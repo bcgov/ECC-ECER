@@ -52,16 +52,3 @@ internal sealed class ApplicationRepository : IApplicationRepository
         return ecerApplication.Id.ToString();
     }
 }
-
-public record ApplicationQueryRequest();
-
-public record ApplicationQueryResponse(IEnumerable<Application> Items);
-
-public record Application
-{
-    public string ApplicantId { get; set; } = null!;
-    public string? ApplicationId { get; set; }
-    public DateTime SubmissionDate { get; set; }
-}
-
-public record SaveApplicationRequest(Application Application);
