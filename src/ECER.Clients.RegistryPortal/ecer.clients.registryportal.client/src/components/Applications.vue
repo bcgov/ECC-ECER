@@ -22,6 +22,10 @@
                 </tbody>
             </table>
         </div>
+
+        <div>
+            <button @click="submitAppliction" type="button">New Application</button>
+        </div>
     </div>
 </template>
 
@@ -36,7 +40,10 @@ interface Data {
     post: null | Components.Schemas.Application[];
 }
 
+const api = new OpenAPIClientAxios({ definition: 'http://localhost:5121/swagger/v1/swagger.json' });
+
 export default defineComponent({
+
     data(): Data {
         return {
             loading: false,
@@ -57,13 +64,20 @@ export default defineComponent({
             this.post = null;
             this.loading = true;
 
-            const api = new OpenAPIClientAxios({ definition: 'http://localhost:5121/swagger/v1/swagger.json' });
             api.init<Client>().then(c => {
                 console.debug(c);
                 return c.GetApplications().then(response => {
                     console.debug(response.data.items);
                     this.post = response.data.items;
                     this.loading = false;
+                });
+            });
+        },
+        submitAppliction(): void {
+            api.init<Client>().then(c => {
+                c.PostNewApplication({}, {}).then(response => {
+                    console.debug(response.data.applicationId);
+                    this.fetchApplications();
                 });
             });
         }
