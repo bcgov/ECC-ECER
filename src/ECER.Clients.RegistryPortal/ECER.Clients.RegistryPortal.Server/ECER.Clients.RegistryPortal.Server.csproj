@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<SpaRoot>..\ecer.clients.registryportal.client</SpaRoot>
+		<SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
+		<SpaProxyServerUrl>https://localhost:5121</SpaProxyServerUrl>
+		<UserSecretsId>c88bcf5c-db2f-4814-aa30-1ef3c67d1808</UserSecretsId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+		<PackageReference Include="Microsoft.AspNetCore.SpaProxy" />
+		<PackageReference Include="Swashbuckle.AspNetCore" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\ECER.Managers.Registry\ECER.Managers.Registry.csproj" />
+		<ProjectReference Include="..\..\ECER.Utilities.Hosting\ECER.Utilities.Hosting.csproj" />
+		<ProjectReference Include="..\ecer.clients.registryportal.client\ecer.clients.registryportal.client.esproj">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+		</ProjectReference>
+	</ItemGroup>
+
+</Project>
