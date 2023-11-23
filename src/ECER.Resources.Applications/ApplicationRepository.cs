@@ -36,10 +36,12 @@ internal sealed class ApplicationRepository : IApplicationRepository
         var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == Guid.Parse(request.Application.ApplicantId));
         if (applicant == null) throw new InvalidOperationException($"Applicant '{request.Application.ApplicantId}' not found");
 
-        var ecerApplication = new ECER_Application(Guid.NewGuid())
+        var applicationId = Guid.NewGuid();
+        var ecerApplication = new ECER_Application(applicationId)
         {
             ECER_LegalFirstName = "First",
             ECER_LegalLastName = "Last",
+            ECER_Name = applicationId.ToString(),
             ECER_DateOfBirth = DateTime.Parse("2000-01-01", CultureInfo.InvariantCulture),
         };
 
@@ -49,6 +51,6 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
         context.SaveChanges();
 
-        return ecerApplication.Id.ToString();
+        return applicationId.ToString();
     }
 }

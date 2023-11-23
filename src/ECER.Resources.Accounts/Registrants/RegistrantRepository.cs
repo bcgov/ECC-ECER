@@ -15,10 +15,11 @@ internal sealed class RegistrantRepository : IRegistrantRepository
     public async Task<string> Create(NewRegistrantRequest request)
     {
         await Task.CompletedTask;
-        var contact = new Contact(Guid.NewGuid())
+        var registrantId = Guid.NewGuid();
+        var contact = new Contact(registrantId)
         {
-            FirstName = "first",
-            LastName = "last",
+            FirstName = $"first{registrantId.ToString().Substring(0, 4)}",
+            LastName = $"last{registrantId.ToString().Substring(32, 4)}",
             Birthdate = DateTime.Parse("2000-01-01", CultureInfo.InvariantCulture)
         };
 
@@ -26,6 +27,6 @@ internal sealed class RegistrantRepository : IRegistrantRepository
 
         context.SaveChanges();
 
-        return contact.Id.ToString();
+        return registrantId.ToString();
     }
 }
