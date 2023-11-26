@@ -1,14 +1,25 @@
-/* eslint-env node */
-require('@rushstack/eslint-patch/modern-module-resolution')
-
 module.exports = {
   root: true,
-  'extends': [
-    'plugin:vue/vue3-essential',
-    'eslint:recommended',
-    '@vue/eslint-config-typescript'
+  env: {
+    node: true,
+  },
+  extends: [
+    "plugin:vue/vue3-recommended",
+    "eslint:recommended",
+    "@vue/eslint-config-typescript",
+    "@vue/eslint-config-prettier",
   ],
-  parserOptions: {
-    ecmaVersion: 'latest'
-  }
-}
+  plugins: ["unused-imports", "simple-import-sort"],
+  rules: {
+    "prettier/prettier": ["error", { endOfLine: "auto" }],
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      { vars: "all", args: "after-used", argsIgnorePattern: "^_" },
+    ],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "vue/multi-word-component-names": "off",
+  },
+};
