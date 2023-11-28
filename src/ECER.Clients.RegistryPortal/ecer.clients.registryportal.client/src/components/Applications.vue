@@ -1,5 +1,5 @@
 <template>
-  <div class="weather-component">
+  <div>
     <h1>Applications</h1>
 
     <div v-if="loading" class="loading">Loading...</div>
@@ -30,19 +30,15 @@
 </template>
 
 <script lang="ts">
-import OpenAPIClientAxios from "openapi-client-axios";
 import { defineComponent } from "vue";
 
-import type { Client, Components } from "@/types/openapi";
+import { getApplications, postApplication } from "@/api/application";
+import type { Components } from "@/types/openapi";
 
 interface Data {
   loading: boolean;
   post: Components.Schemas.Application[] | null | undefined;
 }
-
-const api = new OpenAPIClientAxios({
-  definition: "http://localhost:5121/swagger/v1/swagger.json",
-});
 
 export default defineComponent({
   data(): Data {
@@ -51,36 +47,18 @@ export default defineComponent({
       post: null,
     };
   },
-  watch: {
-    // call again the method if the route changes
-    $route: "fetchApplications",
-  },
   created() {
-    // fetch the data when the view is created and the data is
-    // already being observed
     this.fetchApplications();
   },
   methods: {
-    fetchApplications(): void {
-      this.post = null;
-      this.loading = true;
-
-      api.init<Client>().then((c) => {
-        console.debug(c);
-        return c.GetApplications().then((response) => {
-          console.debug(response.data.items);
-          this.post = response.data.items;
-          this.loading = false;
-        });
-      });
+    async submitAppliction(): Promise<void> {
+      await postApplication();
+      this.fetchApplications();
     },
-    submitAppliction(): void {
-      api.init<Client>().then((c) => {
-        c.PostNewApplication({}, {}).then((response) => {
-          console.debug(response.data.applicationId);
-          this.fetchApplications();
-        });
-      });
+    async fetchApplications(): Promise<void> {
+      this.loading = true;
+      this.post = await getApplications();
+      this.loading = false;
     },
   },
 });
