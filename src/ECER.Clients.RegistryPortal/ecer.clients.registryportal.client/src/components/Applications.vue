@@ -2,9 +2,7 @@
   <div>
     <h1>Applications</h1>
 
-    <div v-if="loading" class="loading">Loading...</div>
-
-    <div v-if="post" class="content">
+    <div v-if="applications" class="content">
       <table>
         <thead>
           <tr>
@@ -14,7 +12,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="application in post" :key="application.submittedOn">
+          <tr
+            v-for="application in applications"
+            :key="application.submittedOn"
+          >
             <td>{{ application.id }}</td>
             <td>{{ application.registrantId }}</td>
             <td>{{ application.submittedOn }}</td>
@@ -24,41 +25,33 @@
     </div>
 
     <div>
-      <button type="button" @click="submitAppliction">New Application</button>
+      <button type="button" @click="createApplication">New Application</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { mapState } from "pinia";
 import { defineComponent } from "vue";
 
-import { getApplications, postApplication } from "@/api/application";
-import type { Components } from "@/types/openapi";
-
-interface Data {
-  loading: boolean;
-  post: Components.Schemas.Application[] | null | undefined;
-}
+import { useApplicationStore } from "@/store/application";
 
 export default defineComponent({
-  data(): Data {
-    return {
-      loading: false,
-      post: null,
-    };
+  setup() {
+    const applicationStore = useApplicationStore();
+
+    return { applicationStore };
+  },
+  computed: {
+    ...mapState(useApplicationStore, ["applications"]),
   },
   created() {
-    this.fetchApplications();
+    this.applicationStore.fetchApplications();
   },
   methods: {
-    async submitAppliction(): Promise<void> {
-      await postApplication();
-      this.fetchApplications();
-    },
-    async fetchApplications(): Promise<void> {
-      this.loading = true;
-      this.post = await getApplications();
-      this.loading = false;
+    async createApplication() {
+      await this.applicationStore.newApplication();
+      this.applicationStore.fetchApplications();
     },
   },
 });

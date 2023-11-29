@@ -8,9 +8,9 @@ const getApplications = async (): Promise<
   return (await client.GetApplications()).data.items;
 };
 
-const postApplication = async (): Promise<any> => {
+const postApplication = async (): Promise<string | null | undefined> => {
   const client = await getClient();
-  await client.PostNewApplication({}, {});
+  return (await client.PostNewApplication({}, {})).data.applicationId;
 };
 
 export { getApplications, postApplication };
