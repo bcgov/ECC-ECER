@@ -41,7 +41,7 @@ interface Data {
 }
 
 const api = new OpenAPIClientAxios({
-  definition: "http://localhost:5121/swagger/v1/swagger.json",
+  definition: "swagger/v1/swagger.json",
 });
 
 export default defineComponent({
