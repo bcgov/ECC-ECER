@@ -3,10 +3,14 @@ import { defineStore } from "pinia";
 import { getApplications, postApplication } from "@/api/application";
 import type { Components } from "@/types/openapi";
 
+export interface ApplicationState {
+  applications: Components.Schemas.Application[] | null | undefined;
+}
+
 export const useApplicationStore = defineStore("application", {
-  state: () => {
+  state: (): ApplicationState => {
     return {
-      applications: [] as Components.Schemas.Application[] | null | undefined,
+      applications: [],
     };
   },
   actions: {
