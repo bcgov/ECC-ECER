@@ -1,15 +1,13 @@
 ﻿using ECER.Managers.Registry;
+using ECER.Utilities.Hosting;
 
 namespace ECER.Clients.RegistryPortal.Server;
 
-/// <summary>
-/// Registry API endpoint map
-/// </summary>
-public static class ApplicationsEndpoints
+public class ApplicationsEndpoints : IRegisterEndpoints
 {
-    internal static void Map(WebApplication app)
+    public void Register(IEndpointRouteBuilder endpointRouteBuilder)
     {
-        app.MapPost("/api/applications", async (NewApplicationRequest request, HttpContext ctx) =>
+        endpointRouteBuilder.MapPost("/api/applications", async (NewApplicationRequest request, HttpContext ctx) =>
         {
             var handlers = ctx.RequestServices.GetRequiredService<ApplicationHandlers>();
             var cmd = new SubmitNewApplicationCommand();
@@ -24,7 +22,7 @@ public static class ApplicationsEndpoints
             return op;
         });
 
-        app.MapGet("/api/applications", async (HttpContext ctx) =>
+        endpointRouteBuilder.MapGet("/api/applications", async (HttpContext ctx) =>
         {
             var handlers = ctx.RequestServices.GetRequiredService<ApplicationHandlers>();
             var query = new ApplicationsQuery();
