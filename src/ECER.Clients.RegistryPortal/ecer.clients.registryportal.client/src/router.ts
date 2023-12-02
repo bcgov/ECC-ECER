@@ -11,6 +11,10 @@ const router = createRouter({
       path: "/login",
       component: () => import("./components/pages/Login.vue"),
     },
+    {
+      path: "/callback",
+      component: () => import("./components/pages/Callback.vue"),
+    },
   ],
 });
 
