@@ -3,7 +3,7 @@
     <button type="button" @click="handleTokenRefresh">
       Refresh token with BCeID
     </button>
-    <p>User: {{ userInfo?.access_token }}</p>
+    <p>User: {{ profile?.display_name }}</p>
 
     <Applications />
   </main>
@@ -26,12 +26,14 @@ export default defineComponent({
     Applications,
   },
   computed: {
-    ...mapState(useUserStore, ["userInfo"]),
+    ...mapState(useUserStore, ["profile"]),
   },
   methods: {
     handleTokenRefresh: async function () {
       const user = await this.userStore.signinSilent();
-      this.userStore.setUser(user);
+      if (user?.profile) {
+        this.userStore.setProfile(user?.profile);
+      }
     },
   },
 });

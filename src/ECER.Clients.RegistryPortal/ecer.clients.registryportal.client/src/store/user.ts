@@ -1,36 +1,46 @@
-import type { SignoutResponse, User } from "oidc-client-ts";
+import type { SignoutResponse, User, UserProfile } from "oidc-client-ts";
 import { UserManager } from "oidc-client-ts";
 import { defineStore } from "pinia";
 
 import oidcConfig from "@/oidc-config";
 
 export interface UserState {
-  userInfo: User | null;
+  profile: UserProfile | null;
   userManager: UserManager;
 }
 
 export const useUserStore = defineStore("user", {
   persist: {
-    paths: ["userInfo"],
+    paths: ["profile"],
   },
   state: (): UserState => ({
-    userInfo: null,
+    profile: null,
     userManager: new UserManager(oidcConfig),
   }),
   getters: {
-    isAuthenticated: (state) => state.userInfo !== null,
+    isAuthenticated: (state) => state.profile !== null,
   },
   actions: {
     initializeUserManager: function () {
       this.userManager = new UserManager(oidcConfig);
     },
 
-    clearUser(): void {
-      this.userInfo = null;
+    clearProfile(): void {
+      this.profile = null;
     },
 
-    setUser(user: User | null): void {
-      this.userInfo = user;
+    setProfile(user: UserProfile | null): void {
+      this.profile = user;
+    },
+
+    async getAccessToken(): Promise<string | null> {
+      const user = await this.userManager.getUser();
+      return user?.access_token ?? null;
+    },
+
+    async getRefreshToken(): Promise<string | null> {
+      const user = await this.userManager.getUser();
+      return user?.access_token ?? null;
     },
 
     async login(): Promise<void> {

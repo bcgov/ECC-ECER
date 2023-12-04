@@ -15,7 +15,7 @@ export default {
   methods: {
     handleCallback() {
       this.userStore.completeLogout();
-      this.userStore.clearUser();
+      this.userStore.clearProfile();
       this.$router.push("/");
     },
   },

@@ -15,7 +15,7 @@ export default {
   methods: {
     async handleCallback(): Promise<void> {
       const user = await this.userStore.signinCallback();
-      this.userStore.setUser(user);
+      this.userStore.setProfile(user.profile);
       this.$router.push("/");
     },
   },
