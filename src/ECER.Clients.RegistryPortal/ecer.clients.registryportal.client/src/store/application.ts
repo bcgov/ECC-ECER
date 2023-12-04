@@ -8,11 +8,9 @@ export interface ApplicationState {
 }
 
 export const useApplicationStore = defineStore("application", {
-  state: (): ApplicationState => {
-    return {
-      applications: [],
-    };
-  },
+  state: (): ApplicationState => ({
+    applications: [],
+  }),
   actions: {
     async fetchApplications() {
       this.applications = await getApplications();

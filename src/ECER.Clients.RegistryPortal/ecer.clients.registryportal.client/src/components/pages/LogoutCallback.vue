@@ -1,9 +1,4 @@
-<!-- src/views/Callback.vue -->
-<template>
-  <div>
-    <p>Loading...</p>
-  </div>
-</template>
+<template><div></div></template>
 
 <script lang="ts">
 import { useUserStore } from "@/store/user";
@@ -15,16 +10,14 @@ export default {
     return { userStore };
   },
   mounted() {
-    // Handle callback logic here
     this.handleCallback();
   },
   methods: {
     handleCallback() {
-      // Call the method to complete the login process
-      console.log("Callback fired");
-      this.userStore.callback();
+      this.userStore.completeLogout();
+      this.userStore.clearUser();
+      this.$router.push("/");
     },
   },
 };
 </script>
-@/services/auth

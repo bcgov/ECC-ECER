@@ -1,9 +1,9 @@
 <template>
-  <div class="weather-component">
+  <div>
     <h1>Login</h1>
 
     <div>
-      <button type="button" @click="login">Login</button>
+      <button type="button" @click="userStore.login()">Login with BCeID</button>
     </div>
   </div>
 </template>
@@ -17,14 +17,7 @@ export default defineComponent({
   name: "Login",
   setup() {
     const userStore = useUserStore();
-
     return { userStore };
-  },
-  methods: {
-    login: async function () {
-      await this.userStore.login();
-    },
   },
 });
 </script>
-@/services/auth

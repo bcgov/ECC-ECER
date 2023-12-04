@@ -39,7 +39,6 @@ import { useApplicationStore } from "@/store/application";
 export default defineComponent({
   setup() {
     const applicationStore = useApplicationStore();
-
     return { applicationStore };
   },
   computed: {

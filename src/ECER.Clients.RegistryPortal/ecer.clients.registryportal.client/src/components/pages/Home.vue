@@ -1,12 +1,16 @@
 <template>
   <main>
-    <p>User: {{ userStore.userInfo }}</p>
+    <button type="button" @click="handleTokenRefresh">
+      Refresh token with BCeID
+    </button>
+    <p>User: {{ userInfo?.access_token }}</p>
 
     <Applications />
   </main>
 </template>
 
 <script lang="ts">
+import { mapState } from "pinia";
 import { defineComponent } from "vue";
 
 import Applications from "@/components/Applications.vue";
@@ -14,13 +18,21 @@ import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   name: "Home",
+  setup() {
+    const userStore = useUserStore();
+    return { userStore };
+  },
   components: {
     Applications,
   },
-  setup() {
-    const userStore = useUserStore();
-
-    return { userStore };
+  computed: {
+    ...mapState(useUserStore, ["userInfo"]),
+  },
+  methods: {
+    handleTokenRefresh: async function () {
+      const user = await this.userStore.signinSilent();
+      this.userStore.setUser(user);
+    },
   },
 });
 </script>

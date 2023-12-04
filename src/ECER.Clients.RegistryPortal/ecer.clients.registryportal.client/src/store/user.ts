@@ -1,5 +1,5 @@
-import type { User } from "oidc-client-ts";
-import { Log, UserManager } from "oidc-client-ts";
+import type { SignoutResponse, User } from "oidc-client-ts";
+import { UserManager } from "oidc-client-ts";
 import { defineStore } from "pinia";
 
 import oidcConfig from "@/oidc-config";
@@ -10,42 +10,51 @@ export interface UserState {
 }
 
 export const useUserStore = defineStore("user", {
-  state: (): UserState => {
-    return {
-      userInfo: null,
-      userManager: new UserManager(oidcConfig),
-    };
+  persist: {
+    paths: ["userInfo"],
   },
+  state: (): UserState => ({
+    userInfo: null,
+    userManager: new UserManager(oidcConfig),
+  }),
   getters: {
-    isAuthenticated: (state) => state.userInfo != null,
-    user: (state) => state.userManager?.getUser(),
+    isAuthenticated: (state) => state.userInfo !== null,
   },
   actions: {
     initializeUserManager: function () {
       this.userManager = new UserManager(oidcConfig);
-      Log.setLogger(console);
-    },
-    async getUser() {
-      this.userInfo = await this.userManager.getUser();
     },
 
-    login: function () {
-      return this.userManager.signinRedirect();
+    clearUser(): void {
+      this.userInfo = null;
     },
 
-    callback: function () {
-      return this.userManager.signinRedirectCallback();
+    setUser(user: User | null): void {
+      this.userInfo = user;
     },
 
-    logout: function () {
+    async login(): Promise<void> {
+      return await this.userManager.signinRedirect();
+    },
+
+    async signinCallback(): Promise<User> {
+      return await this.userManager.signinRedirectCallback();
+    },
+
+    async silentCallback(): Promise<void> {
+      return this.userManager.signinSilentCallback();
+    },
+
+    async signinSilent(): Promise<User | null> {
+      return await this.userManager.signinSilent();
+    },
+
+    async logout(): Promise<void> {
       return this.userManager.signoutRedirect();
     },
 
-    completeLogout: function () {
+    async completeLogout(): Promise<SignoutResponse> {
       return this.userManager.signoutRedirectCallback();
     },
-  },
-  persist: {
-    paths: ["userInfo", "userManager"],
   },
 });
