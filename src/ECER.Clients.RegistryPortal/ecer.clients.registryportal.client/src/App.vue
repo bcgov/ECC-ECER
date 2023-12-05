@@ -25,7 +25,6 @@ export default defineComponent({
   name: "App",
   setup() {
     const userStore = useUserStore();
-    userStore.initializeUserManager();
     return { userStore };
   },
   methods: {

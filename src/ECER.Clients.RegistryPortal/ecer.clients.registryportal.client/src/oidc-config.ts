@@ -1,13 +1,20 @@
-import { type UserManagerSettings, WebStorageStateStore } from "oidc-client-ts";
+import type { UserManagerSettings } from "oidc-client-ts";
 
-const oidcConfig: UserManagerSettings = {
-  authority: import.meta.env.VITE_AUTHORITY,
-  client_id: import.meta.env.VITE_CLIENT_ID,
-  redirect_uri: `${window.location.origin}/signin-callback`, // Your callback URL
-  post_logout_redirect_uri: `${window.location.origin}/logout-callback`, // Your logout URL
-  silent_redirect_uri: `${window.location.origin}/silent-renew`, // Your silent renew URL
+// Pick specific fields from UserManagerSettings to create PartialUserManagerSettings
+type BaseUserManagerSettings = Pick<
+  UserManagerSettings,
+  | "redirect_uri"
+  | "post_logout_redirect_uri"
+  | "silent_redirect_uri"
+  | "response_type"
+>;
+
+// Create an instance of the partial type using oidcConfig
+const oidcConfig: BaseUserManagerSettings = {
+  redirect_uri: `${window.location.origin}/signin-callback`,
+  post_logout_redirect_uri: `${window.location.origin}/logout-callback`,
+  silent_redirect_uri: `${window.location.origin}/silent-renew`,
   response_type: "code",
-  scope: "openid profile email",
 };
 
 export default oidcConfig;

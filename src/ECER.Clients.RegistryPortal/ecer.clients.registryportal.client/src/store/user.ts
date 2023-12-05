@@ -2,7 +2,7 @@ import type { SignoutResponse, User, UserProfile } from "oidc-client-ts";
 import { UserManager } from "oidc-client-ts";
 import { defineStore } from "pinia";
 
-import oidcConfig from "@/oidc-config";
+import { useConfigStore } from "./config";
 
 export interface UserState {
   profile: UserProfile | null;
@@ -15,16 +15,12 @@ export const useUserStore = defineStore("user", {
   },
   state: (): UserState => ({
     profile: null,
-    userManager: new UserManager(oidcConfig),
+    userManager: new UserManager(useConfigStore().oidcConfiguration),
   }),
   getters: {
     isAuthenticated: (state) => state.profile !== null,
   },
   actions: {
-    initializeUserManager: function () {
-      this.userManager = new UserManager(oidcConfig);
-    },
-
     clearProfile(): void {
       this.profile = null;
     },

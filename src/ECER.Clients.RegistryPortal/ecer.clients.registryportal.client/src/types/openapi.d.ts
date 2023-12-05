@@ -1,9 +1,9 @@
 import type {
+  AxiosRequestConfig,
   OpenAPIClient,
+  OperationResponse,
   Parameters,
   UnknownParamsObject,
-  OperationResponse,
-  AxiosRequestConfig,
 } from 'openapi-client-axios';
 
 declare namespace Components {
