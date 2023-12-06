@@ -2,6 +2,7 @@
 {{- define "dc.tpl" }}
 {{- $values := .values -}}
 {{- $name := .name -}}
+{{- $namespace := .namespace -}}
 {{- $labels := .labels -}}
 {{- $port := ($values.port | default 8080) -}}
 {{- $protocol := ($values.protocol | default "tcp") -}}
@@ -33,6 +34,10 @@ spec:
       labels:
         name: {{ $name }}
         role: {{ $values.role }}
+      {{- if gt (len $values.secrets) 0 }}
+      annotations:
+        checksum/secret: {{ $values.secrets | toYaml | sha256sum }}
+      {{- end }}
     spec:
       containers:
         - name: {{ $name }}

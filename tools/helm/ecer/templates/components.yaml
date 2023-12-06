@@ -3,7 +3,8 @@
 {{- range $key, $values := .Values.components -}}
     {{- $values := merge $values $.Values.defaults -}}
     {{- $name := print $.Release.Name "-" $key -}}
-    {{- $context := dict "name" $name "values" $values "labels" $labels -}}
+    {{- $namespace := $.Release.Namespace -}}
+    {{- $context := dict "name" $name "values" $values "labels" $labels "namespace" $namespace -}}
     {{ include "dc.tpl" $context | nindent 0 }}
     {{ "---" | nindent 0 }}
     {{ include "secret.tpl" $context | nindent 0 }}
