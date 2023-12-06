@@ -1,8 +1,6 @@
 <template>
   <main>
-    <button type="button" @click="handleTokenRefresh">
-      Refresh token with BCeID
-    </button>
+    <button type="button" @click="handleTokenRefresh">Refresh token with BCeID</button>
     <p>User: {{ profile?.display_name }}</p>
 
     <Applications />
@@ -18,12 +16,12 @@ import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   name: "Home",
+  components: {
+    Applications,
+  },
   setup() {
     const userStore = useUserStore();
     return { userStore };
-  },
-  components: {
-    Applications,
   },
   computed: {
     ...mapState(useUserStore, ["profile"]),

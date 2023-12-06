@@ -3,10 +3,7 @@ import type { UserManagerSettings } from "oidc-client-ts";
 // Pick specific fields from UserManagerSettings to create PartialUserManagerSettings
 type BaseUserManagerSettings = Pick<
   UserManagerSettings,
-  | "redirect_uri"
-  | "post_logout_redirect_uri"
-  | "silent_redirect_uri"
-  | "response_type"
+  "redirect_uri" | "post_logout_redirect_uri" | "silent_redirect_uri" | "response_type"
 >;
 
 // Create an instance of the partial type using oidcConfig

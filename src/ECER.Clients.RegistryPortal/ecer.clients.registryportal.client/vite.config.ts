@@ -11,12 +11,8 @@ const baseFolder =
     ? `${process.env.APPDATA}/ASP.NET/https`
     : `${process.env.HOME}/.aspnet/https`;
 
-const certificateArg = process.argv
-  .map((arg) => arg.match(/--name=(?<value>.+)/i))
-  .filter(Boolean)[0];
-const certificateName = certificateArg
-  ? certificateArg.groups?.value
-  : "ecer.clients.registryportal.client";
+const certificateArg = process.argv.map((arg) => arg.match(/--name=(?<value>.+)/i)).filter(Boolean)[0];
+const certificateName = certificateArg ? certificateArg.groups?.value : "ecer.clients.registryportal.client";
 
 if (!certificateName) {
   console.error(
@@ -33,15 +29,7 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     0 !==
     child_process.spawnSync(
       "dotnet",
-      [
-        "dev-certs",
-        "https",
-        "--export-path",
-        certFilePath,
-        "--format",
-        "Pem",
-        "--no-password",
-      ],
+      ["dev-certs", "https", "--export-path", certFilePath, "--format", "Pem", "--no-password"],
       { stdio: "inherit" },
     ).status
   ) {

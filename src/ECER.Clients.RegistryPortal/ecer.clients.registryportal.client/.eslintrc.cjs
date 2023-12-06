@@ -14,10 +14,7 @@ module.exports = {
     "prettier/prettier": ["error", { endOfLine: "auto" }],
     "@typescript-eslint/no-unused-vars": "off",
     "unused-imports/no-unused-imports": "warn",
-    "unused-imports/no-unused-vars": [
-      "warn",
-      { vars: "all", args: "after-used", argsIgnorePattern: "^_" },
-    ],
+    "unused-imports/no-unused-vars": ["warn", { vars: "all", args: "after-used", argsIgnorePattern: "^_" }],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "vue/multi-word-component-names": "off",

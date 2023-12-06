@@ -12,10 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="application in applications"
-            :key="application.submittedOn"
-          >
+          <tr v-for="application in applications" :key="application.submittedOn">
             <td>{{ application.id }}</td>
             <td>{{ application.registrantId }}</td>
             <td>{{ application.submittedOn }}</td>

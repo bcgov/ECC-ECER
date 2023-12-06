@@ -34,9 +34,7 @@ export const useConfigStore = defineStore("config", {
             )
           ) {
             const oidcAuthenticationSettings =
-              state.applicationConfiguration[
-                method as keyof Components.Schemas.ApplicationConfiguration
-              ];
+              state.applicationConfiguration[method as keyof Components.Schemas.ApplicationConfiguration];
 
             if (oidcAuthenticationSettings) {
               // Access individual properties of OidcAuthenticationSettings
@@ -59,9 +57,7 @@ export const useConfigStore = defineStore("config", {
     },
   },
   actions: {
-    async initialize(): Promise<
-      Components.Schemas.ApplicationConfiguration | null | undefined
-    > {
+    async initialize(): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> {
       const configuration = await getConfiguration();
       if (configuration !== null && configuration !== undefined) {
         this.applicationConfiguration = configuration;
