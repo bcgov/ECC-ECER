@@ -1,10 +1,9 @@
 using System.Reflection;
-using ECER.Clients.RegistryPortal.Server;
 using ECER.Utilities.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-HostConfigurer.Configure(builder.Services, builder.Configuration);
+HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opts =>
@@ -21,6 +20,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-ApplicationsEndpoints.Map(app);
+EndpointsRegistrar.RegisterAll(app);
 
 app.Run();

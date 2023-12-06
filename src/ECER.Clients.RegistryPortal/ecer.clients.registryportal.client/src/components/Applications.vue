@@ -1,10 +1,8 @@
 <template>
-  <div class="weather-component">
+  <div>
     <h1>Applications</h1>
 
-    <div v-if="loading" class="loading">Loading...</div>
-
-    <div v-if="post" class="content">
+    <div v-if="applications" class="content">
       <table>
         <thead>
           <tr>
@@ -14,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="application in post" :key="application.submittedOn">
+          <tr v-for="application in applications" :key="application.submittedOn">
             <td>{{ application.id }}</td>
             <td>{{ application.registrantId }}</td>
             <td>{{ application.submittedOn }}</td>
@@ -24,63 +22,32 @@
     </div>
 
     <div>
-      <button type="button" @click="submitAppliction">New Application</button>
+      <button type="button" @click="createApplication">New Application</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import OpenAPIClientAxios from "openapi-client-axios";
+import { mapState } from "pinia";
 import { defineComponent } from "vue";
 
-import type { Client, Components } from "@/types/openapi";
-
-interface Data {
-  loading: boolean;
-  post: Components.Schemas.Application[] | null | undefined;
-}
-
-const api = new OpenAPIClientAxios({
-  definition: "swagger/v1/swagger.json",
-});
+import { useApplicationStore } from "@/store/application";
 
 export default defineComponent({
-  data(): Data {
-    return {
-      loading: false,
-      post: null,
-    };
+  setup() {
+    const applicationStore = useApplicationStore();
+    return { applicationStore };
   },
-  watch: {
-    // call again the method if the route changes
-    $route: "fetchApplications",
+  computed: {
+    ...mapState(useApplicationStore, ["applications"]),
   },
   created() {
-    // fetch the data when the view is created and the data is
-    // already being observed
-    this.fetchApplications();
+    this.applicationStore.fetchApplications();
   },
   methods: {
-    fetchApplications(): void {
-      this.post = null;
-      this.loading = true;
-
-      api.init<Client>().then((c) => {
-        console.debug(c);
-        return c.GetApplications().then((response) => {
-          console.debug(response.data.items);
-          this.post = response.data.items;
-          this.loading = false;
-        });
-      });
-    },
-    submitAppliction(): void {
-      api.init<Client>().then((c) => {
-        c.PostNewApplication({}, {}).then((response) => {
-          console.debug(response.data.applicationId);
-          this.fetchApplications();
-        });
-      });
+    async createApplication() {
+      await this.applicationStore.newApplication();
+      this.applicationStore.fetchApplications();
     },
   },
 });

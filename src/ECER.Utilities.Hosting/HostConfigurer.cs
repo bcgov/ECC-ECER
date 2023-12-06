@@ -14,7 +14,7 @@ public static class HostConfigurer
     /// </summary>
     /// <param name="services">The service collection context</param>
     /// <param name="configuration">The configuration context</param>
-    public static void Configure(IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureAll(IServiceCollection services, IConfiguration configuration)
     {
         var configurationContext = new ConfigurationContext(services, configuration);
         var assemblies = ReflectionExtensions.DiscoverLocalAessemblies();
