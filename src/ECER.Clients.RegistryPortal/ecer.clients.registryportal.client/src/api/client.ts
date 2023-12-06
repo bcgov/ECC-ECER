@@ -5,7 +5,7 @@ import type { Client } from "@/types/openapi";
 
 export const getClient = async (appendToken: boolean = true) => {
   const api = new OpenAPIClientAxios({
-    definition: `${import.meta.env.VITE_BASE_URL}/swagger/v1/swagger.json`,
+    definition: "/swagger/v1/swagger.json",
   });
 
   const axiosClient = await api.init<Client>();

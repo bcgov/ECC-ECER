@@ -18,39 +18,13 @@ export const useConfigStore = defineStore("config", {
   }),
   getters: {
     oidcConfiguration: (state): UserManagerSettings => {
-      let authority = "";
-      let client_id = "";
-      let scope = "";
-
-      // Check if authenticationMethods is not null
-      if (state.applicationConfiguration) {
-        // Iterate through each authentication method
-        for (const method in state.applicationConfiguration) {
-          if (
-            Object.prototype.hasOwnProperty.call(
-              state.applicationConfiguration,
-              // eslint-disable-next-line prettier/prettier
-              method
-            )
-          ) {
-            const oidcAuthenticationSettings =
-              state.applicationConfiguration[method as keyof Components.Schemas.ApplicationConfiguration];
-
-            if (oidcAuthenticationSettings) {
-              // Access individual properties of OidcAuthenticationSettings
-              authority = <string>oidcAuthenticationSettings.authority;
-              client_id = <string>oidcAuthenticationSettings.clientId;
-              scope = <string>oidcAuthenticationSettings.scope;
-            }
-          }
-        }
-      }
+      const oidc = state.applicationConfiguration?.authenticationMethods ? state.applicationConfiguration?.authenticationMethods["bceid"] : null;
 
       const combinedConfig: UserManagerSettings = {
         ...oidcConfig,
-        client_id,
-        authority,
-        scope,
+        client_id: oidc?.clientId ?? "",
+        authority: oidc?.authority ?? "",
+        scope: oidc?.scope ?? "",
       };
 
       return combinedConfig;
