@@ -3,7 +3,7 @@ import type { Components } from "@/types/openapi";
 
 const getConfiguration = async (): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> => {
   const client = await getClient(false);
-  return (await client.configuration()).data.authenticationMethods;
+  return (await client.configuration()).data;
 };
 
 export { getConfiguration };
