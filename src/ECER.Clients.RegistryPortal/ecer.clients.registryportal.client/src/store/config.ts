@@ -18,7 +18,6 @@ export const useConfigStore = defineStore("config", {
   }),
   getters: {
     oidcConfiguration: (state): UserManagerSettings => {
-
       const oidc = state.applicationConfiguration?.authenticationMethods ? state.applicationConfiguration?.authenticationMethods["bceid"] : null;
 
       const combinedConfig: UserManagerSettings = {
