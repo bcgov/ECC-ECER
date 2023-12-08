@@ -15,7 +15,7 @@ export const useUserStore = defineStore("user", {
   },
   state: (): UserState => ({
     profile: null,
-    userManager: new UserManager(useConfigStore().oidcConfiguration),
+    userManager: new UserManager(useConfigStore().bcscOidcConfiguration),
   }),
   getters: {
     isAuthenticated: (state) => state.profile !== null,
