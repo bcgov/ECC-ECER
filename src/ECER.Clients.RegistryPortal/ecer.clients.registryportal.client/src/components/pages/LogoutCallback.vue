@@ -15,9 +15,9 @@ export default {
     this.handleCallback();
   },
   methods: {
-    handleCallback() {
+    async handleCallback() {
       if (this.userStore.isAuthenticated && this.userStore.authority) {
-        this.oidcStore.completeLogout(this.userStore.authority);
+        await this.oidcStore.completeLogout(this.userStore.authority);
         this.userStore.$reset();
       }
     },

@@ -28,7 +28,7 @@ export default defineComponent({
   methods: {
     async handleLogin(authority: Authority) {
       this.userStore.setAuthority(authority);
-      this.oidcStore.login(authority);
+      await this.oidcStore.login(authority);
     },
   },
 });

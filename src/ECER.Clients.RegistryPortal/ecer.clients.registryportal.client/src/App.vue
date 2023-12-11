@@ -48,14 +48,14 @@ export default defineComponent({
     return { userStore, oidcStore };
   },
   methods: {
-    logout() {
+    async logout() {
       if (this.userStore.isAuthenticated && this.userStore.authority) {
         if (this.userStore.authority == "bceid") {
-          this.oidcStore.logout(this.userStore.authority);
+          await this.oidcStore.logout(this.userStore.authority);
         }
         if (this.userStore.authority == "bcsc") {
           // BCSC does not support a session logout callback endpoint so just remove session data from client
-          this.oidcStore.removeUser(this.userStore.authority);
+          await this.oidcStore.removeUser(this.userStore.authority);
           this.userStore.$reset();
         }
       }
