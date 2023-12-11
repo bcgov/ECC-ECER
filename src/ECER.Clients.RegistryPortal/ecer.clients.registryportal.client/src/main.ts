@@ -16,6 +16,7 @@ app.use(router);
 
 const configStore = useConfigStore();
 
+// Fetch OIDC configuration from the API and initialize the store before mounting the app
 configStore.initialize().then(() => {
   app.mount("#app");
 });

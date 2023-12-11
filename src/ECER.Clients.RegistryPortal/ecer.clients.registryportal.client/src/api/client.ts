@@ -12,15 +12,12 @@ export const getClient = async (appendToken: boolean = true) => {
 
   if (appendToken) {
     const userStore = useUserStore();
-    const access_token = await userStore.getAccessToken();
+    const access_token = userStore.getAccessToken;
 
     // Add a request interceptor to append the access token to the request
     axiosClient.interceptors.request.use((config) => {
       if (access_token) {
         config.headers.Authorization = `Bearer ${access_token}`;
-      } else {
-        // If we've failed to get an access token from oidc-client-ts sessionStorage, clear the profile and logout
-        userStore.clearProfile();
       }
       return config;
     });
