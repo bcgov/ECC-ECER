@@ -11,8 +11,15 @@ import * as directives from "vuetify/directives";
 import App from "./App.vue";
 import router from "./router";
 import { useConfigStore } from "./store/config";
+import ecerTheme from "./styles/ecer-theme";
 
 const vuetify = createVuetify({
+  theme: {
+    defaultTheme: "ecerTheme",
+    themes: {
+      ecerTheme,
+    },
+  },
   components,
   directives,
 });
