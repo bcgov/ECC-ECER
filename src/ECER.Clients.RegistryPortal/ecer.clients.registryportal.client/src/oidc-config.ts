@@ -7,7 +7,7 @@ type BaseUserManagerSettings = Pick<UserManagerSettings, "redirect_uri" | "post_
 const oidcConfig: BaseUserManagerSettings = {
   redirect_uri: `${window.location.origin}/signin-callback`,
   post_logout_redirect_uri: `${window.location.origin}/logout-callback`,
-  silent_redirect_uri: `${window.location.origin}/silent-renew`,
+  silent_redirect_uri: `${window.location.origin}/silent-callback`,
   response_type: "code",
 };
 

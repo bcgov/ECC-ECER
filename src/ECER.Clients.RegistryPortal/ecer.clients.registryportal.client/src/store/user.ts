@@ -1,66 +1,36 @@
-import type { SignoutResponse, User, UserProfile } from "oidc-client-ts";
-import { UserManager } from "oidc-client-ts";
+import type { User, UserProfile } from "oidc-client-ts";
 import { defineStore } from "pinia";
 
-import { useConfigStore } from "./config";
+import type { Authority } from "@/types/authority";
 
 export interface UserState {
   profile: UserProfile | null;
-  userManager: UserManager;
+  accessToken: string;
+  authority: Authority | null;
 }
 
 export const useUserStore = defineStore("user", {
   persist: {
-    paths: ["profile"],
+    paths: ["profile", "accessToken", "authority"],
   },
   state: (): UserState => ({
     profile: null,
-    userManager: new UserManager(useConfigStore().bcscOidcConfiguration),
+    accessToken: "",
+    authority: null,
   }),
   getters: {
-    isAuthenticated: (state) => state.profile !== null,
+    isAuthenticated: (state) => state.accessToken !== "",
+    getAccessToken: (state) => state.accessToken,
+    getAuthority: (state) => state.authority,
+    getProfile: (state) => state.profile,
   },
   actions: {
-    clearProfile(): void {
-      this.profile = null;
+    setUser(user: User): void {
+      this.accessToken = user.access_token;
+      this.profile = user.profile;
     },
-
-    setProfile(user: UserProfile | null): void {
-      this.profile = user;
-    },
-
-    async getAccessToken(): Promise<string | null> {
-      const user = await this.userManager.getUser();
-      return user?.access_token ?? null;
-    },
-
-    async getRefreshToken(): Promise<string | null> {
-      const user = await this.userManager.getUser();
-      return user?.access_token ?? null;
-    },
-
-    async login(): Promise<void> {
-      return await this.userManager.signinRedirect();
-    },
-
-    async signinCallback(): Promise<User> {
-      return await this.userManager.signinRedirectCallback();
-    },
-
-    async silentCallback(): Promise<void> {
-      return this.userManager.signinSilentCallback();
-    },
-
-    async signinSilent(): Promise<User | null> {
-      return await this.userManager.signinSilent();
-    },
-
-    async logout(): Promise<void> {
-      return this.userManager.signoutRedirect();
-    },
-
-    async completeLogout(): Promise<SignoutResponse> {
-      return this.userManager.signoutRedirectCallback();
+    setAuthority(authority: Authority | null): void {
+      this.authority = authority;
     },
   },
 });

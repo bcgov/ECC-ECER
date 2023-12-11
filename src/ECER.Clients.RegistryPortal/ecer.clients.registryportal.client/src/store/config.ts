@@ -27,8 +27,6 @@ export const useConfigStore = defineStore("config", {
         scope: oidc?.scope ?? "",
       };
 
-      console.log(combinedConfig);
-
       return combinedConfig;
     },
     bcscOidcConfiguration: (state): UserManagerSettings => {
@@ -40,8 +38,6 @@ export const useConfigStore = defineStore("config", {
         authority: oidc?.authority ?? "",
         scope: oidc?.scope ?? "",
       };
-
-      console.log(combinedConfig);
 
       return combinedConfig;
     },
