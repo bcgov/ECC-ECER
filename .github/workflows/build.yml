@@ -3,10 +3,14 @@ name: Build
 on:
   push:
     branches: [ "master" ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    paths:
+    - src/**
+    - .github/workflows/build.yml
   pull_request:
     branches: [ "master" ]
+    paths:
+    - src/**
+    - .github/workflows/build.yml
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -87,3 +91,11 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Cleanup packages
+        uses: actions/delete-package-versions@v4
+        with: 
+          package-name: 'ecc-ecer/registry-portal'
+          package-type: 'container'
+          min-versions-to-keep: 10
+          delete-only-untagged-versions: 'true'        

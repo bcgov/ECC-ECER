@@ -1,22 +1,25 @@
 <template><div></div></template>
 
 <script lang="ts">
+import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 
 export default {
   setup() {
     const userStore = useUserStore();
+    const oidcStore = useOidcStore();
 
-    return { userStore };
+    return { userStore, oidcStore };
   },
   mounted() {
     this.handleCallback();
   },
   methods: {
     async handleCallback(): Promise<void> {
-      const user = await this.userStore.signinCallback();
-      this.userStore.setProfile(user.profile);
-      this.$router.push("/");
+      if (this.userStore.authority) {
+        const user = await this.oidcStore.signinCallback(this.userStore.authority);
+        this.userStore.setUser(user);
+      }
     },
   },
 };
