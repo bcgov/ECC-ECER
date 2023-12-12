@@ -1,18 +1,14 @@
 <template>
   <main>
-    <p>
-      <router-link to="/">Go to Home</router-link>
-    </p>
-
-    <div v-if="userStore.isAuthenticated">
-      <button type="button" @click="logout">Logout</button>
-    </div>
-    <div v-else>
-      <router-link to="/login">Login</router-link>
-    </div>
-    <hr />
-
-    <router-view></router-view>
+    <v-app>
+      <NavigationBar />
+      <v-main>
+        <v-container fluid>
+          <router-view></router-view>
+        </v-container>
+      </v-main>
+      <EceFooter />
+    </v-app>
   </main>
 </template>
 
@@ -22,10 +18,16 @@ import { useRouter } from "vue-router";
 
 import { useUserStore } from "@/store/user";
 
+import EceFooter from "./components/Footer.vue";
+import NavigationBar from "./components/NavigationBar.vue";
 import { useOidcStore } from "./store/oidc";
 
 export default defineComponent({
   name: "App",
+  components: {
+    NavigationBar,
+    EceFooter,
+  },
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
