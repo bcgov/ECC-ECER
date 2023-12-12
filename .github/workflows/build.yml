@@ -3,14 +3,14 @@ name: Build
 on:
   push:
     branches: [ "master" ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
     paths:
-    - src
+    - src/**
+    - .github/workflows/build.yml
   pull_request:
     branches: [ "master" ]
     paths:
-    - src
+    - src/**
+    - .github/workflows/build.yml
 
 env:
   # Use docker.io for Docker Hub if empty
