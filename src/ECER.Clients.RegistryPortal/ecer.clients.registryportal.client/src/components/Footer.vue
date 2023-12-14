@@ -4,8 +4,8 @@
       <v-btn v-for="link in links" :key="link" color="white" variant="text" class="ms-2" rounded="xl" :style="{ 'text-transform': 'unset' }">
         {{ link }}
       </v-btn>
-    </v-row> </v-footer
-  >>
+    </v-row>
+  </v-footer>
 </template>
 
 <script lang="ts">

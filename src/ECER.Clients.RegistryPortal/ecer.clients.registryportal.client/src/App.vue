@@ -3,7 +3,7 @@
     <v-app>
       <NavigationBar />
       <v-main>
-        <v-container fluid>
+        <v-container class="my-6">
           <router-view></router-view>
         </v-container>
       </v-main>
@@ -65,3 +65,7 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+@import "@/styles/typography.scss";
+</style>
