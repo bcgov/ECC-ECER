@@ -1,0 +1,45 @@
+@mixin heading-style {
+  font-weight: 700;
+  color: #313132;
+}
+
+@mixin subheading-style {
+  font-size: 14px;
+  font-weight: 900;
+  color: #757575;
+}
+
+h1 {
+  font-size: 32px;
+  @include heading-style;
+}
+
+h2 {
+  font-size: 24px;
+  @include heading-style;
+}
+
+h3 {
+  font-size: 21px;
+  @include heading-style;
+}
+
+h4 {
+  @include subheading-style;
+}
+
+p {
+  font-size: 16px;
+  line-height: 30px;
+  font-weight: 400;
+  color: #313132;
+}
+
+.small {
+  font-size: 13px;
+  line-height: 24px;
+}
+
+.white {
+  color: #fff;
+}
