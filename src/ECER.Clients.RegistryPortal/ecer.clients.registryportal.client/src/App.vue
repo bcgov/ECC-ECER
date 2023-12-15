@@ -4,6 +4,7 @@
       <NavigationBar />
       <v-main>
         <v-container class="my-6">
+          <v-btn v-if="userStore.isAuthenticated" type="button" @click="logout">Logout</v-btn>
           <router-view></router-view>
         </v-container>
       </v-main>

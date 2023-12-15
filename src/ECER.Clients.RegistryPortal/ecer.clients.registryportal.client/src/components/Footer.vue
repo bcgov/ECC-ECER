@@ -1,5 +1,5 @@
 <template>
-  <v-footer app height="" color="primary" :style="{ 'min-height': '50px' }">
+  <v-footer app color="primary" :style="{ 'min-height': '50px' }">
     <v-row justify="start">
       <v-btn v-for="link in links" :key="link" color="white" variant="text" class="ms-2" rounded="xl" :style="{ 'text-transform': 'unset' }">
         {{ link }}

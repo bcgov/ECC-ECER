@@ -3,7 +3,8 @@
     <div class="d-flex flex-column align-center mt-2" :style="{ height: '24px' }">
       <p class="white"><b>Preferred Login Method</b></p>
     </div>
-    <v-card width="450px" height="500px" color="white" class="mt-3 ml-2 rounded-lg"><slot></slot></v-card
+    <div class="d-flex flex-column align-center">
+      <v-card width="97%" height="500px" color="white" class="mt-3 rounded-lg"><slot></slot></v-card></div
   ></v-card>
   <v-card v-else color="white" width="450px" height="500px" class="mt-11 rounded-lg">
     <slot> </slot>
