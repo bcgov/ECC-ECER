@@ -10,6 +10,7 @@ const router = createRouter({
       component: () => import("./components/pages/Home.vue"),
       meta: { requiresAuth: true },
     },
+
     {
       path: "/login",
       component: () => import("./components/pages/Login.vue"),
@@ -28,6 +29,31 @@ const router = createRouter({
     {
       path: "/logout-callback",
       component: () => import("./components/pages/LogoutCallback.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/terms-of-use",
+      component: () => import("./components/pages/TermsOfUse.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/accessibility",
+      component: () => import("./components/pages/Accessibility.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/privacy",
+      component: () => import("./components/pages/Privacy.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/contact-us",
+      component: () => import("./components/pages/ContactUs.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/disclaimer",
+      component: () => import("./components/pages/Disclaimer.vue"),
       meta: { requiresAuth: false },
     },
   ],
