@@ -37,6 +37,12 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: "/terms-of-use/from-login",
+      component: () => import("./components/pages/TermsOfUse.vue"),
+      meta: { requiresAuth: false },
+      props: { hasBackButton: true },
+    },
+    {
       path: "/accessibility",
       component: () => import("./components/pages/Accessibility.vue"),
       meta: { requiresAuth: false },

@@ -1,7 +1,7 @@
 <template>
   <main>
     <v-col>
-      <v-btn variant="text" :style="{ 'text-transform': 'unset' }" @click="goBack">
+      <v-btn v-if="hasBackButton" variant="text" :style="{ 'text-transform': 'unset' }" @click="goBack">
         <v-icon size="small" color="secondary" icon="mdi-arrow-left" class="mr-2"></v-icon>
         <a class="small">Back</a>
       </v-btn>
