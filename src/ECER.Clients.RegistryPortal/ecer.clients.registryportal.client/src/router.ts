@@ -32,14 +32,19 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: "/new-user",
+      component: () => import("./components/pages/NewUser.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/terms-of-use",
       component: () => import("./components/pages/TermsOfUse.vue"),
       meta: { requiresAuth: false },
     },
     {
-      path: "/terms-of-use/from-login",
+      path: "/terms-of-use/from-new-user",
       component: () => import("./components/pages/TermsOfUse.vue"),
-      meta: { requiresAuth: false },
+      meta: { requiresAuth: true },
       props: { hasBackButton: true },
     },
     {
@@ -76,8 +81,6 @@ router.beforeEach((to, _) => {
     // if not, redirect to login page.
     return {
       path: "/login",
-      // save the location we were at to come back later
-      query: { redirect: to.fullPath },
     };
   }
 });

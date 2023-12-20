@@ -47,7 +47,7 @@
                 process.
               </p>
             </div>
-            <v-btn class="font-weight-bold" color="primary" :style="{ 'text-transform': 'unset' }" @click="handleLogin('bceid')">LOG IN WITH BASIC BCeID</v-btn>
+            <v-btn class="font-weight-bold" color="primary" @click="handleLogin('bceid')">LOG IN WITH BASIC BCeID</v-btn>
             <div class="text-center">
               <p class="small">Don't have an account?</p>
               <a href="https://www.bceid.ca/register/"><p class="small">Register for Basic BCeID</p></a>

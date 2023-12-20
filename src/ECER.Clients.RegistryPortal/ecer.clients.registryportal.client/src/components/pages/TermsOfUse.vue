@@ -1,13 +1,13 @@
 <template>
   <main>
     <v-col>
-      <v-btn v-if="hasBackButton" variant="text" :style="{ 'text-transform': 'unset' }" @click="goBack">
+      <v-btn v-if="hasBackButton" class="mb-10" variant="text" @click="goBack">
         <v-icon size="small" color="secondary" icon="mdi-arrow-left" class="mr-2"></v-icon>
         <a class="small">Back</a>
       </v-btn>
-      <v-row justify="space-between" class="mt-10">
+      <v-row justify="space-between">
         <h3>Terms of Use</h3>
-        <v-btn variant="text" onclick="window.print()" :style="{ 'text-transform': 'unset' }">
+        <v-btn variant="text" onclick="window.print()">
           <v-row align="center" justify="end">
             <v-icon size="small" color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
             <a class="small">Print Terms of Use</a>

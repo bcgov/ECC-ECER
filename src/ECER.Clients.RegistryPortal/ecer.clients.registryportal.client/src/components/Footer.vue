@@ -2,7 +2,7 @@
   <v-footer app color="primary" :style="{ 'min-height': '50px' }">
     <v-row justify="start" class="ga-1 ms-2 my-1">
       <router-link v-for="link in links" :key="link.name" :to="link.path"
-        ><v-btn variant="text" :style="{ 'text-transform': 'unset' }"
+        ><v-btn variant="text"
           ><p class="white small">{{ link.name }}</p></v-btn
         >
       </router-link>
