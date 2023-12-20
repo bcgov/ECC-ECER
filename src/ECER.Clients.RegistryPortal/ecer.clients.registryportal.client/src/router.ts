@@ -10,6 +10,7 @@ const router = createRouter({
       component: () => import("./components/pages/Home.vue"),
       meta: { requiresAuth: true },
     },
+
     {
       path: "/login",
       component: () => import("./components/pages/Login.vue"),
@@ -30,6 +31,42 @@ const router = createRouter({
       component: () => import("./components/pages/LogoutCallback.vue"),
       meta: { requiresAuth: false },
     },
+    {
+      path: "/new-user",
+      component: () => import("./components/pages/NewUser.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/terms-of-use",
+      component: () => import("./components/pages/TermsOfUse.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/terms-of-use/from-new-user",
+      component: () => import("./components/pages/TermsOfUse.vue"),
+      meta: { requiresAuth: true },
+      props: { hasBackButton: true },
+    },
+    {
+      path: "/accessibility",
+      component: () => import("./components/pages/Accessibility.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/privacy",
+      component: () => import("./components/pages/Privacy.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/contact-us",
+      component: () => import("./components/pages/ContactUs.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
+      path: "/disclaimer",
+      component: () => import("./components/pages/Disclaimer.vue"),
+      meta: { requiresAuth: false },
+    },
   ],
 });
 
@@ -44,8 +81,6 @@ router.beforeEach((to, _) => {
     // if not, redirect to login page.
     return {
       path: "/login",
-      // save the location we were at to come back later
-      query: { redirect: to.fullPath },
     };
   }
 });
