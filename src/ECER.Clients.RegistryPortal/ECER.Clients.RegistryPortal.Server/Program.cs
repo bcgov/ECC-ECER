@@ -1,15 +1,34 @@
 using System.Reflection;
+using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
+using Oakton;
+using Wolverine;
 
 var builder = WebApplication.CreateBuilder(args);
 
-HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
+var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
+
+builder.Host.UseWolverine(opts =>
+{
+    foreach (var assembly in assemblies)
+    {
+        opts.Discovery.IncludeAssembly(assembly);
+        opts.Discovery.CustomizeHandlerDiscovery(x =>
+        {
+            x.Includes.WithNameSuffix("Handlers");
+        });
+    }
+});
+builder.Services.AddAutoMapper(cfg => {
+    cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
+}, assemblies);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opts =>
 {
     opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
 });
+builder.Services.AddProblemDetails();
 
 builder.Services.AddCors(options =>
 {
@@ -21,6 +40,8 @@ builder.Services.AddCors(options =>
             .SetIsOriginAllowedToAllowWildcardSubdomains();
     });
 });
+
+HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 
@@ -37,4 +58,4 @@ if (app.Environment.IsDevelopment())
 
 EndpointsRegistrar.RegisterAll(app);
 
-app.Run();
+return await app.RunOaktonCommands(args);
