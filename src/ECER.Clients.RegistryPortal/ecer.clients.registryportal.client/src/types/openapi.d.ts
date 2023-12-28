@@ -1,9 +1,9 @@
 import type {
-  AxiosRequestConfig,
   OpenAPIClient,
-  OperationResponse,
   Parameters,
   UnknownParamsObject,
+  OperationResponse,
+  AxiosRequestConfig,
 } from 'openapi-client-axios';
 
 declare namespace Components {
@@ -14,7 +14,7 @@ declare namespace Components {
             registrantId?: string | null;
         }
         export interface ApplicationConfiguration {
-            authenticationMethods?: {
+            clientAuthenticationMethods?: {
                 [name: string]: OidcAuthenticationSettings;
             } | null;
         }
@@ -46,6 +46,41 @@ declare namespace Components {
             clientId?: string | null;
             scope?: string | null;
         }
+        /**
+         * User profile information response
+         */
+        export interface UserInfoResponse {
+            userInfo?: /* User profile information */ UserProfile;
+        }
+        /**
+         * User profile information
+         */
+        export interface UserProfile {
+            /**
+             * First name
+             */
+            firstName?: string | null;
+            /**
+             * Last name
+             */
+            lastName?: string | null;
+            /**
+             * Date of birth in the form of yyyy-MM-dd
+             */
+            dateOfBirth?: string | null;
+            /**
+             * Email address
+             */
+            email?: string | null;
+            /**
+             * Phone number
+             */
+            phone?: string | null;
+            /**
+             * The home address
+             */
+            homeAddress?: string | null;
+        }
     }
 }
 declare namespace Paths {
@@ -57,6 +92,13 @@ declare namespace Paths {
     namespace GetApplications {
         namespace Responses {
             export type $200 = /* Application query response */ Components.Schemas.ApplicationQueryResponse;
+        }
+    }
+    namespace GetUserInfo {
+        namespace Responses {
+            export type $200 = /* User profile information response */ Components.Schemas.UserInfoResponse;
+            export interface $404 {
+            }
         }
     }
     namespace PostNewApplication {
@@ -98,6 +140,16 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.Configuration.Responses.$200>
+  /**
+   * GetUserInfo - Get user profile information
+   * 
+   * Gets the current user profile information
+   */
+  'GetUserInfo'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetUserInfo.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -134,6 +186,18 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.Configuration.Responses.$200>
+  }
+  ['/api/userinfo']: {
+    /**
+     * GetUserInfo - Get user profile information
+     * 
+     * Gets the current user profile information
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetUserInfo.Responses.$200>
   }
 }
 

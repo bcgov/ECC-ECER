@@ -21,7 +21,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
             op.Summary = "Get user profile information";
             op.Description = "Gets the current user profile information";
             return op;
-        });
+        }).RequireAuthorization();
     }
 }
 

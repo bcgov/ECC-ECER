@@ -9,7 +9,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaProxy" />
 		<PackageReference Include="Swashbuckle.AspNetCore" />
 	</ItemGroup>

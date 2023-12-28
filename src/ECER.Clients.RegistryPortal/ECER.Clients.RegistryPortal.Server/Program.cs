@@ -19,7 +19,8 @@ builder.Host.UseWolverine(opts =>
         });
     }
 });
-builder.Services.AddAutoMapper(cfg => {
+builder.Services.AddAutoMapper(cfg =>
+{
     cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
 }, assemblies);
 
@@ -41,6 +42,12 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddAuthentication().AddJwtBearer("BCSC").AddJwtBearer("BCeID");
+builder.Services.AddAuthorizationBuilder().AddDefaultPolicy("jwt", policy =>
+{
+    policy.AddAuthenticationSchemes("BCSC", "BCeID").RequireAuthenticatedUser();
+});
+
 HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
 
 var app = builder.Build();
@@ -49,6 +56,8 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapFallbackToFile("index.html");
 app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
