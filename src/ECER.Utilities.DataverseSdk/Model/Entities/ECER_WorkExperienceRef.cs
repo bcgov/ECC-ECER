@@ -13,25 +13,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Reason for the status of the Work Experience Reference
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum ECER_WorkExperienceRef_StatusCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
-	}
-	
-	/// <summary>
 	/// Status of the Work Experience Reference
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
 	public enum ECER_WorkExperienceRef_StateCode
 	{
 		
@@ -42,82 +27,116 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Inactive = 1,
 	}
 	
+	/// <summary>
+	/// Reason for the status of the Work Experience Reference
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum ECER_WorkExperienceRef_StatusCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Active = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Inactive = 2,
+	}
+	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_workexperienceref")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
 	public partial class ECER_WorkExperienceRef : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
 		/// Available fields, a the time of codegen, for the ecer_workexperienceref entity
 		/// </summary>
-		public static partial class Fields
+		public partial class Fields
 		{
 			public const string CreatedBy = "createdby";
 			public const string CreatedByName = "createdbyname";
+			public const string CreatedByYomiName = "createdbyyominame";
 			public const string CreatedOn = "createdon";
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
+			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ECER_AdditionalComments = "ecer_additionalcomments";
 			public const string ECER_AgeOfChildrenCaredFor = "ecer_ageofchildrencaredfor";
 			public const string ECER_ApplicantId = "ecer_applicantid";
 			public const string ECER_ApplicantIdName = "ecer_applicantidname";
+			public const string ECER_ApplicantIdYomiName = "ecer_applicantidyominame";
 			public const string ECER_ApplicantNotQualifiedReason = "ecer_applicantnotqualifiedreason";
 			public const string ECER_ApplicationId = "ecer_applicationid";
 			public const string ECER_ApplicationIdName = "ecer_applicationidname";
 			public const string ECER_ChildCaReprogramName = "ecer_childcareprogramname";
 			public const string ECER_CompetenceChildDevelopment = "ecer_competencechilddevelopment";
+			public const string ECER_CompetenceChildDevelopmentName = "ecer_competencechilddevelopmentname";
 			public const string ECER_CompetenceChildGuidance = "ecer_competencechildguidance";
+			public const string ECER_CompetenceChildGuidanceName = "ecer_competencechildguidancename";
 			public const string ECER_CompetenceDevelopANecECurriculum = "ecer_competencedevelopanececurriculum";
+			public const string ECER_CompetenceDevelopANecECurriculumName = "ecer_competencedevelopanececurriculumname";
 			public const string ECER_CompetenceDisagreeReason = "ecer_competencedisagreereason";
 			public const string ECER_CompetenceFosteringPositiveRelationChild = "ecer_competencefosteringpositiverelationchild";
+			public const string ECER_CompetenceFosteringPositiveRelationChildName = "ecer_competencefosteringpositiverelationchildname";
 			public const string ECER_CompetenceFosteringPositiveRelationCoworker = "ecer_competencefosteringpositiverelationcoworker";
+			public const string ECER_CompetenceFosteringPositiveRelationCoworkerName = "ecer_competencefosteringpositiverelationcoworkername";
 			public const string ECER_CompetenceFosteringPositiveRelationFamily = "ecer_competencefosteringpositiverelationfamily";
+			public const string ECER_CompetenceFosteringPositiveRelationFamilyName = "ecer_competencefosteringpositiverelationfamilyname";
 			public const string ECER_CompetenceHealthSafetyAndNutrition = "ecer_competencehealthsafetyandnutrition";
+			public const string ECER_CompetenceHealthSafetyAndNutritionName = "ecer_competencehealthsafetyandnutritionname";
 			public const string ECER_CompetenceImplementANecECurriculum = "ecer_competenceimplementanececurriculum";
+			public const string ECER_CompetenceImplementANecECurriculumName = "ecer_competenceimplementanececurriculumname";
 			public const string ECER_DateSigned = "ecer_datesigned";
 			public const string ECER_ECER_WorkExperienceRef_ReferenceContactId = "ecer_ecer_workexperienceref_ReferenceContactid";
 			public const string ECER_EmailAddress = "ecer_emailaddress";
 			public const string ECER_EndDate = "ecer_enddate";
 			public const string ECER_FirstName = "ecer_firstname";
 			public const string ECER_IsApplicantQualified = "ecer_isapplicantqualified";
+			public const string ECER_IsApplicantQualifiedName = "ecer_isapplicantqualifiedname";
 			public const string ECER_LastName = "ecer_lastname";
 			public const string ECER_Name = "ecer_name";
 			public const string ECER_PhoneNumber = "ecer_phonenumber";
 			public const string ECER_ReferenceContactId = "ecer_referencecontactid";
 			public const string ECER_ReferenceContactIdName = "ecer_referencecontactidname";
+			public const string ECER_ReferenceContactIdYomiName = "ecer_referencecontactidyominame";
 			public const string ECER_ReferenceeCECertificationNumber = "ecer_referenceececertificationnumber";
 			public const string ECER_ReferenceeCECertifiedProvince = "ecer_referenceececertifiedprovince";
 			public const string ECER_ReferenceFullName = "ecer_referencefullname";
 			public const string ECER_ReferenceSignature = "ecer_referencesignature";
 			public const string ECER_RelationshipToApplicant = "ecer_relationshiptoapplicant";
+			public const string ECER_RelationshipToApplicantName = "ecer_relationshiptoapplicantname";
 			public const string ECER_RelationshipToApplicantOther = "ecer_relationshiptoapplicantother";
 			public const string ECER_Role = "ecer_role";
 			public const string ECER_StartDate = "ecer_startdate";
 			public const string ECER_TotalNumberOfHoursObserved = "ecer_totalnumberofhoursobserved";
 			public const string ECER_Type = "ecer_type";
+			public const string ECER_TypeName = "ecer_typename";
 			public const string ECER_WorkExperienceRef_ApplicantId = "ecer_workexperienceref_Applicantid";
 			public const string ECER_WorkExperienceRef_ApplicationId_ECER = "ecer_workexperienceref_Applicationid_ecer";
 			public const string ECER_WorkExperienceRefId = "ecer_workexperiencerefid";
 			public const string Id = "ecer_workexperiencerefid";
 			public const string ECER_WorkHoursType = "ecer_workhourstype";
+			public const string ECER_WorkHoursTypeName = "ecer_workhourstypename";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
+			public const string ModifiedByYomiName = "modifiedbyyominame";
 			public const string ModifiedOn = "modifiedon";
 			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
 			public const string ModifiedOnBehalfByName = "modifiedonbehalfbyname";
+			public const string ModifiedOnBehalfByYomiName = "modifiedonbehalfbyyominame";
 			public const string OverriddenCreatedOn = "overriddencreatedon";
 			public const string OwnerId = "ownerid";
 			public const string OwnerIdName = "owneridname";
+			public const string OwnerIdYomiName = "owneridyominame";
 			public const string OwningBusinessUnit = "owningbusinessunit";
 			public const string OwningBusinessUnitName = "owningbusinessunitname";
 			public const string OwningTeam = "owningteam";
-			public const string OwningTeamName = "owningteamname";
 			public const string OwningUser = "owninguser";
-			public const string OwningUserName = "owningusername";
 			public const string StateCode = "statecode";
+			public const string StateCodename = "statecodename";
 			public const string StatusCode = "statuscode";
+			public const string StatusCodename = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
 			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
@@ -175,6 +194,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyname")]
+		public string CreatedByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdby"))
+				{
+					return this.FormattedValues["createdby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyyominame")]
+		public string CreatedByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdby"))
+				{
+					return this.FormattedValues["createdby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Date and time when the record was created.
 		/// </summary>
@@ -203,6 +256,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("createdonbehalfby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfbyname")]
+		public string CreatedOnBehalfByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdonbehalfby"))
+				{
+					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfbyyominame")]
+		public string CreatedOnBehalfByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdonbehalfby"))
+				{
+					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -251,6 +338,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantidname")]
+		public string ECER_ApplicantIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_applicantid"))
+				{
+					return this.FormattedValues["ecer_applicantid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantidyominame")]
+		public string ECER_ApplicantIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_applicantid"))
+				{
+					return this.FormattedValues["ecer_applicantid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantnotqualifiedreason")]
 		public string ECER_ApplicantNotQualifiedReason
 		{
@@ -278,6 +399,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_applicationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationidname")]
+		public string ECER_ApplicationIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_applicationid"))
+				{
+					return this.FormattedValues["ecer_applicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -311,6 +449,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencechilddevelopmentname")]
+		public string ECER_CompetenceChildDevelopmentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_competencechilddevelopment"))
+				{
+					return this.FormattedValues["ecer_competencechilddevelopment"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencechildguidance")]
 		public virtual ECER_LikeRTScales? ECER_CompetenceChildGuidance
 		{
@@ -326,6 +481,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencechildguidancename")]
+		public string ECER_CompetenceChildGuidanceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_competencechildguidance"))
+				{
+					return this.FormattedValues["ecer_competencechildguidance"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencedevelopanececurriculum")]
 		public virtual ECER_LikeRTScales? ECER_CompetenceDevelopANecECurriculum
 		{
@@ -338,6 +510,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_competencedevelopanececurriculum", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencedevelopanececurriculumname")]
+		public string ECER_CompetenceDevelopANecECurriculumName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_competencedevelopanececurriculum"))
+				{
+					return this.FormattedValues["ecer_competencedevelopanececurriculum"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -371,6 +560,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencefosteringpositiverelationchildname")]
+		public string ECER_CompetenceFosteringPositiveRelationChildName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_competencefosteringpositiverelationchild"))
+				{
+					return this.FormattedValues["ecer_competencefosteringpositiverelationchild"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencefosteringpositiverelationcoworker")]
 		public virtual ECER_LikeRTScales? ECER_CompetenceFosteringPositiveRelationCoworker
 		{
@@ -383,6 +589,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_competencefosteringpositiverelationcoworker", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencefosteringpositiverelationcoworkername")]
+		public string ECER_CompetenceFosteringPositiveRelationCoworkerName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_competencefosteringpositiverelationcoworker"))
+				{
+					return this.FormattedValues["ecer_competencefosteringpositiverelationcoworker"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -401,6 +624,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencefosteringpositiverelationfamilyname")]
+		public string ECER_CompetenceFosteringPositiveRelationFamilyName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_competencefosteringpositiverelationfamily"))
+				{
+					return this.FormattedValues["ecer_competencefosteringpositiverelationfamily"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencehealthsafetyandnutrition")]
 		public virtual ECER_LikeRTScales? ECER_CompetenceHealthSafetyAndNutrition
 		{
@@ -416,6 +656,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencehealthsafetyandnutritionname")]
+		public string ECER_CompetenceHealthSafetyAndNutritionName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_competencehealthsafetyandnutrition"))
+				{
+					return this.FormattedValues["ecer_competencehealthsafetyandnutrition"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competenceimplementanececurriculum")]
 		public virtual ECER_LikeRTScales? ECER_CompetenceImplementANecECurriculum
 		{
@@ -428,6 +685,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_competenceimplementanececurriculum", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competenceimplementanececurriculumname")]
+		public string ECER_CompetenceImplementANecECurriculumName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_competenceimplementanececurriculum"))
+				{
+					return this.FormattedValues["ecer_competenceimplementanececurriculum"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -506,6 +780,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isapplicantqualifiedname")]
+		public string ECER_IsApplicantQualifiedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isapplicantqualified"))
+				{
+					return this.FormattedValues["ecer_isapplicantqualified"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lastname")]
 		public string ECER_LastName
 		{
@@ -563,6 +854,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_referencecontactid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecontactidname")]
+		public string ECER_ReferenceContactIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_referencecontactid"))
+				{
+					return this.FormattedValues["ecer_referencecontactid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecontactidyominame")]
+		public string ECER_ReferenceContactIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_referencecontactid"))
+				{
+					return this.FormattedValues["ecer_referencecontactid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -644,6 +969,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_relationshiptoapplicantname")]
+		public string ECER_RelationshipToApplicantName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_relationshiptoapplicant"))
+				{
+					return this.FormattedValues["ecer_relationshiptoapplicant"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_relationshiptoapplicantother")]
 		public string ECER_RelationshipToApplicantOther
 		{
@@ -722,6 +1064,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_typename")]
+		public string ECER_TypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_type"))
+				{
+					return this.FormattedValues["ecer_type"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
@@ -778,6 +1137,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_workhourstypename")]
+		public string ECER_WorkHoursTypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_workhourstype"))
+				{
+					return this.FormattedValues["ecer_workhourstype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Sequence number of the import that created this record.
 		/// </summary>
@@ -809,6 +1185,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyname")]
+		public string ModifiedByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedby"))
+				{
+					return this.FormattedValues["modifiedby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyyominame")]
+		public string ModifiedByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedby"))
+				{
+					return this.FormattedValues["modifiedby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Date and time when the record was modified.
 		/// </summary>
@@ -837,6 +1247,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("modifiedonbehalfby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfbyname")]
+		public string ModifiedOnBehalfByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedonbehalfby"))
+				{
+					return this.FormattedValues["modifiedonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfbyyominame")]
+		public string ModifiedOnBehalfByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedonbehalfby"))
+				{
+					return this.FormattedValues["modifiedonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -877,6 +1321,46 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Name of the owner
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridname")]
+		public string OwnerIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ownerid"))
+				{
+					return this.FormattedValues["ownerid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Yomi name of the owner
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridyominame")]
+		public string OwnerIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ownerid"))
+				{
+					return this.FormattedValues["ownerid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
 		/// Unique identifier for the business unit that owns the record
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunit")]
@@ -886,6 +1370,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owningbusinessunit");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunitname")]
+		public string OwningBusinessUnitName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("owningbusinessunit"))
+				{
+					return this.FormattedValues["owningbusinessunit"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -933,6 +1434,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
+		public string StateCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("statecode"))
+				{
+					return this.FormattedValues["statecode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Reason for the status of the Work Experience Reference
 		/// </summary>
@@ -948,6 +1466,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("statuscode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
+		public string StatusCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("statuscode"))
+				{
+					return this.FormattedValues["statuscode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

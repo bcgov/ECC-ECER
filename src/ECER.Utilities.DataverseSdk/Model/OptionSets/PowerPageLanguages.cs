@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Power Pages Languages
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
 	public enum PowerPageLanguages
 	{
 		
@@ -108,7 +108,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		MalayMalaysia = 1086,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NorwegianBokmalNorway = 1044,
+		NorwegianBokmlNorway = 1044,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		PolishPoland = 1045,
@@ -147,7 +147,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		ThaiThailand = 1054,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		TurkishTurkiye = 1055,
+		TurkishTrkiye = 1055,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		UkrainianUkraine = 1058,

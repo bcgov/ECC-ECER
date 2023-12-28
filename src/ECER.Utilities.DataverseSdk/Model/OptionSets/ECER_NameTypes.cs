@@ -14,14 +14,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_IdentityProviders
+	public enum ECER_NameTypes
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		BCeID = 621870001,
+		AlternateName = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		BCServiceCard = 621870000,
+		NickName = 621870000,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PreviousLegalName = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PreviousName = 621870001,
 	}
 }
 #pragma warning restore CS1591

@@ -14,14 +14,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_IdentityProviders
+	public enum ECER_AboriginalType
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		BCeID = 621870001,
+		FirstNations = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		BCServiceCard = 621870000,
+		Inuit = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Metis = 621870001,
 	}
 }
 #pragma warning restore CS1591
