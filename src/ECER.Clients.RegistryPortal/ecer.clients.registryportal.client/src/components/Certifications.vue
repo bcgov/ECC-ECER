@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Applications</h1>
+    <h1>Certifications</h1>
 
     <div v-if="applications" class="content">
       <table>
@@ -34,6 +34,7 @@ import { defineComponent } from "vue";
 import { useApplicationStore } from "@/store/application";
 
 export default defineComponent({
+  name: "Certifications",
   setup() {
     const applicationStore = useApplicationStore();
     return { applicationStore };
