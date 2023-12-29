@@ -31,7 +31,7 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     setUser(user: User): void {
-      this.accessToken = user.access_token;
+      this.accessToken = this.authority === "bcsc" ? user.id_token ?? "" : user.access_token;
       this.profile = user.profile;
     },
     setAuthority(authority: Authority | null): void {

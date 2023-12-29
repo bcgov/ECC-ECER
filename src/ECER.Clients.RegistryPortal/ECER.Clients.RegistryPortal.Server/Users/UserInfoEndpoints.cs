@@ -10,9 +10,11 @@ public class UserInfoEndpoints : IRegisterEndpoints
 {
     public void Register(IEndpointRouteBuilder endpointRouteBuilder)
     {
-        endpointRouteBuilder.MapGet("api/userinfo", async Task<Results<Ok<UserInfoResponse>, NotFound>> (CancellationToken ct, IMessageBus bus, IMapper mapper) =>
+        endpointRouteBuilder.MapGet("api/userinfo", async Task<Results<Ok<UserInfoResponse>, NotFound, ForbidHttpResult>> (HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
         {
-            var result = await bus.InvokeAsync<UserProfileQueryResponse>(new UserProfileQuery(), ct);
+            var login = AuthenticationService.GetUserLogin(ctx.User);
+            if (login == null) return TypedResults.Forbid();
+            var result = await bus.InvokeAsync<UserProfileQueryResponse>(new UserProfileQuery(login.Value.identityProvider, login.Value.id), ct);
             if (result == null) return TypedResults.NotFound();
             return TypedResults.Ok(new UserInfoResponse(mapper.Map<UserProfile>(result.UserProfile)));
         }).WithOpenApi(op =>

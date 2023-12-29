@@ -9,7 +9,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+		<PackageReference Include="IdentityModel" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaProxy" />
+		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
 		<PackageReference Include="Swashbuckle.AspNetCore" />
 	</ItemGroup>
 

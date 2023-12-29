@@ -1,6 +1,8 @@
 using System.Reflection;
+using System.Security.Claims;
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Oakton;
 using Wolverine;
 
@@ -42,10 +44,25 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddAuthentication().AddJwtBearer("BCSC").AddJwtBearer("BCeID");
+builder.Services.AddAuthentication("bcsc")
+    .AddJwtBearer("bceid")
+    .AddJwtBearer("bcsc", opts =>
+    {
+        opts.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async ctx =>
+            {
+                await Task.CompletedTask;
+
+                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim("identity_provider", "bcsc") }));
+            }
+        };
+        opts.Validate();
+    });
+
 builder.Services.AddAuthorizationBuilder().AddDefaultPolicy("jwt", policy =>
 {
-    policy.AddAuthenticationSchemes("BCSC", "BCeID").RequireAuthenticatedUser();
+    policy.AddAuthenticationSchemes("bcsc", "bceid").RequireAuthenticatedUser();
 });
 
 HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
