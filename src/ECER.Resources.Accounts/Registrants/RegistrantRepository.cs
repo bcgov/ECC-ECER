@@ -1,27 +1,28 @@
-﻿using System.Globalization;
-using AutoMapper;
+﻿using AutoMapper;
+using ECER.Utilities.DataverseSdk;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Accounts.Registrants;
 
 internal sealed class RegistrantRepository(EcerContext context, IMapper mapper) : IRegistrantRepository
 {
-    public async Task<string> Create(NewRegistrantRequest request)
+    public async Task<string> RegisterNew(NewRegistrantRequest request)
     {
         await Task.CompletedTask;
-        var registrantId = Guid.NewGuid();
-        var contact = new Contact(registrantId)
-        {
-            FirstName = $"first{registrantId.ToString().Substring(0, 4)}",
-            LastName = $"last{registrantId.ToString().Substring(32, 4)}",
-            Birthdate = DateTime.Parse("2000-01-01", CultureInfo.InvariantCulture)
-        };
+
+        var contact = mapper.Map<Contact>(request.UserProfile);
+        contact.Id = Guid.NewGuid();
 
         context.AddObject(contact);
 
+        var authentication = mapper.Map<ECER_Authentication>(request.UserIdentity);
+
+        context.AddObject(authentication);
+        context.AddLink(contact, nameof(Contact.ECER_Authentication_ContactId), authentication);
+
         context.SaveChanges();
 
-        return registrantId.ToString();
+        return contact.Id.ToString();
     }
 
     public async Task<RegistrantQueryResults> Query(RegistrantQuery query)

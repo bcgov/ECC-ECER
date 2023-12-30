@@ -1,17 +1,17 @@
 ﻿using ECER.Managers.Registry;
 using ECER.Utilities.Hosting;
+using Wolverine;
 
-namespace ECER.Clients.RegistryPortal.Server;
+namespace ECER.Clients.RegistryPortal.Server.Applications;
 
 public class ApplicationsEndpoints : IRegisterEndpoints
 {
     public void Register(IEndpointRouteBuilder endpointRouteBuilder)
     {
-        endpointRouteBuilder.MapPost("/api/applications", async (NewApplicationRequest request, HttpContext ctx) =>
+        endpointRouteBuilder.MapPost("/api/applications", async (NewApplicationRequest request, IMessageBus messageBus) =>
         {
-            var handlers = ctx.RequestServices.GetRequiredService<ApplicationHandlers>();
             var cmd = new SubmitNewApplicationCommand();
-            var appId = await handlers.Handle(cmd);
+            var appId = await messageBus.InvokeAsync<string>(cmd);
 
             return TypedResults.Ok(new NewApplicationResponse(appId));
         }).WithOpenApi(op =>
@@ -22,11 +22,10 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             return op;
         });
 
-        endpointRouteBuilder.MapGet("/api/applications", async (HttpContext ctx) =>
+        endpointRouteBuilder.MapGet("/api/applications", async (IMessageBus messageBus) =>
         {
-            var handlers = ctx.RequestServices.GetRequiredService<ApplicationHandlers>();
             var query = new ApplicationsQuery();
-            var results = await handlers.Handle(query);
+            var results = await messageBus.InvokeAsync<ApplicationsQueryResults>(query);
             return TypedResults.Ok(new ApplicationQueryResponse(results.Items.Select(i => new Application
             {
                 Id = i.Id,

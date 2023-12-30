@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using ECER.Managers.Registry;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -24,6 +25,16 @@ public class UserInfoEndpoints : IRegisterEndpoints
             op.Description = "Gets the current user profile information";
             return op;
         }).RequireAuthorization();
+
+        endpointRouteBuilder.MapPost("api/userinfo/profile", async Task<Results<Ok, ForbidHttpResult>> (NewUserRequest request, HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
+        {
+            var login = AuthenticationService.GetUserLogin(ctx.User);
+            if (login == null) return TypedResults.Forbid();
+
+            await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.UserProfile>(request.Profile), new Login(login.Value.identityProvider, login.Value.id)));
+
+            return TypedResults.Ok();
+        });
     }
 }
 
@@ -50,3 +61,9 @@ public record UserProfile(
     string? Phone,
     string? HomeAddress
     );
+
+public record NewUserRequest
+{
+    [Required]
+    public UserProfile Profile { get; set; } = null!;
+}

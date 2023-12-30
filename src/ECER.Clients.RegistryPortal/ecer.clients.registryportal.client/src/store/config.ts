@@ -25,6 +25,7 @@ export const useConfigStore = defineStore("config", {
         client_id: oidc?.clientId ?? "",
         authority: oidc?.authority ?? "",
         scope: oidc?.scope ?? "",
+        loadUserInfo: true,
       };
 
       return combinedConfig;
@@ -37,6 +38,7 @@ export const useConfigStore = defineStore("config", {
         client_id: oidc?.clientId ?? "",
         authority: oidc?.authority ?? "",
         scope: oidc?.scope ?? "",
+        loadUserInfo: true,
       };
 
       return combinedConfig;

@@ -65,6 +65,8 @@ builder.Services.AddAuthorizationBuilder().AddDefaultPolicy("jwt", policy =>
     policy.AddAuthenticationSchemes("bcsc", "bceid").RequireAuthenticatedUser();
 });
 
+builder.Services.AddDistributedMemoryCache();
+
 HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
 
 var app = builder.Build();

@@ -30,17 +30,37 @@ public static class UserHandlers
 
         return new UserProfileQueryResponse(mapper.Map<UserProfile?>(registrant));
     }
+
+    public static async Task<string> Handle(RegisterNewUserCommand cmd, IRegistrantRepository registrantRepository, IMapper mapper)
+    {
+        ArgumentNullException.ThrowIfNull(registrantRepository);
+        ArgumentNullException.ThrowIfNull(mapper);
+        ArgumentNullException.ThrowIfNull(cmd);
+
+        var results = await registrantRepository.Query(new RegistrantQuery
+        {
+            WithIdentity = new UserIdentity(cmd.Login.IdentityProvider, cmd.Login.id)
+        });
+
+        if (results.Items.Any()) throw new InvalidOperationException($"Registrant with login {cmd.Login.id}@{cmd.Login.IdentityProvider} already exists");
+
+        return await registrantRepository.RegisterNew(mapper.Map<NewRegistrantRequest>(cmd));
+    }
 }
 
 public record UserProfileQuery(string IdentityProvider, string Id);
+
+public record RegisterNewUserCommand(UserProfile UserProfile, Login Login);
 
 public record UserProfileQueryResponse(UserProfile? UserProfile);
 
 public record UserProfile(
     string FirstName,
     string LastName,
-    string DateOfBirth,
+    DateOnly DateOfBirth,
     string? Email,
     string? Phone,
     string? HomeAddress
     );
+
+public record Login(string IdentityProvider, string id);

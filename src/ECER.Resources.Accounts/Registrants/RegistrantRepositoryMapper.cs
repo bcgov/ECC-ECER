@@ -14,12 +14,14 @@ internal sealed class RegistrantRepositoryMapper : Profile
 
         CreateMap<Contact, UserProfile>()
             .ForMember(d => d.DateOfBirth, opts => opts.MapFrom(s => DateOnly.FromDateTime(s.Birthdate.GetValueOrDefault())))
+            .ReverseMap()
             ;
 
         CreateMap<ECER_Authentication, UserIdentity>()
             .ForCtorParam(nameof(UserIdentity.Id), opts => opts.MapFrom(s => s.ECER_ExternalId))
-            .ForCtorParam(nameof(UserIdentity.IdentityProvider), opts => opts.MapFrom(s => s.ECER_IdentityProvider))
+            .ForCtorParam(nameof(UserIdentity.IdentityProvider), opts => opts.MapFrom(s => s.ECER_IdentityProvider.GetValueOrDefault()))
             .ForMember(d => d.LastLogin, opts => opts.MapFrom(s => s.ModifiedOn.GetValueOrDefault()))
+            .ReverseMap()
             ;
     }
 }

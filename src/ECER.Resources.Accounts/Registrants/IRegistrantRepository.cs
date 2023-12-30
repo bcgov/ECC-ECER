@@ -10,12 +10,12 @@ public interface IRegistrantRepository
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
-    Task<string> Create(NewRegistrantRequest request);
+    Task<string> RegisterNew(NewRegistrantRequest request);
 
     Task<RegistrantQueryResults> Query(RegistrantQuery query);
 }
 
-public record NewRegistrantRequest();
+public record NewRegistrantRequest(UserProfile UserProfile, UserIdentity UserIdentity);
 
 public record RegistrantQuery
 {
