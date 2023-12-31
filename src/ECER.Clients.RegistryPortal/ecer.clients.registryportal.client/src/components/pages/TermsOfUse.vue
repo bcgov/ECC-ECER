@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <PageContainer>
     <v-col>
       <v-btn v-if="hasBackButton" class="mb-10" variant="text" @click="goBack">
         <v-icon size="small" color="secondary" icon="mdi-arrow-left" class="mr-2"></v-icon>
@@ -57,14 +57,17 @@
         </v-card>
       </v-row>
     </v-col>
-  </main>
+  </PageContainer>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import PageContainer from "@/components/PageContainer.vue";
+
 export default defineComponent({
   name: "TermsOfUse",
+  components: { PageContainer },
   props: {
     hasBackButton: {
       type: Boolean,

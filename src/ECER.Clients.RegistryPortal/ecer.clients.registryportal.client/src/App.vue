@@ -3,9 +3,7 @@
     <v-app>
       <NavigationBar />
       <v-main>
-        <v-container class="my-6">
-          <router-view></router-view>
-        </v-container>
+        <router-view></router-view>
       </v-main>
       <EceFooter />
     </v-app>
