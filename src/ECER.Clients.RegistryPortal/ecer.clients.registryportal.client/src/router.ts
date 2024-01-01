@@ -7,6 +7,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
+      redirect: "/my-certifications",
       component: () => import("./components/pages/Dashboard.vue"),
       meta: { requiresAuth: true },
       children: [
