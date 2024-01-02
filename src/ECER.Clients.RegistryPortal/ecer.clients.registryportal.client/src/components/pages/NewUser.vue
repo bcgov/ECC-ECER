@@ -42,9 +42,12 @@ import FormContainer from "../FormContainer.vue";
 export default defineComponent({
   name: "NewUser",
   components: { FormContainer },
-  setup: () => {
+  setup: async () => {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
+
+    await userStore.setUserProfile();
+
     return { userStore, oidcStore };
   },
   data: () => ({

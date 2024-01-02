@@ -13,364 +13,64 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Unique identifier of the territory to which the contact is assigned.
+	/// Account role of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_TerritoryCode
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_AccountRoleCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
+		DecisionMaker = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Employee = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Influencer = 3,
 	}
 	
 	/// <summary>
-	/// Reason for the status of the contact.
+	/// Type of address for address 1, such as billing, shipping, or primary address.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_StatusCode
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_Address1_AddressTypeCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		BillTo = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
+		Other = 4,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Primary = 3,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ShipTo = 2,
 	}
 	
 	/// <summary>
-	/// Status of the contact.
+	/// Freight terms for address 1.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_StateCode
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_Address1_FreightTermsCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 0,
+		FOB = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 1,
-	}
-	
-	/// <summary>
-	/// Method of shipping for the contact.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_ShippingMethodCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
-	}
-	
-	/// <summary>
-	/// Preferred contact method for the contact.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_PreferredContactMethodCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Any = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Email = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Fax = 4,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Mail = 5,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Phone = 3,
-	}
-	
-	/// <summary>
-	/// Time of day that the contact prefers for scheduling service activities.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_PreferredAppointmentTimeCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Afternoon = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Evening = 3,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Morning = 1,
-	}
-	
-	/// <summary>
-	/// Day of the week that the contact prefers for scheduling service activities.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_PreferredAppointmentDayCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Friday = 5,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Monday = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Saturday = 6,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Sunday = 0,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Thursday = 4,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Tuesday = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Wednesday = 3,
-	}
-	
-	/// <summary>
-	/// Payment terms for the contact.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_PaymentTermsCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		_210Net30 = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Net30 = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Net45 = 3,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Net60 = 4,
-	}
-	
-	/// <summary>
-	/// For Internal Use only
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_Msdyn_OrgChangeStatus
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Ignore = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NoFeedback = 0,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NotatCompany = 1,
-	}
-	
-	/// <summary>
-	/// Indicate buying influence using label
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_Msdyn_DecisionInfluenceTag
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Blocker = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Decisionmaker = 0,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Influencer = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Unknown = 3,
-	}
-	
-	/// <summary>
-	/// Source of the lead of the contact.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_LeadSourceCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
-	}
-	
-	/// <summary>
-	/// Information about whether the contact has children.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_HasChildrenCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
-	}
-	
-	/// <summary>
-	/// Gender of the contact.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_GenderCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Female = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Male = 1,
-	}
-	
-	/// <summary>
-	/// Marital status of the contact.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_FamilyStatusCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Divorced = 3,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Married = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Single = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Widowed = 4,
-	}
-	
-	/// <summary>
-	/// Formal education level that the contact has attained.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_EducationCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
-	}
-	
-	/// <summary>
-	/// Type of business associated with the contact.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_CustomerTypeCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
-	}
-	
-	/// <summary>
-	/// Size of the contact's business.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_CustomerSizeCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
-	}
-	
-	/// <summary>
-	/// Method of shipment for address 3.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_Address3_ShippingMethodCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
-	}
-	
-	/// <summary>
-	/// Freight terms for address 3.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_Address3_FreightTermsCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
-	}
-	
-	/// <summary>
-	/// Type of address for address 3, such as billing, shipping, or primary address.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_Address3_AddressTypeCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
-	}
-	
-	/// <summary>
-	/// Method of shipment for address 2.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_Address2_ShippingMethodCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
-	}
-	
-	/// <summary>
-	/// Freight terms for address 2.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_Address2_FreightTermsCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
-	}
-	
-	/// <summary>
-	/// Type of address for address 2, such as billing, shipping, or primary address.
-	/// </summary>
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_Address2_AddressTypeCode
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DefaultValue = 1,
+		NoCharge = 2,
 	}
 	
 	/// <summary>
 	/// Method of shipment for address 1.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
 	public enum Contact_Address1_ShippingMethodCode
 	{
 		
@@ -397,57 +97,357 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Freight terms for address 1.
+	/// Type of address for address 2, such as billing, shipping, or primary address.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_Address1_FreightTermsCode
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_Address2_AddressTypeCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		FOB = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NoCharge = 2,
+		DefaultValue = 1,
 	}
 	
 	/// <summary>
-	/// Type of address for address 1, such as billing, shipping, or primary address.
+	/// Freight terms for address 2.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_Address1_AddressTypeCode
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_Address2_FreightTermsCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		BillTo = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Other = 4,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Primary = 3,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ShipTo = 2,
+		DefaultValue = 1,
 	}
 	
 	/// <summary>
-	/// Account role of the contact.
+	/// Method of shipment for address 2.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
-	public enum Contact_AccountRoleCode
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_Address2_ShippingMethodCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DecisionMaker = 1,
+		DefaultValue = 1,
+	}
+	
+	/// <summary>
+	/// Type of address for address 3, such as billing, shipping, or primary address.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_Address3_AddressTypeCode
+	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Employee = 2,
+		DefaultValue = 1,
+	}
+	
+	/// <summary>
+	/// Freight terms for address 3.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_Address3_FreightTermsCode
+	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Influencer = 3,
+		DefaultValue = 1,
+	}
+	
+	/// <summary>
+	/// Method of shipment for address 3.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_Address3_ShippingMethodCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		DefaultValue = 1,
+	}
+	
+	/// <summary>
+	/// Size of the contact's business.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_CustomerSizeCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		DefaultValue = 1,
+	}
+	
+	/// <summary>
+	/// Type of business associated with the contact.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_CustomerTypeCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		DefaultValue = 1,
+	}
+	
+	/// <summary>
+	/// Formal education level that the contact has attained.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_EducationCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		DefaultValue = 1,
+	}
+	
+	/// <summary>
+	/// Marital status of the contact.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_FamilyStatusCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Divorced = 3,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Married = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Single = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Widowed = 4,
+	}
+	
+	/// <summary>
+	/// Gender of the contact.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_GenderCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Female = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Male = 1,
+	}
+	
+	/// <summary>
+	/// Information about whether the contact has children.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_HasChildrenCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		DefaultValue = 1,
+	}
+	
+	/// <summary>
+	/// Source of the lead of the contact.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_LeadSourceCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		DefaultValue = 1,
+	}
+	
+	/// <summary>
+	/// Indicate buying influence using label
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_Msdyn_DecisionInfluenceTag
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Blocker = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Decisionmaker = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Influencer = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Unknown = 3,
+	}
+	
+	/// <summary>
+	/// For Internal Use only
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_Msdyn_OrgChangeStatus
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Ignore = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		NoFeedback = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		NotatCompany = 1,
+	}
+	
+	/// <summary>
+	/// Payment terms for the contact.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_PaymentTermsCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		_210Net30 = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Net30 = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Net45 = 3,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Net60 = 4,
+	}
+	
+	/// <summary>
+	/// Day of the week that the contact prefers for scheduling service activities.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_PreferredAppointmentDayCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Friday = 5,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Monday = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Saturday = 6,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Sunday = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Thursday = 4,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Tuesday = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Wednesday = 3,
+	}
+	
+	/// <summary>
+	/// Time of day that the contact prefers for scheduling service activities.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_PreferredAppointmentTimeCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Afternoon = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Evening = 3,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Morning = 1,
+	}
+	
+	/// <summary>
+	/// Preferred contact method for the contact.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_PreferredContactMethodCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Any = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Email = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Fax = 4,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Mail = 5,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Phone = 3,
+	}
+	
+	/// <summary>
+	/// Method of shipping for the contact.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_ShippingMethodCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		DefaultValue = 1,
+	}
+	
+	/// <summary>
+	/// Status of the contact.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_StateCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Active = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Inactive = 1,
+	}
+	
+	/// <summary>
+	/// Reason for the status of the contact.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_StatusCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Active = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Inactive = 2,
+	}
+	
+	/// <summary>
+	/// Unique identifier of the territory to which the contact is assigned.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum Contact_TerritoryCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		DefaultValue = 1,
 	}
 	
 	/// <summary>
@@ -455,25 +455,30 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("contact")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "1.0.0.22")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
 	public partial class Contact : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
 		/// Available fields, a the time of codegen, for the contact entity
 		/// </summary>
-		public static partial class Fields
+		public partial class Fields
 		{
 			public const string AccountId = "accountid";
+			public const string AccountIdName = "accountidname";
+			public const string AccountIdYomiName = "accountidyominame";
 			public const string AccountRoleCode = "accountrolecode";
+			public const string AccountRoleCodename = "accountrolecodename";
 			public const string Address1_AddressId = "address1_addressid";
 			public const string Address1_AddressTypeCode = "address1_addresstypecode";
+			public const string Address1_AddressTypeCodename = "address1_addresstypecodename";
 			public const string Address1_City = "address1_city";
 			public const string Address1_Composite = "address1_composite";
 			public const string Address1_Country = "address1_country";
 			public const string Address1_County = "address1_county";
 			public const string Address1_Fax = "address1_fax";
 			public const string Address1_FreightTermsCode = "address1_freighttermscode";
+			public const string Address1_FreightTermsCodename = "address1_freighttermscodename";
 			public const string Address1_Latitude = "address1_latitude";
 			public const string Address1_Line1 = "address1_line1";
 			public const string Address1_Line2 = "address1_line2";
@@ -484,6 +489,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Address1_PostofficeBox = "address1_postofficebox";
 			public const string Address1_PrimaryContactName = "address1_primarycontactname";
 			public const string Address1_ShippingMethodCode = "address1_shippingmethodcode";
+			public const string Address1_ShippingMethodCodename = "address1_shippingmethodcodename";
 			public const string Address1_StateOrProvince = "address1_stateorprovince";
 			public const string Address1_Telephone1 = "address1_telephone1";
 			public const string Address1_Telephone2 = "address1_telephone2";
@@ -492,12 +498,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Address1_UtcOffset = "address1_utcoffset";
 			public const string Address2_AddressId = "address2_addressid";
 			public const string Address2_AddressTypeCode = "address2_addresstypecode";
+			public const string Address2_AddressTypeCodename = "address2_addresstypecodename";
 			public const string Address2_City = "address2_city";
 			public const string Address2_Composite = "address2_composite";
 			public const string Address2_Country = "address2_country";
 			public const string Address2_County = "address2_county";
 			public const string Address2_Fax = "address2_fax";
 			public const string Address2_FreightTermsCode = "address2_freighttermscode";
+			public const string Address2_FreightTermsCodename = "address2_freighttermscodename";
 			public const string Address2_Latitude = "address2_latitude";
 			public const string Address2_Line1 = "address2_line1";
 			public const string Address2_Line2 = "address2_line2";
@@ -508,6 +516,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Address2_PostofficeBox = "address2_postofficebox";
 			public const string Address2_PrimaryContactName = "address2_primarycontactname";
 			public const string Address2_ShippingMethodCode = "address2_shippingmethodcode";
+			public const string Address2_ShippingMethodCodename = "address2_shippingmethodcodename";
 			public const string Address2_StateOrProvince = "address2_stateorprovince";
 			public const string Address2_Telephone1 = "address2_telephone1";
 			public const string Address2_Telephone2 = "address2_telephone2";
@@ -516,12 +525,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Address2_UtcOffset = "address2_utcoffset";
 			public const string Address3_AddressId = "address3_addressid";
 			public const string Address3_AddressTypeCode = "address3_addresstypecode";
+			public const string Address3_AddressTypeCodename = "address3_addresstypecodename";
 			public const string Address3_City = "address3_city";
 			public const string Address3_Composite = "address3_composite";
 			public const string Address3_Country = "address3_country";
 			public const string Address3_County = "address3_county";
 			public const string Address3_Fax = "address3_fax";
 			public const string Address3_FreightTermsCode = "address3_freighttermscode";
+			public const string Address3_FreightTermsCodename = "address3_freighttermscodename";
 			public const string Address3_Latitude = "address3_latitude";
 			public const string Address3_Line1 = "address3_line1";
 			public const string Address3_Line2 = "address3_line2";
@@ -532,6 +543,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Address3_PostofficeBox = "address3_postofficebox";
 			public const string Address3_PrimaryContactName = "address3_primarycontactname";
 			public const string Address3_ShippingMethodCode = "address3_shippingmethodcode";
+			public const string Address3_ShippingMethodCodename = "address3_shippingmethodcodename";
 			public const string Address3_StateOrProvince = "address3_stateorprovince";
 			public const string Address3_Telephone1 = "address3_telephone1";
 			public const string Address3_Telephone2 = "address3_telephone2";
@@ -539,20 +551,27 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Address3_UpsZone = "address3_upszone";
 			public const string Address3_UtcOffset = "address3_utcoffset";
 			public const string AdX_ConfirmRemovePassword = "adx_confirmremovepassword";
+			public const string AdX_ConfirmRemovePasswordName = "adx_confirmremovepasswordname";
 			public const string AdX_CreatedByIpAddress = "adx_createdbyipaddress";
 			public const string AdX_CreatedByUsername = "adx_createdbyusername";
 			public const string AdX_Identity_AccessFailedCount = "adx_identity_accessfailedcount";
 			public const string AdX_Identity_EmailAddress1Confirmed = "adx_identity_emailaddress1confirmed";
+			public const string AdX_Identity_EmailAddress1ConfirmedName = "adx_identity_emailaddress1confirmedname";
 			public const string AdX_Identity_LastSuccessfulLogin = "adx_identity_lastsuccessfullogin";
 			public const string AdX_Identity_LocalLoginDisabled = "adx_identity_locallogindisabled";
+			public const string AdX_Identity_LocalLoginDisabledName = "adx_identity_locallogindisabledname";
 			public const string AdX_Identity_LockoutEnabled = "adx_identity_lockoutenabled";
+			public const string AdX_Identity_LockoutEnabledName = "adx_identity_lockoutenabledname";
 			public const string AdX_Identity_LockoutEndDate = "adx_identity_lockoutenddate";
 			public const string AdX_Identity_LogOnEnabled = "adx_identity_logonenabled";
+			public const string AdX_Identity_LogOnEnabledName = "adx_identity_logonenabledname";
 			public const string AdX_Identity_MobilePhoneConfirmed = "adx_identity_mobilephoneconfirmed";
+			public const string AdX_Identity_MobilePhoneConfirmedName = "adx_identity_mobilephoneconfirmedname";
 			public const string AdX_Identity_NewPassword = "adx_identity_newpassword";
 			public const string AdX_Identity_PasswordHash = "adx_identity_passwordhash";
 			public const string AdX_Identity_SecurityStamp = "adx_identity_securitystamp";
 			public const string AdX_Identity_TwoFactorEnabled = "adx_identity_twofactorenabled";
+			public const string AdX_Identity_TwoFactorEnabledName = "adx_identity_twofactorenabledname";
 			public const string AdX_Identity_Username = "adx_identity_username";
 			public const string AdX_ModifiedByIpAddress = "adx_modifiedbyipaddress";
 			public const string AdX_ModifiedByUsername = "adx_modifiedbyusername";
@@ -561,7 +580,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string AdX_ProfileAlert = "adx_profilealert";
 			public const string AdX_ProfileAlertDate = "adx_profilealertdate";
 			public const string AdX_ProfileAlertInstructions = "adx_profilealertinstructions";
+			public const string AdX_ProfileAlertName = "adx_profilealertname";
 			public const string AdX_ProfileIsAnonymous = "adx_profileisanonymous";
+			public const string AdX_ProfileIsAnonymousName = "adx_profileisanonymousname";
 			public const string AdX_ProfileLastActivity = "adx_profilelastactivity";
 			public const string AdX_ProfileModifiedOn = "adx_profilemodifiedon";
 			public const string AdX_PublicProfileCopy = "adx_publicprofilecopy";
@@ -591,40 +612,69 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedBy = "createdby";
 			public const string CreatedByExternalParty = "createdbyexternalparty";
 			public const string CreatedByExternalPartyName = "createdbyexternalpartyname";
+			public const string CreatedByExternalPartyYomiName = "createdbyexternalpartyyominame";
 			public const string CreatedByName = "createdbyname";
+			public const string CreatedByYomiName = "createdbyyominame";
 			public const string CreatedOn = "createdon";
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
+			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string CreditLimit = "creditlimit";
 			public const string CreditLimit_Base = "creditlimit_base";
 			public const string CreditOnHold = "creditonhold";
+			public const string CreditOnHoldName = "creditonholdname";
 			public const string CustomerSizeCode = "customersizecode";
+			public const string CustomerSizeCodename = "customersizecodename";
 			public const string CustomerTypeCode = "customertypecode";
+			public const string CustomerTypeCodename = "customertypecodename";
 			public const string DefaultPriceLevelId = "defaultpricelevelid";
 			public const string DefaultPriceLevelIdName = "defaultpricelevelidname";
 			public const string Department = "department";
 			public const string Description = "description";
 			public const string DoNotBulkEmail = "donotbulkemail";
+			public const string DoNotBulkEmailName = "donotbulkemailname";
 			public const string DoNotBulkPostalMail = "donotbulkpostalmail";
+			public const string DoNotBulkPostalMailName = "donotbulkpostalmailname";
 			public const string DoNotEmail = "donotemail";
+			public const string DoNotEmailName = "donotemailname";
 			public const string DoNotFax = "donotfax";
+			public const string DoNotFaxName = "donotfaxname";
 			public const string DoNotPhone = "donotphone";
+			public const string DoNotPhoneName = "donotphonename";
 			public const string DoNotPostalMail = "donotpostalmail";
+			public const string DoNotPostalMailName = "donotpostalmailname";
+			public const string DoNotSendMarketingMaterialName = "donotsendmarketingmaterialname";
 			public const string DoNotSendMm = "donotsendmm";
+			public const string ECER_AboriginalType = "ecer_aboriginaltype";
+			public const string ECER_AboriginalTypeName = "ecer_aboriginaltypename";
+			public const string ECER_AgreeToterMsAndConditions = "ecer_agreetotermsandconditions";
+			public const string ECER_AgreeToterMsAndConditionsName = "ecer_agreetotermsandconditionsname";
 			public const string ECER_Application_ApplicantId_Contact = "ECER_Application_ApplicantId_Contact";
 			public const string ECER_Authentication_ContactId = "ECER_Authentication_ContactId";
+			public const string ECER_Certificate_RegistrantId = "ECER_Certificate_RegistrantId";
 			public const string ECER_CertificateNumber = "ecer_certificatenumber";
 			public const string ECER_CertificateProvince = "ecer_certificateprovince";
+			public const string ECER_ChangeOfInformation_ContactId = "ECER_ChangeOfInformation_ContactId";
 			public const string ECER_CharacterReference_ReferenceContactId = "ECER_CharacterReference_ReferenceContactId";
+			public const string ECER_ClientId = "ecer_clientid";
 			public const string ECER_CompletedCourse_ApplicantId = "ECER_CompletedCourse_ApplicantId";
+			public const string ECER_Contact_ECER_Communication_122 = "ECER_Contact_ECER_Communication_122";
 			public const string ECER_Contact_ECER_File_123 = "ECER_Contact_ECER_File_123";
+			public const string ECER_Contact_ECER_PreviousAddress_251 = "ECER_Contact_ECER_PreviousAddress_251";
 			public const string ECER_ECER_CharacterReference_ApplicantId_ConTA = "ECER_ECER_CharacterReference_ApplicantId_ConTA";
 			public const string ECER_ECER_ProfessionalDevelopment_ApplicantId_ = "ECER_ECER_ProfessionalDevelopment_ApplicantId_";
 			public const string ECER_ECER_WorkExperienceRef_ReferenceContactId = "ECER_ECER_WorkExperienceRef_ReferenceContactId";
 			public const string ECER_IsBcECE = "ecer_isbcece";
+			public const string ECER_IsBcECEName = "ecer_isbcecename";
+			public const string ECER_IsVerified = "ecer_isverified";
+			public const string ECER_IsVerifiedName = "ecer_isverifiedname";
+			public const string ECER_PortalUser_ContactId = "ECER_PortalUser_ContactId";
+			public const string ECER_PreferredName = "ecer_preferredname";
+			public const string ECER_PreviousName_ContactId = "ECER_PreviousName_ContactId";
 			public const string ECER_Transcript_ApplicantId_Contact = "ECER_Transcript_ApplicantId_Contact";
 			public const string ECER_WorkExperienceRef_ApplicantId = "ECER_WorkExperienceRef_ApplicantId";
 			public const string EducationCode = "educationcode";
+			public const string EducationCodename = "educationcodename";
 			public const string EmailAddress1 = "emailaddress1";
 			public const string EmailAddress2 = "emailaddress2";
 			public const string EmailAddress3 = "emailaddress3";
@@ -633,99 +683,131 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string EntityImage_Timestamp = "entityimage_timestamp";
 			public const string EntityImage_Url = "entityimage_url";
 			public const string EntityImageId = "entityimageid";
-			public const string EntityImageIdName = "entityimageidname";
 			public const string ExchangerAte = "exchangerate";
 			public const string ExternalUserIdentifier = "externaluseridentifier";
 			public const string FamilyStatusCode = "familystatuscode";
+			public const string FamilyStatusCodename = "familystatuscodename";
 			public const string Fax = "fax";
 			public const string FirstName = "firstname";
 			public const string FollowEmail = "followemail";
+			public const string FollowEmailName = "followemailname";
 			public const string FtpSiteUrl = "ftpsiteurl";
 			public const string FullName = "fullname";
 			public const string GenderCode = "gendercode";
+			public const string GenderCodename = "gendercodename";
 			public const string GovernmentId = "governmentid";
 			public const string HasChildrenCode = "haschildrencode";
+			public const string HasChildrenCodename = "haschildrencodename";
 			public const string Home2 = "home2";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string IsBackOfficeCustomer = "isbackofficecustomer";
+			public const string IsBackOfficeCustomerName = "isbackofficecustomername";
+			public const string IsPrivateName = "isprivatename";
 			public const string JobTitle = "jobtitle";
 			public const string LastName = "lastname";
 			public const string LastOnHoldTime = "lastonholdtime";
 			public const string LastUsedInCampaign = "lastusedincampaign";
 			public const string LeadSourceCode = "leadsourcecode";
+			public const string LeadSourceCodename = "leadsourcecodename";
 			public const string ManagerName = "managername";
 			public const string ManagerPhone = "managerphone";
 			public const string MarketingOnly = "marketingonly";
+			public const string MarketingOnlyName = "marketingonlyname";
+			public const string MasterContactIdName = "mastercontactidname";
+			public const string MasterContactIdYomiName = "mastercontactidyominame";
 			public const string MasterId = "masterid";
-			public const string MasterIdName = "masteridname";
 			public const string Merged = "merged";
+			public const string MergedName = "mergedname";
 			public const string MiddleName = "middlename";
 			public const string MobilePhone = "mobilephone";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByExternalParty = "modifiedbyexternalparty";
 			public const string ModifiedByExternalPartyName = "modifiedbyexternalpartyname";
+			public const string ModifiedByExternalPartyYomiName = "modifiedbyexternalpartyyominame";
 			public const string ModifiedByName = "modifiedbyname";
+			public const string ModifiedByYomiName = "modifiedbyyominame";
 			public const string ModifiedOn = "modifiedon";
 			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
 			public const string ModifiedOnBehalfByName = "modifiedonbehalfbyname";
+			public const string ModifiedOnBehalfByYomiName = "modifiedonbehalfbyyominame";
 			public const string MSa_ManagingPartnerId = "msa_managingpartnerid";
-			public const string MSa_ManagingPartnerIdName = "msa_managingpartneridname";
+			public const string MsA_ManagingPartnerIdName = "msa_managingpartneridname";
+			public const string MsA_ManagingPartnerIdYomiName = "msa_managingpartneridyominame";
 			public const string Msdyn_ContactKPiId = "msdyn_contactkpiid";
 			public const string Msdyn_ContactKPiIdName = "msdyn_contactkpiidname";
 			public const string Msdyn_DecisionInfluenceTag = "msdyn_decisioninfluencetag";
+			public const string Msdyn_DecisionInfluenceTagName = "msdyn_decisioninfluencetagname";
 			public const string Msdyn_DisableWebTracking = "msdyn_disablewebtracking";
+			public const string Msdyn_DisableWebTrackingName = "msdyn_disablewebtrackingname";
 			public const string Msdyn_GdPrOptOut = "msdyn_gdproptout";
+			public const string Msdyn_GdPrOptOutName = "msdyn_gdproptoutname";
 			public const string Msdyn_IsAssistantInorgChart = "msdyn_isassistantinorgchart";
+			public const string Msdyn_IsAssistantInorgChartName = "msdyn_isassistantinorgchartname";
 			public const string Msdyn_IsMinor = "msdyn_isminor";
+			public const string Msdyn_IsMinorName = "msdyn_isminorname";
 			public const string Msdyn_IsMinorWithParentalConsent = "msdyn_isminorwithparentalconsent";
+			public const string Msdyn_IsMinorWithParentalConsentName = "msdyn_isminorwithparentalconsentname";
 			public const string Msdyn_OrgChangeStatus = "msdyn_orgchangestatus";
+			public const string Msdyn_OrgChangeStatusName = "msdyn_orgchangestatusname";
 			public const string Msdyn_PortalTermsAgreementDate = "msdyn_portaltermsagreementdate";
 			public const string Msdyn_SegmentId = "msdyn_segmentid";
 			public const string Msdyn_SegmentIdName = "msdyn_segmentidname";
 			public const string MsPp_UserPreferredLcId = "mspp_userpreferredlcid";
+			public const string MsPp_UserPreferredLcIdName = "mspp_userpreferredlcidname";
 			public const string Nickname = "nickname";
 			public const string NumberOfChildren = "numberofchildren";
 			public const string OnHoldTime = "onholdtime";
 			public const string OriginatingLeadId = "originatingleadid";
 			public const string OriginatingLeadIdName = "originatingleadidname";
+			public const string OriginatingLeadIdYomiName = "originatingleadidyominame";
 			public const string OverriddenCreatedOn = "overriddencreatedon";
 			public const string OwnerId = "ownerid";
 			public const string OwnerIdName = "owneridname";
+			public const string OwnerIdYomiName = "owneridyominame";
 			public const string OwningBusinessUnit = "owningbusinessunit";
 			public const string OwningBusinessUnitName = "owningbusinessunitname";
 			public const string OwningTeam = "owningteam";
-			public const string OwningTeamName = "owningteamname";
 			public const string OwningUser = "owninguser";
-			public const string OwningUserName = "owningusername";
 			public const string Pager = "pager";
 			public const string ParentContactId = "parentcontactid";
+			public const string ParentContactIdName = "parentcontactidname";
+			public const string ParentContactIdYomiName = "parentcontactidyominame";
 			public const string ParentCustomerId = "parentcustomerid";
 			public const string ParentCustomerIdName = "parentcustomeridname";
+			public const string ParentCustomerIdYomiName = "parentcustomeridyominame";
 			public const string ParticipatesInWorkflow = "participatesinworkflow";
+			public const string ParticipatesInWorkflowName = "participatesinworkflowname";
 			public const string PaymentTermsCode = "paymenttermscode";
+			public const string PaymentTermsCodename = "paymenttermscodename";
 			public const string PreferredAppointmentDayCode = "preferredappointmentdaycode";
+			public const string PreferredAppointmentDayCodename = "preferredappointmentdaycodename";
 			public const string PreferredAppointmentTimeCode = "preferredappointmenttimecode";
+			public const string PreferredAppointmentTimeCodename = "preferredappointmenttimecodename";
 			public const string PreferredContactMethodCode = "preferredcontactmethodcode";
+			public const string PreferredContactMethodCodename = "preferredcontactmethodcodename";
 			public const string PreferredEquipmentId = "preferredequipmentid";
 			public const string PreferredEquipmentIdName = "preferredequipmentidname";
 			public const string PreferredServiceId = "preferredserviceid";
 			public const string PreferredServiceIdName = "preferredserviceidname";
 			public const string PreferredSystemUserId = "preferredsystemuserid";
 			public const string PreferredSystemUserIdName = "preferredsystemuseridname";
+			public const string PreferredSystemUserIdYomiName = "preferredsystemuseridyominame";
 			public const string ProcessId = "processid";
 			public const string ReferencedContact_Customer_Contacts = "ReferencedContact_Customer_Contacts";
 			public const string ReferencedContact_Master_Contact = "ReferencedContact_Master_Contact";
 			public const string Salutation = "salutation";
 			public const string ShippingMethodCode = "shippingmethodcode";
+			public const string ShippingMethodCodename = "shippingmethodcodename";
 			public const string SlaId = "slaid";
-			public const string SlaIdName = "slaidname";
 			public const string SlaInvokedId = "slainvokedid";
 			public const string SlaInvokedIdName = "slainvokedidname";
+			public const string SlaName = "slaname";
 			public const string SpousesName = "spousesname";
 			public const string StageId = "stageid";
-			public const string StageIdName = "stageidname";
 			public const string StateCode = "statecode";
+			public const string StateCodename = "statecodename";
 			public const string StatusCode = "statuscode";
+			public const string StatusCodename = "statuscodename";
 			public const string SubscriptionId = "subscriptionid";
 			public const string Suffix = "suffix";
 			public const string TeamsFollowed = "teamsfollowed";
@@ -733,6 +815,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Telephone2 = "telephone2";
 			public const string Telephone3 = "telephone3";
 			public const string TerritoryCode = "territorycode";
+			public const string TerritoryCodename = "territorycodename";
 			public const string TimeSpentByMeOnEmailAndMeetings = "timespentbymeonemailandmeetings";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
 			public const string TransactionCurrencyId = "transactioncurrencyid";
@@ -799,6 +882,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("accountidname")]
+		public string AccountIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("accountid"))
+				{
+					return this.FormattedValues["accountid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("accountidyominame")]
+		public string AccountIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("accountid"))
+				{
+					return this.FormattedValues["accountid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Select the contact's role within the company or sales process, such as decision maker, employee, or influencer.
 		/// </summary>
@@ -814,6 +931,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("accountrolecode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("accountrolecodename")]
+		public string AccountRoleCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("accountrolecode"))
+				{
+					return this.FormattedValues["accountrolecode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -850,6 +984,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("address1_addresstypecode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_addresstypecodename")]
+		public string Address1_AddressTypeCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("address1_addresstypecode"))
+				{
+					return this.FormattedValues["address1_addresstypecode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -953,6 +1104,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("address1_freighttermscode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_freighttermscodename")]
+		public string Address1_FreightTermsCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("address1_freighttermscode"))
+				{
+					return this.FormattedValues["address1_freighttermscode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1136,6 +1304,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_shippingmethodcodename")]
+		public string Address1_ShippingMethodCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("address1_shippingmethodcode"))
+				{
+					return this.FormattedValues["address1_shippingmethodcode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Type the state or province of the primary address.
 		/// </summary>
@@ -1280,6 +1465,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_addresstypecodename")]
+		public string Address2_AddressTypeCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("address2_addresstypecode"))
+				{
+					return this.FormattedValues["address2_addresstypecode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Type the city for the secondary address.
 		/// </summary>
@@ -1299,7 +1501,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Shows the complete secondary address.
+		/// Home Address
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_composite")]
 		public string Address2_Composite
@@ -1380,6 +1582,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("address2_freighttermscode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_freighttermscodename")]
+		public string Address2_FreightTermsCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("address2_freighttermscode"))
+				{
+					return this.FormattedValues["address2_freighttermscode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1563,6 +1782,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_shippingmethodcodename")]
+		public string Address2_ShippingMethodCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("address2_shippingmethodcode"))
+				{
+					return this.FormattedValues["address2_shippingmethodcode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Type the state or province of the secondary address.
 		/// </summary>
@@ -1707,6 +1943,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address3_addresstypecodename")]
+		public string Address3_AddressTypeCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("address3_addresstypecode"))
+				{
+					return this.FormattedValues["address3_addresstypecode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Type the city for the 3rd address.
 		/// </summary>
@@ -1807,6 +2060,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("address3_freighttermscode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address3_freighttermscodename")]
+		public string Address3_FreightTermsCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("address3_freighttermscode"))
+				{
+					return this.FormattedValues["address3_freighttermscode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1990,6 +2260,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address3_shippingmethodcodename")]
+		public string Address3_ShippingMethodCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("address3_shippingmethodcode"))
+				{
+					return this.FormattedValues["address3_shippingmethodcode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// the state or province of the third address.
 		/// </summary>
@@ -2113,6 +2400,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_confirmremovepasswordname")]
+		public string AdX_ConfirmRemovePasswordName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("adx_confirmremovepassword"))
+				{
+					return this.FormattedValues["adx_confirmremovepassword"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_createdbyipaddress")]
 		public string AdX_CreatedByIpAddress
 		{
@@ -2179,6 +2483,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_emailaddress1confirmedname")]
+		public string AdX_Identity_EmailAddress1ConfirmedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("adx_identity_emailaddress1confirmed"))
+				{
+					return this.FormattedValues["adx_identity_emailaddress1confirmed"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Indicates the last date and time the user successfully signed in to a portal.
 		/// </summary>
@@ -2215,6 +2536,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_locallogindisabledname")]
+		public string AdX_Identity_LocalLoginDisabledName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("adx_identity_locallogindisabled"))
+				{
+					return this.FormattedValues["adx_identity_locallogindisabled"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Determines if this contact will track failed access attempts and become locked after too many failed attempts. To prevent the contact from becoming locked, you can disable this setting.
 		/// </summary>
@@ -2230,6 +2568,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("adx_identity_lockoutenabled", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_lockoutenabledname")]
+		public string AdX_Identity_LockoutEnabledName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("adx_identity_lockoutenabled"))
+				{
+					return this.FormattedValues["adx_identity_lockoutenabled"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -2269,6 +2624,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_logonenabledname")]
+		public string AdX_Identity_LogOnEnabledName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("adx_identity_logonenabled"))
+				{
+					return this.FormattedValues["adx_identity_logonenabled"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Determines if the phone number is confirmed by the contact.
 		/// </summary>
@@ -2284,6 +2656,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("adx_identity_mobilephoneconfirmed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_mobilephoneconfirmedname")]
+		public string AdX_Identity_MobilePhoneConfirmedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("adx_identity_mobilephoneconfirmed"))
+				{
+					return this.FormattedValues["adx_identity_mobilephoneconfirmed"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -2350,6 +2739,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("adx_identity_twofactorenabled", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_twofactorenabledname")]
+		public string AdX_Identity_TwoFactorEnabledName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("adx_identity_twofactorenabled"))
+				{
+					return this.FormattedValues["adx_identity_twofactorenabled"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -2479,6 +2885,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_profilealertname")]
+		public string AdX_ProfileAlertName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("adx_profilealert"))
+				{
+					return this.FormattedValues["adx_profilealert"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_profileisanonymous")]
 		public System.Nullable<bool> AdX_ProfileIsAnonymous
 		{
@@ -2491,6 +2914,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("adx_profileisanonymous", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_profileisanonymousname")]
+		public string AdX_ProfileIsAnonymousName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("adx_profileisanonymous"))
+				{
+					return this.FormattedValues["adx_profileisanonymous"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -2910,6 +3350,74 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyexternalpartyname")]
+		public string CreatedByExternalPartyName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdbyexternalparty"))
+				{
+					return this.FormattedValues["createdbyexternalparty"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyexternalpartyyominame")]
+		public string CreatedByExternalPartyYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdbyexternalparty"))
+				{
+					return this.FormattedValues["createdbyexternalparty"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyname")]
+		public string CreatedByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdby"))
+				{
+					return this.FormattedValues["createdby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyyominame")]
+		public string CreatedByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdby"))
+				{
+					return this.FormattedValues["createdby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Shows the date and time when the record was created. The date and time are displayed in the time zone selected in Microsoft Dynamics 365 options.
 		/// </summary>
@@ -2938,6 +3446,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("createdonbehalfby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfbyname")]
+		public string CreatedOnBehalfByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdonbehalfby"))
+				{
+					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfbyyominame")]
+		public string CreatedOnBehalfByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdonbehalfby"))
+				{
+					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -2990,6 +3532,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("creditonholdname")]
+		public string CreditOnHoldName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("creditonhold"))
+				{
+					return this.FormattedValues["creditonhold"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Select the size of the contact's company for segmentation and reporting purposes.
 		/// </summary>
@@ -3005,6 +3564,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("customersizecode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customersizecodename")]
+		public string CustomerSizeCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("customersizecode"))
+				{
+					return this.FormattedValues["customersizecode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3026,6 +3602,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customertypecodename")]
+		public string CustomerTypeCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("customertypecode"))
+				{
+					return this.FormattedValues["customertypecode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Choose the default price list associated with the contact to make sure the correct product prices for this customer are applied in sales opportunities, quotes, and orders.
 		/// </summary>
@@ -3041,6 +3634,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("defaultpricelevelid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("defaultpricelevelidname")]
+		public string DefaultPriceLevelIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("defaultpricelevelid"))
+				{
+					return this.FormattedValues["defaultpricelevelid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3098,6 +3708,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotbulkemailname")]
+		public string DoNotBulkEmailName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("donotbulkemail"))
+				{
+					return this.FormattedValues["donotbulkemail"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Select whether the contact accepts bulk postal mail sent through marketing campaigns or quick campaigns. If Do Not Allow is selected, the contact can be added to marketing lists, but will be excluded from the letters.
 		/// </summary>
@@ -3113,6 +3740,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("donotbulkpostalmail", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotbulkpostalmailname")]
+		public string DoNotBulkPostalMailName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("donotbulkpostalmail"))
+				{
+					return this.FormattedValues["donotbulkpostalmail"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3134,6 +3778,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotemailname")]
+		public string DoNotEmailName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("donotemail"))
+				{
+					return this.FormattedValues["donotemail"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Select whether the contact allows faxes. If Do Not Allow is selected, the contact will be excluded from any fax activities distributed in marketing campaigns.
 		/// </summary>
@@ -3149,6 +3810,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("donotfax", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotfaxname")]
+		public string DoNotFaxName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("donotfax"))
+				{
+					return this.FormattedValues["donotfax"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3170,6 +3848,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotphonename")]
+		public string DoNotPhoneName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("donotphone"))
+				{
+					return this.FormattedValues["donotphone"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Select whether the contact allows direct mail. If Do Not Allow is selected, the contact will be excluded from letter activities distributed in marketing campaigns.
 		/// </summary>
@@ -3188,6 +3883,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotpostalmailname")]
+		public string DoNotPostalMailName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("donotpostalmail"))
+				{
+					return this.FormattedValues["donotpostalmail"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotsendmarketingmaterialname")]
+		public string DoNotSendMarketingMaterialName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("donotsendmm"))
+				{
+					return this.FormattedValues["donotsendmm"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Select whether the contact accepts marketing materials, such as brochures or catalogs. Contacts that opt out can be excluded from marketing initiatives.
 		/// </summary>
@@ -3203,6 +3932,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("donotsendmm", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_aboriginaltype")]
+		public virtual ECER_AboriginalType? ECER_AboriginalType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ECER_AboriginalType?)(EntityOptionSetEnum.GetEnum(this, "ecer_aboriginaltype")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_aboriginaltype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_aboriginaltypename")]
+		public string ECER_AboriginalTypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_aboriginaltype"))
+				{
+					return this.FormattedValues["ecer_aboriginaltype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_agreetotermsandconditions")]
+		public System.Nullable<bool> ECER_AgreeToterMsAndConditions
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_agreetotermsandconditions");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_agreetotermsandconditions", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_agreetotermsandconditionsname")]
+		public string ECER_AgreeToterMsAndConditionsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_agreetotermsandconditions"))
+				{
+					return this.FormattedValues["ecer_agreetotermsandconditions"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3237,6 +4030,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Readable ID For Contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_clientid")]
+		public string ECER_ClientId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_clientid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_clientid", value);
+			}
+		}
+		
+		/// <summary>
 		/// is BC ECE Registrant. Use to show hide other tabs
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isbcece")]
@@ -3251,6 +4062,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_isbcece", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isbcecename")]
+		public string ECER_IsBcECEName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isbcece"))
+				{
+					return this.FormattedValues["ecer_isbcece"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isverified")]
+		public System.Nullable<bool> ECER_IsVerified
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_isverified");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_isverified", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isverifiedname")]
+		public string ECER_IsVerifiedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isverified"))
+				{
+					return this.FormattedValues["ecer_isverified"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_preferredname")]
+		public string ECER_PreferredName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_preferredname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_preferredname", value);
 			}
 		}
 		
@@ -3269,6 +4144,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("educationcode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("educationcodename")]
+		public string EducationCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("educationcode"))
+				{
+					return this.FormattedValues["educationcode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3444,6 +4336,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("familystatuscodename")]
+		public string FamilyStatusCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("familystatuscode"))
+				{
+					return this.FormattedValues["familystatuscode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Type the fax number for the contact.
 		/// </summary>
@@ -3498,6 +4407,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("followemailname")]
+		public string FollowEmailName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("followemail"))
+				{
+					return this.FormattedValues["followemail"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Type the URL for the contact's FTP site to enable users to access data and share documents.
 		/// </summary>
@@ -3547,6 +4473,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("gendercodename")]
+		public string GenderCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("gendercode"))
+				{
+					return this.FormattedValues["gendercode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Type the passport number or other government ID for the contact for use in documents or reports.
 		/// </summary>
@@ -3580,6 +4523,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("haschildrencode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("haschildrencodename")]
+		public string HasChildrenCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("haschildrencode"))
+				{
+					return this.FormattedValues["haschildrencode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3634,6 +4594,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("isbackofficecustomer", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isbackofficecustomername")]
+		public string IsBackOfficeCustomerName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("isbackofficecustomer"))
+				{
+					return this.FormattedValues["isbackofficecustomer"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isprivatename")]
+		public string IsPrivateName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("isprivate"))
+				{
+					return this.FormattedValues["isprivate"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3727,6 +4721,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("leadsourcecodename")]
+		public string LeadSourceCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("leadsourcecode"))
+				{
+					return this.FormattedValues["leadsourcecode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Type the name of the contact's manager for use in escalating issues or other follow-up communications with the contact.
 		/// </summary>
@@ -3781,6 +4792,57 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("marketingonlyname")]
+		public string MarketingOnlyName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("marketingonly"))
+				{
+					return this.FormattedValues["marketingonly"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mastercontactidname")]
+		public string MasterContactIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("masterid"))
+				{
+					return this.FormattedValues["masterid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mastercontactidyominame")]
+		public string MasterContactIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("masterid"))
+				{
+					return this.FormattedValues["masterid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Unique identifier of the master contact for merge.
 		/// </summary>
@@ -3804,6 +4866,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<bool>>("merged");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mergedname")]
+		public string MergedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("merged"))
+				{
+					return this.FormattedValues["merged"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3869,6 +4948,74 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyexternalpartyname")]
+		public string ModifiedByExternalPartyName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedbyexternalparty"))
+				{
+					return this.FormattedValues["modifiedbyexternalparty"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyexternalpartyyominame")]
+		public string ModifiedByExternalPartyYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedbyexternalparty"))
+				{
+					return this.FormattedValues["modifiedbyexternalparty"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyname")]
+		public string ModifiedByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedby"))
+				{
+					return this.FormattedValues["modifiedby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyyominame")]
+		public string ModifiedByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedby"))
+				{
+					return this.FormattedValues["modifiedby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Shows the date and time when the record was last updated. The date and time are displayed in the time zone selected in Microsoft Dynamics 365 options.
 		/// </summary>
@@ -3900,6 +5047,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfbyname")]
+		public string ModifiedOnBehalfByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedonbehalfby"))
+				{
+					return this.FormattedValues["modifiedonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfbyyominame")]
+		public string ModifiedOnBehalfByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedonbehalfby"))
+				{
+					return this.FormattedValues["modifiedonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Unique identifier for Account associated with Contact.
 		/// </summary>
@@ -3915,6 +5096,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("msa_managingpartnerid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msa_managingpartneridname")]
+		public string MsA_ManagingPartnerIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("msa_managingpartnerid"))
+				{
+					return this.FormattedValues["msa_managingpartnerid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msa_managingpartneridyominame")]
+		public string MsA_ManagingPartnerIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("msa_managingpartnerid"))
+				{
+					return this.FormattedValues["msa_managingpartnerid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3936,6 +5151,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_contactkpiidname")]
+		public string Msdyn_ContactKPiIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("msdyn_contactkpiid"))
+				{
+					return this.FormattedValues["msdyn_contactkpiid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Indicate buying influence using labels
 		/// </summary>
@@ -3951,6 +5183,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("msdyn_decisioninfluencetag", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_decisioninfluencetagname")]
+		public string Msdyn_DecisionInfluenceTagName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("msdyn_decisioninfluencetag"))
+				{
+					return this.FormattedValues["msdyn_decisioninfluencetag"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3972,6 +5221,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_disablewebtrackingname")]
+		public string Msdyn_DisableWebTrackingName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("msdyn_disablewebtracking"))
+				{
+					return this.FormattedValues["msdyn_disablewebtracking"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Describes whether contact is opted out or not
 		/// </summary>
@@ -3987,6 +5253,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("msdyn_gdproptout", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_gdproptoutname")]
+		public string Msdyn_GdPrOptOutName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("msdyn_gdproptout"))
+				{
+					return this.FormattedValues["msdyn_gdproptout"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4008,6 +5291,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_isassistantinorgchartname")]
+		public string Msdyn_IsAssistantInorgChartName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("msdyn_isassistantinorgchart"))
+				{
+					return this.FormattedValues["msdyn_isassistantinorgchart"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Indicates that the contact is considered a minor in their jurisdiction.
 		/// </summary>
@@ -4023,6 +5323,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("msdyn_isminor", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_isminorname")]
+		public string Msdyn_IsMinorName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("msdyn_isminor"))
+				{
+					return this.FormattedValues["msdyn_isminor"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4044,6 +5361,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_isminorwithparentalconsentname")]
+		public string Msdyn_IsMinorWithParentalConsentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("msdyn_isminorwithparentalconsent"))
+				{
+					return this.FormattedValues["msdyn_isminorwithparentalconsent"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Whether or not the contact belongs to the associated account
 		/// </summary>
@@ -4059,6 +5393,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("msdyn_orgchangestatus", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_orgchangestatusname")]
+		public string Msdyn_OrgChangeStatusName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("msdyn_orgchangestatus"))
+				{
+					return this.FormattedValues["msdyn_orgchangestatus"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4098,6 +5449,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_segmentidname")]
+		public string Msdyn_SegmentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("msdyn_segmentid"))
+				{
+					return this.FormattedValues["msdyn_segmentid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// User’s preferred portal language
 		/// </summary>
@@ -4113,6 +5481,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("mspp_userpreferredlcid", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mspp_userpreferredlcidname")]
+		public string MsPp_UserPreferredLcIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("mspp_userpreferredlcid"))
+				{
+					return this.FormattedValues["mspp_userpreferredlcid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4183,6 +5568,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("originatingleadidname")]
+		public string OriginatingLeadIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("originatingleadid"))
+				{
+					return this.FormattedValues["originatingleadid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("originatingleadidyominame")]
+		public string OriginatingLeadIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("originatingleadid"))
+				{
+					return this.FormattedValues["originatingleadid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Date and time that the record was migrated.
 		/// </summary>
@@ -4219,6 +5638,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridname")]
+		public string OwnerIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ownerid"))
+				{
+					return this.FormattedValues["ownerid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridyominame")]
+		public string OwnerIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ownerid"))
+				{
+					return this.FormattedValues["ownerid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Unique identifier of the business unit that owns the contact.
 		/// </summary>
@@ -4229,6 +5682,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owningbusinessunit");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunitname")]
+		public string OwningBusinessUnitName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("owningbusinessunit"))
+				{
+					return this.FormattedValues["owningbusinessunit"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4289,6 +5759,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("parentcontactidname")]
+		public string ParentContactIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("parentcontactid"))
+				{
+					return this.FormattedValues["parentcontactid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("parentcontactidyominame")]
+		public string ParentContactIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("parentcontactid"))
+				{
+					return this.FormattedValues["parentcontactid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Select the parent account or parent contact for the contact to provide a quick link to additional details, such as financial information, activities, and opportunities.
 		/// </summary>
@@ -4304,6 +5808,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("parentcustomerid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("parentcustomeridname")]
+		public string ParentCustomerIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("parentcustomerid"))
+				{
+					return this.FormattedValues["parentcustomerid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("parentcustomeridyominame")]
+		public string ParentCustomerIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("parentcustomerid"))
+				{
+					return this.FormattedValues["parentcustomerid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4325,6 +5863,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("participatesinworkflowname")]
+		public string ParticipatesInWorkflowName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("participatesinworkflow"))
+				{
+					return this.FormattedValues["participatesinworkflow"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Select the payment terms to indicate when the customer needs to pay the total amount.
 		/// </summary>
@@ -4340,6 +5895,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("paymenttermscode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("paymenttermscodename")]
+		public string PaymentTermsCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("paymenttermscode"))
+				{
+					return this.FormattedValues["paymenttermscode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4361,6 +5933,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredappointmentdaycodename")]
+		public string PreferredAppointmentDayCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("preferredappointmentdaycode"))
+				{
+					return this.FormattedValues["preferredappointmentdaycode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Select the preferred time of day for service appointments.
 		/// </summary>
@@ -4376,6 +5965,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("preferredappointmenttimecode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredappointmenttimecodename")]
+		public string PreferredAppointmentTimeCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("preferredappointmenttimecode"))
+				{
+					return this.FormattedValues["preferredappointmenttimecode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4397,6 +6003,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredcontactmethodcodename")]
+		public string PreferredContactMethodCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("preferredcontactmethodcode"))
+				{
+					return this.FormattedValues["preferredcontactmethodcode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Choose the contact's preferred service facility or equipment to make sure services are scheduled correctly for the customer.
 		/// </summary>
@@ -4412,6 +6035,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("preferredequipmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredequipmentidname")]
+		public string PreferredEquipmentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("preferredequipmentid"))
+				{
+					return this.FormattedValues["preferredequipmentid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4433,6 +6073,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredserviceidname")]
+		public string PreferredServiceIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("preferredserviceid"))
+				{
+					return this.FormattedValues["preferredserviceid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Choose the regular or preferred customer service representative for reference when scheduling service activities for the contact.
 		/// </summary>
@@ -4448,6 +6105,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("preferredsystemuserid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredsystemuseridname")]
+		public string PreferredSystemUserIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("preferredsystemuserid"))
+				{
+					return this.FormattedValues["preferredsystemuserid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredsystemuseridyominame")]
+		public string PreferredSystemUserIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("preferredsystemuserid"))
+				{
+					return this.FormattedValues["preferredsystemuserid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4505,6 +6196,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("shippingmethodcodename")]
+		public string ShippingMethodCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("shippingmethodcode"))
+				{
+					return this.FormattedValues["shippingmethodcode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Choose the service level agreement (SLA) that you want to apply to the Contact record.
 		/// </summary>
@@ -4533,6 +6241,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("slainvokedid");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("slainvokedidname")]
+		public string SlaInvokedIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("slainvokedid"))
+				{
+					return this.FormattedValues["slainvokedid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("slaname")]
+		public string SlaName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("slaid"))
+				{
+					return this.FormattedValues["slaid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4590,6 +6332,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
+		public string StateCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("statecode"))
+				{
+					return this.FormattedValues["statecode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Select the contact's status.
 		/// </summary>
@@ -4605,6 +6364,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("statuscode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
+		public string StatusCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("statuscode"))
+				{
+					return this.FormattedValues["statuscode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4734,6 +6510,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("territorycodename")]
+		public string TerritoryCodename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("territorycode"))
+				{
+					return this.FormattedValues["territorycode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Total time spent for emails (read and write) and meetings by me in relation to the contact record.
 		/// </summary>
@@ -4780,6 +6573,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("transactioncurrencyid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("transactioncurrencyidname")]
+		public string TransactionCurrencyIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("transactioncurrencyid"))
+				{
+					return this.FormattedValues["transactioncurrencyid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4990,6 +6800,42 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_certificate_Registrantid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificate_Registrantid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_Certificate> ECER_Certificate_RegistrantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Certificate>("ecer_certificate_Registrantid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Certificate>("ecer_certificate_Registrantid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_changeofinformation_Contactid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_changeofinformation_Contactid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_ChangeOfInformation> ECER_ChangeOfInformation_ContactId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_ChangeOfInformation>("ecer_changeofinformation_Contactid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_ChangeOfInformation>("ecer_changeofinformation_Contactid", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_characterreference_ReferenceContactid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_characterreference_ReferenceContactid")]
@@ -5026,6 +6872,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_contact_ecer_communication_122
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_communication_122")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_Communication> ECER_Contact_ECER_Communication_122
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Communication>("ecer_contact_ecer_communication_122", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Communication>("ecer_contact_ecer_communication_122", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_contact_ecer_file_123
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_file_123")]
@@ -5040,6 +6904,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_File>("ecer_contact_ecer_file_123", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_contact_ecer_previousaddress_251
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_previousaddress_251")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_PreviousAddress> ECER_Contact_ECER_PreviousAddress_251
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PreviousAddress>("ecer_contact_ecer_previousaddress_251", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PreviousAddress>("ecer_contact_ecer_previousaddress_251", null, value);
 			}
 		}
 		
@@ -5094,6 +6976,42 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceRef>("ecer_ecer_workexperienceref_ReferenceContactid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_portaluser_Contactid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portaluser_Contactid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser> ECER_PortalUser_ContactId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser>("ecer_portaluser_Contactid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser>("ecer_portaluser_Contactid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_previousname_Contactid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_previousname_Contactid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_PreviousName> ECER_PreviousName_ContactId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PreviousName>("ecer_previousname_Contactid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PreviousName>("ecer_previousname_Contactid", null, value);
 			}
 		}
 		

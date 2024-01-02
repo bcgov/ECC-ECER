@@ -18,25 +18,27 @@ export const useConfigStore = defineStore("config", {
   }),
   getters: {
     bceidOidcConfiguration: (state): UserManagerSettings => {
-      const oidc = state.applicationConfiguration?.authenticationMethods ? state.applicationConfiguration?.authenticationMethods["bceid"] : null;
+      const oidc = state.applicationConfiguration?.clientAuthenticationMethods ? state.applicationConfiguration?.clientAuthenticationMethods["bceid"] : null;
 
       const combinedConfig: UserManagerSettings = {
         ...oidcConfig,
         client_id: oidc?.clientId ?? "",
         authority: oidc?.authority ?? "",
         scope: oidc?.scope ?? "",
+        loadUserInfo: true,
       };
 
       return combinedConfig;
     },
     bcscOidcConfiguration: (state): UserManagerSettings => {
-      const oidc = state.applicationConfiguration?.authenticationMethods ? state.applicationConfiguration?.authenticationMethods["bcsc"] : null;
+      const oidc = state.applicationConfiguration?.clientAuthenticationMethods ? state.applicationConfiguration?.clientAuthenticationMethods["bcsc"] : null;
 
       const combinedConfig: UserManagerSettings = {
         ...oidcConfig,
         client_id: oidc?.clientId ?? "",
         authority: oidc?.authority ?? "",
         scope: oidc?.scope ?? "",
+        loadUserInfo: true,
       };
 
       return combinedConfig;

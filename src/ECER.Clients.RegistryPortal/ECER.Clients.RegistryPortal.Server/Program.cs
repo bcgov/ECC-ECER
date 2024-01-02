@@ -1,15 +1,37 @@
 using System.Reflection;
+using System.Security.Claims;
+using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Oakton;
+using Wolverine;
 
 var builder = WebApplication.CreateBuilder(args);
 
-HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
+var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
+
+builder.Host.UseWolverine(opts =>
+{
+    foreach (var assembly in assemblies)
+    {
+        opts.Discovery.IncludeAssembly(assembly);
+        opts.Discovery.CustomizeHandlerDiscovery(x =>
+        {
+            x.Includes.WithNameSuffix("Handlers");
+        });
+    }
+});
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
+}, assemblies);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opts =>
 {
     opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
 });
+builder.Services.AddProblemDetails();
 
 builder.Services.AddCors(options =>
 {
@@ -22,12 +44,39 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddAuthentication("bcsc")
+    .AddJwtBearer("bceid")
+    .AddJwtBearer("bcsc", opts =>
+    {
+        opts.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async ctx =>
+            {
+                await Task.CompletedTask;
+
+                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim("identity_provider", "bcsc") }));
+            }
+        };
+        opts.Validate();
+    });
+
+builder.Services.AddAuthorizationBuilder().AddDefaultPolicy("jwt", policy =>
+{
+    policy.AddAuthenticationSchemes("bcsc", "bceid").RequireAuthenticatedUser();
+});
+
+builder.Services.AddDistributedMemoryCache();
+
+HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.MapFallbackToFile("index.html");
 app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
@@ -37,4 +86,4 @@ if (app.Environment.IsDevelopment())
 
 EndpointsRegistrar.RegisterAll(app);
 
-app.Run();
+return await app.RunOaktonCommands(args);
