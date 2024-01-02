@@ -17,7 +17,18 @@ const router = createRouter({
         },
         {
           path: "my-certifications",
-          component: () => import("./components/Certifications.vue"),
+          redirect: "/my-certifications/in-progress",
+          component: () => import("./components/CertificationTabs.vue"),
+          children: [
+            {
+              path: "in-progress",
+              component: () => import("./components/Certifications.vue"),
+            },
+            {
+              path: "completed",
+              component: () => import("./components/Certifications.vue"),
+            },
+          ],
         },
         {
           path: "messages",

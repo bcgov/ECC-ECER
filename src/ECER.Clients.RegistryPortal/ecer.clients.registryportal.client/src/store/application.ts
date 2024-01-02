@@ -11,6 +11,14 @@ export const useApplicationStore = defineStore("application", {
   state: (): ApplicationState => ({
     applications: [],
   }),
+  getters: {
+    inProgressCount(state): number {
+      return state.applications?.length ?? 0;
+    },
+    completedCount(): number {
+      return 0;
+    },
+  },
   actions: {
     async fetchApplications() {
       this.applications = await getApplications();

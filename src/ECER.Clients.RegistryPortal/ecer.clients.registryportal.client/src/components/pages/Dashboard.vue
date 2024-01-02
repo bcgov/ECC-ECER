@@ -18,7 +18,7 @@
         <v-list-item
           v-for="item in navigationOptions"
           :key="item.path"
-          :active="item.path === $router.currentRoute.value.path"
+          :active="$router.currentRoute.value.path.includes(item.path)"
           :prepend-icon="item.icon"
           :title="item.name"
           @click="$router.push(item.path)"
@@ -31,33 +31,26 @@
         <v-row>
           <v-col cols="12" md="8" lg="8" xl="8">
             <v-card class="rounded-lg fill-height" flat color="white">
-              <v-card-item>
-                <v-row>
-                  <v-col cols="12">
-                    <h3>Welcome Jane Doe</h3>
-                    <p class="small">Complete and submit your application for certification in early childhood education.</p>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-btn color="primary">Apply Now</v-btn>
-                  </v-col>
-                </v-row>
+              <v-card-item class="ma-4">
+                <h3>Welcome Jane Doe</h3>
+                <p class="small">Complete and submit your application for certification in early childhood education.</p>
               </v-card-item>
+              <v-card-actions class="ma-4">
+                <v-btn variant="flat" rounded="lg" color="primary">Apply Now</v-btn>
+              </v-card-actions>
             </v-card>
           </v-col>
           <v-col cols="12" md="4" lg="4" xl="4">
             <v-card class="rounded-lg fill-height" flat color="white">
-              <v-card-item>
-                <v-row>
-                  <v-col cols="12">
-                    <p class="small">
-                      Not sure which certificate to apply for? Fill out a quick self-assessment to see your certification options​​​​​​​.
-                    </p> </v-col
-                  ><v-col cols="12"> <v-btn color="warning">Check Elegibility</v-btn></v-col>
-                </v-row>
+              <v-card-item class="ma-4">
+                <p class="small">Not sure which certificate to apply for? Fill out a quick self-assessment to see your certification options.</p>
               </v-card-item>
+              <v-card-actions class="ma-4">
+                <v-btn variant="flat" rounded="lg" color="warning">Check Elegibility</v-btn>
+              </v-card-actions>
             </v-card>
           </v-col>
-          <v-col cols="12" class="order-first order-md-last order-lg-last order-xl-last">
+          <v-col cols="12" class="order-first order-lg-last order-xl-last">
             <v-card class="rounded-lg" flat color="white"
               ><v-card-item> <router-view></router-view> </v-card-item></v-card
           ></v-col>
@@ -81,7 +74,6 @@ export default defineComponent({
       { name: "Profile", path: "/profile", icon: "mdi-account-edit" },
     ],
     drawer: null as boolean | null | undefined,
-    selected: "my-certifications",
   }),
   methods: {
     formatPhoneNumber,

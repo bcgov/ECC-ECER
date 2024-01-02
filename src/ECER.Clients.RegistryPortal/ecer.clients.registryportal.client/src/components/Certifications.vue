@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h1>Certifications</h1>
-
     <div v-if="applications" class="content">
       <table>
         <thead>
