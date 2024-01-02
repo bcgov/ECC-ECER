@@ -1,4 +1,5 @@
 images:
   registry-portal:
     image: artifacts.developer.gov.bc.ca/github-docker-remote/bcgov/ecc-ecer/registry-portal
-
+    tags:
+      dev: latest

@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: test-release-pipeline
+spec:
+  tasks:
+
+    ## Promote dev to test ##
+    - name: test-registry-portal
+      params:
+        - name: imageName
+          value: registry-portal
+        - name: fromTag
+          value: dev
+        - name: toTag
+          value: test
+      taskRef:
+        kind: Task
+        name: promote-image-task
