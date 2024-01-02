@@ -83,4 +83,12 @@ When merging a PR, the code owners will prefer to squash the commits into a sing
 
 ## CI/CD
 
-TBD
+Each synced PR will trigger checks by building the relevant component's dockerfile. Dockerfiles contain the build scripts and invoke various code quality functions such as running tests, lint and similar. This means that in order to produce a deployable component, the docker build process much complete successfully. It also means the build process as it runs in GH Actions can be replicated locally by a developer using Docker/Podman engine.
+
+A successful build after merging to the master branch will tag the new image with `latest` tag. This tag will automatically trigger a deployment to the development environment. To promote to higher environments, please see GitOps documentation.
+
+## GitOps
+
+The repository contains 2 helm charts: `ecer` for the main services and components, and `tools` for supporting CRDs.
+
+There are 3 environments in OpenShift - dev, test and prod. Deployment is done by using ImageStream tags and DeploymentConfig triggers. The Tools namespace contains Tekton workflows to automatically backup and promote image tags between environments. The `tools` chart installs them in OpenShift.
