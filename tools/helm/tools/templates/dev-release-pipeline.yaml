@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: dev-release-pipeline
+spec:
+  tasks:
+
+    ## Promote dev ##
+    - name: dev-registry-portal
+      params:
+        - name: sourceImage
+          value: artifacts.developer.gov.bc.ca/github-docker-remote/bcgov/ecc-ecer/registry-portal
+        - name: sourceTag
+          value: latest
+        - name: destinationImage
+          value: registry-portal
+        - name: destinationTag
+          value: dev
+      taskRef:
+        kind: Task
+        name: tag-image-task
