@@ -19,8 +19,5 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     return { applicationStore };
   },
-  created() {
-    this.applicationStore.fetchApplications();
-  },
 });
 </script>

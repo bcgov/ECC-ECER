@@ -37,7 +37,8 @@ export default defineComponent({
     ...mapState(useApplicationStore, ["applications"]),
   },
   created() {
-    this.applicationStore.fetchApplications();
+    // Disabled for now as the API is not yet ready
+    // this.applicationStore.fetchApplications();
   },
 });
 </script>
