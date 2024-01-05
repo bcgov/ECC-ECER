@@ -18,10 +18,6 @@
         </tbody>
       </table>
     </div>
-
-    <div>
-      <button type="button" @click="createApplication">New Application</button>
-    </div>
   </div>
 </template>
 
@@ -42,12 +38,6 @@ export default defineComponent({
   },
   created() {
     this.applicationStore.fetchApplications();
-  },
-  methods: {
-    async createApplication() {
-      await this.applicationStore.newApplication();
-      this.applicationStore.fetchApplications();
-    },
   },
 });
 </script>

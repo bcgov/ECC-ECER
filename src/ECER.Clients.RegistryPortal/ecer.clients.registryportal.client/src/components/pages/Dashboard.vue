@@ -26,6 +26,10 @@
       </v-list>
     </v-navigation-drawer>
 
+    <v-app-bar v-if="$vuetify.display.mobile" height="40" elevation="0" color="warning">
+      <v-icon class="ms-6" size="large" color="grey-dark" icon="mdi-menu" @click="drawer = !drawer"></v-icon>
+    </v-app-bar>
+
     <v-main>
       <v-container fluid>
         <v-row>
