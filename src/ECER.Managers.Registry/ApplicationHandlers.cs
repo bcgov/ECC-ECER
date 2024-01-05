@@ -1,50 +1,32 @@
-﻿using ECER.Engines.Validation.Applications;
-using ECER.Resources.Accounts.Registrants;
-using ECER.Resources.Applications;
-using Microsoft.Extensions.DependencyInjection;
+﻿using ECER.Resources.Applications;
 
 namespace ECER.Managers.Registry;
 
 /// <summary>
 /// Message handlers
 /// </summary>
-public class ApplicationHandlers(IServiceProvider serviceProvider)
+public static class ApplicationHandlers
 {
     /// <summary>
     /// Handles submitting a new application use case
     /// </summary>
     /// <param name="cmd"></param>
     /// <returns></returns>
-    public async Task<string> Handle(SubmitNewApplicationCommand cmd)
+    public static async Task<string> Handle(SubmitNewApplicationCommand cmd)
     {
-        var validationEngine = serviceProvider.GetRequiredService<IApplicationValidationEngine>();
-        var registrantsRepository = serviceProvider.GetRequiredService<IRegistrantRepository>();
-        var applicationRepository = serviceProvider.GetRequiredService<IApplicationRepository>();
-
-        var validationResults = await validationEngine.Validate(new Engines.Validation.Applications.Application());
-
-        if (!validationResults.IsValid)
-        {
-            throw new InvalidOperationException("invalid application");
-        }
-
-        var applicantId = await registrantsRepository.Create(new NewRegistrantRequest());
-        var applicationId = await applicationRepository.Save(new SaveApplicationRequest(new Resources.Applications.Application
-        {
-            ApplicantId = applicantId
-        }));
-
-        return applicationId;
+        await Task.CompletedTask;
+        return string.Empty;
     }
 
     /// <summary>
     /// Handles applications query use case
     /// </summary>
     /// <param name="query"></param>
+    /// <param name="applicationRepository">DI service</param>
     /// <returns></returns>
-    public async Task<ApplicationsQueryResults> Handle(ApplicationsQuery query)
+    public static async Task<ApplicationsQueryResults> Handle(ApplicationsQuery query, IApplicationRepository applicationRepository)
     {
-        var applicationRepository = serviceProvider.GetRequiredService<IApplicationRepository>();
+        ArgumentNullException.ThrowIfNull(applicationRepository);
         var queryResponse = await applicationRepository.Query(new ApplicationQueryRequest());
         return new ApplicationsQueryResults(queryResponse.Items.Select(i => new Application
         {

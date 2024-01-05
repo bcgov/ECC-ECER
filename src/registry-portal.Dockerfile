@@ -27,8 +27,16 @@ RUN cat ECER.sln \
 | sed 's#\\#/#g' \
 | xargs -I % sh -c 'mkdir -p $(dirname %) && mv $(basename %) $(dirname %)/'
 
+# restore nuget packages
 RUN dotnet restore "ECER.Clients.RegistryPortal/ECER.Clients.RegistryPortal.Server/ECER.Clients.RegistryPortal.Server.csproj"
+RUN dotnet restore "ECER.Tests/ECER.Tests.csproj"
+
 COPY . .
+
+# run unit tests
+RUN dotnet test "ECER.Tests/ECER.Tests.csproj" --filter "Category!=IntegrationTest"
+
+# build publish
 RUN dotnet publish "ECER.Clients.RegistryPortal/ECER.Clients.RegistryPortal.Server/ECER.Clients.RegistryPortal.Server.csproj" -c Release -o /app/publish --no-restore
 
 # FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
