@@ -1,5 +1,12 @@
 <template>
-  <v-app-bar height="80" elevation="0" color="primary">
+  <v-app-bar
+    height="80"
+    elevation="0"
+    color="primary"
+    :style="{
+      'border-bottom': '2px solid #FCBA19',
+    }"
+  >
     <router-link to="/">
       <img src="../assets/bc-gov-logo.svg" width="155" class="logo ms-6" alt="B.C. Government Logo" />
     </router-link>

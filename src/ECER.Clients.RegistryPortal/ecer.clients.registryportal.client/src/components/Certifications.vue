@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h1>Applications</h1>
-
     <div v-if="applications" class="content">
       <table>
         <thead>
@@ -20,10 +18,6 @@
         </tbody>
       </table>
     </div>
-
-    <div>
-      <button type="button" @click="createApplication">New Application</button>
-    </div>
   </div>
 </template>
 
@@ -34,6 +28,7 @@ import { defineComponent } from "vue";
 import { useApplicationStore } from "@/store/application";
 
 export default defineComponent({
+  name: "Certifications",
   setup() {
     const applicationStore = useApplicationStore();
     return { applicationStore };
@@ -42,13 +37,8 @@ export default defineComponent({
     ...mapState(useApplicationStore, ["applications"]),
   },
   created() {
-    this.applicationStore.fetchApplications();
-  },
-  methods: {
-    async createApplication() {
-      await this.applicationStore.newApplication();
-      this.applicationStore.fetchApplications();
-    },
+    // Disabled for now as the API is not yet ready
+    // this.applicationStore.fetchApplications();
   },
 });
 </script>

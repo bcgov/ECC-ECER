@@ -1,31 +1,40 @@
 <template>
-  <FormContainer>
-    <div class="d-flex flex-column ga-8">
-      <div>
-        <h3>Profile Information</h3>
-        <p class="small">The Registry will notify you of important updates regarding your certification</p>
-      </div>
-      <v-form ref="form" validate-on="blur">
-        <div class="d-flex flex-column ga-2">
-          <v-text-field
-            v-model="phoneNumber"
-            label="Phone Number"
-            variant="outlined"
-            color="primary"
-            :rules="[Rules.phoneNumber(), Rules.required()]"
-            @keypress="isNumber($event)"
-          ></v-text-field>
-          <v-text-field v-model="email" label="Email" variant="outlined" color="primary" type="email" :rules="[Rules.email(), Rules.required()]"></v-text-field>
-          <v-checkbox v-model="hasAgreed" label="" color="primary" :rules="hasAgreedRules">
-            <template #label>I have read and accept the&nbsp;<router-link to="/terms-of-use/from-new-user">Terms of Use</router-link></template></v-checkbox
-          >
-          <v-row justify="end">
-            <v-btn variant="outlined" class="mr-2" @click="logout">Cancel</v-btn><v-btn color="primary" @click="submit">Save and Continue</v-btn></v-row
-          >
+  <PageContainer>
+    <FormContainer>
+      <div class="d-flex flex-column ga-8">
+        <div>
+          <h3>Profile Information</h3>
+          <p class="small">The Registry will notify you of important updates regarding your certification</p>
         </div>
-      </v-form>
-    </div>
-  </FormContainer>
+        <v-form ref="form" validate-on="blur">
+          <div class="d-flex flex-column ga-2">
+            <v-text-field
+              v-model="phoneNumber"
+              label="Phone Number"
+              variant="outlined"
+              color="primary"
+              :rules="[Rules.phoneNumber(), Rules.required()]"
+              @keypress="isNumber($event)"
+            ></v-text-field>
+            <v-text-field
+              v-model="email"
+              label="Email"
+              variant="outlined"
+              color="primary"
+              type="email"
+              :rules="[Rules.email(), Rules.required()]"
+            ></v-text-field>
+            <v-checkbox v-model="hasAgreed" label="" color="primary" :rules="hasAgreedRules">
+              <template #label>I have read and accept the&nbsp;<router-link to="/terms-of-use/from-new-user">Terms of Use</router-link></template></v-checkbox
+            >
+            <v-row justify="end">
+              <v-btn variant="outlined" class="mr-2" @click="logout">Cancel</v-btn><v-btn color="primary" @click="submit">Save and Continue</v-btn></v-row
+            >
+          </div>
+        </v-form>
+      </div>
+    </FormContainer>
+  </PageContainer>
 </template>
 
 <script lang="ts">
@@ -33,15 +42,15 @@ import { defineComponent } from "vue";
 
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
-import { formatPhoneNumber } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 import FormContainer from "../FormContainer.vue";
+import PageContainer from "../PageContainer.vue";
 
 export default defineComponent({
   name: "NewUser",
-  components: { FormContainer },
+  components: { FormContainer, PageContainer },
   setup: async () => {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
@@ -59,7 +68,6 @@ export default defineComponent({
   }),
   methods: {
     isNumber,
-    formatPhoneNumber,
     async submit() {
       const { valid } = await (this.$refs.form as any).validate();
       if (valid) {

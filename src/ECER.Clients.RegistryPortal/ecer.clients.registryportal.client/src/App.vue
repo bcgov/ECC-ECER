@@ -4,9 +4,7 @@
       <v-app>
         <NavigationBar />
         <v-main>
-          <v-container class="my-6">
-            <router-view></router-view>
-          </v-container>
+          <router-view></router-view>
         </v-main>
         <EceFooter />
       </v-app>
@@ -43,7 +41,7 @@ export default defineComponent({
           // If not authenticated, navigate to the login page
           router.push("/login");
         } else {
-          // If authenticated, navigate to the home page
+          // If authenticated, navigate to the dashboard page
           // TODO: Once ECER-494 is complete, this should be changed to direct first time users to "/new-user" page and returning users to the dashboard "/"
           router.push("/new-user");
         }

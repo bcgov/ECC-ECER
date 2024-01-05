@@ -7,8 +7,38 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: () => import("./components/pages/Home.vue"),
+      redirect: "/my-certifications",
+      component: () => import("./components/pages/Dashboard.vue"),
       meta: { requiresAuth: true },
+      children: [
+        {
+          path: "profile",
+          component: () => import("./components/Profile.vue"),
+        },
+        {
+          path: "my-certifications",
+          redirect: "/my-certifications/in-progress",
+          component: () => import("./components/CertificationTabs.vue"),
+          children: [
+            {
+              path: "in-progress",
+              component: () => import("./components/Certifications.vue"),
+            },
+            {
+              path: "completed",
+              component: () => import("./components/Certifications.vue"),
+            },
+          ],
+        },
+        {
+          path: "messages",
+          component: () => import("./components/Messages.vue"),
+        },
+        {
+          path: "settings",
+          component: () => import("./components/Settings.vue"),
+        },
+      ],
     },
 
     {
@@ -85,7 +115,7 @@ router.beforeEach((to, _) => {
   }
 });
 
-// Guard for login page (redirect to home if already logged in)
+// Guard for login page (redirect to dashboard if already logged in)
 router.beforeEach((to, _, next) => {
   const userStore = useUserStore();
 
