@@ -106,16 +106,17 @@ namespace ECER.Infrastructure.Common
         /// Discovers all local assemblies in a folder
         /// </summary>
         /// <param name="directory">Optional directory, defaults to the current executing directory</param>
-        /// <param name="prefix">Optional prefix of assembly names to exclude in the discovery</param>
+        /// <param name="prefix">Optional prefix of assembly names to include in the discovery</param>
         /// <returns>array of </returns>
         /// <exception cref="InvalidOperationException"></exception>
         public static Assembly[] DiscoverLocalAessemblies(string? directory = null, string? prefix = null)
         {
             directory ??= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException("Can't determine local assembly directory");
-            var excludedPrefixes = prefix != null ? defaultExcludedAssemblyPrefixes.Append(prefix) : defaultExcludedAssemblyPrefixes;
+            var excludedPrefixes = defaultExcludedAssemblyPrefixes.AsEnumerable();
+            var includedPrefixes = prefix == null ? Enumerable.Empty<string>() : new[] { prefix };
 
             return assemblyFileExtensions.SelectMany(ext => Directory.GetFiles(directory, ext, SearchOption.TopDirectoryOnly))
-                .Where(file => !excludedPrefixes.Any(prefix => Path.GetFileName(file).StartsWith(prefix)))
+                .Where(file => !excludedPrefixes.Any(prefix => Path.GetFileName(file).StartsWith(prefix)) && (!includedPrefixes.Any() || includedPrefixes.Any(prefix => Path.GetFileName(file).StartsWith(prefix))))
                 .Select(file => Assembly.Load(AssemblyName.GetAssemblyName(file)))
                 .ToArray();
         }

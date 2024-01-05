@@ -1,14 +1,16 @@
 <template>
   <main>
-    <v-app>
-      <NavigationBar />
-      <v-main>
-        <v-container class="my-6">
-          <router-view></router-view>
-        </v-container>
-      </v-main>
-      <EceFooter />
-    </v-app>
+    <Suspense>
+      <v-app>
+        <NavigationBar />
+        <v-main>
+          <v-container class="my-6">
+            <router-view></router-view>
+          </v-container>
+        </v-main>
+        <EceFooter />
+      </v-app>
+    </Suspense>
   </main>
 </template>
 
