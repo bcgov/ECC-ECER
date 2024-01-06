@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECER.Utilities.DataverseSdk;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Accounts.Registrants;

@@ -30,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Utilities.Hosting", "E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Infrastructure.Common", "ECER.Infrastructure.Common\ECER.Infrastructure.Common.csproj", "{5E4A7323-AD68-4724-8BAF-FD03FDD2EDA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECER.Tests", "ECER.Tests\ECER.Tests.csproj", "{DB7E91C6-D93C-4266-845E-B26A3953E649}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Tests", "ECER.Tests\ECER.Tests.csproj", "{D786F33A-1580-4D76-B0EC-15419FACA960}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,10 +76,10 @@ Global
 		{5E4A7323-AD68-4724-8BAF-FD03FDD2EDA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E4A7323-AD68-4724-8BAF-FD03FDD2EDA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E4A7323-AD68-4724-8BAF-FD03FDD2EDA9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DB7E91C6-D93C-4266-845E-B26A3953E649}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB7E91C6-D93C-4266-845E-B26A3953E649}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB7E91C6-D93C-4266-845E-B26A3953E649}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB7E91C6-D93C-4266-845E-B26A3953E649}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D786F33A-1580-4D76-B0EC-15419FACA960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D786F33A-1580-4D76-B0EC-15419FACA960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D786F33A-1580-4D76-B0EC-15419FACA960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D786F33A-1580-4D76-B0EC-15419FACA960}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

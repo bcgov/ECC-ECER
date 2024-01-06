@@ -3,10 +3,13 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+	  <NoWarn>CA1001;1701;1702;</NoWarn>
+	  <UserSecretsId>dafa7332-f315-4fe0-9902-bcf5efef84ba</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Alba" />
+    <PackageReference Include="Bogus" />
     <PackageReference Include="MartinCostello.Logging.XUnit" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Shouldly" />
