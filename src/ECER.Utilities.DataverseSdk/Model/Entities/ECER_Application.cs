@@ -159,6 +159,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ECER_PreferredName = "ecer_preferredname";
 			public const string ECER_PreviousName = "ecer_previousname";
 			public const string ECER_PrimaryPhoneNumber = "ecer_primaryphonenumber";
+			public const string ECER_Priority = "ecer_priority";
+			public const string ECER_PriorityName = "ecer_priorityname";
 			public const string ECER_Province = "ecer_province";
 			public const string ECER_Street = "ecer_street";
 			public const string ECER_Transcript_ApplicationId = "ECER_Transcript_ApplicationId";
@@ -1471,6 +1473,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_primaryphonenumber", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_priority")]
+		public virtual ECER_Priority? ECER_Priority
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ECER_Priority?)(EntityOptionSetEnum.GetEnum(this, "ecer_priority")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_priority", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_priorityname")]
+		public string ECER_PriorityName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_priority"))
+				{
+					return this.FormattedValues["ecer_priority"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

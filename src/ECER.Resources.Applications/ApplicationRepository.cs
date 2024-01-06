@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using ECER.Utilities.DataverseSdk;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Applications;
