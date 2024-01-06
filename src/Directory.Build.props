@@ -14,7 +14,7 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<DebugType>portable</DebugType>
 		<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
-		<NoWarn>1701;1702;</NoWarn>
+		<NoWarn>CA1001;1701;1702;</NoWarn>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -25,4 +25,9 @@
 		<RepositoryUrl>https://github.com/bcgov/ECC-ECER</RepositoryUrl>
 		<RepositoryType>GIT</RepositoryType>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="ECER.Tests" />
+	</ItemGroup>
+	
 </Project>
