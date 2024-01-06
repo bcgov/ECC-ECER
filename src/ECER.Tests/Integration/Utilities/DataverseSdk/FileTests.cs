@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using ECER.Utilities.DataverseSdk.Model;
+using Microsoft.Extensions.Configuration;
 using Microsoft.PowerPlatform.Dataverse.Client;
 using Shouldly;
 using Xunit.Categories;
@@ -14,6 +15,13 @@ public class FileTests : IAsyncLifetime
     private readonly Faker faker = new();
     private readonly HttpClient httpClient = new();
     private readonly List<ECER_File> testFiles = [];
+    private readonly IConfigurationRoot configuration;
+
+    public FileTests()
+    {
+        var configBuilder = new ConfigurationBuilder().AddUserSecrets(typeof(Program).Assembly);
+        configuration = configBuilder.Build();
+    }
 
     [Theory]
     [InlineData(1 * 1024 * 1024)]
@@ -75,7 +83,7 @@ public class FileTests : IAsyncLifetime
     public async Task InitializeAsync()
     {
         await Task.CompletedTask;
-        serviceClient = new ServiceClient("authtype=OAuth;url=https://myeceregistrydev.crm3.dynamics.com;username=ECERPASV@gov.bc.ca;password=Spiderman1;RequireNewInstance=false;LoginPrompt=Never");
+        serviceClient = new ServiceClient(configuration.GetValue<string>("Dataverse:ConnectionString"));
         dataverseContext = new EcerContext(serviceClient);
     }
 
