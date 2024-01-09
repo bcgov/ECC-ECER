@@ -648,18 +648,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ECER_AboriginalType = "ecer_aboriginaltype";
 			public const string ECER_AboriginalTypeName = "ecer_aboriginaltypename";
 			public const string ECER_AgreeToterMsAndConditions = "ecer_agreetotermsandconditions";
+			public const string ECER_AgreeToterMsAndConditionsDate = "ecer_agreetotermsandconditionsdate";
 			public const string ECER_AgreeToterMsAndConditionsName = "ecer_agreetotermsandconditionsname";
 			public const string ECER_Application_ApplicantId_Contact = "ECER_Application_ApplicantId_Contact";
 			public const string ECER_Authentication_ContactId = "ECER_Authentication_ContactId";
 			public const string ECER_Certificate_RegistrantId = "ECER_Certificate_RegistrantId";
-			public const string ECER_CertificateNumber = "ecer_certificatenumber";
-			public const string ECER_CertificateProvince = "ecer_certificateprovince";
 			public const string ECER_ChangeOfInformation_ContactId = "ECER_ChangeOfInformation_ContactId";
 			public const string ECER_CharacterReference_ReferenceContactId = "ECER_CharacterReference_ReferenceContactId";
 			public const string ECER_ClientId = "ecer_clientid";
 			public const string ECER_CompletedCourse_ApplicantId = "ECER_CompletedCourse_ApplicantId";
+			public const string ECER_Contact_ECER_Authentication_455 = "ECER_Contact_ECER_Authentication_455";
 			public const string ECER_Contact_ECER_Communication_122 = "ECER_Contact_ECER_Communication_122";
 			public const string ECER_Contact_ECER_File_123 = "ECER_Contact_ECER_File_123";
+			public const string ECER_Contact_ECER_PortalUser_474 = "ECER_Contact_ECER_PortalUser_474";
 			public const string ECER_Contact_ECER_PreviousAddress_251 = "ECER_Contact_ECER_PreviousAddress_251";
 			public const string ECER_ECER_CharacterReference_ApplicantId_ConTA = "ECER_ECER_CharacterReference_ApplicantId_ConTA";
 			public const string ECER_ECER_ProfessionalDevelopment_ApplicantId_ = "ECER_ECER_ProfessionalDevelopment_ApplicantId_";
@@ -671,6 +672,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ECER_PortalUser_ContactId = "ECER_PortalUser_ContactId";
 			public const string ECER_PreferredName = "ecer_preferredname";
 			public const string ECER_PreviousName_ContactId = "ECER_PreviousName_ContactId";
+			public const string ECER_TermsAndConditionsText = "ecer_termsandconditionstext";
 			public const string ECER_Transcript_ApplicantId_Contact = "ECER_Transcript_ApplicantId_Contact";
 			public const string ECER_WorkExperienceRef_ApplicantId = "ECER_WorkExperienceRef_ApplicantId";
 			public const string EducationCode = "educationcode";
@@ -3982,6 +3984,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_agreetotermsandconditionsdate")]
+		public System.Nullable<System.DateTime> ECER_AgreeToterMsAndConditionsDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_agreetotermsandconditionsdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_agreetotermsandconditionsdate", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_agreetotermsandconditionsname")]
 		public string ECER_AgreeToterMsAndConditionsName
 		{
@@ -3999,38 +4016,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatenumber")]
-		public string ECER_CertificateNumber
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_certificatenumber");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_certificatenumber", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateprovince")]
-		public string ECER_CertificateProvince
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_certificateprovince");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_certificateprovince", value);
-			}
-		}
-		
 		/// <summary>
-		/// Readable ID For Contact
+		/// Readable ID For Contact.  Map to Oracle CLI_ID
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_clientid")]
 		public string ECER_ClientId
@@ -4126,6 +4113,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_preferredname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_termsandconditionstext")]
+		public string ECER_TermsAndConditionsText
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_termsandconditionstext");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_termsandconditionstext", value);
 			}
 		}
 		
@@ -6872,6 +6874,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_contact_ecer_authentication_455
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_authentication_455")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_Authentication> ECER_Contact_ECER_Authentication_455
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Authentication>("ecer_contact_ecer_authentication_455", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Authentication>("ecer_contact_ecer_authentication_455", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_contact_ecer_communication_122
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_communication_122")]
@@ -6904,6 +6924,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_File>("ecer_contact_ecer_file_123", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_contact_ecer_portaluser_474
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_portaluser_474")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser> ECER_Contact_ECER_PortalUser_474
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser>("ecer_contact_ecer_portaluser_474", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser>("ecer_contact_ecer_portaluser_474", null, value);
 			}
 		}
 		

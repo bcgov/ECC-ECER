@@ -53,13 +53,24 @@ public record UserInfoResponse(UserProfile UserInfo);
 /// <param name="Email">Email address</param>
 /// <param name="Phone">Phone number</param>
 /// <param name="HomeAddress">The home address</param>
+/// <param name="MailingAddress">The mailing addess</param>
 public record UserProfile(
     string FirstName,
     string LastName,
     string DateOfBirth,
-    string? Email,
-    string? Phone,
-    string? HomeAddress
+    string Email,
+    string Phone,
+    Address HomeAddress,
+    Address? MailingAddress
+    );
+
+public record Address(
+    string Line1,
+    string Line2,
+    string City,
+    string PostalCode,
+    string? Province,
+    string Country
     );
 
 public record NewUserRequest

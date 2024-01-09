@@ -9,8 +9,10 @@ internal sealed class UserInfoMapper : Profile
     {
         CreateMap<UserProfileQueryResponse, UserInfoResponse>()
             .ForCtorParam(nameof(UserInfoResponse.UserInfo), opts => opts.MapFrom(s => s.UserProfile))
+            .ReverseMap()
             ;
 
-        CreateMap<Managers.Registry.UserProfile, UserProfile>();
+        CreateMap<Managers.Registry.UserProfile, UserProfile>().ReverseMap();
+        CreateMap<Address, Managers.Registry.Address>().ReverseMap();
     }
 }

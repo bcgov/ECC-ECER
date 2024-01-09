@@ -6,84 +6,95 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Oakton;
 using Wolverine;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace ECER.Clients.RegistryPortal.Server;
 
-var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
+#pragma warning disable RCS1102 // Make class static
+#pragma warning disable S1118 // Utility classes should not have public constructors
 
-builder.Host.UseWolverine(opts =>
+public class Program
 {
-    foreach (var assembly in assemblies)
+    private static async Task<int> Main(string[] args)
     {
-        opts.Discovery.IncludeAssembly(assembly);
-        opts.Discovery.CustomizeHandlerDiscovery(x =>
+        var builder = WebApplication.CreateBuilder(args);
+
+        var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
+
+        builder.Host.UseWolverine(opts =>
         {
-            x.Includes.WithNameSuffix("Handlers");
-        });
-    }
-});
-builder.Services.AddAutoMapper(cfg =>
-{
-    cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
-}, assemblies);
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(opts =>
-{
-    opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
-});
-builder.Services.AddProblemDetails();
-
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        var allowedOrigins = builder.Configuration.GetValue("cors:allowedOrigins", string.Empty)!.Split(";");
-        policy
-            .WithOrigins(allowedOrigins)
-            .SetIsOriginAllowedToAllowWildcardSubdomains();
-    });
-});
-
-builder.Services.AddAuthentication("bcsc")
-    .AddJwtBearer("bceid")
-    .AddJwtBearer("bcsc", opts =>
-    {
-        opts.Events = new JwtBearerEvents
-        {
-            OnTokenValidated = async ctx =>
+            foreach (var assembly in assemblies)
             {
-                await Task.CompletedTask;
-
-                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim("identity_provider", "bcsc") }));
+                opts.Discovery.IncludeAssembly(assembly);
+                opts.Discovery.CustomizeHandlerDiscovery(x =>
+                {
+                    x.Includes.WithNameSuffix("Handlers");
+                });
             }
-        };
-        opts.Validate();
-    });
+        });
+        builder.Services.AddAutoMapper(cfg =>
+        {
+            cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
+        }, assemblies);
 
-builder.Services.AddAuthorizationBuilder().AddDefaultPolicy("jwt", policy =>
-{
-    policy.AddAuthenticationSchemes("bcsc", "bceid").RequireAuthenticatedUser();
-});
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(opts =>
+        {
+            opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+        });
+        builder.Services.AddProblemDetails();
 
-builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                var allowedOrigins = builder.Configuration.GetValue("cors:allowedOrigins", string.Empty)!.Split(";");
+                policy
+                    .WithOrigins(allowedOrigins)
+                    .SetIsOriginAllowedToAllowWildcardSubdomains();
+            });
+        });
 
-HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
+        builder.Services.AddAuthentication("bcsc")
+            .AddJwtBearer("bceid")
+            .AddJwtBearer("bcsc", opts =>
+            {
+                opts.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = async ctx =>
+                    {
+                        await Task.CompletedTask;
 
-var app = builder.Build();
+                        ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim("identity_provider", "bcsc") }));
+                    }
+                };
+                opts.Validate();
+            });
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
-app.MapFallbackToFile("index.html");
-app.UseCors();
-app.UseAuthentication();
-app.UseAuthorization();
+        builder.Services.AddAuthorizationBuilder().AddDefaultPolicy("jwt", policy =>
+        {
+            policy.AddAuthenticationSchemes("bcsc", "bceid").RequireAuthenticatedUser();
+        });
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+        builder.Services.AddDistributedMemoryCache();
+
+        HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
+
+        var app = builder.Build();
+
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
+        app.MapFallbackToFile("index.html");
+        app.UseCors();
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        EndpointsRegistrar.RegisterAll(app);
+
+        return await app.RunOaktonCommands(args);
+    }
 }
-
-EndpointsRegistrar.RegisterAll(app);
-
-return await app.RunOaktonCommands(args);
