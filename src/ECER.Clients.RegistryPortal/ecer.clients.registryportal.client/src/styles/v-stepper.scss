@@ -1,0 +1,22 @@
+@import "./_colors.scss";
+
+.v-stepper {
+  .v-stepper-item {
+    .v-avatar {
+      background: #{$primary};
+    }
+  }
+
+  .v-stepper-header {
+    box-shadow: none;
+  }
+
+  .v-stepper-actions {
+    .v-btn {
+      background-color: #{$primary};
+      &__content {
+        color: white;
+      }
+    }
+  }
+}
