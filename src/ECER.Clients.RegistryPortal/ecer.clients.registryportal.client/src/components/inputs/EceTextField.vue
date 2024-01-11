@@ -1,10 +1,10 @@
 <template>
   <v-text-field
-    :label="input.label"
+    :label="props.label"
     variant="outlined"
     color="primary"
-    :type="input.type"
-    :rules="input.rules"
+    :type="props.type || 'text'"
+    :rules="props.rules"
     @input="$emit('input', $event.target.value)"
   ></v-text-field>
 </template>
@@ -12,13 +12,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import type { Input } from "@/types/form";
+import type { Props } from "@/types/form";
 
 export default defineComponent({
   name: "EceTextField",
   props: {
-    input: {
-      type: Object as () => Input,
+    props: {
+      type: Object as () => Props,
       required: true,
     },
   },

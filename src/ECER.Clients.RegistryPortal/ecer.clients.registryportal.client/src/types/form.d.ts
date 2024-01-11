@@ -2,11 +2,16 @@ import type EceCheckbox from "@/components/inputs/EceCheckbox.vue";
 import type EceRadio from "@/components/inputs/EceRadio.vue";
 import type EceTextField from "@/components/inputs/EceTextField.vue";
 
+interface Props {
+  type?: string;
+  rules: readonly ValidationRule$1[];
+  label: string;
+}
+
 interface Input {
   id: string;
-  label: string;
-  type: EceCheckbox | EceRadio | EceTextField;
-  rules: readonly ValidationRule$1[];
+  component: EceCheckbox | EceRadio | EceTextField;
+  props: Props;
 }
 
 interface Step {

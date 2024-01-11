@@ -2,17 +2,19 @@
   <PageContainer>
     <v-stepper min-height="100dvh" :alt-labels="true" bg-color="background" flat color="primary" :items="getStepTitles()">
       <template v-for="step in basic.steps" :key="step.id" #[step.key]>
-        <v-container class="pa-4">
-          <v-card class="rounded-lg" color="white" :title="step.title" flat>
-            <v-form ref="form" validate-on="blur">
-              <div class="d-flex flex-column ga-2">
-                <template v-for="input in step.inputs" :key="input.id">
-                  <Component :is="input.type" v-model="formData[input.id as keyof {}]" class="my-4" v-bind="{ input }" />
-                </template>
-              </div>
-            </v-form>
-          </v-card>
-        </v-container>
+        <v-card class="rounded-lg" color="white" :title="step.title" flat>
+          <v-container>
+            <v-sheet max-width="500" color="white">
+              <v-form ref="form" validate-on="blur">
+                <div class="d-flex flex-column ga-2">
+                  <template v-for="input in step.inputs" :key="input.id">
+                    <Component :is="input.component" v-model="formData[input.id as keyof {}]" class="my-4" v-bind="{ props: input.props }" />
+                  </template>
+                </div>
+              </v-form>
+            </v-sheet>
+          </v-container>
+        </v-card>
       </template>
     </v-stepper>
   </PageContainer>
