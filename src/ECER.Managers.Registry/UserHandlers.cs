@@ -28,7 +28,7 @@ public static class UserHandlers
 
         var registrant = results.Items.SingleOrDefault();
 
-        return new UserProfileQueryResponse(mapper.Map<UserProfile?>(registrant));
+        return new UserProfileQueryResponse(mapper.Map<UserProfile?>(registrant?.Profile));
     }
 
     public static async Task<string> Handle(RegisterNewUserCommand cmd, IRegistrantRepository registrantRepository, IMapper mapper)

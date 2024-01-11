@@ -3,7 +3,6 @@ using System.Security.Claims;
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Oakton;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server;
@@ -13,7 +12,7 @@ namespace ECER.Clients.RegistryPortal.Server;
 
 public class Program
 {
-    private static async Task<int> Main(string[] args)
+    private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -95,6 +94,6 @@ public class Program
 
         EndpointsRegistrar.RegisterAll(app);
 
-        return await app.RunOaktonCommands(args);
+        await app.StartAsync();
     }
 }

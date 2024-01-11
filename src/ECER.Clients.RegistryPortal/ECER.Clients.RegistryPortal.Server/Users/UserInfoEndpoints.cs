@@ -34,7 +34,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
             await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.UserProfile>(request.Profile), new Login(login.Value.identityProvider, login.Value.id)));
 
             return TypedResults.Ok();
-        });
+        }).RequireAuthorization();
     }
 }
 
@@ -55,18 +55,18 @@ public record UserInfoResponse(UserProfile UserInfo);
 /// <param name="HomeAddress">The home address</param>
 /// <param name="MailingAddress">The mailing addess</param>
 public record UserProfile(
-    string FirstName,
-    string LastName,
-    string DateOfBirth,
+    string? FirstName,
+    string? LastName,
+    DateOnly? DateOfBirth,
     string Email,
     string Phone,
-    Address HomeAddress,
+    Address? HomeAddress,
     Address? MailingAddress
     );
 
 public record Address(
     string Line1,
-    string Line2,
+    string? Line2,
     string City,
     string PostalCode,
     string? Province,
