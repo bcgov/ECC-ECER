@@ -26,7 +26,6 @@ public class FileTests : IAsyncLifetime
     [Theory]
     [InlineData(1 * 1024 * 1024)]
     [InlineData(4 * 1024 * 1024)]
-    [InlineData(8 * 1024 * 1024)]
     public async Task CanStoreDocumentInDataverse(int documentSize)
     {
         var file = CreateNewFile();

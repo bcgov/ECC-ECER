@@ -8,19 +8,14 @@ using Xunit.Categories;
 namespace ECER.Tests.Integration.Resources.Accounts.Registrants;
 
 [IntegrationTest]
-public class RegistrantTests : WebAppScenarioBase<Clients.RegistryPortal.Server.Program>
+public class RegistrantTests : RegistryPortalWebAppScenarioBase
 
 {
-    private IRegistrantRepository registrantRepository = null!;
+    private readonly IRegistrantRepository registrantRepository;
 
-    public RegistrantTests(ITestOutputHelper output, WebAppFixture fixture) : base(output, fixture)
+    public RegistrantTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
     {
-    }
-
-    public override async Task InitializeAsync()
-    {
-        await base.InitializeAsync();
-        registrantRepository = TestServices.GetRequiredService<IRegistrantRepository>();
+        registrantRepository = Host.Services.GetRequiredService<IRegistrantRepository>();
     }
 
     [Fact]

@@ -1,42 +1,90 @@
 ﻿using Alba;
+using Alba.Security;
 using Bogus;
+using MartinCostello.Logging.XUnit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration;
 
-[CollectionDefinition("WebAppScenario")]
-public class WebAppScenarioCollectionFixture : ICollectionFixture<WebAppFixture>;
-
-[Collection("WebAppScenario")]
-public abstract class WebAppScenarioBase<TProgram> : IAsyncLifetime
-    where TProgram : class
+public abstract class WebAppScenarioBase : IAsyncLifetime
 {
-    protected WebAppFixture Fixture { get; }
-    private IServiceScope testServicesScope = null!;
+    protected WebAppFixtureBase Fixture { get; }
 
-    public IAlbaHost Host { get; private set; } = null!;
+    public IAlbaHost Host => Fixture.Host;
 
-    public IServiceProvider TestServices => testServicesScope.ServiceProvider;
-
-    protected ITestOutputHelper Output { get; }
     protected Faker Faker { get; } = new Faker("en_CA");
 
-    protected WebAppScenarioBase(ITestOutputHelper output, WebAppFixture fixture)
+    protected WebAppScenarioBase(ITestOutputHelper output, WebAppFixtureBase fixture)
     {
-        Output = output;
         this.Fixture = fixture;
+        this.Fixture.OutputHelper = output;
     }
 
     public virtual async Task InitializeAsync()
     {
-        Host = await Fixture.CreateHost<TProgram>(Output, extensions: Array.Empty<IAlbaExtension>());
-        testServicesScope = Host.Services.CreateScope();
+        await Task.CompletedTask;
     }
 
     public virtual async Task DisposeAsync()
     {
-        testServicesScope.Dispose();
-        await Host.DisposeAsync();
+        await Task.CompletedTask;
+    }
+}
+
+public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAccessor
+{
+    public IServiceCollection Services { get; } = new ServiceCollection();
+
+    public string TestRunId { get; } = $"autotest_{Guid.NewGuid().ToString().Substring(0, 4)}_";
+    public IAlbaHost Host { get; protected set; } = null!;
+    public ITestOutputHelper? OutputHelper { get; set; }
+
+    protected virtual async Task<IAlbaHost> CreateHost<TProgram>(KeyValuePair<string, string?>[]? configurationSettings = null, IEnumerable<IAlbaExtension>? extensions = null)
+        where TProgram : class
+    {
+        if (extensions == null) extensions = Array.Empty<IAlbaExtension>();
+
+        // add jwt authentication stub
+#pragma warning disable CA2000 // Dispose objects before losing scope
+        extensions = extensions.Append(new JwtSecurityStub());
+#pragma warning restore CA2000 // Dispose objects before losing scope
+
+        return await AlbaHost.For<TProgram>(
+            builder =>
+            {
+                builder.ConfigureServices(
+                    (_, services) =>
+                    {
+                        services.AddLogging(loggingBuilder => loggingBuilder.AddXUnit(this));
+                        // Configure test authentication and policy - Alba expects JwtBearerDefaults.AuthenticationScheme to automatically configure this
+                        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
+                        {
+                            opts.Authority = "https://test_server";
+                            opts.Audience = "test_client";
+                        });
+                        services.AddAuthorizationBuilder().AddDefaultPolicy(JwtBearerDefaults.AuthenticationScheme, opts =>
+                        {
+                            opts.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser();
+                        });
+                    });
+                var configOverrides = new Dictionary<string, string?>(configurationSettings ?? Enumerable.Empty<KeyValuePair<string, string?>>());
+                builder.ConfigureAppConfiguration(
+                    (_, configBuilder) =>
+                    {
+                        configBuilder.AddInMemoryCollection(configOverrides);
+                    });
+            },
+            extensions.ToArray());
+    }
+
+    public abstract Task InitializeAsync();
+
+    public async Task DisposeAsync()
+    {
+        await Task.CompletedTask;
     }
 }

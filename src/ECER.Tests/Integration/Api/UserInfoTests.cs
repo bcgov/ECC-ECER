@@ -7,9 +7,9 @@ using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.Api;
 
-public class UserInfoTests : WebAppScenarioBase<Clients.RegistryPortal.Server.Program>
+public class UserInfoTests : RegistryPortalWebAppScenarioBase
 {
-    public UserInfoTests(ITestOutputHelper output, WebAppFixture fixture) : base(output, fixture)
+    public UserInfoTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
     {
     }
 
