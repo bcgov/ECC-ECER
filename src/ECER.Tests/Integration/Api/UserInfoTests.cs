@@ -1,4 +1,5 @@
-﻿using Alba;
+﻿using System.Net;
+using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Users;
 using Shouldly;
@@ -53,7 +54,7 @@ public class UserInfoTests : WebAppScenarioBase<Clients.RegistryPortal.Server.Pr
             _.StatusCodeShouldBeOk();
         });
 
-        var userProfile = (await response.ReadAsJsonAsync<UserProfile>()).ShouldNotBeNull();
+        var userProfile = (await response.ReadAsJsonAsync<UserInfoResponse>()).ShouldNotBeNull().UserInfo;
         userProfile.ShouldBe(request.Profile);
     }
 
@@ -65,8 +66,8 @@ public class UserInfoTests : WebAppScenarioBase<Clients.RegistryPortal.Server.Pr
         var response = await Host.Scenario(_ =>
         {
             _.WithBceidUser(userId.ToUpperInvariant());
-            _.Post.Json(CreateNewUserRequest()).ToUrl("/api/userinfo/profile");
-            _.StatusCodeShouldBeOk();
+            _.Get.Url("/api/userinfo");
+            _.StatusCodeShouldBe(HttpStatusCode.NotFound);
         });
 
         response.Context.Response.ContentLength.ShouldBeNull();

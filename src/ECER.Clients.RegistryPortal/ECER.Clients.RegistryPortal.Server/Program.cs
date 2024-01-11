@@ -94,6 +94,6 @@ public class Program
 
         EndpointsRegistrar.RegisterAll(app);
 
-        await app.StartAsync();
+        await app.RunAsync();
     }
 }

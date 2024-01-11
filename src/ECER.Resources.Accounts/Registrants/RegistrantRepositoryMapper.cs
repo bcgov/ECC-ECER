@@ -25,7 +25,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
             .ForMember(d => d.Email, opts => opts.MapFrom(s => s.EmailAddress1))
             .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.Address1_Telephone1))
             .ForMember(d => d.HomeAddress, opts => opts.MapFrom(s => s.Address1_Line1 == null ? null : new Address(s.Address1_Line1, s.Address1_Line2, s.Address1_City, s.Address1_PostalCode, s.Address1_StateOrProvince, s.Address1_Country)))
-            .ForMember(d => d.MailingAddress, opts => opts.MapFrom(s => s.Address1_Line2 == null ? null : new Address(s.Address2_Line1, s.Address2_Line2, s.Address2_City, s.Address2_PostalCode, s.Address2_StateOrProvince, s.Address2_Country)))
+            .ForMember(d => d.MailingAddress, opts => opts.MapFrom(s => s.Address2_Line1 == null ? null : new Address(s.Address2_Line1, s.Address2_Line2, s.Address2_City, s.Address2_PostalCode, s.Address2_StateOrProvince, s.Address2_Country)))
             .ReverseMap()
             //.ValidateMemberList(MemberList.Source)
             .ForMember(d => d.Birthdate, opts => opts.MapFrom(s => s.DateOfBirth == null ? (DateTime?)null : s.DateOfBirth.Value.ToDateTime(TimeOnly.MinValue)))

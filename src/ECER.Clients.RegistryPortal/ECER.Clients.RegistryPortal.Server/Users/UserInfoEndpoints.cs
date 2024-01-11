@@ -16,7 +16,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
             var login = AuthenticationService.GetUserLogin(ctx.User);
             if (login == null) return TypedResults.Forbid();
             var result = await bus.InvokeAsync<UserProfileQueryResponse>(new UserProfileQuery(login.Value.identityProvider, login.Value.id), ct);
-            if (result == null) return TypedResults.NotFound();
+            if (result.UserProfile == null) return TypedResults.NotFound();
             return TypedResults.Ok(new UserInfoResponse(mapper.Map<UserProfile>(result.UserProfile)));
         }).WithOpenApi(op =>
         {
@@ -64,6 +64,15 @@ public record UserProfile(
     Address? MailingAddress
     );
 
+/// <summary>
+/// Address
+/// </summary>
+/// <param name="Line1"></param>
+/// <param name="Line2"></param>
+/// <param name="City"></param>
+/// <param name="PostalCode"></param>
+/// <param name="Province"></param>
+/// <param name="Country"></param>
 public record Address(
     string Line1,
     string? Line2,
@@ -73,6 +82,9 @@ public record Address(
     string Country
     );
 
+/// <summary>
+/// New user request
+/// </summary>
 public record NewUserRequest
 {
     [Required]
