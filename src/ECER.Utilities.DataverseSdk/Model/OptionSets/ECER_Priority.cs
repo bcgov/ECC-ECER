@@ -18,16 +18,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Critical = 621870003,
+		Complex = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		High = 621870002,
+		HighProfile = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Low = 621870000,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Medium = 621870001,
+		Normal = 621870000,
 	}
 }
 #pragma warning restore CS1591

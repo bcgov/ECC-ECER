@@ -12,7 +12,15 @@ internal sealed class UserMapper : Profile
             .ForCtorParam(nameof(NewRegistrantRequest.UserIdentity), opts => opts.MapFrom(s => s.Login))
             ;
 
-        CreateMap<UserProfile, Resources.Accounts.Registrants.UserProfile>();
+        CreateMap<UserProfile, Resources.Accounts.Registrants.UserProfile>()
+            .ReverseMap()
+            .ValidateMemberList(MemberList.Destination)
+            ;
+
+        CreateMap<Address, Resources.Accounts.Registrants.Address>()
+            .ReverseMap()
+            .ValidateMemberList(MemberList.Destination)
+            ;
 
         CreateMap<Login, UserIdentity>()
             .ForMember(d => d.LastLogin, opts => opts.Ignore())

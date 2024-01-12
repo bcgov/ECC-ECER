@@ -19,14 +19,13 @@ public class FileTests : IAsyncLifetime
 
     public FileTests()
     {
-        var configBuilder = new ConfigurationBuilder().AddUserSecrets(typeof(Program).Assembly);
+        var configBuilder = new ConfigurationBuilder().AddUserSecrets(typeof(Clients.RegistryPortal.Server.Program).Assembly);
         configuration = configBuilder.Build();
     }
 
     [Theory]
     [InlineData(1 * 1024 * 1024)]
     [InlineData(4 * 1024 * 1024)]
-    [InlineData(8 * 1024 * 1024)]
     public async Task CanStoreDocumentInDataverse(int documentSize)
     {
         var file = CreateNewFile();

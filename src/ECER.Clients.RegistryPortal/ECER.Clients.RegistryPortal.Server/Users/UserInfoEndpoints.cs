@@ -16,7 +16,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
             var login = AuthenticationService.GetUserLogin(ctx.User);
             if (login == null) return TypedResults.Forbid();
             var result = await bus.InvokeAsync<UserProfileQueryResponse>(new UserProfileQuery(login.Value.identityProvider, login.Value.id), ct);
-            if (result == null) return TypedResults.NotFound();
+            if (result.UserProfile == null) return TypedResults.NotFound();
             return TypedResults.Ok(new UserInfoResponse(mapper.Map<UserProfile>(result.UserProfile)));
         }).WithOpenApi(op =>
         {
@@ -34,7 +34,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
             await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.UserProfile>(request.Profile), new Login(login.Value.identityProvider, login.Value.id)));
 
             return TypedResults.Ok();
-        });
+        }).RequireAuthorization();
     }
 }
 
@@ -53,15 +53,38 @@ public record UserInfoResponse(UserProfile UserInfo);
 /// <param name="Email">Email address</param>
 /// <param name="Phone">Phone number</param>
 /// <param name="HomeAddress">The home address</param>
+/// <param name="MailingAddress">The mailing addess</param>
 public record UserProfile(
-    string FirstName,
-    string LastName,
-    string DateOfBirth,
-    string? Email,
-    string? Phone,
-    string? HomeAddress
+    string? FirstName,
+    string? LastName,
+    DateOnly? DateOfBirth,
+    string Email,
+    string Phone,
+    Address? HomeAddress,
+    Address? MailingAddress
     );
 
+/// <summary>
+/// Address
+/// </summary>
+/// <param name="Line1"></param>
+/// <param name="Line2"></param>
+/// <param name="City"></param>
+/// <param name="PostalCode"></param>
+/// <param name="Province"></param>
+/// <param name="Country"></param>
+public record Address(
+    string Line1,
+    string? Line2,
+    string City,
+    string PostalCode,
+    string? Province,
+    string Country
+    );
+
+/// <summary>
+/// New user request
+/// </summary>
 public record NewUserRequest
 {
     [Required]

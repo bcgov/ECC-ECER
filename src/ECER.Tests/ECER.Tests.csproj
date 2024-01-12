@@ -3,8 +3,7 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-	  <NoWarn>CA1001;1701;1702;</NoWarn>
-	  <UserSecretsId>dafa7332-f315-4fe0-9902-bcf5efef84ba</UserSecretsId>
+    <NoWarn>CA1001;1701;1702;CA1707</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

@@ -34,7 +34,7 @@ public record Registrant
 
 public record UserIdentity(string IdentityProvider, string Id)
 {
-    public DateTime LastLogin { get; set; }
+    public DateTime? LastLogin { get; set; }
 }
 
 public record UserProfile
@@ -43,4 +43,17 @@ public record UserProfile
 
     public string? LastName { get; set; }
     public DateOnly? DateOfBirth { get; set; }
+    public string? Email { get; set; }
+    public string? Phone { get; set; }
+    public Address? HomeAddress { get; set; }
+    public Address? MailingAddress { get; set; }
 }
+
+public record Address(
+    string Line1,
+    string? Line2,
+    string City,
+    string PostalCode,
+    string? Province,
+    string Country
+    );

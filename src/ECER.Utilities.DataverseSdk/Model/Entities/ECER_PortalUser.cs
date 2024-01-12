@@ -68,9 +68,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ECER_AccountIdYomiName = "ecer_accountidyominame";
 			public const string ECER_AuthenticationId = "ecer_authenticationid";
 			public const string ECER_AuthenticationIdName = "ecer_authenticationidname";
+			public const string ECER_Contact_ECER_PortalUser_474 = "ecer_contact_ecer_portaluser_474";
 			public const string ECER_ContactId = "ecer_contactid";
 			public const string ECER_ContactIdName = "ecer_contactidname";
 			public const string ECER_ContactIdYomiName = "ecer_contactidyominame";
+			public const string ECER_CustomerId = "ecer_customerid";
+			public const string ECER_CustomerIdName = "ecer_customeridname";
+			public const string ECER_CustomerIdYomiName = "ecer_customeridyominame";
 			public const string ECER_LastLoggedIn = "ecer_lastloggedin";
 			public const string ECER_Name = "ecer_name";
 			public const string ECER_PortalUser_AuthenticationId = "ecer_portaluser_Authenticationid";
@@ -376,6 +380,55 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_contactid"))
 				{
 					return this.FormattedValues["ecer_contactid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customerid")]
+		public Microsoft.Xrm.Sdk.EntityReference ECER_CustomerId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_customerid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_customerid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customeridname")]
+		public string ECER_CustomerIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_customerid"))
+				{
+					return this.FormattedValues["ecer_customerid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customeridyominame")]
+		public string ECER_CustomerIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_customerid"))
+				{
+					return this.FormattedValues["ecer_customerid"];
 				}
 				else
 				{
@@ -851,6 +904,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalRole>("ecer_PortalUser_ecer_PortalRole", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_contact_ecer_portaluser_474
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customerid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_portaluser_474")]
+		public ECER.Utilities.DataverseSdk.Model.Contact ECER_Contact_ECER_PortalUser_474
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_contact_ecer_portaluser_474", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_contact_ecer_portaluser_474", null, value);
 			}
 		}
 		
