@@ -4,6 +4,7 @@ import type EceTextField from "@/components/inputs/EceTextField.vue";
 
 interface Props {
   type?: string;
+  isNumeric?: boolean;
   rules: readonly ValidationRule$1[];
   label: string;
 }

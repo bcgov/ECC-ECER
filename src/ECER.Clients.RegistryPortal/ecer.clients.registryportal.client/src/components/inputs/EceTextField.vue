@@ -6,6 +6,11 @@
     :type="props.type || 'text'"
     :rules="props.rules"
     @input="$emit('input', $event.target.value)"
+    @keypress="
+      if (props.isNumeric) {
+        isNumber($event);
+      }
+    "
   ></v-text-field>
 </template>
 
@@ -13,6 +18,7 @@
 import { defineComponent } from "vue";
 
 import type { Props } from "@/types/form";
+import { isNumber } from "@/utils/formInput";
 
 export default defineComponent({
   name: "EceTextField",
@@ -23,5 +29,8 @@ export default defineComponent({
     },
   },
   emits: ["input"],
+  methods: {
+    isNumber,
+  },
 });
 </script>
