@@ -4,9 +4,11 @@ using Bogus;
 using ECER.Clients.RegistryPortal.Server.Users;
 using Shouldly;
 using Xunit.Abstractions;
+using Xunit.Categories;
 
 namespace ECER.Tests.Integration.Api;
 
+[IntegrationTest]
 public class UserInfoTests : RegistryPortalWebAppScenarioBase
 {
     public UserInfoTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
