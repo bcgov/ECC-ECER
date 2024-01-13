@@ -19,6 +19,7 @@ type FooterLink = {
 };
 
 export default defineComponent({
+  name: "EceFooter",
   setup: () => {
     const links: FooterLink[] = [
       { name: "Home", path: "/" },
