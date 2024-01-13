@@ -10,12 +10,12 @@
       :items="getStepTitles()"
       :mobile="$vuetify.display.mobile"
     >
-      <template v-for="step in basic.steps" :key="step.id" #[step.key]>
+      <template v-for="(step, index) in basic.steps" :key="step.id" #[step.key]>
         <v-card class="rounded-lg" color="white" :title="step.title" flat>
           <v-container class="">
             <v-row>
               <v-col cols="12" md="8" lg="6" xl="4">
-                <v-form ref="form" validate-on="blur">
+                <v-form :ref="`form-${index + 1}`" validate-on="blur">
                   <template v-for="input in step.inputs" :key="input.id">
                     <Component :is="input.component" v-bind="{ props: input.props }" v-model="formData[input.id as keyof {}]" class="my-8" />
                   </template>
@@ -59,14 +59,17 @@ export default defineComponent({
     currentStep: 1,
     formData: {},
   }),
+  computed: {
+    formRef(): string {
+      return `form-${this.currentStep}`;
+    },
+  },
   methods: {
     getStepTitles() {
       return this.basic.steps.map((step) => step.title);
     },
     async handleSaveAndContinue() {
-      const valid = await (this.$refs.form as any).validate();
-      console.log(this.$refs);
-      console.log(this.$refs.form);
+      const valid = await (this.$refs[this.formRef] as any).validate();
       if (valid.valid && this.currentStep < this.basic.steps.length) {
         this.currentStep++;
       }
