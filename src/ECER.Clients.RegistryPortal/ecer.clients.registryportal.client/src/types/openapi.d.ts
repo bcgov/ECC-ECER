@@ -1,13 +1,42 @@
 import type {
-  AxiosRequestConfig,
   OpenAPIClient,
-  OperationResponse,
   Parameters,
   UnknownParamsObject,
+  OperationResponse,
+  AxiosRequestConfig,
 } from 'openapi-client-axios';
 
 declare namespace Components {
     namespace Schemas {
+        /**
+         * Address
+         */
+        export interface Address {
+            /**
+             *
+             */
+            line1?: string | null;
+            /**
+             *
+             */
+            line2?: string | null;
+            /**
+             *
+             */
+            city?: string | null;
+            /**
+             *
+             */
+            postalCode?: string | null;
+            /**
+             *
+             */
+            province?: string | null;
+            /**
+             *
+             */
+            country?: string | null;
+        }
         export interface Application {
             id?: string | null;
             submittedOn?: string; // date-time
@@ -41,6 +70,12 @@ declare namespace Components {
              */
             applicationId?: string | null;
         }
+        /**
+         * New user request
+         */
+        export interface NewUserRequest {
+            profile: /* User profile information */ UserProfile;
+        }
         export interface OidcAuthenticationSettings {
             authority?: string | null;
             clientId?: string | null;
@@ -67,7 +102,7 @@ declare namespace Components {
             /**
              * Date of birth in the form of yyyy-MM-dd
              */
-            dateOfBirth?: string | null;
+            dateOfBirth?: string | null; // date
             /**
              * Email address
              */
@@ -76,14 +111,21 @@ declare namespace Components {
              * Phone number
              */
             phone?: string | null;
-            /**
-             * The home address
-             */
-            homeAddress?: string | null;
+            homeAddress?: /* Address */ Address;
+            mailingAddress?: /* Address */ Address;
         }
     }
 }
 declare namespace Paths {
+    namespace ApiUserinfoProfile {
+        namespace Post {
+            export type RequestBody = /* New user request */ Components.Schemas.NewUserRequest;
+            namespace Responses {
+                export interface $200 {
+                }
+            }
+        }
+    }
     namespace Configuration {
         namespace Responses {
             export type $200 = Components.Schemas.ApplicationConfiguration;
@@ -111,26 +153,6 @@ declare namespace Paths {
 
 export interface OperationMethods {
   /**
-   * GetApplications - Query applications
-   * 
-   * Handles application queries
-   */
-  'GetApplications'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetApplications.Responses.$200>
-  /**
-   * PostNewApplication - New Application Submission
-   * 
-   * Handles  a new application submission to ECER
-   */
-  'PostNewApplication'(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.PostNewApplication.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.PostNewApplication.Responses.$200>
-  /**
    * configuration - Frontend Configuration
    * 
    * Frontend Configuration endpoint
@@ -150,31 +172,29 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetUserInfo.Responses.$200>
+  /**
+   * GetApplications - Query applications
+   * 
+   * Handles application queries
+   */
+  'GetApplications'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetApplications.Responses.$200>
+  /**
+   * PostNewApplication - New Application Submission
+   * 
+   * Handles  a new application submission to ECER
+   */
+  'PostNewApplication'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.PostNewApplication.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.PostNewApplication.Responses.$200>
 }
 
 export interface PathsDictionary {
-  ['/api/applications']: {
-    /**
-     * PostNewApplication - New Application Submission
-     * 
-     * Handles  a new application submission to ECER
-     */
-    'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.PostNewApplication.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.PostNewApplication.Responses.$200>
-    /**
-     * GetApplications - Query applications
-     * 
-     * Handles application queries
-     */
-    'get'(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetApplications.Responses.$200>
-  }
   ['/api/configuration']: {
     /**
      * configuration - Frontend Configuration
@@ -198,6 +218,30 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetUserInfo.Responses.$200>
+  }
+  ['/api/userinfo/profile']: {
+  }
+  ['/api/applications']: {
+    /**
+     * PostNewApplication - New Application Submission
+     * 
+     * Handles  a new application submission to ECER
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.PostNewApplication.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.PostNewApplication.Responses.$200>
+    /**
+     * GetApplications - Query applications
+     * 
+     * Handles application queries
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetApplications.Responses.$200>
   }
 }
 
