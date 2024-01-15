@@ -117,18 +117,16 @@ declare namespace Components {
     }
 }
 declare namespace Paths {
-    namespace ApiUserinfoProfile {
-        namespace Post {
-            export type RequestBody = /* New user request */ Components.Schemas.NewUserRequest;
-            namespace Responses {
-                export interface $200 {
-                }
-            }
-        }
-    }
     namespace Configuration {
         namespace Responses {
             export type $200 = Components.Schemas.ApplicationConfiguration;
+        }
+    }
+    namespace CreateUserInfo {
+        export type RequestBody = /* New user request */ Components.Schemas.NewUserRequest;
+        namespace Responses {
+            export interface $200 {
+            }
         }
     }
     namespace GetApplications {
@@ -172,6 +170,16 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetUserInfo.Responses.$200>
+  /**
+   * CreateUserInfo - Create user profile information
+   * 
+   * Create new user
+   */
+  'CreateUserInfo'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.CreateUserInfo.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateUserInfo.Responses.$200>
   /**
    * GetApplications - Query applications
    * 
@@ -220,6 +228,16 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.GetUserInfo.Responses.$200>
   }
   ['/api/userinfo/profile']: {
+    /**
+     * CreateUserInfo - Create user profile information
+     * 
+     * Create new user
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.CreateUserInfo.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateUserInfo.Responses.$200>
   }
   ['/api/applications']: {
     /**
