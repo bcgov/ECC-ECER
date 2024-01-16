@@ -42,8 +42,7 @@ export default defineComponent({
           router.push("/login");
         } else {
           // If authenticated, navigate to the dashboard page
-          // TODO: Once ECER-494 is complete, this should be changed to direct first time users to "/new-user" page and returning users to the dashboard "/"
-          router.push("/new-user");
+          router.push("/");
         }
       },
     );
