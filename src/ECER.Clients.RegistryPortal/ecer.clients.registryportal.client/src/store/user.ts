@@ -25,6 +25,10 @@ export const useUserStore = defineStore("user", {
     isAuthenticated(): boolean {
       return this.accessToken !== "";
     },
+    fullName: (state): string =>
+      state.authority == "bcsc" ? `${state.userProfile?.firstName} ${state.userProfile?.lastName}` : `${state.userProfile?.firstName}`,
+    email: (state): string => state.userProfile?.email || "",
+    phoneNumber: (state): string => state.userProfile?.phone || "",
     oidcUserAsUserProfile: (state): Components.Schemas.UserProfile => {
       return {
         // dateOfBirth: state.authority == "bceid" ? null : state.oidcUser?.profile?.birthdate || null,

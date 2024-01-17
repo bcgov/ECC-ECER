@@ -18,9 +18,11 @@ import { useRouter } from "vue-router";
 
 import { useUserStore } from "@/store/user";
 
+import { getUserInfo } from "./api/user";
 import EceFooter from "./components/Footer.vue";
 import NavigationBar from "./components/NavigationBar.vue";
 import { useOidcStore } from "./store/oidc";
+import type { Components } from "./types/openapi";
 
 export default defineComponent({
   name: "App",
@@ -36,13 +38,19 @@ export default defineComponent({
     // Watch for changes to isAuthenticated flag
     watch(
       () => userStore.isAuthenticated,
-      (newValue: boolean) => {
+      async (newValue: boolean) => {
         if (!newValue) {
           // If not authenticated, navigate to the login page
           router.push("/login");
         } else {
-          // If authenticated, navigate to the dashboard page
-          router.push("/");
+          // If authenticated, check if new user
+          const userProfile: Components.Schemas.UserProfile | null = await getUserInfo();
+          if (userProfile) {
+            userStore.setUserProfile(userProfile);
+            router.push("/");
+          } else {
+            router.push("/new-user");
+          }
         }
       },
     );

@@ -15,17 +15,14 @@ const getUserInfo = async (): Promise<Components.Schemas.UserProfile | null> => 
   }
 };
 
-const createUser = async (user: Components.Schemas.NewUserRequest): Promise<Components.Schemas.UserProfile | null> => {
+const createUser = async (user: Components.Schemas.NewUserRequest): Promise<boolean> => {
   try {
     const client = await getClient();
     const response = await client.CreateUserInfo({}, user);
-
-    // Check if the response has data and userInfo property
-    return response?.data ?? null;
+    return response.status === 200;
   } catch (error) {
-    // Handle the error
     console.log("Error creating user:", error);
-    return null;
+    return false;
   }
 };
 

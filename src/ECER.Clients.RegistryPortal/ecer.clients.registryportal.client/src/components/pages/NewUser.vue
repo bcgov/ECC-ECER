@@ -40,10 +40,9 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-import { createUser, getUserInfo } from "@/api/user";
+import { createUser } from "@/api/user";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
-import type { Components } from "@/types/openapi";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
@@ -56,11 +55,6 @@ export default defineComponent({
   setup: async () => {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
-
-    const userProfile: Components.Schemas.UserProfile | null = await getUserInfo();
-    if (userProfile) {
-      userStore.setUserProfile(userProfile);
-    }
 
     const phoneNumber = ref(userStore.oidcUserAsUserProfile.phone);
     const email = ref(userStore.oidcUserAsUserProfile.email);
@@ -78,15 +72,18 @@ export default defineComponent({
     async submit() {
       const { valid } = await (this.$refs.form as any).validate();
       if (valid) {
-        // TODO: Once ECER-494 is complete, call create user with the user's updated email and phone number
-        const userProfile: Components.Schemas.UserProfile | null = await createUser({
+        const userCreated: boolean = await createUser({
           profile: this.userStore.oidcUserAsUserProfile,
         });
 
-        console.log(`user profile: ${userProfile}`);
+        // TODO handle error creating user, need clarification from design team
+        if (userCreated) {
+          this.userStore.setUserProfile({
+            ...this.userStore.oidcUserAsUserProfile,
+            phone: this.phoneNumber,
+            email: this.email,
+          });
 
-        if (userProfile) {
-          this.userStore.setUserProfile(userProfile);
           this.$router.push("/");
         }
       }
