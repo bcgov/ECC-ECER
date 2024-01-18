@@ -25,11 +25,15 @@
               :rules="[Rules.email(), Rules.required()]"
             ></v-text-field>
             <v-checkbox v-model="hasAgreed" label="" color="primary" :rules="hasAgreedRules">
-              <template #label>I have read and accept the&nbsp;<router-link to="/new-user/terms-of-use">Terms of Use</router-link></template></v-checkbox
-            >
+              <template #label>
+                I have read and accept the&nbsp;
+                <router-link to="/new-user/terms-of-use">Terms of Use</router-link>
+              </template>
+            </v-checkbox>
             <v-row justify="end">
-              <v-btn variant="outlined" class="mr-2" @click="logout">Cancel</v-btn><v-btn color="primary" @click="submit">Save and Continue</v-btn></v-row
-            >
+              <v-btn variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
+              <v-btn color="primary" @click="submit">Save and Continue</v-btn>
+            </v-row>
           </div>
         </v-form>
       </div>

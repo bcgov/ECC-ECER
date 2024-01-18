@@ -1,6 +1,6 @@
 <template>
   <v-container class="my-6">
-    <slot> </slot>
+    <slot></slot>
   </v-container>
 </template>
 

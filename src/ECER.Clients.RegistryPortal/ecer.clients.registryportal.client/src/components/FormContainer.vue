@@ -1,6 +1,6 @@
 <template>
   <div :style="{ 'max-width': '600px' }" class="px-2">
-    <slot> </slot>
+    <slot></slot>
   </div>
 </template>
 
