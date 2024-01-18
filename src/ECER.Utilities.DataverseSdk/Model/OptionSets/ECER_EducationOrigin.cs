@@ -14,7 +14,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_EducationOrigin
+	public enum ecer_EducationOrigin
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

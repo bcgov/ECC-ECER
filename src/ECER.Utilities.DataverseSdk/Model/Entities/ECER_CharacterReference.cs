@@ -17,7 +17,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_CharacterReference_StateCode
+	public enum ecer_characterreference_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -32,7 +32,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_CharacterReference_StatusCode
+	public enum ecer_CharacterReference_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -45,7 +45,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_characterreference")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ECER_CharacterReference : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_CharacterReference : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
@@ -60,36 +60,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ECER_ApplicantId = "ecer_applicantid";
-			public const string ECER_ApplicantIdName = "ecer_applicantidname";
-			public const string ECER_ApplicantIdYomiName = "ecer_applicantidyominame";
-			public const string ECER_ApplicantNotQualifiedReason = "ecer_applicantnotqualifiedreason";
-			public const string ECER_ApplicantShouldNotBeeCE = "ecer_applicantshouldnotbeece";
-			public const string ECER_ApplicantShouldNotBeeCEName = "ecer_applicantshouldnotbeecename";
-			public const string ECER_ApplicantSituationDescription = "ecer_applicantsituationdescription";
-			public const string ECER_ApplicantSuitableReason = "ecer_applicantsuitablereason";
-			public const string ECER_ApplicationId = "ecer_applicationid";
-			public const string ECER_ApplicationIdName = "ecer_applicationidname";
-			public const string ECER_CharacterReference_ApplicationId = "ecer_characterreference_Applicationid";
-			public const string ECER_CharacterReference_ReferenceContactId = "ecer_characterreference_ReferenceContactid";
-			public const string ECER_CharacterReferenceId = "ecer_characterreferenceid";
+			public const string ecer_Applicantid = "ecer_applicantid";
+			public const string ecer_ApplicantidName = "ecer_applicantidname";
+			public const string ecer_ApplicantidYomiName = "ecer_applicantidyominame";
+			public const string ecer_applicantnotqualifiedreason = "ecer_applicantnotqualifiedreason";
+			public const string ecer_ApplicantShouldNOTbeECE = "ecer_applicantshouldnotbeece";
+			public const string ecer_applicantshouldnotbeeceName = "ecer_applicantshouldnotbeecename";
+			public const string ecer_ApplicantSituationDescription = "ecer_applicantsituationdescription";
+			public const string ecer_ApplicantSuitableReason = "ecer_applicantsuitablereason";
+			public const string ecer_Applicationid = "ecer_applicationid";
+			public const string ecer_ApplicationidName = "ecer_applicationidname";
+			public const string ecer_characterreference_Applicationid = "ecer_characterreference_Applicationid";
+			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
+			public const string ecer_CharacterReferenceId = "ecer_characterreferenceid";
 			public const string Id = "ecer_characterreferenceid";
-			public const string ECER_DateSigned = "ecer_datesigned";
-			public const string ECER_ECER_CharacterReference_ApplicantId_ConTA = "ecer_ecer_characterreference_Applicantid_conta";
-			public const string ECER_EmailAddress = "ecer_emailaddress";
-			public const string ECER_FirstName = "ecer_firstname";
-			public const string ECER_KnowApplicantsTime = "ecer_knowapplicantstime";
-			public const string ECER_LastName = "ecer_lastname";
-			public const string ECER_Name = "ecer_name";
-			public const string ECER_PhoneNumber = "ecer_phonenumber";
-			public const string ECER_ReferenceCertificationNumber = "ecer_referencecertificationnumber";
-			public const string ECER_ReferenceCertifiedProvince = "ecer_referencecertifiedprovince";
-			public const string ECER_ReferenceContactId = "ecer_referencecontactid";
-			public const string ECER_ReferenceContactIdName = "ecer_referencecontactidname";
-			public const string ECER_ReferenceContactIdYomiName = "ecer_referencecontactidyominame";
-			public const string ECER_ReferenceFullName = "ecer_referencefullname";
-			public const string ECER_ReferenceSignature = "ecer_referencesignature";
-			public const string ECER_RelationshipWithApplicant = "ecer_relationshipwithapplicant";
+			public const string ecer_DateSigned = "ecer_datesigned";
+			public const string ecer_ecer_characterreference_Applicantid_conta = "ecer_ecer_characterreference_Applicantid_conta";
+			public const string ecer_EmailAddress = "ecer_emailaddress";
+			public const string ecer_FirstName = "ecer_firstname";
+			public const string ecer_KnowApplicantsTime = "ecer_knowapplicantstime";
+			public const string ecer_LastName = "ecer_lastname";
+			public const string ecer_Name = "ecer_name";
+			public const string ecer_PhoneNumber = "ecer_phonenumber";
+			public const string ecer_ReferenceCertificationNumber = "ecer_referencecertificationnumber";
+			public const string ecer_ReferenceCertifiedProvince = "ecer_referencecertifiedprovince";
+			public const string ecer_ReferenceContactid = "ecer_referencecontactid";
+			public const string ecer_ReferenceContactidName = "ecer_referencecontactidname";
+			public const string ecer_ReferenceContactidYomiName = "ecer_referencecontactidyominame";
+			public const string ecer_ReferenceFullName = "ecer_referencefullname";
+			public const string ecer_ReferenceSignature = "ecer_referencesignature";
+			public const string ecer_RelationshipwithApplicant = "ecer_relationshipwithapplicant";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -107,28 +107,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
 			public const string StateCode = "statecode";
-			public const string StateCodename = "statecodename";
+			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
-			public const string StatusCodename = "statuscodename";
+			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_CharacterReference(System.Guid id) : 
+		public ecer_CharacterReference(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_CharacterReference(string keyName, object keyValue) : 
+		public ecer_CharacterReference(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_CharacterReference(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_CharacterReference(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -137,7 +137,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_CharacterReference() : 
+		public ecer_CharacterReference() : 
 				base(EntityLogicalName)
 		{
 		}
@@ -267,7 +267,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_ApplicantId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Applicantid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -282,7 +282,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantidname")]
-		public string ECER_ApplicantIdName
+		public string ecer_ApplicantidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -299,7 +299,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantidyominame")]
-		public string ECER_ApplicantIdYomiName
+		public string ecer_ApplicantidYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -316,7 +316,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantnotqualifiedreason")]
-		public string ECER_ApplicantNotQualifiedReason
+		public string ecer_applicantnotqualifiedreason
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -334,12 +334,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Do you have any reason to believe the applicant should not be granted authorization to be an ECE or ECE Assistant? (Once certified, an ECE or ECE Assistant may work alone in a licensed childcare facility with children 0-5 years of age for extended periods of time.)
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantshouldnotbeece")]
-		public virtual ECER_YesNoNull? ECER_ApplicantShouldNotBeeCE
+		public virtual ecer_YesNoNull? ecer_ApplicantShouldNOTbeECE
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_applicantshouldnotbeece")));
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_applicantshouldnotbeece")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -349,7 +349,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantshouldnotbeecename")]
-		public string ECER_ApplicantShouldNotBeeCEName
+		public string ecer_applicantshouldnotbeeceName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -369,7 +369,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Describe situation(s) in which you have observed the applicant working with young children. If you have not observed the applicant working with children, what characteristics and/or qualities have you seen the applicant demonstrate that would be valuable when working with children?
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantsituationdescription")]
-		public string ECER_ApplicantSituationDescription
+		public string ecer_ApplicantSituationDescription
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -387,7 +387,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Explain why you consider the applicant to have the temperament and ability to manage or work with young children.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantsuitablereason")]
-		public string ECER_ApplicantSuitableReason
+		public string ecer_ApplicantSuitableReason
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -402,7 +402,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_ApplicationId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Applicationid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -417,7 +417,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationidname")]
-		public string ECER_ApplicationIdName
+		public string ecer_ApplicationidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -437,7 +437,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Unique identifier for entity instances
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferenceid")]
-		public System.Nullable<System.Guid> ECER_CharacterReferenceId
+		public System.Nullable<System.Guid> ecer_CharacterReferenceId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -470,12 +470,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ECER_CharacterReferenceId = value;
+				this.ecer_CharacterReferenceId = value;
 			}
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_datesigned")]
-		public System.Nullable<System.DateTime> ECER_DateSigned
+		public System.Nullable<System.DateTime> ecer_DateSigned
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -490,7 +490,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_emailaddress")]
-		public string ECER_EmailAddress
+		public string ecer_EmailAddress
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -505,7 +505,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_firstname")]
-		public string ECER_FirstName
+		public string ecer_FirstName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -523,7 +523,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// How long have you known the applicant
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_knowapplicantstime")]
-		public string ECER_KnowApplicantsTime
+		public string ecer_KnowApplicantsTime
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -538,7 +538,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lastname")]
-		public string ECER_LastName
+		public string ecer_LastName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -553,7 +553,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ECER_Name
+		public string ecer_Name
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -568,7 +568,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_phonenumber")]
-		public string ECER_PhoneNumber
+		public string ecer_PhoneNumber
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -583,7 +583,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecertificationnumber")]
-		public string ECER_ReferenceCertificationNumber
+		public string ecer_ReferenceCertificationNumber
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -598,7 +598,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecertifiedprovince")]
-		public string ECER_ReferenceCertifiedProvince
+		public string ecer_ReferenceCertifiedProvince
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -613,7 +613,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecontactid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_ReferenceContactId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ReferenceContactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -628,7 +628,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecontactidname")]
-		public string ECER_ReferenceContactIdName
+		public string ecer_ReferenceContactidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -645,7 +645,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecontactidyominame")]
-		public string ECER_ReferenceContactIdYomiName
+		public string ecer_ReferenceContactidYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -665,7 +665,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Printed Name of Reference
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencefullname")]
-		public string ECER_ReferenceFullName
+		public string ecer_ReferenceFullName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -683,7 +683,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Reference BC Service Card ID if signed from Portal
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencesignature")]
-		public string ECER_ReferenceSignature
+		public string ecer_ReferenceSignature
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -701,7 +701,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// What is your relationship with the applicant?
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_relationshipwithapplicant")]
-		public string ECER_RelationshipWithApplicant
+		public string ecer_RelationshipwithApplicant
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -981,12 +981,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Status of the Character Reference
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ECER_CharacterReference_StateCode? StateCode
+		public virtual ecer_characterreference_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_CharacterReference_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_characterreference_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -996,7 +996,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
-		public string StateCodename
+		public string statecodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1016,12 +1016,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Reason for the status of the Character Reference
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ECER_CharacterReference_StatusCode? StatusCode
+		public virtual ecer_CharacterReference_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_CharacterReference_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_CharacterReference_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -1031,7 +1031,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
-		public string StatusCodename
+		public string statuscodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1069,7 +1069,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
-		public System.Nullable<int> UtcConversionTimeZoneCode
+		public System.Nullable<int> UTCConversionTimeZoneCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1101,17 +1101,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_characterreference_Applicationid")]
-		public ECER.Utilities.DataverseSdk.Model.ECER_Application ECER_CharacterReference_ApplicationId
+		public ECER.Utilities.DataverseSdk.Model.ecer_Application ecer_characterreference_Applicationid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_Application>("ecer_characterreference_Applicationid", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_characterreference_Applicationid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_Application>("ecer_characterreference_Applicationid", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_characterreference_Applicationid", null, value);
 			}
 		}
 		
@@ -1120,7 +1120,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecontactid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_characterreference_ReferenceContactid")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ECER_CharacterReference_ReferenceContactId
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_characterreference_ReferenceContactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1139,7 +1139,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_characterreference_Applicantid_conta")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ECER_ECER_CharacterReference_ApplicantId_ConTA
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_ecer_characterreference_Applicantid_conta
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1158,7 +1158,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_CharacterReference(object anonymousType) : 
+		public ecer_CharacterReference(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())

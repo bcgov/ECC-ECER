@@ -14,17 +14,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_InitiatedFrom
+	public enum ecer_Auspice
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Investigation = 621870001,
+		ContinueEducation = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Registrant = 621870002,
+		OOBPublic = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Registry = 621870000,
+		Private = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Public = 621870000,
 	}
 }
 #pragma warning restore CS1591

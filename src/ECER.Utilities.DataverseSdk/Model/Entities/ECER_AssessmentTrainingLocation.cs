@@ -17,7 +17,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_AssessmentTrainingLocation_StateCode
+	public enum ecer_assessmenttraininglocation_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -32,7 +32,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_AssessmentTrainingLocation_StatusCode
+	public enum ecer_AssessmentTrainingLocation_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -45,7 +45,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_assessmenttraininglocation")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ECER_AssessmentTrainingLocation : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_AssessmentTrainingLocation : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
@@ -60,11 +60,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ECER_AssessmentTrainingLocationId = "ecer_assessmenttraininglocationid";
+			public const string ecer_AssessmentTrainingLocationId = "ecer_assessmenttraininglocationid";
 			public const string Id = "ecer_assessmenttraininglocationid";
-			public const string ECER_Code = "ecer_code";
-			public const string ECER_Description = "ecer_description";
-			public const string ECER_LegacyId = "ecer_legacyid";
+			public const string ecer_Code = "ecer_code";
+			public const string ecer_Description = "ecer_description";
+			public const string ecer_LegacyID = "ecer_legacyid";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -82,28 +82,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
 			public const string StateCode = "statecode";
-			public const string StateCodename = "statecodename";
+			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
-			public const string StatusCodename = "statuscodename";
+			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_AssessmentTrainingLocation(System.Guid id) : 
+		public ecer_AssessmentTrainingLocation(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_AssessmentTrainingLocation(string keyName, object keyValue) : 
+		public ecer_AssessmentTrainingLocation(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_AssessmentTrainingLocation(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_AssessmentTrainingLocation(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -112,7 +112,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_AssessmentTrainingLocation() : 
+		public ecer_AssessmentTrainingLocation() : 
 				base(EntityLogicalName)
 		{
 		}
@@ -245,7 +245,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Unique identifier for entity instances
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assessmenttraininglocationid")]
-		public System.Nullable<System.Guid> ECER_AssessmentTrainingLocationId
+		public System.Nullable<System.Guid> ecer_AssessmentTrainingLocationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -278,12 +278,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ECER_AssessmentTrainingLocationId = value;
+				this.ecer_AssessmentTrainingLocationId = value;
 			}
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_code")]
-		public string ECER_Code
+		public string ecer_Code
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -298,7 +298,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_description")]
-		public string ECER_Description
+		public string ecer_Description
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -313,7 +313,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyid")]
-		public System.Nullable<int> ECER_LegacyId
+		public System.Nullable<int> ecer_LegacyID
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -593,12 +593,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Status of the Assessment Training Location
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ECER_AssessmentTrainingLocation_StateCode? StateCode
+		public virtual ecer_assessmenttraininglocation_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_AssessmentTrainingLocation_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_assessmenttraininglocation_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -608,7 +608,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
-		public string StateCodename
+		public string statecodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -628,12 +628,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Reason for the status of the Assessment Training Location
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ECER_AssessmentTrainingLocation_StatusCode? StatusCode
+		public virtual ecer_AssessmentTrainingLocation_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_AssessmentTrainingLocation_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_AssessmentTrainingLocation_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -643,7 +643,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
-		public string StatusCodename
+		public string statuscodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -681,7 +681,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
-		public System.Nullable<int> UtcConversionTimeZoneCode
+		public System.Nullable<int> UTCConversionTimeZoneCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -713,7 +713,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_AssessmentTrainingLocation(object anonymousType) : 
+		public ecer_AssessmentTrainingLocation(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())

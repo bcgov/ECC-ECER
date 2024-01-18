@@ -41,244 +41,255 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_Application"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Application"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_Application> ECER_ApplicationSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Application> ecer_ApplicationSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_Application>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Application>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_AssessmentTrainingLocation"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_AssessmentTrainingLocation"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_AssessmentTrainingLocation> ECER_AssessmentTrainingLocationSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_AssessmentTrainingLocation> ecer_AssessmentTrainingLocationSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_AssessmentTrainingLocation>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_AssessmentTrainingLocation>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_Authentication"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Authentication"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_Authentication> ECER_AuthenticationSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Authentication> ecer_AuthenticationSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_Authentication>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Authentication>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_Certificate"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Certificate"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_Certificate> ECER_CertificateSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Certificate> ecer_CertificateSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_Certificate>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_CertificateType"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_CertificateType> ECER_CertificateTypeSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions> ecer_CertificateConditionsSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_CertificateType>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_ChangeOfInformation"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_CertificateType"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_ChangeOfInformation> ECER_ChangeOfInformationSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType> ecer_CertificateTypeSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_ChangeOfInformation>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_CharacterReference"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_ChangeofInformation"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_CharacterReference> ECER_CharacterReferenceSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_ChangeofInformation> ecer_ChangeofInformationSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_CharacterReference>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_ChangeofInformation>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_Communication"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_Communication> ECER_CommunicationSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference> ecer_CharacterReferenceSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_Communication>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_CompletedCourse"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Communication"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_CompletedCourse> ECER_CompletedCourseSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Communication> ecer_CommunicationSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_CompletedCourse>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Communication>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_Course"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_Course> ECER_CourseSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse> ecer_CompletedCourseSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_Course>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_File"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Course"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_File> ECER_FileSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Course> ecer_CourseSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_File>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Course>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_PortalRole"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_File"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_PortalRole> ECER_PortalRoleSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_File> ecer_FileSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_PortalRole>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_File>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_PortalUser"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_PortalRole"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser> ECER_PortalUserSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_PortalRole> ecer_PortalRoleSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_PortalRole>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_PortalUser_ECER_PortalRole"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_PortalUser"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser_ECER_PortalRole> ECER_PortalUser_ECER_PortalRoleSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser> ecer_PortalUserSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser_ECER_PortalRole>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_PostsecondaryInstitute"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_PortalUser_ecer_PortalRole"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_PostsecondaryInstitute> ECER_PostsecondaryInstituteSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser_ecer_PortalRole> ecer_PortalUser_ecer_PortalRoleSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_PostsecondaryInstitute>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser_ecer_PortalRole>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_PreviousAddress"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_PreviousAddress> ECER_PreviousAddressSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute> ecer_PostSecondaryInstituteSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_PreviousAddress>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_PreviousName"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_PreviousAddress"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_PreviousName> ECER_PreviousNameSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_PreviousAddress> ecer_PreviousAddressSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_PreviousName>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_PreviousAddress>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_ProfessionalDevelopment"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_PreviousName"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_ProfessionalDevelopment> ECER_ProfessionalDevelopmentSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName> ecer_PreviousNameSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_ProfessionalDevelopment>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_Program"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_Program> ECER_ProgramSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment> ecer_ProfessionalDevelopmentSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_Program>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_Transcript"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Program"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_Transcript> ECER_TranscriptSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Program> ecer_ProgramSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_Transcript>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Program>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceAssessment"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Transcript"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceAssessment> ECER_WorkExperienceAssessmentSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Transcript> ecer_TranscriptSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceAssessment>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>();
 			}
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceRef"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceRef> ECER_WorkExperienceRefSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment> ecer_WorkExperienceAssessmentSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceRef>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef> ecer_WorkExperienceRefSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>();
 			}
 		}
 	}

@@ -15,7 +15,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_portaluser_ecer_portalrole")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ECER_PortalUser_ECER_PortalRole : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_PortalUser_ecer_PortalRole : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
@@ -23,28 +23,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		public partial class Fields
 		{
-			public const string ECER_PortalRoleId = "ecer_portalroleid";
-			public const string ECER_PortalUser_ECER_PortalRole1 = "ecer_PortalUser_ecer_PortalRole";
-			public const string ECER_PortalUser_ECER_PortalRoleId = "ecer_portaluser_ecer_portalroleid";
+			public const string ecer_portalroleid = "ecer_portalroleid";
+			public const string ecer_PortalUser_ecer_PortalRole1 = "ecer_PortalUser_ecer_PortalRole";
+			public const string ecer_PortalUser_ecer_PortalRoleId = "ecer_portaluser_ecer_portalroleid";
 			public const string Id = "ecer_portaluser_ecer_portalroleid";
-			public const string ECER_PortalUserId = "ecer_portaluserid";
+			public const string ecer_portaluserid = "ecer_portaluserid";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_PortalUser_ECER_PortalRole(System.Guid id) : 
+		public ecer_PortalUser_ecer_PortalRole(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_PortalUser_ECER_PortalRole(string keyName, object keyValue) : 
+		public ecer_PortalUser_ecer_PortalRole(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_PortalUser_ECER_PortalRole(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_PortalUser_ecer_PortalRole(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -53,7 +53,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_PortalUser_ECER_PortalRole() : 
+		public ecer_PortalUser_ecer_PortalRole() : 
 				base(EntityLogicalName)
 		{
 		}
@@ -69,7 +69,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		public const string EntitySetName = "ecer_portaluser_ecer_portalroleset";
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portalroleid")]
-		public System.Nullable<System.Guid> ECER_PortalRoleId
+		public System.Nullable<System.Guid> ecer_portalroleid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -79,7 +79,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portaluser_ecer_portalroleid")]
-		public System.Nullable<System.Guid> ECER_PortalUser_ECER_PortalRoleId
+		public System.Nullable<System.Guid> ecer_PortalUser_ecer_PortalRoleId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -104,7 +104,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portaluserid")]
-		public System.Nullable<System.Guid> ECER_PortalUserId
+		public System.Nullable<System.Guid> ecer_portaluserid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -127,17 +127,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// N:N ecer_PortalUser_ecer_PortalRole
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_PortalUser_ecer_PortalRole")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_PortalRole> ECER_PortalUser_ECER_PortalRole1
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PortalRole> ecer_PortalUser_ecer_PortalRole1
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalRole>("ecer_PortalUser_ecer_PortalRole", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalRole>("ecer_PortalUser_ecer_PortalRole", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalRole>("ecer_PortalUser_ecer_PortalRole", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalRole>("ecer_PortalUser_ecer_PortalRole", null, value);
 			}
 		}
 		
@@ -146,7 +146,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_PortalUser_ECER_PortalRole(object anonymousType) : 
+		public ecer_PortalUser_ecer_PortalRole(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())

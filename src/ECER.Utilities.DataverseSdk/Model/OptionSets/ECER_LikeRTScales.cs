@@ -14,7 +14,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_LikeRTScales
+	public enum ecer_LikertScales
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
