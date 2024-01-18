@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import { getClient } from "@/api/client";
 import type { Components } from "@/types/openapi";
 
@@ -9,8 +11,13 @@ const getUserInfo = async (): Promise<Components.Schemas.UserProfile | null> => 
     // Check if the response has data and userInfo property
     return response?.data?.userInfo ?? null;
   } catch (error) {
-    // Handle the error
-    console.log("Error fetching user info:", error);
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 404) {
+        console.log("User not found:", error);
+      } else {
+        console.log("Error fetching user info:", error);
+      }
+    }
     return null;
   }
 };
