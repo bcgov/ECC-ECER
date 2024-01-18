@@ -4,12 +4,12 @@
       <v-list>
         <v-list-item prepend-icon="mdi-account-edit " :title="userStore.fullName" subtitle="sandra_a88@gmail.com">
           <template #subtitle>
-            <v-list-item-title
-              ><p class="small">{{ userStore.email }}</p></v-list-item-title
-            >
-            <v-list-item-title
-              ><p class="small">{{ formatPhoneNumber(userStore.phoneNumber) }}</p></v-list-item-title
-            >
+            <v-list-item-title>
+              <p class="small">{{ userStore.email }}</p>
+            </v-list-item-title>
+            <v-list-item-title>
+              <p class="small">{{ formatPhoneNumber(userStore.phoneNumber) }}</p>
+            </v-list-item-title>
           </template>
         </v-list-item>
       </v-list>
@@ -57,9 +57,12 @@
             </v-card>
           </v-col>
           <v-col cols="12" class="order-first order-lg-last order-xl-last">
-            <v-card class="rounded-lg" flat color="white"
-              ><v-card-item> <router-view></router-view> </v-card-item></v-card
-          ></v-col>
+            <v-card class="rounded-lg" flat color="white">
+              <v-card-item>
+                <router-view></router-view>
+              </v-card-item>
+            </v-card>
+          </v-col>
         </v-row>
       </v-container>
     </v-main>
