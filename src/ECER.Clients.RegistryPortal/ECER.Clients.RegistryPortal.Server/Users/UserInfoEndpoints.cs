@@ -3,6 +3,7 @@ using AutoMapper;
 using ECER.Managers.Registry;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.OpenApi.Models;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Users;
@@ -34,6 +35,12 @@ public class UserInfoEndpoints : IRegisterEndpoints
             await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.UserProfile>(request.Profile), new Login(login.Value.identityProvider, login.Value.id)));
 
             return TypedResults.Ok();
+        }).WithOpenApi(op =>
+        {
+                op.OperationId = "CreateUserInfo";
+                op.Summary = "Create user profile information";
+                op.Description = "Create new user";
+                return op;
         }).RequireAuthorization();
     }
 }

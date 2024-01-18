@@ -14,20 +14,22 @@
           </v-row>
         </v-btn>
       </v-row>
-      <v-row
-        ><v-card variant="outlined" color="grey-lightest" class="pa-10 mt-5">
+      <v-row>
+        <v-card variant="outlined" color="grey-lightest" class="pa-10 mt-5">
           <p class="small">
             <b>Notification of Collection</b>
             <br />
             <br />
             The personal information collected through My Early Childhood Educator Registry is collected under the authority of Section 26(c) of
-            <a href="https://bclaws.gov.bc.ca/civix/document/id/complete/statreg/96165_00">the Freedom of Information and Protection of Privacy Act</a> and is
-            subject to all of the provisions of that Act. Your information will be used under Section 32(a) of the Act to communicate with you, determine or
-            audit your eligibility.
+            <a href="https://bclaws.gov.bc.ca/civix/document/id/complete/statreg/96165_00">the Freedom of Information and Protection of Privacy Act</a>
+            and is subject to all of the provisions of that Act. Your information will be used under Section 32(a) of the Act to communicate with you, determine
+            or audit your eligibility.
             <br />
             <br />
             If you have any specific questions concerning the collection, use or disclosure of personal information, please contact the Early Childhood Educator
-            Registry at <a href="tel:18883386622">1 (888) 338-6622</a>.
+            Registry at
+            <a href="tel:18883386622">1 (888) 338-6622</a>
+            .
             <br />
             <br />
             <b>User Agreement</b>
@@ -37,10 +39,12 @@
             holding a basic BCeID or BC Services Card. By accessing My Early Childhood Educator Registry, you confirm that you are the registered authorized
             user associated with the electronic login information provided to gain access to My Early Childhood Educator Registry, and acknowledge that you are
             bound by the terms of your
-            <a href="https://www.bceid.ca/aboutbceid/tou_basic.aspx#:~:text=1)%20You%20agree%20to%20abide,using%20your%20Basic%20BCeID%20account."
-              >BCeID Terms of Use Agreement</a
-            >
-            or the <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bcservicescardapp/terms-of-use">BC Login Service Terms of Use</a>.
+            <a href="https://www.bceid.ca/aboutbceid/tou_basic.aspx#:~:text=1)%20You%20agree%20to%20abide,using%20your%20Basic%20BCeID%20account.">
+              BCeID Terms of Use Agreement
+            </a>
+            or the
+            <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bcservicescardapp/terms-of-use">BC Login Service Terms of Use</a>
+            .
             <br />
             <br />
             You acknowledge that sharing your password or failing to log out of your session may compromise your personal information, and may be construed as
