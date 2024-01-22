@@ -22,10 +22,12 @@ const router = createRouter({
           children: [
             {
               path: "in-progress",
+              name: "in-progress",
               component: () => import("./components/Certifications.vue"),
             },
             {
               path: "completed",
+              name: "completed",
               component: () => import("./components/Certifications.vue"),
             },
           ],
