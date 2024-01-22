@@ -34,6 +34,7 @@
 import { defineComponent } from "vue";
 
 import { useApplicationStore } from "@/store/application";
+import { ApplicationState, RouteName } from "@/utils/constant";
 
 export default defineComponent({
   name: "CertificationTabs",
@@ -43,12 +44,12 @@ export default defineComponent({
   },
   computed: {
     expansionPanelIndex() {
-      return this.$route.name === "in-progress" ? 0 : 1;
+      return this.$route.name === RouteName.IN_PROGRESS ? ApplicationState.IN_PROGRESS : ApplicationState.COMPLETED;
     },
   },
   methods: {
     updateTab(expansionPanel: any) {
-      this.$router.push({ name: `${expansionPanel === 0 ? "in-progress" : "completed"}` });
+      this.$router.push({ name: `${expansionPanel === ApplicationState.IN_PROGRESS ? RouteName.IN_PROGRESS : RouteName.COMPLETED}` });
     },
   },
 });
