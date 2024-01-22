@@ -40,7 +40,11 @@ const router = createRouter({
         },
       ],
     },
-
+    {
+      path: "/certification-type",
+      component: () => import("./components/pages/CertificationType.vue"),
+      meta: { requiresAuth: true },
+    },
     {
       path: "/login",
       component: () => import("./components/pages/Login.vue"),
