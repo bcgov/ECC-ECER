@@ -2,9 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
+using Xunit.Categories;
 
 namespace ECER.Tests.Integration.Resources.Applications;
 
+[IntegrationTest]
 public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 {
     private readonly IApplicationRepository repository;
