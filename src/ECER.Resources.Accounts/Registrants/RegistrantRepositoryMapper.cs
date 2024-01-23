@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.Security;
 
 namespace ECER.Resources.Accounts.Registrants;
 
@@ -15,9 +16,8 @@ internal sealed class RegistrantRepositoryMapper : Profile
             ;
 
         CreateMap<ecer_Authentication, UserIdentity>()
-            .ForCtorParam(nameof(UserIdentity.Id), opts => opts.MapFrom(s => s.ecer_ExternalID))
+            .ForCtorParam(nameof(UserIdentity.UserId), opts => opts.MapFrom(s => s.ecer_ExternalID))
             .ForCtorParam(nameof(UserIdentity.IdentityProvider), opts => opts.MapFrom(s => s.ecer_IdentityProvider))
-            .ForMember(d => d.LastLogin, opts => opts.MapFrom(s => s.ModifiedOn))
             ;
 
         CreateMap<Contact, UserProfile>()

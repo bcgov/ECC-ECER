@@ -9,7 +9,7 @@ internal sealed class UserMapper : Profile
     {
         CreateMap<RegisterNewUserCommand, NewRegistrantRequest>()
             .ForCtorParam(nameof(NewRegistrantRequest.UserProfile), opts => opts.MapFrom(s => s.UserProfile))
-            .ForCtorParam(nameof(NewRegistrantRequest.UserIdentity), opts => opts.MapFrom(s => s.Login))
+            .ForCtorParam(nameof(NewRegistrantRequest.UserIdentity), opts => opts.MapFrom(s => s.Identity))
             ;
 
         CreateMap<UserProfile, Resources.Accounts.Registrants.UserProfile>()
@@ -20,10 +20,6 @@ internal sealed class UserMapper : Profile
         CreateMap<Address, Resources.Accounts.Registrants.Address>()
             .ReverseMap()
             .ValidateMemberList(MemberList.Destination)
-            ;
-
-        CreateMap<Login, UserIdentity>()
-            .ForMember(d => d.LastLogin, opts => opts.Ignore())
             ;
     }
 }

@@ -104,6 +104,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_AssessorYomiName = "ecer_assessoryominame";
 			public const string ecer_Certificateid = "ecer_certificateid";
 			public const string ecer_CertificateidName = "ecer_certificateidname";
+			public const string ecer_CertificateType = "ecer_certificatetype";
 			public const string ecer_characterreference_Applicationid = "ecer_characterreference_Applicationid";
 			public const string ecer_CharacterReferenceReceived = "ecer_characterreferencereceived";
 			public const string ecer_CharacterReferenceReceivedDate = "ecer_characterreferencereceiveddate";
@@ -670,6 +671,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		/// <summary>
+		/// System Use - Aggregate of choices ECE Assistant, ECE 1 YR, ECE 5 YR, ITE, SNE in TEXT format for use in Document merging
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetype")]
+		public string ecer_CertificateType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_certificatetype");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificatetype", value);
 			}
 		}
 		

@@ -3,7 +3,9 @@
 	  <NoWarn>1701;1702;CS8981</NoWarn>
 	</PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" />
+	  <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" />
+	  <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client.Dynamics" />
+	  <PackageReference Include="XrmToolkit.Linq.Core" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECER.Infrastructure.Common\ECER.Infrastructure.Common.csproj" />

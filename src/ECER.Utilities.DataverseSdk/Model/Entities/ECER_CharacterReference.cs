@@ -36,10 +36,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		Accepted = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
+		Denied = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Pending = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Reviewed = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Submitted = 621870001,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
@@ -75,6 +84,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CharacterReferenceId = "ecer_characterreferenceid";
 			public const string Id = "ecer_characterreferenceid";
 			public const string ecer_DateSigned = "ecer_datesigned";
+			public const string ecer_DateSubmitted = "ecer_datesubmitted";
 			public const string ecer_ecer_characterreference_Applicantid_conta = "ecer_ecer_characterreference_Applicantid_conta";
 			public const string ecer_EmailAddress = "ecer_emailaddress";
 			public const string ecer_FirstName = "ecer_firstname";
@@ -486,6 +496,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_datesigned", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_datesubmitted")]
+		public System.Nullable<System.DateTime> ecer_DateSubmitted
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_datesubmitted");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_datesubmitted", value);
 			}
 		}
 		

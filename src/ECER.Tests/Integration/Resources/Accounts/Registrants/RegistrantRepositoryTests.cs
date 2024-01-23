@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using ECER.Resources.Accounts.Registrants;
+using ECER.Utilities.Security;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
@@ -8,12 +9,12 @@ using Xunit.Categories;
 namespace ECER.Tests.Integration.Resources.Accounts.Registrants;
 
 [IntegrationTest]
-public class RegistrantTests : RegistryPortalWebAppScenarioBase
+public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
 
 {
     private readonly IRegistrantRepository registrantRepository;
 
-    public RegistrantTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
+    public RegistrantRepositoryTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
     {
         registrantRepository = Host.Services.GetRequiredService<IRegistrantRepository>();
     }
@@ -51,8 +52,7 @@ public class RegistrantTests : RegistryPortalWebAppScenarioBase
         user.Profile.MailingAddress.ShouldBe(userProfile.MailingAddress);
         var identity = user.Identities.ShouldHaveSingleItem();
         newIdentity.IdentityProvider.ShouldBe(identity.IdentityProvider);
-        newIdentity.Id.ShouldBe(identity.Id);
-        identity.LastLogin.ShouldNotBeNull().ShouldBeGreaterThan(DateTime.Now.AddSeconds(30));
+        newIdentity.UserId.ShouldBe(identity.UserId);
     }
 
     private UserProfile CreateUserProfile()

@@ -16,7 +16,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper) 
 
         var authentication = new ecer_Authentication(Guid.NewGuid())
         {
-            ecer_ExternalID = request.UserIdentity.Id,
+            ecer_ExternalID = request.UserIdentity.UserId,
             ecer_IdentityProvider = request.UserIdentity.IdentityProvider
         };
 
@@ -36,7 +36,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper) 
                   join authentication in context.ecer_AuthenticationSet on contact.ContactId equals authentication.ecer_Customerid.Id
                   select new { contact, authentication };
 
-        if (query.WithIdentity != null) qry = qry.Where(r => r.authentication.ecer_IdentityProvider == query.WithIdentity.IdentityProvider && r.authentication.ecer_ExternalID == query.WithIdentity.Id);
+        if (query.WithIdentity != null) qry = qry.Where(r => r.authentication.ecer_IdentityProvider == query.WithIdentity.IdentityProvider && r.authentication.ecer_ExternalID == query.WithIdentity.UserId);
         if (query.WithId != null) qry = qry.Where(r => r.contact.ContactId.Equals(Guid.Parse(query.WithId)));
 
         var contacts = qry.Select(r => r.contact).ToList();

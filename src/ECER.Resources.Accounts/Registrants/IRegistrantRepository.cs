@@ -1,4 +1,6 @@
-﻿namespace ECER.Resources.Accounts.Registrants;
+﻿using ECER.Utilities.Security;
+
+namespace ECER.Resources.Accounts.Registrants;
 
 /// <summary>
 /// Manages registrants
@@ -30,11 +32,6 @@ public record Registrant
     public string Id { get; set; } = null!;
     public IEnumerable<UserIdentity> Identities { get; set; } = Array.Empty<UserIdentity>();
     public UserProfile Profile { get; set; } = null!;
-}
-
-public record UserIdentity(string IdentityProvider, string Id)
-{
-    public DateTime? LastLogin { get; set; }
 }
 
 public record UserProfile

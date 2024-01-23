@@ -2,19 +2,53 @@
 
 public interface IApplicationRepository
 {
-    Task<ApplicationQueryResponse> Query(ApplicationQueryRequest query);
-    Task<string> Save(SaveApplicationRequest request);
+    Task<IEnumerable<Application>> Query(ApplicationQuery query);
+
+    Task<string> SaveDraft(Application application);
+
+    Task<string> Submit(string applicationId);
 }
 
-public record ApplicationQueryRequest();
-
-public record ApplicationQueryResponse(IEnumerable<Application> Items);
-
-public record Application
+public abstract record ApplicationQuery
 {
-    public string ApplicantId { get; set; } = null!;
-    public string? ApplicationId { get; set; }
-    public DateTime SubmissionDate { get; set; }
+    public string? ById { get; set; }
 }
 
-public record SaveApplicationRequest(Application Application);
+public record CertificationApplicationQuery : ApplicationQuery
+{
+    public IEnumerable<ApplicationStatus>? ByStatus { get; set; }
+    public string? ByApplicantId { get; set; }
+}
+
+public abstract record Application(string? Id)
+{
+    public ApplicationStatus Status { get; set; }
+    public DateTime CreateddOn { get; set; }
+    public DateTime? SubmittedOn { get; set; }
+}
+
+public record CertificationApplication(string? Id, string ApplicantId, IEnumerable<CertificationType> CertificationTypes) : Application(Id)
+{
+}
+
+public enum CertificationType
+{
+    EceAssistant,
+    OneYear,
+    FiveYears,
+    Ite,
+    Sne
+}
+
+public enum ApplicationStatus
+{
+    Draft,
+    Submitted,
+    Complete,
+    ReviewforCompletness,
+    ReadyforAssessment,
+    BeingAssessed,
+    Reconsideration,
+    Appeal,
+    Cancelled,
+}
