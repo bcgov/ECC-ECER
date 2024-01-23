@@ -42,7 +42,7 @@
                 <p class="small">Complete and submit your application for certification in early childhood education.</p>
               </v-card-item>
               <v-card-actions class="ma-4">
-                <v-btn variant="flat" rounded="lg" color="primary" @click="$router.push('/application')">Apply Now</v-btn>
+                <v-btn variant="flat" rounded="lg" color="primary" @click="$router.push('/certification-type')">Apply Now</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -52,7 +52,7 @@
                 <p class="small">Not sure which certificate to apply for? Fill out a quick self-assessment to see your certification options.</p>
               </v-card-item>
               <v-card-actions class="ma-4">
-                <v-btn variant="flat" rounded="lg" color="warning">Check Elegibility</v-btn>
+                <v-btn variant="flat" rounded="lg" color="warning">Check Eligibility</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
