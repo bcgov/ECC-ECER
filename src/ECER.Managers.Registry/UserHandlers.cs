@@ -58,10 +58,10 @@ public record UserProfileQueryResponse(string? UserId, UserProfile? UserProfile)
 public record UserProfile(
     string FirstName,
     string LastName,
-    DateOnly DateOfBirth,
+    DateOnly? DateOfBirth,
     string Email,
     string Phone,
-    Address HomeAddress,
+    Address? HomeAddress,
     Address? MailingAddress
     );
 

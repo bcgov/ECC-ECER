@@ -4,6 +4,7 @@ using ECER.Managers.Registry;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.OpenApi.Models;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Users;

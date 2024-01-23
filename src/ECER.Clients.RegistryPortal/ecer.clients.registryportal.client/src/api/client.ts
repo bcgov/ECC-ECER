@@ -12,7 +12,7 @@ export const getClient = async (appendToken: boolean = true) => {
 
   if (appendToken) {
     const userStore = useUserStore();
-    const access_token = userStore.getAccessToken;
+    const access_token = userStore.accessToken;
 
     // Add a request interceptor to append the access token to the request
     axiosClient.interceptors.request.use((config) => {
