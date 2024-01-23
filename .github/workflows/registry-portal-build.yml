@@ -9,7 +9,7 @@ on:
       - .github/workflows/build-template.yml
 
   pull_request:
-    branches: ["master"]
+    branches: ["master", "stories/**"]
     paths:
       - src/**
       - .github/workflows/registry-portal-build.yml
