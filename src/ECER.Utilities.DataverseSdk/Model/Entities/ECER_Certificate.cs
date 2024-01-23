@@ -17,7 +17,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_Certificate_StateCode
+	public enum ecer_certificate_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -32,7 +32,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_Certificate_StatusCode
+	public enum ecer_Certificate_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -57,7 +57,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_certificate")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ECER_Certificate : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_Certificate : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
@@ -72,22 +72,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ECER_Application_CertificateId = "ECER_Application_CertificateId";
-			public const string ECER_Certificate_RegistrantId = "ecer_certificate_Registrantid";
-			public const string ECER_CertificateId = "ecer_certificateid";
+			public const string ecer_application_Certificateid = "ecer_application_Certificateid";
+			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
+			public const string ecer_certificateconditions_Certificateid = "ecer_certificateconditions_Certificateid";
+			public const string ecer_CertificateId = "ecer_certificateid";
 			public const string Id = "ecer_certificateid";
-			public const string ECER_CertificateNumber = "ecer_certificatenumber";
-			public const string ECER_Conditions = "ecer_conditions";
-			public const string ECER_Date = "ecer_date";
-			public const string ECER_EffectiveDate = "ecer_effectivedate";
-			public const string ECER_ExpiryDate = "ecer_expirydate";
-			public const string ECER_HasConditions = "ecer_hasconditions";
-			public const string ECER_HasConditionsName = "ecer_hasconditionsname";
-			public const string ECER_Name = "ecer_name";
-			public const string ECER_PrintedDate = "ecer_printeddate";
-			public const string ECER_RegistrantId = "ecer_registrantid";
-			public const string ECER_RegistrantIdName = "ecer_registrantidname";
-			public const string ECER_RegistrantIdYomiName = "ecer_registrantidyominame";
+			public const string ecer_CertificateLevel = "ecer_certificatelevel";
+			public const string ecer_CertificateNumber = "ecer_certificatenumber";
+			public const string ecer_Conditions = "ecer_conditions";
+			public const string ecer_Date = "ecer_date";
+			public const string ecer_EffectiveDate = "ecer_effectivedate";
+			public const string ecer_ExpiryDate = "ecer_expirydate";
+			public const string ecer_HasConditions = "ecer_hasconditions";
+			public const string ecer_hasconditionsName = "ecer_hasconditionsname";
+			public const string ecer_Name = "ecer_name";
+			public const string ecer_PrintedDate = "ecer_printeddate";
+			public const string ecer_Registrantid = "ecer_registrantid";
+			public const string ecer_RegistrantidName = "ecer_registrantidname";
+			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -105,28 +107,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
 			public const string StateCode = "statecode";
-			public const string StateCodename = "statecodename";
+			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
-			public const string StatusCodename = "statuscodename";
+			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Certificate(System.Guid id) : 
+		public ecer_Certificate(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Certificate(string keyName, object keyValue) : 
+		public ecer_Certificate(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Certificate(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_Certificate(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -135,7 +137,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Certificate() : 
+		public ecer_Certificate() : 
 				base(EntityLogicalName)
 		{
 		}
@@ -268,7 +270,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Unique identifier for entity instances
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateid")]
-		public System.Nullable<System.Guid> ECER_CertificateId
+		public System.Nullable<System.Guid> ecer_CertificateId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -301,12 +303,27 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ECER_CertificateId = value;
+				this.ecer_CertificateId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatelevel")]
+		public string ecer_CertificateLevel
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_certificatelevel");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificatelevel", value);
 			}
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatenumber")]
-		public string ECER_CertificateNumber
+		public string ecer_CertificateNumber
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -321,7 +338,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_conditions")]
-		public string ECER_Conditions
+		public string ecer_Conditions
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -336,7 +353,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_date")]
-		public System.Nullable<System.DateTime> ECER_Date
+		public System.Nullable<System.DateTime> ecer_Date
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -351,7 +368,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_effectivedate")]
-		public System.Nullable<System.DateTime> ECER_EffectiveDate
+		public System.Nullable<System.DateTime> ecer_EffectiveDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -366,7 +383,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_expirydate")]
-		public System.Nullable<System.DateTime> ECER_ExpiryDate
+		public System.Nullable<System.DateTime> ecer_ExpiryDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -381,7 +398,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasconditions")]
-		public System.Nullable<bool> ECER_HasConditions
+		public System.Nullable<bool> ecer_HasConditions
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -396,7 +413,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasconditionsname")]
-		public string ECER_HasConditionsName
+		public string ecer_hasconditionsName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -413,7 +430,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ECER_Name
+		public string ecer_Name
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -428,7 +445,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_printeddate")]
-		public System.Nullable<System.DateTime> ECER_PrintedDate
+		public System.Nullable<System.DateTime> ecer_PrintedDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -443,7 +460,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_RegistrantId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Registrantid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -458,7 +475,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantidname")]
-		public string ECER_RegistrantIdName
+		public string ecer_RegistrantidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -475,7 +492,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantidyominame")]
-		public string ECER_RegistrantIdYomiName
+		public string ecer_RegistrantidYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -757,12 +774,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Status of the Certificate
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ECER_Certificate_StateCode? StateCode
+		public virtual ecer_certificate_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_Certificate_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_certificate_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -772,7 +789,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
-		public string StateCodename
+		public string statecodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -792,12 +809,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Reason for the status of the Certificate
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ECER_Certificate_StatusCode? StatusCode
+		public virtual ecer_Certificate_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_Certificate_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_Certificate_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -807,7 +824,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
-		public string StatusCodename
+		public string statuscodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -845,7 +862,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
-		public System.Nullable<int> UtcConversionTimeZoneCode
+		public System.Nullable<int> UTCConversionTimeZoneCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -876,17 +893,35 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_application_Certificateid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_Certificateid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_Application> ECER_Application_CertificateId
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Application> ecer_application_Certificateid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Application>("ecer_application_Certificateid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_Certificateid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Application>("ecer_application_Certificateid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_Certificateid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_certificateconditions_Certificateid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificateconditions_Certificateid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions> ecer_certificateconditions_Certificateid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions>("ecer_certificateconditions_Certificateid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions>("ecer_certificateconditions_Certificateid", null, value);
 			}
 		}
 		
@@ -895,7 +930,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificate_Registrantid")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ECER_Certificate_RegistrantId
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_certificate_Registrantid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -914,7 +949,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Certificate(object anonymousType) : 
+		public ecer_Certificate(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())

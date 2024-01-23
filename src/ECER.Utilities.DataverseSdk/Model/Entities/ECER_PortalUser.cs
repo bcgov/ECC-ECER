@@ -17,7 +17,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_PortalUser_StateCode
+	public enum ecer_portaluser_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -32,7 +32,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_PortalUser_StatusCode
+	public enum ecer_PortalUser_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -48,7 +48,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_portaluser")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ECER_PortalUser : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_PortalUser : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
@@ -63,24 +63,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ECER_AccountId = "ecer_accountid";
-			public const string ECER_AccountIdName = "ecer_accountidname";
-			public const string ECER_AccountIdYomiName = "ecer_accountidyominame";
-			public const string ECER_AuthenticationId = "ecer_authenticationid";
-			public const string ECER_AuthenticationIdName = "ecer_authenticationidname";
-			public const string ECER_Contact_ECER_PortalUser_474 = "ecer_contact_ecer_portaluser_474";
-			public const string ECER_ContactId = "ecer_contactid";
-			public const string ECER_ContactIdName = "ecer_contactidname";
-			public const string ECER_ContactIdYomiName = "ecer_contactidyominame";
-			public const string ECER_CustomerId = "ecer_customerid";
-			public const string ECER_CustomerIdName = "ecer_customeridname";
-			public const string ECER_CustomerIdYomiName = "ecer_customeridyominame";
-			public const string ECER_LastLoggedIn = "ecer_lastloggedin";
-			public const string ECER_Name = "ecer_name";
-			public const string ECER_PortalUser_AuthenticationId = "ecer_portaluser_Authenticationid";
-			public const string ECER_PortalUser_ContactId = "ecer_portaluser_Contactid";
-			public const string ECER_PortalUser_ECER_PortalRole = "ecer_PortalUser_ecer_PortalRole";
-			public const string ECER_PortalUserId = "ecer_portaluserid";
+			public const string ecer_Accountid = "ecer_accountid";
+			public const string ecer_AccountidName = "ecer_accountidname";
+			public const string ecer_AccountidYomiName = "ecer_accountidyominame";
+			public const string ecer_Authenticationid = "ecer_authenticationid";
+			public const string ecer_AuthenticationidName = "ecer_authenticationidname";
+			public const string ecer_contact_ecer_portaluser_474 = "ecer_contact_ecer_portaluser_474";
+			public const string ecer_Contactid = "ecer_contactid";
+			public const string ecer_ContactidName = "ecer_contactidname";
+			public const string ecer_ContactidYomiName = "ecer_contactidyominame";
+			public const string ecer_Customerid = "ecer_customerid";
+			public const string ecer_CustomeridName = "ecer_customeridname";
+			public const string ecer_CustomeridYomiName = "ecer_customeridyominame";
+			public const string ecer_LastLoggedIn = "ecer_lastloggedin";
+			public const string ecer_Name = "ecer_name";
+			public const string ecer_portaluser_Authenticationid = "ecer_portaluser_Authenticationid";
+			public const string ecer_portaluser_Contactid = "ecer_portaluser_Contactid";
+			public const string ecer_PortalUser_ecer_PortalRole = "ecer_PortalUser_ecer_PortalRole";
+			public const string ecer_PortalUserId = "ecer_portaluserid";
 			public const string Id = "ecer_portaluserid";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -99,28 +99,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
 			public const string StateCode = "statecode";
-			public const string StateCodename = "statecodename";
+			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
-			public const string StatusCodename = "statuscodename";
+			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_PortalUser(System.Guid id) : 
+		public ecer_PortalUser(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_PortalUser(string keyName, object keyValue) : 
+		public ecer_PortalUser(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_PortalUser(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_PortalUser(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -129,7 +129,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_PortalUser() : 
+		public ecer_PortalUser() : 
 				base(EntityLogicalName)
 		{
 		}
@@ -259,7 +259,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_accountid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_AccountId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Accountid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -274,7 +274,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_accountidname")]
-		public string ECER_AccountIdName
+		public string ecer_AccountidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -291,7 +291,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_accountidyominame")]
-		public string ECER_AccountIdYomiName
+		public string ecer_AccountidYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -308,7 +308,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_authenticationid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_AuthenticationId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Authenticationid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -323,7 +323,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_authenticationidname")]
-		public string ECER_AuthenticationIdName
+		public string ecer_AuthenticationidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -340,7 +340,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_ContactId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Contactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -355,7 +355,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactidname")]
-		public string ECER_ContactIdName
+		public string ecer_ContactidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -372,7 +372,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactidyominame")]
-		public string ECER_ContactIdYomiName
+		public string ecer_ContactidYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -389,7 +389,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customerid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_CustomerId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Customerid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -404,7 +404,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customeridname")]
-		public string ECER_CustomerIdName
+		public string ecer_CustomeridName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -421,7 +421,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customeridyominame")]
-		public string ECER_CustomerIdYomiName
+		public string ecer_CustomeridYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -438,7 +438,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lastloggedin")]
-		public System.Nullable<System.DateTime> ECER_LastLoggedIn
+		public System.Nullable<System.DateTime> ecer_LastLoggedIn
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -453,7 +453,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ECER_Name
+		public string ecer_Name
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -471,7 +471,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Unique identifier for entity instances
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portaluserid")]
-		public System.Nullable<System.Guid> ECER_PortalUserId
+		public System.Nullable<System.Guid> ecer_PortalUserId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -504,7 +504,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ECER_PortalUserId = value;
+				this.ecer_PortalUserId = value;
 			}
 		}
 		
@@ -774,12 +774,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Status of the Portal User
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ECER_PortalUser_StateCode? StateCode
+		public virtual ecer_portaluser_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_PortalUser_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_portaluser_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -789,7 +789,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
-		public string StateCodename
+		public string statecodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -809,12 +809,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Reason for the status of the Portal User
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ECER_PortalUser_StatusCode? StatusCode
+		public virtual ecer_PortalUser_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_PortalUser_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_PortalUser_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -824,7 +824,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
-		public string StatusCodename
+		public string statuscodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -862,7 +862,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
-		public System.Nullable<int> UtcConversionTimeZoneCode
+		public System.Nullable<int> UTCConversionTimeZoneCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -893,17 +893,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// N:N ecer_PortalUser_ecer_PortalRole
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_PortalUser_ecer_PortalRole")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_PortalRole> ECER_PortalUser_ECER_PortalRole
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PortalRole> ecer_PortalUser_ecer_PortalRole
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalRole>("ecer_PortalUser_ecer_PortalRole", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalRole>("ecer_PortalUser_ecer_PortalRole", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalRole>("ecer_PortalUser_ecer_PortalRole", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalRole>("ecer_PortalUser_ecer_PortalRole", null, value);
 			}
 		}
 		
@@ -912,7 +912,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customerid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_portaluser_474")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ECER_Contact_ECER_PortalUser_474
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_contact_ecer_portaluser_474
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -931,17 +931,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_authenticationid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portaluser_Authenticationid")]
-		public ECER.Utilities.DataverseSdk.Model.ECER_Authentication ECER_PortalUser_AuthenticationId
+		public ECER.Utilities.DataverseSdk.Model.ecer_Authentication ecer_portaluser_Authenticationid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_Authentication>("ecer_portaluser_Authenticationid", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Authentication>("ecer_portaluser_Authenticationid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_Authentication>("ecer_portaluser_Authenticationid", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Authentication>("ecer_portaluser_Authenticationid", null, value);
 			}
 		}
 		
@@ -950,7 +950,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portaluser_Contactid")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ECER_PortalUser_ContactId
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_portaluser_Contactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -969,7 +969,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_PortalUser(object anonymousType) : 
+		public ecer_PortalUser(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())

@@ -3,9 +3,13 @@
     height="80"
     elevation="0"
     color="primary"
-    :style="{
-      'border-bottom': '2px solid #FCBA19',
-    }"
+    :style="
+      $vuetify.display.mobile
+        ? {}
+        : {
+            'border-bottom': '2px solid #FCBA19',
+          }
+    "
   >
     <router-link to="/">
       <img src="../assets/bc-gov-logo.svg" width="155" class="logo ms-6" alt="B.C. Government Logo" />
@@ -26,7 +30,6 @@ export default defineComponent({
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
-
     return { userStore, oidcStore };
   },
   methods: {

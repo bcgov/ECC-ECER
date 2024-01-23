@@ -2,6 +2,7 @@
 using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Users;
+using ECER.Utilities.Security;
 using Shouldly;
 using Xunit.Abstractions;
 using Xunit.Categories;
@@ -20,7 +21,7 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     {
         await Host.Scenario(_ =>
         {
-            _.WithBceidUser(Guid.NewGuid().ToString("N").ToUpperInvariant());
+            _.WithNewUser(new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bceidbasic"));
             _.Post.Json(CreateNewUserRequest()).ToUrl("/api/userinfo/profile");
             _.StatusCodeShouldBeOk();
         });
@@ -31,7 +32,7 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     {
         await Host.Scenario(_ =>
         {
-            _.WithBcscUser(Guid.NewGuid().ToString("N").ToUpperInvariant());
+            _.WithNewUser(new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc"));
             _.Post.Json(CreateNewUserRequest()).ToUrl("/api/userinfo/profile");
             _.StatusCodeShouldBeOk();
         });
@@ -40,18 +41,18 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     [Fact]
     public async Task GetUserProfile_ExistingBCSCUser_UserProfile()
     {
-        var userId = Guid.NewGuid().ToString("N").ToUpperInvariant();
+        var identity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
         var request = CreateNewUserRequest();
         await Host.Scenario(_ =>
         {
-            _.WithBceidUser(userId);
+            _.WithNewUser(identity);
             _.Post.Json(request).ToUrl("/api/userinfo/profile");
             _.StatusCodeShouldBeOk();
         });
 
         var response = await Host.Scenario(_ =>
         {
-            _.WithBceidUser(userId.ToUpperInvariant());
+            _.WithNewUser(identity);
             _.Get.Url("/api/userinfo");
             _.StatusCodeShouldBeOk();
         });
@@ -63,11 +64,11 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     [Fact]
     public async Task GetUserProfile_NonExistingBCSCUser_Empty()
     {
-        var userId = Guid.NewGuid().ToString("N").ToUpperInvariant();
+        var identity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
 
         var response = await Host.Scenario(_ =>
         {
-            _.WithBceidUser(userId.ToUpperInvariant());
+            _.WithNewUser(identity);
             _.Get.Url("/api/userinfo");
             _.StatusCodeShouldBe(HttpStatusCode.NotFound);
         });

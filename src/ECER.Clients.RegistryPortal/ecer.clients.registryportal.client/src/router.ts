@@ -22,10 +22,12 @@ const router = createRouter({
           children: [
             {
               path: "in-progress",
+              name: "in-progress",
               component: () => import("./components/Certifications.vue"),
             },
             {
               path: "completed",
+              name: "completed",
               component: () => import("./components/Certifications.vue"),
             },
           ],
@@ -72,16 +74,17 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/terms-of-use",
-      component: () => import("./components/pages/TermsOfUse.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: "/terms-of-use/from-new-user",
+      path: "/new-user/terms-of-use",
       component: () => import("./components/pages/TermsOfUse.vue"),
       meta: { requiresAuth: true },
       props: { hasBackButton: true },
     },
+    {
+      path: "/terms-of-use",
+      component: () => import("./components/pages/TermsOfUse.vue"),
+      meta: { requiresAuth: false },
+    },
+
     {
       path: "/accessibility",
       component: () => import("./components/pages/Accessibility.vue"),
@@ -105,7 +108,7 @@ const router = createRouter({
   ],
 });
 
-// Gaurd for authentication protected routes
+// Gaurd for authenticated routes
 router.beforeEach((to, _) => {
   const userStore = useUserStore();
 
@@ -120,11 +123,32 @@ router.beforeEach((to, _) => {
   }
 });
 
-// Guard for login page (redirect to dashboard if already logged in)
+// Guard for authenticated routes that require user info
+router.beforeEach((to, _) => {
+  const userStore = useUserStore();
+
+  // instead of having to check every route record with
+  // to.matched.some(record => record.meta.requiresAuth)
+  if (!to.path.startsWith("/new-user") && to.meta.requiresAuth && userStore.isAuthenticated && !userStore.hasUserInfo) {
+    return {
+      path: "/new-user",
+    };
+  }
+});
+
+// Guard for login page (redirect to dashboard if already authenticated)
 router.beforeEach((to, _, next) => {
   const userStore = useUserStore();
 
   if (to.path === "/login" && userStore.isAuthenticated) next({ path: "/" });
+  else next();
+});
+
+// Guard for /new-user page(s) (redirect to dashboard if already authenticated and has user info)
+router.beforeEach((to, _, next) => {
+  const userStore = useUserStore();
+
+  if (to.path.startsWith("/new-user") && userStore.isAuthenticated && userStore.hasUserInfo) next({ path: "/" });
   else next();
 });
 

@@ -25,11 +25,15 @@
               :rules="[Rules.email(), Rules.required()]"
             ></v-text-field>
             <v-checkbox v-model="hasAgreed" label="" color="primary" :rules="hasAgreedRules">
-              <template #label>I have read and accept the&nbsp;<router-link to="/terms-of-use/from-new-user">Terms of Use</router-link></template></v-checkbox
-            >
+              <template #label>
+                I have read and accept the&nbsp;
+                <router-link to="/new-user/terms-of-use">Terms of Use</router-link>
+              </template>
+            </v-checkbox>
             <v-row justify="end">
-              <v-btn variant="outlined" class="mr-2" @click="logout">Cancel</v-btn><v-btn color="primary" @click="submit">Save and Continue</v-btn></v-row
-            >
+              <v-btn variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
+              <v-btn color="primary" @click="submit">Save and Continue</v-btn>
+            </v-row>
           </div>
         </v-form>
       </div>
@@ -38,8 +42,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 
+import { createUser } from "@/api/user";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { isNumber } from "@/utils/formInput";
@@ -55,13 +60,13 @@ export default defineComponent({
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
 
-    await userStore.setUserProfile();
+    const phoneNumber = ref(userStore.oidcUserAsUserProfile.phone);
+    const email = ref(userStore.oidcUserAsUserProfile.email);
 
-    return { userStore, oidcStore };
+    return { userStore, oidcStore, phoneNumber, email };
   },
+
   data: () => ({
-    phoneNumber: "",
-    email: "",
     hasAgreed: false,
     hasAgreedRules: [(v: boolean) => !!v || "You must read and accept the Terms of Use"],
     Rules,
@@ -71,8 +76,20 @@ export default defineComponent({
     async submit() {
       const { valid } = await (this.$refs.form as any).validate();
       if (valid) {
-        // TODO: Once ECER-494 is complete, call create user with the user's updated email and phone number
-        this.$router.push("/");
+        const userCreated: boolean = await createUser({
+          profile: this.userStore.oidcUserAsUserProfile,
+        });
+
+        // TODO handle error creating user, need clarification from design team
+        if (userCreated) {
+          this.userStore.setUserProfile({
+            ...this.userStore.oidcUserAsUserProfile,
+            phone: this.phoneNumber,
+            email: this.email,
+          });
+
+          this.$router.push("/");
+        }
       }
     },
 

@@ -16,6 +16,8 @@ spec:
           value: registry-portal
         - name: destinationTag
           value: dev
+        - name: scheduled
+          value: true
       taskRef:
         kind: Task
         name: tag-image-task

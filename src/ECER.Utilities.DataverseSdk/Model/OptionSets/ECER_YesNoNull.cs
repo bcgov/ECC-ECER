@@ -17,7 +17,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_YesNoNull
+	public enum ecer_YesNoNull
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

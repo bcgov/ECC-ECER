@@ -17,9 +17,9 @@
     <AddOptionSetMetadataAttribute>false</AddOptionSetMetadataAttribute>
     <AdjustCasingForEnumOptions>false</AdjustCasingForEnumOptions>
     <BuilderSettingsJsonRelativePath>builderSettings.json</BuilderSettingsJsonRelativePath>
-    <CamelCaseClassNames>true</CamelCaseClassNames>
+    <CamelCaseClassNames>false</CamelCaseClassNames>
     <CamelCaseCustomWords />
-    <CamelCaseMemberNames>true</CamelCaseMemberNames>
+    <CamelCaseMemberNames>false</CamelCaseMemberNames>
     <CamelCaseNamesDictionaryRelativePath>DLaB.EarlyBoundGeneratorV2\DLaB.Dictionary.txt</CamelCaseNamesDictionaryRelativePath>
     <CleanupCrmSvcUtilLocalOptionSets>false</CleanupCrmSvcUtilLocalOptionSets>
     <CreateOneFilePerAction>true</CreateOneFilePerAction>

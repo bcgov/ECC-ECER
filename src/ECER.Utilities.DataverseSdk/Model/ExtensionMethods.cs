@@ -11,9 +11,14 @@ namespace ECER.Utilities.DataverseSdk.Model;
 
 public static class ExtensionMethods
 {
-    public static void AddLink([NotNull] this EcerContext context, Entity sourceEntity, string relationshipName, Entity targetEntity)
+    public static void AddLink([NotNull] this EcerContext context, Entity source, string relationshipName, Entity target)
     {
-        context.AddLink(sourceEntity, new Relationship(relationshipName), targetEntity);
+        context.AddLink(source, new Relationship(relationshipName), target);
+    }
+
+    public static void AddRelatedObject([NotNull] this EcerContext context, Entity source, string relationshipName, Entity target)
+    {
+        context.AddRelatedObject(source, new Relationship(relationshipName), target);
     }
 
     private const int FileBlockSize = 4 * 1024 * 1024; // 4 MB
