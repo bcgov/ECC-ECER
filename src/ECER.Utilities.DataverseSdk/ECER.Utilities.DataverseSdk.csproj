@@ -5,7 +5,6 @@
   <ItemGroup>
 	  <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" />
 	  <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client.Dynamics" />
-	  <PackageReference Include="XrmToolkit.Linq.Core" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECER.Infrastructure.Common\ECER.Infrastructure.Common.csproj" />

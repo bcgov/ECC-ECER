@@ -7,9 +7,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
+using Xunit.Categories;
 
 namespace ECER.Tests.Integration;
 
+[IntegrationTest]
 public abstract class WebAppScenarioBase : IAsyncLifetime
 {
     protected WebAppFixtureBase Fixture { get; }

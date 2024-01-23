@@ -30,7 +30,7 @@ public class FileTests : IAsyncLifetime
     {
         var file = CreateNewFile();
         var content = await GenerateTestFile(documentSize);
-        var fileId = await dataverseContext.UploadFile(file, ecer_File.Fields.ecer_DocumentFile, content, default);
+        var fileId = await dataverseContext.UploadFileAsync(file, ecer_File.Fields.ecer_DocumentFile, content, default);
         fileId.ShouldNotBeNullOrEmpty();
     }
 
@@ -38,7 +38,7 @@ public class FileTests : IAsyncLifetime
     public async Task CanRetrieveDocumentFromDataverse()
     {
         var fileWithDocument = dataverseContext.ecer_FileSet.First(f => f.ecer_DocumentFile != null);
-        var content = await dataverseContext.DownloadFile(fileWithDocument, ecer_File.Fields.ecer_DocumentFile, default);
+        var content = await dataverseContext.DownloadFileAsync(fileWithDocument, ecer_File.Fields.ecer_DocumentFile, default);
         content.ShouldNotBeNull();
     }
 
@@ -46,7 +46,7 @@ public class FileTests : IAsyncLifetime
     public async Task CanDeleteDocumentFromDataverse()
     {
         var fileWithDocumentPreDelete = dataverseContext.ecer_FileSet.First(f => f.ecer_DocumentFile != null);
-        await dataverseContext.DeleteFile(fileWithDocumentPreDelete, ecer_File.Fields.ecer_DocumentFile, default);
+        await dataverseContext.DeleteFileAsync(fileWithDocumentPreDelete, ecer_File.Fields.ecer_DocumentFile, default);
         dataverseContext.ClearChanges();
         var fileWithDocumentPostDelete = dataverseContext.ecer_FileSet.SingleOrDefault(f => f.ecer_FileId == fileWithDocumentPreDelete.ecer_FileId);
         fileWithDocumentPostDelete.ShouldNotBeNull().ecer_DocumentFile.ShouldBeNull();
@@ -57,7 +57,7 @@ public class FileTests : IAsyncLifetime
     {
         var file = CreateNewFile();
         var content = await GenerateTestImage();
-        var fileId = await dataverseContext.UploadFile(file, ecer_File.Fields.ecer_ImageFile, content, default);
+        var fileId = await dataverseContext.UploadFileAsync(file, ecer_File.Fields.ecer_ImageFile, content, default);
         fileId.ShouldNotBeNullOrEmpty();
     }
 
@@ -65,7 +65,7 @@ public class FileTests : IAsyncLifetime
     public async Task CanRetrieveImageFromDataverse()
     {
         var fileWithDocument = dataverseContext.ecer_FileSet.First(f => f.ecer_ImageFile != null);
-        var content = await dataverseContext.DownloadFile(fileWithDocument, ecer_File.Fields.ecer_ImageFile, default);
+        var content = await dataverseContext.DownloadFileAsync(fileWithDocument, ecer_File.Fields.ecer_ImageFile, default);
         content.ShouldNotBeNull();
     }
 
@@ -73,7 +73,7 @@ public class FileTests : IAsyncLifetime
     public async Task CanDeleteImageFromDataverse()
     {
         var fileWithDocumentPreDelete = dataverseContext.ecer_FileSet.First(f => f.ecer_ImageFile != null);
-        await dataverseContext.DeleteFile(fileWithDocumentPreDelete, ecer_File.Fields.ecer_ImageFile, default);
+        await dataverseContext.DeleteFileAsync(fileWithDocumentPreDelete, ecer_File.Fields.ecer_ImageFile, default);
         dataverseContext.ClearChanges();
         var fileWithDocumentPostDelete = dataverseContext.ecer_FileSet.SingleOrDefault(f => f.ecer_FileId == fileWithDocumentPreDelete.ecer_FileId);
         fileWithDocumentPostDelete.ShouldNotBeNull().ecer_ImageFile.ShouldBeNull();

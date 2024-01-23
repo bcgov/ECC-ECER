@@ -4,7 +4,6 @@ using ECER.Managers.Registry;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.OpenApi.Models;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Users;
@@ -23,6 +22,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
             return TypedResults.Ok(new UserInfoResponse(mapper.Map<UserProfile>(result.UserProfile)));
         }).WithOpenApi(op =>
         {
+            op.OperationId = "userinfo_post";
             op.Summary = "Gets the currently logged in user profile or NotFound if no profile found";
             return op;
         }).RequireAuthorization();
@@ -36,6 +36,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
             return TypedResults.Ok();
         }).WithOpenApi(op =>
         {
+            op.OperationId = "profile_post";
             op.Summary = "Creates or updates the currently logged on user's profile";
             return op;
         }).RequireAuthorization();
