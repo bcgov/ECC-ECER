@@ -4,11 +4,9 @@ using ECER.Utilities.Security;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
-using Xunit.Categories;
 
 namespace ECER.Tests.Integration.Resources.Accounts.Registrants;
 
-[IntegrationTest]
 public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
 
 {
