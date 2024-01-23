@@ -21,8 +21,23 @@
         </div>
       </v-col>
       <v-col cols="11" offset="1">
-        <v-checkbox label="Infant and Toddler Educator (ITE)"></v-checkbox>
-        <v-checkbox label="Special Needs Educator (SNE)"></v-checkbox>
+        <v-checkbox label="Infant and Toddler Educator (ITE)">
+          <template #details>
+            <div class="ml-10">
+              An Infant and Toddler specialization requires successful completion of an infant and toddler educator training program recognized by the ECE
+              Registry.
+            </div>
+          </template>
+        </v-checkbox>
+
+        <v-checkbox label="Special Needs Educator (SNE)">
+          <template #details>
+            <div class="ml-10">
+              A Special Needs specialization requires successful completion of a special needs early childhood educator training program recognized by the ECE
+              Registry.
+            </div>
+          </template>
+        </v-checkbox>
       </v-col>
     </v-row>
   </v-container>

@@ -11,7 +11,7 @@
         <h2>What certificate type(s) are you applying for?</h2>
       </v-col>
       <v-col cols="12" md="8" lg="8" xl="8">
-        <ExpandSelect :options="options" :multiselect="multiselect" :selected="selectedOptions"></ExpandSelect>
+        <ExpandSelect :options="certificationTypes" :selected="selected" @selection="handleExpandSelectSelection"></ExpandSelect>
       </v-col>
     </v-row>
   </PageContainer>
@@ -20,38 +20,26 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import ECEAssistantContent from "@/components/ECEAssistantContent.vue";
-import ECEFiveYearContent from "@/components/ECEFiveYearContent.vue";
-import ECEOneYearContent from "@/components/ECEOneYearContent.vue";
 import ExpandSelect from "@/components/ExpandSelect.vue";
 import PageContainer from "@/components/PageContainer.vue";
-import type { ExpandSelectOption } from "@/types/expand-select";
+import certificationTypes from "@/config/certification-types";
 
 export default defineComponent({
   name: "CertificationType",
   components: { ExpandSelect, PageContainer },
+  setup() {
+    return { certificationTypes };
+  },
   data() {
     return {
       multiselect: false,
-      options: [
-        {
-          id: "1",
-          title: "ECE Assistant",
-          contentComponent: ECEAssistantContent,
-        },
-        {
-          id: "2",
-          title: "ECE One Year",
-          contentComponent: ECEOneYearContent,
-        },
-        {
-          id: "3",
-          title: "ECE Five Year",
-          contentComponent: ECEFiveYearContent,
-        },
-      ] as ExpandSelectOption[],
-      selectedOptions: [] as string[],
+      selected: "",
     };
+  },
+  methods: {
+    handleExpandSelectSelection(selected: string) {
+      this.selected = selected;
+    },
   },
 });
 </script>
