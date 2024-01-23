@@ -24,6 +24,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             return TypedResults.Ok(new DraftApplicationResponse(appId));
         }).WithOpenApi(op =>
         {
+            op.OperationId = "draftapplication_put";
             op.Summary = "New Application Submission";
             op.Description = "Handles  a new application submission to ECER";
             return op;
@@ -37,6 +38,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             return TypedResults.Ok(new DraftApplicationResponse(appId));
         }).WithOpenApi(op =>
         {
+            op.OperationId = "application_post";
             op.Summary = "New Application Submission";
             op.Description = "Handles  a new application submission to ECER";
             return op;
@@ -54,6 +56,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             })));
         }).WithOpenApi(op =>
         {
+            op.OperationId = "application_get";
             op.Summary = "Query applications";
             op.Description = "Handles application queries";
             return op;
