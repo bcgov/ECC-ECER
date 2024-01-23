@@ -54,7 +54,7 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
         newIdentity.IdentityProvider.ShouldBe(identity.IdentityProvider);
         newIdentity.UserId.ShouldBe(identity.UserId);
     }
-    
+
     [Fact]
     public async Task Create_NewRegistrant_PartialUserProfile_Success()
     {
@@ -71,8 +71,7 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
         user.Profile.Phone.ShouldBe(userProfile.Phone);
         var identity = user.Identities.ShouldHaveSingleItem();
         newIdentity.IdentityProvider.ShouldBe(identity.IdentityProvider);
-        newIdentity.Id.ShouldBe(identity.Id);
-        identity.LastLogin.ShouldNotBeNull().ShouldBeGreaterThan(DateTime.Now.AddSeconds(30));
+        newIdentity.ShouldBe(identity);
     }
 
     private UserProfile CreateUserProfile()
@@ -87,7 +86,7 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
             HomeAddress = new Address(Faker.Address.StreetAddress(), null, Faker.Address.City(), Faker.Address.ZipCode(), Faker.Address.State(), Faker.Address.Country())
         };
     }
-    
+
     private UserProfile CreatePartialUserProfile()
     {
         return new UserProfile
