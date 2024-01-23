@@ -7,7 +7,8 @@
         </v-radio-group>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
-        <Component :is="option.contentComponent" />
+        <Component :is="option.contentComponent" v-if="option.hasSubSelection" @selection="handleSubSelectionChange" />
+        <Component :is="option.contentComponent" v-else />
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -25,18 +26,30 @@ export default defineComponent({
       type: Array as () => ExpandSelectOption[],
       default: () => [],
     },
+    subSelected: {
+      type: Array<string>,
+      default: () => [],
+    },
     selected: {
       type: String,
-      default: null,
+      default: "-1",
     },
   },
-  emits: ["selection"],
+  emits: {
+    selection: (_selected: string) => true,
+    subSelection: (_selected: Array<string>) => true,
+  },
   methods: {
+    handleSubSelectionChange(selected: Array<string>) {
+      this.$emit("subSelection", selected);
+    },
     handleRadioChange(selected: string | null) {
-      this.$emit("selection", selected);
+      typeof selected === "string" ? this.$emit("selection", selected) : this.$emit("selection", "-1");
+      this.$emit("subSelection", []);
     },
     handlePanelChange(selected: unknown) {
-      this.$emit("selection", selected);
+      typeof selected === "string" ? this.$emit("selection", selected) : this.$emit("selection", "-1");
+      this.$emit("subSelection", []);
     },
   },
 });

@@ -11,7 +11,16 @@
         <h2>What certificate type(s) are you applying for?</h2>
       </v-col>
       <v-col cols="12" md="8" lg="8" xl="8">
-        <ExpandSelect :options="certificationTypes" :selected="selected" @selection="handleExpandSelectSelection"></ExpandSelect>
+        <ExpandSelect
+          :options="certificationTypes"
+          :selected="selectedCertificationType"
+          @selection="handleExpandSelectSelection"
+          @sub-selection="handleExpandSelectSubSelection"
+        ></ExpandSelect>
+        <v-row justify="end" class="mt-12">
+          <v-btn variant="outlined" class="mr-2" @click="$router.back()">Cancel</v-btn>
+          <v-btn color="primary" :disabled="selectedCertificationType == '-1'" @click="submit">Start Application</v-btn>
+        </v-row>
       </v-col>
     </v-row>
   </PageContainer>
@@ -32,13 +41,20 @@ export default defineComponent({
   },
   data() {
     return {
-      multiselect: false,
-      selected: "",
+      subSelection: [] as Array<string>,
+      selectedCertificationType: "-1" as string,
     };
   },
   methods: {
+    submit() {
+      // TODO handle passing data to application wizard
+      this.$router.push("/application");
+    },
     handleExpandSelectSelection(selected: string) {
-      this.selected = selected;
+      this.selectedCertificationType = selected;
+    },
+    handleExpandSelectSubSelection(selected: Array<string>) {
+      this.subSelection = selected;
     },
   },
 });
