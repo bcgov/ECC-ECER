@@ -54,7 +54,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
         applications.ShouldBeAssignableTo<IEnumerable<CertificationApplication>>()!.ShouldAllBe(ca => ca.ApplicantId == applicantId);
     }
 
-    [Fact(Skip = "temporary")]
+    [Fact]
     public async Task QueryApplications_ByApplicantIdAndStatus_Found()
     {
         var applicantId = Fixture.AuthenticatedBcscUserId;

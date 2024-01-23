@@ -69,7 +69,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
         if (query.ByStatus != null)
         {
             var statuses = mapper.Map<IEnumerable<ecer_Application_StatusCode>>(query.ByStatus).ToList();
-            applications = applications.Where(a => statuses.Contains(a.a.StatusCode!.Value));
+            applications = applications.WhereIn(a => a.a.StatusCode!.Value, statuses);
         }
 
         if (query.ById != null) applications = applications.Where(r => r.a.ecer_ApplicationId == Guid.Parse(query.ById));
