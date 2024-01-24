@@ -10,31 +10,31 @@ namespace ECER.Clients.RegistryPortal.Server.Users;
 
 public class UserInfoEndpoints : IRegisterEndpoints
 {
-    public void Register(IEndpointRouteBuilder endpointRouteBuilder)
-    {
-        endpointRouteBuilder.MapGet("api/userinfo", async Task<Results<Ok<UserInfoResponse>, NotFound>> (HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
-            {
-                var user = ctx.User.GetUserContext()!;
+  public void Register(IEndpointRouteBuilder endpointRouteBuilder)
+  {
+    endpointRouteBuilder.MapGet("api/userinfo", async Task<Results<Ok<UserInfoResponse>, NotFound>> (HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
+        {
+          var user = ctx.User.GetUserContext()!;
 
-                var result = await bus.InvokeAsync<UserProfileQueryResponse>(new UserProfileQuery(user.Identity), ct);
+          var result = await bus.InvokeAsync<UserProfileQueryResponse>(new UserProfileQuery(user.Identity), ct);
 
-                if (result.UserProfile == null) return TypedResults.NotFound();
-                return TypedResults.Ok(new UserInfoResponse(mapper.Map<UserProfile>(result.UserProfile)));
-            })
-            .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "userinfo_get")
-            .RequireAuthorization();
+          if (result.UserProfile == null) return TypedResults.NotFound();
+          return TypedResults.Ok(new UserInfoResponse(mapper.Map<UserProfile>(result.UserProfile)));
+        })
+        .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "userinfo_get")
+        .RequireAuthorization("registry_new_user");
 
-        endpointRouteBuilder.MapPost("api/userinfo/profile", async Task<Ok> (NewUserRequest request, HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
-            {
-                var user = ctx.User.GetUserContext()!;
+    endpointRouteBuilder.MapPost("api/userinfo", async Task<Ok> (NewUserRequest request, HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
+        {
+          var user = ctx.User.GetUserContext()!;
 
-                await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.UserProfile>(request.Profile), user.Identity), ct);
+          await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.UserProfile>(request.Profile), user.Identity), ct);
 
-                return TypedResults.Ok();
-            })
-            .WithOpenApi("Creates or updates the currently logged on user's profile", string.Empty, "profile_post")
-            .RequireAuthorization();
-    }
+          return TypedResults.Ok();
+        })
+        .WithOpenApi("Creates or updates the currently logged on user's profile", string.Empty, "profile_post")
+        .RequireAuthorization("registry_new_user");
+  }
 }
 
 /// <summary>
@@ -86,6 +86,6 @@ public record Address(
 /// </summary>
 public record NewUserRequest
 {
-    [Required]
-    public UserProfile Profile { get; set; } = null!;
+  [Required]
+  public UserProfile Profile { get; set; } = null!;
 }
