@@ -41,6 +41,7 @@ public class Program
         builder.Services.AddSwaggerGen(opts =>
         {
             opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+            opts.UseOneOfForPolymorphism();
         });
         builder.Services.AddProblemDetails();
 
@@ -49,9 +50,7 @@ public class Program
             options.AddDefaultPolicy(policy =>
             {
                 var allowedOrigins = builder.Configuration.GetValue("cors:allowedOrigins", string.Empty)!.Split(";");
-                policy
-                    .WithOrigins(allowedOrigins)
-                    .SetIsOriginAllowedToAllowWildcardSubdomains();
+                policy.WithOrigins(allowedOrigins).SetIsOriginAllowedToAllowWildcardSubdomains();
             });
         });
 

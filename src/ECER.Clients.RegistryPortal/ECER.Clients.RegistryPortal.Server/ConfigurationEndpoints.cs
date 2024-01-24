@@ -12,7 +12,7 @@ public class ConfigurationEndpoints : IRegisterEndpoints
             var configuration = ctx.RequestServices.GetRequiredService<IConfiguration>();
             var appConfig = configuration.Get<ApplicationConfiguration>();
             return TypedResults.Ok(appConfig);
-        }).WithOpenApi("Frontend Configuration", "Frontend Configuration endpoint", "configuration");
+        }).WithOpenApi("Returns the UI initial configuration", string.Empty, "configuration_get");
     }
 }
 

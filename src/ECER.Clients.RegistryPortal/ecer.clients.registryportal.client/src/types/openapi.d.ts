@@ -50,14 +50,18 @@ declare namespace Components {
        */
       items?: Application[] | null;
     }
+    export type CertificationType = 0 | 1; // int32
     /**
      * New application request
      */
-    export interface NewApplicationRequest {}
+    export interface DraftApplication {
+      id?: string | null;
+      certificationTypes?: CertificationType /* int32 */[] | null;
+    }
     /**
      * New application response
      */
-    export interface NewApplicationResponse {
+    export interface DraftApplicationResponse {
       /**
        * The new application id
        */
@@ -110,139 +114,156 @@ declare namespace Components {
   }
 }
 declare namespace Paths {
-  namespace Configuration {
+  namespace ApplicationGet {
+    namespace Responses {
+      export type $200 = /* Application query response */ Components.Schemas.ApplicationQueryResponse;
+    }
+  }
+  namespace ApplicationPost {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = /* New application response */ Components.Schemas.DraftApplicationResponse;
+    }
+  }
+  namespace ConfigurationGet {
     namespace Responses {
       export type $200 = Components.Schemas.ApplicationConfiguration;
     }
   }
-  namespace CreateUserInfo {
+  namespace DraftapplicationPut {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id?: Parameters.Id;
+    }
+    export type RequestBody = /* New application request */ Components.Schemas.DraftApplication;
+    namespace Responses {
+      export type $200 = /* New application response */ Components.Schemas.DraftApplicationResponse;
+    }
+  }
+  namespace ProfilePost {
     export type RequestBody = /* New user request */ Components.Schemas.NewUserRequest;
     namespace Responses {
       export interface $200 {}
     }
   }
-  namespace GetApplications {
-    namespace Responses {
-      export type $200 = /* Application query response */ Components.Schemas.ApplicationQueryResponse;
-    }
-  }
-  namespace GetUserInfo {
+  namespace UserinfoGet {
     namespace Responses {
       export type $200 = /* User profile information response */ Components.Schemas.UserInfoResponse;
       export interface $404 {}
-    }
-  }
-  namespace PostNewApplication {
-    export type RequestBody = /* New application request */ Components.Schemas.NewApplicationRequest;
-    namespace Responses {
-      export type $200 = /* New application response */ Components.Schemas.NewApplicationResponse;
     }
   }
 }
 
 export interface OperationMethods {
   /**
-   * configuration - Frontend Configuration
-   *
-   * Frontend Configuration endpoint
+   * configuration_get - Returns the UI initial configuration
    */
-  "configuration"(
+  "configuration_get"(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.Configuration.Responses.$200>;
+  ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
   /**
-   * GetUserInfo - Get user profile information
-   *
-   * Gets the current user profile information
+   * userinfo_get - Gets the currently logged in user profile or NotFound if no profile found
    */
-  "GetUserInfo"(
+  "userinfo_get"(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.GetUserInfo.Responses.$200>;
+  ): OperationResponse<Paths.UserinfoGet.Responses.$200>;
   /**
-   * CreateUserInfo - Create user profile information
-   *
-   * Create new user
+   * profile_post - Creates or updates the currently logged on user's profile
    */
-  "CreateUserInfo"(
+  "profile_post"(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.CreateUserInfo.RequestBody,
+    data?: Paths.ProfilePost.RequestBody,
     config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.CreateUserInfo.Responses.$200>;
+  ): OperationResponse<Paths.ProfilePost.Responses.$200>;
   /**
-   * GetApplications - Query applications
-   *
-   * Handles application queries
+   * draftapplication_put - Handles  a new application submission to ECER
    */
-  "GetApplications"(
+  "draftapplication_put"(
+    parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,
+    data?: Paths.DraftapplicationPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.DraftapplicationPut.Responses.$200>;
+  /**
+   * application_post - Handles a new application submission to ECER
+   */
+  "application_post"(
+    parameters?: Parameters<Paths.ApplicationPost.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ApplicationPost.Responses.$200>;
+  /**
+   * application_get - Handles application queries
+   */
+  "application_get"(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
     config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.GetApplications.Responses.$200>;
-  /**
-   * PostNewApplication - New Application Submission
-   *
-   * Handles  a new application submission to ECER
-   */
-  "PostNewApplication"(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.PostNewApplication.RequestBody,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.PostNewApplication.Responses.$200>;
+  ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
 }
 
 export interface PathsDictionary {
   ["/api/configuration"]: {
     /**
-     * configuration - Frontend Configuration
-     *
-     * Frontend Configuration endpoint
-     */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.Configuration.Responses.$200>;
-  };
-  ["/api/userinfo"]: {
-    /**
-     * GetUserInfo - Get user profile information
-     *
-     * Gets the current user profile information
-     */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.GetUserInfo.Responses.$200>;
-  };
-  ["/api/userinfo/profile"]: {
-    /**
-     * CreateUserInfo - Create user profile information
-     *
-     * Create new user
-     */
-    "post"(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.CreateUserInfo.RequestBody,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.CreateUserInfo.Responses.$200>;
-  };
-  ["/api/applications"]: {
-    /**
-     * PostNewApplication - New Application Submission
-     *
-     * Handles  a new application submission to ECER
-     */
-    "post"(
-      parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.PostNewApplication.RequestBody,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.PostNewApplication.Responses.$200>;
-    /**
-     * GetApplications - Query applications
-     *
-     * Handles application queries
+     * configuration_get - Returns the UI initial configuration
      */
     "get"(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
       config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.GetApplications.Responses.$200>;
+    ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
+  };
+  ["/api/userinfo"]: {
+    /**
+     * userinfo_get - Gets the currently logged in user profile or NotFound if no profile found
+     */
+    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.UserinfoGet.Responses.$200>;
+  };
+  ["/api/userinfo/profile"]: {
+    /**
+     * profile_post - Creates or updates the currently logged on user's profile
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.ProfilePost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProfilePost.Responses.$200>;
+  };
+  ["/api/draftapplications/{id}"]: {
+    /**
+     * draftapplication_put - Handles  a new application submission to ECER
+     */
+    "put"(
+      parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,
+      data?: Paths.DraftapplicationPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.DraftapplicationPut.Responses.$200>;
+  };
+  ["/api/applications/{id}"]: {
+    /**
+     * application_post - Handles a new application submission to ECER
+     */
+    "post"(
+      parameters?: Parameters<Paths.ApplicationPost.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ApplicationPost.Responses.$200>;
+  };
+  ["/api/applications"]: {
+    /**
+     * application_get - Handles application queries
+     */
+    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ApplicationGet.Responses.$200>;
   };
 }
 

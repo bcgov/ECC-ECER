@@ -13,54 +13,42 @@ public class ApplicationsEndpoints : IRegisterEndpoints
     public void Register(IEndpointRouteBuilder endpointRouteBuilder)
     {
         endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async (string? id, DraftApplication draftApplication, HttpContext httpContext, IMessageBus messageBus, IMapper mapper, IDistributedCache cache) =>
-        {
-            var userContext = httpContext.User.GetUserContext();
-            var application = mapper.Map<CertificationApplication>(draftApplication);
-            application.RegistrantId = userContext!.UserId!;
-            application.Id = id;
-            var cmd = new SaveDraftCertificationApplicationCommand(application);
-            var appId = await messageBus.InvokeAsync<string>(cmd);
+            {
+                var userContext = httpContext.User.GetUserContext();
+                var application = mapper.Map<CertificationApplication>(draftApplication);
+                application.RegistrantId = userContext!.UserId!;
+                application.Id = id;
+                var cmd = new SaveDraftCertificationApplicationCommand(application);
+                var appId = await messageBus.InvokeAsync<string>(cmd);
 
-            return TypedResults.Ok(new DraftApplicationResponse(appId));
-        }).WithOpenApi(op =>
-        {
-            op.OperationId = "draftapplication_put";
-            op.Summary = "New Application Submission";
-            op.Description = "Handles  a new application submission to ECER";
-            return op;
-        });
+                return TypedResults.Ok(new DraftApplicationResponse(appId));
+            })
+            .WithOpenApi("Handles  a new application submission to ECER", string.Empty, "draftapplication_put")
+            .RequireAuthorization();
 
         endpointRouteBuilder.MapPost("/api/applications/{id}", async (string id, IMessageBus messageBus, IMapper mapper) =>
-        {
-            var cmd = new SubmitCertificationApplicationCommand(id);
-            var appId = await messageBus.InvokeAsync<string>(cmd);
+            {
+                var cmd = new SubmitCertificationApplicationCommand(id);
+                var appId = await messageBus.InvokeAsync<string>(cmd);
 
-            return TypedResults.Ok(new DraftApplicationResponse(appId));
-        }).WithOpenApi(op =>
-        {
-            op.OperationId = "application_post";
-            op.Summary = "New Application Submission";
-            op.Description = "Handles  a new application submission to ECER";
-            return op;
-        });
+                return TypedResults.Ok(new DraftApplicationResponse(appId));
+            })
+            .WithOpenApi("Handles a new application submission to ECER", string.Empty, "application_post")
+            .RequireAuthorization();
 
         endpointRouteBuilder.MapGet("/api/applications", async (IMessageBus messageBus) =>
-        {
-            var query = new CertificationApplicationsQuery();
-            var results = await messageBus.InvokeAsync<ApplicationsQueryResults>(query);
-            return TypedResults.Ok(new ApplicationQueryResponse(results.Items.Select(i => new Application
             {
-                Id = i.Id!,
-                RegistrantId = i.RegistrantId,
-                SubmittedOn = i.SubmittedOn
-            })));
-        }).WithOpenApi(op =>
-        {
-            op.OperationId = "application_get";
-            op.Summary = "Query applications";
-            op.Description = "Handles application queries";
-            return op;
-        });
+                var query = new CertificationApplicationsQuery();
+                var results = await messageBus.InvokeAsync<ApplicationsQueryResults>(query);
+                return TypedResults.Ok(new ApplicationQueryResponse(results.Items.Select(i => new Application
+                {
+                    Id = i.Id!,
+                    RegistrantId = i.RegistrantId,
+                    SubmittedOn = i.SubmittedOn
+                })));
+            })
+            .WithOpenApi("Handles application queries", string.Empty, "application_get")
+            .RequireAuthorization();
     }
 }
 
