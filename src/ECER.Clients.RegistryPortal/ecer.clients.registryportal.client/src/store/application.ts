@@ -24,7 +24,7 @@ export const useApplicationStore = defineStore("application", {
       this.applications = await getApplications();
     },
     async newApplication(): Promise<string | null | undefined> {
-      return await postApplication();
+      return await postApplication("");
     },
   },
 });
