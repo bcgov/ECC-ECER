@@ -1,4 +1,9 @@
-﻿[*.cs]
+﻿[*]
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+
+[*.cs]
 
 # IDE0008: Use explicit type
 dotnet_diagnostic.IDE0008.severity = none
