@@ -9,20 +9,20 @@
         <v-form ref="form" validate-on="blur">
           <div class="d-flex flex-column ga-2">
             <v-text-field
-              v-model="phoneNumber"
-              label="Phone Number"
-              variant="outlined"
-              color="primary"
-              :rules="[Rules.phoneNumber(), Rules.required()]"
-              @keypress="isNumber($event)"
-            ></v-text-field>
-            <v-text-field
               v-model="email"
               label="Email"
               variant="outlined"
               color="primary"
               type="email"
               :rules="[Rules.email(), Rules.required()]"
+            ></v-text-field>
+            <v-text-field
+              v-model="phoneNumber"
+              label="Phone Number"
+              variant="outlined"
+              color="primary"
+              :rules="[Rules.phoneNumber(), Rules.required()]"
+              @keypress="isNumber($event)"
             ></v-text-field>
             <v-checkbox v-model="hasAgreed" label="" color="primary" :rules="hasAgreedRules">
               <template #label>
