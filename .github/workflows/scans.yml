@@ -9,8 +9,8 @@ jobs:
       IMAGE: gregnrobinson/bcgov-nginx-demo
       TAG: latest
 
-  codeql-scan:
-    uses: bcgov/pipeline-templates/.github/workflows/codeql.yaml@main
+  # codeql-scan:
+  #   uses: bcgov/pipeline-templates/.github/workflows/codeql.yaml@main
 
   # sonar-repo-scan:
   #   uses: bcgov/pipeline-templates/.github/workflows/sonar-scanner.yaml@main
