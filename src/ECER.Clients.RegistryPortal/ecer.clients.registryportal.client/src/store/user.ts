@@ -4,6 +4,8 @@ import { defineStore } from "pinia";
 import type { Authority } from "@/types/authority";
 import type { Components } from "@/types/openapi";
 
+import { useOidcStore } from "./oidc";
+
 export interface UserState {
   oidcUser: User | null;
   authority: Authority | null;
@@ -68,6 +70,19 @@ export const useUserStore = defineStore("user", {
     },
     setAuthority(authority: Authority | null): void {
       this.authority = authority;
+    },
+    async logout(): Promise<void> {
+      const oidcStore = useOidcStore();
+      if (this.isAuthenticated && this.authority) {
+        if (this.authority == "bceid") {
+          await oidcStore.logout(this.authority);
+        }
+        if (this.authority == "bcsc") {
+          // BCSC does not support a session logout callback endpoint so just remove session data from client
+          await oidcStore.removeUser(this.authority);
+          this.$reset();
+        }
+      }
     },
   },
 });
