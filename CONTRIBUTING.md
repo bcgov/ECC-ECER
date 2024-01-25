@@ -81,6 +81,16 @@ All commits should be descriptive of the change and reference the original JIRA 
 
 When merging a PR, the code owners will prefer to squash the commits into a single merge, and will use GitHub automated commit message generation, so be mindful of your commit messages. In case of smaller changes, the code owners may decide not to squash.
 
+### C# services tests
+
+It is the contributing developers responsibility to ensure that modified, added or removed endpoint(s) have corresponding integration tests. 
+
+__NOTE__: This is _not_ included in the code quality checks at build time. Developers are expected to run tests locally to ensure all tests are passing before PR.
+
+### Vue apps tests
+
+TBD
+
 ## CI/CD
 
 Each synced PR will trigger checks by building the relevant component's dockerfile. Dockerfiles contain the build scripts and invoke various code quality functions such as running tests, lint and similar. This means that in order to produce a deployable component, the docker build process much complete successfully. It also means the build process as it runs in GH Actions can be replicated locally by a developer using Docker/Podman engine.
