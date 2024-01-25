@@ -33,7 +33,7 @@ import ExpandSelect from "@/components/ExpandSelect.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import certificationTypes from "@/config/certification-types";
 import { useApplicationStore } from "@/store/application";
-import { type Components } from "@/types/openapi";
+import type { Components } from "@/types/openapi";
 
 const certificateTypeMap = new Map<string, Components.Schemas.CertificationType>([
   ["1", 0],
