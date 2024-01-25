@@ -269,7 +269,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum Contact_Msdyn_DecisionInfluenceTag
+	public enum Contact_msdyn_decisioninfluencetag
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -290,7 +290,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum Contact_Msdyn_OrgChangeStatus
+	public enum Contact_msdyn_orgchangestatus
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -413,7 +413,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum Contact_StateCode
+	public enum contact_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -468,17 +468,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string AccountIdName = "accountidname";
 			public const string AccountIdYomiName = "accountidyominame";
 			public const string AccountRoleCode = "accountrolecode";
-			public const string AccountRoleCodename = "accountrolecodename";
+			public const string AccountRoleCodeName = "accountrolecodename";
 			public const string Address1_AddressId = "address1_addressid";
 			public const string Address1_AddressTypeCode = "address1_addresstypecode";
-			public const string Address1_AddressTypeCodename = "address1_addresstypecodename";
+			public const string Address1_AddressTypeCodeName = "address1_addresstypecodename";
 			public const string Address1_City = "address1_city";
 			public const string Address1_Composite = "address1_composite";
 			public const string Address1_Country = "address1_country";
 			public const string Address1_County = "address1_county";
 			public const string Address1_Fax = "address1_fax";
 			public const string Address1_FreightTermsCode = "address1_freighttermscode";
-			public const string Address1_FreightTermsCodename = "address1_freighttermscodename";
+			public const string Address1_FreightTermsCodeName = "address1_freighttermscodename";
 			public const string Address1_Latitude = "address1_latitude";
 			public const string Address1_Line1 = "address1_line1";
 			public const string Address1_Line2 = "address1_line2";
@@ -486,26 +486,26 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Address1_Longitude = "address1_longitude";
 			public const string Address1_Name = "address1_name";
 			public const string Address1_PostalCode = "address1_postalcode";
-			public const string Address1_PostofficeBox = "address1_postofficebox";
+			public const string Address1_PostOfficeBox = "address1_postofficebox";
 			public const string Address1_PrimaryContactName = "address1_primarycontactname";
 			public const string Address1_ShippingMethodCode = "address1_shippingmethodcode";
-			public const string Address1_ShippingMethodCodename = "address1_shippingmethodcodename";
+			public const string Address1_ShippingMethodCodeName = "address1_shippingmethodcodename";
 			public const string Address1_StateOrProvince = "address1_stateorprovince";
 			public const string Address1_Telephone1 = "address1_telephone1";
 			public const string Address1_Telephone2 = "address1_telephone2";
 			public const string Address1_Telephone3 = "address1_telephone3";
-			public const string Address1_UpsZone = "address1_upszone";
-			public const string Address1_UtcOffset = "address1_utcoffset";
+			public const string Address1_UPSZone = "address1_upszone";
+			public const string Address1_UTCOffset = "address1_utcoffset";
 			public const string Address2_AddressId = "address2_addressid";
 			public const string Address2_AddressTypeCode = "address2_addresstypecode";
-			public const string Address2_AddressTypeCodename = "address2_addresstypecodename";
+			public const string Address2_AddressTypeCodeName = "address2_addresstypecodename";
 			public const string Address2_City = "address2_city";
 			public const string Address2_Composite = "address2_composite";
 			public const string Address2_Country = "address2_country";
 			public const string Address2_County = "address2_county";
 			public const string Address2_Fax = "address2_fax";
 			public const string Address2_FreightTermsCode = "address2_freighttermscode";
-			public const string Address2_FreightTermsCodename = "address2_freighttermscodename";
+			public const string Address2_FreightTermsCodeName = "address2_freighttermscodename";
 			public const string Address2_Latitude = "address2_latitude";
 			public const string Address2_Line1 = "address2_line1";
 			public const string Address2_Line2 = "address2_line2";
@@ -513,26 +513,26 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Address2_Longitude = "address2_longitude";
 			public const string Address2_Name = "address2_name";
 			public const string Address2_PostalCode = "address2_postalcode";
-			public const string Address2_PostofficeBox = "address2_postofficebox";
+			public const string Address2_PostOfficeBox = "address2_postofficebox";
 			public const string Address2_PrimaryContactName = "address2_primarycontactname";
 			public const string Address2_ShippingMethodCode = "address2_shippingmethodcode";
-			public const string Address2_ShippingMethodCodename = "address2_shippingmethodcodename";
+			public const string Address2_ShippingMethodCodeName = "address2_shippingmethodcodename";
 			public const string Address2_StateOrProvince = "address2_stateorprovince";
 			public const string Address2_Telephone1 = "address2_telephone1";
 			public const string Address2_Telephone2 = "address2_telephone2";
 			public const string Address2_Telephone3 = "address2_telephone3";
-			public const string Address2_UpsZone = "address2_upszone";
-			public const string Address2_UtcOffset = "address2_utcoffset";
+			public const string Address2_UPSZone = "address2_upszone";
+			public const string Address2_UTCOffset = "address2_utcoffset";
 			public const string Address3_AddressId = "address3_addressid";
 			public const string Address3_AddressTypeCode = "address3_addresstypecode";
-			public const string Address3_AddressTypeCodename = "address3_addresstypecodename";
+			public const string Address3_AddressTypeCodeName = "address3_addresstypecodename";
 			public const string Address3_City = "address3_city";
 			public const string Address3_Composite = "address3_composite";
 			public const string Address3_Country = "address3_country";
 			public const string Address3_County = "address3_county";
 			public const string Address3_Fax = "address3_fax";
 			public const string Address3_FreightTermsCode = "address3_freighttermscode";
-			public const string Address3_FreightTermsCodename = "address3_freighttermscodename";
+			public const string Address3_FreightTermsCodeName = "address3_freighttermscodename";
 			public const string Address3_Latitude = "address3_latitude";
 			public const string Address3_Line1 = "address3_line1";
 			public const string Address3_Line2 = "address3_line2";
@@ -540,53 +540,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Address3_Longitude = "address3_longitude";
 			public const string Address3_Name = "address3_name";
 			public const string Address3_PostalCode = "address3_postalcode";
-			public const string Address3_PostofficeBox = "address3_postofficebox";
+			public const string Address3_PostOfficeBox = "address3_postofficebox";
 			public const string Address3_PrimaryContactName = "address3_primarycontactname";
 			public const string Address3_ShippingMethodCode = "address3_shippingmethodcode";
-			public const string Address3_ShippingMethodCodename = "address3_shippingmethodcodename";
+			public const string Address3_ShippingMethodCodeName = "address3_shippingmethodcodename";
 			public const string Address3_StateOrProvince = "address3_stateorprovince";
 			public const string Address3_Telephone1 = "address3_telephone1";
 			public const string Address3_Telephone2 = "address3_telephone2";
 			public const string Address3_Telephone3 = "address3_telephone3";
-			public const string Address3_UpsZone = "address3_upszone";
-			public const string Address3_UtcOffset = "address3_utcoffset";
-			public const string AdX_ConfirmRemovePassword = "adx_confirmremovepassword";
-			public const string AdX_ConfirmRemovePasswordName = "adx_confirmremovepasswordname";
-			public const string AdX_CreatedByIpAddress = "adx_createdbyipaddress";
-			public const string AdX_CreatedByUsername = "adx_createdbyusername";
-			public const string AdX_Identity_AccessFailedCount = "adx_identity_accessfailedcount";
-			public const string AdX_Identity_EmailAddress1Confirmed = "adx_identity_emailaddress1confirmed";
-			public const string AdX_Identity_EmailAddress1ConfirmedName = "adx_identity_emailaddress1confirmedname";
-			public const string AdX_Identity_LastSuccessfulLogin = "adx_identity_lastsuccessfullogin";
-			public const string AdX_Identity_LocalLoginDisabled = "adx_identity_locallogindisabled";
-			public const string AdX_Identity_LocalLoginDisabledName = "adx_identity_locallogindisabledname";
-			public const string AdX_Identity_LockoutEnabled = "adx_identity_lockoutenabled";
-			public const string AdX_Identity_LockoutEnabledName = "adx_identity_lockoutenabledname";
-			public const string AdX_Identity_LockoutEndDate = "adx_identity_lockoutenddate";
-			public const string AdX_Identity_LogOnEnabled = "adx_identity_logonenabled";
-			public const string AdX_Identity_LogOnEnabledName = "adx_identity_logonenabledname";
-			public const string AdX_Identity_MobilePhoneConfirmed = "adx_identity_mobilephoneconfirmed";
-			public const string AdX_Identity_MobilePhoneConfirmedName = "adx_identity_mobilephoneconfirmedname";
-			public const string AdX_Identity_NewPassword = "adx_identity_newpassword";
-			public const string AdX_Identity_PasswordHash = "adx_identity_passwordhash";
-			public const string AdX_Identity_SecurityStamp = "adx_identity_securitystamp";
-			public const string AdX_Identity_TwoFactorEnabled = "adx_identity_twofactorenabled";
-			public const string AdX_Identity_TwoFactorEnabledName = "adx_identity_twofactorenabledname";
-			public const string AdX_Identity_Username = "adx_identity_username";
-			public const string AdX_ModifiedByIpAddress = "adx_modifiedbyipaddress";
-			public const string AdX_ModifiedByUsername = "adx_modifiedbyusername";
-			public const string AdX_OrganizationName = "adx_organizationname";
-			public const string AdX_PreferredLcId = "adx_preferredlcid";
-			public const string AdX_ProfileAlert = "adx_profilealert";
-			public const string AdX_ProfileAlertDate = "adx_profilealertdate";
-			public const string AdX_ProfileAlertInstructions = "adx_profilealertinstructions";
-			public const string AdX_ProfileAlertName = "adx_profilealertname";
-			public const string AdX_ProfileIsAnonymous = "adx_profileisanonymous";
-			public const string AdX_ProfileIsAnonymousName = "adx_profileisanonymousname";
-			public const string AdX_ProfileLastActivity = "adx_profilelastactivity";
-			public const string AdX_ProfileModifiedOn = "adx_profilemodifiedon";
-			public const string AdX_PublicProfileCopy = "adx_publicprofilecopy";
-			public const string AdX_TimeZone = "adx_timezone";
+			public const string Address3_UPSZone = "address3_upszone";
+			public const string Address3_UTCOffset = "address3_utcoffset";
+			public const string adx_ConfirmRemovePassword = "adx_confirmremovepassword";
+			public const string adx_confirmremovepasswordName = "adx_confirmremovepasswordname";
+			public const string Adx_CreatedByIPAddress = "adx_createdbyipaddress";
+			public const string Adx_CreatedByUsername = "adx_createdbyusername";
+			public const string adx_identity_accessfailedcount = "adx_identity_accessfailedcount";
+			public const string adx_identity_emailaddress1confirmed = "adx_identity_emailaddress1confirmed";
+			public const string adx_identity_emailaddress1confirmedName = "adx_identity_emailaddress1confirmedname";
+			public const string adx_identity_lastsuccessfullogin = "adx_identity_lastsuccessfullogin";
+			public const string adx_identity_locallogindisabled = "adx_identity_locallogindisabled";
+			public const string adx_identity_locallogindisabledName = "adx_identity_locallogindisabledname";
+			public const string adx_identity_lockoutenabled = "adx_identity_lockoutenabled";
+			public const string adx_identity_lockoutenabledName = "adx_identity_lockoutenabledname";
+			public const string adx_identity_lockoutenddate = "adx_identity_lockoutenddate";
+			public const string adx_identity_logonenabled = "adx_identity_logonenabled";
+			public const string adx_identity_logonenabledName = "adx_identity_logonenabledname";
+			public const string adx_identity_mobilephoneconfirmed = "adx_identity_mobilephoneconfirmed";
+			public const string adx_identity_mobilephoneconfirmedName = "adx_identity_mobilephoneconfirmedname";
+			public const string adx_identity_newpassword = "adx_identity_newpassword";
+			public const string adx_identity_passwordhash = "adx_identity_passwordhash";
+			public const string adx_identity_securitystamp = "adx_identity_securitystamp";
+			public const string adx_identity_twofactorenabled = "adx_identity_twofactorenabled";
+			public const string adx_identity_twofactorenabledName = "adx_identity_twofactorenabledname";
+			public const string adx_identity_username = "adx_identity_username";
+			public const string Adx_ModifiedByIPAddress = "adx_modifiedbyipaddress";
+			public const string Adx_ModifiedByUsername = "adx_modifiedbyusername";
+			public const string Adx_OrganizationName = "adx_organizationname";
+			public const string adx_preferredlcid = "adx_preferredlcid";
+			public const string adx_profilealert = "adx_profilealert";
+			public const string adx_profilealertdate = "adx_profilealertdate";
+			public const string adx_profilealertinstructions = "adx_profilealertinstructions";
+			public const string adx_profilealertName = "adx_profilealertname";
+			public const string Adx_ProfileIsAnonymous = "adx_profileisanonymous";
+			public const string adx_profileisanonymousName = "adx_profileisanonymousname";
+			public const string Adx_ProfileLastActivity = "adx_profilelastactivity";
+			public const string adx_profilemodifiedon = "adx_profilemodifiedon";
+			public const string adx_PublicProfileCopy = "adx_publicprofilecopy";
+			public const string Adx_TimeZone = "adx_timezone";
 			public const string Aging30 = "aging30";
 			public const string Aging30_Base = "aging30_base";
 			public const string Aging60 = "aging60";
@@ -598,15 +598,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string AnnualIncome_Base = "annualincome_base";
 			public const string AssistantName = "assistantname";
 			public const string AssistantPhone = "assistantphone";
-			public const string Birthdate = "birthdate";
+			public const string BirthDate = "birthdate";
 			public const string Business2 = "business2";
 			public const string BusinessCard = "businesscard";
 			public const string BusinessCardAttributes = "businesscardattributes";
 			public const string Callback = "callback";
 			public const string ChildrensNames = "childrensnames";
 			public const string Company = "company";
-			public const string ReferencingContact_Customer_Contacts = "contact_customer_contacts";
-			public const string ReferencingContact_Master_Contact = "contact_master_contact";
+			public const string Referencingcontact_customer_contacts = "contact_customer_contacts";
+			public const string Referencingcontact_master_contact = "contact_master_contact";
 			public const string ContactId = "contactid";
 			public const string Id = "contactid";
 			public const string CreatedBy = "createdby";
@@ -624,19 +624,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreditOnHold = "creditonhold";
 			public const string CreditOnHoldName = "creditonholdname";
 			public const string CustomerSizeCode = "customersizecode";
-			public const string CustomerSizeCodename = "customersizecodename";
+			public const string CustomerSizeCodeName = "customersizecodename";
 			public const string CustomerTypeCode = "customertypecode";
-			public const string CustomerTypeCodename = "customertypecodename";
+			public const string CustomerTypeCodeName = "customertypecodename";
 			public const string DefaultPriceLevelId = "defaultpricelevelid";
 			public const string DefaultPriceLevelIdName = "defaultpricelevelidname";
 			public const string Department = "department";
 			public const string Description = "description";
-			public const string DoNotBulkEmail = "donotbulkemail";
-			public const string DoNotBulkEmailName = "donotbulkemailname";
+			public const string DoNotBulkEMail = "donotbulkemail";
+			public const string DoNotBulkEMailName = "donotbulkemailname";
 			public const string DoNotBulkPostalMail = "donotbulkpostalmail";
 			public const string DoNotBulkPostalMailName = "donotbulkpostalmailname";
-			public const string DoNotEmail = "donotemail";
-			public const string DoNotEmailName = "donotemailname";
+			public const string DoNotEMail = "donotemail";
+			public const string DoNotEMailName = "donotemailname";
 			public const string DoNotFax = "donotfax";
 			public const string DoNotFaxName = "donotfaxname";
 			public const string DoNotPhone = "donotphone";
@@ -644,51 +644,52 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string DoNotPostalMail = "donotpostalmail";
 			public const string DoNotPostalMailName = "donotpostalmailname";
 			public const string DoNotSendMarketingMaterialName = "donotsendmarketingmaterialname";
-			public const string DoNotSendMm = "donotsendmm";
-			public const string ECER_AboriginalType = "ecer_aboriginaltype";
-			public const string ECER_AboriginalTypeName = "ecer_aboriginaltypename";
-			public const string ECER_AgreeToterMsAndConditions = "ecer_agreetotermsandconditions";
-			public const string ECER_AgreeToterMsAndConditionsDate = "ecer_agreetotermsandconditionsdate";
-			public const string ECER_AgreeToterMsAndConditionsName = "ecer_agreetotermsandconditionsname";
-			public const string ECER_Application_ApplicantId_Contact = "ECER_Application_ApplicantId_Contact";
-			public const string ECER_Authentication_ContactId = "ECER_Authentication_ContactId";
-			public const string ECER_Certificate_RegistrantId = "ECER_Certificate_RegistrantId";
-			public const string ECER_ChangeOfInformation_ContactId = "ECER_ChangeOfInformation_ContactId";
-			public const string ECER_CharacterReference_ReferenceContactId = "ECER_CharacterReference_ReferenceContactId";
-			public const string ECER_ClientId = "ecer_clientid";
-			public const string ECER_CompletedCourse_ApplicantId = "ECER_CompletedCourse_ApplicantId";
-			public const string ECER_Contact_ECER_Authentication_455 = "ECER_Contact_ECER_Authentication_455";
-			public const string ECER_Contact_ECER_Communication_122 = "ECER_Contact_ECER_Communication_122";
-			public const string ECER_Contact_ECER_File_123 = "ECER_Contact_ECER_File_123";
-			public const string ECER_Contact_ECER_PortalUser_474 = "ECER_Contact_ECER_PortalUser_474";
-			public const string ECER_Contact_ECER_PreviousAddress_251 = "ECER_Contact_ECER_PreviousAddress_251";
-			public const string ECER_ECER_CharacterReference_ApplicantId_ConTA = "ECER_ECER_CharacterReference_ApplicantId_ConTA";
-			public const string ECER_ECER_ProfessionalDevelopment_ApplicantId_ = "ECER_ECER_ProfessionalDevelopment_ApplicantId_";
-			public const string ECER_ECER_WorkExperienceRef_ReferenceContactId = "ECER_ECER_WorkExperienceRef_ReferenceContactId";
-			public const string ECER_IsBcECE = "ecer_isbcece";
-			public const string ECER_IsBcECEName = "ecer_isbcecename";
-			public const string ECER_IsVerified = "ecer_isverified";
-			public const string ECER_IsVerifiedName = "ecer_isverifiedname";
-			public const string ECER_PortalUser_ContactId = "ECER_PortalUser_ContactId";
-			public const string ECER_PreferredName = "ecer_preferredname";
-			public const string ECER_PreviousName_ContactId = "ECER_PreviousName_ContactId";
-			public const string ECER_TermsAndConditionsText = "ecer_termsandconditionstext";
-			public const string ECER_Transcript_ApplicantId_Contact = "ECER_Transcript_ApplicantId_Contact";
-			public const string ECER_WorkExperienceRef_ApplicantId = "ECER_WorkExperienceRef_ApplicantId";
+			public const string DoNotSendMM = "donotsendmm";
+			public const string ecer_AboriginalType = "ecer_aboriginaltype";
+			public const string ecer_aboriginaltypeName = "ecer_aboriginaltypename";
+			public const string ecer_AgreetoTermsandConditions = "ecer_agreetotermsandconditions";
+			public const string ecer_AgreetoTermsandConditionsDate = "ecer_agreetotermsandconditionsdate";
+			public const string ecer_agreetotermsandconditionsName = "ecer_agreetotermsandconditionsname";
+			public const string ecer_application_Applicantid_contact = "ecer_application_Applicantid_contact";
+			public const string ecer_authentication_Contactid = "ecer_authentication_Contactid";
+			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
+			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
+			public const string ecer_changeofinformation_Contactid = "ecer_changeofinformation_Contactid";
+			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
+			public const string ecer_ClientID = "ecer_clientid";
+			public const string ecer_completedcourse_Applicantid = "ecer_completedcourse_Applicantid";
+			public const string ecer_contact_ecer_authentication_455 = "ecer_contact_ecer_authentication_455";
+			public const string ecer_contact_ecer_communication_122 = "ecer_contact_ecer_communication_122";
+			public const string ecer_contact_ecer_file_123 = "ecer_contact_ecer_file_123";
+			public const string ecer_contact_ecer_portaluser_474 = "ecer_contact_ecer_portaluser_474";
+			public const string ecer_contact_ecer_previousaddress_251 = "ecer_contact_ecer_previousaddress_251";
+			public const string ecer_ecer_characterreference_Applicantid_conta = "ecer_ecer_characterreference_Applicantid_conta";
+			public const string ecer_ecer_professionaldevelopment_Applicantid_ = "ecer_ecer_professionaldevelopment_Applicantid_";
+			public const string ecer_ecer_workexperienceref_ReferenceContactid = "ecer_ecer_workexperienceref_ReferenceContactid";
+			public const string ecer_IsBCECE = "ecer_isbcece";
+			public const string ecer_isbceceName = "ecer_isbcecename";
+			public const string ecer_IsVerified = "ecer_isverified";
+			public const string ecer_isverifiedName = "ecer_isverifiedname";
+			public const string ecer_portaluser_Contactid = "ecer_portaluser_Contactid";
+			public const string ecer_PreferredName = "ecer_preferredname";
+			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
+			public const string ecer_TermsandConditionsText = "ecer_termsandconditionstext";
+			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
+			public const string ecer_workexperienceref_Applicantid = "ecer_workexperienceref_Applicantid";
 			public const string EducationCode = "educationcode";
-			public const string EducationCodename = "educationcodename";
-			public const string EmailAddress1 = "emailaddress1";
-			public const string EmailAddress2 = "emailaddress2";
-			public const string EmailAddress3 = "emailaddress3";
+			public const string EducationCodeName = "educationcodename";
+			public const string EMailAddress1 = "emailaddress1";
+			public const string EMailAddress2 = "emailaddress2";
+			public const string EMailAddress3 = "emailaddress3";
 			public const string EmployeeId = "employeeid";
 			public const string EntityImage = "entityimage";
 			public const string EntityImage_Timestamp = "entityimage_timestamp";
-			public const string EntityImage_Url = "entityimage_url";
+			public const string EntityImage_URL = "entityimage_url";
 			public const string EntityImageId = "entityimageid";
-			public const string ExchangerAte = "exchangerate";
+			public const string ExchangeRate = "exchangerate";
 			public const string ExternalUserIdentifier = "externaluseridentifier";
 			public const string FamilyStatusCode = "familystatuscode";
-			public const string FamilyStatusCodename = "familystatuscodename";
+			public const string FamilyStatusCodeName = "familystatuscodename";
 			public const string Fax = "fax";
 			public const string FirstName = "firstname";
 			public const string FollowEmail = "followemail";
@@ -696,21 +697,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string FtpSiteUrl = "ftpsiteurl";
 			public const string FullName = "fullname";
 			public const string GenderCode = "gendercode";
-			public const string GenderCodename = "gendercodename";
+			public const string GenderCodeName = "gendercodename";
 			public const string GovernmentId = "governmentid";
 			public const string HasChildrenCode = "haschildrencode";
-			public const string HasChildrenCodename = "haschildrencodename";
+			public const string HasChildrenCodeName = "haschildrencodename";
 			public const string Home2 = "home2";
 			public const string ImportSequenceNumber = "importsequencenumber";
-			public const string IsBackOfficeCustomer = "isbackofficecustomer";
-			public const string IsBackOfficeCustomerName = "isbackofficecustomername";
+			public const string IsBackofficeCustomer = "isbackofficecustomer";
+			public const string IsBackofficeCustomerName = "isbackofficecustomername";
 			public const string IsPrivateName = "isprivatename";
 			public const string JobTitle = "jobtitle";
 			public const string LastName = "lastname";
 			public const string LastOnHoldTime = "lastonholdtime";
 			public const string LastUsedInCampaign = "lastusedincampaign";
 			public const string LeadSourceCode = "leadsourcecode";
-			public const string LeadSourceCodename = "leadsourcecodename";
+			public const string LeadSourceCodeName = "leadsourcecodename";
 			public const string ManagerName = "managername";
 			public const string ManagerPhone = "managerphone";
 			public const string MarketingOnly = "marketingonly";
@@ -732,31 +733,31 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
 			public const string ModifiedOnBehalfByName = "modifiedonbehalfbyname";
 			public const string ModifiedOnBehalfByYomiName = "modifiedonbehalfbyyominame";
-			public const string MSa_ManagingPartnerId = "msa_managingpartnerid";
-			public const string MsA_ManagingPartnerIdName = "msa_managingpartneridname";
-			public const string MsA_ManagingPartnerIdYomiName = "msa_managingpartneridyominame";
-			public const string Msdyn_ContactKPiId = "msdyn_contactkpiid";
-			public const string Msdyn_ContactKPiIdName = "msdyn_contactkpiidname";
-			public const string Msdyn_DecisionInfluenceTag = "msdyn_decisioninfluencetag";
-			public const string Msdyn_DecisionInfluenceTagName = "msdyn_decisioninfluencetagname";
-			public const string Msdyn_DisableWebTracking = "msdyn_disablewebtracking";
-			public const string Msdyn_DisableWebTrackingName = "msdyn_disablewebtrackingname";
-			public const string Msdyn_GdPrOptOut = "msdyn_gdproptout";
-			public const string Msdyn_GdPrOptOutName = "msdyn_gdproptoutname";
-			public const string Msdyn_IsAssistantInorgChart = "msdyn_isassistantinorgchart";
-			public const string Msdyn_IsAssistantInorgChartName = "msdyn_isassistantinorgchartname";
-			public const string Msdyn_IsMinor = "msdyn_isminor";
-			public const string Msdyn_IsMinorName = "msdyn_isminorname";
-			public const string Msdyn_IsMinorWithParentalConsent = "msdyn_isminorwithparentalconsent";
-			public const string Msdyn_IsMinorWithParentalConsentName = "msdyn_isminorwithparentalconsentname";
-			public const string Msdyn_OrgChangeStatus = "msdyn_orgchangestatus";
-			public const string Msdyn_OrgChangeStatusName = "msdyn_orgchangestatusname";
-			public const string Msdyn_PortalTermsAgreementDate = "msdyn_portaltermsagreementdate";
-			public const string Msdyn_SegmentId = "msdyn_segmentid";
-			public const string Msdyn_SegmentIdName = "msdyn_segmentidname";
-			public const string MsPp_UserPreferredLcId = "mspp_userpreferredlcid";
-			public const string MsPp_UserPreferredLcIdName = "mspp_userpreferredlcidname";
-			public const string Nickname = "nickname";
+			public const string msa_managingpartnerid = "msa_managingpartnerid";
+			public const string msa_managingpartneridName = "msa_managingpartneridname";
+			public const string msa_managingpartneridYomiName = "msa_managingpartneridyominame";
+			public const string msdyn_contactkpiid = "msdyn_contactkpiid";
+			public const string msdyn_contactkpiidName = "msdyn_contactkpiidname";
+			public const string msdyn_decisioninfluencetag = "msdyn_decisioninfluencetag";
+			public const string msdyn_decisioninfluencetagName = "msdyn_decisioninfluencetagname";
+			public const string msdyn_disablewebtracking = "msdyn_disablewebtracking";
+			public const string msdyn_disablewebtrackingName = "msdyn_disablewebtrackingname";
+			public const string msdyn_gdproptout = "msdyn_gdproptout";
+			public const string msdyn_gdproptoutName = "msdyn_gdproptoutname";
+			public const string msdyn_isassistantinorgchart = "msdyn_isassistantinorgchart";
+			public const string msdyn_isassistantinorgchartName = "msdyn_isassistantinorgchartname";
+			public const string msdyn_isminor = "msdyn_isminor";
+			public const string msdyn_isminorName = "msdyn_isminorname";
+			public const string msdyn_isminorwithparentalconsent = "msdyn_isminorwithparentalconsent";
+			public const string msdyn_isminorwithparentalconsentName = "msdyn_isminorwithparentalconsentname";
+			public const string msdyn_orgchangestatus = "msdyn_orgchangestatus";
+			public const string msdyn_orgchangestatusName = "msdyn_orgchangestatusname";
+			public const string msdyn_portaltermsagreementdate = "msdyn_portaltermsagreementdate";
+			public const string msdyn_segmentid = "msdyn_segmentid";
+			public const string msdyn_segmentidName = "msdyn_segmentidname";
+			public const string mspp_userpreferredlcid = "mspp_userpreferredlcid";
+			public const string mspp_userpreferredlcidName = "mspp_userpreferredlcidname";
+			public const string NickName = "nickname";
 			public const string NumberOfChildren = "numberofchildren";
 			public const string OnHoldTime = "onholdtime";
 			public const string OriginatingLeadId = "originatingleadid";
@@ -780,13 +781,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ParticipatesInWorkflow = "participatesinworkflow";
 			public const string ParticipatesInWorkflowName = "participatesinworkflowname";
 			public const string PaymentTermsCode = "paymenttermscode";
-			public const string PaymentTermsCodename = "paymenttermscodename";
+			public const string PaymentTermsCodeName = "paymenttermscodename";
 			public const string PreferredAppointmentDayCode = "preferredappointmentdaycode";
-			public const string PreferredAppointmentDayCodename = "preferredappointmentdaycodename";
+			public const string PreferredAppointmentDayCodeName = "preferredappointmentdaycodename";
 			public const string PreferredAppointmentTimeCode = "preferredappointmenttimecode";
-			public const string PreferredAppointmentTimeCodename = "preferredappointmenttimecodename";
+			public const string PreferredAppointmentTimeCodeName = "preferredappointmenttimecodename";
 			public const string PreferredContactMethodCode = "preferredcontactmethodcode";
-			public const string PreferredContactMethodCodename = "preferredcontactmethodcodename";
+			public const string PreferredContactMethodCodeName = "preferredcontactmethodcodename";
 			public const string PreferredEquipmentId = "preferredequipmentid";
 			public const string PreferredEquipmentIdName = "preferredequipmentidname";
 			public const string PreferredServiceId = "preferredserviceid";
@@ -795,21 +796,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string PreferredSystemUserIdName = "preferredsystemuseridname";
 			public const string PreferredSystemUserIdYomiName = "preferredsystemuseridyominame";
 			public const string ProcessId = "processid";
-			public const string ReferencedContact_Customer_Contacts = "ReferencedContact_Customer_Contacts";
-			public const string ReferencedContact_Master_Contact = "ReferencedContact_Master_Contact";
+			public const string Referencedcontact_customer_contacts = "Referencedcontact_customer_contacts";
+			public const string Referencedcontact_master_contact = "Referencedcontact_master_contact";
 			public const string Salutation = "salutation";
 			public const string ShippingMethodCode = "shippingmethodcode";
-			public const string ShippingMethodCodename = "shippingmethodcodename";
-			public const string SlaId = "slaid";
-			public const string SlaInvokedId = "slainvokedid";
-			public const string SlaInvokedIdName = "slainvokedidname";
-			public const string SlaName = "slaname";
+			public const string ShippingMethodCodeName = "shippingmethodcodename";
+			public const string SLAId = "slaid";
+			public const string SLAInvokedId = "slainvokedid";
+			public const string SLAInvokedIdName = "slainvokedidname";
+			public const string SLAName = "slaname";
 			public const string SpousesName = "spousesname";
 			public const string StageId = "stageid";
 			public const string StateCode = "statecode";
-			public const string StateCodename = "statecodename";
+			public const string StateCodeName = "statecodename";
 			public const string StatusCode = "statuscode";
-			public const string StatusCodename = "statuscodename";
+			public const string StatusCodeName = "statuscodename";
 			public const string SubscriptionId = "subscriptionid";
 			public const string Suffix = "suffix";
 			public const string TeamsFollowed = "teamsfollowed";
@@ -817,15 +818,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Telephone2 = "telephone2";
 			public const string Telephone3 = "telephone3";
 			public const string TerritoryCode = "territorycode";
-			public const string TerritoryCodename = "territorycodename";
+			public const string TerritoryCodeName = "territorycodename";
 			public const string TimeSpentByMeOnEmailAndMeetings = "timespentbymeonemailandmeetings";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
 			public const string TransactionCurrencyId = "transactioncurrencyid";
 			public const string TransactionCurrencyIdName = "transactioncurrencyidname";
 			public const string TraversedPath = "traversedpath";
-			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
-			public const string WebsiteUrl = "websiteurl";
+			public const string WebSiteUrl = "websiteurl";
 			public const string YomiFirstName = "yomifirstname";
 			public const string YomiFullName = "yomifullname";
 			public const string YomiLastName = "yomilastname";
@@ -937,7 +938,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("accountrolecodename")]
-		public string AccountRoleCodename
+		public string AccountRoleCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -990,7 +991,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_addresstypecodename")]
-		public string Address1_AddressTypeCodename
+		public string Address1_AddressTypeCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1110,7 +1111,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_freighttermscodename")]
-		public string Address1_FreightTermsCodename
+		public string Address1_FreightTermsCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1256,7 +1257,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Type the post office box number of the primary address.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_postofficebox")]
-		public string Address1_PostofficeBox
+		public string Address1_PostOfficeBox
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1307,7 +1308,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_shippingmethodcodename")]
-		public string Address1_ShippingMethodCodename
+		public string Address1_ShippingMethodCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1399,7 +1400,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Type the UPS zone of the primary address to make sure shipping charges are calculated correctly and deliveries are made promptly, if shipped by UPS.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_upszone")]
-		public string Address1_UpsZone
+		public string Address1_UPSZone
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1417,7 +1418,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Select the time zone, or UTC offset, for this address so that other people can reference it when they contact someone at this address.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address1_utcoffset")]
-		public System.Nullable<int> Address1_UtcOffset
+		public System.Nullable<int> Address1_UTCOffset
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1468,7 +1469,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_addresstypecodename")]
-		public string Address2_AddressTypeCodename
+		public string Address2_AddressTypeCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1588,7 +1589,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_freighttermscodename")]
-		public string Address2_FreightTermsCodename
+		public string Address2_FreightTermsCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1734,7 +1735,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Type the post office box number of the secondary address.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_postofficebox")]
-		public string Address2_PostofficeBox
+		public string Address2_PostOfficeBox
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1785,7 +1786,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_shippingmethodcodename")]
-		public string Address2_ShippingMethodCodename
+		public string Address2_ShippingMethodCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1877,7 +1878,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Type the UPS zone of the secondary address to make sure shipping charges are calculated correctly and deliveries are made promptly, if shipped by UPS.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_upszone")]
-		public string Address2_UpsZone
+		public string Address2_UPSZone
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1895,7 +1896,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Select the time zone, or UTC offset, for this address so that other people can reference it when they contact someone at this address.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address2_utcoffset")]
-		public System.Nullable<int> Address2_UtcOffset
+		public System.Nullable<int> Address2_UTCOffset
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1946,7 +1947,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address3_addresstypecodename")]
-		public string Address3_AddressTypeCodename
+		public string Address3_AddressTypeCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2066,7 +2067,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address3_freighttermscodename")]
-		public string Address3_FreightTermsCodename
+		public string Address3_FreightTermsCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2212,7 +2213,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// the post office box number of the 3rd address.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address3_postofficebox")]
-		public string Address3_PostofficeBox
+		public string Address3_PostOfficeBox
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2263,7 +2264,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address3_shippingmethodcodename")]
-		public string Address3_ShippingMethodCodename
+		public string Address3_ShippingMethodCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2355,7 +2356,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Type the UPS zone of the third address to make sure shipping charges are calculated correctly and deliveries are made promptly, if shipped by UPS.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address3_upszone")]
-		public string Address3_UpsZone
+		public string Address3_UPSZone
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2373,7 +2374,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Select the time zone, or UTC offset, for this address so that other people can reference it when they contact someone at this address.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("address3_utcoffset")]
-		public System.Nullable<int> Address3_UtcOffset
+		public System.Nullable<int> Address3_UTCOffset
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2388,7 +2389,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_confirmremovepassword")]
-		public System.Nullable<bool> AdX_ConfirmRemovePassword
+		public System.Nullable<bool> adx_ConfirmRemovePassword
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2403,7 +2404,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_confirmremovepasswordname")]
-		public string AdX_ConfirmRemovePasswordName
+		public string adx_confirmremovepasswordName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2420,7 +2421,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_createdbyipaddress")]
-		public string AdX_CreatedByIpAddress
+		public string Adx_CreatedByIPAddress
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2435,7 +2436,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_createdbyusername")]
-		public string AdX_CreatedByUsername
+		public string Adx_CreatedByUsername
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2453,7 +2454,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Shows the current count of failed password attempts for the contact.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_accessfailedcount")]
-		public System.Nullable<int> AdX_Identity_AccessFailedCount
+		public System.Nullable<int> adx_identity_accessfailedcount
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2471,7 +2472,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Determines if the email is confirmed by the contact.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_emailaddress1confirmed")]
-		public System.Nullable<bool> AdX_Identity_EmailAddress1Confirmed
+		public System.Nullable<bool> adx_identity_emailaddress1confirmed
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2486,7 +2487,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_emailaddress1confirmedname")]
-		public string AdX_Identity_EmailAddress1ConfirmedName
+		public string adx_identity_emailaddress1confirmedName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2506,7 +2507,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Indicates the last date and time the user successfully signed in to a portal.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_lastsuccessfullogin")]
-		public System.Nullable<System.DateTime> AdX_Identity_LastSuccessfulLogin
+		public System.Nullable<System.DateTime> adx_identity_lastsuccessfullogin
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2524,7 +2525,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Indicates that the contact can no longer sign in to the portal using the local account.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_locallogindisabled")]
-		public System.Nullable<bool> AdX_Identity_LocalLoginDisabled
+		public System.Nullable<bool> adx_identity_locallogindisabled
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2539,7 +2540,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_locallogindisabledname")]
-		public string AdX_Identity_LocalLoginDisabledName
+		public string adx_identity_locallogindisabledName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2559,7 +2560,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Determines if this contact will track failed access attempts and become locked after too many failed attempts. To prevent the contact from becoming locked, you can disable this setting.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_lockoutenabled")]
-		public System.Nullable<bool> AdX_Identity_LockoutEnabled
+		public System.Nullable<bool> adx_identity_lockoutenabled
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2574,7 +2575,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_lockoutenabledname")]
-		public string AdX_Identity_LockoutEnabledName
+		public string adx_identity_lockoutenabledName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2594,7 +2595,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Shows the moment in time when the locked contact becomes unlocked again.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_lockoutenddate")]
-		public System.Nullable<System.DateTime> AdX_Identity_LockoutEndDate
+		public System.Nullable<System.DateTime> adx_identity_lockoutenddate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2612,7 +2613,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Determines if web authentication is enabled for the contact.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_logonenabled")]
-		public System.Nullable<bool> AdX_Identity_LogOnEnabled
+		public System.Nullable<bool> adx_identity_logonenabled
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2627,7 +2628,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_logonenabledname")]
-		public string AdX_Identity_LogOnEnabledName
+		public string adx_identity_logonenabledName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2647,7 +2648,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Determines if the phone number is confirmed by the contact.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_mobilephoneconfirmed")]
-		public System.Nullable<bool> AdX_Identity_MobilePhoneConfirmed
+		public System.Nullable<bool> adx_identity_mobilephoneconfirmed
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2662,7 +2663,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_mobilephoneconfirmedname")]
-		public string AdX_Identity_MobilePhoneConfirmedName
+		public string adx_identity_mobilephoneconfirmedName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2679,7 +2680,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_newpassword")]
-		public string AdX_Identity_NewPassword
+		public string adx_identity_newpassword
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2694,7 +2695,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_passwordhash")]
-		public string AdX_Identity_PasswordHash
+		public string adx_identity_passwordhash
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2712,7 +2713,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// A token used to manage the web authentication session.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_securitystamp")]
-		public string AdX_Identity_SecurityStamp
+		public string adx_identity_securitystamp
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2730,7 +2731,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Determines if two-factor authentication is enabled for the contact.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_twofactorenabled")]
-		public System.Nullable<bool> AdX_Identity_TwoFactorEnabled
+		public System.Nullable<bool> adx_identity_twofactorenabled
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2745,7 +2746,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_twofactorenabledname")]
-		public string AdX_Identity_TwoFactorEnabledName
+		public string adx_identity_twofactorenabledName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2765,7 +2766,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Shows the user identity for local web authentication.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_identity_username")]
-		public string AdX_Identity_Username
+		public string adx_identity_username
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2780,7 +2781,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_modifiedbyipaddress")]
-		public string AdX_ModifiedByIpAddress
+		public string Adx_ModifiedByIPAddress
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2795,7 +2796,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_modifiedbyusername")]
-		public string AdX_ModifiedByUsername
+		public string Adx_ModifiedByUsername
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2810,7 +2811,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_organizationname")]
-		public string AdX_OrganizationName
+		public string Adx_OrganizationName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2828,7 +2829,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// User’s preferred portal LCID
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_preferredlcid")]
-		public System.Nullable<int> AdX_PreferredLcId
+		public System.Nullable<int> adx_preferredlcid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2843,7 +2844,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_profilealert")]
-		public System.Nullable<bool> AdX_ProfileAlert
+		public System.Nullable<bool> adx_profilealert
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2858,7 +2859,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_profilealertdate")]
-		public System.Nullable<System.DateTime> AdX_ProfileAlertDate
+		public System.Nullable<System.DateTime> adx_profilealertdate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2873,7 +2874,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_profilealertinstructions")]
-		public string AdX_ProfileAlertInstructions
+		public string adx_profilealertinstructions
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2888,7 +2889,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_profilealertname")]
-		public string AdX_ProfileAlertName
+		public string adx_profilealertName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2905,7 +2906,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_profileisanonymous")]
-		public System.Nullable<bool> AdX_ProfileIsAnonymous
+		public System.Nullable<bool> Adx_ProfileIsAnonymous
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2920,7 +2921,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_profileisanonymousname")]
-		public string AdX_ProfileIsAnonymousName
+		public string adx_profileisanonymousName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2937,7 +2938,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_profilelastactivity")]
-		public System.Nullable<System.DateTime> AdX_ProfileLastActivity
+		public System.Nullable<System.DateTime> Adx_ProfileLastActivity
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2952,7 +2953,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_profilemodifiedon")]
-		public System.Nullable<System.DateTime> AdX_ProfileModifiedOn
+		public System.Nullable<System.DateTime> adx_profilemodifiedon
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2967,7 +2968,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_publicprofilecopy")]
-		public string AdX_PublicProfileCopy
+		public string adx_PublicProfileCopy
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -2982,7 +2983,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_timezone")]
-		public System.Nullable<int> AdX_TimeZone
+		public System.Nullable<int> Adx_TimeZone
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -3163,7 +3164,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Enter the contact's birthday for use in customer gift programs or other communications.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("birthdate")]
-		public System.Nullable<System.DateTime> Birthdate
+		public System.Nullable<System.DateTime> BirthDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -3570,7 +3571,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customersizecodename")]
-		public string CustomerSizeCodename
+		public string CustomerSizeCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -3605,7 +3606,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("customertypecodename")]
-		public string CustomerTypeCodename
+		public string CustomerTypeCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -3696,7 +3697,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Select whether the contact accepts bulk email sent through marketing campaigns or quick campaigns. If Do Not Allow is selected, the contact can be added to marketing lists, but will be excluded from the email.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotbulkemail")]
-		public System.Nullable<bool> DoNotBulkEmail
+		public System.Nullable<bool> DoNotBulkEMail
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -3711,7 +3712,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotbulkemailname")]
-		public string DoNotBulkEmailName
+		public string DoNotBulkEMailName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -3766,7 +3767,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Select whether the contact allows direct email sent from Microsoft Dynamics 365. If Do Not Allow is selected, Microsoft Dynamics 365 will not send the email.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotemail")]
-		public System.Nullable<bool> DoNotEmail
+		public System.Nullable<bool> DoNotEMail
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -3781,7 +3782,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotemailname")]
-		public string DoNotEmailName
+		public string DoNotEMailName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -3923,7 +3924,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Select whether the contact accepts marketing materials, such as brochures or catalogs. Contacts that opt out can be excluded from marketing initiatives.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("donotsendmm")]
-		public System.Nullable<bool> DoNotSendMm
+		public System.Nullable<bool> DoNotSendMM
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -3938,12 +3939,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_aboriginaltype")]
-		public virtual ECER_AboriginalType? ECER_AboriginalType
+		public virtual ecer_AboriginalType? ecer_AboriginalType
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_AboriginalType?)(EntityOptionSetEnum.GetEnum(this, "ecer_aboriginaltype")));
+				return ((ecer_AboriginalType?)(EntityOptionSetEnum.GetEnum(this, "ecer_aboriginaltype")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -3953,7 +3954,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_aboriginaltypename")]
-		public string ECER_AboriginalTypeName
+		public string ecer_aboriginaltypeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -3970,7 +3971,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_agreetotermsandconditions")]
-		public System.Nullable<bool> ECER_AgreeToterMsAndConditions
+		public System.Nullable<bool> ecer_AgreetoTermsandConditions
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -3985,7 +3986,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_agreetotermsandconditionsdate")]
-		public System.Nullable<System.DateTime> ECER_AgreeToterMsAndConditionsDate
+		public System.Nullable<System.DateTime> ecer_AgreetoTermsandConditionsDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4000,7 +4001,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_agreetotermsandconditionsname")]
-		public string ECER_AgreeToterMsAndConditionsName
+		public string ecer_agreetotermsandconditionsName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4020,7 +4021,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Readable ID For Contact.  Map to Oracle CLI_ID
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_clientid")]
-		public string ECER_ClientId
+		public string ecer_ClientID
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4038,7 +4039,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// is BC ECE Registrant. Use to show hide other tabs
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isbcece")]
-		public System.Nullable<bool> ECER_IsBcECE
+		public System.Nullable<bool> ecer_IsBCECE
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4053,7 +4054,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isbcecename")]
-		public string ECER_IsBcECEName
+		public string ecer_isbceceName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4070,7 +4071,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isverified")]
-		public System.Nullable<bool> ECER_IsVerified
+		public System.Nullable<bool> ecer_IsVerified
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4085,7 +4086,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isverifiedname")]
-		public string ECER_IsVerifiedName
+		public string ecer_isverifiedName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4102,7 +4103,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_preferredname")]
-		public string ECER_PreferredName
+		public string ecer_PreferredName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4117,7 +4118,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_termsandconditionstext")]
-		public string ECER_TermsAndConditionsText
+		public string ecer_TermsandConditionsText
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4150,7 +4151,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("educationcodename")]
-		public string EducationCodename
+		public string EducationCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4170,7 +4171,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Type the primary email address for the contact.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("emailaddress1")]
-		public string EmailAddress1
+		public string EMailAddress1
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4188,7 +4189,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Type the secondary email address for the contact.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("emailaddress2")]
-		public string EmailAddress2
+		public string EMailAddress2
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4206,7 +4207,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Type an alternate email address for the contact.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("emailaddress3")]
-		public string EmailAddress3
+		public string EMailAddress3
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4267,7 +4268,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("entityimage_url")]
-		public string EntityImage_Url
+		public string EntityImage_URL
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4293,7 +4294,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Shows the conversion rate of the record's currency. The exchange rate is used to convert all money fields in the record from the local currency to the system's default currency.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("exchangerate")]
-		public System.Nullable<decimal> ExchangerAte
+		public System.Nullable<decimal> ExchangeRate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4339,7 +4340,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("familystatuscodename")]
-		public string FamilyStatusCodename
+		public string FamilyStatusCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4476,7 +4477,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("gendercodename")]
-		public string GenderCodename
+		public string GenderCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4529,7 +4530,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("haschildrencodename")]
-		public string HasChildrenCodename
+		public string HasChildrenCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4585,7 +4586,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Select whether the contact exists in a separate accounting or other system, such as Microsoft Dynamics GP or another ERP database, for use in integration processes.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isbackofficecustomer")]
-		public System.Nullable<bool> IsBackOfficeCustomer
+		public System.Nullable<bool> IsBackofficeCustomer
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4600,7 +4601,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isbackofficecustomername")]
-		public string IsBackOfficeCustomerName
+		public string IsBackofficeCustomerName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -4724,7 +4725,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("leadsourcecodename")]
-		public string LeadSourceCodename
+		public string LeadSourceCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5087,7 +5088,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Unique identifier for Account associated with Contact.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msa_managingpartnerid")]
-		public Microsoft.Xrm.Sdk.EntityReference MSa_ManagingPartnerId
+		public Microsoft.Xrm.Sdk.EntityReference msa_managingpartnerid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5102,7 +5103,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msa_managingpartneridname")]
-		public string MsA_ManagingPartnerIdName
+		public string msa_managingpartneridName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5119,7 +5120,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msa_managingpartneridyominame")]
-		public string MsA_ManagingPartnerIdYomiName
+		public string msa_managingpartneridYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5139,7 +5140,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Maps to contact KPI records
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_contactkpiid")]
-		public Microsoft.Xrm.Sdk.EntityReference Msdyn_ContactKPiId
+		public Microsoft.Xrm.Sdk.EntityReference msdyn_contactkpiid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5154,7 +5155,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_contactkpiidname")]
-		public string Msdyn_ContactKPiIdName
+		public string msdyn_contactkpiidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5174,12 +5175,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Indicate buying influence using labels
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_decisioninfluencetag")]
-		public virtual Contact_Msdyn_DecisionInfluenceTag? Msdyn_DecisionInfluenceTag
+		public virtual Contact_msdyn_decisioninfluencetag? msdyn_decisioninfluencetag
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((Contact_Msdyn_DecisionInfluenceTag?)(EntityOptionSetEnum.GetEnum(this, "msdyn_decisioninfluencetag")));
+				return ((Contact_msdyn_decisioninfluencetag?)(EntityOptionSetEnum.GetEnum(this, "msdyn_decisioninfluencetag")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -5189,7 +5190,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_decisioninfluencetagname")]
-		public string Msdyn_DecisionInfluenceTagName
+		public string msdyn_decisioninfluencetagName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5209,7 +5210,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Indicates that the contact has opted out of web tracking.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_disablewebtracking")]
-		public System.Nullable<bool> Msdyn_DisableWebTracking
+		public System.Nullable<bool> msdyn_disablewebtracking
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5224,7 +5225,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_disablewebtrackingname")]
-		public string Msdyn_DisableWebTrackingName
+		public string msdyn_disablewebtrackingName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5244,7 +5245,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Describes whether contact is opted out or not
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_gdproptout")]
-		public System.Nullable<bool> Msdyn_GdPrOptOut
+		public System.Nullable<bool> msdyn_gdproptout
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5259,7 +5260,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_gdproptoutname")]
-		public string Msdyn_GdPrOptOutName
+		public string msdyn_gdproptoutName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5279,7 +5280,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Describes if the contact is an assistant in org chart
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_isassistantinorgchart")]
-		public System.Nullable<bool> Msdyn_IsAssistantInorgChart
+		public System.Nullable<bool> msdyn_isassistantinorgchart
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5294,7 +5295,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_isassistantinorgchartname")]
-		public string Msdyn_IsAssistantInorgChartName
+		public string msdyn_isassistantinorgchartName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5314,7 +5315,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Indicates that the contact is considered a minor in their jurisdiction.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_isminor")]
-		public System.Nullable<bool> Msdyn_IsMinor
+		public System.Nullable<bool> msdyn_isminor
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5329,7 +5330,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_isminorname")]
-		public string Msdyn_IsMinorName
+		public string msdyn_isminorName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5349,7 +5350,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Indicates that the contact is considered a minor in their jurisdiction and has parental consent.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_isminorwithparentalconsent")]
-		public System.Nullable<bool> Msdyn_IsMinorWithParentalConsent
+		public System.Nullable<bool> msdyn_isminorwithparentalconsent
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5364,7 +5365,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_isminorwithparentalconsentname")]
-		public string Msdyn_IsMinorWithParentalConsentName
+		public string msdyn_isminorwithparentalconsentName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5384,12 +5385,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Whether or not the contact belongs to the associated account
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_orgchangestatus")]
-		public virtual Contact_Msdyn_OrgChangeStatus? Msdyn_OrgChangeStatus
+		public virtual Contact_msdyn_orgchangestatus? msdyn_orgchangestatus
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((Contact_Msdyn_OrgChangeStatus?)(EntityOptionSetEnum.GetEnum(this, "msdyn_orgchangestatus")));
+				return ((Contact_msdyn_orgchangestatus?)(EntityOptionSetEnum.GetEnum(this, "msdyn_orgchangestatus")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -5399,7 +5400,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_orgchangestatusname")]
-		public string Msdyn_OrgChangeStatusName
+		public string msdyn_orgchangestatusName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5419,7 +5420,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Indicates the date and time that the person agreed to the portal terms and conditions.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_portaltermsagreementdate")]
-		public System.Nullable<System.DateTime> Msdyn_PortalTermsAgreementDate
+		public System.Nullable<System.DateTime> msdyn_portaltermsagreementdate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5437,7 +5438,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Unique identifier for Segment associated with contact.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_segmentid")]
-		public Microsoft.Xrm.Sdk.EntityReference Msdyn_SegmentId
+		public Microsoft.Xrm.Sdk.EntityReference msdyn_segmentid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5452,7 +5453,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_segmentidname")]
-		public string Msdyn_SegmentIdName
+		public string msdyn_segmentidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5472,12 +5473,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// User’s preferred portal language
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mspp_userpreferredlcid")]
-		public virtual PowerPageLanguages? MsPp_UserPreferredLcId
+		public virtual powerpagelanguages? mspp_userpreferredlcid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((PowerPageLanguages?)(EntityOptionSetEnum.GetEnum(this, "mspp_userpreferredlcid")));
+				return ((powerpagelanguages?)(EntityOptionSetEnum.GetEnum(this, "mspp_userpreferredlcid")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -5487,7 +5488,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mspp_userpreferredlcidname")]
-		public string MsPp_UserPreferredLcIdName
+		public string mspp_userpreferredlcidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5507,7 +5508,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Type the contact's nickname.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("nickname")]
-		public string Nickname
+		public string NickName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5901,7 +5902,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("paymenttermscodename")]
-		public string PaymentTermsCodename
+		public string PaymentTermsCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5936,7 +5937,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredappointmentdaycodename")]
-		public string PreferredAppointmentDayCodename
+		public string PreferredAppointmentDayCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -5971,7 +5972,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredappointmenttimecodename")]
-		public string PreferredAppointmentTimeCodename
+		public string PreferredAppointmentTimeCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6006,7 +6007,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("preferredcontactmethodcodename")]
-		public string PreferredContactMethodCodename
+		public string PreferredContactMethodCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6199,7 +6200,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("shippingmethodcodename")]
-		public string ShippingMethodCodename
+		public string ShippingMethodCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6219,7 +6220,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Choose the service level agreement (SLA) that you want to apply to the Contact record.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("slaid")]
-		public Microsoft.Xrm.Sdk.EntityReference SlaId
+		public Microsoft.Xrm.Sdk.EntityReference SLAId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6237,7 +6238,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Last SLA that was applied to this case. This field is for internal use only.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("slainvokedid")]
-		public Microsoft.Xrm.Sdk.EntityReference SlaInvokedId
+		public Microsoft.Xrm.Sdk.EntityReference SLAInvokedId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6247,7 +6248,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("slainvokedidname")]
-		public string SlaInvokedIdName
+		public string SLAInvokedIdName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6264,7 +6265,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("slaname")]
-		public string SlaName
+		public string SLAName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6320,12 +6321,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Shows whether the contact is active or inactive. Inactive contacts are read-only and can't be edited unless they are reactivated.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual Contact_StateCode? StateCode
+		public virtual contact_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((Contact_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((contact_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -6335,7 +6336,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
-		public string StateCodename
+		public string StateCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6370,7 +6371,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
-		public string StatusCodename
+		public string StatusCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6513,7 +6514,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("territorycodename")]
-		public string TerritoryCodename
+		public string TerritoryCodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6617,7 +6618,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
-		public System.Nullable<int> UtcConversionTimeZoneCode
+		public System.Nullable<int> UTCConversionTimeZoneCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6648,7 +6649,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Type the contact's professional or personal website or blog URL.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("websiteurl")]
-		public string WebsiteUrl
+		public string WebSiteUrl
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6733,7 +6734,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N contact_customer_contacts
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("contact_customer_contacts", Microsoft.Xrm.Sdk.EntityRole.Referenced)]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.Contact> ReferencedContact_Customer_Contacts
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.Contact> Referencedcontact_customer_contacts
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6751,7 +6752,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N contact_master_contact
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("contact_master_contact", Microsoft.Xrm.Sdk.EntityRole.Referenced)]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.Contact> ReferencedContact_Master_Contact
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.Contact> Referencedcontact_master_contact
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -6769,17 +6770,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_application_Applicantid_contact
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_Applicantid_contact")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_Application> ECER_Application_ApplicantId_Contact
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Application> ecer_application_Applicantid_contact
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Application>("ecer_application_Applicantid_contact", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_Applicantid_contact", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Application>("ecer_application_Applicantid_contact", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_Applicantid_contact", null, value);
 			}
 		}
 		
@@ -6787,17 +6788,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_authentication_Contactid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_authentication_Contactid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_Authentication> ECER_Authentication_ContactId
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Authentication> ecer_authentication_Contactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Authentication>("ecer_authentication_Contactid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Authentication>("ecer_authentication_Contactid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Authentication>("ecer_authentication_Contactid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Authentication>("ecer_authentication_Contactid", null, value);
 			}
 		}
 		
@@ -6805,17 +6806,35 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_certificate_Registrantid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificate_Registrantid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_Certificate> ECER_Certificate_RegistrantId
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Certificate> ecer_certificate_Registrantid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Certificate>("ecer_certificate_Registrantid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_certificate_Registrantid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Certificate>("ecer_certificate_Registrantid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_certificate_Registrantid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_certificateconditions_Registrantid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificateconditions_Registrantid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions> ecer_certificateconditions_Registrantid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions>("ecer_certificateconditions_Registrantid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions>("ecer_certificateconditions_Registrantid", null, value);
 			}
 		}
 		
@@ -6823,17 +6842,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_changeofinformation_Contactid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_changeofinformation_Contactid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_ChangeOfInformation> ECER_ChangeOfInformation_ContactId
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ChangeofInformation> ecer_changeofinformation_Contactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_ChangeOfInformation>("ecer_changeofinformation_Contactid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ChangeofInformation>("ecer_changeofinformation_Contactid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_ChangeOfInformation>("ecer_changeofinformation_Contactid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ChangeofInformation>("ecer_changeofinformation_Contactid", null, value);
 			}
 		}
 		
@@ -6841,17 +6860,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_characterreference_ReferenceContactid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_characterreference_ReferenceContactid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_CharacterReference> ECER_CharacterReference_ReferenceContactId
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference> ecer_characterreference_ReferenceContactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_CharacterReference>("ecer_characterreference_ReferenceContactid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_characterreference_ReferenceContactid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_CharacterReference>("ecer_characterreference_ReferenceContactid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_characterreference_ReferenceContactid", null, value);
 			}
 		}
 		
@@ -6859,17 +6878,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_completedcourse_Applicantid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_completedcourse_Applicantid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_CompletedCourse> ECER_CompletedCourse_ApplicantId
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse> ecer_completedcourse_Applicantid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_CompletedCourse>("ecer_completedcourse_Applicantid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse>("ecer_completedcourse_Applicantid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_CompletedCourse>("ecer_completedcourse_Applicantid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse>("ecer_completedcourse_Applicantid", null, value);
 			}
 		}
 		
@@ -6877,17 +6896,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_contact_ecer_authentication_455
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_authentication_455")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_Authentication> ECER_Contact_ECER_Authentication_455
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Authentication> ecer_contact_ecer_authentication_455
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Authentication>("ecer_contact_ecer_authentication_455", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Authentication>("ecer_contact_ecer_authentication_455", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Authentication>("ecer_contact_ecer_authentication_455", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Authentication>("ecer_contact_ecer_authentication_455", null, value);
 			}
 		}
 		
@@ -6895,17 +6914,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_contact_ecer_communication_122
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_communication_122")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_Communication> ECER_Contact_ECER_Communication_122
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Communication> ecer_contact_ecer_communication_122
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Communication>("ecer_contact_ecer_communication_122", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_contact_ecer_communication_122", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Communication>("ecer_contact_ecer_communication_122", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_contact_ecer_communication_122", null, value);
 			}
 		}
 		
@@ -6913,17 +6932,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_contact_ecer_file_123
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_file_123")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_File> ECER_Contact_ECER_File_123
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_File> ecer_contact_ecer_file_123
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_File>("ecer_contact_ecer_file_123", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_File>("ecer_contact_ecer_file_123", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_File>("ecer_contact_ecer_file_123", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_File>("ecer_contact_ecer_file_123", null, value);
 			}
 		}
 		
@@ -6931,17 +6950,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_contact_ecer_portaluser_474
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_portaluser_474")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser> ECER_Contact_ECER_PortalUser_474
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser> ecer_contact_ecer_portaluser_474
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser>("ecer_contact_ecer_portaluser_474", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser>("ecer_contact_ecer_portaluser_474", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser>("ecer_contact_ecer_portaluser_474", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser>("ecer_contact_ecer_portaluser_474", null, value);
 			}
 		}
 		
@@ -6949,17 +6968,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_contact_ecer_previousaddress_251
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_previousaddress_251")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_PreviousAddress> ECER_Contact_ECER_PreviousAddress_251
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PreviousAddress> ecer_contact_ecer_previousaddress_251
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PreviousAddress>("ecer_contact_ecer_previousaddress_251", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PreviousAddress>("ecer_contact_ecer_previousaddress_251", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PreviousAddress>("ecer_contact_ecer_previousaddress_251", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PreviousAddress>("ecer_contact_ecer_previousaddress_251", null, value);
 			}
 		}
 		
@@ -6967,17 +6986,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_ecer_characterreference_Applicantid_conta
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_characterreference_Applicantid_conta")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_CharacterReference> ECER_ECER_CharacterReference_ApplicantId_ConTA
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference> ecer_ecer_characterreference_Applicantid_conta
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_CharacterReference>("ecer_ecer_characterreference_Applicantid_conta", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_ecer_characterreference_Applicantid_conta", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_CharacterReference>("ecer_ecer_characterreference_Applicantid_conta", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_ecer_characterreference_Applicantid_conta", null, value);
 			}
 		}
 		
@@ -6985,17 +7004,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_ecer_professionaldevelopment_Applicantid_
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_professionaldevelopment_Applicantid_")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_ProfessionalDevelopment> ECER_ECER_ProfessionalDevelopment_ApplicantId_
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment> ecer_ecer_professionaldevelopment_Applicantid_
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_ProfessionalDevelopment>("ecer_ecer_professionaldevelopment_Applicantid_", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment>("ecer_ecer_professionaldevelopment_Applicantid_", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_ProfessionalDevelopment>("ecer_ecer_professionaldevelopment_Applicantid_", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment>("ecer_ecer_professionaldevelopment_Applicantid_", null, value);
 			}
 		}
 		
@@ -7003,17 +7022,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_ecer_workexperienceref_ReferenceContactid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_workexperienceref_ReferenceContactid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceRef> ECER_ECER_WorkExperienceRef_ReferenceContactId
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef> ecer_ecer_workexperienceref_ReferenceContactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceRef>("ecer_ecer_workexperienceref_ReferenceContactid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_ecer_workexperienceref_ReferenceContactid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceRef>("ecer_ecer_workexperienceref_ReferenceContactid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_ecer_workexperienceref_ReferenceContactid", null, value);
 			}
 		}
 		
@@ -7021,17 +7040,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_portaluser_Contactid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portaluser_Contactid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser> ECER_PortalUser_ContactId
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser> ecer_portaluser_Contactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser>("ecer_portaluser_Contactid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser>("ecer_portaluser_Contactid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PortalUser>("ecer_portaluser_Contactid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser>("ecer_portaluser_Contactid", null, value);
 			}
 		}
 		
@@ -7039,17 +7058,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_previousname_Contactid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_previousname_Contactid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_PreviousName> ECER_PreviousName_ContactId
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName> ecer_previousname_Contactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PreviousName>("ecer_previousname_Contactid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName>("ecer_previousname_Contactid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_PreviousName>("ecer_previousname_Contactid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName>("ecer_previousname_Contactid", null, value);
 			}
 		}
 		
@@ -7057,17 +7076,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_transcript_Applicantid_Contact
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_transcript_Applicantid_Contact")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_Transcript> ECER_Transcript_ApplicantId_Contact
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Transcript> ecer_transcript_Applicantid_Contact
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Transcript>("ecer_transcript_Applicantid_Contact", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_transcript_Applicantid_Contact", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_Transcript>("ecer_transcript_Applicantid_Contact", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_transcript_Applicantid_Contact", null, value);
 			}
 		}
 		
@@ -7075,17 +7094,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_workexperienceref_Applicantid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_workexperienceref_Applicantid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceRef> ECER_WorkExperienceRef_ApplicantId
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef> ecer_workexperienceref_Applicantid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceRef>("ecer_workexperienceref_Applicantid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_workexperienceref_Applicantid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_WorkExperienceRef>("ecer_workexperienceref_Applicantid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_workexperienceref_Applicantid", null, value);
 			}
 		}
 		
@@ -7094,7 +7113,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("parentcustomerid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("contact_customer_contacts", Microsoft.Xrm.Sdk.EntityRole.Referencing)]
-		public ECER.Utilities.DataverseSdk.Model.Contact ReferencingContact_Customer_Contacts
+		public ECER.Utilities.DataverseSdk.Model.Contact Referencingcontact_customer_contacts
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -7113,7 +7132,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("masterid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("contact_master_contact", Microsoft.Xrm.Sdk.EntityRole.Referencing)]
-		public ECER.Utilities.DataverseSdk.Model.Contact ReferencingContact_Master_Contact
+		public ECER.Utilities.DataverseSdk.Model.Contact Referencingcontact_master_contact
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get

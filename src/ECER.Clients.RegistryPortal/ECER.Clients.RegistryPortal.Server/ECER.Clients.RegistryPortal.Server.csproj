@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<SpaRoot>..\ecer.clients.registryportal.client</SpaRoot>
@@ -9,9 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
-		<PackageReference Include="IdentityModel" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaProxy" />
-		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
 		<PackageReference Include="Swashbuckle.AspNetCore" />
 	</ItemGroup>
 

@@ -6,7 +6,7 @@ import type { Components } from "@/types/openapi";
 const getUserInfo = async (): Promise<Components.Schemas.UserProfile | null> => {
   try {
     const client = await getClient();
-    const response = await client.GetUserInfo();
+    const response = await client.userinfo_get();
 
     // Check if the response has data and userInfo property
     return response?.data?.userInfo ?? null;
@@ -25,7 +25,7 @@ const getUserInfo = async (): Promise<Components.Schemas.UserProfile | null> => 
 const createUser = async (user: Components.Schemas.NewUserRequest): Promise<boolean> => {
   try {
     const client = await getClient();
-    const response = await client.CreateUserInfo({}, user);
+    const response = await client.profile_post({}, user);
     return response.status === 200;
   } catch (error) {
     console.log("Error creating user:", error);

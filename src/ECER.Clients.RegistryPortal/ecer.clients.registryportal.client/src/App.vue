@@ -61,6 +61,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "@/styles/typography.scss";
-@import "@/styles/button.scss";
+@import "@/styles/main.scss";
 </style>

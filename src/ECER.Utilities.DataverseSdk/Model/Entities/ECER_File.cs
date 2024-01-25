@@ -17,7 +17,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_File_StateCode
+	public enum ecer_file_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -32,7 +32,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_File_StatusCode
+	public enum ecer_File_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -45,7 +45,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_file")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ECER_File : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_File : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
@@ -60,22 +60,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ECER_ApplicationId = "ecer_applicationid";
-			public const string ECER_ApplicationIdName = "ecer_applicationidname";
-			public const string ECER_Contact_ECER_File_123 = "ecer_contact_ecer_file_123";
-			public const string ECER_CustomerId = "ecer_customerid";
-			public const string ECER_CustomerIdName = "ecer_customeridname";
-			public const string ECER_CustomerIdYomiName = "ecer_customeridyominame";
-			public const string ECER_DocumentFile = "ecer_documentfile";
-			public const string ECER_DocumentFile_Name = "ecer_documentfile_name";
-			public const string ECER_File_ApplicationId_ECER_Application = "ecer_file_Applicationid_ecer_application";
-			public const string ECER_FileId = "ecer_fileid";
+			public const string ecer_Applicationid = "ecer_applicationid";
+			public const string ecer_ApplicationidName = "ecer_applicationidname";
+			public const string ecer_Communicationid = "ecer_communicationid";
+			public const string ecer_CommunicationidName = "ecer_communicationidname";
+			public const string ecer_contact_ecer_file_123 = "ecer_contact_ecer_file_123";
+			public const string ecer_Customerid = "ecer_customerid";
+			public const string ecer_CustomeridName = "ecer_customeridname";
+			public const string ecer_CustomeridYomiName = "ecer_customeridyominame";
+			public const string ecer_DocumentFile = "ecer_documentfile";
+			public const string ecer_DocumentFile_Name = "ecer_documentfile_name";
+			public const string ecer_file_Applicationid_ecer_application = "ecer_file_Applicationid_ecer_application";
+			public const string ecer_file_Communicationid = "ecer_file_Communicationid";
+			public const string ecer_FileId = "ecer_fileid";
 			public const string Id = "ecer_fileid";
-			public const string ECER_ImageFile = "ecer_imagefile";
-			public const string ECER_ImageFile_Timestamp = "ecer_imagefile_timestamp";
-			public const string ECER_ImageFile_Url = "ecer_imagefile_url";
-			public const string ECER_ImageFileId = "ecer_imagefileid";
-			public const string ECER_Name = "ecer_name";
+			public const string ecer_ImageFile = "ecer_imagefile";
+			public const string ecer_ImageFile_Timestamp = "ecer_imagefile_timestamp";
+			public const string ecer_ImageFile_URL = "ecer_imagefile_url";
+			public const string ecer_ImageFileId = "ecer_imagefileid";
+			public const string ecer_Name = "ecer_name";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -93,28 +96,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
 			public const string StateCode = "statecode";
-			public const string StateCodename = "statecodename";
+			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
-			public const string StatusCodename = "statuscodename";
+			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_File(System.Guid id) : 
+		public ecer_File(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_File(string keyName, object keyValue) : 
+		public ecer_File(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_File(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_File(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -123,7 +126,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_File() : 
+		public ecer_File() : 
 				base(EntityLogicalName)
 		{
 		}
@@ -253,7 +256,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_ApplicationId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Applicationid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -268,7 +271,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationidname")]
-		public string ECER_ApplicationIdName
+		public string ecer_ApplicationidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -284,8 +287,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Communicationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_communicationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_communicationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationidname")]
+		public string ecer_CommunicationidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_communicationid"))
+				{
+					return this.FormattedValues["ecer_communicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customerid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_CustomerId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Customerid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -300,7 +335,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customeridname")]
-		public string ECER_CustomerIdName
+		public string ecer_CustomeridName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -317,7 +352,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customeridyominame")]
-		public string ECER_CustomerIdYomiName
+		public string ecer_CustomeridYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -334,7 +369,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfile")]
-		public object ECER_DocumentFile
+		public object ecer_DocumentFile
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -344,7 +379,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfile_name")]
-		public string ECER_DocumentFile_Name
+		public string ecer_DocumentFile_Name
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -364,7 +399,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Unique identifier for entity instances
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fileid")]
-		public System.Nullable<System.Guid> ECER_FileId
+		public System.Nullable<System.Guid> ecer_FileId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -397,12 +432,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ECER_FileId = value;
+				this.ecer_FileId = value;
 			}
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_imagefile")]
-		public byte[] ECER_ImageFile
+		public byte[] ecer_ImageFile
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -417,7 +452,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_imagefile_timestamp")]
-		public System.Nullable<long> ECER_ImageFile_Timestamp
+		public System.Nullable<long> ecer_ImageFile_Timestamp
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -427,7 +462,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_imagefile_url")]
-		public string ECER_ImageFile_Url
+		public string ecer_ImageFile_URL
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -437,7 +472,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_imagefileid")]
-		public System.Nullable<System.Guid> ECER_ImageFileId
+		public System.Nullable<System.Guid> ecer_ImageFileId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -447,7 +482,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ECER_Name
+		public string ecer_Name
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -727,12 +762,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Status of the File
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ECER_File_StateCode? StateCode
+		public virtual ecer_file_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_File_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_file_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -742,7 +777,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
-		public string StateCodename
+		public string statecodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -762,12 +797,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Reason for the status of the File
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ECER_File_StatusCode? StatusCode
+		public virtual ecer_File_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_File_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_File_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -777,7 +812,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
-		public string StatusCodename
+		public string statuscodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -815,7 +850,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
-		public System.Nullable<int> UtcConversionTimeZoneCode
+		public System.Nullable<int> UTCConversionTimeZoneCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -847,7 +882,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customerid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_file_123")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ECER_Contact_ECER_File_123
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_contact_ecer_file_123
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -866,17 +901,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_file_Applicationid_ecer_application")]
-		public ECER.Utilities.DataverseSdk.Model.ECER_Application ECER_File_ApplicationId_ECER_Application
+		public ECER.Utilities.DataverseSdk.Model.ecer_Application ecer_file_Applicationid_ecer_application
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_Application>("ecer_file_Applicationid_ecer_application", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_file_Applicationid_ecer_application", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_Application>("ecer_file_Applicationid_ecer_application", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_file_Applicationid_ecer_application", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_file_Communicationid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_file_Communicationid")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Communication ecer_file_Communicationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_file_Communicationid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_file_Communicationid", null, value);
 			}
 		}
 		
@@ -885,7 +939,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_File(object anonymousType) : 
+		public ecer_File(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())

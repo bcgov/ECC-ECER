@@ -3,7 +3,7 @@
     <v-expansion-panel v-for="option in options" :key="option.id" :value="option.id" class="rounded-lg">
       <v-expansion-panel-title>
         <v-radio-group :mandatory="true" :hide-details="true" :model-value="selected" @update:model-value="handleRadioChange">
-          <v-radio :label="option.title" :value="option.id"></v-radio>
+          <v-radio color="primary" :label="option.title" :value="option.id"></v-radio>
         </v-radio-group>
       </v-expansion-panel-title>
       <v-expansion-panel-text>

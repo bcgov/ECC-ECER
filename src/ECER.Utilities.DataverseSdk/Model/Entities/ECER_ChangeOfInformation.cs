@@ -17,7 +17,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_ChangeOfInformation_StateCode
+	public enum ecer_changeofinformation_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -32,7 +32,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_ChangeOfInformation_StatusCode
+	public enum ecer_ChangeofInformation_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -45,7 +45,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_changeofinformation")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ECER_ChangeOfInformation : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_ChangeofInformation : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
@@ -60,36 +60,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ECER_ChangeOfInformation_ContactId = "ecer_changeofinformation_Contactid";
-			public const string ECER_ChangeOfInformationId = "ecer_changeofinformationid";
+			public const string ecer_changeofinformation_Contactid = "ecer_changeofinformation_Contactid";
+			public const string ecer_ChangeofInformationId = "ecer_changeofinformationid";
 			public const string Id = "ecer_changeofinformationid";
-			public const string ECER_ContactId = "ecer_contactid";
-			public const string ECER_ContactIdName = "ecer_contactidname";
-			public const string ECER_ContactIdYomiName = "ecer_contactidyominame";
-			public const string ECER_HasEmailAddressChanged = "ecer_hasemailaddresschanged";
-			public const string ECER_HasEmailAddressChangedName = "ecer_hasemailaddresschangedname";
-			public const string ECER_HasNameChanged = "ecer_hasnamechanged";
-			public const string ECER_HasNameChangedName = "ecer_hasnamechangedname";
-			public const string ECER_HasPhoneNumberChanged = "ecer_hasphonenumberchanged";
-			public const string ECER_HasPhoneNumberChangedName = "ecer_hasphonenumberchangedname";
-			public const string ECER_HasResidentialMailingAddressChanged = "ecer_hasresidentialmailingaddresschanged";
-			public const string ECER_HasResidentialMailingAddressChangedName = "ecer_hasresidentialmailingaddresschangedname";
-			public const string ECER_Name = "ecer_name";
-			public const string ECER_NewAddressCity = "ecer_newaddresscity";
-			public const string ECER_NewAddressCountry = "ecer_newaddresscountry";
-			public const string ECER_NewAddressEffectiveDate = "ecer_newaddresseffectivedate";
-			public const string ECER_NewAddressPostalCode = "ecer_newaddresspostalcode";
-			public const string ECER_NewAddressProvince = "ecer_newaddressprovince";
-			public const string ECER_NewAlternatePhoneNumber = "ecer_newalternatephonenumber";
-			public const string ECER_NewEmailAddress = "ecer_newemailaddress";
-			public const string ECER_NewEmailAddressEffectiveDate = "ecer_newemailaddresseffectivedate";
-			public const string ECER_NewLegalFirstName = "ecer_newlegalfirstname";
-			public const string ECER_NewLegalLastName = "ecer_newlegallastname";
-			public const string ECER_NewLegalMiddleName = "ecer_newlegalmiddlename";
-			public const string ECER_NewPhoneNumberEffectiveDate = "ecer_newphonenumbereffectivedate";
-			public const string ECER_NewPreferredName = "ecer_newpreferredname";
-			public const string ECER_NewPrimaryPhoneNumber = "ecer_newprimaryphonenumber";
-			public const string ECER_NewResidentialMailingAddress = "ecer_newresidentialmailingaddress";
+			public const string ecer_Contactid = "ecer_contactid";
+			public const string ecer_ContactidName = "ecer_contactidname";
+			public const string ecer_ContactidYomiName = "ecer_contactidyominame";
+			public const string ecer_HasEmailAddressChanged = "ecer_hasemailaddresschanged";
+			public const string ecer_hasemailaddresschangedName = "ecer_hasemailaddresschangedname";
+			public const string ecer_HasNameChanged = "ecer_hasnamechanged";
+			public const string ecer_hasnamechangedName = "ecer_hasnamechangedname";
+			public const string ecer_HasPhoneNumberChanged = "ecer_hasphonenumberchanged";
+			public const string ecer_hasphonenumberchangedName = "ecer_hasphonenumberchangedname";
+			public const string ecer_HasResidentialMailingAddressChanged = "ecer_hasresidentialmailingaddresschanged";
+			public const string ecer_hasresidentialmailingaddresschangedName = "ecer_hasresidentialmailingaddresschangedname";
+			public const string ecer_Name = "ecer_name";
+			public const string ecer_NewAddressCity = "ecer_newaddresscity";
+			public const string ecer_NewAddressCountry = "ecer_newaddresscountry";
+			public const string ecer_NewAddressEffectiveDate = "ecer_newaddresseffectivedate";
+			public const string ecer_NewAddressPostalCode = "ecer_newaddresspostalcode";
+			public const string ecer_NewAddressProvince = "ecer_newaddressprovince";
+			public const string ecer_NewAlternatePhoneNumber = "ecer_newalternatephonenumber";
+			public const string ecer_NewEmailAddress = "ecer_newemailaddress";
+			public const string ecer_NewEmailAddressEffectiveDate = "ecer_newemailaddresseffectivedate";
+			public const string ecer_NewLegalFirstName = "ecer_newlegalfirstname";
+			public const string ecer_NewLegalLastName = "ecer_newlegallastname";
+			public const string ecer_NewLegalMiddleName = "ecer_newlegalmiddlename";
+			public const string ecer_NewPhoneNumberEffectiveDate = "ecer_newphonenumbereffectivedate";
+			public const string ecer_NewPreferredName = "ecer_newpreferredname";
+			public const string ecer_NewPrimaryPhoneNumber = "ecer_newprimaryphonenumber";
+			public const string ecer_NewResidentialMailingAddress = "ecer_newresidentialmailingaddress";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -107,28 +107,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
 			public const string StateCode = "statecode";
-			public const string StateCodename = "statecodename";
+			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
-			public const string StatusCodename = "statuscodename";
+			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_ChangeOfInformation(System.Guid id) : 
+		public ecer_ChangeofInformation(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_ChangeOfInformation(string keyName, object keyValue) : 
+		public ecer_ChangeofInformation(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_ChangeOfInformation(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_ChangeofInformation(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -137,7 +137,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_ChangeOfInformation() : 
+		public ecer_ChangeofInformation() : 
 				base(EntityLogicalName)
 		{
 		}
@@ -270,7 +270,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Unique identifier for entity instances
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_changeofinformationid")]
-		public System.Nullable<System.Guid> ECER_ChangeOfInformationId
+		public System.Nullable<System.Guid> ecer_ChangeofInformationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -303,12 +303,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ECER_ChangeOfInformationId = value;
+				this.ecer_ChangeofInformationId = value;
 			}
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_ContactId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Contactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -323,7 +323,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactidname")]
-		public string ECER_ContactIdName
+		public string ecer_ContactidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -340,7 +340,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactidyominame")]
-		public string ECER_ContactIdYomiName
+		public string ecer_ContactidYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -357,7 +357,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasemailaddresschanged")]
-		public System.Nullable<bool> ECER_HasEmailAddressChanged
+		public System.Nullable<bool> ecer_HasEmailAddressChanged
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -372,7 +372,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasemailaddresschangedname")]
-		public string ECER_HasEmailAddressChangedName
+		public string ecer_hasemailaddresschangedName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -389,7 +389,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasnamechanged")]
-		public System.Nullable<bool> ECER_HasNameChanged
+		public System.Nullable<bool> ecer_HasNameChanged
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -404,7 +404,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasnamechangedname")]
-		public string ECER_HasNameChangedName
+		public string ecer_hasnamechangedName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -421,7 +421,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasphonenumberchanged")]
-		public System.Nullable<bool> ECER_HasPhoneNumberChanged
+		public System.Nullable<bool> ecer_HasPhoneNumberChanged
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -436,7 +436,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasphonenumberchangedname")]
-		public string ECER_HasPhoneNumberChangedName
+		public string ecer_hasphonenumberchangedName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -453,7 +453,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasresidentialmailingaddresschanged")]
-		public System.Nullable<bool> ECER_HasResidentialMailingAddressChanged
+		public System.Nullable<bool> ecer_HasResidentialMailingAddressChanged
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -468,7 +468,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasresidentialmailingaddresschangedname")]
-		public string ECER_HasResidentialMailingAddressChangedName
+		public string ecer_hasresidentialmailingaddresschangedName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -485,7 +485,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ECER_Name
+		public string ecer_Name
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -500,7 +500,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newaddresscity")]
-		public string ECER_NewAddressCity
+		public string ecer_NewAddressCity
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -515,7 +515,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newaddresscountry")]
-		public string ECER_NewAddressCountry
+		public string ecer_NewAddressCountry
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -530,7 +530,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newaddresseffectivedate")]
-		public System.Nullable<System.DateTime> ECER_NewAddressEffectiveDate
+		public System.Nullable<System.DateTime> ecer_NewAddressEffectiveDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -545,7 +545,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newaddresspostalcode")]
-		public string ECER_NewAddressPostalCode
+		public string ecer_NewAddressPostalCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -560,7 +560,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newaddressprovince")]
-		public string ECER_NewAddressProvince
+		public string ecer_NewAddressProvince
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -575,7 +575,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newalternatephonenumber")]
-		public string ECER_NewAlternatePhoneNumber
+		public string ecer_NewAlternatePhoneNumber
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -590,7 +590,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newemailaddress")]
-		public string ECER_NewEmailAddress
+		public string ecer_NewEmailAddress
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -605,7 +605,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newemailaddresseffectivedate")]
-		public System.Nullable<System.DateTime> ECER_NewEmailAddressEffectiveDate
+		public System.Nullable<System.DateTime> ecer_NewEmailAddressEffectiveDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -620,7 +620,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newlegalfirstname")]
-		public string ECER_NewLegalFirstName
+		public string ecer_NewLegalFirstName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -635,7 +635,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newlegallastname")]
-		public string ECER_NewLegalLastName
+		public string ecer_NewLegalLastName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -650,7 +650,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newlegalmiddlename")]
-		public string ECER_NewLegalMiddleName
+		public string ecer_NewLegalMiddleName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -665,7 +665,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newphonenumbereffectivedate")]
-		public System.Nullable<System.DateTime> ECER_NewPhoneNumberEffectiveDate
+		public System.Nullable<System.DateTime> ecer_NewPhoneNumberEffectiveDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -680,7 +680,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newpreferredname")]
-		public string ECER_NewPreferredName
+		public string ecer_NewPreferredName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -695,7 +695,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newprimaryphonenumber")]
-		public string ECER_NewPrimaryPhoneNumber
+		public string ecer_NewPrimaryPhoneNumber
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -710,7 +710,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newresidentialmailingaddress")]
-		public string ECER_NewResidentialMailingAddress
+		public string ecer_NewResidentialMailingAddress
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -990,12 +990,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Status of the Change of Information
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ECER_ChangeOfInformation_StateCode? StateCode
+		public virtual ecer_changeofinformation_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_ChangeOfInformation_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_changeofinformation_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -1005,7 +1005,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
-		public string StateCodename
+		public string statecodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1025,12 +1025,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Reason for the status of the Change of Information
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ECER_ChangeOfInformation_StatusCode? StatusCode
+		public virtual ecer_ChangeofInformation_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_ChangeOfInformation_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_ChangeofInformation_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -1040,7 +1040,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
-		public string StatusCodename
+		public string statuscodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1078,7 +1078,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
-		public System.Nullable<int> UtcConversionTimeZoneCode
+		public System.Nullable<int> UTCConversionTimeZoneCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1110,7 +1110,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_changeofinformation_Contactid")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ECER_ChangeOfInformation_ContactId
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_changeofinformation_Contactid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -1129,7 +1129,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_ChangeOfInformation(object anonymousType) : 
+		public ecer_ChangeofInformation(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())

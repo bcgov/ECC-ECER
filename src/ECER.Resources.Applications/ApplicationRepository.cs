@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Applications;
@@ -6,50 +6,75 @@ namespace ECER.Resources.Applications;
 internal sealed class ApplicationRepository : IApplicationRepository
 {
     private readonly EcerContext context;
+    private readonly IMapper mapper;
 
-    public ApplicationRepository(EcerContext context)
+    public ApplicationRepository(EcerContext context, IMapper mapper)
     {
         this.context = context;
+        this.mapper = mapper;
     }
 
-    public async Task<ApplicationQueryResponse> Query(ApplicationQueryRequest query)
+    public async Task<IEnumerable<Application>> Query(ApplicationQuery query)
     {
-        await Task.CompletedTask;
-        var applications = (from a in context.ECER_ApplicationSet
-                            join c in context.ContactSet on a.ECER_ApplicantId.Id equals c.ContactId
-                            where a.StateCode == ECER_Application_StateCode.Active && a.ECER_ApplicantId != null
-                            select a).ToList();
-
-        return new ApplicationQueryResponse(applications.Select(a => new Application
+        return query switch
         {
-            ApplicantId = a.ECER_ApplicantId.Id.ToString(),
-            ApplicationId = a.Id.ToString(),
-            SubmissionDate = a.CreatedOn!.Value
-        }));
-    }
-
-    public async Task<string> Save(SaveApplicationRequest request)
-    {
-        await Task.CompletedTask;
-
-        var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == Guid.Parse(request.Application.ApplicantId));
-        if (applicant == null) throw new InvalidOperationException($"Applicant '{request.Application.ApplicantId}' not found");
-
-        var applicationId = Guid.NewGuid();
-        var ecerApplication = new ECER_Application(applicationId)
-        {
-            ECER_LegalFirstName = "First",
-            ECER_LegalLastName = "Last",
-            ECER_Name = applicationId.ToString(),
-            ECER_DateOfBirth = DateTime.Parse("2000-01-01", CultureInfo.InvariantCulture),
+            CertificationApplicationQuery qry => await Query(qry),
+            _ => throw new NotImplementedException()
         };
+    }
 
-        context.AddObject(ecerApplication);
+    public async Task<string> SaveDraft(Application application)
+    {
+        return application switch
+        {
+            CertificationApplication app => await Save(app),
+            _ => throw new NotImplementedException()
+        };
+    }
 
-        context.AddLink(ecerApplication, ECER_Application.Fields.ECER_Application_ApplicantId_Contact, applicant);
+    private async Task<string> Save(CertificationApplication application)
+    {
+        await Task.CompletedTask;
+
+        var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == Guid.Parse(application.ApplicantId));
+        if (applicant == null) throw new InvalidOperationException($"Applicant '{application.ApplicantId}' not found");
+
+        var ecerApplication = mapper.Map<ecer_Application>(application);
+        if (!ecerApplication.ecer_ApplicationId.HasValue)
+        {
+            ecerApplication.ecer_ApplicationId = Guid.NewGuid();
+            context.AddObject(ecerApplication);
+            context.AddLink(ecerApplication, ecer_Application.Fields.ecer_application_Applicantid_contact, applicant);
+        }
+        else
+        {
+            context.Attach(ecerApplication);
+            context.UpdateObject(ecerApplication);
+        }
 
         context.SaveChanges();
 
-        return applicationId.ToString();
+        return ecerApplication.ecer_ApplicationId.Value.ToString();
+    }
+
+    public Task<string> Submit(string applicationId) => throw new NotImplementedException();
+
+    private async Task<IEnumerable<CertificationApplication>> Query(CertificationApplicationQuery query)
+    {
+        await Task.CompletedTask;
+        var applications = from a in context.ecer_ApplicationSet
+                           join c in context.ContactSet on a.ecer_Applicantid.Id equals c.ContactId
+                           select new { a, c };
+
+        if (query.ByStatus != null)
+        {
+            var statuses = mapper.Map<IEnumerable<ecer_Application_StatusCode>>(query.ByStatus).ToList();
+            applications = applications.WhereIn(a => a.a.StatusCode!.Value, statuses);
+        }
+
+        if (query.ById != null) applications = applications.Where(r => r.a.ecer_ApplicationId == Guid.Parse(query.ById));
+        if (query.ByApplicantId != null) applications = applications.Where(r => r.a.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
+
+        return mapper.Map<IEnumerable<CertificationApplication>>(applications.Select(r => r.a).ToList());
     }
 }

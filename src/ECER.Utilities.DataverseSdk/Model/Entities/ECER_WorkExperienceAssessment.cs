@@ -17,7 +17,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_WorkExperienceAssessment_StateCode
+	public enum ecer_workexperienceassessment_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -32,7 +32,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_WorkExperienceAssessment_StatusCode
+	public enum ecer_WorkExperienceAssessment_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -45,7 +45,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_workexperienceassessment")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ECER_WorkExperienceAssessment : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_WorkExperienceAssessment : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
@@ -60,8 +60,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ECER_Name = "ecer_name";
-			public const string ECER_WorkExperienceAssessmentId = "ecer_workexperienceassessmentid";
+			public const string ecer_Name = "ecer_name";
+			public const string ecer_WorkExperienceAssessmentId = "ecer_workexperienceassessmentid";
 			public const string Id = "ecer_workexperienceassessmentid";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -80,28 +80,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
 			public const string StateCode = "statecode";
-			public const string StateCodename = "statecodename";
+			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
-			public const string StatusCodename = "statuscodename";
+			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_WorkExperienceAssessment(System.Guid id) : 
+		public ecer_WorkExperienceAssessment(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_WorkExperienceAssessment(string keyName, object keyValue) : 
+		public ecer_WorkExperienceAssessment(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_WorkExperienceAssessment(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_WorkExperienceAssessment(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -110,7 +110,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_WorkExperienceAssessment() : 
+		public ecer_WorkExperienceAssessment() : 
 				base(EntityLogicalName)
 		{
 		}
@@ -240,7 +240,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ECER_Name
+		public string ecer_Name
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -258,7 +258,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Unique identifier for entity instances
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_workexperienceassessmentid")]
-		public System.Nullable<System.Guid> ECER_WorkExperienceAssessmentId
+		public System.Nullable<System.Guid> ecer_WorkExperienceAssessmentId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -291,7 +291,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ECER_WorkExperienceAssessmentId = value;
+				this.ecer_WorkExperienceAssessmentId = value;
 			}
 		}
 		
@@ -561,12 +561,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Status of the Work Experience Assessment
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ECER_WorkExperienceAssessment_StateCode? StateCode
+		public virtual ecer_workexperienceassessment_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_WorkExperienceAssessment_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_workexperienceassessment_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -576,7 +576,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
-		public string StateCodename
+		public string statecodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -596,12 +596,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Reason for the status of the Work Experience Assessment
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ECER_WorkExperienceAssessment_StatusCode? StatusCode
+		public virtual ecer_WorkExperienceAssessment_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_WorkExperienceAssessment_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_WorkExperienceAssessment_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -611,7 +611,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
-		public string StatusCodename
+		public string statuscodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -649,7 +649,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
-		public System.Nullable<int> UtcConversionTimeZoneCode
+		public System.Nullable<int> UTCConversionTimeZoneCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -681,7 +681,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_WorkExperienceAssessment(object anonymousType) : 
+		public ecer_WorkExperienceAssessment(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())

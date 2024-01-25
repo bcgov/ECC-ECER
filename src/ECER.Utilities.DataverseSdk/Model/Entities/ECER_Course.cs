@@ -17,7 +17,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_Course_StateCode
+	public enum ecer_course_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -32,7 +32,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_Course_StatusCode
+	public enum ecer_Course_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -48,7 +48,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_course")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ECER_Course : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_Course : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
@@ -63,22 +63,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ECER_CertificateTypeId = "ecer_certificatetypeid";
-			public const string ECER_CertificateTypeIdName = "ecer_certificatetypeidname";
-			public const string ECER_Code = "ecer_code";
-			public const string ECER_CompletedCourse_CourseId = "ECER_CompletedCourse_CourseId";
-			public const string ECER_Course_CertificateTypeId = "ecer_course_CertificateTypeid";
-			public const string ECER_Course_ProgramId = "ecer_course_Programid";
-			public const string ECER_CourseId = "ecer_courseid";
+			public const string ecer_CertificateTypeid = "ecer_certificatetypeid";
+			public const string ecer_CertificateTypeidName = "ecer_certificatetypeidname";
+			public const string ecer_Code = "ecer_code";
+			public const string ecer_completedcourse_Courseid = "ecer_completedcourse_Courseid";
+			public const string ecer_course_CertificateTypeid = "ecer_course_CertificateTypeid";
+			public const string ecer_course_Programid = "ecer_course_Programid";
+			public const string ecer_CourseId = "ecer_courseid";
 			public const string Id = "ecer_courseid";
-			public const string ECER_CourseName = "ecer_coursename";
-			public const string ECER_Description = "ecer_description";
-			public const string ECER_Name = "ecer_name";
-			public const string ECER_ProgramId = "ecer_programid";
-			public const string ECER_ProgramIdName = "ecer_programidname";
-			public const string ECER_PsiId = "ecer_psiid";
-			public const string ECER_PsiIdName = "ecer_psiidname";
-			public const string ECER_PsiIdYomiName = "ecer_psiidyominame";
+			public const string ecer_CourseName = "ecer_coursename";
+			public const string ecer_Description = "ecer_description";
+			public const string ecer_Name = "ecer_name";
+			public const string ecer_Programid = "ecer_programid";
+			public const string ecer_ProgramidName = "ecer_programidname";
+			public const string ecer_PSIid = "ecer_psiid";
+			public const string ecer_PSIidName = "ecer_psiidname";
+			public const string ecer_PSIidYomiName = "ecer_psiidyominame";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -96,28 +96,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
 			public const string StateCode = "statecode";
-			public const string StateCodename = "statecodename";
+			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
-			public const string StatusCodename = "statuscodename";
+			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Course(System.Guid id) : 
+		public ecer_Course(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Course(string keyName, object keyValue) : 
+		public ecer_Course(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Course(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_Course(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -126,7 +126,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Course() : 
+		public ecer_Course() : 
 				base(EntityLogicalName)
 		{
 		}
@@ -256,7 +256,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypeid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_CertificateTypeId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CertificateTypeid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -271,7 +271,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypeidname")]
-		public string ECER_CertificateTypeIdName
+		public string ecer_CertificateTypeidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -291,7 +291,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Course Code
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_code")]
-		public string ECER_Code
+		public string ecer_Code
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -309,7 +309,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Unique identifier for entity instances
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseid")]
-		public System.Nullable<System.Guid> ECER_CourseId
+		public System.Nullable<System.Guid> ecer_CourseId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -342,7 +342,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ECER_CourseId = value;
+				this.ecer_CourseId = value;
 			}
 		}
 		
@@ -350,7 +350,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Name of entity will be populated as Code - Course Name
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_coursename")]
-		public string ECER_CourseName
+		public string ecer_CourseName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -365,7 +365,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_description")]
-		public string ECER_Description
+		public string ecer_Description
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -380,7 +380,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ECER_Name
+		public string ecer_Name
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -395,7 +395,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_ProgramId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Programid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -410,7 +410,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programidname")]
-		public string ECER_ProgramIdName
+		public string ecer_ProgramidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -427,7 +427,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_PsiId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_PSIid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -442,7 +442,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiidname")]
-		public string ECER_PsiIdName
+		public string ecer_PSIidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -459,7 +459,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiidyominame")]
-		public string ECER_PsiIdYomiName
+		public string ecer_PSIidYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -741,12 +741,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Status of the Course
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ECER_Course_StateCode? StateCode
+		public virtual ecer_course_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_Course_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_course_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -756,7 +756,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
-		public string StateCodename
+		public string statecodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -776,12 +776,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Reason for the status of the Course
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ECER_Course_StatusCode? StatusCode
+		public virtual ecer_Course_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_Course_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_Course_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -791,7 +791,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
-		public string StatusCodename
+		public string statuscodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -829,7 +829,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
-		public System.Nullable<int> UtcConversionTimeZoneCode
+		public System.Nullable<int> UTCConversionTimeZoneCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -860,17 +860,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// 1:N ecer_completedcourse_Courseid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_completedcourse_Courseid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ECER_CompletedCourse> ECER_CompletedCourse_CourseId
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse> ecer_completedcourse_Courseid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_CompletedCourse>("ecer_completedcourse_Courseid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse>("ecer_completedcourse_Courseid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ECER_CompletedCourse>("ecer_completedcourse_Courseid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse>("ecer_completedcourse_Courseid", null, value);
 			}
 		}
 		
@@ -879,17 +879,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypeid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_course_CertificateTypeid")]
-		public ECER.Utilities.DataverseSdk.Model.ECER_CertificateType ECER_Course_CertificateTypeId
+		public ECER.Utilities.DataverseSdk.Model.ecer_CertificateType ecer_course_CertificateTypeid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_CertificateType>("ecer_course_CertificateTypeid", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType>("ecer_course_CertificateTypeid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_CertificateType>("ecer_course_CertificateTypeid", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType>("ecer_course_CertificateTypeid", null, value);
 			}
 		}
 		
@@ -898,17 +898,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_course_Programid")]
-		public ECER.Utilities.DataverseSdk.Model.ECER_Program ECER_Course_ProgramId
+		public ECER.Utilities.DataverseSdk.Model.ecer_Program ecer_course_Programid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_Program>("ecer_course_Programid", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_course_Programid", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_Program>("ecer_course_Programid", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_course_Programid", null, value);
 			}
 		}
 		
@@ -917,7 +917,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Course(object anonymousType) : 
+		public ecer_Course(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())

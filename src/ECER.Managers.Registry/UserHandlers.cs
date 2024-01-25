@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Resources.Accounts.Registrants;
+using ECER.Utilities.Security;
 
 namespace ECER.Managers.Registry;
 
@@ -23,12 +24,12 @@ public static class UserHandlers
 
         var results = await registrantRepository.Query(new RegistrantQuery
         {
-            WithIdentity = new UserIdentity(query.IdentityProvider, query.Id)
+            WithIdentity = query.UserIdentity
         });
 
         var registrant = results.Items.SingleOrDefault();
 
-        return new UserProfileQueryResponse(mapper.Map<UserProfile?>(registrant?.Profile));
+        return new UserProfileQueryResponse(registrant?.Id, mapper.Map<UserProfile?>(registrant?.Profile));
     }
 
     public static async Task<string> Handle(RegisterNewUserCommand cmd, IRegistrantRepository registrantRepository, IMapper mapper)
@@ -39,20 +40,20 @@ public static class UserHandlers
 
         var results = await registrantRepository.Query(new RegistrantQuery
         {
-            WithIdentity = new UserIdentity(cmd.Login.IdentityProvider, cmd.Login.id)
+            WithIdentity = cmd.Identity
         });
 
-        if (results.Items.Any()) throw new InvalidOperationException($"Registrant with login {cmd.Login.id}@{cmd.Login.IdentityProvider} already exists");
+        if (results.Items.Any()) throw new InvalidOperationException($"Registrant with identity {cmd.Identity} already exists");
 
         return await registrantRepository.RegisterNew(mapper.Map<NewRegistrantRequest>(cmd));
     }
 }
 
-public record UserProfileQuery(string IdentityProvider, string Id);
+public record UserProfileQuery(UserIdentity UserIdentity);
 
-public record RegisterNewUserCommand(UserProfile UserProfile, Login Login);
+public record RegisterNewUserCommand(UserProfile UserProfile, UserIdentity Identity);
 
-public record UserProfileQueryResponse(UserProfile? UserProfile);
+public record UserProfileQueryResponse(string? UserId, UserProfile? UserProfile);
 
 public record UserProfile(
     string FirstName,
@@ -72,5 +73,3 @@ public record Address(
     string? Province,
     string Country
     );
-
-public record Login(string IdentityProvider, string id);

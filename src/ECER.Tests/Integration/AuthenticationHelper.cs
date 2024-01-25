@@ -1,30 +1,63 @@
 ﻿using System.Security.Claims;
 using Alba;
+using ECER.Utilities.Security;
 
 namespace ECER.Tests.Integration;
 
 public static class AuthenticationHelper
 {
-    public static Scenario WithBceidUser(this Scenario scenario, string userGuid)
-    {
-        scenario.WithClaim("identity_provider", "bceidbasic");
-        scenario.WithClaim("bceid_user_guid", userGuid);
+  public static Scenario WithNewUser(this Scenario scenario, UserIdentity identity)
+  {
+    ArgumentNullException.ThrowIfNull(identity);
 
-        return scenario;
+    scenario.WithClaim("identity_provider", identity.IdentityProvider);
+    scenario.WithClaim("identity_id", identity.UserId);
+
+    if (identity.IdentityProvider == "bcsc")
+    {
+      scenario.WithClaim(ClaimTypes.NameIdentifier, identity.UserId);
+    }
+    else if (identity.IdentityProvider == "bceidbasic")
+    {
+      scenario.WithClaim("bceid_user_guid", identity.UserId);
+    }
+    else
+    {
+      throw new NotImplementedException();
     }
 
-    public static Scenario WithBcscUser(this Scenario scenario, string userGuid)
-    {
-        scenario.WithClaim("identity_provider", "bcsc");
-        scenario.WithClaim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString("N").ToUpperInvariant());
+    return scenario;
+  }
 
-        return scenario;
+  public static Scenario WithExistingUser(this Scenario scenario, UserIdentity identity, string userId)
+  {
+    ArgumentNullException.ThrowIfNull(identity);
+
+    scenario.WithClaim("identity_provider", identity.IdentityProvider);
+    scenario.WithClaim("identity_id", identity.UserId);
+
+    if (identity.IdentityProvider == "bcsc")
+    {
+      scenario.WithClaim(ClaimTypes.NameIdentifier, identity.UserId);
+    }
+    else if (identity.IdentityProvider == "bceidbasic")
+    {
+      scenario.WithClaim("bceid_user_guid", identity.UserId);
+    }
+    else
+    {
+      throw new NotImplementedException();
     }
 
-    public static Scenario WithClaim(this Scenario scenario, string type, string value)
-    {
-        scenario.WithClaim(new Claim(type, value));
+    scenario.WithClaim("userId", userId);
 
-        return scenario;
-    }
+    return scenario;
+  }
+
+  public static Scenario WithClaim(this Scenario scenario, string type, string value)
+  {
+    scenario.WithClaim(new Claim(type, value));
+
+    return scenario;
+  }
 }

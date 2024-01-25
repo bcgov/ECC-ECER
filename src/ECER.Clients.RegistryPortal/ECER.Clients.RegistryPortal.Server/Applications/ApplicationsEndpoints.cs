@@ -1,5 +1,9 @@
-﻿using ECER.Managers.Registry;
+﻿using System.ComponentModel;
+using AutoMapper;
+using ECER.Managers.Registry;
 using ECER.Utilities.Hosting;
+using ECER.Utilities.Security;
+using Microsoft.Extensions.Caching.Distributed;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
@@ -8,50 +12,78 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 {
     public void Register(IEndpointRouteBuilder endpointRouteBuilder)
     {
-        endpointRouteBuilder.MapPost("/api/applications", async (NewApplicationRequest request, IMessageBus messageBus) =>
-        {
-            var cmd = new SubmitNewApplicationCommand();
-            var appId = await messageBus.InvokeAsync<string>(cmd);
+        endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async (string? id, DraftApplication draftApplication, HttpContext httpContext, IMessageBus messageBus, IMapper mapper, IDistributedCache cache) =>
+            {
+                var userContext = httpContext.User.GetUserContext();
+                var application = mapper.Map<CertificationApplication>(draftApplication);
+                application.RegistrantId = userContext!.UserId!;
+                application.Id = id;
+                var cmd = new SaveDraftCertificationApplicationCommand(application);
+                var appId = await messageBus.InvokeAsync<string>(cmd);
 
-            return TypedResults.Ok(new NewApplicationResponse(appId));
-        }).WithOpenApi(op =>
-        {
-            op.OperationId = "PostNewApplication";
-            op.Summary = "New Application Submission";
-            op.Description = "Handles  a new application submission to ECER";
-            return op;
-        });
+                return TypedResults.Ok(new DraftApplicationResponse(appId));
+            })
+            .WithOpenApi("Handles a new application submission to ECER", string.Empty, "draftapplication_put")
+            .RequireAuthorization();
+
+        endpointRouteBuilder.MapPost("/api/applications/{id}", async (string id, IMessageBus messageBus, IMapper mapper) =>
+            {
+                var cmd = new SubmitCertificationApplicationCommand(id);
+                var appId = await messageBus.InvokeAsync<string>(cmd);
+
+                return TypedResults.Ok(new DraftApplicationResponse(appId));
+            })
+            .WithOpenApi("Handles a new application submission to ECER", string.Empty, "application_post")
+            .RequireAuthorization();
 
         endpointRouteBuilder.MapGet("/api/applications", async (IMessageBus messageBus) =>
-        {
-            var query = new ApplicationsQuery();
-            var results = await messageBus.InvokeAsync<ApplicationsQueryResults>(query);
-            return TypedResults.Ok(new ApplicationQueryResponse(results.Items.Select(i => new Application
             {
-                Id = i.Id,
-                RegistrantId = i.RegistrantId,
-                SubmittedOn = i.SubmittedOn
-            })));
-        }).WithOpenApi(op =>
-        {
-            op.OperationId = "GetApplications";
-            op.Summary = "Query applications";
-            op.Description = "Handles application queries";
-            return op;
-        });
+                var query = new CertificationApplicationsQuery();
+                var results = await messageBus.InvokeAsync<ApplicationsQueryResults>(query);
+                return TypedResults.Ok(new ApplicationQueryResponse(results.Items.Select(i => new Application
+                {
+                    Id = i.Id!,
+                    RegistrantId = i.RegistrantId,
+                    SubmittedOn = i.SubmittedOn
+                })));
+            })
+            .WithOpenApi("Handles application queries", string.Empty, "application_get")
+            .RequireAuthorization();
     }
 }
 
 /// <summary>
 /// New application request
 /// </summary>
-public record NewApplicationRequest();
+public record DraftApplication
+{
+    public string? Id { get; set; }
+    public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+}
+
+public enum CertificationType
+{
+    [Description("Ece Assistant")]
+    EceAssistant,
+    
+    [Description("One Year")]
+    OneYear,
+
+    [Description("Five Years")]
+    FiveYears,
+    
+    [Description("Ite")]
+    Ite,
+    
+    [Description("Sne")]
+    Sne,
+}
 
 /// <summary>
 /// New application response
 /// </summary>
 /// <param name="ApplicationId">The new application id</param>
-public record NewApplicationResponse(string ApplicationId);
+public record DraftApplicationResponse(string ApplicationId);
 
 /// <summary>
 /// Application query response

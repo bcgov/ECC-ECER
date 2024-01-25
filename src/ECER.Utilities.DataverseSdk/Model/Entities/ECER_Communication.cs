@@ -17,7 +17,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_Communication_StateCode
+	public enum ecer_communication_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -32,14 +32,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ECER_Communication_StatusCode
+	public enum ecer_Communication_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		Acknowledged = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Draft = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		NotifiedRecipient = 621870001,
 	}
 	
 	/// <summary>
@@ -48,7 +54,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_communication")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ECER_Communication : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_Communication : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
@@ -63,20 +69,32 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ECER_ApplicationId = "ecer_applicationid";
-			public const string ECER_ApplicationIdName = "ecer_applicationidname";
-			public const string ECER_Communication_ApplicationId = "ecer_communication_Applicationid";
-			public const string ECER_CommunicationId = "ecer_communicationid";
+			public const string ecer_Acknowledged = "ecer_acknowledged";
+			public const string ecer_acknowledgedName = "ecer_acknowledgedname";
+			public const string ecer_Applicationid = "ecer_applicationid";
+			public const string ecer_ApplicationidName = "ecer_applicationidname";
+			public const string ecer_communication_Applicationid = "ecer_communication_Applicationid";
+			public const string Referencingecer_communication_ParentCommunicationid = "ecer_communication_ParentCommunicationid";
+			public const string ecer_CommunicationId = "ecer_communicationid";
 			public const string Id = "ecer_communicationid";
-			public const string ECER_Contact_ECER_Communication_122 = "ecer_contact_ecer_communication_122";
-			public const string ECER_InitiatedFrom = "ecer_initiatedfrom";
-			public const string ECER_InitiatedFromName = "ecer_initiatedfromname";
-			public const string ECER_Message = "ecer_message";
-			public const string ECER_Name = "ecer_name";
-			public const string ECER_RegistrantId = "ecer_registrantid";
-			public const string ECER_RegistrantIdName = "ecer_registrantidname";
-			public const string ECER_RegistrantIdYomiName = "ecer_registrantidyominame";
-			public const string ECER_Reply = "ecer_reply";
+			public const string ecer_contact_ecer_communication_122 = "ecer_contact_ecer_communication_122";
+			public const string ecer_DateAcknowledged = "ecer_dateacknowledged";
+			public const string ecer_DateNotified = "ecer_datenotified";
+			public const string ecer_file_Communicationid = "ecer_file_Communicationid";
+			public const string ecer_InitiatedFrom = "ecer_initiatedfrom";
+			public const string ecer_initiatedfromName = "ecer_initiatedfromname";
+			public const string ecer_Message = "ecer_message";
+			public const string ecer_Name = "ecer_name";
+			public const string ecer_NotifyRecipient = "ecer_notifyrecipient";
+			public const string ecer_notifyrecipientName = "ecer_notifyrecipientname";
+			public const string ecer_ParentCommunicationid = "ecer_parentcommunicationid";
+			public const string ecer_ParentCommunicationidName = "ecer_parentcommunicationidname";
+			public const string ecer_Registrantid = "ecer_registrantid";
+			public const string ecer_RegistrantidName = "ecer_registrantidname";
+			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
+			public const string ecer_Reply = "ecer_reply";
+			public const string ecer_Type = "ecer_type";
+			public const string ecer_typeName = "ecer_typename";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -93,29 +111,30 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningBusinessUnitName = "owningbusinessunitname";
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
+			public const string Referencedecer_communication_ParentCommunicationid = "Referencedecer_communication_ParentCommunicationid";
 			public const string StateCode = "statecode";
-			public const string StateCodename = "statecodename";
+			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
-			public const string StatusCodename = "statuscodename";
+			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-			public const string UtcConversionTimeZoneCode = "utcconversiontimezonecode";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Communication(System.Guid id) : 
+		public ecer_Communication(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Communication(string keyName, object keyValue) : 
+		public ecer_Communication(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Communication(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_Communication(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -124,7 +143,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Communication() : 
+		public ecer_Communication() : 
 				base(EntityLogicalName)
 		{
 		}
@@ -253,8 +272,43 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Recipient acknowledge message read
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_acknowledged")]
+		public System.Nullable<bool> ecer_Acknowledged
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_acknowledged");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_acknowledged", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_acknowledgedname")]
+		public string ecer_acknowledgedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_acknowledged"))
+				{
+					return this.FormattedValues["ecer_acknowledged"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_ApplicationId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Applicationid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -269,7 +323,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationidname")]
-		public string ECER_ApplicationIdName
+		public string ecer_ApplicationidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -289,7 +343,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Unique identifier for entity instances
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
-		public System.Nullable<System.Guid> ECER_CommunicationId
+		public System.Nullable<System.Guid> ecer_CommunicationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -322,17 +376,47 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ECER_CommunicationId = value;
+				this.ecer_CommunicationId = value;
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_initiatedfrom")]
-		public virtual ECER_InitiatedFrom? ECER_InitiatedFrom
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateacknowledged")]
+		public System.Nullable<System.DateTime> ecer_DateAcknowledged
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_InitiatedFrom?)(EntityOptionSetEnum.GetEnum(this, "ecer_initiatedfrom")));
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_dateacknowledged");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_dateacknowledged", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_datenotified")]
+		public System.Nullable<System.DateTime> ecer_DateNotified
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_datenotified");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_datenotified", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_initiatedfrom")]
+		public virtual ecer_InitiatedFrom? ecer_InitiatedFrom
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_InitiatedFrom?)(EntityOptionSetEnum.GetEnum(this, "ecer_initiatedfrom")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -342,7 +426,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_initiatedfromname")]
-		public string ECER_InitiatedFromName
+		public string ecer_initiatedfromName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -359,7 +443,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_message")]
-		public string ECER_Message
+		public string ecer_Message
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -374,7 +458,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ECER_Name
+		public string ecer_Name
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -388,8 +472,78 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Toggle to send email notification to recipient 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_notifyrecipient")]
+		public System.Nullable<bool> ecer_NotifyRecipient
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_notifyrecipient");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_notifyrecipient", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_notifyrecipientname")]
+		public string ecer_notifyrecipientName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_notifyrecipient"))
+				{
+					return this.FormattedValues["ecer_notifyrecipient"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Self Referred to allow thread communications
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parentcommunicationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ParentCommunicationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_parentcommunicationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_parentcommunicationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parentcommunicationidname")]
+		public string ecer_ParentCommunicationidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_parentcommunicationid"))
+				{
+					return this.FormattedValues["ecer_parentcommunicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantid")]
-		public Microsoft.Xrm.Sdk.EntityReference ECER_RegistrantId
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Registrantid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -404,7 +558,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantidname")]
-		public string ECER_RegistrantIdName
+		public string ecer_RegistrantidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -421,7 +575,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantidyominame")]
-		public string ECER_RegistrantIdYomiName
+		public string ecer_RegistrantidYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -438,7 +592,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reply")]
-		public string ECER_Reply
+		public string ecer_Reply
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -449,6 +603,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_reply", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_type")]
+		public virtual ecer_CommunicationTypes? ecer_Type
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_CommunicationTypes?)(EntityOptionSetEnum.GetEnum(this, "ecer_type")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_type", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_typename")]
+		public string ecer_typeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_type"))
+				{
+					return this.FormattedValues["ecer_type"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -718,12 +904,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Status of the Communication
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ECER_Communication_StateCode? StateCode
+		public virtual ecer_communication_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_Communication_StateCode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_communication_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -733,7 +919,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
-		public string StateCodename
+		public string statecodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -753,12 +939,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Reason for the status of the Communication
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ECER_Communication_StatusCode? StatusCode
+		public virtual ecer_Communication_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ECER_Communication_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_Communication_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -768,7 +954,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
-		public string StatusCodename
+		public string statuscodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -806,7 +992,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
-		public System.Nullable<int> UtcConversionTimeZoneCode
+		public System.Nullable<int> UTCConversionTimeZoneCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -834,21 +1020,76 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// N:1 ecer_communication_Applicationid
+		/// 1:N ecer_communication_ParentCommunicationid
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_Applicationid")]
-		public ECER.Utilities.DataverseSdk.Model.ECER_Application ECER_Communication_ApplicationId
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ParentCommunicationid", Microsoft.Xrm.Sdk.EntityRole.Referenced)]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Communication> Referencedecer_communication_ParentCommunicationid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_Application>("ecer_communication_Applicationid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_ParentCommunicationid", Microsoft.Xrm.Sdk.EntityRole.Referenced);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ECER_Application>("ecer_communication_Applicationid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_ParentCommunicationid", Microsoft.Xrm.Sdk.EntityRole.Referenced, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_file_Communicationid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_file_Communicationid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_File> ecer_file_Communicationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_File>("ecer_file_Communicationid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_File>("ecer_file_Communicationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_communication_Applicationid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_Applicationid")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Application ecer_communication_Applicationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_communication_Applicationid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_communication_Applicationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_communication_ParentCommunicationid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parentcommunicationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ParentCommunicationid", Microsoft.Xrm.Sdk.EntityRole.Referencing)]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Communication Referencingecer_communication_ParentCommunicationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_ParentCommunicationid", Microsoft.Xrm.Sdk.EntityRole.Referencing);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_ParentCommunicationid", Microsoft.Xrm.Sdk.EntityRole.Referencing, value);
 			}
 		}
 		
@@ -857,7 +1098,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantid")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_communication_122")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ECER_Contact_ECER_Communication_122
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_contact_ecer_communication_122
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -876,7 +1117,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ECER_Communication(object anonymousType) : 
+		public ecer_Communication(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())

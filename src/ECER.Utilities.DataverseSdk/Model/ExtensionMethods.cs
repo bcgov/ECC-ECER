@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.ServiceModel;
 using System.Text;
 using Microsoft.Crm.Sdk.Messages;
@@ -11,14 +12,42 @@ namespace ECER.Utilities.DataverseSdk.Model;
 
 public static class ExtensionMethods
 {
-    public static void AddLink([NotNull] this EcerContext context, Entity sourceEntity, string relationshipName, Entity targetEntity)
+    /// <summary>
+    /// Adds a link between 2 entities
+    /// </summary>
+    /// <param name="context">The context</param>
+    /// <param name="sourceEntity">The source entity to link to</param>
+    /// <param name="relationshipName">The relationship name; it is case sensitive</param>
+    /// <param name="linkedEntity">The target linked entity</param>
+    public static void AddLink([NotNull] this EcerContext context, Entity sourceEntity, string relationshipName, Entity linkedEntity)
     {
-        context.AddLink(sourceEntity, new Relationship(relationshipName), targetEntity);
+        context.AddLink(sourceEntity, new Relationship(relationshipName), linkedEntity);
+    }
+
+    /// <summary>
+    /// Adds a link between 2 entities and also adds the target linked entity
+    /// </summary>
+    /// <param name="context">The context</param>
+    /// <param name="source">The source entity to link to</param>
+    /// <param name="relationshipName">The relationship name; it is case sensitive</param>
+    /// <param name="target">The target entity to add and link</param>
+    public static void AddRelatedObject([NotNull] this EcerContext context, Entity source, string relationshipName, Entity target)
+    {
+        context.AddRelatedObject(source, new Relationship(relationshipName), target);
     }
 
     private const int FileBlockSize = 4 * 1024 * 1024; // 4 MB
 
-    public static async Task<string?> UploadFile([NotNull] this EcerContext context, [NotNull] Entity entity, string fileFieldName, [NotNull] FileContainer file, CancellationToken ct = default)
+    /// <summary>
+    /// Uploads a file
+    /// </summary>
+    /// <param name="context">The context</param>
+    /// <param name="entity">The entity with file or image field</param>
+    /// <param name="fileFieldName">The file or image field name</param>
+    /// <param name="file">The file data</param>
+    /// <param name="ct">Optional cancellation token</param>
+    /// <returns>The uploaded file id</returns>
+    public static async Task<string?> UploadFileAsync([NotNull] this EcerContext context, [NotNull] Entity entity, string fileFieldName, [NotNull] FileContainer file, CancellationToken ct = default)
     {
         var response = (InitializeFileBlocksUploadResponse)context.Execute(new InitializeFileBlocksUploadRequest
         {
@@ -84,7 +113,16 @@ public static class ExtensionMethods
         });
     }
 
-    public static async Task<FileContainer?> DownloadFile([NotNull] this EcerContext context, [NotNull] Entity entity, string fileFieldName, CancellationToken ct = default)
+    /// <summary>
+    /// Download a file or image
+    /// </summary>
+    /// <param name="context">The context</param>
+    /// <param name="entity">The entity with the file or image field</param>
+    /// <param name="fileFieldName">The file or image field name</param>
+    /// <param name="ct">Optional cancellation token</param>
+    /// <returns>The file data, null if not found</returns>
+    /// <exception cref="FileNotFoundException"></exception>
+    public static async Task<FileContainer> DownloadFileAsync([NotNull] this EcerContext context, [NotNull] Entity entity, string fileFieldName, CancellationToken ct = default)
     {
         InitializeFileBlocksDownloadResponse response;
         try
@@ -106,7 +144,7 @@ public static class ExtensionMethods
         using var ms = new MemoryStream();
         while (offset < response.FileSizeInBytes)
         {
-            if (ct.IsCancellationRequested) return null;
+            if (ct.IsCancellationRequested) break;
             var dlResponse = (DownloadBlockResponse)context.Execute(new DownloadBlockRequest
             {
                 FileContinuationToken = response.FileContinuationToken,
@@ -120,7 +158,14 @@ public static class ExtensionMethods
         return await Task.FromResult(new FileContainer(response.FileName, string.Empty, new ReadOnlyMemory<byte>(ms.ToArray())));
     }
 
-    public static async Task DeleteFile([NotNull] this EcerContext context, [NotNull] Entity entity, string fileFieldName, CancellationToken ct = default)
+    /// <summary>
+    /// Deletes a file or image
+    /// </summary>
+    /// <param name="context">The context</param>
+    /// <param name="entity">The entity with the file or image field</param>
+    /// <param name="fileFieldName">The file or image field name</param>
+    /// <param name="ct">Optional cancellation token</param>
+    public static async Task DeleteFileAsync([NotNull] this EcerContext context, [NotNull] Entity entity, string fileFieldName, CancellationToken ct = default)
     {
         await Task.CompletedTask;
 
@@ -143,6 +188,52 @@ public static class ExtensionMethods
 
             context.Execute(deleteFileRequest);
         }
+    }
+
+    /// <summary>
+    /// Filters a sequence for elements with a property matching a predefined list of values (`in` filter)
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source">The source query</param>
+    /// <param name="valueSelector">The value selector to filter by</param>
+    /// <param name="values">The list of values to include</param>
+    /// <returns>The query with the added filter</returns>
+    public static IQueryable<TSource> WhereIn<TSource, TValue>(this IQueryable<TSource> source, Expression<Func<TSource, TValue>> valueSelector, IEnumerable<TValue> values)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(valueSelector);
+        ArgumentNullException.ThrowIfNull(values);
+
+        var element = valueSelector.Parameters.Single();
+        var body = values.Select(v => Expression.Equal(valueSelector.Body, Expression.Constant(v))).Aggregate(Expression.OrElse);
+
+        var lambda = Expression.Lambda<Func<TSource, bool>>(body, element);
+
+        return source.Where(lambda);
+    }
+
+    /// <summary>
+    /// Filters a sequence for elements with a property not matching a predefined list of values (`not in` filter)
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source">The source query</param>
+    /// <param name="valueSelector">The value selector to filter by</param>
+    /// <param name="values">The list of values to exclude</param>
+    /// <returns>The query with the added filter</returns>
+    public static IQueryable<TSource> WhereNotIn<TSource, TValue>(this IQueryable<TSource> source, Expression<Func<TSource, TValue>> valueSelector, IEnumerable<TValue> values)
+    {
+        ArgumentNullException.ThrowIfNull(source);
+        ArgumentNullException.ThrowIfNull(valueSelector);
+        ArgumentNullException.ThrowIfNull(values);
+
+        var element = valueSelector.Parameters.Single();
+        var body = values.Select(v => Expression.NotEqual(valueSelector.Body, Expression.Constant(v))).Aggregate(Expression.AndAlso);
+
+        var lambda = Expression.Lambda<Func<TSource, bool>>(body, element);
+
+        return source.Where(lambda);
     }
 }
 

@@ -1,8 +1,11 @@
 using System.Reflection;
 using System.Security.Claims;
 using ECER.Infrastructure.Common;
+using ECER.Managers.Registry;
 using ECER.Utilities.Hosting;
+using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Caching.Distributed;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server;
@@ -12,88 +15,152 @@ namespace ECER.Clients.RegistryPortal.Server;
 
 public class Program
 {
-    private static async Task Main(string[] args)
+  private static async Task Main(string[] args)
+  {
+    var builder = WebApplication.CreateBuilder(args);
+
+    var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
+
+    builder.Host.UseWolverine(opts =>
     {
-        var builder = WebApplication.CreateBuilder(args);
-
-        var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
-
-        builder.Host.UseWolverine(opts =>
-        {
-            foreach (var assembly in assemblies)
+      foreach (var assembly in assemblies)
+      {
+        opts.Discovery.IncludeAssembly(assembly);
+        opts.Discovery.CustomizeHandlerDiscovery(x =>
             {
-                opts.Discovery.IncludeAssembly(assembly);
-                opts.Discovery.CustomizeHandlerDiscovery(x =>
-                {
-                    x.Includes.WithNameSuffix("Handlers");
-                });
-            }
-        });
-        builder.Services.AddAutoMapper(cfg =>
-        {
-            cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
-        }, assemblies);
-
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(opts =>
-        {
-            opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
-        });
-        builder.Services.AddProblemDetails();
-
-        builder.Services.AddCors(options =>
-        {
-            options.AddDefaultPolicy(policy =>
-            {
-                var allowedOrigins = builder.Configuration.GetValue("cors:allowedOrigins", string.Empty)!.Split(";");
-                policy
-                    .WithOrigins(allowedOrigins)
-                    .SetIsOriginAllowedToAllowWildcardSubdomains();
+              x.Includes.WithNameSuffix("Handlers");
             });
-        });
+      }
+    });
+    builder.Services.AddAutoMapper(cfg =>
+    {
+      cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
+    }, assemblies);
 
-        builder.Services.AddAuthentication("bcsc")
-            .AddJwtBearer("bceid")
-            .AddJwtBearer("bcsc", opts =>
-            {
-                opts.Events = new JwtBearerEvents
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(opts =>
+    {
+      opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+      opts.UseOneOfForPolymorphism();
+    });
+    builder.Services.AddProblemDetails();
+
+    builder.Services.AddCors(options =>
+    {
+      options.AddDefaultPolicy(policy =>
+          {
+            var allowedOrigins = builder.Configuration.GetValue("cors:allowedOrigins", string.Empty)!.Split(";");
+            policy.WithOrigins(allowedOrigins).SetIsOriginAllowedToAllowWildcardSubdomains();
+          });
+    });
+
+    builder.Services.AddAuthentication()
+        .AddJwtBearer("bceid", opts =>
+        {
+          opts.Events = new JwtBearerEvents
+          {
+            OnTokenValidated = async ctx =>
+              {
+                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
+{
+                  new Claim("identity_id", ctx.Principal!.FindFirstValue("bceid_user_guid") ?? string.Empty)
+                }));
+
+                ctx.Principal = await GetAdditionalClaimsForUser(
+                        ctx.Principal!,
+                        ctx.HttpContext.RequestServices.GetRequiredService<IMessageBus>(),
+                        ctx.HttpContext.RequestServices.GetRequiredService<IDistributedCache>(),
+                        ctx.HttpContext.RequestAborted);
+              }
+          };
+          opts.Validate();
+        })
+        .AddJwtBearer("bcsc", opts =>
+        {
+          opts.Events = new JwtBearerEvents
+          {
+            OnTokenValidated = async ctx =>
+              {
+                await Task.CompletedTask;
+
+                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
                 {
-                    OnTokenValidated = async ctx =>
-                    {
-                        await Task.CompletedTask;
-
-                        ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim("identity_provider", "bcsc") }));
-                    }
-                };
-                opts.Validate();
-            });
-
-        builder.Services.AddAuthorizationBuilder().AddDefaultPolicy("jwt", policy =>
-        {
-            policy.AddAuthenticationSchemes("bcsc", "bceid").RequireAuthenticatedUser();
+                  new Claim("identity_provider", "bcsc"),
+                  new Claim("identity_id", ctx.Principal!.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty)
+                }));
+                ctx.Principal = await GetAdditionalClaimsForUser(
+                        ctx.Principal!,
+                        ctx.HttpContext.RequestServices.GetRequiredService<IMessageBus>(),
+                        ctx.HttpContext.RequestServices.GetRequiredService<IDistributedCache>(),
+                        ctx.HttpContext.RequestAborted);
+              }
+          };
+          opts.Validate();
         });
 
-        builder.Services.AddDistributedMemoryCache();
+    builder.Services.AddAuthorizationBuilder()
+      .AddDefaultPolicy("registry_user", policy =>
+      {
+        policy
+          .AddAuthenticationSchemes("bcsc", "bceid")
+          .RequireClaim("identity_provider")
+          .RequireClaim("identity_id")
+          .RequireClaim("user_id")
+          .RequireAuthenticatedUser();
+      })
+      .AddPolicy("registry_new_user", policy =>
+      {
+        policy
+          .AddAuthenticationSchemes("bcsc", "bceid")
+          .RequireClaim("identity_provider")
+          .RequireClaim("identity_id")
+          .RequireAuthenticatedUser();
+      });
 
-        HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
+    builder.Services.AddDistributedMemoryCache();
 
-        var app = builder.Build();
+    HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
 
-        app.UseDefaultFiles();
-        app.UseStaticFiles();
-        app.MapFallbackToFile("index.html");
-        app.UseCors();
-        app.UseAuthentication();
-        app.UseAuthorization();
+    var app = builder.Build();
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
+    app.MapFallbackToFile("index.html");
+    app.UseCors();
+    app.UseAuthentication();
+    app.UseAuthorization();
 
-        EndpointsRegistrar.RegisterAll(app);
-
-        await app.RunAsync();
+    if (app.Environment.IsDevelopment())
+    {
+      app.UseSwagger();
+      app.UseSwaggerUI();
     }
+
+    EndpointsRegistrar.RegisterAll(app);
+
+    await app.RunAsync();
+  }
+
+  private static async Task<ClaimsPrincipal?> GetAdditionalClaimsForUser(ClaimsPrincipal principal, IMessageBus messageBus, IDistributedCache distributedCache, CancellationToken ct)
+  {
+    var identityProvider = principal.FindFirst("identity_provider")?.Value;
+    var identityId = principal.FindFirst("identity_id")?.Value;
+
+    if (string.IsNullOrEmpty(identityProvider) || string.IsNullOrEmpty(identityId)) return principal;
+
+    var userProfileResponse = await distributedCache.GetAsync(
+      $"userinfo:{identityId}@{identityProvider}",
+      async ct => await messageBus.InvokeAsync<UserProfileQueryResponse>(new UserProfileQuery(new UserIdentity(identityId, identityProvider)), ct),
+      new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) },
+      ct);
+
+    if (userProfileResponse.UserId == null) return principal;
+
+    principal!.AddIdentity(new ClaimsIdentity(new[]
+    {
+            new Claim("user_id", userProfileResponse.UserId)
+        }));
+
+    return principal;
+  }
 }

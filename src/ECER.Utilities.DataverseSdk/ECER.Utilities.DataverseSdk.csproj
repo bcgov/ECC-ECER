@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-	  <NoWarn>1701;1702;</NoWarn>
+	  <NoWarn>1701;1702;CS8981</NoWarn>
 	</PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" />
+	  <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" />
+	  <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client.Dynamics" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECER.Infrastructure.Common\ECER.Infrastructure.Common.csproj" />
