@@ -11,4 +11,14 @@ const postApplication = async (applicationId: string): Promise<string | null | u
   return (await client.application_post(applicationId, {})).data.applicationId;
 };
 
-export { getApplications, postApplication };
+const createDraftApplication = async (certificationTypes: Components.Schemas.CertificationType[]): Promise<string | null | undefined> => {
+  const client = await getClient();
+
+  const draftApplication: Components.Schemas.DraftApplication = {
+    certificationTypes: certificationTypes,
+  };
+
+  return (await client.draftapplication_put("", draftApplication)).data.applicationId;
+};
+
+export { createDraftApplication, getApplications, postApplication };

@@ -32,12 +32,14 @@ import { defineComponent } from "vue";
 import ExpandSelect from "@/components/ExpandSelect.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import certificationTypes from "@/config/certification-types";
+import { useApplicationStore } from "@/store/application";
 
 export default defineComponent({
   name: "CertificationType",
   components: { ExpandSelect, PageContainer },
   setup() {
-    return { certificationTypes };
+    const applicationStore = useApplicationStore();
+    return { certificationTypes, applicationStore };
   },
   data() {
     return {
@@ -47,9 +49,16 @@ export default defineComponent({
   },
   methods: {
     submit() {
-      // TODO handle passing data to application wizard
-      this.$router.push("/application");
+      if (this.selectedCertificationType == "-1") {
+        // TODO show snackbar error if no selection when ECER-824 is ready
+        return;
+      } else {
+        // this.applicationStore.newDraftApplication([1]);
+        this.applicationStore.newApplication();
+        this.$router.push("/application");
+      }
     },
+
     handleExpandSelectSelection(selected: string) {
       this.selectedCertificationType = selected;
     },

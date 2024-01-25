@@ -23,7 +23,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 
                 return TypedResults.Ok(new DraftApplicationResponse(appId));
             })
-            .WithOpenApi("Handles  a new application submission to ECER", string.Empty, "draftapplication_put")
+            .WithOpenApi("Handles a new application submission to ECER", string.Empty, "draftapplication_put")
             .RequireAuthorization();
 
         endpointRouteBuilder.MapPost("/api/applications/{id}", async (string id, IMessageBus messageBus, IMapper mapper) =>
@@ -63,11 +63,20 @@ public record DraftApplication
 
 public enum CertificationType
 {
+    [Description("Ece Assistant")]
+    EceAssistant,
+    
     [Description("One Year")]
     OneYear,
 
     [Description("Five Years")]
-    FiveYear,
+    FiveYears,
+    
+    [Description("Ite")]
+    Ite,
+    
+    [Description("Sne")]
+    Sne,
 }
 
 /// <summary>
