@@ -21,6 +21,17 @@ export const getClient = async (appendToken: boolean = true) => {
       }
       return config;
     });
+
+    // Add a response interceptor to handle 401 responses
+    axiosClient.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response.status === 401) {
+          userStore.logout();
+        }
+        return error;
+      },
+    );
   }
 
   return axiosClient;
