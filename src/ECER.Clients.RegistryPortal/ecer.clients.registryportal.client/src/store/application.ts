@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { createDraftApplication, getApplications, postApplication } from "@/api/application";
+import { createDraftApplication, getApplications } from "@/api/application";
 import type { Components } from "@/types/openapi";
 
 export interface ApplicationState {
@@ -22,9 +22,6 @@ export const useApplicationStore = defineStore("application", {
   actions: {
     async fetchApplications() {
       this.applications = await getApplications();
-    },
-    async newApplication(): Promise<string | null | undefined> {
-      return await postApplication("");
     },
 
     async newDraftApplication(certificationTypes: Components.Schemas.CertificationType[]): Promise<string | null | undefined> {

@@ -50,7 +50,7 @@ declare namespace Components {
        */
       items?: Application[] | null;
     }
-    export type CertificationType = 0 | 1; // int32
+    export type CertificationType = 0 | 1 | 2 | 3 | 4; // int32
     /**
      * New application request
      */
@@ -187,7 +187,7 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProfilePost.Responses.$200>;
   /**
-   * draftapplication_put - Handles  a new application submission to ECER
+   * draftapplication_put - Handles a new application submission to ECER
    */
   "draftapplication_put"(
     parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,
@@ -228,8 +228,6 @@ export interface PathsDictionary {
      * userinfo_get - Gets the currently logged in user profile or NotFound if no profile found
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.UserinfoGet.Responses.$200>;
-  };
-  ["/api/userinfo/profile"]: {
     /**
      * profile_post - Creates or updates the currently logged on user's profile
      */
@@ -241,7 +239,7 @@ export interface PathsDictionary {
   };
   ["/api/draftapplications/{id}"]: {
     /**
-     * draftapplication_put - Handles  a new application submission to ECER
+     * draftapplication_put - Handles a new application submission to ECER
      */
     "put"(
       parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,

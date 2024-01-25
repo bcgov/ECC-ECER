@@ -33,7 +33,15 @@ import ExpandSelect from "@/components/ExpandSelect.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import certificationTypes from "@/config/certification-types";
 import { useApplicationStore } from "@/store/application";
+import { type Components } from "@/types/openapi";
 
+const certificateTypeMap = new Map<string, Components.Schemas.CertificationType>([
+  ["1", 0],
+  ["2", 1],
+  ["3", 2],
+  ["ITE", 3],
+  ["SNE", 4],
+]);
 export default defineComponent({
   name: "CertificationType",
   components: { ExpandSelect, PageContainer },
@@ -53,8 +61,15 @@ export default defineComponent({
         // TODO show snackbar error if no selection when ECER-824 is ready
         return;
       } else {
-        // this.applicationStore.newDraftApplication([1]);
-        this.applicationStore.newApplication();
+        // Map selectedCertificationType to corresponding number
+        const selectedCertificationTypeNumber = certificateTypeMap.get(this.selectedCertificationType) as Components.Schemas.CertificationType;
+
+        // Map subSelection to corresponding numbers
+        const selectedSubNumbers = this.subSelection.map((selected) => certificateTypeMap.get(selected)) as Array<Components.Schemas.CertificationType>;
+
+        const certificationTypes: Array<Components.Schemas.CertificationType> = [selectedCertificationTypeNumber, ...selectedSubNumbers];
+
+        this.applicationStore.newDraftApplication(certificationTypes);
         this.$router.push("/application");
       }
     },
