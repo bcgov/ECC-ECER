@@ -26,7 +26,6 @@ export const getClient = async (appendToken: boolean = true) => {
     axiosClient.interceptors.response.use(
       (response) => response,
       (error) => {
-        console.log(error);
         if (error.response.status === 401) {
           userStore.logout();
         }
