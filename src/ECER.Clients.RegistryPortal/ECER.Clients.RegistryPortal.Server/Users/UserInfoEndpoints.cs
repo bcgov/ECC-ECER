@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
-using ECER.Managers.Registry;
+using ECER.Managers.Registry.Contract;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -28,7 +28,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
         {
           var user = ctx.User.GetUserContext()!;
 
-          await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.UserProfile>(request.Profile), user.Identity), ct);
+          await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.Contract.UserProfile>(request.Profile), user.Identity), ct);
 
           return TypedResults.Ok();
         })

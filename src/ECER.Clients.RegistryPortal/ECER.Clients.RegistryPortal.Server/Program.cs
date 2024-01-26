@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Security.Claims;
 using ECER.Infrastructure.Common;
-using ECER.Managers.Registry;
+using ECER.Managers.Registry.Contract;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
