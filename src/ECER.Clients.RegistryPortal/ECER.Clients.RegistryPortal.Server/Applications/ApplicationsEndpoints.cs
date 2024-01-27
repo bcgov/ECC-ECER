@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using AutoMapper;
-using ECER.Managers.Registry.Contract;
+using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Wolverine;

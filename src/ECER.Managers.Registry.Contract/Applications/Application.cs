@@ -1,6 +1,6 @@
 ﻿using ECER.Utilities.Security;
 
-namespace ECER.Managers.Registry.Contract;
+namespace ECER.Managers.Registry.Contract.Applications;
 
 /// <summary>
 /// Saves an application in draft state

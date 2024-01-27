@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ECER.Managers.Registry.Contract;
+using ECER.Managers.Registry.Contract.Applications;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ECER.Managers.Registry.Contract;
+using ECER.Managers.Registry.Contract.Applications;
 using ECER.Resources.Applications;
 
 namespace ECER.Managers.Registry;
@@ -43,6 +43,6 @@ public static class ApplicationHandlers
     {
       ById = query.ById
     });
-    return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.CertificationApplication>>(applications));
+    return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.CertificationApplication>>(applications));
   }
 }

@@ -20,15 +20,15 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
   [Fact]
   public async Task Query_NonExistentId_NoResults()
   {
-    var result = await registrantRepository.Query(new RegistrantQuery { WithId = Guid.NewGuid().ToString() });
-    result.Items.ShouldBeEmpty();
+    var registrants = await registrantRepository.Query(new RegistrantQuery { ByUserId = Guid.NewGuid().ToString() });
+    registrants.ShouldBeEmpty();
   }
 
   [Fact]
   public async Task Query_NonExistentIdentity_NoResults()
   {
-    var result = await registrantRepository.Query(new RegistrantQuery { WithIdentity = new UserIdentity("noop", Guid.NewGuid().ToString()) });
-    result.Items.ShouldBeEmpty();
+    var registrants = await registrantRepository.Query(new RegistrantQuery { ByIdentity = new UserIdentity("noop", Guid.NewGuid().ToString()) });
+    registrants.ShouldBeEmpty();
   }
 
   [Fact]
@@ -36,17 +36,17 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     var userProfile = CreateUserProfile();
     var newIdentity = new UserIdentity(Fixture.TestRunId, Guid.NewGuid().ToString());
-    var id = await registrantRepository.RegisterNew(new NewRegistrantRequest(userProfile, newIdentity));
+    var id = await registrantRepository.Create(new Registrant { Profile = userProfile, Identities = new[] { newIdentity } });
 
     id.ShouldNotBeNullOrEmpty();
-    var user = (await registrantRepository.Query(new RegistrantQuery { WithId = id })).Items.ShouldHaveSingleItem();
+    var user = (await registrantRepository.Query(new RegistrantQuery { ByUserId = id })).ShouldHaveSingleItem();
     user.Id.ShouldBe(id);
     user.Profile.FirstName.ShouldBe(userProfile.FirstName);
     user.Profile.LastName.ShouldBe(userProfile.LastName);
     user.Profile.DateOfBirth.ShouldBe(userProfile.DateOfBirth);
     user.Profile.Email.ShouldBe(userProfile.Email);
     user.Profile.Phone.ShouldBe(userProfile.Phone);
-    user.Profile.HomeAddress.ShouldBe(userProfile.HomeAddress);
+    user.Profile.ResidentialAddress.ShouldBe(userProfile.ResidentialAddress);
     user.Profile.MailingAddress.ShouldBe(userProfile.MailingAddress);
     var identity = user.Identities.ShouldHaveSingleItem();
     newIdentity.IdentityProvider.ShouldBe(identity.IdentityProvider);
@@ -58,10 +58,10 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     var userProfile = CreatePartialUserProfile();
     var newIdentity = new UserIdentity(Fixture.TestRunId, Guid.NewGuid().ToString());
-    var id = await registrantRepository.RegisterNew(new NewRegistrantRequest(userProfile, newIdentity));
+    var id = await registrantRepository.Create(new Registrant { Profile = userProfile, Identities = new[] { newIdentity } });
 
     id.ShouldNotBeNullOrEmpty();
-    var user = (await registrantRepository.Query(new RegistrantQuery { WithId = id })).Items.ShouldHaveSingleItem();
+    var user = (await registrantRepository.Query(new RegistrantQuery { ByUserId = id })).ShouldHaveSingleItem();
     user.Id.ShouldBe(id);
     user.Profile.FirstName.ShouldBe(userProfile.FirstName);
     user.Profile.LastName.ShouldBe(userProfile.LastName);
@@ -81,7 +81,7 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
       DateOfBirth = DateOnly.FromDateTime(Faker.Person.DateOfBirth),
       Email = Faker.Person.Email,
       Phone = Faker.Phone.PhoneNumber(),
-      HomeAddress = new Address(Faker.Address.StreetAddress(), null, Faker.Address.City(), Faker.Address.ZipCode(), Faker.Address.State(), Faker.Address.Country())
+      ResidentialAddress = new Address(Faker.Address.StreetAddress(), null, Faker.Address.City(), Faker.Address.ZipCode(), Faker.Address.State(), Faker.Address.Country())
     };
   }
 
