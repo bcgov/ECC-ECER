@@ -10,16 +10,12 @@
       :items="getStepTitles()"
       :mobile="$vuetify.display.mobile"
     >
-      <template v-for="(step, index) in basic.steps" :key="step.id" #[step.key]>
+      <template v-for="step in wizard.steps" :key="step.id" #[step.key]>
         <v-card class="rounded-lg" color="white" :title="step.title" flat>
-          <v-container class="">
+          <v-container>
             <v-row>
               <v-col cols="12" md="8" lg="6" xl="4">
-                <v-form :ref="`form-${index + 1}`" validate-on="blur">
-                  <template v-for="input in step.inputs" :key="input.id">
-                    <Component :is="input.component" v-bind="{ props: input.props }" v-model="formData[input.id as keyof {}]" class="my-8" />
-                  </template>
-                </v-form>
+                <EceForm :form="step.form" />
               </v-col>
             </v-row>
           </v-container>
@@ -43,18 +39,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 
-import FormContainer from "@/components/FormContainer.vue";
+import EceForm from "@/components/EceForm.vue";
 import PageContainer from "@/components/PageContainer.vue";
-import basic from "@/config/basic";
+import applicationWizard from "@/config/application-wizard";
+import type { Wizard } from "@/types/wizard";
 
 export default defineComponent({
-  name: "Wizard",
-  components: { FormContainer, PageContainer },
-  setup: () => {
-    return { basic };
+  name: "EceWizard",
+  components: { PageContainer, EceForm },
+  props: {
+    wizard: {
+      type: Object as PropType<Wizard>,
+      default: () => applicationWizard,
+    },
   },
+
   data: () => ({
     currentStep: 1,
     formData: {},
@@ -66,11 +67,11 @@ export default defineComponent({
   },
   methods: {
     getStepTitles() {
-      return this.basic.steps.map((step) => step.title);
+      return this.wizard.steps.map((step) => step.title);
     },
     async handleSaveAndContinue() {
       const valid = await (this.$refs[this.formRef] as any).validate();
-      if (valid.valid && this.currentStep < this.basic.steps.length) {
+      if (valid.valid && this.currentStep < this.wizard.steps.length) {
         this.currentStep++;
       }
     },
