@@ -76,9 +76,7 @@ export default defineComponent({
     async submit() {
       const { valid } = await (this.$refs.form as any).validate();
       if (valid) {
-        const userCreated: boolean = await createUser({
-          profile: this.userStore.oidcUserAsUserProfile,
-        });
+        const userCreated: boolean = await createUser(this.userStore.userInfo);
 
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {

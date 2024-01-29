@@ -49,7 +49,7 @@ public static class AuthenticationHelper
       throw new NotImplementedException();
     }
 
-    scenario.WithClaim("userId", userId);
+    scenario.WithClaim("user_id", userId);
 
     return scenario;
   }

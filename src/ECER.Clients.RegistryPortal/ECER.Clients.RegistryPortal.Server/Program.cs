@@ -1,11 +1,8 @@
 using System.Reflection;
 using System.Security.Claims;
 using ECER.Infrastructure.Common;
-using ECER.Managers.Registry;
 using ECER.Utilities.Hosting;
-using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Caching.Distributed;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server;
@@ -54,49 +51,39 @@ public class Program
           });
     });
 
-    builder.Services.AddAuthentication()
-        .AddJwtBearer("bceid", opts =>
+    builder.Services
+      .AddTransient<AuthenticationService>()
+      .AddAuthentication()
+      .AddJwtBearer("bceid", opts =>
+      {
+        opts.Events = new JwtBearerEvents
         {
-          opts.Events = new JwtBearerEvents
-          {
-            OnTokenValidated = async ctx =>
-              {
-                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
-{
-                  new Claim("identity_id", ctx.Principal!.FindFirstValue("bceid_user_guid") ?? string.Empty)
-                }));
-
-                ctx.Principal = await GetAdditionalClaimsForUser(
-                        ctx.Principal!,
-                        ctx.HttpContext.RequestServices.GetRequiredService<IMessageBus>(),
-                        ctx.HttpContext.RequestServices.GetRequiredService<IDistributedCache>(),
-                        ctx.HttpContext.RequestAborted);
-              }
-          };
-          opts.Validate();
-        })
-        .AddJwtBearer("bcsc", opts =>
+          OnTokenValidated = async ctx =>
+            {
+              ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim("identity_id", ctx.Principal!.FindFirstValue("bceid_user_guid") ?? string.Empty) }));
+              ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal, ctx.HttpContext.RequestAborted);
+            }
+        };
+        opts.Validate();
+      })
+      .AddJwtBearer("bcsc", opts =>
+      {
+        opts.Events = new JwtBearerEvents
         {
-          opts.Events = new JwtBearerEvents
-          {
-            OnTokenValidated = async ctx =>
-              {
-                await Task.CompletedTask;
+          OnTokenValidated = async ctx =>
+            {
+              await Task.CompletedTask;
 
-                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
-                {
-                  new Claim("identity_provider", "bcsc"),
-                  new Claim("identity_id", ctx.Principal!.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty)
-                }));
-                ctx.Principal = await GetAdditionalClaimsForUser(
-                        ctx.Principal!,
-                        ctx.HttpContext.RequestServices.GetRequiredService<IMessageBus>(),
-                        ctx.HttpContext.RequestServices.GetRequiredService<IDistributedCache>(),
-                        ctx.HttpContext.RequestAborted);
-              }
-          };
-          opts.Validate();
-        });
+              ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
+              {
+                new Claim("identity_provider", "bcsc"),
+                new Claim("identity_id", ctx.Principal!.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty)
+              }));
+              ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal, ctx.HttpContext.RequestAborted);
+            }
+        };
+        opts.Validate();
+      });
 
     builder.Services.AddAuthorizationBuilder()
       .AddDefaultPolicy("registry_user", policy =>
@@ -139,28 +126,5 @@ public class Program
     EndpointsRegistrar.RegisterAll(app);
 
     await app.RunAsync();
-  }
-
-  private static async Task<ClaimsPrincipal?> GetAdditionalClaimsForUser(ClaimsPrincipal principal, IMessageBus messageBus, IDistributedCache distributedCache, CancellationToken ct)
-  {
-    var identityProvider = principal.FindFirst("identity_provider")?.Value;
-    var identityId = principal.FindFirst("identity_id")?.Value;
-
-    if (string.IsNullOrEmpty(identityProvider) || string.IsNullOrEmpty(identityId)) return principal;
-
-    var userProfileResponse = await distributedCache.GetAsync(
-      $"userinfo:{identityId}@{identityProvider}",
-      async ct => await messageBus.InvokeAsync<UserProfileQueryResponse>(new UserProfileQuery(new UserIdentity(identityId, identityProvider)), ct),
-      new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) },
-      ct);
-
-    if (userProfileResponse.UserId == null) return principal;
-
-    principal!.AddIdentity(new ClaimsIdentity(new[]
-    {
-            new Claim("user_id", userProfileResponse.UserId)
-        }));
-
-    return principal;
   }
 }

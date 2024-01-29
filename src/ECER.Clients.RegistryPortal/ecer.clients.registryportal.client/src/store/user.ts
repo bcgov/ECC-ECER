@@ -34,11 +34,11 @@ export const useUserStore = defineStore("user", {
     oidcUserAsUserProfile: (state): Components.Schemas.UserProfile => {
       return {
         // dateOfBirth: state.authority == "bceid" ? null : state.oidcUser?.profile?.birthdate || null,
-        firstName: state.authority == "bceid" ? state.oidcUser?.profile?.given_name || "" : state.oidcUser?.profile?.given_names || "",
+        firstName: state.authority === "bceid" ? state.oidcUser?.profile?.given_name || "" : state.oidcUser?.profile?.given_names || "",
         lastName: state.oidcUser?.profile?.family_name || "",
-        phone: state.authority == "bceid" ? "" : "",
+        phone: state.authority === "bceid" ? "" : "",
         email: state.oidcUser?.profile?.email || "",
-        homeAddress:
+        residentialAddress:
           state.authority === "bcsc"
             ? ({
                 street_address: state.oidcUser?.profile?.address?.street_address || "",
@@ -48,17 +48,17 @@ export const useUserStore = defineStore("user", {
                 postalCode: state.oidcUser?.profile?.address?.postal_code || "",
               } as Components.Schemas.Address)
             : undefined,
-        mailingAddress:
-          state.authority === "bcsc"
-            ? ({
-                street_address: state.oidcUser?.profile?.address?.street_address || "",
-                city: state.oidcUser?.profile?.address?.locality || "",
-                province: state.oidcUser?.profile?.address?.region || "",
-                country: state.oidcUser?.profile?.address?.country || "",
-                postalCode: state.oidcUser?.profile?.address?.postal_code || "",
-              } as Components.Schemas.Address)
-            : undefined,
+        mailingAddress: undefined,
       } as Components.Schemas.UserProfile;
+    },
+    userInfo: (state): Components.Schemas.UserInfo => {
+      return {
+        dateOfBirth: state.authority == "bceid" ? undefined : state.oidcUser?.profile?.birthdate || undefined,
+        firstName: state.authority === "bceid" ? state.oidcUser?.profile?.given_name || "" : state.oidcUser?.profile?.given_names || "",
+        lastName: state.oidcUser?.profile?.family_name || "",
+        phone: state.authority === "bceid" ? "" : "",
+        email: state.oidcUser?.profile?.email || "",
+      } as Components.Schemas.UserInfo;
     },
   },
   actions: {

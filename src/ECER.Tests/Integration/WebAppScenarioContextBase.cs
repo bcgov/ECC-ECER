@@ -72,8 +72,9 @@ public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAcces
 
                     services.AddAuthorization(opts =>
                     {
-                      opts.DefaultPolicy = new AuthorizationPolicyBuilder(opts.DefaultPolicy).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build();
+                      opts.AddPolicy("registry_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
                       opts.AddPolicy("registry_new_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_new_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+                      opts.DefaultPolicy = opts.GetPolicy("registry_user")!;
                     });
                   });
           var configOverrides = new Dictionary<string, string?>(configurationSettings ?? Enumerable.Empty<KeyValuePair<string, string?>>());
