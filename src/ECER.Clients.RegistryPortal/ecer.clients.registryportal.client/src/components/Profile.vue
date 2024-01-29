@@ -2,7 +2,12 @@
   <h1>Profile</h1>
   <v-row class="ma-4">
     <v-col cols="12" md="10" lg="6" xl="4">
-      <EceForm :form="profileInformationForm" :form-data="formStore.formData" @updated-form-data="formStore.setFormData" />
+      <EceForm
+        :form="profileInformationForm"
+        :form-data="formStore.formData"
+        @updated-form-data="formStore.setFormData"
+        @updated-validation="isFormValid = $event"
+      />
     </v-col>
     <v-col cols="12">
       <v-row justify="end">
@@ -55,11 +60,14 @@ export default defineComponent({
 
     return { profileInformationForm, formStore };
   },
+  data: () => ({
+    isFormValid: null as boolean | null,
+  }),
   methods: {
     saveProfile() {
       /*
       TODO:
-        - Validate form
+        - Validate form (use isFormValid)
         - Save updated profile data
         - Toast user with success/error message
       */

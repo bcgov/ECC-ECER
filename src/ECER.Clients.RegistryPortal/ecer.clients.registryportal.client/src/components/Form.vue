@@ -1,5 +1,5 @@
 <template>
-  <v-form :ref="form.id" validate-on="blur">
+  <v-form :ref="form.id" validate-on="blur" @update:model-value="onFormValidationChanged">
     <template v-for="input in form.inputs" :key="input.id">
       <div class="my-8">
         <Component
@@ -36,10 +36,14 @@ export default defineComponent({
   },
   emits: {
     updatedFormData: (_formData: Record<string, any>) => true,
+    updatedValidation: (_validation: boolean | null) => true,
   },
   methods: {
     onInputChanged(id: string, value: any) {
       this.$emit("updatedFormData", { ...this.formData, [id]: value });
+    },
+    onFormValidationChanged(value: boolean | null) {
+      this.$emit("updatedValidation", value);
     },
   },
 });
