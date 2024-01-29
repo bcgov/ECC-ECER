@@ -19,14 +19,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import type { Props } from "@/types/form";
+import type { EceTextFieldProps } from "@/types/input";
 import { isNumber } from "@/utils/formInput";
 
 export default defineComponent({
   name: "EceTextField",
   props: {
     props: {
-      type: Object as () => Props,
+      type: Object as () => EceTextFieldProps,
       required: true,
     },
   },

@@ -31,8 +31,8 @@
               </template>
             </v-checkbox>
             <v-row justify="end">
-              <v-btn variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
-              <v-btn color="primary" @click="submit">Save and Continue</v-btn>
+              <v-btn rounded="lg" variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
+              <v-btn rounded="lg" color="primary" @click="submit">Save and Continue</v-btn>
             </v-row>
           </div>
         </v-form>

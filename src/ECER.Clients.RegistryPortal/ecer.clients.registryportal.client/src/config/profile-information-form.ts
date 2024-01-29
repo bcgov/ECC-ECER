@@ -1,3 +1,4 @@
+import EceAddress from "@/components/inputs/EceAddress.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
@@ -36,30 +37,15 @@ const profileInformationForm: Form = {
       component: EceTextField,
       props: { label: "Date of Birth", type: "date", rules: [Rules.required()], disabled: true },
     },
-    residentialMailingAddress: {
-      id: "residentialMailingAddress",
-      component: EceTextField,
-      props: { label: "Residential Mailing Address", rules: [Rules.required()] },
+    residentialAddress: {
+      id: "residentialAddress",
+      component: EceAddress,
+      props: { hasCheckbox: false, addressLabel: "Residential", rules: [Rules.required()] },
     },
-    cityTown: {
-      id: "cityTown",
-      component: EceTextField,
-      props: { label: "City/Town", rules: [Rules.required()] },
-    },
-    province: {
-      id: "province",
-      component: EceTextField,
-      props: { label: "Province", rules: [Rules.required()] },
-    },
-    postalCode: {
-      id: "postalCode",
-      component: EceTextField,
-      props: { label: "Postal Code", rules: [Rules.required()] },
-    },
-    country: {
-      id: "country",
-      component: EceTextField,
-      props: { label: "Country", rules: [Rules.required()] },
+    mailingAddress: {
+      id: "mailingAddress",
+      component: EceAddress,
+      props: { hasCheckbox: true, addressLabel: "Mailing", rules: [Rules.required()] },
     },
     primaryContactNumber: {
       id: "primaryContactNumber",

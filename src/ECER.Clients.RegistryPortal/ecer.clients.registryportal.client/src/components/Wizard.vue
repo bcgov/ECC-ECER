@@ -25,11 +25,11 @@
         <v-container>
           <v-row class="justify-space-between ga-4" no-gutters>
             <v-col cols="auto" class="mr-auto">
-              <v-btn variant="outlined" color="primary" aut @click="handleBack()">Back</v-btn>
+              <v-btn rounded="lg" variant="outlined" color="primary" aut @click="handleBack()">Back</v-btn>
             </v-col>
             <v-col cols="auto">
-              <v-btn variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft()">Save as Draft</v-btn>
-              <v-btn color="primary" @click="handleSaveAndContinue()">Save and Continue</v-btn>
+              <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft()">Save as Draft</v-btn>
+              <v-btn rounded="lg" color="primary" @click="handleSaveAndContinue()">Save and Continue</v-btn>
             </v-col>
           </v-row>
         </v-container>
