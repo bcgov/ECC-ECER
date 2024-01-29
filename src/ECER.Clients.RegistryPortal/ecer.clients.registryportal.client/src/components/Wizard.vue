@@ -41,13 +41,13 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 
-import EceForm from "@/components/EceForm.vue";
+import EceForm from "@/components/Form.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import applicationWizard from "@/config/application-wizard";
 import type { Wizard } from "@/types/wizard";
 
 export default defineComponent({
-  name: "EceWizard",
+  name: "Wizard",
   components: { PageContainer, EceForm },
   props: {
     wizard: {

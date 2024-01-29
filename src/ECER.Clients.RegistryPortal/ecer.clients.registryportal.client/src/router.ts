@@ -73,7 +73,7 @@ const router = createRouter({
     },
     {
       path: "/application",
-      component: () => import("./components/EceWizard.vue"),
+      component: () => import("./components/Wizard.vue"),
       meta: { requiresAuth: true },
     },
     {

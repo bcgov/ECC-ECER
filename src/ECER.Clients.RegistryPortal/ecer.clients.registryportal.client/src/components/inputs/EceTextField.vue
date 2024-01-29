@@ -5,6 +5,8 @@
     color="primary"
     :type="props.type || 'text'"
     :rules="props.rules"
+    :disabled="props.disabled"
+    :maxlength="props.maxLength"
     @input="$emit('input', $event.target.value)"
     @keypress="
       if (props.isNumeric) {

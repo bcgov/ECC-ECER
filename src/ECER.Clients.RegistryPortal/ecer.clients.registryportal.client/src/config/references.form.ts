@@ -3,7 +3,7 @@ import type { Form } from "@/types/form";
 const referencesForm: Form = {
   id: "references-form",
   title: "References",
-  inputs: [],
+  inputs: {},
 };
 
 export default referencesForm;
