@@ -32,13 +32,13 @@ declare namespace Components {
        */
       items?: Application[] | null;
     }
-    export type CertificationType = 0 | 1 | 2 | 3 | 4; // int32
+    export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
     /**
      * New application request
      */
     export interface DraftApplication {
       id?: string | null;
-      certificationTypes?: CertificationType /* int32 */[] | null;
+      certificationTypes?: CertificationType[] | null;
     }
     /**
      * New application response
@@ -112,9 +112,11 @@ declare namespace Paths {
   namespace ProfileGet {
     namespace Responses {
       export type $200 = /* User profile information */ Components.Schemas.UserProfile;
+      export interface $404 {}
     }
   }
   namespace ProfilePut {
+    export type RequestBody = /* User profile information */ Components.Schemas.UserProfile;
     namespace Responses {
       export interface $200 {}
     }
@@ -155,7 +157,7 @@ export interface OperationMethods {
    */
   "profile_put"(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
+    data?: Paths.ProfilePut.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProfilePut.Responses.$200>;
   /**
@@ -219,7 +221,11 @@ export interface PathsDictionary {
     /**
      * profile_put - Gets the current user profile
      */
-    "put"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProfilePut.Responses.$200>;
+    "put"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.ProfilePut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ProfilePut.Responses.$200>;
   };
   ["/api/userinfo"]: {
     /**
