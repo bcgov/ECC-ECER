@@ -31,7 +31,7 @@
                   <p class="small">Save time later in the application process</p>
                 </div>
               </div>
-              <v-btn class="font-weight-bold" color="primary" @click="handleLogin('bcsc')">LOG IN WITH BC SERVICES CARD</v-btn>
+              <v-btn rounded="lg" class="font-weight-bold" color="primary" @click="handleLogin('bcsc')">LOG IN WITH BC SERVICES CARD</v-btn>
               <div class="text-center">
                 <p class="small">Don't have an account?</p>
                 <a href="https://id.gov.bc.ca/account/setup-instruction"><p class="small">Register for BC Services Card</p></a>
@@ -48,7 +48,7 @@
                   process.
                 </p>
               </div>
-              <v-btn class="font-weight-bold" color="primary" @click="handleLogin('bceid')">LOG IN WITH BASIC BCeID</v-btn>
+              <v-btn rounded="lg" class="font-weight-bold" color="primary" @click="handleLogin('bceid')">LOG IN WITH BASIC BCeID</v-btn>
               <div class="text-center">
                 <p class="small">Don't have an account?</p>
                 <a href="https://www.bceid.ca/register/"><p class="small">Register for Basic BCeID</p></a>

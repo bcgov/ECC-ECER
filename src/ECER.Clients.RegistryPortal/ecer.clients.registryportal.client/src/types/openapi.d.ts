@@ -6,29 +6,11 @@ declare namespace Components {
      * Address
      */
     export interface Address {
-      /**
-       *
-       */
       line1?: string | null;
-      /**
-       *
-       */
       line2?: string | null;
-      /**
-       *
-       */
       city?: string | null;
-      /**
-       *
-       */
       postalCode?: string | null;
-      /**
-       *
-       */
       province?: string | null;
-      /**
-       *
-       */
       country?: string | null;
     }
     export interface Application {
@@ -67,48 +49,28 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
-    /**
-     * New user request
-     */
-    export interface NewUserRequest {
-      profile: /* User profile information */ UserProfile;
-    }
     export interface OidcAuthenticationSettings {
       authority?: string | null;
       clientId?: string | null;
       scope?: string | null;
     }
-    /**
-     * User profile information response
-     */
-    export interface UserInfoResponse {
-      userInfo?: /* User profile information */ UserProfile;
+    export interface UserInfo {
+      firstName?: string | null;
+      lastName?: string | null;
+      dateOfBirth?: string; // date
+      email?: string | null;
+      phone?: string | null;
     }
     /**
      * User profile information
      */
     export interface UserProfile {
-      /**
-       * First name
-       */
       firstName?: string | null;
-      /**
-       * Last name
-       */
       lastName?: string | null;
-      /**
-       * Date of birth in the form of yyyy-MM-dd
-       */
       dateOfBirth?: string | null; // date
-      /**
-       * Email address
-       */
       email?: string | null;
-      /**
-       * Phone number
-       */
       phone?: string | null;
-      homeAddress?: /* Address */ Address;
+      residentialAddress?: /* Address */ Address;
       mailingAddress?: /* Address */ Address;
     }
   }
@@ -147,16 +109,26 @@ declare namespace Paths {
       export type $200 = /* New application response */ Components.Schemas.DraftApplicationResponse;
     }
   }
-  namespace ProfilePost {
-    export type RequestBody = /* New user request */ Components.Schemas.NewUserRequest;
+  namespace ProfileGet {
+    namespace Responses {
+      export type $200 = /* User profile information */ Components.Schemas.UserProfile;
+    }
+  }
+  namespace ProfilePut {
     namespace Responses {
       export interface $200 {}
     }
   }
   namespace UserinfoGet {
     namespace Responses {
-      export type $200 = /* User profile information response */ Components.Schemas.UserInfoResponse;
+      export type $200 = Components.Schemas.UserInfo;
       export interface $404 {}
+    }
+  }
+  namespace UserinfoPost {
+    export type RequestBody = Components.Schemas.UserInfo;
+    namespace Responses {
+      export interface $200 {}
     }
   }
 }
@@ -171,6 +143,22 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
   /**
+   * profile_get - Gets the current user profile
+   */
+  "profile_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProfileGet.Responses.$200>;
+  /**
+   * profile_put - Gets the current user profile
+   */
+  "profile_put"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProfilePut.Responses.$200>;
+  /**
    * userinfo_get - Gets the currently logged in user profile or NotFound if no profile found
    */
   "userinfo_get"(
@@ -179,13 +167,13 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.UserinfoGet.Responses.$200>;
   /**
-   * profile_post - Creates or updates the currently logged on user's profile
+   * userinfo_post - Creates or updates the currently logged on user's profile
    */
-  "profile_post"(
+  "userinfo_post"(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.ProfilePost.RequestBody,
+    data?: Paths.UserinfoPost.RequestBody,
     config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ProfilePost.Responses.$200>;
+  ): OperationResponse<Paths.UserinfoPost.Responses.$200>;
   /**
    * draftapplication_put - Handles a new application submission to ECER
    */
@@ -223,19 +211,29 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
   };
+  ["/api/profile"]: {
+    /**
+     * profile_get - Gets the current user profile
+     */
+    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProfileGet.Responses.$200>;
+    /**
+     * profile_put - Gets the current user profile
+     */
+    "put"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProfilePut.Responses.$200>;
+  };
   ["/api/userinfo"]: {
     /**
      * userinfo_get - Gets the currently logged in user profile or NotFound if no profile found
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.UserinfoGet.Responses.$200>;
     /**
-     * profile_post - Creates or updates the currently logged on user's profile
+     * userinfo_post - Creates or updates the currently logged on user's profile
      */
     "post"(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.ProfilePost.RequestBody,
+      data?: Paths.UserinfoPost.RequestBody,
       config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.ProfilePost.Responses.$200>;
+    ): OperationResponse<Paths.UserinfoPost.Responses.$200>;
   };
   ["/api/draftapplications/{id}"]: {
     /**

@@ -12,16 +12,10 @@ public static class UserContextExtensions
     var identityId = principal.FindFirst("identity_id")?.Value ?? string.Empty;
     var userId = principal.FindFirst("user_id")?.Value ?? string.Empty;
 
-    return new UserContext(new UserIdentity(identityId, identityProvider))
-    {
-      UserId = userId
-    };
+    return new UserContext(new UserIdentity(identityId, identityProvider), userId);
   }
 }
 
-public record UserContext(UserIdentity Identity)
-{
-  public string? UserId { get; set; }
-}
+public record UserContext(UserIdentity Identity, string UserId);
 
 public record UserIdentity(string UserId, string IdentityProvider);

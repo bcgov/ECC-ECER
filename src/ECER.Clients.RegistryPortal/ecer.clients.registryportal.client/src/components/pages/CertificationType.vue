@@ -18,8 +18,8 @@
           @sub-selection="handleExpandSelectSubSelection"
         ></ExpandSelect>
         <v-row justify="end" class="mt-12">
-          <v-btn variant="outlined" class="mr-2" @click="$router.back()">Cancel</v-btn>
-          <v-btn color="primary" :disabled="selectedCertificationType == '-1'" @click="submit">Start Application</v-btn>
+          <v-btn rounded="lg" variant="outlined" class="mr-2" @click="$router.back()">Cancel</v-btn>
+          <v-btn rounded="lg" color="primary" :disabled="selectedCertificationType == '-1'" @click="submit">Start Application</v-btn>
         </v-row>
       </v-col>
     </v-row>

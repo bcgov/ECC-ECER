@@ -15,32 +15,32 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task PostUserProfile_NewBceidUser_Ok()
+  public async Task PostUserInfo_NewBceidUser_Ok()
   {
     await Host.Scenario(_ =>
     {
       _.WithNewUser(new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bceidbasic"));
-      _.Post.Json(CreateNewUserRequest()).ToUrl("/api/userinfo");
+      _.Post.Json(CreateNewUser()).ToUrl("/api/userinfo");
       _.StatusCodeShouldBeOk();
     });
   }
 
   [Fact]
-  public async Task PostUserProfile_NewBcscUser_Ok()
+  public async Task PostUserInfo_NewBcscUser_Ok()
   {
     await Host.Scenario(_ =>
     {
       _.WithNewUser(new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc"));
-      _.Post.Json(CreateNewUserRequest()).ToUrl("/api/userinfo");
+      _.Post.Json(CreateNewUser()).ToUrl("/api/userinfo");
       _.StatusCodeShouldBeOk();
     });
   }
 
   [Fact]
-  public async Task GetUserProfile_ExistingBCSCUser_UserProfile()
+  public async Task GetUserInfo_ExistingBCSCUser_UserProfile()
   {
     var identity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
-    var request = CreateNewUserRequest();
+    var request = CreateNewUser();
     await Host.Scenario(_ =>
     {
       _.WithNewUser(identity);
@@ -55,12 +55,12 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var userProfile = (await response.ReadAsJsonAsync<UserInfoResponse>()).ShouldNotBeNull().UserInfo;
-    userProfile.ShouldBe(request.Profile);
+    var userProfile = (await response.ReadAsJsonAsync<UserInfo>()).ShouldNotBeNull();
+    userProfile.ShouldBe(request);
   }
 
   [Fact]
-  public async Task GetUserProfile_NonExistingBCSCUser_Empty()
+  public async Task GetUserInfo_NonExistingBCSCUser_Empty()
   {
     var identity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
 
@@ -74,29 +74,17 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     response.Context.Response.ContentLength.ShouldBeNull();
   }
 
-  private NewUserRequest CreateNewUserRequest()
+  private UserInfo CreateNewUser()
   {
-    var address = new Faker<Address>("en_CA")
-        .CustomInstantiator(f => new Address(
-            f.Address.StreetAddress(),
-            null,
-            f.Address.City(),
-            f.Address.ZipCode(),
-            f.Address.State(), f.Address.Country()
-            ));
+    var userProfile = new Faker<UserInfo>("en_CA")
+    .CustomInstantiator(f => new UserInfo(
+        f.Person.FirstName,
+        f.Person.LastName,
+        DateOnly.FromDateTime(f.Person.DateOfBirth),
+        f.Person.Email,
+        f.Person.Phone
+        ));
 
-    var userProfile = new Faker<UserProfile>("en_CA")
-        .CustomInstantiator(f => new UserProfile(
-            f.Person.FirstName,
-            f.Person.LastName,
-            DateOnly.FromDateTime(f.Person.DateOfBirth),
-            f.Person.Email,
-            f.Person.Phone,
-            address.Generate(),
-            address.Generate().OrNull(f)
-            ));
-
-    return new Faker<NewUserRequest>("en_CA")
-        .RuleFor(req => req.Profile, f => userProfile.Generate());
+    return userProfile.Generate();
   }
 }

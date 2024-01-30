@@ -31,8 +31,8 @@
               </template>
             </v-checkbox>
             <v-row justify="end">
-              <v-btn variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
-              <v-btn color="primary" @click="submit">Save and Continue</v-btn>
+              <v-btn rounded="lg" variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
+              <v-btn rounded="lg" color="primary" @click="submit">Save and Continue</v-btn>
             </v-row>
           </div>
         </v-form>
@@ -76,9 +76,7 @@ export default defineComponent({
     async submit() {
       const { valid } = await (this.$refs.form as any).validate();
       if (valid) {
-        const userCreated: boolean = await createUser({
-          profile: this.userStore.oidcUserAsUserProfile,
-        });
+        const userCreated: boolean = await createUser(this.userStore.userInfo);
 
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {
