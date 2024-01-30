@@ -11,6 +11,7 @@
       transition="slide-y-transition"
       class="snackbar"
     >
+      <v-icon v-if="icon" :icon="icon" class="mr-2" />
       {{ alertNotificationText }}
       <template #actions>
         <v-btn text="true" color="white" v-bind="$attrs" @click="showSnackBar = false">
@@ -32,6 +33,7 @@ export default {
   data() {
     return {
       colour: "",
+      icon: "",
       polling: 1000,
       timeout: 5000,
       pause: false,
@@ -46,7 +48,7 @@ export default {
       get(): any {
         return this.alertNotification;
       },
-      set(val: any) {
+      set(val: Boolean) {
         this.setAlertNotification(val);
       },
     },
@@ -71,12 +73,15 @@ export default {
       switch (alertType.toLowerCase()) {
         case AlertNotificationType.ERROR:
           this.colour = AlertNotificationType.ERROR;
+          this.icon = "mdi-alert-circle-outline";
           break;
         case AlertNotificationType.WARN:
           this.colour = AlertNotificationType.WARN;
+          this.icon = "mdi-alert-outline";
           break;
         case AlertNotificationType.SUCCESS:
           this.colour = AlertNotificationType.SUCCESS;
+          this.icon = "mdi-check-circle-outline";
           break;
         case AlertNotificationType.INFO:
         default:
