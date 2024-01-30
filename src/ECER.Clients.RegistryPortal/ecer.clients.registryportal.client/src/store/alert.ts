@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+
 import { AlertNotificationType } from "@/utils/constant";
 
 export interface AlertState {
