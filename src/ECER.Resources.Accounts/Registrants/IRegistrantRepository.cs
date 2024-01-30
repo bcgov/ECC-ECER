@@ -3,16 +3,25 @@
 namespace ECER.Resources.Accounts.Registrants;
 
 /// <summary>
-/// Manages registrants
+/// Registrant resouce access
 /// </summary>
 public interface IRegistrantRepository
 {
   /// <summary>
   /// Create a new registrant
   /// </summary>
-  Task<string> Create(Registrant registrant);
+  Task<string> Create(Registrant registrant, CancellationToken ct);
 
-  Task<IEnumerable<Registrant>> Query(RegistrantQuery query);
+  /// <summary>
+  /// Query registrants
+  /// </summary>
+  /// <returns>Enumerable of registrants</returns>
+  Task<IEnumerable<Registrant>> Query(RegistrantQuery query, CancellationToken ct);
+
+  /// <summary>
+  /// Saves a registrant's profile - registrant must exist
+  /// </summary>
+  Task Save(Registrant registrant, CancellationToken ct);
 }
 
 public record RegistrantQuery

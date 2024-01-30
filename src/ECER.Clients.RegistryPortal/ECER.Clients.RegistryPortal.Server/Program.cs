@@ -1,8 +1,10 @@
 using System.Reflection;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Json;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server;
@@ -40,6 +42,10 @@ public class Program
       opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
       opts.UseOneOfForPolymorphism();
     });
+
+    builder.Services.Configure<JsonOptions>(opts => opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+    builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
     builder.Services.AddProblemDetails();
 
     builder.Services.AddCors(options =>
