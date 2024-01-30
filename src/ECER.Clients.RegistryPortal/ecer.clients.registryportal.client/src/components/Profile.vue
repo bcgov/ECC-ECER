@@ -18,44 +18,47 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 
+import { getProfile, putProfile } from "@/api/profile";
 import EceForm from "@/components/Form.vue";
 import profileInformationForm from "@/config/profile-information-form";
 import { useFormStore } from "@/store/form";
+import { useUserStore } from "@/store/user";
 
-import type { AddressData } from "./inputs/EceAddress.vue";
+import { AddressType } from "./inputs/EceAddresses.vue";
 
 export default defineComponent({
   name: "Profile",
   components: { EceForm },
   setup: () => {
     const formStore = useFormStore();
-
-    /*
-    TODO:
-      - Fetch UserProfile from Server
-      - Initialize form with UserProfile data
-    */
+    const userStore = useUserStore();
 
     formStore.initializeForm({
-      [profileInformationForm.inputs.legalFirstName.id]: "John",
-      [profileInformationForm.inputs.legalLastName.id]: "Doe",
-      [profileInformationForm.inputs.dateOfBirth.id]: "1991-01-01",
-      [profileInformationForm.inputs.residentialAddress.id]: {
-        line1: "123 Main Street",
-        city: "Toronto",
-        province: "Ontario",
-        postalCode: "M1M 1M1",
-        country: "Canada",
-      } as AddressData,
-      [profileInformationForm.inputs.mailingAddress.id]: {
-        line1: "123 Main Street",
-        city: "Toronto",
-        province: "Ontario",
-        postalCode: "M1M 1M1",
-        country: "Canada",
-      } as AddressData,
+      [profileInformationForm.inputs.legalFirstName.id]: userStore.oidcUserInfo.firstName,
+      [profileInformationForm.inputs.legalLastName.id]: userStore.oidcUserInfo.lastName,
+      [profileInformationForm.inputs.dateOfBirth.id]: userStore.oidcUserInfo.dateOfBirth,
+      [profileInformationForm.inputs.addresses.id]: { [AddressType.RESIDENTIAL]: userStore.oidcAddress, [AddressType.MAILING]: userStore.oidcAddress },
+      [profileInformationForm.inputs.email.id]: userStore.oidcUserInfo.email,
+      [profileInformationForm.inputs.primaryContactNumber.id]: userStore.oidcUserInfo.phone,
+    });
+
+    onMounted(async () => {
+      const userProfile = await getProfile();
+      if (userProfile !== null) {
+        formStore.initializeForm({
+          [profileInformationForm.inputs.legalFirstName.id]: userProfile.firstName,
+          [profileInformationForm.inputs.legalLastName.id]: userProfile.lastName,
+          [profileInformationForm.inputs.dateOfBirth.id]: "1972-04-13",
+          [profileInformationForm.inputs.addresses.id]: {
+            [AddressType.RESIDENTIAL]: userProfile.residentialAddress || userStore.oidcAddress,
+            [AddressType.MAILING]: userProfile.mailingAddress || userStore.oidcAddress,
+          },
+          [profileInformationForm.inputs.email.id]: userProfile.email,
+          [profileInformationForm.inputs.primaryContactNumber.id]: userProfile.phone,
+        });
+      }
     });
 
     return { profileInformationForm, formStore };
@@ -64,13 +67,17 @@ export default defineComponent({
     isFormValid: null as boolean | null,
   }),
   methods: {
-    saveProfile() {
-      /*
-      TODO:
-        - Validate form (use isFormValid)
-        - Save updated profile data
-        - Toast user with success/error message
-      */
+    async saveProfile() {
+      if (this.isFormValid) {
+        const success = await putProfile(this.formStore.formData);
+        if (success) {
+          alert("Profile saved successfully");
+        } else {
+          alert("Profile save failed");
+        }
+      } else {
+        alert("Please fill out all required fields");
+      }
     },
   },
 });

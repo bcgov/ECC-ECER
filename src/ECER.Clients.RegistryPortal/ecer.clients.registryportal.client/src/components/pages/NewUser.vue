@@ -60,8 +60,8 @@ export default defineComponent({
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
 
-    const phoneNumber = ref(userStore.oidcUserAsUserProfile.phone);
-    const email = ref(userStore.oidcUserAsUserProfile.email);
+    const phoneNumber = ref(userStore.oidcUserAsUserInfo.phone);
+    const email = ref(userStore.oidcUserAsUserInfo.email);
 
     return { userStore, oidcStore, phoneNumber, email };
   },
@@ -76,12 +76,12 @@ export default defineComponent({
     async submit() {
       const { valid } = await (this.$refs.form as any).validate();
       if (valid) {
-        const userCreated: boolean = await postUserInfo(this.userStore.userInfo);
+        const userCreated: boolean = await postUserInfo(this.userStore.oidcUserInfo);
 
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {
-          this.userStore.setUserProfile({
-            ...this.userStore.oidcUserAsUserProfile,
+          this.userStore.setUserInfo({
+            ...this.userStore.oidcUserAsUserInfo,
             phone: this.phoneNumber,
             email: this.email,
           });

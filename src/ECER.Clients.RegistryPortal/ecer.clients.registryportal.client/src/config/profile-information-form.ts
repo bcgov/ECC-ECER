@@ -1,4 +1,4 @@
-import EceAddress from "@/components/inputs/EceAddress.vue";
+import EceAddresses from "@/components/inputs/EceAddresses.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
@@ -37,15 +37,13 @@ const profileInformationForm: Form = {
       component: EceTextField,
       props: { label: "Date of Birth", type: "date", rules: [Rules.required()], disabled: true },
     },
-    residentialAddress: {
-      id: "residentialAddress",
-      component: EceAddress,
-      props: { hasCheckbox: false, addressLabel: "Residential", rules: [Rules.required()] },
-    },
-    mailingAddress: {
-      id: "mailingAddress",
-      component: EceAddress,
-      props: { hasCheckbox: true, addressLabel: "Mailing", rules: [Rules.required()] },
+    addresses: {
+      id: "addresses",
+      component: EceAddresses,
+      props: {
+        residential: { addressLabel: "Residential" },
+        mailing: { addressLabel: "Mailing" },
+      },
     },
     primaryContactNumber: {
       id: "primaryContactNumber",
