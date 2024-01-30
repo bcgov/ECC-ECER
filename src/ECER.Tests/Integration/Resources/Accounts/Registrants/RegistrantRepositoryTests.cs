@@ -20,14 +20,14 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
   [Fact]
   public async Task Query_NonExistentId_NoResults()
   {
-    var registrants = await registrantRepository.Query(new RegistrantQuery { ByUserId = Guid.NewGuid().ToString() });
+    var registrants = await registrantRepository.Query(new RegistrantQuery { ByUserId = Guid.NewGuid().ToString() }, default);
     registrants.ShouldBeEmpty();
   }
 
   [Fact]
   public async Task Query_NonExistentIdentity_NoResults()
   {
-    var registrants = await registrantRepository.Query(new RegistrantQuery { ByIdentity = new UserIdentity("noop", Guid.NewGuid().ToString()) });
+    var registrants = await registrantRepository.Query(new RegistrantQuery { ByIdentity = new UserIdentity("noop", Guid.NewGuid().ToString()) }, default);
     registrants.ShouldBeEmpty();
   }
 
@@ -36,10 +36,10 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     var userProfile = CreateUserProfile();
     var newIdentity = new UserIdentity(Fixture.TestRunId, Guid.NewGuid().ToString());
-    var id = await registrantRepository.Create(new Registrant { Profile = userProfile, Identities = new[] { newIdentity } });
+    var id = await registrantRepository.Create(new Registrant { Profile = userProfile, Identities = new[] { newIdentity } }, default);
 
     id.ShouldNotBeNullOrEmpty();
-    var user = (await registrantRepository.Query(new RegistrantQuery { ByUserId = id })).ShouldHaveSingleItem();
+    var user = (await registrantRepository.Query(new RegistrantQuery { ByUserId = id }, default)).ShouldHaveSingleItem();
     user.Id.ShouldBe(id);
     user.Profile.FirstName.ShouldBe(userProfile.FirstName);
     user.Profile.LastName.ShouldBe(userProfile.LastName);
@@ -58,10 +58,10 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     var userProfile = CreatePartialUserProfile();
     var newIdentity = new UserIdentity(Fixture.TestRunId, Guid.NewGuid().ToString());
-    var id = await registrantRepository.Create(new Registrant { Profile = userProfile, Identities = new[] { newIdentity } });
+    var id = await registrantRepository.Create(new Registrant { Profile = userProfile, Identities = new[] { newIdentity } }, default);
 
     id.ShouldNotBeNullOrEmpty();
-    var user = (await registrantRepository.Query(new RegistrantQuery { ByUserId = id })).ShouldHaveSingleItem();
+    var user = (await registrantRepository.Query(new RegistrantQuery { ByUserId = id }, default)).ShouldHaveSingleItem();
     user.Id.ShouldBe(id);
     user.Profile.FirstName.ShouldBe(userProfile.FirstName);
     user.Profile.LastName.ShouldBe(userProfile.LastName);
@@ -70,6 +70,26 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
     var identity = user.Identities.ShouldHaveSingleItem();
     newIdentity.IdentityProvider.ShouldBe(identity.IdentityProvider);
     newIdentity.ShouldBe(identity);
+  }
+
+  [Fact]
+  public async Task Save_ExistingRegistrant_Updated()
+  {
+    var userProfile = CreatePartialUserProfile();
+    var newIdentity = new UserIdentity(Fixture.TestRunId, Guid.NewGuid().ToString());
+    var registrantId = await registrantRepository.Create(new Registrant { Profile = userProfile, Identities = new[] { newIdentity } }, default);
+
+    var updatedUserProfile = CreateUserProfile();
+    await registrantRepository.Save(new Registrant { Profile = updatedUserProfile, Id = registrantId }, default);
+    var user = (await registrantRepository.Query(new RegistrantQuery { ByUserId = registrantId }, default)).ShouldHaveSingleItem();
+    user.Profile.ShouldBe(updatedUserProfile);
+  }
+
+  [Fact]
+  public async Task Save_NonExistantRegistrant_Updated()
+  {
+    var userProfile = CreateUserProfile();
+    await Should.ThrowAsync<InvalidOperationException>(async () => await registrantRepository.Save(new Registrant { Profile = userProfile, Id = Guid.NewGuid().ToString() }, default));
   }
 
   private UserProfile CreateUserProfile()

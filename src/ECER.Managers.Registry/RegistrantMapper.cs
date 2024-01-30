@@ -2,11 +2,11 @@
 
 namespace ECER.Managers.Registry;
 
-internal sealed class UserMapper : AutoMapper.Profile
+internal sealed class RegistrantMapper : AutoMapper.Profile
 {
-  public UserMapper()
+  public RegistrantMapper()
   {
-    CreateMap<Contract.Registrants.RegisterNewRegistrantCommand, Resources.Accounts.Registrants.Registrant>()
+    CreateMap<Contract.Registrants.RegisterNewUserCommand, Resources.Accounts.Registrants.Registrant>()
       .ForMember(d => d.Identities, opts => opts.MapFrom(s => (new[] { s.Identity })))
       .ForMember(d => d.Id, opts => opts.Ignore())
       ;

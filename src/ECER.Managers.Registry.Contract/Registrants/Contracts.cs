@@ -5,7 +5,13 @@ namespace ECER.Managers.Registry.Contract.Registrants;
 /// <summary>
 /// Invokes a new registrant registration use case
 /// </summary>
-public record RegisterNewRegistrantCommand(UserProfile Profile, UserIdentity Identity);
+public record RegisterNewUserCommand(UserProfile Profile, UserIdentity Identity);
+
+/// <summary>
+/// Invokes updating a registrant's profile use case
+/// </summary>
+/// <param name="Registrant"></param>
+public record UpdateRegistrantProfileCommand(Registrant Registrant);
 
 /// <summary>
 /// Invokes a registrant query use case
