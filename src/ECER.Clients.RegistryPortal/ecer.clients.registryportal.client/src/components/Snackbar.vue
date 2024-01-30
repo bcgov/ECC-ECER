@@ -1,0 +1,122 @@
+<template>
+  <div @mouseover="pause = true" @mouseleave="pause = false">
+    <v-snackbar
+      id="mainSnackBar"
+      v-model="showSnackBar"
+      :timeout="timeout"
+      elevation="24"
+      location="top"
+      centered
+      :color="colour"
+      transition="slide-y-transition"
+      class="snackbar"
+    >
+      {{ alertNotificationText }}
+      <template #actions>
+        <v-btn text="true" color="white" v-bind="$attrs" @click="showSnackBar = false">
+          {{ alertNotificationQueue.length > 0 ? "Next (" + alertNotificationQueue.length + ")" : "Close" }}
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+</template>
+
+<script lang="ts">
+import { mapActions, mapState } from "pinia";
+
+import { useAlertStore } from "@/store/alert";
+import { AlertNotificationType } from "@/utils/constant";
+
+export default {
+  name: "Snackbar",
+  data() {
+    return {
+      colour: "",
+      polling: 1000,
+      timeout: 5000,
+      pause: false,
+    };
+  },
+  computed: {
+    ...mapState(useAlertStore, ["alertNotificationText", "alertNotificationQueue", "alertNotification"]),
+    hasNotificationsPending() {
+      return this.alertNotificationQueue.length > 0;
+    },
+    showSnackBar: {
+      get(): any {
+        return this.alertNotification;
+      },
+      set(val: any) {
+        this.setAlertNotification(val);
+      },
+    },
+  },
+  watch: {
+    showSnackBar() {
+      if (!this.showSnackBar && this.hasNotificationsPending) {
+        this.$nextTick(() => (this.showSnackBar = true));
+      } else if (this.showSnackBar && this.hasNotificationsPending) {
+        this.setupSnackBar();
+      } else {
+        this.teardownSnackBar();
+      }
+    },
+  },
+  methods: {
+    ...mapActions(useAlertStore, ["setAlertNotificationText", "setAlertNotification"]),
+    setAlertType(alertType: String) {
+      if (!alertType) {
+        alertType = "";
+      }
+      switch (alertType.toLowerCase()) {
+        case AlertNotificationType.ERROR:
+          this.colour = AlertNotificationType.ERROR;
+          break;
+        case AlertNotificationType.WARN:
+          this.colour = AlertNotificationType.WARN;
+          break;
+        case AlertNotificationType.SUCCESS:
+          this.colour = AlertNotificationType.SUCCESS;
+          break;
+        case AlertNotificationType.INFO:
+        default:
+          this.colour = AlertNotificationType.INFO;
+      }
+    },
+    setupSnackBar() {
+      let alertObject = this.alertNotificationQueue.shift();
+      this.setAlertNotificationText(alertObject!.text);
+      this.setAlertType(alertObject!.alertType);
+      document.addEventListener("keydown", this.close);
+      if (alertObject!.alertType === AlertNotificationType.ERROR) {
+        this.timeout = 8000;
+      } else {
+        this.timeout = 5000;
+      }
+      this.timeoutCounter();
+    },
+    teardownSnackBar() {
+      document.removeEventListener("keydown", this.close);
+      clearInterval(this.polling);
+    },
+    close(e: KeyboardEvent) {
+      if ((e.key === "Escape" || e.key === "Esc") && this.showSnackBar) {
+        this.showSnackBar = false;
+      }
+    },
+    timeoutCounter() {
+      this.polling = setInterval(() => {
+        if (this.pause) {
+          this.timeout += 1;
+        }
+      }, 1000);
+    },
+  },
+};
+</script>
+
+<style>
+.snackbar {
+  padding: 0 !important;
+}
+</style>
