@@ -44,7 +44,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-import { createUser } from "@/api/user";
+import { postUserInfo } from "@/api/user";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { isNumber } from "@/utils/formInput";
@@ -76,7 +76,7 @@ export default defineComponent({
     async submit() {
       const { valid } = await (this.$refs.form as any).validate();
       if (valid) {
-        const userCreated: boolean = await createUser(this.userStore.userInfo);
+        const userCreated: boolean = await postUserInfo(this.userStore.userInfo);
 
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {

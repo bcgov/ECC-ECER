@@ -21,7 +21,7 @@
         </div>
       </v-col>
       <v-col cols="11" offset="1">
-        <v-checkbox v-model="selection" color="primary" label="Infant and Toddler Educator (ITE)" value="ITE">
+        <v-checkbox v-model="selection" color="primary" label="Infant and Toddler Educator (ITE)" value="Ite">
           <template #details>
             <div class="ml-10">
               An Infant and Toddler specialization requires successful completion of an infant and toddler educator training program recognized by the ECE
@@ -30,7 +30,7 @@
           </template>
         </v-checkbox>
 
-        <v-checkbox v-model="selection" color="primary" label="Special Needs Educator (SNE)" value="SNE">
+        <v-checkbox v-model="selection" color="primary" label="Special Needs Educator (SNE)" value="Sne">
           <template #details>
             <div class="ml-10">
               A Special Needs specialization requires successful completion of a special needs early childhood educator training program recognized by the ECE
@@ -46,18 +46,20 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import type { Components } from "@/types/openapi";
+
 export default defineComponent({
   name: "ECEFiveYearContent",
   emits: {
-    selection: (_selected: Array<string>) => true,
+    selection: (_selected: Array<Components.Schemas.CertificationType>) => true,
   },
   data() {
     return {
-      selection: [] as Array<string>,
+      selection: [] as Array<Components.Schemas.CertificationType>,
     };
   },
   watch: {
-    selection(selected: Array<string>) {
+    selection(selected: Array<Components.Schemas.CertificationType>) {
       this.$emit("selection", selected);
     },
   },

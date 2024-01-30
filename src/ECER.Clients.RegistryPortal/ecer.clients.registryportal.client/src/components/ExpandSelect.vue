@@ -32,11 +32,11 @@ export default defineComponent({
     },
     selected: {
       type: String,
-      default: "-1",
+      default: null,
     },
   },
   emits: {
-    selection: (_selected: string) => true,
+    selection: (_selected: string | null) => true,
     subSelection: (_selected: Array<string>) => true,
   },
   methods: {
@@ -44,11 +44,11 @@ export default defineComponent({
       this.$emit("subSelection", selected);
     },
     handleRadioChange(selected: string | null) {
-      typeof selected === "string" ? this.$emit("selection", selected) : this.$emit("selection", "-1");
+      this.$emit("selection", selected);
       this.$emit("subSelection", []);
     },
     handlePanelChange(selected: unknown) {
-      typeof selected === "string" ? this.$emit("selection", selected) : this.$emit("selection", "-1");
+      typeof selected === "string" ? this.$emit("selection", selected) : this.$emit("selection", null);
       this.$emit("subSelection", []);
     },
   },
