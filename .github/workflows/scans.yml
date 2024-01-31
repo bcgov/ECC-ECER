@@ -1,6 +1,9 @@
 name: Code scans
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * Mon'
+    
 jobs:
   registry-portal-trivy-scan:
     uses: bcgov/pipeline-templates/.github/workflows/trivy-container.yaml@main
