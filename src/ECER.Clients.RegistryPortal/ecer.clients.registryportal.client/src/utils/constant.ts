@@ -8,3 +8,10 @@ export enum RouteName {
   IN_PROGRESS = "in-progress",
   COMPLETED = "completed",
 }
+
+export enum AlertNotificationType {
+  ERROR = "error",
+  WARN = "warning",
+  SUCCESS = "success",
+  INFO = "primary",
+}
