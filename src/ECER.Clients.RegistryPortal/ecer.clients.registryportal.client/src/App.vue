@@ -44,9 +44,9 @@ export default defineComponent({
           router.push("/login");
         } else {
           // If authenticated, check if new user
-          const userProfile: Components.Schemas.UserProfile | null = await getUserInfo();
-          if (userProfile) {
-            userStore.setUserProfile(userProfile);
+          const userInfo: Components.Schemas.UserInfo | null = await getUserInfo();
+          if (userInfo) {
+            userStore.setUserInfo(userInfo);
             router.push("/");
           } else {
             router.push("/new-user");

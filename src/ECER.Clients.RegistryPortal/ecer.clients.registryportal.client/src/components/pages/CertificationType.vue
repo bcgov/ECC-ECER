@@ -13,13 +13,13 @@
       <v-col cols="12" md="8" lg="8" xl="8">
         <ExpandSelect
           :options="certificationTypes"
-          :selected="selectedCertificationType"
+          :selected="selectedCertificationType?.toString()"
           @selection="handleExpandSelectSelection"
           @sub-selection="handleExpandSelectSubSelection"
         ></ExpandSelect>
         <v-row justify="end" class="mt-12">
           <v-btn rounded="lg" variant="outlined" class="mr-2" @click="$router.back()">Cancel</v-btn>
-          <v-btn rounded="lg" color="primary" :disabled="selectedCertificationType == '-1'" @click="submit">Start Application</v-btn>
+          <v-btn rounded="lg" color="primary" :disabled="selectedCertificationType === null" @click="submit">Start Application</v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -35,13 +35,6 @@ import certificationTypes from "@/config/certification-types";
 import { useApplicationStore } from "@/store/application";
 import type { Components } from "@/types/openapi";
 
-const certificateTypeMap = new Map<string, Components.Schemas.CertificationType>([
-  ["1", 0],
-  ["2", 1],
-  ["3", 2],
-  ["ITE", 3],
-  ["SNE", 4],
-]);
 export default defineComponent({
   name: "CertificationType",
   components: { ExpandSelect, PageContainer },
@@ -51,34 +44,28 @@ export default defineComponent({
   },
   data() {
     return {
-      subSelection: [] as Array<string>,
-      selectedCertificationType: "-1" as string,
+      subSelection: [] as Array<Components.Schemas.CertificationType>,
+      selectedCertificationType: null as Components.Schemas.CertificationType | null,
     };
   },
   methods: {
     submit() {
-      if (this.selectedCertificationType == "-1") {
+      if (this.selectedCertificationType === null) {
         // TODO show snackbar error if no selection when ECER-824 is ready
         return;
       } else {
-        // Map selectedCertificationType to corresponding number
-        const selectedCertificationTypeNumber = certificateTypeMap.get(this.selectedCertificationType) as Components.Schemas.CertificationType;
-
-        // Map subSelection to corresponding numbers
-        const selectedSubNumbers = this.subSelection.map((selected) => certificateTypeMap.get(selected)) as Array<Components.Schemas.CertificationType>;
-
-        const certificationTypes: Array<Components.Schemas.CertificationType> = [selectedCertificationTypeNumber, ...selectedSubNumbers];
+        const certificationTypes: Array<Components.Schemas.CertificationType> = [this.selectedCertificationType, ...this.subSelection];
 
         this.applicationStore.newDraftApplication(certificationTypes);
         this.$router.push("/application");
       }
     },
 
-    handleExpandSelectSelection(selected: string) {
-      this.selectedCertificationType = selected;
+    handleExpandSelectSelection(selected: string | null) {
+      this.selectedCertificationType = selected as Components.Schemas.CertificationType;
     },
     handleExpandSelectSubSelection(selected: Array<string>) {
-      this.subSelection = selected;
+      this.subSelection = selected as Components.Schemas.CertificationType[];
     },
   },
 });

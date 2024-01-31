@@ -1,4 +1,4 @@
-import EceAddress from "@/components/inputs/EceAddress.vue";
+import EceAddresses from "@/components/inputs/EceAddresses.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
@@ -20,7 +20,7 @@ const profileInformationForm: Form = {
     legalMiddleName: {
       id: "legalMiddleName",
       component: EceTextField,
-      props: { label: "Legal Middle Name", rules: [Rules.required()], maxLength: 50 },
+      props: { label: "Legal Middle Name", rules: [], maxLength: 50 },
     },
     preferredName: {
       id: "preferredName",
@@ -37,15 +37,13 @@ const profileInformationForm: Form = {
       component: EceTextField,
       props: { label: "Date of Birth", type: "date", rules: [Rules.required()], disabled: true },
     },
-    residentialAddress: {
-      id: "residentialAddress",
-      component: EceAddress,
-      props: { hasCheckbox: false, addressLabel: "Residential", rules: [Rules.required()] },
-    },
-    mailingAddress: {
-      id: "mailingAddress",
-      component: EceAddress,
-      props: { hasCheckbox: true, addressLabel: "Mailing", rules: [Rules.required()] },
+    addresses: {
+      id: "addresses",
+      component: EceAddresses,
+      props: {
+        residential: { addressLabel: "Residential" },
+        mailing: { addressLabel: "Mailing" },
+      },
     },
     primaryContactNumber: {
       id: "primaryContactNumber",
@@ -55,7 +53,7 @@ const profileInformationForm: Form = {
     alternateContactNumber: {
       id: "alternateContactNumber",
       component: EceTextField,
-      props: { label: "Alternate Contact Number", isNumeric: true, rules: [Rules.required()] },
+      props: { label: "Alternate Contact Number", isNumeric: true, rules: [] },
     },
     email: {
       id: "email",
