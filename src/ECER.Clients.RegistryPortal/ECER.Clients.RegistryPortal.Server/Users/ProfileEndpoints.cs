@@ -13,7 +13,7 @@ public class ProfileEndpoints : IRegisterEndpoints
   {
     endpointRouteBuilder.MapGet("/api/profile", async Task<Results<Ok<UserProfile>, NotFound>> (HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
     {
-      var profile = (await bus.InvokeAsync<RegistrantQueryResults>(new RegistrantQuery { ByUserIdentity = ctx.User.GetUserContext()!.Identity }, ctx.RequestAborted)).Items.SingleOrDefault();
+      var profile = (await bus.InvokeAsync<RegistrantQueryResults>(new SearchRegistrantQuery { ByUserIdentity = ctx.User.GetUserContext()!.Identity }, ctx.RequestAborted)).Items.SingleOrDefault();
       if (profile == null) return TypedResults.NotFound();
       return TypedResults.Ok(mapper.Map<UserProfile>(profile.Profile));
     })

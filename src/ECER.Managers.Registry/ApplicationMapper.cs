@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Resources.Documents.Applications;
 
 namespace ECER.Managers.Registry;
 
@@ -6,12 +7,12 @@ internal class ApplicationMapper : Profile
 {
   public ApplicationMapper()
   {
-    CreateMap<Contract.Applications.CertificationApplication, Resources.Applications.CertificationApplication>()
-        .ForCtorParam(nameof(Resources.Applications.CertificationApplication.Id), opts => opts.MapFrom(s => s.Id))
-        .ForCtorParam(nameof(Resources.Applications.CertificationApplication.ApplicantId), opts => opts.MapFrom(s => s.RegistrantId))
-        .ForCtorParam(nameof(Resources.Applications.CertificationApplication.CertificationTypes), opts => opts.MapFrom(s => s.CertificationTypes))
+    CreateMap<Contract.Applications.Application, Application>()
+        .ForCtorParam(nameof(Application.Id), opts => opts.MapFrom(s => s.Id))
+        .ForCtorParam(nameof(Application.ApplicantId), opts => opts.MapFrom(s => s.RegistrantId))
+        .ForCtorParam(nameof(Application.CertificationTypes), opts => opts.MapFrom(s => s.CertificationTypes))
         .ForMember(d => d.Status, opts => opts.Ignore())
-        .ForMember(d => d.CreateddOn, opts => opts.Ignore())
+        .ForMember(d => d.CreatedOn, opts => opts.Ignore())
         .ReverseMap()
         .ValidateMemberList(MemberList.Destination)
         ;

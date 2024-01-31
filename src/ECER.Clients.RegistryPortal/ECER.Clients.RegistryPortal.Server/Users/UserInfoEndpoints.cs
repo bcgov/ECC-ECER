@@ -15,7 +15,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
         {
           var user = ctx.User.GetUserContext()!;
 
-          var results = await bus.InvokeAsync<RegistrantQueryResults>(new RegistrantQuery { ByUserIdentity = user.Identity }, ct);
+          var results = await bus.InvokeAsync<RegistrantQueryResults>(new SearchRegistrantQuery { ByUserIdentity = user.Identity }, ct);
 
           var registrant = results.Items.SingleOrDefault();
           if (registrant == null) return TypedResults.NotFound();

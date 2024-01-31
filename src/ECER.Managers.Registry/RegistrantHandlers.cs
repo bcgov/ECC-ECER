@@ -10,16 +10,16 @@ namespace ECER.Managers.Registry;
 public static class RegistrantHandlers
 {
   /// <summary>
-  /// Handles user profile query use case
+  /// Handles search registrants use case
   /// </summary>
   /// <returns>Query results</returns>
-  public static async Task<RegistrantQueryResults> Handle(Contract.Registrants.RegistrantQuery query, IRegistrantRepository registrantRepository, IMapper mapper, CancellationToken ct)
+  public static async Task<RegistrantQueryResults> Handle(Contract.Registrants.SearchRegistrantQuery query, IRegistrantRepository registrantRepository, IMapper mapper, CancellationToken ct)
   {
     ArgumentNullException.ThrowIfNull(registrantRepository);
     ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(query);
 
-    var registrants = await registrantRepository.Query(new Resources.Accounts.Registrants.RegistrantQuery
+    var registrants = await registrantRepository.Query(new RegistrantQuery
     {
       ByIdentity = query.ByUserIdentity
     }, ct);
@@ -28,7 +28,7 @@ public static class RegistrantHandlers
   }
 
   /// <summary>
-  /// Handles registering a new registty user use case
+  /// Handles register a new registty user use case
   /// </summary>
   /// <returns>the user id of the newly created user</returns>
   /// <exception cref="InvalidOperationException"></exception>
@@ -49,7 +49,7 @@ public static class RegistrantHandlers
   }
 
   /// <summary>
-  /// Handles updating an existing registrant profile use case
+  /// Handles update an existing registrant profile use case
   /// </summary>
   /// <param name="cmd"></param>
   /// <param name="registrantRepository"></param>
