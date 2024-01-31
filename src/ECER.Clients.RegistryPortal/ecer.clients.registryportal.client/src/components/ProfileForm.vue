@@ -18,9 +18,9 @@ import { defineComponent } from "vue";
 import { getProfile, putProfile } from "@/api/profile";
 import EceForm from "@/components/Form.vue";
 import profileInformationForm from "@/config/profile-information-form";
+import { useAlertStore } from "@/store/alert";
 import { useFormStore } from "@/store/form";
 import { useUserStore } from "@/store/user";
-import { useAlertStore } from "@/store/alert";
 
 import { AddressType } from "./inputs/EceAddresses.vue";
 
