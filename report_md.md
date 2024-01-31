@@ -32,10 +32,10 @@
 | Modern Web Application | Informational | 1 |
 | Non-Storable Content | Informational | 1 |
 | Re-examine Cache-control Directives | Informational | 1 |
-| Sec-Fetch-Dest Header is Missing | Informational | 2 |
-| Sec-Fetch-Mode Header is Missing | Informational | 2 |
-| Sec-Fetch-Site Header is Missing | Informational | 2 |
-| Sec-Fetch-User Header is Missing | Informational | 2 |
+| Sec-Fetch-Dest Header is Missing | Informational | 3 |
+| Sec-Fetch-Mode Header is Missing | Informational | 3 |
+| Sec-Fetch-Site Header is Missing | Informational | 3 |
+| Sec-Fetch-User Header is Missing | Informational | 3 |
 | Session Management Response Identified | Informational | 2 |
 | Storable and Cacheable Content | Informational | 7 |
 
@@ -204,7 +204,7 @@ The following web/application server has been identified:
 The following web/application server has been identified: 
 - Kestrel
 `
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-288d27d7.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -214,7 +214,7 @@ The following web/application server has been identified:
 The following web/application server has been identified: 
 - Kestrel
 `
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -318,18 +318,18 @@ Configure all proxies, application servers, and web servers to prevent disclosur
 
 The web server is configured to serve responses to ambiguous URLs in a manner that is likely to lead to confusion about the correct "relative path" for the URL. Resources (CSS, images, etc.) are also specified in the page response using relative, rather than absolute URLs. In an attack, if the web browser parses the "cross-content" response in a permissive manner, or can be tricked into permissively parsing the "cross-content" response, using techniques such as framing, then the web browser may be fooled into interpreting HTML as CSS (or other content types), leading to an XSS vulnerability.
 
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-288d27d7.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-288d27d7.css/6w2j1/41ht5`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css/exrh3/b1q8n`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
 No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js/6w2j1/41ht5`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js/exrh3/b1q8n`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -337,7 +337,7 @@ No X-Frame-Options header was specified, so the page can be framed, and this can
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png/6w2j1/41ht5`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png/exrh3/b1q8n`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -345,7 +345,7 @@ No X-Frame-Options header was specified, so the page can be framed, and this can
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico/6w2j1/41ht5`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico/exrh3/b1q8n`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -353,7 +353,7 @@ No X-Frame-Options header was specified, so the page can be framed, and this can
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt/6w2j1/41ht5`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt/exrh3/b1q8n`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -361,7 +361,7 @@ No X-Frame-Options header was specified, so the page can be framed, and this can
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml/6w2j1/41ht5`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml/exrh3/b1q8n`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -369,7 +369,7 @@ No X-Frame-Options header was specified, so the page can be framed, and this can
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css/6w2j1/41ht5`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css/exrh3/b1q8n`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -389,9 +389,9 @@ Specify the "X-Frame-Options" HTTP response header to prevent Quirks Mode from b
 ### Reference
 
 
-* [ http://www.thespanner.co.uk/2014/03/21/rpo/ ](http://www.thespanner.co.uk/2014/03/21/rpo/)
+* [ https://arxiv.org/abs/1811.00917 ](https://arxiv.org/abs/1811.00917)
 * [ https://hsivonen.fi/doctype/ ](https://hsivonen.fi/doctype/)
-* [ http://www.w3schools.com/tags/tag_base.asp ](http://www.w3schools.com/tags/tag_base.asp)
+* [ https://www.w3schools.com/tags/tag_base.asp ](https://www.w3schools.com/tags/tag_base.asp)
 
 
 #### CWE Id: [ 20 ](https://cwe.mitre.org/data/definitions/20.html)
@@ -453,7 +453,7 @@ Permissions Policy Header is an added layer of security that helps to restrict f
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -493,7 +493,7 @@ Ensure that your web server, application server, load balancer, etc. is configur
 
 A timestamp was disclosed by the application/web server - Unix
 
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-288d27d7.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -536,14 +536,14 @@ The Anti-MIME-Sniffing header X-Content-Type-Options was not set to 'nosniff'. T
   * Evidence: ``
   * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
 At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-288d27d7.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css
   * Method: `GET`
   * Parameter: `x-content-type-options`
   * Attack: ``
   * Evidence: ``
   * Other Info: `This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
 At "High" threshold this scan rule will not alert on client or server error responses.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
   * Method: `GET`
   * Parameter: `x-content-type-options`
   * Attack: ``
@@ -603,7 +603,7 @@ If possible, ensure that the end user uses a standards-compliant and modern web 
 
 Base64 encoded data was disclosed by the application/web server. Note: in the interests of performance not all base64 strings in the response were analyzed individually, the entire response should be looked at by the analyst/security team/developer(s).
 
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-288d27d7.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -611,12 +611,12 @@ Base64 encoded data was disclosed by the application/web server. Note: in the in
   * Other Info: `�PNG
 
    IHDR         ���   sRGB ���   $IDAT(Sc<t��$`ggǈ�g��d�@lt+QD [n b��    IEND�B`�`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `assets/Certifications-56aaf768`
-  * Other Info: `j����z�b~'�*'��zi���`
+  * Evidence: `assets/Certifications-8795183b`
+  * Other Info: `j����z�b~'�*'��;��|�`
 
 Instances: 2
 
@@ -674,7 +674,7 @@ These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
 These cookies affected the response: 
 These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
 `
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-288d27d7.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -683,7 +683,7 @@ These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
 These cookies affected the response: 
 These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
 `
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -776,30 +776,30 @@ Instances: 11
 
 The response appears to contain suspicious comments which may help an attacker. Note: Matches made within script blocks or files are against the entire content not only comments.
 
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `Db`
-  * Other Info: `The following pattern was used: \bDB\b and was detected in the element starting with: "`)}get[Symbol.toStringTag](){return"AxiosHeaders"}static from(t){return t instanceof this?t:new this(t)}static concat(t,...n){co", see evidence field for the suspicious comment/snippet.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `from`
-  * Other Info: `The following pattern was used: \bFROM\b and was detected in the element starting with: "Expected #hex, #hexa, rgb(), rgba(), hsl(), hsla(), object or number`)}function Zn(e){const{h:t,s:n,v:r,a}=e,i=o=>{const s=(o+t/", see evidence field for the suspicious comment/snippet.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js
+  * Other Info: `The following pattern was used: \bFROM\b and was detected 2 times, the first in the element starting with: "**/function xr(e,t,n,r){let a;try{a=r?e(...r):e()}catch(i){Li(i,t,n)}return a}function gn(e,t,n,r){if(Ue(e)){const i=xr(e,t,n,r)", see evidence field for the suspicious comment/snippet.`
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `query`
-  * Other Info: `The following pattern was used: \bQUERY\b and was detected 4 times, the first in the element starting with: "`)}function gv(e){const t=e.dark?2:1,n=e.dark?1:2,r=[];for(const[a,i]of Object.entries(e.colors)){const l=vn(i);r.push(`--v-them", see evidence field for the suspicious comment/snippet.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js
+  * Other Info: `The following pattern was used: \bQUERY\b and was detected 4 times, the first in the element starting with: "`)}function Sv(e){const t=e.dark?2:1,n=e.dark?1:2,r=[];for(const[a,i]of Object.entries(e.colors)){const l=hn(i);r.push(`--v-them", see evidence field for the suspicious comment/snippet.`
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `select`
-  * Other Info: `The following pattern was used: \bSELECT\b and was detected 2 times, the first in the element starting with: "(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const a of d", see evidence field for the suspicious comment/snippet.`
+  * Other Info: `The following pattern was used: \bSELECT\b and was detected 3 times, the first in the element starting with: "**/const RS="http://www.w3.org/2000/svg",OS="http://www.w3.org/1998/Math/MathML",pr=typeof document<"u"?document:null,wf=pr&&pr.", see evidence field for the suspicious comment/snippet.`
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `User`
+  * Other Info: `The following pattern was used: \bUSER\b and was detected in the element starting with: "`)}get[Symbol.toStringTag](){return"AxiosHeaders"}static from(t){return t instanceof this?t:new this(t)}static concat(t,...n){co", see evidence field for the suspicious comment/snippet.`
 
 Instances: 4
 
@@ -832,7 +832,7 @@ The application appears to be a modern web application. If you need to explore i
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script type="module" crossorigin src="/assets/index-eb629945.js"></script>`
+  * Evidence: `<script type="module" crossorigin src="/assets/index-b466020c.js"></script>`
   * Other Info: `No links have been found while there are scripts, which is an indication that this is a modern web application.`
 
 Instances: 1
@@ -951,6 +951,12 @@ Specifies how and where the data would be used. For instance, if the value is au
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-Dest`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-Dest`
@@ -958,7 +964,7 @@ Specifies how and where the data would be used. For instance, if the value is au
   * Evidence: ``
   * Other Info: ``
 
-Instances: 2
+Instances: 3
 
 ### Solution
 
@@ -993,6 +999,12 @@ Allows to differentiate between requests for navigating between HTML pages and r
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-Mode`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-Mode`
@@ -1000,7 +1012,7 @@ Allows to differentiate between requests for navigating between HTML pages and r
   * Evidence: ``
   * Other Info: ``
 
-Instances: 2
+Instances: 3
 
 ### Solution
 
@@ -1035,6 +1047,12 @@ Specifies the relationship between request initiator's origin and target's origi
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-Site`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-Site`
@@ -1042,7 +1060,7 @@ Specifies the relationship between request initiator's origin and target's origi
   * Evidence: ``
   * Other Info: ``
 
-Instances: 2
+Instances: 3
 
 ### Solution
 
@@ -1077,6 +1095,12 @@ Specifies if a navigation request was initiated by a user.
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-User`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-User`
@@ -1084,7 +1108,7 @@ Specifies if a navigation request was initiated by a user.
   * Evidence: ``
   * Other Info: ``
 
-Instances: 2
+Instances: 3
 
 ### Solution
 
@@ -1117,14 +1141,14 @@ The given response has been identified as containing a session management token.
   * Method: `GET`
   * Parameter: `fae215f6a98faf034d267e6fb0d680d6`
   * Attack: ``
-  * Evidence: `00432b656e3d0b408b503985a4fbee58`
+  * Evidence: `f91ee2af48521f750c54857245e589f9`
   * Other Info: `
 cookie:fae215f6a98faf034d267e6fb0d680d6`
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
   * Method: `GET`
   * Parameter: `fae215f6a98faf034d267e6fb0d680d6`
   * Attack: ``
-  * Evidence: `00432b656e3d0b408b503985a4fbee58`
+  * Evidence: `f91ee2af48521f750c54857245e589f9`
   * Other Info: `
 cookie:fae215f6a98faf034d267e6fb0d680d6`
 
@@ -1153,13 +1177,13 @@ This is an informational alert rather than a vulnerability and so there is nothi
 
 The response contents are storable by caching components such as proxy servers, and may be retrieved directly from the cache, rather than from the origin server by the caching servers, in response to similar requests from other users.  If the response data is sensitive, personal or user-specific, this may result in sensitive information being leaked. In some cases, this may even result in a user gaining complete control of the session of another user, depending on the configuration of the caching components in use in their environment. This is primarily an issue where "shared" caching servers such as "proxy" caches are configured on the local network. This configuration is typically found in corporate or educational environments, for instance.
 
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-288d27d7.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: ``
   * Other Info: `In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-eb629945.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
