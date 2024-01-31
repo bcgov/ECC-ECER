@@ -41,6 +41,9 @@ export default defineComponent({
           [AddressType.MAILING]: userProfile.mailingAddress || userStore.oidcAddress,
         },
         [profileInformationForm.inputs.email.id]: userProfile.email,
+        [profileInformationForm.inputs.legalMiddleName.id]: userProfile.middleName,
+        [profileInformationForm.inputs.preferredName.id]: userProfile.preferredName,
+        [profileInformationForm.inputs.alternateContactNumber.id]: userProfile.alternateContactPhone,
         [profileInformationForm.inputs.primaryContactNumber.id]: userProfile.phone,
       });
     } else {
@@ -66,12 +69,15 @@ export default defineComponent({
       } else {
         const success = await putProfile({
           firstName: this.formStore.formData[profileInformationForm.inputs.legalFirstName.id],
+          middleName: this.formStore.formData[profileInformationForm.inputs.legalMiddleName.id],
+          preferredName: this.formStore.formData[profileInformationForm.inputs.preferredName.id],
           lastName: this.formStore.formData[profileInformationForm.inputs.legalLastName.id],
           dateOfBirth: this.formStore.formData[profileInformationForm.inputs.dateOfBirth.id],
           residentialAddress: this.formStore.formData[profileInformationForm.inputs.addresses.id][AddressType.RESIDENTIAL],
           mailingAddress: this.formStore.formData[profileInformationForm.inputs.addresses.id][AddressType.MAILING],
           email: this.formStore.formData[profileInformationForm.inputs.email.id],
           phone: this.formStore.formData[profileInformationForm.inputs.primaryContactNumber.id],
+          alternateContactPhone: this.formStore.formData[profileInformationForm.inputs.alternateContactNumber.id],
         });
 
         if (success) {

@@ -27,11 +27,6 @@ const profileInformationForm: Form = {
       component: EceTextField,
       props: { label: "Preferred Name (optional)", rules: [], maxLength: 50 },
     },
-    previousName: {
-      id: "previousName",
-      component: EceTextField,
-      props: { label: "Previous Name (if applicable)", rules: [], maxLength: 50 },
-    },
     dateOfBirth: {
       id: "dateOfBirth",
       component: EceTextField,
