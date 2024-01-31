@@ -4,7 +4,7 @@
     v-bind="{ props: props.residential }"
     @update:model-value="(value: any) => updateAddress(AddressType.RESIDENTIAL, value)"
   />
-  <v-checkbox v-model="checked" color="primary" label="Mailing Street Address is the same as Residential Street Address"></v-checkbox>
+  <v-checkbox v-model="checked" color="primary" label="Mailing Address is the same as Residential Address"></v-checkbox>
   <EceAddress
     v-if="!checked"
     :model-value="modelValue.mailing"
