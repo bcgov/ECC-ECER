@@ -118,11 +118,13 @@ public class Program
         });
 
       builder.Services.AddDistributedMemoryCache();
+      builder.Services.AddHealthChecks();
 
       HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
 
       var app = builder.Build();
 
+      app.UseHealthChecks("/health");
       app.UseObservabilityMiddleware();
       app.UseDefaultFiles();
       app.UseStaticFiles();
