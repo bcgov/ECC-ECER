@@ -1,7 +1,7 @@
 {
 	"@programName": "ZAP",
 	"@version": "2.14.0",
-	"@generated": "Wed, 31 Jan 2024 17:14:30",
+	"@generated": "Wed, 31 Jan 2024 17:46:52",
 	"site":[ 
 		{
 			"@name": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca",
@@ -195,7 +195,7 @@
 					"reference": "<p>https://tools.ietf.org/html/rfc7231#section-5.1.2</p>",
 					"cweid": "200",
 					"wascid": "45",
-					"sourceid": "840"
+					"sourceid": "842"
 				},
 				{
 					"pluginid": "10051",
@@ -211,7 +211,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css/exrh3/b1q8n",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css/9itav/nn1s7",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
@@ -219,7 +219,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js/exrh3/b1q8n",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js/9itav/nn1s7",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
@@ -227,7 +227,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png/exrh3/b1q8n",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png/9itav/nn1s7",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
@@ -235,7 +235,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico/exrh3/b1q8n",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico/9itav/nn1s7",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
@@ -243,7 +243,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt/exrh3/b1q8n",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt/9itav/nn1s7",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
@@ -251,7 +251,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml/exrh3/b1q8n",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml/9itav/nn1s7",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
@@ -259,7 +259,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css/exrh3/b1q8n",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css/9itav/nn1s7",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						}
@@ -270,7 +270,7 @@
 					"reference": "<p>https://arxiv.org/abs/1811.00917</p><p>https://hsivonen.fi/doctype/</p><p>https://www.w3schools.com/tags/tag_base.asp</p>",
 					"cweid": "20",
 					"wascid": "20",
-					"sourceid": "529"
+					"sourceid": "530"
 				},
 				{
 					"pluginid": "10054",
@@ -568,7 +568,7 @@
 					"reference": "<p>https://cwe.mitre.org/data/definitions/205.html</p>",
 					"cweid": "200",
 					"wascid": "45",
-					"sourceid": "1023"
+					"sourceid": "1017"
 				},
 				{
 					"pluginid": "10027",
@@ -721,14 +721,6 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt",
-							"method": "GET",
-							"param": "Sec-Fetch-Dest",
-							"attack": "",
-							"evidence": "",
-							"otherinfo": ""
-						},
-						{
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
 							"method": "GET",
 							"param": "Sec-Fetch-Dest",
@@ -737,7 +729,7 @@
 							"otherinfo": ""
 						}
 					],
-					"count": "3",
+					"count": "2",
 					"solution": "<p>Ensure that Sec-Fetch-Dest header is included in request headers.</p>",
 					"otherinfo": "",
 					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Dest</p>",
@@ -764,14 +756,6 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt",
-							"method": "GET",
-							"param": "Sec-Fetch-Mode",
-							"attack": "",
-							"evidence": "",
-							"otherinfo": ""
-						},
-						{
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
 							"method": "GET",
 							"param": "Sec-Fetch-Mode",
@@ -780,7 +764,7 @@
 							"otherinfo": ""
 						}
 					],
-					"count": "3",
+					"count": "2",
 					"solution": "<p>Ensure that Sec-Fetch-Mode header is included in request headers.</p>",
 					"otherinfo": "",
 					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Mode</p>",
@@ -807,14 +791,6 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt",
-							"method": "GET",
-							"param": "Sec-Fetch-Site",
-							"attack": "",
-							"evidence": "",
-							"otherinfo": ""
-						},
-						{
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
 							"method": "GET",
 							"param": "Sec-Fetch-Site",
@@ -823,7 +799,7 @@
 							"otherinfo": ""
 						}
 					],
-					"count": "3",
+					"count": "2",
 					"solution": "<p>Ensure that Sec-Fetch-Site header is included in request headers.</p>",
 					"otherinfo": "",
 					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-Site</p>",
@@ -850,14 +826,6 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt",
-							"method": "GET",
-							"param": "Sec-Fetch-User",
-							"attack": "",
-							"evidence": "",
-							"otherinfo": ""
-						},
-						{
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
 							"method": "GET",
 							"param": "Sec-Fetch-User",
@@ -866,7 +834,7 @@
 							"otherinfo": ""
 						}
 					],
-					"count": "3",
+					"count": "2",
 					"solution": "<p>Ensure that Sec-Fetch-User header is included in user initiated requests.</p>",
 					"otherinfo": "",
 					"reference": "<p>https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-Fetch-User</p>",

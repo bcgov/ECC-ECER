@@ -32,10 +32,10 @@
 | Modern Web Application | Informational | 1 |
 | Non-Storable Content | Informational | 1 |
 | Re-examine Cache-control Directives | Informational | 1 |
-| Sec-Fetch-Dest Header is Missing | Informational | 3 |
-| Sec-Fetch-Mode Header is Missing | Informational | 3 |
-| Sec-Fetch-Site Header is Missing | Informational | 3 |
-| Sec-Fetch-User Header is Missing | Informational | 3 |
+| Sec-Fetch-Dest Header is Missing | Informational | 2 |
+| Sec-Fetch-Mode Header is Missing | Informational | 2 |
+| Sec-Fetch-Site Header is Missing | Informational | 2 |
+| Sec-Fetch-User Header is Missing | Informational | 2 |
 | Session Management Response Identified | Informational | 2 |
 | Storable and Cacheable Content | Informational | 7 |
 
@@ -321,7 +321,7 @@ The web server is configured to serve responses to ambiguous URLs in a manner th
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css/exrh3/b1q8n`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-2f7ba158.css/9itav/nn1s7`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -329,7 +329,7 @@ No X-Frame-Options header was specified, so the page can be framed, and this can
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js/exrh3/b1q8n`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b466020c.js/9itav/nn1s7`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -337,7 +337,7 @@ No X-Frame-Options header was specified, so the page can be framed, and this can
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png/exrh3/b1q8n`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png/9itav/nn1s7`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -345,7 +345,7 @@ No X-Frame-Options header was specified, so the page can be framed, and this can
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico/exrh3/b1q8n`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico/9itav/nn1s7`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -353,7 +353,7 @@ No X-Frame-Options header was specified, so the page can be framed, and this can
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt/exrh3/b1q8n`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt/9itav/nn1s7`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -361,7 +361,7 @@ No X-Frame-Options header was specified, so the page can be framed, and this can
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml/exrh3/b1q8n`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml/9itav/nn1s7`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -369,7 +369,7 @@ No X-Frame-Options header was specified, so the page can be framed, and this can
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css
   * Method: `GET`
   * Parameter: ``
-  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css/exrh3/b1q8n`
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css/9itav/nn1s7`
   * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
   * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
 A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
@@ -951,12 +951,6 @@ Specifies how and where the data would be used. For instance, if the value is au
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Dest`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-Dest`
@@ -964,7 +958,7 @@ Specifies how and where the data would be used. For instance, if the value is au
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 2
 
 ### Solution
 
@@ -999,12 +993,6 @@ Allows to differentiate between requests for navigating between HTML pages and r
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Mode`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-Mode`
@@ -1012,7 +1000,7 @@ Allows to differentiate between requests for navigating between HTML pages and r
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 2
 
 ### Solution
 
@@ -1047,12 +1035,6 @@ Specifies the relationship between request initiator's origin and target's origi
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-Site`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-Site`
@@ -1060,7 +1042,7 @@ Specifies the relationship between request initiator's origin and target's origi
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 2
 
 ### Solution
 
@@ -1095,12 +1077,6 @@ Specifies if a navigation request was initiated by a user.
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
-  * Method: `GET`
-  * Parameter: `Sec-Fetch-User`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-User`
@@ -1108,7 +1084,7 @@ Specifies if a navigation request was initiated by a user.
   * Evidence: ``
   * Other Info: ``
 
-Instances: 3
+Instances: 2
 
 ### Solution
 
