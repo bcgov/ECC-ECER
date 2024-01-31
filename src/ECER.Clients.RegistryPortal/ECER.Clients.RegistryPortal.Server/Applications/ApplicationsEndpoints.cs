@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel;
 using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
@@ -11,40 +13,37 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async (string? id, DraftApplication draftApplication, HttpContext httpContext, IMessageBus messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (string? id, SaveDraftApplicationRequest request, HttpContext httpContext, IMessageBus messageBus, IMapper mapper) =>
         {
+          if (request.DraftApplication.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
           var userContext = httpContext.User.GetUserContext();
-          var application = mapper.Map<CertificationApplication>(draftApplication);
-          application.RegistrantId = userContext!.UserId!;
-          application.Id = id;
-          var cmd = new SaveDraftCertificationApplicationCommand(application);
-          var appId = await messageBus.InvokeAsync<string>(cmd);
+          var application = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId));
 
-          return TypedResults.Ok(new DraftApplicationResponse(appId));
+          var applicationId = await messageBus.InvokeAsync<string>(new SaveDraftApplicationCommand(application));
+
+          return TypedResults.Ok(new DraftApplicationResponse(applicationId));
         })
-        .WithOpenApi("Handles a new application submission to ECER", string.Empty, "draftapplication_put")
+        .WithOpenApi("Save a draft application for the current user", string.Empty, "draftapplication_put")
         .RequireAuthorization();
 
-    endpointRouteBuilder.MapPost("/api/applications/{id}", async (string id, IMessageBus messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/applications", async (ApplicationSubmissionRequest request, IMessageBus messageBus) =>
         {
-          var cmd = new SubmitCertificationApplicationCommand(id);
-          var appId = await messageBus.InvokeAsync<string>(cmd);
+          var cmd = new SubmitApplicationCommand(request.Id);
+          await messageBus.InvokeAsync<string>(cmd);
 
-          return TypedResults.Ok(new DraftApplicationResponse(appId));
+          return TypedResults.Ok();
         })
-        .WithOpenApi("Handles a new application submission to ECER", string.Empty, "application_post")
+        .WithOpenApi("Submit an application", string.Empty, "application_post")
         .RequireAuthorization();
 
-    endpointRouteBuilder.MapGet("/api/applications", async (IMessageBus messageBus) =>
+    endpointRouteBuilder.MapGet("/api/applications", async (ApplicationStatus[]? byStatus, IMessageBus messageBus, IMapper mapper) =>
         {
-          var query = new CertificationApplicationsQuery();
-          var results = await messageBus.InvokeAsync<ApplicationsQueryResults>(query);
-          return TypedResults.Ok(new ApplicationQueryResponse(results.Items.Select(i => new Application
+          var query = new ApplicationsQuery
           {
-            Id = i.Id!,
-            RegistrantId = i.RegistrantId,
-            SubmittedOn = i.SubmittedOn
-          })));
+            ByStatus = byStatus?.Convert<ApplicationStatus, Managers.Registry.Contract.Applications.ApplicationStatus>()
+          };
+          var results = await messageBus.InvokeAsync<ApplicationsQueryResults>(query);
+          return TypedResults.Ok(mapper.Map<IEnumerable<Application>>(results.Items));
         })
         .WithOpenApi("Handles application queries", string.Empty, "application_get")
         .RequireAuthorization();
@@ -52,12 +51,42 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 }
 
 /// <summary>
-/// New application request
+/// Save draft application request
 /// </summary>
+/// <param name="DraftApplication">The draft application</param>
+public record SaveDraftApplicationRequest(DraftApplication DraftApplication);
+
+/// <summary>
+/// Submit application request
+/// </summary>
+/// <param name="Id">The application id</param>
+public record ApplicationSubmissionRequest(string Id);
+
+/// <summary>
+/// Save draft application response
+/// </summary>
+/// <param name="ApplicationId">The application id</param>
+public record DraftApplicationResponse(string ApplicationId);
+
+/// <summary>
+/// Application query response
+/// </summary>
+/// <param name="Items">The found applications</param>
+public record ApplicationQueryResponse(IEnumerable<Application> Items);
+
 public record DraftApplication
 {
   public string? Id { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+}
+
+public record Application
+{
+  public string Id { get; set; } = null!;
+  public DateTime CreatedOn { get; set; }
+  public DateTime? SubmittedOn { get; set; }
+  public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+  public ApplicationStatus Status { get; set; }
 }
 
 public enum CertificationType
@@ -78,21 +107,15 @@ public enum CertificationType
   Sne,
 }
 
-/// <summary>
-/// New application response
-/// </summary>
-/// <param name="ApplicationId">The new application id</param>
-public record DraftApplicationResponse(string ApplicationId);
-
-/// <summary>
-/// Application query response
-/// </summary>
-/// <param name="Items">The items in the response</param>
-public record ApplicationQueryResponse(IEnumerable<Application> Items);
-
-public record Application
+public enum ApplicationStatus
 {
-  public string Id { get; set; } = null!;
-  public DateTime SubmittedOn { get; set; }
-  public string RegistrantId { get; set; } = null!;
+  Draft,
+  Submitted,
+  Complete,
+  ReviewforCompletness,
+  ReadyforAssessment,
+  BeingAssessed,
+  Reconsideration,
+  Appeal,
+  Cancelled,
 }
