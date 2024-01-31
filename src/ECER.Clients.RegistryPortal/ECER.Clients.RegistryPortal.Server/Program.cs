@@ -5,6 +5,7 @@ using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using Serilog;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server;
@@ -18,119 +19,133 @@ public class Program
   {
     var builder = WebApplication.CreateBuilder(args);
 
-    var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
+    var logger = builder.ConfigureWebApplicationObservability();
 
-    builder.Host.UseWolverine(opts =>
+    logger.Information("Starting up");
+
+    try
     {
-      foreach (var assembly in assemblies)
+      var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
+
+      builder.Host.UseWolverine(opts =>
       {
-        opts.Discovery.IncludeAssembly(assembly);
-        opts.Discovery.CustomizeHandlerDiscovery(x =>
-            {
-              x.Includes.WithNameSuffix("Handlers");
-            });
-      }
-    });
-    builder.Services.AddAutoMapper(cfg =>
-    {
-      cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
-    }, assemblies);
-
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen(opts =>
-    {
-      opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
-      opts.UseOneOfForPolymorphism();
-    });
-
-    builder.Services.Configure<JsonOptions>(opts => opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-    builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-
-    builder.Services.AddProblemDetails();
-
-    builder.Services.AddCors(options =>
-    {
-      options.AddDefaultPolicy(policy =>
-          {
-            var allowedOrigins = builder.Configuration.GetValue("cors:allowedOrigins", string.Empty)!.Split(";");
-            policy.WithOrigins(allowedOrigins).SetIsOriginAllowedToAllowWildcardSubdomains();
-          });
-    });
-
-    builder.Services
-      .AddTransient<AuthenticationService>()
-      .AddAuthentication()
-      .AddJwtBearer("bceid", opts =>
-      {
-        opts.Events = new JwtBearerEvents
+        foreach (var assembly in assemblies)
         {
-          OnTokenValidated = async ctx =>
-            {
-              ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim("identity_id", ctx.Principal!.FindFirstValue("bceid_user_guid") ?? string.Empty) }));
-              ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal, ctx.HttpContext.RequestAborted);
-            }
-        };
-        opts.Validate();
-      })
-      .AddJwtBearer("bcsc", opts =>
-      {
-        opts.Events = new JwtBearerEvents
-        {
-          OnTokenValidated = async ctx =>
-            {
-              await Task.CompletedTask;
-
-              ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
+          opts.Discovery.IncludeAssembly(assembly);
+          opts.Discovery.CustomizeHandlerDiscovery(x =>
               {
+                x.Includes.WithNameSuffix("Handlers");
+              });
+        }
+      });
+      builder.Services.AddAutoMapper(cfg =>
+      {
+        cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
+      }, assemblies);
+
+      builder.Services.AddEndpointsApiExplorer();
+      builder.Services.AddSwaggerGen(opts =>
+      {
+        opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+        opts.UseOneOfForPolymorphism();
+      });
+
+      builder.Services.Configure<JsonOptions>(opts => opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+      builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+      builder.Services.AddProblemDetails();
+
+      builder.Services.AddCors(options =>
+      {
+        options.AddDefaultPolicy(policy =>
+            {
+              var allowedOrigins = builder.Configuration.GetValue("cors:allowedOrigins", string.Empty)!.Split(";");
+              policy.WithOrigins(allowedOrigins).SetIsOriginAllowedToAllowWildcardSubdomains();
+            });
+      });
+
+      builder.Services
+        .AddTransient<AuthenticationService>()
+        .AddAuthentication()
+        .AddJwtBearer("bceid", opts =>
+        {
+          opts.Events = new JwtBearerEvents
+          {
+            OnTokenValidated = async ctx =>
+              {
+                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim("identity_id", ctx.Principal!.FindFirstValue("bceid_user_guid") ?? string.Empty) }));
+                ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal, ctx.HttpContext.RequestAborted);
+              }
+          };
+          opts.Validate();
+        })
+        .AddJwtBearer("bcsc", opts =>
+        {
+          opts.Events = new JwtBearerEvents
+          {
+            OnTokenValidated = async ctx =>
+              {
+                await Task.CompletedTask;
+
+                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
+                {
                 new Claim("identity_provider", "bcsc"),
                 new Claim("identity_id", ctx.Principal!.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty)
-              }));
-              ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal, ctx.HttpContext.RequestAborted);
-            }
-        };
-        opts.Validate();
-      });
+                }));
+                ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal, ctx.HttpContext.RequestAborted);
+              }
+          };
+          opts.Validate();
+        });
 
-    builder.Services.AddAuthorizationBuilder()
-      .AddDefaultPolicy("registry_user", policy =>
+      builder.Services.AddAuthorizationBuilder()
+        .AddDefaultPolicy("registry_user", policy =>
+        {
+          policy
+            .AddAuthenticationSchemes("bcsc", "bceid")
+            .RequireClaim("identity_provider")
+            .RequireClaim("identity_id")
+            .RequireClaim("user_id")
+            .RequireAuthenticatedUser();
+        })
+        .AddPolicy("registry_new_user", policy =>
+        {
+          policy
+            .AddAuthenticationSchemes("bcsc", "bceid")
+            .RequireClaim("identity_provider")
+            .RequireClaim("identity_id")
+            .RequireAuthenticatedUser();
+        });
+
+      builder.Services.AddDistributedMemoryCache();
+
+      HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
+
+      var app = builder.Build();
+
+      app.UseObservabilityMiddleware();
+      app.UseDefaultFiles();
+      app.UseStaticFiles();
+      app.MapFallbackToFile("index.html");
+      app.UseCors();
+      app.UseAuthentication();
+      app.UseAuthorization();
+
+      if (app.Environment.IsDevelopment())
       {
-        policy
-          .AddAuthenticationSchemes("bcsc", "bceid")
-          .RequireClaim("identity_provider")
-          .RequireClaim("identity_id")
-          .RequireClaim("user_id")
-          .RequireAuthenticatedUser();
-      })
-      .AddPolicy("registry_new_user", policy =>
-      {
-        policy
-          .AddAuthenticationSchemes("bcsc", "bceid")
-          .RequireClaim("identity_provider")
-          .RequireClaim("identity_id")
-          .RequireAuthenticatedUser();
-      });
+        app.UseSwagger();
+        app.UseSwaggerUI();
+      }
 
-    builder.Services.AddDistributedMemoryCache();
+      EndpointsRegistrar.RegisterAll(app);
 
-    HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
-
-    var app = builder.Build();
-
-    app.UseDefaultFiles();
-    app.UseStaticFiles();
-    app.MapFallbackToFile("index.html");
-    app.UseCors();
-    app.UseAuthentication();
-    app.UseAuthorization();
-
-    if (app.Environment.IsDevelopment())
-    {
-      app.UseSwagger();
-      app.UseSwaggerUI();
+      await app.RunAsync();
+      Log.Information("Stopped");
     }
-
-    EndpointsRegistrar.RegisterAll(app);
-
-    await app.RunAsync();
+    catch (Exception e)
+    {
+      Log.Fatal(e, "An unhandled exception occurred during bootstrapping");
+      throw;
+    }
   }
 }
