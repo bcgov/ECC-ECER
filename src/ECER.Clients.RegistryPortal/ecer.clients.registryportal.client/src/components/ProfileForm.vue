@@ -20,6 +20,7 @@ import EceForm from "@/components/Form.vue";
 import profileInformationForm from "@/config/profile-information-form";
 import { useFormStore } from "@/store/form";
 import { useUserStore } from "@/store/user";
+import { useAlertStore } from "@/store/alert";
 
 import { AddressType } from "./inputs/EceAddresses.vue";
 
@@ -29,6 +30,7 @@ export default defineComponent({
   setup: async () => {
     const formStore = useFormStore();
     const userStore = useUserStore();
+    const alertStore = useAlertStore();
 
     const userProfile = await getProfile();
     if (userProfile !== null) {
@@ -54,7 +56,7 @@ export default defineComponent({
       });
     }
 
-    return { profileInformationForm, formStore };
+    return { profileInformationForm, formStore, alertStore };
   },
   data: () => ({
     isFormValid: null as boolean | null,
@@ -62,7 +64,7 @@ export default defineComponent({
   methods: {
     async saveProfile() {
       if (!this.isFormValid) {
-        alert("Please fill out all required fields");
+        this.alertStore.setFailureAlert("Please fill out all required fields");
       } else {
         const success = await putProfile({
           firstName: this.formStore.formData[profileInformationForm.inputs.legalFirstName.id],
@@ -75,9 +77,9 @@ export default defineComponent({
         });
 
         if (success) {
-          alert("Profile saved successfully");
+          this.alertStore.setSuccessAlert("Profile saved successfully");
         } else {
-          alert("Profile save failed");
+          this.alertStore.setFailureAlert("Profile save failed");
         }
       }
     },
