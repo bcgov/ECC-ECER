@@ -4,6 +4,7 @@
       <v-app>
         <NavigationBar />
         <v-main>
+          <Snackbar />
           <router-view></router-view>
         </v-main>
         <EceFooter />
@@ -21,6 +22,7 @@ import { useUserStore } from "@/store/user";
 import { getUserInfo } from "./api/user";
 import EceFooter from "./components/Footer.vue";
 import NavigationBar from "./components/NavigationBar.vue";
+import Snackbar from "./components/Snackbar.vue";
 import { useOidcStore } from "./store/oidc";
 import type { Components } from "./types/openapi";
 
@@ -29,10 +31,12 @@ export default defineComponent({
   components: {
     NavigationBar,
     EceFooter,
+    Snackbar,
   },
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
+
     const router = useRouter();
 
     // Watch for changes to isAuthenticated flag
