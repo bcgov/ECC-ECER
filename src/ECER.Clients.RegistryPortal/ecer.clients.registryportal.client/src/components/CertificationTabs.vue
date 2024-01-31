@@ -1,5 +1,9 @@
 <template>
-  <h1>My Certifications</h1>
+  <v-row class="ma-4">
+    <v-col cols="12">
+      <h1>My Certifications</h1>
+    </v-col>
+  </v-row>
   <v-expansion-panels v-if="$vuetify.display.mobile" :model-value="expansionPanelIndex" @update:model-value="updateTab">
     <v-expansion-panel elevation="0">
       <v-expansion-panel-title>

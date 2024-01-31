@@ -20,7 +20,7 @@ const profileInformationForm: Form = {
     legalMiddleName: {
       id: "legalMiddleName",
       component: EceTextField,
-      props: { label: "Legal Middle Name", rules: [Rules.required()], maxLength: 50 },
+      props: { label: "Legal Middle Name", rules: [], maxLength: 50 },
     },
     preferredName: {
       id: "preferredName",
@@ -53,7 +53,7 @@ const profileInformationForm: Form = {
     alternateContactNumber: {
       id: "alternateContactNumber",
       component: EceTextField,
-      props: { label: "Alternate Contact Number", isNumeric: true, rules: [Rules.required()] },
+      props: { label: "Alternate Contact Number", isNumeric: true, rules: [] },
     },
     email: {
       id: "email",
