@@ -48,6 +48,9 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
     user.Profile.Phone.ShouldBe(userProfile.Phone);
     user.Profile.ResidentialAddress.ShouldBe(userProfile.ResidentialAddress);
     user.Profile.MailingAddress.ShouldBe(userProfile.MailingAddress);
+    user.Profile.AlternateContactPhone.ShouldBe(userProfile.AlternateContactPhone);
+    user.Profile.MiddleName.ShouldBe(userProfile.MiddleName);
+    user.Profile.PreferredName.ShouldBe(userProfile.PreferredName);
     var identity = user.Identities.ShouldHaveSingleItem();
     newIdentity.IdentityProvider.ShouldBe(identity.IdentityProvider);
     newIdentity.UserId.ShouldBe(identity.UserId);
@@ -97,10 +100,13 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
     return new UserProfile
     {
       FirstName = Faker.Person.FirstName,
+      MiddleName = Faker.Person.FirstName,
+      PreferredName = Faker.Person.FirstName,
       LastName = $"{Fixture.TestRunId}_{Faker.Person.LastName}",
       DateOfBirth = DateOnly.FromDateTime(Faker.Person.DateOfBirth),
       Email = Faker.Person.Email,
       Phone = Faker.Phone.PhoneNumber(),
+      AlternateContactPhone = Faker.Phone.PhoneNumber(),
       ResidentialAddress = new Address(Faker.Address.StreetAddress(), null, Faker.Address.City(), Faker.Address.ZipCode(), Faker.Address.State(), Faker.Address.Country())
     };
   }

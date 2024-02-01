@@ -37,6 +37,9 @@ public class ProfileEndpoints : IRegisterEndpoints
 public record UserProfile(
     string? FirstName,
     string? LastName,
+    string? MiddleName,
+    string? PreferredName,
+    string? AlternateContactPhone,
     DateOnly? DateOfBirth,
     string Email,
     string Phone,

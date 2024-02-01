@@ -9,49 +9,47 @@ import { useOidcStore } from "./oidc";
 export interface UserState {
   oidcUser: User | null;
   authority: Authority | null;
-  userProfile: Components.Schemas.UserProfile | null;
+  userInfo: Components.Schemas.UserInfo | null;
 }
 
 export const useUserStore = defineStore("user", {
   persist: {
-    paths: ["oidcUser", "userProfile", "authority"],
+    paths: ["oidcUser", "userInfo", "authority"],
   },
   state: (): UserState => ({
     oidcUser: null,
     authority: null,
-    userProfile: null,
+    userInfo: null,
   }),
   getters: {
-    hasUserInfo: (state): boolean => state.userProfile !== null,
+    hasUserInfo: (state): boolean => state.userInfo !== null,
     accessToken: (state): string => (state.authority === "bcsc" ? state.oidcUser?.id_token ?? "" : state.oidcUser?.access_token ?? ""),
     isAuthenticated(): boolean {
       return this.accessToken !== "";
     },
-    fullName: (state): string =>
-      state.authority == "bcsc" ? `${state.userProfile?.firstName} ${state.userProfile?.lastName}` : `${state.userProfile?.firstName}`,
-    email: (state): string => state.userProfile?.email || "",
-    phoneNumber: (state): string => state.userProfile?.phone || "",
-    oidcUserAsUserProfile: (state): Components.Schemas.UserProfile => {
+    fullName: (state): string => (state.authority == "bcsc" ? `${state.userInfo?.firstName} ${state.userInfo?.lastName}` : `${state.userInfo?.firstName}`),
+    email: (state): string => state.userInfo?.email || "",
+    phoneNumber: (state): string => state.userInfo?.phone || "",
+    oidcUserAsUserInfo: (state): Components.Schemas.UserInfo => {
       return {
-        // dateOfBirth: state.authority == "bceid" ? null : state.oidcUser?.profile?.birthdate || null,
+        dateOfBirth: state.authority == "bceid" ? null : state.oidcUser?.profile?.birthdate || null,
         firstName: state.authority === "bceid" ? state.oidcUser?.profile?.given_name || "" : state.oidcUser?.profile?.given_names || "",
         lastName: state.oidcUser?.profile?.family_name || "",
         phone: state.authority === "bceid" ? "" : "",
         email: state.oidcUser?.profile?.email || "",
-        residentialAddress:
-          state.authority === "bcsc"
-            ? ({
-                street_address: state.oidcUser?.profile?.address?.street_address || "",
-                city: state.oidcUser?.profile?.address?.locality || "",
-                province: state.oidcUser?.profile?.address?.region || "",
-                country: state.oidcUser?.profile?.address?.country || "",
-                postalCode: state.oidcUser?.profile?.address?.postal_code || "",
-              } as Components.Schemas.Address)
-            : undefined,
-        mailingAddress: undefined,
-      } as Components.Schemas.UserProfile;
+      } as Components.Schemas.UserInfo;
     },
-    userInfo: (state): Components.Schemas.UserInfo => {
+    oidcAddress: (state): Components.Schemas.Address => {
+      return {
+        line1: state.oidcUser?.profile?.address?.street_address || "",
+        line2: "",
+        city: state.oidcUser?.profile?.address?.locality || "",
+        province: state.oidcUser?.profile?.address?.region || "",
+        country: state.oidcUser?.profile?.address?.country || "",
+        postalCode: state.oidcUser?.profile?.address?.postal_code || "",
+      };
+    },
+    oidcUserInfo: (state): Components.Schemas.UserInfo => {
       return {
         dateOfBirth: state.authority == "bceid" ? undefined : state.oidcUser?.profile?.birthdate || undefined,
         firstName: state.authority === "bceid" ? state.oidcUser?.profile?.given_name || "" : state.oidcUser?.profile?.given_names || "",
@@ -65,8 +63,8 @@ export const useUserStore = defineStore("user", {
     setUser(user: User): void {
       this.oidcUser = user;
     },
-    setUserProfile(userProfile: Components.Schemas.UserProfile): void {
-      this.userProfile = userProfile;
+    setUserInfo(userInfo: Components.Schemas.UserInfo): void {
+      this.userInfo = userInfo;
     },
     setAuthority(authority: Authority | null): void {
       this.authority = authority;

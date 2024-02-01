@@ -1,23 +1,23 @@
 import ECEAssistantContent from "@/components/ECEAssistantContent.vue";
 import ECEFiveYearContent from "@/components/ECEFiveYearContent.vue";
 import ECEOneYearContent from "@/components/ECEOneYearContent.vue";
-import type { ExpandSelectOption } from "@/types/expand-select";
+import type { ExpandSelectCertificateTypeOption } from "@/types/expand-select";
 
-const certificationTypes: ExpandSelectOption[] = [
+const certificationTypes: ExpandSelectCertificateTypeOption[] = [
   {
-    id: "1",
+    id: "EceAssistant",
     title: "ECE Assistant",
     contentComponent: ECEAssistantContent,
     hasSubSelection: false,
   },
   {
-    id: "2",
+    id: "OneYear",
     title: "ECE One Year",
     contentComponent: ECEOneYearContent,
     hasSubSelection: false,
   },
   {
-    id: "3",
+    id: "FiveYears",
     title: "ECE Five Year",
     contentComponent: ECEFiveYearContent,
     hasSubSelection: true,

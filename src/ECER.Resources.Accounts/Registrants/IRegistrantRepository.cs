@@ -40,11 +40,18 @@ public record Registrant
 public record UserProfile
 {
   public string? FirstName { get; set; }
+  
+  public string? MiddleName { get; set; }
+  
+  public string? PreferredName { get; set; }
 
   public string? LastName { get; set; }
   public DateOnly? DateOfBirth { get; set; }
   public string? Email { get; set; }
   public string? Phone { get; set; }
+  
+  public string? AlternateContactPhone { get; set; }
+
   public Address? ResidentialAddress { get; set; }
   public Address? MailingAddress { get; set; }
 }
