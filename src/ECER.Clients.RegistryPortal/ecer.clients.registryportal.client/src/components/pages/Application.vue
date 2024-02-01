@@ -2,7 +2,9 @@
   <Wizard
     :wizard="applicationWizard"
     :wizard-data="wizardStore.wizardData"
-    @updated-wizard-data="wizardStore.setWizardData"
+    @save-and-continue="handleSaveAndContinue"
+    @save-as-draft="handleSaveAsDraft"
+    @back="handleBack"
     @updated-validation="isFormValid = $event"
   />
 </template>
@@ -29,7 +31,7 @@ export default defineComponent({
 
     const userProfile = await getProfile();
     if (userProfile !== null) {
-      wizardStore.initializeWizard({
+      wizardStore.initializeWizard(applicationWizard, {
         [applicationWizard.steps.profile.form.inputs.legalFirstName.id]: userProfile.firstName,
         [applicationWizard.steps.profile.form.inputs.legalLastName.id]: userProfile.lastName,
         [applicationWizard.steps.profile.form.inputs.dateOfBirth.id]: userProfile.dateOfBirth,
@@ -44,7 +46,7 @@ export default defineComponent({
         [applicationWizard.steps.profile.form.inputs.primaryContactNumber.id]: userProfile.phone,
       });
     } else {
-      wizardStore.initializeWizard({
+      wizardStore.initializeWizard(applicationWizard, {
         [applicationWizard.steps.profile.form.inputs.legalFirstName.id]: userStore.oidcUserInfo.firstName,
         [applicationWizard.steps.profile.form.inputs.legalLastName.id]: userStore.oidcUserInfo.lastName,
         [applicationWizard.steps.profile.form.inputs.dateOfBirth.id]: userStore.oidcUserInfo.dateOfBirth,
@@ -63,6 +65,15 @@ export default defineComponent({
     isFormValid: null as boolean | null,
   }),
   methods: {
+    handleSaveAndContinue() {
+      this.saveProfile();
+    },
+    handleBack() {
+      this.wizardStore.decrementStep();
+    },
+    handleSaveAsDraft() {
+      this.alertStore.setSuccessAlert("Save as Draft");
+    },
     async saveProfile() {
       if (!this.isFormValid) {
         this.alertStore.setFailureAlert("Please fill out all required fields");
@@ -89,6 +100,7 @@ export default defineComponent({
             phone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.primaryContactNumber.id],
             dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
           });
+          this.wizardStore.incrementStep();
         } else {
           this.alertStore.setFailureAlert("Profile save failed");
         }

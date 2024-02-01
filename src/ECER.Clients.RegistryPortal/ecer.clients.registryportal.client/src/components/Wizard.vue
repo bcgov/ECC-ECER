@@ -19,7 +19,7 @@
                   :form="step.form"
                   :form-data="wizardStore.wizardData"
                   @updated-form-data="wizardStore.setWizardData"
-                  @updated-validation="isFormValid = $event"
+                  @updated-validation="$emit('updatedValidation', $event)"
                 />
               </v-col>
             </v-row>
@@ -30,13 +30,11 @@
         <v-container>
           <v-row class="justify-space-between ga-4" no-gutters>
             <v-col cols="auto" class="mr-auto">
-              <v-btn rounded="lg" variant="outlined" color="primary" aut @click="wizardStore.decrementStep">Back</v-btn>
+              <v-btn rounded="lg" variant="outlined" color="primary" aut @click="$emit('back')">Back</v-btn>
             </v-col>
             <v-col cols="auto">
-              <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="alertStore.setWarningAlert('Save as Draft')">
-                Save as Draft
-              </v-btn>
-              <v-btn rounded="lg" color="primary" @click="wizardStore.incrementStep">Save and Continue</v-btn>
+              <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="$emit('saveAsDraft')">Save as Draft</v-btn>
+              <v-btn rounded="lg" color="primary" @click="$emit('saveAndContinue')">Save and Continue</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -64,6 +62,12 @@ export default defineComponent({
       type: Object as PropType<Wizard>,
       default: () => applicationWizard,
     },
+  },
+  emits: {
+    saveAsDraft: () => true,
+    saveAndContinue: () => true,
+    back: () => true,
+    updatedValidation: (_validation: boolean | null) => true,
   },
   setup: async () => {
     const wizardStore = userWizardStore();

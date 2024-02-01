@@ -19,7 +19,8 @@ export const userWizardStore = defineStore("wizard", {
     wizardConfig: {} as Wizard,
   }),
   actions: {
-    initializeWizard(wizardData: WizardData): void {
+    initializeWizard(wizard: Wizard, wizardData: WizardData): void {
+      this.wizardConfig = wizard;
       this.wizardData = wizardData;
     },
     setWizardData(wizardData: WizardData): void {
