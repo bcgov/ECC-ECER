@@ -59,7 +59,7 @@ export default defineComponent({
       });
     }
 
-    return { profileInformationForm, formStore, alertStore };
+    return { profileInformationForm, formStore, alertStore, userStore };
   },
   data: () => ({
     isFormValid: null as boolean | null,
@@ -84,6 +84,13 @@ export default defineComponent({
 
         if (success) {
           this.alertStore.setSuccessAlert("Profile saved successfully");
+          this.userStore.setUserInfo({
+            firstName: this.formStore.formData[profileInformationForm.inputs.legalFirstName.id],
+            lastName: this.formStore.formData[profileInformationForm.inputs.legalLastName.id],
+            email: this.formStore.formData[profileInformationForm.inputs.email.id],
+            phone: this.formStore.formData[profileInformationForm.inputs.primaryContactNumber.id],
+            dateOfBirth: this.formStore.formData[profileInformationForm.inputs.dateOfBirth.id],
+          });
         } else {
           this.alertStore.setFailureAlert("Profile save failed");
         }
