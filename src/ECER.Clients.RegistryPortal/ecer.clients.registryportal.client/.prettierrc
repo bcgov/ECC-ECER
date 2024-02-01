@@ -1,4 +1,12 @@
 {
   "printWidth": 160,
-  "htmlWhitespaceSensitivity": "ignore"
+  "htmlWhitespaceSensitivity": "ignore",
+  "overrides": [
+    {
+      "files": ["./src/config/*"],
+      "options": {
+        "printWidth": 120
+      }
+    }
+  ]
 }

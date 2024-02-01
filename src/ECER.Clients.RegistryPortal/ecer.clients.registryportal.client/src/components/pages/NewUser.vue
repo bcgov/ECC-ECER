@@ -31,8 +31,8 @@
               </template>
             </v-checkbox>
             <v-row justify="end">
-              <v-btn variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
-              <v-btn color="primary" @click="submit">Save and Continue</v-btn>
+              <v-btn rounded="lg" variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
+              <v-btn rounded="lg" color="primary" @click="submit">Save and Continue</v-btn>
             </v-row>
           </div>
         </v-form>
@@ -44,7 +44,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 
-import { createUser } from "@/api/user";
+import { postUserInfo } from "@/api/user";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { isNumber } from "@/utils/formInput";
@@ -60,8 +60,8 @@ export default defineComponent({
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
 
-    const phoneNumber = ref(userStore.oidcUserAsUserProfile.phone);
-    const email = ref(userStore.oidcUserAsUserProfile.email);
+    const phoneNumber = ref(userStore.oidcUserAsUserInfo.phone);
+    const email = ref(userStore.oidcUserAsUserInfo.email);
 
     return { userStore, oidcStore, phoneNumber, email };
   },
@@ -76,14 +76,12 @@ export default defineComponent({
     async submit() {
       const { valid } = await (this.$refs.form as any).validate();
       if (valid) {
-        const userCreated: boolean = await createUser({
-          profile: this.userStore.oidcUserAsUserProfile,
-        });
+        const userCreated: boolean = await postUserInfo(this.userStore.oidcUserInfo);
 
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {
-          this.userStore.setUserProfile({
-            ...this.userStore.oidcUserAsUserProfile,
+          this.userStore.setUserInfo({
+            ...this.userStore.oidcUserAsUserInfo,
             phone: this.phoneNumber,
             email: this.email,
           });

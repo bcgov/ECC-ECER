@@ -5,6 +5,10 @@
     color="primary"
     :type="props.type || 'text'"
     :rules="props.rules"
+    :disabled="props.disabled"
+    :readonly="props.readonly"
+    :maxlength="props.maxLength"
+    :prepend-inner-icon="props.prependInnerIcon"
     @input="$emit('input', $event.target.value)"
     @keypress="
       if (props.isNumeric) {
@@ -17,14 +21,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import type { Props } from "@/types/form";
+import type { EceTextFieldProps } from "@/types/input";
 import { isNumber } from "@/utils/formInput";
 
 export default defineComponent({
   name: "EceTextField",
   props: {
     props: {
-      type: Object as () => Props,
+      type: Object as () => EceTextFieldProps,
       required: true,
     },
   },
