@@ -11,7 +11,7 @@ ARG NODE_MAJOR=20
 RUN curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh \
     && chmod 500 nsolid_setup_deb.sh \
     && ./nsolid_setup_deb.sh ${NODE_MAJOR} \
-    && apt-get install nodejs -y \
+    && apt-get install nodejs -y --no-install-recommends \
     && apt-get clean
 
 WORKDIR /src
