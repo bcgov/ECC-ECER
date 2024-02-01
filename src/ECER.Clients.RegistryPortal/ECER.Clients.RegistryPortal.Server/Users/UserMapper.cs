@@ -21,6 +21,10 @@ internal sealed class UserMapper : AutoMapper.Profile
       .ValidateMemberList(MemberList.Source)
       .ForSourceMember(s => s.ResidentialAddress, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.MailingAddress, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.PreferredName, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.MiddleName, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.AlternateContactPhone, opts => opts.DoNotValidate())
+
       ;
 
     CreateMap<UserProfile, Managers.Registry.Contract.Registrants.UserProfile>()
