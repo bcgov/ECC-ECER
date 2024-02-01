@@ -1,7 +1,7 @@
 <template>
   <PageContainer>
     <v-stepper
-      v-model="currentStep"
+      v-model="wizardStore.step"
       min-height="100dvh"
       :alt-labels="true"
       bg-color="background"
@@ -15,7 +15,12 @@
           <v-container>
             <v-row>
               <v-col cols="12" md="8" lg="6" xl="4">
-                <EceForm :form="step.form" />
+                <EceForm
+                  :form="step.form"
+                  :form-data="wizardStore.wizardData"
+                  @updated-form-data="wizardStore.setWizardData"
+                  @updated-validation="isFormValid = $event"
+                />
               </v-col>
             </v-row>
           </v-container>
@@ -25,11 +30,13 @@
         <v-container>
           <v-row class="justify-space-between ga-4" no-gutters>
             <v-col cols="auto" class="mr-auto">
-              <v-btn rounded="lg" variant="outlined" color="primary" aut @click="handleBack()">Back</v-btn>
+              <v-btn rounded="lg" variant="outlined" color="primary" aut @click="wizardStore.decrementStep">Back</v-btn>
             </v-col>
             <v-col cols="auto">
-              <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft()">Save as Draft</v-btn>
-              <v-btn rounded="lg" color="primary" @click="handleSaveAndContinue()">Save and Continue</v-btn>
+              <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="alertStore.setWarningAlert('Save as Draft')">
+                Save as Draft
+              </v-btn>
+              <v-btn rounded="lg" color="primary" @click="wizardStore.incrementStep">Save and Continue</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -44,7 +51,10 @@ import { defineComponent, type PropType } from "vue";
 import EceForm from "@/components/Form.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import applicationWizard from "@/config/application-wizard";
-import type { Wizard } from "@/types/wizard";
+import { useAlertStore } from "@/store/alert";
+import { useUserStore } from "@/store/user";
+import { userWizardStore } from "@/store/wizard";
+import type { Step, Wizard } from "@/types/wizard";
 
 export default defineComponent({
   name: "Wizard",
@@ -55,31 +65,23 @@ export default defineComponent({
       default: () => applicationWizard,
     },
   },
+  setup: async () => {
+    const wizardStore = userWizardStore();
+    const userStore = useUserStore();
+    const alertStore = useAlertStore();
 
-  data: () => ({
-    currentStep: 1,
-    formData: {},
-  }),
-  computed: {
-    formRef(): string {
-      return `form-${this.currentStep}`;
-    },
+    return {
+      wizardStore,
+      userStore,
+      alertStore,
+    };
   },
+  data: () => ({
+    isFormValid: null as boolean | null,
+  }),
   methods: {
     getStepTitles() {
-      return this.wizard.steps.map((step) => step.title);
-    },
-    async handleSaveAndContinue() {
-      const valid = await (this.$refs[this.formRef] as any).validate();
-      if (valid.valid && this.currentStep < this.wizard.steps.length) {
-        this.currentStep++;
-      }
-    },
-    handleSaveAsDraft() {
-      console.log("Save as Draft");
-    },
-    handleBack() {
-      if (this.currentStep > 1) this.currentStep--;
+      return Object.values(this.wizard.steps).map((step: Step) => step.title);
     },
   },
 });

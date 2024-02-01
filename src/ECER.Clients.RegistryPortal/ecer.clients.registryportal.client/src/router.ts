@@ -73,7 +73,7 @@ const router = createRouter({
     },
     {
       path: "/application",
-      component: () => import("./components/Wizard.vue"),
+      component: () => import("./components/pages/Application.vue"),
       meta: { requiresAuth: true },
     },
     {
