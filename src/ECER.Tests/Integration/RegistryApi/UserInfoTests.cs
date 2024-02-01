@@ -82,7 +82,10 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
         f.Person.LastName,
         DateOnly.FromDateTime(f.Person.DateOfBirth),
         f.Person.Email,
-        f.Person.Phone
+        f.Person.Phone,
+        f.Person.FirstName,
+        f.Person.Phone,
+        f.Person.UserName
         ));
 
     return userProfile.Generate();
