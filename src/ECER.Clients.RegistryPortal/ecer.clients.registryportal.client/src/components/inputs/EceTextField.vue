@@ -6,7 +6,9 @@
     :type="props.type || 'text'"
     :rules="props.rules"
     :disabled="props.disabled"
+    :readonly="props.readonly"
     :maxlength="props.maxLength"
+    :prepend-inner-icon="props.prependInnerIcon"
     @input="$emit('input', $event.target.value)"
     @keypress="
       if (props.isNumeric) {

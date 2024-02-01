@@ -67,6 +67,9 @@ declare namespace Components {
     export interface UserProfile {
       firstName?: string | null;
       lastName?: string | null;
+      middleName?: string | null;
+      preferredName?: string | null;
+      alternateContactPhone?: string | null;
       dateOfBirth?: string | null; // date
       email?: string | null;
       phone?: string | null;

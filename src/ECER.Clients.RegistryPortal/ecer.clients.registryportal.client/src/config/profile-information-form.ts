@@ -10,32 +10,51 @@ const profileInformationForm: Form = {
     legalLastName: {
       id: "legalLastName",
       component: EceTextField,
-      props: { label: "Legal Last Name", rules: [Rules.required()], maxLength: 50, disabled: true },
+      props: {
+        label: "Legal Last Name",
+        rules: [],
+        maxLength: 50,
+        readonly: true,
+      },
     },
     legalFirstName: {
       id: "legalFirstName",
       component: EceTextField,
-      props: { label: "Legal First Name", rules: [Rules.required()], maxLength: 50, disabled: true },
+      props: {
+        label: "Legal First Name",
+        rules: [],
+        maxLength: 50,
+        readonly: true,
+      },
     },
     legalMiddleName: {
       id: "legalMiddleName",
       component: EceTextField,
-      props: { label: "Legal Middle Name", rules: [], maxLength: 50 },
+      props: {
+        label: "Legal Middle Name",
+        rules: [],
+        maxLength: 50,
+        readonly: true,
+      },
     },
     preferredName: {
       id: "preferredName",
       component: EceTextField,
-      props: { label: "Preferred Name (optional)", rules: [], maxLength: 50 },
-    },
-    previousName: {
-      id: "previousName",
-      component: EceTextField,
-      props: { label: "Previous Name (if applicable)", rules: [], maxLength: 50 },
+      props: {
+        label: "Preferred Name (optional)",
+        rules: [],
+        maxLength: 50,
+      },
     },
     dateOfBirth: {
       id: "dateOfBirth",
       component: EceTextField,
-      props: { label: "Date of Birth", type: "date", rules: [Rules.required()], disabled: true },
+      props: {
+        label: "Date of Birth",
+        type: "date",
+        rules: [Rules.required()],
+        readonly: true,
+      },
     },
     addresses: {
       id: "addresses",
@@ -48,17 +67,28 @@ const profileInformationForm: Form = {
     primaryContactNumber: {
       id: "primaryContactNumber",
       component: EceTextField,
-      props: { label: "Primary Contact Number", isNumeric: true, rules: [Rules.phoneNumber(), Rules.required()] },
+      props: {
+        label: "Primary Contact Number",
+        isNumeric: true,
+        rules: [Rules.phoneNumber(), Rules.required()],
+      },
     },
     alternateContactNumber: {
       id: "alternateContactNumber",
       component: EceTextField,
-      props: { label: "Alternate Contact Number", isNumeric: true, rules: [] },
+      props: {
+        label: "Alternate Contact Number",
+        isNumeric: true,
+        rules: [],
+      },
     },
     email: {
       id: "email",
       component: EceTextField,
-      props: { label: "Email", rules: [Rules.email(), Rules.required()] },
+      props: {
+        label: "Email",
+        rules: [Rules.email(), Rules.required()],
+      },
     },
   },
 };

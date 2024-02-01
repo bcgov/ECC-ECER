@@ -14,10 +14,17 @@ internal sealed class UserMapper : AutoMapper.Profile
       .ForCtorParam(nameof(Managers.Registry.Contract.Registrants.UserProfile.Phone), opts => opts.MapFrom(s => s.Phone))
       .ForCtorParam(nameof(Managers.Registry.Contract.Registrants.UserProfile.ResidentialAddress), opts => opts.MapFrom(s => (Address?)null))
       .ForCtorParam(nameof(Managers.Registry.Contract.Registrants.UserProfile.MailingAddress), opts => opts.MapFrom(s => (Address?)null))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Registrants.UserProfile.PreferredName), opts => opts.MapFrom(s => (string?)null))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Registrants.UserProfile.MiddleName), opts => opts.MapFrom(s => (string?)null))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Registrants.UserProfile.AlternateContactPhone), opts => opts.MapFrom(s => (string?)null))
       .ReverseMap()
       .ValidateMemberList(MemberList.Source)
       .ForSourceMember(s => s.ResidentialAddress, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.MailingAddress, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.PreferredName, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.MiddleName, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.AlternateContactPhone, opts => opts.DoNotValidate())
+
       ;
 
     CreateMap<UserProfile, Managers.Registry.Contract.Registrants.UserProfile>()

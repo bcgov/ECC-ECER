@@ -48,6 +48,9 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
         .CustomInstantiator(f => new UserProfile(
             f.Person.FirstName,
             f.Person.LastName,
+            f.Person.FirstName,
+            f.Person.FirstName,
+            f.Person.Phone,
             DateOnly.FromDateTime(f.Person.DateOfBirth),
             f.Person.Email,
             f.Person.Phone,

@@ -35,7 +35,10 @@ public record UserProfile(
     string Email,
     string Phone,
     Address? ResidentialAddress,
-    Address? MailingAddress
+    Address? MailingAddress,
+    string? PreferredName,
+    string? MiddleName,
+    string? AlternateContactPhone
     );
 
 public record Address(
