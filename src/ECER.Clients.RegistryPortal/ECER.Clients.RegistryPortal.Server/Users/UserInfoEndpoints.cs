@@ -37,4 +37,4 @@ public class UserInfoEndpoints : IRegisterEndpoints
   }
 }
 
-public record UserInfo(string FirstName, string LastName, DateOnly DateOfBirth, string Email, string Phone, string? MiddleName, string? AlternateContactPhone, string? PreferredName);
+public record UserInfo(string FirstName, string LastName, DateOnly DateOfBirth, string Email, string Phone);

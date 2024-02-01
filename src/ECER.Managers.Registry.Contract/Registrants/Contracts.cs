@@ -31,14 +31,14 @@ public record Registrant(string UserId, UserProfile Profile);
 public record UserProfile(
     string FirstName,
     string LastName,
-    string? PreferredName,
-    string? MiddleName,
     DateOnly? DateOfBirth,
     string Email,
     string Phone,
-    string? AlternateContactPhone,
     Address? ResidentialAddress,
-    Address? MailingAddress
+    Address? MailingAddress,
+    string? PreferredName,
+    string? MiddleName,
+    string? AlternateContactPhone
     );
 
 public record Address(
