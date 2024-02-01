@@ -10,6 +10,8 @@ interface EceTextFieldProps {
   type?: string;
   isNumeric?: boolean;
   disabled?: boolean;
+  readonly?: boolean;
+  prependInnerIcon?: string;
   maxLength?: number;
 }
 
