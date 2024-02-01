@@ -2,11 +2,11 @@ import { defineStore } from "pinia";
 
 import type { Wizard } from "@/types/wizard";
 
-interface WizardData {
+export interface WizardData {
   [key: string]: any;
 }
 
-interface WizardState {
+export interface WizardState {
   step: number;
   wizardConfig: Wizard;
   wizardData: WizardData;
@@ -19,8 +19,22 @@ export const userWizardStore = defineStore("wizard", {
     wizardConfig: {} as Wizard,
   }),
   actions: {
+    initializeWizard(wizard: Wizard, wizardData: WizardData): void {
+      this.wizardConfig = wizard;
+      this.wizardData = wizardData;
+    },
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };
+    },
+    incrementStep(): void {
+      if (this.step < Object.keys(this.wizardConfig.steps).length) {
+        this.step += 1;
+      }
+    },
+    decrementStep(): void {
+      if (this.step > 1) {
+        this.step -= 1;
+      }
     },
   },
 });
