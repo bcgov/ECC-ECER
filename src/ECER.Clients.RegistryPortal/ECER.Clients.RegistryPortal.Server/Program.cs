@@ -119,6 +119,8 @@ public class Program
 
       builder.Services.AddDistributedMemoryCache();
       builder.Services.AddHealthChecks();
+      builder.Services.AddResponseCompression(opts => opts.EnableForHttps = true);
+      builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
 
       HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
 
@@ -126,9 +128,11 @@ public class Program
 
       app.UseHealthChecks("/health");
       app.UseObservabilityMiddleware();
+      app.UseResponseCompression();
+      app.UseCsp();
+      app.UseSecurityHeaders();
       app.UseDefaultFiles();
       app.UseStaticFiles();
-      app.MapFallbackToFile("index.html");
       app.UseCors();
       app.UseAuthentication();
       app.UseAuthorization();
