@@ -30,8 +30,8 @@
           </div>
         </v-row>
         <v-row justify="end" class="mt-12">
-          <v-btn rounded="lg" variant="outlined" class="mr-2" @click="alertStore.setSuccessAlert('Save as Draft')">Save As Draft</v-btn>
-          <v-btn rounded="lg" color="primary" @click="$router.push('/application')">Start Application</v-btn>
+          <v-btn rounded="lg" variant="outlined" class="mr-2" @click="alertStore.setSuccessAlert('Save as Draft')">Save as a Draft</v-btn>
+          <v-btn rounded="lg" color="primary" @click="$router.push('/application')">Save and Continue</v-btn>
         </v-row>
       </v-col>
     </v-row>
