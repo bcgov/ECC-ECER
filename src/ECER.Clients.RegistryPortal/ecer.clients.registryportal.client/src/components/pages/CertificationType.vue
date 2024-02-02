@@ -32,6 +32,7 @@ import { defineComponent } from "vue";
 import ExpandSelect from "@/components/ExpandSelect.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import certificationTypes from "@/config/certification-types";
+import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import type { Components } from "@/types/openapi";
 
@@ -40,7 +41,9 @@ export default defineComponent({
   components: { ExpandSelect, PageContainer },
   setup() {
     const applicationStore = useApplicationStore();
-    return { certificationTypes, applicationStore };
+    const alertStore = useAlertStore();
+
+    return { certificationTypes, applicationStore, alertStore };
   },
   data() {
     return {
@@ -51,13 +54,14 @@ export default defineComponent({
   methods: {
     submit() {
       if (this.selectedCertificationType === null) {
-        // TODO show snackbar error if no selection when ECER-824 is ready
-        return;
+        this.alertStore.setFailureAlert("Select a certification type to continue");
       } else {
         const certificationTypes: Array<Components.Schemas.CertificationType> = [this.selectedCertificationType, ...this.subSelection];
 
+        this.applicationStore.setCertificationTypes(certificationTypes);
         this.applicationStore.newDraftApplication(certificationTypes);
-        this.$router.push("/application");
+
+        this.$router.push("/requirements");
       }
     },
 

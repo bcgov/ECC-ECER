@@ -51,7 +51,7 @@ import PageContainer from "@/components/PageContainer.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useUserStore } from "@/store/user";
-import { userWizardStore } from "@/store/wizard";
+import { useWizardStore } from "@/store/wizard";
 import type { Step, Wizard } from "@/types/wizard";
 
 export default defineComponent({
@@ -70,7 +70,7 @@ export default defineComponent({
     updatedValidation: (_validation: boolean | null) => true,
   },
   setup: async () => {
-    const wizardStore = userWizardStore();
+    const wizardStore = useWizardStore();
     const userStore = useUserStore();
     const alertStore = useAlertStore();
 
