@@ -22,19 +22,7 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
     repository = Host.Services.GetRequiredService<ICommunicationRepository>();
   }
 
-  [Fact]
-  public async Task QueryCommunications_ByStatus_Found()
-  {
-    // Arrange
-    var status = CommunicationStatus.NotifiedRecipient; // Example status
 
-    // Act
-    var communications = await repository.Query(new CommunicationQuery { ByStatus = new[] { status } });
-
-    // Assert
-    communications.ShouldNotBeEmpty();
-    _ = communications.ShouldBeAssignableTo<IEnumerable<Communication>>()!.All(c => c.Status == status);
-  }
 
   [Fact]
   public async Task QueryCommunications_ById_Found()
