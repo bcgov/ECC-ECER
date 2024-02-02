@@ -22,9 +22,10 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageVersion Include="Microsoft.PowerPlatform.Dataverse.Client" Version="1.1.17" />
     <PackageVersion Include="Microsoft.PowerPlatform.Dataverse.Client.Dynamics" Version="1.1.17" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageVersion Include="WolverineFx" Version="1.16.1" />
+    <PackageVersion Include="WolverineFx" Version="1.16.2" />
     <PackageVersion Include="xunit" Version="2.6.6" />
     <PackageVersion Include="xunit.categories" Version="2.0.8" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.6" />
