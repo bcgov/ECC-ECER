@@ -120,6 +120,7 @@ public class Program
       builder.Services.AddDistributedMemoryCache();
       builder.Services.AddHealthChecks();
       builder.Services.AddResponseCompression(opts => opts.EnableForHttps = true);
+      builder.Services.AddResponseCaching();
       builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
 
       HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
@@ -134,6 +135,7 @@ public class Program
       app.UseDefaultFiles();
       app.UseStaticFiles();
       app.UseCors();
+      app.UseResponseCaching();
       app.UseAuthentication();
       app.UseAuthorization();
 
