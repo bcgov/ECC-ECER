@@ -1,6 +1,6 @@
 ﻿namespace ECER.Clients.RegistryPortal.Server.Communications
 {
-  public class CommunicationMapper
+  internal class CommunicationMapper
   {
   }
 }

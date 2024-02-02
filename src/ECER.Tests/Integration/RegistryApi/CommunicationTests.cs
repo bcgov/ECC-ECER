@@ -5,14 +5,14 @@ using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
-public class MessagesTests : RegistryPortalWebAppScenarioBase
+public class CommunicationsTests : RegistryPortalWebAppScenarioBase
 {
-  public MessagesTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
+  public CommunicationsTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
   }
 
   [Fact]
-  public async Task GetMessages_ReturnsMessages()
+  public async Task GetCommunications_ReturnsCommunications()
   {
     await Host.Scenario(_ =>
     {
@@ -23,7 +23,7 @@ public class MessagesTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task GetMessageStatus_ReturnsStatus()
+  public async Task GetCommunicationsStatus_ReturnsStatus()
   {
     await Host.Scenario(_ =>
     {
