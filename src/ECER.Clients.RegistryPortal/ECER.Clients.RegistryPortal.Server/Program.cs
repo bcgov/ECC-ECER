@@ -15,7 +15,7 @@ namespace ECER.Clients.RegistryPortal.Server;
 
 public class Program
 {
-  private static readonly string[] DisabledHttpVerbs = { "TRACE" };
+  private static readonly string[] DisabledHttpVerbs = { "TRACE", "OPTIONS" };
 
   private static async Task Main(string[] args)
   {
@@ -60,10 +60,10 @@ public class Program
       builder.Services.AddCors(options =>
       {
         options.AddDefaultPolicy(policy =>
-            {
-              var allowedOrigins = builder.Configuration.GetValue("cors:allowedOrigins", string.Empty)!.Split(";");
-              policy.WithOrigins(allowedOrigins).SetIsOriginAllowedToAllowWildcardSubdomains();
-            });
+        {
+          var allowedOrigins = builder.Configuration.GetValue("cors:allowedOrigins", string.Empty)!.Split(";");
+          policy.WithOrigins(allowedOrigins).SetIsOriginAllowedToAllowWildcardSubdomains();
+        });
       });
 
       builder.Services

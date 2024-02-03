@@ -42,7 +42,7 @@ public static class WebApplicationExtensions
     var list = verbs.ToArray();
     webApplication.Use(async (context, next) =>
     {
-      if (list.Contains(context.Request.Method))
+      if (list.Contains(context.Request.Method.ToUpperInvariant()))
       {
         context.Response.StatusCode = 405;
         return;
@@ -75,7 +75,7 @@ public record CspSettings : IOptions<CspSettings>
     (string.IsNullOrWhiteSpace(ImageSource) ? "" : $"img-src {ImageSource};") +
     (string.IsNullOrWhiteSpace(StyleSource) ? "" : $"style-src {StyleSource};") +
     (string.IsNullOrWhiteSpace(FontSource) ? "" : $"font-src {this.FontSource};") +
-    (string.IsNullOrWhiteSpace(FontSource) ? "" : $"frame-ancestors {this.FrameAncestors};") +
-    (string.IsNullOrWhiteSpace(FontSource) ? "" : $"form-action {this.FormAction};")
+    (string.IsNullOrWhiteSpace(FrameAncestors) ? "" : $"frame-ancestors {this.FrameAncestors};") +
+    (string.IsNullOrWhiteSpace(FormAction) ? "" : $"form-action {this.FormAction};")
   ;
 }
