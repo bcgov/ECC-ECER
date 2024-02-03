@@ -1,16 +1,16 @@
 <template>
   <PageContainer>
     <v-row class="ga-4">
-      <v-col cols="1">
+      <v-col cols="1" offset="0" offset-lg="2" offset-md="2" offset-xl="2">
         <v-btn variant="text" @click="$router.back()">
           <v-icon start icon="mdi-arrow-left"></v-icon>
           Back
         </v-btn>
       </v-col>
       <v-col cols="12">
-        <h2>What certificate type(s) are you applying for?</h2>
+        <h2 class="text-center">What certificate type(s) are you applying for?</h2>
       </v-col>
-      <v-col cols="12" md="8" lg="8" xl="8">
+      <v-col cols="12" md="8" lg="8" xl="8" class="mx-auto">
         <ExpandSelect
           :options="certificationTypes"
           :selected="selectedCertificationType?.toString()"
@@ -32,6 +32,7 @@ import { defineComponent } from "vue";
 import ExpandSelect from "@/components/ExpandSelect.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import certificationTypes from "@/config/certification-types";
+import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import type { Components } from "@/types/openapi";
 
@@ -40,7 +41,9 @@ export default defineComponent({
   components: { ExpandSelect, PageContainer },
   setup() {
     const applicationStore = useApplicationStore();
-    return { certificationTypes, applicationStore };
+    const alertStore = useAlertStore();
+
+    return { certificationTypes, applicationStore, alertStore };
   },
   data() {
     return {
@@ -51,13 +54,14 @@ export default defineComponent({
   methods: {
     submit() {
       if (this.selectedCertificationType === null) {
-        // TODO show snackbar error if no selection when ECER-824 is ready
-        return;
+        this.alertStore.setFailureAlert("Select a certification type to continue");
       } else {
         const certificationTypes: Array<Components.Schemas.CertificationType> = [this.selectedCertificationType, ...this.subSelection];
 
+        this.applicationStore.setCertificationTypes(certificationTypes);
         this.applicationStore.newDraftApplication(certificationTypes);
-        this.$router.push("/application");
+
+        this.$router.push("/requirements");
       }
     },
 

@@ -12,7 +12,7 @@ export interface WizardState {
   wizardData: WizardData;
 }
 
-export const userWizardStore = defineStore("wizard", {
+export const useWizardStore = defineStore("wizard", {
   state: (): WizardState => ({
     step: 1,
     wizardData: {} as WizardData,
