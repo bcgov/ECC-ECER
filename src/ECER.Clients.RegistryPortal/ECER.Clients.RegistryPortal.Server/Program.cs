@@ -15,6 +15,8 @@ namespace ECER.Clients.RegistryPortal.Server;
 
 public class Program
 {
+  private static readonly string[] DisabledHttpVerbs = { "TRACE" };
+
   private static async Task Main(string[] args)
   {
     var builder = WebApplication.CreateBuilder(args);
@@ -129,6 +131,7 @@ public class Program
 
       app.UseHealthChecks("/health");
       app.UseObservabilityMiddleware();
+      app.UseDisableHttpVerbes(DisabledHttpVerbs);
       app.UseResponseCompression();
       app.UseCsp();
       app.UseSecurityHeaders();

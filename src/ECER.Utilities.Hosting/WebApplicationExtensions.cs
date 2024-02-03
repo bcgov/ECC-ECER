@@ -32,7 +32,23 @@ public static class WebApplicationExtensions
     {
       context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
       context.Response.Headers.Append("X-Xss-Protection", "1; mode=block");
+      context.Response.Headers.Append("X-Frame-Protection", "DENY");
       await next();
+    });
+  }
+
+  public static void UseDisableHttpVerbes(this WebApplication webApplication, IEnumerable<string> verbs)
+  {
+    var list = verbs.ToArray();
+    webApplication.Use(async (context, next) =>
+    {
+      if (list.Contains(context.Request.Method))
+      {
+        context.Response.StatusCode = 405;
+        return;
+      }
+
+      await next.Invoke();
     });
   }
 }
@@ -46,6 +62,8 @@ public record CspSettings : IOptions<CspSettings>
   public string ImageSource { get; set; } = string.Empty;
   public string StyleSource { get; set; } = string.Empty;
   public string FontSource { get; set; } = string.Empty;
+  public string FrameAncestors { get; set; } = string.Empty;
+  public string FormAction { get; set; } = string.Empty;
 
   public CspSettings Value => this;
 
@@ -56,6 +74,8 @@ public record CspSettings : IOptions<CspSettings>
     (string.IsNullOrWhiteSpace(ConnectSource) ? "" : $"connect-src {ConnectSource};") +
     (string.IsNullOrWhiteSpace(ImageSource) ? "" : $"img-src {ImageSource};") +
     (string.IsNullOrWhiteSpace(StyleSource) ? "" : $"style-src {StyleSource};") +
-    (string.IsNullOrWhiteSpace(FontSource) ? "" : $"font-src {this.FontSource};")
+    (string.IsNullOrWhiteSpace(FontSource) ? "" : $"font-src {this.FontSource};") +
+    (string.IsNullOrWhiteSpace(FontSource) ? "" : $"frame-ancestors {this.FrameAncestors};") +
+    (string.IsNullOrWhiteSpace(FontSource) ? "" : $"form-action {this.FormAction};")
   ;
 }
