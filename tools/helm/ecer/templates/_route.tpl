@@ -15,6 +15,8 @@ metadata:
     haproxy.router.openshift.io/hsts_header: max-age=31536000;includeSubDomains;preload
     haproxy.router.openshift.io/balance: leastconn
     haproxy.router.openshift.io/timeout: {{ $values.routeTimeout | default  "60s" }}
+    haproxy.router.openshift.io/disable_cookies: 'true'
+    haproxy.router.openshift.io/rate-limit-connections: 'true'
 spec:
   host: {{ $host.host }}
   path: {{ $host.path | default "" | quote }}
