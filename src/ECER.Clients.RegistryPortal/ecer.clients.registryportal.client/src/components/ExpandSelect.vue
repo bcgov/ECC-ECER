@@ -1,14 +1,28 @@
 <template>
-  <v-expansion-panels :model-value="selected" @update:model-value="handlePanelChange">
+  <v-expansion-panels v-model="selection">
     <v-expansion-panel v-for="option in options" :key="option.id" :value="option.id" class="rounded-lg">
       <v-expansion-panel-title>
-        <v-radio-group :mandatory="true" :hide-details="true" :model-value="selected" @update:model-value="handleRadioChange">
-          <v-radio color="primary" :label="option.title" :value="option.id"></v-radio>
-        </v-radio-group>
+        <v-row no-gutters>
+          <v-col cols="12">
+            <v-radio-group v-model="selection" :mandatory="true" :hide-details="true">
+              <v-radio color="primary" :label="option.title" :value="option.id"></v-radio>
+            </v-radio-group>
+          </v-col>
+          <v-col v-if="option.id === 'FiveYears' && selection !== 'FiveYears'" cols="11" offset="1">
+            <p class="small">You may select the following specialization(s) in addition to your ECE Five Year Certificate</p>
+            <v-checkbox v-model="certificationTypeStore.subSelection" color="primary" label="Infant and Toddler Educator (ITE)" value="Ite"></v-checkbox>
+            <v-checkbox
+              v-model="certificationTypeStore.subSelection"
+              color="primary"
+              label="Special Needs Educator (SNE)"
+              value="Sne"
+              class="mt-n10"
+            ></v-checkbox>
+          </v-col>
+        </v-row>
       </v-expansion-panel-title>
       <v-expansion-panel-text>
-        <Component :is="option.contentComponent" v-if="option.hasSubSelection" @selection="handleSubSelectionChange" />
-        <Component :is="option.contentComponent" v-else />
+        <Component :is="option.contentComponent" />
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
@@ -17,7 +31,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { useCertificationTypeStore } from "@/store/certificationType";
 import type { ExpandSelectOption } from "@/types/expand-select";
+import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "ExpandSelect",
@@ -26,30 +42,23 @@ export default defineComponent({
       type: Array as () => ExpandSelectOption[],
       default: () => [],
     },
-    subSelected: {
-      type: Array<string>,
-      default: () => [],
-    },
-    selected: {
-      type: String,
-      default: null,
-    },
   },
-  emits: {
-    selection: (_selected: string | null) => true,
-    subSelection: (_selected: Array<string>) => true,
+  setup: () => {
+    const certificationTypeStore = useCertificationTypeStore();
+
+    return { certificationTypeStore };
   },
-  methods: {
-    handleSubSelectionChange(selected: Array<string>) {
-      this.$emit("subSelection", selected);
-    },
-    handleRadioChange(selected: string | null) {
-      this.$emit("selection", selected);
-      this.$emit("subSelection", []);
-    },
-    handlePanelChange(selected: unknown) {
-      typeof selected === "string" ? this.$emit("selection", selected) : this.$emit("selection", null);
-      this.$emit("subSelection", []);
+  computed: {
+    selection: {
+      get() {
+        return this.certificationTypeStore.selection;
+      },
+      set(newValue: Components.Schemas.CertificationType) {
+        if (newValue !== "FiveYears") {
+          this.certificationTypeStore.subSelection = [];
+        }
+        this.certificationTypeStore.selection = newValue;
+      },
     },
   },
 });
