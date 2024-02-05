@@ -1,5 +1,6 @@
 import type { Wizard } from "@/types/wizard";
 
+import declarationForm from "./declaration-form";
 import educationForm from "./education-form";
 import profileInformationForm from "./profile-information-form";
 import referencesForm from "./references.form";
@@ -7,33 +8,34 @@ import referencesForm from "./references.form";
 const applicationWizard: Wizard = {
   id: "form-1",
   steps: {
-    profile: {
-      id: "step-1",
-      title: "Contact Information",
-      form: profileInformationForm,
+    declaration: {
+      id: "declaration-step",
+      title: "Declaration & Consent",
+      subtitle: "Read the following statements and use the checkbox to indicate you understand and agree",
+      form: declarationForm,
       key: "item.1",
     },
-    education: {
+    profile: {
       id: "step-2",
-      title: "Education",
-      form: educationForm,
+      title: "Contact Information",
+      form: profileInformationForm,
       key: "item.2",
     },
-    references: {
+    education: {
       id: "step-3",
-      title: "References",
-      form: referencesForm,
+      title: "Education",
+      form: educationForm,
       key: "item.3",
     },
-    review: {
+    references: {
       id: "step-4",
-      title: "Review",
-      form: profileInformationForm,
+      title: "References",
+      form: referencesForm,
       key: "item.4",
     },
-    declaration: {
+    review: {
       id: "step-5",
-      title: "Declaration",
+      title: "Review",
       form: profileInformationForm,
       key: "item.5",
     },

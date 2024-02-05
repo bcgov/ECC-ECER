@@ -73,6 +73,15 @@ const postalCode = (message = "Postal code must be valid") => {
 };
 
 /**
+ * Rule for checkbox
+ * @param {String} message
+ * @returns Function
+ */
+const hasCheckbox = (message = "You must check the box") => {
+  return (v: boolean) => !!v || message;
+};
+
+/**
  * Rule required v.trim prevents ' ' from being valid
  * @param {String} message
  * @returns Function
@@ -111,6 +120,7 @@ const website = (message = "Website must be valid and secure (i.e., https)") => 
 export {
   email,
   endDateRule,
+  hasCheckbox,
   noSpecialCharactersAddress,
   noSpecialCharactersContactName,
   noSpecialCharactersContactTitle,

@@ -32,6 +32,9 @@ export default defineComponent({
     const userProfile = await getProfile();
     if (userProfile !== null) {
       wizardStore.initializeWizard(applicationWizard, {
+        [applicationWizard.steps.declaration.form.inputs.applicantLegalName.id]: userStore.fullName,
+        [applicationWizard.steps.declaration.form.inputs.signedDate.id]: new Date().toISOString().slice(0, 10),
+
         [applicationWizard.steps.profile.form.inputs.legalFirstName.id]: userProfile.firstName,
         [applicationWizard.steps.profile.form.inputs.legalLastName.id]: userProfile.lastName,
         [applicationWizard.steps.profile.form.inputs.dateOfBirth.id]: userProfile.dateOfBirth,
@@ -47,6 +50,9 @@ export default defineComponent({
       });
     } else {
       wizardStore.initializeWizard(applicationWizard, {
+        [applicationWizard.steps.declaration.form.inputs.applicantLegalName.id]: userStore.fullName,
+        [applicationWizard.steps.declaration.form.inputs.signedDate.id]: new Date().toISOString().slice(0, 10),
+
         [applicationWizard.steps.profile.form.inputs.legalFirstName.id]: userStore.oidcUserInfo.firstName,
         [applicationWizard.steps.profile.form.inputs.legalLastName.id]: userStore.oidcUserInfo.lastName,
         [applicationWizard.steps.profile.form.inputs.dateOfBirth.id]: userStore.oidcUserInfo.dateOfBirth,
