@@ -11,15 +11,10 @@
         <h2 class="text-center">What certificate type(s) are you applying for?</h2>
       </v-col>
       <v-col cols="12" md="8" lg="8" xl="8" class="mx-auto">
-        <ExpandSelect
-          :options="certificationTypes"
-          :selected="selectedCertificationType?.toString()"
-          @selection="handleExpandSelectSelection"
-          @sub-selection="handleExpandSelectSubSelection"
-        ></ExpandSelect>
+        <ExpandSelect :options="certificationTypes"></ExpandSelect>
         <v-row justify="end" class="mt-12">
           <v-btn rounded="lg" variant="outlined" class="mr-2" @click="$router.back()">Cancel</v-btn>
-          <v-btn rounded="lg" color="primary" :disabled="selectedCertificationType === null" @click="submit">Start Application</v-btn>
+          <v-btn rounded="lg" color="primary" :disabled="certificationTypeStore.certificationTypes.length === 0" @click="submit">Start Application</v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -34,7 +29,7 @@ import PageContainer from "@/components/PageContainer.vue";
 import certificationTypes from "@/config/certification-types";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
-import type { Components } from "@/types/openapi";
+import { useCertificationTypeStore } from "@/store/certificationType";
 
 export default defineComponent({
   name: "CertificationType",
@@ -42,34 +37,21 @@ export default defineComponent({
   setup() {
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
+    const certificationTypeStore = useCertificationTypeStore();
 
-    return { certificationTypes, applicationStore, alertStore };
+    return { certificationTypes, applicationStore, alertStore, certificationTypeStore };
   },
-  data() {
-    return {
-      subSelection: [] as Array<Components.Schemas.CertificationType>,
-      selectedCertificationType: null as Components.Schemas.CertificationType | null,
-    };
-  },
+
   methods: {
     submit() {
-      if (this.selectedCertificationType === null) {
-        this.alertStore.setFailureAlert("Select a certification type to continue");
-      } else {
-        const certificationTypes: Array<Components.Schemas.CertificationType> = [this.selectedCertificationType, ...this.subSelection];
-
-        this.applicationStore.setCertificationTypes(certificationTypes);
-        this.applicationStore.newDraftApplication(certificationTypes);
+      if (this.certificationTypeStore.certificationTypes.length > 0) {
+        this.applicationStore.setCertificationTypes(this.certificationTypeStore.certificationTypes);
+        this.applicationStore.newDraftApplication(this.certificationTypeStore.certificationTypes);
 
         this.$router.push("/requirements");
+      } else {
+        this.alertStore.setFailureAlert("Select a certification type to continue");
       }
-    },
-
-    handleExpandSelectSelection(selected: string | null) {
-      this.selectedCertificationType = selected as Components.Schemas.CertificationType;
-    },
-    handleExpandSelectSubSelection(selected: Array<string>) {
-      this.subSelection = selected as Components.Schemas.CertificationType[];
     },
   },
 });
