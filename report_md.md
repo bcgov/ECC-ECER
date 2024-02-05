@@ -6,9 +6,9 @@
 | Risk Level | Number of Alerts |
 | --- | --- |
 | High | 0 |
-| Medium | 3 |
-| Low | 3 |
-| Informational | 12 |
+| Medium | 1 |
+| Low | 2 |
+| Informational | 9 |
 
 
 
@@ -17,24 +17,18 @@
 
 | Name | Risk Level | Number of Instances |
 | --- | --- | --- |
-| CSP: Wildcard Directive | Medium | 1 |
-| Missing Anti-clickjacking Header | Medium | 1 |
 | Proxy Disclosure | Medium | 11 |
-| Cookie with SameSite Attribute None | Low | 1 |
 | Permissions Policy Header Not Set | Low | 2 |
 | Timestamp Disclosure - Unix | Low | 1 |
 | Base64 Disclosure | Informational | 2 |
-| Cookie Slack Detector | Informational | 11 |
 | Information Disclosure - Suspicious Comments | Informational | 4 |
 | Modern Web Application | Informational | 1 |
-| Non-Storable Content | Informational | 1 |
 | Re-examine Cache-control Directives | Informational | 1 |
 | Sec-Fetch-Dest Header is Missing | Informational | 2 |
 | Sec-Fetch-Mode Header is Missing | Informational | 2 |
 | Sec-Fetch-Site Header is Missing | Informational | 2 |
 | Sec-Fetch-User Header is Missing | Informational | 2 |
-| Session Management Response Identified | Informational | 2 |
-| Storable and Cacheable Content | Informational | 7 |
+| Storable and Cacheable Content | Informational | 8 |
 
 
 
@@ -42,86 +36,6 @@
 ## Alert Detail
 
 
-
-### [ CSP: Wildcard Directive ](https://www.zaproxy.org/docs/alerts/10055/)
-
-
-
-##### Medium (High)
-
-### Description
-
-Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.
-
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
-  * Method: `GET`
-  * Parameter: `content-security-policy`
-  * Attack: ``
-  * Evidence: `base-uri 'self';default-src 'self';`
-  * Other Info: `The following directives either allow wildcard sources (or ancestors), are not defined, or are overly broadly defined: 
-frame-ancestors, form-action
-
-The directive(s): frame-ancestors, form-action are among the directives that do not fallback to default-src, missing/excluding them is the same as allowing anything.`
-
-Instances: 1
-
-### Solution
-
-Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.
-
-### Reference
-
-
-* [ https://www.w3.org/TR/CSP/ ](https://www.w3.org/TR/CSP/)
-* [ https://caniuse.com/#search=content+security+policy ](https://caniuse.com/#search=content+security+policy)
-* [ https://content-security-policy.com/ ](https://content-security-policy.com/)
-* [ https://github.com/HtmlUnit/htmlunit-csp ](https://github.com/HtmlUnit/htmlunit-csp)
-* [ https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources ](https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources)
-
-
-#### CWE Id: [ 693 ](https://cwe.mitre.org/data/definitions/693.html)
-
-
-#### WASC Id: 15
-
-#### Source ID: 3
-
-### [ Missing Anti-clickjacking Header ](https://www.zaproxy.org/docs/alerts/10020/)
-
-
-
-##### Medium (Medium)
-
-### Description
-
-The response does not include either Content-Security-Policy with 'frame-ancestors' directive or X-Frame-Options to protect against 'ClickJacking' attacks.
-
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
-  * Method: `GET`
-  * Parameter: `x-frame-options`
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: ``
-
-Instances: 1
-
-### Solution
-
-Modern Web browsers support the Content-Security-Policy and X-Frame-Options HTTP headers. Ensure one of them is set on all web pages returned by your site/app.
-If you expect the page to be framed only by pages on your server (e.g. it's part of a FRAMESET) then you'll want to use SAMEORIGIN, otherwise if you never expect the page to be framed, you should use DENY. Alternatively consider implementing Content Security Policy's "frame-ancestors" directive.
-
-### Reference
-
-
-* [ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options ](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options)
-
-
-#### CWE Id: [ 1021 ](https://cwe.mitre.org/data/definitions/1021.html)
-
-
-#### WASC Id: 15
-
-#### Source ID: 3
 
 ### [ Proxy Disclosure ](https://www.zaproxy.org/docs/alerts/40025/)
 
@@ -166,7 +80,7 @@ The following web/application server has been identified:
 The following web/application server has been identified: 
 - Kestrel
 `
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -176,7 +90,7 @@ The following web/application server has been identified:
 The following web/application server has been identified: 
 - Kestrel
 `
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ba48b7fb.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -270,42 +184,6 @@ Configure all proxies, application servers, and web servers to prevent disclosur
 
 #### Source ID: 1
 
-### [ Cookie with SameSite Attribute None ](https://www.zaproxy.org/docs/alerts/10054/)
-
-
-
-##### Low (Medium)
-
-### Description
-
-A cookie has been set with its SameSite attribute set to "none", which means that the cookie can be sent as a result of a 'cross-site' request. The SameSite attribute is an effective counter measure to cross-site request forgery, cross-site script inclusion, and timing attacks.
-
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
-  * Method: `GET`
-  * Parameter: `fae215f6a98faf034d267e6fb0d680d6`
-  * Attack: ``
-  * Evidence: `set-cookie: fae215f6a98faf034d267e6fb0d680d6`
-  * Other Info: ``
-
-Instances: 1
-
-### Solution
-
-Ensure that the SameSite attribute is set to either 'lax' or ideally 'strict' for all cookies.
-
-### Reference
-
-
-* [ https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site ](https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site)
-
-
-#### CWE Id: [ 1275 ](https://cwe.mitre.org/data/definitions/1275.html)
-
-
-#### WASC Id: 13
-
-#### Source ID: 3
-
 ### [ Permissions Policy Header Not Set ](https://www.zaproxy.org/docs/alerts/10063/)
 
 
@@ -322,7 +200,7 @@ Permissions Policy Header is an added layer of security that helps to restrict f
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ba48b7fb.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -398,6 +276,12 @@ Manually confirm that the timestamp data is not sensitive, and that the data can
 
 Base64 encoded data was disclosed by the application/web server. Note: in the interests of performance not all base64 strings in the response were analyzed individually, the entire response should be looked at by the analyst/security team/developer(s).
 
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `assets/Certifications-055efad0`
+  * Other Info: `j����z�b~'�*'��9���w`
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
   * Method: `GET`
   * Parameter: ``
@@ -406,12 +290,6 @@ Base64 encoded data was disclosed by the application/web server. Note: in the in
   * Other Info: `�PNG
 
    IHDR         ���   sRGB ���   $IDAT(Sc<t��$`ggǈ�g��d�@lt+QD [n b��    IEND�B`�`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ba48b7fb.js
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `assets/Certifications-9983b8e9`
-  * Other Info: `j����z�b~'�*'��}�v�{`
 
 Instances: 2
 
@@ -432,135 +310,6 @@ Manually confirm that the Base64 data does not leak sensitive information, and t
 
 #### Source ID: 3
 
-### [ Cookie Slack Detector ](https://www.zaproxy.org/docs/alerts/90027/)
-
-
-
-##### Informational (Low)
-
-### Description
-
-Repeated GET requests: drop a different cookie each time, followed by normal request with all cookies to stabilize session, compare responses against original baseline GET. This can reveal areas where cookie based authentication/attributes are not actually enforced.
-
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
-`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
-`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
-`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
-`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ba48b7fb.js
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
-`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
-`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
-`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
-`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
-`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
-`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: ``
-  * Other Info: `Cookies that don't have expected effects can reveal flaws in application logic. In the worst case, this can reveal where authentication via cookie token(s) is not actually enforced.
-These cookies affected the response: 
-These cookies did NOT affect the response: fae215f6a98faf034d267e6fb0d680d6
-`
-
-Instances: 11
-
-### Solution
-
-
-
-### Reference
-
-
-* [ https://cwe.mitre.org/data/definitions/205.html ](https://cwe.mitre.org/data/definitions/205.html)
-
-
-#### CWE Id: [ 200 ](https://cwe.mitre.org/data/definitions/200.html)
-
-
-#### WASC Id: 45
-
-#### Source ID: 1
-
 ### [ Information Disclosure - Suspicious Comments ](https://www.zaproxy.org/docs/alerts/10027/)
 
 
@@ -571,25 +320,25 @@ Instances: 11
 
 The response appears to contain suspicious comments which may help an attacker. Note: Matches made within script blocks or files are against the entire content not only comments.
 
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ba48b7fb.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `from`
   * Other Info: `The following pattern was used: \bFROM\b and was detected 2 times, the first in the element starting with: "**/function kr(e,t,n,r){let i;try{i=r?e(...r):e()}catch(a){Da(a,t,n)}return i}function pn(e,t,n,r){if(Ue(e)){const a=kr(e,t,n,r)", see evidence field for the suspicious comment/snippet.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ba48b7fb.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `query`
   * Other Info: `The following pattern was used: \bQUERY\b and was detected 4 times, the first in the element starting with: "`)}function kv(e){const t=e.dark?2:1,n=e.dark?1:2,r=[];for(const[i,a]of Object.entries(e.colors)){const o=gn(a);r.push(`--v-them", see evidence field for the suspicious comment/snippet.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ba48b7fb.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `select`
   * Other Info: `The following pattern was used: \bSELECT\b and was detected 3 times, the first in the element starting with: "**/const BS="http://www.w3.org/2000/svg",MS="http://www.w3.org/1998/Math/MathML",br=typeof document<"u"?document:null,Cf=br&&br.", see evidence field for the suspicious comment/snippet.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ba48b7fb.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -627,7 +376,7 @@ The application appears to be a modern web application. If you need to explore i
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script type="module" crossorigin src="/assets/index-ba48b7fb.js"></script>`
+  * Evidence: `<script type="module" crossorigin src="/assets/index-0975bcb1.js"></script>`
   * Other Info: `No links have been found while there are scripts, which is an indication that this is a modern web application.`
 
 Instances: 1
@@ -640,55 +389,6 @@ This is an informational alert and so no changes are required.
 
 
 
-
-#### Source ID: 3
-
-### [ Non-Storable Content ](https://www.zaproxy.org/docs/alerts/10049/)
-
-
-
-##### Informational (Medium)
-
-### Description
-
-The response contents are not storable by caching components such as proxy servers. If the response does not contain sensitive, personal or user-specific information, it may benefit from being stored and cached, to improve performance.
-
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `private`
-  * Other Info: ``
-
-Instances: 1
-
-### Solution
-
-The content may be marked as storable by ensuring that the following conditions are satisfied:
-The request method must be understood by the cache and defined as being cacheable ("GET", "HEAD", and "POST" are currently defined as cacheable)
-The response status code must be understood by the cache (one of the 1XX, 2XX, 3XX, 4XX, or 5XX response classes are generally understood)
-The "no-store" cache directive must not appear in the request or response header fields
-For caching by "shared" caches such as "proxy" caches, the "private" response directive must not appear in the response
-For caching by "shared" caches such as "proxy" caches, the "Authorization" header field must not appear in the request, unless the response explicitly allows it (using one of the "must-revalidate", "public", or "s-maxage" Cache-Control response directives)
-In addition to the conditions above, at least one of the following conditions must also be satisfied by the response:
-It must contain an "Expires" header field
-It must contain a "max-age" response directive
-For "shared" caches such as "proxy" caches, it must contain a "s-maxage" response directive
-It must contain a "Cache Control Extension" that allows it to be cached
-It must have a status code that is defined as cacheable by default (200, 203, 204, 206, 300, 301, 404, 405, 410, 414, 501).   
-
-### Reference
-
-
-* [ https://datatracker.ietf.org/doc/html/rfc7234 ](https://datatracker.ietf.org/doc/html/rfc7234)
-* [ https://datatracker.ietf.org/doc/html/rfc7231 ](https://datatracker.ietf.org/doc/html/rfc7231)
-* [ https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html ](https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html)
-
-
-#### CWE Id: [ 524 ](https://cwe.mitre.org/data/definitions/524.html)
-
-
-#### WASC Id: 13
 
 #### Source ID: 3
 
@@ -706,7 +406,7 @@ The cache-control header has not been set properly or is missing, allowing the b
   * Method: `GET`
   * Parameter: `cache-control`
   * Attack: ``
-  * Evidence: `private`
+  * Evidence: ``
   * Other Info: ``
 
 Instances: 1
@@ -746,7 +446,7 @@ Specifies how and where the data would be used. For instance, if the value is au
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
   * Method: `GET`
   * Parameter: `Sec-Fetch-Dest`
   * Attack: ``
@@ -788,7 +488,7 @@ Allows to differentiate between requests for navigating between HTML pages and r
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
   * Method: `GET`
   * Parameter: `Sec-Fetch-Mode`
   * Attack: ``
@@ -830,7 +530,7 @@ Specifies the relationship between request initiator's origin and target's origi
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
   * Method: `GET`
   * Parameter: `Sec-Fetch-Site`
   * Attack: ``
@@ -872,7 +572,7 @@ Specifies if a navigation request was initiated by a user.
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
   * Method: `GET`
   * Parameter: `Sec-Fetch-User`
   * Attack: ``
@@ -898,46 +598,6 @@ Ensure that Sec-Fetch-User header is included in user initiated requests.
 
 #### Source ID: 3
 
-### [ Session Management Response Identified ](https://www.zaproxy.org/docs/alerts/10112/)
-
-
-
-##### Informational (Medium)
-
-### Description
-
-The given response has been identified as containing a session management token. The 'Other Info' field contains a set of header tokens that can be used in the Header Based Session Management Method. If the request is in a context which has a Session Management Method set to "Auto-Detect" then this rule will change the session management to use the tokens identified.
-
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
-  * Method: `GET`
-  * Parameter: `fae215f6a98faf034d267e6fb0d680d6`
-  * Attack: ``
-  * Evidence: `93876d26658f78f7a7f3c65ad23c5ab1`
-  * Other Info: `
-cookie:fae215f6a98faf034d267e6fb0d680d6`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
-  * Method: `GET`
-  * Parameter: `fae215f6a98faf034d267e6fb0d680d6`
-  * Attack: ``
-  * Evidence: `93876d26658f78f7a7f3c65ad23c5ab1`
-  * Other Info: `
-cookie:fae215f6a98faf034d267e6fb0d680d6`
-
-Instances: 2
-
-### Solution
-
-This is an informational alert rather than a vulnerability and so there is nothing to fix.
-
-### Reference
-
-
-* [ https://www.zaproxy.org/docs/desktop/addons/authentication-helper/session-mgmt-id ](https://www.zaproxy.org/docs/desktop/addons/authentication-helper/session-mgmt-id)
-
-
-
-#### Source ID: 3
-
 ### [ Storable and Cacheable Content ](https://www.zaproxy.org/docs/alerts/10049/)
 
 
@@ -948,13 +608,19 @@ This is an informational alert rather than a vulnerability and so there is nothi
 
 The response contents are storable by caching components such as proxy servers, and may be retrieved directly from the cache, rather than from the origin server by the caching servers, in response to similar requests from other users.  If the response data is sensitive, personal or user-specific, this may result in sensitive information being leaked. In some cases, this may even result in a user gaining complete control of the session of another user, depending on the configuration of the caching components in use in their environment. This is primarily an issue where "shared" caching servers such as "proxy" caches are configured on the local network. This configuration is typically found in corporate or educational environments, for instance.
 
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: ``
   * Other Info: `In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ba48b7fb.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: `In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234.`
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -991,7 +657,7 @@ The response contents are storable by caching components such as proxy servers, 
   * Evidence: ``
   * Other Info: `In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234.`
 
-Instances: 7
+Instances: 8
 
 ### Solution
 
