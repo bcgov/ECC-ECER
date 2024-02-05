@@ -6,38 +6,38 @@ import referencesForm from "./references.form";
 
 const applicationWizard: Wizard = {
   id: "form-1",
-  steps: [
-    {
+  steps: {
+    profile: {
       id: "step-1",
       title: "Contact Information",
       form: profileInformationForm,
       key: "item.1",
     },
-    {
+    education: {
       id: "step-2",
       title: "Education",
       form: educationForm,
       key: "item.2",
     },
-    {
+    references: {
       id: "step-3",
       title: "References",
       form: referencesForm,
       key: "item.3",
     },
-    {
+    review: {
       id: "step-4",
       title: "Review",
       form: profileInformationForm,
       key: "item.4",
     },
-    {
+    declaration: {
       id: "step-5",
       title: "Declaration",
       form: profileInformationForm,
       key: "item.5",
     },
-  ],
+  },
 };
 
 export default applicationWizard;

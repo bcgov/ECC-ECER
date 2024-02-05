@@ -9,5 +9,7 @@ interface Step {
 
 interface Wizard {
   id: string;
-  steps: Step[];
+  steps: {
+    [id: string]: Step;
+  };
 }
