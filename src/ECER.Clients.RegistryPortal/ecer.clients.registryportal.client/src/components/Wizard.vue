@@ -11,8 +11,11 @@
       :mobile="$vuetify.display.mobile"
     >
       <template v-for="step in wizard.steps" :key="step.id" #[step.key]>
-        <v-card class="rounded-lg" color="white" :title="step.title" flat>
+        <v-card class="rounded-lg" color="white" flat>
           <v-container>
+            <h3>{{ step.title }}</h3>
+            <h4>{{ step.subtitle }}</h4>
+            <DeclarationStepContent v-if="step.id == 'declaration-step'" />
             <v-row>
               <v-col cols="12" md="8" lg="6" xl="4">
                 <EceForm
@@ -46,6 +49,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 
+import DeclarationStepContent from "@/components/DeclarationStepContent.vue";
 import EceForm from "@/components/Form.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import applicationWizard from "@/config/application-wizard";
@@ -56,7 +60,7 @@ import type { Step, Wizard } from "@/types/wizard";
 
 export default defineComponent({
   name: "Wizard",
-  components: { PageContainer, EceForm },
+  components: { PageContainer, EceForm, DeclarationStepContent },
   props: {
     wizard: {
       type: Object as PropType<Wizard>,
