@@ -21,10 +21,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
           var registrant = results.Items.SingleOrDefault();
           if (registrant == null) return TypedResults.NotFound();
 
-          var communicationResult = await bus.InvokeAsync<CommunicationsStatusResults>(user.Identity.UserId);
-          var userInfo = mapper.Map<UserInfo>(registrant.Profile);
-          userInfo.CommunicationsStatus = mapper.Map<CommunicationsStatus>(communicationResult.Status);
-          return TypedResults.Ok(userInfo);
+          return TypedResults.Ok(mapper.Map<UserInfo>(registrant.Profile));
         })
         .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "userinfo_get")
         .RequireAuthorization("registry_new_user");
@@ -42,12 +39,4 @@ public class UserInfoEndpoints : IRegisterEndpoints
   }
 }
 
-public record UserInfo(string FirstName, string LastName, DateOnly DateOfBirth, string Email, string Phone)
-{
-  public CommunicationsStatus CommunicationsStatus { get; set; } = null!;
-}
-public record CommunicationsStatus
-{
-  public int Count { get; set; }
-  public bool HasUnread { get; set; }
-}
+public record UserInfo(string FirstName, string LastName, DateOnly DateOfBirth, string Email, string Phone);

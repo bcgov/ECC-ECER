@@ -24,7 +24,7 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task GetCommunicationsStatus_ReturnsStatus()
+  public async Task GetMessageStatus_ReturnsStatus()
   {
     await Host.Scenario(_ =>
     {

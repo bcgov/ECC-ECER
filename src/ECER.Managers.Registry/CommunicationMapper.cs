@@ -8,15 +8,11 @@ namespace ECER.Managers.Registry
 
     public CommunicationMapper()
     {
-      CreateMap<Contract.Communications.Communication, Communication>()
+      CreateMap<Communication, Contract.Communications.Communication>()
           .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id ?? string.Empty))
-          .ForMember(dest => dest.Body, opt => opt.MapFrom(src => src.Text));
+          .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Body));
 
-
-      CreateMap<Contract.Communications.CommunicationsStatus, CommunicationsStatus>()
-         .ForMember(dest => dest.Count, opt => opt.MapFrom(src => src.Count))
-         .ForMember(dest => dest.HasUnread, opt => opt.MapFrom(src => src.HasUnread));
-
+      CreateMap<CommunicationsStatus, Contract.Communications.CommunicationsStatus> ();
     }
   }
 }
