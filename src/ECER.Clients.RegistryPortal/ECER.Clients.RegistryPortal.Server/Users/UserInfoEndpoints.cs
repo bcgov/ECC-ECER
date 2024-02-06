@@ -28,7 +28,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
         {
           var user = ctx.User.GetUserContext()!;
 
-          await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.Contract.Registrants.UserProfile>(userInfo), user.Identity), ct);
+          await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.Contract.Registrants.UserProfile>(userInfo)!, user.Identity), ct);
 
           return TypedResults.Ok();
         })

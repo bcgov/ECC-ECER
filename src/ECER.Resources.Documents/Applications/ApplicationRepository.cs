@@ -23,14 +23,14 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
     if (query.ByStatus != null)
     {
-      var statuses = mapper.Map<IEnumerable<ecer_Application_StatusCode>>(query.ByStatus).ToList();
+      var statuses = mapper.Map<IEnumerable<ecer_Application_StatusCode>>(query.ByStatus)!.ToList();
       applications = applications.WhereIn(a => a.a.StatusCode!.Value, statuses);
     }
 
     if (query.ById != null) applications = applications.Where(r => r.a.ecer_ApplicationId == Guid.Parse(query.ById));
     if (query.ByApplicantId != null) applications = applications.Where(r => r.a.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
 
-    return mapper.Map<IEnumerable<Application>>(applications.Select(r => r.a).ToList());
+    return mapper.Map<IEnumerable<Application>>(applications.Select(r => r.a).ToList())!;
   }
 
   public async Task<string> SaveDraft(Application application)
@@ -40,7 +40,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == Guid.Parse(application.ApplicantId));
     if (applicant == null) throw new InvalidOperationException($"Applicant '{application.ApplicantId}' not found");
 
-    var ecerApplication = mapper.Map<ecer_Application>(application);
+    var ecerApplication = mapper.Map<ecer_Application>(application)!;
     if (!ecerApplication.ecer_ApplicationId.HasValue)
     {
       ecerApplication.ecer_ApplicationId = Guid.NewGuid();

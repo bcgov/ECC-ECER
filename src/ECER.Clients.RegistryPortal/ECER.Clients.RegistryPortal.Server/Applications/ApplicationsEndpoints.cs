@@ -17,7 +17,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         {
           if (request.DraftApplication.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
           var userContext = httpContext.User.GetUserContext();
-          var application = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId));
+          var application = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
 
           var applicationId = await messageBus.InvokeAsync<string>(new SaveDraftApplicationCommand(application));
 
