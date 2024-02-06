@@ -1,5 +1,5 @@
 <template>
-  <v-row class="ma-4">
+  <v-row>
     <v-col cols="12">
       <ul class="small">
         <v-col cols="12">
