@@ -22,7 +22,7 @@ public class ProfileEndpoints : IRegisterEndpoints
 
     endpointRouteBuilder.MapPut("/api/profile", async Task<Ok> (UserProfile profile, HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
     {
-      var registrant = new Registrant(ctx.User.GetUserContext()!.UserId, mapper.Map<Managers.Registry.Contract.Registrants.UserProfile>(profile));
+      var registrant = new Registrant(ctx.User.GetUserContext()!.UserId, mapper.Map<Managers.Registry.Contract.Registrants.UserProfile>(profile)!);
       await bus.InvokeAsync<string>(new UpdateRegistrantProfileCommand(registrant), ctx.RequestAborted);
       return TypedResults.Ok();
     })

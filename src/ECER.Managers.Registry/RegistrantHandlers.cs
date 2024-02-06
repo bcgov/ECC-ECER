@@ -24,7 +24,7 @@ public static class RegistrantHandlers
       ByIdentity = query.ByUserIdentity
     }, ct);
 
-    return new RegistrantQueryResults(mapper.Map<IEnumerable<Contract.Registrants.Registrant>>(registrants));
+    return new RegistrantQueryResults(mapper.Map<IEnumerable<Contract.Registrants.Registrant>>(registrants)!);
   }
 
   /// <summary>
@@ -45,7 +45,7 @@ public static class RegistrantHandlers
 
     if (registrants.Any()) throw new InvalidOperationException($"Registrant with identity {cmd.Identity} already exists");
 
-    return await registrantRepository.Create(mapper.Map<Resources.Accounts.Registrants.Registrant>(cmd), ct);
+    return await registrantRepository.Create(mapper.Map<Resources.Accounts.Registrants.Registrant>(cmd)!, ct);
   }
 
   /// <summary>
@@ -69,7 +69,7 @@ public static class RegistrantHandlers
 
     if (registrant == null) throw new InvalidOperationException($"Registrant {cmd.Registrant.UserId} wasn't found");
 
-    var profile = mapper.Map<Resources.Accounts.Registrants.UserProfile>(cmd.Registrant.Profile);
+    var profile = mapper.Map<Resources.Accounts.Registrants.UserProfile>(cmd.Registrant.Profile)!;
 
     await registrantRepository.Save(new Resources.Accounts.Registrants.Registrant { Id = cmd.Registrant.UserId, Profile = profile }, ct);
 
