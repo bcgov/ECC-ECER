@@ -1,18 +1,12 @@
 # deployment config template
 {{- define "dc.tpl" }}
-{{- $values := .values -}}
-{{- $name := .name -}}
-{{- $namespace := .namespace -}}
-{{- $labels := .labels -}}
-{{- $port := ($values.port | default 8080) -}}
-{{- $protocol := ($values.protocol | default "tcp") -}}
 kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:
-  name: {{ $name }}
-  labels: {{ $labels | nindent 4 }}
+  name: {{ .name }}
+  labels: {{ .labels | nindent 4 }}
 spec:
-  replicas: {{ $values.replicas }}
+  replicas: {{ .Values.scaling.minReplicas }}
   revisionHistoryLimit: 10
   strategy:
     type: Rolling
@@ -27,82 +21,96 @@ spec:
         cpu: 5m
         memory: 32Mi
   selector:
-    name: {{ $name }}
+    name: {{ .name }}
   template:
     metadata:
-      name: {{ $name }}
+      name: {{ .name }}
       labels:
-        name: {{ $name }}
-        role: {{ $values.role }}
-      {{- if gt (len $values.secrets) 0 }}
+        name: {{ .name }}
+        role: {{ .Values.role }}
+      {{- if or (gt (len .Values.secrets) 0) (.Values.secretFiles).files -}}
+      {{- if gt (len .Values.secrets) 0 }}
       annotations:
-        checksum/secret: {{ $values.secrets | toYaml | sha256sum }}
+        checksum/secret: {{ .Values.secrets | toYaml | sha256sum }}
+      {{- end }}
+      {{- if (.Values.secretFiles).files }}
+      annotations:
+      {{- range $file :=.Values.secretFiles.files }}
+        checksum/{{ base $file | replace "." "-" }}: {{ $.Files.Get $file | toYaml | sha256sum }}
+      {{- end -}}
+      {{- end -}}
       {{- end }}
     spec:
       containers:
-        - name: {{ $name }}
-          image: {{ $values.image.name}}:{{ $values.image.tag }}
+        - name: {{ .name }}
+          image: {{ .Values.image.name }}:{{ .Values.image.tag }}
           imagePullPolicy: Always
-          resources: {{ $values.resources | toYaml | nindent 12 }}
-          volumeMounts:
-            - mountPath: /ssl
-              name: ssl
-              readOnly: true
-          {{- if $values.env }}
+          resources: {{ .Values.resources | toYaml | nindent 12 }}
+          {{- if .Values.env }}
           env:
-          {{- range $key, $value := $values.env }}
+          {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}
           {{- end }}
-          {{- end }}
+          {{- end -}}
+          {{- if .Values.secrets }}
           envFrom:
             - secretRef:
-                name: {{ $name }}-secret
+                name: {{ .name }}-secret
+          {{- end }}
+          {{- if or .Values.volumeMounts .Values.secretFiles }}
+          volumeMounts:
+            {{- if .Values.volumeMounts }}
+            {{ .Values.volumeMounts | toYaml | nindent 12 }}
+            {{ end -}}
+            {{- if (.Values.secretFiles).files }}
+            - name: {{ $.name}}-secret
+              mountPath: {{ .Values.secretFiles.mountPath }}
+            {{ end -}}
+            {{- end }}
+
+          {{- if .Values.port }}
           ports:
-            - containerPort: {{ $port }}
-              protocol: {{ $protocol | upper }}
-          livenessProbe:
-            httpGet:
-              path: {{ ($values.livenessProbe).path | default "/health" }}
-              port: {{ ($values.livenessProbe).port | default $port }}
-              scheme: HTTP
-            timeoutSeconds: {{ ($values.livenessProbe).timeoutSeconds | default 10 }}
-            periodSeconds: {{ ($values.livenessProbe).periodSeconds | default 15 }}
-            failureThreshold: {{ ($values.livenessProbe).failureThreshold | default 5 }}
-          readinessProbe:
-            httpGet:
-              path: {{ ($values.readinessProbe).path | default "/health" }}
-              port: {{ ($values.readinessProbe).port | default $port }}
-              scheme: HTTP
-            timeoutSeconds: {{ ($values.readinessProbe).timeoutSeconds | default 10 }}
-            periodSeconds: {{ ($values.readinessProbe).periodSeconds | default 15 }}
-            failureThreshold: {{ ($values.readinessProbe).failureThreshold | default 5 }}
-          startupProbe:
-            httpGet:
-              path: {{ ($values.startupProbe).path | default "/health" }}
-              port: {{ ($values.startupProbe).port | default $port }}
-              scheme: HTTP
-            initialDelaySeconds: {{ ($values.startupProbe).initialDelaySeconds | default 15 }}
-            timeoutSeconds: {{ ($values.startupProbe).timeoutSeconds | default 10 }}
-            periodSeconds: {{ ($values.startupProbe).periodSeconds | default 15 }}
-            failureThreshold: {{ ($values.startupProbe).failureThreshold | default 5 }}
+            - containerPort: {{ .Values.port }}
+              protocol: {{ .Values.protocol | default "TCP" | upper }}
+          {{- end }}
+
+          {{- if .Values.livenessProbe }}
+          livenessProbe: {{ .Values.livenessProbe | toYaml | nindent 12 }}
+          {{- end }}
+
+          {{- if .Values.readinessProbe }}
+          readinessProbe: {{ .Values.readinessProbe | toYaml | nindent 12 }}
+          {{- end }}
+
+          {{- if .Values.startupProbe }}
+          startupProbe: {{ .Values.startupProbe | toYaml | nindent 12 }}
+          {{- end }}
 
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
+
+      {{- if or .Values.volumes .Values.secretFiles }}
       volumes:
-        - name: ssl
+        {{- if .Values.volumes }}
+        {{ tpl (.Values.volumes | toYaml) $ | nindent 8 }}
+        {{ end -}}      
+        {{- if (.Values.secretFiles).files }}
+        - name: {{ $.name}}-secret
           secret:
-            secretName: {{ $name }}-ssl
+            secretName: {{ $.name}}-secret
+        {{- end }}
+      {{- end }}
   triggers:
     - type: ConfigChange
     - type: ImageChange
       imageChangeParams:
         automatic: true
         containerNames:
-          - {{ $name }}
+          - {{ .name }}
         from:
           kind: ImageStreamTag
-          name: {{ base $values.image.name }}:{{ $values.image.tag }}
-          namespace: {{ $values.image.triggerNamespace }}
+          name: {{ base .Values.image.name }}:{{ .Values.image.tag }}
+          namespace: {{ .Values.image.triggerNamespace }}
 {{- end }}

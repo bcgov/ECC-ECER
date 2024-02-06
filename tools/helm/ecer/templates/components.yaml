@@ -3,9 +3,12 @@
 {{- range $key, $values := .Values.components -}}
     {{- $values := merge $values $.Values.defaults -}}
     {{- $name := print $.Release.Name "-" $key -}}
-    {{- $namespace := $.Release.Namespace -}}
-    {{- $context := dict "name" $name "values" $values "labels" $labels "namespace" $namespace -}}
+    {{- $context := dict "name" $name "labels" $labels "Values" $values "Release" $.Release "Files" $.Files "Template" $.Template -}}
     {{ include "dc.tpl" $context | nindent 0 }}
+    {{ "---" | nindent 0 }}
+    {{ include "hpa.tpl" $context | nindent 0 }}
+    {{ "---" | nindent 0 }}
+    {{ include "pdb.tpl" $context | nindent 0 }}
     {{ "---" | nindent 0 }}
     {{ include "secret.tpl" $context | nindent 0 }}
     {{ "---" | nindent 0 }}

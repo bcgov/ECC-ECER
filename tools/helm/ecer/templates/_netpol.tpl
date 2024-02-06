@@ -1,28 +1,25 @@
 # network policy template
-{{- define "netpol.tpl" }}
-{{- $values := .values -}}
-{{- $name := .name -}}
-{{- $labels := .labels -}}
-{{- $port := ($values.port | default 8080) -}}
-{{- $protocol := ($values.protocol | default "tcp") -}}
+{{- define "netpol.tpl" -}}
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: {{ $name }}-netpol
-  labels: {{ $labels | nindent 4 }}
+  name: {{ .name }}-netpol
+  labels: {{ .labels | nindent 4 }}
 spec:
   podSelector:
     matchLabels:
-      name: {{ $name }}
+      name: {{ .name }}
+  {{- if and .Values.port (eq "app" .Values.role)}}
   ingress:
     - from:
       - namespaceSelector:
           matchLabels:
             network.openshift.io/policy-group: ingress
-      - podSelector:
-          matchLabels:
-            role: api
       ports:
-        - protocol: {{ $protocol | upper }}
-          port: {{ $port }}
+        - protocol: {{ .Values.protocol | upper }}
+          port: {{ .Values.port }}
+  {{- end }}
+  {{- if .Values.egress }}
+  egress: {{ tpl (.Values.egress | toYaml) $ | nindent 4 }}
+  {{- end }}
 {{- end -}}
