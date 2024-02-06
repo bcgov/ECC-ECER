@@ -1,36 +1,33 @@
 # route template
 {{- define "route.tpl" }}
-{{- $values := .values -}}
-{{- $name := .name -}}
-{{- $labels := .labels -}}
-{{- $port := ($values.port | default 8080) -}}
-{{- $protocol := ($values.protocol | default "tcp") -}}
-{{- range $host := $values.routes }}
+{{- range $host := .Values.routes }}
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: {{ $name }}-{{ $host.host }}-route
-  labels: {{ $labels | nindent 4 }}
+  name: {{ $.name }}-{{ $host.host }}-route
+  labels: {{ $.labels | nindent 4 }}
   annotations:
     haproxy.router.openshift.io/hsts_header: max-age=31536000;includeSubDomains;preload
     haproxy.router.openshift.io/balance: leastconn
-    haproxy.router.openshift.io/timeout: {{ $values.routeTimeout | default  "60s" }}
+    haproxy.router.openshift.io/timeout: {{ $.Values.routeTimeout | default  "120s" }}
+    haproxy.router.openshift.io/rate-limit-connections: 'true'
+    haproxy.router.openshift.io/disable_cookies: 'true'
 spec:
   host: {{ $host.host }}
   path: {{ $host.path | default "" | quote }}
   port:
-    targetPort: {{ printf "%d-%s" $port $protocol }}
+    targetPort: {{ printf "%s-%s" ($.Values.port | toString) $.Values.protocol }}
   tls:
     insecureEdgeTerminationPolicy: Redirect
     termination: edge
     {{- if $host.key }}
-    key: | {{ $values.Files.Get $host.key | trim | nindent 6 }}
-    certificate: | {{ $values.Files.Get $host.certificate | trim | nindent 6 }}
-    caCertificate: | {{ $values.Files.Get $host.caCertificate | trim | nindent 6 }}
+    key: | {{ $.Files.Get $host.key | trim | nindent 6 }}
+    certificate: | {{ $.Files.Get $host.certificate | trim | nindent 6 }}
+    caCertificate: | {{ $.Files.Get $host.caCertificate | trim | nindent 6 }}
     {{- end }}
   to:
     kind: Service
-    name: {{ $name }}-svc
+    name: {{ $.name }}-svc
     weight: 100
 ---
 {{- end -}}
