@@ -19,6 +19,7 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
       _.Get.Url("/api/messages");
       _.StatusCodeShouldBeOk();
+
     });
   }
 

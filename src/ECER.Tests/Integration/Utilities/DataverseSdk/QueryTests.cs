@@ -33,6 +33,7 @@ public class QueryTests : IAsyncLifetime
     {
         var statuses = new[] { ecer_Application_StatusCode.Draft, ecer_Application_StatusCode.Complete };
         var query = dataverseContext.ecer_ApplicationSet.WhereNotIn(a => a.StatusCode!.Value, statuses).ToList();
+        query.ShouldNotBeEmpty();
         query.ShouldAllBe(a => !statuses.Contains(a.StatusCode!.Value));
     }
 

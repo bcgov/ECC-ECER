@@ -26,17 +26,6 @@ public class CommunicationsEndpoints : IRegisterEndpoints
     })
      .WithOpenApi("Handles messages queries", string.Empty, "message_get")
      .RequireAuthorization();
-
-
-    endpointRouteBuilder.MapGet("/api/messages/status", async (HttpContext httpContext, IMessageBus messageBus) =>
-    {
-      var userContext = httpContext.User.GetUserContext();
-
-      var result = await messageBus.InvokeAsync<CommunicationsStatusResults>(userContext!.UserId);
-      return TypedResults.Ok(new CommunicationsStatusResults(result.Status));
-    })
-       .WithOpenApi("Handles messages status", string.Empty, "message_status_get")
-       .RequireAuthorization();
   }
 }
 
@@ -45,10 +34,4 @@ public record Communication
   public string Id { get; set; } = null!;
   public string Subject { get; set; } = null!;
   public string Text { get; set; } = null!;
-}
-
-public record CommunicationsStatus
-{
-  public int Count { get; set; }
-  public bool HasUnread { get; set; }
 }

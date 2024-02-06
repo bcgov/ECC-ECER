@@ -19,7 +19,7 @@ namespace ECER.Managers.Registry
       ArgumentNullException.ThrowIfNull(mapper);
       ArgumentNullException.ThrowIfNull(UserId);
 
-      var status = await communicationRepository.NotificationStatus(UserId);
+      var status = await communicationRepository.GetCommunicationsCountAndNewIndicator(UserId);
 
       return new CommunicationsStatusResults(mapper.Map<Contract.Communications.CommunicationsStatus>(status));
     }

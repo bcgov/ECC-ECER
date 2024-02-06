@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -19,7 +20,11 @@ public class UserInfoEndpoints : IRegisterEndpoints
 
           var registrant = results.Items.SingleOrDefault();
           if (registrant == null) return TypedResults.NotFound();
-          return TypedResults.Ok(mapper.Map<UserInfo>(registrant.Profile));
+
+          var communicationResult = await bus.InvokeAsync<CommunicationsStatusResults>(user.Identity.UserId);
+          var userInfo = mapper.Map<UserInfo>(registrant.Profile);
+          userInfo.CommunicationsStatus = mapper.Map<CommunicationsStatus>(communicationResult.Status);
+          return TypedResults.Ok(userInfo);
         })
         .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "userinfo_get")
         .RequireAuthorization("registry_new_user");
@@ -37,4 +42,12 @@ public class UserInfoEndpoints : IRegisterEndpoints
   }
 }
 
-public record UserInfo(string FirstName, string LastName, DateOnly DateOfBirth, string Email, string Phone);
+public record UserInfo(string FirstName, string LastName, DateOnly DateOfBirth, string Email, string Phone)
+{
+  public CommunicationsStatus CommunicationsStatus { get; set; } = null!;
+}
+public record CommunicationsStatus
+{
+  public int Count { get; set; }
+  public bool HasUnread { get; set; }
+}

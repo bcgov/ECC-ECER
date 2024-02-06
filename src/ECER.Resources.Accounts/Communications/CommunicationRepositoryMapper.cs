@@ -8,18 +8,16 @@ internal class CommunicationRepositoryMapper : Profile
 {
   public CommunicationRepositoryMapper()
   {
-    CreateMap<Communication, ecer_Communication>(MemberList.Source)
-              .ForMember(d => d.ecer_CommunicationId, opts => opts.MapFrom(s => s.Id))
-              .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => s.Body))
-              .ForMember(d => d.ecer_Name, opts => opts.MapFrom(s => s.Subject))
-              .ForMember(d => d.ecer_Acknowledged, opts => opts.MapFrom(s => s.Acknowledged))
-              .ForMember(d => d.ecer_DateNotified, opts => opts.MapFrom(s => s.NotifiedOn))
-              .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
-              .ReverseMap();
+    CreateMap<ecer_Communication, Communication>(MemberList.Source)
+     .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CommunicationId))
+     .ForMember(d => d.Body, opts => opts.MapFrom(s => s.ecer_Message))
+     .ForMember(d => d.Subject, opts => opts.MapFrom(s => s.ecer_Name))
+     .ForMember(d => d.Acknowledged, opts => opts.MapFrom(s => s.ecer_Acknowledged))
+     .ForMember(d => d.NotifiedOn, opts => opts.MapFrom(s => s.ecer_DateNotified))
+     .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode));
 
-    CreateMap<CommunicationStatus, ecer_Communication_StatusCode>()
-            .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-            .ReverseMap();
+    CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true));
   }
 }
 

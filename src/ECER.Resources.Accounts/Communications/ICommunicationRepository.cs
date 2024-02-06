@@ -10,7 +10,7 @@ namespace ECER.Resources.Accounts.Communications;
 public interface ICommunicationRepository
 {
   Task<IEnumerable<Communication>> Query(CommunicationQuery query);
-  Task<CommunicationsStatus> NotificationStatus(string userId);
+  Task<CommunicationsStatus> GetCommunicationsCountAndNewIndicator(string userId);
 }
 
 public record CommunicationQuery

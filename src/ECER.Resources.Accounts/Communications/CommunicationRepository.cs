@@ -15,7 +15,7 @@ internal class CommunicationRepository : ICommunicationRepository
     this.mapper = mapper;
   }
 
-  public async Task<CommunicationsStatus> NotificationStatus(string userId)
+  public async Task<CommunicationsStatus> GetCommunicationsCountAndNewIndicator(string userId)
   {
     await Task.CompletedTask;
     var communications = from a in context.ecer_CommunicationSet
@@ -34,11 +34,13 @@ internal class CommunicationRepository : ICommunicationRepository
 
   public async Task<IEnumerable<Communication>> Query(CommunicationQuery query)
   {
+
     await Task.CompletedTask;
     var communications = from a in context.ecer_CommunicationSet
                          join b in context.ecer_ApplicationSet on a.ecer_Applicationid.Id equals b.ecer_ApplicationId
                          join c in context.ContactSet on b.ecer_Applicantid.Id equals c.ContactId
                          select new { a, b, c };
+
 
     if (query.ByStatus != null)
     {
