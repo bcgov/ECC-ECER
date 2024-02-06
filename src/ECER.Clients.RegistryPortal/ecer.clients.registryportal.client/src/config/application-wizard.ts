@@ -9,32 +9,32 @@ const applicationWizard: Wizard = {
   id: "form-1",
   steps: {
     declaration: {
-      id: "declaration-step",
+      id: "declaration",
       title: "Declaration & Consent",
       subtitle: "Read the following statements and use the checkbox to indicate you understand and agree",
       form: declarationForm,
       key: "item.1",
     },
     profile: {
-      id: "step-2",
+      id: "profile",
       title: "Contact Information",
       form: profileInformationForm,
       key: "item.2",
     },
     education: {
-      id: "step-3",
+      id: "education",
       title: "Education",
       form: educationForm,
       key: "item.3",
     },
     references: {
-      id: "step-4",
+      id: "references",
       title: "References",
       form: referencesForm,
       key: "item.4",
     },
     review: {
-      id: "step-5",
+      id: "review ",
       title: "Review",
       form: profileInformationForm,
       key: "item.5",

@@ -72,7 +72,17 @@ export default defineComponent({
   }),
   methods: {
     handleSaveAndContinue() {
-      this.saveProfile();
+      if (!this.isFormValid) {
+        this.alertStore.setFailureAlert("Please fill out all required fields");
+      } else {
+        switch (this.wizardStore.currentStepId) {
+          case applicationWizard.steps.profile.id:
+            this.saveProfile();
+            break;
+          default:
+            this.wizardStore.incrementStep();
+        }
+      }
     },
     handleBack() {
       this.wizardStore.decrementStep();
@@ -81,35 +91,31 @@ export default defineComponent({
       this.alertStore.setSuccessAlert("Save as Draft");
     },
     async saveProfile() {
-      if (!this.isFormValid) {
-        this.alertStore.setFailureAlert("Please fill out all required fields");
-      } else {
-        const success = await putProfile({
+      const success = await putProfile({
+        firstName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalFirstName.id],
+        middleName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalMiddleName.id],
+        preferredName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.preferredName.id],
+        lastName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalLastName.id],
+        dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
+        residentialAddress: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.addresses.id][AddressType.RESIDENTIAL],
+        mailingAddress: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.addresses.id][AddressType.MAILING],
+        email: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.email.id],
+        phone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.primaryContactNumber.id],
+        alternateContactPhone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.alternateContactNumber.id],
+      });
+
+      if (success) {
+        this.alertStore.setSuccessAlert("Profile saved successfully");
+        this.userStore.setUserInfo({
           firstName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalFirstName.id],
-          middleName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalMiddleName.id],
-          preferredName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.preferredName.id],
           lastName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalLastName.id],
-          dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
-          residentialAddress: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.addresses.id][AddressType.RESIDENTIAL],
-          mailingAddress: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.addresses.id][AddressType.MAILING],
           email: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.email.id],
           phone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.primaryContactNumber.id],
-          alternateContactPhone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.alternateContactNumber.id],
+          dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
         });
-
-        if (success) {
-          this.alertStore.setSuccessAlert("Profile saved successfully");
-          this.userStore.setUserInfo({
-            firstName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalFirstName.id],
-            lastName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalLastName.id],
-            email: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.email.id],
-            phone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.primaryContactNumber.id],
-            dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
-          });
-          this.wizardStore.incrementStep();
-        } else {
-          this.alertStore.setFailureAlert("Profile save failed");
-        }
+        this.wizardStore.incrementStep();
+      } else {
+        this.alertStore.setFailureAlert("Profile save failed");
       }
     },
   },
