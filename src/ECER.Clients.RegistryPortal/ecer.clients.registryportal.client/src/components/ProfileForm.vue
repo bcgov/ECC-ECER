@@ -7,7 +7,7 @@
       @updated-validation="isFormValid = $event"
     />
     <v-row justify="end">
-      <v-btn rounded="lg" color="primary" @click="saveProfile">Save</v-btn>
+      <v-btn :form="profileInformationForm.id" type="submit" rounded="lg" color="primary" @click="saveProfile">Save</v-btn>
     </v-row>
   </v-col>
 </template>
