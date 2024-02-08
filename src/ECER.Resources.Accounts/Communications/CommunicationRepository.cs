@@ -26,9 +26,8 @@ internal class CommunicationRepository : ICommunicationRepository
     var unreadCount= communications.Where(communication => communication.a.ecer_Acknowledged == false).ToList().Count; // it does not support Any
 
     var hasUnread = unreadCount > 0;
-    var statuses= new List<ecer_Communication_StatusCode> { ecer_Communication_StatusCode.NotifiedRecipient, ecer_Communication_StatusCode.Acknowledged };
-    var count = communications.WhereIn(communication => communication.a.StatusCode!.Value, statuses).ToList().Count;
-    return mapper.Map<CommunicationsStatus>(new CommunicationsStatus() { HasUnread=hasUnread, Count=count});
+
+    return mapper.Map<CommunicationsStatus>(new CommunicationsStatus() { HasUnread=hasUnread, Count= unreadCount });
   }
 
   public async Task<IEnumerable<Communication>> Query(CommunicationQuery query)
