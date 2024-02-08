@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panels v-model="selection">
+  <v-expansion-panels v-model="selection" variant="accordion">
     <v-expansion-panel v-for="option in options" :key="option.id" :value="option.id" class="rounded-lg">
       <v-expansion-panel-title>
         <v-row no-gutters>
@@ -9,14 +9,14 @@
             </v-radio-group>
           </v-col>
           <v-col v-if="option.id === 'FiveYears' && selection !== 'FiveYears'" cols="11" offset="1">
-            <p class="small">You may select the following specialization(s) in addition to your ECE Five Year Certificate</p>
+            <p class="small">If you are eligible for an ECE Five Year Certificate, you may also be eligible for one or both specializations:</p>
             <v-checkbox v-model="certificationTypeStore.subSelection" color="primary" label="Infant and Toddler Educator (ITE)" value="Ite"></v-checkbox>
             <v-checkbox
               v-model="certificationTypeStore.subSelection"
               color="primary"
               label="Special Needs Educator (SNE)"
               value="Sne"
-              class="mt-n10"
+              class="mt-n8"
             ></v-checkbox>
           </v-col>
         </v-row>

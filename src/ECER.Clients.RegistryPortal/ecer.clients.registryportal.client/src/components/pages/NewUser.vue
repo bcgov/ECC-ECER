@@ -6,7 +6,7 @@
           <h3>Profile Information</h3>
           <p class="small">The Registry will notify you of important updates regarding your certification</p>
         </div>
-        <v-form ref="form" validate-on="blur">
+        <v-form ref="form" validate-on="input">
           <div class="d-flex flex-column ga-2">
             <v-text-field
               v-model="email"
@@ -30,6 +30,7 @@
                 <router-link to="/new-user/terms-of-use">Terms of Use</router-link>
               </template>
             </v-checkbox>
+            <div></div>
             <v-row justify="end">
               <v-btn rounded="lg" variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
               <v-btn rounded="lg" color="primary" @click="submit">Save and Continue</v-btn>
