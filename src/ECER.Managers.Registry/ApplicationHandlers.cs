@@ -23,7 +23,7 @@ public static class ApplicationHandlers
     ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(cmd);
 
-    var applicationId = await applicationRepository.SaveDraft(mapper.Map<Resources.Documents.Applications.Application>(cmd.Application));
+    var applicationId = await applicationRepository.SaveDraft(mapper.Map<Resources.Documents.Applications.Application>(cmd.Application)!);
     return applicationId;
   }
 
@@ -45,6 +45,6 @@ public static class ApplicationHandlers
       ById = query.ById,
       ByStatus = query.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
     });
-    return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications));
+    return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
   }
 }
