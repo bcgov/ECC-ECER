@@ -10,25 +10,29 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="8" lg="8" xl="8" class="mx-auto">
-        <v-row class="ga-4">
-          <div v-for="certificationType in applicationStore.currentApplication.certificationTypes" :key="certificationType">
-            <template v-if="certificationType === 'EceAssistant'">
-              <ECEAssistantRequirements />
-            </template>
-            <template v-if="certificationType === 'OneYear'">
-              <ECEOneYearRequirements />
-            </template>
-            <template v-if="certificationType === 'FiveYears'">
-              <ECEFiveYearRequirements />
-            </template>
-            <template v-if="certificationType === 'Sne'">
-              <SneRequirements />
-            </template>
-            <template v-if="certificationType === 'Ite'">
-              <IteRequirements />
-            </template>
-          </div>
-        </v-row>
+        <v-card>
+          <v-card-text>
+            <v-row class="ga-4">
+              <div v-for="certificationType in applicationStore.currentApplication.certificationTypes" :key="certificationType">
+                <template v-if="certificationType === 'EceAssistant'">
+                  <ECEAssistantRequirements />
+                </template>
+                <template v-if="certificationType === 'OneYear'">
+                  <ECEOneYearRequirements />
+                </template>
+                <template v-if="certificationType === 'FiveYears'">
+                  <ECEFiveYearRequirements />
+                </template>
+                <template v-if="certificationType === 'Sne'">
+                  <SneRequirements />
+                </template>
+                <template v-if="certificationType === 'Ite'">
+                  <IteRequirements />
+                </template>
+              </div>
+            </v-row>
+          </v-card-text>
+        </v-card>
         <v-row justify="end" class="mt-12">
           <v-btn rounded="lg" variant="outlined" class="mr-2" @click="alertStore.setSuccessAlert('Save as Draft')">Save as a Draft</v-btn>
           <v-btn rounded="lg" color="primary" @click="$router.push('/application')">Save and Continue</v-btn>

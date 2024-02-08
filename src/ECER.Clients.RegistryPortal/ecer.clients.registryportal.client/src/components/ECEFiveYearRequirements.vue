@@ -14,11 +14,11 @@
         >
           recognized
         </a>
-        by the ECE Registry.
+        by the ECE Registry
       </li>
     </v-col>
     <v-col cols="11" offset="1">
-      <li>You can request an official transcript from your educational institution and ask them to send it directly to the ECE Registry.</li>
+      <li>You can request an official transcript from your educational institution and ask them to send it directly to the ECE Registry</li>
     </v-col>
     <v-col cols="11" offset="1">
       <li>You can provide a character reference who:</li>
