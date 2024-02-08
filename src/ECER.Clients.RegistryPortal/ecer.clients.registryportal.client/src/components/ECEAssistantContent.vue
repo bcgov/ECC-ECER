@@ -7,7 +7,7 @@
           child development, completed within the last 5 years at a recognized educational institution.
           <br />
           <br />
-          As an ECE Assistant you can work in a licensed facility with children 0 to 5 years old under the supervision of a certified EC
+          As an ECE Assistant you can work in a licensed facility with children 0 to 5 years old under the supervision of a certified ECE
         </p>
       </v-col>
     </v-row>
