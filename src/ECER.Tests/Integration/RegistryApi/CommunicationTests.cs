@@ -1,9 +1,5 @@
 ﻿using Alba;
-using Xunit;
-using System.Threading.Tasks;
 using Xunit.Abstractions;
-using Newtonsoft.Json;
-using Wolverine;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
@@ -19,10 +15,17 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
     await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      var response = _.Get.Url("/api/messages");
+      _.Get.Url("/api/messages");
       _.StatusCodeShouldBeOk();
+
+      _.ConfigureHttpContext(context =>
+      {
+        var responseBody = context.Response.Body;
+        Assert.NotNull(responseBody);
+      });
     });
   }
+
 
   [Fact]
   public async Task GetMessageStatus_ReturnsStatus()
