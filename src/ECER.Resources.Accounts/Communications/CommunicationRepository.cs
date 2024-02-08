@@ -20,8 +20,7 @@ internal class CommunicationRepository : ICommunicationRepository
     await Task.CompletedTask;
     var communications = from a in context.ecer_CommunicationSet
                          join b in context.ecer_ApplicationSet on a.ecer_Applicationid.Id equals b.ecer_ApplicationId
-                         join c in context.ContactSet on b.ecer_Applicantid.Id equals c.ContactId
-                         select new { a, b, c };
+                         select new { a, b };
     communications = communications.Where(r => r.b.ecer_Applicantid.Id == Guid.Parse(userId));
 
     var unreadCount= communications.Where(communication => communication.a.ecer_Acknowledged == false).ToList().Count; // it does not support Any
@@ -34,13 +33,10 @@ internal class CommunicationRepository : ICommunicationRepository
 
   public async Task<IEnumerable<Communication>> Query(CommunicationQuery query)
   {
-
     await Task.CompletedTask;
     var communications = from a in context.ecer_CommunicationSet
                          join b in context.ecer_ApplicationSet on a.ecer_Applicationid.Id equals b.ecer_ApplicationId
-                         join c in context.ContactSet on b.ecer_Applicantid.Id equals c.ContactId
-                         select new { a, b, c };
-
+                         select new { a, b };
 
     if (query.ByStatus != null)
     {
@@ -50,7 +46,8 @@ internal class CommunicationRepository : ICommunicationRepository
 
     if (query.ById != null) communications = communications.Where(r => r.a.ecer_CommunicationId == Guid.Parse(query.ById));
     if (query.ByApplicantId != null) communications = communications.Where(r => r.b.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
-
-    return mapper.Map<IEnumerable<Communication>>(communications.Select(r => r.a).ToList());
+    var data = communications.Select(r => r.a).ToList();
+    var result = mapper.Map<IEnumerable<Communication>>(data);
+    return result;
   }
 }

@@ -20,7 +20,7 @@ public record CommunicationQuery
   public string? ByApplicantId { get; set; }
 }
 
-public abstract record Communication(string? Id)
+public record Communication(string? Id)
 {
   public string Subject { get; set; } = string.Empty;
   public string Body { get; set; } = string.Empty;

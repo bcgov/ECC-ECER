@@ -8,7 +8,7 @@ internal class CommunicationRepositoryMapper : Profile
 {
   public CommunicationRepositoryMapper()
   {
-    CreateMap<ecer_Communication, Communication>(MemberList.Source)
+    CreateMap<ecer_Communication, Communication>(MemberList.Destination)
      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CommunicationId))
      .ForMember(d => d.Body, opts => opts.MapFrom(s => s.ecer_Message))
      .ForMember(d => d.Subject, opts => opts.MapFrom(s => s.ecer_Name))

@@ -35,7 +35,6 @@ public class CommunicationsEndpoints : IRegisterEndpoints
     })
      .WithOpenApi("Handles messages status", string.Empty, "message_status_get")
      .RequireAuthorization();
-
   }
 }
 

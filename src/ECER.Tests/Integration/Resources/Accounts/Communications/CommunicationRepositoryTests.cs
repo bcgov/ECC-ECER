@@ -20,7 +20,7 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
   public async Task QueryCommunications_ById_Found()
   {
     // Arrange
-    var communicationId = "d2cef005-33b6-ee11-a569-000d3af4fd74"; // Example ID
+     var communicationId = Fixture.communicationId;
 
     // Act
     var communications = await repository.Query(new CommunicationQuery { ById = communicationId });
