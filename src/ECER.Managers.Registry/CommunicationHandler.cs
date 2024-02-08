@@ -21,7 +21,7 @@ namespace ECER.Managers.Registry
 
       var status = await communicationRepository.GetCommunicationsCountAndNewIndicator(UserId);
 
-      return new CommunicationsStatusResults(mapper.Map<Contract.Communications.CommunicationsStatus>(status));
+      return new CommunicationsStatusResults(mapper.Map<Contract.Communications.CommunicationsStatus>(status)!);
     }
 
     public static async Task<CommunicationsQueryResults> Handle(CommunicationsQuery query, ICommunicationRepository communicationRepository, IMapper mapper)
@@ -35,7 +35,7 @@ namespace ECER.Managers.Registry
         ById = query.ById,
         ByStatus = query.ByStatus?.Convert<Contract.Communications.CommunicationStatus, Resources.Accounts.Communications.CommunicationStatus>(),
       });
-      return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communications));
+      return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communications)!);
     }
   }
 }

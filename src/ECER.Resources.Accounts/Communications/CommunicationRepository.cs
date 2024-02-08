@@ -27,7 +27,7 @@ internal class CommunicationRepository : ICommunicationRepository
 
     var hasUnread = unreadCount > 0;
 
-    return mapper.Map<CommunicationsStatus>(new CommunicationsStatus() { HasUnread=hasUnread, Count= unreadCount });
+    return mapper.Map<CommunicationsStatus>(new CommunicationsStatus() { HasUnread=hasUnread, Count= unreadCount })!;
   }
 
   public async Task<IEnumerable<Communication>> Query(CommunicationQuery query)
@@ -39,7 +39,7 @@ internal class CommunicationRepository : ICommunicationRepository
 
     if (query.ByStatus != null)
     {
-      var statuses = mapper.Map<IEnumerable<ecer_Communication_StatusCode>>(query.ByStatus).ToList();
+      var statuses = mapper.Map<IEnumerable<ecer_Communication_StatusCode>>(query.ByStatus)!.ToList();
       communications = communications.WhereIn(communication => communication.a.StatusCode!.Value, statuses);
     }
 
@@ -47,6 +47,6 @@ internal class CommunicationRepository : ICommunicationRepository
     if (query.ByApplicantId != null) communications = communications.Where(r => r.b.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
     var data = communications.Select(r => r.a).ToList();
     var result = mapper.Map<IEnumerable<Communication>>(data);
-    return result;
+    return result!;
   }
 }
