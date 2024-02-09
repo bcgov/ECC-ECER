@@ -30,7 +30,7 @@ public enum CommunicationStatus
   Draft,
   NotifiedRecipient,
   Acknowledged,
-  InActive
+  Inactive
 }
 public record CommunicationsStatusResults(CommunicationsStatus Status);
 public record CommunicationsStatus
