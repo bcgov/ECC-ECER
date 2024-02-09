@@ -9,15 +9,14 @@ namespace ECER.Resources.Accounts.Communications;
 
 public interface ICommunicationRepository
 {
-  Task<IEnumerable<Communication>> Query(CommunicationQuery query);
-  Task<CommunicationsStatus> GetCommunicationsCountAndNewIndicator(string userId);
+  Task<IEnumerable<Communication>> Query(UserCommunicationQuery query);
 }
 
-public record CommunicationQuery
+public record UserCommunicationQuery
 {
   public string? ById { get; set; }
   public IEnumerable<CommunicationStatus>? ByStatus { get; set; }
-  public string? ByApplicantId { get; set; }
+  public string? ByRegistrantId { get; set; }
 }
 
 public record Communication(string? Id)

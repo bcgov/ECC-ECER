@@ -15,37 +15,22 @@ internal class CommunicationRepository : ICommunicationRepository
     this.mapper = mapper;
   }
 
-  public async Task<CommunicationsStatus> GetCommunicationsCountAndNewIndicator(string userId)
+  public async Task<IEnumerable<Communication>> Query(UserCommunicationQuery query)
   {
     await Task.CompletedTask;
-    var communications = from a in context.ecer_CommunicationSet
-                         join b in context.ecer_ApplicationSet on a.ecer_Applicationid.Id equals b.ecer_ApplicationId
-                         select new { a, b };
-    communications = communications.Where(r => r.b.ecer_Applicantid.Id == Guid.Parse(userId));
-
-    var unreadCount= communications.Where(communication => communication.a.ecer_Acknowledged == false).ToList().Count; // it does not support Any
-
-    var hasUnread = unreadCount > 0;
-
-    return mapper.Map<CommunicationsStatus>(new CommunicationsStatus() { HasUnread=hasUnread, Count= unreadCount })!;
-  }
-
-  public async Task<IEnumerable<Communication>> Query(CommunicationQuery query)
-  {
-    await Task.CompletedTask;
-    var communications = from a in context.ecer_CommunicationSet
-                         join b in context.ecer_ApplicationSet on a.ecer_Applicationid.Id equals b.ecer_ApplicationId
-                         select new { a, b };
+    var communications = from c in context.ecer_CommunicationSet
+                         join a in context.ecer_ApplicationSet on c.ecer_Applicationid.Id equals a.ecer_ApplicationId
+                         select new { c, a };
 
     if (query.ByStatus != null)
     {
       var statuses = mapper.Map<IEnumerable<ecer_Communication_StatusCode>>(query.ByStatus)!.ToList();
-      communications = communications.WhereIn(communication => communication.a.StatusCode!.Value, statuses);
+      communications = communications.WhereIn(communication => communication.c.StatusCode!.Value, statuses);
     }
 
-    if (query.ById != null) communications = communications.Where(r => r.a.ecer_CommunicationId == Guid.Parse(query.ById));
-    if (query.ByApplicantId != null) communications = communications.Where(r => r.b.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
-    var data = communications.Select(r => r.a).ToList();
+    if (query.ById != null) communications = communications.Where(r => r.c.ecer_CommunicationId == Guid.Parse(query.ById));
+    if (query.ByRegistrantId != null) communications = communications.Where(r => r.a.ecer_Applicantid.Id == Guid.Parse(query.ByRegistrantId));
+    var data = communications.Select(r => r.c).ToList();
     var result = mapper.Map<IEnumerable<Communication>>(data);
     return result!;
   }

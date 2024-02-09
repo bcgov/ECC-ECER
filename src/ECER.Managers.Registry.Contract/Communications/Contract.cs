@@ -3,10 +3,15 @@ using ECER.Utilities.Security;
 
 namespace ECER.Managers.Registry.Contract.Communications;
 
-public record CommunicationsQuery
+public record UserCommunicationsStatusQuery
+{
+  public string ByRegistrantId { get; set; } = null!;
+}
+
+public record UserCommunicationQuery
 {
   public string? ById { get; set; }
-  public UserIdentity? ByIdentity { get; set; }
+  public string? ByRegistrantId { get; set; }
   public IEnumerable<CommunicationStatus>? ByStatus { get; set; }
 }
 public record CommunicationsQueryResults(IEnumerable<Communication> Items);

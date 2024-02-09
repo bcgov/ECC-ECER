@@ -23,7 +23,7 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
      var communicationId = Fixture.communicationId;
 
     // Act
-    var communications = await repository.Query(new CommunicationQuery { ById = communicationId });
+    var communications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
 
     // Assert
     communications.ShouldHaveSingleItem();

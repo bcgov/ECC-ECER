@@ -12,8 +12,8 @@ public class CommunicationsEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapGet("/api/messages", async (HttpContext httpContext, IMessageBus messageBus) =>
     {
       var userContext = httpContext.User.GetUserContext();
-      var query = new CommunicationsQuery();
-      query.ByIdentity = userContext!.Identity!;
+      var query = new UserCommunicationQuery();
+      query.ByRegistrantId = userContext!.UserId;
       query.ByStatus = new CommunicationStatus[] { CommunicationStatus.NotifiedRecipient, CommunicationStatus.Acknowledged };
       var results = await messageBus.InvokeAsync<CommunicationsQueryResults>(query);
 
@@ -30,7 +30,9 @@ public class CommunicationsEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapGet("/api/messages/status", async (HttpContext httpContext, IMessageBus messageBus) =>
     {
       var userContext = httpContext.User.GetUserContext();
-      var result = await messageBus.InvokeAsync<CommunicationsStatusResults>(userContext!.UserId);
+      var query = new UserCommunicationsStatusQuery();
+      query.ByRegistrantId = userContext!.UserId;
+      var result = await messageBus.InvokeAsync<CommunicationsStatusResults>(query);
       return TypedResults.Ok(new CommunicationsStatusResults(result.Status));
     })
      .WithOpenApi("Handles messages status", string.Empty, "message_status_get")
