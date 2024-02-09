@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -19,6 +20,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
 
           var registrant = results.Items.SingleOrDefault();
           if (registrant == null) return TypedResults.NotFound();
+
           return TypedResults.Ok(mapper.Map<UserInfo>(registrant.Profile));
         })
         .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "userinfo_get")

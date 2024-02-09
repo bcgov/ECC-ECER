@@ -137,14 +137,15 @@ public class Program
       app.UseSecurityHeaders();
       app.UseDefaultFiles();
       app.UseStaticFiles();
+      app.MapFallbackToFile("index.html");
       app.UseCors();
       app.UseResponseCaching();
       app.UseAuthentication();
       app.UseAuthorization();
 
+      app.UseSwagger();
       if (app.Environment.IsDevelopment())
       {
-        app.UseSwagger();
         app.UseSwaggerUI();
       }
 
