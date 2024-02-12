@@ -10,13 +10,19 @@
           </v-col>
           <v-col v-if="option.id === 'FiveYears' && selection !== 'FiveYears'" cols="11" offset="1">
             <p class="small">If you are eligible for an ECE Five Year Certificate, you may also be eligible for one or both specializations:</p>
-            <v-checkbox v-model="certificationTypeStore.subSelection" color="primary" label="Infant and Toddler Educator (ITE)" value="Ite"></v-checkbox>
+            <v-checkbox
+              v-model="certificationTypeStore.subSelection"
+              color="primary"
+              label="Infant and Toddler Educator (ITE)"
+              value="Ite"
+              hide-details="auto"
+            ></v-checkbox>
             <v-checkbox
               v-model="certificationTypeStore.subSelection"
               color="primary"
               label="Special Needs Educator (SNE)"
               value="Sne"
-              class="mt-n8"
+              hide-details="auto"
             ></v-checkbox>
           </v-col>
         </v-row>
