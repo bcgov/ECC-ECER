@@ -1,6 +1,6 @@
 <template>
   <v-col cols="12">
-    <h1>Requirements for ECE Five Year Certification</h1>
+    <h1 :class="$vuetify.display.mobile ? 'mobile-header' : ''">{{ generateTitle() }}</h1>
   </v-col>
   <v-col cols="12">
     <p>Before you proceed, please make sure that you meet the following requirements:</p>
@@ -28,6 +28,7 @@
         <li>Can speak to your character and has known you for at least 6 months</li>
         <li>Can speak to your ability to educate and care for young children</li>
         <li>Is not a relative, partner, spouse, or yourself</li>
+        <li>Is not the same person you provide as your 500-hour work experience reference</li>
         <li>(Recommended) is a certified ECE who has directly observed you working with young children</li>
       </ul>
     </v-col>
@@ -60,7 +61,36 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { useApplicationStore } from "@/store/application";
+import type { Components } from "@/types/openapi";
+
 export default defineComponent({
   name: "ECEFiveYearRequirements",
+  setup() {
+    const applicationStore = useApplicationStore();
+    return { applicationStore };
+  },
+  methods: {
+    generateTitle() {
+      if (this.hasCertificationType("Ite") && this.hasCertificationType("Sne")) {
+        return "Requirements for ECE Five Year Certification, SNE and ITE";
+      } else if (this.hasCertificationType("Ite")) {
+        return "Requirements for ECE Five Year Certification and ITE";
+      } else if (this.hasCertificationType("Sne")) {
+        return "Requirements for ECE Five Year Certification and SNE";
+      } else {
+        return "Requirements for ECE Five Year Certification";
+      }
+    },
+    hasCertificationType(type: Components.Schemas.CertificationType) {
+      return this.applicationStore.currentApplication.certificationTypes?.includes(type);
+    },
+  },
 });
 </script>
+
+<style>
+.mobile-header {
+  line-height: 1;
+}
+</style>
