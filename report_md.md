@@ -6,7 +6,7 @@
 | Risk Level | Number of Alerts |
 | --- | --- |
 | High | 0 |
-| Medium | 1 |
+| Medium | 6 |
 | Low | 2 |
 | Informational | 9 |
 
@@ -17,17 +17,22 @@
 
 | Name | Risk Level | Number of Instances |
 | --- | --- | --- |
+| CSP: script-src unsafe-eval | Medium | 1 |
+| CSP: script-src unsafe-inline | Medium | 1 |
+| CSP: style-src unsafe-inline | Medium | 1 |
+| Hidden File Found | Medium | 1 |
 | Proxy Disclosure | Medium | 11 |
+| Relative Path Confusion | Medium | 7 |
 | Permissions Policy Header Not Set | Low | 2 |
 | Timestamp Disclosure - Unix | Low | 1 |
 | Base64 Disclosure | Informational | 2 |
 | Information Disclosure - Suspicious Comments | Informational | 4 |
 | Modern Web Application | Informational | 1 |
 | Re-examine Cache-control Directives | Informational | 1 |
-| Sec-Fetch-Dest Header is Missing | Informational | 2 |
-| Sec-Fetch-Mode Header is Missing | Informational | 2 |
-| Sec-Fetch-Site Header is Missing | Informational | 2 |
-| Sec-Fetch-User Header is Missing | Informational | 2 |
+| Sec-Fetch-Dest Header is Missing | Informational | 3 |
+| Sec-Fetch-Mode Header is Missing | Informational | 3 |
+| Sec-Fetch-Site Header is Missing | Informational | 3 |
+| Sec-Fetch-User Header is Missing | Informational | 3 |
 | Storable and Cacheable Content | Informational | 8 |
 
 
@@ -36,6 +41,162 @@
 ## Alert Detail
 
 
+
+### [ CSP: script-src unsafe-eval ](https://www.zaproxy.org/docs/alerts/10055/)
+
+
+
+##### Medium (High)
+
+### Description
+
+Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.
+
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
+  * Method: `GET`
+  * Parameter: `content-security-policy`
+  * Attack: ``
+  * Evidence: `base-uri 'self';default-src 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval';connect-src 'self' https://dev.loginproxy.gov.bc.ca/ https://idtest.gov.bc.ca/;img-src 'self' data:;style-src 'self' 'unsafe-inline';frame-ancestors 'self';form-action 'self';`
+  * Other Info: `script-src includes unsafe-eval.`
+
+Instances: 1
+
+### Solution
+
+Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.
+
+### Reference
+
+
+* [ https://www.w3.org/TR/CSP/ ](https://www.w3.org/TR/CSP/)
+* [ https://caniuse.com/#search=content+security+policy ](https://caniuse.com/#search=content+security+policy)
+* [ https://content-security-policy.com/ ](https://content-security-policy.com/)
+* [ https://github.com/HtmlUnit/htmlunit-csp ](https://github.com/HtmlUnit/htmlunit-csp)
+* [ https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources ](https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources)
+
+
+#### CWE Id: [ 693 ](https://cwe.mitre.org/data/definitions/693.html)
+
+
+#### WASC Id: 15
+
+#### Source ID: 3
+
+### [ CSP: script-src unsafe-inline ](https://www.zaproxy.org/docs/alerts/10055/)
+
+
+
+##### Medium (High)
+
+### Description
+
+Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.
+
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
+  * Method: `GET`
+  * Parameter: `content-security-policy`
+  * Attack: ``
+  * Evidence: `base-uri 'self';default-src 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval';connect-src 'self' https://dev.loginproxy.gov.bc.ca/ https://idtest.gov.bc.ca/;img-src 'self' data:;style-src 'self' 'unsafe-inline';frame-ancestors 'self';form-action 'self';`
+  * Other Info: `script-src includes unsafe-inline.`
+
+Instances: 1
+
+### Solution
+
+Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.
+
+### Reference
+
+
+* [ https://www.w3.org/TR/CSP/ ](https://www.w3.org/TR/CSP/)
+* [ https://caniuse.com/#search=content+security+policy ](https://caniuse.com/#search=content+security+policy)
+* [ https://content-security-policy.com/ ](https://content-security-policy.com/)
+* [ https://github.com/HtmlUnit/htmlunit-csp ](https://github.com/HtmlUnit/htmlunit-csp)
+* [ https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources ](https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources)
+
+
+#### CWE Id: [ 693 ](https://cwe.mitre.org/data/definitions/693.html)
+
+
+#### WASC Id: 15
+
+#### Source ID: 3
+
+### [ CSP: style-src unsafe-inline ](https://www.zaproxy.org/docs/alerts/10055/)
+
+
+
+##### Medium (High)
+
+### Description
+
+Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.
+
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/
+  * Method: `GET`
+  * Parameter: `content-security-policy`
+  * Attack: ``
+  * Evidence: `base-uri 'self';default-src 'self';script-src 'self' 'unsafe-inline' 'unsafe-eval';connect-src 'self' https://dev.loginproxy.gov.bc.ca/ https://idtest.gov.bc.ca/;img-src 'self' data:;style-src 'self' 'unsafe-inline';frame-ancestors 'self';form-action 'self';`
+  * Other Info: `style-src includes unsafe-inline.`
+
+Instances: 1
+
+### Solution
+
+Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.
+
+### Reference
+
+
+* [ https://www.w3.org/TR/CSP/ ](https://www.w3.org/TR/CSP/)
+* [ https://caniuse.com/#search=content+security+policy ](https://caniuse.com/#search=content+security+policy)
+* [ https://content-security-policy.com/ ](https://content-security-policy.com/)
+* [ https://github.com/HtmlUnit/htmlunit-csp ](https://github.com/HtmlUnit/htmlunit-csp)
+* [ https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources ](https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources)
+
+
+#### CWE Id: [ 693 ](https://cwe.mitre.org/data/definitions/693.html)
+
+
+#### WASC Id: 15
+
+#### Source ID: 3
+
+### [ Hidden File Found ](https://www.zaproxy.org/docs/alerts/40035/)
+
+
+
+##### Medium (Low)
+
+### Description
+
+A sensitive file was identified as accessible or available. This may leak administrative, configuration, or credential information which can be leveraged by a malicious individual to further attack the system or conduct social engineering efforts.
+
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/BitKeeper
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `HTTP/1.1 200 OK`
+  * Other Info: ``
+
+Instances: 1
+
+### Solution
+
+Consider whether or not the component is actually required in production, if it isn't then disable it. If it is then ensure access to it requires appropriate authentication and authorization, or limit exposure to internal systems or specific source IPs, etc.
+
+### Reference
+
+
+* [ https://blog.hboeck.de/archives/892-Introducing-Snallygaster-a-Tool-to-Scan-for-Secrets-on-Web-Servers.html ](https://blog.hboeck.de/archives/892-Introducing-Snallygaster-a-Tool-to-Scan-for-Secrets-on-Web-Servers.html)
+
+
+#### CWE Id: [ 538 ](https://cwe.mitre.org/data/definitions/538.html)
+
+
+#### WASC Id: 13
+
+#### Source ID: 1
 
 ### [ Proxy Disclosure ](https://www.zaproxy.org/docs/alerts/40025/)
 
@@ -80,7 +241,7 @@ The following web/application server has been identified:
 The following web/application server has been identified: 
 - Kestrel
 `
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -90,7 +251,7 @@ The following web/application server has been identified:
 The following web/application server has been identified: 
 - Kestrel
 `
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js
   * Method: `GET`
   * Parameter: ``
   * Attack: `TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.`
@@ -184,6 +345,99 @@ Configure all proxies, application servers, and web servers to prevent disclosur
 
 #### Source ID: 1
 
+### [ Relative Path Confusion ](https://www.zaproxy.org/docs/alerts/10051/)
+
+
+
+##### Medium (Medium)
+
+### Description
+
+The web server is configured to serve responses to ambiguous URLs in a manner that is likely to lead to confusion about the correct "relative path" for the URL. Resources (CSS, images, etc.) are also specified in the page response using relative, rather than absolute URLs. In an attack, if the web browser parses the "cross-content" response in a permissive manner, or can be tricked into permissively parsing the "cross-content" response, using techniques such as framing, then the web browser may be fooled into interpreting HTML as CSS (or other content types), leading to an XSS vulnerability.
+
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css/13776/vlhya`
+  * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
+  * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
+A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.`
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js/13776/vlhya`
+  * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
+  * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
+A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.`
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png/13776/vlhya`
+  * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
+  * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
+A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.`
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico/13776/vlhya`
+  * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
+  * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
+A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.`
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt/13776/vlhya`
+  * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
+  * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
+A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.`
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml/13776/vlhya`
+  * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
+  * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
+A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.`
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: `https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css/13776/vlhya`
+  * Evidence: `<link rel="apple-touch-icon" href="bcid-apple-touch-icon.png">`
+  * Other Info: `No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.
+A Content Type of "text/html" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.`
+
+Instances: 7
+
+### Solution
+
+Web servers and frameworks should be updated to be configured to not serve responses to ambiguous URLs in such a way that the relative path of such URLs could be mis-interpreted by components on either the client side, or server side.
+Within the application, the correct use of the "<base>" HTML tag in the HTTP response will unambiguously specify the base URL for all relative URLs in the document.
+Use the "Content-Type" HTTP response header to make it harder for the attacker to force the web browser to mis-interpret the content type of the response.
+Use the "X-Content-Type-Options: nosniff" HTTP response header to prevent the web browser from "sniffing" the content type of the response.
+Use a modern DOCTYPE such as "<!doctype html>" to prevent the page from being rendered in the web browser using "Quirks Mode", since this results in the content type being ignored by the web browser.
+Specify the "X-Frame-Options" HTTP response header to prevent Quirks Mode from being enabled in the web browser using framing attacks. 
+
+### Reference
+
+
+* [ https://arxiv.org/abs/1811.00917 ](https://arxiv.org/abs/1811.00917)
+* [ https://hsivonen.fi/doctype/ ](https://hsivonen.fi/doctype/)
+* [ https://www.w3schools.com/tags/tag_base.asp ](https://www.w3schools.com/tags/tag_base.asp)
+
+
+#### CWE Id: [ 20 ](https://cwe.mitre.org/data/definitions/20.html)
+
+
+#### WASC Id: 20
+
+#### Source ID: 1
+
 ### [ Permissions Policy Header Not Set ](https://www.zaproxy.org/docs/alerts/10063/)
 
 
@@ -200,7 +454,7 @@ Permissions Policy Header is an added layer of security that helps to restrict f
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -276,12 +530,6 @@ Manually confirm that the timestamp data is not sensitive, and that the data can
 
 Base64 encoded data was disclosed by the application/web server. Note: in the interests of performance not all base64 strings in the response were analyzed individually, the entire response should be looked at by the analyst/security team/developer(s).
 
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
-  * Method: `GET`
-  * Parameter: ``
-  * Attack: ``
-  * Evidence: `assets/Certifications-055efad0`
-  * Other Info: `j����z�b~'�*'��9���w`
 * URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
   * Method: `GET`
   * Parameter: ``
@@ -290,6 +538,12 @@ Base64 encoded data was disclosed by the application/web server. Note: in the in
   * Other Info: `�PNG
 
    IHDR         ���   sRGB ���   $IDAT(Sc<t��$`ggǈ�g��d�@lt+QD [n b��    IEND�B`�`
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js
+  * Method: `GET`
+  * Parameter: ``
+  * Attack: ``
+  * Evidence: `assets/Certifications-9d5088b9`
+  * Other Info: `j����z�b~'�*'��]�O<o`
 
 Instances: 2
 
@@ -320,25 +574,25 @@ Manually confirm that the Base64 data does not leak sensitive information, and t
 
 The response appears to contain suspicious comments which may help an attacker. Note: Matches made within script blocks or files are against the entire content not only comments.
 
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `from`
   * Other Info: `The following pattern was used: \bFROM\b and was detected 2 times, the first in the element starting with: "**/function kr(e,t,n,r){let i;try{i=r?e(...r):e()}catch(a){Da(a,t,n)}return i}function pn(e,t,n,r){if(Ue(e)){const a=kr(e,t,n,r)", see evidence field for the suspicious comment/snippet.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `query`
   * Other Info: `The following pattern was used: \bQUERY\b and was detected 4 times, the first in the element starting with: "`)}function kv(e){const t=e.dark?2:1,n=e.dark?1:2,r=[];for(const[i,a]of Object.entries(e.colors)){const o=gn(a);r.push(`--v-them", see evidence field for the suspicious comment/snippet.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: `select`
   * Other Info: `The following pattern was used: \bSELECT\b and was detected 3 times, the first in the element starting with: "**/const BS="http://www.w3.org/2000/svg",MS="http://www.w3.org/1998/Math/MathML",br=typeof document<"u"?document:null,Cf=br&&br.", see evidence field for the suspicious comment/snippet.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
@@ -376,7 +630,7 @@ The application appears to be a modern web application. If you need to explore i
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
-  * Evidence: `<script type="module" crossorigin src="/assets/index-0975bcb1.js"></script>`
+  * Evidence: `<script type="module" crossorigin src="/assets/index-ebc3f9f3.js"></script>`
   * Other Info: `No links have been found while there are scripts, which is an indication that this is a modern web application.`
 
 Instances: 1
@@ -446,14 +700,20 @@ Specifies how and where the data would be used. For instance, if the value is au
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-Dest`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-Dest`
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
 
-Instances: 2
+Instances: 3
 
 ### Solution
 
@@ -488,14 +748,20 @@ Allows to differentiate between requests for navigating between HTML pages and r
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-Mode`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-Mode`
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
 
-Instances: 2
+Instances: 3
 
 ### Solution
 
@@ -530,14 +796,20 @@ Specifies the relationship between request initiator's origin and target's origi
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-Site`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-Site`
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
 
-Instances: 2
+Instances: 3
 
 ### Solution
 
@@ -572,14 +844,20 @@ Specifies if a navigation request was initiated by a user.
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt
+  * Method: `GET`
+  * Parameter: `Sec-Fetch-User`
+  * Attack: ``
+  * Evidence: ``
+  * Other Info: ``
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml
   * Method: `GET`
   * Parameter: `Sec-Fetch-User`
   * Attack: ``
   * Evidence: ``
   * Other Info: ``
 
-Instances: 2
+Instances: 3
 
 ### Solution
 
@@ -614,13 +892,13 @@ The response contents are storable by caching components such as proxy servers, 
   * Attack: ``
   * Evidence: ``
   * Other Info: `In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
   * Method: `GET`
   * Parameter: ``
   * Attack: ``
   * Evidence: ``
   * Other Info: `In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234.`
-* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css
+* URL: https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js
   * Method: `GET`
   * Parameter: ``
   * Attack: ``

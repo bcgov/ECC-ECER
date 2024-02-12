@@ -127,7 +127,7 @@ td {
 	</h2>
 
 	<h3>
-		Generated on Mon, 5 Feb 2024 01:14:11
+		Generated on Mon, 12 Feb 2024 01:12:10
 	</h3>
 
 	<h3>
@@ -156,7 +156,7 @@ td {
 					<div>Medium</div>
 				</td>
 				<td align="center">
-					<div>1</div>
+					<div>6</div>
 				</td>
 			</tr>
 			<tr>
@@ -198,9 +198,34 @@ td {
 					align="center">Number of Instances</th>
 			</tr>
 			<tr>
+				<td><a href="#10055">CSP: script-src unsafe-eval</a></td>
+				<td align="center" class="risk-2">Medium</td>
+				<td align="center">1</td>
+			</tr>
+			<tr>
+				<td><a href="#10055">CSP: script-src unsafe-inline</a></td>
+				<td align="center" class="risk-2">Medium</td>
+				<td align="center">1</td>
+			</tr>
+			<tr>
+				<td><a href="#10055">CSP: style-src unsafe-inline</a></td>
+				<td align="center" class="risk-2">Medium</td>
+				<td align="center">1</td>
+			</tr>
+			<tr>
+				<td><a href="#40035">Hidden File Found</a></td>
+				<td align="center" class="risk-2">Medium</td>
+				<td align="center">1</td>
+			</tr>
+			<tr>
 				<td><a href="#40025">Proxy Disclosure</a></td>
 				<td align="center" class="risk-2">Medium</td>
 				<td align="center">11</td>
+			</tr>
+			<tr>
+				<td><a href="#10051">Relative Path Confusion</a></td>
+				<td align="center" class="risk-2">Medium</td>
+				<td align="center">7</td>
 			</tr>
 			<tr>
 				<td><a href="#10063">Permissions Policy Header Not Set</a></td>
@@ -235,22 +260,22 @@ td {
 			<tr>
 				<td><a href="#90005">Sec-Fetch-Dest Header is Missing</a></td>
 				<td align="center" class="risk-0">Informational</td>
-				<td align="center">2</td>
+				<td align="center">3</td>
 			</tr>
 			<tr>
 				<td><a href="#90005">Sec-Fetch-Mode Header is Missing</a></td>
 				<td align="center" class="risk-0">Informational</td>
-				<td align="center">2</td>
+				<td align="center">3</td>
 			</tr>
 			<tr>
 				<td><a href="#90005">Sec-Fetch-Site Header is Missing</a></td>
 				<td align="center" class="risk-0">Informational</td>
-				<td align="center">2</td>
+				<td align="center">3</td>
 			</tr>
 			<tr>
 				<td><a href="#90005">Sec-Fetch-User Header is Missing</a></td>
 				<td align="center" class="risk-0">Informational</td>
-				<td align="center">2</td>
+				<td align="center">3</td>
 			</tr>
 			<tr>
 				<td><a href="#10049">Storable and Cacheable Content</a></td>
@@ -263,6 +288,378 @@ td {
 
 	
 		<h3>Alert Detail</h3>
+		
+			<table class="results">
+				<tr height="24">
+					<th width="20%" class="risk-2"><a
+						id="10055"></a>
+						<div>Medium</div></th>
+					<th class="risk-2">CSP: script-src unsafe-eval</th>
+				</tr>
+				<tr>
+					<td width="20%">Description</td>
+					<td width="80%">
+							<div>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</div>
+							
+						</td>
+				</tr>
+				<TR vAlign="top">
+					<TD colspan="2"></TD>
+				</TR>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">content-security-policy</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">base-uri &#39;self&#39;;default-src &#39;self&#39;;script-src &#39;self&#39; &#39;unsafe-inline&#39; &#39;unsafe-eval&#39;;connect-src &#39;self&#39; https://dev.loginproxy.gov.bc.ca/ https://idtest.gov.bc.ca/;img-src &#39;self&#39; data:;style-src &#39;self&#39; &#39;unsafe-inline&#39;;frame-ancestors &#39;self&#39;;form-action &#39;self&#39;;</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">script-src includes unsafe-eval.</td>
+					</tr>
+				
+				<tr>
+					<td width="20%">Instances</td>
+					<td width="80%">1</td>
+				</tr>
+				<tr>
+					<td width="20%">Solution</td>
+					<td width="80%">
+							<div>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</div>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">Reference</td>
+					<td width="80%">
+							<a href="https://www.w3.org/TR/CSP/">https://www.w3.org/TR/CSP/</a>
+							<br />
+						
+							<a href="https://caniuse.com/#search=content+security+policy">https://caniuse.com/#search=content+security+policy</a>
+							<br />
+						
+							<a href="https://content-security-policy.com/">https://content-security-policy.com/</a>
+							<br />
+						
+							<a href="https://github.com/HtmlUnit/htmlunit-csp">https://github.com/HtmlUnit/htmlunit-csp</a>
+							<br />
+						
+							<a href="https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources">https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources</a>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">CWE Id</td>
+					<td width="80%"><a
+						href="https://cwe.mitre.org/data/definitions/693.html">693</a></td>
+				</tr>
+				<tr>
+					<td width="20%">WASC Id</td>
+					<td width="80%">15</td>
+				</tr>
+				<tr>
+					<td width="20%">Plugin Id</td>
+					<td width="80%"><a
+						href="https://www.zaproxy.org/docs/alerts/10055/">10055</a></td>
+				</tr>
+			</table>
+			<div class="spacer"></div>
+		
+			<table class="results">
+				<tr height="24">
+					<th width="20%" class="risk-2"><a
+						id="10055"></a>
+						<div>Medium</div></th>
+					<th class="risk-2">CSP: script-src unsafe-inline</th>
+				</tr>
+				<tr>
+					<td width="20%">Description</td>
+					<td width="80%">
+							<div>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</div>
+							
+						</td>
+				</tr>
+				<TR vAlign="top">
+					<TD colspan="2"></TD>
+				</TR>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">content-security-policy</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">base-uri &#39;self&#39;;default-src &#39;self&#39;;script-src &#39;self&#39; &#39;unsafe-inline&#39; &#39;unsafe-eval&#39;;connect-src &#39;self&#39; https://dev.loginproxy.gov.bc.ca/ https://idtest.gov.bc.ca/;img-src &#39;self&#39; data:;style-src &#39;self&#39; &#39;unsafe-inline&#39;;frame-ancestors &#39;self&#39;;form-action &#39;self&#39;;</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">script-src includes unsafe-inline.</td>
+					</tr>
+				
+				<tr>
+					<td width="20%">Instances</td>
+					<td width="80%">1</td>
+				</tr>
+				<tr>
+					<td width="20%">Solution</td>
+					<td width="80%">
+							<div>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</div>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">Reference</td>
+					<td width="80%">
+							<a href="https://www.w3.org/TR/CSP/">https://www.w3.org/TR/CSP/</a>
+							<br />
+						
+							<a href="https://caniuse.com/#search=content+security+policy">https://caniuse.com/#search=content+security+policy</a>
+							<br />
+						
+							<a href="https://content-security-policy.com/">https://content-security-policy.com/</a>
+							<br />
+						
+							<a href="https://github.com/HtmlUnit/htmlunit-csp">https://github.com/HtmlUnit/htmlunit-csp</a>
+							<br />
+						
+							<a href="https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources">https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources</a>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">CWE Id</td>
+					<td width="80%"><a
+						href="https://cwe.mitre.org/data/definitions/693.html">693</a></td>
+				</tr>
+				<tr>
+					<td width="20%">WASC Id</td>
+					<td width="80%">15</td>
+				</tr>
+				<tr>
+					<td width="20%">Plugin Id</td>
+					<td width="80%"><a
+						href="https://www.zaproxy.org/docs/alerts/10055/">10055</a></td>
+				</tr>
+			</table>
+			<div class="spacer"></div>
+		
+			<table class="results">
+				<tr height="24">
+					<th width="20%" class="risk-2"><a
+						id="10055"></a>
+						<div>Medium</div></th>
+					<th class="risk-2">CSP: style-src unsafe-inline</th>
+				</tr>
+				<tr>
+					<td width="20%">Description</td>
+					<td width="80%">
+							<div>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks. Including (but not limited to) Cross Site Scripting (XSS), and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</div>
+							
+						</td>
+				</tr>
+				<TR vAlign="top">
+					<TD colspan="2"></TD>
+				</TR>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">content-security-policy</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">base-uri &#39;self&#39;;default-src &#39;self&#39;;script-src &#39;self&#39; &#39;unsafe-inline&#39; &#39;unsafe-eval&#39;;connect-src &#39;self&#39; https://dev.loginproxy.gov.bc.ca/ https://idtest.gov.bc.ca/;img-src &#39;self&#39; data:;style-src &#39;self&#39; &#39;unsafe-inline&#39;;frame-ancestors &#39;self&#39;;form-action &#39;self&#39;;</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">style-src includes unsafe-inline.</td>
+					</tr>
+				
+				<tr>
+					<td width="20%">Instances</td>
+					<td width="80%">1</td>
+				</tr>
+				<tr>
+					<td width="20%">Solution</td>
+					<td width="80%">
+							<div>Ensure that your web server, application server, load balancer, etc. is properly configured to set the Content-Security-Policy header.</div>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">Reference</td>
+					<td width="80%">
+							<a href="https://www.w3.org/TR/CSP/">https://www.w3.org/TR/CSP/</a>
+							<br />
+						
+							<a href="https://caniuse.com/#search=content+security+policy">https://caniuse.com/#search=content+security+policy</a>
+							<br />
+						
+							<a href="https://content-security-policy.com/">https://content-security-policy.com/</a>
+							<br />
+						
+							<a href="https://github.com/HtmlUnit/htmlunit-csp">https://github.com/HtmlUnit/htmlunit-csp</a>
+							<br />
+						
+							<a href="https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources">https://developers.google.com/web/fundamentals/security/csp#policy_applies_to_a_wide_variety_of_resources</a>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">CWE Id</td>
+					<td width="80%"><a
+						href="https://cwe.mitre.org/data/definitions/693.html">693</a></td>
+				</tr>
+				<tr>
+					<td width="20%">WASC Id</td>
+					<td width="80%">15</td>
+				</tr>
+				<tr>
+					<td width="20%">Plugin Id</td>
+					<td width="80%"><a
+						href="https://www.zaproxy.org/docs/alerts/10055/">10055</a></td>
+				</tr>
+			</table>
+			<div class="spacer"></div>
+		
+			<table class="results">
+				<tr height="24">
+					<th width="20%" class="risk-2"><a
+						id="40035"></a>
+						<div>Medium</div></th>
+					<th class="risk-2">Hidden File Found</th>
+				</tr>
+				<tr>
+					<td width="20%">Description</td>
+					<td width="80%">
+							<div>A sensitive file was identified as accessible or available. This may leak administrative, configuration, or credential information which can be leveraged by a malicious individual to further attack the system or conduct social engineering efforts.</div>
+							
+						</td>
+				</tr>
+				<TR vAlign="top">
+					<TD colspan="2"></TD>
+				</TR>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/BitKeeper">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/BitKeeper</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">HTTP/1.1 200 OK</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%"></td>
+					</tr>
+				
+				<tr>
+					<td width="20%">Instances</td>
+					<td width="80%">1</td>
+				</tr>
+				<tr>
+					<td width="20%">Solution</td>
+					<td width="80%">
+							<div>Consider whether or not the component is actually required in production, if it isn&#39;t then disable it. If it is then ensure access to it requires appropriate authentication and authorization, or limit exposure to internal systems or specific source IPs, etc.</div>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">Reference</td>
+					<td width="80%">
+							<a href="https://blog.hboeck.de/archives/892-Introducing-Snallygaster-a-Tool-to-Scan-for-Secrets-on-Web-Servers.html">https://blog.hboeck.de/archives/892-Introducing-Snallygaster-a-Tool-to-Scan-for-Secrets-on-Web-Servers.html</a>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">CWE Id</td>
+					<td width="80%"><a
+						href="https://cwe.mitre.org/data/definitions/538.html">538</a></td>
+				</tr>
+				<tr>
+					<td width="20%">WASC Id</td>
+					<td width="80%">13</td>
+				</tr>
+				<tr>
+					<td width="20%">Plugin Id</td>
+					<td width="80%"><a
+						href="https://www.zaproxy.org/docs/alerts/40035/">40035</a></td>
+				</tr>
+			</table>
+			<div class="spacer"></div>
 		
 			<table class="results">
 				<tr height="24">
@@ -399,7 +796,7 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -434,7 +831,7 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -722,6 +1119,311 @@ The following web/application server has been identified:
 		
 			<table class="results">
 				<tr height="24">
+					<th width="20%" class="risk-2"><a
+						id="10051"></a>
+						<div>Medium</div></th>
+					<th class="risk-2">Relative Path Confusion</th>
+				</tr>
+				<tr>
+					<td width="20%">Description</td>
+					<td width="80%">
+							<div>The web server is configured to serve responses to ambiguous URLs in a manner that is likely to lead to confusion about the correct &quot;relative path&quot; for the URL. Resources (CSS, images, etc.) are also specified in the page response using relative, rather than absolute URLs. In an attack, if the web browser parses the &quot;cross-content&quot; response in a permissive manner, or can be tricked into permissively parsing the &quot;cross-content&quot; response, using techniques such as framing, then the web browser may be fooled into interpreting HTML as CSS (or other content types), leading to an XSS vulnerability.</div>
+							
+						</td>
+				</tr>
+				<TR vAlign="top">
+					<TD colspan="2"></TD>
+				</TR>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css/13776/vlhya</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">&lt;link rel=&quot;apple-touch-icon&quot; href=&quot;bcid-apple-touch-icon.png&quot;&gt;</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">No &lt;base&gt; tag was specified in the HTML &lt;head&gt; tag to define the location for relative URLs.
+A Content Type of &quot;text/html&quot; was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.</td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js/13776/vlhya</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">&lt;link rel=&quot;apple-touch-icon&quot; href=&quot;bcid-apple-touch-icon.png&quot;&gt;</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">No &lt;base&gt; tag was specified in the HTML &lt;head&gt; tag to define the location for relative URLs.
+A Content Type of &quot;text/html&quot; was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.</td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png/13776/vlhya</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">&lt;link rel=&quot;apple-touch-icon&quot; href=&quot;bcid-apple-touch-icon.png&quot;&gt;</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">No &lt;base&gt; tag was specified in the HTML &lt;head&gt; tag to define the location for relative URLs.
+A Content Type of &quot;text/html&quot; was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.</td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico/13776/vlhya</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">&lt;link rel=&quot;apple-touch-icon&quot; href=&quot;bcid-apple-touch-icon.png&quot;&gt;</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">No &lt;base&gt; tag was specified in the HTML &lt;head&gt; tag to define the location for relative URLs.
+A Content Type of &quot;text/html&quot; was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.</td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt/13776/vlhya</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">&lt;link rel=&quot;apple-touch-icon&quot; href=&quot;bcid-apple-touch-icon.png&quot;&gt;</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">No &lt;base&gt; tag was specified in the HTML &lt;head&gt; tag to define the location for relative URLs.
+A Content Type of &quot;text/html&quot; was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.</td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml/13776/vlhya</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">&lt;link rel=&quot;apple-touch-icon&quot; href=&quot;bcid-apple-touch-icon.png&quot;&gt;</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">No &lt;base&gt; tag was specified in the HTML &lt;head&gt; tag to define the location for relative URLs.
+A Content Type of &quot;text/html&quot; was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.</td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css/13776/vlhya</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">&lt;link rel=&quot;apple-touch-icon&quot; href=&quot;bcid-apple-touch-icon.png&quot;&gt;</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">No &lt;base&gt; tag was specified in the HTML &lt;head&gt; tag to define the location for relative URLs.
+A Content Type of &quot;text/html&quot; was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  
+No X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed.</td>
+					</tr>
+				
+				<tr>
+					<td width="20%">Instances</td>
+					<td width="80%">7</td>
+				</tr>
+				<tr>
+					<td width="20%">Solution</td>
+					<td width="80%">
+							<div>Web servers and frameworks should be updated to be configured to not serve responses to ambiguous URLs in such a way that the relative path of such URLs could be mis-interpreted by components on either the client side, or server side.</div>
+							<br />
+						
+							<div>Within the application, the correct use of the &quot;&lt;base&gt;&quot; HTML tag in the HTTP response will unambiguously specify the base URL for all relative URLs in the document.</div>
+							<br />
+						
+							<div>Use the &quot;Content-Type&quot; HTTP response header to make it harder for the attacker to force the web browser to mis-interpret the content type of the response.</div>
+							<br />
+						
+							<div>Use the &quot;X-Content-Type-Options: nosniff&quot; HTTP response header to prevent the web browser from &quot;sniffing&quot; the content type of the response.</div>
+							<br />
+						
+							<div>Use a modern DOCTYPE such as &quot;&lt;!doctype html&gt;&quot; to prevent the page from being rendered in the web browser using &quot;Quirks Mode&quot;, since this results in the content type being ignored by the web browser.</div>
+							<br />
+						
+							<div>Specify the &quot;X-Frame-Options&quot; HTTP response header to prevent Quirks Mode from being enabled in the web browser using framing attacks. </div>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">Reference</td>
+					<td width="80%">
+							<a href="https://arxiv.org/abs/1811.00917">https://arxiv.org/abs/1811.00917</a>
+							<br />
+						
+							<a href="https://hsivonen.fi/doctype/">https://hsivonen.fi/doctype/</a>
+							<br />
+						
+							<a href="https://www.w3schools.com/tags/tag_base.asp">https://www.w3schools.com/tags/tag_base.asp</a>
+							
+						</td>
+				</tr>
+				<tr>
+					<td width="20%">CWE Id</td>
+					<td width="80%"><a
+						href="https://cwe.mitre.org/data/definitions/20.html">20</a></td>
+				</tr>
+				<tr>
+					<td width="20%">WASC Id</td>
+					<td width="80%">20</td>
+				</tr>
+				<tr>
+					<td width="20%">Plugin Id</td>
+					<td width="80%"><a
+						href="https://www.zaproxy.org/docs/alerts/10051/">10051</a></td>
+				</tr>
+			</table>
+			<div class="spacer"></div>
+		
+			<table class="results">
+				<tr height="24">
 					<th width="20%" class="risk-1"><a
 						id="10063"></a>
 						<div>Low</div></th>
@@ -772,7 +1474,7 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -952,37 +1654,6 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%">assets/Certifications-055efad0</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%">j����z�b~&#39;�*&#39;��9���w</td>
-					</tr>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
 						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css</a></td>
 					</tr>
 					<tr>
@@ -1011,6 +1682,37 @@ The following web/application server has been identified:
 						<td width="80%">�PNG
 
    IHDR         ���   sRGB ���   $IDAT(Sc&lt;t��$`ggǈ�g��d�@lt+QD [n b��    IEND�B`�</td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">assets/Certifications-9d5088b9</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">j����z�b~&#39;�*&#39;��]�O&lt;o</td>
 					</tr>
 				
 				<tr>
@@ -1069,7 +1771,7 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1100,7 +1802,7 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1131,7 +1833,7 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1162,7 +1864,7 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1263,7 +1965,7 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent2">Evidence</td>
-						<td width="80%">&lt;script type=&quot;module&quot; crossorigin src=&quot;/assets/index-0975bcb1.js&quot;&gt;&lt;/script&gt;</td>
+						<td width="80%">&lt;script type=&quot;module&quot; crossorigin src=&quot;/assets/index-ebc3f9f3.js&quot;&gt;&lt;/script&gt;</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1444,7 +2146,38 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">Sec-Fetch-Dest</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%"></td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1474,7 +2207,7 @@ The following web/application server has been identified:
 				
 				<tr>
 					<td width="20%">Instances</td>
-					<td width="80%">2</td>
+					<td width="80%">3</td>
 				</tr>
 				<tr>
 					<td width="20%">Solution</td>
@@ -1559,7 +2292,38 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">Sec-Fetch-Mode</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%"></td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1589,7 +2353,7 @@ The following web/application server has been identified:
 				
 				<tr>
 					<td width="20%">Instances</td>
-					<td width="80%">2</td>
+					<td width="80%">3</td>
 				</tr>
 				<tr>
 					<td width="20%">Solution</td>
@@ -1674,7 +2438,38 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">Sec-Fetch-Site</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%"></td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1704,7 +2499,7 @@ The following web/application server has been identified:
 				
 				<tr>
 					<td width="20%">Instances</td>
-					<td width="80%">2</td>
+					<td width="80%">3</td>
 				</tr>
 				<tr>
 					<td width="20%">Solution</td>
@@ -1789,7 +2584,38 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">Sec-Fetch-User</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%"></td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1819,7 +2645,7 @@ The following web/application server has been identified:
 				
 				<tr>
 					<td width="20%">Instances</td>
-					<td width="80%">2</td>
+					<td width="80%">3</td>
 				</tr>
 				<tr>
 					<td width="20%">Solution</td>
@@ -1904,7 +2730,7 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-0975bcb1.js</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1935,7 +2761,7 @@ The following web/application server has been identified:
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-22025aa6.css</a></td>
+						<td width="80%"><a href="https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js">https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ebc3f9f3.js</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
