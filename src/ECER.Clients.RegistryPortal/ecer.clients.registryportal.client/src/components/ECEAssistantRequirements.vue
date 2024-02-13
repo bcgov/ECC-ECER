@@ -1,6 +1,6 @@
 <template>
   <v-col cols="12">
-    <h1 :class="$vuetify.display.mobile ? 'mobile-header' : ''">Requirements for ECE Assistant Certification</h1>
+    <h1 class="title-header">Requirements for ECE Assistant Certification</h1>
   </v-col>
   <v-col cols="12">
     <p>Before you proceed, please make sure that you meet the following requirements:</p>
@@ -44,7 +44,7 @@ export default defineComponent({
 </script>
 
 <style>
-.mobile-header {
-  line-height: 1;
+.title-header {
+  line-height: 1.25;
 }
 </style>
