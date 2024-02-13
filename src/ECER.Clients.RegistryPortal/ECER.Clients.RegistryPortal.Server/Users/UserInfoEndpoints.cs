@@ -15,21 +15,25 @@ public class UserInfoEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapGet("api/userinfo", async Task<Results<Ok<UserInfo>, NotFound>> (HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
         {
           var user = ctx.User.GetUserContext()!;
-
           var results = await bus.InvokeAsync<RegistrantQueryResults>(new SearchRegistrantQuery { ByUserIdentity = user.Identity }, ct);
 
           var registrant = results.Items.SingleOrDefault();
           if (registrant == null) return TypedResults.NotFound();
 
-          return TypedResults.Ok(mapper.Map<UserInfo>(registrant.Profile));
+          var query = new UserCommunicationsStatusQuery();
+          query.ByRegistrantId = registrant.UserId;
+          var communicationsStatus = await bus.InvokeAsync<CommunicationsStatusResults>(query);
+          
+          var userInfo= mapper.Map<UserInfo>(registrant.Profile);
+          userInfo!.UnreadMessagesCount = communicationsStatus.Status.Count;
+          return TypedResults.Ok(userInfo);
         })
         .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "userinfo_get")
         .RequireAuthorization("registry_new_user");
-
+    
     endpointRouteBuilder.MapPost("api/userinfo", async Task<Ok> (UserInfo userInfo, HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
         {
           var user = ctx.User.GetUserContext()!;
-
           await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.Contract.Registrants.UserProfile>(userInfo)!, user.Identity), ct);
 
           return TypedResults.Ok();
@@ -39,4 +43,7 @@ public class UserInfoEndpoints : IRegisterEndpoints
   }
 }
 
-public record UserInfo(string FirstName, string LastName, DateOnly DateOfBirth, string Email, string Phone);
+public record UserInfo(string FirstName, string LastName, DateOnly DateOfBirth, string Email, string Phone)
+{
+  public int UnreadMessagesCount { get; set; }
+}

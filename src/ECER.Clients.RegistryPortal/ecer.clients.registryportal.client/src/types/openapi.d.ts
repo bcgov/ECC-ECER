@@ -15,37 +15,58 @@ declare namespace Components {
     }
     export interface Application {
       id?: string | null;
-      submittedOn?: string; // date-time
-      registrantId?: string | null;
+      createdOn?: string; // date-time
+      submittedOn?: string | null; // date-time
+      certificationTypes?: CertificationType[] | null;
+      status?: ApplicationStatus;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
         [name: string]: OidcAuthenticationSettings;
       } | null;
     }
+    export type ApplicationStatus =
+      | "Draft"
+      | "Submitted"
+      | "Complete"
+      | "ReviewforCompletness"
+      | "ReadyforAssessment"
+      | "BeingAssessed"
+      | "Reconsideration"
+      | "Appeal"
+      | "Cancelled";
     /**
-     * Application query response
+     * Submit application request
      */
-    export interface ApplicationQueryResponse {
+    export interface ApplicationSubmissionRequest {
       /**
-       * The items in the response
+       * The application id
        */
-      items?: Application[] | null;
+      id?: string | null;
     }
     export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
-    /**
-     * New application request
-     */
+    export interface Communication {
+      id?: string | null;
+      subject?: string | null;
+      text?: string | null;
+    }
+    export interface CommunicationsStatus {
+      count?: number; // int32
+      hasUnread?: boolean;
+    }
+    export interface CommunicationsStatusResults {
+      status?: CommunicationsStatus;
+    }
     export interface DraftApplication {
       id?: string | null;
       certificationTypes?: CertificationType[] | null;
     }
     /**
-     * New application response
+     * Save draft application response
      */
     export interface DraftApplicationResponse {
       /**
-       * The new application id
+       * The application id
        */
       applicationId?: string | null;
     }
@@ -54,12 +75,19 @@ declare namespace Components {
       clientId?: string | null;
       scope?: string | null;
     }
+    /**
+     * Save draft application request
+     */
+    export interface SaveDraftApplicationRequest {
+      draftApplication?: DraftApplication;
+    }
     export interface UserInfo {
       firstName?: string | null;
       lastName?: string | null;
       dateOfBirth?: string; // date
       email?: string | null;
       phone?: string | null;
+      unreadMessagesCount?: number; // int32
     }
     /**
      * User profile information
@@ -81,18 +109,13 @@ declare namespace Components {
 declare namespace Paths {
   namespace ApplicationGet {
     namespace Responses {
-      export type $200 = /* Application query response */ Components.Schemas.ApplicationQueryResponse;
+      export type $200 = Components.Schemas.Application[];
     }
   }
   namespace ApplicationPost {
-    namespace Parameters {
-      export type Id = string;
-    }
-    export interface PathParameters {
-      id: Parameters.Id;
-    }
+    export type RequestBody = /* Submit application request */ Components.Schemas.ApplicationSubmissionRequest;
     namespace Responses {
-      export type $200 = /* New application response */ Components.Schemas.DraftApplicationResponse;
+      export interface $200 {}
     }
   }
   namespace ConfigurationGet {
@@ -107,9 +130,20 @@ declare namespace Paths {
     export interface PathParameters {
       id?: Parameters.Id;
     }
-    export type RequestBody = /* New application request */ Components.Schemas.DraftApplication;
+    export type RequestBody = /* Save draft application request */ Components.Schemas.SaveDraftApplicationRequest;
     namespace Responses {
-      export type $200 = /* New application response */ Components.Schemas.DraftApplicationResponse;
+      export type $200 = /* Save draft application response */ Components.Schemas.DraftApplicationResponse;
+      export type $400 = string;
+    }
+  }
+  namespace MessageGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.Communication[];
+    }
+  }
+  namespace MessageStatusGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.CommunicationsStatusResults;
     }
   }
   namespace ProfileGet {
@@ -180,21 +214,29 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.UserinfoPost.Responses.$200>;
   /**
-   * draftapplication_put - Handles a new application submission to ECER
+   * message_get - Handles messages queries
+   */
+  "message_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.MessageGet.Responses.$200>;
+  /**
+   * message_status_get - Handles messages status
+   */
+  "message_status_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.MessageStatusGet.Responses.$200>;
+  /**
+   * draftapplication_put - Save a draft application for the current user
    */
   "draftapplication_put"(
     parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,
     data?: Paths.DraftapplicationPut.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.DraftapplicationPut.Responses.$200>;
-  /**
-   * application_post - Handles a new application submission to ECER
-   */
-  "application_post"(
-    parameters?: Parameters<Paths.ApplicationPost.PathParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ApplicationPost.Responses.$200>;
   /**
    * application_get - Handles application queries
    */
@@ -203,6 +245,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
+  /**
+   * application_post - Submit an application
+   */
+  "application_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.ApplicationPost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ApplicationPost.Responses.$200>;
 }
 
 export interface PathsDictionary {
@@ -244,9 +294,25 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UserinfoPost.Responses.$200>;
   };
+  ["/api/messages"]: {
+    /**
+     * message_get - Handles messages queries
+     */
+    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.MessageGet.Responses.$200>;
+  };
+  ["/api/messages/status"]: {
+    /**
+     * message_status_get - Handles messages status
+     */
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.MessageStatusGet.Responses.$200>;
+  };
   ["/api/draftapplications/{id}"]: {
     /**
-     * draftapplication_put - Handles a new application submission to ECER
+     * draftapplication_put - Save a draft application for the current user
      */
     "put"(
       parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,
@@ -254,17 +320,15 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DraftapplicationPut.Responses.$200>;
   };
-  ["/api/applications/{id}"]: {
+  ["/api/applications"]: {
     /**
-     * application_post - Handles a new application submission to ECER
+     * application_post - Submit an application
      */
     "post"(
-      parameters?: Parameters<Paths.ApplicationPost.PathParameters> | null,
-      data?: any,
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.ApplicationPost.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationPost.Responses.$200>;
-  };
-  ["/api/applications"]: {
     /**
      * application_get - Handles application queries
      */

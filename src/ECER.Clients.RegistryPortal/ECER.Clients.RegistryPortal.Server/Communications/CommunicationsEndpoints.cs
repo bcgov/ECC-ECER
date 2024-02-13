@@ -31,7 +31,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
     {
       var userContext = httpContext.User.GetUserContext();
       var query = new UserCommunicationsStatusQuery();
-      query.ByRegistrantId = userContext!.UserId;
+      query.ByRegistrantId = userContext!.UserId; 
       var result = await messageBus.InvokeAsync<CommunicationsStatusResults>(query);
       return TypedResults.Ok(new CommunicationsStatusResults(result.Status));
     })

@@ -90,7 +90,12 @@ export default defineComponent({
 
     const navigationOptions = [
       { name: "My Certifications", path: "/my-certifications", icon: "mdi-folder" },
-      { name: `Messages (${messageStore.messageCount})`, path: "/messages", icon: "mdi-bell", badge: messageStore.messageCount },
+      {
+        name: `Messages${messageStore.messageCount > 0 ? ` (${messageStore.messageCount})` : ""}`,
+        path: "/messages",
+        icon: "mdi-bell",
+        badge: messageStore.messageCount,
+      },
       { name: "Profile", path: "/profile", icon: "mdi-account-edit" },
     ];
 
