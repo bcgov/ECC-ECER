@@ -10,11 +10,7 @@ const getMessagesStatus = async (): Promise<Components.Schemas.CommunicationsSta
     return response?.data.status ?? null;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        console.log("User not found:", error);
-      } else {
-        console.log("Error fetching user communications status:", error);
-      }
+      console.log("Error fetching user communications status:", error);
     }
     return null;
   }

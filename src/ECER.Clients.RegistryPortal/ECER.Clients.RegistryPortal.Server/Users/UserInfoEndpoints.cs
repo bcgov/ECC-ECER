@@ -23,14 +23,14 @@ public class UserInfoEndpoints : IRegisterEndpoints
           var query = new UserCommunicationsStatusQuery();
           query.ByRegistrantId = registrant.UserId;
           var communicationsStatus = await bus.InvokeAsync<CommunicationsStatusResults>(query);
-          
-          var userInfo= mapper.Map<UserInfo>(registrant.Profile);
+
+          var userInfo = mapper.Map<UserInfo>(registrant.Profile);
           userInfo!.UnreadMessagesCount = communicationsStatus.Status.Count;
           return TypedResults.Ok(userInfo);
         })
         .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "userinfo_get")
         .RequireAuthorization("registry_new_user");
-    
+
     endpointRouteBuilder.MapPost("api/userinfo", async Task<Ok> (UserInfo userInfo, HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
         {
           var user = ctx.User.GetUserContext()!;
