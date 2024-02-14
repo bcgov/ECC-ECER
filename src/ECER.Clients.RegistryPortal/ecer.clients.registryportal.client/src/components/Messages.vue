@@ -1,7 +1,10 @@
 <template>
   <v-row class="ma-4">
     <v-col cols="12">
-      <h1>Messages ({{ messageStore.messageCount }})</h1>
+      <h1>
+        Messages
+        <span v-if="messageStore.messageCount > 0">({{ messageStore.messageCount }})</span>
+      </h1>
     </v-col>
   </v-row>
   <MessageList />
