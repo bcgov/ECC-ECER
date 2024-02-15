@@ -9,6 +9,6 @@ public class Configurer : IConfigureComponents
 {
     public void Configure([NotNull] ConfigurationContext configurationContext)
     {
-        configurationContext.Services.AddTransient<IApplicationValidationEngine, ApplicationValidationEngine>();
+        configurationContext.Services.AddTransient<IApplicationSubmissionValidationEngine, ApplicationSubmissionValidationEngine>();
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-form :id="form.id" :ref="form.id" validate-on="input" @update:model-value="onFormValidationChanged">
+  <v-form :id="form.id" :ref="form.id" validate-on="input" @update:model-value="onFormValidationChanged" @submit.prevent>
     <template v-for="input in form.inputs" :key="input.id">
       <div class="my-8">
         <Component

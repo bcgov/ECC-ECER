@@ -1,6 +1,6 @@
 <template>
   <v-col cols="12">
-    <h2>Requirements for ECE Five Year Certification</h2>
+    <h1 class="title-header">{{ generateTitle() }}</h1>
   </v-col>
   <v-col cols="12">
     <p>Before you proceed, please make sure that you meet the following requirements:</p>
@@ -14,11 +14,11 @@
         >
           recognized
         </a>
-        by the ECE Registry.
+        by the ECE Registry
       </li>
     </v-col>
     <v-col cols="11" offset="1">
-      <li>You can request an official transcript from your educational institution and ask them to send it directly to the ECE Registry.</li>
+      <li>You can request an official transcript from your educational institution and ask them to send it directly to the ECE Registry</li>
     </v-col>
     <v-col cols="11" offset="1">
       <li>You can provide a character reference who:</li>
@@ -28,6 +28,7 @@
         <li>Can speak to your character and has known you for at least 6 months</li>
         <li>Can speak to your ability to educate and care for young children</li>
         <li>Is not a relative, partner, spouse, or yourself</li>
+        <li>Is not the same person you provide as your 500-hour work experience reference</li>
         <li>(Recommended) is a certified ECE who has directly observed you working with young children</li>
       </ul>
     </v-col>
@@ -60,7 +61,36 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { useApplicationStore } from "@/store/application";
+import type { Components } from "@/types/openapi";
+
 export default defineComponent({
   name: "ECEFiveYearRequirements",
+  setup() {
+    const applicationStore = useApplicationStore();
+    return { applicationStore };
+  },
+  methods: {
+    generateTitle() {
+      if (this.hasCertificationType("Ite") && this.hasCertificationType("Sne")) {
+        return "Requirements for ECE Five Year Certification, SNE and ITE";
+      } else if (this.hasCertificationType("Ite")) {
+        return "Requirements for ECE Five Year Certification and ITE";
+      } else if (this.hasCertificationType("Sne")) {
+        return "Requirements for ECE Five Year Certification and SNE";
+      } else {
+        return "Requirements for ECE Five Year Certification";
+      }
+    },
+    hasCertificationType(type: Components.Schemas.CertificationType) {
+      return this.applicationStore.currentApplication.certificationTypes?.includes(type);
+    },
+  },
 });
 </script>
+
+<style>
+.title-header {
+  line-height: 1.25;
+}
+</style>

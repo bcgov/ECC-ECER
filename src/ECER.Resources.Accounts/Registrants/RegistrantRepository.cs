@@ -9,7 +9,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper) 
   {
     await Task.CompletedTask;
 
-    var contact = mapper.Map<Contact>(registrant.Profile);
+    var contact = mapper.Map<Contact>(registrant.Profile)!;
     contact.Id = Guid.NewGuid();
 
     context.AddObject(contact);
@@ -46,7 +46,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper) 
     {
       context.LoadProperty(contact, nameof(Contact.ecer_contact_ecer_authentication_455));
     }
-    return mapper.Map<IEnumerable<Registrant>>(contacts);
+    return mapper.Map<IEnumerable<Registrant>>(contacts)!;
   }
 
   public async Task Save(Registrant registrant, CancellationToken ct)
@@ -58,7 +58,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper) 
 
     context.Detach(contact);
 
-    contact = mapper.Map<Contact>(registrant.Profile);
+    contact = mapper.Map<Contact>(registrant.Profile)!;
     contact.ContactId = contactId;
 
     context.Attach(contact);

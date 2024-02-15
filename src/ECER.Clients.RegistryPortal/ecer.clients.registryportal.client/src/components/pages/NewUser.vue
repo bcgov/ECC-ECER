@@ -26,8 +26,10 @@
             ></v-text-field>
             <v-checkbox v-model="hasAgreed" label="" color="primary" :rules="hasAgreedRules">
               <template #label>
-                I have read and accept the&nbsp;
-                <router-link to="/new-user/terms-of-use">Terms of Use</router-link>
+                <div>
+                  I have read and accept the
+                  <router-link to="/new-user/terms-of-use">Terms of Use</router-link>
+                </div>
               </template>
             </v-checkbox>
             <div></div>
@@ -77,7 +79,7 @@ export default defineComponent({
     async submit() {
       const { valid } = await (this.$refs.form as any).validate();
       if (valid) {
-        const userCreated: boolean = await postUserInfo(this.userStore.oidcUserInfo);
+        const userCreated: boolean = await postUserInfo({ ...this.userStore.oidcUserInfo, phone: this.phoneNumber });
 
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {

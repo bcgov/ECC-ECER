@@ -12,23 +12,29 @@
         </p>
       </v-col>
       <v-col cols="11" offset="1">
-        <v-checkbox v-model="certificationTypeStore.subSelection" color="primary" label="Infant and Toddler Educator (ITE)" value="Ite">
-          <template #details>
-            <div class="ml-10">
-              An Infant and Toddler specialization requires successful completion of an infant and toddler educator training program recognized by the ECE
-              Registry.
-            </div>
-          </template>
-        </v-checkbox>
-
-        <v-checkbox v-model="certificationTypeStore.subSelection" color="primary" label="Special Needs Educator (SNE)" value="Sne">
-          <template #details>
-            <div class="ml-10">
-              A Special Needs specialization requires successful completion of a special needs early childhood educator training program recognized by the ECE
-              Registry.
-            </div>
-          </template>
-        </v-checkbox>
+        <v-checkbox
+          v-model="certificationTypeStore.subSelection"
+          color="primary"
+          label="Infant and Toddler Educator (ITE)"
+          value="Ite"
+          hide-details="auto"
+          aria-describedby="ITEDescription"
+        ></v-checkbox>
+        <div id="ITEDescription" class="ml-10 text-caption">
+          An Infant and Toddler specialization requires successful completion of an infant and toddler educator training program recognized by the ECE Registry.
+        </div>
+        <v-checkbox
+          v-model="certificationTypeStore.subSelection"
+          color="primary"
+          label="Special Needs Educator (SNE)"
+          value="Sne"
+          hide-details="auto"
+          aria-describedby="SNEDescription"
+        />
+        <div id="SNEDescription" class="ml-10 text-caption">
+          A Special Needs specialization requires successful completion of a special needs early childhood educator training program recognized by the ECE
+          Registry.
+        </div>
       </v-col>
     </v-row>
   </v-container>

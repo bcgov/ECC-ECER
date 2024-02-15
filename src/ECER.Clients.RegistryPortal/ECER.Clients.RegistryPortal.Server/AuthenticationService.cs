@@ -31,7 +31,7 @@ public class AuthenticationService(IMessageBus messageBus, IDistributedCache cac
   {
     // try to find the registrant
     var registrant = await cache.GetAsync($"userinfo:{userIdentity.UserId}@{userIdentity.IdentityProvider}",
-      async ct => (await messageBus.InvokeAsync<RegistrantQueryResults>(new RegistrantQuery { ByUserIdentity = userIdentity }, ct)).Items.SingleOrDefault(),
+      async ct => (await messageBus.InvokeAsync<RegistrantQueryResults>(new SearchRegistrantQuery { ByUserIdentity = userIdentity }, ct)).Items.SingleOrDefault(),
       new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) },
       ct);
 

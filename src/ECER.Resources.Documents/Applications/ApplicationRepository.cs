@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 
-namespace ECER.Resources.Applications;
+namespace ECER.Resources.Documents.Applications;
 
 internal sealed class ApplicationRepository : IApplicationRepository
 {
@@ -16,30 +16,31 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
   public async Task<IEnumerable<Application>> Query(ApplicationQuery query)
   {
-    return query switch
+    await Task.CompletedTask;
+    var applications = from a in context.ecer_ApplicationSet
+                       join c in context.ContactSet on a.ecer_Applicantid.Id equals c.ContactId
+                       select new { a, c };
+
+    if (query.ByStatus != null)
     {
-      CertificationApplicationQuery qry => await Query(qry),
-      _ => throw new NotImplementedException()
-    };
+      var statuses = mapper.Map<IEnumerable<ecer_Application_StatusCode>>(query.ByStatus)!.ToList();
+      applications = applications.WhereIn(a => a.a.StatusCode!.Value, statuses);
+    }
+
+    if (query.ById != null) applications = applications.Where(r => r.a.ecer_ApplicationId == Guid.Parse(query.ById));
+    if (query.ByApplicantId != null) applications = applications.Where(r => r.a.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
+
+    return mapper.Map<IEnumerable<Application>>(applications.Select(r => r.a).ToList())!;
   }
 
   public async Task<string> SaveDraft(Application application)
-  {
-    return application switch
-    {
-      CertificationApplication app => await Save(app),
-      _ => throw new NotImplementedException()
-    };
-  }
-
-  private async Task<string> Save(CertificationApplication application)
   {
     await Task.CompletedTask;
 
     var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == Guid.Parse(application.ApplicantId));
     if (applicant == null) throw new InvalidOperationException($"Applicant '{application.ApplicantId}' not found");
 
-    var ecerApplication = mapper.Map<ecer_Application>(application);
+    var ecerApplication = mapper.Map<ecer_Application>(application)!;
     if (!ecerApplication.ecer_ApplicationId.HasValue)
     {
       ecerApplication.ecer_ApplicationId = Guid.NewGuid();
@@ -62,23 +63,4 @@ internal sealed class ApplicationRepository : IApplicationRepository
   }
 
   public Task<string> Submit(string applicationId) => throw new NotImplementedException();
-
-  private async Task<IEnumerable<CertificationApplication>> Query(CertificationApplicationQuery query)
-  {
-    await Task.CompletedTask;
-    var applications = from a in context.ecer_ApplicationSet
-                       join c in context.ContactSet on a.ecer_Applicantid.Id equals c.ContactId
-                       select new { a, c };
-
-    if (query.ByStatus != null)
-    {
-      var statuses = mapper.Map<IEnumerable<ecer_Application_StatusCode>>(query.ByStatus).ToList();
-      applications = applications.WhereIn(a => a.a.StatusCode!.Value, statuses);
-    }
-
-    if (query.ById != null) applications = applications.Where(r => r.a.ecer_ApplicationId == Guid.Parse(query.ById));
-    if (query.ByApplicantId != null) applications = applications.Where(r => r.a.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
-
-    return mapper.Map<IEnumerable<CertificationApplication>>(applications.Select(r => r.a).ToList());
-  }
 }

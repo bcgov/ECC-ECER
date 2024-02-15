@@ -21,10 +21,16 @@
           v-for="item in navigationOptions"
           :key="item.path"
           :active="$router.currentRoute.value.path.includes(item.path)"
-          :prepend-icon="item.icon"
           :title="item.name"
           @click="$router.push(item.path)"
-        />
+        >
+          <template #prepend>
+            <v-badge v-if="item.badge" color="error" :content="item.badge">
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-badge>
+            <v-icon v-else>{{ item.icon }}</v-icon>
+          </template>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -72,6 +78,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { useMessageStore } from "@/store/message";
 import { useUserStore } from "@/store/user";
 import { formatPhoneNumber } from "@/utils/format";
 
@@ -79,15 +86,22 @@ export default defineComponent({
   name: "Dashboard",
   setup() {
     const userStore = useUserStore();
+    const messageStore = useMessageStore();
 
-    return { userStore };
+    const navigationOptions = [
+      { name: "My Certifications", path: "/my-certifications", icon: "mdi-folder" },
+      {
+        name: `Messages${messageStore.messageCount > 0 ? ` (${messageStore.messageCount})` : ""}`,
+        path: "/messages",
+        icon: "mdi-bell",
+        badge: messageStore.messageCount,
+      },
+      { name: "Profile", path: "/profile", icon: "mdi-account-edit" },
+    ];
+
+    return { userStore, navigationOptions };
   },
   data: () => ({
-    navigationOptions: [
-      { name: "My Certifications", path: "/my-certifications", icon: "mdi-folder" },
-      { name: "Messages", path: "/messages", icon: "mdi-bell" },
-      { name: "Profile", path: "/profile", icon: "mdi-account-edit" },
-    ],
     drawer: null as boolean | null | undefined,
   }),
   methods: {

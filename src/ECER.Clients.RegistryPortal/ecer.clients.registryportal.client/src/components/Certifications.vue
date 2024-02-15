@@ -5,14 +5,14 @@
         <thead>
           <tr>
             <th>Application ID</th>
-            <th>Applicant ID</th>
+            <th>Application Status</th>
             <th>Date submitted</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="application in applications" :key="application.submittedOn">
+          <tr v-for="application in applications" :key="application.submittedOn ? application.submittedOn : 'defaultKey'">
             <td>{{ application.id }}</td>
-            <td>{{ application.registrantId }}</td>
+            <td>{{ application.status }}</td>
             <td>{{ application.submittedOn }}</td>
           </tr>
         </tbody>

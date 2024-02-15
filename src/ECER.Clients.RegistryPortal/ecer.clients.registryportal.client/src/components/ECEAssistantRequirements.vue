@@ -1,6 +1,6 @@
 <template>
   <v-col cols="12">
-    <h2>Requirements for ECE Assistant Certification</h2>
+    <h1 class="title-header">Requirements for ECE Assistant Certification</h1>
   </v-col>
   <v-col cols="12">
     <p>Before you proceed, please make sure that you meet the following requirements:</p>
@@ -15,11 +15,11 @@
         >
           recognized
         </a>
-        by the ECE Registry.
+        by the ECE Registry
       </li>
     </v-col>
     <v-col cols="11" offset="1">
-      <li>You can request an official transcript from your educational institution and ask them to send it directly to the ECE Registry.</li>
+      <li>You can request an official transcript from your educational institution and ask them to send it directly to the ECE Registry</li>
     </v-col>
     <v-col cols="11" offset="1">
       <li>You can provide a character reference who:</li>
@@ -42,3 +42,9 @@ export default defineComponent({
   name: "ECEAssistantRequirements",
 });
 </script>
+
+<style>
+.title-header {
+  line-height: 1.25;
+}
+</style>
