@@ -19,7 +19,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(application).ToUrl("/api/draftapplications");
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl("/api/draftapplications");
       _.StatusCodeShouldBeOk();
     });
   }
@@ -31,15 +31,17 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var newAppResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(application).ToUrl("/api/draftapplications");
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl("/api/draftapplications");
       _.StatusCodeShouldBeOk();
     });
 
     var applicationId = (await newAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+
+    application.Id = applicationId;
     var existingAppResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(application).ToUrl($"/api/draftapplications/{applicationId}");
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{applicationId}");
       _.StatusCodeShouldBeOk();
     });
     var existingApplicationId = (await existingAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;

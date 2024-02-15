@@ -16,13 +16,13 @@ public record UpdateRegistrantProfileCommand(Registrant Registrant);
 /// <summary>
 /// Invokes a registrant query use case
 /// </summary>
-public record RegistrantQuery
+public record SearchRegistrantQuery
 {
   public UserIdentity? ByUserIdentity { get; set; }
 }
 
 /// <summary>
-/// contains <see cref="RegistrantQuery"/> results
+/// Container for <see cref="SearchRegistrantQuery"/> results
 /// </summary>
 public record RegistrantQueryResults(IEnumerable<Registrant> Items);
 

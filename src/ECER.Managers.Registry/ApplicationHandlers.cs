@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
-using ECER.Resources.Applications;
+using ECER.Resources.Documents.Applications;
 
 namespace ECER.Managers.Registry;
 
@@ -16,13 +17,13 @@ public static class ApplicationHandlers
   /// <param name="applicationRepository">DI service</param>
   /// <param name="mapper">DI service</param>
   /// <returns></returns>
-  public static async Task<string> Handle(SaveDraftCertificationApplicationCommand cmd, IApplicationRepository applicationRepository, IMapper mapper)
+  public static async Task<string> Handle(SaveDraftApplicationCommand cmd, IApplicationRepository applicationRepository, IMapper mapper)
   {
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(cmd);
 
-    var applicationId = await applicationRepository.SaveDraft(mapper.Map<Resources.Applications.CertificationApplication>(cmd.Application));
+    var applicationId = await applicationRepository.SaveDraft(mapper.Map<Resources.Documents.Applications.Application>(cmd.Application)!);
     return applicationId;
   }
 
@@ -33,16 +34,17 @@ public static class ApplicationHandlers
   /// <param name="applicationRepository">DI service</param>
   /// <param name="mapper">DI service</param>
   /// <returns></returns>
-  public static async Task<ApplicationsQueryResults> Handle(CertificationApplicationsQuery query, IApplicationRepository applicationRepository, IMapper mapper)
+  public static async Task<ApplicationsQueryResults> Handle(ApplicationsQuery query, IApplicationRepository applicationRepository, IMapper mapper)
   {
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(query);
 
-    var applications = await applicationRepository.Query(new CertificationApplicationQuery
+    var applications = await applicationRepository.Query(new ApplicationQuery
     {
-      ById = query.ById
+      ById = query.ById,
+      ByStatus = query.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
     });
-    return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.CertificationApplication>>(applications));
+    return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
   }
 }
