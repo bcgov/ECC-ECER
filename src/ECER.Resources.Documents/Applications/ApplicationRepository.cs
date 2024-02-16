@@ -21,7 +21,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
                        join c in context.ContactSet on a.ecer_Applicantid.Id equals c.ContactId
                        select new { a, c };
 
-    if (query.ByStatus != null)
+    if (query.ByStatus != null && query.ByStatus.Any())
     {
       var statuses = mapper.Map<IEnumerable<ecer_Application_StatusCode>>(query.ByStatus)!.ToList();
       applications = applications.WhereIn(a => a.a.StatusCode!.Value, statuses);

@@ -43,6 +43,7 @@ public static class ApplicationHandlers
     var applications = await applicationRepository.Query(new ApplicationQuery
     {
       ById = query.ById,
+      ByApplicantId = query.ByApplicantId,
       ByStatus = query.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
     });
     return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
