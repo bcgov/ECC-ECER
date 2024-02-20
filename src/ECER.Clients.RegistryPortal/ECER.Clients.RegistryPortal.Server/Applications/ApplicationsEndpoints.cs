@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
-using AutoMapper;
+﻿using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.ComponentModel;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
@@ -35,10 +35,15 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .WithOpenApi("Submit an application", string.Empty, "application_post")
         .RequireAuthorization();
 
-    endpointRouteBuilder.MapGet("/api/applications", async (ApplicationStatus[]? byStatus, IMessageBus messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapGet("/api/applications/{id?}", async (string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMessageBus messageBus, IMapper mapper) =>
         {
+          var userId = ctx.User.GetUserContext()?.UserId;
+
+          bool isNotGuid = !Guid.TryParse(id, out _); if (isNotGuid) { id = null; }
           var query = new ApplicationsQuery
           {
+            ById = id,
+            ByApplicantId = userId,
             ByStatus = byStatus?.Convert<ApplicationStatus, Managers.Registry.Contract.Applications.ApplicationStatus>()
           };
           var results = await messageBus.InvokeAsync<ApplicationsQueryResults>(query);

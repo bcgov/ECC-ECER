@@ -1,6 +1,4 @@
-﻿using ECER.Utilities.Security;
-
-namespace ECER.Managers.Registry.Contract.Applications;
+﻿namespace ECER.Managers.Registry.Contract.Applications;
 
 /// <summary>
 /// Invokes draft application saving use case
@@ -19,7 +17,7 @@ public record SubmitApplicationCommand(string applicationId);
 public record ApplicationsQuery
 {
   public string? ById { get; set; }
-  public UserIdentity? ByIdentity { get; set; }
+  public string? ByApplicantId { get; set; }
   public IEnumerable<ApplicationStatus>? ByStatus { get; set; }
 }
 
