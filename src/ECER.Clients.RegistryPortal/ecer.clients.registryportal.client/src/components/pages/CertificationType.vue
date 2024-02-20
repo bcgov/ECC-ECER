@@ -28,7 +28,7 @@ import ExpandSelect from "@/components/ExpandSelect.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import certificationTypes from "@/config/certification-types";
 import { useAlertStore } from "@/store/alert";
-import { useApplicationStore } from "@/store/application";
+import { type Application, useApplicationStore } from "@/store/application";
 import { useCertificationTypeStore } from "@/store/certificationType";
 
 export default defineComponent({
@@ -45,9 +45,11 @@ export default defineComponent({
   methods: {
     submit() {
       if (this.certificationTypeStore.certificationTypes.length > 0) {
-        this.applicationStore.setCertificationTypes(this.certificationTypeStore.certificationTypes);
-        this.applicationStore.newDraftApplication(this.certificationTypeStore.certificationTypes);
-
+        const application: Application = {
+          Id: null,
+          certificationTypes: this.certificationTypeStore.certificationTypes,
+        };
+        this.applicationStore.createOrUpdateDraftApplication(application);
         this.$router.push("/requirements");
       } else {
         this.alertStore.setFailureAlert("Select a certification type to continue");

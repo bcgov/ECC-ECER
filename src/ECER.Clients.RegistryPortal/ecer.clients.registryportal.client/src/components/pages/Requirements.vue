@@ -34,8 +34,8 @@
           </v-card-text>
         </v-card>
         <v-row justify="end" class="mt-12">
-          <v-btn rounded="lg" variant="outlined" class="mr-2" @click="alertStore.setSuccessAlert('Save as Draft')">Save as a Draft</v-btn>
-          <v-btn rounded="lg" color="primary" @click="$router.push('/application')">Save and Continue</v-btn>
+          <v-btn rounded="lg" variant="outlined" class="mr-2" @click="handleSaveAsDraft">Save as a Draft</v-btn>
+          <v-btn rounded="lg" color="primary" @click="">Save and Continue</v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -67,6 +67,15 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
     return { applicationStore, alertStore };
+  },
+  methods: {
+    handleSaveAndContinue() {
+      this.$router.push('/application')
+    },
+    handleSaveAsDraft() {
+      this.applicationStore.createOrUpdateDraftApplication(this.applicationStore.currentApplication);
+      this.alertStore.setSuccessAlert("Draft saved successfully");
+    },
   },
 });
 </script>
