@@ -7,22 +7,6 @@ const getApplications = async (): Promise<Components.Schemas.Application[] | nul
   return (await client.application_get()).data;
 };
 
-const createDraftApplication = async (certificationTypes: Components.Schemas.CertificationType[]): Promise<string | null | undefined> => {
-  const client = await getClient();
-
-  const body: Paths.DraftapplicationPut.RequestBody = {
-    draftApplication: {
-      id: "",
-      certificationTypes: certificationTypes,
-    },
-  };
-  const pathParameters: Paths.DraftapplicationPut.PathParameters = {
-    id: "",
-  };
-
-  return (await client.draftapplication_put(pathParameters, body)).data.applicationId;
-};
-
 const createOrUpdateDraftApplication = async (application: Application): Promise<string | null | undefined> => {
   const client = await getClient();
 
@@ -36,4 +20,4 @@ const createOrUpdateDraftApplication = async (application: Application): Promise
   return (await client.draftapplication_put(pathParameters, body)).data.applicationId;
 };
 
-export { createDraftApplication, createOrUpdateDraftApplication, getApplications };
+export { createOrUpdateDraftApplication, getApplications };

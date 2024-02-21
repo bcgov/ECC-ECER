@@ -654,9 +654,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_authentication_Contactid = "ecer_authentication_Contactid";
 			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
 			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
+			public const string ecer_CertificationLevel = "ecer_certificationlevel";
 			public const string ecer_changeofinformation_Contactid = "ecer_changeofinformation_Contactid";
 			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
 			public const string ecer_ClientID = "ecer_clientid";
+			public const string ecer_comment_Contact_contact = "ecer_comment_Contact_contact";
 			public const string ecer_completedcourse_Applicantid = "ecer_completedcourse_Applicantid";
 			public const string ecer_contact_ecer_authentication_455 = "ecer_contact_ecer_authentication_455";
 			public const string ecer_contact_ecer_communication_122 = "ecer_contact_ecer_communication_122";
@@ -666,15 +668,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ecer_characterreference_Applicantid_conta = "ecer_ecer_characterreference_Applicantid_conta";
 			public const string ecer_ecer_professionaldevelopment_Applicantid_ = "ecer_ecer_professionaldevelopment_Applicantid_";
 			public const string ecer_ecer_workexperienceref_ReferenceContactid = "ecer_ecer_workexperienceref_ReferenceContactid";
+			public const string ecer_guardianreference_Applicantid = "ecer_guardianreference_Applicantid";
 			public const string ecer_IsBCECE = "ecer_isbcece";
 			public const string ecer_isbceceName = "ecer_isbcecename";
+			public const string ecer_IsUnder19 = "ecer_isunder19";
+			public const string ecer_isunder19Name = "ecer_isunder19name";
 			public const string ecer_IsVerified = "ecer_isverified";
 			public const string ecer_isverifiedName = "ecer_isverifiedname";
 			public const string ecer_portaluser_Contactid = "ecer_portaluser_Contactid";
 			public const string ecer_PreferredName = "ecer_preferredname";
+			public const string ecer_PreviousName = "ecer_previousname";
 			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
 			public const string ecer_TermsandConditionsText = "ecer_termsandconditionstext";
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
+			public const string ecer_UnderInvestigation = "ecer_underinvestigation";
+			public const string ecer_underinvestigationName = "ecer_underinvestigationname";
 			public const string ecer_workexperienceref_Applicantid = "ecer_workexperienceref_Applicantid";
 			public const string EducationCode = "educationcode";
 			public const string EducationCodeName = "educationcodename";
@@ -4017,6 +4025,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationlevel")]
+		public string ecer_CertificationLevel
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_certificationlevel");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificationlevel", value);
+			}
+		}
+		
 		/// <summary>
 		/// Readable ID For Contact.  Map to Oracle CLI_ID
 		/// </summary>
@@ -4062,6 +4085,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_isbcece"))
 				{
 					return this.FormattedValues["ecer_isbcece"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isunder19")]
+		public virtual ecer_YesNoNull? ecer_IsUnder19
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_isunder19")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_isunder19", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isunder19name")]
+		public string ecer_isunder19Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isunder19"))
+				{
+					return this.FormattedValues["ecer_isunder19"];
 				}
 				else
 				{
@@ -4117,6 +4172,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_previousname")]
+		public string ecer_PreviousName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_previousname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_previousname", value);
+			}
+		}
+		
+		/// <summary>
+		/// Portals Terms of Use
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_termsandconditionstext")]
 		public string ecer_TermsandConditionsText
 		{
@@ -4129,6 +4202,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_termsandconditionstext", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_underinvestigation")]
+		public virtual ecer_YesNoNull? ecer_UnderInvestigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_underinvestigation")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_underinvestigation", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_underinvestigationname")]
+		public string ecer_underinvestigationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_underinvestigation"))
+				{
+					return this.FormattedValues["ecer_underinvestigation"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -6875,6 +6980,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_comment_Contact_contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_comment_Contact_contact")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Comment> ecer_comment_Contact_contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Comment>("ecer_comment_Contact_contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Comment>("ecer_comment_Contact_contact", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_completedcourse_Applicantid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_completedcourse_Applicantid")]
@@ -7033,6 +7156,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_ecer_workexperienceref_ReferenceContactid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_guardianreference_Applicantid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_guardianreference_Applicantid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference> ecer_guardianreference_Applicantid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference>("ecer_guardianreference_Applicantid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference>("ecer_guardianreference_Applicantid", null, value);
 			}
 		}
 		

@@ -35,7 +35,7 @@
         </v-card>
         <v-row justify="end" class="mt-12">
           <v-btn rounded="lg" variant="outlined" class="mr-2" @click="handleSaveAsDraft">Save as a Draft</v-btn>
-          <v-btn rounded="lg" color="primary" @click="">Save and Continue</v-btn>
+          <v-btn rounded="lg" color="primary" @click="handleSaveAndContinue">Save and Continue</v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -70,7 +70,7 @@ export default defineComponent({
   },
   methods: {
     handleSaveAndContinue() {
-      this.$router.push('/application')
+      this.$router.push("/application");
     },
     handleSaveAsDraft() {
       this.applicationStore.createOrUpdateDraftApplication(this.applicationStore.currentApplication);

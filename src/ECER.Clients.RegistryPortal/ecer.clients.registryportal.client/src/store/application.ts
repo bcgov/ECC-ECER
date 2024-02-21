@@ -6,10 +6,19 @@ import type { Components } from "@/types/openapi";
 export interface Application {
   certificationTypes: Components.Schemas.CertificationType[];
   Id: string | null | undefined;
+  stage: PortalStage;
 }
 export interface ApplicationState {
   applications: Components.Schemas.Application[] | null | undefined;
   currentApplication: Application;
+}
+
+export enum PortalStage {
+  ContactInformation,
+  Education,
+  References,
+  Review,
+  Declaration,
 }
 
 export const useApplicationStore = defineStore("application", {
@@ -18,6 +27,7 @@ export const useApplicationStore = defineStore("application", {
     currentApplication: {
       certificationTypes: [],
       Id: null,
+      stage: PortalStage.ContactInformation,
     },
   }),
   persist: {
