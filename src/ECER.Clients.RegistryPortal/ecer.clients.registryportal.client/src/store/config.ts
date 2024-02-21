@@ -26,6 +26,7 @@ export const useConfigStore = defineStore("config", {
         authority: oidc?.authority ?? "",
         scope: oidc?.scope ?? "",
         loadUserInfo: true,
+        extraQueryParams: { kc_idp_hint: oidc?.idp ?? "" },
       };
 
       return combinedConfig;
@@ -39,6 +40,7 @@ export const useConfigStore = defineStore("config", {
         authority: oidc?.authority ?? "",
         scope: oidc?.scope ?? "",
         loadUserInfo: true,
+        extraQueryParams: { kc_idp_hint: oidc?.idp ?? "" },
       };
 
       return combinedConfig;

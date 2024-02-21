@@ -74,6 +74,7 @@ declare namespace Components {
       authority?: string | null;
       clientId?: string | null;
       scope?: string | null;
+      idp?: string | null;
     }
     /**
      * Save draft application request
