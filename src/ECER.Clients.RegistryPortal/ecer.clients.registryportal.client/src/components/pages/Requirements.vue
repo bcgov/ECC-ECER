@@ -74,7 +74,7 @@ export default defineComponent({
     },
     handleSaveAsDraft() {
       this.applicationStore.createOrUpdateDraftApplication(this.applicationStore.currentApplication);
-      this.alertStore.setSuccessAlert("Draft saved successfully");
+      this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
     },
   },
 });

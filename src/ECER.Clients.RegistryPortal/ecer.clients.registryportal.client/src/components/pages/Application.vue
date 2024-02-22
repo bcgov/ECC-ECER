@@ -77,7 +77,7 @@ export default defineComponent({
       this.applicationStore.currentApplication.stage = PortalStage.ContactInformation;
       this.applicationStore.createOrUpdateDraftApplication(this.applicationStore.currentApplication);
 
-      this.alertStore.setSuccessAlert("Save as Draft");
+      this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
     },
     async saveProfile() {
       if (!this.isFormValid) {
