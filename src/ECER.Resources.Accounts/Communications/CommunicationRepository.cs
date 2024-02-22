@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
-using System.ServiceModel.Channels;
 
 namespace ECER.Resources.Accounts.Communications;
 
@@ -29,7 +28,7 @@ internal class CommunicationRepository : ICommunicationRepository
     }
 
     if (query.ById != null) communications = communications.Where(r => r.c.ecer_CommunicationId == Guid.Parse(query.ById));
-    if (query.ByRegistrantId != null) communications = communications.Where(r => r.a.ecer_Applicantid.Id == Guid.Parse(query.ByRegistrantId));
+    if (query.ByRegistrantId != null) communications = communications.Where(r => r.c.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
     var data = communications.Select(r => r.c).ToList();
     var result = mapper.Map<IEnumerable<Communication>>(data);
     return result!;

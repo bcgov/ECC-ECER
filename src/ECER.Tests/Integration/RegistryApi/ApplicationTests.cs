@@ -13,6 +13,20 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetApplications_ReturnsApplications()
+  {
+    var applicationsResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url("/api/applications");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applications = await applicationsResponse.ReadAsJsonAsync<Application[]>();
+    applications.ShouldNotBeNull();
+  }
+
+  [Fact]
   public async Task SaveDraftApplication_NewDraft_Saved()
   {
     var application = CreateDraftApplication();
