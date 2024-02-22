@@ -15,6 +15,8 @@ interface EceTextFieldProps {
   maxLength?: number;
 }
 
+interface EceEducationProps {}
+
 interface EceAddressProps {
   addressLabel: string;
 }
@@ -27,5 +29,10 @@ interface EceAddressesProps {
 interface Input {
   id: string;
   component: EceCheckbox | EceRadio | EceTextField | EceAddress | EceAddresses;
-  props: EceTextFieldProps | EceAddressProps | EceAddressesProps;
+  props: EceTextFieldProps | EceAddressProps | EceAddressesProps | EceEducationProps;
+  cols: {
+    md: number;
+    lg: number;
+    xl: number;
+  };
 }

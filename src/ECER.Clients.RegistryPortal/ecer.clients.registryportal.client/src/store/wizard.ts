@@ -18,6 +18,7 @@ export const useWizardStore = defineStore("wizard", {
     wizardData: {} as WizardData,
     wizardConfig: {} as Wizard,
   }),
+  persist: true,
   actions: {
     initializeWizard(wizard: Wizard, wizardData: WizardData): void {
       this.wizardConfig = wizard;
