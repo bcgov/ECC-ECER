@@ -12,11 +12,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { createOrUpdateDraftApplication } from "@/api/application";
 import { getProfile, putProfile } from "@/api/profile";
 import Wizard from "@/components/Wizard.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
-import { PortalStage, useApplicationStore } from "@/store/application";
+import { useApplicationStore } from "@/store/application";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 
@@ -73,11 +74,12 @@ export default defineComponent({
     handleBack() {
       this.wizardStore.decrementStep();
     },
-    handleSaveAsDraft() {
-      this.applicationStore.currentApplication.stage = PortalStage.ContactInformation;
-      this.applicationStore.createOrUpdateDraftApplication(this.applicationStore.currentApplication);
-
-      this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
+    async handleSaveAsDraft() {
+      this.applicationStore.currentApplication.stage = "ContactInformation";
+      var applicationId = await createOrUpdateDraftApplication(this.applicationStore.currentApplication);
+      if (applicationId) {
+        this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
+      }
     },
     async saveProfile() {
       if (!this.isFormValid) {

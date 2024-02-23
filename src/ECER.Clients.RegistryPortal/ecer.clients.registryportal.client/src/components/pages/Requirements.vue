@@ -44,6 +44,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { createOrUpdateDraftApplication } from "@/api/application";
 import ECEAssistantRequirements from "@/components/ECEAssistantRequirements.vue";
 import ECEFiveYearRequirements from "@/components/ECEFiveYearRequirements.vue";
 import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
@@ -72,9 +73,11 @@ export default defineComponent({
     handleSaveAndContinue() {
       this.$router.push("/application");
     },
-    handleSaveAsDraft() {
-      this.applicationStore.createOrUpdateDraftApplication(this.applicationStore.currentApplication);
-      this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
+    async handleSaveAsDraft() {
+      const applicationId = await createOrUpdateDraftApplication(this.applicationStore.currentApplication);
+      if (applicationId) {
+        this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
+      }
     },
   },
 });

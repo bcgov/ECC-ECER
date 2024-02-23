@@ -85,7 +85,7 @@ public record DraftApplication
 {
   public string? Id { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
-  public ApplicationStep Step { get; set; }
+  public PortalStage Stage { get; set; }
 }
 
 public record Application
@@ -115,7 +115,7 @@ public enum CertificationType
   Sne,
 }
 
-public enum ApplicationStep
+public enum PortalStage
 {
   ContactInformation,
   Education,

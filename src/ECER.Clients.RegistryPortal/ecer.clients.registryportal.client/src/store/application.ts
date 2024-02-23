@@ -1,24 +1,10 @@
 import { defineStore } from "pinia";
 
-import { createOrUpdateDraftApplication, getApplications } from "@/api/application";
+import { getApplications } from "@/api/application";
 import type { Components } from "@/types/openapi";
-
-export interface Application {
-  certificationTypes: Components.Schemas.CertificationType[];
-  Id: string | null | undefined;
-  stage: PortalStage;
-}
 export interface ApplicationState {
   applications: Components.Schemas.Application[] | null | undefined;
-  currentApplication: Application;
-}
-
-export enum PortalStage {
-  ContactInformation,
-  Education,
-  References,
-  Review,
-  Declaration,
+  currentApplication: Components.Schemas.DraftApplication;
 }
 
 export const useApplicationStore = defineStore("application", {
@@ -26,8 +12,8 @@ export const useApplicationStore = defineStore("application", {
     applications: [],
     currentApplication: {
       certificationTypes: [],
-      Id: null,
-      stage: PortalStage.ContactInformation,
+      id: null,
+      stage: "ContactInformation",
     },
   }),
   persist: {
@@ -44,13 +30,6 @@ export const useApplicationStore = defineStore("application", {
   actions: {
     async fetchApplications() {
       this.applications = await getApplications();
-    },
-
-    async createOrUpdateDraftApplication(application: Application): Promise<string | null | undefined> {
-      const applicationId = await createOrUpdateDraftApplication(application);
-      this.currentApplication = application;
-      this.currentApplication.Id = applicationId;
-      return applicationId;
     },
   },
 });
