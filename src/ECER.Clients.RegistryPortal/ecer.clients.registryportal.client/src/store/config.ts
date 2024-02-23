@@ -45,6 +45,20 @@ export const useConfigStore = defineStore("config", {
 
       return combinedConfig;
     },
+    kcOidcConfiguration: (state): UserManagerSettings => {
+      const oidc = state.applicationConfiguration?.clientAuthenticationMethods ? state.applicationConfiguration?.clientAuthenticationMethods["kc"] : null;
+
+      const combinedConfig: UserManagerSettings = {
+        ...oidcConfig,
+        client_id: oidc?.clientId ?? "",
+        authority: oidc?.authority ?? "",
+        scope: oidc?.scope ?? "",
+        loadUserInfo: true,
+        extraQueryParams: { kc_idp_hint: oidc?.idp ?? "" },
+      };
+
+      return combinedConfig;
+    },
   },
   actions: {
     async initialize(): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> {

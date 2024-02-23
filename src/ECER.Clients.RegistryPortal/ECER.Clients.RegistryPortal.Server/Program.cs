@@ -75,7 +75,10 @@ public class Program
           {
             OnTokenValidated = async ctx =>
               {
-                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim("identity_id", ctx.Principal!.FindFirstValue("bceid_user_guid") ?? string.Empty) }));
+                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
+                {
+                  new Claim(ClaimTypes.NameIdentifier, ctx.Principal!.FindFirstValue("bceid_user_guid") ?? string.Empty)
+                }));
                 ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal, ctx.HttpContext.RequestAborted);
               }
           };
@@ -87,35 +90,43 @@ public class Program
           {
             OnTokenValidated = async ctx =>
               {
-                await Task.CompletedTask;
-
                 ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
                 {
-                new Claim("identity_provider", "bcsc"),
-                new Claim("identity_id", ctx.Principal!.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty)
+                  new Claim("identity_provider", "bcsc"),
                 }));
                 ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal, ctx.HttpContext.RequestAborted);
               }
           };
           opts.Validate();
-        });
+        })
+        .AddJwtBearer("kc", opts =>
+         {
+           opts.Events = new JwtBearerEvents
+           {
+             OnTokenValidated = async ctx =>
+             {
+               ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal!, ctx.HttpContext.RequestAborted);
+             }
+           };
+           opts.Validate();
+         });
 
       builder.Services.AddAuthorizationBuilder()
         .AddDefaultPolicy("registry_user", policy =>
         {
           policy
-            .AddAuthenticationSchemes("bcsc", "bceid")
+            .AddAuthenticationSchemes("bcsc", "bceid", "kc")
             .RequireClaim("identity_provider")
-            .RequireClaim("identity_id")
+            .RequireClaim(ClaimTypes.NameIdentifier)
             .RequireClaim("user_id")
             .RequireAuthenticatedUser();
         })
         .AddPolicy("registry_new_user", policy =>
         {
           policy
-            .AddAuthenticationSchemes("bcsc", "bceid")
+            .AddAuthenticationSchemes("bcsc", "bceid", "kc")
             .RequireClaim("identity_provider")
-            .RequireClaim("identity_id")
+            .RequireClaim(ClaimTypes.NameIdentifier)
             .RequireAuthenticatedUser();
         });
 

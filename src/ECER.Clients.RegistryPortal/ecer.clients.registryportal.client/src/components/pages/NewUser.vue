@@ -95,16 +95,7 @@ export default defineComponent({
     },
 
     async logout() {
-      if (this.userStore.isAuthenticated && this.userStore.authority) {
-        if (this.userStore.authority == "bceid") {
-          await this.oidcStore.logout(this.userStore.authority);
-        }
-        if (this.userStore.authority == "bcsc") {
-          // BCSC does not support a session logout callback endpoint so just remove session data from client
-          await this.oidcStore.removeUser(this.userStore.authority);
-          this.userStore.$reset();
-        }
-      }
+      this.userStore.logout();
     },
   },
 });
