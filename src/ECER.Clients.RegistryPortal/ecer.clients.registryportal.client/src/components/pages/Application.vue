@@ -12,10 +12,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { createOrUpdateDraftApplication } from "@/api/application";
 import { getProfile, putProfile } from "@/api/profile";
 import Wizard from "@/components/Wizard.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
+import { useApplicationStore } from "@/store/application";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 
@@ -28,6 +30,7 @@ export default defineComponent({
     const wizardStore = useWizardStore();
     const userStore = useUserStore();
     const alertStore = useAlertStore();
+    const applicationStore = useApplicationStore();
 
     const userProfile = await getProfile();
     if (userProfile !== null) {
@@ -59,7 +62,7 @@ export default defineComponent({
       });
     }
 
-    return { applicationWizard, wizardStore, alertStore, userStore };
+    return { applicationWizard, applicationStore, wizardStore, alertStore, userStore };
   },
   data: () => ({
     isFormValid: null as boolean | null,
@@ -71,8 +74,12 @@ export default defineComponent({
     handleBack() {
       this.wizardStore.decrementStep();
     },
-    handleSaveAsDraft() {
-      this.alertStore.setSuccessAlert("Save as Draft");
+    async handleSaveAsDraft() {
+      this.applicationStore.currentApplication.stage = "ContactInformation";
+      var applicationId = await createOrUpdateDraftApplication(this.applicationStore.currentApplication);
+      if (applicationId) {
+        this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
+      }
     },
     async saveProfile() {
       if (!this.isFormValid) {
