@@ -79,6 +79,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ImageFile_URL = "ecer_imagefile_url";
 			public const string ecer_ImageFileId = "ecer_imagefileid";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_URL = "ecer_url";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -493,6 +494,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_url")]
+		public string ecer_URL
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_url");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_url", value);
 			}
 		}
 		
