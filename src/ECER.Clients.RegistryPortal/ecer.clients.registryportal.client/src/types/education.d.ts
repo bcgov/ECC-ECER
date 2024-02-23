@@ -7,6 +7,6 @@ interface Education {
   studentName: string;
   studentNumber: string;
   language: string;
-  startYear: number;
-  endYear: number;
+  startYear: string;
+  endYear: string;
 }

@@ -44,30 +44,7 @@ export default defineComponent({
         [applicationWizard.steps.profile.form.inputs.preferredName.id]: userProfile.preferredName,
         [applicationWizard.steps.profile.form.inputs.alternateContactNumber.id]: userProfile.alternateContactPhone,
         [applicationWizard.steps.profile.form.inputs.primaryContactNumber.id]: userProfile.phone,
-        [applicationWizard.steps.education.form.inputs.educationList.id]: [
-          {
-            id: "1",
-            school: "UVic",
-            program: "Software Engineering (BSeng)",
-            campusLocation: "Victoria",
-            studentName: "Peter Parker",
-            studentNumber: "1234",
-            language: "English",
-            startYear: "01-01-2009",
-            endYear: "01-01-2013",
-          },
-          {
-            id: "2",
-            school: "University of Toronto",
-            program: "Computer Science",
-            campusLocation: "Toronto",
-            studentName: "Bill Smith",
-            studentNumber: "4321",
-            language: "French",
-            startYear: "01-01-2009",
-            endYear: "01-01-2013",
-          },
-        ],
+        [applicationWizard.steps.education.form.inputs.educationList.id]: [],
       });
     } else {
       wizardStore.initializeWizard(applicationWizard, {
@@ -80,19 +57,7 @@ export default defineComponent({
         },
         [applicationWizard.steps.profile.form.inputs.email.id]: userStore.oidcUserInfo.email,
         [applicationWizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.oidcUserInfo.phone,
-        [applicationWizard.steps.education.form.inputs.educationList.id]: [
-          {
-            id: "1",
-            school: "UVic",
-            program: "Software Engineering (BSeng)",
-            campusLocation: "Victoria",
-            studentName: "Peter Parker",
-            studentNumber: "1234",
-            language: "English",
-            startYear: "01-01-2009",
-            endYear: "01-01-2013",
-          },
-        ],
+        [applicationWizard.steps.education.form.inputs.educationList.id]: [],
       });
     }
 

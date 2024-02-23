@@ -6,8 +6,16 @@
       </v-card-title>
     </template>
     <template #append>
-      <v-btn icon="mdi-pencil" variant="plain" />
-      <v-btn icon="mdi-trash-can-outline" variant="plain" />
+      <v-tooltip text="Edit Education" location="top">
+        <template #activator="{ props }">
+          <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editEducation" />
+        </template>
+      </v-tooltip>
+      <v-tooltip text="Delete Education" location="top">
+        <template #activator="{ props }">
+          <v-btn v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteEducation" />
+        </template>
+      </v-tooltip>
     </template>
   </v-card>
 </template>
@@ -21,6 +29,21 @@ export default defineComponent({
     education: {
       type: Object as () => Education,
       required: true,
+    },
+  },
+
+  emits: {
+    edit: (_education: Education) => true,
+    delete: (_education: Education) => true,
+  },
+  methods: {
+    editEducation() {
+      // Emit an event or implement edit logic here
+      this.$emit("edit", this.education);
+    },
+    deleteEducation() {
+      // Emit an event or implement delete logic here
+      this.$emit("delete", this.education);
     },
   },
 });
