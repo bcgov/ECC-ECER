@@ -24,12 +24,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { createOrUpdateDraftApplication } from "@/api/application";
 import ExpandSelect from "@/components/ExpandSelect.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import certificationTypes from "@/config/certification-types";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationTypeStore } from "@/store/certificationType";
+import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "CertificationType",
@@ -43,12 +45,17 @@ export default defineComponent({
   },
 
   methods: {
-    submit() {
+    async submit() {
       if (this.certificationTypeStore.certificationTypes.length > 0) {
-        this.applicationStore.setCertificationTypes(this.certificationTypeStore.certificationTypes);
-        this.applicationStore.newDraftApplication(this.certificationTypeStore.certificationTypes);
-
-        this.$router.push("/requirements");
+        const application: Components.Schemas.DraftApplication = {
+          id: null,
+          certificationTypes: this.certificationTypeStore.certificationTypes,
+          stage: "ContactInformation",
+        };
+        const applicationId = await createOrUpdateDraftApplication(application);
+        if (applicationId) {
+          this.$router.push("/requirements");
+        }
       } else {
         this.alertStore.setFailureAlert("Select a certification type to continue");
       }

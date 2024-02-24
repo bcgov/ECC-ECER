@@ -34,8 +34,8 @@
           </v-card-text>
         </v-card>
         <v-row justify="end" class="mt-12">
-          <v-btn rounded="lg" variant="outlined" class="mr-2" @click="alertStore.setSuccessAlert('Save as Draft')">Save as a Draft</v-btn>
-          <v-btn rounded="lg" color="primary" @click="$router.push('/application')">Save and Continue</v-btn>
+          <v-btn rounded="lg" variant="outlined" class="mr-2" @click="handleSaveAsDraft">Save as a Draft</v-btn>
+          <v-btn rounded="lg" color="primary" @click="handleSaveAndContinue">Save and Continue</v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -44,6 +44,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { createOrUpdateDraftApplication } from "@/api/application";
 import ECEAssistantRequirements from "@/components/ECEAssistantRequirements.vue";
 import ECEFiveYearRequirements from "@/components/ECEFiveYearRequirements.vue";
 import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
@@ -67,6 +68,17 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
     return { applicationStore, alertStore };
+  },
+  methods: {
+    handleSaveAndContinue() {
+      this.$router.push("/application");
+    },
+    async handleSaveAsDraft() {
+      const applicationId = await createOrUpdateDraftApplication(this.applicationStore.currentApplication);
+      if (applicationId) {
+        this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
+      }
+    },
   },
 });
 </script>

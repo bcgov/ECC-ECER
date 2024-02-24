@@ -14,17 +14,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_ApplicationTypes
+	public enum ecer_VerifiedDecisions
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		LaborMobility = 621870003,
+		Escalated = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		New = 621870000,
+		PendingforInformation = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Renewal = 621870001,
+		UnderReview = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Unverified = 621870000,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Verified = 621870003,
 	}
 }
 #pragma warning restore CS1591

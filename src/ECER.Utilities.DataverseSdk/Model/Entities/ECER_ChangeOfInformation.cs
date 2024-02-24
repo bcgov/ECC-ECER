@@ -63,6 +63,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_changeofinformation_Contactid = "ecer_changeofinformation_Contactid";
 			public const string ecer_ChangeofInformationId = "ecer_changeofinformationid";
 			public const string Id = "ecer_changeofinformationid";
+			public const string ecer_comment_ChangeofInformationid = "ecer_comment_ChangeofInformationid";
 			public const string ecer_Contactid = "ecer_contactid";
 			public const string ecer_ContactidName = "ecer_contactidname";
 			public const string ecer_ContactidYomiName = "ecer_contactidyominame";
@@ -1102,6 +1103,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_comment_ChangeofInformationid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_comment_ChangeofInformationid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Comment> ecer_comment_ChangeofInformationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Comment>("ecer_comment_ChangeofInformationid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Comment>("ecer_comment_ChangeofInformationid", null, value);
 			}
 		}
 		

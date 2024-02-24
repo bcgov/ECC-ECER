@@ -36,19 +36,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Accepted = 2,
+		Approved = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Denied = 621870003,
+		Draft = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Pending = 1,
+		InProgress = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Reviewed = 621870002,
+		Rejected = 621870005,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Submitted = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		UnderReview = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		WaitingResponse = 621870003,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
@@ -69,6 +75,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_AccessCode = "ecer_accesscode";
 			public const string ecer_Applicantid = "ecer_applicantid";
 			public const string ecer_ApplicantidName = "ecer_applicantidname";
 			public const string ecer_ApplicantidYomiName = "ecer_applicantidyominame";
@@ -273,6 +280,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_accesscode")]
+		public string ecer_AccessCode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_accesscode");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_accesscode", value);
 			}
 		}
 		
