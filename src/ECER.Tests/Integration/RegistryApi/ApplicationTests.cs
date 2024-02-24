@@ -25,6 +25,33 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var applications = await applicationsResponse.ReadAsJsonAsync<Application[]>();
     applications.ShouldNotBeNull();
   }
+  
+  [Fact]
+  public async Task GetApplications_ById()
+  {
+    var application = CreateDraftApplication();
+    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl("/api/draftapplications");
+      _.StatusCodeShouldBeOk();
+    });
+    
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    
+    var applicationByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url($"/api/applications/{applicationId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<DraftApplication[]>();
+    applicationsById.ShouldNotBeNull();
+    var applicationById = applicationsById.First();
+    applicationById.CertificationTypes.ShouldBeEquivalentTo(application.CertificationTypes);
+    applicationById.Stage.ShouldBe(PortalStage.ContactInformation);
+  }
 
   [Fact]
   public async Task SaveDraftApplication_NewDraft_Saved()
