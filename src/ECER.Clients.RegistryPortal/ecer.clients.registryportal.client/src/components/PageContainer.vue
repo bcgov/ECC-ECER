@@ -1,5 +1,5 @@
 <template>
-  <v-container class="my-6">
+  <v-container class="my-6 px-0">
     <slot></slot>
   </v-container>
 </template>

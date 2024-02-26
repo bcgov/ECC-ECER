@@ -44,6 +44,7 @@ export default defineComponent({
         [applicationWizard.steps.profile.form.inputs.preferredName.id]: userProfile.preferredName,
         [applicationWizard.steps.profile.form.inputs.alternateContactNumber.id]: userProfile.alternateContactPhone,
         [applicationWizard.steps.profile.form.inputs.primaryContactNumber.id]: userProfile.phone,
+        [applicationWizard.steps.education.form.inputs.educationList.id]: [],
       });
     } else {
       wizardStore.initializeWizard(applicationWizard, {
@@ -56,6 +57,7 @@ export default defineComponent({
         },
         [applicationWizard.steps.profile.form.inputs.email.id]: userStore.oidcUserInfo.email,
         [applicationWizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.oidcUserInfo.phone,
+        [applicationWizard.steps.education.form.inputs.educationList.id]: [],
       });
     }
 

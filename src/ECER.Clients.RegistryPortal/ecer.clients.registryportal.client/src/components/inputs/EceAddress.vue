@@ -48,7 +48,7 @@
     color="primary"
     maxlength="50"
     class="my-8"
-    @input="updateField('country  ', $event)"
+    @input="updateField('country', $event)"
   ></v-text-field>
 </template>
 
