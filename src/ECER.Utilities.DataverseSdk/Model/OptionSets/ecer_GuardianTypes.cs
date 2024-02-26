@@ -14,17 +14,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_ApplicationTypes
+	public enum ecer_GuardianTypes
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		LaborMobility = 621870003,
+		Guardian = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		New = 621870000,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Renewal = 621870001,
+		Parent = 621870000,
 	}
 }
 #pragma warning restore CS1591

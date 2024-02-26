@@ -107,6 +107,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_certifications"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_certifications> ecer_certificationsSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_certifications>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_ChangeofInformation"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_ChangeofInformation> ecer_ChangeofInformationSet
@@ -129,6 +140,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Comment"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Comment> ecer_CommentSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Comment>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Communication"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Communication> ecer_CommunicationSet
@@ -136,6 +158,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Communication>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_CommunicationLineItem"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationLineItem> ecer_CommunicationLineItemSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationLineItem>();
 			}
 		}
 		
@@ -162,13 +195,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_File"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_File> ecer_FileSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference> ecer_GuardianReferenceSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_File>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_IANTemplateContent"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_IANTemplateContent> ecer_IANTemplateContentSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_IANTemplateContent>();
 			}
 		}
 		
