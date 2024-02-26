@@ -59,6 +59,7 @@ declare namespace Components {
     }
     export interface DraftApplication {
       id?: string | null;
+      signedDate?: string | null; // date
       certificationTypes?: CertificationType[] | null;
       stage?: PortalStage;
     }

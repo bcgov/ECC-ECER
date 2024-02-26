@@ -84,6 +84,7 @@ public record ApplicationQueryResponse(IEnumerable<Application> Items);
 public record DraftApplication
 {
   public string? Id { get; set; }
+  public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public PortalStage Stage { get; set; }
 }
@@ -93,6 +94,7 @@ public record Application
   public string Id { get; set; } = null!;
   public DateTime CreatedOn { get; set; }
   public DateTime? SubmittedOn { get; set; }
+  public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public ApplicationStatus Status { get; set; }
 }
