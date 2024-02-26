@@ -151,7 +151,6 @@ export default defineComponent({
     };
   },
   mounted() {
-    console.log(this.modelValue);
     if (this.modelValue.length === 0) {
       this.mode = "add";
     } else {
