@@ -1,7 +1,7 @@
 {
 	"@programName": "ZAP",
 	"@version": "2.14.0",
-	"@generated": "Mon, 19 Feb 2024 01:13:13",
+	"@generated": "Mon, 26 Feb 2024 01:13:41",
 	"site":[ 
 		{
 			"@name": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca",
@@ -152,7 +152,7 @@
 							"otherinfo": "Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server: \n- Unknown\nThe following web/application server has been identified: \n- Kestrel\n"
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b8868db3.css",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-298bbd04.js",
 							"method": "GET",
 							"param": "",
 							"attack": "TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.",
@@ -160,7 +160,7 @@
 							"otherinfo": "Using the TRACE, OPTIONS, and TRACK methods, the following proxy servers have been identified between ZAP and the application/web server: \n- Unknown\nThe following web/application server has been identified: \n- Kestrel\n"
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ed8aa29a.js",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b8868db3.css",
 							"method": "GET",
 							"param": "",
 							"attack": "TRACE, OPTIONS methods with 'Max-Forwards' header. TRACK method.",
@@ -222,7 +222,7 @@
 					"reference": "<p>https://tools.ietf.org/html/rfc7231#section-5.1.2</p>",
 					"cweid": "200",
 					"wascid": "45",
-					"sourceid": "840"
+					"sourceid": "846"
 				},
 				{
 					"pluginid": "10051",
@@ -235,18 +235,18 @@
 					"desc": "<p>The web server is configured to serve responses to ambiguous URLs in a manner that is likely to lead to confusion about the correct \"relative path\" for the URL. Resources (CSS, images, etc.) are also specified in the page response using relative, rather than absolute URLs. In an attack, if the web browser parses the \"cross-content\" response in a permissive manner, or can be tricked into permissively parsing the \"cross-content\" response, using techniques such as framing, then the web browser may be fooled into interpreting HTML as CSS (or other content types), leading to an XSS vulnerability.</p>",
 					"instances":[ 
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b8868db3.css",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-298bbd04.js",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b8868db3.css/e058q/8mav0",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-298bbd04.js/6ylmw/ow3rr",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ed8aa29a.js",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b8868db3.css",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ed8aa29a.js/e058q/8mav0",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b8868db3.css/6ylmw/ow3rr",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
@@ -254,7 +254,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png/e058q/8mav0",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/bcid-apple-touch-icon.png/6ylmw/ow3rr",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
@@ -262,7 +262,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico/e058q/8mav0",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/favicon.ico/6ylmw/ow3rr",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
@@ -270,7 +270,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt/e058q/8mav0",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt/6ylmw/ow3rr",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
@@ -278,7 +278,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml/e058q/8mav0",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml/6ylmw/ow3rr",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						},
@@ -286,7 +286,7 @@
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css",
 							"method": "GET",
 							"param": "",
-							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css/e058q/8mav0",
+							"attack": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css/6ylmw/ow3rr",
 							"evidence": "<link rel=\"apple-touch-icon\" href=\"bcid-apple-touch-icon.png\">",
 							"otherinfo": "No <base> tag was specified in the HTML <head> tag to define the location for relative URLs.\nA Content Type of \"text/html\" was specified. If the web browser is employing strict parsing rules, this will prevent cross-content attacks from succeeding. Quirks Mode in the web browser would disable strict parsing.  \nNo X-Frame-Options header was specified, so the page can be framed, and this can be used to enable Quirks Mode, allowing the specified Content Type to be bypassed."
 						}
@@ -297,7 +297,7 @@
 					"reference": "<p>https://arxiv.org/abs/1811.00917</p><p>https://hsivonen.fi/doctype/</p><p>https://www.w3schools.com/tags/tag_base.asp</p>",
 					"cweid": "20",
 					"wascid": "20",
-					"sourceid": "527"
+					"sourceid": "537"
 				},
 				{
 					"pluginid": "10063",
@@ -318,7 +318,7 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ed8aa29a.js",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-298bbd04.js",
 							"method": "GET",
 							"param": "",
 							"attack": "",
@@ -359,7 +359,7 @@
 					"reference": "<p>https://cwe.mitre.org/data/definitions/200.html</p>",
 					"cweid": "200",
 					"wascid": "13",
-					"sourceid": "18"
+					"sourceid": "20"
 				},
 				{
 					"pluginid": "10094",
@@ -372,25 +372,25 @@
 					"desc": "<p>Base64 encoded data was disclosed by the application/web server. Note: in the interests of performance not all base64 strings in the response were analyzed individually, the entire response should be looked at by the analyst/security team/developer(s).</p>",
 					"instances":[ 
 						{
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-298bbd04.js",
+							"method": "GET",
+							"param": "",
+							"attack": "",
+							"evidence": "assets/Certifications-316c85a7",
+							"otherinfo": "j\uFFFD\\x001e\uFFFD\uFFFD\uFFFDz\uFFFDb~'\\x001a\uFFFD*'\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD9k"
+						},
+						{
 							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b8868db3.css",
 							"method": "GET",
 							"param": "",
 							"attack": "",
 							"evidence": "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAAXNSR0IArs4c6QAAACRJREFUKFNjPHTo0H8GJGBnZ8eIzGekgwJk+0BsdCtRHEQbBQBbbh0dIGKknQAAAABJRU5ErkJggg==",
 							"otherinfo": "\uFFFDPNG\r\n\\x001a\n\\x0000\\x0000\\x0000\rIHDR\\x0000\\x0000\\x0000\\x0008\\x0000\\x0000\\x0000\\x0008\\x0008\\x0006\\x0000\\x0000\\x0000\uFFFD\\x000f\uFFFD\uFFFD\\x0000\\x0000\\x0000\\x0001sRGB\\x0000\uFFFD\uFFFD\\x001c\uFFFD\\x0000\\x0000\\x0000$IDAT(Sc<t\uFFFD\uFFFD\\x0006$`gg\u01C8\uFFFDg\uFFFD\uFFFD\\x0002d\uFFFD@lt+Q\\x001cD\\x001b\\x0005\\x0000[n\\x001d\\x001d b\uFFFD\uFFFD\\x0000\\x0000\\x0000\\x0000IEND\uFFFDB`\uFFFD"
-						},
-						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ed8aa29a.js",
-							"method": "GET",
-							"param": "",
-							"attack": "",
-							"evidence": "assets/Certifications-509b84d1",
-							"otherinfo": "j\uFFFD\\x001e\uFFFD\uFFFD\uFFFDz\uFFFDb~'\\x001a\uFFFD*'\uFFFD\uFFFDt\uFFFD\uFFFD8w"
 						}
 					],
 					"count": "2",
 					"solution": "<p>Manually confirm that the Base64 data does not leak sensitive information, and that the data cannot be aggregated/used to exploit other vulnerabilities.</p>",
-					"otherinfo": "<p>\uFFFDPNG</p><p>\\x001a</p><p>\\x0000\\x0000\\x0000\rIHDR\\x0000\\x0000\\x0000\\x0008\\x0000\\x0000\\x0000\\x0008\\x0008\\x0006\\x0000\\x0000\\x0000\uFFFD\\x000f\uFFFD\uFFFD\\x0000\\x0000\\x0000\\x0001sRGB\\x0000\uFFFD\uFFFD\\x001c\uFFFD\\x0000\\x0000\\x0000$IDAT(Sc<t\uFFFD\uFFFD\\x0006$`gg\u01C8\uFFFDg\uFFFD\uFFFD\\x0002d\uFFFD@lt+Q\\x001cD\\x001b\\x0005\\x0000[n\\x001d\\x001d b\uFFFD\uFFFD\\x0000\\x0000\\x0000\\x0000IEND\uFFFDB`\uFFFD</p>",
+					"otherinfo": "<p>j\uFFFD\\x001e\uFFFD\uFFFD\uFFFDz\uFFFDb~'\\x001a\uFFFD*'\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD9k</p>",
 					"reference": "<p>https://projects.webappsec.org/w/page/13246936/Information%20Leakage</p>",
 					"cweid": "200",
 					"wascid": "13",
@@ -407,7 +407,7 @@
 					"desc": "<p>The response appears to contain suspicious comments which may help an attacker. Note: Matches made within script blocks or files are against the entire content not only comments.</p>",
 					"instances":[ 
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ed8aa29a.js",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-298bbd04.js",
 							"method": "GET",
 							"param": "",
 							"attack": "",
@@ -415,23 +415,23 @@
 							"otherinfo": "The following pattern was used: \\bFROM\\b and was detected 2 times, the first in the element starting with: \"**/function kr(e,t,n,r){let i;try{i=r?e(...r):e()}catch(a){Da(a,t,n)}return i}function pn(e,t,n,r){if(Ue(e)){const a=kr(e,t,n,r)\", see evidence field for the suspicious comment/snippet."
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ed8aa29a.js",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-298bbd04.js",
 							"method": "GET",
 							"param": "",
 							"attack": "",
 							"evidence": "query",
-							"otherinfo": "The following pattern was used: \\bQUERY\\b and was detected 4 times, the first in the element starting with: \"`)}function Cv(e){const t=e.dark?2:1,n=e.dark?1:2,r=[];for(const[i,a]of Object.entries(e.colors)){const o=gn(a);r.push(`--v-them\", see evidence field for the suspicious comment/snippet."
+							"otherinfo": "The following pattern was used: \\bQUERY\\b and was detected 4 times, the first in the element starting with: \"`)}function kv(e){const t=e.dark?2:1,n=e.dark?1:2,r=[];for(const[i,a]of Object.entries(e.colors)){const o=gn(a);r.push(`--v-them\", see evidence field for the suspicious comment/snippet."
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ed8aa29a.js",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-298bbd04.js",
 							"method": "GET",
 							"param": "",
 							"attack": "",
 							"evidence": "select",
-							"otherinfo": "The following pattern was used: \\bSELECT\\b and was detected 3 times, the first in the element starting with: \"**/const MS=\"http://www.w3.org/2000/svg\",LS=\"http://www.w3.org/1998/Math/MathML\",br=typeof document<\"u\"?document:null,Pf=br&&br.\", see evidence field for the suspicious comment/snippet."
+							"otherinfo": "The following pattern was used: \\bSELECT\\b and was detected 3 times, the first in the element starting with: \"**/const BS=\"http://www.w3.org/2000/svg\",MS=\"http://www.w3.org/1998/Math/MathML\",br=typeof document<\"u\"?document:null,Cf=br&&br.\", see evidence field for the suspicious comment/snippet."
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ed8aa29a.js",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-298bbd04.js",
 							"method": "GET",
 							"param": "",
 							"attack": "",
@@ -445,7 +445,7 @@
 					"reference": "",
 					"cweid": "200",
 					"wascid": "13",
-					"sourceid": "20"
+					"sourceid": "18"
 				},
 				{
 					"pluginid": "10109",
@@ -462,7 +462,7 @@
 							"method": "GET",
 							"param": "",
 							"attack": "",
-							"evidence": "<script type=\"module\" crossorigin src=\"/assets/index-ed8aa29a.js\"></script>",
+							"evidence": "<script type=\"module\" crossorigin src=\"/assets/index-298bbd04.js\"></script>",
 							"otherinfo": "No links have been found while there are scripts, which is an indication that this is a modern web application."
 						}
 					],
@@ -520,7 +520,7 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
 							"method": "GET",
 							"param": "Sec-Fetch-Dest",
 							"attack": "",
@@ -528,7 +528,7 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css",
 							"method": "GET",
 							"param": "Sec-Fetch-Dest",
 							"attack": "",
@@ -563,7 +563,7 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
 							"method": "GET",
 							"param": "Sec-Fetch-Mode",
 							"attack": "",
@@ -571,7 +571,7 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css",
 							"method": "GET",
 							"param": "Sec-Fetch-Mode",
 							"attack": "",
@@ -606,7 +606,7 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
 							"method": "GET",
 							"param": "Sec-Fetch-Site",
 							"attack": "",
@@ -614,7 +614,7 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css",
 							"method": "GET",
 							"param": "Sec-Fetch-Site",
 							"attack": "",
@@ -649,7 +649,7 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/robots.txt",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
 							"method": "GET",
 							"param": "Sec-Fetch-User",
 							"attack": "",
@@ -657,7 +657,7 @@
 							"otherinfo": ""
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/sitemap.xml",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/styles/fonts.css",
 							"method": "GET",
 							"param": "Sec-Fetch-User",
 							"attack": "",
@@ -692,7 +692,7 @@
 							"otherinfo": "In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234."
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b8868db3.css",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-298bbd04.js",
 							"method": "GET",
 							"param": "",
 							"attack": "",
@@ -700,7 +700,7 @@
 							"otherinfo": "In the absence of an explicitly specified caching lifetime directive in the response, a liberal lifetime heuristic of 1 year was assumed. This is permitted by rfc7234."
 						},
 						{
-							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-ed8aa29a.js",
+							"uri": "https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/assets/index-b8868db3.css",
 							"method": "GET",
 							"param": "",
 							"attack": "",
