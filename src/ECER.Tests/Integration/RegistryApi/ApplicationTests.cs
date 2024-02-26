@@ -88,18 +88,12 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var existingApplicationId = (await existingAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
     existingApplicationId.ShouldBe(applicationId);
   }
-
+  
   private DraftApplication CreateDraftApplication()
   {
     return new Faker<DraftApplication>("en_CA")
         .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
+        .RuleFor(f => f.SignedDate, f => f.Date.Recent())
         .Generate();
-  }
-  
-  private DraftApplication CreateDraftApplicationWithDateSigned()
-  {
-    return new Faker<DraftApplication>("en_CA")
-      .RuleFor(f => f.SignedDate, f => f.Date.Recent())
-      .Generate();
   }
 }

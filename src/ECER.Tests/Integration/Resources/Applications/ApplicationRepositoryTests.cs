@@ -48,7 +48,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   }
   
   [Fact]
-  public async Task SaveDraftApplication_Existing_Signed_Updated()
+  public async Task SaveDraftApplication_ExistingSigned_Updated()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
     var newApplicationId = await repository.SaveDraft(new Application(null, applicantId, new[] { CertificationType.OneYear }));
@@ -66,18 +66,23 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   
     
   [Fact]
-  public async Task SaveDraftApplication_Existing_AlreadySigned_Updated_ShouldThrowInvalidOperation()
+  public async Task SaveDraftApplication_ExistingShouldNotUpdateSignedDate_Updated()
   {
+    var today = DateTime.Today;
+    var oneWeekAgo = today - TimeSpan.FromDays(7);
+    
     var applicantId = Fixture.AuthenticatedBcscUserId;
     var newApplication = new Application(null, applicantId, new[] { CertificationType.OneYear });
-    newApplication.SignedDate = DateTime.Now;
+    newApplication.SignedDate = oneWeekAgo;
     var newApplicationId = await repository.SaveDraft(newApplication);
     var existingApplication = new Application(newApplicationId, applicantId, new[] { CertificationType.OneYear });
-    existingApplication.SignedDate = DateTime.Now;
-    await Should.ThrowAsync<InvalidOperationException>(async () =>
-    {
-      await repository.SaveDraft(existingApplication);
-    });
+    existingApplication.SignedDate = today;
+    var existingApplicationId = await repository.SaveDraft(existingApplication);
+    
+    existingApplicationId.ShouldBe(newApplicationId);
+    
+    var application = (await repository.Query(new ApplicationQuery { ById = existingApplicationId })).ShouldHaveSingleItem();
+    application.SignedDate.ShouldBe(oneWeekAgo);
   }
 
   [Fact]
