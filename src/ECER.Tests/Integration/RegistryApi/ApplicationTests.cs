@@ -51,6 +51,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var applicationById = applicationsById.First();
     applicationById.CertificationTypes.ShouldBeEquivalentTo(application.CertificationTypes);
     applicationById.Stage.ShouldBe(PortalStage.ContactInformation);
+    applicationById.SignedDate.ShouldBe(application.SignedDate);
   }
 
   [Fact]
