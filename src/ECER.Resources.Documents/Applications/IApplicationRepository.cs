@@ -20,7 +20,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
 {
   public ApplicationStatus Status { get; set; }
   public DateTime CreatedOn { get; set; }
-  public DateOnly SignedDate { get; set; }
+  public DateTime? SignedDate { get; set; }
   public DateTime? SubmittedOn { get; set; }
   public PortalStage Stage { get; set; }
 }

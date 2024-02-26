@@ -51,7 +51,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var applicationById = applicationsById.First();
     applicationById.CertificationTypes.ShouldBeEquivalentTo(application.CertificationTypes);
     applicationById.Stage.ShouldBe(PortalStage.ContactInformation);
-    applicationById.SignedDate.ShouldBe(application.SignedDate);
   }
 
   [Fact]
@@ -94,7 +93,13 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   {
     return new Faker<DraftApplication>("en_CA")
         .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
-        .RuleFor(f => f.SignedDate, f => f.Date.RecentDateOnly())
         .Generate();
+  }
+  
+  private DraftApplication CreateDraftApplicationWithDateSigned()
+  {
+    return new Faker<DraftApplication>("en_CA")
+      .RuleFor(f => f.SignedDate, f => f.Date.Recent())
+      .Generate();
   }
 }

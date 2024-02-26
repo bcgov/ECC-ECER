@@ -51,8 +51,9 @@ internal sealed class ApplicationRepository : IApplicationRepository
     {
       var existingApplication = context.ecer_ApplicationSet.SingleOrDefault(c => c.ecer_ApplicationId == ecerApplication.ecer_ApplicationId);
       if (existingApplication == null) throw new InvalidOperationException($"ecer_Application '{ecerApplication.ecer_ApplicationId}' not found");
+      if (ecerApplication.ecer_DateSigned.HasValue && existingApplication.ecer_DateSigned.HasValue) throw new InvalidOperationException($"ecer_Application '{ecerApplication.ecer_ApplicationId}' has already been signed");
+      
       context.Detach(existingApplication);
-
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);
     }
