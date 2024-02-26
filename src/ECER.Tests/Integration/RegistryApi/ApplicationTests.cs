@@ -93,6 +93,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   {
     return new Faker<DraftApplication>("en_CA")
         .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
+        .RuleFor(f => f.SignedDate, f => f.Date.RecentDateOnly())
         .Generate();
   }
 }

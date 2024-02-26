@@ -84,6 +84,8 @@ public record ApplicationQueryResponse(IEnumerable<Application> Items);
 public record DraftApplication
 {
   public string? Id { get; set; }
+  
+  public DateOnly? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public PortalStage Stage { get; set; }
 }

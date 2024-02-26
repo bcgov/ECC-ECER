@@ -18,6 +18,7 @@ internal class ApplicationRepositoryMapper : Profile
         .ForMember(d => d.ecer_isECE5YR, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.FiveYears)))
         .ForMember(d => d.ecer_isITE, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.Ite)))
         .ForMember(d => d.ecer_isSNE, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.Sne)))
+        .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.SignedDate))
         .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.Stage))
         .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
         .ForSourceMember(s => s.CertificationTypes, opts => opts.DoNotValidate())
@@ -28,6 +29,7 @@ internal class ApplicationRepositoryMapper : Profile
         .ForCtorParam(nameof(Application.CertificationTypes), opts => opts.MapFrom(s => s))
         .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
         .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted))
+        .ForMember( d => d.SignedDate, opts => opts.MapFrom(s => s.ecer_DateSigned))
     ;
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
