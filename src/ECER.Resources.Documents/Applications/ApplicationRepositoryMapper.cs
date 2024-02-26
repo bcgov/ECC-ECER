@@ -26,8 +26,7 @@ internal class ApplicationRepositoryMapper : Profile
         .ForCtorParam(nameof(Application.ApplicantId), opts => opts.MapFrom(s => s.ecer_Applicantid.Id.ToString()))
         .ForCtorParam(nameof(Application.CertificationTypes), opts => opts.MapFrom(s => s))
         .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StateCode))
-        .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted))
-    ;
+        .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted));
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
         .ConstructUsing((s, _) =>

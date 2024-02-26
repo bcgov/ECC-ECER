@@ -116,10 +116,13 @@ public enum ApplicationStatus
   Draft,
   Submitted,
   Complete,
-  ReviewforCompletness,
-  ReadyforAssessment,
-  BeingAssessed,
   Reconsideration,
-  Appeal,
   Cancelled,
+  Escalated,
+  Decision,
+  Withdrawn,
+  Ready,
+  InProgress,
+  PendingQueue,
+  ReconsiderationDecision
 }

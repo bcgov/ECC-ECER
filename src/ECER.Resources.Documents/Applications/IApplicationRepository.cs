@@ -37,10 +37,14 @@ public enum ApplicationStatus
   Draft,
   Submitted,
   Complete,
-  ReviewforCompletness,
-  ReadyforAssessment,
-  BeingAssessed,
   Reconsideration,
-  Appeal,
   Cancelled,
+  Escalated,
+  Decision,
+  Withdrawn,
+  Pending,
+  Ready,
+  InProgress,
+  PendingQueue,
+  ReconsiderationDecision
 }
