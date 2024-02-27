@@ -68,5 +68,17 @@ public enum CertificationType
 
 public enum ApplicationStatus
 {
-  Draft
+  Draft,
+  Submitted,
+  Complete,
+  Reconsideration,
+  Cancelled,
+  Escalated,
+  Decision,
+  Withdrawn,
+  Pending,
+  Ready,
+  InProgress,
+  PendingQueue,
+  ReconsiderationDecision
 }
