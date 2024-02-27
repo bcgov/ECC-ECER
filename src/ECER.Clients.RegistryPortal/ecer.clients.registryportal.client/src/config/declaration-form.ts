@@ -13,6 +13,8 @@ const profileInformationForm: Form = {
       props: {
         rules: [Rules.hasCheckbox("Please agree to continue")],
         label: "I understand and agree with the statements above",
+        //TODO ECER-812 add in logic where we check if user has passed the declaration step that this field should be set to disabled
+        disabled: false,
       },
     },
     applicantLegalName: {
