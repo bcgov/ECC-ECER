@@ -6,7 +6,7 @@
         :key="message.id ? `id-${message.id}` : `index-${index}`"
         prepend-icon="mdi-message-alert-outline"
       >
-        {{ message.text }}
+        <div v-html="message.text"></div>
       </v-list-item>
     </v-list>
   </v-row>

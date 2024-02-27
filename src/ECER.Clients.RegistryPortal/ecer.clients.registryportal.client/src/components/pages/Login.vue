@@ -34,7 +34,7 @@
               <v-btn rounded="lg" class="font-weight-bold" color="primary" @click="handleLogin('bcsc')">LOG IN WITH BC SERVICES CARD</v-btn>
               <div class="text-center">
                 <p class="small">Don't have an account?</p>
-                <a href="https://id.gov.bc.ca/account/setup-instruction"><p class="small">Register for BC Services Card</p></a>
+                <a href="https://id.gov.bc.ca/account/setup-instruction"><p class="small">Get set up with BC Services Card</p></a>
               </div>
             </div>
           </LoginCard>

@@ -59,7 +59,9 @@ declare namespace Components {
     }
     export interface DraftApplication {
       id?: string | null;
+      signedDate?: string | null; // date
       certificationTypes?: CertificationType[] | null;
+      stage?: PortalStage;
     }
     /**
      * Save draft application response
@@ -75,6 +77,7 @@ declare namespace Components {
       clientId?: string | null;
       scope?: string | null;
     }
+    export type PortalStage = "ContactInformation" | "Education" | "References" | "Review" | "Declaration";
     /**
      * Save draft application request
      */

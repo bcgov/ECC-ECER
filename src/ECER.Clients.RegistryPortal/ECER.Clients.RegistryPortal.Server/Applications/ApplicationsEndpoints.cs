@@ -13,10 +13,13 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (string? id, SaveDraftApplicationRequest request, HttpContext httpContext, IMessageBus messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (string? id, SaveDraftApplicationRequest request, HttpContext ctx, IMessageBus messageBus, IMapper mapper) =>
         {
+          bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
+          bool ApplicationIdIsNotGuid = !Guid.TryParse(request.DraftApplication.Id, out _); if (ApplicationIdIsNotGuid && request.DraftApplication.Id != null) { request.DraftApplication.Id = null; }
+
           if (request.DraftApplication.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
-          var userContext = httpContext.User.GetUserContext();
+          var userContext = ctx.User.GetUserContext();
           var application = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
           var applicationId = await messageBus.InvokeAsync<string>(new SaveDraftApplicationCommand(application));
 
@@ -39,7 +42,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         {
           var userId = ctx.User.GetUserContext()?.UserId;
 
-          bool isNotGuid = !Guid.TryParse(id, out _); if (isNotGuid) { id = null; }
+          bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
           var query = new ApplicationsQuery
           {
             ById = id,
@@ -81,7 +84,9 @@ public record ApplicationQueryResponse(IEnumerable<Application> Items);
 public record DraftApplication
 {
   public string? Id { get; set; }
+  public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+  public PortalStage Stage { get; set; }
 }
 
 public record Application
@@ -89,6 +94,7 @@ public record Application
   public string Id { get; set; } = null!;
   public DateTime CreatedOn { get; set; }
   public DateTime? SubmittedOn { get; set; }
+  public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public ApplicationStatus Status { get; set; }
 }
@@ -109,6 +115,15 @@ public enum CertificationType
 
   [Description("Sne")]
   Sne,
+}
+
+public enum PortalStage
+{
+  ContactInformation,
+  Education,
+  References,
+  Review,
+  Declaration,
 }
 
 public enum ApplicationStatus
