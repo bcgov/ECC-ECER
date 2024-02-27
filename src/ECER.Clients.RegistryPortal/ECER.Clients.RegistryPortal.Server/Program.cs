@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text.Json.Serialization;
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
+using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Serilog;
@@ -93,6 +94,7 @@ public class Program
                 ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
                 {
                   new Claim("identity_provider", "bcsc"),
+                  new Claim(RegistryPortalClaims.IdentityId, ctx.Principal!.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty)
                 }));
                 ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal, ctx.HttpContext.RequestAborted);
               }
@@ -105,6 +107,10 @@ public class Program
            {
              OnTokenValidated = async ctx =>
              {
+               ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
+               {
+                  new Claim(RegistryPortalClaims.IdentityId, ctx.Principal!.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty)
+                }));
                ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal!, ctx.HttpContext.RequestAborted);
              }
            };
@@ -116,16 +122,16 @@ public class Program
         {
           policy
             .AddAuthenticationSchemes("bcsc", "bceid", "kc")
-            .RequireClaim("identity_provider")
-            .RequireClaim(ClaimTypes.NameIdentifier)
-            .RequireClaim("user_id")
+            .RequireClaim(RegistryPortalClaims.IdenityProvider)
+            .RequireClaim(RegistryPortalClaims.IdentityId)
+            .RequireClaim(RegistryPortalClaims.UserId)
             .RequireAuthenticatedUser();
         })
         .AddPolicy("registry_new_user", policy =>
         {
           policy
             .AddAuthenticationSchemes("bcsc", "bceid", "kc")
-            .RequireClaim("identity_provider")
+            .RequireClaim(RegistryPortalClaims.IdentityId)
             .RequireClaim(ClaimTypes.NameIdentifier)
             .RequireAuthenticatedUser();
         });
