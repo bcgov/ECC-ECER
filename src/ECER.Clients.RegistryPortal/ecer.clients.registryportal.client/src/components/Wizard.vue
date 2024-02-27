@@ -1,6 +1,6 @@
 <template>
   <WizardHeader class="mb-6" />
-  <v-stepper v-model="wizardStore.step" min-height="100dvh" flat color="primary" :items="getStepTitles()" :mobile="$vuetify.display.mobile">
+  <v-stepper v-model="wizardStore.step" min-height="100dvh" flat color="primary" :items="getStepTitles()" :alt-labels="true" :mobile="$vuetify.display.mobile">
     <template v-for="step in wizard.steps" :key="step.id" #[step.key]>
       <v-container>
         <h3>{{ step.title }}</h3>

@@ -9,7 +9,7 @@
         </v-breadcrumbs>
       </v-col>
     </v-row>
-    <v-row justify="space-between">
+    <v-row justify="space-between" class="pb-6">
       <v-col offset="1" cols="12" sm="8">
         <h3>Application for ECE Assistant Certification</h3>
       </v-col>
