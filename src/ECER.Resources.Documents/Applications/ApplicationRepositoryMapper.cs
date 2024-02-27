@@ -8,7 +8,7 @@ internal class ApplicationRepositoryMapper : Profile
 {
   public ApplicationRepositoryMapper()
   {
-    CreateMap<Application, ecer_Application>(MemberList.Source)
+    _ = CreateMap<Application, ecer_Application>(MemberList.Source)
         .ForSourceMember(s => s.CreatedOn, opts => opts.DoNotValidate())
         .ForSourceMember(s => s.SubmittedOn, opts => opts.DoNotValidate())
         .ForMember(d => d.ecer_ApplicationId, opts => opts.MapFrom(s => s.Id))
@@ -18,7 +18,6 @@ internal class ApplicationRepositoryMapper : Profile
         .ForMember(d => d.ecer_isECE5YR, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.FiveYears)))
         .ForMember(d => d.ecer_isITE, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.Ite)))
         .ForMember(d => d.ecer_isSNE, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.Sne)))
-        .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
         .ForSourceMember(s => s.CertificationTypes, opts => opts.DoNotValidate())
         .ReverseMap()
         .ValidateMemberList(MemberList.Destination)
@@ -43,5 +42,20 @@ internal class ApplicationRepositoryMapper : Profile
     CreateMap<ApplicationStatus, ecer_Application_StatusCode>()
         .ConvertUsingEnumMapping(opts => opts.MapByName(true))
         .ReverseMap();
+
+    CreateMap<Transcript, ecer_Transcript>(MemberList.Source)
+       .ForSourceMember(s => s.StartDate, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.EndDate, opts => opts.DoNotValidate())
+       .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
+       .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
+       .ForMember(d => d.ecer_ProgramName, opts => opts.MapFrom(s => s.ProgramName))
+       .ForMember(d => d.ecer_CampusLocation, opts => opts.MapFrom(s => s.CampusLocation))
+       .ForMember(d => d.ecer_StudentName, opts => opts.MapFrom(s => s.StudentName))
+       .ForMember(d => d.ecer_StudentNumber, opts => opts.MapFrom(s => s.StudentNumber))
+       .ForMember(d => d.ecer_EducationInstitutionFullName, opts => opts.MapFrom(s => s.EducationalInstitutionName))
+       .ForMember(d => d.ecer_LanguageofInstruction, opts => opts.MapFrom(s => s.LanguageofInstruction))
+       .ForCtorParam(nameof(Transcript.Id), opts => opts.MapFrom(s => s.Id!.ToString()))
+       .ReverseMap()
+       .ValidateMemberList(MemberList.Destination);
   }
 }

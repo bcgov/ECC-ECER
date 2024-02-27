@@ -41,6 +41,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     if (applicant == null) throw new InvalidOperationException($"Applicant '{application.ApplicantId}' not found");
 
     var ecerApplication = mapper.Map<ecer_Application>(application)!;
+
     if (!ecerApplication.ecer_ApplicationId.HasValue)
     {
       ecerApplication.ecer_ApplicationId = Guid.NewGuid();
@@ -51,7 +52,21 @@ internal sealed class ApplicationRepository : IApplicationRepository
     {
       var existingApplication = context.ecer_ApplicationSet.SingleOrDefault(c => c.ecer_ApplicationId == ecerApplication.ecer_ApplicationId);
       if (existingApplication == null) throw new InvalidOperationException($"ecer_Application '{ecerApplication.ecer_ApplicationId}' not found");
+
+      var applicationTranscripts = context.ecer_TranscriptSet.Where(t => t.ecer_Applicationid.Id == existingApplication.Id);
+      foreach (var transcript in applicationTranscripts)
+      {
+        context.Detach(transcript);
+      }
       context.Detach(existingApplication);
+
+      foreach (var transcript in application.Transcripts)
+      {
+        var ecerTranscript = mapper.Map<ecer_Transcript>(transcript)!;
+        context.AddLink(ecerTranscript, ecer_Transcript.Fields.ecer_transcript_Applicantid_Contact, existingApplication.ecer_application_Applicantid_contact);
+        context.AddLink(ecerTranscript, ecer_Transcript.Fields.ecer_transcript_Applicationid, existingApplication);
+        context.AddObject(ecerTranscript);
+      }
 
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);

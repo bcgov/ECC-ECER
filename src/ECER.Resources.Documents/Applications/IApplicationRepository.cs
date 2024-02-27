@@ -21,6 +21,19 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public ApplicationStatus Status { get; set; }
   public DateTime CreatedOn { get; set; }
   public DateTime? SubmittedOn { get; set; }
+  public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
+}
+
+public record Transcript(string? Id)
+{
+  public string EducationalInstitutionName { get; set; } = string.Empty;
+  public string ProgramName { get; set; } = string.Empty;
+  public string CampusLocation { get; set; } = string.Empty;
+  public string StudentName { get; set; } = string.Empty;
+  public string StudentNumber { get; set; } = string.Empty;
+  public string LanguageofInstruction { get; set; } = string.Empty;
+  public DateTime StartDate { get; set; }
+  public DateTime EndDate { get; set; }
 }
 
 public enum CertificationType

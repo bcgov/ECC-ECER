@@ -17,5 +17,7 @@ internal class ApplicationMapper : Profile
         .ValidateMemberList(MemberList.Destination)
         .ForCtorParam(nameof(Contract.Applications.Application.RegistrantId), opts => opts.MapFrom(s => s.ApplicantId))
         ;
+
+    CreateMap<Contract.Applications.Transcript, Transcript>().ReverseMap();
   }
 }

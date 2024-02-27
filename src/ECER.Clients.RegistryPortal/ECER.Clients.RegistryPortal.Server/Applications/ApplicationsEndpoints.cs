@@ -82,6 +82,7 @@ public record DraftApplication
 {
   public string? Id { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+  public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
 }
 
 public record Application
@@ -90,7 +91,20 @@ public record Application
   public DateTime CreatedOn { get; set; }
   public DateTime? SubmittedOn { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+  public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public ApplicationStatus Status { get; set; }
+}
+
+public record Transcript(string? Id)
+{
+  public string EducationalInstitutionName { get; set; } = string.Empty;
+  public string ProgramName { get; set; } = string.Empty;
+  public string CampusLocation { get; set; } = string.Empty;
+  public string StudentName { get; set; } = string.Empty;
+  public string StudentNumber { get; set; } = string.Empty;
+  public string LanguageofInstruction { get; set; } = string.Empty;
+  public DateTime StartDate { get; set; }
+  public DateTime EndDate { get; set; }
 }
 
 public enum CertificationType
