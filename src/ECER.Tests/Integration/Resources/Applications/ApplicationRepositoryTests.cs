@@ -28,6 +28,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.Status.ShouldBe(ApplicationStatus.Draft);
     application.ApplicantId.ShouldBe(applicantId);
     application.CertificationTypes.ShouldBe(new[] { CertificationType.OneYear });
+    application.SignedDate.ShouldBeNull();
   }
 
   [Fact]
@@ -35,14 +36,53 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
     var newApplicationId = await repository.SaveDraft(new Application(null, applicantId, new[] { CertificationType.OneYear }));
-    var existintApplicationId = await repository.SaveDraft(new Application(newApplicationId, applicantId, new[] { CertificationType.OneYear, CertificationType.FiveYears }));
+    var existingApplicationId = await repository.SaveDraft(new Application(newApplicationId, applicantId, new[] { CertificationType.OneYear, CertificationType.FiveYears }));
 
-    existintApplicationId.ShouldBe(newApplicationId);
+    existingApplicationId.ShouldBe(newApplicationId);
 
-    var application = (await repository.Query(new ApplicationQuery { ById = existintApplicationId })).ShouldHaveSingleItem();
+    var application = (await repository.Query(new ApplicationQuery { ById = existingApplicationId })).ShouldHaveSingleItem();
     application.Status.ShouldBe(ApplicationStatus.Draft);
     application.ApplicantId.ShouldBe(applicantId);
     application.CertificationTypes.ShouldBe(new[] { CertificationType.OneYear, CertificationType.FiveYears });
+    application.SignedDate.ShouldBeNull();
+  }
+  
+  [Fact]
+  public async Task SaveDraftApplication_ExistingSigned_Updated()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var newApplicationId = await repository.SaveDraft(new Application(null, applicantId, new[] { CertificationType.OneYear }));
+    var application = new Application(newApplicationId, applicantId, new[] { CertificationType.OneYear });
+    application.SignedDate = DateTime.Now;
+    var existingApplicationId = await repository.SaveDraft(application);
+
+    existingApplicationId.ShouldBe(newApplicationId);
+
+    var existingApplication = (await repository.Query(new ApplicationQuery { ById = existingApplicationId })).ShouldHaveSingleItem();
+    existingApplication.Status.ShouldBe(ApplicationStatus.Draft);
+    existingApplication.ApplicantId.ShouldBe(applicantId);
+    existingApplication.SignedDate.ShouldNotBeNull();
+  }
+  
+    
+  [Fact]
+  public async Task SaveDraftApplication_ExistingShouldNotUpdateSignedDate_Updated()
+  {
+    var today = DateTime.Today;
+    var oneWeekAgo = today - TimeSpan.FromDays(7);
+    
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var newApplication = new Application(null, applicantId, new[] { CertificationType.OneYear });
+    newApplication.SignedDate = oneWeekAgo;
+    var newApplicationId = await repository.SaveDraft(newApplication);
+    var existingApplication = new Application(newApplicationId, applicantId, new[] { CertificationType.OneYear });
+    existingApplication.SignedDate = today;
+    var existingApplicationId = await repository.SaveDraft(existingApplication);
+    
+    existingApplicationId.ShouldBe(newApplicationId);
+    
+    var application = (await repository.Query(new ApplicationQuery { ById = existingApplicationId })).ShouldHaveSingleItem();
+    application.SignedDate.ShouldBe(oneWeekAgo);
   }
 
   [Fact]

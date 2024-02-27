@@ -21,7 +21,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
                        join c in context.ContactSet on a.ecer_Applicantid.Id equals c.ContactId
                        select new { a, c };
 
-    if (query.ByStatus != null)
+    if (query.ByStatus != null && query.ByStatus.Any())
     {
       var statuses = mapper.Map<IEnumerable<ecer_Application_StatusCode>>(query.ByStatus)!.ToList();
       applications = applications.WhereIn(a => a.a.StatusCode!.Value, statuses);
@@ -51,8 +51,11 @@ internal sealed class ApplicationRepository : IApplicationRepository
     {
       var existingApplication = context.ecer_ApplicationSet.SingleOrDefault(c => c.ecer_ApplicationId == ecerApplication.ecer_ApplicationId);
       if (existingApplication == null) throw new InvalidOperationException($"ecer_Application '{ecerApplication.ecer_ApplicationId}' not found");
+      
+      // If we have a DateSigned value already keep it
+      if (ecerApplication.ecer_DateSigned.HasValue && existingApplication.ecer_DateSigned.HasValue) ecerApplication.ecer_DateSigned = existingApplication.ecer_DateSigned;
+      
       context.Detach(existingApplication);
-
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);
     }

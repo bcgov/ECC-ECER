@@ -59,7 +59,9 @@ declare namespace Components {
     }
     export interface DraftApplication {
       id?: string | null;
+      signedDate?: string | null; // date
       certificationTypes?: CertificationType[] | null;
+      stage?: PortalStage;
     }
     /**
      * Save draft application response
@@ -76,6 +78,7 @@ declare namespace Components {
       scope?: string | null;
       idp?: string | null;
     }
+    export type PortalStage = "ContactInformation" | "Education" | "References" | "Review" | "Declaration";
     /**
      * Save draft application request
      */
@@ -109,6 +112,12 @@ declare namespace Components {
 }
 declare namespace Paths {
   namespace ApplicationGet {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id?: Parameters.Id;
+    }
     namespace Responses {
       export type $200 = Components.Schemas.Application[];
     }
@@ -239,14 +248,6 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.DraftapplicationPut.Responses.$200>;
   /**
-   * application_get - Handles application queries
-   */
-  "application_get"(
-    parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
-  /**
    * application_post - Submit an application
    */
   "application_post"(
@@ -254,6 +255,14 @@ export interface OperationMethods {
     data?: Paths.ApplicationPost.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ApplicationPost.Responses.$200>;
+  /**
+   * application_get - Handles application queries
+   */
+  "application_get"(
+    parameters?: Parameters<Paths.ApplicationGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
 }
 
 export interface PathsDictionary {
@@ -330,10 +339,16 @@ export interface PathsDictionary {
       data?: Paths.ApplicationPost.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationPost.Responses.$200>;
+  };
+  ["/api/applications/{id}"]: {
     /**
      * application_get - Handles application queries
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ApplicationGet.Responses.$200>;
+    "get"(
+      parameters?: Parameters<Paths.ApplicationGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
   };
 }
 

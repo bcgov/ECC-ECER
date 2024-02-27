@@ -1,6 +1,4 @@
-﻿using ECER.Utilities.Security;
-
-namespace ECER.Managers.Registry.Contract.Applications;
+﻿namespace ECER.Managers.Registry.Contract.Applications;
 
 /// <summary>
 /// Invokes draft application saving use case
@@ -19,7 +17,7 @@ public record SubmitApplicationCommand(string applicationId);
 public record ApplicationsQuery
 {
   public string? ById { get; set; }
-  public UserIdentity? ByIdentity { get; set; }
+  public string? ByApplicantId { get; set; }
   public IEnumerable<ApplicationStatus>? ByStatus { get; set; }
 }
 
@@ -33,7 +31,18 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
 {
   public DateTime? SubmittedOn { get; set; }
   public DateTime? CreatedOn { get; set; }
+  public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+  public PortalStage Stage { get; set; }
+}
+
+public enum PortalStage
+{
+  ContactInformation,
+  Education,
+  References,
+  Review,
+  Declaration,
 }
 
 public enum CertificationType
@@ -50,10 +59,14 @@ public enum ApplicationStatus
   Draft,
   Submitted,
   Complete,
-  ReviewforCompletness,
-  ReadyforAssessment,
-  BeingAssessed,
   Reconsideration,
-  Appeal,
   Cancelled,
+  Decision,
+  Escalated,
+  InProgress,
+  Pending,
+  PendingQueue,
+  Ready,
+  ReconsiderationDecision,
+  Withdrawn,
 }

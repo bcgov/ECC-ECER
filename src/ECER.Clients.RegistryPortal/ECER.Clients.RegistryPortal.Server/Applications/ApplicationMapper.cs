@@ -13,6 +13,8 @@ public class ApplicationMapper : Profile
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.Id), opts => opts.MapFrom(s => s.Id))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.RegistrantId), opts => opts.MapFrom((_, ctx) => ctx.Items["registrantId"]))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.Status), opts => opts.MapFrom(_ => Managers.Registry.Contract.Applications.ApplicationStatus.Draft))
+      .ForMember(d => d.Stage, opts => opts.MapFrom(s => s.Stage))
+      .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.SignedDate))
       ;
 
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>()
