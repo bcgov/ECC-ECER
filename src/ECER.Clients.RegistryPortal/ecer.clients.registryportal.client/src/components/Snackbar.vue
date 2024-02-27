@@ -14,7 +14,7 @@
       <v-icon v-if="icon" :icon="icon" class="mr-2" />
       {{ alertNotificationText }}
       <template #actions>
-        <v-btn text="true" color="white" v-bind="$attrs" @click="showSnackBar = false">
+        <v-btn text="true" :color="colour == AlertNotificationType.WARN ? 'black' : 'white'" v-bind="$attrs" @click="showSnackBar = false">
           {{ alertNotificationQueue.length > 0 ? "Next (" + alertNotificationQueue.length + ")" : "Close" }}
         </v-btn>
       </template>
@@ -30,6 +30,11 @@ import { AlertNotificationType } from "@/utils/constant";
 
 export default {
   name: "Snackbar",
+  setup() {
+    return {
+      AlertNotificationType,
+    };
+  },
   data() {
     return {
       colour: "",
