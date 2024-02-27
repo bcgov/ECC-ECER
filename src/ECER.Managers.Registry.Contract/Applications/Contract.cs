@@ -31,8 +31,10 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
 {
   public DateTime? SubmittedOn { get; set; }
   public DateTime? CreatedOn { get; set; }
+  public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
+  public PortalStage Stage { get; set; }
 }
 public record Transcript(string? Id)
 {
@@ -46,6 +48,15 @@ public record Transcript(string? Id)
   public DateTime EndDate { get; set; }
 }
 
+public enum PortalStage
+{
+  ContactInformation,
+  Education,
+  References,
+  Review,
+  Declaration,
+}
+
 public enum CertificationType
 {
   EceAssistant,
@@ -57,17 +68,5 @@ public enum CertificationType
 
 public enum ApplicationStatus
 {
-  Draft,
-  Submitted,
-  Complete,
-  Reconsideration,
-  Cancelled,
-  Escalated,
-  Decision,
-  Withdrawn,
-  Pending,
-  Ready,
-  InProgress,
-  PendingQueue,
-  ReconsiderationDecision
+  Draft
 }

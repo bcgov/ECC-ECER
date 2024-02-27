@@ -26,6 +26,12 @@ interface EceAddressesProps {
   mailing: EceAddressProps;
 }
 
+interface EceCheckboxProps {
+  rules?: readonly ValidationRule$1[];
+  label: string;
+  disabled?: boolean;
+}
+
 interface Input {
   id: string;
   component: EceCheckbox | EceRadio | EceTextField | EceAddress | EceAddresses;

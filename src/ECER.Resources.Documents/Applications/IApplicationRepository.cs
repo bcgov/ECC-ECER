@@ -20,7 +20,9 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
 {
   public ApplicationStatus Status { get; set; }
   public DateTime CreatedOn { get; set; }
+  public DateTime? SignedDate { get; set; }
   public DateTime? SubmittedOn { get; set; }
+  public PortalStage Stage { get; set; }
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
 }
 
@@ -34,6 +36,15 @@ public record Transcript(string? Id)
   public string LanguageofInstruction { get; set; } = string.Empty;
   public DateTime StartDate { get; set; }
   public DateTime EndDate { get; set; }
+}
+
+public enum PortalStage
+{
+  ContactInformation,
+  Education,
+  References,
+  Review,
+  Declaration,
 }
 
 public enum CertificationType

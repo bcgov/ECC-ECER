@@ -19,6 +19,12 @@ export const useWizardStore = defineStore("wizard", {
     wizardConfig: {} as Wizard,
   }),
   persist: true,
+  getters: {
+    steps: (state) => Object.values(state.wizardConfig.steps),
+    currentStepId(state): string {
+      return this.steps[state.step - 1].id;
+    },
+  },
   actions: {
     initializeWizard(wizard: Wizard, wizardData: WizardData): void {
       this.wizardConfig = wizard;
