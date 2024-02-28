@@ -59,7 +59,8 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.ecer_StudentNumber, opts => opts.MapFrom(s => s.StudentNumber))
        .ForMember(d => d.ecer_EducationInstitutionFullName, opts => opts.MapFrom(s => s.EducationalInstitutionName))
        .ForMember(d => d.ecer_LanguageofInstruction, opts => opts.MapFrom(s => s.LanguageofInstruction))
-       .ForCtorParam(nameof(Transcript.Id), opts => opts.MapFrom(s => s.Id!.ToString()))
+       .ForMember(d => d.ecer_TranscriptId, opts => opts.MapFrom(s => s.Id))
+       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
        .ReverseMap()
        .ValidateMemberList(MemberList.Destination);
   }

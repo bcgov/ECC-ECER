@@ -16,6 +16,11 @@ const profileInformationForm: Form = {
         //TODO ECER-812 add in logic where we check if user has passed the declaration step that this field should be set to disabled
         disabled: false,
       },
+      cols: {
+        md: 12,
+        lg: 12,
+        xl: 12,
+      },
     },
     applicantLegalName: {
       id: "applicantLegalName",
@@ -23,6 +28,11 @@ const profileInformationForm: Form = {
       props: {
         label: "Applicant Legal Name",
         readonly: true,
+      },
+      cols: {
+        md: 12,
+        lg: 12,
+        xl: 12,
       },
     },
     signedDate: {
@@ -32,6 +42,11 @@ const profileInformationForm: Form = {
         label: "Signed Date",
         type: "date",
         readonly: true,
+      },
+      cols: {
+        md: 12,
+        lg: 12,
+        xl: 12,
       },
     },
   },

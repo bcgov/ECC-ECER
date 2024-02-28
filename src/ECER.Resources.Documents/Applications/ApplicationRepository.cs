@@ -64,20 +64,18 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
       foreach (var transcript in application.Transcripts)
       {
+        transcript.Id = Guid.NewGuid().ToString();
         var ecerTranscript = mapper.Map<ecer_Transcript>(transcript)!;
-        context.AddLink(ecerTranscript, ecer_Transcript.Fields.ecer_transcript_Applicantid_Contact, existingApplication.ecer_application_Applicantid_contact);
-        context.AddLink(ecerTranscript, ecer_Transcript.Fields.ecer_transcript_Applicationid, existingApplication);
         context.AddObject(ecerTranscript);
+        //context.AddLink(ecerTranscript, ecer_Transcript.Fields.ecer_transcript_Applicantid_Contact, ecerApplication.ecer_application_Applicantid_contact);
+        //context.AddLink(ecerTranscript, ecer_Transcript.Fields.ecer_transcript_Applicationid, ecerApplication);
       }
-
-      context.Detach(existingApplication);
 
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);
     }
 
     context.SaveChanges();
-
     return ecerApplication.ecer_ApplicationId.Value.ToString();
   }
 

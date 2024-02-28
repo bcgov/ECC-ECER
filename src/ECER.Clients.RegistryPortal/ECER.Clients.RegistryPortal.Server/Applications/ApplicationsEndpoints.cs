@@ -101,8 +101,9 @@ public record Application
   public ApplicationStatus Status { get; set; }
 }
 
-public record Transcript(string? Id)
+public record Transcript()
 {
+  public string? Id { get; set; } = string.Empty;
   public string EducationalInstitutionName { get; set; } = string.Empty;
   public string ProgramName { get; set; } = string.Empty;
   public string CampusLocation { get; set; } = string.Empty;

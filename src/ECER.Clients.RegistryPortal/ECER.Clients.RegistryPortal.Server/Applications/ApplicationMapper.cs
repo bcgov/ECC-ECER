@@ -6,6 +6,9 @@ public class ApplicationMapper : Profile
 {
   public ApplicationMapper()
   {
+    CreateMap<Transcript, Managers.Registry.Contract.Applications.Transcript>()
+    ;
+
     CreateMap<DraftApplication, Managers.Registry.Contract.Applications.Application>()
       .ForMember(d => d.RegistrantId, opts => opts.Ignore())
       .ForMember(d => d.CreatedOn, opts => opts.Ignore())
@@ -19,9 +22,6 @@ public class ApplicationMapper : Profile
       ;
 
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>()
-      ;
-
-    CreateMap<Managers.Registry.Contract.Applications.Transcript, Transcript>()
       ;
   }
 }

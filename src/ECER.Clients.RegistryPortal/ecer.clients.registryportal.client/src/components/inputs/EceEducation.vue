@@ -107,8 +107,8 @@ import { defineComponent } from "vue";
 import EducationList from "@/components/EducationList.vue";
 import { useAlertStore } from "@/store/alert";
 import type { EceEducationProps } from "@/types/input";
+import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
-
 export default defineComponent({
   name: "EceEdducation",
   components: { EducationList },
@@ -118,12 +118,12 @@ export default defineComponent({
       required: true,
     },
     modelValue: {
-      type: Object as () => Education[],
+      type: Object as () => Components.Schemas.Transcript[],
       required: true,
     },
   },
   emits: {
-    "update:model-value": (_educationData: Education[]) => true,
+    "update:model-value": (_educationData: Components.Schemas.Transcript[]) => true,
   },
   setup: () => {
     const alertStore = useAlertStore();
@@ -169,17 +169,19 @@ export default defineComponent({
             "update:model-value",
             this.modelValue.map((e) => {
               if (e.id === this.id) {
-                return {
+                const item: Components.Schemas.Transcript = {
                   id: this.id,
-                  school: this.school,
-                  program: this.program,
+                  educationalInstitutionName: this.school,
+                  programName: this.program,
                   campusLocation: this.campusLocation,
                   studentName: this.studentName,
                   studentNumber: this.studentNumber,
-                  language: this.language,
-                  startYear: this.startYear,
-                  endYear: this.endYear,
+                  languageofInstruction: this.language,
+                  startDate: this.startYear,
+                  endDate: this.endYear,
                 };
+
+                return item;
               }
               return e;
             }),
@@ -194,15 +196,15 @@ export default defineComponent({
           this.$emit("update:model-value", [
             ...this.modelValue,
             {
-              id: (this.modelValue.length + 1).toString(),
-              school: this.school,
-              program: this.program,
+              id: this.id,
+              educationalInstitutionName: this.school,
+              programName: this.program,
               campusLocation: this.campusLocation,
               studentName: this.studentName,
               studentNumber: this.studentNumber,
-              language: this.language,
-              startYear: this.startYear,
-              endYear: this.endYear,
+              languageofInstruction: this.language,
+              startDate: this.startYear,
+              endDate: this.endYear,
             },
           ]);
 
@@ -226,22 +228,22 @@ export default defineComponent({
       // Change mode to add
       this.mode = "add";
     },
-    handleEdit(education: Education) {
+    handleEdit(education: Components.Schemas.Transcript) {
       // Set the form fields to the education data
-      this.id = education.id;
-      this.previousSchool = education.school;
-      this.school = education.school;
-      this.program = education.program;
-      this.campusLocation = education.campusLocation;
-      this.studentName = education.studentName;
-      this.studentNumber = education.studentNumber;
-      this.language = education.language;
-      this.startYear = education.startYear;
-      this.endYear = education.endYear;
+      this.id = education.id ?? "";
+      this.previousSchool = education.educationalInstitutionName ?? "";
+      this.school = education.educationalInstitutionName ?? "";
+      this.program = education.programName ?? "";
+      this.campusLocation = education.campusLocation ?? "";
+      this.studentName = education.studentName ?? "";
+      this.studentNumber = education.studentNumber ?? "";
+      this.language = education.languageofInstruction ?? "";
+      this.startYear = education.startDate ?? "";
+      this.endYear = education.endDate ?? "";
       // Change mode to add
       this.mode = "add";
     },
-    handleDelete(education: Education) {
+    handleDelete(education: Components.Schemas.Transcript) {
       // Remove the education from the modelValue
       this.$emit(
         "update:model-value",

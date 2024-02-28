@@ -36,8 +36,9 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public PortalStage Stage { get; set; }
 }
-public record Transcript(string? Id)
+public record Transcript()
 {
+  public string? Id { get; set; } = string.Empty;
   public string EducationalInstitutionName { get; set; } = string.Empty;
   public string ProgramName { get; set; } = string.Empty;
   public string CampusLocation { get; set; } = string.Empty;

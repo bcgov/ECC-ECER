@@ -87,6 +87,9 @@ export default defineComponent({
           case applicationWizard.steps.declaration.id:
             this.saveDeclaration();
             break;
+          case applicationWizard.steps.education.id:
+            this.saveEducation();
+            break;
           default:
             this.wizardStore.incrementStep();
         }
@@ -96,7 +99,6 @@ export default defineComponent({
       this.wizardStore.decrementStep();
     },
     async handleSaveAsDraft() {
-      this.applicationStore.currentApplication.stage = "ContactInformation"; //TODO investigate if we should save using the wizard store. Also think that we do not save the stage when handling draft.
       const applicationId = await createOrUpdateDraftApplication(this.applicationStore.currentApplication);
       if (applicationId) {
         this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
@@ -133,14 +135,24 @@ export default defineComponent({
     async saveDeclaration() {
       //TODO ECER-812 add in logic that if the application is at a further step that we do not overwrite the application stage.
       this.applicationStore.currentApplication.stage = "Declaration";
-      const applicationId = await createOrUpdateDraftApplication({
-        signedDate: this.wizardStore.wizardData[applicationWizard.steps.declaration.form.inputs.signedDate.id],
-      });
+      this.applicationStore.currentApplication.signedDate = this.wizardStore.wizardData[applicationWizard.steps.declaration.form.inputs.signedDate.id];
+      const applicationId = await createOrUpdateDraftApplication(this.applicationStore.currentApplication);
       if (applicationId) {
         this.alertStore.setSuccessAlert("Declaration saved successfully.");
         this.wizardStore.incrementStep();
       } else {
         this.alertStore.setFailureAlert("Declaration save failed");
+      }
+    },
+    async saveEducation() {
+      this.applicationStore.currentApplication.stage = "Education";
+      this.applicationStore.currentApplication.transcripts = this.wizardStore.wizardData[applicationWizard.steps.education.form.inputs.educationList.id];
+      const applicationId = await createOrUpdateDraftApplication(this.applicationStore.currentApplication);
+      if (applicationId) {
+        this.alertStore.setSuccessAlert("Education saved successfully.");
+        this.wizardStore.incrementStep();
+      } else {
+        this.alertStore.setFailureAlert("Education save failed");
       }
     },
   },

@@ -1,6 +1,7 @@
 import { getClient } from "@/api/client";
 import type { Components, Paths } from "@/types/openapi";
 import ApiResultHandler from "@/utils/apiResultHandler";
+
 const getApplications = async (): Promise<Components.Schemas.Application[] | null | undefined> => {
   const client = await getClient();
   return (await client.application_get()).data;
@@ -17,7 +18,6 @@ const createOrUpdateDraftApplication = async (application: Components.Schemas.Dr
     const pathParameters: Paths.DraftapplicationPut.PathParameters = {
       id: application.id || "",
     };
-
     const response = await client.draftapplication_put(pathParameters, body);
     return apiResultHandler.handleSuccess(response);
   } catch (error) {

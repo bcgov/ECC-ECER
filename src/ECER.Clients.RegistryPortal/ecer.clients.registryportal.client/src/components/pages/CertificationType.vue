@@ -52,8 +52,10 @@ export default defineComponent({
           certificationTypes: this.certificationTypeStore.certificationTypes,
           stage: "ContactInformation",
         };
-        const applicationId = await createOrUpdateDraftApplication(application);
-        if (applicationId) {
+        const response = await createOrUpdateDraftApplication(application);
+        if (response) {
+          const data = response as Components.Schemas.DraftApplicationResponse;
+          this.applicationStore.currentApplication.id = data.applicationId;
           this.$router.push("/requirements");
         }
       } else {
