@@ -17,6 +17,7 @@ declare namespace Components {
       id?: string | null;
       createdOn?: string; // date-time
       submittedOn?: string | null; // date-time
+      signedDate?: string | null; // date-time
       certificationTypes?: CertificationType[] | null;
       status?: ApplicationStatus;
     }
@@ -59,7 +60,7 @@ declare namespace Components {
     }
     export interface DraftApplication {
       id?: string | null;
-      signedDate?: string | null; // date
+      signedDate?: string | null; // date-time
       certificationTypes?: CertificationType[] | null;
       stage?: PortalStage;
     }
@@ -77,7 +78,7 @@ declare namespace Components {
       clientId?: string | null;
       scope?: string | null;
     }
-    export type PortalStage = "ContactInformation" | "Education" | "References" | "Review" | "Declaration";
+    export type PortalStage = "WorkReferences" | "CerticationType" | "ContactInformation" | "Education" | "CharacterReferences" | "Review" | "Declaration";
     /**
      * Save draft application request
      */
