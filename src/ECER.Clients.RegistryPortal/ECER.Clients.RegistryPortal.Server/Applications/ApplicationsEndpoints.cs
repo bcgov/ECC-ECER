@@ -120,7 +120,7 @@ public enum CertificationType
 public enum PortalStage
 {
   WorkReferences,
-  CerticationType,
+  CertificationType,
   ContactInformation,
   Education,
   CharacterReferences,

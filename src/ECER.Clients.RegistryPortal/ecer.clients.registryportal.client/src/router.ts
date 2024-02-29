@@ -46,11 +46,7 @@ const router = createRouter({
         },
       ],
     },
-    {
-      path: "/certification-type",
-      component: () => import("./components/pages/CertificationType.vue"),
-      meta: { requiresAuth: true },
-    },
+
     {
       path: "/login",
       component: () => import("./components/pages/Login.vue"),
@@ -70,11 +66,6 @@ const router = createRouter({
       path: "/logout-callback",
       component: () => import("./components/pages/LogoutCallback.vue"),
       meta: { requiresAuth: false },
-    },
-    {
-      path: "/requirements",
-      component: () => import("./components/pages/Requirements.vue"),
-      meta: { requiresAuth: true },
     },
     {
       path: "/application",

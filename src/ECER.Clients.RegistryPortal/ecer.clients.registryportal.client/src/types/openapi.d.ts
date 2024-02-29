@@ -78,7 +78,7 @@ declare namespace Components {
       clientId?: string | null;
       scope?: string | null;
     }
-    export type PortalStage = "WorkReferences" | "CerticationType" | "ContactInformation" | "Education" | "CharacterReferences" | "Review" | "Declaration";
+    export type PortalStage = "WorkReferences" | "CertificationType" | "ContactInformation" | "Education" | "CharacterReferences" | "Review" | "Declaration";
     /**
      * Save draft application request
      */

@@ -32,41 +32,13 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const applicationStore = useApplicationStore();
 
+    // Refresh userProfile from the server
     const userProfile = await getProfile();
     if (userProfile !== null) {
-      wizardStore.initializeWizard(applicationWizard, {
-        [applicationWizard.steps.declaration.form.inputs.applicantLegalName.id]: userStore.fullName,
-        [applicationWizard.steps.declaration.form.inputs.signedDate.id]: new Date().toISOString().slice(0, 10),
-
-        [applicationWizard.steps.profile.form.inputs.legalFirstName.id]: userProfile.firstName,
-        [applicationWizard.steps.profile.form.inputs.legalLastName.id]: userProfile.lastName,
-        [applicationWizard.steps.profile.form.inputs.dateOfBirth.id]: userProfile.dateOfBirth,
-        [applicationWizard.steps.profile.form.inputs.addresses.id]: {
-          [AddressType.RESIDENTIAL]: userProfile.residentialAddress || userStore.oidcAddress,
-          [AddressType.MAILING]: userProfile.mailingAddress || userStore.oidcAddress,
-        },
-        [applicationWizard.steps.profile.form.inputs.email.id]: userProfile.email,
-        [applicationWizard.steps.profile.form.inputs.legalMiddleName.id]: userProfile.middleName,
-        [applicationWizard.steps.profile.form.inputs.preferredName.id]: userProfile.preferredName,
-        [applicationWizard.steps.profile.form.inputs.alternateContactNumber.id]: userProfile.alternateContactPhone,
-        [applicationWizard.steps.profile.form.inputs.primaryContactNumber.id]: userProfile.phone,
-      });
-    } else {
-      wizardStore.initializeWizard(applicationWizard, {
-        [applicationWizard.steps.declaration.form.inputs.applicantLegalName.id]: userStore.fullName,
-        [applicationWizard.steps.declaration.form.inputs.signedDate.id]: new Date().toISOString().slice(0, 10),
-
-        [applicationWizard.steps.profile.form.inputs.legalFirstName.id]: userStore.oidcUserInfo.firstName,
-        [applicationWizard.steps.profile.form.inputs.legalLastName.id]: userStore.oidcUserInfo.lastName,
-        [applicationWizard.steps.profile.form.inputs.dateOfBirth.id]: userStore.oidcUserInfo.dateOfBirth,
-        [applicationWizard.steps.profile.form.inputs.addresses.id]: {
-          [AddressType.RESIDENTIAL]: userStore.oidcAddress,
-          [AddressType.MAILING]: userStore.oidcAddress,
-        },
-        [applicationWizard.steps.profile.form.inputs.email.id]: userStore.oidcUserInfo.email,
-        [applicationWizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.oidcUserInfo.phone,
-      });
+      userStore.setUserProfile(userProfile);
     }
+
+    wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
 
     return { applicationWizard, applicationStore, wizardStore, alertStore, userStore };
   },
@@ -78,11 +50,16 @@ export default defineComponent({
       if (!this.isFormValid) {
         this.alertStore.setFailureAlert("Please fill out all required fields");
       } else {
-        switch (this.wizardStore.currentStepId) {
-          case applicationWizard.steps.profile.id:
+        switch (this.wizardStore.currentStage) {
+          case "ContactInformation":
             this.saveProfile();
             break;
-          case applicationWizard.steps.declaration.id:
+          case "Declaration":
+          case "Review":
+          case "CertificationType":
+          case "Education":
+          case "WorkReferences":
+          case "CharacterReferences":
             this.saveDeclaration();
             break;
           default:
@@ -92,10 +69,11 @@ export default defineComponent({
     },
     handleBack() {
       this.wizardStore.decrementStep();
+      this.isFormValid = true;
     },
     async handleSaveAsDraft() {
-      this.applicationStore.currentApplication.stage = "ContactInformation"; //TODO investigate if we should save using the wizard store. Also think that we do not save the stage when handling draft.
-      const applicationId = await createOrUpdateDraftApplication(this.applicationStore.currentApplication);
+      this.applicationStore.draftApplication.stage = "ContactInformation";
+      const applicationId = await createOrUpdateDraftApplication(this.applicationStore.draftApplication);
       if (applicationId) {
         this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
       }
@@ -130,7 +108,7 @@ export default defineComponent({
     },
     async saveDeclaration() {
       //TODO ECER-812 add in logic that if the application is at a further step that we do not overwrite the application stage.
-      this.applicationStore.currentApplication.stage = "Declaration";
+      this.applicationStore.draftApplication.stage = "Declaration";
       const applicationId = await createOrUpdateDraftApplication({
         signedDate: this.wizardStore.wizardData[applicationWizard.steps.declaration.form.inputs.signedDate.id],
       });

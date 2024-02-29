@@ -1,11 +1,11 @@
 <template>
   <WizardHeader class="mb-6" />
   <v-stepper v-model="wizardStore.step" min-height="100dvh" flat color="primary" :items="getStepTitles()" :alt-labels="true" :mobile="$vuetify.display.mobile">
-    <template v-for="step in wizard.steps" :key="step.id" #[step.key]>
+    <template v-for="step in wizard.steps" :key="step.stage" #[step.key]>
       <v-container>
         <h3>{{ step.title }}</h3>
         <h4>{{ step.subtitle }}</h4>
-        <DeclarationStepContent v-if="step.id == 'declaration'" class="mt-6" />
+        <DeclarationStepContent v-if="step.stage == 'Declaration'" class="mt-6" />
         <v-row>
           <v-col cols="12" md="8" lg="6" xl="4">
             <EceForm

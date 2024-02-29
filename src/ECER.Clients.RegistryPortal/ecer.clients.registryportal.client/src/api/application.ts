@@ -1,6 +1,7 @@
 import { getClient } from "@/api/client";
 import type { Components, Paths } from "@/types/openapi";
 import ApiResultHandler from "@/utils/apiResultHandler";
+
 const getApplications = async (): Promise<Components.Schemas.Application[] | null | undefined> => {
   const client = await getClient();
   return (await client.application_get()).data;

@@ -4,22 +4,26 @@ import { getApplications } from "@/api/application";
 import type { Components } from "@/types/openapi";
 export interface ApplicationState {
   applications: Components.Schemas.Application[] | null | undefined;
-  currentApplication: Components.Schemas.DraftApplication;
+  draftApplication: Components.Schemas.DraftApplication;
 }
 
 export const useApplicationStore = defineStore("application", {
   state: (): ApplicationState => ({
     applications: [],
-    currentApplication: {
+    draftApplication: {
       certificationTypes: [],
       id: null,
-      stage: "ContactInformation",
+      signedDate: new Date().toISOString().slice(0, 10),
+      stage: "CertificationType",
     },
   }),
   persist: {
-    paths: ["currentApplication"],
+    paths: ["draftApplication"],
   },
   getters: {
+    hasDraftApplication(state): boolean {
+      return state.draftApplication.id !== null;
+    },
     inProgressCount(state): number {
       return state.applications?.length ?? 0;
     },

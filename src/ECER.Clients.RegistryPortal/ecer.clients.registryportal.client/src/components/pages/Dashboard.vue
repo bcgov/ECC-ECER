@@ -48,7 +48,7 @@
                 <p class="small">Complete and submit your application for certification in early childhood education.</p>
               </v-card-item>
               <v-card-actions class="ma-4">
-                <v-btn variant="flat" rounded="lg" color="primary" @click="$router.push('/certification-type')">Apply Now</v-btn>
+                <v-btn variant="flat" rounded="lg" color="primary" @click="$router.push('/application')">Start New Application</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>

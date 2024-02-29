@@ -4,7 +4,7 @@ import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
 
 const profileInformationForm: Form = {
-  id: "profile-information-form",
+  id: "profileInformationForm",
   title: "Contact Information",
   inputs: {
     legalLastName: {
