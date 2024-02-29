@@ -1,7 +1,6 @@
 <template>
   <Wizard
     :wizard="applicationWizard"
-    :wizard-data="wizardStore.wizardData"
     @save-and-continue="handleSaveAndContinue"
     @save-as-draft="handleSaveAsDraft"
     @back="handleBack"

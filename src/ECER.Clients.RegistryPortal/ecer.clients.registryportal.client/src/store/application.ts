@@ -11,7 +11,7 @@ export const useApplicationStore = defineStore("application", {
   state: (): ApplicationState => ({
     applications: [],
     draftApplication: {
-      certificationTypes: [],
+      certificationTypes: [] as Components.Schemas.CertificationType[],
       id: null,
       signedDate: new Date().toISOString().slice(0, 10),
       stage: "CertificationType",

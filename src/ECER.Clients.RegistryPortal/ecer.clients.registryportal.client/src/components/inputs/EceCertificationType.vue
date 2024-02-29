@@ -75,12 +75,24 @@
 import { mapState } from "pinia";
 import { defineComponent } from "vue";
 
+import ECEAssistantRequirements from "@/components/ECEAssistantRequirements.vue";
+import ECEFiveYearRequirements from "@/components/ECEFiveYearRequirements.vue";
+import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
+import IteRequirements from "@/components/IteRequirements.vue";
+import SneRequirements from "@/components/SneRequirements.vue";
 import { useCertificationTypeStore } from "@/store/certificationType";
 import type { EceCertificateTypeProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "EceCertificationType",
+  components: {
+    ECEAssistantRequirements,
+    ECEOneYearRequirements,
+    ECEFiveYearRequirements,
+    SneRequirements,
+    IteRequirements,
+  },
   props: {
     props: {
       type: Object as () => EceCertificateTypeProps,
@@ -134,7 +146,6 @@ export default defineComponent({
   },
   watch: {
     certificationTypes(newValue: Components.Schemas.CertificationType[], _) {
-      console.log(newValue);
       this.$emit("update:model-value", newValue);
     },
   },

@@ -44,7 +44,6 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.declaration.form.inputs.applicantLegalName.id]: userStore.fullName,
         [wizard.steps.declaration.form.inputs.signedDate.id]: draftApplication.signedDate,
         [wizard.steps.declaration.form.inputs.consentCheckbox.id]: true,
-
         // Contact Information step data
         [wizard.steps.profile.form.inputs.legalLastName.id]: userStore.userProfile?.lastName || userStore.oidcUserInfo?.lastName,
         [wizard.steps.profile.form.inputs.legalFirstName.id]: userStore.userProfile?.firstName || userStore.oidcUserInfo?.firstName,
