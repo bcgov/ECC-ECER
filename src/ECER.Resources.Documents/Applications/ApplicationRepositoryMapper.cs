@@ -11,6 +11,8 @@ internal class ApplicationRepositoryMapper : Profile
     _ = CreateMap<Application, ecer_Application>(MemberList.Source)
         .ForSourceMember(s => s.CreatedOn, opts => opts.DoNotValidate())
         .ForSourceMember(s => s.SubmittedOn, opts => opts.DoNotValidate())
+        .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
+        .ForSourceMember(s => s.CertificationTypes, opts => opts.DoNotValidate())
         .ForMember(d => d.ecer_ApplicationId, opts => opts.MapFrom(s => s.Id))
         .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
         .ForMember(d => d.ecer_IsECEAssistant, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.EceAssistant)))
@@ -20,8 +22,6 @@ internal class ApplicationRepositoryMapper : Profile
         .ForMember(d => d.ecer_isSNE, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.Sne)))
         .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.SignedDate))
         .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.Stage))
-        .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
-        .ForSourceMember(s => s.CertificationTypes, opts => opts.DoNotValidate())
         .ReverseMap()
         .ValidateMemberList(MemberList.Destination)
         .ForCtorParam(nameof(Application.Id), opts => opts.MapFrom(s => s.ecer_ApplicationId!.ToString()))
@@ -30,7 +30,7 @@ internal class ApplicationRepositoryMapper : Profile
         .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
         .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted))
         .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.ecer_DateSigned))
-    ;
+        .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.ecer_transcript_Applicationid));
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
         .ConstructUsing((s, _) =>

@@ -55,21 +55,9 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
       if (ecerApplication.ecer_DateSigned.HasValue && existingApplication.ecer_DateSigned.HasValue) ecerApplication.ecer_DateSigned = existingApplication.ecer_DateSigned;
 
-      var applicationTranscripts = context.ecer_TranscriptSet.Where(t => t.ecer_Applicationid.Id == existingApplication.Id);
-      foreach (var transcript in applicationTranscripts)
-      {
-        context.Detach(transcript);
-      }
       context.Detach(existingApplication);
 
-      foreach (var transcript in application.Transcripts)
-      {
-        transcript.Id = Guid.NewGuid().ToString();
-        var ecerTranscript = mapper.Map<ecer_Transcript>(transcript)!;
-        context.AddObject(ecerTranscript);
-        //context.AddLink(ecerTranscript, ecer_Transcript.Fields.ecer_transcript_Applicantid_Contact, ecerApplication.ecer_application_Applicantid_contact);
-        //context.AddLink(ecerTranscript, ecer_Transcript.Fields.ecer_transcript_Applicationid, ecerApplication);
-      }
+      _ = UpdateApplicationTranscripts(ecerApplication);
 
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);
@@ -77,6 +65,51 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
+  }
+
+  public async Task UpdateApplicationTranscripts(ecer_Application application)
+  {
+    await Task.CompletedTask;
+    var existingTranscripts = context.ecer_TranscriptSet.Where(t => t.ecer_Applicationid.Id == application.Id);
+
+    // 1. Remove Transcripts that they exist in the dataverse but not in the application
+    foreach (var transcript in existingTranscripts.ToList())
+    {
+      if (!application.ecer_transcript_Applicationid.Any(t => t.Id == transcript.Id))
+      {
+        context.Detach(transcript);
+      }
+    }
+
+    // 2. Add New Transcripts that they exist in the application but not in the dataverse
+    foreach (var transcript in application.ecer_transcript_Applicationid)
+    {
+      if (!existingTranscripts.Any(t => t.Id == transcript.Id))
+      {
+        transcript.Id = Guid.NewGuid();
+        var ecerTranscript = mapper.Map<ecer_Transcript>(transcript)!;
+        context.Attach(ecerTranscript);
+        context.AddLink(application, ecer_Application.Fields.ecer_transcript_Applicationid, ecerTranscript);
+      }
+    }
+
+    // 3. Update Existing Transcripts
+    foreach (var oldTranscript in existingTranscripts)
+    {
+      var newTranscript = application.ecer_transcript_Applicationid.FirstOrDefault(t => t.Id == oldTranscript.Id);
+      if (newTranscript != null)
+      {
+        oldTranscript.ecer_StudentName = newTranscript.ecer_StudentName;
+        oldTranscript.ecer_StudentNumber = newTranscript.ecer_StudentNumber;
+        oldTranscript.ecer_StartDate = newTranscript.ecer_StartDate;
+        oldTranscript.ecer_EndDate = newTranscript.ecer_EndDate;
+        oldTranscript.ecer_CampusLocation = newTranscript.ecer_CampusLocation;
+        oldTranscript.ecer_ProgramName = newTranscript.ecer_ProgramName;
+        oldTranscript.ecer_LanguageofInstruction = newTranscript.ecer_LanguageofInstruction;
+        oldTranscript.ecer_EducationInstitutionFullName = newTranscript.ecer_EducationInstitutionFullName;
+      }
+    }
+    context.SaveChanges();
   }
 
   public Task<string> Submit(string applicationId) => throw new NotImplementedException();
