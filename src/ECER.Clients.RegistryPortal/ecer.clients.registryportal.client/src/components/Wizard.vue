@@ -77,7 +77,7 @@ export default defineComponent({
   }),
   computed: {
     getFormId() {
-      return this.wizardStore.steps[this.wizardStore.step - 1].form.id;
+      return this.wizardStore.currentStep.form.id;
     },
   },
   methods: {

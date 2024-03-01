@@ -9,7 +9,9 @@ const getApplications = async (): Promise<Components.Schemas.Application[] | nul
 
 const apiResultHandler = new ApiResultHandler();
 
-const createOrUpdateDraftApplication = async (application: Components.Schemas.DraftApplication): Promise<string | null | undefined> => {
+const createOrUpdateDraftApplication = async (
+  application: Components.Schemas.DraftApplication,
+): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> => {
   try {
     const client = await getClient();
     const body: Paths.DraftapplicationPut.RequestBody = {

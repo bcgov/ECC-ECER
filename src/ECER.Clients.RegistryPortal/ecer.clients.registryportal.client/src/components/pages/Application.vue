@@ -11,7 +11,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import { createOrUpdateDraftApplication } from "@/api/application";
 import { getProfile, putProfile } from "@/api/profile";
 import Wizard from "@/components/Wizard.vue";
 import applicationWizard from "@/config/application-wizard";
@@ -49,7 +48,7 @@ export default defineComponent({
       if (!this.isFormValid) {
         this.alertStore.setFailureAlert("Please fill out all required fields");
       } else {
-        switch (this.wizardStore.currentStage) {
+        switch (this.wizardStore.currentStepStage) {
           case "ContactInformation":
             this.saveProfile();
             break;
@@ -59,23 +58,28 @@ export default defineComponent({
           case "Education":
           case "WorkReferences":
           case "CharacterReferences":
-            this.saveDeclaration();
+            this.saveDraft();
             break;
           default:
-            this.wizardStore.incrementStep();
+            break;
         }
+        this.incrementWizard();
       }
     },
-    handleBack() {
+    incrementWizard() {
+      this.wizardStore.incrementStep();
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+    },
+    decrementWizard() {
       this.wizardStore.decrementStep();
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+    },
+    handleBack() {
+      this.decrementWizard();
       this.isFormValid = true;
     },
     async handleSaveAsDraft() {
-      this.applicationStore.draftApplication.stage = "ContactInformation";
-      const applicationId = await createOrUpdateDraftApplication(this.applicationStore.draftApplication);
-      if (applicationId) {
-        this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
-      }
+      this.saveDraft();
     },
     async saveProfile() {
       const success = await putProfile({
@@ -105,18 +109,19 @@ export default defineComponent({
         this.alertStore.setFailureAlert("Profile save failed");
       }
     },
-    async saveDeclaration() {
-      //TODO ECER-812 add in logic that if the application is at a further step that we do not overwrite the application stage.
-      this.applicationStore.draftApplication.stage = "Declaration";
-      const applicationId = await createOrUpdateDraftApplication({
-        signedDate: this.wizardStore.wizardData[applicationWizard.steps.declaration.form.inputs.signedDate.id],
-      });
-      if (applicationId) {
-        this.alertStore.setSuccessAlert("Declaration saved successfully.");
-        this.wizardStore.incrementStep();
-      } else {
-        this.alertStore.setFailureAlert("Declaration save failed");
-      }
+    async saveDraft() {
+      // Prepare draft application to save saving
+      // this.applicationStore.draftApplication.stage = "Declaration";
+      this.applicationStore.upsertDraftApplication();
+      // const applicationId = await createOrUpdateDraftApplication({
+      //   signedDate: this.wizardStore.wizardData[applicationWizard.steps.declaration.form.inputs.signedDate.id],
+      // });
+      // if (applicationId) {
+      //   this.alertStore.setSuccessAlert("Declaration saved successfully.");
+      //   this.wizardStore.incrementStep();
+      // } else {
+      //   this.alertStore.setFailureAlert("Declaration save failed");
+      // }
     },
   },
 });

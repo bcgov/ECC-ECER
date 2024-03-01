@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 import { AddressType } from "@/components/inputs/EceAddresses.vue";
 import type { Components } from "@/types/openapi";
-import type { Wizard } from "@/types/wizard";
+import type { Step, Wizard } from "@/types/wizard";
 
 import { useUserStore } from "./user";
 
@@ -24,11 +24,14 @@ export const useWizardStore = defineStore("wizard", {
   }),
   getters: {
     steps: (state) => Object.values(state.wizardConfig.steps),
-    currentStage(state): Components.Schemas.PortalStage {
-      return this.steps[state.step - 1].stage;
+    currentStep(state): Step {
+      return this.steps[state.step - 1];
     },
     currentStepId(state): string {
       return this.steps[state.step - 1].id;
+    },
+    currentStepStage(state): Components.Schemas.PortalStage {
+      return this.steps[state.step - 1].stage;
     },
   },
   actions: {
@@ -36,6 +39,10 @@ export const useWizardStore = defineStore("wizard", {
       const userStore = useUserStore();
 
       this.wizardConfig = wizard;
+
+      // set step to the index of steps where the stage matches the draft application stage
+      this.step = Object.values(wizard.steps).findIndex((step) => step.stage === draftApplication.stage) + 1;
+
       this.wizardData = {
         // Certification Type step data
         [wizard.steps.certificationType.form.inputs.certificationSelection.id]: draftApplication.certificationTypes,
@@ -44,6 +51,7 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.declaration.form.inputs.applicantLegalName.id]: userStore.fullName,
         [wizard.steps.declaration.form.inputs.signedDate.id]: draftApplication.signedDate,
         [wizard.steps.declaration.form.inputs.consentCheckbox.id]: true,
+
         // Contact Information step data
         [wizard.steps.profile.form.inputs.legalLastName.id]: userStore.userProfile?.lastName || userStore.oidcUserInfo?.lastName,
         [wizard.steps.profile.form.inputs.legalFirstName.id]: userStore.userProfile?.firstName || userStore.oidcUserInfo?.firstName,

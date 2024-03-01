@@ -48,7 +48,10 @@
                 <p class="small">Complete and submit your application for certification in early childhood education.</p>
               </v-card-item>
               <v-card-actions class="ma-4">
-                <v-btn variant="flat" rounded="lg" color="primary" @click="$router.push('/application')">Start New Application</v-btn>
+                <v-btn v-if="applicationStore.hasDraftApplication" variant="flat" rounded="lg" color="primary" @click="$router.push('/application')">
+                  Continue Your Application
+                </v-btn>
+                <v-btn v-else variant="flat" rounded="lg" color="primary" @click="handleStartNewApplication">Start New Application</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -78,6 +81,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { useApplicationStore } from "@/store/application";
 import { useMessageStore } from "@/store/message";
 import { useUserStore } from "@/store/user";
 import { formatPhoneNumber } from "@/utils/format";
@@ -87,6 +91,7 @@ export default defineComponent({
   setup() {
     const userStore = useUserStore();
     const messageStore = useMessageStore();
+    const applicationStore = useApplicationStore();
 
     const navigationOptions = [
       { name: "My Certifications", path: "/my-certifications", icon: "mdi-folder" },
@@ -99,13 +104,17 @@ export default defineComponent({
       { name: "Profile", path: "/profile", icon: "mdi-account-edit" },
     ];
 
-    return { userStore, navigationOptions };
+    return { userStore, applicationStore, navigationOptions };
   },
   data: () => ({
     drawer: null as boolean | null | undefined,
   }),
   methods: {
     formatPhoneNumber,
+    handleStartNewApplication() {
+      this.applicationStore.upsertDraftApplication();
+      this.$router.push("/application");
+    },
   },
 });
 </script>
