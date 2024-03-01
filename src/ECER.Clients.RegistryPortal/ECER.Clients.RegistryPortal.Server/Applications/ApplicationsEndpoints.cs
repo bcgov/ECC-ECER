@@ -97,6 +97,7 @@ public record Application
   public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public ApplicationStatus Status { get; set; }
+  public PortalStage Stage { get; set; }
 }
 
 public enum CertificationType

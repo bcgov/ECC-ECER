@@ -20,6 +20,7 @@ declare namespace Components {
       signedDate?: string | null; // date-time
       certificationTypes?: CertificationType[] | null;
       status?: ApplicationStatus;
+      stage?: PortalStage;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
