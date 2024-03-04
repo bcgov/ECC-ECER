@@ -2,6 +2,9 @@ import { defineStore } from "pinia";
 
 import { createOrUpdateDraftApplication, getApplications } from "@/api/application";
 import type { Components } from "@/types/openapi";
+
+import { useCertificationTypeStore } from "./certificationType";
+import { useWizardStore } from "./wizard";
 export interface ApplicationState {
   applications: Components.Schemas.Application[] | null | undefined;
   draftApplication: Components.Schemas.DraftApplication;
@@ -38,6 +41,16 @@ export const useApplicationStore = defineStore("application", {
       if (this.applications?.length) {
         this.draftApplication = this.applications[0];
       }
+    },
+    prepareDraftApplicationFromWizard() {
+      const wizardStore = useWizardStore();
+      const certificationTypeStore = useCertificationTypeStore();
+
+      this.draftApplication.stage = wizardStore.currentStepStage;
+
+      this.draftApplication.certificationTypes = certificationTypeStore.certificationTypes;
+
+      this.draftApplication.signedDate = wizardStore.wizardData[wizardStore.wizardConfig.steps.declaration.form.inputs.signedDate.id];
     },
     async upsertDraftApplication() {
       const draftApplicationResponse = await createOrUpdateDraftApplication(this.draftApplication);

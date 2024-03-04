@@ -16,6 +16,7 @@ import Wizard from "@/components/Wizard.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
+import { useCertificationTypeStore } from "@/store/certificationType";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 
@@ -29,6 +30,7 @@ export default defineComponent({
     const userStore = useUserStore();
     const alertStore = useAlertStore();
     const applicationStore = useApplicationStore();
+    const certificationTypeStore = useCertificationTypeStore();
 
     // Refresh userProfile from the server
     const userProfile = await getProfile();
@@ -38,7 +40,7 @@ export default defineComponent({
 
     wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
 
-    return { applicationWizard, applicationStore, wizardStore, alertStore, userStore };
+    return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore };
   },
   data: () => ({
     isFormValid: null as boolean | null,
@@ -49,21 +51,27 @@ export default defineComponent({
         this.alertStore.setFailureAlert("Please fill out all required fields");
       } else {
         switch (this.wizardStore.currentStepStage) {
+          case "CertificationType":
+            if (this.certificationTypeStore.mode == "selection") {
+              this.certificationTypeStore.mode = "terms";
+            } else {
+              this.saveDraft();
+              this.incrementWizard();
+            }
+            break;
           case "ContactInformation":
             this.saveProfile();
+            this.incrementWizard();
             break;
           case "Declaration":
-          case "Review":
-          case "CertificationType":
           case "Education":
           case "WorkReferences":
           case "CharacterReferences":
+          case "Review":
             this.saveDraft();
-            break;
-          default:
+            this.incrementWizard();
             break;
         }
-        this.incrementWizard();
       }
     },
     incrementWizard() {
@@ -75,11 +83,28 @@ export default defineComponent({
       this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
     },
     handleBack() {
-      this.decrementWizard();
-      this.isFormValid = true;
+      switch (this.wizardStore.currentStepStage) {
+        case "CertificationType":
+          if (this.certificationTypeStore.mode == "terms") {
+            this.certificationTypeStore.mode = "selection";
+          }
+          break;
+        default:
+          this.saveDraft();
+          this.decrementWizard();
+          this.isFormValid = true;
+          break;
+      }
     },
     async handleSaveAsDraft() {
-      this.saveDraft();
+      switch (this.wizardStore.currentStepStage) {
+        case "ContactInformation":
+          this.saveProfile();
+          break;
+        default:
+          this.saveDraft();
+          break;
+      }
     },
     async saveProfile() {
       const success = await putProfile({
@@ -104,24 +129,13 @@ export default defineComponent({
           phone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.primaryContactNumber.id],
           dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
         });
-        this.wizardStore.incrementStep();
       } else {
         this.alertStore.setFailureAlert("Profile save failed");
       }
     },
     async saveDraft() {
-      // Prepare draft application to save saving
-      // this.applicationStore.draftApplication.stage = "Declaration";
+      this.applicationStore.prepareDraftApplicationFromWizard();
       this.applicationStore.upsertDraftApplication();
-      // const applicationId = await createOrUpdateDraftApplication({
-      //   signedDate: this.wizardStore.wizardData[applicationWizard.steps.declaration.form.inputs.signedDate.id],
-      // });
-      // if (applicationId) {
-      //   this.alertStore.setSuccessAlert("Declaration saved successfully.");
-      //   this.wizardStore.incrementStep();
-      // } else {
-      //   this.alertStore.setFailureAlert("Declaration save failed");
-      // }
     },
   },
 });

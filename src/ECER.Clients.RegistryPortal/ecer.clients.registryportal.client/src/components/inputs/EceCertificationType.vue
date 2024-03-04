@@ -1,5 +1,5 @@
 <template>
-  <v-expansion-panels v-if="mode == 'selection'" v-model="selection" variant="accordion">
+  <v-expansion-panels v-if="certificationTypeStore.mode == 'selection'" v-model="selection" variant="accordion">
     <v-expansion-panel v-for="option in props.options" :key="option.id" :value="option.id" class="rounded-lg">
       <v-expansion-panel-title>
         <v-row no-gutters>
@@ -32,15 +32,7 @@
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
-  <div v-if="mode == 'requirements'">
-    <v-row class="ga-4">
-      <v-col cols="1" offset="0" offset-lg="2" offset-md="2" offset-xl="2">
-        <v-btn variant="text" @click="$router.back()">
-          <v-icon start icon="mdi-arrow-left"></v-icon>
-          Back
-        </v-btn>
-      </v-col>
-    </v-row>
+  <div v-if="certificationTypeStore.mode == 'terms'">
     <v-row>
       <v-col cols="12" md="8" lg="8" xl="8" class="mx-auto">
         <v-card>
@@ -127,9 +119,6 @@ export default defineComponent({
 
     return { certificationTypeStore };
   },
-  data: () => ({
-    mode: "selection",
-  }),
   computed: {
     selection: {
       get() {

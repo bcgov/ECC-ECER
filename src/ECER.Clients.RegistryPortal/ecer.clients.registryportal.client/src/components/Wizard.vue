@@ -22,7 +22,16 @@
       <v-container class="mb-8">
         <v-row class="justify-space-between ga-4" no-gutters>
           <v-col cols="auto" class="mr-auto">
-            <v-btn :disabled="wizardStore.step === 1" rounded="lg" variant="outlined" color="primary" aut @click="$emit('back')">Back</v-btn>
+            <v-btn
+              :disabled="wizardStore.step === 1 && certificationTypeStore.mode === 'selection'"
+              rounded="lg"
+              variant="outlined"
+              color="primary"
+              aut
+              @click="$emit('back')"
+            >
+              Back
+            </v-btn>
           </v-col>
           <v-col cols="auto">
             <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="$emit('saveAsDraft')">Save as Draft</v-btn>
@@ -42,6 +51,7 @@ import EceForm from "@/components/Form.vue";
 import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
+import { useCertificationTypeStore } from "@/store/certificationType";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import type { Step, Wizard } from "@/types/wizard";
@@ -65,8 +75,10 @@ export default defineComponent({
     const wizardStore = useWizardStore();
     const userStore = useUserStore();
     const alertStore = useAlertStore();
+    const certificationTypeStore = useCertificationTypeStore();
 
     return {
+      certificationTypeStore,
       wizardStore,
       userStore,
       alertStore,
