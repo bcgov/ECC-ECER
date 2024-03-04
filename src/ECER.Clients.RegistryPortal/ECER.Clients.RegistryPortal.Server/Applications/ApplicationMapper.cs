@@ -7,6 +7,8 @@ public class ApplicationMapper : Profile
   public ApplicationMapper()
   {
     CreateMap<Transcript, Managers.Registry.Contract.Applications.Transcript>()
+      .ForMember(d => d.Id, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.Id) ? null : s.Id))
+      .ReverseMap()
     ;
 
     CreateMap<DraftApplication, Managers.Registry.Contract.Applications.Application>()

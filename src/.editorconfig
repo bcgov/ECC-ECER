@@ -34,3 +34,6 @@ dotnet_diagnostic.CA1822.severity = suggestion
 
 # CA1056: URI-like properties should not be strings
 dotnet_diagnostic.CA1056.severity = suggestion
+
+# S6605: Collection-specific "Exists" method should be used instead of the "Any" extension
+dotnet_diagnostic.S6605.severity = suggestion

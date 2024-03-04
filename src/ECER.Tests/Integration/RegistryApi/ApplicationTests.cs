@@ -25,7 +25,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var applications = await applicationsResponse.ReadAsJsonAsync<Application[]>();
     applications.ShouldNotBeNull();
   }
-  
+
   [Fact]
   public async Task GetApplications_ById()
   {
@@ -36,9 +36,9 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl("/api/draftapplications");
       _.StatusCodeShouldBeOk();
     });
-    
+
     var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
-    
+
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
@@ -88,7 +88,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var existingApplicationId = (await existingAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
     existingApplicationId.ShouldBe(applicationId);
   }
-  
+
   private DraftApplication CreateDraftApplication()
   {
     return new Faker<DraftApplication>("en_CA")

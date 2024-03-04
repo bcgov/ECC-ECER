@@ -28,7 +28,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
 
 public record Transcript()
 {
-  public string? Id { get; set; } = string.Empty;
+  public string? Id { get; set; }
   public string EducationalInstitutionName { get; set; } = string.Empty;
   public string ProgramName { get; set; } = string.Empty;
   public string CampusLocation { get; set; } = string.Empty;
