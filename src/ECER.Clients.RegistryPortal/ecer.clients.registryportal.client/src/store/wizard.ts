@@ -67,6 +67,12 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.userProfile?.phone || userStore.oidcUserInfo?.phone,
         [wizard.steps.profile.form.inputs.alternateContactNumber.id]: userStore.userProfile?.alternateContactPhone,
         [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || userStore.oidcUserInfo?.email,
+
+        // TODO Character References step data
+        [wizard.steps.characterReference.form.inputs.firstName.id]: "",
+        [wizard.steps.characterReference.form.inputs.lastName.id]: "",
+        [wizard.steps.characterReference.form.inputs.email.id]: "",
+        [wizard.steps.characterReference.form.inputs.phoneNumber.id]: "",
       };
     },
     setWizardData(wizardData: WizardData): void {
