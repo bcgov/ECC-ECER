@@ -38,6 +38,7 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
+    certificationTypeStore.$reset();
     wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
 
     return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore };

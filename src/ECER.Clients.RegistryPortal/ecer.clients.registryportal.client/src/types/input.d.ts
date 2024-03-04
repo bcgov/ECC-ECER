@@ -28,6 +28,7 @@ interface EceCheckboxProps {
   rules?: readonly ValidationRule$1[];
   label: string;
   disabled?: boolean;
+  checkableOnce?: boolean;
 }
 
 interface EceCertificateTypeProps {

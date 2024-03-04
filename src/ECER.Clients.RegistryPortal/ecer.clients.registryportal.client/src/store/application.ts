@@ -16,7 +16,7 @@ export const useApplicationStore = defineStore("application", {
     draftApplication: {
       certificationTypes: [] as Components.Schemas.CertificationType[],
       id: undefined,
-      signedDate: new Date().toISOString().slice(0, 10),
+      signedDate: null,
       stage: "CertificationType",
     },
   }),
@@ -25,7 +25,7 @@ export const useApplicationStore = defineStore("application", {
   },
   getters: {
     hasDraftApplication(state): boolean {
-      return state.draftApplication.id !== null;
+      return state.draftApplication.id !== undefined;
     },
     inProgressCount(state): number {
       return state.applications?.length ?? 0;
@@ -36,6 +36,9 @@ export const useApplicationStore = defineStore("application", {
   },
   actions: {
     async fetchApplications() {
+      // Drop any existing draft application
+      this.$reset();
+
       this.applications = await getApplications();
       // Load the first application as the current draft application
       if (this.applications?.length) {
@@ -50,7 +53,9 @@ export const useApplicationStore = defineStore("application", {
 
       this.draftApplication.certificationTypes = certificationTypeStore.certificationTypes;
 
-      this.draftApplication.signedDate = wizardStore.wizardData[wizardStore.wizardConfig.steps.declaration.form.inputs.signedDate.id];
+      this.draftApplication.signedDate = wizardStore.wizardData[wizardStore.wizardConfig.steps.declaration.form.inputs.consentCheckbox.id]
+        ? wizardStore.wizardData[wizardStore.wizardConfig.steps.declaration.form.inputs.signedDate.id]
+        : null;
     },
     async upsertDraftApplication() {
       const draftApplicationResponse = await createOrUpdateDraftApplication(this.draftApplication);

@@ -14,6 +14,7 @@ const declarationForm: Form = {
         rules: [Rules.hasCheckbox("Please agree to continue")],
         label: "I understand and agree with the statements above",
         disabled: false,
+        checkableOnce: true,
       },
     },
     applicantLegalName: {
