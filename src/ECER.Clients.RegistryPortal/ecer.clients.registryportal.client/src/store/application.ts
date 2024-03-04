@@ -39,9 +39,10 @@ export const useApplicationStore = defineStore("application", {
       // Drop any existing draft application
       this.$reset();
 
-      this.applications = await getApplications();
+      const { data: applications } = await getApplications();
       // Load the first application as the current draft application
-      if (this.applications?.length) {
+      if (applications?.length) {
+        this.applications = applications;
         this.draftApplication = this.applications[0];
       }
     },
@@ -57,9 +58,17 @@ export const useApplicationStore = defineStore("application", {
         ? wizardStore.wizardData[wizardStore.wizardConfig.steps.declaration.form.inputs.signedDate.id]
         : null;
     },
-    async upsertDraftApplication() {
-      const draftApplicationResponse = await createOrUpdateDraftApplication(this.draftApplication);
-      if (draftApplicationResponse) this.draftApplication.id = draftApplicationResponse.applicationId;
+    async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
+      const { data: draftApplicationResponse } = await createOrUpdateDraftApplication(this.draftApplication);
+      if (draftApplicationResponse !== null && draftApplicationResponse !== undefined) {
+        this.draftApplication.id = draftApplicationResponse.applicationId;
+      }
+      return draftApplicationResponse;
+    },
+
+    async saveDraft(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
+      this.prepareDraftApplicationFromWizard();
+      return await this.upsertDraftApplication();
     },
   },
 });
