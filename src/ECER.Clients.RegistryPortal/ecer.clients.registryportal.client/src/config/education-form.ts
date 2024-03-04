@@ -1,7 +1,7 @@
 import type { Form } from "@/types/form";
 
 const educationForm: Form = {
-  id: "education-form",
+  id: "educationForm",
   title: "Education",
   inputs: {},
 };

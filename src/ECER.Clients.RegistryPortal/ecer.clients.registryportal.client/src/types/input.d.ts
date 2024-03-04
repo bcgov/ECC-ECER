@@ -28,10 +28,15 @@ interface EceCheckboxProps {
   rules?: readonly ValidationRule$1[];
   label: string;
   disabled?: boolean;
+  checkableOnce?: boolean;
+}
+
+interface EceCertificateTypeProps {
+  options: ExpandSelectOption[];
 }
 
 interface Input {
   id: string;
-  component: EceCheckbox | EceRadio | EceTextField | EceAddress | EceAddresses;
-  props: EceTextFieldProps | EceAddressProps | EceAddressesProps | EceCheckboxProps;
+  component: EceCheckbox | EceRadio | EceTextField | EceAddress | EceAddresses | EceCertificateType;
+  props: EceTextFieldProps | EceAddressProps | EceAddressesProps | EceCheckboxProps | EceCertificateTypeProps;
 }

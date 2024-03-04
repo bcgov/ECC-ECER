@@ -10,6 +10,7 @@ export interface UserState {
   oidcUser: User | null;
   authority: Authority | null;
   userInfo: Components.Schemas.UserInfo | null;
+  userProfile: Components.Schemas.UserProfile | null;
 }
 
 export const useUserStore = defineStore("user", {
@@ -20,9 +21,11 @@ export const useUserStore = defineStore("user", {
     oidcUser: null,
     authority: null,
     userInfo: null,
+    userProfile: null,
   }),
   getters: {
     hasUserInfo: (state): boolean => state.userInfo !== null,
+    hasUserProfile: (state): boolean => state.userProfile !== null,
     accessToken: (state): string => (state.authority === "bcsc" ? state.oidcUser?.id_token ?? "" : state.oidcUser?.access_token ?? ""),
     isAuthenticated(): boolean {
       return this.accessToken !== "";
@@ -63,8 +66,11 @@ export const useUserStore = defineStore("user", {
     setUser(user: User): void {
       this.oidcUser = user;
     },
-    setUserInfo(userInfo: Components.Schemas.UserInfo): void {
+    setUserInfo(userInfo: Components.Schemas.UserInfo | null): void {
       this.userInfo = userInfo;
+    },
+    setUserProfile(userProfile: Components.Schemas.UserProfile | null): void {
+      this.userProfile = userProfile;
     },
     setAuthority(authority: Authority | null): void {
       this.authority = authority;

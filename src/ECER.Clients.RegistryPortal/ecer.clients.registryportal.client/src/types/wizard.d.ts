@@ -1,7 +1,8 @@
 import type { Form } from "@/types/form";
+import type { Components } from "@/types/openapi";
 
 interface Step {
-  id: string;
+  stage: Components.Schemas.PortalStage;
   title: string;
   subtitle?: string;
   form: Form;

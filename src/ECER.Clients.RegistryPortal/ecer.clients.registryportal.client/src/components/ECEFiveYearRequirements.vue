@@ -83,7 +83,7 @@ export default defineComponent({
       }
     },
     hasCertificationType(type: Components.Schemas.CertificationType) {
-      return this.applicationStore.currentApplication.certificationTypes?.includes(type);
+      return this.applicationStore.draftApplication.certificationTypes?.includes(type);
     },
   },
 });
