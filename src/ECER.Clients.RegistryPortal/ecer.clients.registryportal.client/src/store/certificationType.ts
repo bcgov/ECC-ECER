@@ -14,6 +14,7 @@ export const useCertificationTypeStore = defineStore("certificationType", {
     subSelection: [],
     mode: "selection",
   }),
+  persist: true,
   getters: {
     certificationTypes(state): Components.Schemas.CertificationType[] {
       return state.selection === null || typeof state.selection === "undefined" ? [] : [state.selection, ...state.subSelection];

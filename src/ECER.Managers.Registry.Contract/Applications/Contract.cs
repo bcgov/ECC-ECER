@@ -38,11 +38,13 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
 
 public enum PortalStage
 {
+  CertificationType,
+  Declaration,
   ContactInformation,
   Education,
-  References,
+  CharacterReferences,
+  WorkReferences,
   Review,
-  Declaration,
 }
 
 public enum CertificationType
