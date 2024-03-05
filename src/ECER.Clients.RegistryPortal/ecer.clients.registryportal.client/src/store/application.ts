@@ -52,7 +52,7 @@ export const useApplicationStore = defineStore("application", {
 
       this.draftApplication.stage = wizardStore.currentStepStage;
 
-      this.draftApplication.certificationTypes = certificationTypeStore.certificationTypes;
+      this.draftApplication.certificationTypes = wizardStore.wizardData[wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id];
 
       this.draftApplication.signedDate = wizardStore.wizardData[wizardStore.wizardConfig.steps.declaration.form.inputs.consentCheckbox.id]
         ? wizardStore.wizardData[wizardStore.wizardConfig.steps.declaration.form.inputs.signedDate.id]
