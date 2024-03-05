@@ -56,7 +56,7 @@ export default defineComponent({
             if (this.certificationTypeStore.mode == "selection") {
               this.certificationTypeStore.mode = "terms";
             } else {
-              this.saveDraft();
+              this.saveDraftAndAlertSuccess();
               this.incrementWizard();
             }
             break;
@@ -69,7 +69,7 @@ export default defineComponent({
           case "WorkReferences":
           case "CharacterReferences":
           case "Review":
-            this.saveDraft();
+            this.saveDraftAndAlertSuccess();
             this.incrementWizard();
             break;
         }
@@ -91,10 +91,16 @@ export default defineComponent({
           }
           break;
         default:
-          this.saveDraft();
+          this.applicationStore.saveDraft();
           this.decrementWizard();
           this.isFormValid = true;
           break;
+      }
+    },
+    async saveDraftAndAlertSuccess() {
+      const draftApplicationResponse = await this.applicationStore.saveDraft();
+      if (draftApplicationResponse?.applicationId) {
+        this.alertStore.setSuccessAlert("Draft application saved successfully");
       }
     },
     async handleSaveAsDraft() {
@@ -103,7 +109,7 @@ export default defineComponent({
           this.saveProfile();
           break;
         default:
-          this.saveDraft();
+          this.saveDraftAndAlertSuccess();
           break;
       }
     },
@@ -133,10 +139,6 @@ export default defineComponent({
       } else {
         this.alertStore.setFailureAlert("Profile save failed");
       }
-    },
-    async saveDraft() {
-      this.applicationStore.prepareDraftApplicationFromWizard();
-      this.applicationStore.upsertDraftApplication();
     },
   },
 });
