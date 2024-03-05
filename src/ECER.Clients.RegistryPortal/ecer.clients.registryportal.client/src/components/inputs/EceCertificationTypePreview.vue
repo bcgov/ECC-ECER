@@ -1,16 +1,23 @@
 <template>
   <PreviewCard>
-    <div>
-      <h3 class="text-lg font-semibold">Certification Selection</h3>
-    </div>
-    <div>
-      <div class="flex flex-col space-y-2">
-        <div class="flex items-center space-x-2">
-          <span class="font-semibold">Certification Type</span>
-          <span>{{ certificationType }}</span>
-        </div>
-      </div>
-    </div>
+    <v-container>
+      <v-row align="center">
+        <v-col>
+          <h3 class="font-black">Certification Selection</h3>
+        </v-col>
+        <v-col align="end">
+          <v-btn v-bind="props" icon="mdi-pencil" color="primary" variant="plain" />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="4">
+          <p class="small">Certification Type</p>
+        </v-col>
+        <v-col>
+          <p class="small font-weight-bold">{{ certificationType }}</p>
+        </v-col>
+      </v-row>
+    </v-container>
   </PreviewCard>
 </template>
 
@@ -18,7 +25,6 @@
 import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
-import { useCertificationTypeStore } from "@/store/certificationType";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 
@@ -35,25 +41,30 @@ export default defineComponent({
   },
   setup: () => {
     const wizardStore = useWizardStore();
-    const certificationTypeStore = useCertificationTypeStore();
 
     return {
       wizardStore,
-      certificationTypeStore,
     };
   },
   computed: {
     certificationType() {
       let certificationType = "";
-      console.log(this.certificationTypeStore.certificationTypes);
+      if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("EceAssistant")) {
+        certificationType = "ECE Assistant";
+      } else if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("OneYear")) {
+        certificationType = "One Year";
+      } else if (
+        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("FiveYears")
+      ) {
+        certificationType = "Five Year";
 
-      // if (this.certificationTypeStore.certificationTypes.contains("EceAssistant")) {
-      //   certificationType = "ECE Assistant";
-      // } else if (this.certificationTypeStore.certificationTypes.contains("OneYear")) {
-      //   certificationType = "One Year";
-      // } else if (this.certificationTypeStore.certificationTypes.contains("FiveYears")) {
-      //   certificationType = "Five Year";
-      // }
+        if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Sne")) {
+          certificationType += " & Special Needs Educator (SNE)";
+        }
+        if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Ite")) {
+          certificationType += " & Infant and Toddle Educator (ITE)";
+        }
+      }
       return certificationType;
     },
   },

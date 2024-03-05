@@ -1,5 +1,5 @@
 <template>
-  <v-card color="white" class="rounded-lg">
+  <v-card variant="outlined" color="grey-lightest" rounded="lg">
     <slot></slot>
   </v-card>
 </template>
