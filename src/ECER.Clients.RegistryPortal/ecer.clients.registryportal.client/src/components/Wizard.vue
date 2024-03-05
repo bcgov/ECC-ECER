@@ -16,7 +16,7 @@
           <h4>{{ step.subtitle }}</h4>
           <DeclarationStepContent v-if="step.id == 'declaration'" class="mt-6" />
           <v-row>
-            <v-col cols="12" md="8" lg="6" xl="4">
+            <v-col cols="12">
               <EceForm
                 :form="step.form"
                 :form-data="wizardStore.wizardData"
