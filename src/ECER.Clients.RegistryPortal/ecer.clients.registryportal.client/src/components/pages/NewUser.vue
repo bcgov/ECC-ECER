@@ -6,22 +6,15 @@
           <h3>Profile Information</h3>
           <p class="small">The Registry will notify you of important updates regarding your certification</p>
         </div>
-        <v-form ref="form" validate-on="input">
+        <v-form ref="form" v-model="isValid" validate-on="input">
           <div class="d-flex flex-column ga-2">
-            <v-text-field
-              v-model="email"
-              label="Email"
-              variant="outlined"
-              color="primary"
-              type="email"
-              :rules="[Rules.email(), Rules.required()]"
-            ></v-text-field>
+            <v-text-field v-model="email" label="Email" variant="outlined" color="primary" type="email" :rules="emailRules"></v-text-field>
             <v-text-field
               v-model="phoneNumber"
               label="Phone Number"
               variant="outlined"
               color="primary"
-              :rules="[Rules.phoneNumber(), Rules.required()]"
+              :rules="phoneRules"
               @keypress="isNumber($event)"
             ></v-text-field>
             <v-checkbox v-model="hasAgreed" label="" color="primary" :rules="hasAgreedRules">
@@ -35,7 +28,7 @@
             <div></div>
             <v-row justify="end">
               <v-btn rounded="lg" variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
-              <v-btn rounded="lg" color="primary" @click="submit">Save and Continue</v-btn>
+              <v-btn rounded="lg" color="primary" :disabled="!isValid" @click="submit">Save and Continue</v-btn>
             </v-row>
           </div>
         </v-form>
@@ -70,11 +63,27 @@ export default defineComponent({
   },
 
   data: () => ({
+    isValid: false,
     hasAgreed: false,
     hasAgreedRules: [(v: boolean) => !!v || "You must read and accept the Terms of Use"],
     Rules,
   }),
+  computed: {
+    emailRules() {
+      return [this.customEmailRule(), this.Rules.required()];
+    },
+    phoneRules() {
+      return [this.customPhoneRule(), this.Rules.required()];
+    },
+  },
   methods: {
+    customEmailRule() {
+      return this.Rules.email("Enter your email in the format 'name@email.com'");
+    },
+    customPhoneRule() {
+      return this.Rules.phoneNumber("Enter your primary 10-digit phone number");
+    },
+
     isNumber,
     async submit() {
       const { valid } = await (this.$refs.form as any).validate();
