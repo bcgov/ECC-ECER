@@ -93,14 +93,14 @@ declare namespace Components {
     }
     export interface Transcript {
       id?: string | null;
-      educationalInstitutionName?: string | null;
-      programName?: string | null;
+      educationalInstitutionName: string;
+      programName: string;
       campusLocation?: string | null;
-      studentName?: string | null;
-      studentNumber?: string | null;
+      studentName: string;
+      studentNumber: string;
       languageofInstruction?: string | null;
       startDate?: string; // date-time
-      endDate?: string; // date-time
+      endDate: string; // date-time
     }
     export interface UserInfo {
       firstName?: string | null;
