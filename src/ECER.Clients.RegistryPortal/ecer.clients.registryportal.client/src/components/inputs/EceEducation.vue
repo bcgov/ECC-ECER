@@ -1,8 +1,8 @@
 <template>
   <v-row>
     <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
-      <h3 v-if="!id">Education {{ localId }}</h3>
-      <h3 v-if="id">Edit {{ previousSchool }}</h3>
+      <h3 v-if="!studentNumber">Education {{ localId }}</h3>
+      <h3 v-if="studentNumber">Edit {{ previousSchool }}</h3>
       <v-form ref="addEducationForm" validate-on="input" class="mt-6">
         <v-text-field
           v-model="school"

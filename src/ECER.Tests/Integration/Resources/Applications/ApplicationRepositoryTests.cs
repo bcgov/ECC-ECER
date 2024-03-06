@@ -172,14 +172,19 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.Transcripts = originalTranscripts;
     var applicationId = await repository.SaveDraft(application);
 
-    // TODO load transcripts from dataverse and update them
-    var updatedTranscripts = new List<Transcript> { /* Initialize with updated set of transcripts */ };
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var transcript = query.First().Transcripts.First();
+    transcript.StudentName = "Updated Student Name";
+    transcript.StudentNumber = "Updated Student Number";
+    transcript.EducationalInstitutionName = "Updated Educational Institution Name";
+
+    var updatedTranscripts = new List<Transcript> { transcript };
     application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
     application.Transcripts = updatedTranscripts;
     await repository.SaveDraft(application);
 
     var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
-    updatedApplication.Transcripts.Count().ShouldBe(updatedTranscripts.Count);
+    updatedApplication.Transcripts.First().StudentName.ShouldBe("Updated Student Name");
   }
 
   [Fact]

@@ -5,6 +5,7 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
@@ -104,14 +105,19 @@ public record Application
 
 public record Transcript()
 {
-  public string? Id { get; set; } = string.Empty;
-  public string EducationalInstitutionName { get; set; } = string.Empty;
-  public string ProgramName { get; set; } = string.Empty;
-  public string CampusLocation { get; set; } = string.Empty;
-  public string StudentName { get; set; } = string.Empty;
-  public string StudentNumber { get; set; } = string.Empty;
-  public string LanguageofInstruction { get; set; } = string.Empty;
+  public string? Id { get; set; }
+  [Required]
+  public string? EducationalInstitutionName { get; set; }
+  [Required]
+  public string? ProgramName { get; set; }
+  public string? CampusLocation { get; set; }
+  [Required]
+  public string? StudentName { get; set; }
+  [Required]
+  public string? StudentNumber { get; set; }
+  public string? LanguageofInstruction { get; set; }
   public DateTime StartDate { get; set; }
+  [Required]
   public DateTime EndDate { get; set; }
 }
 
