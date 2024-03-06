@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import { createOrUpdateDraftApplication, getApplications } from "@/api/application";
 import type { Components } from "@/types/openapi";
 
-import { useCertificationTypeStore } from "./certificationType";
 import { useWizardStore } from "./wizard";
 export interface ApplicationState {
   applications: Components.Schemas.Application[] | null | undefined;
@@ -48,7 +47,6 @@ export const useApplicationStore = defineStore("application", {
     },
     prepareDraftApplicationFromWizard() {
       const wizardStore = useWizardStore();
-      const certificationTypeStore = useCertificationTypeStore();
 
       this.draftApplication.stage = wizardStore.currentStepStage;
 

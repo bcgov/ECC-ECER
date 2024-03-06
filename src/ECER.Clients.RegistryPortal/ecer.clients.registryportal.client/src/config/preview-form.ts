@@ -13,26 +13,51 @@ const previewForm: Form = {
       id: "certificationSelectionPreview",
       component: EceCertificationTypePreview,
       props: {},
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 6,
+      },
     },
     contactInformationPreview: {
       id: "contactInformationPreview",
       component: EceContactInformationPreview,
       props: {},
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 6,
+      },
     },
     educationPreview: {
       id: "educationPreview",
       component: EceEducationPreview,
       props: {},
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 6,
+      },
     },
     characterReferencePreview: {
       id: "characterReferencePreview",
       component: EceCharacterReferencePreview,
       props: {},
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 6,
+      },
     },
     workExperienceReferencePreview: {
       id: "workExperienceReferencePreview",
       component: EceWorkExperienceReferencePreview,
       props: {},
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 6,
+      },
     },
   },
 };

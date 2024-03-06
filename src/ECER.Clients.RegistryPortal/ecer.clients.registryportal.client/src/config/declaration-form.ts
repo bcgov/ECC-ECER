@@ -16,6 +16,11 @@ const declarationForm: Form = {
         disabled: false,
         checkableOnce: true,
       },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
+      },
     },
     applicantLegalName: {
       id: "applicantLegalName",
@@ -23,6 +28,11 @@ const declarationForm: Form = {
       props: {
         label: "Applicant Legal Name",
         readonly: true,
+      },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
       },
     },
     signedDate: {
@@ -32,6 +42,11 @@ const declarationForm: Form = {
         label: "Signed Date",
         type: "date",
         readonly: true,
+      },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
       },
     },
   },
