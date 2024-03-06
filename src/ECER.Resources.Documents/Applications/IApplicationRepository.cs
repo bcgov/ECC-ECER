@@ -23,6 +23,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public DateTime? SignedDate { get; set; }
   public DateTime? SubmittedOn { get; set; }
   public PortalStage Stage { get; set; }
+  public IEnumerable<CharacterReference> CharacterReference { get; set; } = Array.Empty<CharacterReference>();
 }
 
 public enum PortalStage
@@ -60,4 +61,12 @@ public enum ApplicationStatus
   Ready,
   ReconsiderationDecision,
   Withdrawn,
+}
+
+public record CharacterReference
+{
+  public string FirstName { get; set; } = string.Empty;
+  public string LastName { get; set; } = string.Empty;
+  public string PhoneNumber { get; set; } = string.Empty;
+  public string EmailAddress { get; set; } = string.Empty;
 }

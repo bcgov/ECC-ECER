@@ -88,7 +88,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var existingApplicationId = (await existingAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
     existingApplicationId.ShouldBe(applicationId);
   }
-  
+
   private DraftApplication CreateDraftApplication()
   {
     return new Faker<DraftApplication>("en_CA")

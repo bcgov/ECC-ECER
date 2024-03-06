@@ -96,6 +96,44 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     applications.ShouldBeAssignableTo<IEnumerable<Application>>()!.ShouldAllBe(ca => ca.ApplicantId == applicantId);
   }
 
+   [Fact]
+  public async Task SaveDraftApplication_ExistingSigned_Updated_Derek_Test()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var newApplication = new Application(null, applicantId, new[] { CertificationType.OneYear }) {
+  
+    };
+
+    var charReferenceList = new List<CharacterReference>
+    {
+        new CharacterReference
+    {
+      FirstName = "Test",
+      LastName = "Test",
+      EmailAddress = "Test",
+      PhoneNumber = "Test"
+    }
+    };
+
+    newApplication.CharacterReference = charReferenceList;
+
+    var newApplicationId = await repository.SaveDraft(newApplication);
+    var savedApplication = (await repository.Query(new ApplicationQuery { ById = newApplicationId })).ShouldHaveSingleItem();
+    savedApplication.CharacterReference.ShouldNotBeNull();
+//    savedApplication.CharacterReference.FirstName.ShouldBe("Test"); TODO remove this comment
+
+    var application = new Application(newApplicationId, applicantId, new[] { CertificationType.OneYear });
+    application.SignedDate = DateTime.Now;
+    var existingApplicationId = await repository.SaveDraft(application);
+
+    existingApplicationId.ShouldBe(newApplicationId);
+
+    var existingApplication = (await repository.Query(new ApplicationQuery { ById = existingApplicationId })).ShouldHaveSingleItem();
+    existingApplication.Status.ShouldBe(ApplicationStatus.Draft);
+    existingApplication.ApplicantId.ShouldBe(applicantId);
+    existingApplication.SignedDate.ShouldNotBeNull();
+  }
+
   [Fact]
   public async Task QueryApplications_ByApplicantIdAndStatus_Found()
   {

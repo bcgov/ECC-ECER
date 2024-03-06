@@ -29,7 +29,8 @@ internal class ApplicationRepositoryMapper : Profile
         .ForCtorParam(nameof(Application.CertificationTypes), opts => opts.MapFrom(s => s))
         .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
         .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted))
-        .ForMember( d => d.SignedDate, opts => opts.MapFrom(s => s.ecer_DateSigned))
+        .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.ecer_DateSigned))
+        .ForMember(d => d.CharacterReference, opts => opts.MapFrom(s => s.ecer_characterreference_Applicationid))
     ;
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
@@ -47,5 +48,12 @@ internal class ApplicationRepositoryMapper : Profile
     CreateMap<ApplicationStatus, ecer_Application_StatusCode>()
         .ConvertUsingEnumMapping(opts => opts.MapByName(true))
         .ReverseMap();
+
+    CreateMap<CharacterReference, ecer_CharacterReference>()
+    .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
+    .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
+    .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
+    .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
+    .ReverseMap();
   }
 }

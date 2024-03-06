@@ -41,6 +41,9 @@ internal sealed class ApplicationRepository : IApplicationRepository
     if (applicant == null) throw new InvalidOperationException($"Applicant '{application.ApplicantId}' not found");
 
     var ecerApplication = mapper.Map<ecer_Application>(application)!;
+
+    var ecerCharacterReference = mapper.Map<IEnumerable<ecer_CharacterReference>>(application.CharacterReference)!.ToList();
+
     if (!ecerApplication.ecer_ApplicationId.HasValue)
     {
       ecerApplication.ecer_ApplicationId = Guid.NewGuid();
@@ -51,18 +54,38 @@ internal sealed class ApplicationRepository : IApplicationRepository
     {
       var existingApplication = context.ecer_ApplicationSet.SingleOrDefault(c => c.ecer_ApplicationId == ecerApplication.ecer_ApplicationId);
       if (existingApplication == null) throw new InvalidOperationException($"ecer_Application '{ecerApplication.ecer_ApplicationId}' not found");
-      
+
       // If we have a DateSigned value already keep it
       if (ecerApplication.ecer_DateSigned.HasValue && existingApplication.ecer_DateSigned.HasValue) ecerApplication.ecer_DateSigned = existingApplication.ecer_DateSigned;
-      
+
       context.Detach(existingApplication);
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);
     }
-
+    _ = UpdateCharacterReferences(ecerApplication, ecerCharacterReference);
     context.SaveChanges();
 
     return ecerApplication.ecer_ApplicationId.Value.ToString();
+  }
+
+  public async Task UpdateCharacterReferences(ecer_Application application, List<ecer_CharacterReference> updatedCharacterReferences)
+  {
+    await Task.CompletedTask;
+    var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
+
+    // 1. Remove character references
+    foreach (var characterReference in existingCharacterReferences)
+    {
+      context.DeleteObject(characterReference);
+    }
+
+    // 2. Add New character references
+    foreach (var characterReference in updatedCharacterReferences)
+    {
+      characterReference.ecer_CharacterReferenceId = Guid.NewGuid();
+      context.AddObject(characterReference);
+      context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, characterReference);
+    }
   }
 
   public Task<string> Submit(string applicationId) => throw new NotImplementedException();

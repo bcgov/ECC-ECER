@@ -87,6 +87,7 @@ public record DraftApplication
   public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public PortalStage Stage { get; set; }
+  public IEnumerable<CharacterReference> CharacterReference { get; set; } = Array.Empty<CharacterReference>();
 }
 
 public record Application
@@ -98,6 +99,7 @@ public record Application
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public ApplicationStatus Status { get; set; }
   public PortalStage Stage { get; set; }
+  public IEnumerable<CharacterReference> CharacterReference { get; set; } = Array.Empty<CharacterReference>();
 }
 
 public enum CertificationType
@@ -140,4 +142,12 @@ public enum ApplicationStatus
   Reconsideration,
   Appeal,
   Cancelled,
+}
+
+public record CharacterReference
+{
+  public string FirstName { get; set; } = string.Empty;
+  public string LastName { get; set; } = string.Empty;
+  public string PhoneNumber { get; set; } = string.Empty;
+  public string EmailAddress { get; set; } = string.Empty;
 }
