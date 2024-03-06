@@ -3,6 +3,7 @@ import type { Wizard } from "@/types/wizard";
 import certificationTypeForm from "./certification-type-form";
 import declarationForm from "./declaration-form";
 import educationForm from "./education-form";
+import previewForm from "./preview-form";
 import profileInformationForm from "./profile-information-form";
 import referencesForm from "./references.form";
 
@@ -49,7 +50,7 @@ const applicationWizard: Wizard = {
     review: {
       stage: "Review",
       title: "Preview & Submit",
-      form: referencesForm,
+      form: previewForm,
       key: "item.7",
     },
   },
