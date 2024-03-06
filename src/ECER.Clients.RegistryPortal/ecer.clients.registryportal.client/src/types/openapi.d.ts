@@ -21,6 +21,7 @@ declare namespace Components {
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
       status?: ApplicationStatus;
+      stage?: PortalStage;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -83,7 +84,7 @@ declare namespace Components {
       clientId?: string | null;
       scope?: string | null;
     }
-    export type PortalStage = "ContactInformation" | "Education" | "References" | "Review" | "Declaration";
+    export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
     /**
      * Save draft application request
      */

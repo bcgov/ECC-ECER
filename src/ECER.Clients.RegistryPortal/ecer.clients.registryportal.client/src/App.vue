@@ -19,6 +19,7 @@ import { useRouter } from "vue-router";
 
 import { useUserStore } from "@/store/user";
 
+import { getProfile } from "./api/profile";
 import { getUserInfo } from "./api/user";
 import EceFooter from "./components/Footer.vue";
 import NavigationBar from "./components/NavigationBar.vue";
@@ -50,7 +51,13 @@ export default defineComponent({
           // If authenticated, check if new user
           const userInfo: Components.Schemas.UserInfo | null = await getUserInfo();
           if (userInfo) {
+            // Maybe user has a profile already
+            const profileInfo: Components.Schemas.UserProfile | null = await getProfile();
+
+            // Set user info and profile info in the store
             userStore.setUserInfo(userInfo);
+            userStore.setUserProfile(profileInfo);
+
             router.push("/");
           } else {
             router.push("/new-user");

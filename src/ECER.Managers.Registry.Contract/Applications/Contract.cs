@@ -51,11 +51,13 @@ public record Transcript()
 
 public enum PortalStage
 {
+  CertificationType,
+  Declaration,
   ContactInformation,
   Education,
-  References,
+  CharacterReferences,
+  WorkReferences,
   Review,
-  Declaration,
 }
 
 public enum CertificationType

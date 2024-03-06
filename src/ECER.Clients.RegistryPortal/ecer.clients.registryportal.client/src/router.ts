@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import { useApplicationStore } from "./store/application";
 import { useUserStore } from "./store/user";
 
 const router = createRouter({
@@ -46,11 +47,7 @@ const router = createRouter({
         },
       ],
     },
-    {
-      path: "/certification-type",
-      component: () => import("./components/pages/CertificationType.vue"),
-      meta: { requiresAuth: true },
-    },
+
     {
       path: "/login",
       component: () => import("./components/pages/Login.vue"),
@@ -70,11 +67,6 @@ const router = createRouter({
       path: "/logout-callback",
       component: () => import("./components/pages/LogoutCallback.vue"),
       meta: { requiresAuth: false },
-    },
-    {
-      path: "/requirements",
-      component: () => import("./components/pages/Requirements.vue"),
-      meta: { requiresAuth: true },
     },
     {
       path: "/application",
@@ -163,6 +155,16 @@ router.beforeEach((to, _, next) => {
 
   if (to.path.startsWith("/new-user") && userStore.isAuthenticated && userStore.hasUserInfo) next({ path: "/" });
   else next();
+});
+
+// Guard to save draft application before navigating away from /application
+router.beforeEach((_, from, next) => {
+  const applicationStore = useApplicationStore();
+
+  if (from.path === "/application" && applicationStore.hasDraftApplication) {
+    applicationStore.saveDraft();
+    next();
+  } else next();
 });
 
 export default router;
