@@ -5,6 +5,7 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
@@ -86,6 +87,7 @@ public record DraftApplication
   public string? Id { get; set; }
   public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+  public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public PortalStage Stage { get; set; }
 }
 
@@ -96,8 +98,28 @@ public record Application
   public DateTime? SubmittedOn { get; set; }
   public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+  public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public ApplicationStatus Status { get; set; }
   public PortalStage Stage { get; set; }
+}
+
+public record Transcript()
+{
+  public string? Id { get; set; }
+  [Required]
+  public string? EducationalInstitutionName { get; set; }
+  [Required]
+  public string? ProgramName { get; set; }
+  public string? CampusLocation { get; set; }
+  [Required]
+  public string? StudentName { get; set; }
+  [Required]
+  public string? StudentNumber { get; set; }
+  public string? LanguageofInstruction { get; set; }
+  [Required]
+  public DateTime StartDate { get; set; }
+  [Required]
+  public DateTime EndDate { get; set; }
 }
 
 public enum CertificationType
@@ -134,10 +156,13 @@ public enum ApplicationStatus
   Draft,
   Submitted,
   Complete,
-  ReviewforCompletness,
-  ReadyforAssessment,
-  BeingAssessed,
   Reconsideration,
-  Appeal,
   Cancelled,
+  Escalated,
+  Decision,
+  Withdrawn,
+  Ready,
+  InProgress,
+  PendingQueue,
+  ReconsiderationDecision
 }

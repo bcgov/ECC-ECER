@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="12" md="10" lg="6" xl="4">
+  <v-col cols="12">
     <EceForm
       :form="profileInformationForm"
       :form-data="formStore.formData"

@@ -2,7 +2,7 @@
   <v-card min-width="100%" variant="elevated" rounded="lg" class="custom-card-styling" elevation="4">
     <template #title>
       <v-card-title>
-        <p class="font-weight-bold">{{ education.school }}</p>
+        <p class="font-weight-bold">{{ education.educationalInstitutionName }}</p>
       </v-card-title>
     </template>
     <template #append>
@@ -23,18 +23,20 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import type { Components } from "@/types/openapi";
+
 export default defineComponent({
   name: "EducationCard",
   props: {
     education: {
-      type: Object as () => Education,
+      type: Object as () => Components.Schemas.Transcript,
       required: true,
     },
   },
 
   emits: {
-    edit: (_education: Education) => true,
-    delete: (_education: Education) => true,
+    edit: (_education: Components.Schemas.Transcript) => true,
+    delete: (_education: Components.Schemas.Transcript) => true,
   },
   methods: {
     editEducation() {

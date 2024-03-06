@@ -1,8 +1,8 @@
 <template>
   <v-row>
     <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
-      <h3 v-if="!id">Education {{ modelValue.length + 1 }}</h3>
-      <h3 v-if="id">Edit {{ previousSchool }}</h3>
+      <h3 v-if="!studentNumber">Education {{ localId }}</h3>
+      <h3 v-if="studentNumber">Edit {{ previousSchool }}</h3>
       <v-form ref="addEducationForm" validate-on="input" class="mt-6">
         <v-text-field
           v-model="school"
@@ -104,11 +104,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import EducationList from "@/components/EducationList.vue";
+import EducationList, { type EducationData } from "@/components/EducationList.vue";
 import { useAlertStore } from "@/store/alert";
 import type { EceEducationProps } from "@/types/input";
+import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
-
 export default defineComponent({
   name: "EceEdducation",
   components: { EducationList },
@@ -118,12 +118,12 @@ export default defineComponent({
       required: true,
     },
     modelValue: {
-      type: Object as () => Education[],
+      type: Object as () => { [id: string]: Components.Schemas.Transcript },
       required: true,
     },
   },
   emits: {
-    "update:model-value": (_educationData: Education[]) => true,
+    "update:model-value": (_educationData: { [id: string]: Components.Schemas.Transcript }) => true,
   },
   setup: () => {
     const alertStore = useAlertStore();
@@ -134,6 +134,7 @@ export default defineComponent({
   },
   data: function () {
     return {
+      clientId: "",
       mode: "add",
       id: "",
       previousSchool: "",
@@ -150,8 +151,13 @@ export default defineComponent({
       Rules,
     };
   },
+  computed: {
+    localId() {
+      return Object.keys(this.modelValue).length + 1;
+    },
+  },
   mounted() {
-    if (this.modelValue.length === 0) {
+    if (Object.keys(this.modelValue).length === 0) {
       this.mode = "add";
     } else {
       this.mode = "list";
@@ -163,54 +169,34 @@ export default defineComponent({
       const { valid } = await (this.$refs.addEducationForm as any).validate();
 
       if (valid) {
-        // If modelValue array contains ID, update the education data
-        if (this.modelValue.some((e) => e.id === this.id)) {
-          this.$emit(
-            "update:model-value",
-            this.modelValue.map((e) => {
-              if (e.id === this.id) {
-                return {
-                  id: this.id,
-                  school: this.school,
-                  program: this.program,
-                  campusLocation: this.campusLocation,
-                  studentName: this.studentName,
-                  studentNumber: this.studentNumber,
-                  language: this.language,
-                  startYear: this.startYear,
-                  endYear: this.endYear,
-                };
-              }
-              return e;
-            }),
-          );
+        // Prepare the new or updated Transcript data
+        const newTranscript: Components.Schemas.Transcript = {
+          id: null,
+          educationalInstitutionName: this.school,
+          programName: this.program,
+          campusLocation: this.campusLocation,
+          studentName: this.studentName,
+          studentNumber: this.studentNumber,
+          languageofInstruction: this.language,
+          startDate: this.startYear,
+          endDate: this.endYear,
+        };
+        const clientId = this.clientId ? this.clientId : this.localId;
+        // Update the modelValue dictionary
+        const updatedModelValue = {
+          ...this.modelValue,
+          [clientId]: newTranscript,
+        };
 
-          this.alertStore.setSuccessAlert("You have successfully edited your Education.");
+        // Emit the updated modelValue
+        this.$emit("update:model-value", updatedModelValue);
 
-          // Change mode to education list
-          this.mode = "list";
-        } else {
-          // If the form is valid, emit the new education data
-          this.$emit("update:model-value", [
-            ...this.modelValue,
-            {
-              id: (this.modelValue.length + 1).toString(),
-              school: this.school,
-              program: this.program,
-              campusLocation: this.campusLocation,
-              studentName: this.studentName,
-              studentNumber: this.studentNumber,
-              language: this.language,
-              startYear: this.startYear,
-              endYear: this.endYear,
-            },
-          ]);
+        // Set success alert message
+        const message = this.modelValue[clientId] ? "You have successfully edited your Education." : "You have successfully added your Education.";
+        this.alertStore.setSuccessAlert(message);
 
-          this.alertStore.setSuccessAlert("You have successfully added your Education.");
-
-          // Change mode to education list
-          this.mode = "list";
-        }
+        // Change mode to education list
+        this.mode = "list";
       } else {
         this.alertStore.setFailureAlert("Please fill out all required fields");
       }
@@ -222,31 +208,39 @@ export default defineComponent({
     handleAddEducation() {
       // Reset the form fields
       this.resetFormData();
-
-      // Change mode to add
+      this.clientId = "";
       this.mode = "add";
     },
-    handleEdit(education: Education) {
+    handleEdit(educationData: EducationData) {
+      console.log("Edit education with id: ", educationData.educationId);
+      console.log("Education data: ", educationData.education);
       // Set the form fields to the education data
-      this.id = education.id;
-      this.previousSchool = education.school;
-      this.school = education.school;
-      this.program = education.program;
-      this.campusLocation = education.campusLocation;
-      this.studentName = education.studentName;
-      this.studentNumber = education.studentNumber;
-      this.language = education.language;
-      this.startYear = education.startYear;
-      this.endYear = education.endYear;
+      this.id = educationData.education.id ?? "";
+      this.clientId = educationData.educationId.toString();
+      this.previousSchool = educationData.education.educationalInstitutionName ?? "";
+      this.school = educationData.education.educationalInstitutionName ?? "";
+      this.program = educationData.education.programName ?? "";
+      this.campusLocation = educationData.education.campusLocation ?? "";
+      this.studentName = educationData.education.studentName ?? "";
+      this.studentNumber = educationData.education.studentNumber ?? "";
+      this.language = educationData.education.languageofInstruction ?? "";
+      this.startYear = educationData.education.startDate ?? "";
+      this.endYear = educationData.education.endDate ?? "";
       // Change mode to add
       this.mode = "add";
     },
-    handleDelete(education: Education) {
-      // Remove the education from the modelValue
-      this.$emit(
-        "update:model-value",
-        this.modelValue.filter((e) => e.id !== education.id),
-      );
+    handleDelete(educationId: string | number) {
+      console.log("Delete education with id: ", educationId);
+      //Remove the education from the modelValue
+
+      if (educationId in this.modelValue) {
+        // Create a copy of modelValue
+        const updatedModelValue = { ...this.modelValue };
+        // Delete the education entry from the copied object
+        delete updatedModelValue[educationId];
+        // Emit the updated modelValue
+        this.$emit("update:model-value", updatedModelValue);
+      }
 
       this.alertStore.setWarningAlert("You have Deleted your Education.");
     },

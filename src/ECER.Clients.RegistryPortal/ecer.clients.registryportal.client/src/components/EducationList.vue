@@ -1,7 +1,14 @@
 <template>
   <v-row>
-    <p v-if="educations.length == 0" class="small">No Education has been added yet. You may add multiple education entries.</p>
-    <EducationCard v-for="education in educations" :key="education.id" :education="education" class="mb-4" @edit="handleEdit" @delete="handleDelete" />
+    <p v-if="educationList.length == 0" class="small">No Education has been added yet. You may add multiple education entries.</p>
+    <EducationCard
+      v-for="(education, id) in educations"
+      :key="id"
+      :education="education"
+      class="mb-4"
+      @edit="handleEdit(education, id)"
+      @delete="handleDelete(id)"
+    />
   </v-row>
 </template>
 
@@ -9,28 +16,39 @@
 import { defineComponent } from "vue";
 
 import EducationCard from "@/components/EducationCard.vue";
+import type { Components } from "@/types/openapi";
+
+export interface EducationData {
+  education: Components.Schemas.Transcript;
+  educationId: string | number;
+}
 
 export default defineComponent({
   name: "EducationList",
   components: { EducationCard },
   props: {
     educations: {
-      type: Array as () => Education[],
+      type: Object as () => { [id: string]: Components.Schemas.Transcript },
       required: true,
     },
   },
   emits: {
-    edit: (_education: Education) => true,
-    delete: (_education: Education) => true,
+    edit: (_educationData: EducationData) => true,
+    delete: (_educationId: string | number) => true,
+  },
+  computed: {
+    educationList() {
+      return Object.values(this.educations);
+    },
   },
   methods: {
-    handleEdit(education: Education) {
+    handleEdit(education: Components.Schemas.Transcript, educationId: string | number) {
       // Re-emit the event to the parent component
-      this.$emit("edit", education);
+      this.$emit("edit", { education, educationId });
     },
-    handleDelete(education: Education) {
+    handleDelete(educationId: string | number) {
       // Re-emit the event to the parent component
-      this.$emit("delete", education);
+      this.$emit("delete", educationId);
     },
   },
 });

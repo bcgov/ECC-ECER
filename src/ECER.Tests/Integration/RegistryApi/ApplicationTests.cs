@@ -25,7 +25,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var applications = await applicationsResponse.ReadAsJsonAsync<Application[]>();
     applications.ShouldNotBeNull();
   }
-  
+
   [Fact]
   public async Task GetApplications_ById()
   {
@@ -36,9 +36,9 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl("/api/draftapplications");
       _.StatusCodeShouldBeOk();
     });
-    
+
     var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
-    
+
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
@@ -50,7 +50,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     applicationsById.ShouldNotBeNull();
     var applicationById = applicationsById.First();
     applicationById.CertificationTypes.ShouldBeEquivalentTo(application.CertificationTypes);
-    applicationById.Stage.ShouldBe(PortalStage.ContactInformation);
+    applicationById.Stage.ShouldBe(PortalStage.CertificationType);
   }
 
   [Fact]
@@ -88,10 +88,42 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var existingApplicationId = (await existingAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
     existingApplicationId.ShouldBe(applicationId);
   }
-  
+
+  [Fact(Skip = "we do not apply validation yet")]
+  public async Task SaveDraftApplication_WithInvalidTranscript_ReturnsBadRequest()
+  {
+    var invalidApplication = CreateInvalidDraftApplication();
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(invalidApplication)).ToUrl("/api/draftapplications");
+      _.StatusCodeShouldBe(400);
+    });
+  }
+
   private DraftApplication CreateDraftApplication()
   {
     return new Faker<DraftApplication>("en_CA")
+        .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
+        .RuleFor(f => f.SignedDate, f => f.Date.Recent())
+        .Generate();
+  }
+
+  private DraftApplication CreateInvalidDraftApplication()
+  {
+    var faker = new Faker("en_CA");
+    var invalidTranscript = new Transcript
+    {
+      EducationalInstitutionName = faker.Random.String2(1), // Invalid: too short
+      ProgramName = faker.Lorem.Sentence(),
+      StudentName = faker.Person.FullName,
+      StudentNumber = faker.Random.Number(1000, 9999).ToString(),
+      StartDate = faker.Date.Recent(),
+      EndDate = faker.Date.Soon()
+    };
+
+    return new Faker<DraftApplication>("en_CA")
+        .RuleFor(f => f.Transcripts, _ => new List<Transcript> { invalidTranscript })
         .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
         .RuleFor(f => f.SignedDate, f => f.Date.Recent())
         .Generate();

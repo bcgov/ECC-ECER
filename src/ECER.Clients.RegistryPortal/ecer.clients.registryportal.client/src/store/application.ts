@@ -17,6 +17,7 @@ export const useApplicationStore = defineStore("application", {
       id: undefined,
       signedDate: null,
       stage: "CertificationType",
+      transcripts: [] as Components.Schemas.Transcript[],
     },
   }),
   persist: {
@@ -48,13 +49,19 @@ export const useApplicationStore = defineStore("application", {
     prepareDraftApplicationFromWizard() {
       const wizardStore = useWizardStore();
 
+      // Set wizard stage to the current step stage
       this.draftApplication.stage = wizardStore.currentStepStage;
 
+      // Certification selection step data
       this.draftApplication.certificationTypes = wizardStore.wizardData[wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id];
 
+      // Declaration step data
       this.draftApplication.signedDate = wizardStore.wizardData[wizardStore.wizardConfig.steps.declaration.form.inputs.consentCheckbox.id]
         ? wizardStore.wizardData[wizardStore.wizardConfig.steps.declaration.form.inputs.signedDate.id]
         : null;
+
+      // Education step data
+      this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
     },
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       const { data: draftApplicationResponse } = await createOrUpdateDraftApplication(this.draftApplication);
