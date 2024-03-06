@@ -17,20 +17,21 @@ internal sealed class ApplicationRepository : IApplicationRepository
   public async Task<IEnumerable<Application>> Query(ApplicationQuery query)
   {
     await Task.CompletedTask;
-    var applications = from a in context.ecer_ApplicationSet
-                       join c in context.ContactSet on a.ecer_Applicantid.Id equals c.ContactId
-                       select new { Application = a, Contact = c };
+
+    var applications = context.ecer_ApplicationSet;
 
     if (query.ByStatus != null && query.ByStatus.Any())
     {
       var statuses = mapper.Map<IEnumerable<ecer_Application_StatusCode>>(query.ByStatus)!.ToList();
-      applications = applications.WhereIn(a => a.Application.StatusCode!.Value, statuses);
+      applications = applications.WhereIn(a => a.StatusCode!.Value, statuses);
     }
 
-    if (query.ById != null) applications = applications.Where(r => r.Application.ecer_ApplicationId == Guid.Parse(query.ById));
-    if (query.ByApplicantId != null) applications = applications.Where(r => r.Application.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
+    if (query.ById != null) applications = applications.Where(r => r.ecer_ApplicationId == Guid.Parse(query.ById));
+    if (query.ByApplicantId != null) applications = applications.Where(r => r.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
 
-    return mapper.Map<IEnumerable<Application>>(applications.Select(d => d.Application).ToList())!;
+    context.LoadProperties(applications, ecer_Application.Fields.ecer_transcript_Applicationid);
+
+    return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
   }
 
   public async Task<string> SaveDraft(Application application)

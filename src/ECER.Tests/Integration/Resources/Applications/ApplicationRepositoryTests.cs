@@ -97,6 +97,20 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task QueryApplications_ByApplictionId_Found()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var applicationId = await repository.SaveDraft(new Application(null, applicantId, new[] { CertificationType.OneYear })
+    {
+      Transcripts = [new Transcript { CampusLocation = "test", StartDate = DateTime.Now.AddDays(-10), EndDate = DateTime.Now.AddDays(-5) }]
+    });
+
+    var applications = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var application = applications.ShouldHaveSingleItem();
+    application.ApplicantId.ShouldBe(applicantId);
+  }
+
+  [Fact]
   public async Task QueryApplications_ByApplicantIdAndStatus_Found()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
@@ -108,7 +122,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     applications.ShouldBeAssignableTo<IEnumerable<Application>>()!.ShouldAllBe(ca => ca.ApplicantId == applicantId && statuses.Contains(ca.Status));
   }
 
-  [Fact(Skip = "issues with loading transcripts")]
+  [Fact]
   public async Task SaveDraftApplication_WithTranscripts_Created()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
@@ -137,7 +151,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     savedApplication.Transcripts.Count().ShouldBe(transcripts.Count);
   }
 
-  [Fact(Skip = "issues with loading transcripts")]
+  [Fact]
   public async Task UpdateApplication_WithModifiedTranscripts_Updated()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
@@ -168,7 +182,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     updatedApplication.Transcripts.Count().ShouldBe(updatedTranscripts.Count);
   }
 
-  [Fact(Skip = "issues with loading transcripts")]
+  [Fact]
   public async Task UpdateApplication_RemoveTranscripts_Updated()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
