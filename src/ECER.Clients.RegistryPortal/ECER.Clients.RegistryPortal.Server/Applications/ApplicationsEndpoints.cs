@@ -99,6 +99,7 @@ public record Application
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public ApplicationStatus Status { get; set; }
+  public PortalStage Stage { get; set; }
 }
 
 public record Transcript()
@@ -134,11 +135,13 @@ public enum CertificationType
 
 public enum PortalStage
 {
+  CertificationType,
+  Declaration,
   ContactInformation,
   Education,
-  References,
+  CharacterReferences,
+  WorkReferences,
   Review,
-  Declaration,
 }
 
 public enum ApplicationStatus

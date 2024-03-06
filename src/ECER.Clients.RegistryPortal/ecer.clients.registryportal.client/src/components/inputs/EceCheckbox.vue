@@ -1,5 +1,13 @@
 <template>
-  <v-checkbox color="primary" :label="props.label" :disabled="props.disabled" :rules="props.rules"></v-checkbox>
+  <v-checkbox
+    color="primary"
+    :label="props.label"
+    :disabled="props.disabled"
+    :readonly="readonly"
+    :rules="props.rules"
+    :model-value="modelValue"
+    @click="readonly ?? $emit('update:model-value', $event.target.checked)"
+  ></v-checkbox>
 </template>
 
 <script lang="ts">
@@ -13,6 +21,18 @@ export default defineComponent({
     props: {
       type: Object as () => EceCheckboxProps,
       required: true,
+    },
+    modelValue: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  emits: {
+    "update:model-value": (_checked: Boolean) => true,
+  },
+  computed: {
+    readonly(): boolean {
+      return this.props.checkableOnce && this.modelValue ? true : false;
     },
   },
 });
