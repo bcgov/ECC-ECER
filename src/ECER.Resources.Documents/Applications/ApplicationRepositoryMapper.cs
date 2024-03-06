@@ -60,8 +60,18 @@ internal class ApplicationRepositoryMapper : Profile
            .ForMember(d => d.ecer_StudentNumber, opts => opts.MapFrom(s => s.StudentNumber))
            .ForMember(d => d.ecer_EducationInstitutionFullName, opts => opts.MapFrom(s => s.EducationalInstitutionName))
            .ForMember(d => d.ecer_LanguageofInstruction, opts => opts.MapFrom(s => s.LanguageofInstruction))
-           .ForMember(d => d.ecer_TranscriptId, opts => opts.MapFrom(s => s.Id))
-       .ReverseMap()
-       .ValidateMemberList(MemberList.Destination);
+           .ForMember(d => d.ecer_TranscriptId, opts => opts.MapFrom(s => s.Id));
+
+    CreateMap<ecer_Transcript, Transcript>(MemberList.Source)
+          .ForCtorParam(nameof(Transcript.Id), opt => opt.MapFrom(src => src.ecer_TranscriptId))
+          .ForCtorParam(nameof(Transcript.EducationalInstitutionName), opt => opt.MapFrom(src => src.ecer_EducationInstitutionFullName))
+          .ForCtorParam(nameof(Transcript.ProgramName), opt => opt.MapFrom(src => src.ecer_ProgramName))
+          .ForCtorParam(nameof(Transcript.StudentName), opt => opt.MapFrom(src => src.ecer_StudentName))
+          .ForCtorParam(nameof(Transcript.StudentNumber), opt => opt.MapFrom(src => src.ecer_StudentNumber))
+          .ForCtorParam(nameof(Transcript.StartDate), opt => opt.MapFrom(src => src.ecer_StartDate))
+          .ForCtorParam(nameof(Transcript.EndDate), opt => opt.MapFrom(src => src.ecer_EndDate))
+          .ForMember(d => d.CampusLocation, opts => opts.MapFrom(s => s.ecer_CampusLocation))
+          .ForMember(d => d.LanguageofInstruction, opts => opts.MapFrom(s => s.ecer_LanguageofInstruction))
+    .ValidateMemberList(MemberList.Destination);
   }
 }

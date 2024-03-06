@@ -102,7 +102,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var applicantId = Fixture.AuthenticatedBcscUserId;
     var applicationId = await repository.SaveDraft(new Application(null, applicantId, new[] { CertificationType.OneYear })
     {
-      Transcripts = [new Transcript { CampusLocation = "test", StartDate = DateTime.Now.AddDays(-10), EndDate = DateTime.Now.AddDays(-5) }]
+      Transcripts = [new Transcript(null, null, null, null, null, DateTime.Now.AddDays(-10), DateTime.Now.AddDays(-5)) { CampusLocation = "test" }]
     });
 
     var applications = await repository.Query(new ApplicationQuery { ById = applicationId });
@@ -128,16 +128,9 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var applicantId = Fixture.AuthenticatedBcscUserId;
     var transcripts = new List<Transcript>
     {
-        new Transcript {
-           Id= null,
-           EducationalInstitutionName = "Test Institution",
-           ProgramName = "Test Program",
+        new Transcript(null,"Test Institution","Test Program","Test Student","123456",DateTime.Now.AddYears(-2),DateTime.Now.AddYears(-1)) {
            LanguageofInstruction = "English",
            CampusLocation = "Test Campus",
-           StudentName = "Test Student",
-           StudentNumber = "123456",
-           StartDate = DateTime.Now.AddYears(-2),
-           EndDate = DateTime.Now.AddYears(-1),
         },
     };
     var application = new Application(null, applicantId, new[] { CertificationType.OneYear })
@@ -156,17 +149,10 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
     var originalTranscripts = new List<Transcript> {
-      new Transcript {
-         Id= null,
-         EducationalInstitutionName = "Test Institution",
-         ProgramName = "Test Program",
-         LanguageofInstruction = "English",
-         CampusLocation = "Test Campus",
-         StudentName = "Test Student",
-         StudentNumber = "123456",
-         StartDate = DateTime.Now.AddYears(-2),
-         EndDate = DateTime.Now.AddYears(-1),
-      }
+      new Transcript(null,"Test Institution","Test Program","Test Student","123456",DateTime.Now.AddYears(-2),DateTime.Now.AddYears(-1)) {
+      LanguageofInstruction = "English",
+      CampusLocation = "Test Campus",
+      },
     };
     var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
     application.Transcripts = originalTranscripts;
@@ -174,9 +160,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     var query = await repository.Query(new ApplicationQuery { ById = applicationId });
     var transcript = query.First().Transcripts.First();
-    transcript.StudentName = "Updated Student Name";
-    transcript.StudentNumber = "Updated Student Number";
-    transcript.EducationalInstitutionName = "Updated Educational Institution Name";
+    transcript.CampusLocation = "Updated Campus";
 
     var updatedTranscripts = new List<Transcript> { transcript };
     application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
@@ -184,7 +168,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     await repository.SaveDraft(application);
 
     var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
-    updatedApplication.Transcripts.First().StudentName.ShouldBe("Updated Student Name");
+    updatedApplication.Transcripts.First().CampusLocation.ShouldBe("Updated Campus");
   }
 
   [Fact]
@@ -192,17 +176,10 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
     var originalTranscripts = new List<Transcript> {
-      new Transcript {
-          Id= null,
-          EducationalInstitutionName = "Test Institution",
-          ProgramName = "Test Program",
-          LanguageofInstruction = "English",
-          CampusLocation = "Test Campus",
-          StudentName = "Test Student",
-          StudentNumber = "123456",
-          StartDate = DateTime.Now.AddYears(-2),
-          EndDate = DateTime.Now.AddYears(-1),
-          }
+     new Transcript(null,"Test Institution","Test Program","Test Student","123456",DateTime.Now.AddYears(-2),DateTime.Now.AddYears(-1)) {
+     LanguageofInstruction = "English",
+     CampusLocation = "Test Campus",
+     },
     };
     var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
     application.Transcripts = originalTranscripts;

@@ -26,17 +26,10 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
 }
 
-public record Transcript()
+public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate)
 {
-  public string? Id { get; set; }
-  public string EducationalInstitutionName { get; set; } = string.Empty;
-  public string ProgramName { get; set; } = string.Empty;
-  public string CampusLocation { get; set; } = string.Empty;
-  public string StudentName { get; set; } = string.Empty;
-  public string StudentNumber { get; set; } = string.Empty;
-  public string LanguageofInstruction { get; set; } = string.Empty;
-  public DateTime StartDate { get; set; }
-  public DateTime EndDate { get; set; }
+  public string? CampusLocation { get; set; }
+  public string? LanguageofInstruction { get; set; }
 }
 
 public enum PortalStage

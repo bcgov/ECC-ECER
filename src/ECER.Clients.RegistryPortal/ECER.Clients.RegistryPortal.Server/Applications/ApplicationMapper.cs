@@ -7,9 +7,25 @@ public class ApplicationMapper : Profile
   public ApplicationMapper()
   {
     CreateMap<Transcript, Managers.Registry.Contract.Applications.Transcript>()
-      .ForMember(d => d.Id, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.Id) ? null : s.Id))
-      .ReverseMap()
-    ;
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.Id),
+               opt => opt.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.EducationalInstitutionName),
+               opt => opt.MapFrom(src => src.EducationalInstitutionName))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.ProgramName),
+               opt => opt.MapFrom(src => src.ProgramName))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentName),
+               opt => opt.MapFrom(src => src.StudentName))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentNumber),
+               opt => opt.MapFrom(src => src.StudentNumber))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StartDate),
+               opt => opt.MapFrom(src => src.StartDate))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.EndDate),
+               opt => opt.MapFrom(src => src.EndDate))
+      .ForMember(d => d.CampusLocation,
+             opts => opts.MapFrom(src => src.CampusLocation))
+      .ForMember(d => d.LanguageofInstruction,
+             opts => opts.MapFrom(src => src.LanguageofInstruction))
+      .ReverseMap();
 
     CreateMap<DraftApplication, Managers.Registry.Contract.Applications.Application>()
       .ForMember(d => d.RegistrantId, opts => opts.Ignore())

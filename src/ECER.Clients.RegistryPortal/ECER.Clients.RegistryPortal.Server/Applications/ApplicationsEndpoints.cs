@@ -116,6 +116,7 @@ public record Transcript()
   [Required]
   public string? StudentNumber { get; set; }
   public string? LanguageofInstruction { get; set; }
+  [Required]
   public DateTime StartDate { get; set; }
   [Required]
   public DateTime EndDate { get; set; }
