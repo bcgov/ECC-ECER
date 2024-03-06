@@ -35,8 +35,10 @@ interface EceCertificateTypeProps {
   options: ExpandSelectOption[];
 }
 
+interface EcePreviewProps {}
+
 interface Input {
   id: string;
   component: EceCheckbox | EceRadio | EceTextField | EceAddress | EceAddresses | EceCertificateType;
-  props: EceTextFieldProps | EceAddressProps | EceAddressesProps | EceCheckboxProps | EceCertificateTypeProps;
+  props: EceTextFieldProps | EceAddressProps | EceAddressesProps | EceCheckboxProps | EceCertificateTypeProps | EcePreviewProps;
 }

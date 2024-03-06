@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import { useApplicationStore } from "./store/application";
 import { useUserStore } from "./store/user";
 
 const router = createRouter({
@@ -154,6 +155,16 @@ router.beforeEach((to, _, next) => {
 
   if (to.path.startsWith("/new-user") && userStore.isAuthenticated && userStore.hasUserInfo) next({ path: "/" });
   else next();
+});
+
+// Guard to save draft application before navigating away from /application
+router.beforeEach((_, from, next) => {
+  const applicationStore = useApplicationStore();
+
+  if (from.path === "/application" && applicationStore.hasDraftApplication) {
+    applicationStore.saveDraft();
+    next();
+  } else next();
 });
 
 export default router;
