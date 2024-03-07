@@ -47,8 +47,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     });
 
     var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<DraftApplication[]>();
-    applicationsById.ShouldNotBeNull();
-    var applicationById = applicationsById.First();
+    var applicationById = applicationsById.ShouldHaveSingleItem();
     applicationById.CertificationTypes.ShouldBeEquivalentTo(application.CertificationTypes);
     applicationById.Stage.ShouldBe(PortalStage.CertificationType);
   }
@@ -89,7 +88,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     existingApplicationId.ShouldBe(applicationId);
   }
 
-  [Fact(Skip = "we do not apply validation yet")]
+  [Fact]
   public async Task SaveDraftApplication_WithInvalidTranscript_ReturnsBadRequest()
   {
     var invalidApplication = CreateInvalidDraftApplication();
@@ -114,7 +113,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
     var invalidTranscript = new Transcript
     {
-      EducationalInstitutionName = faker.Random.String2(1), // Invalid: too short
+      EducationalInstitutionName = null,
       ProgramName = faker.Lorem.Sentence(),
       StudentName = faker.Person.FullName,
       StudentNumber = faker.Random.Number(1000, 9999).ToString(),

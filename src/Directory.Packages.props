@@ -21,6 +21,7 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageVersion Include="Microsoft.PowerPlatform.Dataverse.Client" Version="1.1.17" />
     <PackageVersion Include="Microsoft.PowerPlatform.Dataverse.Client.Dynamics" Version="1.1.17" />
+    <PackageVersion Include="MinimalApis.Extensions" Version="0.11.0" />
     <PackageVersion Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
