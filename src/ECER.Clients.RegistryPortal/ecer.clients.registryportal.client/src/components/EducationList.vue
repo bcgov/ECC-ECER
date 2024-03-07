@@ -5,7 +5,7 @@
       v-for="(education, id) in educations"
       :key="id"
       :education="education"
-      class="mb-4"
+      class="my-4"
       @edit="handleEdit(education, id)"
       @delete="handleDelete(id)"
     />
