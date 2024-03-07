@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
@@ -27,7 +27,8 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(new DraftApplicationResponse(applicationId));
         })
         .WithOpenApi("Save a draft application for the current user", string.Empty, "draftapplication_put")
-        .RequireAuthorization();
+        .RequireAuthorization()
+        .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/applications", async (ApplicationSubmissionRequest request, IMessageBus messageBus) =>
         {
@@ -37,7 +38,8 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok();
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")
-        .RequireAuthorization();
+        .RequireAuthorization()
+        .WithParameterValidation();
 
     endpointRouteBuilder.MapGet("/api/applications/{id?}", async (string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMessageBus messageBus, IMapper mapper) =>
         {
@@ -54,7 +56,8 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(mapper.Map<IEnumerable<Application>>(results.Items));
         })
         .WithOpenApi("Handles application queries", string.Empty, "application_get")
-        .RequireAuthorization();
+        .RequireAuthorization()
+        .WithParameterValidation();
   }
 }
 
