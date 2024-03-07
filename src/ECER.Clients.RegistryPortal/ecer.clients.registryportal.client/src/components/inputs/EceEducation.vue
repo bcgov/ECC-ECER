@@ -1,8 +1,8 @@
 <template>
   <v-row>
     <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
-      <h3 v-if="!studentNumber">Education {{ localId }}</h3>
-      <h3 v-if="studentNumber">Edit {{ previousSchool }}</h3>
+      <h3 v-if="!clientId">Education {{ newClientId }}</h3>
+      <h3 v-if="clientId">Edit {{ previousSchool }}</h3>
       <v-form ref="addEducationForm" validate-on="input" class="mt-6">
         <v-text-field
           v-model="school"
@@ -152,7 +152,7 @@ export default defineComponent({
     };
   },
   computed: {
-    localId() {
+    newClientId() {
       return Object.keys(this.modelValue).length + 1;
     },
   },
@@ -171,7 +171,7 @@ export default defineComponent({
       if (valid) {
         // Prepare the new or updated Transcript data
         const newTranscript: Components.Schemas.Transcript = {
-          id: null,
+          id: this.id,
           educationalInstitutionName: this.school,
           programName: this.program,
           campusLocation: this.campusLocation,
@@ -181,7 +181,9 @@ export default defineComponent({
           startDate: this.startYear,
           endDate: this.endYear,
         };
-        const clientId = this.clientId ? this.clientId : this.localId;
+
+        // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
+        const clientId = this.clientId ? this.clientId : this.newClientId;
         // Update the modelValue dictionary
         const updatedModelValue = {
           ...this.modelValue,
