@@ -1,4 +1,5 @@
-<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.302517-alpha">
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.628833">
+
   <PropertyGroup>
     <StartupCommand>npm run dev</StartupCommand>
     <JavaScriptTestRoot>.\</JavaScriptTestRoot>
@@ -8,4 +9,5 @@
     <!-- Folder where production build objects will be placed -->
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
   </PropertyGroup>
+
 </Project>
