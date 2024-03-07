@@ -51,7 +51,7 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.declaration.form.inputs.applicantLegalName.id]: userStore.fullName,
         [wizard.steps.declaration.form.inputs.signedDate.id]: draftApplication.signedDate
           ? new Date(draftApplication.signedDate).toISOString().slice(0, 10)
-          : new Date().toISOString().slice(0, 10),
+          : new Date().toLocaleDateString("en-CA"),
         [wizard.steps.declaration.form.inputs.consentCheckbox.id]: draftApplication.signedDate ? true : false,
 
         // Contact Information step data

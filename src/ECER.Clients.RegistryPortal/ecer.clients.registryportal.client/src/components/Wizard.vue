@@ -19,26 +19,7 @@
       </v-container>
     </template>
     <template #actions>
-      <v-container class="mb-8">
-        <v-row class="justify-space-between ga-4" no-gutters>
-          <v-col cols="auto" class="mr-auto">
-            <v-btn
-              :disabled="wizardStore.step === 1 && certificationTypeStore.mode === 'selection'"
-              rounded="lg"
-              variant="outlined"
-              color="primary"
-              aut
-              @click="$emit('back')"
-            >
-              Back
-            </v-btn>
-          </v-col>
-          <v-col cols="auto">
-            <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="$emit('saveAsDraft')">Save as Draft</v-btn>
-            <v-btn type="submit" :form="getFormId" rounded="lg" color="primary" @click="$emit('saveAndContinue')">Save and Continue</v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
+      <slot name="actions"></slot>
     </template>
   </v-stepper>
 </template>
@@ -66,9 +47,6 @@ export default defineComponent({
     },
   },
   emits: {
-    saveAsDraft: () => true,
-    saveAndContinue: () => true,
-    back: () => true,
     updatedValidation: (_validation: boolean | null) => true,
   },
   setup: async () => {
@@ -84,16 +62,9 @@ export default defineComponent({
       alertStore,
     };
   },
-  data: () => ({
-    isFormValid: null as boolean | null,
-  }),
-  computed: {
-    getFormId() {
-      return this.wizardStore.currentStep.form.id;
-    },
-  },
+
   methods: {
-    getStepTitles() {
+    getStepTitles(): string[] {
       return Object.values(this.wizard.steps).map((step: Step) => step.title);
     },
   },
