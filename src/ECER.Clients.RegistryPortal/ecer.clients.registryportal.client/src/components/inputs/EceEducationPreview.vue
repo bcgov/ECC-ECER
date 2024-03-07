@@ -9,7 +9,7 @@
           <v-btn v-bind="props" icon="mdi-pencil" color="primary" variant="plain" />
         </v-col>
       </v-row>
-      <div v-for="(education, index) in transcriptList" :key="index">
+      <div v-for="(education, id, index) in educations" :key="id">
         <v-divider v-if="index !== 0" :thickness="2" color="grey-lightest" class="border-opacity-100 my-6" />
         <v-row>
           <v-col>
@@ -83,43 +83,7 @@ import { defineComponent } from "vue";
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
-
-//////////////////////// TODO REMOVE THIS TEST DATA ////////////////////////
-interface Transcript {
-  id?: string | null;
-  educationalInstitutionName?: string | null;
-  programName?: string | null;
-  campusLocation?: string | null;
-  studentName?: string | null;
-  studentNumber?: string | null;
-  languageofInstruction?: string | null;
-  startDate?: string; // date-time
-  endDate?: string; // date-time
-}
-
-const transcriptList: Transcript[] = [
-  {
-    educationalInstitutionName: "University of Alberta",
-    programName: "Bachelor of Science in Computer Science",
-    campusLocation: "Edmonton",
-    studentName: "John Doe",
-    studentNumber: "123456789",
-    languageofInstruction: "English",
-    startDate: "2021-01-01T00:00:00Z",
-    endDate: "2025-01-01T00:00:00Z",
-  },
-  {
-    educationalInstitutionName: "University of British Columbia",
-    programName: "Bachelor of Psychology",
-    campusLocation: "Vancouver",
-    studentName: "Jane Doe",
-    studentNumber: "987654321",
-    languageofInstruction: "English",
-    startDate: "2021-01-01T00:00:00Z",
-    endDate: "2025-01-01T00:00:00Z",
-  },
-];
-//////////////////////// TODO REMOVE THIS TEST DATA ////////////////////////
+import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "EceEducationPreview",
@@ -137,8 +101,12 @@ export default defineComponent({
 
     return {
       wizardStore,
-      transcriptList,
     };
+  },
+  computed: {
+    educations(): { [id: string]: Components.Schemas.Transcript } {
+      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.education.form.inputs.educationList.id];
+    },
   },
 });
 </script>
