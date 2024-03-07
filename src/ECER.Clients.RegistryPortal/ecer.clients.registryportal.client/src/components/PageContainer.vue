@@ -1,7 +1,9 @@
 <template>
-  <v-container class="my-6 px-0">
-    <slot></slot>
-  </v-container>
+  <div class="h-screen bg-white">
+    <v-container class="py-12">
+      <slot></slot>
+    </v-container>
+  </div>
 </template>
 
 <script lang="ts">

@@ -4,7 +4,7 @@
       <v-expansion-panel-title>
         <v-row no-gutters>
           <v-col cols="12">
-            <v-radio-group v-model="selection" :mandatory="true" :hide-details="true">
+            <v-radio-group v-model="selection" :mandatory="true" :hide-details="true" :error="errorState">
               <v-radio color="primary" :label="option.title" :value="option.id"></v-radio>
             </v-radio-group>
           </v-col>
@@ -31,6 +31,7 @@
         <Component :is="option.contentComponent" />
       </v-expansion-panel-text>
     </v-expansion-panel>
+    <div v-if="errorState" class="v-messages error-message" role="alert" aria-live="polite">Select a certificate type to begin your application</div>
   </v-expansion-panels>
   <div v-if="certificationTypeStore.mode == 'terms'">
     <div v-for="certificationType in certificationTypes" :key="certificationType">
@@ -87,6 +88,7 @@ export default defineComponent({
   },
   emits: {
     "update:model-value": (_certificateTypeList: Components.Schemas.CertificationType[]) => true,
+    updatedValidation: (_errorState: boolean) => true,
   },
   setup: (props) => {
     const certificationTypeStore = useCertificationTypeStore();
@@ -122,11 +124,27 @@ export default defineComponent({
       },
     },
     ...mapState(useCertificationTypeStore, ["certificationTypes"]),
+    errorState() {
+      //this prevents the error state from being set to true on first load.
+      if (this.selection === null) {
+        return false;
+      }
+      return !this.selection;
+    },
   },
   watch: {
     certificationTypes(newValue: Components.Schemas.CertificationType[], _) {
       this.$emit("update:model-value", newValue);
     },
+    errorState() {
+      this.$emit("updatedValidation", this.errorState);
+    },
   },
 });
 </script>
+
+<style>
+.error-message {
+  color: rgb(var(--v-theme-error));
+}
+</style>
