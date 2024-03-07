@@ -1,14 +1,16 @@
 <template>
   <v-form :id="form.id" :ref="form.id" validate-on="input" @update:model-value="onFormValidationChanged" @submit.prevent>
     <template v-for="input in form.inputs" :key="input.id">
-      <div class="my-8">
-        <Component
-          :is="input.component"
-          v-bind="{ props: input.props }"
-          :model-value="formData[input.id as keyof {}]"
-          @update:model-value="(value: any) => onInputChanged(input.id, value)"
-        />
-      </div>
+      <v-row class="ma-sm-4">
+        <v-col cols="12" :md="input.cols.md" :lg="input.cols.lg" :xl="input.cols.xl">
+          <Component
+            :is="input.component"
+            v-bind="{ props: input.props }"
+            :model-value="formData[input.id as keyof {}]"
+            @update:model-value="(value: any) => onInputChanged(input.id, value)"
+          />
+        </v-col>
+      </v-row>
     </template>
   </v-form>
 </template>

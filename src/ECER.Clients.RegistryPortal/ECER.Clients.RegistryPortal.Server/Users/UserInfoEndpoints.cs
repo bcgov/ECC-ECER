@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Hosting;
@@ -29,7 +30,8 @@ public class UserInfoEndpoints : IRegisterEndpoints
           return TypedResults.Ok(userInfo);
         })
         .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "userinfo_get")
-        .RequireAuthorization("registry_new_user");
+        .RequireAuthorization("registry_new_user")
+        .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("api/userinfo", async Task<Ok> (UserInfo userInfo, HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
         {
@@ -39,11 +41,12 @@ public class UserInfoEndpoints : IRegisterEndpoints
           return TypedResults.Ok();
         })
         .WithOpenApi("Creates or updates the currently logged on user's profile", string.Empty, "userinfo_post")
-        .RequireAuthorization("registry_new_user");
+        .RequireAuthorization("registry_new_user")
+        .WithParameterValidation();
   }
 }
 
-public record UserInfo(string FirstName, string LastName, DateOnly DateOfBirth, string Email, string Phone)
+public record UserInfo([Required] string FirstName, [Required] string LastName, [Required] DateOnly DateOfBirth, [Required] string Email, [Required] string Phone)
 {
   public int UnreadMessagesCount { get; set; }
 }

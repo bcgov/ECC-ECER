@@ -36,6 +36,17 @@ public static class ExtensionMethods
     context.AddRelatedObject(source, new Relationship(relationshipName), target);
   }
 
+  public static void LoadProperties([NotNull] this EcerContext context, IEnumerable<Entity> entities, params string[] propertyNames)
+  {
+    Parallel.ForEach(entities, entity =>
+    {
+      foreach (var property in propertyNames)
+      {
+        context.LoadProperty(entity, property);
+      }
+    });
+  }
+
   private const int FileBlockSize = 4 * 1024 * 1024; // 4 MB
 
   /// <summary>

@@ -3,8 +3,8 @@ import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
 
-const profileInformationForm: Form = {
-  id: "declaration-form",
+const declarationForm: Form = {
+  id: "declarationForm",
   title: "Declaration & Consent",
   inputs: {
     consentCheckbox: {
@@ -13,8 +13,13 @@ const profileInformationForm: Form = {
       props: {
         rules: [Rules.hasCheckbox("Please agree to continue")],
         label: "I understand and agree with the statements above",
-        //TODO ECER-812 add in logic where we check if user has passed the declaration step that this field should be set to disabled
         disabled: false,
+        checkableOnce: true,
+      },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
       },
     },
     applicantLegalName: {
@@ -23,6 +28,11 @@ const profileInformationForm: Form = {
       props: {
         label: "Applicant Legal Name",
         readonly: true,
+      },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
       },
     },
     signedDate: {
@@ -33,8 +43,13 @@ const profileInformationForm: Form = {
         type: "date",
         readonly: true,
       },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
+      },
     },
   },
 };
 
-export default profileInformationForm;
+export default declarationForm;

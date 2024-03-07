@@ -662,13 +662,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_completedcourse_Applicantid = "ecer_completedcourse_Applicantid";
 			public const string ecer_contact_ecer_authentication_455 = "ecer_contact_ecer_authentication_455";
 			public const string ecer_contact_ecer_communication_122 = "ecer_contact_ecer_communication_122";
-			public const string ecer_contact_ecer_file_123 = "ecer_contact_ecer_file_123";
 			public const string ecer_contact_ecer_portaluser_474 = "ecer_contact_ecer_portaluser_474";
 			public const string ecer_contact_ecer_previousaddress_251 = "ecer_contact_ecer_previousaddress_251";
 			public const string ecer_ecer_characterreference_Applicantid_conta = "ecer_ecer_characterreference_Applicantid_conta";
 			public const string ecer_ecer_professionaldevelopment_Applicantid_ = "ecer_ecer_professionaldevelopment_Applicantid_";
 			public const string ecer_ecer_workexperienceref_ReferenceContactid = "ecer_ecer_workexperienceref_ReferenceContactid";
 			public const string ecer_guardianreference_Applicantid = "ecer_guardianreference_Applicantid";
+			public const string ecer_HasCurrentCertificateConditions = "ecer_hascurrentcertificateconditions";
+			public const string ecer_hascurrentcertificateconditionsName = "ecer_hascurrentcertificateconditionsname";
 			public const string ecer_IsBCECE = "ecer_isbcece";
 			public const string ecer_isbceceName = "ecer_isbcecename";
 			public const string ecer_IsUnder19 = "ecer_isunder19";
@@ -4058,6 +4059,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascurrentcertificateconditions")]
+		public virtual ecer_YesNoNull? ecer_HasCurrentCertificateConditions
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_hascurrentcertificateconditions")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hascurrentcertificateconditions", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascurrentcertificateconditionsname")]
+		public string ecer_hascurrentcertificateconditionsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hascurrentcertificateconditions"))
+				{
+					return this.FormattedValues["ecer_hascurrentcertificateconditions"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// is BC ECE Registrant. Use to show hide other tabs
 		/// </summary>
@@ -7048,24 +7081,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_contact_ecer_communication_122", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_contact_ecer_file_123
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_file_123")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_File> ecer_contact_ecer_file_123
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_File>("ecer_contact_ecer_file_123", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_File>("ecer_contact_ecer_file_123", null, value);
 			}
 		}
 		

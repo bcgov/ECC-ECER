@@ -1,10 +1,11 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
-using System.ComponentModel;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
@@ -26,7 +27,8 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(new DraftApplicationResponse(applicationId));
         })
         .WithOpenApi("Save a draft application for the current user", string.Empty, "draftapplication_put")
-        .RequireAuthorization();
+        .RequireAuthorization()
+        .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/applications", async (ApplicationSubmissionRequest request, IMessageBus messageBus) =>
         {
@@ -36,7 +38,8 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok();
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")
-        .RequireAuthorization();
+        .RequireAuthorization()
+        .WithParameterValidation();
 
     endpointRouteBuilder.MapGet("/api/applications/{id?}", async (string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMessageBus messageBus, IMapper mapper) =>
         {
@@ -53,7 +56,8 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(mapper.Map<IEnumerable<Application>>(results.Items));
         })
         .WithOpenApi("Handles application queries", string.Empty, "application_get")
-        .RequireAuthorization();
+        .RequireAuthorization()
+        .WithParameterValidation();
   }
 }
 
@@ -86,6 +90,7 @@ public record DraftApplication
   public string? Id { get; set; }
   public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+  public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public PortalStage Stage { get; set; }
 }
 
@@ -96,7 +101,28 @@ public record Application
   public DateTime? SubmittedOn { get; set; }
   public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+  public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public ApplicationStatus Status { get; set; }
+  public PortalStage Stage { get; set; }
+}
+
+public record Transcript()
+{
+  public string? Id { get; set; }
+  [Required]
+  public string? EducationalInstitutionName { get; set; }
+  [Required]
+  public string? ProgramName { get; set; }
+  public string? CampusLocation { get; set; }
+  [Required]
+  public string? StudentName { get; set; }
+  [Required]
+  public string? StudentNumber { get; set; }
+  public string? LanguageofInstruction { get; set; }
+  [Required]
+  public DateTime StartDate { get; set; }
+  [Required]
+  public DateTime EndDate { get; set; }
 }
 
 public enum CertificationType
@@ -119,11 +145,13 @@ public enum CertificationType
 
 public enum PortalStage
 {
+  CertificationType,
+  Declaration,
   ContactInformation,
   Education,
-  References,
+  CharacterReferences,
+  WorkReferences,
   Review,
-  Declaration,
 }
 
 public enum ApplicationStatus
@@ -131,10 +159,13 @@ public enum ApplicationStatus
   Draft,
   Submitted,
   Complete,
-  ReviewforCompletness,
-  ReadyforAssessment,
-  BeingAssessed,
   Reconsideration,
-  Appeal,
   Cancelled,
+  Escalated,
+  Decision,
+  Withdrawn,
+  Ready,
+  InProgress,
+  PendingQueue,
+  ReconsiderationDecision
 }

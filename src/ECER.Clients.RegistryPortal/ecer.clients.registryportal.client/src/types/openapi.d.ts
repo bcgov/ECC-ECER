@@ -17,8 +17,11 @@ declare namespace Components {
       id?: string | null;
       createdOn?: string; // date-time
       submittedOn?: string | null; // date-time
+      signedDate?: string | null; // date-time
       certificationTypes?: CertificationType[] | null;
+      transcripts?: Transcript[] | null;
       status?: ApplicationStatus;
+      stage?: PortalStage;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -29,12 +32,15 @@ declare namespace Components {
       | "Draft"
       | "Submitted"
       | "Complete"
-      | "ReviewforCompletness"
-      | "ReadyforAssessment"
-      | "BeingAssessed"
       | "Reconsideration"
-      | "Appeal"
-      | "Cancelled";
+      | "Cancelled"
+      | "Escalated"
+      | "Decision"
+      | "Withdrawn"
+      | "Ready"
+      | "InProgress"
+      | "PendingQueue"
+      | "ReconsiderationDecision";
     /**
      * Submit application request
      */
@@ -59,8 +65,9 @@ declare namespace Components {
     }
     export interface DraftApplication {
       id?: string | null;
-      signedDate?: string | null; // date
+      signedDate?: string | null; // date-time
       certificationTypes?: CertificationType[] | null;
+      transcripts?: Transcript[] | null;
       stage?: PortalStage;
     }
     /**
@@ -78,12 +85,23 @@ declare namespace Components {
       scope?: string | null;
       idp?: string | null;
     }
-    export type PortalStage = "ContactInformation" | "Education" | "References" | "Review" | "Declaration";
+    export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
     /**
      * Save draft application request
      */
     export interface SaveDraftApplicationRequest {
       draftApplication?: DraftApplication;
+    }
+    export interface Transcript {
+      id?: string | null;
+      educationalInstitutionName: string;
+      programName: string;
+      campusLocation?: string | null;
+      studentName: string;
+      studentNumber: string;
+      languageofInstruction?: string | null;
+      startDate?: string; // date-time
+      endDate: string; // date-time
     }
     export interface UserInfo {
       firstName?: string | null;

@@ -4,7 +4,7 @@ import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
 
 const profileInformationForm: Form = {
-  id: "profile-information-form",
+  id: "profileInformationForm",
   title: "Contact Information",
   inputs: {
     legalLastName: {
@@ -16,6 +16,11 @@ const profileInformationForm: Form = {
         maxLength: 50,
         readonly: true,
       },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
+      },
     },
     legalFirstName: {
       id: "legalFirstName",
@@ -25,6 +30,11 @@ const profileInformationForm: Form = {
         rules: [],
         maxLength: 50,
         readonly: true,
+      },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
       },
     },
     legalMiddleName: {
@@ -36,6 +46,11 @@ const profileInformationForm: Form = {
         maxLength: 50,
         readonly: true,
       },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
+      },
     },
     preferredName: {
       id: "preferredName",
@@ -44,6 +59,11 @@ const profileInformationForm: Form = {
         label: "Preferred Name (optional)",
         rules: [],
         maxLength: 50,
+      },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
       },
     },
     dateOfBirth: {
@@ -55,6 +75,11 @@ const profileInformationForm: Form = {
         rules: [Rules.required()],
         readonly: true,
       },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
+      },
     },
     addresses: {
       id: "addresses",
@@ -62,6 +87,11 @@ const profileInformationForm: Form = {
       props: {
         residential: { addressLabel: "Residential" },
         mailing: { addressLabel: "Mailing" },
+      },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
       },
     },
     primaryContactNumber: {
@@ -72,6 +102,11 @@ const profileInformationForm: Form = {
         isNumeric: true,
         rules: [Rules.phoneNumber(), Rules.required()],
       },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
+      },
     },
     alternateContactNumber: {
       id: "alternateContactNumber",
@@ -81,6 +116,11 @@ const profileInformationForm: Form = {
         isNumeric: true,
         rules: [],
       },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
+      },
     },
     email: {
       id: "email",
@@ -88,6 +128,11 @@ const profileInformationForm: Form = {
       props: {
         label: "Email",
         rules: [Rules.email(), Rules.required()],
+      },
+      cols: {
+        md: 8,
+        lg: 6,
+        xl: 4,
       },
     },
   },

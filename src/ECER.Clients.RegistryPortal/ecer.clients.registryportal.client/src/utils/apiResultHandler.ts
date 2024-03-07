@@ -1,16 +1,29 @@
+import type { AxiosResponse } from "axios";
+
 import { useAlertStore } from "@/store/alert";
+
+// Define the structure of the response object
+export interface ApiResponse<T> {
+  data?: T;
+  error?: any;
+}
 
 class ApiResultHandler {
   // Inject the alert store
-  alertStore = useAlertStore();
 
-  // Method to handle successful API responses
-  handleSuccess(response: any) {
-    return response.data;
+  // Generic method to execute an API request and handle the response
+  public async execute<T>(request: Promise<AxiosResponse<T>>): Promise<ApiResponse<T>> {
+    try {
+      const response = await request;
+      return { data: response.data };
+    } catch (error: any) {
+      this.handleError(error);
+      return { error: error.response ? error.response.data : "An unknown error occurred" };
+    }
   }
 
   // Method to handle API errors
-  async handleError(error: any) {
+  private handleError(error: any) {
     if (error.response) {
       const status = error.response.status;
       if (status === 400) {
@@ -37,8 +50,10 @@ class ApiResultHandler {
   }
 
   // Method to show error messages
-  showErrorMessage(message: any) {
-    this.alertStore.setFailureAlert(message);
+  private showErrorMessage(message: any) {
+    const alertStore = useAlertStore();
+    alertStore.setFailureAlert(message);
   }
 }
+
 export default ApiResultHandler;
