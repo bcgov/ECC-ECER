@@ -114,8 +114,8 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var invalidTranscript = new Transcript
     {
       EducationalInstitutionName = null,
-      ProgramName = faker.Lorem.Sentence(),
-      StudentName = faker.Person.FullName,
+      ProgramName = null,
+      StudentName = null,
       StudentNumber = faker.Random.Number(1000, 9999).ToString(),
       StartDate = faker.Date.Recent(),
       EndDate = faker.Date.Soon()
