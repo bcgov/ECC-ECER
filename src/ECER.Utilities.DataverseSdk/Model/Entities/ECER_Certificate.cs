@@ -85,6 +85,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ExpiryDate = "ecer_expirydate";
 			public const string ecer_HasConditions = "ecer_hasconditions";
 			public const string ecer_hasconditionsName = "ecer_hasconditionsname";
+			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
+			public const string ecer_ineligiblereferenceName = "ecer_ineligiblereferencename";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PrintedDate = "ecer_printeddate";
 			public const string ecer_Registrantid = "ecer_registrantid";
@@ -421,6 +423,41 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_hasconditions"))
 				{
 					return this.FormattedValues["ecer_hasconditions"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// When marked with certain condition and not eligible as a reference
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ineligiblereference")]
+		public virtual ecer_YesNoNull? ecer_IneligibleReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_ineligiblereference")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_ineligiblereference", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ineligiblereferencename")]
+		public string ecer_ineligiblereferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_ineligiblereference"))
+				{
+					return this.FormattedValues["ecer_ineligiblereference"];
 				}
 				else
 				{

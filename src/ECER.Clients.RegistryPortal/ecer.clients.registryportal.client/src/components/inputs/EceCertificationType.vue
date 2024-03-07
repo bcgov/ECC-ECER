@@ -34,33 +34,23 @@
     <div v-if="errorState" class="v-messages error-message" role="alert" aria-live="polite">Select a certificate type to begin your application</div>
   </v-expansion-panels>
   <div v-if="certificationTypeStore.mode == 'terms'">
-    <v-row>
-      <v-col cols="12" md="8" lg="8" xl="8" class="mx-auto">
-        <v-card>
-          <v-card-text>
-            <v-row class="ga-4">
-              <div v-for="certificationType in certificationTypes" :key="certificationType">
-                <template v-if="certificationType === 'EceAssistant'">
-                  <ECEAssistantRequirements />
-                </template>
-                <template v-if="certificationType === 'OneYear'">
-                  <ECEOneYearRequirements />
-                </template>
-                <template v-if="certificationType === 'FiveYears'">
-                  <ECEFiveYearRequirements />
-                </template>
-                <template v-if="certificationType === 'Sne'">
-                  <SneRequirements />
-                </template>
-                <template v-if="certificationType === 'Ite'">
-                  <IteRequirements />
-                </template>
-              </div>
-            </v-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
+    <div v-for="certificationType in certificationTypes" :key="certificationType">
+      <template v-if="certificationType === 'EceAssistant'">
+        <ECEAssistantRequirements />
+      </template>
+      <template v-if="certificationType === 'OneYear'">
+        <ECEOneYearRequirements />
+      </template>
+      <template v-if="certificationType === 'FiveYears'">
+        <ECEFiveYearRequirements />
+      </template>
+      <template v-if="certificationType === 'Sne'">
+        <SneRequirements />
+      </template>
+      <template v-if="certificationType === 'Ite'">
+        <IteRequirements />
+      </template>
+    </div>
   </div>
 </template>
 
@@ -95,6 +85,12 @@ export default defineComponent({
       type: Object as () => Components.Schemas.CertificationType[],
       required: true,
     },
+  },
+  mounted() {
+    //if user does not have a selection, default to EceAssistant.
+    if (!this.certificationTypeStore.selection) {
+      this.certificationTypeStore.selection = "EceAssistant";
+    }
   },
   emits: {
     "update:model-value": (_certificateTypeList: Components.Schemas.CertificationType[]) => true,
@@ -135,10 +131,6 @@ export default defineComponent({
     },
     ...mapState(useCertificationTypeStore, ["certificationTypes"]),
     errorState() {
-      //this prevents the error state from being set to true on first load.
-      if (this.selection === null) {
-        return false;
-      }
       return !this.selection;
     },
   },

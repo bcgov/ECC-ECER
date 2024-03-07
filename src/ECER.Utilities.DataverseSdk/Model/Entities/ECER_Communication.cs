@@ -81,7 +81,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_contact_ecer_communication_122 = "ecer_contact_ecer_communication_122";
 			public const string ecer_DateAcknowledged = "ecer_dateacknowledged";
 			public const string ecer_DateNotified = "ecer_datenotified";
-			public const string ecer_file_Communicationid = "ecer_file_Communicationid";
 			public const string ecer_InitiatedFrom = "ecer_initiatedfrom";
 			public const string ecer_initiatedfromName = "ecer_initiatedfromname";
 			public const string ecer_Message = "ecer_message";
@@ -1053,24 +1052,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationLineItem>("ecer_communicationlineitem_Communicationid", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_file_Communicationid
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_file_Communicationid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_File> ecer_file_Communicationid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_File>("ecer_file_Communicationid", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_File>("ecer_file_Communicationid", null, value);
 			}
 		}
 		

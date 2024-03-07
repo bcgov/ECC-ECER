@@ -1,10 +1,7 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Client;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration;
@@ -26,11 +23,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 {
   private Contact authenticatedBcscUser = null!;
   private ecer_Application testApplication = null!;
-  private ecer_Communication communication = null!;
+  private ecer_Communication testCommunication = null!;
 
   public UserIdentity AuthenticatedBcscUserIdentity => authenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
-  public string communicationId => communication.Id.ToString();
+  public string communicationId => testCommunication.Id.ToString();
 
   public override async Task InitializeAsync()
   {
@@ -46,23 +43,22 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
     authenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user");
     testApplication = GetOrAddApplication(context, authenticatedBcscUser);
-    communication = GetOrAddCommunication(context, testApplication);
+    testCommunication = GetOrAddCommunication(context, testApplication);
 
     context.SaveChanges();
 
     //load dependent properties
     context.Attach(authenticatedBcscUser);
     context.LoadProperty(authenticatedBcscUser, Contact.Fields.ecer_contact_ecer_authentication_455);
-    
   }
 
   private Contact GetOrAddApplicant(EcerContext context, string identityProvider, string userId)
   {
     var contact = (from a in context.ecer_AuthenticationSet
-                 join c in context.ContactSet on a.ecer_authentication_Contactid.ContactId equals c.ContactId into contacts
-                 from c in contacts.DefaultIfEmpty()
-                 where a.ecer_IdentityProvider == identityProvider && a.ecer_ExternalID == userId
-                 select c).SingleOrDefault();
+                   join c in context.ContactSet on a.ecer_authentication_Contactid.ContactId equals c.ContactId into contacts
+                   from c in contacts.DefaultIfEmpty()
+                   where a.ecer_IdentityProvider == identityProvider && a.ecer_ExternalID == userId
+                   select c).SingleOrDefault();
 
     if (contact == null)
     {
@@ -80,7 +76,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       };
       context.AddObject(authentication);
       context.AddObject(contact);
-      context.AddLink(authentication, ecer_Authentication.Fields.ecer_contact_ecer_authentication_455, contact);     
+      context.AddLink(authentication, ecer_Authentication.Fields.ecer_contact_ecer_authentication_455, contact);
     }
 
     return contact;
@@ -99,16 +95,16 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         Id = Guid.NewGuid(),
       };
       context.AddObject(application);
-      context.AddLink(application, ecer_Application.Fields.ecer_application_Applicantid_contact, applicant);      
+      context.AddLink(application, ecer_Application.Fields.ecer_application_Applicantid_contact, applicant);
     }
     return application;
   }
+
   private ecer_Communication GetOrAddCommunication(EcerContext context, ecer_Application application)
   {
-
     var communication = (from a in context.ecer_CommunicationSet
-                 where a.ecer_Applicationid.Id == application.Id
-                 select a).FirstOrDefault();
+                         where a.ecer_Applicationid.Id == application.Id
+                         select a).FirstOrDefault();
 
     if (communication == null)
     {
@@ -119,12 +115,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Acknowledged = false,
         StatusCode = ecer_Communication_StatusCode.NotifiedRecipient,
       };
-      
+
       context.AddObject(communication);
       context.AddLink(communication, ecer_Communication.Fields.ecer_communication_Applicationid, testApplication);
     }
 
     return communication;
   }
-
 }

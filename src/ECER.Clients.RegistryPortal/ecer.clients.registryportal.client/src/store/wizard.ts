@@ -22,6 +22,7 @@ export const useWizardStore = defineStore("wizard", {
     wizardData: {} as WizardData,
     wizardConfig: {} as Wizard,
   }),
+  persist: true,
   getters: {
     steps: (state) => Object.values(state.wizardConfig.steps),
     currentStep(state): Step {
@@ -67,6 +68,10 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.userProfile?.phone || userStore.oidcUserInfo?.phone,
         [wizard.steps.profile.form.inputs.alternateContactNumber.id]: userStore.userProfile?.alternateContactPhone,
         [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || userStore.oidcUserInfo?.email,
+
+        // Education step data
+        // TODO convert from Components.Schemas.Transcript[] -> {[id: string]: Components.Schemas.Transcript}
+        [wizard.steps.education.form.inputs.educationList.id]: draftApplication.transcripts,
       };
     },
     setWizardData(wizardData: WizardData): void {
