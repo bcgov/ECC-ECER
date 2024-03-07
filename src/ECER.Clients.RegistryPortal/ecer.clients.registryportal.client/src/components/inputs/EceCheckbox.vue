@@ -6,7 +6,7 @@
     :readonly="readonly"
     :rules="props.rules"
     :model-value="modelValue"
-    @click="readonly ?? $emit('update:model-value', $event.target.checked)"
+    @click="!readonly && $emit('update:model-value', $event.target.checked)"
   ></v-checkbox>
 </template>
 
