@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" />
+    <PackageReference Include="MinimalApis.Extensions" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 

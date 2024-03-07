@@ -33,7 +33,13 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public DateTime? CreatedOn { get; set; }
   public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
+  public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public PortalStage Stage { get; set; }
+}
+public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate)
+{
+  public string? CampusLocation { get; set; }
+  public string? LanguageofInstruction { get; set; }
 }
 
 public enum PortalStage
@@ -63,12 +69,12 @@ public enum ApplicationStatus
   Complete,
   Reconsideration,
   Cancelled,
-  Decision,
   Escalated,
-  InProgress,
-  Pending,
-  PendingQueue,
-  Ready,
-  ReconsiderationDecision,
+  Decision,
   Withdrawn,
+  Pending,
+  Ready,
+  InProgress,
+  PendingQueue,
+  ReconsiderationDecision
 }

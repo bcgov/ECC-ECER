@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the File
+	/// Status of the Denial Reason
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_file_statecode
+	public enum ecer_denialreason_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the File
+	/// Reason for the status of the Denial Reason
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_File_StatusCode
+	public enum ecer_DenialReason_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -43,13 +43,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_file")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_denialreason")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ecer_File : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_DenialReason : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_file entity
+		/// Available fields, a the time of codegen, for the ecer_denialreason entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,26 +60,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_Applicationid = "ecer_applicationid";
-			public const string ecer_ApplicationidName = "ecer_applicationidname";
-			public const string ecer_Communicationid = "ecer_communicationid";
-			public const string ecer_CommunicationidName = "ecer_communicationidname";
-			public const string ecer_contact_ecer_file_123 = "ecer_contact_ecer_file_123";
-			public const string ecer_Customerid = "ecer_customerid";
-			public const string ecer_CustomeridName = "ecer_customeridname";
-			public const string ecer_CustomeridYomiName = "ecer_customeridyominame";
-			public const string ecer_DocumentFile = "ecer_documentfile";
-			public const string ecer_DocumentFile_Name = "ecer_documentfile_name";
-			public const string ecer_file_Applicationid_ecer_application = "ecer_file_Applicationid_ecer_application";
-			public const string ecer_file_Communicationid = "ecer_file_Communicationid";
-			public const string ecer_FileId = "ecer_fileid";
-			public const string Id = "ecer_fileid";
-			public const string ecer_ImageFile = "ecer_imagefile";
-			public const string ecer_ImageFile_Timestamp = "ecer_imagefile_timestamp";
-			public const string ecer_ImageFile_URL = "ecer_imagefile_url";
-			public const string ecer_ImageFileId = "ecer_imagefileid";
-			public const string ecer_Name = "ecer_name";
-			public const string ecer_URL = "ecer_url";
+			public const string ecer_application_DenialReasonType_ecer_denialr = "ecer_application_DenialReasonType_ecer_denialr";
+			public const string ecer_DenialReason1 = "ecer_denialreason";
+			public const string ecer_DenialReasonId = "ecer_denialreasonid";
+			public const string Id = "ecer_denialreasonid";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -106,19 +90,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_File(System.Guid id) : 
+		public ecer_DenialReason(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_File(string keyName, object keyValue) : 
+		public ecer_DenialReason(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_File(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_DenialReason(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -127,22 +111,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_File() : 
+		public ecer_DenialReason() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_fileid";
+		public const string PrimaryIdAttribute = "ecer_denialreasonid";
 		
-		public const string PrimaryNameAttribute = "ecer_name";
+		public const string PrimaryNameAttribute = "ecer_denialreason";
 		
-		public const string EntitySchemaName = "ecer_File";
+		public const string EntitySchemaName = "ecer_DenialReason";
 		
-		public const string EntityLogicalName = "ecer_file";
+		public const string EntityLogicalName = "ecer_denialreason";
 		
-		public const string EntityLogicalCollectionName = "ecer_files";
+		public const string EntityLogicalCollectionName = "ecer_denialreasons";
 		
-		public const string EntitySetName = "ecer_files";
+		public const string EntitySetName = "ecer_denialreasons";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -256,161 +240,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_Applicationid
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreason")]
+		public string ecer_DenialReason1
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_applicationid");
+				return this.GetAttributeValue<string>("ecer_denialreason");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_applicationid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationidname")]
-		public string ecer_ApplicationidName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_applicationid"))
-				{
-					return this.FormattedValues["ecer_applicationid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_Communicationid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_communicationid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_communicationid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationidname")]
-		public string ecer_CommunicationidName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_communicationid"))
-				{
-					return this.FormattedValues["ecer_communicationid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customerid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_Customerid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_customerid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_customerid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customeridname")]
-		public string ecer_CustomeridName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_customerid"))
-				{
-					return this.FormattedValues["ecer_customerid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customeridyominame")]
-		public string ecer_CustomeridYomiName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_customerid"))
-				{
-					return this.FormattedValues["ecer_customerid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfile")]
-		public object ecer_DocumentFile
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<object>("ecer_documentfile");
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfile_name")]
-		public string ecer_DocumentFile_Name
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_documentfile"))
-				{
-					return this.FormattedValues["ecer_documentfile"];
-				}
-				else
-				{
-					return default(string);
-				}
+				this.SetAttributeValue("ecer_denialreason", value);
 			}
 		}
 		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fileid")]
-		public System.Nullable<System.Guid> ecer_FileId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasonid")]
+		public System.Nullable<System.Guid> ecer_DenialReasonId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_fileid");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_denialreasonid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_fileid", value);
+				this.SetAttributeValue("ecer_denialreasonid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -422,7 +281,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fileid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasonid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -433,82 +292,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_FileId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_imagefile")]
-		public byte[] ecer_ImageFile
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<byte[]>("ecer_imagefile");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_imagefile", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_imagefile_timestamp")]
-		public System.Nullable<long> ecer_ImageFile_Timestamp
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<long>>("ecer_imagefile_timestamp");
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_imagefile_url")]
-		public string ecer_ImageFile_URL
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_imagefile_url");
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_imagefileid")]
-		public System.Nullable<System.Guid> ecer_ImageFileId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_imagefileid");
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ecer_Name
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_name");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_name", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_url")]
-		public string ecer_URL
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_url");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_url", value);
+				this.ecer_DenialReasonId = value;
 			}
 		}
 		
@@ -775,15 +559,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the File
+		/// Status of the Denial Reason
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_file_statecode? StateCode
+		public virtual ecer_denialreason_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_file_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_denialreason_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -810,15 +594,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the File
+		/// Reason for the status of the Denial Reason
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_File_StatusCode? StatusCode
+		public virtual ecer_DenialReason_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_File_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_DenialReason_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -894,59 +678,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// N:1 ecer_contact_ecer_file_123
+		/// 1:N ecer_application_DenialReasonType_ecer_denialr
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_customerid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_file_123")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ecer_contact_ecer_file_123
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_DenialReasonType_ecer_denialr")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Application> ecer_application_DenialReasonType_ecer_denialr
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_contact_ecer_file_123", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_DenialReasonType_ecer_denialr", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_contact_ecer_file_123", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_file_Applicationid_ecer_application
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_file_Applicationid_ecer_application")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_Application ecer_file_Applicationid_ecer_application
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_file_Applicationid_ecer_application", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_file_Applicationid_ecer_application", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_file_Communicationid
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_file_Communicationid")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_Communication ecer_file_Communicationid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_file_Communicationid", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_file_Communicationid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_DenialReasonType_ecer_denialr", null, value);
 			}
 		}
 		
@@ -955,7 +700,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_File(object anonymousType) : 
+		public ecer_DenialReason(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -973,9 +718,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_fileid"] = base.Id;
+                        Attributes["ecer_denialreasonid"] = base.Id;
                         break;
-                    case "ecer_fileid":
+                    case "ecer_denialreasonid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

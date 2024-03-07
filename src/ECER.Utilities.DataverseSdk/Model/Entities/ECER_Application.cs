@@ -106,6 +106,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicantSignature = "ecer_applicantsignature";
 			public const string ecer_application_Applicantid_contact = "ecer_application_Applicantid_contact";
 			public const string ecer_application_Certificateid = "ecer_application_Certificateid";
+			public const string ecer_application_DenialReasonType_ecer_denialr = "ecer_application_DenialReasonType_ecer_denialr";
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string Id = "ecer_applicationid";
 			public const string ecer_ApplicationNumber = "ecer_applicationnumber";
@@ -142,6 +143,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_declarationinformationcanbeauditedName = "ecer_declarationinformationcanbeauditedname";
 			public const string ecer_DeclarationInformationCompleteAccurate = "ecer_declarationinformationcompleteaccurate";
 			public const string ecer_declarationinformationcompleteaccurateName = "ecer_declarationinformationcompleteaccuratename";
+			public const string ecer_DenialReasonExplanation = "ecer_denialreasonexplanation";
+			public const string ecer_DenialReasonType = "ecer_denialreasontype";
+			public const string ecer_DenialReasonTypeName = "ecer_denialreasontypename";
 			public const string ecer_DoesECERegistryHaveTranscript = "ecer_doeseceregistryhavetranscript";
 			public const string ecer_doeseceregistryhavetranscriptName = "ecer_doeseceregistryhavetranscriptname";
 			public const string ecer_ecer_professionaldevelopment_Applicationi = "ecer_ecer_professionaldevelopment_Applicationi";
@@ -156,7 +160,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EscalatetoTeamLead = "ecer_escalatetoteamlead";
 			public const string ecer_escalatetoteamleadName = "ecer_escalatetoteamleadname";
 			public const string ecer_ExplanationLetter = "ecer_explanationletter";
-			public const string ecer_file_Applicationid_ecer_application = "ecer_file_Applicationid_ecer_application";
 			public const string ecer_guardianreference_Applicationid = "ecer_guardianreference_Applicationid";
 			public const string ecer_HasProfessionalDevelopment = "ecer_hasprofessionaldevelopment";
 			public const string ecer_hasprofessionaldevelopmentName = "ecer_hasprofessionaldevelopmentname";
@@ -211,8 +214,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ReadyforAssessment = "ecer_readyforassessment";
 			public const string ecer_ReadyforAssessmentDate = "ecer_readyforassessmentdate";
 			public const string ecer_readyforassessmentName = "ecer_readyforassessmentname";
+			public const string ecer_RequestCharacterReference = "ecer_requestcharacterreference";
+			public const string ecer_requestcharacterreferenceName = "ecer_requestcharacterreferencename";
+			public const string ecer_RequestWkExpReference = "ecer_requestwkexpreference";
+			public const string ecer_requestwkexpreferenceName = "ecer_requestwkexpreferencename";
 			public const string ecer_RoutetoAssessmentTeam = "ecer_routetoassessmentteam";
 			public const string ecer_routetoassessmentteamName = "ecer_routetoassessmentteamname";
+			public const string ecer_RoutetoInvestigationTeam = "ecer_routetoinvestigationteam";
+			public const string ecer_routetoinvestigationteamName = "ecer_routetoinvestigationteamname";
 			public const string ecer_StatusReasonDetail = "ecer_statusreasondetail";
 			public const string ecer_statusreasondetailName = "ecer_statusreasondetailname";
 			public const string ecer_street = "ecer_street";
@@ -1072,6 +1081,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_declarationinformationcompleteaccurate"))
 				{
 					return this.FormattedValues["ecer_declarationinformationcompleteaccurate"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasonexplanation")]
+		public string ecer_DenialReasonExplanation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_denialreasonexplanation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_denialreasonexplanation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasontype")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_DenialReasonType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_denialreasontype");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_denialreasontype", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasontypename")]
+		public string ecer_DenialReasonTypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_denialreasontype"))
+				{
+					return this.FormattedValues["ecer_denialreasontype"];
 				}
 				else
 				{
@@ -2132,6 +2188,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requestcharacterreference")]
+		public System.Nullable<bool> ecer_RequestCharacterReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_requestcharacterreference");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requestcharacterreference", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requestcharacterreferencename")]
+		public string ecer_requestcharacterreferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requestcharacterreference"))
+				{
+					return this.FormattedValues["ecer_requestcharacterreference"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requestwkexpreference")]
+		public System.Nullable<bool> ecer_RequestWkExpReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_requestwkexpreference");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requestwkexpreference", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requestwkexpreferencename")]
+		public string ecer_requestwkexpreferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requestwkexpreference"))
+				{
+					return this.FormattedValues["ecer_requestwkexpreference"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_routetoassessmentteam")]
 		public virtual ecer_YesNoNull? ecer_RoutetoAssessmentTeam
 		{
@@ -2156,6 +2276,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_routetoassessmentteam"))
 				{
 					return this.FormattedValues["ecer_routetoassessmentteam"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_routetoinvestigationteam")]
+		public System.Nullable<bool> ecer_RoutetoInvestigationTeam
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_routetoinvestigationteam");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_routetoinvestigationteam", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_routetoinvestigationteamname")]
+		public string ecer_routetoinvestigationteamName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_routetoinvestigationteam"))
+				{
+					return this.FormattedValues["ecer_routetoinvestigationteam"];
 				}
 				else
 				{
@@ -2910,24 +3062,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_file_Applicationid_ecer_application
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_file_Applicationid_ecer_application")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_File> ecer_file_Applicationid_ecer_application
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_File>("ecer_file_Applicationid_ecer_application", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_File>("ecer_file_Applicationid_ecer_application", null, value);
-			}
-		}
-		
-		/// <summary>
 		/// 1:N ecer_guardianreference_Applicationid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_guardianreference_Applicationid")]
@@ -3016,6 +3150,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_application_Certificateid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_application_DenialReasonType_ecer_denialr
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasontype")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_DenialReasonType_ecer_denialr")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_DenialReason ecer_application_DenialReasonType_ecer_denialr
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_DenialReason>("ecer_application_DenialReasonType_ecer_denialr", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_DenialReason>("ecer_application_DenialReasonType_ecer_denialr", null, value);
 			}
 		}
 		

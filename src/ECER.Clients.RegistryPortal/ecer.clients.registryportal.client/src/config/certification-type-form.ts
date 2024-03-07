@@ -13,6 +13,11 @@ const certificationTypeForm: Form = {
       props: {
         options: certificationTypes,
       },
+      cols: {
+        md: 12,
+        lg: 8,
+        xl: 8,
+      },
     },
   },
 };

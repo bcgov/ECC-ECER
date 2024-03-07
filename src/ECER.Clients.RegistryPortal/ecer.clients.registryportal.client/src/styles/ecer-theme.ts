@@ -5,6 +5,7 @@ const ecerTheme: ThemeDefinition = {
   colors: {
     background: "#F2F2F2",
     primary: "#003366",
+    alternate: "#1976D2",
     secondary: "#38598A",
     "grey-dark": "#313231",
     "grey-light": "#757575",

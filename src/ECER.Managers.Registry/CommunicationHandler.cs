@@ -1,14 +1,7 @@
 ﻿using AutoMapper;
+using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Resources.Accounts.Communications;
-using ECER.Resources.Documents.Applications;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ECER.Infrastructure.Common;
-using System.Collections;
 
 namespace ECER.Managers.Registry
 {
@@ -28,7 +21,7 @@ namespace ECER.Managers.Registry
         ByStatus = statuses,
       });
 
-      var unreadCount = communications.Where(c => c.Acknowledged == false).ToList().Count; // it does not support Any
+      var unreadCount = communications.Where(c => c.Acknowledged).ToList().Count; // it does not support Any
       var hasUnread = unreadCount > 0;
 
       var communicationsStatus = new Contract.Communications.CommunicationsStatus() { HasUnread = hasUnread, Count = unreadCount };
