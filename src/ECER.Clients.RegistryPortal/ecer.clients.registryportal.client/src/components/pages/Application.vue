@@ -1,11 +1,28 @@
 <template>
-  <Wizard
-    :wizard="applicationWizard"
-    @save-and-continue="handleSaveAndContinue"
-    @save-as-draft="handleSaveAsDraft"
-    @back="handleBack"
-    @updated-validation="isFormValid = $event"
-  />
+  <Wizard :wizard="applicationWizard" @updated-validation="isFormValid = $event">
+    <template #actions>
+      <v-container class="mb-8">
+        <v-row class="justify-space-between ga-4" no-gutters>
+          <v-col cols="auto" class="mr-auto">
+            <v-btn
+              :disabled="wizardStore.step === 1 && certificationTypeStore.mode === 'selection'"
+              rounded="lg"
+              variant="outlined"
+              color="primary"
+              aut
+              @click="handleBack"
+            >
+              Back
+            </v-btn>
+          </v-col>
+          <v-col cols="auto">
+            <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
+            <v-btn type="submit" :form="getFormId" rounded="lg" color="primary" :disabled="isDisabled" @click="handleSaveAndContinue">Save and Continue</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </template>
+  </Wizard>
 </template>
 
 <script lang="ts">
@@ -46,6 +63,14 @@ export default defineComponent({
   data: () => ({
     isFormValid: null as boolean | null,
   }),
+  computed: {
+    getFormId(): string {
+      return this.wizardStore.currentStep.form.id;
+    },
+    isDisabled(): boolean {
+      return this.wizardStore.currentStepStage === "Declaration" && !this.isFormValid;
+    },
+  },
   methods: {
     handleSaveAndContinue() {
       if (!this.isFormValid) {
