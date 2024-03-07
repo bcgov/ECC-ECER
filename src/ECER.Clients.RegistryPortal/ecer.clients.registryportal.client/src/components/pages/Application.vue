@@ -1,5 +1,5 @@
 <template>
-  <Wizard :wizard="applicationWizard" @back="handleBack" @updated-validation="isFormValid = $event">
+  <Wizard :wizard="applicationWizard" @updated-validation="isFormValid = $event">
     <template #actions>
       <v-container class="mb-8">
         <v-row class="justify-space-between ga-4" no-gutters>
