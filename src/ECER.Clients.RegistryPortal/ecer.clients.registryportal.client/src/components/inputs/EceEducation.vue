@@ -212,8 +212,6 @@ export default defineComponent({
       this.mode = "add";
     },
     handleEdit(educationData: EducationData) {
-      console.log("Edit education with id: ", educationData.educationId);
-      console.log("Education data: ", educationData.education);
       // Set the form fields to the education data
       this.id = educationData.education.id ?? "";
       this.clientId = educationData.educationId.toString();
@@ -230,7 +228,6 @@ export default defineComponent({
       this.mode = "add";
     },
     handleDelete(educationId: string | number) {
-      console.log("Delete education with id: ", educationId);
       //Remove the education from the modelValue
 
       if (educationId in this.modelValue) {
