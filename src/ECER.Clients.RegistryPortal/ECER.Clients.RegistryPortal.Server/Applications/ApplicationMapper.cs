@@ -26,6 +26,17 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.LanguageofInstruction,
              opts => opts.MapFrom(src => src.LanguageofInstruction))
       .ReverseMap();
+    
+    CreateMap<CharacterReference, Managers.Registry.Contract.Applications.CharacterReference>()
+      .ForMember(d => d.FirstName,
+        opts => opts.MapFrom(src => src.FirstName))
+      .ForMember(d => d.LastName,
+        opts => opts.MapFrom(src => src.LastName))
+      .ForMember(d => d.EmailAddress,
+        opts => opts.MapFrom(src => src.EmailAddress))
+      .ForMember(d => d.PhoneNumber,
+        opts => opts.MapFrom(src => src.PhoneNumber))
+      .ReverseMap();
 
     CreateMap<DraftApplication, Managers.Registry.Contract.Applications.Application>()
       .ForMember(d => d.RegistrantId, opts => opts.Ignore())
@@ -37,11 +48,10 @@ public class ApplicationMapper : Profile
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.Status), opts => opts.MapFrom(_ => Managers.Registry.Contract.Applications.ApplicationStatus.Draft))
       .ForMember(d => d.Stage, opts => opts.MapFrom(s => s.Stage))
       .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.SignedDate))
-      .ForMember(d => d.CharacterReference, opts => opts.MapFrom(s => s.CharacterReference))
+      .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.CharacterReferences))
       ;
 
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>()
       ;
-    CreateMap<Managers.Registry.Contract.Applications.CharacterReference, CharacterReference>();
   }
 }

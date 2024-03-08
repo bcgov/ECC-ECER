@@ -14,6 +14,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.CertificationTypes, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.Transcripts, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.CharacterReferences, opts => opts.DoNotValidate())
        .ForMember(d => d.ecer_ApplicationId, opts => opts.MapFrom(s => s.Id))
        .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
        .ForMember(d => d.ecer_IsECEAssistant, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.EceAssistant)))
@@ -32,7 +33,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted))
        .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.ecer_DateSigned))
        .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.ecer_transcript_Applicationid))
-       .ForMember(d => d.CharacterReference, opts => opts.MapFrom(s => s.ecer_characterreference_Applicationid));
+       .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.ecer_characterreference_Applicationid));
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
         .ConstructUsing((s, _) =>
@@ -75,11 +76,17 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.LanguageofInstruction, opts => opts.MapFrom(s => s.ecer_LanguageofInstruction))
     .ValidateMemberList(MemberList.Destination);
 
-    CreateMap<CharacterReference, ecer_CharacterReference>()
-    .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
-    .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
-    .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
-    .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
-    .ReverseMap();
+    CreateMap<CharacterReference, ecer_CharacterReference>(MemberList.Source)
+      .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
+      .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
+      .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
+      .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber));
+
+    CreateMap<ecer_CharacterReference, CharacterReference>(MemberList.Source)
+          .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.ecer_FirstName))
+          .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.ecer_LastName))
+          .ForMember(d => d.EmailAddress, opts => opts.MapFrom(s => s.ecer_EmailAddress))
+          .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
+    .ValidateMemberList(MemberList.Destination);
   }
 }

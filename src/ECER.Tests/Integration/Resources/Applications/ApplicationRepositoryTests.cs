@@ -1,9 +1,16 @@
-﻿using ECER.Resources.Documents.Applications;
+﻿using Bogus;
+using ECER.Clients.RegistryPortal.Server.Applications;
+using ECER.Resources.Documents.Applications;
 using JasperFx.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
 using Xunit.Categories;
+using Application = ECER.Resources.Documents.Applications.Application;
+using ApplicationStatus = ECER.Resources.Documents.Applications.ApplicationStatus;
+using CertificationType = ECER.Resources.Documents.Applications.CertificationType;
+using CharacterReference = ECER.Resources.Documents.Applications.CharacterReference;
+using Transcript = ECER.Resources.Documents.Applications.Transcript;
 
 namespace ECER.Tests.Integration.Resources.Applications;
 
@@ -107,6 +114,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     var applications = await repository.Query(new ApplicationQuery { ById = applicationId });
     var application = applications.ShouldHaveSingleItem();
+    application.Transcripts.ShouldHaveSingleItem();
     application.ApplicantId.ShouldBe(applicantId);
   }
 
@@ -195,39 +203,77 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task SaveDraftApplication_WithCharacterReference_Updated_Test()
+  public async Task SaveDraftApplication_WithCharacterReferences_Created()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
-    var newApplication = new Application(null, applicantId, new[] { CertificationType.OneYear });
-
-    var charReferenceList = new List<CharacterReference>
+    var characterReferences = new List<CharacterReference>
     {
-        new CharacterReference
-    {
-      FirstName = "Test",
-      LastName = "Test",
-      EmailAddress = "Test",
-      PhoneNumber = "Test"
-    }
+        CreateCharacterReference()
     };
-
-    newApplication.CharacterReference = charReferenceList;
-
-    var newApplicationId = await repository.SaveDraft(newApplication);
-    var savedApplication = (await repository.Query(new ApplicationQuery { ById = newApplicationId })).ShouldHaveSingleItem();
-    savedApplication.CharacterReference.ShouldNotBeNull();
-    //    savedApplication.CharacterReference.FirstName.ShouldBe("Test"); TODO check for character reference 
-
-    var application = new Application(newApplicationId, applicantId, new[] { CertificationType.OneYear });
-    application.SignedDate = DateTime.Now;
-    var existingApplicationId = await repository.SaveDraft(application);
-
-    existingApplicationId.ShouldBe(newApplicationId);
-
-    var existingApplication = (await repository.Query(new ApplicationQuery { ById = existingApplicationId })).ShouldHaveSingleItem();
-    existingApplication.Status.ShouldBe(ApplicationStatus.Draft);
-    existingApplication.ApplicantId.ShouldBe(applicantId);
-    existingApplication.SignedDate.ShouldNotBeNull();
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear })
+    {
+      CharacterReferences = characterReferences
+    };
+    var applicationId = await repository.SaveDraft(application);
+    applicationId.ShouldNotBeNull();
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var savedApplication = query.ShouldHaveSingleItem();
+    savedApplication.CharacterReferences.Count().ShouldBe(characterReferences.Count);
   }
 
+  [Fact]
+  public async Task UpdateApplication_WithModifiedCharacterReferences_Updated()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var originalCharacterReferences = new List<CharacterReference> {
+      CreateCharacterReference()
+    };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
+    application.CharacterReferences = originalCharacterReferences;
+    var applicationId = await repository.SaveDraft(application);
+
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var characterReference = query.First().CharacterReferences.First();
+    characterReference.FirstName = "Roberto";
+    characterReference.LastName = "Firmino";
+
+    var updatedCharacterReferences = new List<CharacterReference> { characterReference };
+    application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
+    application.CharacterReferences = updatedCharacterReferences;
+    await repository.SaveDraft(application);
+
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    updatedApplication.CharacterReferences.First().FirstName.ShouldBe("Roberto");
+    updatedApplication.CharacterReferences.First().LastName.ShouldBe("Firmino");
+  }
+
+  [Fact]
+  public async Task UpdateApplication_RemoveCharacterReferences_Updated()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var originalCharacterReferences = new List<CharacterReference> {
+      CreateCharacterReference()
+    };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
+    application.CharacterReferences = originalCharacterReferences;
+    var applicationId = await repository.SaveDraft(application);
+
+    // Update application with empty character reference list
+    application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
+    application.CharacterReferences = new List<CharacterReference>();
+    await repository.SaveDraft(application);
+
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    updatedApplication.CharacterReferences.ShouldBeEmpty();
+  }
+  
+  private CharacterReference CreateCharacterReference()
+  {
+    return new Faker<CharacterReference>("en_CA")
+      .RuleFor(f => f.FirstName, f => f.Name.FirstName())
+      .RuleFor(f => f.LastName, f => f.Name.LastName())
+      .RuleFor(f => f.EmailAddress, f => f.Internet.Email())
+      .RuleFor(f => f.PhoneNumber, f => f.Phone.PhoneNumber())
+      .Generate();
+  }
 }
