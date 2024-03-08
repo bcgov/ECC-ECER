@@ -15,11 +15,13 @@ internal class ApplicationMapper : Profile
         .ForMember(d => d.CreatedOn, opts => opts.Ignore())
         .ForMember(d => d.Stage, opts => opts.MapFrom(s => s.Stage))
         .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.Transcripts))
+        .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.WorkExperienceReferences))
         .ReverseMap()
         .ValidateMemberList(MemberList.Destination)
         .ForCtorParam(nameof(Contract.Applications.Application.RegistrantId), opts => opts.MapFrom(s => s.ApplicantId))
         ;
 
     CreateMap<Contract.Applications.Transcript, Transcript>().ReverseMap();
+    CreateMap<Contract.Applications.WorkExperienceReference, WorkExperienceReference>().ReverseMap();
   }
 }

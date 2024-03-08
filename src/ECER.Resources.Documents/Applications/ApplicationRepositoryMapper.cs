@@ -14,6 +14,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.CertificationTypes, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.Transcripts, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.WorkExperienceReferences, opts => opts.DoNotValidate())
        .ForMember(d => d.ecer_ApplicationId, opts => opts.MapFrom(s => s.Id))
        .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
        .ForMember(d => d.ecer_IsECEAssistant, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.EceAssistant)))
@@ -31,7 +32,8 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
        .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted))
        .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.ecer_DateSigned))
-       .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.ecer_transcript_Applicationid));
+       .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.ecer_transcript_Applicationid))
+       .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.ecer_workexperienceref_Applicationid_ecer));
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
         .ConstructUsing((s, _) =>
@@ -72,6 +74,21 @@ internal class ApplicationRepositoryMapper : Profile
           .ForCtorParam(nameof(Transcript.EndDate), opt => opt.MapFrom(src => src.ecer_EndDate))
           .ForMember(d => d.CampusLocation, opts => opts.MapFrom(s => s.ecer_CampusLocation))
           .ForMember(d => d.LanguageofInstruction, opts => opts.MapFrom(s => s.ecer_LanguageofInstruction))
+    .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<WorkExperienceReference, ecer_WorkExperienceRef>(MemberList.Source)
+          .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => s.Id))
+          .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
+          .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
+          .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
+          .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber));
+
+    CreateMap<ecer_WorkExperienceRef, WorkExperienceReference>(MemberList.Source)
+          .ForCtorParam(nameof(WorkExperienceReference.Id), opt => opt.MapFrom(src => src.ecer_WorkExperienceRefId))
+          .ForCtorParam(nameof(WorkExperienceReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
+          .ForCtorParam(nameof(WorkExperienceReference.LastName), opt => opt.MapFrom(src => src.ecer_LastName))
+          .ForCtorParam(nameof(WorkExperienceReference.EmailAddress), opt => opt.MapFrom(src => src.ecer_EmailAddress))
+          .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
     .ValidateMemberList(MemberList.Destination);
   }
 }
