@@ -21,5 +21,7 @@ internal class ApplicationMapper : Profile
         ;
 
     CreateMap<Contract.Applications.Transcript, Transcript>().ReverseMap();
+
+    CreateMap<Contract.Applications.CharacterReference, CharacterReference>().ReverseMap();
   }
 }

@@ -1,11 +1,11 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
@@ -92,6 +92,7 @@ public record DraftApplication
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public PortalStage Stage { get; set; }
+  public IEnumerable<CharacterReference> CharacterReference { get; set; } = Array.Empty<CharacterReference>();
 }
 
 public record Application
@@ -104,6 +105,7 @@ public record Application
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public ApplicationStatus Status { get; set; }
   public PortalStage Stage { get; set; }
+  public IEnumerable<CharacterReference> CharacterReference { get; set; } = Array.Empty<CharacterReference>();
 }
 
 public record Transcript()
@@ -168,4 +170,12 @@ public enum ApplicationStatus
   InProgress,
   PendingQueue,
   ReconsiderationDecision
+}
+
+public record CharacterReference
+{
+  public string FirstName { get; set; } = string.Empty;
+  public string LastName { get; set; } = string.Empty;
+  public string PhoneNumber { get; set; } = string.Empty;
+  public string EmailAddress { get; set; } = string.Empty;
 }

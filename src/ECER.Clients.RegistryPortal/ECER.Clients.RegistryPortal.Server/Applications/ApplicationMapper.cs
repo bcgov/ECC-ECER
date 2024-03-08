@@ -37,9 +37,11 @@ public class ApplicationMapper : Profile
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.Status), opts => opts.MapFrom(_ => Managers.Registry.Contract.Applications.ApplicationStatus.Draft))
       .ForMember(d => d.Stage, opts => opts.MapFrom(s => s.Stage))
       .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.SignedDate))
+      .ForMember(d => d.CharacterReference, opts => opts.MapFrom(s => s.CharacterReference))
       ;
 
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>()
       ;
+    CreateMap<Managers.Registry.Contract.Applications.CharacterReference, CharacterReference>();
   }
 }

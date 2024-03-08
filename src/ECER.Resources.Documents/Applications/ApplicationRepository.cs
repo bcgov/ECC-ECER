@@ -45,6 +45,8 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
     var ecerTranscripts = mapper.Map<IEnumerable<ecer_Transcript>>(application.Transcripts)!.ToList();
 
+    var ecerCharacterReferences = mapper.Map<IEnumerable<ecer_CharacterReference>>(application.CharacterReference)!.ToList();
+
     if (!ecerApplication.ecer_ApplicationId.HasValue)
     {
       ecerApplication.ecer_ApplicationId = Guid.NewGuid();
@@ -63,6 +65,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.UpdateObject(ecerApplication);
     }
     _ = UpdateApplicationTranscripts(ecerApplication, ecerTranscripts);
+    _ = UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
   }
@@ -99,6 +102,27 @@ internal sealed class ApplicationRepository : IApplicationRepository
       }
       context.Attach(transcript);
       context.UpdateObject(transcript);
+    }
+  }
+
+//TODO investigate whether this pattern is okay or if we need to copy what we do in transcripts
+  public async Task UpdateCharacterReferences(ecer_Application application, List<ecer_CharacterReference> updatedCharacterReferences)
+  {
+    await Task.CompletedTask;
+    var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
+
+    // 1. Remove character references
+    foreach (var characterReference in existingCharacterReferences)
+    {
+      context.DeleteObject(characterReference);
+    }
+
+    // 2. Add New character references
+    foreach (var characterReference in updatedCharacterReferences)
+    {
+      characterReference.ecer_CharacterReferenceId = Guid.NewGuid();
+      context.AddObject(characterReference);
+      context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, characterReference);
     }
   }
 

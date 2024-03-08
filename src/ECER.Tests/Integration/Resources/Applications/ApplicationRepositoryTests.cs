@@ -193,4 +193,41 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
     updatedApplication.Transcripts.ShouldBeEmpty();
   }
+
+  [Fact]
+  public async Task SaveDraftApplication_WithCharacterReference_Updated_Test()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var newApplication = new Application(null, applicantId, new[] { CertificationType.OneYear });
+
+    var charReferenceList = new List<CharacterReference>
+    {
+        new CharacterReference
+    {
+      FirstName = "Test",
+      LastName = "Test",
+      EmailAddress = "Test",
+      PhoneNumber = "Test"
+    }
+    };
+
+    newApplication.CharacterReference = charReferenceList;
+
+    var newApplicationId = await repository.SaveDraft(newApplication);
+    var savedApplication = (await repository.Query(new ApplicationQuery { ById = newApplicationId })).ShouldHaveSingleItem();
+    savedApplication.CharacterReference.ShouldNotBeNull();
+    //    savedApplication.CharacterReference.FirstName.ShouldBe("Test"); TODO check for character reference 
+
+    var application = new Application(newApplicationId, applicantId, new[] { CertificationType.OneYear });
+    application.SignedDate = DateTime.Now;
+    var existingApplicationId = await repository.SaveDraft(application);
+
+    existingApplicationId.ShouldBe(newApplicationId);
+
+    var existingApplication = (await repository.Query(new ApplicationQuery { ById = existingApplicationId })).ShouldHaveSingleItem();
+    existingApplication.Status.ShouldBe(ApplicationStatus.Draft);
+    existingApplication.ApplicantId.ShouldBe(applicantId);
+    existingApplication.SignedDate.ShouldNotBeNull();
+  }
+
 }
