@@ -51,6 +51,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Managers.Registry.Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Resources.Documents", "ECER.Resources.Documents\ECER.Resources.Documents.csproj", "{68E90558-CABC-401F-B4BE-A8C314AC151F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECER.Utilities.ObjectStorage", "ECER.Utilities.ObjectStorage\ECER.Utilities.ObjectStorage.csproj", "{CE7DE4F9-6CFA-4165-918B-C775E16D8728}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{68E90558-CABC-401F-B4BE-A8C314AC151F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68E90558-CABC-401F-B4BE-A8C314AC151F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68E90558-CABC-401F-B4BE-A8C314AC151F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE7DE4F9-6CFA-4165-918B-C775E16D8728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE7DE4F9-6CFA-4165-918B-C775E16D8728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE7DE4F9-6CFA-4165-918B-C775E16D8728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE7DE4F9-6CFA-4165-918B-C775E16D8728}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +130,7 @@ Global
 		{399B5DF8-4A89-46C9-9B20-FDAFF4D596E7} = {19F2F08C-C5B1-47C2-BB55-02C090B24C6E}
 		{CBE9442A-5910-4F33-BF9A-E5130F290E6F} = {8E2378FE-DFE8-46C0-AE5A-14A48F59F0FB}
 		{68E90558-CABC-401F-B4BE-A8C314AC151F} = {92D49B4E-2C0B-4D3A-9E39-5D5D0E218863}
+		{CE7DE4F9-6CFA-4165-918B-C775E16D8728} = {19F2F08C-C5B1-47C2-BB55-02C090B24C6E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C9C9A1C-3986-464E-9339-01724D912A19}
