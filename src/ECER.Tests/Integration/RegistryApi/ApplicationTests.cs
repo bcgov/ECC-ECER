@@ -177,6 +177,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     invalidCharacterReference.FirstName = faker.Name.FirstName();
     invalidCharacterReference.LastName = faker.Name.LastName();
     invalidCharacterReference.PhoneNumber = faker.Phone.PhoneNumber();
+    invalidCharacterReference.EmailAddress = $"{faker.Random.String2(201, "abcdefghijklmnopqrstuvwxyz0123456789")}@example.com";
 
     return new Faker<DraftApplication>("en_CA")
       .RuleFor(f => f.CharacterReferences, _ => new List<CharacterReference> { invalidCharacterReference })
