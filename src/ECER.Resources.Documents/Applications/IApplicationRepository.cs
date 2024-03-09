@@ -66,5 +66,6 @@ public enum ApplicationStatus
   Ready,
   InProgress,
   PendingQueue,
-  ReconsiderationDecision
+  ReconsiderationDecision,
+  AppealDecision
 }

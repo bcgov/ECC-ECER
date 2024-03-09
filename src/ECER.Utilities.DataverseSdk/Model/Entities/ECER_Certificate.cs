@@ -81,6 +81,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CertificateNumber = "ecer_certificatenumber";
 			public const string ecer_Conditions = "ecer_conditions";
 			public const string ecer_Date = "ecer_date";
+			public const string ecer_ecer_certificate_ecer_investigation_CurrentCertificate = "ecer_ecer_certificate_ecer_investigation_CurrentCertificate";
 			public const string ecer_EffectiveDate = "ecer_effectivedate";
 			public const string ecer_ExpiryDate = "ecer_expirydate";
 			public const string ecer_HasConditions = "ecer_hasconditions";
@@ -339,6 +340,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Use for legacy data
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_conditions")]
 		public string ecer_Conditions
 		{
@@ -959,6 +963,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions>("ecer_certificateconditions_Certificateid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_ecer_certificate_ecer_investigation_CurrentCertificate
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_certificate_ecer_investigation_CurrentCertificate")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Investigation> ecer_ecer_certificate_ecer_investigation_CurrentCertificate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_ecer_certificate_ecer_investigation_CurrentCertificate", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_ecer_certificate_ecer_investigation_CurrentCertificate", null, value);
 			}
 		}
 		

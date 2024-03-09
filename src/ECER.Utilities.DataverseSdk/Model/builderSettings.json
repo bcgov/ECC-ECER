@@ -91,6 +91,7 @@
   "emitFieldsClasses": true,
   "emitVirtualAttributes": true,
   "entityNamesFilter": [
+    "annotation",
     "contact",
     "ecer_*"
   ],

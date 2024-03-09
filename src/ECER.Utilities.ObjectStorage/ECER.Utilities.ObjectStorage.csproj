@@ -6,5 +6,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECER.Infrastructure.Common\ECER.Infrastructure.Common.csproj" />
+    <ProjectReference Include="..\ECER.Utilities.DataverseSdk\ECER.Utilities.DataverseSdk.csproj" />
   </ItemGroup>
 </Project>

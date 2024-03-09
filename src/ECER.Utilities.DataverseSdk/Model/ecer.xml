@@ -27,7 +27,8 @@
     <CreateOneFilePerOptionSet>true</CreateOneFilePerOptionSet>
     <DeleteFilesFromOutputFolders>true</DeleteFilesFromOutputFolders>
     <EntitiesToSkip />
-    <EntitiesWhitelist>contact</EntitiesWhitelist>
+    <EntitiesWhitelist>annotation|
+contact</EntitiesWhitelist>
     <EntityAttributeSpecifiedNames />
     <EntityClassNameOverrides />
     <EntityPrefixesToSkip />
@@ -116,7 +117,7 @@ VoiceMail</TokenCapitalizationOverrides>
   <Namespace>ECER.Utilities.DataverseSdk.Model</Namespace>
   <ServiceContextName>EcerContext</ServiceContextName>
   <SuppressGeneratedCodeAttribute>false</SuppressGeneratedCodeAttribute>
-  <SettingsVersion>2.2023.12.22</SettingsVersion>
+  <SettingsVersion>2.2024.2.1</SettingsVersion>
   <UpdateBuilderSettingsJson>true</UpdateBuilderSettingsJson>
-  <Version>2.2024.1.23</Version>
+  <Version>2.2024.2.1</Version>
 </Config>

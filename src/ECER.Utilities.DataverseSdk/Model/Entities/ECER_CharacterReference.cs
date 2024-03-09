@@ -87,6 +87,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
 			public const string ecer_characterreference_Applicationid = "ecer_characterreference_Applicationid";
+			public const string ecer_characterreference_RefCertifiedProvinceId = "ecer_characterreference_RefCertifiedProvinceId";
 			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
 			public const string ecer_CharacterReferenceId = "ecer_characterreferenceid";
 			public const string Id = "ecer_characterreferenceid";
@@ -101,6 +102,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
 			public const string ecer_ReferenceCertificationNumber = "ecer_referencecertificationnumber";
 			public const string ecer_ReferenceCertifiedProvince = "ecer_referencecertifiedprovince";
+			public const string ecer_ReferenceCertifiedProvinceId = "ecer_referencecertifiedprovinceid";
+			public const string ecer_ReferenceCertifiedProvinceIdName = "ecer_referencecertifiedprovinceidname";
 			public const string ecer_ReferenceContactid = "ecer_referencecontactid";
 			public const string ecer_ReferenceContactidName = "ecer_referencecontactidname";
 			public const string ecer_ReferenceContactidYomiName = "ecer_referencecontactidyominame";
@@ -659,6 +662,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecertifiedprovinceid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ReferenceCertifiedProvinceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_referencecertifiedprovinceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referencecertifiedprovinceid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecertifiedprovinceidname")]
+		public string ecer_ReferenceCertifiedProvinceIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_referencecertifiedprovinceid"))
+				{
+					return this.FormattedValues["ecer_referencecertifiedprovinceid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecontactid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_ReferenceContactid
 		{
@@ -1159,6 +1194,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_characterreference_Applicationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_characterreference_RefCertifiedProvinceId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecertifiedprovinceid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_characterreference_RefCertifiedProvinceId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Province ecer_characterreference_RefCertifiedProvinceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Province>("ecer_characterreference_RefCertifiedProvinceId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Province>("ecer_characterreference_RefCertifiedProvinceId", null, value);
 			}
 		}
 		

@@ -10,7 +10,7 @@ using Xunit.Categories;
 namespace ECER.Tests.Integration.Utilities.ObjectStorage;
 
 [IntegrationTest, Category("requires_vpn")]
-public class ObjectStorageTests : IAsyncLifetime
+public class S3ObjectStorageTests : IAsyncLifetime
 {
   private readonly Faker faker = new Faker();
 
@@ -100,8 +100,8 @@ public class ObjectStorageTests : IAsyncLifetime
     var configuration = configBuilder.Build();
     var services = new ServiceCollection();
     var configurer = new Configurer();
-    configurer.Configure(new ConfigurationContext(services, configuration));
 
+    configurer.Configure(new ConfigurationContext(services, configuration));
     scope = services.BuildServiceProvider().CreateScope();
     bucket = configuration.GetValue<string>("objectStorage:bucketName")!;
   }

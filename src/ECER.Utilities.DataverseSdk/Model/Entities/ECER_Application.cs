@@ -36,6 +36,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		AppealDecision = 621870008,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Cancelled = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -104,6 +107,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicantidName = "ecer_applicantidname";
 			public const string ecer_ApplicantidYomiName = "ecer_applicantidyominame";
 			public const string ecer_ApplicantSignature = "ecer_applicantsignature";
+			public const string ecer_application_Annotations = "ecer_application_Annotations";
 			public const string ecer_application_Applicantid_contact = "ecer_application_Applicantid_contact";
 			public const string ecer_application_Certificateid = "ecer_application_Certificateid";
 			public const string ecer_application_DenialReasonType_ecer_denialr = "ecer_application_DenialReasonType_ecer_denialr";
@@ -148,6 +152,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DenialReasonTypeName = "ecer_denialreasontypename";
 			public const string ecer_DoesECERegistryHaveTranscript = "ecer_doeseceregistryhavetranscript";
 			public const string ecer_doeseceregistryhavetranscriptName = "ecer_doeseceregistryhavetranscriptname";
+			public const string ecer_ecer_application_ecer_investigation_OpenApplication = "ecer_ecer_application_ecer_investigation_OpenApplication";
 			public const string ecer_ecer_professionaldevelopment_Applicationi = "ecer_ecer_professionaldevelopment_Applicationi";
 			public const string ecer_EducationOrigin = "ecer_educationorigin";
 			public const string ecer_educationoriginName = "ecer_educationoriginname";
@@ -2990,6 +2995,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_application_Annotations
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_Annotations")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.Annotation> ecer_application_Annotations
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.Annotation>("ecer_application_Annotations", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.Annotation>("ecer_application_Annotations", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_characterreference_Applicationid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_characterreference_Applicationid")]
@@ -3040,6 +3063,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_Applicationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_ecer_application_ecer_investigation_OpenApplication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_application_ecer_investigation_OpenApplication")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Investigation> ecer_ecer_application_ecer_investigation_OpenApplication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_ecer_application_ecer_investigation_OpenApplication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_ecer_application_ecer_investigation_OpenApplication", null, value);
 			}
 		}
 		

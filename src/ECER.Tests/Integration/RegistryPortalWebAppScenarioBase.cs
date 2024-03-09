@@ -2,6 +2,7 @@
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Xrm.Sdk.Client;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration;
