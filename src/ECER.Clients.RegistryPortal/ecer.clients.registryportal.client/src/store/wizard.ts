@@ -44,6 +44,17 @@ export const useWizardStore = defineStore("wizard", {
       // set step to the index of steps where the stage matches the draft application stage
       this.step = Object.values(wizard.steps).findIndex((step) => step.stage === draftApplication.stage) + 1;
 
+      // Initialize an empty dictionary
+      const transcriptsDict = {} as { [id: string]: Components.Schemas.Transcript };
+
+      // Convert array to dictionary with keys as "1", "2", ..., "n"
+      if (draftApplication.transcripts) {
+        draftApplication.transcripts.forEach((transcript, index) => {
+          const id = (index + 1).toString();
+          transcriptsDict[id] = transcript;
+        });
+      }
+
       this.wizardData = {
         // Certification Type step data
         [wizard.steps.certificationType.form.inputs.certificationSelection.id]: draftApplication.certificationTypes,
@@ -52,7 +63,7 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.declaration.form.inputs.applicantLegalName.id]: userStore.fullName,
         [wizard.steps.declaration.form.inputs.signedDate.id]: draftApplication.signedDate
           ? new Date(draftApplication.signedDate).toISOString().slice(0, 10)
-          : new Date().toISOString().slice(0, 10),
+          : new Date().toLocaleDateString("en-CA"),
         [wizard.steps.declaration.form.inputs.consentCheckbox.id]: draftApplication.signedDate ? true : false,
 
         // Contact Information step data
@@ -71,7 +82,13 @@ export const useWizardStore = defineStore("wizard", {
 
         // Education step data
         // TODO convert from Components.Schemas.Transcript[] -> {[id: string]: Components.Schemas.Transcript}
-        [wizard.steps.education.form.inputs.educationList.id]: draftApplication.transcripts,
+        [wizard.steps.education.form.inputs.educationList.id]: transcriptsDict,
+
+        // TODO Character reference characterReference data from draft application
+        [wizard.steps.characterReference.form.inputs.firstName.id]: "",
+        [wizard.steps.characterReference.form.inputs.lastName.id]: "",
+        [wizard.steps.characterReference.form.inputs.email.id]: "",
+        [wizard.steps.characterReference.form.inputs.phoneNumber.id]: "",
       };
     },
     setWizardData(wizardData: WizardData): void {

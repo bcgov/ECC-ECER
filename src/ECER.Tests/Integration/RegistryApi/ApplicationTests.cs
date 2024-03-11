@@ -49,6 +49,8 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<DraftApplication[]>();
     var applicationById = applicationsById.ShouldHaveSingleItem();
     applicationById.CertificationTypes.ShouldBeEquivalentTo(application.CertificationTypes);
+    applicationById.Transcripts.ShouldNotBeEmpty();
+    applicationById.CharacterReferences.ShouldNotBeEmpty();
     applicationById.Stage.ShouldBe(PortalStage.CertificationType);
   }
 
@@ -91,7 +93,19 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   [Fact]
   public async Task SaveDraftApplication_WithInvalidTranscript_ReturnsBadRequest()
   {
-    var invalidApplication = CreateInvalidDraftApplication();
+    var invalidApplication = CreateDraftApplicationWithInvalidTranscript();
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(invalidApplication)).ToUrl("/api/draftapplications");
+      _.StatusCodeShouldBe(400);
+    });
+  }
+  
+  [Fact]
+  public async Task SaveDraftApplication_WithInvalidCharacterReference_ReturnsBadRequest()
+  {
+    var invalidApplication = CreateDraftApplicationWithInvalidCharacterReference();
     await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
@@ -105,10 +119,40 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     return new Faker<DraftApplication>("en_CA")
         .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
         .RuleFor(f => f.SignedDate, f => f.Date.Recent())
+        .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript())) 
+        .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference())) 
+        
+
         .Generate();
   }
 
-  private DraftApplication CreateInvalidDraftApplication()
+  private Transcript CreateTranscript()
+  {
+    var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };
+    
+    return new Faker<Transcript>("en_CA")
+      .RuleFor(f => f.EducationalInstitutionName, f => f.Company.CompanyName())
+      .RuleFor(f => f.StudentName, f => f.Name.FullName())
+      .RuleFor(f => f.StudentNumber, f => f.Random.Number(10000000, 99999999).ToString())
+      .RuleFor(f => f.StartDate, f => f.Date.Past())
+      .RuleFor(f => f.EndDate, f => f.Date.Past())
+      .RuleFor(f => f.ProgramName, (f, u) => $"{f.Hacker.Adjective()} Program")
+      .RuleFor(f => f.LanguageofInstruction, f => f.PickRandom(languages))
+      .RuleFor(f => f.CampusLocation, f => f.Address.City())
+      
+      .Generate();
+  }
+
+  private CharacterReference CreateCharacterReference()
+  {
+    var faker = new Faker("en_CA");
+
+    return new CharacterReference(
+      faker.Name.FirstName(), faker.Name.LastName(), faker.Internet.Email(), faker.Phone.PhoneNumber()
+    );
+  }
+  
+  private DraftApplication CreateDraftApplicationWithInvalidTranscript()
   {
     var faker = new Faker("en_CA");
     var invalidTranscript = new Transcript
@@ -126,5 +170,20 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
         .RuleFor(f => f.SignedDate, f => f.Date.Recent())
         .Generate();
+  }
+  private DraftApplication CreateDraftApplicationWithInvalidCharacterReference()
+  {
+    var faker = new Faker("en_CA");
+    var invalidCharacterReference = new CharacterReference(
+      FirstName: faker.Name.FirstName(),
+      LastName: faker.Name.LastName(),
+      PhoneNumber: faker.Phone.PhoneNumber(),
+      EmailAddress: null);
+
+    return new Faker<DraftApplication>("en_CA")
+      .RuleFor(f => f.CharacterReferences, _ => new List<CharacterReference> { invalidCharacterReference })
+      .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
+      .RuleFor(f => f.SignedDate, f => f.Date.Recent())
+      .Generate();
   }
 }

@@ -25,6 +25,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public PortalStage Stage { get; set; }
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
+  public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate)
@@ -73,4 +74,8 @@ public enum ApplicationStatus
   InProgress,
   PendingQueue,
   ReconsiderationDecision
+}
+public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
+{
+  public string? Id { get; set; }
 }

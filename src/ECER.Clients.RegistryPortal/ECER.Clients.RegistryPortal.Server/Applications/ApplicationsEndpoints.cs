@@ -93,6 +93,7 @@ public record DraftApplication
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public PortalStage Stage { get; set; }
+  public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
 }
 
 public record Application
@@ -106,6 +107,7 @@ public record Application
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public ApplicationStatus Status { get; set; }
   public PortalStage Stage { get; set; }
+  public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
 }
 
 public record Transcript()
@@ -174,4 +176,9 @@ public enum ApplicationStatus
   InProgress,
   PendingQueue,
   ReconsiderationDecision
+}
+
+public record CharacterReference([Required] string? FirstName, [Required] string? LastName, [Required] string? PhoneNumber, [Required] string? EmailAddress)
+{
+  public string? Id { get; set; }
 }

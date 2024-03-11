@@ -36,6 +36,7 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public PortalStage Stage { get; set; }
+  public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
 }
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate)
 {
@@ -45,6 +46,11 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
 public record WorkExperienceReference(string? Id, string? FirstName, string? LastName, string? EmailAddress)
 {
   public string? PhoneNumber { get; set; }
+}
+
+public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
+{
+  public string? Id { get; set; }
 }
 
 public enum PortalStage
@@ -83,3 +89,4 @@ public enum ApplicationStatus
   PendingQueue,
   ReconsiderationDecision
 }
+
