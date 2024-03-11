@@ -86,12 +86,6 @@ export default defineComponent({
       required: true,
     },
   },
-  mounted() {
-    //if user does not have a selection, default to EceAssistant.
-    if (!this.certificationTypeStore.selection) {
-      this.certificationTypeStore.selection = "EceAssistant";
-    }
-  },
   emits: {
     "update:model-value": (_certificateTypeList: Components.Schemas.CertificationType[]) => true,
     updatedValidation: (_errorState: boolean) => true,
@@ -116,6 +110,12 @@ export default defineComponent({
     }
 
     return { certificationTypeStore };
+  },
+  mounted() {
+    //if user does not have a selection, default to EceAssistant.
+    if (!this.certificationTypeStore.selection) {
+      this.certificationTypeStore.selection = "EceAssistant";
+    }
   },
   computed: {
     selection: {
