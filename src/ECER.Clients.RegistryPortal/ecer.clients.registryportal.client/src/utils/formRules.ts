@@ -68,7 +68,7 @@ const phoneNumber = (message = "Enter a valid, 10-digit phone number") => {
  * @param {String} message
  * @returns Function
  */
-const postalCode = (message = "Postal code must be valid") => {
+const postalCode = (message = "Enter your postal code in the format \'A1A 1A1\'") => {
   return (v: string) => /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i.test(v) || message;
 };
 
