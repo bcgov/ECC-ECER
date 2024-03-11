@@ -193,4 +193,73 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
     updatedApplication.Transcripts.ShouldBeEmpty();
   }
+
+  [Fact]
+  public async Task SaveDraftApplication_WithWorkExperienceReferences_Created()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var workExperienceReferences = new List<WorkExperienceReference>
+    {
+      new WorkExperienceReference(null, "FirstName", "LastName", "email@example.com") {
+         PhoneNumber = "123-456-7890",
+      },
+    };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear })
+    {
+      WorkExperienceReferences = workExperienceReferences
+    };
+    var applicationId = await repository.SaveDraft(application);
+    applicationId.ShouldNotBeNull();
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var savedApplication = query.ShouldHaveSingleItem();
+    savedApplication.WorkExperienceReferences.Count().ShouldBe(workExperienceReferences.Count);
+  }
+
+  [Fact]
+  public async Task UpdateApplication_WithModifiedWorkExperienceReferences_Updated()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var originalWorkExperienceReferences = new List<WorkExperienceReference> {
+    new WorkExperienceReference(null, "FirstName", "LastName", "email@example.com") {
+      PhoneNumber = "123-456-7890",
+    },
+  };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
+    application.WorkExperienceReferences = originalWorkExperienceReferences;
+    var applicationId = await repository.SaveDraft(application);
+
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var reference = query.First().WorkExperienceReferences.First();
+    reference.PhoneNumber = "987-654-3210";
+
+    var updatedReferences = new List<WorkExperienceReference> { reference };
+    application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
+    application.WorkExperienceReferences = updatedReferences;
+    await repository.SaveDraft(application);
+
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    updatedApplication.WorkExperienceReferences.First().PhoneNumber.ShouldBe("987-654-3210");
+  }
+
+  [Fact]
+  public async Task UpdateApplication_RemoveWorkExperienceReferences_Updated()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var originalWorkExperienceReferences = new List<WorkExperienceReference> {
+    new WorkExperienceReference(null, "FirstName", "LastName", "email@example.com") {
+      PhoneNumber = "123-456-7890",
+    },
+  };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
+    application.WorkExperienceReferences = originalWorkExperienceReferences;
+    var applicationId = await repository.SaveDraft(application);
+
+    // Update application with empty work experience references list
+    application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
+    application.WorkExperienceReferences = new List<WorkExperienceReference>();
+    await repository.SaveDraft(application);
+
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    updatedApplication.WorkExperienceReferences.ShouldBeEmpty();
+  }
 }

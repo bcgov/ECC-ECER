@@ -34,12 +34,17 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
+  public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public PortalStage Stage { get; set; }
 }
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate)
 {
   public string? CampusLocation { get; set; }
   public string? LanguageofInstruction { get; set; }
+}
+public record WorkExperienceReference(string? Id, string? FirstName, string? LastName, string? EmailAddress)
+{
+  public string? PhoneNumber { get; set; }
 }
 
 public enum PortalStage
