@@ -83,6 +83,12 @@ export const useWizardStore = defineStore("wizard", {
         // Education step data
         // TODO convert from Components.Schemas.Transcript[] -> {[id: string]: Components.Schemas.Transcript}
         [wizard.steps.education.form.inputs.educationList.id]: transcriptsDict,
+
+        // TODO Character reference characterReference data from draft application
+        [wizard.steps.characterReference.form.inputs.firstName.id]: "",
+        [wizard.steps.characterReference.form.inputs.lastName.id]: "",
+        [wizard.steps.characterReference.form.inputs.email.id]: "",
+        [wizard.steps.characterReference.form.inputs.phoneNumber.id]: "",
       };
     },
     setWizardData(wizardData: WizardData): void {

@@ -35,11 +35,17 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public PortalStage Stage { get; set; }
+  public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
 }
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate)
 {
   public string? CampusLocation { get; set; }
   public string? LanguageofInstruction { get; set; }
+}
+
+public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
+{
+  public string? Id { get; set; }
 }
 
 public enum PortalStage
@@ -78,3 +84,4 @@ public enum ApplicationStatus
   PendingQueue,
   ReconsiderationDecision
 }
+

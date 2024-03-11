@@ -1,6 +1,7 @@
 import type { Wizard } from "@/types/wizard";
 
 import certificationTypeForm from "./certification-type-form";
+import characterReferencesForm from "./character-references-form";
 import declarationForm from "./declaration-form";
 import educationForm from "./education-form";
 import previewForm from "./preview-form";
@@ -38,7 +39,7 @@ const applicationWizard: Wizard = {
     characterReference: {
       stage: "CharacterReferences",
       title: "Character Reference",
-      form: referencesForm,
+      form: characterReferencesForm,
       key: "item.5",
     },
     workReference: {

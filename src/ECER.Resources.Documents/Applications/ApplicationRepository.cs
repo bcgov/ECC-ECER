@@ -30,6 +30,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     if (query.ByApplicantId != null) applications = applications.Where(r => r.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
 
     context.LoadProperties(applications, ecer_Application.Fields.ecer_transcript_Applicationid);
+    context.LoadProperties(applications, ecer_Application.Fields.ecer_characterreference_Applicationid);
 
     return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
   }
@@ -44,6 +45,8 @@ internal sealed class ApplicationRepository : IApplicationRepository
     var ecerApplication = mapper.Map<ecer_Application>(application)!;
 
     var ecerTranscripts = mapper.Map<IEnumerable<ecer_Transcript>>(application.Transcripts)!.ToList();
+
+    var ecerCharacterReferences = mapper.Map<IEnumerable<ecer_CharacterReference>>(application.CharacterReferences)!.ToList();
 
     if (!ecerApplication.ecer_ApplicationId.HasValue)
     {
@@ -63,6 +66,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.UpdateObject(ecerApplication);
     }
     _ = UpdateApplicationTranscripts(ecerApplication, ecerTranscripts);
+    _ = UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
   }
@@ -99,6 +103,41 @@ internal sealed class ApplicationRepository : IApplicationRepository
       }
       context.Attach(transcript);
       context.UpdateObject(transcript);
+    }
+  }
+  
+  public async Task UpdateCharacterReferences(ecer_Application application, List<ecer_CharacterReference> updatedCharacterReferences)
+  {
+    await Task.CompletedTask;
+    var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
+
+    // 1. Remove Character References that exist in the dataverse but not in the application
+    foreach (var reference in existingCharacterReferences)
+    {
+      if (!updatedCharacterReferences.Any(t => t.Id == reference.Id))
+      {
+        context.DeleteObject(reference);
+      }
+    }
+
+    // 2. Add New Character References that exist in the application but not in the dataverse
+    foreach (var reference in updatedCharacterReferences.Where(d => d.ecer_CharacterReferenceId == null))
+    {
+      reference.ecer_CharacterReferenceId = Guid.NewGuid();
+      context.AddObject(reference);
+      context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, reference);
+    }
+    
+    // 3. Update Existing Character References
+    foreach (var reference in updatedCharacterReferences.Where(d => d.ecer_CharacterReferenceId != null))
+    {
+      var oldReference = existingCharacterReferences.SingleOrDefault(t => t.Id == reference.Id);
+      if (oldReference != null)
+      {
+        context.Detach(oldReference);
+      }
+      context.Attach(reference);
+      context.UpdateObject(reference);
     }
   }
 
