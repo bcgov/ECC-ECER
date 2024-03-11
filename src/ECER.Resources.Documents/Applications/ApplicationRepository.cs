@@ -30,6 +30,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     if (query.ByApplicantId != null) applications = applications.Where(r => r.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
 
     context.LoadProperties(applications, ecer_Application.Fields.ecer_transcript_Applicationid);
+    context.LoadProperties(applications, ecer_Application.Fields.ecer_characterreference_Applicationid);
 
     return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
   }

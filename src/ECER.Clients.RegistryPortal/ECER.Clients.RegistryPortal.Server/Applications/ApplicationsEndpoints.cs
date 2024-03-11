@@ -174,8 +174,16 @@ public enum ApplicationStatus
 
 public record CharacterReference
 {
+  [Required]
+  // [StringLength(100, ErrorMessage = "Educational Institution Name cannot be longer than 100 characters.")]
   public string? FirstName { get; set; }
+  [Required]
+  // [StringLength(100, ErrorMessage = "Educational Institution Name cannot be longer than 100 characters.")]
   public string? LastName { get; set; } 
+  [Required]
+  // [StringLength(100, ErrorMessage = "Educational Institution Name cannot be longer than 100 characters.")]
   public string? PhoneNumber { get; set; } 
+  [Required]
+  // [StringLength(100, ErrorMessage = "Educational Institution Name cannot be longer than 100 characters.")]
   public string? EmailAddress { get; set; }
 }
