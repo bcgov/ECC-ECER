@@ -234,10 +234,10 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     var query = await repository.Query(new ApplicationQuery { ById = applicationId });
     var characterReference = query.First().CharacterReferences.First();
-    characterReference.FirstName = "Roberto";
-    characterReference.LastName = "Firmino";
 
-    var updatedCharacterReferences = new List<CharacterReference> { characterReference };
+    var newCharacterReference = new CharacterReference("Roberto", "Firmino", characterReference.PhoneNumber, characterReference.EmailAddress) { Id = characterReference.Id };
+
+    var updatedCharacterReferences = new List<CharacterReference> { newCharacterReference };
     application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
     application.CharacterReferences = updatedCharacterReferences;
     await repository.SaveDraft(application);
@@ -269,11 +269,10 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   
   private CharacterReference CreateCharacterReference()
   {
-    return new Faker<CharacterReference>("en_CA")
-      .RuleFor(f => f.FirstName, f => f.Name.FirstName())
-      .RuleFor(f => f.LastName, f => f.Name.LastName())
-      .RuleFor(f => f.EmailAddress, f => f.Internet.Email())
-      .RuleFor(f => f.PhoneNumber, f => f.Phone.PhoneNumber())
-      .Generate();
+    var faker = new Faker("en_CA");
+
+    return new CharacterReference(
+      faker.Name.FirstName(), faker.Name.LastName(), faker.Internet.Email(), faker.Phone.PhoneNumber()
+    );
   }
 }

@@ -69,10 +69,7 @@ public enum ApplicationStatus
   PendingQueue,
   ReconsiderationDecision
 }
-public record CharacterReference
+public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
-  public string? FirstName { get; set; }
-  public string? LastName { get; set; } 
-  public string? PhoneNumber { get; set; } 
-  public string? EmailAddress { get; set; }
+  public string? Id { get; set; }
 }

@@ -49,6 +49,8 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<DraftApplication[]>();
     var applicationById = applicationsById.ShouldHaveSingleItem();
     applicationById.CertificationTypes.ShouldBeEquivalentTo(application.CertificationTypes);
+    applicationById.Transcripts.ShouldNotBeEmpty();
+    applicationById.CharacterReferences.ShouldNotBeEmpty();
     applicationById.Stage.ShouldBe(PortalStage.CertificationType);
   }
 
@@ -142,13 +144,11 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
   private CharacterReference CreateCharacterReference()
   {
-    return new Faker<CharacterReference>("en_CA")
-      .RuleFor(f => f.FirstName, f => f.Name.FirstName())
-      .RuleFor(f => f.LastName, f => f.Name.LastName())
-      .RuleFor(f => f.EmailAddress, f => f.Internet.Email())
-      .RuleFor(f => f.PhoneNumber, f => f.Phone.PhoneNumber())
+    var faker = new Faker("en_CA");
 
-      .Generate();
+    return new CharacterReference(
+      faker.Name.FirstName(), faker.Name.LastName(), faker.Internet.Email(), faker.Phone.PhoneNumber()
+    );
   }
   
   private DraftApplication CreateDraftApplicationWithInvalidTranscript()
@@ -173,11 +173,11 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   private DraftApplication CreateDraftApplicationWithInvalidCharacterReference()
   {
     var faker = new Faker("en_CA");
-    var invalidCharacterReference = new CharacterReference();
-    invalidCharacterReference.FirstName = faker.Name.FirstName();
-    invalidCharacterReference.LastName = faker.Name.LastName();
-    invalidCharacterReference.PhoneNumber = faker.Phone.PhoneNumber();
-    invalidCharacterReference.EmailAddress = null;
+    var invalidCharacterReference = new CharacterReference(
+      FirstName: faker.Name.FirstName(),
+      LastName: faker.Name.LastName(),
+      PhoneNumber: faker.Phone.PhoneNumber(),
+      EmailAddress: null);
 
     return new Faker<DraftApplication>("en_CA")
       .RuleFor(f => f.CharacterReferences, _ => new List<CharacterReference> { invalidCharacterReference })

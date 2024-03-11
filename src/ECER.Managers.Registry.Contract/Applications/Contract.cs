@@ -43,12 +43,9 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public string? LanguageofInstruction { get; set; }
 }
 
-public record CharacterReference
+public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
-  public string? FirstName { get; set; }
-  public string? LastName { get; set; } 
-  public string? PhoneNumber { get; set; } 
-  public string? EmailAddress { get; set; }
+  public string? Id { get; set; }
 }
 
 public enum PortalStage

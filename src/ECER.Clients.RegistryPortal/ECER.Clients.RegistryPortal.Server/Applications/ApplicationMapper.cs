@@ -28,14 +28,16 @@ public class ApplicationMapper : Profile
       .ReverseMap();
     
     CreateMap<CharacterReference, Managers.Registry.Contract.Applications.CharacterReference>()
-      .ForMember(d => d.FirstName,
-        opts => opts.MapFrom(src => src.FirstName))
-      .ForMember(d => d.LastName,
-        opts => opts.MapFrom(src => src.LastName))
-      .ForMember(d => d.EmailAddress,
-        opts => opts.MapFrom(src => src.EmailAddress))
-      .ForMember(d => d.PhoneNumber,
-        opts => opts.MapFrom(src => src.PhoneNumber))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.FirstName),
+        opt => opt.MapFrom(src => src.FirstName))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.LastName),
+        opt => opt.MapFrom(src => src.LastName))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.EmailAddress),
+        opt => opt.MapFrom(src => src.EmailAddress))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.PhoneNumber),
+        opt => opt.MapFrom(src => src.PhoneNumber))
+      .ForMember(d => d.Id,
+        opts => opts.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
       .ReverseMap();
 
     CreateMap<DraftApplication, Managers.Registry.Contract.Applications.Application>()

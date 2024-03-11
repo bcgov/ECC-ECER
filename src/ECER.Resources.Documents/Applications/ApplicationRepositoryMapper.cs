@@ -80,13 +80,15 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
-      .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber));
+      .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
+      .ForMember(d => d.ecer_CharacterReferenceId, opts => opts.MapFrom(s => s.Id));
 
     CreateMap<ecer_CharacterReference, CharacterReference>(MemberList.Source)
-          .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.ecer_FirstName))
-          .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.ecer_LastName))
-          .ForMember(d => d.EmailAddress, opts => opts.MapFrom(s => s.ecer_EmailAddress))
-          .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
+          .ForCtorParam(nameof(CharacterReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
+          .ForCtorParam(nameof(CharacterReference.LastName), opt => opt.MapFrom(src => src.ecer_LastName))
+          .ForCtorParam(nameof(CharacterReference.EmailAddress), opt => opt.MapFrom(src => src.ecer_EmailAddress))
+          .ForCtorParam(nameof(CharacterReference.PhoneNumber), opt => opt.MapFrom(src => src.ecer_PhoneNumber))
+          .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId))
     .ValidateMemberList(MemberList.Destination);
   }
 }
