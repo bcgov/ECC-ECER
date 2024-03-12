@@ -83,14 +83,17 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
           .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
           .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
-          .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber));
+          .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
+          .ForMember(d => d.ecer_TotalNumberofHoursAnticipated, opts => opts.MapFrom(s => s.Hours));
+
 
     CreateMap<ecer_WorkExperienceRef, WorkExperienceReference>(MemberList.Source)
-      .ForCtorParam(nameof(WorkExperienceReference.Id), opt => opt.MapFrom(src => src.ecer_WorkExperienceRefId))
       .ForCtorParam(nameof(WorkExperienceReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
       .ForCtorParam(nameof(WorkExperienceReference.LastName), opt => opt.MapFrom(src => src.ecer_LastName))
       .ForCtorParam(nameof(WorkExperienceReference.EmailAddress), opt => opt.MapFrom(src => src.ecer_EmailAddress))
+      .ForCtorParam(nameof(WorkExperienceReference.Hours), opt => opt.MapFrom(src => src.ecer_TotalNumberofHoursAnticipated))
       .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
+      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_WorkExperienceRefId))
       .ValidateMemberList(MemberList.Destination);
     
     CreateMap<CharacterReference, ecer_CharacterReference>(MemberList.Source)
