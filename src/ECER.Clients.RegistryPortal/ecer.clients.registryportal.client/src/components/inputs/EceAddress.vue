@@ -2,17 +2,17 @@
   <v-text-field
     ref="line1"
     :model-value="modelValue.line1"
-    :rules="[Rules.required()]"
+    :rules="[Rules.required(`Enter your ${props.addressLabel.toLowerCase()} address`)]"
     :label="props.addressLabel + ' Street Address'"
     variant="outlined"
     color="primary"
-    maxlength="150"
+    maxlength="100"
     class="my-8"
     @input="updateField('line1', $event)"
   ></v-text-field>
   <v-text-field
     :model-value="modelValue.city"
-    :rules="[Rules.required()]"
+    :rules="[Rules.required('Select your city/town')]"
     label="City/Town"
     variant="outlined"
     color="primary"
@@ -22,7 +22,7 @@
   ></v-text-field>
   <v-text-field
     :model-value="modelValue.province"
-    :rules="[Rules.required()]"
+    :rules="[Rules.required('Select your province')]"
     label="Province"
     variant="outlined"
     color="primary"
@@ -32,7 +32,7 @@
   ></v-text-field>
   <v-text-field
     :model-value="modelValue.postalCode"
-    :rules="[Rules.required()]"
+    :rules="[Rules.required('Postal code required'), Rules.postalCode()]"
     label="Postal Code"
     variant="outlined"
     color="primary"
@@ -42,7 +42,7 @@
   ></v-text-field>
   <v-text-field
     :model-value="modelValue.country"
-    :rules="[Rules.required()]"
+    :rules="[Rules.required('Select your country')]"
     label="Country"
     variant="outlined"
     color="primary"
