@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Resources.Documents.Applications;
 using JasperFx.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -266,7 +265,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
     updatedApplication.CharacterReferences.ShouldBeEmpty();
   }
-  
+
   private CharacterReference CreateCharacterReference()
   {
     var faker = new Faker("en_CA");
