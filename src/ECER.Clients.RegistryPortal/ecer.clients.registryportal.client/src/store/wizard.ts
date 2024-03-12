@@ -84,11 +84,15 @@ export const useWizardStore = defineStore("wizard", {
         // TODO convert from Components.Schemas.Transcript[] -> {[id: string]: Components.Schemas.Transcript}
         [wizard.steps.education.form.inputs.educationList.id]: transcriptsDict,
 
-        // TODO Character reference characterReference data from draft application
-        [wizard.steps.characterReference.form.inputs.firstName.id]: "",
-        [wizard.steps.characterReference.form.inputs.lastName.id]: "",
-        [wizard.steps.characterReference.form.inputs.email.id]: "",
-        [wizard.steps.characterReference.form.inputs.phoneNumber.id]: "",
+        // Character reference characterReference data from draft application
+        [wizard.steps.characterReferences.form.inputs.firstName.id]:
+          draftApplication.characterReferences && draftApplication.characterReferences[0] ? draftApplication.characterReferences[0].firstName : null,
+        [wizard.steps.characterReferences.form.inputs.lastName.id]:
+          draftApplication.characterReferences && draftApplication.characterReferences[0] ? draftApplication.characterReferences[0].lastName : null,
+        [wizard.steps.characterReferences.form.inputs.email.id]:
+          draftApplication.characterReferences && draftApplication.characterReferences[0] ? draftApplication.characterReferences[0].emailAddress : null,
+        [wizard.steps.characterReferences.form.inputs.phoneNumber.id]:
+          draftApplication.characterReferences && draftApplication.characterReferences[0] ? draftApplication.characterReferences[0].phoneNumber : null,
       };
     },
     setWizardData(wizardData: WizardData): void {
