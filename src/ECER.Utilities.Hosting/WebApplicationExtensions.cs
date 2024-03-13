@@ -37,7 +37,7 @@ public static class WebApplicationExtensions
     });
   }
 
-  public static void UseDisableHttpVerbes(this WebApplication webApplication, IEnumerable<string> verbs)
+  public static void UseDisableHttpVerbs(this WebApplication webApplication, IEnumerable<string> verbs)
   {
     var list = verbs.ToArray();
     webApplication.Use(async (context, next) =>

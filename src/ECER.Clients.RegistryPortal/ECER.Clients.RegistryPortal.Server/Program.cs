@@ -5,7 +5,6 @@ using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
-using Serilog;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server;
@@ -131,7 +130,7 @@ public class Program
 
       app.UseHealthChecks("/health");
       app.UseObservabilityMiddleware();
-      app.UseDisableHttpVerbes(DisabledHttpVerbs);
+      app.UseDisableHttpVerbs(DisabledHttpVerbs);
       app.UseResponseCompression();
       app.UseCsp();
       app.UseSecurityHeaders();
@@ -152,11 +151,11 @@ public class Program
       EndpointsRegistrar.RegisterAll(app);
 
       await app.RunAsync();
-      Log.Information("Stopped");
+      logger.Information("Stopped");
     }
     catch (Exception e)
     {
-      Log.Fatal(e, "An unhandled exception occurred during bootstrapping");
+      logger.Fatal(e, "An unhandled exception occurred during bootstrapping");
       throw;
     }
   }
