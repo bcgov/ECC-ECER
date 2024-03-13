@@ -93,9 +93,6 @@ export default defineComponent({
           case "Education":
           case "WorkReferences":
           case "CharacterReferences":
-            this.saveDraftAndAlertSuccess();
-            this.incrementWizard();
-            break;
           case "Review":
             this.saveDraftAndAlertSuccess();
             this.incrementWizard();

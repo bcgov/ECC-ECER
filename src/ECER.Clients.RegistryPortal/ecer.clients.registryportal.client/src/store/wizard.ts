@@ -84,15 +84,18 @@ export const useWizardStore = defineStore("wizard", {
         // TODO convert from Components.Schemas.Transcript[] -> {[id: string]: Components.Schemas.Transcript}
         [wizard.steps.education.form.inputs.educationList.id]: transcriptsDict,
 
-        // Character reference characterReference data from draft application
-        [wizard.steps.characterReferences.form.inputs.firstName.id]:
-          draftApplication.characterReferences && draftApplication.characterReferences[0] ? draftApplication.characterReferences[0].firstName : null,
-        [wizard.steps.characterReferences.form.inputs.lastName.id]:
-          draftApplication.characterReferences && draftApplication.characterReferences[0] ? draftApplication.characterReferences[0].lastName : null,
-        [wizard.steps.characterReferences.form.inputs.email.id]:
-          draftApplication.characterReferences && draftApplication.characterReferences[0] ? draftApplication.characterReferences[0].emailAddress : null,
-        [wizard.steps.characterReferences.form.inputs.phoneNumber.id]:
-          draftApplication.characterReferences && draftApplication.characterReferences[0] ? draftApplication.characterReferences[0].phoneNumber : null,
+        [wizard.steps.characterReferences.form.inputs.firstName.id]: draftApplication?.characterReferences?.[0]
+          ? draftApplication.characterReferences[0].firstName
+          : "",
+        [wizard.steps.characterReferences.form.inputs.lastName.id]: draftApplication?.characterReferences?.[0]
+          ? draftApplication.characterReferences[0].lastName
+          : "",
+        [wizard.steps.characterReferences.form.inputs.email.id]: draftApplication?.characterReferences?.[0]
+          ? draftApplication.characterReferences[0].emailAddress
+          : "",
+        [wizard.steps.characterReferences.form.inputs.phoneNumber.id]: draftApplication?.characterReferences?.[0]
+          ? draftApplication.characterReferences[0].phoneNumber
+          : "",
       };
     },
     setWizardData(wizardData: WizardData): void {

@@ -63,15 +63,12 @@ export const useApplicationStore = defineStore("application", {
       // Education step data
       this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
 
-      // Check all required fields are present for valid character reference.
+      //We can only save characterReferences if all required fields have a value. Otherwise do nothing.
       if (
-        !wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.firstName.id] ||
-        !wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.lastName.id] ||
-        !wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.email.id]
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.firstName.id] &&
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.lastName.id] &&
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.email.id]
       ) {
-        // Backend will not accept an invalid character reference. Save empty array of character references
-        this.draftApplication.characterReferences = [];
-      } else {
         this.draftApplication.characterReferences = [
           {
             firstName: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.firstName.id],
