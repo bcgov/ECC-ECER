@@ -22,6 +22,7 @@ declare namespace Components {
       transcripts?: Transcript[] | null;
       status?: ApplicationStatus;
       stage?: PortalStage;
+      characterReferences?: CharacterReference[] | null;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -51,6 +52,13 @@ declare namespace Components {
       id?: string | null;
     }
     export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
+    export interface CharacterReference {
+      firstName?: string | null;
+      lastName?: string | null;
+      phoneNumber?: string | null;
+      emailAddress?: string | null;
+      id?: string | null;
+    }
     export interface Communication {
       id?: string | null;
       subject?: string | null;
@@ -69,6 +77,7 @@ declare namespace Components {
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
       stage?: PortalStage;
+      characterReferences?: CharacterReference[] | null;
     }
     /**
      * Save draft application response
@@ -79,12 +88,31 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
+    export interface HttpValidationProblemDetails {
+      [name: string]: any;
+      type?: string | null;
+      title?: string | null;
+      status?: number | null; // int32
+      detail?: string | null;
+      instance?: string | null;
+      errors?: {
+        [name: string]: string[];
+      } | null;
+    }
     export interface OidcAuthenticationSettings {
       authority?: string | null;
       clientId?: string | null;
       scope?: string | null;
     }
     export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
+    export interface ProblemDetails {
+      [name: string]: any;
+      type?: string | null;
+      title?: string | null;
+      status?: number | null; // int32
+      detail?: string | null;
+      instance?: string | null;
+    }
     /**
      * Save draft application request
      */
@@ -99,7 +127,7 @@ declare namespace Components {
       studentName: string;
       studentNumber: string;
       languageofInstruction?: string | null;
-      startDate?: string; // date-time
+      startDate: string; // date-time
       endDate: string; // date-time
     }
     export interface UserInfo {
@@ -137,6 +165,7 @@ declare namespace Paths {
     }
     namespace Responses {
       export type $200 = Components.Schemas.Application[];
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace ApplicationPost {
@@ -160,7 +189,7 @@ declare namespace Paths {
     export type RequestBody = /* Save draft application request */ Components.Schemas.SaveDraftApplicationRequest;
     namespace Responses {
       export type $200 = /* Save draft application response */ Components.Schemas.DraftApplicationResponse;
-      export type $400 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace MessageGet {
@@ -195,6 +224,7 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.UserInfo;
     namespace Responses {
       export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
 }
