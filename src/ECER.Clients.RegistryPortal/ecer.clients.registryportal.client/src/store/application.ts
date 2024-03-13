@@ -18,6 +18,7 @@ export const useApplicationStore = defineStore("application", {
       signedDate: null,
       stage: "CertificationType",
       transcripts: [] as Components.Schemas.Transcript[],
+      workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
     },
   }),
   persist: {
@@ -62,6 +63,11 @@ export const useApplicationStore = defineStore("application", {
 
       // Education step data
       this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
+
+      // Work References step data
+      this.draftApplication.workExperienceReferences = Object.values(
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.workReference.form.inputs.referenceList.id],
+      );
     },
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       const { data: draftApplicationResponse } = await createOrUpdateDraftApplication(this.draftApplication);

@@ -6,7 +6,7 @@ import declarationForm from "./declaration-form";
 import educationForm from "./education-form";
 import previewForm from "./preview-form";
 import profileInformationForm from "./profile-information-form";
-import referencesForm from "./references.form";
+import referencesForm from "./references-form";
 
 const applicationWizard: Wizard = {
   id: "form-1",

@@ -44,14 +44,20 @@ export const useWizardStore = defineStore("wizard", {
       // set step to the index of steps where the stage matches the draft application stage
       this.step = Object.values(wizard.steps).findIndex((step) => step.stage === draftApplication.stage) + 1;
 
-      // Initialize an empty dictionary
       const transcriptsDict = {} as { [id: string]: Components.Schemas.Transcript };
+      const workReferencesDict = {} as { [id: string]: Components.Schemas.WorkExperienceReference };
 
       // Convert array to dictionary with keys as "1", "2", ..., "n"
       if (draftApplication.transcripts) {
         draftApplication.transcripts.forEach((transcript, index) => {
           const id = (index + 1).toString();
           transcriptsDict[id] = transcript;
+        });
+      }
+      if (draftApplication.workExperienceReferences) {
+        draftApplication.workExperienceReferences.forEach((reference, index) => {
+          const id = (index + 1).toString();
+          workReferencesDict[id] = reference;
         });
       }
 
@@ -81,7 +87,6 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || userStore.oidcUserInfo?.email,
 
         // Education step data
-        // TODO convert from Components.Schemas.Transcript[] -> {[id: string]: Components.Schemas.Transcript}
         [wizard.steps.education.form.inputs.educationList.id]: transcriptsDict,
 
         // TODO Character reference characterReference data from draft application
@@ -89,6 +94,8 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.characterReference.form.inputs.lastName.id]: "",
         [wizard.steps.characterReference.form.inputs.email.id]: "",
         [wizard.steps.characterReference.form.inputs.phoneNumber.id]: "",
+
+        [wizard.steps.workReference.form.inputs.referenceList.id]: workReferencesDict,
       };
     },
     setWizardData(wizardData: WizardData): void {
