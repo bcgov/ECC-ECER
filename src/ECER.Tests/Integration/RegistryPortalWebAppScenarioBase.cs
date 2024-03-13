@@ -1,7 +1,7 @@
-﻿using System.Globalization;
-using ECER.Utilities.DataverseSdk.Model;
+﻿using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration;
@@ -28,6 +28,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public UserIdentity AuthenticatedBcscUserIdentity => authenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
   public string communicationId => testCommunication.Id.ToString();
+  public string applicationId => testApplication.Id.ToString();
 
   public override async Task InitializeAsync()
   {
