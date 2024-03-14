@@ -2,6 +2,7 @@ import type EceAddress from "@/components/inputs/EceAddress.vue";
 import type EceAddresses from "@/components/inputs/EceAddresses.vue";
 import type EceCertificateType from "@/components/inputs/EceCertificateType.vue";
 import type EceCertificationTypePreview from "@/components/inputs/EceCertificationTypePreview.vue";
+import type EceCharacterReference from "@/components/inputs/EceCharacterReference.vue";
 import type EceCharacterReferencePreview from "@/components/inputs/EceCharacterReferencePreview.vue";
 import type EceCheckbox from "@/components/inputs/EceCheckbox.vue";
 import type EceContactInformationPreview from "@/components/inputs/EceContactInformationPreview.vue";
@@ -46,6 +47,8 @@ interface EceCertificateTypeProps {
 
 interface EcePreviewProps {}
 
+interface EceCharacterReferenceProps {}
+
 interface Input {
   id: string;
   component:
@@ -60,8 +63,17 @@ interface Input {
     | EceContactInformationPreview
     | EceEducationPreview
     | EceWorkExperienceReferencePreview
-    | EceCharacterReferencePreview;
-  props: EceTextFieldProps | EceAddressProps | EceAddressesProps | EceEducationProps | EceCheckboxProps | EceCertificateTypeProps | EcePreviewProps;
+    | EceCharacterReferencePreview
+    | EceCharacterReference;
+  props:
+    | EceTextFieldProps
+    | EceAddressProps
+    | EceAddressesProps
+    | EceEducationProps
+    | EceCheckboxProps
+    | EceCertificateTypeProps
+    | EcePreviewProps
+    | EceCharacterReferenceProps;
   cols: {
     md: number;
     lg: number;

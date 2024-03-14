@@ -84,18 +84,9 @@ export const useWizardStore = defineStore("wizard", {
         // TODO convert from Components.Schemas.Transcript[] -> {[id: string]: Components.Schemas.Transcript}
         [wizard.steps.education.form.inputs.educationList.id]: transcriptsDict,
 
-        [wizard.steps.characterReferences.form.inputs.firstName.id]: draftApplication?.characterReferences?.[0]
-          ? draftApplication.characterReferences[0].firstName
-          : "",
-        [wizard.steps.characterReferences.form.inputs.lastName.id]: draftApplication?.characterReferences?.[0]
-          ? draftApplication.characterReferences[0].lastName
-          : "",
-        [wizard.steps.characterReferences.form.inputs.email.id]: draftApplication?.characterReferences?.[0]
-          ? draftApplication.characterReferences[0].emailAddress
-          : "",
-        [wizard.steps.characterReferences.form.inputs.phoneNumber.id]: draftApplication?.characterReferences?.[0]
-          ? draftApplication.characterReferences[0].phoneNumber
-          : "",
+        [wizard.steps.characterReferences.form.inputs.characterReferences.id]: draftApplication?.characterReferences?.[0]
+          ? draftApplication?.characterReferences
+          : [],
       };
     },
     setWizardData(wizardData: WizardData): void {
