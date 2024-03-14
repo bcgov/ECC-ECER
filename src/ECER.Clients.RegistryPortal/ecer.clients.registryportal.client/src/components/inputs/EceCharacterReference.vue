@@ -62,16 +62,6 @@ import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
 export default defineComponent({
   name: "EceCharacterReference",
-  //   props: {
-  //     props: {
-  //       type: Object as () => EceCharacterReferenceProps,
-  //       required: true,
-  //     },
-  //     modelValue: {
-  //       type: Object,
-  //       required: true,
-  //     },
-  //   },
   props: {
     props: {
       type: Object as () => EceCharacterReferenceProps,
