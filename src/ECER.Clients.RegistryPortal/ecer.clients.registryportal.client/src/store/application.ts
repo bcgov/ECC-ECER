@@ -64,7 +64,7 @@ export const useApplicationStore = defineStore("application", {
       // Education step data
       this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
 
-      // //We can only save characterReferences if all required fields have a value. Otherwise do nothing.
+      // We can only save characterReferences if all required fields have a value. Otherwise do nothing.
       if (
         wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0].firstName &&
         wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0].lastName &&
