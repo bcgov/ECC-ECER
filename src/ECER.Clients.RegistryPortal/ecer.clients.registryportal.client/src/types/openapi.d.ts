@@ -23,6 +23,7 @@ declare namespace Components {
       workExperienceReferences?: WorkExperienceReference[] | null;
       status?: ApplicationStatus;
       stage?: PortalStage;
+      characterReferences?: CharacterReference[] | null;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -52,6 +53,13 @@ declare namespace Components {
       id?: string | null;
     }
     export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
+    export interface CharacterReference {
+      firstName?: string | null;
+      lastName?: string | null;
+      phoneNumber?: string | null;
+      emailAddress?: string | null;
+      id?: string | null;
+    }
     export interface Communication {
       id?: string | null;
       subject?: string | null;
@@ -71,6 +79,7 @@ declare namespace Components {
       transcripts?: Transcript[] | null;
       workExperienceReferences?: WorkExperienceReference[] | null;
       stage?: PortalStage;
+      characterReferences?: CharacterReference[] | null;
     }
     /**
      * Save draft application response

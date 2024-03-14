@@ -67,7 +67,7 @@ export default defineComponent({
   methods: {
     async saveProfile() {
       if (!this.isFormValid) {
-        this.alertStore.setFailureAlert("Please fill out all required fields");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       } else {
         const success = await putProfile({
           firstName: this.formStore.formData[profileInformationForm.inputs.legalFirstName.id],

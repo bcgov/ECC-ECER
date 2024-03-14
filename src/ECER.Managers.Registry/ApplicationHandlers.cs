@@ -23,6 +23,25 @@ public static class ApplicationHandlers
     ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(cmd);
 
+    if (cmd.Application.Id == null)
+    {
+      // Check if a draft application already exists for the current user
+
+      var applications = await applicationRepository.Query(new ApplicationQuery
+      {
+        ByApplicantId = cmd.Application.RegistrantId,
+        ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
+      });
+
+      var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
+      var existingDraftApplication = draftApplicationResults.Items.FirstOrDefault();
+      if (existingDraftApplication != null)
+      {
+        // user already has a draft application
+        throw new InvalidOperationException($"User already has a draft application with id '{existingDraftApplication.Id}'");
+      }
+    }
+
     var applicationId = await applicationRepository.SaveDraft(mapper.Map<Resources.Documents.Applications.Application>(cmd.Application)!);
     return applicationId;
   }

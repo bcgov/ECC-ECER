@@ -62,6 +62,22 @@ export const useApplicationStore = defineStore("application", {
 
       // Education step data
       this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
+
+      //We can only save characterReferences if all required fields have a value. Otherwise do nothing.
+      if (
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.firstName.id] &&
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.lastName.id] &&
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.email.id]
+      ) {
+        this.draftApplication.characterReferences = [
+          {
+            firstName: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.firstName.id],
+            lastName: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.lastName.id],
+            emailAddress: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.email.id],
+            phoneNumber: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.phoneNumber.id],
+          },
+        ];
+      }
     },
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       const { data: draftApplicationResponse } = await createOrUpdateDraftApplication(this.draftApplication);
