@@ -180,7 +180,7 @@ public enum ApplicationStatus
   ReconsiderationDecision
 }
 
-public record CharacterReference([Required] string? FirstName, [Required] string? LastName, [Required] string? PhoneNumber, [Required] string? EmailAddress)
+public record CharacterReference([Required] string? FirstName, [Required] string? LastName, string? PhoneNumber, [Required] string? EmailAddress)
 {
   public string? Id { get; set; }
 }

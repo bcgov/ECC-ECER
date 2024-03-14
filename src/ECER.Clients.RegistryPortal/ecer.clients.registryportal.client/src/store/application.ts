@@ -68,6 +68,22 @@ export const useApplicationStore = defineStore("application", {
       this.draftApplication.workExperienceReferences = Object.values(
         wizardStore.wizardData[wizardStore.wizardConfig.steps.workReference.form.inputs.referenceList.id],
       );
+
+      // Character References step data
+      if (
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.firstName.id] &&
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.lastName.id] &&
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.email.id]
+      ) {
+        this.draftApplication.characterReferences = [
+          {
+            firstName: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.firstName.id],
+            lastName: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.lastName.id],
+            emailAddress: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.email.id],
+            phoneNumber: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.phoneNumber.id],
+          },
+        ];
+      }
     },
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       const { data: draftApplicationResponse } = await createOrUpdateDraftApplication(this.draftApplication);

@@ -345,7 +345,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   private Transcript CreateTranscript()
   {
     var faker = new Faker("en_CA");
-    
+
     var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };
 
     return new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program",

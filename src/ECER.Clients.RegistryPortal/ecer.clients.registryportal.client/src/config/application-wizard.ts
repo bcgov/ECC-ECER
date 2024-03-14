@@ -36,7 +36,7 @@ const applicationWizard: Wizard = {
       form: educationForm,
       key: "item.4",
     },
-    characterReference: {
+    characterReferences: {
       stage: "CharacterReferences",
       title: "Character Reference",
       form: characterReferencesForm,

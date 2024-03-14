@@ -100,7 +100,7 @@ const profileInformationForm: Form = {
       props: {
         label: "Primary Contact Number",
         isNumeric: true,
-        rules: [Rules.phoneNumber(), Rules.required()],
+        rules: [Rules.phoneNumber("Enter your primary 10-digit phone number"), Rules.required()],
       },
       cols: {
         md: 8,
