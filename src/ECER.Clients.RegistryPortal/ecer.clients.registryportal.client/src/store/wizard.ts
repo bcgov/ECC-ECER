@@ -102,6 +102,9 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.characterReferences.form.inputs.phoneNumber.id]: draftApplication?.characterReferences?.[0]
           ? draftApplication.characterReferences[0].phoneNumber
           : "",
+
+        // Work References step data
+        [wizard.steps.workReference.form.inputs.referenceList.id]: workReferencesDict,
       };
     },
     setWizardData(wizardData: WizardData): void {
