@@ -47,6 +47,36 @@ public static class ApplicationHandlers
   }
 
   /// <summary>
+  /// Handles submitting a new application use case
+  /// </summary>
+  /// <param name="cmd">The command</param>
+  /// <param name="applicationRepository">DI service</param>
+  /// <param name="mapper">DI service</param>
+  /// <returns></returns>
+  public static async Task<string> Handle(SubmitApplicationCommand cmd, IApplicationRepository applicationRepository, IMapper mapper)
+  {
+    ArgumentNullException.ThrowIfNull(applicationRepository);
+    ArgumentNullException.ThrowIfNull(mapper);
+    ArgumentNullException.ThrowIfNull(cmd);
+
+    var applications = await applicationRepository.Query(new ApplicationQuery
+    {
+      ById = cmd.applicationId,
+      ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
+    });
+
+    var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
+    var draftApplication = draftApplicationResults.Items.FirstOrDefault();
+    if (draftApplication == null)
+    {
+      throw new InvalidOperationException("draft application does not exist");
+    }
+
+    var applicationId = await applicationRepository.Submit(draftApplication.Id!);
+    return applicationId;
+  }
+
+  /// <summary>
   /// Handles applications query use case
   /// </summary>
   /// <param name="query">The query</param>

@@ -179,5 +179,14 @@ internal sealed class ApplicationRepository : IApplicationRepository
     }
   }
 
-  public Task<string> Submit(string applicationId) => throw new NotImplementedException();
+  public async Task<string> Submit(string applicationId)
+  {
+    await Task.CompletedTask;
+    var application = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId));
+    if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
+    application.StatusCode = ecer_Application_StatusCode.Submitted;
+    context.UpdateObject(application);
+    context.SaveChanges();
+    return applicationId;
+  }
 }
