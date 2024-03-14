@@ -56,91 +56,74 @@
       </v-form>
     </v-col>
     <div v-else-if="mode == 'list'" class="w-100">
-      <v-row>
-        <v-col sm="12" md="10" lg="8" xl="6" class="my-6">
+      <v-col sm="12" md="10" lg="8" xl="6" class="my-6">
+        <p class="small">
+          You must provide
+          <b>500 hours of work experience.</b>
+          These hours:
+        </p>
+        <ul class="small">
+          <v-col cols="12">
+            <li>
+              Are counted from the date you started your education and cannot include your practicum/placement hours (hours that were a part of your education)
+            </li>
+            <li>Must be completed within the 5 years before your application submission</li>
+            <li>Can be work or volunteer hours</li>
+          </v-col>
+        </ul>
+        <p class="small">
+          If your 500 hours were completed at more than one location and under the supervision of more than one ECE, you must provide a reference from each
+          person who supervised your hours. You may enter up to six references.
+        </p>
+      </v-col>
+      <v-col sm="12" md="10" lg="8" xl="6">
+        <Alert type="info">
           <p class="small">
-            You must provide
-            <b>500 hours of work experience.</b>
-            These hours:
+            The Registry will not assess an application until references have been submitted. Please make sure your reference:
+            <br />
+            <br />
+            &#x2022; Directly supervised (observed) the hours they attest to
+            <br />
+            &#x2022; Can speak to your knowledge, skills, and ability (competencies) as an ECE
+            <br />
+            &#x2022; Has held valid Canadian ECE certification/registration during the hours they supervised (observed)
+            <br />
+            &#x2022; Is not the same person you provided as a character reference
           </p>
-          <ul class="small">
-            <v-col cols="12">
-              <li>
-                Are counted from the date you started your education and cannot include your practicum/placement hours (hours that were a part of your
-                education)
-              </li>
-              <li>Must be completed within the 5 years before your application submission</li>
-              <li>Can be work or volunteer hours</li>
-            </v-col>
-          </ul>
+        </Alert>
+      </v-col>
+      <v-col v-if="totalHours >= 500" sm="12" md="10" lg="8" xl="6">
+        <Alert type="info">
           <p class="small">
-            If your 500 hours were completed at more than one location and under the supervision of more than one ECE, you must provide a reference from each
-            person who supervised your hours. You may enter up to six references.
+            You provided the required 500 hours of work experience. If needed, the Registry will contact you for additional work experience information once
+            your references submit their forms.
           </p>
-        </v-col>
-      </v-row>
-      <!-- <v-row>
-        <v-col sm="12" md="10" lg="8" xl="6">
-          <Alert type="info">
-            <p class="small">
-              The Registry will not assess an application until references have been submitted. Please make sure your reference:
-              <br />
-              <br />
-              &#x2022; Directly supervised (observed) the hours they attest to
-              <br />
-              &#x2022; Can speak to your knowledge, skills, and ability (competencies) as an ECE
-              <br />
-              &#x2022; Has held valid Canadian ECE certification/registration during the hours they supervised (observed)
-              <br />
-              &#x2022; Is not the same person you provided as a character reference
-            </p>
-          </Alert>
-        </v-col>
-      </v-row> -->
-      <v-row v-if="totalHours >= 500">
-        <v-col sm="12" md="10" lg="8" xl="6">
-          <Alert type="info">
-            <p class="small">
-              You provided the required 500 hours of work experience. If needed, the Registry will contact you for additional work experience information once
-              your references submit their forms.
-            </p>
-          </Alert>
-        </v-col>
-      </v-row>
-      <v-row v-if="count >= 6 && totalHours < 500">
-        <v-col sm="12" md="10" lg="8" xl="6">
-          <Alert type="warning">
-            <p class="small">
-              You reached the limit of six work experience references but do not meet the 500-hour requirement. You can still proceed to submit your
-              application. The Registry will contact you to provide additional references for the remaining hours.
-            </p>
-          </Alert>
-        </v-col>
-      </v-row>
-      <v-row v-if="count < 6 && totalHours < 500">
-        <v-col sm="12" md="10" lg="8" xl="6">
-          <Alert type="error">
-            <p class="small">You must enter 500 hours of work experience to submit your application.</p>
-          </Alert>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col sm="12" md="10" lg="8" xl="6" class="my-6">
-          <WorkExperienceReferenceProgressBar :references="modelValue" />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col sm="12" md="10" lg="8" xl="6">
-          <WorkExperienceReferenceList :references="modelValue" @edit="handleEdit" @delete="handleDelete" />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" class="mt-6">
-          <v-row justify="start" class="ml-1">
-            <v-btn prepend-icon="mdi-plus" rounded="lg" color="alternate" :disabled="isDisabled" @click="handleAddReference">Add References</v-btn>
-          </v-row>
-        </v-col>
-      </v-row>
+        </Alert>
+      </v-col>
+      <v-col v-if="count >= 6 && totalHours < 500" sm="12" md="10" lg="8" xl="6">
+        <Alert type="warning">
+          <p class="small">
+            You reached the limit of six work experience references but do not meet the 500-hour requirement. You can still proceed to submit your application.
+            The Registry will contact you to provide additional references for the remaining hours.
+          </p>
+        </Alert>
+      </v-col>
+      <v-col v-if="count < 6 && totalHours < 500" sm="12" md="10" lg="8" xl="6">
+        <Alert type="error">
+          <p class="small">You must enter 500 hours of work experience to submit your application.</p>
+        </Alert>
+      </v-col>
+      <v-col sm="12" md="10" lg="8" xl="6" class="my-6">
+        <WorkExperienceReferenceProgressBar :references="modelValue" />
+      </v-col>
+      <v-col sm="12" md="10" lg="8" xl="6">
+        <WorkExperienceReferenceList :references="modelValue" @edit="handleEdit" @delete="handleDelete" />
+      </v-col>
+      <v-col cols="12" class="mt-6">
+        <v-row justify="start" class="ml-1">
+          <v-btn prepend-icon="mdi-plus" rounded="lg" color="alternate" :disabled="isDisabled" @click="handleAddReference">Add References</v-btn>
+        </v-row>
+      </v-col>
     </div>
   </v-row>
 </template>
