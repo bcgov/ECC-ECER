@@ -44,7 +44,7 @@ const applicationWizard: Wizard = {
     },
     workReference: {
       stage: "WorkReferences",
-      title: "Work Experience Reference",
+      title: "Work Experience References",
       form: referencesForm,
       key: "item.6",
     },

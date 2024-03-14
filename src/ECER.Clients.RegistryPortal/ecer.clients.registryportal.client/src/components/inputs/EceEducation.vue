@@ -75,7 +75,7 @@
       </v-form>
     </v-col>
     <div v-else-if="mode == 'list'" class="w-100">
-      <v-col sm="12" md="8" lg="6">
+      <v-col sm="12" md="10" lg="8" xl="6">
         <EducationList :educations="modelValue" @edit="handleEdit" @delete="handleDelete" />
       </v-col>
       <v-col cols="12" class="mt-6">

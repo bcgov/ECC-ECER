@@ -2,8 +2,8 @@
   <v-row>
     <v-tooltip :text="`${hoursRemaining} Hours Remaining`" location="top">
       <template #activator="{ props }">
-        <v-progress-linear v-bind="props" v-model="percentHours" rounded="lg" height="25" color="primary">
-          <strong>{{ Math.ceil(totalHours) }} hours</strong>
+        <v-progress-linear v-bind="props" v-model="percentHours" rounded="lg" height="25" color="#67cb7b" bg-color="#f0f2f4" bg-opacity="1">
+          <strong>{{ Math.ceil(totalHours) }}/500 hours</strong>
         </v-progress-linear>
       </template>
     </v-tooltip>
