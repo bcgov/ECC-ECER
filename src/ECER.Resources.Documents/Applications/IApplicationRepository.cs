@@ -34,7 +34,7 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public string? LanguageofInstruction { get; set; }
 }
 
-public record WorkExperienceReference( string? FirstName, string? LastName, string? EmailAddress, string? Hours)
+public record WorkExperienceReference( string? FirstName, string? LastName, string? EmailAddress, int? Hours)
 {
   public string? Id { get; set; }
   public string? PhoneNumber { get; set; }

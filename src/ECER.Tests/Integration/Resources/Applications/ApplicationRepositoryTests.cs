@@ -335,7 +335,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
 
     return new WorkExperienceReference(
-      faker.Name.FirstName(), faker.Name.FirstName(), faker.Internet.Email(), faker.Random.Number(10, 150).ToString()
+      faker.Name.FirstName(), faker.Name.FirstName(), faker.Internet.Email(), faker.Random.Number(10, 150)
     )
     {
       PhoneNumber = faker.Phone.PhoneNumber()

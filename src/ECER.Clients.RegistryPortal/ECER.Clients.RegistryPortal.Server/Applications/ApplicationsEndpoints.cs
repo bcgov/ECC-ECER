@@ -128,7 +128,7 @@ public record Transcript()
   [Required]
   public DateTime EndDate { get; set; }
 }
-public record WorkExperienceReference([Required] string? FirstName, [Required] string? LastName, [Required] string? EmailAddress, [Required] string? Hours)
+public record WorkExperienceReference([Required] string? FirstName, [Required] string? LastName, [Required] string? EmailAddress, [Required] int? Hours)
 {
   public string? Id { get; set; }
 
