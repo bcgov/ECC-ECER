@@ -30,12 +30,26 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications", async (ApplicationSubmissionRequest request, IMessageBus messageBus) =>
+    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<string>, BadRequest<string>>> (ApplicationSubmissionRequest request, HttpContext ctx, IMessageBus messageBus) =>
         {
+          var userId = ctx.User.GetUserContext()?.UserId;
+          bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid) { return TypedResults.BadRequest("ApplicationId is not valid"); }
+          var query = new ApplicationsQuery
+          {
+            ById = request.Id,
+            ByApplicantId = userId,
+            ByStatus = new List<Managers.Registry.Contract.Applications.ApplicationStatus>() { Managers.Registry.Contract.Applications.ApplicationStatus.Draft }
+          };
+          var results = await messageBus.InvokeAsync<ApplicationsQueryResults>(query);
+          if (!results.Items.Any())
+          {
+            return TypedResults.BadRequest("Application not found");
+          }
+
           var cmd = new SubmitApplicationCommand(request.Id);
           await messageBus.InvokeAsync<string>(cmd);
 
-          return TypedResults.Ok();
+          return TypedResults.Ok(request.Id);
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")
         .RequireAuthorization()
