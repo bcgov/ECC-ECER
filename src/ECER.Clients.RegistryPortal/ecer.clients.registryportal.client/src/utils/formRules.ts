@@ -87,7 +87,13 @@ const hasCheckbox = (message = "You must check the box") => {
  * @returns Function
  */
 const required = (message = "This field is required") => {
-  return (v: string) => !!(v && v.trim()) || message;
+  return (v: string | number) => {
+    if (typeof v === "number") {
+      return !!v || message;
+    } else {
+      return !!(v && v?.trim()) || message;
+    }
+  };
 };
 
 /**

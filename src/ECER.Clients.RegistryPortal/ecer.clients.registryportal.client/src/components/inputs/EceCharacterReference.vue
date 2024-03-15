@@ -1,6 +1,19 @@
 <template>
   <v-row>
     <v-col>
+      <Alert type="info">
+        <p>The Registry will not assess an application until references have been submitted. Please make sure your reference:</p>
+        <ul class="pl-5">
+          <li>Can speak to your character and has known you for at least 6 months.</li>
+          <li>Can speak to your ability to educate and care for young children.</li>
+          <li>Is NOT a relative, partner, spouse or myself.</li>
+          <li>(Recommended) Is a certified ECE who has directly observed you working with young children.</li>
+        </ul>
+      </Alert>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="firstName"
         :rules="[Rules.required()]"
@@ -13,7 +26,7 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col>
+    <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="lastName"
         :rules="[Rules.required()]"
@@ -26,7 +39,7 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col>
+    <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="phoneNumber"
         :rules="[Rules.phoneNumber()]"
@@ -39,7 +52,7 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col>
+    <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="emailAddress"
         :rules="[Rules.required(), Rules.email()]"
@@ -60,8 +73,10 @@ import { useAlertStore } from "@/store/alert";
 import type { EceCharacterReferenceProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
+import Alert from "../Alert.vue";
 export default defineComponent({
   name: "EceCharacterReference",
+  components: { Alert },
   props: {
     props: {
       type: Object as () => EceCharacterReferenceProps,

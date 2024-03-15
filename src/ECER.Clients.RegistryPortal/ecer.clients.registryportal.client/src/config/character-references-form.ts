@@ -10,9 +10,9 @@ const referencesForm: Form = {
       component: EceCharacterReference,
       props: {},
       cols: {
-        md: 8,
-        lg: 6,
-        xl: 4,
+        md: 12,
+        lg: 12,
+        xl: 12,
       },
     },
   },
