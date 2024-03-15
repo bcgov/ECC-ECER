@@ -47,9 +47,12 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           }
 
           var cmd = new SubmitApplicationCommand(request.Id);
-          await messageBus.InvokeAsync<string>(cmd);
-
-          return TypedResults.Ok(request.Id);
+          var result = await messageBus.InvokeAsync<ApplicationSubmissionResult>(cmd);
+          if (!result.IsSuccess)
+          {
+            return TypedResults.BadRequest($"Application submission failed: {string.Join(',', result.ValidationErrors!)}");
+          }
+          return TypedResults.Ok(result.ApplicationId);
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")
         .RequireAuthorization()

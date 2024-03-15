@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Engines.Validation.Applications;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Resources.Documents.Applications;
@@ -51,9 +52,10 @@ public static class ApplicationHandlers
   /// </summary>
   /// <param name="cmd">The command</param>
   /// <param name="applicationRepository">DI service</param>
+  /// <param name="validationEngine">validationEngine</param>
   /// <param name="mapper">DI service</param>
   /// <returns></returns>
-  public static async Task<string> Handle(SubmitApplicationCommand cmd, IApplicationRepository applicationRepository, IMapper mapper)
+  public static async Task<ApplicationSubmissionResult> Handle(SubmitApplicationCommand cmd, IApplicationSubmissionValidationEngine validationEngine, IApplicationRepository applicationRepository, IMapper mapper)
   {
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(mapper);
@@ -72,8 +74,13 @@ public static class ApplicationHandlers
       throw new InvalidOperationException("draft application does not exist");
     }
 
+    var validationErrors = await validationEngine?.Validate(draftApplication)!;
+    if (validationErrors.ValidationErrors.Any())
+    {
+      return new ApplicationSubmissionResult() { ValidationErrors = validationErrors.ValidationErrors };
+    }
     var applicationId = await applicationRepository.Submit(draftApplication.Id!);
-    return applicationId;
+    return new ApplicationSubmissionResult() { ApplicationId = applicationId };
   }
 
   /// <summary>
@@ -95,6 +102,7 @@ public static class ApplicationHandlers
       ByApplicantId = query.ByApplicantId,
       ByStatus = query.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
     });
+
     return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
   }
 }

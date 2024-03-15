@@ -27,6 +27,16 @@ public record ApplicationsQuery
 /// <param name="Items">The </param>
 public record ApplicationsQueryResults(IEnumerable<Application> Items);
 
+/// <summary>
+/// Application submission result
+/// </summary>
+public record ApplicationSubmissionResult()
+{
+  public string? ApplicationId { get; set; }
+  public IEnumerable<string>? ValidationErrors { get; set; }
+  public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
+}
+
 public record Application(string? Id, string RegistrantId, ApplicationStatus Status)
 {
   public DateTime? SubmittedOn { get; set; }
@@ -38,19 +48,19 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
 }
+
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate)
 {
   public string? CampusLocation { get; set; }
   public string? LanguageofInstruction { get; set; }
 }
 
-public record WorkExperienceReference(string? FirstName, string? LastName,  string? EmailAddress,  int? Hours)
+public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
 {
   public string? Id { get; set; }
 
   public string? PhoneNumber { get; set; }
 }
-
 
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
@@ -93,4 +103,3 @@ public enum ApplicationStatus
   PendingQueue,
   ReconsiderationDecision
 }
-
