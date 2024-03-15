@@ -114,7 +114,7 @@ const profileInformationForm: Form = {
       props: {
         label: "Alternate Contact Number",
         isNumeric: true,
-        rules: [],
+        rules: [Rules.phoneNumber("Enter your alternate 10-digit phone number")],
       },
       cols: {
         md: 8,
