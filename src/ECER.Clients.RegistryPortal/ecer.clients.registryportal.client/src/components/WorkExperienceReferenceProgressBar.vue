@@ -29,18 +29,18 @@ export default defineComponent({
     },
   },
   computed: {
-    percentHours() {
+    percentHours(): number {
       return (this.totalHours / 500) * 100;
     },
-    hoursRemaining() {
+    hoursRemaining(): number {
       return 500 - this.totalHours;
     },
-    totalHours() {
+    totalHours(): number {
       return this.referenceList.reduce((acc, reference) => {
-        return acc + parseInt(reference.hours as string);
+        return acc + (reference.hours as number);
       }, 0);
     },
-    referenceList() {
+    referenceList(): Components.Schemas.WorkExperienceReference[] {
       return Object.values(this.references);
     },
   },

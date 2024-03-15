@@ -159,7 +159,7 @@ declare namespace Components {
       firstName?: string | null;
       lastName?: string | null;
       emailAddress?: string | null;
-      hours?: string | null;
+      hours?: number | null; // int32
       id?: string | null;
       phoneNumber?: string | null;
     }
