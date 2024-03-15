@@ -18,6 +18,7 @@ export const useApplicationStore = defineStore("application", {
       signedDate: null,
       stage: "CertificationType",
       transcripts: [] as Components.Schemas.Transcript[],
+      characterReferences: [] as Components.Schemas.CharacterReference[],
       workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
     },
   }),
@@ -71,18 +72,12 @@ export const useApplicationStore = defineStore("application", {
 
       // Character References step data
       if (
-        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.firstName.id] &&
-        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.lastName.id] &&
-        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.email.id]
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName &&
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName &&
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress
       ) {
-        this.draftApplication.characterReferences = [
-          {
-            firstName: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.firstName.id],
-            lastName: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.lastName.id],
-            emailAddress: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.email.id],
-            phoneNumber: wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.phoneNumber.id],
-          },
-        ];
+        this.draftApplication.characterReferences =
+          wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id];
       }
     },
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {

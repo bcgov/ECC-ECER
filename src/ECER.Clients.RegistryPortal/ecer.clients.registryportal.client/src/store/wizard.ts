@@ -90,18 +90,9 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.education.form.inputs.educationList.id]: transcriptsDict,
 
         // Character References step data
-        [wizard.steps.characterReferences.form.inputs.firstName.id]: draftApplication?.characterReferences?.[0]
-          ? draftApplication.characterReferences[0].firstName
-          : "",
-        [wizard.steps.characterReferences.form.inputs.lastName.id]: draftApplication?.characterReferences?.[0]
-          ? draftApplication.characterReferences[0].lastName
-          : "",
-        [wizard.steps.characterReferences.form.inputs.email.id]: draftApplication?.characterReferences?.[0]
-          ? draftApplication.characterReferences[0].emailAddress
-          : "",
-        [wizard.steps.characterReferences.form.inputs.phoneNumber.id]: draftApplication?.characterReferences?.[0]
-          ? draftApplication.characterReferences[0].phoneNumber
-          : "",
+        [wizard.steps.characterReferences.form.inputs.characterReferences.id]: draftApplication?.characterReferences?.[0]
+          ? draftApplication?.characterReferences
+          : [],
 
         // Work References step data
         [wizard.steps.workReference.form.inputs.referenceList.id]: workReferencesDict,
