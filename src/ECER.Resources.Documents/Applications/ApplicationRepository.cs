@@ -74,6 +74,17 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return ecerApplication.ecer_ApplicationId.Value.ToString();
   }
 
+  public async Task<string> Submit(string applicationId)
+  {
+    await Task.CompletedTask;
+    var application = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId));
+    if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
+    application.StatusCode = ecer_Application_StatusCode.Submitted;
+    context.UpdateObject(application);
+    context.SaveChanges();
+    return applicationId;
+  }
+
   public async Task UpdateApplicationWorkExperienceReferences(ecer_Application application, List<ecer_WorkExperienceRef> updatedReferences)
   {
     await Task.CompletedTask;
@@ -143,7 +154,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.UpdateObject(transcript);
     }
   }
-  
+
   public async Task UpdateCharacterReferences(ecer_Application application, List<ecer_CharacterReference> updatedCharacterReferences)
   {
     await Task.CompletedTask;
@@ -165,7 +176,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.AddObject(reference);
       context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, reference);
     }
-    
+
     // 3. Update Existing Character References
     foreach (var reference in updatedCharacterReferences.Where(d => d.ecer_CharacterReferenceId != null))
     {
@@ -177,16 +188,5 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.Attach(reference);
       context.UpdateObject(reference);
     }
-  }
-
-  public async Task<string> Submit(string applicationId)
-  {
-    await Task.CompletedTask;
-    var application = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId));
-    if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
-    application.StatusCode = ecer_Application_StatusCode.Submitted;
-    context.UpdateObject(application);
-    context.SaveChanges();
-    return applicationId;
   }
 }

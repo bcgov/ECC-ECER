@@ -106,7 +106,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript()))
         .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference()))
         .RuleFor(f => f.WorkExperienceReferences, f => f.Make(f.Random.Number(2, 5), () => CreateWorkExperienceReference()))
-
         .Generate();
 
     application.Id = this.Fixture.applicationId;
@@ -128,6 +127,19 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     });
   }
 
+  [Fact]
+  public async Task SubmitApplication_WithoutEducation_ReturnsBadRequest()
+  {
+    var submissionRequest = new ApplicationSubmissionRequest(this.Fixture.applicationId);
+
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUserId);
+      _.Post.Json(submissionRequest).ToUrl("/api/applications");
+      _.StatusCodeShouldBe(400);
+    });
+  }
+
   private Transcript CreateTranscript()
   {
     var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };
@@ -141,7 +153,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       .RuleFor(f => f.ProgramName, (f, u) => $"{f.Hacker.Adjective()} Program")
       .RuleFor(f => f.LanguageofInstruction, f => f.PickRandom(languages))
       .RuleFor(f => f.CampusLocation, f => f.Address.City())
-
       .Generate();
   }
 
