@@ -15,6 +15,7 @@ internal class ApplicationMapper : Profile
         .ForMember(d => d.CreatedOn, opts => opts.Ignore())
         .ForMember(d => d.Stage, opts => opts.MapFrom(s => s.Stage))
         .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.Transcripts))
+        .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.WorkExperienceReferences))
         .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.CharacterReferences))
         .ReverseMap()
         .ValidateMemberList(MemberList.Destination)
@@ -22,6 +23,7 @@ internal class ApplicationMapper : Profile
         ;
 
     CreateMap<Contract.Applications.Transcript, Transcript>().ReverseMap();
+    CreateMap<Contract.Applications.WorkExperienceReference, WorkExperienceReference>().ReverseMap();
     CreateMap<Contract.Applications.CharacterReference, CharacterReference>().ReverseMap();
   }
 }

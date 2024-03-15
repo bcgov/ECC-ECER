@@ -14,7 +14,7 @@
           <p class="small">Reference Last Name</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ referenceLastName }}</p>
+          <p class="small font-weight-bold">{{ characterReference.lastName }}</p>
         </v-col>
       </v-row>
       <v-row>
@@ -22,7 +22,7 @@
           <p class="small">Reference First Name</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ referenceFirstName }}</p>
+          <p class="small font-weight-bold">{{ characterReference.firstName }}</p>
         </v-col>
       </v-row>
       <v-row>
@@ -30,7 +30,7 @@
           <p class="small">Reference Email</p>
         </v-col>
         <v-col>
-          <p class="small font>weight-bold">{{ referenceEmail }}</p>
+          <p class="small font>weight-bold">{{ characterReference.emailAddress }}</p>
         </v-col>
       </v-row>
       <v-row>
@@ -38,7 +38,7 @@
           <p class="small">Referece Phone Number</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ referencePhoneNumber }}</p>
+          <p class="small font-weight-bold">{{ characterReference.phoneNumber }}</p>
         </v-col>
       </v-row>
     </v-container>
@@ -51,6 +51,7 @@ import { defineComponent } from "vue";
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
+import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "EceCharaterReferencePreview",
@@ -71,17 +72,13 @@ export default defineComponent({
     };
   },
   computed: {
-    referenceLastName() {
-      return "—";
-    },
-    referenceFirstName() {
-      return "—";
-    },
-    referenceEmail() {
-      return "—";
-    },
-    referencePhoneNumber() {
-      return "—";
+    characterReference(): Components.Schemas.CharacterReference {
+      return {
+        firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.firstName.id],
+        lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.lastName.id],
+        emailAddress: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.email.id],
+        phoneNumber: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.phoneNumber.id],
+      };
     },
   },
 });

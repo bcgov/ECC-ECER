@@ -19,6 +19,7 @@ export const useApplicationStore = defineStore("application", {
       stage: "CertificationType",
       transcripts: [] as Components.Schemas.Transcript[],
       characterReferences: [] as Components.Schemas.CharacterReference[],
+      workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
     },
   }),
   persist: {
@@ -64,7 +65,12 @@ export const useApplicationStore = defineStore("application", {
       // Education step data
       this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
 
-      // We can only save characterReferences if all required fields have a value. Otherwise do nothing.
+      // Work References step data
+      this.draftApplication.workExperienceReferences = Object.values(
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.workReference.form.inputs.referenceList.id],
+      );
+
+      // Character References step data
       if (
         wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName &&
         wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName &&

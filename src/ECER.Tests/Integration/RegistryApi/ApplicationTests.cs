@@ -51,6 +51,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     applicationById.CertificationTypes.ShouldBeEquivalentTo(application.CertificationTypes);
     applicationById.Transcripts.ShouldNotBeEmpty();
     applicationById.CharacterReferences.ShouldNotBeEmpty();
+    applicationById.WorkExperienceReferences.ShouldNotBeEmpty();
     applicationById.Stage.ShouldBe(PortalStage.CertificationType);
   }
 
@@ -104,6 +105,8 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         .RuleFor(f => f.SignedDate, f => f.Date.Recent())
         .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript()))
         .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference()))
+        .RuleFor(f => f.WorkExperienceReferences, f => f.Make(f.Random.Number(2, 5), () => CreateWorkExperienceReference()))
+
         .Generate();
 
     application.Id = this.Fixture.applicationId;
@@ -149,6 +152,18 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     return new CharacterReference(
       faker.Name.FirstName(), faker.Name.LastName(), faker.Internet.Email(), faker.Phone.PhoneNumber()
     );
+  }
+
+  private WorkExperienceReference CreateWorkExperienceReference()
+  {
+    var faker = new Faker("en_CA");
+
+    return new WorkExperienceReference(
+       faker.Name.FirstName(), faker.Name.FirstName(), faker.Internet.Email(), faker.Random.Number(10, 150)
+    )
+    {
+      PhoneNumber = faker.Phone.PhoneNumber()
+    };
   }
 
   private Transcript CreateInvalidTranscript()

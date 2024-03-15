@@ -14,6 +14,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.CertificationTypes, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.Transcripts, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.WorkExperienceReferences, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.CharacterReferences, opts => opts.DoNotValidate())
        .ForMember(d => d.ecer_ApplicationId, opts => opts.MapFrom(s => s.Id))
        .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
@@ -33,6 +34,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted))
        .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.ecer_DateSigned))
        .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.ecer_transcript_Applicationid))
+       .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.ecer_workexperienceref_Applicationid_ecer))
        .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.ecer_characterreference_Applicationid));
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
@@ -76,6 +78,24 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.LanguageofInstruction, opts => opts.MapFrom(s => s.ecer_LanguageofInstruction))
     .ValidateMemberList(MemberList.Destination);
 
+    CreateMap<WorkExperienceReference, ecer_WorkExperienceRef>(MemberList.Source)
+          .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => s.Id))
+          .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
+          .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
+          .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
+          .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
+          .ForMember(d => d.ecer_TotalNumberofHoursAnticipated, opts => opts.MapFrom(s => s.Hours));
+
+
+    CreateMap<ecer_WorkExperienceRef, WorkExperienceReference>(MemberList.Source)
+      .ForCtorParam(nameof(WorkExperienceReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
+      .ForCtorParam(nameof(WorkExperienceReference.LastName), opt => opt.MapFrom(src => src.ecer_LastName))
+      .ForCtorParam(nameof(WorkExperienceReference.EmailAddress), opt => opt.MapFrom(src => src.ecer_EmailAddress))
+      .ForCtorParam(nameof(WorkExperienceReference.Hours), opt => opt.MapFrom(src => src.ecer_TotalNumberofHoursAnticipated))
+      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
+      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_WorkExperienceRefId))
+      .ValidateMemberList(MemberList.Destination);
+    
     CreateMap<CharacterReference, ecer_CharacterReference>(MemberList.Source)
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
@@ -89,6 +109,6 @@ internal class ApplicationRepositoryMapper : Profile
           .ForCtorParam(nameof(CharacterReference.EmailAddress), opt => opt.MapFrom(src => src.ecer_EmailAddress))
           .ForCtorParam(nameof(CharacterReference.PhoneNumber), opt => opt.MapFrom(src => src.ecer_PhoneNumber))
           .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId))
-    .ValidateMemberList(MemberList.Destination);
+          .ValidateMemberList(MemberList.Destination);
   }
 }

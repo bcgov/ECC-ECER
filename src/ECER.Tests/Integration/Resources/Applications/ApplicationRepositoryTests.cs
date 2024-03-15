@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using ECER.Resources.Documents.Applications;
-using JasperFx.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
@@ -9,6 +8,7 @@ using Application = ECER.Resources.Documents.Applications.Application;
 using ApplicationStatus = ECER.Resources.Documents.Applications.ApplicationStatus;
 using CertificationType = ECER.Resources.Documents.Applications.CertificationType;
 using CharacterReference = ECER.Resources.Documents.Applications.CharacterReference;
+using WorkExperienceReference = ECER.Resources.Documents.Applications.WorkExperienceReference;
 using Transcript = ECER.Resources.Documents.Applications.Transcript;
 
 namespace ECER.Tests.Integration.Resources.Applications;
@@ -108,7 +108,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var applicantId = Fixture.AuthenticatedBcscUserId;
     var applicationId = await repository.SaveDraft(new Application(null, applicantId, new[] { CertificationType.OneYear })
     {
-      Transcripts = [new Transcript(null, null, null, null, null, DateTime.Now.AddDays(-10), DateTime.Now.AddDays(-5)) { CampusLocation = "test" }]
+      Transcripts = new List<Transcript> { CreateTranscript() }
     });
 
     var applications = await repository.Query(new ApplicationQuery { ById = applicationId });
@@ -135,10 +135,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var applicantId = Fixture.AuthenticatedBcscUserId;
     var transcripts = new List<Transcript>
     {
-        new Transcript(null,"Test Institution","Test Program","Test Student","123456",DateTime.Now.AddYears(-2),DateTime.Now.AddYears(-1)) {
-           LanguageofInstruction = "English",
-           CampusLocation = "Test Campus",
-        },
+        CreateTranscript()
     };
     var application = new Application(null, applicantId, new[] { CertificationType.OneYear })
     {
@@ -156,10 +153,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
     var originalTranscripts = new List<Transcript> {
-      new Transcript(null,"Test Institution","Test Program","Test Student","123456",DateTime.Now.AddYears(-2),DateTime.Now.AddYears(-1)) {
-      LanguageofInstruction = "English",
-      CampusLocation = "Test Campus",
-      },
+        CreateTranscript()
     };
     var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
     application.Transcripts = originalTranscripts;
@@ -183,10 +177,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
     var originalTranscripts = new List<Transcript> {
-     new Transcript(null,"Test Institution","Test Program","Test Student","123456",DateTime.Now.AddYears(-2),DateTime.Now.AddYears(-1)) {
-     LanguageofInstruction = "English",
-     CampusLocation = "Test Campus",
-     },
+        CreateTranscript()
     };
     var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
     application.Transcripts = originalTranscripts;
@@ -266,6 +257,70 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     updatedApplication.CharacterReferences.ShouldBeEmpty();
   }
 
+  [Fact]
+  public async Task SaveDraftApplication_WithWorkExperienceReferences_Created()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var workExperienceReferences = new List<WorkExperienceReference>
+    {
+        CreateWorkExperienceReference()
+    };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear })
+    {
+      WorkExperienceReferences = workExperienceReferences
+    };
+    var applicationId = await repository.SaveDraft(application);
+    applicationId.ShouldNotBeNull();
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var savedApplication = query.ShouldHaveSingleItem();
+    savedApplication.WorkExperienceReferences.Count().ShouldBe(workExperienceReferences.Count);
+  }
+
+  [Fact]
+  public async Task UpdateApplication_WithModifiedWorkExperienceReferences_Updated()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var originalWorkExperienceReferences = new List<WorkExperienceReference> {
+        CreateWorkExperienceReference()
+  };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
+    application.WorkExperienceReferences = originalWorkExperienceReferences;
+    var applicationId = await repository.SaveDraft(application);
+
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var reference = query.First().WorkExperienceReferences.First();
+    
+    var newWorkExperienceReference = new WorkExperienceReference(reference.FirstName, reference.LastName, reference.EmailAddress, reference.Hours) { Id = reference.Id, PhoneNumber = "987-654-3210"};
+
+    var updatedReferences = new List<WorkExperienceReference> { newWorkExperienceReference };
+    application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
+    application.WorkExperienceReferences = updatedReferences;
+    await repository.SaveDraft(application);
+
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    updatedApplication.WorkExperienceReferences.First().PhoneNumber.ShouldBe("987-654-3210");
+  }
+
+  [Fact]
+  public async Task UpdateApplication_RemoveWorkExperienceReferences_Updated()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var originalWorkExperienceReferences = new List<WorkExperienceReference> {
+        CreateWorkExperienceReference()
+  };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
+    application.WorkExperienceReferences = originalWorkExperienceReferences;
+    var applicationId = await repository.SaveDraft(application);
+
+    // Update application with empty work experience references list
+    application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
+    application.WorkExperienceReferences = new List<WorkExperienceReference>();
+    await repository.SaveDraft(application);
+
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    updatedApplication.WorkExperienceReferences.ShouldBeEmpty();
+  }
+
   private CharacterReference CreateCharacterReference()
   {
     var faker = new Faker("en_CA");
@@ -273,5 +328,32 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     return new CharacterReference(
       faker.Name.FirstName(), faker.Name.LastName(), faker.Internet.Email(), faker.Phone.PhoneNumber()
     );
+  }
+
+  private WorkExperienceReference CreateWorkExperienceReference()
+  {
+    var faker = new Faker("en_CA");
+
+    return new WorkExperienceReference(
+      faker.Name.FirstName(), faker.Name.FirstName(), faker.Internet.Email(), faker.Random.Number(10, 150)
+    )
+    {
+      PhoneNumber = faker.Phone.PhoneNumber()
+    };
+  }
+
+  private Transcript CreateTranscript()
+  {
+    var faker = new Faker("en_CA");
+
+    var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };
+
+    return new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program",
+      faker.Name.FullName(), faker.Random.Number(10000000, 99999999).ToString(), faker.Date.Past(), faker.Date.Recent()
+    )
+    {
+      LanguageofInstruction = faker.PickRandom(languages),
+      CampusLocation = faker.Address.City()
+    };
   }
 }

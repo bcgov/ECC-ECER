@@ -24,6 +24,7 @@ interface EceTextFieldProps {
 }
 
 interface EceEducationProps {}
+interface EceWorkExperienceReferencesProps {}
 
 interface EceAddressProps {
   addressLabel: string;

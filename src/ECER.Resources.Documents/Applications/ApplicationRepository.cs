@@ -30,6 +30,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     if (query.ByApplicantId != null) applications = applications.Where(r => r.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
 
     context.LoadProperties(applications, ecer_Application.Fields.ecer_transcript_Applicationid);
+    context.LoadProperties(applications, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer);
     context.LoadProperties(applications, ecer_Application.Fields.ecer_characterreference_Applicationid);
 
     return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
@@ -45,6 +46,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     var ecerApplication = mapper.Map<ecer_Application>(application)!;
 
     var ecerTranscripts = mapper.Map<IEnumerable<ecer_Transcript>>(application.Transcripts)!.ToList();
+    var ecerWorkExperienceReferences = mapper.Map<IEnumerable<ecer_WorkExperienceRef>>(application.WorkExperienceReferences)!.ToList();
 
     var ecerCharacterReferences = mapper.Map<IEnumerable<ecer_CharacterReference>>(application.CharacterReferences)!.ToList();
 
@@ -66,9 +68,45 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.UpdateObject(ecerApplication);
     }
     _ = UpdateApplicationTranscripts(ecerApplication, ecerTranscripts);
+    _ = UpdateApplicationWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     _ = UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
+  }
+
+  public async Task UpdateApplicationWorkExperienceReferences(ecer_Application application, List<ecer_WorkExperienceRef> updatedReferences)
+  {
+    await Task.CompletedTask;
+    var existingWorkExpericnes = context.ecer_WorkExperienceRefSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
+
+    // 1. Remove WorkExperienceReferences that they exist in the dataverse but not in the application
+    foreach (var reference in existingWorkExpericnes)
+    {
+      if (!updatedReferences.Any(t => t.Id == reference.Id))
+      {
+        context.DeleteObject(reference);
+      }
+    }
+
+    // 2. Add New WorkExperienceReferences that they exist in the application but not in the dataverse
+    foreach (var reference in updatedReferences.Where(d => d.ecer_WorkExperienceRefId == null))
+    {
+      reference.ecer_WorkExperienceRefId = Guid.NewGuid();
+      context.AddObject(reference);
+      context.AddLink(application, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer, reference);
+    }
+
+    // 3. Update Existing WorkExperienceReferences
+    foreach (var reference in updatedReferences.Where(d => d.ecer_WorkExperienceRefId != null))
+    {
+      var oldReference = existingWorkExpericnes.SingleOrDefault(t => t.Id == reference.Id);
+      if (oldReference != null)
+      {
+        context.Detach(oldReference);
+      }
+      context.Attach(reference);
+      context.UpdateObject(reference);
+    }
   }
 
   public async Task UpdateApplicationTranscripts(ecer_Application application, List<ecer_Transcript> updatedTranscripts)

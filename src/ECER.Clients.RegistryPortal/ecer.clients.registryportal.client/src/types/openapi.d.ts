@@ -20,6 +20,7 @@ declare namespace Components {
       signedDate?: string | null; // date-time
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
+      workExperienceReferences?: WorkExperienceReference[] | null;
       status?: ApplicationStatus;
       stage?: PortalStage;
       characterReferences?: CharacterReference[] | null;
@@ -76,6 +77,7 @@ declare namespace Components {
       signedDate?: string | null; // date-time
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
+      workExperienceReferences?: WorkExperienceReference[] | null;
       stage?: PortalStage;
       characterReferences?: CharacterReference[] | null;
     }
@@ -152,6 +154,14 @@ declare namespace Components {
       phone?: string | null;
       residentialAddress?: /* Address */ Address;
       mailingAddress?: /* Address */ Address;
+    }
+    export interface WorkExperienceReference {
+      firstName?: string | null;
+      lastName?: string | null;
+      emailAddress?: string | null;
+      hours?: number | null; // int32
+      id?: string | null;
+      phoneNumber?: string | null;
     }
   }
 }
