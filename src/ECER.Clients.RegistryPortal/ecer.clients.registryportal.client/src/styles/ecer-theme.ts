@@ -11,6 +11,7 @@ const ecerTheme: ThemeDefinition = {
     "grey-light": "#757575",
     "grey-lightest": "#dee2e6",
     links: "#1A5A96",
+    info: "#003366",
     error: "#D8292F",
     success: "#2E8540",
     warning: "#FCBA19",

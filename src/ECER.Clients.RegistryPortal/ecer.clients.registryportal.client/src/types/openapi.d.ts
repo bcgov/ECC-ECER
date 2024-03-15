@@ -156,10 +156,11 @@ declare namespace Components {
       mailingAddress?: /* Address */ Address;
     }
     export interface WorkExperienceReference {
-      id?: string | null;
       firstName?: string | null;
       lastName?: string | null;
       emailAddress?: string | null;
+      hours?: number | null; // int32
+      id?: string | null;
       phoneNumber?: string | null;
     }
   }

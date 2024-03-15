@@ -289,9 +289,10 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     var query = await repository.Query(new ApplicationQuery { ById = applicationId });
     var reference = query.First().WorkExperienceReferences.First();
-    reference.PhoneNumber = "987-654-3210";
+    
+    var newWorkExperienceReference = new WorkExperienceReference(reference.FirstName, reference.LastName, reference.EmailAddress, reference.Hours) { Id = reference.Id, PhoneNumber = "987-654-3210"};
 
-    var updatedReferences = new List<WorkExperienceReference> { reference };
+    var updatedReferences = new List<WorkExperienceReference> { newWorkExperienceReference };
     application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
     application.WorkExperienceReferences = updatedReferences;
     await repository.SaveDraft(application);
@@ -334,7 +335,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
 
     return new WorkExperienceReference(
-      null, faker.Name.FirstName(), faker.Name.LastName(), faker.Internet.Email()
+      faker.Name.FirstName(), faker.Name.FirstName(), faker.Internet.Email(), faker.Random.Number(10, 150)
     )
     {
       PhoneNumber = faker.Phone.PhoneNumber()
