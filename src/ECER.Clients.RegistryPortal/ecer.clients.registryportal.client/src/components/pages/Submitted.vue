@@ -1,10 +1,6 @@
 <template>
   <PageContainer>
     <v-col>
-      <v-btn v-if="hasBackButton" class="mb-10" variant="text" @click="goBack">
-        <v-icon size="small" color="secondary" icon="mdi-arrow-left" class="mr-2"></v-icon>
-        <a class="small">Back</a>
-      </v-btn>
       <v-row class="pa-10 mt-5">
         <div>
           <div class="text-center mb-10">
@@ -45,16 +41,6 @@ import PageContainer from "@/components/PageContainer.vue";
 export default defineComponent({
   name: "Submitted",
   components: { PageContainer },
-  props: {
-    hasBackButton: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  methods: {
-    goBack() {
-      this.$router.go(-1);
-    },
-  },
+  props: {}
 });
 </script>

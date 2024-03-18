@@ -18,7 +18,7 @@
           <v-col cols="auto">
             <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
             <v-btn
-              v-if="wizardStore.step !== 7"
+              v-if="wizardStore.currentStepStage !== `Review`"
               type="submit"
               :form="getFormId"
               rounded="lg"
@@ -28,7 +28,7 @@
             >
               Save and Continue
             </v-btn>
-            <v-btn v-if="wizardStore.step === 7" type="submit" :form="getFormId" rounded="lg" color="primary" :disabled="isDisabled" @click="handleSubmit">
+            <v-btn v-if="wizardStore.currentStepStage === 'Review'" type="submit" :form="getFormId" rounded="lg" color="primary" :disabled="isDisabled" @click="handleSubmit">
               Submit Application
             </v-btn>
           </v-col>
@@ -49,7 +49,6 @@ import { useApplicationStore } from "@/store/application";
 import { useCertificationTypeStore } from "@/store/certificationType";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
-
 import { AddressType } from "../inputs/EceAddresses.vue";
 
 export default defineComponent({
