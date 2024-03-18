@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECER.Clients.RegistryPortal\ECER.Clients.RegistryPortal.Server\ECER.Clients.RegistryPortal.Server.csproj" />
+    <ProjectReference Include="..\ECER.Clients.Api\ECER.Clients.Api.csproj" />
     <ProjectReference Include="..\ECER.Resources.Accounts\ECER.Resources.Accounts.csproj" />
   </ItemGroup>
 

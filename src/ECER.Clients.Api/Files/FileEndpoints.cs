@@ -23,26 +23,26 @@ public class FileEndpoints : IRegisterEndpoints
       if (file == null) return TypedResults.NotFound();
       return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
     })
-      .RequireAuthorization("api")
+      //.RequireAuthorization("api")
       .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/files/{fileId}", async (
-      [FromForm] UploadFileRequest request,
+    endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok,BadRequest<string>>> (
       [FromRoute] string fileId,
       [FromHeader(Name = "file-classification")][Required] string classification,
       [FromHeader(Name = "file-tag")] string? tags,
       [FromHeader(Name = "file-folder")] string? folder,
+      HttpContext httpContext,
       IMessageBus messageBus,
       CancellationToken ct) =>
       {
-        var file = new FileData(new FileLocation(fileId, folder ?? string.Empty), request.File.FileName, request.File.ContentType, request.File.OpenReadStream());
-        await messageBus.InvokeAsync(new SaveFileCommand([file]), ct);
+        var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, folder ?? string.Empty), file.FileName, file.ContentType, file.OpenReadStream())).ToList();
+        if (files.Count == 0) return TypedResults.BadRequest("No files were uploaded");
+        await messageBus.InvokeAsync(new SaveFileCommand(files), ct);
         return TypedResults.Ok();
       })
       .WithOpenApi("Uploads a new file", string.Empty, "files_post")
-      .RequireAuthorization("api")
+      .DisableAntiforgery()
+      //.RequireAuthorization("api")
       .WithParameterValidation();
   }
 }
-
-public record UploadFileRequest([Required] IFormFile File);
