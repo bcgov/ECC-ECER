@@ -30,7 +30,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<string>, BadRequest<string>>> (ApplicationSubmissionRequest request, HttpContext ctx, IMessageBus messageBus) =>
+    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<string>>> (ApplicationSubmissionRequest request, HttpContext ctx, IMessageBus messageBus) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid) { return TypedResults.BadRequest("ApplicationId is not valid"); }
@@ -52,7 +52,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           {
             return TypedResults.BadRequest($"Application submission failed: {string.Join(',', result.ValidationErrors!)}");
           }
-          return TypedResults.Ok(result.ApplicationId);
+          return TypedResults.Ok(new SubmitApplicationResponse(result.ApplicationId!));
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")
         .RequireAuthorization()
@@ -95,6 +95,8 @@ public record ApplicationSubmissionRequest(string Id);
 /// </summary>
 /// <param name="ApplicationId">The application id</param>
 public record DraftApplicationResponse(string ApplicationId);
+
+public record SubmitApplicationResponse(string ApplicationId);
 
 /// <summary>
 /// Application query response
