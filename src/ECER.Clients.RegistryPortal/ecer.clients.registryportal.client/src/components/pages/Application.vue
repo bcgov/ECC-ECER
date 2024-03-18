@@ -17,7 +17,20 @@
           </v-col>
           <v-col cols="auto">
             <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
-            <v-btn type="submit" :form="getFormId" rounded="lg" color="primary" :disabled="isDisabled" @click="handleSaveAndContinue">Save and Continue</v-btn>
+            <v-btn
+              v-if="wizardStore.step !== 7"
+              type="submit"
+              :form="getFormId"
+              rounded="lg"
+              color="primary"
+              :disabled="isDisabled"
+              @click="handleSaveAndContinue"
+            >
+              Save and Continue
+            </v-btn>
+            <v-btn v-if="wizardStore.step === 7" type="submit" :form="getFormId" rounded="lg" color="primary" :disabled="isDisabled" @click="handleSubmit">
+              Submit Application
+            </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -72,6 +85,12 @@ export default defineComponent({
     },
   },
   methods: {
+    async handleSubmit() {
+      const submitApplicationResponse = await this.applicationStore.submitApplication();
+      if (submitApplicationResponse?.applicationId) {
+        this.$router.push({ path: "/submitted" });
+      }
+    },
     handleSaveAndContinue() {
       if (!this.isFormValid) {
         this.alertStore.setFailureAlert("Please fill out all required fields");
@@ -120,6 +139,12 @@ export default defineComponent({
           this.decrementWizard();
           this.isFormValid = true;
           break;
+      }
+    },
+    async submitApplication() {
+      const draftApplicationResponse = await this.applicationStore.saveDraft();
+      if (draftApplicationResponse?.applicationId) {
+        this.alertStore.setSuccessAlert("Draft application saved successfully");
       }
     },
     async saveDraftAndAlertSuccess() {
