@@ -34,7 +34,9 @@
               <v-btn rounded="lg" class="font-weight-bold" color="primary" @click="handleLogin('bcsc')">LOG IN WITH BC SERVICES CARD</v-btn>
               <div class="text-center">
                 <p class="small">Don't have an account?</p>
-                <a href="https://id.gov.bc.ca/account/setup-instruction"><p class="small">Get set up with BC Services Card</p></a>
+                <a href="https://id.gov.bc.ca/account/setup-instruction">
+                  <p class="small">Get set up with BC Services Card</p>
+                </a>
               </div>
             </div>
           </LoginCard>
@@ -51,7 +53,9 @@
               <v-btn rounded="lg" class="font-weight-bold" color="primary" @click="handleLogin('bceid')">LOG IN WITH BASIC BCeID</v-btn>
               <div class="text-center">
                 <p class="small">Don't have an account?</p>
-                <a href="https://www.bceid.ca/register/"><p class="small">Register for Basic BCeID</p></a>
+                <a href="https://www.bceid.ca/register/">
+                  <p class="small">Register for Basic BCeID</p>
+                </a>
               </div>
             </div>
           </LoginCard>
@@ -68,7 +72,6 @@ import LoginCard from "@/components/LoginCard.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
-import type { Authority } from "@/types/authority";
 
 export default defineComponent({
   name: "Login",
@@ -79,9 +82,9 @@ export default defineComponent({
     return { userStore, oidcStore };
   },
   methods: {
-    async handleLogin(authority: Authority) {
-      this.userStore.setAuthority(authority);
-      await this.oidcStore.login(authority);
+    async handleLogin(provider: string) {
+      this.userStore.setAuthority("kc");
+      await this.oidcStore.login("kc", provider == "bceid" ? "BCEIDBOTH" : "BCSC");
     },
   },
 });

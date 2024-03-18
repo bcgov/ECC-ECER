@@ -7,43 +7,45 @@ import type { Authority } from "@/types/authority";
 import { useConfigStore } from "./config";
 
 export interface UserState {
-  bceidUserManager: UserManager;
-  bcscUserManager: UserManager;
+  userManagers: Record<Authority, { manager: UserManager }>;
 }
 
 export const useOidcStore = defineStore("oidc", {
   state: (): UserState => ({
-    bceidUserManager: new UserManager(useConfigStore().bceidOidcConfiguration),
-    bcscUserManager: new UserManager(useConfigStore().bcscOidcConfiguration),
+    userManagers: {
+      bcsc: { manager: new UserManager(useConfigStore().bcscOidcConfiguration) },
+      bceid: { manager: new UserManager(useConfigStore().bceidOidcConfiguration) },
+      kc: { manager: new UserManager(useConfigStore().kcOidcConfiguration) },
+    },
   }),
 
   actions: {
-    async login(authority: Authority): Promise<void> {
-      return authority === "bceid" ? await this.bceidUserManager.signinRedirect() : await this.bcscUserManager.signinRedirect();
+    async login(authority: Authority, provider: string): Promise<void> {
+      return await this.userManagers[authority].manager.signinRedirect({ extraQueryParams: { kc_idp_hint: provider } });
     },
 
     async removeUser(authority: Authority): Promise<void> {
-      return authority === "bceid" ? await this.bceidUserManager.removeUser() : await this.bcscUserManager.removeUser();
+      return await this.userManagers[authority].manager.removeUser();
     },
 
     async signinCallback(authority: Authority): Promise<User> {
-      return authority === "bceid" ? await this.bceidUserManager.signinRedirectCallback() : await this.bcscUserManager.signinRedirectCallback();
+      return await this.userManagers[authority].manager.signinRedirectCallback();
     },
 
     async silentCallback(authority: Authority): Promise<void> {
-      return authority === "bceid" ? await this.bceidUserManager.signinSilentCallback() : await this.bcscUserManager.signinSilentCallback();
+      return await this.userManagers[authority].manager.signinSilentCallback();
     },
 
     async signinSilent(authority: Authority): Promise<User | null> {
-      return authority === "bceid" ? await this.bceidUserManager.signinSilent() : await this.bcscUserManager.signinSilent();
+      return await this.userManagers[authority].manager.signinSilent();
     },
 
     async logout(authority: Authority): Promise<void> {
-      return authority === "bceid" ? await this.bceidUserManager.signoutRedirect() : await this.bcscUserManager.signoutRedirect();
+      return await this.userManagers[authority].manager.signoutRedirect();
     },
 
     async completeLogout(authority: Authority): Promise<SignoutResponse> {
-      return authority === "bceid" ? await this.bceidUserManager.signoutRedirectCallback() : await this.bcscUserManager.signoutRedirectCallback();
+      return await this.userManagers[authority].manager.signoutRedirectCallback();
     },
   },
 });
