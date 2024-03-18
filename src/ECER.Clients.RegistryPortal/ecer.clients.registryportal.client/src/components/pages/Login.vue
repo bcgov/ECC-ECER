@@ -35,7 +35,7 @@
               <div class="text-center">
                 <p class="small">Don't have an account?</p>
                 <a href="https://id.gov.bc.ca/account/setup-instruction">
-                  <p class="small">Register for BC Services Card</p>
+                  <p class="small">Get set up with BC Services Card</p>
                 </a>
               </div>
             </div>
