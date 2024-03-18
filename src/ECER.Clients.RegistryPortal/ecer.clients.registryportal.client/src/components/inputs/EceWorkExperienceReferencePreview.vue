@@ -37,7 +37,7 @@
             <p class="small">Work Experience Hours</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ parseInt(experience.hours as string) }}</p>
+            <p class="small font-weight-bold">{{ experience.hours }}</p>
           </v-col>
         </v-row>
       </div>

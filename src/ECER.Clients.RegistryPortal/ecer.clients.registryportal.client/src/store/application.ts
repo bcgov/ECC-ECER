@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { createOrUpdateDraftApplication, getApplications } from "@/api/application";
+import { createOrUpdateDraftApplication, getApplications, submitApplication } from "@/api/application";
 import type { Components } from "@/types/openapi";
 
 import { useWizardStore } from "./wizard";
@@ -92,7 +92,10 @@ export const useApplicationStore = defineStore("application", {
       }
       return draftApplicationResponse;
     },
-
+    async submitApplication(): Promise<Components.Schemas.SubmitApplicationResponse | null | undefined> {
+      const { data: submitApplicationResponse } = await submitApplication(this.draftApplication.id!);
+      return submitApplicationResponse;
+    },
     async saveDraft(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       this.prepareDraftApplicationFromWizard();
       return await this.upsertDraftApplication();

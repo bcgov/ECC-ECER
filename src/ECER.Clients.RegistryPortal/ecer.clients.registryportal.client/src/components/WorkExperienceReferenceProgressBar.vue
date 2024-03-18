@@ -37,7 +37,7 @@ export default defineComponent({
     },
     totalHours() {
       return this.referenceList.reduce((acc, reference) => {
-        return acc + parseInt(reference.hours as string);
+        return acc + reference.hours!;
       }, 0);
     },
     referenceList() {

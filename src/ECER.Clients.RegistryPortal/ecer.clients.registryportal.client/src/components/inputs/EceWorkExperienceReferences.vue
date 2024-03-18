@@ -183,7 +183,7 @@ export default defineComponent({
     },
     totalHours() {
       return Object.values(this.modelValue).reduce((acc, reference) => {
-        return acc + parseInt(reference.hours as string);
+        return acc + reference.hours!;
       }, 0);
     },
     count() {
@@ -217,7 +217,7 @@ export default defineComponent({
           lastName: this.lastName,
           emailAddress: this.email,
           phoneNumber: this.phoneNumber,
-          hours: this.hours,
+          hours: parseInt(this.hours),
         };
 
         // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
@@ -260,7 +260,7 @@ export default defineComponent({
       this.lastName = referenceData.reference.lastName ?? "";
       this.email = referenceData.reference.emailAddress ?? "";
       this.phoneNumber = referenceData.reference.phoneNumber ?? "";
-      this.hours = referenceData.reference.hours ?? "";
+      this.hours = referenceData.reference.hours?.toString() ?? "";
       // Change mode to add
       this.mode = "add";
     },

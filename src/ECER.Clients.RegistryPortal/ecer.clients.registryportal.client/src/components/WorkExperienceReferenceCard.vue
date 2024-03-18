@@ -49,7 +49,7 @@ export default defineComponent({
   },
   computed: {
     referenceHours() {
-      return `${parseInt(this.reference.hours as string)} hours`;
+      return `${this.reference.hours} hours`;
     },
     referenceFullName() {
       return `${this.reference.firstName} ${this.reference.lastName}`;
