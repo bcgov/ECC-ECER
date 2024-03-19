@@ -4,9 +4,9 @@ public interface IApplicationRepository
 {
   Task<IEnumerable<Application>> Query(ApplicationQuery query);
 
-  Task<string> SaveDraft(Application application);
+  Task<string> SaveDraft(Application application, CancellationToken cancellationToken);
 
-  Task<string> Submit(string applicationId);
+  Task<string> Submit(string applicationId, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery

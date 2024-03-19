@@ -36,7 +36,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
   }
 
-  public async Task<string> SaveDraft(Application application)
+  public async Task<string> SaveDraft(Application application, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
@@ -70,17 +70,22 @@ internal sealed class ApplicationRepository : IApplicationRepository
     _ = UpdateApplicationTranscripts(ecerApplication, ecerTranscripts);
     _ = UpdateApplicationWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     _ = UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
+
+    cancellationToken.ThrowIfCancellationRequested();
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
   }
 
-  public async Task<string> Submit(string applicationId)
+  public async Task<string> Submit(string applicationId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     var application = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId));
     if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
+
     application.StatusCode = ecer_Application_StatusCode.Submitted;
     context.UpdateObject(application);
+
+    cancellationToken.ThrowIfCancellationRequested();
     context.SaveChanges();
     return applicationId;
   }

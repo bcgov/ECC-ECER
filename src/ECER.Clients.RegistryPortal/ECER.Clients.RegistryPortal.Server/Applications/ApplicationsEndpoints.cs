@@ -19,12 +19,13 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         {
           bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
           bool ApplicationIdIsNotGuid = !Guid.TryParse(request.DraftApplication.Id, out _); if (ApplicationIdIsNotGuid && request.DraftApplication.Id != null) { request.DraftApplication.Id = null; }
+          CancellationToken cancellationToken = ctx.RequestAborted;
 
           if (request.DraftApplication.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
           var userContext = ctx.User.GetUserContext();
           var application = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
-          var applicationId = await messageBus.InvokeAsync<string>(new SaveDraftApplicationCommand(application));
 
+          var applicationId = await messageBus.InvokeAsync<string>(new SaveDraftApplicationCommand(application), cancellationToken);
           return TypedResults.Ok(new DraftApplicationResponse(applicationId));
         })
         .WithOpenApi("Save a draft application for the current user", string.Empty, "draftapplication_put")
@@ -34,6 +35,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>>> (ApplicationSubmissionRequest request, HttpContext ctx, IMessageBus messageBus) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
+          CancellationToken cancellationToken = ctx.RequestAborted;
           bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid)
           {
             return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
@@ -51,7 +53,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           }
 
           var cmd = new SubmitApplicationCommand(request.Id);
-          var result = await messageBus.InvokeAsync<ApplicationSubmissionResult>(cmd);
+          var result = await messageBus.InvokeAsync<ApplicationSubmissionResult>(cmd, cancellationToken);
           if (!result.IsSuccess)
           {
             var problemDetails = new ProblemDetails
@@ -63,6 +65,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 
             return TypedResults.BadRequest(problemDetails);
           }
+
           return TypedResults.Ok(new SubmitApplicationResponse(result.ApplicationId!));
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")

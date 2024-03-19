@@ -17,8 +17,9 @@ public static class ApplicationHandlers
   /// <param name="cmd">The command</param>
   /// <param name="applicationRepository">DI service</param>
   /// <param name="mapper">DI service</param>
+  /// <param name="cancellationToken">cancellation token</param>
   /// <returns></returns>
-  public static async Task<string> Handle(SaveDraftApplicationCommand cmd, IApplicationRepository applicationRepository, IMapper mapper)
+  public static async Task<string> Handle(SaveDraftApplicationCommand cmd, IApplicationRepository applicationRepository, IMapper mapper, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(mapper);
@@ -42,8 +43,8 @@ public static class ApplicationHandlers
         throw new InvalidOperationException($"User already has a draft application with id '{existingDraftApplication.Id}'");
       }
     }
-
-    var applicationId = await applicationRepository.SaveDraft(mapper.Map<Resources.Documents.Applications.Application>(cmd.Application)!);
+    cancellationToken.ThrowIfCancellationRequested();
+    var applicationId = await applicationRepository.SaveDraft(mapper.Map<Resources.Documents.Applications.Application>(cmd.Application)!, cancellationToken);
     return applicationId;
   }
 
@@ -54,8 +55,9 @@ public static class ApplicationHandlers
   /// <param name="applicationRepository">DI service</param>
   /// <param name="validationEngine">validationEngine</param>
   /// <param name="mapper">DI service</param>
+  /// <param name="cancellationToken">cancellation token</param>
   /// <returns></returns>
-  public static async Task<ApplicationSubmissionResult> Handle(SubmitApplicationCommand cmd, IApplicationSubmissionValidationEngine validationEngine, IApplicationRepository applicationRepository, IMapper mapper)
+  public static async Task<ApplicationSubmissionResult> Handle(SubmitApplicationCommand cmd, IApplicationSubmissionValidationEngine validationEngine, IApplicationRepository applicationRepository, IMapper mapper, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(mapper);
@@ -79,7 +81,8 @@ public static class ApplicationHandlers
     {
       return new ApplicationSubmissionResult() { ValidationErrors = validationErrors.ValidationErrors };
     }
-    var applicationId = await applicationRepository.Submit(draftApplication.Id!);
+    cancellationToken.ThrowIfCancellationRequested();
+    var applicationId = await applicationRepository.Submit(draftApplication.Id!, cancellationToken);
     return new ApplicationSubmissionResult() { ApplicationId = applicationId };
   }
 
@@ -102,7 +105,6 @@ public static class ApplicationHandlers
       ByApplicantId = query.ByApplicantId,
       ByStatus = query.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
     });
-
     return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
   }
 }
