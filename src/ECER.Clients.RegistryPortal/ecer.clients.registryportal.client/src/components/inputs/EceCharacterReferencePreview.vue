@@ -74,10 +74,11 @@ export default defineComponent({
   computed: {
     characterReference(): Components.Schemas.CharacterReference {
       return {
-        firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.firstName.id],
-        lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.lastName.id],
-        emailAddress: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.email.id],
-        phoneNumber: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.phoneNumber.id],
+        firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName,
+        lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName,
+        emailAddress:
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress,
+        phoneNumber: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.phoneNumber,
       };
     },
   },

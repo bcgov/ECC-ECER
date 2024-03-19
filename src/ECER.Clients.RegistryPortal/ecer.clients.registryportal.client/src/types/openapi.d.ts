@@ -105,6 +105,7 @@ declare namespace Components {
       authority?: string | null;
       clientId?: string | null;
       scope?: string | null;
+      idp?: string | null;
     }
     export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
     export interface ProblemDetails {

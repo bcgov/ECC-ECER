@@ -158,7 +158,7 @@ export default defineComponent({
     async saveDraftAndAlertSuccess() {
       const draftApplicationResponse = await this.applicationStore.saveDraft();
       if (draftApplicationResponse?.applicationId) {
-        this.alertStore.setSuccessAlert("Draft application saved successfully");
+        this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
       }
     },
     async handleSaveAsDraft() {
@@ -186,7 +186,7 @@ export default defineComponent({
       });
 
       if (success) {
-        this.alertStore.setSuccessAlert("Profile saved successfully");
+        this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
         this.userStore.setUserInfo({
           firstName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalFirstName.id],
           lastName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalLastName.id],
@@ -194,8 +194,6 @@ export default defineComponent({
           phone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.primaryContactNumber.id],
           dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
         });
-      } else {
-        this.alertStore.setFailureAlert("Profile save failed");
       }
     },
   },

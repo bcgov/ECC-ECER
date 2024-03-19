@@ -111,12 +111,6 @@ export default defineComponent({
 
     return { certificationTypeStore };
   },
-  mounted() {
-    //if user does not have a selection, default to EceAssistant.
-    if (!this.certificationTypeStore.selection) {
-      this.certificationTypeStore.selection = "EceAssistant";
-    }
-  },
   computed: {
     selection: {
       get() {
@@ -141,6 +135,12 @@ export default defineComponent({
     errorState() {
       this.$emit("updatedValidation", this.errorState);
     },
+  },
+  mounted() {
+    //if user does not have a selection, default to EceAssistant.
+    if (!this.certificationTypeStore.selection) {
+      this.certificationTypeStore.selection = "EceAssistant";
+    }
   },
 });
 </script>

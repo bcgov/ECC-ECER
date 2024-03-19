@@ -40,7 +40,9 @@
           class="my-8"
         ></v-text-field>
         <v-text-field
-          v-model="hours"
+          v-model.number="hours"
+          :rules="[Rules.required()]"
+          type="number"
           label="Work Experience Hours"
           variant="outlined"
           color="primary"
@@ -173,7 +175,7 @@ export default defineComponent({
       lastName: "",
       email: "",
       phoneNumber: "",
-      hours: "",
+      hours: null as number | null | undefined,
       Rules,
     };
   },
@@ -183,14 +185,11 @@ export default defineComponent({
     },
     totalHours() {
       return Object.values(this.modelValue).reduce((acc, reference) => {
-        return acc + reference.hours!;
+        return acc + (reference.hours as number);
       }, 0);
     },
     count() {
       return Object.keys(this.modelValue).length;
-    },
-    fullName() {
-      return `${this.firstName} ${this.lastName}`;
     },
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
@@ -255,12 +254,12 @@ export default defineComponent({
       // Set the form fields to component data
       this.id = referenceData.reference.id ?? null;
       this.clientId = referenceData.referenceId.toString();
-      this.previousFullName = this.fullName ?? "";
+      this.previousFullName = `${referenceData.reference.firstName} ${referenceData.reference.lastName}`;
       this.firstName = referenceData.reference.firstName ?? "";
       this.lastName = referenceData.reference.lastName ?? "";
       this.email = referenceData.reference.emailAddress ?? "";
       this.phoneNumber = referenceData.reference.phoneNumber ?? "";
-      this.hours = referenceData.reference.hours?.toString() ?? "";
+      this.hours = referenceData.reference.hours ?? null;
       // Change mode to add
       this.mode = "add";
     },
@@ -280,11 +279,12 @@ export default defineComponent({
     },
     resetFormData() {
       this.id = null;
+      this.previousFullName = "";
       this.firstName = "";
       this.lastName = "";
       this.email = "";
       this.phoneNumber = "";
-      this.hours = "";
+      this.hours = null;
     },
   },
 });
