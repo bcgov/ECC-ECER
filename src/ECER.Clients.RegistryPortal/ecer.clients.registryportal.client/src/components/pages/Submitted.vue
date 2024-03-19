@@ -41,6 +41,6 @@ import PageContainer from "@/components/PageContainer.vue";
 export default defineComponent({
   name: "Submitted",
   components: { PageContainer },
-  props: {}
+  props: {},
 });
 </script>

@@ -68,11 +68,11 @@ public static class ApplicationHandlers
     });
 
     var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
-    var draftApplication = draftApplicationResults.Items.FirstOrDefault();
-    if (draftApplication == null)
+    if (!draftApplicationResults.Items.Any())
     {
       throw new InvalidOperationException("draft application does not exist");
     }
+    var draftApplication = draftApplicationResults.Items.First();
 
     var validationErrors = await validationEngine?.Validate(draftApplication)!;
     if (validationErrors.ValidationErrors.Any())

@@ -25,18 +25,10 @@ internal sealed class ApplicationSubmissionValidationEngine : IApplicationSubmis
     }
 
     // if the application contains the ECE Assistant certification type, the most recent education should be within 5 years
-    if (application.CertificationTypes.Any(ct => ct == CertificationType.EceAssistant))
+    if (application.CertificationTypes.Any(ct => ct == CertificationType.EceAssistant) && application.Transcripts.Any(t => t.EndDate.AddYears(5) <= DateTime.Today))
     {
-      var recentTranscript = application.Transcripts.FirstOrDefault();
-      if (recentTranscript != null)
-      {
-        var difference = DateTime.Today - recentTranscript.EndDate;
-        if (difference.TotalDays / 365 > 5)
-        {
-          // The end date is more than 5 years from today
-          validationErrors.Add("Education was completed more than 5 years ago");
-        }
-      }
+      // The end date is more than 5 years from today
+      validationErrors.Add("Education was completed more than 5 years ago");
     }
 
     // if the application contains SNE and ITE certification types, the application should contain the Five Years certification type

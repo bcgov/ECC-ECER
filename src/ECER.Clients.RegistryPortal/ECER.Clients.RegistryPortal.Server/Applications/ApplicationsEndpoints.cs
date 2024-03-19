@@ -4,6 +4,7 @@ using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Wolverine;
@@ -30,10 +31,13 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<string>>> (ApplicationSubmissionRequest request, HttpContext ctx, IMessageBus messageBus) =>
+    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>>> (ApplicationSubmissionRequest request, HttpContext ctx, IMessageBus messageBus) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
-          bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid) { return TypedResults.BadRequest("ApplicationId is not valid"); }
+          bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
+          }
           var query = new ApplicationsQuery
           {
             ById = request.Id,
@@ -43,14 +47,21 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           var results = await messageBus.InvokeAsync<ApplicationsQueryResults>(query);
           if (!results.Items.Any())
           {
-            return TypedResults.BadRequest("Application not found");
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "Application not found" });
           }
 
           var cmd = new SubmitApplicationCommand(request.Id);
           var result = await messageBus.InvokeAsync<ApplicationSubmissionResult>(cmd);
           if (!result.IsSuccess)
           {
-            return TypedResults.BadRequest($"Application submission failed: {string.Join(',', result.ValidationErrors!)}");
+            var problemDetails = new ProblemDetails
+            {
+              Status = StatusCodes.Status400BadRequest,
+              Title = "Application submission failed",
+              Extensions = { ["errors"] = result.ValidationErrors }
+            };
+
+            return TypedResults.BadRequest(problemDetails);
           }
           return TypedResults.Ok(new SubmitApplicationResponse(result.ApplicationId!));
         })
