@@ -84,7 +84,7 @@ export default defineComponent({
   methods: {
     async handleLogin(provider: string) {
       this.userStore.setAuthority("kc");
-      await this.oidcStore.login("kc", provider == "bceid" ? "BCEIDBOTH" : "BCSC");
+      await this.oidcStore.login("kc", provider == "bceid" ? "bceidbasic" : "bcsc");
     },
   },
 });
