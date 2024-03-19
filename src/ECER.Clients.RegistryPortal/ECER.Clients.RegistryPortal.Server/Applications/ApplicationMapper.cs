@@ -1,9 +1,15 @@
 ﻿using AutoMapper;
+using System.Text.Json;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
 public class ApplicationMapper : Profile
 {
+  private JsonSerializerOptions customJsonOptions = new JsonSerializerOptions 
+  {
+    WriteIndented = true
+  };
+
   public ApplicationMapper()
   {
     CreateMap<WorkExperienceReference, Managers.Registry.Contract.Applications.WorkExperienceReference>()
@@ -52,12 +58,13 @@ public class ApplicationMapper : Profile
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.Id), opts => opts.MapFrom(s => s.Id))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.RegistrantId), opts => opts.MapFrom((_, ctx) => ctx.Items["registrantId"]))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.Status), opts => opts.MapFrom(_ => Managers.Registry.Contract.Applications.ApplicationStatus.Draft))
-      .ForMember(d => d.Stage, opts => opts.MapFrom(s => s.Stage))
+      .ForMember(d => d.State, opts => opts.MapFrom(s => JsonSerializer.Serialize(s.State, customJsonOptions)))
       .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.SignedDate))
       .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.CharacterReferences))
       ;
 
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>()
+      .ForMember(d => d.State, opts => opts.MapFrom(s => JsonSerializer.Deserialize<DraftApplicationState>(s.State!, customJsonOptions)))
       ;
   }
 }

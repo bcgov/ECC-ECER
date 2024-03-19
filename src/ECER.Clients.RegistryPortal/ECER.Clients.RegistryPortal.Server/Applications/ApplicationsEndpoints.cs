@@ -6,6 +6,7 @@ using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
@@ -89,12 +90,31 @@ public record DraftApplication
 {
   public string? Id { get; set; }
   public DateTime? SignedDate { get; set; }
+  
+  public DraftApplicationState? State { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
-  public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
 }
+
+
+public record DraftApplicationState
+{
+  public PortalStage CurrentStage { get; set; }
+  
+  public IEnumerable<DraftApplicationStep> Steps { get; set; } = Array.Empty<DraftApplicationStep>();
+}
+
+public record DraftApplicationStep
+{
+  [Required]
+  public PortalStage Name { get; set; }
+
+  [Required]
+  public PortalStepState Status { get; set; }
+}
+
 
 public record Application
 {
@@ -105,8 +125,8 @@ public record Application
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
+  public string? State { get; set; }
   public ApplicationStatus Status { get; set; }
-  public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
 }
 
@@ -164,6 +184,14 @@ public enum PortalStage
   Review,
 }
 
+public enum PortalStepState
+{
+  NotStarted,
+  InProgress,
+  Invalid,
+  Complete
+}
+
 public enum ApplicationStatus
 {
   Draft,
@@ -184,3 +212,5 @@ public record CharacterReference([Required] string? FirstName, [Required] string
 {
   public string? Id { get; set; }
 }
+
+

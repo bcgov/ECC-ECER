@@ -52,7 +52,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     applicationById.Transcripts.ShouldNotBeEmpty();
     applicationById.CharacterReferences.ShouldNotBeEmpty();
     applicationById.WorkExperienceReferences.ShouldNotBeEmpty();
-    applicationById.Stage.ShouldBe(PortalStage.CertificationType);
+    applicationById.State.ShouldNotBeNull();
   }
 
   [Fact]
@@ -106,7 +106,17 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript()))
         .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference()))
         .RuleFor(f => f.WorkExperienceReferences, f => f.Make(f.Random.Number(2, 5), () => CreateWorkExperienceReference()))
-
+        .RuleFor(f => f.State, f => new DraftApplicationState
+        {
+          CurrentStage = f.PickRandom<PortalStage>(),
+          Steps = Enumerable.Range(1, f.Random.Number(1, 5)) // Generates between 1 to 5 steps
+            .Select(_ => new DraftApplicationStep
+            {
+              Name = f.PickRandom<PortalStage>(),
+              Status = f.PickRandom<PortalStepState>()
+            })
+            .ToArray()
+        })
         .Generate();
 
     application.Id = this.Fixture.applicationId;
