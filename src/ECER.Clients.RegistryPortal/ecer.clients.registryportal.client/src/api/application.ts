@@ -24,7 +24,7 @@ const createOrUpdateDraftApplication = async (
   return apiResultHandler.execute<Components.Schemas.DraftApplicationResponse | null | undefined>(client.draftapplication_put(pathParameters, body));
 };
 
-const submitApplication = async (applicationId: string): Promise<ApiResponse<Components.Schemas.SubmitApplicationResponse | null | undefined>> => {
+const submitDraftApplication = async (applicationId: string): Promise<ApiResponse<Components.Schemas.SubmitApplicationResponse | null | undefined>> => {
   const client = await getClient();
   const body: Components.Schemas.ApplicationSubmissionRequest = {
     id: applicationId,
@@ -33,4 +33,4 @@ const submitApplication = async (applicationId: string): Promise<ApiResponse<Com
   return apiResultHandler.execute<Components.Schemas.SubmitApplicationResponse | null | undefined>(client.application_post(null, body));
 };
 
-export { createOrUpdateDraftApplication, getApplications, submitApplication };
+export { createOrUpdateDraftApplication, getApplications, submitDraftApplication };
