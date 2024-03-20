@@ -31,29 +31,21 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>>> (ApplicationSubmissionRequest request, HttpContext ctx, CancellationToken ct, IMessageBus messageBus) =>
+    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>, NotFound>> (ApplicationSubmissionRequest request, HttpContext ctx, CancellationToken ct, IMessageBus messageBus) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
-
           bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid)
           {
             return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
           }
-          var query = new ApplicationsQuery
-          {
-            ById = request.Id,
-            ByApplicantId = userId,
-            ByStatus = new List<Managers.Registry.Contract.Applications.ApplicationStatus>() { Managers.Registry.Contract.Applications.ApplicationStatus.Draft }
-          };
-          var results = await messageBus.InvokeAsync<ApplicationsQueryResults>(query);
-          if (!results.Items.Any())
-          {
-            return TypedResults.BadRequest(new ProblemDetails() { Title = "Application not found" });
-          }
 
-          var cmd = new SubmitApplicationCommand(request.Id);
+          var cmd = new SubmitApplicationCommand(request.Id, userId!);
           var result = await messageBus.InvokeAsync<ApplicationSubmissionResult>(cmd, ct);
-          if (!result.IsSuccess)
+          if (!result.IsSuccess && result.Error == SubmissionError.DraftApplicationNotFound)
+          {
+            return TypedResults.NotFound();
+          }
+          if (!result.IsSuccess && result.Error == SubmissionError.DraftApplicationValidationFailed)
           {
             var problemDetails = new ProblemDetails
             {
@@ -61,10 +53,8 @@ public class ApplicationsEndpoints : IRegisterEndpoints
               Title = "Application submission failed",
               Extensions = { ["errors"] = result.ValidationErrors }
             };
-
             return TypedResults.BadRequest(problemDetails);
           }
-
           return TypedResults.Ok(new SubmitApplicationResponse(result.ApplicationId!));
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")

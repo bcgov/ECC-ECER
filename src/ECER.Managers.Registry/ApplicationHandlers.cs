@@ -65,20 +65,21 @@ public static class ApplicationHandlers
     var applications = await applicationRepository.Query(new ApplicationQuery
     {
       ById = cmd.applicationId,
+      ByApplicantId = cmd.userId,
       ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
     });
 
     var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
     if (!draftApplicationResults.Items.Any())
     {
-      throw new InvalidOperationException("draft application does not exist");
+      return new ApplicationSubmissionResult() { ApplicationId = cmd.applicationId, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
     }
     var draftApplication = draftApplicationResults.Items.First();
 
     var validationErrors = await validationEngine?.Validate(draftApplication)!;
     if (validationErrors.ValidationErrors.Any())
     {
-      return new ApplicationSubmissionResult() { ValidationErrors = validationErrors.ValidationErrors };
+      return new ApplicationSubmissionResult() { ApplicationId = cmd.applicationId, Error = SubmissionError.DraftApplicationValidationFailed, ValidationErrors = validationErrors.ValidationErrors };
     }
     var applicationId = await applicationRepository.Submit(draftApplication.Id!, cancellationToken);
     return new ApplicationSubmissionResult() { ApplicationId = applicationId };

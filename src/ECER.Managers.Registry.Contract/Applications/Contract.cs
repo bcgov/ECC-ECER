@@ -9,7 +9,8 @@ public record SaveDraftApplicationCommand(Application Application);
 /// Invokes application submission use case
 /// </summary>
 /// <param name="applicationId"></param>
-public record SubmitApplicationCommand(string applicationId);
+/// <param name="userId"></param>
+public record SubmitApplicationCommand(string applicationId, string userId);
 
 /// <summary>
 /// Invokes application query use case
@@ -33,6 +34,7 @@ public record ApplicationsQueryResults(IEnumerable<Application> Items);
 public record ApplicationSubmissionResult()
 {
   public string? ApplicationId { get; set; }
+  public SubmissionError? Error { get; set; }
   public IEnumerable<string>? ValidationErrors { get; set; }
   public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
 }
@@ -85,6 +87,12 @@ public enum CertificationType
   FiveYears,
   Ite,
   Sne
+}
+
+public enum SubmissionError
+{
+  DraftApplicationNotFound,
+  DraftApplicationValidationFailed
 }
 
 public enum ApplicationStatus
