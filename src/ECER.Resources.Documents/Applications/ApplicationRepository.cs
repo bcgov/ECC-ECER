@@ -71,7 +71,6 @@ internal sealed class ApplicationRepository : IApplicationRepository
     _ = UpdateApplicationWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     _ = UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
 
-    cancellationToken.ThrowIfCancellationRequested();
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
   }
@@ -85,7 +84,6 @@ internal sealed class ApplicationRepository : IApplicationRepository
     application.StatusCode = ecer_Application_StatusCode.Submitted;
     context.UpdateObject(application);
 
-    cancellationToken.ThrowIfCancellationRequested();
     context.SaveChanges();
     return applicationId;
   }

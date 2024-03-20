@@ -43,7 +43,6 @@ public static class ApplicationHandlers
         throw new InvalidOperationException($"User already has a draft application with id '{existingDraftApplication.Id}'");
       }
     }
-    cancellationToken.ThrowIfCancellationRequested();
     var applicationId = await applicationRepository.SaveDraft(mapper.Map<Resources.Documents.Applications.Application>(cmd.Application)!, cancellationToken);
     return applicationId;
   }
@@ -81,7 +80,6 @@ public static class ApplicationHandlers
     {
       return new ApplicationSubmissionResult() { ValidationErrors = validationErrors.ValidationErrors };
     }
-    cancellationToken.ThrowIfCancellationRequested();
     var applicationId = await applicationRepository.Submit(draftApplication.Id!, cancellationToken);
     return new ApplicationSubmissionResult() { ApplicationId = applicationId };
   }
