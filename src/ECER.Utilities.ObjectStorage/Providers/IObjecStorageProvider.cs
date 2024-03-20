@@ -15,4 +15,4 @@ public interface IObjecStorageProvider
 
 public record Descriptor();
 
-public record FileObject(string FileName, string ContentType, Stream Content);
+public record FileObject(string FileName, string ContentType, Stream Content, IEnumerable<KeyValuePair<string, string>>? Tags);

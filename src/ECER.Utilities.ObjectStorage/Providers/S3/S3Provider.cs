@@ -15,6 +15,7 @@ internal class S3Provider(IAmazonS3 s3Client) : IObjecStorageProvider
       BucketName = s3destination.BucketName,
       ContentType = obj.ContentType,
       InputStream = obj.Content,
+      TagSet = obj.Tags?.Select(t => new Tag { Key = t.Key, Value = t.Value }).ToList()
     };
     request.Metadata.Add("filename", obj.FileName);
 
@@ -33,10 +34,13 @@ internal class S3Provider(IAmazonS3 s3Client) : IObjecStorageProvider
     };
     try
     {
-      var response = await s3Client.GetObjectAsync(request, ct);
-      response.EnsureSuccess();
+      var objectResponse = await s3Client.GetObjectAsync(request, ct);
+      objectResponse.EnsureSuccess();
 
-      return new FileObject(response.Metadata["filename"], response.Headers.ContentType, response.ResponseStream);
+      var tagResponse = await s3Client.GetObjectTaggingAsync(new GetObjectTaggingRequest { BucketName = s3source.BucketName, Key = s3source.Key }, ct);
+      tagResponse.EnsureSuccess();
+
+      return new FileObject(objectResponse.Metadata["filename"], objectResponse.Headers.ContentType, objectResponse.ResponseStream, tagResponse.Tagging.ToDictionary(t => t.Key, t => t.Value));
     }
     catch (AmazonS3Exception e) when (e.Message.Equals("The specified key does not exist."))
     {

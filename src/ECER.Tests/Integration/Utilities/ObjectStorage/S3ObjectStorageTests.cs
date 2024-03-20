@@ -24,7 +24,7 @@ public class S3ObjectStorageTests : IAsyncLifetime
   public async Task CanStoreObject(int documentSize)
   {
     var file = await faker.GenerateTestFile(documentSize);
-    await Should.NotThrowAsync(async () => await storageProvider.StoreAsync(new S3Descriptor(bucket, file.FileName, "test"), new FileObject(file.FileName, file.ContentType, file.Content), CancellationToken.None));
+    await Should.NotThrowAsync(async () => await storageProvider.StoreAsync(new S3Descriptor(bucket, file.FileName, "test"), new FileObject(file.FileName, file.ContentType, file.Content, null), CancellationToken.None));
   }
 
   [Fact]
@@ -33,7 +33,7 @@ public class S3ObjectStorageTests : IAsyncLifetime
     var file = await faker.GenerateTestFile(1000);
     var content = await file.Content.CloneAsync();
     var descriptor = new S3Descriptor(bucket, file.FileName, "test");
-    await storageProvider.StoreAsync(descriptor, new FileObject(file.FileName, file.ContentType, file.Content), CancellationToken.None);
+    await storageProvider.StoreAsync(descriptor, new FileObject(file.FileName, file.ContentType, file.Content, null), CancellationToken.None);
     var storedFile = (await storageProvider.GetAsync(descriptor, CancellationToken.None)).ShouldNotBeNull();
     storedFile.FileName.ShouldBe(file.FileName);
     storedFile.ContentType.ShouldBe(file.ContentType);
@@ -47,7 +47,7 @@ public class S3ObjectStorageTests : IAsyncLifetime
   {
     var file = await faker.GenerateTestFile(1000);
     var descriptor = new S3Descriptor(bucket, file.FileName, "test");
-    await storageProvider.StoreAsync(descriptor, new FileObject(file.FileName, file.ContentType, file.Content), CancellationToken.None);
+    await storageProvider.StoreAsync(descriptor, new FileObject(file.FileName, file.ContentType, file.Content, null), CancellationToken.None);
     await Should.NotThrowAsync(async () => await storageProvider.DeleteAsync(descriptor, CancellationToken.None));
     (await storageProvider.GetAsync(descriptor, CancellationToken.None)).ShouldBeNull();
   }
@@ -59,7 +59,7 @@ public class S3ObjectStorageTests : IAsyncLifetime
     var originalContent = await file.Content.CloneAsync();
     var fromDescriptor = new S3Descriptor(bucket, file.FileName, "test/source");
     var toDescriptor = new S3Descriptor(bucket, file.FileName, "test/destination");
-    await storageProvider.StoreAsync(fromDescriptor, new FileObject(file.FileName, file.ContentType, file.Content), CancellationToken.None);
+    await storageProvider.StoreAsync(fromDescriptor, new FileObject(file.FileName, file.ContentType, file.Content, null), CancellationToken.None);
 
     (await storageProvider.GetAsync(toDescriptor, CancellationToken.None)).ShouldBeNull();
 
@@ -79,7 +79,7 @@ public class S3ObjectStorageTests : IAsyncLifetime
     var originalContent = await file.Content.CloneAsync();
     var fromDescriptor = new S3Descriptor(bucket, file.FileName, "test/source");
     var toDescriptor = new S3Descriptor(bucket, file.FileName, "test/destination");
-    await storageProvider.StoreAsync(fromDescriptor, new FileObject(file.FileName, file.ContentType, file.Content), CancellationToken.None);
+    await storageProvider.StoreAsync(fromDescriptor, new FileObject(file.FileName, file.ContentType, file.Content, null), CancellationToken.None);
 
     (await storageProvider.GetAsync(toDescriptor, CancellationToken.None)).ShouldBeNull();
 

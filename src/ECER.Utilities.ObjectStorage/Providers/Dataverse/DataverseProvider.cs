@@ -15,7 +15,7 @@ internal class DataverseProvider(IOrganizationServiceAsync organizationService) 
     var src = source.DownCastOrThrow<Descriptor, DataverseDescriptor>();
     var file = await organizationService.DownloadFileAsync(src.Entity, src.PropertyName, ct);
 
-    return new FileObject(file.FileName, file.MimeType, new MemoryStream(file.Content.ToArray()));
+    return new FileObject(file.FileName, file.MimeType, new MemoryStream(file.Content.ToArray()), null);
   }
 
   public Task MoveAsync(Descriptor source, Descriptor destination, CancellationToken ct) => throw new NotImplementedException();

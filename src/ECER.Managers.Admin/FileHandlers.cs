@@ -17,7 +17,11 @@ public static class FileHandlers
     var bucket = GetBucketName(configuration);
     await Parallel.ForEachAsync(cmd.Items, ct, async (file, ct) =>
     {
-      await objectStorageProvider.StoreAsync(new S3Descriptor(bucket, file.FileLocation.Id, file.FileLocation.Folder), new FileObject(file.FileName, file.ContentType, file.Content), ct);
+      var tags = new Dictionary<string, string>(file.FileProperties.TagsList ?? Array.Empty<KeyValuePair<string, string>>())
+      {
+        { "classification", file.FileProperties.Classification }
+      };
+      await objectStorageProvider.StoreAsync(new S3Descriptor(bucket, file.FileLocation.Id, file.FileLocation.Folder), new FileObject(file.FileName, file.ContentType, file.Content, tags), ct);
     });
   }
 
@@ -32,8 +36,14 @@ public static class FileHandlers
     await Parallel.ForEachAsync(query.FileLocations, ct, async (fileLocation, ct) =>
     {
       var file = await objectStorageProvider.GetAsync(new S3Descriptor(bucket, fileLocation.Id, fileLocation.Folder), ct);
+      var classification = file?.Tags?.SingleOrDefault(t => t.Key == "classification");
+      var fileProperties = new FileProperties
+      {
+        Classification = classification?.Value ?? string.Empty,
+        TagsList = file?.Tags?.Where(t => t.Key != "classification")
+      };
 
-      if (file != null) files.Add(new FileData(fileLocation, file.FileName, file.ContentType, file.Content));
+      if (file != null) files.Add(new FileData(fileLocation, fileProperties, file.FileName, file.ContentType, file.Content));
     });
 
     return new FIleQueryResults(files.ToList());

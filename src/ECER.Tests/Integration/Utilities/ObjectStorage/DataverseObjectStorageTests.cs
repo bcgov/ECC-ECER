@@ -28,7 +28,7 @@ public class DataverseObjectStorageTests : IAsyncLifetime
   {
     var file = await faker.GenerateTestFile(documentSize);
     var entity = await CreateObjectEntity();
-    await Should.NotThrowAsync(async () => await storageProvider.StoreAsync(new DataverseDescriptor(entity, Annotation.Fields.DocumentBody), new FileObject(file.FileName, file.ContentType, file.Content), CancellationToken.None));
+    await Should.NotThrowAsync(async () => await storageProvider.StoreAsync(new DataverseDescriptor(entity, Annotation.Fields.DocumentBody), new FileObject(file.FileName, file.ContentType, file.Content, null), CancellationToken.None));
   }
 
   [Fact(Skip = "not ready")]
@@ -38,7 +38,7 @@ public class DataverseObjectStorageTests : IAsyncLifetime
     var content = await file.Content.CloneAsync();
     var entity = await CreateObjectEntity();
     var descriptor = new DataverseDescriptor(entity);
-    await storageProvider.StoreAsync(descriptor, new FileObject(file.FileName, file.ContentType, file.Content), CancellationToken.None);
+    await storageProvider.StoreAsync(descriptor, new FileObject(file.FileName, file.ContentType, file.Content, null), CancellationToken.None);
     var storedFile = (await storageProvider.GetAsync(descriptor, CancellationToken.None)).ShouldNotBeNull();
     storedFile.FileName.ShouldBe(file.FileName);
     storedFile.ContentType.ShouldBe(file.ContentType);
