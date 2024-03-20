@@ -4,6 +4,7 @@ using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Wolverine;
@@ -14,7 +15,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (string? id, SaveDraftApplicationRequest request, HttpContext ctx, IMessageBus messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (string? id, SaveDraftApplicationRequest request, HttpContext ctx, CancellationToken ct, IMessageBus messageBus, IMapper mapper) =>
         {
           bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
           bool ApplicationIdIsNotGuid = !Guid.TryParse(request.DraftApplication.Id, out _); if (ApplicationIdIsNotGuid && request.DraftApplication.Id != null) { request.DraftApplication.Id = null; }
@@ -22,20 +23,39 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           if (request.DraftApplication.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
           var userContext = ctx.User.GetUserContext();
           var application = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
-          var applicationId = await messageBus.InvokeAsync<string>(new SaveDraftApplicationCommand(application));
 
+          var applicationId = await messageBus.InvokeAsync<string>(new SaveDraftApplicationCommand(application), ct);
           return TypedResults.Ok(new DraftApplicationResponse(applicationId));
         })
         .WithOpenApi("Save a draft application for the current user", string.Empty, "draftapplication_put")
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications", async (ApplicationSubmissionRequest request, IMessageBus messageBus) =>
+    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>, NotFound>> (ApplicationSubmissionRequest request, HttpContext ctx, CancellationToken ct, IMessageBus messageBus) =>
         {
-          var cmd = new SubmitApplicationCommand(request.Id);
-          await messageBus.InvokeAsync<string>(cmd);
+          var userId = ctx.User.GetUserContext()?.UserId;
+          bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
+          }
 
-          return TypedResults.Ok();
+          var cmd = new SubmitApplicationCommand(request.Id, userId!);
+          var result = await messageBus.InvokeAsync<ApplicationSubmissionResult>(cmd, ct);
+          if (!result.IsSuccess && result.Error == SubmissionError.DraftApplicationNotFound)
+          {
+            return TypedResults.NotFound();
+          }
+          if (!result.IsSuccess && result.Error == SubmissionError.DraftApplicationValidationFailed)
+          {
+            var problemDetails = new ProblemDetails
+            {
+              Status = StatusCodes.Status400BadRequest,
+              Title = "Application submission failed",
+              Extensions = { ["errors"] = result.ValidationErrors }
+            };
+            return TypedResults.BadRequest(problemDetails);
+          }
+          return TypedResults.Ok(new SubmitApplicationResponse(result.ApplicationId!));
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")
         .RequireAuthorization()
@@ -78,6 +98,8 @@ public record ApplicationSubmissionRequest(string Id);
 /// </summary>
 /// <param name="ApplicationId">The application id</param>
 public record DraftApplicationResponse(string ApplicationId);
+
+public record SubmitApplicationResponse(string ApplicationId);
 
 /// <summary>
 /// Application query response
