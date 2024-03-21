@@ -145,8 +145,6 @@ public record DraftApplication
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
-  public ApplicationStatus Status { get; set; }
-
 }
 
 public record Application
