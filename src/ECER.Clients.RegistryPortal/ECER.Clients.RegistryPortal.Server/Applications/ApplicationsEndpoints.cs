@@ -111,12 +111,6 @@ public record SaveDraftApplicationRequest(DraftApplication DraftApplication);
 public record ApplicationSubmissionRequest(string Id);
 
 /// <summary>
-/// delete draft application request
-/// </summary>
-/// <param name="Id">The application id</param>
-public record DeleteDraftApplicationRequest(string Id);
-
-/// <summary>
 /// Save draft application response
 /// </summary>
 /// <param name="Id">The application id</param>
