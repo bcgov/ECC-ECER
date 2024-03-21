@@ -1,9 +1,15 @@
 <template>
   <WizardHeader class="mb-6" />
-  <v-stepper v-model="wizardStore.step" min-height="100dvh" color="primary" :alt-labels="true" :mobile="$vuetify.display.mobile">
+  <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :mobile="$vuetify.display.mobile">
     <v-stepper-header>
       <template v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage">
-        <v-stepper-item :step="wizardStore.step" :value="index + 1" :title="step.title"></v-stepper-item>
+        <v-stepper-item
+          color="primary"
+          :step="wizardStore.step"
+          :value="index + 1"
+          :title="step.title"
+          :rules="wizardStore.step <= index + 1 ? [] : [() => wizardStore.validationState[step.stage]]"
+        ></v-stepper-item>
         <v-divider v-if="index !== Object.values(wizard.steps).length - 1" :key="`divider-${index}`" />
       </template>
     </v-stepper-header>
