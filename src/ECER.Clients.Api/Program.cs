@@ -87,6 +87,7 @@ public class Program
         });
 
       builder.Services.AddDistributedMemoryCache();
+      builder.ConfigureDataProtection();
       builder.Services.AddHealthChecks();
       builder.Services.AddResponseCompression(opts => opts.EnableForHttps = true);
       builder.Services.AddResponseCaching();

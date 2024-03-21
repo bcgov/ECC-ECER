@@ -1,8 +1,5 @@
-﻿using System.Globalization;
-using ECER.Utilities.DataverseSdk.Model;
-using ECER.Utilities.Security;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Xrm.Sdk.Client;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration;
@@ -10,22 +7,27 @@ namespace ECER.Tests.Integration;
 [CollectionDefinition("ApiWebAppScenario")]
 public class ApiWebAppScenarioCollectionFixture : ICollectionFixture<ApiWebAppFixture>;
 
-[Collection("RegistryPortalWebAppScenario")]
+[Collection("ApiWebAppScenario")]
 public abstract class ApiWebAppScenarioBase : WebAppScenarioBase
 {
-  protected new RegistryPortalWebAppFixture Fixture => (RegistryPortalWebAppFixture)base.Fixture;
+  protected new ApiWebAppFixture Fixture => (ApiWebAppFixture)base.Fixture;
 
-  protected ApiWebAppScenarioBase(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
+  protected ApiWebAppScenarioBase(ITestOutputHelper output, ApiWebAppFixture fixture) : base(output, fixture)
   {
   }
 }
 
 public class ApiWebAppFixture : WebAppFixtureBase
 {
+  protected override void AddAuthorizationOptions(AuthorizationOptions opts)
+  {
+    ArgumentNullException.ThrowIfNull(opts);
+    opts.AddPolicy("api_user", new AuthorizationPolicyBuilder(opts.GetPolicy("api_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+    opts.DefaultPolicy = opts.GetPolicy("api_user")!;
+  }
 
   public override async Task InitializeAsync()
   {
     Host = await CreateHost<Clients.Api.Program>();
   }
-
 }

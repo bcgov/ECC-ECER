@@ -28,7 +28,7 @@ public class FileEndpoints : IRegisterEndpoints
         ctx.Response.Headers.Append("file-classification", file.FileProperties.Classification);
         return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
       })
-      //.RequireAuthorization("api")
+      .RequireAuthorization()
       .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok, BadRequest<string>>> (
@@ -49,7 +49,7 @@ public class FileEndpoints : IRegisterEndpoints
       })
       .WithOpenApi("Uploads a new file", string.Empty, "files_post")
       .DisableAntiforgery()
-      //.RequireAuthorization("api")
+      .RequireAuthorization()
       .WithParameterValidation();
   }
 }

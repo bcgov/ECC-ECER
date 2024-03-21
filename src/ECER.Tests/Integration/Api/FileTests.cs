@@ -13,7 +13,7 @@ public class FileTests : ApiWebAppScenarioBase
 {
   private readonly Faker faker = new Faker("en_CA");
 
-  public FileTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
+  public FileTests(ITestOutputHelper output, ApiWebAppFixture fixture) : base(output, fixture)
   {
   }
 

@@ -16,7 +16,7 @@ public static class ObservabilityExtensions
 
     builder.Host.UseSerilog((context, services, configuration) => configuration
                 .ReadFrom.Configuration(context.Configuration)
-                .ReadFrom.Services(services));
+                .ReadFrom.Services(services), preserveStaticLogger: true);
 
     return logger;
   }
