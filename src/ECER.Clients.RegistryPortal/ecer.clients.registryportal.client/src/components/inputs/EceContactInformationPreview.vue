@@ -6,7 +6,7 @@
           <h3 class="font-black">Contact Information</h3>
         </v-col>
         <v-col align="end">
-          <v-btn v-bind="props" icon="mdi-pencil" color="primary" variant="plain" />
+          <v-btn @click="setWizard('ContactInformation')" v-bind="props" icon="mdi-pencil" color="primary" variant="plain" />
         </v-col>
       </v-row>
       <v-row>
@@ -103,7 +103,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import { useApplicationStore } from "@/store/application";
 import type { AddressesData } from "@/components/inputs/EceAddresses.vue";
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
@@ -122,10 +122,16 @@ export default defineComponent({
   },
   setup: () => {
     const wizardStore = useWizardStore();
-
+    const applicationStore = useApplicationStore();
     return {
-      wizardStore,
+      wizardStore,applicationStore,
     };
+  },
+  methods:{
+    setWizard(stage:string) {
+      this.wizardStore.setCurrentStep(stage);
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+    },
   },
   computed: {
     legalLastName() {

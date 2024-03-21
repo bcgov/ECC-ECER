@@ -6,7 +6,7 @@
           <h3 class="font-black">Character Reference</h3>
         </v-col>
         <v-col align="end">
-          <v-btn v-bind="props" icon="mdi-pencil" color="primary" variant="plain" />
+          <v-btn v-bind="props" @click="setWizard('CharacterReferences')" icon="mdi-pencil" color="primary" variant="plain" />
         </v-col>
       </v-row>
       <v-row>
@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import { useApplicationStore } from "@/store/application";
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
@@ -66,10 +66,16 @@ export default defineComponent({
   },
   setup: () => {
     const wizardStore = useWizardStore();
-
+    const applicationStore = useApplicationStore();
     return {
-      wizardStore,
+      wizardStore, applicationStore,
     };
+  },
+  methods:{
+    setWizard(stage:string) {
+      this.wizardStore.setCurrentStep(stage);
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+    },
   },
   computed: {
     characterReference(): Components.Schemas.CharacterReference {
