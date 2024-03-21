@@ -122,6 +122,9 @@ declare namespace Components {
     export interface SaveDraftApplicationRequest {
       draftApplication?: DraftApplication;
     }
+    export interface SubmitApplicationResponse {
+      applicationId?: string | null;
+    }
     export interface Transcript {
       id?: string | null;
       educationalInstitutionName: string;
@@ -182,7 +185,8 @@ declare namespace Paths {
   namespace ApplicationPost {
     export type RequestBody = /* Submit application request */ Components.Schemas.ApplicationSubmissionRequest;
     namespace Responses {
-      export interface $200 {}
+      export type $200 = Components.Schemas.SubmitApplicationResponse;
+      export type $400 = string;
     }
   }
   namespace ConfigurationGet {
