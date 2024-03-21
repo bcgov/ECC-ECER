@@ -25,10 +25,17 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Application testApplication = null!;
   private ecer_Communication testCommunication = null!;
 
+  private Contact authenticatedBcscUser2 = null!;
+  private ecer_Application testApplication2 = null!;
+
   public UserIdentity AuthenticatedBcscUserIdentity => authenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
   public string communicationId => testCommunication.Id.ToString();
   public string applicationId => testApplication.Id.ToString();
+
+  public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
+  public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
+  public string applicationId2 => testApplication2.Id.ToString();
 
   public override async Task InitializeAsync()
   {
@@ -42,7 +49,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   {
     await Task.CompletedTask;
 
-    authenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user");
+    authenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user1");
     testApplication = GetOrAddApplication(context, authenticatedBcscUser);
     testCommunication = GetOrAddCommunication(context, testApplication);
 
@@ -51,6 +58,16 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     //load dependent properties
     context.Attach(authenticatedBcscUser);
     context.LoadProperty(authenticatedBcscUser, Contact.Fields.ecer_contact_ecer_authentication_455);
+
+    //load user 2
+    authenticatedBcscUser2 = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user2");
+    testApplication2 = GetOrAddApplication(context, authenticatedBcscUser2);
+
+    context.SaveChanges();
+
+    //load dependent properties
+    context.Attach(authenticatedBcscUser2);
+    context.LoadProperty(authenticatedBcscUser2, Contact.Fields.ecer_contact_ecer_authentication_455);
   }
 
   private Contact GetOrAddApplicant(EcerContext context, string identityProvider, string userId)

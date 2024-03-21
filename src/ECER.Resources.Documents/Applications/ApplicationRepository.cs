@@ -18,7 +18,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
   {
     await Task.CompletedTask;
 
-    var applications = context.ecer_ApplicationSet;
+    var applications = context.ecer_ApplicationSet.Where(a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled);
 
     if (query.ByStatus != null && query.ByStatus.Any())
     {
@@ -191,5 +191,19 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.Attach(reference);
       context.UpdateObject(reference);
     }
+  }
+
+  public async Task<string> Cancel(string applicationId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var application = context.ecer_ApplicationSet.FirstOrDefault(
+      d => d.ecer_ApplicationId == Guid.Parse(applicationId)
+      );
+    if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
+    application.StatusCode = ecer_Application_StatusCode.Cancelled;
+    application.StateCode = ecer_application_statecode.Inactive;
+    context.UpdateObject(application);
+    context.SaveChanges();
+    return applicationId;
   }
 }
