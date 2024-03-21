@@ -8,9 +8,9 @@ public static class UserContextExtensions
   {
     if (principal == null) return null;
 
-    var identityProvider = principal.FindFirst("identity_provider")?.Value ?? string.Empty;
-    var identityId = principal.FindFirst("identity_id")?.Value ?? string.Empty;
-    var userId = principal.FindFirst("user_id")?.Value ?? string.Empty;
+    var identityProvider = principal.FindFirst(RegistryPortalClaims.IdenityProvider)?.Value ?? string.Empty;
+    var identityId = principal.FindFirst(RegistryPortalClaims.IdentityId)?.Value ?? string.Empty;
+    var userId = principal.FindFirst(RegistryPortalClaims.UserId)?.Value ?? string.Empty;
 
     return new UserContext(new UserIdentity(identityId, identityProvider), userId);
   }
@@ -19,3 +19,10 @@ public static class UserContextExtensions
 public record UserContext(UserIdentity Identity, string UserId);
 
 public record UserIdentity(string UserId, string IdentityProvider);
+
+public static class RegistryPortalClaims
+{
+  public const string UserId = "user_id";
+  public const string IdenityProvider = "identity_provider";
+  public const string IdentityId = "identity_id";
+}

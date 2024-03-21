@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { createOrUpdateDraftApplication, getApplications } from "@/api/application";
+import { createOrUpdateDraftApplication, getApplications, submitDraftApplication } from "@/api/application";
 import type { Components } from "@/types/openapi";
 
 import { useWizardStore } from "./wizard";
@@ -18,6 +18,8 @@ export const useApplicationStore = defineStore("application", {
       signedDate: null,
       stage: "CertificationType",
       transcripts: [] as Components.Schemas.Transcript[],
+      characterReferences: [] as Components.Schemas.CharacterReference[],
+      workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
     },
   }),
   persist: {
@@ -62,6 +64,21 @@ export const useApplicationStore = defineStore("application", {
 
       // Education step data
       this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
+
+      // Work References step data
+      this.draftApplication.workExperienceReferences = Object.values(
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.workReference.form.inputs.referenceList.id],
+      );
+
+      // Character References step data
+      if (
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName &&
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName &&
+        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress
+      ) {
+        this.draftApplication.characterReferences =
+          wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id];
+      }
     },
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       const { data: draftApplicationResponse } = await createOrUpdateDraftApplication(this.draftApplication);
@@ -70,7 +87,10 @@ export const useApplicationStore = defineStore("application", {
       }
       return draftApplicationResponse;
     },
-
+    async submitApplication(): Promise<Components.Schemas.SubmitApplicationResponse | null | undefined> {
+      const { data: submitApplicationResponse } = await submitDraftApplication(this.draftApplication.id!);
+      return submitApplicationResponse;
+    },
     async saveDraft(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       this.prepareDraftApplicationFromWizard();
       return await this.upsertDraftApplication();

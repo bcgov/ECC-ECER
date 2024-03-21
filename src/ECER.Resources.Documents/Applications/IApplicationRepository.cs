@@ -4,9 +4,9 @@ public interface IApplicationRepository
 {
   Task<IEnumerable<Application>> Query(ApplicationQuery query);
 
-  Task<string> SaveDraft(Application application);
+  Task<string> SaveDraft(Application application, CancellationToken cancellationToken);
 
-  Task<string> Submit(string applicationId);
+  Task<string> Submit(string applicationId, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery
@@ -24,12 +24,20 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public DateTime? SubmittedOn { get; set; }
   public PortalStage Stage { get; set; }
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
+  public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
+  public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate)
 {
   public string? CampusLocation { get; set; }
   public string? LanguageofInstruction { get; set; }
+}
+
+public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
+{
+  public string? Id { get; set; }
+  public string? PhoneNumber { get; set; }
 }
 
 public enum PortalStage
@@ -68,4 +76,9 @@ public enum ApplicationStatus
   PendingQueue,
   ReconsiderationDecision,
   AppealDecision
+}
+
+public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
+{
+  public string? Id { get; set; }
 }

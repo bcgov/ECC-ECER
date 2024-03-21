@@ -17,7 +17,28 @@
           </v-col>
           <v-col cols="auto">
             <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
-            <v-btn type="submit" :form="getFormId" rounded="lg" color="primary" :disabled="isDisabled" @click="handleSaveAndContinue">Save and Continue</v-btn>
+            <v-btn
+              v-if="wizardStore.currentStepStage !== `Review`"
+              type="submit"
+              :form="getFormId"
+              rounded="lg"
+              color="primary"
+              :disabled="isDisabled"
+              @click="handleSaveAndContinue"
+            >
+              Save and Continue
+            </v-btn>
+            <v-btn
+              v-if="wizardStore.currentStepStage === 'Review'"
+              type="submit"
+              :form="getFormId"
+              rounded="lg"
+              color="primary"
+              :disabled="isDisabled"
+              @click="handleSubmit"
+            >
+              Submit Application
+            </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -72,6 +93,12 @@ export default defineComponent({
     },
   },
   methods: {
+    async handleSubmit() {
+      const submitApplicationResponse = await this.applicationStore.submitApplication();
+      if (submitApplicationResponse?.applicationId) {
+        this.$router.push({ path: "/submitted" });
+      }
+    },
     handleSaveAndContinue() {
       if (!this.isFormValid) {
         this.alertStore.setFailureAlert("Please fill out all required fields");
@@ -122,10 +149,16 @@ export default defineComponent({
           break;
       }
     },
-    async saveDraftAndAlertSuccess() {
+    async submitApplication() {
       const draftApplicationResponse = await this.applicationStore.saveDraft();
       if (draftApplicationResponse?.applicationId) {
         this.alertStore.setSuccessAlert("Draft application saved successfully");
+      }
+    },
+    async saveDraftAndAlertSuccess() {
+      const draftApplicationResponse = await this.applicationStore.saveDraft();
+      if (draftApplicationResponse?.applicationId) {
+        this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
       }
     },
     async handleSaveAsDraft() {
@@ -153,7 +186,7 @@ export default defineComponent({
       });
 
       if (success) {
-        this.alertStore.setSuccessAlert("Profile saved successfully");
+        this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
         this.userStore.setUserInfo({
           firstName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalFirstName.id],
           lastName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalLastName.id],
@@ -161,8 +194,6 @@ export default defineComponent({
           phone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.primaryContactNumber.id],
           dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
         });
-      } else {
-        this.alertStore.setFailureAlert("Profile save failed");
       }
     },
   },

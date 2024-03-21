@@ -1,1 +1,1 @@
-export type Authority = "bceid" | "bcsc";
+export type Authority = "bceid" | "bcsc" | "kc";

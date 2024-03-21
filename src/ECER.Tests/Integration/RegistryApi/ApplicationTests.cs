@@ -33,7 +33,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl("/api/draftapplications");
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
 
@@ -49,66 +49,135 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<DraftApplication[]>();
     var applicationById = applicationsById.ShouldHaveSingleItem();
     applicationById.CertificationTypes.ShouldBeEquivalentTo(application.CertificationTypes);
+    applicationById.Transcripts.ShouldNotBeEmpty();
+    applicationById.CharacterReferences.ShouldNotBeEmpty();
+    applicationById.WorkExperienceReferences.ShouldNotBeEmpty();
     applicationById.Stage.ShouldBe(PortalStage.CertificationType);
-  }
-
-  [Fact]
-  public async Task SaveDraftApplication_NewDraft_Saved()
-  {
-    var application = CreateDraftApplication();
-    await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl("/api/draftapplications");
-      _.StatusCodeShouldBeOk();
-    });
   }
 
   [Fact]
   public async Task SaveDraftApplication_ExistingDraft_Saved()
   {
     var application = CreateDraftApplication();
-    var newAppResponse = await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl("/api/draftapplications");
-      _.StatusCodeShouldBeOk();
-    });
 
-    var applicationId = (await newAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
-
-    application.Id = applicationId;
     var existingAppResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{applicationId}");
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
     var existingApplicationId = (await existingAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
-    existingApplicationId.ShouldBe(applicationId);
+    existingApplicationId.ShouldBe(application.Id);
   }
 
   [Fact]
   public async Task SaveDraftApplication_WithInvalidTranscript_ReturnsBadRequest()
   {
-    var invalidApplication = CreateInvalidDraftApplication();
+    var invalidDraftApplication = CreateDraftApplication();
+    invalidDraftApplication.Transcripts = new List<Transcript> { CreateInvalidTranscript() };
+
     await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(new SaveDraftApplicationRequest(invalidApplication)).ToUrl("/api/draftapplications");
+      _.Put.Json(new SaveDraftApplicationRequest(invalidDraftApplication)).ToUrl($"/api/draftapplications/{invalidDraftApplication.Id}");
+      _.StatusCodeShouldBe(400);
+    });
+  }
+
+  [Fact]
+  public async Task SaveDraftApplication_WithInvalidCharacterReference_ReturnsBadRequest()
+  {
+    var invalidDraftApplication = CreateDraftApplication();
+    invalidDraftApplication.CharacterReferences = new List<CharacterReference> { CreateInvalidCharacterReference() };
+
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(invalidDraftApplication)).ToUrl($"/api/draftapplications/{invalidDraftApplication.Id}");
       _.StatusCodeShouldBe(400);
     });
   }
 
   private DraftApplication CreateDraftApplication()
   {
-    return new Faker<DraftApplication>("en_CA")
+    var application = new Faker<DraftApplication>("en_CA")
         .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
         .RuleFor(f => f.SignedDate, f => f.Date.Recent())
+        .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript()))
+        .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference()))
+        .RuleFor(f => f.WorkExperienceReferences, f => f.Make(f.Random.Number(2, 5), () => CreateWorkExperienceReference()))
         .Generate();
+
+    application.Id = this.Fixture.applicationId;
+    return application;
   }
 
-  private DraftApplication CreateInvalidDraftApplication()
+  [Fact]
+  public async Task SaveDraftApplication_ForUserWithExistingDraft_ReturnsBadRequest()
+  {
+    // Attempt to save a new draft application for the same user
+    var application = CreateDraftApplication();
+    application.Id = null;
+
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications");
+      _.StatusCodeShouldBe(500);
+    });
+  }
+
+  [Fact]
+  public async Task SubmitApplication_WithoutEducation_ReturnsBadRequest()
+  {
+    var submissionRequest = new ApplicationSubmissionRequest(this.Fixture.applicationId);
+
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUserId);
+      _.Post.Json(submissionRequest).ToUrl("/api/applications");
+      _.StatusCodeShouldBe(400);
+    });
+  }
+
+  private Transcript CreateTranscript()
+  {
+    var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };
+
+    return new Faker<Transcript>("en_CA")
+      .RuleFor(f => f.EducationalInstitutionName, f => f.Company.CompanyName())
+      .RuleFor(f => f.StudentName, f => f.Name.FullName())
+      .RuleFor(f => f.StudentNumber, f => f.Random.Number(10000000, 99999999).ToString())
+      .RuleFor(f => f.StartDate, f => f.Date.Past())
+      .RuleFor(f => f.EndDate, f => f.Date.Past())
+      .RuleFor(f => f.ProgramName, (f, u) => $"{f.Hacker.Adjective()} Program")
+      .RuleFor(f => f.LanguageofInstruction, f => f.PickRandom(languages))
+      .RuleFor(f => f.CampusLocation, f => f.Address.City())
+      .Generate();
+  }
+
+  private CharacterReference CreateCharacterReference()
+  {
+    var faker = new Faker("en_CA");
+
+    return new CharacterReference(
+      faker.Name.FirstName(), faker.Name.LastName(), faker.Internet.Email(), faker.Phone.PhoneNumber()
+    );
+  }
+
+  private WorkExperienceReference CreateWorkExperienceReference()
+  {
+    var faker = new Faker("en_CA");
+
+    return new WorkExperienceReference(
+       faker.Name.FirstName(), faker.Name.FirstName(), faker.Internet.Email(), faker.Random.Number(10, 150)
+    )
+    {
+      PhoneNumber = faker.Phone.PhoneNumber()
+    };
+  }
+
+  private Transcript CreateInvalidTranscript()
   {
     var faker = new Faker("en_CA");
     var invalidTranscript = new Transcript
@@ -121,10 +190,18 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       EndDate = faker.Date.Soon()
     };
 
-    return new Faker<DraftApplication>("en_CA")
-        .RuleFor(f => f.Transcripts, _ => new List<Transcript> { invalidTranscript })
-        .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
-        .RuleFor(f => f.SignedDate, f => f.Date.Recent())
-        .Generate();
+    return invalidTranscript;
+  }
+
+  private CharacterReference CreateInvalidCharacterReference()
+  {
+    var faker = new Faker("en_CA");
+    var invalidCharacterReference = new CharacterReference(
+      FirstName: faker.Name.FirstName(),
+      LastName: faker.Name.LastName(),
+      PhoneNumber: faker.Phone.PhoneNumber(),
+      EmailAddress: null);
+
+    return invalidCharacterReference;
   }
 }
