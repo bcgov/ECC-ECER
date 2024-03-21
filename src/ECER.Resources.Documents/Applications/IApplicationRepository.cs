@@ -4,9 +4,9 @@ public interface IApplicationRepository
 {
   Task<IEnumerable<Application>> Query(ApplicationQuery query);
 
-  Task<string> SaveDraft(Application application);
+  Task<string> SaveDraft(Application application, CancellationToken cancellationToken);
 
-  Task<string> Submit(string applicationId);
+  Task<string> Submit(string applicationId, CancellationToken cancellationToken);
 
   Task<string> Delete(string applicationId, CancellationToken ct);
 }
@@ -78,6 +78,7 @@ public enum ApplicationStatus
   PendingQueue,
   ReconsiderationDecision
 }
+
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
   public string? Id { get; set; }

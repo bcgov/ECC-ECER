@@ -36,7 +36,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
   }
 
-  public async Task<string> SaveDraft(Application application)
+  public async Task<string> SaveDraft(Application application, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
@@ -58,7 +58,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     }
     else
     {
-      var existingApplication = context.ecer_ApplicationSet.SingleOrDefault(c => c.ecer_ApplicationId == ecerApplication.ecer_ApplicationId);
+      var existingApplication = context.ecer_ApplicationSet.SingleOrDefault(c => c.ecer_ApplicationId == ecerApplication.ecer_ApplicationId && c.StatusCode == ecer_Application_StatusCode.Draft);
       if (existingApplication == null) throw new InvalidOperationException($"ecer_Application '{ecerApplication.ecer_ApplicationId}' not found");
 
       if (ecerApplication.ecer_DateSigned.HasValue && existingApplication.ecer_DateSigned.HasValue) ecerApplication.ecer_DateSigned = existingApplication.ecer_DateSigned;
@@ -70,8 +70,22 @@ internal sealed class ApplicationRepository : IApplicationRepository
     _ = UpdateApplicationTranscripts(ecerApplication, ecerTranscripts);
     _ = UpdateApplicationWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     _ = UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
+
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
+  }
+
+  public async Task<string> Submit(string applicationId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var application = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId));
+    if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
+
+    application.StatusCode = ecer_Application_StatusCode.Submitted;
+    context.UpdateObject(application);
+
+    context.SaveChanges();
+    return applicationId;
   }
 
   public async Task UpdateApplicationWorkExperienceReferences(ecer_Application application, List<ecer_WorkExperienceRef> updatedReferences)
@@ -178,8 +192,6 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.UpdateObject(reference);
     }
   }
-
-  public Task<string> Submit(string applicationId) => throw new NotImplementedException();
 
   public async Task<string> Delete(string applicationId, CancellationToken ct)
   {

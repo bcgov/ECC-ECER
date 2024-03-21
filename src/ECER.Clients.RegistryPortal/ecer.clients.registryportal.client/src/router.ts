@@ -89,7 +89,11 @@ const router = createRouter({
       component: () => import("./components/pages/TermsOfUse.vue"),
       meta: { requiresAuth: false },
     },
-
+    {
+      path: "/submitted",
+      component: () => import("./components/pages/Submitted.vue"),
+      meta: { requiresAuth: true },
+    },
     {
       path: "/accessibility",
       component: () => import("./components/pages/Accessibility.vue"),

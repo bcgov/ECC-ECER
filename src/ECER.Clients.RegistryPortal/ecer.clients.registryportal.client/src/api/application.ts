@@ -24,4 +24,13 @@ const createOrUpdateDraftApplication = async (
   return apiResultHandler.execute<Components.Schemas.DraftApplicationResponse | null | undefined>(client.draftapplication_put(pathParameters, body));
 };
 
-export { createOrUpdateDraftApplication, getApplications };
+const submitDraftApplication = async (applicationId: string): Promise<ApiResponse<Components.Schemas.SubmitApplicationResponse | null | undefined>> => {
+  const client = await getClient();
+  const body: Components.Schemas.ApplicationSubmissionRequest = {
+    id: applicationId,
+  };
+
+  return apiResultHandler.execute<Components.Schemas.SubmitApplicationResponse | null | undefined>(client.application_post(null, body));
+};
+
+export { createOrUpdateDraftApplication, getApplications, submitDraftApplication };

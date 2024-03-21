@@ -129,6 +129,19 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task SubmitApplication_WithoutEducation_ReturnsBadRequest()
+  {
+    var submissionRequest = new ApplicationSubmissionRequest(this.Fixture.applicationId);
+
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUserId);
+      _.Post.Json(submissionRequest).ToUrl("/api/applications");
+      _.StatusCodeShouldBe(400);
+    });
+  }
+
+  [Fact]
   public async Task DeleteApplication_ById()
   {
     var application = CreateDraftApplication();
@@ -179,7 +192,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       .RuleFor(f => f.ProgramName, (f, u) => $"{f.Hacker.Adjective()} Program")
       .RuleFor(f => f.LanguageofInstruction, f => f.PickRandom(languages))
       .RuleFor(f => f.CampusLocation, f => f.Address.City())
-
       .Generate();
   }
 
