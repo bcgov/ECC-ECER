@@ -321,6 +321,45 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     updatedApplication.WorkExperienceReferences.ShouldBeEmpty();
   }
 
+  [Fact]
+  public async Task SubmitApplication_QueryShouldReturnStatusSubmitted()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear })
+    {
+      WorkExperienceReferences = new List<WorkExperienceReference>
+      {
+        CreateWorkExperienceReference()
+      },
+      CharacterReferences = new List<CharacterReference>
+      {
+        CreateCharacterReference()
+      },
+      Transcripts = new List<Transcript>
+      {
+        CreateTranscript()
+      }
+    };
+    var savedApplicationId = await repository.SaveDraft(application, CancellationToken.None);
+
+    await repository.Submit(savedApplicationId, CancellationToken.None);
+
+    var submittedApplication = (await repository.Query(new ApplicationQuery { ById = savedApplicationId })).ShouldHaveSingleItem();
+    submittedApplication.Status.ShouldBe(ApplicationStatus.Submitted);
+  }
+
+  [Fact]
+  public async Task DeleteApplication_QueryShouldnotReturnResults()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId2;
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
+    var savedApplicationId = await repository.SaveDraft(application, CancellationToken.None);
+
+    await repository.Delete(savedApplicationId, CancellationToken.None);
+
+    (await repository.Query(new ApplicationQuery { ById = savedApplicationId })).ShouldBeEmpty();
+  }
+
   private CharacterReference CreateCharacterReference()
   {
     var faker = new Faker("en_CA");

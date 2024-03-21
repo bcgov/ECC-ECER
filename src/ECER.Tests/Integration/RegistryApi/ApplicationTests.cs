@@ -142,7 +142,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task DeleteApplication_ById()
+  public async Task DeleteApplication_ById_ShouldReturnId_QueryApplications_ShouldNotReturnCancelledApplications()
   {
     var application = CreateDraftApplication();
     application.Id = this.Fixture.applicationId2;

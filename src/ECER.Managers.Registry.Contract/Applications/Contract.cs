@@ -8,7 +8,7 @@ public record SaveDraftApplicationCommand(Application Application);
 /// <summary>
 /// Invokes draft application saving use case
 /// </summary>
-public record DeleteDraftApplicationCommand(string applicationId, string userId, CancellationToken ct);
+public record DeleteDraftApplicationCommand(string applicationId, string userId);
 
 /// <summary>
 /// Invokes application submission use case

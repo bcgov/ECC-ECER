@@ -8,7 +8,7 @@ public interface IApplicationRepository
 
   Task<string> Submit(string applicationId, CancellationToken cancellationToken);
 
-  Task<string> Delete(string applicationId, CancellationToken ct);
+  Task<string> Delete(string applicationId, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery

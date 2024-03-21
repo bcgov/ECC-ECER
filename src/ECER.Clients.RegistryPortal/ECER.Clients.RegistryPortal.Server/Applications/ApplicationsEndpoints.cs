@@ -88,7 +88,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
            return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
          }
 
-         var deletedApplicationId = await messageBus.InvokeAsync<string>(new DeleteDraftApplicationCommand(id, userId!, ct));
+         var deletedApplicationId = await messageBus.InvokeAsync<string>(new DeleteDraftApplicationCommand(id, userId!), ct);
 
          return TypedResults.Ok(new DeleteDraftApplicationResponse(deletedApplicationId));
        })
