@@ -18,7 +18,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
   {
     await Task.CompletedTask;
 
-    var applications = context.ecer_ApplicationSet;
+    var applications = context.ecer_ApplicationSet.Where(a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled);
 
     if (query.ByStatus != null && query.ByStatus.Any())
     {
@@ -143,7 +143,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.UpdateObject(transcript);
     }
   }
-  
+
   public async Task UpdateCharacterReferences(ecer_Application application, List<ecer_CharacterReference> updatedCharacterReferences)
   {
     await Task.CompletedTask;
@@ -165,7 +165,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.AddObject(reference);
       context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, reference);
     }
-    
+
     // 3. Update Existing Character References
     foreach (var reference in updatedCharacterReferences.Where(d => d.ecer_CharacterReferenceId != null))
     {
@@ -180,4 +180,18 @@ internal sealed class ApplicationRepository : IApplicationRepository
   }
 
   public Task<string> Submit(string applicationId) => throw new NotImplementedException();
+
+  public async Task<string> Delete(string applicationId, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    var application = context.ecer_ApplicationSet.FirstOrDefault(
+      d => d.ecer_ApplicationId == Guid.Parse(applicationId)
+      );
+    if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
+    application.StatusCode = ecer_Application_StatusCode.Cancelled;
+    application.StateCode = ecer_application_statecode.Inactive;
+    context.UpdateObject(application);
+    context.SaveChanges();
+    return applicationId;
+  }
 }

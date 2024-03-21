@@ -2,6 +2,7 @@
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Applications;
 using Shouldly;
+using System.Net;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.RegistryApi;
@@ -37,7 +38,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Id;
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
@@ -66,7 +67,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
-    var existingApplicationId = (await existingAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    var existingApplicationId = (await existingAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Id;
     existingApplicationId.ShouldBe(application.Id);
   }
 
@@ -106,7 +107,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript()))
         .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference()))
         .RuleFor(f => f.WorkExperienceReferences, f => f.Make(f.Random.Number(2, 5), () => CreateWorkExperienceReference()))
-
         .Generate();
 
     application.Id = this.Fixture.applicationId;
@@ -125,6 +125,44 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications");
       _.StatusCodeShouldBe(500);
+    });
+  }
+
+  [Fact]
+  public async Task DeleteApplication_ById()
+  {
+    var application = CreateDraftApplication();
+    application.Id = this.Fixture.applicationId2;
+
+    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity2, this.Fixture.AuthenticatedBcscUserId2);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Id;
+
+    var applicationByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity2, this.Fixture.AuthenticatedBcscUserId2);
+      _.Delete.Url($"/api/draftApplications/{applicationId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    (await applicationByIdResponse.ReadAsJsonAsync<DeleteDraftApplicationResponse>()).ShouldNotBeNull().ApplicationId.ShouldBe(applicationId);
+  }
+
+  [Fact]
+  public async Task DeleteApplication_ById_WithInvalidApplicationId_ShouldReturnBadRequest()
+  {
+    Guid randomGuid = Guid.NewGuid();
+
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Delete.Url($"/api/draftApplications/{randomGuid}");
+      _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
     });
   }
 

@@ -6,6 +6,11 @@
 public record SaveDraftApplicationCommand(Application Application);
 
 /// <summary>
+/// Invokes draft application saving use case
+/// </summary>
+public record DeleteDraftApplicationCommand(string applicationId, string userId, CancellationToken ct);
+
+/// <summary>
 /// Invokes application submission use case
 /// </summary>
 /// <param name="applicationId"></param>
@@ -44,7 +49,7 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public string? LanguageofInstruction { get; set; }
 }
 
-public record WorkExperienceReference(string? FirstName, string? LastName,  string? EmailAddress,  int? Hours)
+public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
 {
   public string? Id { get; set; }
 

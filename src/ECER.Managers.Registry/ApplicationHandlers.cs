@@ -46,6 +46,30 @@ public static class ApplicationHandlers
     return applicationId;
   }
 
+  public static async Task<string> Handle(DeleteDraftApplicationCommand cmd, IApplicationRepository applicationRepository, IMapper mapper)
+  {
+    ArgumentNullException.ThrowIfNull(applicationRepository);
+    ArgumentNullException.ThrowIfNull(mapper);
+    ArgumentNullException.ThrowIfNull(cmd);
+
+    var applications = await applicationRepository.Query(new ApplicationQuery
+    {
+      ById = cmd.applicationId,
+      ByApplicantId = cmd.userId,
+      ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
+    });
+
+    if (!applications.Any())
+    {
+      throw new InvalidOperationException($"Application not found id '{cmd.applicationId}'");
+    }
+
+    var deletedApplicationId = await applicationRepository.Delete(cmd.applicationId, cmd.ct);
+
+    return deletedApplicationId;
+  }
+
+
   /// <summary>
   /// Handles applications query use case
   /// </summary>

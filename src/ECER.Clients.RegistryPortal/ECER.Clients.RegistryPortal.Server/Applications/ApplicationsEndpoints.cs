@@ -4,6 +4,7 @@ using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Wolverine;
@@ -58,6 +59,23 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .WithOpenApi("Handles application queries", string.Empty, "application_get")
         .RequireAuthorization()
         .WithParameterValidation();
+
+    endpointRouteBuilder.MapDelete("/api/draftApplications/{id}", async Task<Results<Ok<DeleteDraftApplicationResponse>, BadRequest<ProblemDetails>>> (string id, HttpContext ctx, CancellationToken ct, IMessageBus messageBus) =>
+       {
+         var userId = ctx.User.GetUserContext()?.UserId;
+
+         bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid)
+         {
+           return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
+         }
+
+         var deletedApplicationId = await messageBus.InvokeAsync<string>(new DeleteDraftApplicationCommand(id, userId!, ct));
+
+         return TypedResults.Ok(new DeleteDraftApplicationResponse(deletedApplicationId));
+       })
+       .WithOpenApi("Delete a draft application for the current user", "Changes status to cancelled", "draftapplication_delete")
+       .RequireAuthorization()
+       .WithParameterValidation();
   }
 }
 
@@ -74,10 +92,22 @@ public record SaveDraftApplicationRequest(DraftApplication DraftApplication);
 public record ApplicationSubmissionRequest(string Id);
 
 /// <summary>
+/// delete draft application request
+/// </summary>
+/// <param name="Id">The application id</param>
+public record DeleteDraftApplicationRequest(string Id);
+
+/// <summary>
 /// Save draft application response
 /// </summary>
+/// <param name="Id">The application id</param>
+public record DraftApplicationResponse(string Id);
+
+/// <summary>
+/// delete draft application response
+/// </summary>
 /// <param name="ApplicationId">The application id</param>
-public record DraftApplicationResponse(string ApplicationId);
+public record DeleteDraftApplicationResponse(string ApplicationId);
 
 /// <summary>
 /// Application query response
@@ -94,6 +124,8 @@ public record DraftApplication
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public ApplicationStatus Status { get; set; }
+
 }
 
 public record Application

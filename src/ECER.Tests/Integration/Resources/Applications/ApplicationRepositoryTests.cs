@@ -8,8 +8,8 @@ using Application = ECER.Resources.Documents.Applications.Application;
 using ApplicationStatus = ECER.Resources.Documents.Applications.ApplicationStatus;
 using CertificationType = ECER.Resources.Documents.Applications.CertificationType;
 using CharacterReference = ECER.Resources.Documents.Applications.CharacterReference;
-using WorkExperienceReference = ECER.Resources.Documents.Applications.WorkExperienceReference;
 using Transcript = ECER.Resources.Documents.Applications.Transcript;
+using WorkExperienceReference = ECER.Resources.Documents.Applications.WorkExperienceReference;
 
 namespace ECER.Tests.Integration.Resources.Applications;
 
@@ -289,8 +289,8 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     var query = await repository.Query(new ApplicationQuery { ById = applicationId });
     var reference = query.First().WorkExperienceReferences.First();
-    
-    var newWorkExperienceReference = new WorkExperienceReference(reference.FirstName, reference.LastName, reference.EmailAddress, reference.Hours) { Id = reference.Id, PhoneNumber = "987-654-3210"};
+
+    var newWorkExperienceReference = new WorkExperienceReference(reference.FirstName, reference.LastName, reference.EmailAddress, reference.Hours) { Id = reference.Id, PhoneNumber = "987-654-3210" };
 
     var updatedReferences = new List<WorkExperienceReference> { newWorkExperienceReference };
     application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
