@@ -605,7 +605,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Callback = "callback";
 			public const string ChildrensNames = "childrensnames";
 			public const string Company = "company";
-			public const string Contact_Annotation = "Contact_Annotation";
 			public const string Referencingcontact_customer_contacts = "contact_customer_contacts";
 			public const string Referencingcontact_master_contact = "contact_master_contact";
 			public const string ContactId = "contactid";
@@ -678,6 +677,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_isunder19Name = "ecer_isunder19name";
 			public const string ecer_IsVerified = "ecer_isverified";
 			public const string ecer_isverifiedName = "ecer_isverifiedname";
+			public const string ecer_portalinvitation_ApplicantId = "ecer_portalinvitation_ApplicantId";
 			public const string ecer_portaluser_Contactid = "ecer_portaluser_Contactid";
 			public const string ecer_PreferredName = "ecer_preferredname";
 			public const string ecer_PreviousName = "ecer_previousname";
@@ -6871,24 +6871,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N Contact_Annotation
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("Contact_Annotation")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.Annotation> Contact_Annotation
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.Annotation>("Contact_Annotation", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.Annotation>("Contact_Annotation", null, value);
-			}
-		}
-		
-		/// <summary>
 		/// 1:N contact_customer_contacts
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("contact_customer_contacts", Microsoft.Xrm.Sdk.EntityRole.Referenced)]
@@ -7227,6 +7209,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference>("ecer_guardianreference_Applicantid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_portalinvitation_ApplicantId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_ApplicantId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation> ecer_portalinvitation_ApplicantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_ApplicantId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_ApplicantId", null, value);
 			}
 		}
 		

@@ -60,13 +60,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_certificateconditions_Certificateid = "ecer_certificateconditions_Certificateid";
 			public const string ecer_certificateconditions_PresetConditionId = "ecer_certificateconditions_PresetConditionId";
 			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
 			public const string ecer_CertificateConditionsId = "ecer_certificateconditionsid";
 			public const string Id = "ecer_certificateconditionsid";
-			public const string ecer_Certificateid = "ecer_certificateid";
-			public const string ecer_CertificateidName = "ecer_certificateidname";
 			public const string ecer_Details = "ecer_details";
 			public const string ecer_DisplayOrder = "ecer_displayorder";
 			public const string ecer_EndDate = "ecer_enddate";
@@ -291,38 +288,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_CertificateConditionsId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_Certificateid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_certificateid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_certificateid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateidname")]
-		public string ecer_CertificateidName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_certificateid"))
-				{
-					return this.FormattedValues["ecer_certificateid"];
-				}
-				else
-				{
-					return default(string);
-				}
 			}
 		}
 		
@@ -860,25 +825,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_certificateconditions_Certificateid
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificateconditions_Certificateid")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_Certificate ecer_certificateconditions_Certificateid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_certificateconditions_Certificateid", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_certificateconditions_Certificateid", null, value);
 			}
 		}
 		

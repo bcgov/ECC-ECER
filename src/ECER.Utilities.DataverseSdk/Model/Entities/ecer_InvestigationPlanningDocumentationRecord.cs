@@ -13,22 +13,49 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Note that is attached to one or more objects, including other notes.
+	/// Status of the Investigation Planning Documentation Record
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("annotation")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class Annotation : Microsoft.Xrm.Sdk.Entity
+	public enum ecer_investigationplanningdocumentationrecord_statecode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Active = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Inactive = 1,
+	}
+	
+	/// <summary>
+	/// Reason for the status of the Investigation Planning Documentation Record
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum ecer_InvestigationPlanningDocumentationRecord_StatusCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Active = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Inactive = 2,
+	}
+	
+	/// <summary>
+	/// Investigation Planning Documentation / Record
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_investigationplanningdocumentationrecord")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public partial class ecer_InvestigationPlanningDocumentationRecord : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the annotation entity
+		/// Available fields, a the time of codegen, for the ecer_investigationplanningdocumentationrecord entity
 		/// </summary>
 		public partial class Fields
 		{
-			public const string AnnotationId = "annotationid";
-			public const string Id = "annotationid";
-			public const string Contact_Annotation = "Contact_Annotation";
 			public const string CreatedBy = "createdby";
 			public const string CreatedByName = "createdbyname";
 			public const string CreatedByYomiName = "createdbyyominame";
@@ -36,16 +63,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string DocumentBody = "documentbody";
-			public const string ecer_application_Annotations = "ecer_application_Annotations";
-			public const string FileName = "filename";
-			public const string FileSize = "filesize";
+			public const string ecer_Comments = "ecer_comments";
+			public const string ecer_DocumentType = "ecer_documenttype";
+			public const string ecer_documenttypeName = "ecer_documenttypename";
+			public const string ecer_Investigation = "ecer_investigation";
+			public const string ecer_InvestigationName = "ecer_investigationname";
+			public const string ecer_investigationplanningdocumentationrecord_ = "ecer_investigationplanningdocumentationrecord_";
+			public const string ecer_InvestigationPlanningDocumentationRecordId = "ecer_investigationplanningdocumentationrecordid";
+			public const string Id = "ecer_investigationplanningdocumentationrecordid";
+			public const string ecer_Name = "ecer_name";
 			public const string ImportSequenceNumber = "importsequencenumber";
-			public const string IsDocument = "isdocument";
-			public const string IsDocumentName = "isdocumentname";
-			public const string IsPrivateName = "isprivatename";
-			public const string LangId = "langid";
-			public const string MimeType = "mimetype";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
 			public const string ModifiedByYomiName = "modifiedbyyominame";
@@ -53,10 +80,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
 			public const string ModifiedOnBehalfByName = "modifiedonbehalfbyname";
 			public const string ModifiedOnBehalfByYomiName = "modifiedonbehalfbyyominame";
-			public const string NoteText = "notetext";
-			public const string ObjectId = "objectid";
-			public const string ObjectTypeCode = "objecttypecode";
-			public const string ObjectTypeCodeName = "objecttypecodename";
 			public const string OverriddenCreatedOn = "overriddencreatedon";
 			public const string OwnerId = "ownerid";
 			public const string OwnerIdName = "owneridname";
@@ -65,26 +88,29 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningBusinessUnitName = "owningbusinessunitname";
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
-			public const string Prefix = "prefix";
-			public const string StepId = "stepid";
-			public const string Subject = "subject";
+			public const string StateCode = "statecode";
+			public const string statecodeName = "statecodename";
+			public const string StatusCode = "statuscode";
+			public const string statuscodeName = "statuscodename";
+			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public Annotation(System.Guid id) : 
+		public ecer_InvestigationPlanningDocumentationRecord(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public Annotation(string keyName, object keyValue) : 
+		public ecer_InvestigationPlanningDocumentationRecord(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public Annotation(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_InvestigationPlanningDocumentationRecord(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -93,66 +119,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public Annotation() : 
+		public ecer_InvestigationPlanningDocumentationRecord() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "annotationid";
+		public const string PrimaryIdAttribute = "ecer_investigationplanningdocumentationrecordid";
 		
-		public const string PrimaryNameAttribute = "subject";
+		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "Annotation";
+		public const string EntitySchemaName = "ecer_InvestigationPlanningDocumentationRecord";
 		
-		public const string EntityLogicalName = "annotation";
+		public const string EntityLogicalName = "ecer_investigationplanningdocumentationrecord";
 		
-		public const string EntityLogicalCollectionName = "annotations";
+		public const string EntityLogicalCollectionName = "ecer_investigationplanningdocumentationrecords";
 		
-		public const string EntitySetName = "annotations";
-		
-		/// <summary>
-		/// Unique identifier of the note.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("annotationid")]
-		public System.Nullable<System.Guid> AnnotationId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("annotationid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("annotationid", value);
-				if (value.HasValue)
-				{
-					base.Id = value.Value;
-				}
-				else
-				{
-					base.Id = System.Guid.Empty;
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("annotationid")]
-		public override System.Guid Id
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return base.Id;
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.AnnotationId = value;
-			}
-		}
+		public const string EntitySetName = "ecer_investigationplanningdocumentationrecords";
 		
 		/// <summary>
-		/// Unique identifier of the user who created the note.
+		/// Unique identifier of the user who created the record.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
 		public Microsoft.Xrm.Sdk.EntityReference CreatedBy
@@ -199,7 +184,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Date and time when the note was created.
+		/// Date and time when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
 		public System.Nullable<System.DateTime> CreatedOn
@@ -212,7 +197,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Unique identifier of the delegate user who created the annotation.
+		/// Unique identifier of the delegate user who created the record.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
 		public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
@@ -263,57 +248,143 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Contents of the note's attachment.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("documentbody")]
-		public string DocumentBody
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_comments")]
+		public string ecer_Comments
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("documentbody");
+				return this.GetAttributeValue<string>("ecer_comments");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("documentbody", value);
+				this.SetAttributeValue("ecer_comments", value);
 			}
 		}
 		
-		/// <summary>
-		/// File name of the note.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("filename")]
-		public string FileName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documenttype")]
+		public virtual ecer_InvestigationDocumentTypes? ecer_DocumentType
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("filename");
+				return ((ecer_InvestigationDocumentTypes?)(EntityOptionSetEnum.GetEnum(this, "ecer_documenttype")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("filename", value);
+				this.SetAttributeValue("ecer_documenttype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
 			}
 		}
 		
-		/// <summary>
-		/// File size of the note.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("filesize")]
-		public System.Nullable<int> FileSize
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documenttypename")]
+		public string ecer_documenttypeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<int>>("filesize");
+				if (this.FormattedValues.Contains("ecer_documenttype"))
+				{
+					return this.FormattedValues["ecer_documenttype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Investigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_investigation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationname")]
+		public string ecer_InvestigationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_investigation"))
+				{
+					return this.FormattedValues["ecer_investigation"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
 		/// <summary>
-		/// Unique identifier of the data import or data migration that created this record.
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationplanningdocumentationrecordid")]
+		public System.Nullable<System.Guid> ecer_InvestigationPlanningDocumentationRecordId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_investigationplanningdocumentationrecordid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_investigationplanningdocumentationrecordid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationplanningdocumentationrecordid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.ecer_InvestigationPlanningDocumentationRecordId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
+		public string ecer_Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		/// <summary>
+		/// Sequence number of the import that created this record.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("importsequencenumber")]
 		public System.Nullable<int> ImportSequenceNumber
@@ -331,95 +402,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Specifies whether the note is an attachment.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isdocument")]
-		public System.Nullable<bool> IsDocument
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<bool>>("isdocument");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("isdocument", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isdocumentname")]
-		public string IsDocumentName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("isdocument"))
-				{
-					return this.FormattedValues["isdocument"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("isprivatename")]
-		public string IsPrivateName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("isprivate"))
-				{
-					return this.FormattedValues["isprivate"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		/// <summary>
-		/// Language identifier for the note.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("langid")]
-		public string LangId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("langid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("langid", value);
-			}
-		}
-		
-		/// <summary>
-		/// MIME type of the note's attachment.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mimetype")]
-		public string MimeType
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("mimetype");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("mimetype", value);
-			}
-		}
-		
-		/// <summary>
-		/// Unique identifier of the user who last modified the note.
+		/// Unique identifier of the user who modified the record.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
 		public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
@@ -466,7 +449,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Date and time when the note was last modified.
+		/// Date and time when the record was modified.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
 		public System.Nullable<System.DateTime> ModifiedOn
@@ -479,7 +462,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Unique identifier of the delegate user who last modified the annotation.
+		/// Unique identifier of the delegate user who modified the record.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
 		public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
@@ -531,77 +514,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Text of the note.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("notetext")]
-		public string NoteText
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("notetext");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("notetext", value);
-			}
-		}
-		
-		/// <summary>
-		/// Unique identifier of the object with which the note is associated.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("objectid")]
-		public Microsoft.Xrm.Sdk.EntityReference ObjectId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("objectid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("objectid", value);
-			}
-		}
-		
-		/// <summary>
-		/// Type of entity with which the note is associated.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("objecttypecode")]
-		public string ObjectTypeCode
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("objecttypecode");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("objecttypecode", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("objecttypecodename")]
-		public string ObjectTypeCodeName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("objecttypecode"))
-				{
-					return this.FormattedValues["objecttypecode"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		/// <summary>
 		/// Date and time that the record was migrated.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overriddencreatedon")]
@@ -620,7 +532,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Unique identifier of the user or team who owns the note.
+		/// Owner Id
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ownerid")]
 		public Microsoft.Xrm.Sdk.EntityReference OwnerId
@@ -637,6 +549,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Name of the owner
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridname")]
 		public string OwnerIdName
 		{
@@ -654,6 +569,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Yomi name of the owner
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridyominame")]
 		public string OwnerIdYomiName
 		{
@@ -672,7 +590,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Unique identifier of the business unit that owns the note.
+		/// Unique identifier for the business unit that owns the record
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunit")]
 		public Microsoft.Xrm.Sdk.EntityReference OwningBusinessUnit
@@ -702,7 +620,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Unique identifier of the team who owns the note.
+		/// Unique identifier for the team that owns the record.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
 		public Microsoft.Xrm.Sdk.EntityReference OwningTeam
@@ -715,7 +633,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Unique identifier of the user who owns the note.
+		/// Unique identifier for the user that owns the record.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owninguser")]
 		public Microsoft.Xrm.Sdk.EntityReference OwningUser
@@ -728,56 +646,113 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Prefix of the file pointer in blob storage.
+		/// Status of the Investigation Planning Documentation Record
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("prefix")]
-		public string Prefix
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
+		public virtual ecer_investigationplanningdocumentationrecord_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("prefix");
-			}
-		}
-		
-		/// <summary>
-		/// workflow step id associated with the note.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("stepid")]
-		public string StepId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("stepid");
+				return ((ecer_investigationplanningdocumentationrecord_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("stepid", value);
+				this.SetAttributeValue("statecode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
 			}
 		}
 		
-		/// <summary>
-		/// Subject associated with the note.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("subject")]
-		public string Subject
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
+		public string statecodeName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("subject");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("subject", value);
+				if (this.FormattedValues.Contains("statecode"))
+				{
+					return this.FormattedValues["statecode"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
 		/// <summary>
-		/// Version number of the note.
+		/// Reason for the status of the Investigation Planning Documentation Record
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
+		public virtual ecer_InvestigationPlanningDocumentationRecord_StatusCode? StatusCode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_InvestigationPlanningDocumentationRecord_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("statuscode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
+		public string statuscodeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("statuscode"))
+				{
+					return this.FormattedValues["statuscode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("timezoneruleversionnumber")]
+		public System.Nullable<int> TimeZoneRuleVersionNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("timezoneruleversionnumber");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("timezoneruleversionnumber", value);
+			}
+		}
+		
+		/// <summary>
+		/// Time zone code that was in use when the record was created.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
+		public System.Nullable<int> UTCConversionTimeZoneCode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("utcconversiontimezonecode");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("utcconversiontimezonecode", value);
+			}
+		}
+		
+		/// <summary>
+		/// Version Number
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
 		public System.Nullable<long> VersionNumber
@@ -790,40 +765,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// N:1 Contact_Annotation
+		/// N:1 ecer_investigationplanningdocumentationrecord_
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("objectid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("Contact_Annotation")]
-		public ECER.Utilities.DataverseSdk.Model.Contact Contact_Annotation
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationplanningdocumentationrecord_")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_investigationplanningdocumentationrecord_
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("Contact_Annotation", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigationplanningdocumentationrecord_", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("Contact_Annotation", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_application_Annotations
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("objectid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_Annotations")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_Application ecer_application_Annotations
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_Annotations", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_Annotations", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigationplanningdocumentationrecord_", null, value);
 			}
 		}
 		
@@ -832,7 +788,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public Annotation(object anonymousType) : 
+		public ecer_InvestigationPlanningDocumentationRecord(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -850,9 +806,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["annotationid"] = base.Id;
+                        Attributes["ecer_investigationplanningdocumentationrecordid"] = base.Id;
                         break;
-                    case "annotationid":
+                    case "ecer_investigationplanningdocumentationrecordid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

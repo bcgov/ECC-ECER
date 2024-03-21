@@ -36,6 +36,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ApplicationSubmitted = 621870006,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Approved = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -100,6 +103,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_LastName = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
+			public const string ecer_portalinvitation_CharacterReferenceId = "ecer_portalinvitation_CharacterReferenceId";
 			public const string ecer_ReferenceCertificationNumber = "ecer_referencecertificationnumber";
 			public const string ecer_ReferenceCertifiedProvince = "ecer_referencecertifiedprovince";
 			public const string ecer_ReferenceCertifiedProvinceId = "ecer_referencecertifiedprovinceid";
@@ -110,6 +114,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ReferenceFullName = "ecer_referencefullname";
 			public const string ecer_ReferenceSignature = "ecer_referencesignature";
 			public const string ecer_RelationshipwithApplicant = "ecer_relationshipwithapplicant";
+			public const string ecer_UnabletoProvideReferenceReason = "ecer_unabletoprovidereferencereason";
+			public const string ecer_unabletoprovidereferencereasonName = "ecer_unabletoprovidereferencereasonname";
+			public const string ecer_WillProvideReference = "ecer_willprovidereference";
+			public const string ecer_willprovidereferenceName = "ecer_willprovidereferencename";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -797,6 +805,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_unabletoprovidereferencereason")]
+		public virtual ecer_UnabletoProvideReferenceReasons? ecer_UnabletoProvideReferenceReason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_UnabletoProvideReferenceReasons?)(EntityOptionSetEnum.GetEnum(this, "ecer_unabletoprovidereferencereason")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_unabletoprovidereferencereason", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_unabletoprovidereferencereasonname")]
+		public string ecer_unabletoprovidereferencereasonName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_unabletoprovidereferencereason"))
+				{
+					return this.FormattedValues["ecer_unabletoprovidereferencereason"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_willprovidereference")]
+		public virtual ecer_YesNoNull? ecer_WillProvideReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_willprovidereference")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_willprovidereference", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_willprovidereferencename")]
+		public string ecer_willprovidereferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_willprovidereference"))
+				{
+					return this.FormattedValues["ecer_willprovidereference"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Sequence number of the import that created this record.
 		/// </summary>
@@ -1175,6 +1247,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_portalinvitation_CharacterReferenceId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_CharacterReferenceId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation> ecer_portalinvitation_CharacterReferenceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_CharacterReferenceId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_CharacterReferenceId", null, value);
 			}
 		}
 		

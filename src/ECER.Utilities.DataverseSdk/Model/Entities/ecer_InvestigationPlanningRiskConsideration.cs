@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Certificate
+	/// Status of the Investigation Planning Risk or Consideration
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_certificate_statecode
+	public enum ecer_investigationplanningriskconsideration_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,40 +28,31 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Certificate
+	/// Reason for the status of the Investigation Planning Risk or Consideration
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_Certificate_StatusCode
+	public enum ecer_InvestigationPlanningRiskConsideration_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Active = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Cancelled = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Expired = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Reprinted = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Suspended = 621870004,
 	}
 	
+	/// <summary>
+	/// Investigation Planning Risk or Considerations
+	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_certificate")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_investigationplanningriskconsideration")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ecer_Certificate : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_InvestigationPlanningRiskConsideration : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_certificate entity
+		/// Available fields, a the time of codegen, for the ecer_investigationplanningriskconsideration entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -72,27 +63,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_application_Certificateid = "ecer_application_Certificateid";
-			public const string ecer_Certificate_ecer_CertificateTypes = "ecer_Certificate_ecer_CertificateTypes";
-			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
-			public const string ecer_CertificateId = "ecer_certificateid";
-			public const string Id = "ecer_certificateid";
-			public const string ecer_CertificateLevel = "ecer_certificatelevel";
-			public const string ecer_CertificateNumber = "ecer_certificatenumber";
-			public const string ecer_Conditions = "ecer_conditions";
-			public const string ecer_Date = "ecer_date";
-			public const string ecer_ecer_certificate_ecer_investigation_CurrentCertificate = "ecer_ecer_certificate_ecer_investigation_CurrentCertificate";
-			public const string ecer_EffectiveDate = "ecer_effectivedate";
-			public const string ecer_ExpiryDate = "ecer_expirydate";
-			public const string ecer_HasConditions = "ecer_hasconditions";
-			public const string ecer_hasconditionsName = "ecer_hasconditionsname";
-			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
-			public const string ecer_ineligiblereferenceName = "ecer_ineligiblereferencename";
+			public const string ecer_Investigation = "ecer_investigation";
+			public const string ecer_InvestigationName = "ecer_investigationname";
+			public const string ecer_investigationplanningriskconsideration_In = "ecer_investigationplanningriskconsideration_In";
+			public const string ecer_InvestigationPlanningRiskConsiderationId = "ecer_investigationplanningriskconsiderationid";
+			public const string Id = "ecer_investigationplanningriskconsiderationid";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_PrintedDate = "ecer_printeddate";
-			public const string ecer_Registrantid = "ecer_registrantid";
-			public const string ecer_RegistrantidName = "ecer_registrantidname";
-			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -119,19 +95,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Certificate(System.Guid id) : 
+		public ecer_InvestigationPlanningRiskConsideration(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Certificate(string keyName, object keyValue) : 
+		public ecer_InvestigationPlanningRiskConsideration(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Certificate(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_InvestigationPlanningRiskConsideration(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -140,22 +116,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Certificate() : 
+		public ecer_InvestigationPlanningRiskConsideration() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_certificateid";
+		public const string PrimaryIdAttribute = "ecer_investigationplanningriskconsiderationid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_Certificate";
+		public const string EntitySchemaName = "ecer_InvestigationPlanningRiskConsideration";
 		
-		public const string EntityLogicalName = "ecer_certificate";
+		public const string EntityLogicalName = "ecer_investigationplanningriskconsideration";
 		
-		public const string EntityLogicalCollectionName = "ecer_certificates";
+		public const string EntityLogicalCollectionName = "ecer_investigationplanningriskconsiderations";
 		
-		public const string EntitySetName = "ecer_certificates";
+		public const string EntitySetName = "ecer_investigationplanningriskconsiderations";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -269,21 +245,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateid")]
-		public System.Nullable<System.Guid> ecer_CertificateId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Investigation
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_certificateid");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigation");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_certificateid", value);
+				this.SetAttributeValue("ecer_investigation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationname")]
+		public string ecer_InvestigationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_investigation"))
+				{
+					return this.FormattedValues["ecer_investigation"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationplanningriskconsiderationid")]
+		public System.Nullable<System.Guid> ecer_InvestigationPlanningRiskConsiderationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_investigationplanningriskconsiderationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_investigationplanningriskconsiderationid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -295,7 +303,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationplanningriskconsiderationid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -306,167 +314,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_CertificateId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatelevel")]
-		public string ecer_CertificateLevel
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_certificatelevel");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_certificatelevel", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatenumber")]
-		public string ecer_CertificateNumber
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_certificatenumber");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_certificatenumber", value);
-			}
-		}
-		
-		/// <summary>
-		/// Use for legacy data
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_conditions")]
-		public string ecer_Conditions
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_conditions");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_conditions", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_date")]
-		public System.Nullable<System.DateTime> ecer_Date
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_date");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_date", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_effectivedate")]
-		public System.Nullable<System.DateTime> ecer_EffectiveDate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_effectivedate");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_effectivedate", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_expirydate")]
-		public System.Nullable<System.DateTime> ecer_ExpiryDate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_expirydate");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_expirydate", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasconditions")]
-		public System.Nullable<bool> ecer_HasConditions
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_hasconditions");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_hasconditions", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasconditionsname")]
-		public string ecer_hasconditionsName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_hasconditions"))
-				{
-					return this.FormattedValues["ecer_hasconditions"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		/// <summary>
-		/// When marked with certain condition and not eligible as a reference
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ineligiblereference")]
-		public virtual ecer_YesNoNull? ecer_IneligibleReference
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_ineligiblereference")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_ineligiblereference", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ineligiblereferencename")]
-		public string ecer_ineligiblereferenceName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_ineligiblereference"))
-				{
-					return this.FormattedValues["ecer_ineligiblereference"];
-				}
-				else
-				{
-					return default(string);
-				}
+				this.ecer_InvestigationPlanningRiskConsiderationId = value;
 			}
 		}
 		
@@ -482,70 +330,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_printeddate")]
-		public System.Nullable<System.DateTime> ecer_PrintedDate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_printeddate");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_printeddate", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_Registrantid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_registrantid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_registrantid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantidname")]
-		public string ecer_RegistrantidName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_registrantid"))
-				{
-					return this.FormattedValues["ecer_registrantid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantidyominame")]
-		public string ecer_RegistrantidYomiName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_registrantid"))
-				{
-					return this.FormattedValues["ecer_registrantid"];
-				}
-				else
-				{
-					return default(string);
-				}
 			}
 		}
 		
@@ -812,15 +596,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Certificate
+		/// Status of the Investigation Planning Risk or Consideration
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_certificate_statecode? StateCode
+		public virtual ecer_investigationplanningriskconsideration_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_certificate_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_investigationplanningriskconsideration_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -847,15 +631,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Certificate
+		/// Reason for the status of the Investigation Planning Risk or Consideration
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_Certificate_StatusCode? StatusCode
+		public virtual ecer_InvestigationPlanningRiskConsideration_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_Certificate_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_InvestigationPlanningRiskConsideration_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -931,75 +715,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_application_Certificateid
+		/// N:1 ecer_investigationplanningriskconsideration_In
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_Certificateid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Application> ecer_application_Certificateid
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationplanningriskconsideration_In")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_investigationplanningriskconsideration_In
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_Certificateid", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigationplanningriskconsideration_In", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_Certificateid", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_ecer_certificate_ecer_investigation_CurrentCertificate
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_certificate_ecer_investigation_CurrentCertificate")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Investigation> ecer_ecer_certificate_ecer_investigation_CurrentCertificate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_ecer_certificate_ecer_investigation_CurrentCertificate", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_ecer_certificate_ecer_investigation_CurrentCertificate", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:N ecer_Certificate_ecer_CertificateTypes
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_Certificate_ecer_CertificateTypes")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType> ecer_Certificate_ecer_CertificateTypes
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType>("ecer_Certificate_ecer_CertificateTypes", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType>("ecer_Certificate_ecer_CertificateTypes", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_certificate_Registrantid
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificate_Registrantid")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ecer_certificate_Registrantid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_certificate_Registrantid", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_certificate_Registrantid", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigationplanningriskconsideration_In", null, value);
 			}
 		}
 		
@@ -1008,7 +738,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Certificate(object anonymousType) : 
+		public ecer_InvestigationPlanningRiskConsideration(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -1026,9 +756,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_certificateid"] = base.Id;
+                        Attributes["ecer_investigationplanningriskconsiderationid"] = base.Id;
                         break;
-                    case "ecer_certificateid":
+                    case "ecer_investigationplanningriskconsiderationid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;
