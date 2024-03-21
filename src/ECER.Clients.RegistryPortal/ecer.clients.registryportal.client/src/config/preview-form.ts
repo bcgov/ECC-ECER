@@ -15,7 +15,7 @@ const previewForm: Form = {
       props: {},
       cols: {
         md: 8,
-        lg: 6,
+        lg: 8,
         xl: 6,
       },
     },
@@ -25,7 +25,7 @@ const previewForm: Form = {
       props: {},
       cols: {
         md: 8,
-        lg: 6,
+        lg: 8,
         xl: 6,
       },
     },
@@ -35,7 +35,7 @@ const previewForm: Form = {
       props: {},
       cols: {
         md: 8,
-        lg: 6,
+        lg: 8,
         xl: 6,
       },
     },
@@ -45,7 +45,7 @@ const previewForm: Form = {
       props: {},
       cols: {
         md: 8,
-        lg: 6,
+        lg: 8,
         xl: 6,
       },
     },
@@ -55,7 +55,7 @@ const previewForm: Form = {
       props: {},
       cols: {
         md: 8,
-        lg: 6,
+        lg: 8,
         xl: 6,
       },
     },
