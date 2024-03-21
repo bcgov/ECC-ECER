@@ -9,7 +9,7 @@ using Xunit.Categories;
 
 namespace ECER.Tests.Integration.Utilities.ObjectStorage;
 
-[IntegrationTest, Category("requires_vpn")]
+[IntegrationTest, Category("VPN")]
 public class S3ObjectStorageTests : IAsyncLifetime
 {
   private readonly Faker faker = new Faker();
