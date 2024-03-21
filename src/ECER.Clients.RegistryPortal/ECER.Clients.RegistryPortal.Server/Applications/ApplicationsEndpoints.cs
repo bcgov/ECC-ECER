@@ -79,7 +79,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapDelete("/api/draftApplications/{id}", async Task<Results<Ok<DeleteDraftApplicationResponse>, BadRequest<ProblemDetails>>> (string id, HttpContext ctx, CancellationToken ct, IMessageBus messageBus) =>
+    endpointRouteBuilder.MapDelete("/api/draftApplications/{id}", async Task<Results<Ok<CancelDraftApplicationResponse>, BadRequest<ProblemDetails>>> (string id, HttpContext ctx, CancellationToken ct, IMessageBus messageBus) =>
        {
          var userId = ctx.User.GetUserContext()?.UserId;
 
@@ -88,11 +88,11 @@ public class ApplicationsEndpoints : IRegisterEndpoints
            return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
          }
 
-         var deletedApplicationId = await messageBus.InvokeAsync<string>(new DeleteDraftApplicationCommand(id, userId!), ct);
+         var cancelledApplicationId = await messageBus.InvokeAsync<string>(new CancelDraftApplicationCommand(id, userId!), ct);
 
-         return TypedResults.Ok(new DeleteDraftApplicationResponse(deletedApplicationId));
+         return TypedResults.Ok(new CancelDraftApplicationResponse(cancelledApplicationId));
        })
-       .WithOpenApi("Delete a draft application for the current user", "Changes status to cancelled", "draftapplication_delete")
+       .WithOpenApi("Cancel a draft application for the current user", "Changes status to cancelled", "draftapplication_delete")
        .RequireAuthorization()
        .WithParameterValidation();
   }
@@ -126,7 +126,7 @@ public record DraftApplicationResponse(string Id);
 /// delete draft application response
 /// </summary>
 /// <param name="ApplicationId">The application id</param>
-public record DeleteDraftApplicationResponse(string ApplicationId);
+public record CancelDraftApplicationResponse(string ApplicationId);
 
 public record SubmitApplicationResponse(string ApplicationId);
 

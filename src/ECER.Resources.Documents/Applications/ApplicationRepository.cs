@@ -193,7 +193,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     }
   }
 
-  public async Task<string> Delete(string applicationId, CancellationToken cancellationToken)
+  public async Task<string> Cancel(string applicationId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     var application = context.ecer_ApplicationSet.FirstOrDefault(

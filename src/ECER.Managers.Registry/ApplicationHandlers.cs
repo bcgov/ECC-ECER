@@ -47,7 +47,7 @@ public static class ApplicationHandlers
     return applicationId;
   }
 
-  public static async Task<string> Handle(DeleteDraftApplicationCommand cmd, IApplicationRepository applicationRepository, IMapper mapper, CancellationToken cancellationToken)
+  public static async Task<string> Handle(CancelDraftApplicationCommand cmd, IApplicationRepository applicationRepository, IMapper mapper, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(mapper);
@@ -65,9 +65,9 @@ public static class ApplicationHandlers
       throw new InvalidOperationException($"Application not found id '{cmd.applicationId}'");
     }
 
-    var deletedApplicationId = await applicationRepository.Delete(cmd.applicationId, cancellationToken);
+    var cancelledApplicationId = await applicationRepository.Cancel(cmd.applicationId, cancellationToken);
 
-    return deletedApplicationId;
+    return cancelledApplicationId;
   }
 
 

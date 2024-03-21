@@ -349,13 +349,13 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task DeleteApplication_QueryShouldnotReturnResults()
+  public async Task CancelApplication_QueryShouldnotReturnResults()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId2;
     var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
     var savedApplicationId = await repository.SaveDraft(application, CancellationToken.None);
 
-    await repository.Delete(savedApplicationId, CancellationToken.None);
+    await repository.Cancel(savedApplicationId, CancellationToken.None);
 
     (await repository.Query(new ApplicationQuery { ById = savedApplicationId })).ShouldBeEmpty();
   }

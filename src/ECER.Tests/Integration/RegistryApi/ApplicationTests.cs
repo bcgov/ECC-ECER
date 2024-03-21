@@ -142,7 +142,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task DeleteApplication_ById_ShouldReturnId_QueryApplications_ShouldNotReturnCancelledApplications()
+  public async Task CancelApplication_ById_ShouldReturnId_QueryApplications_ShouldNotReturnCancelledApplications()
   {
     var application = CreateDraftApplication();
     application.Id = this.Fixture.applicationId2;
@@ -163,11 +163,11 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    (await applicationByIdResponse.ReadAsJsonAsync<DeleteDraftApplicationResponse>()).ShouldNotBeNull().ApplicationId.ShouldBe(applicationId);
+    (await applicationByIdResponse.ReadAsJsonAsync<CancelDraftApplicationResponse>()).ShouldNotBeNull().ApplicationId.ShouldBe(applicationId);
   }
 
   [Fact]
-  public async Task DeleteApplication_ById_WithInvalidApplicationId_ShouldReturnBadRequest()
+  public async Task CancelApplication_ById_WithInvalidApplicationId_ShouldReturnBadRequest()
   {
     Guid randomGuid = Guid.NewGuid();
 
