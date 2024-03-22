@@ -1,4 +1,4 @@
-name: Delete old container images
+name: Prune old images
 
 on:
   schedule:
@@ -13,20 +13,20 @@ jobs:
     - name: Prune registry-portal images
       uses: vlaurin/action-ghcr-prune@v0.6.0
       with:
-        token: ${{ secrets.PAT }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         organization: bcgov
         container: ecc-ecer/registry-portal
         dry-run: true # Dry-run first, then change to `false`
         keep-younger-than: 7 # days
-        keep-last: 2
+        keep-last: 5
         prune-untagged: true
     - name: Prune api images
       uses: vlaurin/action-ghcr-prune@v0.6.0
       with:
-        token: ${{ secrets.PAT }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         organization: bcgov
         container: ecc-ecer/api
         dry-run: true # Dry-run first, then change to `false`
         keep-younger-than: 7 # days
-        keep-last: 2
+        keep-last: 5
         prune-untagged: true
