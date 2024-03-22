@@ -6,50 +6,18 @@ namespace ECER.Tests.Integration;
 
 public static class AuthenticationHelper
 {
-  public static Scenario WithNewUser(this Scenario scenario, UserIdentity identity)
+  public static Scenario WithNewUser(this Scenario scenario, UserIdentity identity) => scenario.WithUser(identity);
+
+  public static Scenario WithExistingUser(this Scenario scenario, UserIdentity identity, string userId) => scenario.WithUser(identity, userId);
+
+  private static Scenario WithUser(this Scenario scenario, UserIdentity identity, string? userId = null)
   {
     ArgumentNullException.ThrowIfNull(identity);
 
     scenario.WithClaim("identity_provider", identity.IdentityProvider);
     scenario.WithClaim("identity_id", identity.UserId);
-
-    if (identity.IdentityProvider == "bcsc")
-    {
-      scenario.WithClaim(ClaimTypes.NameIdentifier, identity.UserId);
-    }
-    else if (identity.IdentityProvider == "bceidbasic")
-    {
-      scenario.WithClaim("bceid_user_guid", identity.UserId);
-    }
-    else
-    {
-      throw new NotImplementedException();
-    }
-
-    return scenario;
-  }
-
-  public static Scenario WithExistingUser(this Scenario scenario, UserIdentity identity, string userId)
-  {
-    ArgumentNullException.ThrowIfNull(identity);
-
-    scenario.WithClaim("identity_provider", identity.IdentityProvider);
-    scenario.WithClaim("identity_id", identity.UserId);
-
-    if (identity.IdentityProvider == "bcsc")
-    {
-      scenario.WithClaim(ClaimTypes.NameIdentifier, identity.UserId);
-    }
-    else if (identity.IdentityProvider == "bceidbasic")
-    {
-      scenario.WithClaim("bceid_user_guid", identity.UserId);
-    }
-    else
-    {
-      throw new NotImplementedException();
-    }
-
-    scenario.WithClaim("user_id", userId);
+    scenario.WithClaim(ClaimTypes.NameIdentifier, identity.UserId);
+    if (!string.IsNullOrEmpty(userId)) scenario.WithClaim("user_id", userId);
 
     return scenario;
   }
