@@ -21,3 +21,18 @@ spec:
       taskRef:
         kind: Task
         name: tag-image-task
+    - name: dev-api
+      params:
+        - name: sourceImage
+          value: artifacts.developer.gov.bc.ca/github-docker-remote/bcgov/ecc-ecer/api
+        - name: sourceTag
+          value: latest
+        - name: destinationImage
+          value: api
+        - name: destinationTag
+          value: dev
+        - name: scheduled
+          value: true
+      taskRef:
+        kind: Task
+        name: tag-image-task
