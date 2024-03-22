@@ -1,0 +1,32 @@
+name: Delete old container images
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # every day at midnight
+  workflow_dispatch:
+
+jobs:
+  prune-images:
+    name: Prune
+    runs-on: ubuntu-latest
+    steps:
+    - name: Prune registry-portal images
+      uses: vlaurin/action-ghcr-prune@v0.6.0
+      with:
+        token: ${{ secrets.PAT }}
+        organization: bcgov
+        container: ecc-ecer/registry-portal
+        dry-run: true # Dry-run first, then change to `false`
+        keep-younger-than: 7 # days
+        keep-last: 2
+        prune-untagged: true
+    - name: Prune api images
+      uses: vlaurin/action-ghcr-prune@v0.6.0
+      with:
+        token: ${{ secrets.PAT }}
+        organization: bcgov
+        container: ecc-ecer/api
+        dry-run: true # Dry-run first, then change to `false`
+        keep-younger-than: 7 # days
+        keep-last: 2
+        prune-untagged: true
