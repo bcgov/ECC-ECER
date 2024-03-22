@@ -16,7 +16,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         organization: bcgov
         container: ecc-ecer/registry-portal
-        dry-run: true # Dry-run first, then change to `false`
+        dry-run: false
         keep-younger-than: 7 # days
         keep-last: 5
         prune-untagged: true
@@ -26,7 +26,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         organization: bcgov
         container: ecc-ecer/api
-        dry-run: true # Dry-run first, then change to `false`
+        dry-run: false
         keep-younger-than: 7 # days
         keep-last: 5
         prune-untagged: true
