@@ -28,8 +28,8 @@ spec:
       labels:
         name: {{ .name }}
         role: {{ .Values.role }}
-      {{- if or (gt (len .Values.secrets) 0) (.Values.secretFiles).files -}}
-      {{- if gt (len .Values.secrets) 0 }}
+      {{- if or .Values.secrets (.Values.secretFiles).files -}}
+      {{- if len .Values.secrets }}
       annotations:
         checksum/secret: {{ .Values.secrets | toYaml | sha256sum }}
       {{- end }}
