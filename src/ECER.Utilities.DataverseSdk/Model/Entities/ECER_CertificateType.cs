@@ -60,6 +60,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_Certificate_ecer_CertificateTypes = "ecer_Certificate_ecer_CertificateTypes";
 			public const string ecer_CertificateTypeId = "ecer_certificatetypeid";
 			public const string Id = "ecer_certificatetypeid";
 			public const string ecer_course_CertificateTypeid = "ecer_course_CertificateTypeid";
@@ -711,6 +712,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_CertificateTypeid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:N ecer_Certificate_ecer_CertificateTypes
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_Certificate_ecer_CertificateTypes")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Certificate> ecer_Certificate_ecer_CertificateTypes
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_Certificate_ecer_CertificateTypes", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_Certificate_ecer_CertificateTypes", null, value);
 			}
 		}
 		

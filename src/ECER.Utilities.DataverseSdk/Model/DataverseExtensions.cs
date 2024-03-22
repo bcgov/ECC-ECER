@@ -4,13 +4,13 @@ using System.Linq.Expressions;
 using System.ServiceModel;
 using System.Text;
 using Microsoft.Crm.Sdk.Messages;
-using Microsoft.Xrm.Sdk;
+using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 
-namespace ECER.Utilities.DataverseSdk.Model;
+namespace Microsoft.Xrm.Sdk.Client;
 
-public static class ExtensionMethods
+public static class DataverseExtensions
 {
   /// <summary>
   /// Adds a link between 2 entities
@@ -19,7 +19,7 @@ public static class ExtensionMethods
   /// <param name="sourceEntity">The source entity to link to</param>
   /// <param name="relationshipName">The relationship name; it is case sensitive</param>
   /// <param name="linkedEntity">The target linked entity</param>
-  public static void AddLink([NotNull] this EcerContext context, Entity sourceEntity, string relationshipName, Entity linkedEntity)
+  public static void AddLink([NotNull] this OrganizationServiceContext context, Entity sourceEntity, string relationshipName, Entity linkedEntity)
   {
     context.AddLink(sourceEntity, new Relationship(relationshipName), linkedEntity);
   }
@@ -31,12 +31,12 @@ public static class ExtensionMethods
   /// <param name="source">The source entity to link to</param>
   /// <param name="relationshipName">The relationship name; it is case sensitive</param>
   /// <param name="target">The target entity to add and link</param>
-  public static void AddRelatedObject([NotNull] this EcerContext context, Entity source, string relationshipName, Entity target)
+  public static void AddRelatedObject([NotNull] this OrganizationServiceContext context, Entity source, string relationshipName, Entity target)
   {
     context.AddRelatedObject(source, new Relationship(relationshipName), target);
   }
 
-  public static void LoadProperties([NotNull] this EcerContext context, IEnumerable<Entity> entities, params string[] propertyNames)
+  public static void LoadProperties([NotNull] this OrganizationServiceContext context, IEnumerable<Entity> entities, params string[] propertyNames)
   {
     Parallel.ForEach(entities, entity =>
     {
@@ -52,15 +52,15 @@ public static class ExtensionMethods
   /// <summary>
   /// Uploads a file
   /// </summary>
-  /// <param name="context">The context</param>
+  /// <param name="organizationService">The organization service instance</param>
   /// <param name="entity">The entity with file or image field</param>
   /// <param name="fileFieldName">The file or image field name</param>
   /// <param name="file">The file data</param>
   /// <param name="ct">Optional cancellation token</param>
   /// <returns>The uploaded file id</returns>
-  public static async Task<string?> UploadFileAsync([NotNull] this EcerContext context, [NotNull] Entity entity, string fileFieldName, [NotNull] FileContainer file, CancellationToken ct = default)
+  public static async Task<string?> UploadFileAsync([NotNull] this IOrganizationServiceAsync organizationService, [NotNull] Entity entity, string? fileFieldName, [NotNull] FileContainer file, CancellationToken ct = default)
   {
-    var response = (InitializeFileBlocksUploadResponse)context.Execute(new InitializeFileBlocksUploadRequest
+    var response = (InitializeFileBlocksUploadResponse)organizationService.Execute(new InitializeFileBlocksUploadRequest
     {
       Target = new EntityReference(entity.LogicalName, entity.Id),
       FileAttributeName = fileFieldName,
@@ -91,7 +91,7 @@ public static class ExtensionMethods
 
         blockIds.Add(blockId);
 
-        context.Execute(new UploadBlockRequest()
+        organizationService.Execute(new UploadBlockRequest()
         {
           BlockData = slice.ToArray(),
           BlockId = blockId,
@@ -104,7 +104,7 @@ public static class ExtensionMethods
       return null;
     }
 
-    var commitFileBlocksUploadResponse = (CommitFileBlocksUploadResponse)context.Execute(new CommitFileBlocksUploadRequest
+    var commitFileBlocksUploadResponse = (CommitFileBlocksUploadResponse)organizationService.Execute(new CommitFileBlocksUploadRequest
     {
       BlockList = blockIds.ToArray(),
       FileContinuationToken = fileContinuationToken,
@@ -115,7 +115,7 @@ public static class ExtensionMethods
     return await Task.FromResult(commitFileBlocksUploadResponse.FileId.ToString());
   }
 
-  private static RetrieveAttributeResponse GetAttribute([NotNull] this EcerContext context, [NotNull] Entity entity, string fileFieldName)
+  private static RetrieveAttributeResponse GetAttribute([NotNull] this OrganizationServiceContext context, [NotNull] Entity entity, string? fileFieldName)
   {
     return (RetrieveAttributeResponse)context.Execute(new RetrieveAttributeRequest
     {
@@ -127,18 +127,18 @@ public static class ExtensionMethods
   /// <summary>
   /// Download a file or image
   /// </summary>
-  /// <param name="context">The context</param>
+  /// <param name="organizationService">The organization service instance</param>
   /// <param name="entity">The entity with the file or image field</param>
   /// <param name="fileFieldName">The file or image field name</param>
   /// <param name="ct">Optional cancellation token</param>
   /// <returns>The file data, null if not found</returns>
   /// <exception cref="FileNotFoundException"></exception>
-  public static async Task<FileContainer> DownloadFileAsync([NotNull] this EcerContext context, [NotNull] Entity entity, string fileFieldName, CancellationToken ct = default)
+  public static async Task<FileContainer> DownloadFileAsync([NotNull] this IOrganizationServiceAsync organizationService, [NotNull] Entity entity, string? fileFieldName, CancellationToken ct = default)
   {
     InitializeFileBlocksDownloadResponse response;
     try
     {
-      response = (InitializeFileBlocksDownloadResponse)context.Execute(new InitializeFileBlocksDownloadRequest
+      response = (InitializeFileBlocksDownloadResponse)organizationService.Execute(new InitializeFileBlocksDownloadRequest
 
       {
         Target = new EntityReference(entity.LogicalName, entity.Id),
@@ -156,7 +156,7 @@ public static class ExtensionMethods
     while (offset < response.FileSizeInBytes)
     {
       if (ct.IsCancellationRequested) break;
-      var dlResponse = (DownloadBlockResponse)context.Execute(new DownloadBlockRequest
+      var dlResponse = (DownloadBlockResponse)organizationService.Execute(new DownloadBlockRequest
       {
         FileContinuationToken = response.FileContinuationToken,
         BlockLength = FileBlockSize,
@@ -176,7 +176,7 @@ public static class ExtensionMethods
   /// <param name="entity">The entity with the file or image field</param>
   /// <param name="fileFieldName">The file or image field name</param>
   /// <param name="ct">Optional cancellation token</param>
-  public static async Task DeleteFileAsync([NotNull] this EcerContext context, [NotNull] Entity entity, string fileFieldName, CancellationToken ct = default)
+  public static async Task DeleteFileAsync([NotNull] this OrganizationServiceContext context, [NotNull] Entity entity, string? fileFieldName, CancellationToken ct = default)
   {
     await Task.CompletedTask;
 

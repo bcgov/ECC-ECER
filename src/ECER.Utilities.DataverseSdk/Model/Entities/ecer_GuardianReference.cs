@@ -36,6 +36,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ApplicationSubmitted = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Draft = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -91,6 +94,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_ParentalConsent = "ecer_parentalconsent";
 			public const string ecer_parentalconsentName = "ecer_parentalconsentname";
+			public const string ecer_portalinvitation_GuardianReferenceId = "ecer_portalinvitation_GuardianReferenceId";
 			public const string ecer_PostalCode = "ecer_postalcode";
 			public const string ecer_PrimaryPhoneNumber = "ecer_primaryphonenumber";
 			public const string ecer_Province = "ecer_province";
@@ -1017,6 +1021,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_portalinvitation_GuardianReferenceId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_GuardianReferenceId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation> ecer_portalinvitation_GuardianReferenceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_GuardianReferenceId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_GuardianReferenceId", null, value);
 			}
 		}
 		

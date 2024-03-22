@@ -62,7 +62,7 @@ public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAcces
           builder.ConfigureServices(
                   (_, services) =>
                   {
-                    services.AddLogging(loggingBuilder => loggingBuilder.AddXUnit(this));
+                    services.AddLogging(loggingBuilder => loggingBuilder.ClearProviders().AddXUnit(this));
                     // Configure test authentication and policy - Alba expects JwtBearerDefaults.AuthenticationScheme to automatically configure this
                     services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
                         {
@@ -70,12 +70,7 @@ public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAcces
                           opts.Audience = "test_client";
                         });
 
-                    services.AddAuthorization(opts =>
-                    {
-                      opts.AddPolicy("registry_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
-                      opts.AddPolicy("registry_new_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_new_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
-                      opts.DefaultPolicy = opts.GetPolicy("registry_user")!;
-                    });
+                    services.AddAuthorization(AddAuthorizationOptions);
                   });
           var configOverrides = new Dictionary<string, string?>(configurationSettings ?? Enumerable.Empty<KeyValuePair<string, string?>>());
           builder.ConfigureAppConfiguration(
@@ -85,6 +80,10 @@ public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAcces
                   });
         },
         extensions.ToArray());
+  }
+
+  protected virtual void AddAuthorizationOptions(AuthorizationOptions opts)
+  {
   }
 
   public abstract Task InitializeAsync();

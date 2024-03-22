@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\ECER.Managers.Admin.Contract\ECER.Managers.Admin.Contract.csproj" />
+    <ProjectReference Include="..\ECER.Utilities.ObjectStorage\ECER.Utilities.ObjectStorage.csproj" />
+  </ItemGroup>
+
+</Project>
