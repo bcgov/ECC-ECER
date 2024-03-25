@@ -60,13 +60,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_ApplicationType = "ecer_applicationtype";
-			public const string ecer_applicationtypeName = "ecer_applicationtypename";
 			public const string ecer_DisplayOrder = "ecer_displayorder";
-			public const string ecer_EducationOrigin = "ecer_educationorigin";
-			public const string ecer_educationoriginName = "ecer_educationoriginname";
-			public const string ecer_EducationRecognition = "ecer_educationrecognition";
-			public const string ecer_educationrecognitionName = "ecer_educationrecognitionname";
 			public const string ecer_IANTemplateContentId = "ecer_iantemplatecontentid";
 			public const string Id = "ecer_iantemplatecontentid";
 			public const string ecer_Name = "ecer_name";
@@ -247,38 +241,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationtype")]
-		public virtual ecer_ApplicationTypes? ecer_ApplicationType
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_ApplicationTypes?)(EntityOptionSetEnum.GetEnum(this, "ecer_applicationtype")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_applicationtype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationtypename")]
-		public string ecer_applicationtypeName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_applicationtype"))
-				{
-					return this.FormattedValues["ecer_applicationtype"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_displayorder")]
 		public System.Nullable<int> ecer_DisplayOrder
 		{
@@ -291,70 +253,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_displayorder", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationorigin")]
-		public virtual ecer_EducationOrigin? ecer_EducationOrigin
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_EducationOrigin?)(EntityOptionSetEnum.GetEnum(this, "ecer_educationorigin")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_educationorigin", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationoriginname")]
-		public string ecer_educationoriginName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_educationorigin"))
-				{
-					return this.FormattedValues["ecer_educationorigin"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationrecognition")]
-		public virtual ecer_EducationRecognition? ecer_EducationRecognition
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_EducationRecognition?)(EntityOptionSetEnum.GetEnum(this, "ecer_educationrecognition")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_educationrecognition", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationrecognitionname")]
-		public string ecer_educationrecognitionName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_educationrecognition"))
-				{
-					return this.FormattedValues["ecer_educationrecognition"];
-				}
-				else
-				{
-					return default(string);
-				}
 			}
 		}
 		

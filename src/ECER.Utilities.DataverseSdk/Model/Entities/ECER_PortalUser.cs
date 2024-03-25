@@ -77,6 +77,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CustomeridYomiName = "ecer_customeridyominame";
 			public const string ecer_LastLoggedIn = "ecer_lastloggedin";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_portalinvitation_InvitedById = "ecer_portalinvitation_InvitedById";
+			public const string ecer_portalinvitation_PortalUserId = "ecer_portalinvitation_PortalUserId";
 			public const string ecer_portaluser_Authenticationid = "ecer_portaluser_Authenticationid";
 			public const string ecer_portaluser_Contactid = "ecer_portaluser_Contactid";
 			public const string ecer_PortalUser_ecer_PortalRole = "ecer_PortalUser_ecer_PortalRole";
@@ -886,6 +888,42 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_portalinvitation_InvitedById
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_InvitedById")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation> ecer_portalinvitation_InvitedById
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_InvitedById", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_InvitedById", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_portalinvitation_PortalUserId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_PortalUserId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation> ecer_portalinvitation_PortalUserId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_PortalUserId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_PortalUserId", null, value);
 			}
 		}
 		

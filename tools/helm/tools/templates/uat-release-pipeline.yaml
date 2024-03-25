@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: uat-release-pipeline
+spec:
+  tasks:
+
+    ## Promote test to uat ##
+    - name: uat-registry-portal
+      params:
+        - name: imageName
+          value: registry-portal
+        - name: fromTag
+          value: test
+        - name: toTag
+          value: uat
+      taskRef:
+        kind: Task
+        name: promote-image-task
+    - name: uat-api
+      params:
+        - name: imageName
+          value: api
+        - name: fromTag
+          value: test
+        - name: toTag
+          value: uat
+      taskRef:
+        kind: Task
+        name: promote-image-task

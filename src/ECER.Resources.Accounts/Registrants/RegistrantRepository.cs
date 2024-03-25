@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
+using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Accounts.Registrants;
 

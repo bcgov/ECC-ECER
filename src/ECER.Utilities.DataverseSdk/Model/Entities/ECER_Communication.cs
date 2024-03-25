@@ -74,6 +74,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
 			public const string ecer_communication_Applicationid = "ecer_communication_Applicationid";
+			public const string ecer_communication_Investigation_ecer_investig = "ecer_communication_Investigation_ecer_investig";
 			public const string Referencingecer_communication_ParentCommunicationid = "ecer_communication_ParentCommunicationid";
 			public const string ecer_CommunicationId = "ecer_communicationid";
 			public const string Id = "ecer_communicationid";
@@ -81,8 +82,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_contact_ecer_communication_122 = "ecer_contact_ecer_communication_122";
 			public const string ecer_DateAcknowledged = "ecer_dateacknowledged";
 			public const string ecer_DateNotified = "ecer_datenotified";
+			public const string ecer_FromOracle = "ecer_fromoracle";
 			public const string ecer_InitiatedFrom = "ecer_initiatedfrom";
 			public const string ecer_initiatedfromName = "ecer_initiatedfromname";
+			public const string ecer_Investigation = "ecer_investigation";
+			public const string ecer_InvestigationName = "ecer_investigationname";
 			public const string ecer_Message = "ecer_message";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NotifyRecipient = "ecer_notifyrecipient";
@@ -410,6 +414,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromoracle")]
+		public string ecer_FromOracle
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_fromoracle");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_fromoracle", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_initiatedfrom")]
 		public virtual ecer_InitiatedFrom? ecer_InitiatedFrom
 		{
@@ -434,6 +453,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_initiatedfrom"))
 				{
 					return this.FormattedValues["ecer_initiatedfrom"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Investigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_investigation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationname")]
+		public string ecer_InvestigationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_investigation"))
+				{
+					return this.FormattedValues["ecer_investigation"];
 				}
 				else
 				{
@@ -1071,6 +1122,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_communication_Applicationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_communication_Investigation_ecer_investig
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_Investigation_ecer_investig")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_communication_Investigation_ecer_investig
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_communication_Investigation_ecer_investig", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_communication_Investigation_ecer_investig", null, value);
 			}
 		}
 		

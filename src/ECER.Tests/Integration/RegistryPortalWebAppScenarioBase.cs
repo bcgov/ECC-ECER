@@ -1,6 +1,9 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Xrm.Sdk.Client;
 using System.Globalization;
 using Xunit.Abstractions;
 
@@ -29,6 +32,14 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
   public string communicationId => testCommunication.Id.ToString();
   public string applicationId => testApplication.Id.ToString();
+
+  protected override void AddAuthorizationOptions(AuthorizationOptions opts)
+  {
+    ArgumentNullException.ThrowIfNull(opts);
+    opts.AddPolicy("registry_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+    opts.AddPolicy("registry_new_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_new_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+    opts.DefaultPolicy = opts.GetPolicy("registry_user")!;
+  }
 
   public override async Task InitializeAsync()
   {
