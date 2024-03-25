@@ -17,3 +17,14 @@ spec:
       taskRef:
         kind: Task
         name: promote-image-task
+    - name: test-api
+      params:
+        - name: imageName
+          value: api
+        - name: fromTag
+          value: dev
+        - name: toTag
+          value: test
+      taskRef:
+        kind: Task
+        name: promote-image-task

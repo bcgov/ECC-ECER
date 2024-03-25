@@ -36,10 +36,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		ApplicationSubmitted = 621870006,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Draft = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		InProgress = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Rejected = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Submitted = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		UnderReview = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		WaitingResponse = 621870003,
 	}
 	
 	/// <summary>
@@ -81,6 +99,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NumberofHours = "ecer_numberofhours";
 			public const string ecer_OrganizationName = "ecer_organizationname";
+			public const string ecer_portalinvitation_ProfessionalDevelopment = "ecer_portalinvitation_ProfessionalDevelopment";
 			public const string ecer_ProfessionalDevelopmentId = "ecer_professionaldevelopmentid";
 			public const string Id = "ecer_professionaldevelopmentid";
 			public const string ecer_StartDate = "ecer_startdate";
@@ -946,6 +965,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_portalinvitation_ProfessionalDevelopment
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_ProfessionalDevelopment")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation> ecer_portalinvitation_ProfessionalDevelopment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_ProfessionalDevelopment", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_ProfessionalDevelopment", null, value);
 			}
 		}
 		

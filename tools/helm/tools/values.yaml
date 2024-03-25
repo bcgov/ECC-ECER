@@ -3,3 +3,7 @@ images:
     image: artifacts.developer.gov.bc.ca/github-docker-remote/bcgov/ecc-ecer/registry-portal
     tags:
       dev: latest
+  api:
+    image: artifacts.developer.gov.bc.ca/github-docker-remote/bcgov/ecc-ecer/api
+    tags:
+      dev: latest      

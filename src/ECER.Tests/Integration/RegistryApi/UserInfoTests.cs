@@ -1,9 +1,9 @@
-﻿using Alba;
+﻿using System.Net;
+using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Users;
 using ECER.Utilities.Security;
 using Shouldly;
-using System.Net;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.Api;
@@ -14,7 +14,7 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
   {
   }
 
-  [Fact(Skip = "fails due to custom realm changes")]
+  [Fact]
   public async Task PostUserInfo_NewBceidUser_Ok()
   {
     await Host.Scenario(_ =>

@@ -5,7 +5,6 @@ import type { Components } from "@/types/openapi";
 import type { Step, Wizard } from "@/types/wizard";
 
 import { useUserStore } from "./user";
-
 export interface WizardData {
   [key: string]: any;
 }
@@ -100,6 +99,10 @@ export const useWizardStore = defineStore("wizard", {
     },
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };
+    },
+    setCurrentStep(stage: Components.Schemas.PortalStage): void {
+      const item = Object.values(this.wizardConfig.steps).findIndex((step) => step.stage === stage) + 1;
+      this.step = item;
     },
     incrementStep(): void {
       if (this.step < Object.keys(this.wizardConfig.steps).length) {

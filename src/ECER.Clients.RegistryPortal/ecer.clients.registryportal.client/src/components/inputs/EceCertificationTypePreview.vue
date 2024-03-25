@@ -6,7 +6,7 @@
           <h3 class="font-black">Certification Selection</h3>
         </v-col>
         <v-col align="end">
-          <v-btn v-bind="props" icon="mdi-pencil" color="primary" variant="plain" />
+          <v-btn v-bind="props" icon="mdi-pencil" color="primary" variant="plain" @click="setWizard('CertificationType')" />
         </v-col>
       </v-row>
       <v-row>
@@ -25,9 +25,10 @@
 import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
+import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
-
+import type { Components } from "@/types/openapi";
 export default defineComponent({
   name: "EceCertificationTypePreview",
   components: {
@@ -41,9 +42,10 @@ export default defineComponent({
   },
   setup: () => {
     const wizardStore = useWizardStore();
-
+    const applicationStore = useApplicationStore();
     return {
       wizardStore,
+      applicationStore,
     };
   },
   computed: {
@@ -66,6 +68,12 @@ export default defineComponent({
         }
       }
       return certificationType;
+    },
+  },
+  methods: {
+    setWizard(stage: Components.Schemas.PortalStage) {
+      this.wizardStore.setCurrentStep(stage);
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
     },
   },
 });

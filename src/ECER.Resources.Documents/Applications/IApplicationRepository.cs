@@ -76,7 +76,8 @@ public enum ApplicationStatus
   Ready,
   InProgress,
   PendingQueue,
-  ReconsiderationDecision
+  ReconsiderationDecision,
+  AppealDecision
 }
 
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)

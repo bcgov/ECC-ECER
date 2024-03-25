@@ -216,7 +216,7 @@ export default defineComponent({
           lastName: this.lastName,
           emailAddress: this.email,
           phoneNumber: this.phoneNumber,
-          hours: parseInt(this.hours),
+          hours: parseInt(this.hours!.toString()),
         };
 
         // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
