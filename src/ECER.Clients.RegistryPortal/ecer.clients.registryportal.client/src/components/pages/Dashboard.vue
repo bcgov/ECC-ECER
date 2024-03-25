@@ -133,8 +133,7 @@ export default defineComponent({
       this.$router.push("/application");
     },
     async cancelApplication() {
-      // const cancelledApplicationId = await cancelDraftApplication(this.applicationStore.draftApplication.id!);
-      const { data: cancelledApplicationId } = await cancelDraftApplication("fail");
+      const { data: cancelledApplicationId } = await cancelDraftApplication(this.applicationStore.draftApplication.id!);
       if (cancelledApplicationId) {
         this.applicationStore.fetchApplications();
         this.alertStore.setSuccessAlert("Application successfully cancelled");
