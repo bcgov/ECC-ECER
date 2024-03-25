@@ -28,8 +28,8 @@
         <v-card-actions>
           <v-row>
             <v-col class="text-right">
-              <v-btn :class="{ 'mb-2': smAndDown }" variant="outlined" @click="cancel">{{ cancelButtonText }}</v-btn>
-              <v-btn color="warning" variant="outlined" @click="accept">{{ acceptButtonText }}</v-btn>
+              <v-btn rounded="lg" :class="{ 'mb-2': smAndDown }" variant="outlined" @click="cancel">{{ cancelButtonText }}</v-btn>
+              <v-btn rounded="lg" color="warning" variant="outlined" @click="accept">{{ acceptButtonText }}</v-btn>
             </v-col>
           </v-row>
         </v-card-actions>
