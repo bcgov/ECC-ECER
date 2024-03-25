@@ -6,7 +6,7 @@
           <h3>Work Experience References</h3>
         </v-col>
         <v-col align="end">
-          <v-btn @click="setWizard('WorkReferences')" v-bind="props" icon="mdi-pencil" color="primary" variant="plain" />
+          <v-btn v-bind="props" icon="mdi-pencil" color="primary" variant="plain" @click="setWizard('WorkReferences')" />
         </v-col>
       </v-row>
       <div v-for="(experience, id, index) in references" :key="id">
@@ -47,8 +47,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useApplicationStore } from "@/store/application";
+
 import PreviewCard from "@/components/PreviewCard.vue";
+import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
@@ -69,18 +70,19 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
 
     return {
-      wizardStore,applicationStore,
+      wizardStore,
+      applicationStore,
     };
-  },
-  methods:{
-    setWizard(stage:string) {
-      this.wizardStore.setCurrentStep(stage);
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
-    },
   },
   computed: {
     references(): { [id: string]: Components.Schemas.WorkExperienceReference } {
       return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workReference.form.inputs.referenceList.id];
+    },
+  },
+  methods: {
+    setWizard(stage: Components.Schemas.PortalStage) {
+      this.wizardStore.setCurrentStep(stage);
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
     },
   },
 });
