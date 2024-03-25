@@ -11,7 +11,7 @@
       transition="slide-y-transition"
       class="snackbar"
     >
-      <v-icon v-if="icon" :icon="icon" class="mr-2"/>
+      <v-icon v-if="icon" :icon="icon" class="mr-2" />
       {{ alertNotificationText }}
       <template #actions>
         <v-btn text="true" :color="colour == AlertNotificationType.WARN ? 'black' : 'white'" v-bind="$attrs" @click="showSnackBar = false">

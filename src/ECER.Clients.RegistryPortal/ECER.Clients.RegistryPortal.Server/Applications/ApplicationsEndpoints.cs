@@ -113,8 +113,8 @@ public record ApplicationSubmissionRequest(string Id);
 /// <summary>
 /// Save draft application response
 /// </summary>
-/// <param name="Id">The application id</param>
-public record DraftApplicationResponse(string Id);
+/// <param name="ApplicationId">The application id</param>
+public record DraftApplicationResponse(string ApplicationId);
 
 /// <summary>
 /// delete draft application response

@@ -33,4 +33,13 @@ const submitDraftApplication = async (applicationId: string): Promise<ApiRespons
   return apiResultHandler.execute<Components.Schemas.SubmitApplicationResponse | null | undefined>(client.application_post(null, body));
 };
 
-export { createOrUpdateDraftApplication, getApplications, submitDraftApplication };
+const cancelDraftApplication = async (applicationId: string): Promise<ApiResponse<Components.Schemas.SubmitApplicationResponse | null | undefined>> => {
+  const client = await getClient();
+  const pathParameters = {
+    id: applicationId,
+  };
+
+  return await apiResultHandler.execute<Components.Schemas.SubmitApplicationResponse | null | undefined>(client.draftapplication_delete(pathParameters));
+};
+
+export { cancelDraftApplication, createOrUpdateDraftApplication, getApplications, submitDraftApplication };
