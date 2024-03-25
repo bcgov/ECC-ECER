@@ -6,7 +6,7 @@
           <h3>Education</h3>
         </v-col>
         <v-col align="end">
-          <v-btn v-bind="props" icon="mdi-pencil" color="primary" variant="plain" />
+          <v-btn v-bind="props" icon="mdi-pencil" color="primary" variant="plain" @click="setWizard('Education')" />
         </v-col>
       </v-row>
       <div v-for="(education, id, index) in educations" :key="id">
@@ -81,6 +81,7 @@
 import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
+import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
@@ -98,14 +99,21 @@ export default defineComponent({
   },
   setup: () => {
     const wizardStore = useWizardStore();
-
+    const applicationStore = useApplicationStore();
     return {
       wizardStore,
+      applicationStore,
     };
   },
   computed: {
     educations(): { [id: string]: Components.Schemas.Transcript } {
       return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.education.form.inputs.educationList.id];
+    },
+  },
+  methods: {
+    setWizard(stage: Components.Schemas.PortalStage) {
+      this.wizardStore.setCurrentStep(stage);
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
     },
   },
 });
