@@ -52,6 +52,15 @@ declare namespace Components {
        */
       id?: string | null;
     }
+    /**
+     * delete draft application response
+     */
+    export interface CancelDraftApplicationResponse {
+      /**
+       * The application id
+       */
+      applicationId?: string | null;
+    }
     export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
     export interface CharacterReference {
       firstName?: string | null;
@@ -186,12 +195,25 @@ declare namespace Paths {
     export type RequestBody = /* Submit application request */ Components.Schemas.ApplicationSubmissionRequest;
     namespace Responses {
       export type $200 = Components.Schemas.SubmitApplicationResponse;
-      export type $400 = string;
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
     }
   }
   namespace ConfigurationGet {
     namespace Responses {
       export type $200 = Components.Schemas.ApplicationConfiguration;
+    }
+  }
+  namespace DraftapplicationDelete {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = /* delete draft application response */ Components.Schemas.CancelDraftApplicationResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace DraftapplicationPut {
@@ -325,6 +347,16 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
+  /**
+   * draftapplication_delete - Cancel a draft application for the current user
+   *
+   * Changes status to cancelled
+   */
+  "draftapplication_delete"(
+    parameters?: Parameters<Paths.DraftapplicationDelete.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.DraftapplicationDelete.Responses.$200>;
 }
 
 export interface PathsDictionary {
@@ -411,6 +443,18 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
+  };
+  ["/api/draftApplications/{id}"]: {
+    /**
+     * draftapplication_delete - Cancel a draft application for the current user
+     *
+     * Changes status to cancelled
+     */
+    "delete"(
+      parameters?: Parameters<Paths.DraftapplicationDelete.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.DraftapplicationDelete.Responses.$200>;
   };
 }
 
