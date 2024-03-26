@@ -48,9 +48,21 @@
                 <p class="small">Complete and submit your application for certification in early childhood education.</p>
               </v-card-item>
               <v-card-actions class="ma-4">
-                <v-btn v-if="applicationStore.hasDraftApplication" variant="flat" rounded="lg" color="primary" @click="$router.push('/application')">
-                  Continue Your Application
-                </v-btn>
+                <v-row v-if="applicationStore.hasDraftApplication">
+                  <v-col>
+                    <v-btn variant="flat" rounded="lg" color="primary" @click="$router.push('/application')">Continue Your Application</v-btn>
+                    <ConfirmationDialog
+                      :config="{ cancelButtonText: 'Keep Application', acceptButtonText: 'Cancel Application', title: 'Cancel Application' }"
+                      @accept="cancelApplication"
+                    >
+                      <template #activator>Cancel Application</template>
+                      <template #confirmation-text>
+                        <p>By cancelling your application, it will be removed from the system. You cannot undo this.</p>
+                        <p><b>Are you sure you want to proceed?</b></p>
+                      </template>
+                    </ConfirmationDialog>
+                  </v-col>
+                </v-row>
                 <v-btn v-else variant="flat" rounded="lg" color="primary" @click="handleStartNewApplication">Start New Application</v-btn>
               </v-card-actions>
             </v-card>
@@ -81,6 +93,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { cancelDraftApplication } from "@/api/application";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
+import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useMessageStore } from "@/store/message";
 import { useUserStore } from "@/store/user";
@@ -88,10 +103,12 @@ import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "Dashboard",
+  components: { ConfirmationDialog },
   setup() {
     const userStore = useUserStore();
     const messageStore = useMessageStore();
     const applicationStore = useApplicationStore();
+    const alertStore = useAlertStore();
 
     const navigationOptions = [
       { name: "My Certifications", path: "/my-certifications", icon: "mdi-folder" },
@@ -104,7 +121,7 @@ export default defineComponent({
       { name: "Profile", path: "/profile", icon: "mdi-account-edit" },
     ];
 
-    return { userStore, applicationStore, navigationOptions };
+    return { userStore, applicationStore, navigationOptions, alertStore };
   },
   data: () => ({
     drawer: null as boolean | null | undefined,
@@ -114,6 +131,15 @@ export default defineComponent({
     handleStartNewApplication() {
       this.applicationStore.upsertDraftApplication();
       this.$router.push("/application");
+    },
+    async cancelApplication() {
+      const { data: cancelledApplicationId } = await cancelDraftApplication(this.applicationStore.draftApplication.id!);
+      if (cancelledApplicationId) {
+        this.applicationStore.fetchApplications();
+        this.alertStore.setSuccessAlert("Application successfully cancelled");
+      } else {
+        this.alertStore.setFailureAlert("Unable to cancel application.");
+      }
     },
   },
 });

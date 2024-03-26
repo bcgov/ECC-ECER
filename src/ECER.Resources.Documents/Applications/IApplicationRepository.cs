@@ -7,6 +7,8 @@ public interface IApplicationRepository
   Task<string> SaveDraft(Application application, CancellationToken cancellationToken);
 
   Task<string> Submit(string applicationId, CancellationToken cancellationToken);
+
+  Task<string> Cancel(string applicationId, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery

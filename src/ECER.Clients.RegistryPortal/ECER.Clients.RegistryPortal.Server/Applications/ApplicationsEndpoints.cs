@@ -78,6 +78,23 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .WithOpenApi("Handles application queries", string.Empty, "application_get")
         .RequireAuthorization()
         .WithParameterValidation();
+
+    endpointRouteBuilder.MapDelete("/api/draftApplications/{id}", async Task<Results<Ok<CancelDraftApplicationResponse>, BadRequest<ProblemDetails>>> (string id, HttpContext ctx, CancellationToken ct, IMessageBus messageBus) =>
+       {
+         var userId = ctx.User.GetUserContext()?.UserId;
+
+         bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid)
+         {
+           return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
+         }
+
+         var cancelledApplicationId = await messageBus.InvokeAsync<string>(new CancelDraftApplicationCommand(id, userId!), ct);
+
+         return TypedResults.Ok(new CancelDraftApplicationResponse(cancelledApplicationId));
+       })
+       .WithOpenApi("Cancel a draft application for the current user", "Changes status to cancelled", "draftapplication_delete")
+       .RequireAuthorization()
+       .WithParameterValidation();
   }
 }
 
@@ -98,6 +115,12 @@ public record ApplicationSubmissionRequest(string Id);
 /// </summary>
 /// <param name="ApplicationId">The application id</param>
 public record DraftApplicationResponse(string ApplicationId);
+
+/// <summary>
+/// delete draft application response
+/// </summary>
+/// <param name="ApplicationId">The application id</param>
+public record CancelDraftApplicationResponse(string ApplicationId);
 
 public record SubmitApplicationResponse(string ApplicationId);
 

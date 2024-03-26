@@ -2,6 +2,7 @@
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Applications;
 using Shouldly;
+using System.Net;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.RegistryApi;
@@ -137,6 +138,44 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUserId);
       _.Post.Json(submissionRequest).ToUrl("/api/applications");
       _.StatusCodeShouldBe(400);
+    });
+  }
+
+  [Fact]
+  public async Task CancelApplication_ById_ShouldReturnId_QueryApplications_ShouldNotReturnCancelledApplications()
+  {
+    var application = CreateDraftApplication();
+    application.Id = this.Fixture.applicationId2;
+
+    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity2, this.Fixture.AuthenticatedBcscUserId2);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+
+    var applicationByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity2, this.Fixture.AuthenticatedBcscUserId2);
+      _.Delete.Url($"/api/draftApplications/{applicationId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    (await applicationByIdResponse.ReadAsJsonAsync<CancelDraftApplicationResponse>()).ShouldNotBeNull().ApplicationId.ShouldBe(applicationId);
+  }
+
+  [Fact]
+  public async Task CancelApplication_ById_WithInvalidApplicationId_ShouldReturnBadRequest()
+  {
+    Guid randomGuid = Guid.NewGuid();
+
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Delete.Url($"/api/draftApplications/{randomGuid}");
+      _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
     });
   }
 

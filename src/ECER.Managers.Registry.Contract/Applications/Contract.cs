@@ -6,6 +6,11 @@
 public record SaveDraftApplicationCommand(Application Application);
 
 /// <summary>
+/// Invokes draft application saving use case
+/// </summary>
+public record CancelDraftApplicationCommand(string applicationId, string userId);
+
+/// <summary>
 /// Invokes application submission use case
 /// </summary>
 /// <param name="applicationId"></param>
