@@ -360,7 +360,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task CancelApplication_QueryShouldnotReturnResults_ThenTryToSubmitAgain_ShouldThrowInvalidOperationException()
+  public async Task CancelApplication_QueryShouldnotReturnResults_ThenTryToCancelAgain_ShouldThrowInvalidOperationException()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId2;
     var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
