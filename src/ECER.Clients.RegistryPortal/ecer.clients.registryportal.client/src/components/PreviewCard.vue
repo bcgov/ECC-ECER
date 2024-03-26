@@ -1,7 +1,12 @@
 <template>
   <v-card variant="outlined" :color="cardColor" rounded="lg">
     <div class="float-right">
-      <v-btn icon="mdi-pencil" :color="isValid ? 'primary' : 'error'" variant="plain" @click="setWizard(portalStage)" />
+      <v-tooltip v-model="show" location="top">
+        <template #activator="{ props }">
+          <v-btn icon="mdi-pencil" v-bind="props" :color="isValid ? 'primary' : 'error'" variant="plain" @click="setWizard(portalStage)" />
+        </template>
+        <span>Edit {{ title }}</span>
+      </v-tooltip>
     </div>
     <v-container>
       <v-row align="center">
@@ -50,6 +55,9 @@ export default defineComponent({
       applicationStore,
     };
   },
+  data: () => ({
+    show: false,
+  }),
   computed: {
     cardColor() {
       return this.isValid ? "grey-lightest" : "error";
