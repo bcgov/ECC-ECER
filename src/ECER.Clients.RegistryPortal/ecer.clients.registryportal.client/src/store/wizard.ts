@@ -15,6 +15,10 @@ export interface WizardState {
   wizardData: WizardData;
 }
 
+export type PortalStageValidation = {
+  [key in Components.Schemas.PortalStage]: boolean;
+};
+
 export const useWizardStore = defineStore("wizard", {
   state: (): WizardState => ({
     step: 1,
@@ -23,7 +27,9 @@ export const useWizardStore = defineStore("wizard", {
   }),
   persist: true,
   getters: {
-    steps: (state) => Object.values(state.wizardConfig.steps),
+    steps(state): Step[] {
+      return Object.values(state.wizardConfig.steps);
+    },
     currentStep(state): Step {
       return this.steps[state.step - 1];
     },
@@ -32,6 +38,27 @@ export const useWizardStore = defineStore("wizard", {
     },
     currentStepStage(state): Components.Schemas.PortalStage {
       return this.steps[state.step - 1].stage;
+    },
+    validationState(state): PortalStageValidation {
+      let totalHours = 0;
+      const referenceListPath = state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id];
+      if (Array.isArray(referenceListPath) && referenceListPath.length > 0) {
+        totalHours = referenceListPath.reduce((sum, currentReference) => {
+          return sum + (currentReference.hours || 0);
+        }, 0);
+      }
+
+      return {
+        CertificationType: (state.wizardData[this.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].length || []) > 0,
+        Declaration:
+          state.wizardData[this.wizardConfig.steps.declaration.form.inputs.signedDate.id] !== null &&
+          state.wizardData[this.wizardConfig.steps.declaration.form.inputs.consentCheckbox.id] === true,
+        ContactInformation: true,
+        Education: Object.values(state.wizardData[this.wizardConfig.steps.education.form.inputs.educationList.id]).length > 0,
+        CharacterReferences: (state.wizardData[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id].length || []) > 0,
+        WorkReferences: Object.values(state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id]).length > 0 && totalHours >= 500,
+        Review: true,
+      };
     },
   },
   actions: {
@@ -107,11 +134,13 @@ export const useWizardStore = defineStore("wizard", {
     incrementStep(): void {
       if (this.step < Object.keys(this.wizardConfig.steps).length) {
         this.step += 1;
+        window.scrollTo(0, 0);
       }
     },
     decrementStep(): void {
       if (this.step > 1) {
         this.step -= 1;
+        window.scrollTo(0, 0);
       }
     },
   },

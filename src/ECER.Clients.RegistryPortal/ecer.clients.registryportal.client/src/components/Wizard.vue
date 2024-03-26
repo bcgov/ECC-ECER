@@ -1,23 +1,37 @@
 <template>
   <WizardHeader class="mb-6" />
-  <v-stepper v-model="wizardStore.step" min-height="100dvh" flat color="primary" :items="getStepTitles()" :alt-labels="true" :mobile="$vuetify.display.mobile">
-    <template v-for="step in wizard.steps" :key="step.stage" #[step.key]>
-      <v-container>
-        <h3>{{ step.title }}</h3>
-        <h4>{{ step.subtitle }}</h4>
-        <DeclarationStepContent v-if="step.stage == 'Declaration'" class="mt-6" />
-        <v-row>
-          <v-col cols="12">
-            <EceForm
-              :form="step.form"
-              :form-data="wizardStore.wizardData"
-              @updated-form-data="wizardStore.setWizardData"
-              @updated-validation="$emit('updatedValidation', $event)"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
-    </template>
+  <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :mobile="$vuetify.display.mobile">
+    <v-stepper-header>
+      <template v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage">
+        <v-stepper-item
+          color="primary"
+          :step="wizardStore.step"
+          :value="index + 1"
+          :title="step.title"
+          :rules="wizardStore.step <= index + 1 ? [] : [() => wizardStore.validationState[step.stage]]"
+        ></v-stepper-item>
+        <v-divider v-if="index !== Object.values(wizard.steps).length - 1" :key="`divider-${index}`" />
+      </template>
+    </v-stepper-header>
+    <v-stepper-window v-model="wizardStore.step">
+      <v-stepper-window-item v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage" :value="index + 1">
+        <v-container>
+          <h3>{{ step.title }}</h3>
+          <h4>{{ step.subtitle }}</h4>
+          <DeclarationStepContent v-if="step.stage == 'Declaration'" class="mt-6" />
+          <v-row>
+            <v-col cols="12">
+              <EceForm
+                :form="step.form"
+                :form-data="wizardStore.wizardData"
+                @updated-form-data="wizardStore.setWizardData"
+                @updated-validation="$emit('updatedValidation', $event)"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-stepper-window-item>
+    </v-stepper-window>
     <template #actions>
       <slot name="actions"></slot>
     </template>
