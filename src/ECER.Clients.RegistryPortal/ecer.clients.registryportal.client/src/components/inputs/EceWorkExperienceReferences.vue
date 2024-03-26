@@ -6,7 +6,7 @@
       <v-form ref="addWorkExperienceReferenceForm" validate-on="input" class="mt-6">
         <v-text-field
           v-model="lastName"
-          :rules="[Rules.required()]"
+          :rules="[Rules.required('Enter your reference\'s last name')]"
           label="Reference Last Name"
           variant="outlined"
           color="primary"
@@ -14,7 +14,7 @@
         ></v-text-field>
         <v-text-field
           v-model="firstName"
-          :rules="[Rules.required()]"
+          :rules="[Rules.required('Enter your reference\'s first name')]"
           label="Reference First Name"
           variant="outlined"
           color="primary"
@@ -23,7 +23,7 @@
         ></v-text-field>
         <v-text-field
           v-model="email"
-          :rules="[Rules.required(), Rules.email()]"
+          :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
           label="Reference Email"
           variant="outlined"
           color="primary"
@@ -32,16 +32,17 @@
         ></v-text-field>
         <v-text-field
           v-model="phoneNumber"
-          :rules="[Rules.phoneNumber()]"
+          :rules="[Rules.phoneNumber('Enter your reference\'s 10-digit phone number')]"
           label="Reference Phone Number (Optional)"
           variant="outlined"
           color="primary"
           maxlength="20"
           class="my-8"
+          @keypress="isNumber($event)"
         ></v-text-field>
         <v-text-field
           v-model.number="hours"
-          :rules="[Rules.required()]"
+          :rules="[Rules.required('Enter your work experience hours')]"
           type="number"
           label="Work Experience Hours"
           variant="outlined"
