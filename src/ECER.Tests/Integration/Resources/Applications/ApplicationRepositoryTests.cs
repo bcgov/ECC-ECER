@@ -365,7 +365,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
 
     return new CharacterReference(
-      faker.Name.FirstName(), faker.Name.LastName(), faker.Internet.Email(), faker.Phone.PhoneNumber()
+      faker.Name.FirstName(), faker.Name.LastName(), faker.Phone.PhoneNumber(), faker.Internet.Email()
     );
   }
 
