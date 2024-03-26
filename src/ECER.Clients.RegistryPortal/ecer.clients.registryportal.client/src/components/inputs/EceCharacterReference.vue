@@ -16,8 +16,8 @@
     <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="firstName"
-        :rules="[Rules.required()]"
-        label="First Name"
+        :rules="[Rules.required('Enter your reference\'s first name')]"
+        label="Reference First Name"
         variant="outlined"
         color="primary"
         maxlength="100"
@@ -29,8 +29,8 @@
     <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="lastName"
-        :rules="[Rules.required()]"
-        label="Last Name"
+        :rules="[Rules.required('Enter your reference\'s last name')]"
+        label="Reference Last Name"
         variant="outlined"
         color="primary"
         maxlength="100"
@@ -42,8 +42,8 @@
     <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="phoneNumber"
-        :rules="[Rules.phoneNumber()]"
-        label="Phone Number (Optional)"
+        :rules="[Rules.phoneNumber('Enter your reference\'s 10-digit phone number')]"
+        label="Reference Phone Number (Optional)"
         variant="outlined"
         color="primary"
         type="number"
@@ -56,8 +56,8 @@
     <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="emailAddress"
-        :rules="[Rules.required(), Rules.email()]"
-        label="Email"
+        :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
+        label="Reference Email"
         variant="outlined"
         color="primary"
         maxlength="100"
