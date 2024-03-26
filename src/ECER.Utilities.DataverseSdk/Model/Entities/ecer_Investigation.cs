@@ -398,6 +398,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ParallelProcess = "ecer_parallelprocess";
 			public const string ecer_parallelprocesscommunicationinvestigation = "ecer_parallelprocesscommunicationinvestigation";
 			public const string ecer_parallelprocessName = "ecer_parallelprocessname";
+			public const string ecer_PortalSubmission = "ecer_portalsubmission";
+			public const string ecer_portalsubmissionName = "ecer_portalsubmissionname";
 			public const string ecer_PreviouslyInvestigatedIntake = "ecer_previouslyinvestigatedintake";
 			public const string ecer_previouslyinvestigatedintakeName = "ecer_previouslyinvestigatedintakename";
 			public const string ecer_ReadyforAssignment = "ecer_readyforassignment";
@@ -3423,6 +3425,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_parallelprocess"))
 				{
 					return this.FormattedValues["ecer_parallelprocess"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portalsubmission")]
+		public System.Nullable<bool> ecer_PortalSubmission
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_portalsubmission");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_portalsubmission", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portalsubmissionname")]
+		public string ecer_portalsubmissionName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_portalsubmission"))
+				{
+					return this.FormattedValues["ecer_portalsubmission"];
 				}
 				else
 				{

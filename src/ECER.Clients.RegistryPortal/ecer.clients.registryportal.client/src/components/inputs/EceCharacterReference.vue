@@ -46,6 +46,7 @@
         label="Phone Number (Optional)"
         variant="outlined"
         color="primary"
+        type="number"
         maxlength="100"
         @update:model-value="updateCharacterReference()"
       ></v-text-field>

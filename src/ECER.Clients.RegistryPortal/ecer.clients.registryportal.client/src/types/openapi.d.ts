@@ -186,7 +186,8 @@ declare namespace Paths {
     export type RequestBody = /* Submit application request */ Components.Schemas.ApplicationSubmissionRequest;
     namespace Responses {
       export type $200 = Components.Schemas.SubmitApplicationResponse;
-      export type $400 = string;
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
     }
   }
   namespace ConfigurationGet {
