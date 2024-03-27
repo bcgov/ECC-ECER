@@ -9,7 +9,7 @@ spec:
     - name: dev-registry-portal
       params:
         - name: sourceImage
-          value: artifacts.developer.gov.bc.ca/github-docker-remote/bcgov/ecc-ecer/registry-portal
+          value: ghcr.io/bcgov/ecc-ecer/registry-portal
         - name: sourceTag
           value: latest
         - name: destinationImage
@@ -24,7 +24,7 @@ spec:
     - name: dev-api
       params:
         - name: sourceImage
-          value: artifacts.developer.gov.bc.ca/github-docker-remote/bcgov/ecc-ecer/api
+          value: ghcr.io/bcgov/ecc-ecer/api
         - name: sourceTag
           value: latest
         - name: destinationImage
