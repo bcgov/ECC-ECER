@@ -17,12 +17,12 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
+import type { VForm } from "vuetify/components";
 
 import FormContainer from "@/components/FormContainer.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import profileInformationForm from "@/config/profile-information-form";
 import type { Form } from "@/types/form";
-import type { VForm } from "vuetify/components";
 
 export default defineComponent({
   name: "EcerForm",
@@ -41,6 +41,9 @@ export default defineComponent({
     updatedFormData: (_formData: Record<string, any>) => true,
     updatedValidation: (_validation: boolean | null) => true,
   },
+  mounted() {
+    setTimeout(this.resetFormValidation, 100);
+  },
   methods: {
     onInputChanged(id: string, value: any) {
       this.$emit("updatedFormData", { ...this.formData, [id]: value });
@@ -51,9 +54,6 @@ export default defineComponent({
     resetFormValidation() {
       (this.$refs[this.form.id] as VForm).resetValidation();
     },
-  },
-  mounted() {
-    setTimeout(this.resetFormValidation, 100);
   },
 });
 </script>

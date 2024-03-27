@@ -143,11 +143,11 @@ import Alert from "@/components/Alert.vue";
 import WorkExperienceReferenceList, { type WorkExperienceReferenceData } from "@/components/WorkExperienceReferenceList.vue";
 import WorkExperienceReferenceProgressBar from "@/components/WorkExperienceReferenceProgressBar.vue";
 import { useAlertStore } from "@/store/alert";
+import { useWizardStore } from "@/store/wizard";
 import type { EceWorkExperienceReferencesProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
-import { useWizardStore } from "@/store/wizard";
 
 export default defineComponent({
   name: "EceEdducation",
