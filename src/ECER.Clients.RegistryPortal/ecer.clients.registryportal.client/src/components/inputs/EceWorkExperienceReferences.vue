@@ -116,6 +116,11 @@
           <p class="small">You must enter 500 hours of work experience to submit your application.</p>
         </Alert>
       </v-col>
+      <v-col v-if="duplicateCharacterReference" sm="12" md="10" lg="8" xl="6">
+        <Alert type="error">
+          <p class="small">Your work experience reference(s) cannot be the same as your character reference</p>
+        </Alert>
+      </v-col>
       <v-col sm="12" md="10" lg="8" xl="6" class="my-6">
         <WorkExperienceReferenceProgressBar :references="modelValue" />
       </v-col>
@@ -142,6 +147,7 @@ import type { EceWorkExperienceReferencesProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
+import { useWizardStore } from "@/store/wizard";
 
 export default defineComponent({
   name: "EceEdducation",
@@ -161,9 +167,11 @@ export default defineComponent({
   },
   setup: () => {
     const alertStore = useAlertStore();
+    const wizardStore = useWizardStore();
 
     return {
       alertStore,
+      wizardStore,
     };
   },
   data: function () {
@@ -194,6 +202,17 @@ export default defineComponent({
     },
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
+    },
+    duplicateCharacterReference() {
+      const check = Object.values(this.modelValue).some((workExperienceReference: Components.Schemas.WorkExperienceReference) => {
+        const characterReferenceKey = this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id;
+        return (
+          workExperienceReference.firstName === this.wizardStore.wizardData?.[characterReferenceKey][0].firstName &&
+          workExperienceReference.lastName === this.wizardStore.wizardData?.[characterReferenceKey][0].lastName &&
+          workExperienceReference.emailAddress === this.wizardStore.wizardData?.[characterReferenceKey][0].emailAddress
+        );
+      });
+      return check;
     },
   },
   mounted() {

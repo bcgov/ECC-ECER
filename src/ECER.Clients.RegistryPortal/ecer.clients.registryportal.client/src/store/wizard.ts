@@ -50,6 +50,16 @@ export const useWizardStore = defineStore("wizard", {
         }, 0);
       }
 
+      const duplicateCharacterReferenceFound = references.some((workExperienceReference: Components.Schemas.WorkExperienceReference) => {
+        return (
+          workExperienceReference.firstName ===
+            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id][0].firstName &&
+          workExperienceReference.lastName === state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id][0].lastName &&
+          workExperienceReference.emailAddress ===
+            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id][0].emailAddress
+        );
+      });
+
       return {
         CertificationType: (state.wizardData[this.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].length || []) > 0,
         Declaration:
@@ -58,7 +68,10 @@ export const useWizardStore = defineStore("wizard", {
         ContactInformation: true,
         Education: Object.values(state.wizardData[this.wizardConfig.steps.education.form.inputs.educationList.id]).length > 0,
         CharacterReferences: (state.wizardData[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id].length || []) > 0,
-        WorkReferences: Object.values(state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id]).length > 0 && totalHours >= 500,
+        WorkReferences:
+          Object.values(state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id]).length > 0 &&
+          totalHours >= 500 &&
+          !duplicateCharacterReferenceFound,
         Review: true,
       };
     },
