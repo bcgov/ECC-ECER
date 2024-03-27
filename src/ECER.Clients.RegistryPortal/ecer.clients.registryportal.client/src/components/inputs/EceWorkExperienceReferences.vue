@@ -207,9 +207,9 @@ export default defineComponent({
       const check = Object.values(this.modelValue).some((workExperienceReference: Components.Schemas.WorkExperienceReference) => {
         const characterReferenceKey = this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id;
         return (
-          workExperienceReference.firstName === this.wizardStore.wizardData?.[characterReferenceKey][0].firstName &&
-          workExperienceReference.lastName === this.wizardStore.wizardData?.[characterReferenceKey][0].lastName &&
-          workExperienceReference.emailAddress === this.wizardStore.wizardData?.[characterReferenceKey][0].emailAddress
+          workExperienceReference.firstName === this.wizardStore.wizardData?.[characterReferenceKey]?.[0]?.firstName &&
+          workExperienceReference.lastName === this.wizardStore.wizardData?.[characterReferenceKey]?.[0]?.lastName &&
+          workExperienceReference.emailAddress === this.wizardStore.wizardData?.[characterReferenceKey]?.[0]?.emailAddress
         );
       });
       return check;

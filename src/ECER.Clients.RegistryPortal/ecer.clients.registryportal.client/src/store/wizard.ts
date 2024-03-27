@@ -53,10 +53,11 @@ export const useWizardStore = defineStore("wizard", {
       const duplicateCharacterReferenceFound = references.some((workExperienceReference: Components.Schemas.WorkExperienceReference) => {
         return (
           workExperienceReference.firstName ===
-            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id][0].firstName &&
-          workExperienceReference.lastName === state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id][0].lastName &&
+            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName &&
+          workExperienceReference.lastName ===
+            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName &&
           workExperienceReference.emailAddress ===
-            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id][0].emailAddress
+            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress
         );
       });
 
