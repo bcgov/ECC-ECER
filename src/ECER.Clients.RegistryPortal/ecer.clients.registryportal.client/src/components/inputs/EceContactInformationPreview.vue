@@ -1,14 +1,6 @@
 <template>
-  <PreviewCard>
-    <v-container>
-      <v-row align="center">
-        <v-col>
-          <h3 class="font-black">Contact Information</h3>
-        </v-col>
-        <v-col align="end">
-          <v-btn v-bind="props" icon="mdi-pencil" color="primary" variant="plain" @click="setWizard('ContactInformation')" />
-        </v-col>
-      </v-row>
+  <PreviewCard :is-valid="wizardStore.validationState.ContactInformation" title="Contact Information" portal-stage="ContactInformation">
+    <template #content>
       <v-row>
         <v-col cols="4">
           <p class="small">Legal Last Name</p>
@@ -97,7 +89,7 @@
           <p class="small font-weight-bold">{{ alternatePhoneNumber }}</p>
         </v-col>
       </v-row>
-    </v-container>
+    </template>
   </PreviewCard>
 </template>
 
@@ -106,10 +98,8 @@ import { defineComponent } from "vue";
 
 import type { AddressesData } from "@/components/inputs/EceAddresses.vue";
 import PreviewCard from "@/components/PreviewCard.vue";
-import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
-import type { Components } from "@/types/openapi";
 export default defineComponent({
   name: "EceContactInformationPreview",
   components: {
@@ -123,10 +113,8 @@ export default defineComponent({
   },
   setup: () => {
     const wizardStore = useWizardStore();
-    const applicationStore = useApplicationStore();
     return {
       wizardStore,
-      applicationStore,
     };
   },
   computed: {
@@ -164,12 +152,6 @@ export default defineComponent({
     },
     alternatePhoneNumber() {
       return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.alternateContactNumber.id] ?? "—";
-    },
-  },
-  methods: {
-    setWizard(stage: Components.Schemas.PortalStage) {
-      this.wizardStore.setCurrentStep(stage);
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
     },
   },
 });

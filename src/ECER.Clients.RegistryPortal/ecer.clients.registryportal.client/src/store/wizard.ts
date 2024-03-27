@@ -41,9 +41,11 @@ export const useWizardStore = defineStore("wizard", {
     },
     validationState(state): PortalStageValidation {
       let totalHours = 0;
-      const referenceListPath = state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id];
-      if (Array.isArray(referenceListPath) && referenceListPath.length > 0) {
-        totalHours = referenceListPath.reduce((sum, currentReference) => {
+      const references: Components.Schemas.WorkExperienceReference[] = Object.values(
+        state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id],
+      );
+      if (references.length > 0) {
+        totalHours = references.reduce((sum, currentReference) => {
           return sum + (currentReference.hours || 0);
         }, 0);
       }
