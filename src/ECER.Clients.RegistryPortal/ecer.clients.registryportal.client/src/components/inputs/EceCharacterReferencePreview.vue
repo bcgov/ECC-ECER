@@ -1,14 +1,6 @@
 <template>
-  <PreviewCard>
-    <v-container>
-      <v-row align="center">
-        <v-col>
-          <h3 class="font-black">Character Reference</h3>
-        </v-col>
-        <v-col align="end">
-          <v-btn v-bind="props" icon="mdi-pencil" color="primary" variant="plain" @click="setWizard('CharacterReferences')" />
-        </v-col>
-      </v-row>
+  <PreviewCard :is-valid="wizardStore.validationState.CharacterReferences" title="Character Reference" portal-stage="CharacterReferences">
+    <template #content>
       <v-row>
         <v-col cols="4">
           <p class="small">Reference Last Name</p>
@@ -41,7 +33,7 @@
           <p class="small font-weight-bold">{{ characterReference.phoneNumber }}</p>
         </v-col>
       </v-row>
-    </v-container>
+    </template>
   </PreviewCard>
 </template>
 
@@ -49,7 +41,6 @@
 import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
-import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
@@ -67,10 +58,8 @@ export default defineComponent({
   },
   setup: () => {
     const wizardStore = useWizardStore();
-    const applicationStore = useApplicationStore();
     return {
       wizardStore,
-      applicationStore,
     };
   },
   computed: {
@@ -82,12 +71,6 @@ export default defineComponent({
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress,
         phoneNumber: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.phoneNumber,
       };
-    },
-  },
-  methods: {
-    setWizard(stage: Components.Schemas.PortalStage) {
-      this.wizardStore.setCurrentStep(stage);
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
     },
   },
 });

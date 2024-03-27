@@ -349,7 +349,18 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task CancelApplication_QueryShouldnotReturnResults()
+  public async Task SubmitApplicationNotInDraft_ShouldThrowInvalidOperationException()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear }) { };
+    application.Status = ApplicationStatus.Submitted;
+    var savedApplicationId = await repository.SaveDraft(application, CancellationToken.None);
+
+    await Assert.ThrowsAsync<InvalidOperationException>(async () => await repository.Submit(savedApplicationId, CancellationToken.None));
+  }
+
+  [Fact]
+  public async Task CancelApplication_QueryShouldnotReturnResults_ThenTryToCancelAgain_ShouldThrowInvalidOperationException()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId2;
     var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
@@ -358,6 +369,8 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     await repository.Cancel(savedApplicationId, CancellationToken.None);
 
     (await repository.Query(new ApplicationQuery { ById = savedApplicationId })).ShouldBeEmpty();
+
+    await Assert.ThrowsAsync<InvalidOperationException>(async () => await repository.Cancel(savedApplicationId, CancellationToken.None));
   }
 
   private CharacterReference CreateCharacterReference()
@@ -365,7 +378,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
 
     return new CharacterReference(
-      faker.Name.FirstName(), faker.Name.LastName(), faker.Internet.Email(), faker.Phone.PhoneNumber()
+      faker.Name.FirstName(), faker.Name.LastName(), faker.Phone.PhoneNumber(), faker.Internet.Email()
     );
   }
 

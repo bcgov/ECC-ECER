@@ -6,7 +6,7 @@
       <v-form ref="addEducationForm" validate-on="input" class="mt-6">
         <v-text-field
           v-model="school"
-          :rules="[Rules.required()]"
+          :rules="[Rules.required('Enter the full name of your educational institution')]"
           label="Full Name of Educational Institution"
           variant="outlined"
           color="primary"
@@ -14,8 +14,8 @@
         ></v-text-field>
         <v-text-field
           v-model="program"
-          :rules="[Rules.required()]"
-          label="Name of Program (as it appears on official transcript) "
+          :rules="[Rules.required('Enter the name of your program/course')]"
+          label="Name of Program/Course"
           variant="outlined"
           color="primary"
           maxlength="100"
@@ -24,7 +24,7 @@
         <v-text-field v-model="campusLocation" label="Campus Location (Optional)" variant="outlined" color="primary" maxlength="50" class="my-8"></v-text-field>
         <v-text-field
           v-model="studentName"
-          :rules="[Rules.required()]"
+          :rules="[Rules.required('Enter your student name as it appears on your official transcript')]"
           label="Student Name (as it appears on your official transcript)"
           variant="outlined"
           color="primary"
@@ -33,8 +33,8 @@
         ></v-text-field>
         <v-text-field
           v-model="studentNumber"
-          :rules="[Rules.required()]"
-          label="Student Number/ ID (as it appears on your official transcript)"
+          :rules="[Rules.required('Enter your student ID as it appears on your official transcript')]"
+          label="Student ID"
           variant="outlined"
           color="primary"
           maxlength="100"
@@ -50,7 +50,7 @@
         ></v-text-field>
         <v-text-field
           v-model="startYear"
-          :rules="[Rules.required()]"
+          :rules="[Rules.required('Enter the start date of your program')]"
           label="Start Date of Program"
           type="date"
           variant="outlined"
@@ -60,7 +60,7 @@
         ></v-text-field>
         <v-text-field
           v-model="endYear"
-          :rules="[Rules.required()]"
+          :rules="[Rules.required('Enter the end date of your program')]"
           label="End Date of Program"
           type="date"
           variant="outlined"

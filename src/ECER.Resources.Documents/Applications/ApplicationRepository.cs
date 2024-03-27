@@ -79,7 +79,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
   public async Task<string> Submit(string applicationId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    var application = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId));
+    var application = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.StatusCode == ecer_Application_StatusCode.Draft);
     if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
 
     application.StatusCode = ecer_Application_StatusCode.Submitted;
@@ -198,7 +198,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
   {
     await Task.CompletedTask;
     var application = context.ecer_ApplicationSet.FirstOrDefault(
-      d => d.ecer_ApplicationId == Guid.Parse(applicationId)
+      d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.StatusCode == ecer_Application_StatusCode.Draft
       );
     if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
     application.StatusCode = ecer_Application_StatusCode.Cancelled;
