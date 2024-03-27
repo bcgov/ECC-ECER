@@ -136,12 +136,6 @@ export default defineComponent({
       this.$emit("updatedValidation", this.errorState);
     },
   },
-  mounted() {
-    //if user does not have a selection, default to EceAssistant.
-    if (!this.certificationTypeStore.selection) {
-      this.certificationTypeStore.selection = "EceAssistant";
-    }
-  },
 });
 </script>
 

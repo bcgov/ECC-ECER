@@ -56,7 +56,10 @@
     <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="emailAddress"
-        :rules="[Rules.required('Enter your reference\'s email in the format \'name@email.com\''), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
+        :rules="[
+          Rules.required('Enter your reference\'s email in the format \'name@email.com\''),
+          Rules.email('Enter your reference\'s email in the format \'name@email.com\''),
+        ]"
         label="Reference Email"
         variant="outlined"
         color="primary"
@@ -108,7 +111,6 @@ export default defineComponent({
       Rules,
     };
   },
-  created() {},
   methods: {
     async updateCharacterReference() {
       this.$emit("update:model-value", [

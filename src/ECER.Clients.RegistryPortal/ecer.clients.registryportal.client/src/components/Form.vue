@@ -17,6 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
+import type { VForm } from "vuetify/components";
 
 import FormContainer from "@/components/FormContainer.vue";
 import PageContainer from "@/components/PageContainer.vue";

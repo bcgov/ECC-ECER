@@ -22,6 +22,7 @@
           <v-row>
             <v-col cols="12">
               <EceForm
+                v-if="step.form.id === wizardStore.currentStep.form.id"
                 :form="step.form"
                 :form-data="wizardStore.wizardData"
                 @updated-form-data="wizardStore.setWizardData"

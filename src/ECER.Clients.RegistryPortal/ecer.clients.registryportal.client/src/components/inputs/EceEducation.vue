@@ -93,7 +93,7 @@
           <v-checkbox
             v-model="officialTranscriptReceived"
             color="primary"
-            label="The ECE Registry has already my official transcript for the course/program relevant to this application and certificate type"
+            label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
           ></v-checkbox>
         </form>
       </v-col>
