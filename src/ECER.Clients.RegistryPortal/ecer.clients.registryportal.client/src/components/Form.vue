@@ -41,18 +41,12 @@ export default defineComponent({
     updatedFormData: (_formData: Record<string, any>) => true,
     updatedValidation: (_validation: boolean | null) => true,
   },
-  mounted() {
-    setTimeout(this.resetFormValidation, 100);
-  },
   methods: {
     onInputChanged(id: string, value: any) {
       this.$emit("updatedFormData", { ...this.formData, [id]: value });
     },
     onFormValidationChanged(value: boolean | null) {
       this.$emit("updatedValidation", value);
-    },
-    resetFormValidation() {
-      (this.$refs[this.form.id] as VForm).resetValidation();
     },
   },
 });
