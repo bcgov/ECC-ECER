@@ -7,7 +7,7 @@ namespace ECER.Engines.Transformation.References;
 /// </summary>
 public interface IReferenceLinkTransformationEngine
 {
-  Task<GenerateReferenceLinkResponse> Transform(GenerateReferenceLinkRequest request);
+  Task<PortalInvitationToLinkResponse> Transform(PortalInvitationToLinkRequest request);
 
-  Task<GenerateReferenceLinkRequest> UnTransform(GenerateReferenceLinkResponse response);
+  Task<LinkToPortalInvitationResponse> UnTransform(LinkToPortalInvitationRequest request);
 }

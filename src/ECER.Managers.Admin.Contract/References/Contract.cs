@@ -2,9 +2,12 @@
 
 namespace ECER.Managers.Admin.Contract.References;
 
-public record ReferenceLinkQuery(Guid portalInvitation, ReferenceType referenceType) : IRequest<GenerateReferenceLinkResponse>;
-public record GenerateReferenceLinkRequest(Guid portalInvitation, ReferenceType referenceType);
-public record GenerateReferenceLinkResponse(Guid portalInvitation, string referenceLink);
+public record GenerateReferenceLinkCommand(Guid portalInvitation, ReferenceType referenceType) : IRequest<PortalInvitationToLinkResponse>;
+public record UnpackReferenceLinkCommand(Guid portalInvitation, string referenceLink) : IRequest<LinkToPortalInvitationResponse>;
+public record PortalInvitationToLinkRequest(Guid portalInvitation, ReferenceType referenceType);
+public record PortalInvitationToLinkResponse(Guid portalInvitation, string referenceLink);
+public record LinkToPortalInvitationRequest(Guid portalInvitation, string referenceLink);
+public record LinkToPortalInvitationResponse(Guid portalInvitation, ReferenceType referenceType);
 
 public enum ReferenceType
 {

@@ -9,13 +9,13 @@ public class ReferenceEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPost("/api/references", async Task<Results<Ok<GenerateReferenceLinkResponse>, BadRequest<string>>> (
-      GenerateReferenceLinkRequest request,
+    endpointRouteBuilder.MapPost("/api/references", async Task<Results<Ok<PortalInvitationToLinkResponse>, BadRequest<string>>> (
+      PortalInvitationToLinkRequest request,
       HttpContext httpContext,
       IMediator messageBus,
       CancellationToken ct) =>
     {
-      var referenceLinkResponse = await messageBus.Send(new ReferenceLinkQuery(request.portalInvitation, request.referenceType), ct);
+      var referenceLinkResponse = await messageBus.Send(new GenerateReferenceLinkCommand(request.portalInvitation, request.referenceType), ct);
       return TypedResults.Ok(referenceLinkResponse);
     })
 .WithOpenApi("Creates a new reference link", string.Empty, "references_post")
