@@ -5,23 +5,12 @@ using Shouldly;
 using Xunit.Abstractions;
 using ReferenceType = ECER.Managers.Admin.Contract.References.ReferenceType;
 
-namespace ECER.Tests.Integration.Api;
+namespace ECER.Tests.Integration.Managers.Admin;
 
-public class ReferenceTests : ApiWebAppScenarioBase
+public class ReferenceHandlersTests : ApiWebAppScenarioBase
 {
-  public ReferenceTests(ITestOutputHelper output, ApiWebAppFixture fixture) : base(output, fixture)
+  public ReferenceHandlersTests(ITestOutputHelper output, ApiWebAppFixture fixture) : base(output, fixture)
   {
-  }
-
-  [Fact]
-  public async Task GenerateReferenceLink_WithValidInfo_ReturnsOk()
-  {
-    var validRequest = new GenerateReferenceLinkRequest(Guid.NewGuid(), ReferenceType.CharacterReference);
-    await Host.Scenario(_ =>
-    {
-      _.Post.Json(validRequest).ToUrl("/api/references");
-      _.StatusCodeShouldBe(200);
-    });
   }
 
   [Fact]

@@ -1,10 +1,10 @@
-﻿using ECER.Utilities.DataverseSdk.Model;
+﻿using System.Globalization;
+using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xrm.Sdk.Client;
-using System.Globalization;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration;
@@ -24,6 +24,7 @@ public abstract class RegistryPortalWebAppScenarioBase : WebAppScenarioBase
 
 public class RegistryPortalWebAppFixture : WebAppFixtureBase
 {
+  private IServiceScope serviceScope = null!;
   private Contact authenticatedBcscUser = null!;
   private ecer_Application testApplication = null!;
   private ecer_Communication testCommunication = null!;
@@ -31,6 +32,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private Contact authenticatedBcscUser2 = null!;
   private ecer_Application testApplication2 = null!;
 
+  public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedBcscUserIdentity => authenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
   public string communicationId => testCommunication.Id.ToString();
@@ -39,6 +41,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
   public string applicationId2 => testApplication2.Id.ToString();
+
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
     ArgumentNullException.ThrowIfNull(opts);
@@ -50,9 +53,15 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public override async Task InitializeAsync()
   {
     Host = await CreateHost<Clients.RegistryPortal.Server.Program>();
-    using var scope = Host.Services.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<EcerContext>();
+    serviceScope = Host.Services.CreateScope();
+    var context = serviceScope.ServiceProvider.GetRequiredService<EcerContext>();
     await InitializeDataverseTestData(context);
+  }
+
+  public override async Task DisposeAsync()
+  {
+    await Task.CompletedTask;
+    serviceScope.Dispose();
   }
 
   private async Task InitializeDataverseTestData(EcerContext context)

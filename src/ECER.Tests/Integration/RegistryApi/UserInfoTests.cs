@@ -6,7 +6,7 @@ using ECER.Utilities.Security;
 using Shouldly;
 using Xunit.Abstractions;
 
-namespace ECER.Tests.Integration.Api;
+namespace ECER.Tests.Integration.RegistryApi;
 
 public class UserInfoTests : RegistryPortalWebAppScenarioBase
 {

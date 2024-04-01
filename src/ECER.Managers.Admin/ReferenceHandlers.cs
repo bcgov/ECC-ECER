@@ -1,14 +1,16 @@
 ﻿using ECER.Engines.Transformation.References;
 using ECER.Managers.Admin.Contract.References;
+using MediatR;
 
 namespace ECER.Managers.Admin;
 
-public static class ReferenceHandlers
+public class ReferenceHandlers(IReferenceLinkTransformationEngine transformationEngine)
+  : IRequestHandler<ReferenceLinkQuery, GenerateReferenceLinkResponse>
 {
-  public static async Task<GenerateReferenceLinkResponse> Handle(ReferenceLinkQuery cmd, IReferenceLinkTransformationEngine transformationEngine, CancellationToken ct)
+  public async Task<GenerateReferenceLinkResponse> Handle(ReferenceLinkQuery request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(cmd);
+    ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(transformationEngine);
-    return await transformationEngine.Transform(new GenerateReferenceLinkRequest(cmd.portalInvitation, cmd.referenceType))!;
+    return await transformationEngine.Transform(new GenerateReferenceLinkRequest(request.portalInvitation, request.referenceType))!;
   }
 }

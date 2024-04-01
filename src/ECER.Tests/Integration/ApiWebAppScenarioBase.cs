@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration;
@@ -19,6 +20,10 @@ public abstract class ApiWebAppScenarioBase : WebAppScenarioBase
 
 public class ApiWebAppFixture : WebAppFixtureBase
 {
+  private IServiceScope serviceScope = null!;
+
+  public IServiceProvider Services => serviceScope.ServiceProvider;
+
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
     ArgumentNullException.ThrowIfNull(opts);
@@ -29,5 +34,12 @@ public class ApiWebAppFixture : WebAppFixtureBase
   public override async Task InitializeAsync()
   {
     Host = await CreateHost<Clients.Api.Program>();
+    serviceScope = Host.Services.CreateScope();
+  }
+
+  public override async Task DisposeAsync()
+  {
+    await Task.CompletedTask;
+    serviceScope.Dispose();
   }
 }
