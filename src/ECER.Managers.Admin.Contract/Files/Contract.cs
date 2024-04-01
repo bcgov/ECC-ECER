@@ -29,6 +29,6 @@ public record FileProperties
   }
 }
 
-public record FIleQueryResults(IEnumerable<FileData> Items);
+public record FileQueryResults(IEnumerable<FileData> Items);
 
 public record FileData(FileLocation FileLocation, FileProperties FileProperties, string FileName, string ContentType, Stream Content);

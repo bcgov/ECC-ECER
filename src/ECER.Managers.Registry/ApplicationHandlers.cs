@@ -70,7 +70,6 @@ public static class ApplicationHandlers
     return cancelledApplicationId;
   }
 
-
   /// <summary>
   /// Handles submitting a new application use case
   /// </summary>

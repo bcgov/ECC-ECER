@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ECER.Managers.Admin.Contract.Files;
+﻿using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using Wolverine;
 
 namespace ECER.Clients.Api.Files;
@@ -19,7 +19,7 @@ public class FileEndpoints : IRegisterEndpoints
       HttpContext ctx,
       CancellationToken ct) =>
       {
-        var results = await messageBus.InvokeAsync<FIleQueryResults>(new FileQuery([new FileLocation(fileId, folder ?? string.Empty)]), ct);
+        var results = await messageBus.InvokeAsync<FileQueryResults>(new FileQuery([new FileLocation(fileId, folder ?? string.Empty)]), ct);
         var file = results.Items.SingleOrDefault();
         if (file == null) return TypedResults.NotFound();
 

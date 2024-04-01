@@ -53,15 +53,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Resources.Documents", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Utilities.ObjectStorage", "ECER.Utilities.ObjectStorage\ECER.Utilities.ObjectStorage.csproj", "{CE7DE4F9-6CFA-4165-918B-C775E16D8728}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECER.Clients.Api", "ECER.Clients.Api\ECER.Clients.Api.csproj", "{67B0C3B4-480C-4E20-9857-2A00B2BA3E13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Clients.Api", "ECER.Clients.Api\ECER.Clients.Api.csproj", "{67B0C3B4-480C-4E20-9857-2A00B2BA3E13}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Registry", "Registry", "{0E0CCAE1-AB96-4842-B90A-DA230325DB2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Admin", "Admin", "{A311CE3C-C51D-4826-ADD9-FED13AAA51EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECER.Managers.Admin.Contract", "ECER.Managers.Admin.Contract\ECER.Managers.Admin.Contract.csproj", "{C665280B-AD1F-4ED9-AFB0-C87DF155E93D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Managers.Admin.Contract", "ECER.Managers.Admin.Contract\ECER.Managers.Admin.Contract.csproj", "{C665280B-AD1F-4ED9-AFB0-C87DF155E93D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECER.Managers.Admin", "ECER.Managers.Admin\ECER.Managers.Admin.csproj", "{BAAD73EA-EA04-469F-8F3A-63EB69955D02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Managers.Admin", "ECER.Managers.Admin\ECER.Managers.Admin.csproj", "{BAAD73EA-EA04-469F-8F3A-63EB69955D02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECER.Engines.Transformation", "ECER.Engines.Transformation\ECER.Engines.Transformation.csproj", "{3C325134-4511-477F-B96B-88E1FB2753B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +137,10 @@ Global
 		{BAAD73EA-EA04-469F-8F3A-63EB69955D02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAAD73EA-EA04-469F-8F3A-63EB69955D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAAD73EA-EA04-469F-8F3A-63EB69955D02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C325134-4511-477F-B96B-88E1FB2753B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C325134-4511-477F-B96B-88E1FB2753B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C325134-4511-477F-B96B-88E1FB2753B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C325134-4511-477F-B96B-88E1FB2753B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -158,6 +164,7 @@ Global
 		{A311CE3C-C51D-4826-ADD9-FED13AAA51EF} = {8E2378FE-DFE8-46C0-AE5A-14A48F59F0FB}
 		{C665280B-AD1F-4ED9-AFB0-C87DF155E93D} = {A311CE3C-C51D-4826-ADD9-FED13AAA51EF}
 		{BAAD73EA-EA04-469F-8F3A-63EB69955D02} = {A311CE3C-C51D-4826-ADD9-FED13AAA51EF}
+		{3C325134-4511-477F-B96B-88E1FB2753B5} = {E28CD46A-BF2B-4113-8816-2C9FC31C9923}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C9C9A1C-3986-464E-9339-01724D912A19}

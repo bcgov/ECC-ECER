@@ -1,8 +1,8 @@
-﻿using System.Collections.Concurrent;
-using ECER.Managers.Admin.Contract.Files;
+﻿using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Concurrent;
 
 namespace ECER.Managers.Admin;
 
@@ -25,7 +25,7 @@ public static class FileHandlers
     });
   }
 
-  public static async Task<FIleQueryResults> Handle(FileQuery query, IObjecStorageProvider objectStorageProvider, IConfiguration configuration, CancellationToken ct)
+  public static async Task<FileQueryResults> Handle(FileQuery query, IObjecStorageProvider objectStorageProvider, IConfiguration configuration, CancellationToken ct)
   {
     ArgumentNullException.ThrowIfNull(query);
     ArgumentNullException.ThrowIfNull(objectStorageProvider);
@@ -46,7 +46,7 @@ public static class FileHandlers
       if (file != null) files.Add(new FileData(fileLocation, fileProperties, file.FileName, file.ContentType, file.Content));
     });
 
-    return new FIleQueryResults(files.ToList());
+    return new FileQueryResults(files.ToList());
   }
 
   private static string GetBucketName(IConfiguration configuration) =>
