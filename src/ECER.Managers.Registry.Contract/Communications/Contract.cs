@@ -1,14 +1,13 @@
-﻿using ECER.Managers.Registry.Contract.Applications;
-using ECER.Utilities.Security;
+﻿using MediatR;
 
 namespace ECER.Managers.Registry.Contract.Communications;
 
-public record UserCommunicationsStatusQuery
+public record UserCommunicationsStatusQuery : IRequest<CommunicationsStatusResults>
 {
   public string ByRegistrantId { get; set; } = null!;
 }
 
-public record UserCommunicationQuery
+public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>
 {
   public string? ById { get; set; }
   public string? ByRegistrantId { get; set; }
@@ -25,6 +24,7 @@ public record Communication
   public bool Acknowledged { get; set; }
   public CommunicationStatus Status { get; set; }
 }
+
 public enum CommunicationStatus
 {
   Draft,
@@ -32,6 +32,7 @@ public enum CommunicationStatus
   Acknowledged,
   Inactive
 }
+
 public record CommunicationsStatusResults(CommunicationsStatus Status);
 public record CommunicationsStatus
 {

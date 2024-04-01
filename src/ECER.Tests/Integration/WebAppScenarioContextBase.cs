@@ -40,8 +40,6 @@ public abstract class WebAppScenarioBase : IAsyncLifetime
 
 public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAccessor
 {
-  public IServiceCollection Services { get; } = new ServiceCollection();
-
   public string TestRunId { get; } = $"autotest_{Guid.NewGuid().ToString().Substring(0, 4)}_";
   public IAlbaHost Host { get; protected set; } = null!;
   public ITestOutputHelper? OutputHelper { get; set; }
@@ -86,10 +84,7 @@ public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAcces
   {
   }
 
-  public abstract Task InitializeAsync();
+  public virtual async Task InitializeAsync() => await Task.CompletedTask;
 
-  public async Task DisposeAsync()
-  {
-    await Task.CompletedTask;
-  }
+  public virtual async Task DisposeAsync() => await Task.CompletedTask;
 }

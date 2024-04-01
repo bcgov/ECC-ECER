@@ -1,26 +1,28 @@
-﻿namespace ECER.Managers.Registry.Contract.Applications;
+﻿using MediatR;
+
+namespace ECER.Managers.Registry.Contract.Applications;
 
 /// <summary>
 /// Invokes draft application saving use case
 /// </summary>
-public record SaveDraftApplicationCommand(Application Application);
+public record SaveDraftApplicationCommand(Application Application) : IRequest<string>;
 
 /// <summary>
 /// Invokes draft application saving use case
 /// </summary>
-public record CancelDraftApplicationCommand(string applicationId, string userId);
+public record CancelDraftApplicationCommand(string applicationId, string userId) : IRequest<string>;
 
 /// <summary>
 /// Invokes application submission use case
 /// </summary>
 /// <param name="applicationId"></param>
 /// <param name="userId"></param>
-public record SubmitApplicationCommand(string applicationId, string userId);
+public record SubmitApplicationCommand(string applicationId, string userId) : IRequest<ApplicationSubmissionResult>;
 
 /// <summary>
 /// Invokes application query use case
 /// </summary>
-public record ApplicationsQuery
+public record ApplicationsQuery : IRequest<ApplicationsQueryResults>
 {
   public string? ById { get; set; }
   public string? ByApplicantId { get; set; }

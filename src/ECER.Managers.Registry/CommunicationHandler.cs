@@ -2,22 +2,25 @@
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Resources.Accounts.Communications;
+using MediatR;
 
 namespace ECER.Managers.Registry
 {
-  public static class CommunicationHandler
+  public class CommunicationHandler(ICommunicationRepository communicationRepository, IMapper mapper)
+    : IRequestHandler<Contract.Communications.UserCommunicationsStatusQuery, CommunicationsStatusResults>,
+      IRequestHandler<Contract.Communications.UserCommunicationQuery, CommunicationsQueryResults>
   {
-    public static async Task<CommunicationsStatusResults> Handle(Contract.Communications.UserCommunicationsStatusQuery query, ICommunicationRepository communicationRepository, IMapper mapper)
+    public async Task<CommunicationsStatusResults> Handle(UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
     {
       ArgumentNullException.ThrowIfNull(communicationRepository);
       ArgumentNullException.ThrowIfNull(mapper);
-      ArgumentNullException.ThrowIfNull(query);
+      ArgumentNullException.ThrowIfNull(request);
 
       var statuses = new List<Resources.Accounts.Communications.CommunicationStatus>();
       statuses.Add(Resources.Accounts.Communications.CommunicationStatus.NotifiedRecipient);
       var communications = await communicationRepository.Query(new Resources.Accounts.Communications.UserCommunicationQuery
       {
-        ByRegistrantId = query.ByRegistrantId,
+        ByRegistrantId = request.ByRegistrantId,
         ByStatus = statuses,
       });
 
@@ -28,17 +31,17 @@ namespace ECER.Managers.Registry
       return new CommunicationsStatusResults(communicationsStatus!);
     }
 
-    public static async Task<CommunicationsQueryResults> Handle(Contract.Communications.UserCommunicationQuery query, ICommunicationRepository communicationRepository, IMapper mapper)
+    public async Task<CommunicationsQueryResults> Handle(Contract.Communications.UserCommunicationQuery request, CancellationToken cancellationToken)
     {
       ArgumentNullException.ThrowIfNull(communicationRepository);
       ArgumentNullException.ThrowIfNull(mapper);
-      ArgumentNullException.ThrowIfNull(query);
+      ArgumentNullException.ThrowIfNull(request);
 
       var communications = await communicationRepository.Query(new Resources.Accounts.Communications.UserCommunicationQuery
       {
-        ById = query.ById,
-        ByRegistrantId = query.ByRegistrantId,
-        ByStatus = query.ByStatus?.Convert<Contract.Communications.CommunicationStatus, Resources.Accounts.Communications.CommunicationStatus>(),
+        ById = request.ById,
+        ByRegistrantId = request.ByRegistrantId,
+        ByStatus = request.ByStatus?.Convert<Contract.Communications.CommunicationStatus, Resources.Accounts.Communications.CommunicationStatus>(),
       });
       return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communications)!);
     }
