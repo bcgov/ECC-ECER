@@ -27,7 +27,7 @@ internal sealed class ReferenceLinkTransformationEngine(IDataProtectionProvider 
   {
     await Task.CompletedTask;
 
-    var encryptedData = WebUtility.UrlDecode(request.referenceLink);
+    var encryptedData = WebUtility.UrlDecode(request.encryptedVerificationToken);
 
     var protector = dataProtectionProvider.CreateProtector(nameof(ReferenceLinkTransformationEngine)).ToTimeLimitedDataProtector();
     var decryptedData = protector.Unprotect(encryptedData);
