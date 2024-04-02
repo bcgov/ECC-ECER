@@ -25,12 +25,12 @@ public class ReferenceHandlersTests : ApiWebAppScenarioBase
   public async Task CanTransformLinkToPortalInvitation()
   {
     var bus = Host.Services.GetRequiredService<IMediator>();
-    var guid = Guid.NewGuid();
-    var packingResponse = await bus.Send(new GenerateReferenceLinkCommand(guid, ReferenceType.WorkExperienceReference), CancellationToken.None);
+    var portalInvitation = Guid.NewGuid();
+    var packingResponse = await bus.Send(new GenerateReferenceLinkCommand(portalInvitation, ReferenceType.WorkExperienceReference), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
-    var unpackingResponse = await bus.Send(new UnpackReferenceLinkCommand(guid, packingResponse.encryptedVerificationToken), CancellationToken.None);
-    unpackingResponse.portalInvitation.ShouldBe(guid);
+    var unpackingResponse = await bus.Send(new UnpackReferenceLinkCommand(portalInvitation, packingResponse.encryptedVerificationToken), CancellationToken.None);
+    unpackingResponse.portalInvitation.ShouldBe(portalInvitation);
     unpackingResponse.referenceType.ShouldBe(ReferenceType.WorkExperienceReference);
   }
 }
