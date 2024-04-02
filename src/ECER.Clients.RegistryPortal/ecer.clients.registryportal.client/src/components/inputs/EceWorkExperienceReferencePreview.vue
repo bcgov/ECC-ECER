@@ -5,7 +5,7 @@
         <v-divider v-if="index !== 0" :thickness="2" color="grey-lightest" class="border-opacity-100 my-6" />
         <v-row>
           <v-col>
-            <h4 class="text-black">{{ experience.firstName }}</h4>
+            <h4 class="text-black">{{ experience.firstName }} {{ experience.lastName }}</h4>
           </v-col>
         </v-row>
         <v-row>
