@@ -18,6 +18,6 @@ public class ReferenceHandlers(IReferenceLinkTransformationEngine transformation
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(transformationEngine);
-    return await transformationEngine.UnTransform(new LinkToPortalInvitationRequest(request.portalInvitation, request.referenceLink))!;
+    return await transformationEngine.Transform(new LinkToPortalInvitationRequest(request.portalInvitation, request.referenceLink))!;
   }
 }
