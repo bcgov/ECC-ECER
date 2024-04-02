@@ -9,14 +9,19 @@ public class ReferenceEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPost("/api/references", async Task<Results<Ok<PortalInvitationToLinkResponse>, BadRequest<string>>> (
+    endpointRouteBuilder.MapPost("/api/references", async Task<Results<Ok<GenerateVerificationLinkResponse>, BadRequest<string>>> (
       PortalInvitationToLinkRequest request,
       HttpContext httpContext,
       IMediator messageBus,
+      IConfiguration configuration,
       CancellationToken ct) =>
     {
       var referenceLinkResponse = await messageBus.Send(new GenerateReferenceLinkCommand(request.portalInvitation, request.referenceType), ct);
-      return TypedResults.Ok(referenceLinkResponse);
+      string baseUrl = configuration["PortalApp:BaseUrl"]!;
+      string referenceVerificationRoute = configuration["PortalApp:ReferenceVerificationRoute"]!;
+      string verificationLink = $"{baseUrl}/{referenceVerificationRoute}/{referenceLinkResponse.encryptedVerificationToken}";
+
+      return TypedResults.Ok(new GenerateVerificationLinkResponse(referenceLinkResponse.portalInvitation, verificationLink));
     })
 .WithOpenApi("Creates a new reference link", string.Empty, "references_post")
 .RequireAuthorization()
@@ -24,3 +29,5 @@ public class ReferenceEndpoints : IRegisterEndpoints
 .WithParameterValidation();
   }
 }
+
+public record GenerateVerificationLinkResponse(Guid portalInvitation, string verificationLink);
