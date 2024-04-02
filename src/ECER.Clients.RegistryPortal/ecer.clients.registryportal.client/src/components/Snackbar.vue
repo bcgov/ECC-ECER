@@ -11,8 +11,7 @@
       transition="slide-y-transition"
       class="snackbar"
     >
-      <v-icon v-if="icon" :icon="icon" class="mr-2" />
-      {{ alertNotificationText }}
+      <v-alert :color="colour" :icon="icon" density="compact">{{ alertNotificationText }}</v-alert>
       <template #actions>
         <v-btn text="true" :color="colour == AlertNotificationType.WARN ? 'black' : 'white'" v-bind="$attrs" @click="showSnackBar = false">
           {{ alertNotificationQueue.length > 0 ? "Next (" + alertNotificationQueue.length + ")" : "Close" }}
