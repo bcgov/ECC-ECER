@@ -23,7 +23,7 @@ internal sealed class ReferenceLinkTransformationEngine(IDataProtectionProvider 
     return new PortalInvitationToLinkResponse(request.portalInvitation, referenceLink);
   }
 
-  public async Task<LinkToPortalInvitationResponse> UnTransform(LinkToPortalInvitationRequest request)
+  public async Task<LinkToPortalInvitationResponse> Transform(LinkToPortalInvitationRequest request)
   {
     await Task.CompletedTask;
 

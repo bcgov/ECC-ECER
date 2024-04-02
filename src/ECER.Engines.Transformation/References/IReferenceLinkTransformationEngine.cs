@@ -9,5 +9,5 @@ public interface IReferenceLinkTransformationEngine
 {
   Task<PortalInvitationToLinkResponse> Transform(PortalInvitationToLinkRequest request);
 
-  Task<LinkToPortalInvitationResponse> UnTransform(LinkToPortalInvitationRequest request);
+  Task<LinkToPortalInvitationResponse> Transform(LinkToPortalInvitationRequest request);
 }
