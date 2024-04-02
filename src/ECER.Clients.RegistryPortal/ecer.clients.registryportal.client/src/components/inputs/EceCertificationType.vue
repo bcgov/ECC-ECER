@@ -4,7 +4,7 @@
       <v-expansion-panel-title>
         <v-row no-gutters>
           <v-col cols="12">
-            <v-radio-group v-model="selection" :mandatory="true" :hide-details="true" :error="errorState">
+            <v-radio-group v-model="selection" :mandatory="true" :hide-details="true" :error="errorState" :rules="[!errorState]">
               <v-radio color="primary" :label="option.title" :value="option.id"></v-radio>
             </v-radio-group>
           </v-col>
@@ -86,10 +86,6 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: {
-    "update:model-value": (_certificateTypeList: Components.Schemas.CertificationType[]) => true,
-    updatedValidation: (_errorState: boolean) => true,
-  },
   setup: (props) => {
     const certificationTypeStore = useCertificationTypeStore();
     // If props.modelValue contains "Ite" or "Sne", set the subSelection to those values
@@ -131,9 +127,6 @@ export default defineComponent({
   watch: {
     certificationTypes(newValue: Components.Schemas.CertificationType[], _) {
       this.$emit("update:model-value", newValue);
-    },
-    errorState() {
-      this.$emit("updatedValidation", this.errorState);
     },
   },
 });
