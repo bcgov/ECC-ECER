@@ -1,11 +1,11 @@
-﻿using ECER.Managers.Admin.Contract.References;
+﻿using ECER.Managers.Admin.Contract.InviteLinks;
 
-namespace ECER.Engines.Transformation.References;
+namespace ECER.Engines.Transformation.InviteLinks;
 
 /// <summary>
 /// transforms references links
 /// </summary>
-public interface IReferenceLinkTransformationEngine
+public interface IInviteLinkTransformationEngine
 {
   Task<PortalInvitationToLinkResponse> Transform(PortalInvitationToLinkRequest request);
 

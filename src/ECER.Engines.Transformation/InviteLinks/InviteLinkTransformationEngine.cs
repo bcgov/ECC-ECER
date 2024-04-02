@@ -1,10 +1,10 @@
-﻿using ECER.Managers.Admin.Contract.References;
+﻿using ECER.Managers.Admin.Contract.InviteLinks;
 using Microsoft.AspNetCore.DataProtection;
 using System.Net;
 
-namespace ECER.Engines.Transformation.References;
+namespace ECER.Engines.Transformation.InviteLinks;
 
-internal sealed class ReferenceLinkTransformationEngine(IDataProtectionProvider dataProtectionProvider) : IReferenceLinkTransformationEngine
+internal sealed class InviteLinkTransformationEngine(IDataProtectionProvider dataProtectionProvider) : IInviteLinkTransformationEngine
 {
   public async Task<PortalInvitationToLinkResponse> Transform(PortalInvitationToLinkRequest request)
   {
@@ -12,10 +12,10 @@ internal sealed class ReferenceLinkTransformationEngine(IDataProtectionProvider 
 
     var expiryDate = DateTime.UtcNow.AddDays(7); // Example expiry date
 
-    var protector = dataProtectionProvider.CreateProtector(nameof(ReferenceLinkTransformationEngine)).ToTimeLimitedDataProtector();
+    var protector = dataProtectionProvider.CreateProtector(nameof(InviteLinkTransformationEngine)).ToTimeLimitedDataProtector();
 
     // Combine referenceType and portalInvitation into a single string
-    var combinedData = $"{request.referenceType}:{request.portalInvitation}";
+    var combinedData = $"{request.inviteType}:{request.portalInvitation}";
     var encryptedData = protector.Protect(combinedData, expiryDate);
 
     var referenceLink = WebUtility.UrlEncode(encryptedData);
@@ -29,7 +29,7 @@ internal sealed class ReferenceLinkTransformationEngine(IDataProtectionProvider 
 
     var encryptedData = WebUtility.UrlDecode(request.encryptedVerificationToken);
 
-    var protector = dataProtectionProvider.CreateProtector(nameof(ReferenceLinkTransformationEngine)).ToTimeLimitedDataProtector();
+    var protector = dataProtectionProvider.CreateProtector(nameof(InviteLinkTransformationEngine)).ToTimeLimitedDataProtector();
     var decryptedData = protector.Unprotect(encryptedData);
 
     // Split the decrypted data back into ReferenceType and PortalInvitation
@@ -43,7 +43,7 @@ internal sealed class ReferenceLinkTransformationEngine(IDataProtectionProvider 
     var inviteIdString = decryptedData.Substring(splitIndex + 1);
     var portalInvitation = Guid.Parse(inviteIdString);
 
-    if (!Enum.TryParse<ReferenceType>(referenceTypeString, out var referenceType))
+    if (!Enum.TryParse<InviteType>(referenceTypeString, out var referenceType))
     {
       throw new InvalidOperationException("Invalid reference type.");
     }
