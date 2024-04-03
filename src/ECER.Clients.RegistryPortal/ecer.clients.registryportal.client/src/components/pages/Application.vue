@@ -16,9 +16,9 @@
             </v-btn>
           </v-col>
           <v-col cols="auto">
-            <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
-            <v-btn v-if="wizardStore.currentStepStage !== `Review`" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and Continue</v-btn>
-            <v-btn v-if="wizardStore.currentStepStage === 'Review'" rounded="lg" color="primary" @click="handleSubmit">Submit Application</v-btn>
+            <v-btn v-if="showSaveButtons" rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
+            <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and Continue</v-btn>
+            <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" @click="handleSubmit">Submit Application</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -60,6 +60,18 @@ export default defineComponent({
     wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
 
     return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore };
+  },
+  computed: {
+    showSaveButtons() {
+      return (
+        this.wizardStore.currentStepStage !== "Review" &&
+        !(this.wizardStore.currentStepStage === "Education" && this.wizardStore.listComponentMode === "add") &&
+        !(this.wizardStore.currentStepStage === "WorkReferences" && this.wizardStore.listComponentMode === "add")
+      );
+    },
+    showSubmitApplication() {
+      return this.wizardStore.currentStepStage === "Review";
+    },
   },
   methods: {
     async handleSubmit() {

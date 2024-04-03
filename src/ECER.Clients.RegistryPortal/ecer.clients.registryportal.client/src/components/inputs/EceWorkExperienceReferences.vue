@@ -137,6 +137,7 @@
 </template>
 
 <script lang="ts">
+import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 
 import Alert from "@/components/Alert.vue";
@@ -177,7 +178,6 @@ export default defineComponent({
   data: function () {
     return {
       clientId: "",
-      mode: "add",
       id: null as string | null,
       previousFullName: "",
       firstName: "",
@@ -189,6 +189,7 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     isDisabled() {
       return this.count >= 6 || this.totalHours >= 500;
     },
