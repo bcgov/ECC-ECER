@@ -11,13 +11,15 @@ public class InviteLinkHandlers(IInviteLinkTransformationEngine transformationEn
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(transformationEngine);
-    return await transformationEngine.Transform(request)!;
+    var response = await transformationEngine.Transform(request)!;
+    return response! as GenerateInviteLinkCommandResponse ?? throw new InvalidCastException("Invalid response type");
   }
 
   public async Task<VerifyInviteLinkCommandResponse> Handle(VerifyInviteLinkCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(transformationEngine);
-    return await transformationEngine.Transform(request)!;
+    var response = await transformationEngine.Transform(request)!;
+    return response! as VerifyInviteLinkCommandResponse ?? throw new InvalidCastException("Invalid response type");
   }
 }

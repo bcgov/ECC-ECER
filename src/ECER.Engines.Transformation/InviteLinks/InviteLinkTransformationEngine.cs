@@ -6,7 +6,17 @@ namespace ECER.Engines.Transformation.InviteLinks;
 
 internal sealed class InviteLinkTransformationEngine(IDataProtectionProvider dataProtectionProvider) : IInviteLinkTransformationEngine
 {
-  public async Task<GenerateInviteLinkCommandResponse> Transform(GenerateInviteLinkCommand command)
+  public async Task<ManageInviteLinkCommandResponse> Transform(ManageInviteLinkCommand command)
+  {
+    return command switch
+    {
+      VerifyInviteLinkCommand c => await TransformVerifyInviteLinkCommand(c),
+      GenerateInviteLinkCommand c => await TransformGenerateInviteLinkCommand(c),
+      _ => throw new NotSupportedException($"{command.GetType().Name} is not supported")
+    };
+  }
+
+  public async Task<GenerateInviteLinkCommandResponse> TransformGenerateInviteLinkCommand(GenerateInviteLinkCommand command)
   {
     await Task.CompletedTask;
 
@@ -21,7 +31,7 @@ internal sealed class InviteLinkTransformationEngine(IDataProtectionProvider dat
     return new GenerateInviteLinkCommandResponse(command.portalInvitation, referenceLink);
   }
 
-  public async Task<VerifyInviteLinkCommandResponse> Transform(VerifyInviteLinkCommand command)
+  public async Task<VerifyInviteLinkCommandResponse> TransformVerifyInviteLinkCommand(VerifyInviteLinkCommand command)
   {
     await Task.CompletedTask;
 

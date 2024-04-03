@@ -16,10 +16,10 @@ public class InviteLinksEndpoints : IRegisterEndpoints
       IConfiguration configuration,
       CancellationToken ct) =>
     {
-      var referenceLinkResponse = await messageBus.Send(new GenerateInviteLinkCommand(request.portalInvitation, request.inviteType, request.validDays), ct);
+      var referenceLinkResponse = await messageBus.Send(new GenerateInviteLinkCommand(request.portalInvitation, request.inviteType, request.validDays), ct) as GenerateInviteLinkCommandResponse;
       string baseUrl = configuration["PortalApp:BaseUrl"]!;
       string referenceVerificationRoute = configuration["PortalApp:ReferenceVerificationRoute"]!;
-      string verificationLink = $"{baseUrl}/{referenceVerificationRoute}/{referenceLinkResponse.encryptedVerificationToken}";
+      string verificationLink = $"{baseUrl}/{referenceVerificationRoute}/{referenceLinkResponse!.encryptedVerificationToken}";
 
       return TypedResults.Ok(new GenerateInviteLinkResponse(referenceLinkResponse.portalInvitation, verificationLink));
     })

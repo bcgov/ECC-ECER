@@ -29,7 +29,8 @@ public class InviteLinkHandlersTests : ApiWebAppScenarioBase
     packingResponse.ShouldNotBeNull();
 
     var verifyResponse = await bus.Send(new VerifyInviteLinkCommand(portalInvitation, packingResponse.encryptedVerificationToken), CancellationToken.None);
-    verifyResponse.portalInvitation.ShouldBe(portalInvitation);
+    verifyResponse!.portalInvitation.ShouldBe(portalInvitation);
+
     verifyResponse.inviteType.ShouldBe(InviteType.WorkExperienceReference);
   }
 }
