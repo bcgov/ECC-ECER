@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
 
 namespace ECER.Utilities.Hosting;
@@ -24,7 +21,7 @@ public static class DataProtectionConfigurationExtensions
     {
       dpbuilder.PersistKeysToFileSystem(new DirectoryInfo(dataProtectionSettings.DirectoryPath));
     }
-    else if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!.Equals("Development", StringComparison.OrdinalIgnoreCase))
+    else if ((Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development").Equals("Development", StringComparison.OrdinalIgnoreCase))
     {
       dpbuilder.UseEphemeralDataProtectionProvider();
     }

@@ -15,8 +15,6 @@ namespace ECER.Clients.RegistryPortal.Server;
 
 public class Program
 {
-  private static readonly string[] DisabledHttpVerbs = { "TRACE", "OPTIONS" };
-
   private static async Task Main(string[] args)
   {
     var builder = WebApplication.CreateBuilder(args);
@@ -57,14 +55,7 @@ public class Program
 
       builder.Services.AddProblemDetails();
 
-      builder.Services.AddCors(options =>
-      {
-        options.AddDefaultPolicy(policy =>
-        {
-          var allowedOrigins = builder.Configuration.GetValue("cors:allowedOrigins", string.Empty)!.Split(";");
-          policy.WithOrigins(allowedOrigins).SetIsOriginAllowedToAllowWildcardSubdomains();
-        });
-      });
+      builder.Services.AddCorsPolicy(builder.Configuration.GetSection("cors").Get<CorsSettings>());
 
       builder.Services
         .AddTransient<AuthenticationService>()
@@ -143,13 +134,13 @@ public class Program
       builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
       builder.Services.ConfigureHealthChecks();
 
-      HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
+      builder.ConfigureComponents();
 
       var app = builder.Build();
 
-      app.MapHealthChecks();
+      app.UseHealthChecks();
       app.UseObservabilityMiddleware();
-      app.UseDisableHttpVerbs(DisabledHttpVerbs);
+      app.UseDisableHttpVerbsMiddleware(app.Configuration.GetValue("DisabledHttpVerbs", string.Empty));
       app.UseResponseCompression();
       app.UseCsp();
       app.UseSecurityHeaders();
@@ -167,7 +158,7 @@ public class Program
         app.UseSwaggerUI();
       }
 
-      EndpointsRegistrar.RegisterAll(app);
+      app.RegisterApiEndpoints();
 
       await app.RunAsync();
       logger.Information("Stopped");

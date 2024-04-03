@@ -7,6 +7,5 @@ namespace ECER.Utilities.Hosting;
 /// </summary>
 public interface IRegisterEndpoints
 {
-    void Register(IEndpointRouteBuilder endpointRouteBuilder);
-
+  void Register(IEndpointRouteBuilder endpointRouteBuilder);
 }
