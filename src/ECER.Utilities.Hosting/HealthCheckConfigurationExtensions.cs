@@ -21,6 +21,6 @@ public static class HealthCheckConfigurationExtensions
     webApplication.MapHealthChecks("/health/liveness", new HealthCheckOptions
     {
       Predicate = _ => false
-    });
+    }).ShortCircuit();
   }
 }
