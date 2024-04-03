@@ -5,19 +5,19 @@ using MediatR;
 namespace ECER.Managers.Admin;
 
 public class InviteLinkHandlers(IInviteLinkTransformationEngine transformationEngine)
-  : IRequestHandler<GenerateInviteLinkCommand, PortalInvitationToLinkResponse>, IRequestHandler<VerifyInviteLinkCommand, LinkToPortalInvitationResponse>
+  : IRequestHandler<GenerateInviteLinkCommand, GenerateInviteLinkCommandResponse>, IRequestHandler<VerifyInviteLinkCommand, VerifyInviteLinkCommandResponse>
 {
-  public async Task<PortalInvitationToLinkResponse> Handle(GenerateInviteLinkCommand request, CancellationToken cancellationToken)
+  public async Task<GenerateInviteLinkCommandResponse> Handle(GenerateInviteLinkCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(transformationEngine);
-    return await transformationEngine.Transform(new PortalInvitationToLinkRequest(request.portalInvitation, request.inviteType))!;
+    return await transformationEngine.Transform(request)!;
   }
 
-  public async Task<LinkToPortalInvitationResponse> Handle(VerifyInviteLinkCommand request, CancellationToken cancellationToken)
+  public async Task<VerifyInviteLinkCommandResponse> Handle(VerifyInviteLinkCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(transformationEngine);
-    return await transformationEngine.Transform(new LinkToPortalInvitationRequest(request.portalInvitation, request.encryptedVerificationToken))!;
+    return await transformationEngine.Transform(request)!;
   }
 }

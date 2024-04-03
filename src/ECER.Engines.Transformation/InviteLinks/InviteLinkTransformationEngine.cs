@@ -6,28 +6,26 @@ namespace ECER.Engines.Transformation.InviteLinks;
 
 internal sealed class InviteLinkTransformationEngine(IDataProtectionProvider dataProtectionProvider) : IInviteLinkTransformationEngine
 {
-  public async Task<PortalInvitationToLinkResponse> Transform(PortalInvitationToLinkRequest request)
+  public async Task<GenerateInviteLinkCommandResponse> Transform(GenerateInviteLinkCommand command)
   {
     await Task.CompletedTask;
 
-    var expiryDate = DateTime.UtcNow.AddDays(7); // Example expiry date
-
+    var expiryDate = DateTime.UtcNow.AddDays(command.validDays); // Example expiry date
     var protector = dataProtectionProvider.CreateProtector(nameof(InviteLinkTransformationEngine)).ToTimeLimitedDataProtector();
 
     // Combine referenceType and portalInvitation into a single string
-    var combinedData = $"{request.inviteType}:{request.portalInvitation}";
+    var combinedData = $"{command.inviteType}:{command.portalInvitation}";
     var encryptedData = protector.Protect(combinedData, expiryDate);
 
     var referenceLink = WebUtility.UrlEncode(encryptedData);
-
-    return new PortalInvitationToLinkResponse(request.portalInvitation, referenceLink);
+    return new GenerateInviteLinkCommandResponse(command.portalInvitation, referenceLink);
   }
 
-  public async Task<LinkToPortalInvitationResponse> Transform(LinkToPortalInvitationRequest request)
+  public async Task<VerifyInviteLinkCommandResponse> Transform(VerifyInviteLinkCommand command)
   {
     await Task.CompletedTask;
 
-    var encryptedData = WebUtility.UrlDecode(request.encryptedVerificationToken);
+    var encryptedData = WebUtility.UrlDecode(command.encryptedVerificationToken);
 
     var protector = dataProtectionProvider.CreateProtector(nameof(InviteLinkTransformationEngine)).ToTimeLimitedDataProtector();
     var decryptedData = protector.Unprotect(encryptedData);
@@ -48,6 +46,6 @@ internal sealed class InviteLinkTransformationEngine(IDataProtectionProvider dat
       throw new InvalidOperationException("Invalid reference type.");
     }
 
-    return new LinkToPortalInvitationResponse(portalInvitation, referenceType);
+    return new VerifyInviteLinkCommandResponse(portalInvitation, referenceType);
   }
 }

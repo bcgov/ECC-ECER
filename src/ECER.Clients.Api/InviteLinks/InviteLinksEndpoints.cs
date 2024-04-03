@@ -10,13 +10,13 @@ public class InviteLinksEndpoints : IRegisterEndpoints
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
     endpointRouteBuilder.MapPost("/api/invitelinks", async Task<Results<Ok<GenerateInviteLinkResponse>, BadRequest<string>>> (
-      PortalInvitationToLinkRequest request,
+      GenerateInviteLinkRequest request,
       HttpContext httpContext,
       IMediator messageBus,
       IConfiguration configuration,
       CancellationToken ct) =>
     {
-      var referenceLinkResponse = await messageBus.Send(new GenerateInviteLinkCommand(request.portalInvitation, request.inviteType), ct);
+      var referenceLinkResponse = await messageBus.Send(new GenerateInviteLinkCommand(request.portalInvitation, request.inviteType, request.validDays), ct);
       string baseUrl = configuration["PortalApp:BaseUrl"]!;
       string referenceVerificationRoute = configuration["PortalApp:ReferenceVerificationRoute"]!;
       string verificationLink = $"{baseUrl}/{referenceVerificationRoute}/{referenceLinkResponse.encryptedVerificationToken}";
@@ -30,4 +30,5 @@ public class InviteLinksEndpoints : IRegisterEndpoints
   }
 }
 
+public record GenerateInviteLinkRequest(Guid portalInvitation, InviteType inviteType, int validDays);
 public record GenerateInviteLinkResponse(Guid portalInvitation, string inviteLink);

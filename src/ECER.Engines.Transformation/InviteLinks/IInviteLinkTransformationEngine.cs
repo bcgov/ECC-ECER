@@ -7,7 +7,7 @@ namespace ECER.Engines.Transformation.InviteLinks;
 /// </summary>
 public interface IInviteLinkTransformationEngine
 {
-  Task<PortalInvitationToLinkResponse> Transform(PortalInvitationToLinkRequest request);
+  Task<GenerateInviteLinkCommandResponse> Transform(GenerateInviteLinkCommand command);
 
-  Task<LinkToPortalInvitationResponse> Transform(LinkToPortalInvitationRequest request);
+  Task<VerifyInviteLinkCommandResponse> Transform(VerifyInviteLinkCommand command);
 }
