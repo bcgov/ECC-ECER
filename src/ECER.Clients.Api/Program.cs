@@ -86,8 +86,8 @@ public class Program
             .RequireAuthenticatedUser();
         });
 
-      builder.Services.AddDistributedMemoryCache();
-      builder.ConfigureDataProtection();
+      builder.Services.ConfigureDistributedCache(builder.Configuration.GetSection("DistributedCache").Get<DistributedCacheSettings>());
+      builder.Services.ConfigureDataProtection(builder.Configuration.GetSection("DataProtection").Get<DataProtectionSettings>());
       builder.Services.AddHealthChecks();
       builder.Services.AddResponseCompression(opts => opts.EnableForHttps = true);
       builder.Services.AddResponseCaching();
