@@ -141,12 +141,13 @@ public class Program
       builder.Services.AddResponseCompression(opts => opts.EnableForHttps = true);
       builder.Services.AddResponseCaching();
       builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
+      builder.Services.ConfigureHealthChecks();
 
       HostConfigurer.ConfigureAll(builder.Services, builder.Configuration);
 
       var app = builder.Build();
 
-      app.UseHealthChecks("/health");
+      app.MapHealthChecks();
       app.UseObservabilityMiddleware();
       app.UseDisableHttpVerbs(DisabledHttpVerbs);
       app.UseResponseCompression();

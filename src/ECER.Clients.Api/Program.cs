@@ -88,7 +88,7 @@ public class Program
 
       builder.Services.ConfigureDistributedCache(builder.Configuration.GetSection("DistributedCache").Get<DistributedCacheSettings>());
       builder.Services.ConfigureDataProtection(builder.Configuration.GetSection("DataProtection").Get<DataProtectionSettings>());
-      builder.Services.AddHealthChecks();
+      builder.Services.ConfigureHealthChecks();
       builder.Services.AddResponseCompression(opts => opts.EnableForHttps = true);
       builder.Services.AddResponseCaching();
       builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
@@ -97,7 +97,7 @@ public class Program
 
       var app = builder.Build();
 
-      app.UseHealthChecks("/health");
+      app.MapHealthChecks("/health");
       app.UseObservabilityMiddleware();
       app.UseDisableHttpVerbs(DisabledHttpVerbs);
       app.UseResponseCompression();
