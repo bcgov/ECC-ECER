@@ -6,7 +6,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace ECER.Utilities.Hosting;
 
-public static class WebApplicationExtensions
+public static class SecurityExtensions
 {
   public static void UseCsp(this WebApplication webApplication)
   {
@@ -26,6 +26,18 @@ public static class WebApplicationExtensions
     });
   }
 
+  public static void AddCorsPolicy(this IServiceCollection services, CorsSettings? settings)
+  {
+    services.AddCors(options =>
+    {
+      options.AddDefaultPolicy(policy =>
+      {
+        policy.SetIsOriginAllowedToAllowWildcardSubdomains();
+        if (settings != null && settings.AllowedOrigins != null) policy.WithOrigins(settings.ToOriginsArray()!);
+      });
+    });
+  }
+
   public static void UseSecurityHeaders(this WebApplication webApplication)
   {
     webApplication.Use(async (context, next) =>
@@ -37,12 +49,13 @@ public static class WebApplicationExtensions
     });
   }
 
-  public static void UseDisableHttpVerbs(this WebApplication webApplication, IEnumerable<string> verbs)
+  public static void UseDisableHttpVerbsMiddleware(this WebApplication webApplication, string? verbString)
   {
-    var list = verbs.ToArray();
+    if (verbString == null) return;
+    var verbList = verbString.Split(',', ';', ' ').Select(v => v.Trim().ToUpperInvariant()).ToArray();
     webApplication.Use(async (context, next) =>
     {
-      if (list.Contains(context.Request.Method.ToUpperInvariant()))
+      if (verbList.Contains(context.Request.Method.ToUpperInvariant()))
       {
         context.Response.StatusCode = 405;
         return;
@@ -78,4 +91,11 @@ public record CspSettings : IOptions<CspSettings>
     (string.IsNullOrWhiteSpace(FrameAncestors) ? "" : $"frame-ancestors {this.FrameAncestors};") +
     (string.IsNullOrWhiteSpace(FormAction) ? "" : $"form-action {this.FormAction};")
   ;
+}
+
+public record CorsSettings
+{
+  public string? AllowedOrigins { get; set; }
+
+  public string[]? ToOriginsArray() => AllowedOrigins?.Split(',', ';', ' ').Select(v => v.Trim()).ToArray() ?? Array.Empty<string>();
 }

@@ -8,8 +8,9 @@ using Microsoft.PowerPlatform.Dataverse.Client;
 
 namespace ECER.Utilities.DataverseSdk;
 
-public class Configurer : IConfigureComponents
+public class Configurer : IConfigureComponents, IPostConfigureChecker
 {
+
     public void Configure([NotNull] ConfigurationContext configurationContext)
     {
         configurationContext.Services.AddSingleton<IOrganizationServiceAsync>(sp =>
@@ -24,5 +25,14 @@ public class Configurer : IConfigureComponents
             var client = sp.GetRequiredService<IOrganizationServiceAsync>();
             return new EcerContext(client);
         });
+    }
+
+
+    public async Task<bool> Check([NotNull] CheckContext context, CancellationToken ct)
+    {
+        await Task.CompletedTask;
+        using var _ = context.Services.GetRequiredService<EcerContext>();
+
+        return true;
     }
 }

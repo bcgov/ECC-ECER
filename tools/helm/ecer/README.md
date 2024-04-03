@@ -4,7 +4,13 @@ This directory contains a Helm chart to deploy ECER
 
 ## Usage
 
-To install a new environment, ensure the values.yaml matches the environment, then run the following command:
+To update or install the chart's dependencies run the following command:
+
+```sh
+helm dep update
+```
+
+To install a new environment, ensure the [env]_values.yaml matches the environment, then run the following command:
 
 ```sh
 helm -n [namespace] install [env name] .
