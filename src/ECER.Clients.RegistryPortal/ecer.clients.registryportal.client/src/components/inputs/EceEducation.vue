@@ -102,10 +102,12 @@
 </template>
 
 <script lang="ts">
+import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 
 import EducationList, { type EducationData } from "@/components/EducationList.vue";
 import { useAlertStore } from "@/store/alert";
+import { useWizardStore } from "@/store/wizard";
 import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
@@ -135,7 +137,6 @@ export default defineComponent({
   data: function () {
     return {
       clientId: "",
-      mode: "add",
       id: "",
       previousSchool: "",
       school: "",
@@ -152,6 +153,7 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
     },
