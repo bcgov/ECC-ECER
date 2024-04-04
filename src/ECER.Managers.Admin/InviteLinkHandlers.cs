@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace ECER.Managers.Admin;
 
-public class InviteLinkHandlers(IInviteLinkTransformationEngine transformationEngine, IOptions<CspSettings> cspSettings)
+public class InviteLinkHandlers(IInviteLinkTransformationEngine transformationEngine, IOptions<PortalAppSettings> cspSettings)
   : IRequestHandler<GenerateInviteLinkCommand, GenerateInviteLinkCommandResponse>, IRequestHandler<VerifyInviteTokenCommand, VerifyInviteTokenCommandResponse>
 {
   public async Task<GenerateInviteLinkCommandResponse> Handle(GenerateInviteLinkCommand request, CancellationToken cancellationToken)

@@ -10,7 +10,7 @@ public class Configurer : IConfigureComponents
 {
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
-    configurationContext.Services.Configure<CspSettings>(cspSettings =>
+    configurationContext.Services.Configure<PortalAppSettings>(cspSettings =>
          configurationContext.Configuration.GetSection("PortalApp").Bind(cspSettings));
 
     configurationContext.Services.AddTransient<FileHandlers>();
@@ -18,10 +18,10 @@ public class Configurer : IConfigureComponents
   }
 }
 
-public record CspSettings : IOptions<CspSettings>
+public record PortalAppSettings : IOptions<PortalAppSettings>
 {
   public string BaseUrl { get; set; } = string.Empty;
   public string ReferenceVerificationRoute { get; set; } = string.Empty;
-  public CspSettings Value => this;
+  public PortalAppSettings Value => this;
   // Add other properties as needed
 }
