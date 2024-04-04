@@ -23,7 +23,7 @@ public class InviteLinkHandlers(IInviteLinkTransformationEngine transformationEn
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(transformationEngine);
-    var response = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.portalInvitation, request.verificationToken))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
+    var response = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.verificationToken))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
     return new VerifyInviteTokenCommandResponse(response.portalInvitation, response.inviteType);
   }
 }
