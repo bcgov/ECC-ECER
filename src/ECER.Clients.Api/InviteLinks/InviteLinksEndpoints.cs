@@ -13,7 +13,6 @@ public class InviteLinksEndpoints : IRegisterEndpoints
       GenerateInviteLinkRequest request,
       HttpContext httpContext,
       IMediator messageBus,
-      IConfiguration configuration,
       CancellationToken ct) =>
     {
       var referenceLinkResponse = await messageBus.Send(new GenerateInviteLinkCommand(request.portalInvitation, request.inviteType, request.validDays), ct);
