@@ -1,21 +1,24 @@
-﻿using System.Collections.Concurrent;
-using ECER.Managers.Admin.Contract.Files;
+﻿using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
+using MediatR;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Concurrent;
 
 namespace ECER.Managers.Admin;
 
-public static class FileHandlers
+public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfiguration configuration)
+  : IRequestHandler<SaveFileCommand>, IRequestHandler<FileQuery, FileQueryResults>
+
 {
-  public static async Task Handle(SaveFileCommand cmd, IObjecStorageProvider objectStorageProvider, IConfiguration configuration, CancellationToken ct)
+  public async Task Handle(SaveFileCommand request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(cmd);
+    ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(objectStorageProvider);
     ArgumentNullException.ThrowIfNull(configuration);
 
     var bucket = GetBucketName(configuration);
-    await Parallel.ForEachAsync(cmd.Items, ct, async (file, ct) =>
+    await Parallel.ForEachAsync(request.Items, cancellationToken, async (file, ct) =>
     {
       var tags = new Dictionary<string, string>(file.FileProperties.TagsList ?? Array.Empty<KeyValuePair<string, string>>())
       {
@@ -25,15 +28,15 @@ public static class FileHandlers
     });
   }
 
-  public static async Task<FIleQueryResults> Handle(FileQuery query, IObjecStorageProvider objectStorageProvider, IConfiguration configuration, CancellationToken ct)
+  public async Task<FileQueryResults> Handle(FileQuery request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(query);
+    ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(objectStorageProvider);
     ArgumentNullException.ThrowIfNull(configuration);
 
     var bucket = GetBucketName(configuration);
     var files = new ConcurrentBag<FileData>();
-    await Parallel.ForEachAsync(query.FileLocations, ct, async (fileLocation, ct) =>
+    await Parallel.ForEachAsync(request.FileLocations, cancellationToken, async (fileLocation, ct) =>
     {
       var file = await objectStorageProvider.GetAsync(new S3Descriptor(bucket, fileLocation.Id, fileLocation.Folder), ct);
       var classification = file?.Tags?.SingleOrDefault(t => t.Key == "classification");
@@ -46,7 +49,7 @@ public static class FileHandlers
       if (file != null) files.Add(new FileData(fileLocation, fileProperties, file.FileName, file.ContentType, file.Content));
     });
 
-    return new FIleQueryResults(files.ToList());
+    return new FileQueryResults(files.ToList());
   }
 
   private static string GetBucketName(IConfiguration configuration) =>

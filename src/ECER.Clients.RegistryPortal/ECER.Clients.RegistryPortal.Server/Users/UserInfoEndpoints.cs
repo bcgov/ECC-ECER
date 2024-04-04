@@ -4,8 +4,8 @@ using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
+using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server.Users;
 
@@ -13,17 +13,17 @@ public class UserInfoEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("api/userinfo", async Task<Results<Ok<UserInfo>, NotFound>> (HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
+    endpointRouteBuilder.MapGet("api/userinfo", async Task<Results<Ok<UserInfo>, NotFound>> (HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
         {
           var user = ctx.User.GetUserContext()!;
-          var results = await bus.InvokeAsync<RegistrantQueryResults>(new SearchRegistrantQuery { ByUserIdentity = user.Identity }, ct);
+          var results = await bus.Send<RegistrantQueryResults>(new SearchRegistrantQuery { ByUserIdentity = user.Identity }, ct);
 
           var registrant = results.Items.SingleOrDefault();
           if (registrant == null) return TypedResults.NotFound();
 
           var query = new UserCommunicationsStatusQuery();
           query.ByRegistrantId = registrant.UserId;
-          var communicationsStatus = await bus.InvokeAsync<CommunicationsStatusResults>(query);
+          var communicationsStatus = await bus.Send<CommunicationsStatusResults>(query);
 
           var userInfo = mapper.Map<UserInfo>(registrant.Profile);
           userInfo!.UnreadMessagesCount = communicationsStatus.Status.Count;
@@ -33,10 +33,10 @@ public class UserInfoEndpoints : IRegisterEndpoints
         .RequireAuthorization("registry_new_user")
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("api/userinfo", async Task<Ok> (UserInfo userInfo, HttpContext ctx, CancellationToken ct, IMessageBus bus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("api/userinfo", async Task<Ok> (UserInfo userInfo, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
         {
           var user = ctx.User.GetUserContext()!;
-          await bus.InvokeAsync<string>(new RegisterNewUserCommand(mapper.Map<Managers.Registry.Contract.Registrants.UserProfile>(userInfo)!, user.Identity), ct);
+          await bus.Send(new RegisterNewUserCommand(mapper.Map<Managers.Registry.Contract.Registrants.UserProfile>(userInfo)!, user.Identity), ct);
 
           return TypedResults.Ok();
         })

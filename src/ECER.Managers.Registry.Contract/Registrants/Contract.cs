@@ -1,22 +1,23 @@
 ﻿using ECER.Utilities.Security;
+using MediatR;
 
 namespace ECER.Managers.Registry.Contract.Registrants;
 
 /// <summary>
 /// Invokes a new registrant registration use case
 /// </summary>
-public record RegisterNewUserCommand(UserProfile Profile, UserIdentity Identity);
+public record RegisterNewUserCommand(UserProfile Profile, UserIdentity Identity) : IRequest<string>;
 
 /// <summary>
 /// Invokes updating a registrant's profile use case
 /// </summary>
 /// <param name="Registrant"></param>
-public record UpdateRegistrantProfileCommand(Registrant Registrant);
+public record UpdateRegistrantProfileCommand(Registrant Registrant) : IRequest<string>;
 
 /// <summary>
 /// Invokes a registrant query use case
 /// </summary>
-public record SearchRegistrantQuery
+public record SearchRegistrantQuery : IRequest<RegistrantQueryResults>
 {
   public UserIdentity? ByUserIdentity { get; set; }
 }
