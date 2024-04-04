@@ -1,25 +1,29 @@
-﻿using ECER.Engines.Transformation.InviteLinks;
+﻿using ECER.Engines.Transformation;
+using ECER.Engines.Transformation.InviteLinks;
 using ECER.Managers.Admin.Contract.InviteLinks;
 using MediatR;
+using Microsoft.Extensions.Options;
 
 namespace ECER.Managers.Admin;
 
-public class InviteLinkHandlers(IInviteLinkTransformationEngine transformationEngine)
-  : IRequestHandler<GenerateInviteLinkCommand, GenerateInviteLinkCommandResponse>, IRequestHandler<VerifyInviteLinkCommand, VerifyInviteLinkCommandResponse>
+public class InviteLinkHandlers(IInviteLinkTransformationEngine transformationEngine, IOptions<CspSettings> cspSettings)
+  : IRequestHandler<GenerateInviteLinkCommand, GenerateInviteLinkCommandResponse>, IRequestHandler<VerifyInviteTokenCommand, VerifyInviteTokenCommandResponse>
 {
   public async Task<GenerateInviteLinkCommandResponse> Handle(GenerateInviteLinkCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(transformationEngine);
-    var response = await transformationEngine.Transform(request)!;
-    return response! as GenerateInviteLinkCommandResponse ?? throw new InvalidCastException("Invalid response type");
+    var response = await transformationEngine.Transform(new EncryptInviteTokenRequest(request.portalInvitation, request.inviteType, request.validDays))! as EncryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
+    string verificationLink = $"{cspSettings.Value.BaseUrl}/{cspSettings.Value.ReferenceVerificationRoute}/{response.verificationToken}";
+
+    return new GenerateInviteLinkCommandResponse(response.portalInvitation, verificationLink);
   }
 
-  public async Task<VerifyInviteLinkCommandResponse> Handle(VerifyInviteLinkCommand request, CancellationToken cancellationToken)
+  public async Task<VerifyInviteTokenCommandResponse> Handle(VerifyInviteTokenCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(transformationEngine);
-    var response = await transformationEngine.Transform(request)!;
-    return response! as VerifyInviteLinkCommandResponse ?? throw new InvalidCastException("Invalid response type");
+    var response = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.portalInvitation, request.verificationToken))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
+    return new VerifyInviteTokenCommandResponse(response.portalInvitation, response.inviteType);
   }
 }

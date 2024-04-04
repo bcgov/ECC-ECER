@@ -28,9 +28,8 @@ public class InviteLinkHandlersTests : ApiWebAppScenarioBase
     var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
-    var verifyResponse = await bus.Send(new VerifyInviteLinkCommand(portalInvitation, packingResponse.encryptedVerificationToken), CancellationToken.None);
+    var verifyResponse = await bus.Send(new VerifyInviteTokenCommand(portalInvitation, packingResponse.verificationLink.Split('/')[2]), CancellationToken.None);
     verifyResponse!.portalInvitation.ShouldBe(portalInvitation);
-
     verifyResponse.inviteType.ShouldBe(InviteType.WorkExperienceReference);
   }
 }

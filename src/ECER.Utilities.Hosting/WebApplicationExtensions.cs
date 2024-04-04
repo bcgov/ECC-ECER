@@ -47,7 +47,6 @@ public static class WebApplicationExtensions
         context.Response.StatusCode = 405;
         return;
       }
-
       await next.Invoke();
     });
   }

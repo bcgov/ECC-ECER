@@ -6,36 +6,36 @@ namespace ECER.Engines.Transformation.InviteLinks;
 
 internal sealed class InviteLinkTransformationEngine(IDataProtectionProvider dataProtectionProvider) : IInviteLinkTransformationEngine
 {
-  public async Task<ManageInviteLinkCommandResponse> Transform(ManageInviteLinkCommand command)
+  public async Task<TransformResponse> Transform(TransformRequest request)
   {
-    return command switch
+    return request switch
     {
-      VerifyInviteLinkCommand c => await TransformVerifyInviteLinkCommand(c),
-      GenerateInviteLinkCommand c => await TransformGenerateInviteLinkCommand(c),
-      _ => throw new NotSupportedException($"{command.GetType().Name} is not supported")
+      EncryptInviteTokenRequest r => await EncryptInviteToken(r),
+      DecryptInviteTokenRequest r => await DecryptInviteToken(r),
+      _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
     };
   }
 
-  public async Task<GenerateInviteLinkCommandResponse> TransformGenerateInviteLinkCommand(GenerateInviteLinkCommand command)
+  private async Task<EncryptInviteTokenResponse> EncryptInviteToken(EncryptInviteTokenRequest request)
   {
     await Task.CompletedTask;
 
-    var expiryDate = DateTime.UtcNow.AddDays(command.validDays); // Example expiry date
+    var expiryDate = DateTime.UtcNow.AddDays(request.validDays); // Example expiry date
     var protector = dataProtectionProvider.CreateProtector(nameof(InviteLinkTransformationEngine)).ToTimeLimitedDataProtector();
 
     // Combine referenceType and portalInvitation into a single string
-    var combinedData = $"{command.inviteType}:{command.portalInvitation}";
+    var combinedData = $"{request.inviteType}:{request.portalInvitation}";
     var encryptedData = protector.Protect(combinedData, expiryDate);
 
     var referenceLink = WebUtility.UrlEncode(encryptedData);
-    return new GenerateInviteLinkCommandResponse(command.portalInvitation, referenceLink);
+    return new EncryptInviteTokenResponse(request.portalInvitation, referenceLink);
   }
 
-  public async Task<VerifyInviteLinkCommandResponse> TransformVerifyInviteLinkCommand(VerifyInviteLinkCommand command)
+  private async Task<DecryptInviteTokenResponse> DecryptInviteToken(DecryptInviteTokenRequest request)
   {
     await Task.CompletedTask;
 
-    var encryptedData = WebUtility.UrlDecode(command.encryptedVerificationToken);
+    var encryptedData = WebUtility.UrlDecode(request.verificationToken);
 
     var protector = dataProtectionProvider.CreateProtector(nameof(InviteLinkTransformationEngine)).ToTimeLimitedDataProtector();
     var decryptedData = protector.Unprotect(encryptedData);
@@ -56,6 +56,6 @@ internal sealed class InviteLinkTransformationEngine(IDataProtectionProvider dat
       throw new InvalidOperationException("Invalid reference type.");
     }
 
-    return new VerifyInviteLinkCommandResponse(portalInvitation, referenceType);
+    return new DecryptInviteTokenResponse(portalInvitation, referenceType);
   }
 }
