@@ -2,6 +2,7 @@
 
 using System.Buffers;
 using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Microsoft.Extensions.Caching.Distributed;
 

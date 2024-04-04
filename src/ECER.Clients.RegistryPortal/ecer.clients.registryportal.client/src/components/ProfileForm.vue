@@ -1,13 +1,8 @@
 <template>
   <v-col cols="12">
-    <EceForm
-      :form="profileInformationForm"
-      :form-data="formStore.formData"
-      @updated-form-data="formStore.setFormData"
-      @updated-validation="isFormValid = $event"
-    />
+    <EceForm ref="profileForm" :form="profileInformationForm" :form-data="formStore.formData" @updated-form-data="formStore.setFormData" />
     <v-row justify="end">
-      <v-btn :form="profileInformationForm.id" type="submit" rounded="lg" color="primary" @click="saveProfile">Save</v-btn>
+      <v-btn rounded="lg" color="primary" @click="saveProfile">Save</v-btn>
     </v-row>
   </v-col>
 </template>
@@ -61,12 +56,11 @@ export default defineComponent({
 
     return { profileInformationForm, formStore, alertStore, userStore };
   },
-  data: () => ({
-    isFormValid: null as boolean | null,
-  }),
   methods: {
     async saveProfile() {
-      if (!this.isFormValid) {
+      const { valid } = await (this.$refs.profileForm as typeof EceForm).$refs[profileInformationForm.id].validate();
+
+      if (!valid) {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       } else {
         const success = await putProfile({

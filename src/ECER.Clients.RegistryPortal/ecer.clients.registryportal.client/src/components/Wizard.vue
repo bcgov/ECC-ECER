@@ -21,12 +21,7 @@
           <DeclarationStepContent v-if="step.stage == 'Declaration'" class="mt-6" />
           <v-row>
             <v-col cols="12">
-              <EceForm
-                :form="step.form"
-                :form-data="wizardStore.wizardData"
-                @updated-form-data="wizardStore.setWizardData"
-                @updated-validation="$emit('updatedValidation', $event)"
-              />
+              <EceForm :ref="step.form.id" :form="step.form" :form-data="wizardStore.wizardData" @updated-form-data="wizardStore.setWizardData" />
             </v-col>
           </v-row>
         </v-container>
@@ -59,9 +54,6 @@ export default defineComponent({
       type: Object as PropType<Wizard>,
       default: () => applicationWizard,
     },
-  },
-  emits: {
-    updatedValidation: (_validation: boolean | null) => true,
   },
   setup: async () => {
     const wizardStore = useWizardStore();

@@ -1,5 +1,5 @@
 <template>
-  <Wizard :wizard="applicationWizard" @updated-validation="isFormValid = $event">
+  <Wizard :ref="'wizard'" :wizard="applicationWizard">
     <template #actions>
       <v-container class="mb-8">
         <v-row class="justify-space-between ga-4" no-gutters>
@@ -16,29 +16,9 @@
             </v-btn>
           </v-col>
           <v-col cols="auto">
-            <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
-            <v-btn
-              v-if="wizardStore.currentStepStage !== `Review`"
-              type="submit"
-              :form="getFormId"
-              rounded="lg"
-              color="primary"
-              :disabled="isDisabled"
-              @click="handleSaveAndContinue"
-            >
-              Save and Continue
-            </v-btn>
-            <v-btn
-              v-if="wizardStore.currentStepStage === 'Review'"
-              type="submit"
-              :form="getFormId"
-              rounded="lg"
-              color="primary"
-              :disabled="isDisabled"
-              @click="handleSubmit"
-            >
-              Submit Application
-            </v-btn>
+            <v-btn v-if="showSaveButtons" rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
+            <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and Continue</v-btn>
+            <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" @click="handleSubmit">Submit Application</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -81,15 +61,16 @@ export default defineComponent({
 
     return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore };
   },
-  data: () => ({
-    isFormValid: null as boolean | null,
-  }),
   computed: {
-    getFormId(): string {
-      return this.wizardStore.currentStep.form.id;
+    showSaveButtons() {
+      return (
+        this.wizardStore.currentStepStage !== "Review" &&
+        !(this.wizardStore.currentStepStage === "Education" && this.wizardStore.listComponentMode === "add") &&
+        !(this.wizardStore.currentStepStage === "WorkReferences" && this.wizardStore.listComponentMode === "add")
+      );
     },
-    isDisabled(): boolean {
-      return this.wizardStore.currentStepStage === "Declaration" && !this.isFormValid;
+    showSubmitApplication() {
+      return this.wizardStore.currentStepStage === "Review";
     },
   },
   methods: {
@@ -97,10 +78,15 @@ export default defineComponent({
       const submitApplicationResponse = await this.applicationStore.submitApplication();
       if (submitApplicationResponse?.applicationId) {
         this.$router.push({ path: "/submitted" });
+      } else {
+        this.alertStore.setFailureAlert("Your application is incomplete. You need to complete it before you can submit.");
       }
     },
-    handleSaveAndContinue() {
-      if (!this.isFormValid) {
+    async handleSaveAndContinue() {
+      const currentStepFormId = this.wizardStore.currentStep.form.id;
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const { valid } = await formRef.validate();
+      if (!valid) {
         this.alertStore.setFailureAlert("Please fill out all required fields");
       } else {
         switch (this.wizardStore.currentStepStage) {
@@ -145,7 +131,6 @@ export default defineComponent({
         default:
           this.applicationStore.saveDraft();
           this.decrementWizard();
-          this.isFormValid = true;
           break;
       }
     },

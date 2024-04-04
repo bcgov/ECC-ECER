@@ -23,8 +23,8 @@ namespace ECER.Managers.Registry
         ByRegistrantId = request.ByRegistrantId,
         ByStatus = statuses,
       });
-
-      var unreadCount = communications.Where(c => c.Acknowledged).ToList().Count; // it does not support Any
+      
+      var unreadCount = communications.Where(c => !c.Acknowledged).ToList().Count; // it does not support Any
       var hasUnread = unreadCount > 0;
 
       var communicationsStatus = new Contract.Communications.CommunicationsStatus() { HasUnread = hasUnread, Count = unreadCount };

@@ -13,6 +13,7 @@ export interface WizardState {
   step: number;
   wizardConfig: Wizard;
   wizardData: WizardData;
+  listComponentMode: "add" | "list";
 }
 
 export type PortalStageValidation = {
@@ -24,6 +25,7 @@ export const useWizardStore = defineStore("wizard", {
     step: 1,
     wizardData: {} as WizardData,
     wizardConfig: {} as Wizard,
+    listComponentMode: "add",
   }),
   persist: true,
   getters: {
@@ -41,12 +43,25 @@ export const useWizardStore = defineStore("wizard", {
     },
     validationState(state): PortalStageValidation {
       let totalHours = 0;
-      const referenceListPath = state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id];
-      if (Array.isArray(referenceListPath) && referenceListPath.length > 0) {
-        totalHours = referenceListPath.reduce((sum, currentReference) => {
+      const references: Components.Schemas.WorkExperienceReference[] = Object.values(
+        state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id],
+      );
+      if (references.length > 0) {
+        totalHours = references.reduce((sum, currentReference) => {
           return sum + (currentReference.hours || 0);
         }, 0);
       }
+
+      const duplicateCharacterReferenceFound = references.some((workExperienceReference: Components.Schemas.WorkExperienceReference) => {
+        return (
+          workExperienceReference.firstName ===
+            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName &&
+          workExperienceReference.lastName ===
+            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName &&
+          workExperienceReference.emailAddress ===
+            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress
+        );
+      });
 
       return {
         CertificationType: (state.wizardData[this.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].length || []) > 0,
@@ -56,7 +71,10 @@ export const useWizardStore = defineStore("wizard", {
         ContactInformation: true,
         Education: Object.values(state.wizardData[this.wizardConfig.steps.education.form.inputs.educationList.id]).length > 0,
         CharacterReferences: (state.wizardData[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id].length || []) > 0,
-        WorkReferences: Object.values(state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id]).length > 0 && totalHours >= 500,
+        WorkReferences:
+          Object.values(state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id]).length > 0 &&
+          totalHours >= 500 &&
+          !duplicateCharacterReferenceFound,
         Review: true,
       };
     },

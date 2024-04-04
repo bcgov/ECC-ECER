@@ -116,6 +116,11 @@
           <p class="small">You must enter 500 hours of work experience to submit your application.</p>
         </Alert>
       </v-col>
+      <v-col v-if="duplicateCharacterReference" sm="12" md="10" lg="8" xl="6">
+        <Alert type="error">
+          <p class="small">Your work experience reference(s) cannot be the same as your character reference</p>
+        </Alert>
+      </v-col>
       <v-col sm="12" md="10" lg="8" xl="6" class="my-6">
         <WorkExperienceReferenceProgressBar :references="modelValue" />
       </v-col>
@@ -132,12 +137,14 @@
 </template>
 
 <script lang="ts">
+import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 
 import Alert from "@/components/Alert.vue";
 import WorkExperienceReferenceList, { type WorkExperienceReferenceData } from "@/components/WorkExperienceReferenceList.vue";
 import WorkExperienceReferenceProgressBar from "@/components/WorkExperienceReferenceProgressBar.vue";
 import { useAlertStore } from "@/store/alert";
+import { useWizardStore } from "@/store/wizard";
 import type { EceWorkExperienceReferencesProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { isNumber } from "@/utils/formInput";
@@ -161,15 +168,16 @@ export default defineComponent({
   },
   setup: () => {
     const alertStore = useAlertStore();
+    const wizardStore = useWizardStore();
 
     return {
       alertStore,
+      wizardStore,
     };
   },
   data: function () {
     return {
       clientId: "",
-      mode: "add",
       id: null as string | null,
       previousFullName: "",
       firstName: "",
@@ -181,6 +189,7 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     isDisabled() {
       return this.count >= 6 || this.totalHours >= 500;
     },
@@ -194,6 +203,17 @@ export default defineComponent({
     },
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
+    },
+    duplicateCharacterReference() {
+      const check = Object.values(this.modelValue).some((workExperienceReference: Components.Schemas.WorkExperienceReference) => {
+        const characterReferenceKey = this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id;
+        return (
+          workExperienceReference.firstName === this.wizardStore.wizardData?.[characterReferenceKey]?.[0]?.firstName &&
+          workExperienceReference.lastName === this.wizardStore.wizardData?.[characterReferenceKey]?.[0]?.lastName &&
+          workExperienceReference.emailAddress === this.wizardStore.wizardData?.[characterReferenceKey]?.[0]?.emailAddress
+        );
+      });
+      return check;
     },
   },
   mounted() {
