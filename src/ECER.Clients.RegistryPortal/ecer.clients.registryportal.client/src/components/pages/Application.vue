@@ -1,5 +1,22 @@
 <template>
   <Wizard :ref="'wizard'" :wizard="applicationWizard">
+    <template #header>
+      <WizardHeader class="mb-6" />
+    </template>
+    <template #stepperHeader>
+      <v-stepper-header>
+        <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
+          <v-stepper-item
+            color="primary"
+            :step="wizardStore.step"
+            :value="index + 1"
+            :title="step.title"
+            :rules="wizardStore.step <= index + 1 ? [] : [() => wizardStore.validationState[step.stage as Components.Schemas.PortalStage]]"
+          ></v-stepper-item>
+          <v-divider v-if="index !== Object.values(wizardStore.steps).length - 1" :key="`divider-${index}`" />
+        </template>
+      </v-stepper-header>
+    </template>
     <template #actions>
       <v-container class="mb-8">
         <v-row class="justify-space-between ga-4" no-gutters>
@@ -31,18 +48,20 @@ import { defineComponent } from "vue";
 
 import { getProfile, putProfile } from "@/api/profile";
 import Wizard from "@/components/Wizard.vue";
+import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationTypeStore } from "@/store/certificationType";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
+import type { Components } from "@/types/openapi";
 
 import { AddressType } from "../inputs/EceAddresses.vue";
 
 export default defineComponent({
   name: "Application",
-  components: { Wizard },
+  components: { Wizard, WizardHeader },
   setup: async () => {
     const wizardStore = useWizardStore();
     const userStore = useUserStore();
@@ -103,11 +122,11 @@ export default defineComponent({
     },
     incrementWizard() {
       this.wizardStore.incrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as Components.Schemas.PortalStage;
     },
     decrementWizard() {
       this.wizardStore.decrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as Components.Schemas.PortalStage;
     },
     handleBack() {
       switch (this.wizardStore.currentStepStage) {

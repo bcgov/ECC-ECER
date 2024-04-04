@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 import { AddressType } from "@/components/inputs/EceAddresses.vue";
 import type { Components } from "@/types/openapi";
-import type { Step, Wizard } from "@/types/wizard";
+import type { ReferenceStage, Step, Wizard } from "@/types/wizard";
 
 import { useUserStore } from "./user";
 export interface WizardData {
@@ -36,7 +36,7 @@ export const useWizardStore = defineStore("wizard", {
     currentStepId(state): string {
       return this.steps[state.step - 1].id;
     },
-    currentStepStage(state): Components.Schemas.PortalStage {
+    currentStepStage(state): Components.Schemas.PortalStage | ReferenceStage {
       return this.steps[state.step - 1].stage;
     },
     validationState(state): PortalStageValidation {
@@ -140,10 +140,16 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.workReference.form.inputs.referenceList.id]: workReferencesDict,
       };
     },
+    initializeWizardForReference(wizard: Wizard) {
+      this.$reset();
+      this.wizardConfig = wizard;
+
+      this.setWizardData({ applicantFirstName: "JANE", applicantLastName: "DOE", referenceType: "Work" });
+    },
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };
     },
-    setCurrentStep(stage: Components.Schemas.PortalStage): void {
+    setCurrentStep(stage: Components.Schemas.PortalStage | ReferenceStage): void {
       const item = Object.values(this.wizardConfig.steps).findIndex((step) => step.stage === stage) + 1;
       this.step = item;
     },
@@ -158,6 +164,10 @@ export const useWizardStore = defineStore("wizard", {
         this.step -= 1;
         window.scrollTo(0, 0);
       }
+    },
+    setStep(step: number): void {
+      this.step = step;
+      window.scrollTo(0, 0);
     },
   },
 });

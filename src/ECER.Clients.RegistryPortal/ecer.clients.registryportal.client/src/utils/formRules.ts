@@ -97,6 +97,15 @@ const required = (message = "This field is required") => {
 };
 
 /**
+ * Rule required for radio buttons
+ * @param {String} message
+ * @returns Function
+ */
+const requiredRadio = (message = "This field is required") => {
+  return (v: boolean | string) => v !== undefined || message;
+};
+
+/**
  * Custom endDate Rule! Checks that we have start date and that end date
  * happens after start date. Date format should be 2022-12-10 YYYY-MM-DD.
  * @param {String} effectiveDate
@@ -134,5 +143,6 @@ export {
   phoneNumber,
   postalCode,
   required,
+  requiredRadio,
   website,
 };

@@ -114,6 +114,11 @@ const router = createRouter({
       component: () => import("./components/pages/Disclaimer.vue"),
       meta: { requiresAuth: false },
     },
+    {
+      path: "/verify/:id",
+      component: () => import("./components/reference/Reference.vue"),
+      meta: { requiresAuth: false },
+    },
   ],
 });
 

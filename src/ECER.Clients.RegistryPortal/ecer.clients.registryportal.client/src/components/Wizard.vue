@@ -1,24 +1,19 @@
 <template>
-  <WizardHeader class="mb-6" />
+  <slot name="header"></slot>
   <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :mobile="$vuetify.display.mobile">
-    <v-stepper-header>
-      <template v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage">
-        <v-stepper-item
-          color="primary"
-          :step="wizardStore.step"
-          :value="index + 1"
-          :title="step.title"
-          :rules="wizardStore.step <= index + 1 ? [] : [() => wizardStore.validationState[step.stage]]"
-        ></v-stepper-item>
-        <v-divider v-if="index !== Object.values(wizard.steps).length - 1" :key="`divider-${index}`" />
-      </template>
-    </v-stepper-header>
+    <slot name="stepperHeader">
+      <v-stepper-header v-if="$props.config!.showSteps">
+        <template v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage">
+          <v-stepper-item color="primary" :step="wizardStore.step" :value="index + 1" :title="step.title"></v-stepper-item>
+          <v-divider v-if="index !== Object.values(wizard.steps).length - 1" :key="`divider-${index}`" />
+        </template>
+      </v-stepper-header>
+    </slot>
     <v-stepper-window v-model="wizardStore.step">
       <v-stepper-window-item v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage" :value="index + 1">
         <v-container>
-          <h3>{{ step.title }}</h3>
-          <h4>{{ step.subtitle }}</h4>
-          <DeclarationStepContent v-if="step.stage == 'Declaration'" class="mt-6" />
+          <h3 v-if="step.title">{{ step.title }}</h3>
+          <h4 v-if="step.subtitle">{{ step.subtitle }}</h4>
           <v-row>
             <v-col cols="12">
               <EceForm :ref="step.form.id" :form="step.form" :form-data="wizardStore.wizardData" @updated-form-data="wizardStore.setWizardData" />
@@ -36,33 +31,34 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 
-import DeclarationStepContent from "@/components/DeclarationStepContent.vue";
 import EceForm from "@/components/Form.vue";
-import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
-import { useCertificationTypeStore } from "@/store/certificationType";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
-import type { Step, Wizard } from "@/types/wizard";
+import type { Step, Wizard, WizardConfigProps } from "@/types/wizard";
 
 export default defineComponent({
   name: "Wizard",
-  components: { WizardHeader, EceForm, DeclarationStepContent },
+  components: { EceForm },
   props: {
     wizard: {
       type: Object as PropType<Wizard>,
       default: () => applicationWizard,
+    },
+    config: {
+      type: Object as PropType<WizardConfigProps>,
+      default: () => {
+        return { showSteps: true };
+      },
     },
   },
   setup: async () => {
     const wizardStore = useWizardStore();
     const userStore = useUserStore();
     const alertStore = useAlertStore();
-    const certificationTypeStore = useCertificationTypeStore();
 
     return {
-      certificationTypeStore,
       wizardStore,
       userStore,
       alertStore,
