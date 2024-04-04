@@ -1,7 +1,9 @@
-﻿namespace ECER.Managers.Admin.Contract.Files;
-public record SaveFileCommand(IEnumerable<FileData> Items);
+﻿using MediatR;
 
-public record FileQuery(IEnumerable<FileLocation> FileLocations);
+namespace ECER.Managers.Admin.Contract.Files;
+public record SaveFileCommand(IEnumerable<FileData> Items) : IRequest;
+
+public record FileQuery(IEnumerable<FileLocation> FileLocations) : IRequest<FileQueryResults>;
 
 public record FileLocation(string Id, string Folder);
 
@@ -29,6 +31,6 @@ public record FileProperties
   }
 }
 
-public record FIleQueryResults(IEnumerable<FileData> Items);
+public record FileQueryResults(IEnumerable<FileData> Items);
 
 public record FileData(FileLocation FileLocation, FileProperties FileProperties, string FileName, string ContentType, Stream Content);

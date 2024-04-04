@@ -20,7 +20,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
   public ApplicationRepositoryTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
-    repository = Host.Services.GetRequiredService<IApplicationRepository>();
+    repository = Fixture.Services.GetRequiredService<IApplicationRepository>();
   }
 
   [Fact]

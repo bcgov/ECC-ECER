@@ -3,35 +3,38 @@ using ECER.Engines.Validation.Applications;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Resources.Documents.Applications;
+using MediatR;
 
 namespace ECER.Managers.Registry;
 
 /// <summary>
 /// Message handlers
 /// </summary>
-public static class ApplicationHandlers
+public class ApplicationHandlers(IApplicationRepository applicationRepository, IMapper mapper, IApplicationSubmissionValidationEngine validationEngine)
+  : IRequestHandler<SaveDraftApplicationCommand, string>,
+    IRequestHandler<CancelDraftApplicationCommand, string>,
+    IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
+    IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>
 {
   /// <summary>
   /// Handles submitting a new application use case
   /// </summary>
-  /// <param name="cmd">The command</param>
-  /// <param name="applicationRepository">DI service</param>
-  /// <param name="mapper">DI service</param>
+  /// <param name="request">The command</param>
   /// <param name="cancellationToken">cancellation token</param>
   /// <returns></returns>
-  public static async Task<string> Handle(SaveDraftApplicationCommand cmd, IApplicationRepository applicationRepository, IMapper mapper, CancellationToken cancellationToken)
+  public async Task<string> Handle(SaveDraftApplicationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(mapper);
-    ArgumentNullException.ThrowIfNull(cmd);
+    ArgumentNullException.ThrowIfNull(request);
 
-    if (cmd.Application.Id == null)
+    if (request.Application.Id == null)
     {
       // Check if a draft application already exists for the current user
 
       var applications = await applicationRepository.Query(new ApplicationQuery
       {
-        ByApplicantId = cmd.Application.RegistrantId,
+        ByApplicantId = request.Application.RegistrantId,
         ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
       });
 
@@ -43,67 +46,63 @@ public static class ApplicationHandlers
         throw new InvalidOperationException($"User already has a draft application with id '{existingDraftApplication.Id}'");
       }
     }
-    var applicationId = await applicationRepository.SaveDraft(mapper.Map<Resources.Documents.Applications.Application>(cmd.Application)!, cancellationToken);
+    var applicationId = await applicationRepository.SaveDraft(mapper.Map<Resources.Documents.Applications.Application>(request.Application)!, cancellationToken);
     return applicationId;
   }
 
-  public static async Task<string> Handle(CancelDraftApplicationCommand cmd, IApplicationRepository applicationRepository, IMapper mapper, CancellationToken cancellationToken)
+  public async Task<string> Handle(CancelDraftApplicationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(mapper);
-    ArgumentNullException.ThrowIfNull(cmd);
+    ArgumentNullException.ThrowIfNull(request);
 
     var applications = await applicationRepository.Query(new ApplicationQuery
     {
-      ById = cmd.applicationId,
-      ByApplicantId = cmd.userId,
+      ById = request.applicationId,
+      ByApplicantId = request.userId,
       ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
     });
 
     if (!applications.Any())
     {
-      throw new InvalidOperationException($"Application not found id '{cmd.applicationId}'");
+      throw new InvalidOperationException($"Application not found id '{request.applicationId}'");
     }
 
-    var cancelledApplicationId = await applicationRepository.Cancel(cmd.applicationId, cancellationToken);
+    var cancelledApplicationId = await applicationRepository.Cancel(request.applicationId, cancellationToken);
 
     return cancelledApplicationId;
   }
 
-
   /// <summary>
   /// Handles submitting a new application use case
   /// </summary>
-  /// <param name="cmd">The command</param>
-  /// <param name="applicationRepository">DI service</param>
-  /// <param name="validationEngine">validationEngine</param>
-  /// <param name="mapper">DI service</param>
+  /// <param name="request">The command</param>
   /// <param name="cancellationToken">cancellation token</param>
   /// <returns></returns>
-  public static async Task<ApplicationSubmissionResult> Handle(SubmitApplicationCommand cmd, IApplicationSubmissionValidationEngine validationEngine, IApplicationRepository applicationRepository, IMapper mapper, CancellationToken cancellationToken)
+  public async Task<ApplicationSubmissionResult> Handle(SubmitApplicationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(mapper);
-    ArgumentNullException.ThrowIfNull(cmd);
+    ArgumentNullException.ThrowIfNull(request);
 
     var applications = await applicationRepository.Query(new ApplicationQuery
     {
-      ById = cmd.applicationId,
-      ByApplicantId = cmd.userId,
+      ById = request.applicationId,
+      ByApplicantId = request.userId,
       ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
     });
 
     var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
     if (!draftApplicationResults.Items.Any())
     {
-      return new ApplicationSubmissionResult() { ApplicationId = cmd.applicationId, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
+      return new ApplicationSubmissionResult() { ApplicationId = request.applicationId, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
     }
     var draftApplication = draftApplicationResults.Items.First();
 
     var validationErrors = await validationEngine?.Validate(draftApplication)!;
     if (validationErrors.ValidationErrors.Any())
     {
-      return new ApplicationSubmissionResult() { ApplicationId = cmd.applicationId, Error = SubmissionError.DraftApplicationValidationFailed, ValidationErrors = validationErrors.ValidationErrors };
+      return new ApplicationSubmissionResult() { ApplicationId = request.applicationId, Error = SubmissionError.DraftApplicationValidationFailed, ValidationErrors = validationErrors.ValidationErrors };
     }
     var applicationId = await applicationRepository.Submit(draftApplication.Id!, cancellationToken);
     return new ApplicationSubmissionResult() { ApplicationId = applicationId };
@@ -112,21 +111,20 @@ public static class ApplicationHandlers
   /// <summary>
   /// Handles applications query use case
   /// </summary>
-  /// <param name="query">The query</param>
-  /// <param name="applicationRepository">DI service</param>
-  /// <param name="mapper">DI service</param>
+  /// <param name="request">The query</param>
+  /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public static async Task<ApplicationsQueryResults> Handle(ApplicationsQuery query, IApplicationRepository applicationRepository, IMapper mapper)
+  public async Task<ApplicationsQueryResults> Handle(ApplicationsQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(mapper);
-    ArgumentNullException.ThrowIfNull(query);
+    ArgumentNullException.ThrowIfNull(request);
 
     var applications = await applicationRepository.Query(new ApplicationQuery
     {
-      ById = query.ById,
-      ByApplicantId = query.ByApplicantId,
-      ByStatus = query.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
+      ById = request.ById,
+      ByApplicantId = request.ByApplicantId,
+      ByStatus = request.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
     });
     return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
   }

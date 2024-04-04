@@ -60,7 +60,6 @@ public static class SecurityExtensions
         context.Response.StatusCode = 405;
         return;
       }
-
       await next.Invoke();
     });
   }

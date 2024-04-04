@@ -2,12 +2,11 @@
 using Alba;
 using Bogus;
 using ECER.Tests.Integration;
-using JasperFx.Core;
 using Shouldly;
 using Xunit.Abstractions;
 using Xunit.Categories;
 
-namespace ECER.Tests;
+namespace ECER.Tests.Integration.Api;
 
 public class FileTests : ApiWebAppScenarioBase
 {
@@ -60,6 +59,7 @@ public class FileTests : ApiWebAppScenarioBase
     var returnedFile = await response.ReadAsTextAsync();
     returnedFile.Length.ShouldBe(fileLength);
     testFile.Content.Position = 0;
-    returnedFile.ShouldBe(await testFile.Content.ReadAllTextAsync());
+    using var sw = new StreamReader(testFile.Content);
+    returnedFile.ShouldBe(await sw.ReadToEndAsync());
   }
 }

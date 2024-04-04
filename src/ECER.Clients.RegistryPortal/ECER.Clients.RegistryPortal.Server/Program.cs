@@ -6,7 +6,6 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
-using Wolverine;
 
 namespace ECER.Clients.RegistryPortal.Server;
 
@@ -27,16 +26,9 @@ public class Program
     {
       var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
 
-      builder.Host.UseWolverine(opts =>
+      builder.Services.AddMediatR(opts =>
       {
-        foreach (var assembly in assemblies)
-        {
-          opts.Discovery.IncludeAssembly(assembly);
-          opts.Discovery.CustomizeHandlerDiscovery(x =>
-              {
-                x.Includes.WithNameSuffix("Handlers");
-              });
-        }
+        opts.RegisterServicesFromAssemblies(assemblies);
       });
       builder.Services.AddAutoMapper(cfg =>
       {
