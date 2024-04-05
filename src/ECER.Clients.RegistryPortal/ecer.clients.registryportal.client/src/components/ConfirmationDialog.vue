@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="showDialog" width="auto">
     <template #activator="{ props: activatorProps }">
-      <v-btn v-bind="activatorProps" rounded="lg" variant="outlined">
+      <v-btn v-bind="activatorProps" rounded="lg" :variant="customButtonVariant">
         <slot name="activator">Cancel</slot>
       </v-btn>
     </template>
@@ -66,6 +66,7 @@ export default defineComponent({
       cancelButtonText: this.config?.cancelButtonText || "Cancel",
       acceptButtonText: this.config?.acceptButtonText || "Proceed",
       title: this.config?.title || "Please Confirm",
+      customButtonVariant: this.config?.customButtonVariant || "outlined",
     };
   },
   methods: {
@@ -74,8 +75,8 @@ export default defineComponent({
       this.showDialog = false;
     },
     accept() {
-      this.$emit("accept");
       this.showDialog = false;
+      setTimeout(this.$emit, 500, "accept");
     },
   },
 });
