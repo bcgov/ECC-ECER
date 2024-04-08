@@ -1,10 +1,10 @@
-﻿using System.Globalization;
-using ECER.Utilities.DataverseSdk.Model;
+﻿using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xrm.Sdk.Client;
+using System.Globalization;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration;
@@ -28,6 +28,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private Contact authenticatedBcscUser = null!;
   private ecer_Application testApplication = null!;
   private ecer_Communication testCommunication = null!;
+  private ecer_PortalInvitation testPortalInvitation = null!;
 
   private Contact authenticatedBcscUser2 = null!;
   private ecer_Application testApplication2 = null!;
@@ -37,6 +38,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
   public string communicationId => testCommunication.Id.ToString();
   public string applicationId => testApplication.Id.ToString();
+  public Guid portalInvitationId => testPortalInvitation.Id;
 
   public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
@@ -71,7 +73,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     authenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user1");
     testApplication = GetOrAddApplication(context, authenticatedBcscUser);
     testCommunication = GetOrAddCommunication(context, testApplication);
-
+    testPortalInvitation = GetOrAddPortalInvitation(context, authenticatedBcscUser);
     context.SaveChanges();
 
     //load dependent properties
@@ -158,5 +160,31 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     }
 
     return communication;
+  }
+
+  private ecer_PortalInvitation GetOrAddPortalInvitation(EcerContext context, Contact registrant)
+  {
+    var portalInvitation = (from a in context.ecer_PortalInvitationSet
+                            where a.ecer_ApplicantId.Id == registrant.Id
+                            select a).FirstOrDefault();
+
+    if (portalInvitation == null)
+    {
+      var guid = Guid.NewGuid();
+      portalInvitation = new ecer_PortalInvitation
+      {
+        Id = guid,
+        ecer_PortalInvitationId = guid,
+        ecer_Name = "Test name",
+        ecer_FirstName = "Test firstname",
+        ecer_LastName = "Test lastname",
+        ecer_EmailAddress = "test@email.com",
+      };
+
+      context.AddObject(portalInvitation);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
+    }
+
+    return portalInvitation;
   }
 }

@@ -20,7 +20,6 @@ public class InviteLinksEndpoints : IRegisterEndpoints
       return TypedResults.Ok(new GenerateInviteLinkResponse(referenceLinkResponse.portalInvitation, referenceLinkResponse.verificationLink));
     })
 .WithOpenApi("Creates a new reference link", string.Empty, "references_post")
-.RequireAuthorization()
 .DisableAntiforgery()
 .WithParameterValidation();
   }

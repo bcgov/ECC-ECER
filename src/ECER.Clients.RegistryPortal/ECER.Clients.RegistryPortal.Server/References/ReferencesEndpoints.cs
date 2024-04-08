@@ -14,6 +14,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
       if (token == null) return TypedResults.BadRequest("Token is required");
       var verificationResult = await messageBus.Send<VerifyInviteTokenCommandResponse>(new VerifyInviteTokenCommand(token), ct);
       if (verificationResult == null || verificationResult.portalInvitation == Guid.Empty) return TypedResults.BadRequest("Invalid token");
+      // send portal invitation code and get reference details
 
       return TypedResults.Ok(new ReferenceQueryResult(string.Empty, string.Empty));
     }).WithOpenApi("Handles references queries", string.Empty, "references_get")
