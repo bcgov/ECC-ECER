@@ -5,4 +5,5 @@ export interface ConfirmationDialogProps {
   acceptButtonText?: string;
   title?: string;
   customButtonVariant?: TVariant;
+  isDialogDisabled?: boolean;
 }

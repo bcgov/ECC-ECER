@@ -21,31 +21,7 @@
               <h3>{{ step.title }}</h3>
             </v-col>
             <v-col v-if="wizardStore.currentStepStage === 'Review'" cols="auto">
-              <ConfirmationDialog
-                v-if="!isWizardDataValid"
-                :config="{ cancelButtonText: 'Cancel', acceptButtonText: 'Yes', title: 'Print Confirmation', customButtonVariant: 'text' }"
-                @accept="printPage"
-              >
-                <template #activator>
-                  <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
-                  <a class="small">Print Preview</a>
-                </template>
-                <template #confirmation-text>
-                  <p>
-                    Your Application contains missing data and/or invalid data.
-                    <br />
-                    The printed preview will show which sections are incomplete
-                  </p>
-                  <br />
-                  <p><b>Are you sure you want to proceed?</b></p>
-                </template>
-              </ConfirmationDialog>
-              <v-btn v-if="isWizardDataValid" variant="text" onclick="window.print()">
-                <v-row align="center" justify="end">
-                  <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
-                  <a class="small">Print Preview</a>
-                </v-row>
-              </v-btn>
+              <slot name="PrintPreview"></slot>
             </v-col>
           </v-row>
 
@@ -68,7 +44,6 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 
-import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import DeclarationStepContent from "@/components/DeclarationStepContent.vue";
 import EceForm from "@/components/Form.vue";
 import WizardHeader from "@/components/WizardHeader.vue";
@@ -81,7 +56,7 @@ import type { Step, Wizard } from "@/types/wizard";
 
 export default defineComponent({
   name: "Wizard",
-  components: { WizardHeader, EceForm, DeclarationStepContent, ConfirmationDialog },
+  components: { WizardHeader, EceForm, DeclarationStepContent },
   props: {
     wizard: {
       type: Object as PropType<Wizard>,
@@ -101,18 +76,10 @@ export default defineComponent({
       alertStore,
     };
   },
-  computed: {
-    isWizardDataValid() {
-      return !(Object.values(this.wizardStore.validationState).indexOf(false) > -1);
-    },
-  },
 
   methods: {
     getStepTitles(): string[] {
       return Object.values(this.wizard.steps).map((step: Step) => step.title);
-    },
-    printPage() {
-      window.print();
     },
   },
 });

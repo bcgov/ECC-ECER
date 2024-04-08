@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="showDialog" width="auto">
+  <v-dialog v-model="showDialog" width="auto" :disabled="isDialogDisabled">
     <template #activator="{ props: activatorProps }">
       <v-btn v-bind="activatorProps" rounded="lg" :variant="customButtonVariant">
         <slot name="activator">Cancel</slot>
@@ -67,6 +67,7 @@ export default defineComponent({
       acceptButtonText: this.config?.acceptButtonText || "Proceed",
       title: this.config?.title || "Please Confirm",
       customButtonVariant: this.config?.customButtonVariant || "outlined",
+      isDialogDisabled: this.config?.isDialogDisabled || false,
     };
   },
   methods: {
@@ -76,6 +77,7 @@ export default defineComponent({
     },
     accept() {
       this.showDialog = false;
+      /* creating a delay before emitting accept - helps prevent warning dialog overlay in print preview */
       setTimeout(this.$emit, 500, "accept");
     },
   },
