@@ -19,6 +19,7 @@ internal class PortalInvitationRepository : IPortalInvitationRepository
     await Task.CompletedTask;
     var portalInvitations = from pi in context.ecer_PortalInvitationSet
                             join c in context.ContactSet on pi.ecer_portalinvitation_ApplicantId.Id equals c.ContactId
+                            where pi.ecer_PortalInvitationId == query.portalInvitationId
                             select new { pi, c };
 
     var data = portalInvitations.Select(r => r.pi).ToList();

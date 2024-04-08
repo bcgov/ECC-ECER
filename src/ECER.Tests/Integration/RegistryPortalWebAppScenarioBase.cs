@@ -38,7 +38,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
   public string communicationId => testCommunication.Id.ToString();
   public string applicationId => testApplication.Id.ToString();
-  public Guid portalInvitationId => testPortalInvitation.Id;
+  public Guid portalInvitationId => testPortalInvitation.ecer_PortalInvitationId ?? Guid.Empty;
 
   public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();

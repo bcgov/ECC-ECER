@@ -1,6 +1,6 @@
 ﻿using ECER.Managers.Registry.Contract.Registrants;
 
-namespace ECER.Managers.Registry.Contract.InviteLinks;
+namespace ECER.Managers.Registry.Contract.PortalInvitations;
 
 public record PortalInvitationQuery(Guid portalInvitation);
 

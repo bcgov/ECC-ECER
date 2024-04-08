@@ -7,7 +7,7 @@ public interface IPortalInvitationRepository
   Task<IEnumerable<PortalInvitation>> Query(PortalInvitationQuery query);
 }
 
-public record PortalInvitationQuery(Guid portalInvitation);
+public record PortalInvitationQuery(Guid portalInvitationId);
 
 public record PortalInvitation(string? Id, string name, string firstName, string lastName, string emailAddress)
 {

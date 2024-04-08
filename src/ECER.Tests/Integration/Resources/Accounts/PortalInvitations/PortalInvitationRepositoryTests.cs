@@ -26,6 +26,6 @@ public class PortalInvitationRepositoryTests : RegistryPortalWebAppScenarioBase
     var portalInvitations = await repository.Query(new PortalInvitationQuery(portalInvitationId));
 
     // Assert
-    portalInvitations.ShouldNotBeNull();
+    portalInvitations.ShouldHaveSingleItem();
   }
 }
