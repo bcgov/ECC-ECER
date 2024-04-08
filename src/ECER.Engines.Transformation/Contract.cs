@@ -1,4 +1,4 @@
-﻿using ECER.Managers.Admin.Contract.InviteLinks;
+﻿using ECER.Managers.Admin.Contract.PortalInvitations;
 
 namespace ECER.Engines.Transformation;
 

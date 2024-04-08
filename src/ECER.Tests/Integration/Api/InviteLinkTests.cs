@@ -1,5 +1,5 @@
 ﻿using ECER.Clients.Api.References;
-using ECER.Managers.Admin.Contract.InviteLinks;
+using ECER.Managers.Admin.Contract.PortalInvitations;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;

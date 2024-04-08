@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ECER.Managers.Admin.Contract.InviteLinks;
+namespace ECER.Managers.Admin.Contract.PortalInvitations;
 
 public record GenerateInviteLinkCommand(Guid portalInvitation, InviteType inviteType, int validDays) : IRequest<GenerateInviteLinkCommandResponse>;
 public record GenerateInviteLinkCommandResponse(Guid portalInvitation, string verificationLink);

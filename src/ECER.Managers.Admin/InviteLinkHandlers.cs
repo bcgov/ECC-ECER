@@ -1,12 +1,12 @@
 ﻿using ECER.Engines.Transformation;
-using ECER.Engines.Transformation.InviteLinks;
-using ECER.Managers.Admin.Contract.InviteLinks;
+using ECER.Engines.Transformation.PortalInvitations;
+using ECER.Managers.Admin.Contract.PortalInvitations;
 using MediatR;
 using Microsoft.Extensions.Options;
 
 namespace ECER.Managers.Admin;
 
-public class InviteLinkHandlers(IInviteLinkTransformationEngine transformationEngine, IOptions<PortalAppSettings> portalAppSettings)
+public class InviteLinkHandlers(IPortalInvitationTransformationEngine transformationEngine, IOptions<PortalAppSettings> portalAppSettings)
   : IRequestHandler<GenerateInviteLinkCommand, GenerateInviteLinkCommandResponse>, IRequestHandler<VerifyInviteTokenCommand, VerifyInviteTokenCommandResponse>
 {
   public async Task<GenerateInviteLinkCommandResponse> Handle(GenerateInviteLinkCommand request, CancellationToken cancellationToken)

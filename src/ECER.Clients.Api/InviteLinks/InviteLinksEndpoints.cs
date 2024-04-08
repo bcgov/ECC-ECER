@@ -1,4 +1,4 @@
-﻿using ECER.Managers.Admin.Contract.InviteLinks;
+﻿using ECER.Managers.Admin.Contract.PortalInvitations;
 using ECER.Utilities.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;

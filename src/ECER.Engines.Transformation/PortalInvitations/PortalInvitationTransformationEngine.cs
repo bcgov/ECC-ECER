@@ -1,10 +1,10 @@
-﻿using ECER.Managers.Admin.Contract.InviteLinks;
+﻿using ECER.Managers.Admin.Contract.PortalInvitations;
 using Microsoft.AspNetCore.DataProtection;
 using System.Net;
 
-namespace ECER.Engines.Transformation.InviteLinks;
+namespace ECER.Engines.Transformation.PortalInvitations;
 
-internal sealed class InviteLinkTransformationEngine(IDataProtectionProvider dataProtectionProvider) : IInviteLinkTransformationEngine
+internal sealed class PortalInvitationTransformationEngine(IDataProtectionProvider dataProtectionProvider) : IPortalInvitationTransformationEngine
 {
   public async Task<TransformResponse> Transform(TransformRequest request)
   {
@@ -21,7 +21,7 @@ internal sealed class InviteLinkTransformationEngine(IDataProtectionProvider dat
     await Task.CompletedTask;
 
     var expiryDate = DateTime.UtcNow.AddDays(request.validDays); // Example expiry date
-    var protector = dataProtectionProvider.CreateProtector(nameof(InviteLinkTransformationEngine)).ToTimeLimitedDataProtector();
+    var protector = dataProtectionProvider.CreateProtector(nameof(PortalInvitationTransformationEngine)).ToTimeLimitedDataProtector();
 
     // Combine referenceType and portalInvitation into a single string
     var combinedData = $"{request.inviteType}:{request.portalInvitation}";
@@ -37,7 +37,7 @@ internal sealed class InviteLinkTransformationEngine(IDataProtectionProvider dat
 
     var encryptedData = WebUtility.UrlDecode(request.verificationToken);
 
-    var protector = dataProtectionProvider.CreateProtector(nameof(InviteLinkTransformationEngine)).ToTimeLimitedDataProtector();
+    var protector = dataProtectionProvider.CreateProtector(nameof(PortalInvitationTransformationEngine)).ToTimeLimitedDataProtector();
     var decryptedData = protector.Unprotect(encryptedData);
 
     // Split the decrypted data back into ReferenceType and PortalInvitation
