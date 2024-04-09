@@ -3,7 +3,7 @@ using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Accounts.PortalInvitations;
 
-internal class PortalInvitationMapper : Profile
+internal sealed class PortalInvitationMapper : Profile
 {
   public PortalInvitationMapper()
   {

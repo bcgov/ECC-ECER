@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
+using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Accounts.PortalInvitations;
 
@@ -17,13 +18,10 @@ internal class PortalInvitationRepository : IPortalInvitationRepository
   public async Task<IEnumerable<PortalInvitation>> Query(PortalInvitationQuery query)
   {
     await Task.CompletedTask;
-    var portalInvitations = from pi in context.ecer_PortalInvitationSet
-                            join c in context.ContactSet on pi.ecer_portalinvitation_ApplicantId.Id equals c.ContactId
-                            where pi.ecer_PortalInvitationId == query.portalInvitationId
-                            select new { pi, c };
+    var portalInvitations = context.ecer_PortalInvitationSet.Where(pi => pi.ecer_PortalInvitationId == query.portalInvitationId);
 
-    var data = portalInvitations.Select(r => r.pi).ToList();
-    var result = mapper.Map<IEnumerable<PortalInvitation>>(data);
+    context.LoadProperties(portalInvitations, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId);
+    var result = mapper.Map<IEnumerable<PortalInvitation>>(portalInvitations);
     return result!;
   }
 }

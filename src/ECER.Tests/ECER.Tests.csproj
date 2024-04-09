@@ -31,4 +31,8 @@
     <ProjectReference Include="..\ECER.Resources.Accounts\ECER.Resources.Accounts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Integration\Managers\Registry\" />
+  </ItemGroup>
+
 </Project>

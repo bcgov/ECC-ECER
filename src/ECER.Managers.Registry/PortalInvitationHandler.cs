@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Resources.Accounts.PortalInvitations;
+using MediatR;
 
 namespace ECER.Managers.Registry;
 
 public class PortalInvitationHandler(IPortalInvitationRepository portalInvitationRepository, IMapper mapper)
+    : IRequestHandler<Contract.PortalInvitations.PortalInvitationQuery, PortalInvitationQueryResults>
 {
   public async Task<PortalInvitationQueryResults> Handle(Contract.PortalInvitations.PortalInvitationQuery request, CancellationToken cancellationToken)
   {

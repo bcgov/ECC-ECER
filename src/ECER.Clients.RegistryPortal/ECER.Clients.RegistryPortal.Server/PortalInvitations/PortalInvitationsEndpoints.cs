@@ -25,10 +25,9 @@ public class PortalInvitationsEndpoints : IRegisterEndpoints
       var portalInvitation = portalInvitationQueryResults.Items.SingleOrDefault();
       var registrant = portalInvitation!.Registrant!.Profile;
 
-      return TypedResults.Ok(new ReferenceQueryResult(portalInvitation.Id, registrant.FirstName, registrant.LastName));
-    }).WithOpenApi("Handles references queries", string.Empty, "references_get")
-      .RequireAuthorization();
+      return TypedResults.Ok(new ReferenceQueryResult(portalInvitation.firstName, portalInvitation.lastName, portalInvitation.emailAddress, registrant.FirstName, registrant.LastName));
+    }).WithOpenApi("Handles references queries", string.Empty, "references_get");
   }
 }
 
-public record ReferenceQueryResult(string? referenceId, string applicantFirstName, string applicantLastName);
+public record ReferenceQueryResult(string referenceFirstName, string referenceLastName, string referenceEmail, string applicantFirstName, string applicantLastName);

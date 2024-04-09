@@ -6,9 +6,9 @@ using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.Managers.Admin;
 
-public class InviteLinkHandlersTests : ApiWebAppScenarioBase
+public class InviteLinkHandlerTests : ApiWebAppScenarioBase
 {
-  public InviteLinkHandlersTests(ITestOutputHelper output, ApiWebAppFixture fixture) : base(output, fixture)
+  public InviteLinkHandlerTests(ITestOutputHelper output, ApiWebAppFixture fixture) : base(output, fixture)
   {
   }
 
