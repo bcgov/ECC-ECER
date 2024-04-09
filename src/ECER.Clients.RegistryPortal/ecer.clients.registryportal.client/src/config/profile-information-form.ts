@@ -14,7 +14,7 @@ const profileInformationForm: Form = {
         label: "Legal Last Name",
         rules: [],
         maxLength: 50,
-        readonly: true,
+        disabled: true,
       },
       cols: {
         md: 8,
@@ -29,7 +29,7 @@ const profileInformationForm: Form = {
         label: "Legal First Name",
         rules: [],
         maxLength: 50,
-        readonly: true,
+        disabled: true,
       },
       cols: {
         md: 8,
@@ -44,7 +44,7 @@ const profileInformationForm: Form = {
         label: "Legal Middle Name",
         rules: [],
         maxLength: 50,
-        readonly: true,
+        disabled: true,
       },
       cols: {
         md: 8,
@@ -73,7 +73,7 @@ const profileInformationForm: Form = {
         label: "Date of Birth",
         type: "date",
         rules: [Rules.required()],
-        readonly: true,
+        disabled: true,
       },
       cols: {
         md: 8,

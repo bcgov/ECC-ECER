@@ -77,7 +77,7 @@ export default defineComponent({
         });
 
         if (success) {
-          this.alertStore.setSuccessAlert("Profile saved successfully");
+          this.alertStore.setSuccessAlert("You have successfully edited your profile information.");
           this.userStore.setUserInfo({
             firstName: this.formStore.formData[profileInformationForm.inputs.legalFirstName.id],
             lastName: this.formStore.formData[profileInformationForm.inputs.legalLastName.id],
