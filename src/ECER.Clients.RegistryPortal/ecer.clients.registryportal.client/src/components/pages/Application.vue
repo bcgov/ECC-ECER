@@ -1,5 +1,33 @@
 <template>
   <Wizard :ref="'wizard'" :wizard="applicationWizard">
+    <template #PrintPreview>
+      <ConfirmationDialog
+        :config="{
+          cancelButtonText: 'Cancel',
+          acceptButtonText: 'Yes',
+          title: 'Print Confirmation',
+          customButtonVariant: 'text',
+          isDialogDisabled: wizardStore.allStageValidations,
+        }"
+        @accept="printPage"
+      >
+        <template #activator>
+          <span @click="wizardStore.allStageValidations ? printPage() : {}">
+            <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
+            <a class="small">Print Preview</a>
+          </span>
+        </template>
+        <template #confirmation-text>
+          <p>
+            Your Application contains missing data and/or invalid data.
+            <br />
+            The printed preview will show which sections are incomplete
+          </p>
+          <br />
+          <p><b>Are you sure you want to proceed?</b></p>
+        </template>
+      </ConfirmationDialog>
+    </template>
     <template #actions>
       <v-container class="mb-8">
         <v-row class="justify-space-between ga-4" no-gutters>
@@ -30,6 +58,7 @@
 import { defineComponent } from "vue";
 
 import { getProfile, putProfile } from "@/api/profile";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import Wizard from "@/components/Wizard.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
@@ -42,7 +71,7 @@ import { AddressType } from "../inputs/EceAddresses.vue";
 
 export default defineComponent({
   name: "Application",
-  components: { Wizard },
+  components: { Wizard, ConfirmationDialog },
   setup: async () => {
     const wizardStore = useWizardStore();
     const userStore = useUserStore();
@@ -180,6 +209,9 @@ export default defineComponent({
           dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
         });
       }
+    },
+    printPage() {
+      window.print();
     },
   },
 });

@@ -16,7 +16,15 @@
     <v-stepper-window v-model="wizardStore.step">
       <v-stepper-window-item v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage" :value="index + 1">
         <v-container>
-          <h3>{{ step.title }}</h3>
+          <v-row class="justify-space-between">
+            <v-col cols="auto">
+              <h3>{{ step.title }}</h3>
+            </v-col>
+            <v-col v-if="wizardStore.currentStepStage === 'Review'" cols="auto">
+              <slot name="PrintPreview"></slot>
+            </v-col>
+          </v-row>
+
           <h4>{{ step.subtitle }}</h4>
           <DeclarationStepContent v-if="step.stage == 'Declaration'" class="mt-6" />
           <v-row>

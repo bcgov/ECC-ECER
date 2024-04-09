@@ -78,6 +78,9 @@ export const useWizardStore = defineStore("wizard", {
         Review: true,
       };
     },
+    allStageValidations() {
+      return !(Object.values(this.validationState).indexOf(false) > -1);
+    },
   },
   actions: {
     initializeWizard(wizard: Wizard, draftApplication: Components.Schemas.DraftApplication): void {
