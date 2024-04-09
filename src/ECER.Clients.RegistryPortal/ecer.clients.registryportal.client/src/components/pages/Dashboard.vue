@@ -48,7 +48,7 @@
                 <p class="small">Complete and submit your application for certification in early childhood education.</p>
               </v-card-item>
               <v-card-actions class="ma-4">
-                <v-row v-if="applicationStore.hasDraftApplication">
+                <v-row v-if="applications && applications?.length > 0 && applicationStore.hasDraftApplication">
                   <v-col>
                     <v-btn variant="flat" rounded="lg" color="primary" @click="$router.push('/application')">Continue Your Application</v-btn>
                     <ConfirmationDialog
@@ -104,11 +104,13 @@ import { formatPhoneNumber } from "@/utils/format";
 export default defineComponent({
   name: "Dashboard",
   components: { ConfirmationDialog },
-  setup() {
+  async setup() {
     const userStore = useUserStore();
     const messageStore = useMessageStore();
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
+
+    const applications = await applicationStore.fetchApplications();
 
     const navigationOptions = [
       { name: "My Certifications", path: "/my-certifications", icon: "mdi-folder" },
@@ -121,7 +123,7 @@ export default defineComponent({
       { name: "Profile", path: "/profile", icon: "mdi-account-edit" },
     ];
 
-    return { userStore, applicationStore, navigationOptions, alertStore };
+    return { userStore, applicationStore, navigationOptions, alertStore, applications };
   },
   data: () => ({
     drawer: null as boolean | null | undefined,
