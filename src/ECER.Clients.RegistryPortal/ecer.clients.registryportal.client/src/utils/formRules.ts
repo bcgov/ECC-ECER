@@ -54,6 +54,7 @@ const noSpecialCharactersContactName =
   (message = "Remove or replace any special characters in this field.") =>
   (v: string) =>
     !v || !/[^A-Za-z.'\s-]/.test(v) || message;
+
 /**
  * Rule for phone numbers also works for fax numbers too
  * @param {String} message

@@ -22,7 +22,7 @@
           <p class="small">Reference Email</p>
         </v-col>
         <v-col>
-          <p class="small font>weight-bold">{{ characterReference.emailAddress }}</p>
+          <p class="small font-weight-bold">{{ characterReference.emailAddress }}</p>
         </v-col>
       </v-row>
       <v-row>
