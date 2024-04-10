@@ -11,7 +11,7 @@
     </v-row>
     <v-row justify="space-between" class="pb-6">
       <v-col offset-md="1" cols="12" sm="8">
-        <h3>Application for ECE Assistant Certification</h3>
+        <h3>{{ `Application for ${certificationType} Certification` }}</h3>
       </v-col>
       <v-col v-if="false" cols="auto" offset="1">
         <v-btn class="mr-2" rounded="lg" variant="outlined" color="primary">Cancel Application</v-btn>
@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useWizardStore } from "@/store/wizard";
 
 export default defineComponent({
   name: "WizardHeader",
@@ -40,5 +41,36 @@ export default defineComponent({
       },
     ],
   }),
+  setup() {
+    const wizardStore = useWizardStore();
+
+    return {
+      wizardStore,
+    };
+  },
+  computed: {
+    certificationType() {
+      let certificationType = "";
+      if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("EceAssistant")) {
+        certificationType = "ECE Assistant";
+      } else if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("OneYear")) {
+        certificationType = "One Year";
+      } else if (
+        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("FiveYears")
+      ) {
+        certificationType = "Five Year";
+
+        if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Sne")) {
+          certificationType += " & Special Needs Educator (SNE)";
+        }
+        if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Ite")) {
+          certificationType += " & Infant and Toddle Educator (ITE)";
+        }
+      } else {
+        certificationType += "ECE Assistant";
+      }
+      return certificationType;
+    },
+  },
 });
 </script>
