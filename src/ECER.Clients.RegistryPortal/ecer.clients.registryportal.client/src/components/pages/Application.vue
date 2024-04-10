@@ -1,5 +1,8 @@
 <template>
   <Wizard :ref="'wizard'" :wizard="applicationWizard">
+    <template #header>
+      <WizardHeader class="mb-6" />
+    </template>
     <template #PrintPreview>
       <ConfirmationDialog
         :config="{
@@ -68,10 +71,11 @@ import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 
 import { AddressType } from "../inputs/EceAddresses.vue";
+import WizardHeader from "../WizardHeader.vue";
 
 export default defineComponent({
   name: "Application",
-  components: { Wizard, ConfirmationDialog },
+  components: { Wizard, WizardHeader, ConfirmationDialog },
   setup: async () => {
     const wizardStore = useWizardStore();
     const userStore = useUserStore();

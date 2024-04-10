@@ -22,10 +22,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+
 import { useWizardStore } from "@/store/wizard";
 
 export default defineComponent({
   name: "WizardHeader",
+  setup() {
+    const wizardStore = useWizardStore();
+
+    return {
+      wizardStore,
+    };
+  },
   data: () => ({
     items: [
       {
@@ -41,13 +49,6 @@ export default defineComponent({
       },
     ],
   }),
-  setup() {
-    const wizardStore = useWizardStore();
-
-    return {
-      wizardStore,
-    };
-  },
   computed: {
     certificationType() {
       let certificationType = "";

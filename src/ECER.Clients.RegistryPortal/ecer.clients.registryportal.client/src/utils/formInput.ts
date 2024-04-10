@@ -35,4 +35,4 @@ const isNotSpecialCharacterName = function (event: KeyboardEvent): void {
   }
 };
 
-export { isNumber, isNotSpecialCharacterName };
+export { isNotSpecialCharacterName, isNumber };
