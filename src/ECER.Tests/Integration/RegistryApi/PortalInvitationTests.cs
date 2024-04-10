@@ -17,15 +17,16 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
   [Fact]
   public async Task CanGetPortalInvitationData()
   {
-    var bus = Host.Services.GetRequiredService<IMediator>();
+    var bus = Fixture.Services.GetRequiredService<IMediator>();
     var portalInvitation = Fixture.portalInvitationId;
     var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.verificationLink.Split('/')[2];
-    var verifyResponse = await bus.Send(new VerifyInviteTokenCommand(token), CancellationToken.None);
-    verifyResponse!.portalInvitation.ShouldBe(portalInvitation);
-    verifyResponse.inviteType.ShouldBe(InviteType.WorkExperienceReference);
+    var verifyResponse = await bus.Send(new InviteLinkQuery(token), CancellationToken.None);
+
+    var item = verifyResponse.Items.FirstOrDefault();
+    item!.Id.ShouldBe(portalInvitation.ToString());
 
     var inviteLinkResponse = await Host.Scenario(_ =>
     {

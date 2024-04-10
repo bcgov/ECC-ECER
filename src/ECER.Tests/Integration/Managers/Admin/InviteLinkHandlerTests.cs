@@ -15,21 +15,8 @@ public class InviteLinkHandlerTests : ApiWebAppScenarioBase
   [Fact]
   public async Task CanTransformPortalInvitationToLink()
   {
-    var bus = Host.Services.GetRequiredService<IMediator>();
+    var bus = Fixture.Services.GetRequiredService<IMediator>();
     var response = await bus.Send(new GenerateInviteLinkCommand(Guid.NewGuid(), InviteType.CharacterReference, 7), CancellationToken.None);
     response.ShouldNotBeNull();
-  }
-
-  [Fact]
-  public async Task CanTransformLinkToPortalInvitation()
-  {
-    var bus = Host.Services.GetRequiredService<IMediator>();
-    var portalInvitation = Guid.NewGuid();
-    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
-    packingResponse.ShouldNotBeNull();
-
-    var verifyResponse = await bus.Send(new VerifyInviteTokenCommand(packingResponse.verificationLink.Split('/')[2]), CancellationToken.None);
-    verifyResponse!.portalInvitation.ShouldBe(portalInvitation);
-    verifyResponse.inviteType.ShouldBe(InviteType.WorkExperienceReference);
   }
 }

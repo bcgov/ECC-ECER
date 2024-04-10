@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ECER.Resources.Accounts.PortalInvitations;
 
-namespace ECER.Managers.Registry;
+namespace ECER.Managers.Admin;
 
 public class PortalInvitationMapper : Profile
 {

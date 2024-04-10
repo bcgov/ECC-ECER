@@ -21,7 +21,8 @@ public class InviteLinksEndpoints : IRegisterEndpoints
     })
 .WithOpenApi("Creates a new reference link", string.Empty, "references_post")
 .DisableAntiforgery()
-.WithParameterValidation();
+.WithParameterValidation()
+.RequireAuthorization();
   }
 }
 

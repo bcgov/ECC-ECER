@@ -8,6 +8,7 @@
     <ProjectReference Include="..\ECER.Engines.Transformation\ECER.Engines.Transformation.csproj" />
     <ProjectReference Include="..\ECER.Infrastructure.Common\ECER.Infrastructure.Common.csproj" />
     <ProjectReference Include="..\ECER.Managers.Admin.Contract\ECER.Managers.Admin.Contract.csproj" />
+    <ProjectReference Include="..\ECER.Resources.Accounts\ECER.Resources.Accounts.csproj" />
     <ProjectReference Include="..\ECER.Utilities.ObjectStorage\ECER.Utilities.ObjectStorage.csproj" />
     <ProjectReference Include="..\ECER.Utilities.Security\ECER.Utilities.Security.csproj" />
   </ItemGroup>
