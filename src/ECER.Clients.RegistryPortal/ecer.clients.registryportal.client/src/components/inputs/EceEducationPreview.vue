@@ -53,7 +53,7 @@
             <p class="small">Start Date of Program</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ education.startDate }}</p>
+            <p class="small font-weight-bold">{{ education.startDate.slice(0, 10) }}</p>
           </v-col>
         </v-row>
         <v-row>
@@ -61,7 +61,7 @@
             <p class="small">End Date of Program</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ education.endDate }}</p>
+            <p class="small font-weight-bold">{{ education.endDate.slice(0, 10) }}</p>
           </v-col>
         </v-row>
       </div>
