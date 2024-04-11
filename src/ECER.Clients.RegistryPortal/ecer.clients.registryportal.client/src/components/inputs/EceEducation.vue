@@ -111,6 +111,7 @@ import { useWizardStore } from "@/store/wizard";
 import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
+import { formatDate } from "@/utils/format";
 export default defineComponent({
   name: "EceEdducation",
   components: { EducationList },
@@ -226,8 +227,8 @@ export default defineComponent({
       this.studentName = educationData.education.studentName ?? "";
       this.studentNumber = educationData.education.studentNumber ?? "";
       this.language = educationData.education.languageofInstruction ?? "";
-      this.startYear = educationData.education.startDate ?? "";
-      this.endYear = educationData.education.endDate ?? "";
+      this.startYear = formatDate(educationData.education.startDate) ?? "";
+      this.endYear = formatDate(educationData.education.endDate) ?? "";
       // Change mode to add
       this.mode = "add";
     },
@@ -257,6 +258,7 @@ export default defineComponent({
       this.startYear = "";
       this.endYear = "";
     },
+    formatDate,
   },
 });
 </script>
