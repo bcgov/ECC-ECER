@@ -272,6 +272,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative> ecer_ECEProgramRepresentativeSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference> ecer_GuardianReferenceSet
@@ -492,17 +503,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramProfile"/> entities.
-		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramProfile> ecer_PostSecondaryInstituteProgramProfileSet
-		{
-			get
-			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramProfile>();
-			}
-		}
-		
-		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit> ecer_PostSecondaryInstituteSiteVisitSet
@@ -565,6 +565,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Province>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement> ecer_ProvincialRequirementSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement>();
 			}
 		}
 		

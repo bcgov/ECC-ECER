@@ -2,7 +2,7 @@
 
 public interface IApplicationRepository
 {
-  Task<IEnumerable<Application>> Query(ApplicationQuery query);
+  Task<IEnumerable<Application>> Query(ApplicationQuery query, CancellationToken cancellationToken);
 
   Task<string> SaveDraft(Application application, CancellationToken cancellationToken);
 

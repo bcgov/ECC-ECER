@@ -36,7 +36,7 @@ public class ApplicationHandlers(IApplicationRepository applicationRepository, I
       {
         ByApplicantId = request.Application.RegistrantId,
         ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
-      });
+      }, cancellationToken);
 
       var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
       var existingDraftApplication = draftApplicationResults.Items.FirstOrDefault();
@@ -61,7 +61,7 @@ public class ApplicationHandlers(IApplicationRepository applicationRepository, I
       ById = request.applicationId,
       ByApplicantId = request.userId,
       ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
-    });
+    }, cancellationToken);
 
     if (!applications.Any())
     {
@@ -90,7 +90,7 @@ public class ApplicationHandlers(IApplicationRepository applicationRepository, I
       ById = request.applicationId,
       ByApplicantId = request.userId,
       ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
-    });
+    }, cancellationToken);
 
     var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
     if (!draftApplicationResults.Items.Any())
@@ -125,7 +125,7 @@ public class ApplicationHandlers(IApplicationRepository applicationRepository, I
       ById = request.ById,
       ByApplicantId = request.ByApplicantId,
       ByStatus = request.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
-    });
+    }, cancellationToken);
     return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
   }
 }

@@ -61,7 +61,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/applications/{id?}", async (string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapGet("/api/applications/{id?}", async (string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
 
@@ -72,7 +72,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             ByApplicantId = userId,
             ByStatus = byStatus?.Convert<ApplicationStatus, Managers.Registry.Contract.Applications.ApplicationStatus>()
           };
-          var results = await messageBus.Send(query);
+          var results = await messageBus.Send(query, ct);
           return TypedResults.Ok(mapper.Map<IEnumerable<Application>>(results.Items));
         })
         .WithOpenApi("Handles application queries", string.Empty, "application_get")
