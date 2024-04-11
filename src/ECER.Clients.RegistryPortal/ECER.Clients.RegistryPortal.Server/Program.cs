@@ -1,11 +1,11 @@
-using System.Reflection;
-using System.Security.Claims;
-using System.Text.Json.Serialization;
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using System.Reflection;
+using System.Security.Claims;
+using System.Text.Json.Serialization;
 
 namespace ECER.Clients.RegistryPortal.Server;
 

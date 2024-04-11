@@ -6,7 +6,7 @@ using MediatR;
 
 namespace ECER.Managers.Registry;
 
-public class CommunicationHandler(ICommunicationRepository communicationRepository, IMapper mapper)
+public class CommunicationHandlers(ICommunicationRepository communicationRepository, IMapper mapper)
   : IRequestHandler<Contract.Communications.UserCommunicationsStatusQuery, CommunicationsStatusResults>,
     IRequestHandler<Contract.Communications.UserCommunicationQuery, CommunicationsQueryResults>
 {

@@ -36,10 +36,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		ApplicationSubmitted = 621870006,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
+		Approved = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		DRAFT = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		InProgress = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Rejected = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Submitted = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		UnderReview = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		WaitingResponse = 621870003,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
@@ -83,6 +101,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PostSecondaryInstituteid = "ecer_postsecondaryinstituteid";
 			public const string ecer_PostSecondaryInstituteidName = "ecer_postsecondaryinstituteidname";
 			public const string ecer_PostSecondaryInstituteidYomiName = "ecer_postsecondaryinstituteidyominame";
+			public const string ecer_ProgramCourseName = "ecer_programcoursename";
 			public const string ecer_ProgramName = "ecer_programname";
 			public const string ecer_StartDate = "ecer_startdate";
 			public const string ecer_StudentName = "ecer_studentname";
@@ -612,6 +631,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programcoursename")]
+		public string ecer_ProgramCourseName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_programcoursename");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programcoursename", value);
 			}
 		}
 		

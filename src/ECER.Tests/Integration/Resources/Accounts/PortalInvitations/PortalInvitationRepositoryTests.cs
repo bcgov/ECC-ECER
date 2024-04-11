@@ -1,4 +1,4 @@
-﻿using ECER.Resources.Accounts.PortalInvitations;
+﻿using ECER.Resources.Documents.PortalInvitations;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
@@ -23,9 +23,9 @@ public class PortalInvitationRepositoryTests : RegistryPortalWebAppScenarioBase
     var portalInvitationId = Fixture.portalInvitationId;
 
     // Act
-    var portalInvitations = await repository.Query(new PortalInvitationQuery(portalInvitationId));
+    var portalInvitation = await repository.Query(new PortalInvitationQuery(portalInvitationId), default);
 
     // Assert
-    portalInvitations.ShouldHaveSingleItem();
+    portalInvitation.ShouldNotBeNull();
   }
 }

@@ -94,7 +94,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private Contact GetOrAddApplicant(EcerContext context, string identityProvider, string userId)
   {
     var contact = (from a in context.ecer_AuthenticationSet
-                   join c in context.ContactSet on a.ecer_authentication_Contactid.ContactId equals c.ContactId into contacts
+                   join c in context.ContactSet on a.ecer_contact_ecer_authentication_455.ContactId equals c.ContactId into contacts
                    from c in contacts.DefaultIfEmpty()
                    where a.ecer_IdentityProvider == identityProvider && a.ecer_ExternalID == userId
                    select c).SingleOrDefault();

@@ -1,10 +1,12 @@
 ﻿using Alba;
 using ECER.Clients.RegistryPortal.Server.References;
 using ECER.Managers.Admin.Contract.PortalInvitations;
+using ECER.Managers.Registry.Contract.PortalInvitations;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
+using InviteType = ECER.Managers.Admin.Contract.PortalInvitations.InviteType;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
@@ -22,10 +24,10 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
     var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
-    var token = packingResponse.verificationLink.Split('/')[2];
-    var verifyResponse = await bus.Send(new InviteLinkQuery(token), CancellationToken.None);
+    var token = packingResponse.VerificationLink.Split('/')[2];
+    var verifyResponse = await bus.Send(new PortalInvitationVerificationQuery(token), CancellationToken.None);
 
-    var item = verifyResponse.Items.FirstOrDefault();
+    var item = verifyResponse.portalInvitation;
     item!.Id.ShouldBe(portalInvitation.ToString());
 
     var inviteLinkResponse = await Host.Scenario(_ =>

@@ -1,6 +1,5 @@
 ﻿using ECER.Infrastructure.Common;
 using ECER.Resources.Accounts.Communications;
-using ECER.Resources.Accounts.PortalInvitations;
 using ECER.Resources.Accounts.Registrants;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
@@ -13,6 +12,5 @@ public class Configurer : IConfigureComponents
   {
     configurationContext.Services.AddTransient<IRegistrantRepository, RegistrantRepository>();
     configurationContext.Services.AddTransient<ICommunicationRepository, CommunicationRepository>();
-    configurationContext.Services.AddTransient<IPortalInvitationRepository, PortalInvitationRepository>();
   }
 }
