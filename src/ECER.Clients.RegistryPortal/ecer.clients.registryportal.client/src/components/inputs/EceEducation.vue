@@ -113,7 +113,7 @@ import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 export default defineComponent({
-  name: "EceEdducation",
+  name: "EceEducation",
   components: { EducationList },
   props: {
     props: {
