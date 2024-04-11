@@ -3,7 +3,17 @@
 namespace ECER.Managers.Registry.Contract.PortalInvitations;
 
 public record PortalInvitationVerificationQuery(string VerificationToken) : IRequest<PortalInvitationVerificationQueryResult>;
-public record PortalInvitationVerificationQueryResult(PortalInvitation portalInvitation);
+
+public class PortalInvitationVerificationQueryResult
+{
+  public bool IsSuccess { get; set; }
+  public PortalInvitation? Invitation { get; set; }
+  public string? ErrorMessage { get; set; }
+
+  public static PortalInvitationVerificationQueryResult Success(PortalInvitation invitation) => new PortalInvitationVerificationQueryResult { IsSuccess = true, Invitation = invitation };
+
+  public static PortalInvitationVerificationQueryResult Failure(string message) => new PortalInvitationVerificationQueryResult { IsSuccess = false, ErrorMessage = message };
+}
 
 public record PortalInvitation(string? Id, string Name, string ReferenceFirstName, string ReferenceLastName, string ReferenceEmailAddress)
 {

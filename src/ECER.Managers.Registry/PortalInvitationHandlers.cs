@@ -16,16 +16,19 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(transformationEngine);
     var response = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.VerificationToken))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
-    if (response.portalInvitation == Guid.Empty) throw new InvalidOperationException("Invalid token");
+    if (response.portalInvitation == Guid.Empty) return PortalInvitationVerificationQueryResult.Failure("Invalid Token");
 
     var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(response.portalInvitation), cancellationToken);
 
     var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
+
     var applicant = registrantResult.SingleOrDefault();
-    if (applicant == null) throw new InvalidOperationException("Applicant not found");
+    if (applicant == null) return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
+
     var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation)!;
     result.ApplicantFirstName = applicant.Profile.FirstName;
     result.ApplicantLastName = applicant.Profile.LastName;
-    return new PortalInvitationVerificationQueryResult(result);
+
+    return PortalInvitationVerificationQueryResult.Success(result);
   }
 }

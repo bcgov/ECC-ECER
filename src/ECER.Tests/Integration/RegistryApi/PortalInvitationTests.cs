@@ -27,8 +27,7 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
     var token = packingResponse.VerificationLink.Split('/')[2];
     var verifyResponse = await bus.Send(new PortalInvitationVerificationQuery(token), CancellationToken.None);
 
-    var item = verifyResponse.portalInvitation;
-    item!.Id.ShouldBe(portalInvitation.ToString());
+    verifyResponse.Invitation!.Id.ShouldBe(portalInvitation.ToString());
 
     var inviteLinkResponse = await Host.Scenario(_ =>
     {
