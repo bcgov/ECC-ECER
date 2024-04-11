@@ -110,8 +110,8 @@ import { useAlertStore } from "@/store/alert";
 import { useWizardStore } from "@/store/wizard";
 import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
-import * as Rules from "@/utils/formRules";
 import { formatDate } from "@/utils/format";
+import * as Rules from "@/utils/formRules";
 export default defineComponent({
   name: "EceEdducation",
   components: { EducationList },
