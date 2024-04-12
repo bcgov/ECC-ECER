@@ -1,9 +1,9 @@
-using System.Reflection;
-using System.Text.Json.Serialization;
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace ECER.Clients.Api;
 

@@ -22,5 +22,4 @@ public record PortalAppSettings : IOptions<PortalAppSettings>
   public string BaseUrl { get; set; } = string.Empty;
   public string ReferenceVerificationRoute { get; set; } = string.Empty;
   public PortalAppSettings Value => this;
-  // Add other properties as needed
 }
