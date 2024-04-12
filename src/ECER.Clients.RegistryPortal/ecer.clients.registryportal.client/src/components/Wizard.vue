@@ -1,5 +1,5 @@
 <template>
-  <WizardHeader class="mb-6" />
+  <slot name="header"></slot>
   <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :mobile="$vuetify.display.mobile">
     <v-stepper-header>
       <template v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage">
@@ -46,7 +46,6 @@ import { defineComponent, type PropType } from "vue";
 
 import DeclarationStepContent from "@/components/DeclarationStepContent.vue";
 import EceForm from "@/components/Form.vue";
-import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useCertificationTypeStore } from "@/store/certificationType";
@@ -56,7 +55,7 @@ import type { Step, Wizard } from "@/types/wizard";
 
 export default defineComponent({
   name: "Wizard",
-  components: { WizardHeader, EceForm, DeclarationStepContent },
+  components: { EceForm, DeclarationStepContent },
   props: {
     wizard: {
       type: Object as PropType<Wizard>,
