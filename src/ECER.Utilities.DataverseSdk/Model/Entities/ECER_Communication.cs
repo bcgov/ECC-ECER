@@ -97,6 +97,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_RegistrantidName = "ecer_registrantidname";
 			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
 			public const string ecer_Reply = "ecer_reply";
+			public const string ecer_RichText = "ecer_richtext";
 			public const string ecer_Type = "ecer_type";
 			public const string ecer_typeName = "ecer_typename";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -654,6 +655,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_reply", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_richtext")]
+		public string ecer_RichText
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_richtext");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_richtext", value);
 			}
 		}
 		

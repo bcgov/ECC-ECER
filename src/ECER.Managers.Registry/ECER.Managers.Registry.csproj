@@ -4,6 +4,7 @@
     <PackageReference Include="MediatR" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ECER.Engines.Transformation\ECER.Engines.Transformation.csproj" />
     <ProjectReference Include="..\ECER.Engines.Validation\ECER.Engines.Validation.csproj" />
     <ProjectReference Include="..\ECER.Infrastructure.Common\ECER.Infrastructure.Common.csproj" />
     <ProjectReference Include="..\ECER.Managers.Registry.Contract\ECER.Managers.Registry.Contract.csproj" />

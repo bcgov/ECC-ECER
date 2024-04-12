@@ -63,13 +63,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_authentication_Contactid = "ecer_authentication_Contactid";
 			public const string ecer_AuthenticationId = "ecer_authenticationid";
 			public const string Id = "ecer_authenticationid";
 			public const string ecer_contact_ecer_authentication_455 = "ecer_contact_ecer_authentication_455";
-			public const string ecer_Contactid = "ecer_contactid";
-			public const string ecer_ContactidName = "ecer_contactidname";
-			public const string ecer_ContactidYomiName = "ecer_contactidyominame";
 			public const string ecer_Customerid = "ecer_customerid";
 			public const string ecer_CustomeridName = "ecer_customeridname";
 			public const string ecer_CustomeridYomiName = "ecer_customeridyominame";
@@ -290,55 +286,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_AuthenticationId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_Contactid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_contactid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_contactid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactidname")]
-		public string ecer_ContactidName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_contactid"))
-				{
-					return this.FormattedValues["ecer_contactid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactidyominame")]
-		public string ecer_ContactidYomiName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_contactid"))
-				{
-					return this.FormattedValues["ecer_contactid"];
-				}
-				else
-				{
-					return default(string);
-				}
 			}
 		}
 		
@@ -817,25 +764,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser>("ecer_portaluser_Authenticationid", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_authentication_Contactid
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_authentication_Contactid")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ecer_authentication_Contactid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_authentication_Contactid", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_authentication_Contactid", null, value);
 			}
 		}
 		

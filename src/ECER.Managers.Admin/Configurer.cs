@@ -11,8 +11,7 @@ public class Configurer : IConfigureComponents
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
     configurationContext.Services.Configure<PortalAppSettings>(portalAppSettings =>
-         configurationContext.Configuration.GetSection("PortalApp").Bind(portalAppSettings));
-
+    configurationContext.Configuration.GetSection("PortalApp").Bind(portalAppSettings));
     configurationContext.Services.AddTransient<FileHandlers>();
     configurationContext.Services.AddTransient<InviteLinkHandlers>();
   }
@@ -23,5 +22,4 @@ public record PortalAppSettings : IOptions<PortalAppSettings>
   public string BaseUrl { get; set; } = string.Empty;
   public string ReferenceVerificationRoute { get; set; } = string.Empty;
   public PortalAppSettings Value => this;
-  // Add other properties as needed
 }

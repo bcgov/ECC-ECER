@@ -36,14 +36,35 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		ApprovedInterim = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ApprovedOnGoing = 621870006,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Denied = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PendingDecision = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PendingReview = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		RFAI = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		SiteVisitRequired = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		UnderReview = 621870001,
 	}
 	
 	/// <summary>
-	/// PSI Program Applicaitons
+	/// Post Secondary Institute Program Applicaiton
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton")]
@@ -77,6 +98,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_ = "ecer_postsecondaryinstituteprogramapplicaiton_";
 			public const string ecer_PostSecondaryInstituteProgramApplicaitonId = "ecer_postsecondaryinstituteprogramapplicaitonid";
 			public const string Id = "ecer_postsecondaryinstituteprogramapplicaitonid";
+			public const string ecer_program_ProgramApplication_ecer_postsecon = "ecer_program_ProgramApplication_ecer_postsecon";
 			public const string ecer_ProjectedNumberOfFullTimeStudents = "ecer_projectednumberoffulltimestudents";
 			public const string ecer_ProjectedNumberofOccasionalStudents = "ecer_projectednumberofoccasionalstudents";
 			public const string ecer_ProjectedNumberofPartTimeStudents = "ecer_projectednumberofparttimestudents";
@@ -980,6 +1002,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_program_ProgramApplication_ecer_postsecon
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_program_ProgramApplication_ecer_postsecon")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Program> ecer_program_ProgramApplication_ecer_postsecon
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_ProgramApplication_ecer_postsecon", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_ProgramApplication_ecer_postsecon", null, value);
 			}
 		}
 		

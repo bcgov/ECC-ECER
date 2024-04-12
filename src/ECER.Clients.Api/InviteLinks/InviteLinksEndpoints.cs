@@ -1,4 +1,4 @@
-﻿using ECER.Managers.Admin.Contract.InviteLinks;
+﻿using ECER.Managers.Admin.Contract.PortalInvitations;
 using ECER.Utilities.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -13,17 +13,16 @@ public class InviteLinksEndpoints : IRegisterEndpoints
       GenerateInviteLinkRequest request,
       HttpContext httpContext,
       IMediator messageBus,
-      IConfiguration configuration,
       CancellationToken ct) =>
     {
       var referenceLinkResponse = await messageBus.Send(new GenerateInviteLinkCommand(request.portalInvitation, request.inviteType, request.validDays), ct);
 
-      return TypedResults.Ok(new GenerateInviteLinkResponse(referenceLinkResponse.portalInvitation, referenceLinkResponse.verificationLink));
+      return TypedResults.Ok(new GenerateInviteLinkResponse(referenceLinkResponse.PortalInvitation, referenceLinkResponse.VerificationLink));
     })
 .WithOpenApi("Creates a new reference link", string.Empty, "references_post")
-.RequireAuthorization()
 .DisableAntiforgery()
-.WithParameterValidation();
+.WithParameterValidation()
+.RequireAuthorization();
   }
 }
 
