@@ -1,6 +1,8 @@
 import type { AxiosResponse } from "axios";
 
 import { useAlertStore } from "@/store/alert";
+import type { LoadingOperation } from "@/store/loading";
+import { useLoadingStore } from "@/store/loading";
 
 // Define the structure of the response object
 export interface ApiResponse<T> {
@@ -12,13 +14,17 @@ class ApiResultHandler {
   // Inject the alert store
 
   // Generic method to execute an API request and handle the response
-  public async execute<T>(request: Promise<AxiosResponse<T>>): Promise<ApiResponse<T>> {
+  public async execute<T>(request: Promise<AxiosResponse<T>>, key?: LoadingOperation): Promise<ApiResponse<T>> {
     try {
+      if (key) this.setLoadingState(key, true);
+
       const response = await request;
       return { data: response.data };
     } catch (error: any) {
       this.handleError(error);
       return { error: error.response ? error.response.data : "An unknown error occurred" };
+    } finally {
+      if (key) this.setLoadingState(key, true);
     }
   }
 
@@ -44,15 +50,17 @@ class ApiResultHandler {
       // Something happened in setting up the request that triggered an Error
       this.showErrorMessage("Error in request: " + error.message);
     }
-
-    // Optionally rethrow the error if you want calling code to handle it as well
-    throw error;
   }
 
   // Method to show error messages
   private showErrorMessage(message: any) {
     const alertStore = useAlertStore();
     alertStore.setFailureAlert(message);
+  }
+
+  private setLoadingState(key: string, loading: boolean) {
+    const loadingStore = useLoadingStore();
+    loadingStore.setLoading(key, loading);
   }
 }
 
