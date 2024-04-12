@@ -172,7 +172,6 @@ export default defineComponent({
       }
     },
     async submitApplication() {
-      console.log(this.loadingStore.isLoading("application_post"));
       const draftApplicationResponse = await this.applicationStore.saveDraft();
       if (draftApplicationResponse?.applicationId) {
         this.alertStore.setSuccessAlert("Draft application saved successfully");

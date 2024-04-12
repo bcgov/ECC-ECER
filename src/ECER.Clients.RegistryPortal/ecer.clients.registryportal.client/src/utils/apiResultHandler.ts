@@ -24,7 +24,7 @@ class ApiResultHandler {
       this.handleError(error);
       return { error: error.response ? error.response.data : "An unknown error occurred" };
     } finally {
-      if (key) this.setLoadingState(key, true);
+      if (key) this.setLoadingState(key, false);
     }
   }
 
@@ -58,7 +58,7 @@ class ApiResultHandler {
     alertStore.setFailureAlert(message);
   }
 
-  private setLoadingState(key: string, loading: boolean) {
+  private setLoadingState(key: LoadingOperation, loading: boolean) {
     const loadingStore = useLoadingStore();
     loadingStore.setLoading(key, loading);
   }
