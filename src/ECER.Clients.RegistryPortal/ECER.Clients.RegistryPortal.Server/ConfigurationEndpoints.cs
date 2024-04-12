@@ -21,6 +21,8 @@ public class ConfigurationEndpoints : IRegisterEndpoints
 public class ApplicationConfiguration
 {
   public Dictionary<string, OidcAuthenticationSettings> ClientAuthenticationMethods { get; set; } = [];
+
+  public Dictionary<string, string> ProvinceList { get; set; } = [];
 }
 
 #pragma warning restore CA2227 // Collection properties should be read only
