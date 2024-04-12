@@ -50,6 +50,7 @@
         color="primary"
         type="number"
         maxlength="100"
+        hide-spin-buttons
         @update:model-value="updateCharacterReference()"
       ></v-text-field>
     </v-col>
@@ -78,8 +79,8 @@ import { defineComponent } from "vue";
 import { useAlertStore } from "@/store/alert";
 import type { EceCharacterReferenceProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
-import * as Rules from "@/utils/formRules";
 import { isNotSpecialCharacterName } from "@/utils/formInput";
+import * as Rules from "@/utils/formRules";
 
 import Alert from "../Alert.vue";
 export default defineComponent({
