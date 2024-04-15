@@ -23,7 +23,12 @@ export const useLoadingStore = defineStore("loading", {
 
   getters: {
     isLoading(): (key: LoadingOperation) => boolean {
-      return (key: LoadingOperation): boolean => this.loadingStates[key] || false;
+      return (key: LoadingOperation): boolean => {
+        if (!this.loadingStates.hasOwnProperty(key)) {
+          this.loadingStates[key] = false;
+        }
+        return this.loadingStates[key];
+      };
     },
   },
   actions: {
