@@ -49,7 +49,9 @@
           <v-col cols="auto">
             <v-btn v-if="showSaveButtons" rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
             <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and Continue</v-btn>
-            <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" @click="handleSubmit">Submit Application</v-btn>
+            <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
+              Submit Application
+            </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -67,6 +69,7 @@ import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationTypeStore } from "@/store/certificationType";
+import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 
@@ -82,6 +85,7 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const applicationStore = useApplicationStore();
     const certificationTypeStore = useCertificationTypeStore();
+    const loadingStore = useLoadingStore();
 
     // Refresh userProfile from the server
     const userProfile = await getProfile();
@@ -92,7 +96,7 @@ export default defineComponent({
     certificationTypeStore.$reset();
     wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
 
-    return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore };
+    return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore, loadingStore };
   },
   computed: {
     showSaveButtons() {
