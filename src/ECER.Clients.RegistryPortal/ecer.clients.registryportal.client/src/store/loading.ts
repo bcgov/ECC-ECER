@@ -22,8 +22,8 @@ export const useLoadingStore = defineStore("loading", {
   }),
 
   getters: {
-    isLoading() {
-      return (key: LoadingOperation) => this.loadingStates[key];
+    isLoading(): (key: LoadingOperation) => boolean {
+      return (key: LoadingOperation): boolean => this.loadingStates[key] || false;
     },
   },
   actions: {
