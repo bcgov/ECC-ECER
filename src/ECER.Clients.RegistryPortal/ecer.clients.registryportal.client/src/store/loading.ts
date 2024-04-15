@@ -12,28 +12,23 @@ export type LoadingState = {
   [key in LoadingOperation]: boolean;
 };
 
+export interface LoadingStateConfig {
+  loadingStates: LoadingState;
+}
+
 export const useLoadingStore = defineStore("loading", {
-  state: (): LoadingState => ({
-    application_post: false,
-    configuration_get: false,
-    profile_get: false,
-    profile_put: false,
-    userinfo_get: false,
-    userinfo_post: false,
-    message_get: false,
-    message_status_get: false,
-    draftapplication_put: false,
-    application_get: false,
-    draftapplication_delete: false,
+  state: (): LoadingStateConfig => ({
+    loadingStates: {} as LoadingState,
   }),
+
   getters: {
     isLoading() {
-      return (key: LoadingOperation) => this[key];
+      return (key: LoadingOperation) => this.loadingStates[key];
     },
   },
   actions: {
     async setLoading(key: LoadingOperation, loading: boolean) {
-      this.$state[key] = loading;
+      this.$patch({ loadingStates: { [key]: loading } });
     },
   },
 });
