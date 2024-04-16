@@ -19,7 +19,6 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
     if (response.portalInvitation == Guid.Empty) return PortalInvitationVerificationQueryResult.Failure("Invalid Token");
 
     var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(response.portalInvitation), cancellationToken);
-
     var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
 
     var applicant = registrantResult.SingleOrDefault();

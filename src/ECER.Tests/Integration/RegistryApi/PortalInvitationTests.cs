@@ -35,7 +35,7 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var queryResult = await inviteLinkResponse.ReadAsJsonAsync<ReferenceQueryResult>();
+    var queryResult = await inviteLinkResponse.ReadAsJsonAsync<PortalInvitationQueryResult>();
     queryResult.ShouldNotBeNull();
   }
 }

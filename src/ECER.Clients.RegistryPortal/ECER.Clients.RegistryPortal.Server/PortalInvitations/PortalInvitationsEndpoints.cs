@@ -10,7 +10,7 @@ public class PortalInvitationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/PortalInvitations/{token?}", async Task<Results<Ok<ReferenceQueryResult>, BadRequest<string>>> (string? token, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/PortalInvitations/{token?}", async Task<Results<Ok<PortalInvitationQueryResult>, BadRequest<string>>> (string? token, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
     {
       if (token == null) return TypedResults.BadRequest("Token is required");
       var result = await messageBus.Send(new PortalInvitationVerificationQuery(token), ct);
@@ -19,12 +19,12 @@ public class PortalInvitationsEndpoints : IRegisterEndpoints
       {
         return TypedResults.BadRequest(result.ErrorMessage);
       }
-      return TypedResults.Ok(new ReferenceQueryResult(mapper.Map<PortalInvitation>(result.Invitation)));
+      return TypedResults.Ok(new PortalInvitationQueryResult(mapper.Map<PortalInvitation>(result.Invitation)));
     }).WithOpenApi("Handles references queries", string.Empty, "references_get").WithParameterValidation();
   }
 }
 
-public record ReferenceQueryResult(PortalInvitation PortalInvitation);
+public record PortalInvitationQueryResult(PortalInvitation PortalInvitation);
 
 public record PortalInvitation(string? Id, string Name, string ReferenceFirstName, string ReferenceLastName, string ReferenceEmailAddress)
 {
