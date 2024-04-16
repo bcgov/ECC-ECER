@@ -69,8 +69,8 @@ import { useApplicationStore } from "@/store/application";
 import { useCertificationTypeStore } from "@/store/certificationType";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
+import { AddressType } from "@/utils/constant";
 
-import { AddressType } from "../inputs/EceAddresses.vue";
 import WizardHeader from "../WizardHeader.vue";
 
 export default defineComponent({

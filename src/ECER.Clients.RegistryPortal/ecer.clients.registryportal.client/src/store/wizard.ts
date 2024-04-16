@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 
-import AddressType from "@/components/inputs/EceAddresses.vue";
 import type { Components } from "@/types/openapi";
 import type { Step, Wizard } from "@/types/wizard";
+import { AddressType } from "@/utils/constant";
 
 import { useOidcStore } from "./oidc";
 import { useUserStore } from "./user";

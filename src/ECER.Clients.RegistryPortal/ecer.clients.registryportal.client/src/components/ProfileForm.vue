@@ -17,8 +17,7 @@ import { useAlertStore } from "@/store/alert";
 import { useFormStore } from "@/store/form";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
-
-import { AddressType } from "./inputs/EceAddresses.vue";
+import { AddressType } from "@/utils/constant";
 
 export default defineComponent({
   name: "ProfileForm",
