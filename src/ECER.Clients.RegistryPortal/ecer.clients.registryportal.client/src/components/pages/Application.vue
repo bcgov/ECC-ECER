@@ -127,11 +127,14 @@ export default defineComponent({
   },
   methods: {
     async handleSubmit() {
-      const submitApplicationResponse = await this.applicationStore.submitApplication();
-      if (submitApplicationResponse?.applicationId) {
-        this.$router.push({ path: "/submitted" });
-      } else {
+      if (!this.wizardStore.allStageValidations) {
         this.alertStore.setFailureAlert("Your application is incomplete. You need to complete it before you can submit.");
+      } else {
+        const submitApplicationResponse = await this.applicationStore.submitApplication();
+
+        if (submitApplicationResponse?.applicationId) {
+          this.$router.push({ path: "/submitted" });
+        }
       }
     },
     async handleSaveAndContinue() {
