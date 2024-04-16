@@ -15,6 +15,7 @@ import EceForm from "@/components/Form.vue";
 import profileInformationForm from "@/config/profile-information-form";
 import { useAlertStore } from "@/store/alert";
 import { useFormStore } from "@/store/form";
+import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 
 import { AddressType } from "./inputs/EceAddresses.vue";
@@ -26,6 +27,10 @@ export default defineComponent({
     const formStore = useFormStore();
     const userStore = useUserStore();
     const alertStore = useAlertStore();
+    const oidcStore = useOidcStore();
+
+    const oidcUserInfo = await oidcStore.oidcUserInfo();
+    const oidcAddress = await oidcStore.oidcAddress();
 
     const userProfile = await getProfile();
     if (userProfile !== null) {
@@ -34,8 +39,8 @@ export default defineComponent({
         [profileInformationForm.inputs.legalLastName.id]: userProfile.lastName,
         [profileInformationForm.inputs.dateOfBirth.id]: userProfile.dateOfBirth,
         [profileInformationForm.inputs.addresses.id]: {
-          [AddressType.RESIDENTIAL]: userProfile.residentialAddress || userStore.oidcAddress,
-          [AddressType.MAILING]: userProfile.mailingAddress || userStore.oidcAddress,
+          [AddressType.RESIDENTIAL]: userProfile.residentialAddress || oidcAddress,
+          [AddressType.MAILING]: userProfile.mailingAddress || oidcAddress,
         },
         [profileInformationForm.inputs.email.id]: userProfile.email,
         [profileInformationForm.inputs.legalMiddleName.id]: userProfile.middleName,
@@ -45,12 +50,12 @@ export default defineComponent({
       });
     } else {
       formStore.initializeForm({
-        [profileInformationForm.inputs.legalFirstName.id]: userStore.oidcUserInfo.firstName,
-        [profileInformationForm.inputs.legalLastName.id]: userStore.oidcUserInfo.lastName,
-        [profileInformationForm.inputs.dateOfBirth.id]: userStore.oidcUserInfo.dateOfBirth,
-        [profileInformationForm.inputs.addresses.id]: { [AddressType.RESIDENTIAL]: userStore.oidcAddress, [AddressType.MAILING]: userStore.oidcAddress },
-        [profileInformationForm.inputs.email.id]: userStore.oidcUserInfo.email,
-        [profileInformationForm.inputs.primaryContactNumber.id]: userStore.oidcUserInfo.phone,
+        [profileInformationForm.inputs.legalFirstName.id]: oidcUserInfo.firstName,
+        [profileInformationForm.inputs.legalLastName.id]: oidcUserInfo.lastName,
+        [profileInformationForm.inputs.dateOfBirth.id]: oidcUserInfo.dateOfBirth,
+        [profileInformationForm.inputs.addresses.id]: { [AddressType.RESIDENTIAL]: oidcAddress, [AddressType.MAILING]: oidcAddress },
+        [profileInformationForm.inputs.email.id]: oidcUserInfo.email,
+        [profileInformationForm.inputs.primaryContactNumber.id]: oidcUserInfo.phone,
       });
     }
 

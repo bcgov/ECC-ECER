@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from "vue";
+import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
 import { useUserStore } from "@/store/user";
@@ -40,31 +40,21 @@ export default defineComponent({
 
     const router = useRouter();
 
-    // Watch for changes to isAuthenticated flag
-    watch(
-      () => userStore.isAuthenticated,
-      async (newValue: boolean) => {
-        if (!newValue) {
-          // If not authenticated, navigate to the login page
-          router.push("/login");
-        } else {
-          // If authenticated, check if new user
-          const userInfo: Components.Schemas.UserInfo | null = await getUserInfo();
-          if (userInfo) {
-            // Maybe user has a profile already
-            const profileInfo: Components.Schemas.UserProfile | null = await getProfile();
+    oidcStore.userManager.events.addUserLoaded(async () => {
+      const userInfo: Components.Schemas.UserInfo | null = await getUserInfo();
+      if (userInfo) {
+        // Maybe user has a profile already
+        const profileInfo: Components.Schemas.UserProfile | null = await getProfile();
 
-            // Set user info and profile info in the store
-            userStore.setUserInfo(userInfo);
-            userStore.setUserProfile(profileInfo);
+        // Set user info and profile info in the store
+        userStore.setUserInfo(userInfo);
+        userStore.setUserProfile(profileInfo);
 
-            router.push("/");
-          } else {
-            router.push("/new-user");
-          }
-        }
-      },
-    );
+        router.push("/");
+      } else {
+        router.push("/new-user");
+      }
+    });
 
     return { userStore, oidcStore };
   },

@@ -90,7 +90,8 @@ export default defineComponent({
     }
 
     certificationTypeStore.$reset();
-    wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
+
+    await wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
 
     return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore };
   },
