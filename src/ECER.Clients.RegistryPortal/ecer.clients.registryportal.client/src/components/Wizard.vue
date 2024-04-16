@@ -12,8 +12,15 @@
     <v-stepper-window v-model="wizardStore.step">
       <v-stepper-window-item v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage" :value="index + 1">
         <v-container>
-          <h3 v-if="step.title">{{ step.title }}</h3>
-          <h4 v-if="step.subtitle">{{ step.subtitle }}</h4>
+          <v-row class="justify-space-between">
+            <v-col cols="auto">
+              <h3>{{ step.title }}</h3>
+            </v-col>
+            <v-col v-if="wizardStore.currentStepStage === 'Review'" cols="auto">
+              <slot name="PrintPreview"></slot>
+            </v-col>
+          </v-row>
+          <h4>{{ step.subtitle }}</h4>
           <v-row>
             <v-col cols="12">
               <EceForm :ref="step.form.id" :form="step.form" :form-data="wizardStore.wizardData" @updated-form-data="wizardStore.setWizardData" />

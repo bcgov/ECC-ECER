@@ -30,7 +30,7 @@ const submitDraftApplication = async (applicationId: string): Promise<ApiRespons
     id: applicationId,
   };
 
-  return apiResultHandler.execute<Components.Schemas.SubmitApplicationResponse | null | undefined>(client.application_post(null, body));
+  return apiResultHandler.execute<Components.Schemas.SubmitApplicationResponse | null | undefined>(client.application_post(null, body), "application_post");
 };
 
 const cancelDraftApplication = async (applicationId: string): Promise<ApiResponse<Components.Schemas.SubmitApplicationResponse | null | undefined>> => {

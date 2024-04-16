@@ -20,7 +20,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
   public ApplicationRepositoryTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
-    repository = Host.Services.GetRequiredService<IApplicationRepository>();
+    repository = Fixture.Services.GetRequiredService<IApplicationRepository>();
   }
 
   [Fact]
@@ -31,7 +31,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     applicationId.ShouldNotBeNull();
 
-    var application = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    var application = (await repository.Query(new ApplicationQuery { ById = applicationId }, default)).ShouldHaveSingleItem();
     application.Status.ShouldBe(ApplicationStatus.Draft);
     application.ApplicantId.ShouldBe(applicantId);
     application.CertificationTypes.ShouldBe(new[] { CertificationType.OneYear });
@@ -47,7 +47,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     existingApplicationId.ShouldBe(newApplicationId);
 
-    var application = (await repository.Query(new ApplicationQuery { ById = existingApplicationId })).ShouldHaveSingleItem();
+    var application = (await repository.Query(new ApplicationQuery { ById = existingApplicationId }, default)).ShouldHaveSingleItem();
     application.Status.ShouldBe(ApplicationStatus.Draft);
     application.ApplicantId.ShouldBe(applicantId);
     application.CertificationTypes.ShouldBe(new[] { CertificationType.OneYear, CertificationType.FiveYears });
@@ -65,7 +65,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     existingApplicationId.ShouldBe(newApplicationId);
 
-    var existingApplication = (await repository.Query(new ApplicationQuery { ById = existingApplicationId })).ShouldHaveSingleItem();
+    var existingApplication = (await repository.Query(new ApplicationQuery { ById = existingApplicationId }, default)).ShouldHaveSingleItem();
     existingApplication.Status.ShouldBe(ApplicationStatus.Draft);
     existingApplication.ApplicantId.ShouldBe(applicantId);
     existingApplication.SignedDate.ShouldNotBeNull();
@@ -87,7 +87,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     existingApplicationId.ShouldBe(newApplicationId);
 
-    var application = (await repository.Query(new ApplicationQuery { ById = existingApplicationId })).ShouldHaveSingleItem();
+    var application = (await repository.Query(new ApplicationQuery { ById = existingApplicationId }, default)).ShouldHaveSingleItem();
     application.SignedDate.ShouldBe(oneWeekAgo);
   }
 
@@ -97,7 +97,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var applicantId = Fixture.AuthenticatedBcscUserId;
     await repository.SaveDraft(new Application(null, applicantId, new[] { CertificationType.OneYear }), CancellationToken.None);
 
-    var applications = await repository.Query(new ApplicationQuery { ByApplicantId = applicantId });
+    var applications = await repository.Query(new ApplicationQuery { ByApplicantId = applicantId }, default);
     applications.ShouldNotBeEmpty();
     applications.ShouldBeAssignableTo<IEnumerable<Application>>()!.ShouldAllBe(ca => ca.ApplicantId == applicantId);
   }
@@ -111,7 +111,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
       Transcripts = new List<Transcript> { CreateTranscript() }
     }, CancellationToken.None);
 
-    var applications = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var applications = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
     var application = applications.ShouldHaveSingleItem();
     application.Transcripts.ShouldHaveSingleItem();
     application.ApplicantId.ShouldBe(applicantId);
@@ -124,7 +124,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var statuses = new[] { ApplicationStatus.Draft, ApplicationStatus.Complete };
     await repository.SaveDraft(new Application(null, applicantId, new[] { CertificationType.OneYear }), CancellationToken.None);
 
-    var applications = await repository.Query(new ApplicationQuery { ByApplicantId = applicantId, ByStatus = statuses });
+    var applications = await repository.Query(new ApplicationQuery { ByApplicantId = applicantId, ByStatus = statuses }, default);
     applications.ShouldNotBeEmpty();
     applications.ShouldBeAssignableTo<IEnumerable<Application>>()!.ShouldAllBe(ca => ca.ApplicantId == applicantId && statuses.Contains(ca.Status));
   }
@@ -143,7 +143,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     };
     var applicationId = await repository.SaveDraft(application, CancellationToken.None);
     applicationId.ShouldNotBeNull();
-    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
     var savedApplication = query.ShouldHaveSingleItem();
     savedApplication.Transcripts.Count().ShouldBe(transcripts.Count);
   }
@@ -159,7 +159,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.Transcripts = originalTranscripts;
     var applicationId = await repository.SaveDraft(application, CancellationToken.None);
 
-    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
     var transcript = query.First().Transcripts.First();
     transcript.CampusLocation = "Updated Campus";
 
@@ -168,7 +168,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.Transcripts = updatedTranscripts;
     await repository.SaveDraft(application, CancellationToken.None);
 
-    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId }, default)).ShouldHaveSingleItem();
     updatedApplication.Transcripts.First().CampusLocation.ShouldBe("Updated Campus");
   }
 
@@ -188,7 +188,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.Transcripts = new List<Transcript>();
     await repository.SaveDraft(application, CancellationToken.None);
 
-    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId }, default)).ShouldHaveSingleItem();
     updatedApplication.Transcripts.ShouldBeEmpty();
   }
 
@@ -206,7 +206,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     };
     var applicationId = await repository.SaveDraft(application, CancellationToken.None);
     applicationId.ShouldNotBeNull();
-    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
     var savedApplication = query.ShouldHaveSingleItem();
     savedApplication.CharacterReferences.Count().ShouldBe(characterReferences.Count);
   }
@@ -222,7 +222,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.CharacterReferences = originalCharacterReferences;
     var applicationId = await repository.SaveDraft(application, CancellationToken.None);
 
-    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
     var characterReference = query.First().CharacterReferences.First();
 
     var newCharacterReference = new CharacterReference("Roberto", "Firmino", characterReference.PhoneNumber, characterReference.EmailAddress) { Id = characterReference.Id };
@@ -232,7 +232,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.CharacterReferences = updatedCharacterReferences;
     await repository.SaveDraft(application, CancellationToken.None);
 
-    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId }, default)).ShouldHaveSingleItem();
     updatedApplication.CharacterReferences.First().FirstName.ShouldBe("Roberto");
     updatedApplication.CharacterReferences.First().LastName.ShouldBe("Firmino");
   }
@@ -253,7 +253,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.CharacterReferences = new List<CharacterReference>();
     await repository.SaveDraft(application, CancellationToken.None);
 
-    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId }, default)).ShouldHaveSingleItem();
     updatedApplication.CharacterReferences.ShouldBeEmpty();
   }
 
@@ -271,7 +271,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     };
     var applicationId = await repository.SaveDraft(application, CancellationToken.None);
     applicationId.ShouldNotBeNull();
-    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
     var savedApplication = query.ShouldHaveSingleItem();
     savedApplication.WorkExperienceReferences.Count().ShouldBe(workExperienceReferences.Count);
   }
@@ -287,7 +287,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.WorkExperienceReferences = originalWorkExperienceReferences;
     var applicationId = await repository.SaveDraft(application, CancellationToken.None);
 
-    var query = await repository.Query(new ApplicationQuery { ById = applicationId });
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
     var reference = query.First().WorkExperienceReferences.First();
 
     var newWorkExperienceReference = new WorkExperienceReference(reference.FirstName, reference.LastName, reference.EmailAddress, reference.Hours) { Id = reference.Id, PhoneNumber = "987-654-3210" };
@@ -297,7 +297,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.WorkExperienceReferences = updatedReferences;
     await repository.SaveDraft(application, CancellationToken.None);
 
-    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId }, default)).ShouldHaveSingleItem();
     updatedApplication.WorkExperienceReferences.First().PhoneNumber.ShouldBe("987-654-3210");
   }
 
@@ -317,7 +317,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     application.WorkExperienceReferences = new List<WorkExperienceReference>();
     await repository.SaveDraft(application, CancellationToken.None);
 
-    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId })).ShouldHaveSingleItem();
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId }, default)).ShouldHaveSingleItem();
     updatedApplication.WorkExperienceReferences.ShouldBeEmpty();
   }
 
@@ -344,7 +344,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     await repository.Submit(savedApplicationId, CancellationToken.None);
 
-    var submittedApplication = (await repository.Query(new ApplicationQuery { ById = savedApplicationId })).ShouldHaveSingleItem();
+    var submittedApplication = (await repository.Query(new ApplicationQuery { ById = savedApplicationId }, default)).ShouldHaveSingleItem();
     submittedApplication.Status.ShouldBe(ApplicationStatus.Submitted);
   }
 
@@ -368,7 +368,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     await repository.Cancel(savedApplicationId, CancellationToken.None);
 
-    (await repository.Query(new ApplicationQuery { ById = savedApplicationId })).ShouldBeEmpty();
+    (await repository.Query(new ApplicationQuery { ById = savedApplicationId }, default)).ShouldBeEmpty();
 
     await Assert.ThrowsAsync<InvalidOperationException>(async () => await repository.Cancel(savedApplicationId, CancellationToken.None));
   }

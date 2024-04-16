@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="MediatR.Contracts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ECER.Utilities.Security\ECER.Utilities.Security.csproj" />
   </ItemGroup>
 

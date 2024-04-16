@@ -36,8 +36,5 @@ export default defineComponent({
   computed: {
     ...mapState(useApplicationStore, ["applications"]),
   },
-  created() {
-    this.applicationStore.fetchApplications();
-  },
 });
 </script>

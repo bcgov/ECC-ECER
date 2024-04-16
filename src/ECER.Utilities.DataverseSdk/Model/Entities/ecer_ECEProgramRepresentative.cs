@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Post Secondary Institute Program Profile
+	/// Status of the ECE Program Representative
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_postsecondaryinstituteprogramprofile_statecode
+	public enum ecer_eceprogramrepresentative_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Post Secondary Institute Program Profile
+	/// Reason for the status of the ECE Program Representative
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_PostSecondaryInstituteProgramProfile_StatusCode
+	public enum ecer_ECEProgramRepresentative_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -42,17 +42,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Inactive = 2,
 	}
 	
-	/// <summary>
-	/// PSI Program Profiles
-	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_postsecondaryinstituteprogramprofile")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_eceprogramrepresentative")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ecer_PostSecondaryInstituteProgramProfile : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_ECEProgramRepresentative : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_postsecondaryinstituteprogramprofile entity
+		/// Available fields, a the time of codegen, for the ecer_eceprogramrepresentative entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -63,12 +60,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_ContactId = "ecer_contactid";
+			public const string ecer_ContactIdName = "ecer_contactidname";
+			public const string ecer_ContactIdYomiName = "ecer_contactidyominame";
+			public const string ecer_eceprogramrepresentative_ContactId_contac = "ecer_eceprogramrepresentative_ContactId_contac";
+			public const string ecer_eceprogramrepresentative_PostSecondaryIns = "ecer_eceprogramrepresentative_PostSecondaryIns";
+			public const string ecer_ECEProgramRepresentativeId = "ecer_eceprogramrepresentativeid";
+			public const string Id = "ecer_eceprogramrepresentativeid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PostSecondaryInstitute = "ecer_postsecondaryinstitute";
 			public const string ecer_PostSecondaryInstituteName = "ecer_postsecondaryinstitutename";
-			public const string ecer_postsecondaryinstituteprogramprofile_Post = "ecer_postsecondaryinstituteprogramprofile_Post";
-			public const string ecer_PostSecondaryInstituteProgramProfileId = "ecer_postsecondaryinstituteprogramprofileid";
-			public const string Id = "ecer_postsecondaryinstituteprogramprofileid";
+			public const string ecer_Role = "ecer_role";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -95,19 +97,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PostSecondaryInstituteProgramProfile(System.Guid id) : 
+		public ecer_ECEProgramRepresentative(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PostSecondaryInstituteProgramProfile(string keyName, object keyValue) : 
+		public ecer_ECEProgramRepresentative(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PostSecondaryInstituteProgramProfile(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_ECEProgramRepresentative(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -116,22 +118,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PostSecondaryInstituteProgramProfile() : 
+		public ecer_ECEProgramRepresentative() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_postsecondaryinstituteprogramprofileid";
+		public const string PrimaryIdAttribute = "ecer_eceprogramrepresentativeid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_PostSecondaryInstituteProgramProfile";
+		public const string EntitySchemaName = "ecer_ECEProgramRepresentative";
 		
-		public const string EntityLogicalName = "ecer_postsecondaryinstituteprogramprofile";
+		public const string EntityLogicalName = "ecer_eceprogramrepresentative";
 		
-		public const string EntityLogicalCollectionName = "ecer_postsecondaryinstituteprogramprofiles";
+		public const string EntityLogicalCollectionName = "ecer_eceprogramrepresentatives";
 		
-		public const string EntitySetName = "ecer_postsecondaryinstituteprogramprofiles";
+		public const string EntitySetName = "ecer_eceprogramrepresentatives";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -245,6 +247,96 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ContactId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_contactid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_contactid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactidname")]
+		public string ecer_ContactIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_contactid"))
+				{
+					return this.FormattedValues["ecer_contactid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactidyominame")]
+		public string ecer_ContactIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_contactid"))
+				{
+					return this.FormattedValues["ecer_contactid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_eceprogramrepresentativeid")]
+		public System.Nullable<System.Guid> ecer_ECEProgramRepresentativeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_eceprogramrepresentativeid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_eceprogramrepresentativeid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_eceprogramrepresentativeid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.ecer_ECEProgramRepresentativeId = value;
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -292,44 +384,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstituteprogramprofileid")]
-		public System.Nullable<System.Guid> ecer_PostSecondaryInstituteProgramProfileId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_role")]
+		public string ecer_Role
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_postsecondaryinstituteprogramprofileid");
+				return this.GetAttributeValue<string>("ecer_role");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_postsecondaryinstituteprogramprofileid", value);
-				if (value.HasValue)
-				{
-					base.Id = value.Value;
-				}
-				else
-				{
-					base.Id = System.Guid.Empty;
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstituteprogramprofileid")]
-		public override System.Guid Id
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return base.Id;
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.ecer_PostSecondaryInstituteProgramProfileId = value;
+				this.SetAttributeValue("ecer_role", value);
 			}
 		}
 		
@@ -596,15 +662,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Post Secondary Institute Program Profile
+		/// Status of the ECE Program Representative
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_postsecondaryinstituteprogramprofile_statecode? StateCode
+		public virtual ecer_eceprogramrepresentative_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_postsecondaryinstituteprogramprofile_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_eceprogramrepresentative_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -631,15 +697,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Post Secondary Institute Program Profile
+		/// Reason for the status of the ECE Program Representative
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_PostSecondaryInstituteProgramProfile_StatusCode? StatusCode
+		public virtual ecer_ECEProgramRepresentative_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_PostSecondaryInstituteProgramProfile_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_ECEProgramRepresentative_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -715,21 +781,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// N:1 ecer_postsecondaryinstituteprogramprofile_Post
+		/// N:1 ecer_eceprogramrepresentative_ContactId_contac
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstitute")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramprofile_Post")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute ecer_postsecondaryinstituteprogramprofile_Post
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_eceprogramrepresentative_ContactId_contac")]
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_eceprogramrepresentative_ContactId_contac
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_postsecondaryinstituteprogramprofile_Post", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_eceprogramrepresentative_ContactId_contac", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_postsecondaryinstituteprogramprofile_Post", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_eceprogramrepresentative_ContactId_contac", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_eceprogramrepresentative_PostSecondaryIns
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstitute")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_eceprogramrepresentative_PostSecondaryIns")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute ecer_eceprogramrepresentative_PostSecondaryIns
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_eceprogramrepresentative_PostSecondaryIns", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_eceprogramrepresentative_PostSecondaryIns", null, value);
 			}
 		}
 		
@@ -738,7 +823,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PostSecondaryInstituteProgramProfile(object anonymousType) : 
+		public ecer_ECEProgramRepresentative(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -756,9 +841,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_postsecondaryinstituteprogramprofileid"] = base.Id;
+                        Attributes["ecer_eceprogramrepresentativeid"] = base.Id;
                         break;
-                    case "ecer_postsecondaryinstituteprogramprofileid":
+                    case "ecer_eceprogramrepresentativeid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

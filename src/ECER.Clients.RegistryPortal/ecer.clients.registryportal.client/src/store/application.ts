@@ -47,6 +47,8 @@ export const useApplicationStore = defineStore("application", {
         this.applications = applications;
         this.draftApplication = this.applications[0];
       }
+
+      return applications;
     },
     prepareDraftApplicationFromWizard() {
       const wizardStore = useWizardStore();

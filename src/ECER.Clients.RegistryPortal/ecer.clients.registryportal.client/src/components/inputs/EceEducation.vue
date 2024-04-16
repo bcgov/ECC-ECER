@@ -102,15 +102,18 @@
 </template>
 
 <script lang="ts">
+import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 
 import EducationList, { type EducationData } from "@/components/EducationList.vue";
 import { useAlertStore } from "@/store/alert";
+import { useWizardStore } from "@/store/wizard";
 import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
+import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 export default defineComponent({
-  name: "EceEdducation",
+  name: "EceEducation",
   components: { EducationList },
   props: {
     props: {
@@ -135,7 +138,6 @@ export default defineComponent({
   data: function () {
     return {
       clientId: "",
-      mode: "add",
       id: "",
       previousSchool: "",
       school: "",
@@ -152,6 +154,7 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
     },
@@ -224,8 +227,8 @@ export default defineComponent({
       this.studentName = educationData.education.studentName ?? "";
       this.studentNumber = educationData.education.studentNumber ?? "";
       this.language = educationData.education.languageofInstruction ?? "";
-      this.startYear = educationData.education.startDate ?? "";
-      this.endYear = educationData.education.endDate ?? "";
+      this.startYear = formatDate(educationData.education.startDate) ?? "";
+      this.endYear = formatDate(educationData.education.endDate) ?? "";
       // Change mode to add
       this.mode = "add";
     },
@@ -255,6 +258,7 @@ export default defineComponent({
       this.startYear = "";
       this.endYear = "";
     },
+    formatDate,
   },
 });
 </script>

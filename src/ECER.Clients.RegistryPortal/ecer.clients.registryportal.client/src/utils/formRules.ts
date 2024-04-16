@@ -12,7 +12,7 @@
 //  import * as Rule from @/utils/institute/form
 //  under data do rules: Rules <- allows you to use in <template>.
 
-import { LocalDate } from "@js-joda/core";
+import { DateTime } from "luxon";
 
 /**
  * Rule for emails
@@ -54,6 +54,7 @@ const noSpecialCharactersContactName =
   (message = "Remove or replace any special characters in this field.") =>
   (v: string) =>
     !v || !/[^A-Za-z.'\s-]/.test(v) || message;
+
 /**
  * Rule for phone numbers also works for fax numbers too
  * @param {String} message
@@ -114,10 +115,10 @@ const requiredRadio = (message = "This field is required") => {
  */
 const endDateRule = (effectiveDate: string, expiryDate: string, message = "End date cannot be before start date") => {
   if (effectiveDate && expiryDate) {
-    const effDate = LocalDate.parse(effectiveDate.substring(0, 10));
-    const expDate = LocalDate.parse(expiryDate.substring(0, 10));
+    const effDate = DateTime.fromISO(effectiveDate);
+    const expDate = DateTime.fromISO(expiryDate);
 
-    return expDate.isAfter(effDate) || expDate.isEqual(effDate) || message;
+    return expDate < effDate || expDate === effDate || message;
   }
 
   return true;

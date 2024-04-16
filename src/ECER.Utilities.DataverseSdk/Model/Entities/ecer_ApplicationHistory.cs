@@ -65,6 +65,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Id = "ecer_applicationhistoryid";
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
+			public const string ecer_BPFStageName = "ecer_bpfstagename";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NewAssigneeId = "ecer_newassigneeid";
 			public const string ecer_NewAssigneeIdName = "ecer_newassigneeidname";
@@ -315,6 +316,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bpfstagename")]
+		public string ecer_BPFStageName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_bpfstagename");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_bpfstagename", value);
 			}
 		}
 		

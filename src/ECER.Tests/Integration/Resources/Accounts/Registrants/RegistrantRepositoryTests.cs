@@ -14,7 +14,7 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
 
   public RegistrantRepositoryTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
-    registrantRepository = Host.Services.GetRequiredService<IRegistrantRepository>();
+    registrantRepository = Fixture.Services.GetRequiredService<IRegistrantRepository>();
   }
 
   [Fact]

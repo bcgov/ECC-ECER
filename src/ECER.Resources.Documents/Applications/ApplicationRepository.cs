@@ -15,7 +15,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     this.mapper = mapper;
   }
 
-  public async Task<IEnumerable<Application>> Query(ApplicationQuery query)
+  public async Task<IEnumerable<Application>> Query(ApplicationQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 

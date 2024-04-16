@@ -13,6 +13,7 @@ export interface WizardState {
   step: number;
   wizardConfig: Wizard;
   wizardData: WizardData;
+  listComponentMode: "add" | "list";
 }
 
 export type PortalStageValidation = {
@@ -24,6 +25,7 @@ export const useWizardStore = defineStore("wizard", {
     step: 1,
     wizardData: {} as WizardData,
     wizardConfig: {} as Wizard,
+    listComponentMode: "add",
   }),
   persist: true,
   getters: {
@@ -75,6 +77,9 @@ export const useWizardStore = defineStore("wizard", {
           !duplicateCharacterReferenceFound,
         Review: true,
       };
+    },
+    allStageValidations() {
+      return !(Object.values(this.validationState).indexOf(false) > -1);
     },
   },
   actions: {

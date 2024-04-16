@@ -53,7 +53,7 @@
             <p class="small">Start Date of Program</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ education.startDate }}</p>
+            <p class="small font-weight-bold">{{ formatDate(education.startDate) }}</p>
           </v-col>
         </v-row>
         <v-row>
@@ -61,7 +61,7 @@
             <p class="small">End Date of Program</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ education.endDate }}</p>
+            <p class="small font-weight-bold">{{ formatDate(education.endDate) }}</p>
           </v-col>
         </v-row>
       </div>
@@ -76,6 +76,7 @@ import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
+import { formatDate } from "@/utils/format";
 
 export default defineComponent({
   name: "EceEducationPreview",
@@ -98,6 +99,9 @@ export default defineComponent({
     educations(): { [id: string]: Components.Schemas.Transcript } {
       return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.education.form.inputs.educationList.id];
     },
+  },
+  methods: {
+    formatDate,
   },
 });
 </script>

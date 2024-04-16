@@ -1,0 +1,4 @@
+envs
+**/values*.yaml
+**/charts
+**/Chart.lock

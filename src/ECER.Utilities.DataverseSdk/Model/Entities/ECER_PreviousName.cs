@@ -63,6 +63,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Contactid = "ecer_contactid";
 			public const string ecer_ContactidName = "ecer_contactidname";
 			public const string ecer_ContactidYomiName = "ecer_contactidyominame";
+			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_FirstName = "ecer_firstname";
 			public const string ecer_LastName = "ecer_lastname";
 			public const string ecer_LinktoIDDocument = "ecer_linktoiddocument";
@@ -74,6 +75,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
 			public const string ecer_PreviousNameId = "ecer_previousnameid";
 			public const string Id = "ecer_previousnameid";
+			public const string ecer_StartDate = "ecer_startdate";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -299,6 +301,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_enddate")]
+		public System.Nullable<System.DateTime> ecer_EndDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_enddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_enddate", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_firstname")]
 		public string ecer_FirstName
 		{
@@ -459,6 +476,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_PreviousNameId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_startdate")]
+		public System.Nullable<System.DateTime> ecer_StartDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_startdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_startdate", value);
 			}
 		}
 		

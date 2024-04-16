@@ -1,0 +1,35 @@
+﻿using AutoMapper;
+using ECER.Utilities.DataverseSdk.Model;
+
+namespace ECER.Resources.Documents.PortalInvitations;
+
+internal sealed class PortalInvitationMapper : Profile
+{
+  public PortalInvitationMapper()
+  {
+    CreateMap<ecer_PortalInvitation, PortalInvitation>(MemberList.Destination)
+      .ForCtorParam(nameof(PortalInvitation.Id), opts => opts.MapFrom(s => s.ecer_PortalInvitationId))
+      .ForCtorParam(nameof(PortalInvitation.Name), opts => opts.MapFrom(s => s.ecer_Name))
+      .ForCtorParam(nameof(PortalInvitation.ReferenceFirstName), opts => opts.MapFrom(s => s.ecer_FirstName))
+      .ForCtorParam(nameof(PortalInvitation.ReferenceLastName), opts => opts.MapFrom(s => s.ecer_LastName))
+      .ForCtorParam(nameof(PortalInvitation.ReferenceEmailAddress), opts => opts.MapFrom(s => s.ecer_EmailAddress))
+      .ForMember(d => d.WorkexperienceReferenceId, opts => opts.MapFrom(s => s.ecer_WorkExperienceReferenceId.Id))
+      .ForMember(d => d.CharacterReferenceId, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId.Id))
+      .ForMember(d => d.ApplicantId, opts => opts.MapFrom(s => s.ecer_ApplicantId.Id))
+      .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.ecer_ApplicationId.Id))
+      .ForMember(d => d.InviteType, opts => opts.MapFrom(s => DetermineInviteType(s)));
+  }
+
+  private static InviteType? DetermineInviteType(ecer_PortalInvitation source)
+  {
+    if (source.ecer_WorkExperienceReferenceId != null)
+    {
+      return InviteType.WorkExperienceReference;
+    }
+    else if (source.ecer_CharacterReferenceId != null)
+    {
+      return InviteType.CharacterReference;
+    }
+    return null;
+  }
+}

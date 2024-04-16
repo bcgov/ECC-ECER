@@ -33,7 +33,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Complainant = 621870000,
+		Complaint = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Referral = 621870001,

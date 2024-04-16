@@ -16,12 +16,13 @@
     <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="firstName"
-        :rules="[Rules.required('Enter your reference\'s first name')]"
+        :rules="[Rules.required('Enter your reference\'s first name'), Rules.noSpecialCharactersContactName()]"
         label="Reference First Name"
         variant="outlined"
         color="primary"
         maxlength="100"
         @update:model-value="updateCharacterReference()"
+        @keypress="isNotSpecialCharacterName"
       ></v-text-field>
     </v-col>
   </v-row>
@@ -29,12 +30,13 @@
     <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="lastName"
-        :rules="[Rules.required('Enter your reference\'s last name')]"
+        :rules="[Rules.required('Enter your reference\'s last name'), Rules.noSpecialCharactersContactName()]"
         label="Reference Last Name"
         variant="outlined"
         color="primary"
         maxlength="100"
         @update:model-value="updateCharacterReference()"
+        @keypress="isNotSpecialCharacterName"
       ></v-text-field>
     </v-col>
   </v-row>
@@ -48,6 +50,7 @@
         color="primary"
         type="number"
         maxlength="100"
+        hide-spin-buttons
         @update:model-value="updateCharacterReference()"
       ></v-text-field>
     </v-col>
@@ -76,6 +79,7 @@ import { defineComponent } from "vue";
 import { useAlertStore } from "@/store/alert";
 import type { EceCharacterReferenceProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
+import { isNotSpecialCharacterName } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 import Alert from "../Alert.vue";
@@ -117,6 +121,7 @@ export default defineComponent({
         { firstName: this.firstName, lastName: this.lastName, emailAddress: this.emailAddress, phoneNumber: this.phoneNumber },
       ] as Components.Schemas.CharacterReference);
     },
+    isNotSpecialCharacterName,
   },
 });
 </script>

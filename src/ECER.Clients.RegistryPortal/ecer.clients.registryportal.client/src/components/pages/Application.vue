@@ -17,6 +17,34 @@
         </template>
       </v-stepper-header>
     </template>
+    <template #PrintPreview>
+      <ConfirmationDialog
+        :config="{
+          cancelButtonText: 'Cancel',
+          acceptButtonText: 'Yes',
+          title: 'Print Confirmation',
+          customButtonVariant: 'text',
+          isDialogDisabled: wizardStore.allStageValidations,
+        }"
+        @accept="printPage"
+      >
+        <template #activator>
+          <span @click="wizardStore.allStageValidations ? printPage() : {}">
+            <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
+            <a class="small">Print Preview</a>
+          </span>
+        </template>
+        <template #confirmation-text>
+          <p>
+            Your Application contains missing data and/or invalid data.
+            <br />
+            The printed preview will show which sections are incomplete
+          </p>
+          <br />
+          <p><b>Are you sure you want to proceed?</b></p>
+        </template>
+      </ConfirmationDialog>
+    </template>
     <template #actions>
       <v-container class="mb-8">
         <v-row class="justify-space-between ga-4" no-gutters>
@@ -33,9 +61,11 @@
             </v-btn>
           </v-col>
           <v-col cols="auto">
-            <v-btn rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
-            <v-btn v-if="wizardStore.currentStepStage !== `Review`" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and Continue</v-btn>
-            <v-btn v-if="wizardStore.currentStepStage === 'Review'" rounded="lg" color="primary" @click="handleSubmit">Submit Application</v-btn>
+            <v-btn v-if="showSaveButtons" rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
+            <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and Continue</v-btn>
+            <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
+              Submit Application
+            </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -47,12 +77,14 @@
 import { defineComponent } from "vue";
 
 import { getProfile, putProfile } from "@/api/profile";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import Wizard from "@/components/Wizard.vue";
 import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationTypeStore } from "@/store/certificationType";
+import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
@@ -61,13 +93,14 @@ import { AddressType } from "../inputs/EceAddresses.vue";
 
 export default defineComponent({
   name: "Application",
-  components: { Wizard, WizardHeader },
+  components: { Wizard, WizardHeader, ConfirmationDialog },
   setup: async () => {
     const wizardStore = useWizardStore();
     const userStore = useUserStore();
     const alertStore = useAlertStore();
     const applicationStore = useApplicationStore();
     const certificationTypeStore = useCertificationTypeStore();
+    const loadingStore = useLoadingStore();
 
     // Refresh userProfile from the server
     const userProfile = await getProfile();
@@ -78,7 +111,19 @@ export default defineComponent({
     certificationTypeStore.$reset();
     wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
 
-    return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore };
+    return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore, loadingStore };
+  },
+  computed: {
+    showSaveButtons() {
+      return (
+        this.wizardStore.currentStepStage !== "Review" &&
+        !(this.wizardStore.currentStepStage === "Education" && this.wizardStore.listComponentMode === "add") &&
+        !(this.wizardStore.currentStepStage === "WorkReferences" && this.wizardStore.listComponentMode === "add")
+      );
+    },
+    showSubmitApplication() {
+      return this.wizardStore.currentStepStage === "Review";
+    },
   },
   methods: {
     async handleSubmit() {
@@ -187,6 +232,9 @@ export default defineComponent({
           dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
         });
       }
+    },
+    printPage() {
+      window.print();
     },
   },
 });

@@ -38,7 +38,7 @@ const declarationForm: Form = {
       component: EceTextField,
       props: {
         label: "Applicant Legal Name",
-        readonly: true,
+        disabled: true,
       },
       cols: {
         md: 8,
@@ -52,7 +52,7 @@ const declarationForm: Form = {
       props: {
         label: "Signed Date",
         type: "date",
-        readonly: true,
+        disabled: true,
       },
       cols: {
         md: 8,

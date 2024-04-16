@@ -28,8 +28,9 @@ export const getClient = async (appendToken: boolean = true) => {
       (error) => {
         if (error.response.status === 401) {
           userStore.logout();
+        } else {
+          return Promise.reject(error);
         }
-        return error;
       },
     );
   }

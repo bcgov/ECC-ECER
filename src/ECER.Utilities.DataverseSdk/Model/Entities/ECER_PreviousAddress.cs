@@ -68,11 +68,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Customerid = "ecer_customerid";
 			public const string ecer_CustomeridName = "ecer_customeridname";
 			public const string ecer_CustomeridYomiName = "ecer_customeridyominame";
+			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PostalCode = "ecer_postalcode";
 			public const string ecer_PreviousAddressId = "ecer_previousaddressid";
 			public const string Id = "ecer_previousaddressid";
 			public const string ecer_Province = "ecer_province";
+			public const string ecer_StartDate = "ecer_startdate";
 			public const string ecer_Street1 = "ecer_street1";
 			public const string ecer_Street2 = "ecer_street2";
 			public const string ecer_Street3 = "ecer_street3";
@@ -363,6 +365,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_enddate")]
+		public System.Nullable<System.DateTime> ecer_EndDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_enddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_enddate", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -446,6 +463,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_province", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_startdate")]
+		public System.Nullable<System.DateTime> ecer_StartDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_startdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_startdate", value);
 			}
 		}
 		
