@@ -17,34 +17,6 @@ export const useConfigStore = defineStore("config", {
     applicationConfiguration: {} as Components.Schemas.ApplicationConfiguration,
   }),
   getters: {
-    bceidOidcConfiguration: (state): UserManagerSettings => {
-      const oidc = state.applicationConfiguration?.clientAuthenticationMethods ? state.applicationConfiguration?.clientAuthenticationMethods["bceid"] : null;
-
-      const combinedConfig: UserManagerSettings = {
-        ...oidcConfig,
-        client_id: oidc?.clientId ?? "",
-        authority: oidc?.authority ?? "",
-        scope: oidc?.scope ?? "",
-        loadUserInfo: true,
-        extraQueryParams: { kc_idp_hint: oidc?.idp ?? "" },
-      };
-
-      return combinedConfig;
-    },
-    bcscOidcConfiguration: (state): UserManagerSettings => {
-      const oidc = state.applicationConfiguration?.clientAuthenticationMethods ? state.applicationConfiguration?.clientAuthenticationMethods["bcsc"] : null;
-
-      const combinedConfig: UserManagerSettings = {
-        ...oidcConfig,
-        client_id: oidc?.clientId ?? "",
-        authority: oidc?.authority ?? "",
-        scope: oidc?.scope ?? "",
-        loadUserInfo: true,
-        extraQueryParams: { kc_idp_hint: oidc?.idp ?? "" },
-      };
-
-      return combinedConfig;
-    },
     kcOidcConfiguration: (state): UserManagerSettings => {
       const oidc = state.applicationConfiguration?.clientAuthenticationMethods ? state.applicationConfiguration?.clientAuthenticationMethods["kc"] : null;
 

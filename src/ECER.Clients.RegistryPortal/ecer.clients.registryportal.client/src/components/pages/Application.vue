@@ -72,8 +72,8 @@ import { useCertificationTypeStore } from "@/store/certificationType";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
+import { AddressType } from "@/utils/constant";
 
-import { AddressType } from "../inputs/EceAddresses.vue";
 import WizardHeader from "../WizardHeader.vue";
 
 export default defineComponent({
@@ -94,7 +94,8 @@ export default defineComponent({
     }
 
     certificationTypeStore.$reset();
-    wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
+
+    await wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
 
     return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore, loadingStore };
   },
