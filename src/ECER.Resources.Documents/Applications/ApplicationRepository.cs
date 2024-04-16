@@ -207,4 +207,14 @@ internal sealed class ApplicationRepository : IApplicationRepository
     context.SaveChanges();
     return applicationId;
   }
+
+  public Task<bool> SubmitCharacterReference(ReferenceSubmissionRequest request, CancellationToken ct)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task<bool> SubmitWorkexperienceReference(ReferenceSubmissionRequest request, CancellationToken ct)
+  {
+    throw new NotImplementedException();
+  }
 }

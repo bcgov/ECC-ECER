@@ -9,6 +9,10 @@ public interface IApplicationRepository
   Task<string> Submit(string applicationId, CancellationToken cancellationToken);
 
   Task<string> Cancel(string applicationId, CancellationToken cancellationToken);
+
+  Task<bool> SubmitCharacterReference(ReferenceSubmissionRequest request, CancellationToken ct);
+
+  Task<bool> SubmitWorkexperienceReference(ReferenceSubmissionRequest request, CancellationToken ct);
 }
 
 public record ApplicationQuery
@@ -84,3 +88,7 @@ public record CharacterReference(string? FirstName, string? LastName, string? Ph
 {
   public string? Id { get; set; }
 }
+
+public record ReferenceSubmissionRequest(string Token, ReferenceContactInformation ReferenceContactInformation, ReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation);
+public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvince);
+public record ReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool Confirmed);

@@ -12,7 +12,7 @@ public class ReferencesEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapPost("/api/References", async Task<Results<Ok, BadRequest<string>>> (ReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest("Token is required");
-      var result = await messageBus.Send(mapper.Map<Managers.Registry.Contract.References.ReferenceSubmissionRequest>(request), ct);
+      var result = await messageBus.Send(mapper.Map<Managers.Registry.Contract.Applications.ReferenceSubmissionRequest>(request), ct);
       if (!result.IsSuccess)
       {
         return TypedResults.BadRequest(result.ErrorMessage);

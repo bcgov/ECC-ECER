@@ -1,20 +1,26 @@
 ﻿using AutoMapper;
+using ECER.Engines.Transformation;
+using ECER.Engines.Transformation.PortalInvitations;
 using ECER.Engines.Validation.Applications;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
+using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Applications;
+using ECER.Resources.Documents.PortalInvitations;
 using MediatR;
+using ReferenceSubmissionRequest = ECER.Managers.Registry.Contract.Applications.ReferenceSubmissionRequest;
 
 namespace ECER.Managers.Registry;
 
 /// <summary>
 /// Message handlers
 /// </summary>
-public class ApplicationHandlers(IApplicationRepository applicationRepository, IMapper mapper, IApplicationSubmissionValidationEngine validationEngine)
+public class ApplicationHandlers(IPortalInvitationTransformationEngine transformationEngine, IPortalInvitationRepository portalInvitationRepository, IRegistrantRepository registrantRepository, IApplicationRepository applicationRepository, IMapper mapper, IApplicationSubmissionValidationEngine validationEngine)
   : IRequestHandler<SaveDraftApplicationCommand, string>,
     IRequestHandler<CancelDraftApplicationCommand, string>,
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
-    IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>
+    IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
+    IRequestHandler<ReferenceSubmissionRequest, ReferenceSubmissionResult>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -127,5 +133,36 @@ public class ApplicationHandlers(IApplicationRepository applicationRepository, I
       ByStatus = request.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
     }, cancellationToken);
     return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
+  }
+
+  public async Task<ReferenceSubmissionResult> Handle(ReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(portalInvitationRepository);
+    ArgumentNullException.ThrowIfNull(registrantRepository);
+    ArgumentNullException.ThrowIfNull(applicationRepository);
+    ArgumentNullException.ThrowIfNull(transformationEngine);
+    ArgumentNullException.ThrowIfNull(mapper);
+    ArgumentNullException.ThrowIfNull(request);
+
+    var transformationResponse = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.Token))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
+    if (transformationResponse.PortalInvitation == Guid.Empty) return ReferenceSubmissionResult.Failure("Invalid Token");
+
+    var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(transformationResponse.PortalInvitation), cancellationToken);
+    var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
+
+    var applicant = registrantResult.SingleOrDefault();
+    if (applicant == null) return ReferenceSubmissionResult.Failure("Applicant not found");
+
+    if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.WorkExperienceReference)
+    {
+      var result = await applicationRepository.SubmitWorkexperienceReference(mapper.Map<Resources.Documents.Applications.ReferenceSubmissionRequest>(request), cancellationToken);
+      if (!result) return ReferenceSubmissionResult.Failure("Failed to submit work experience reference");
+    }
+    else if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.CharacterReference)
+    {
+      var result = await applicationRepository.SubmitCharacterReference(mapper.Map<Resources.Documents.Applications.ReferenceSubmissionRequest>(request), cancellationToken);
+      if (!result) return ReferenceSubmissionResult.Failure("Failed to submit character reference");
+    }
+    return ReferenceSubmissionResult.Success();
   }
 }

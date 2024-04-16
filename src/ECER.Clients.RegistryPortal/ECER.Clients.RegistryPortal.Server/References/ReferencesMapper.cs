@@ -6,8 +6,8 @@ public class ReferencesMapper : Profile
 {
   public ReferencesMapper()
   {
-    CreateMap<Managers.Registry.Contract.References.ReferenceContactInformation, ReferenceContactInformation>();
-    CreateMap<Managers.Registry.Contract.References.ReferenceEvaluation, ReferenceEvaluation>();
-    CreateMap<Managers.Registry.Contract.References.ReferenceSubmissionRequest, ReferenceSubmissionRequest>();
+    CreateMap<Managers.Registry.Contract.Applications.ReferenceContactInformation, ReferenceContactInformation>();
+    CreateMap<Managers.Registry.Contract.Applications.ReferenceEvaluation, ReferenceEvaluation>();
+    CreateMap<Managers.Registry.Contract.Applications.ReferenceSubmissionRequest, ReferenceSubmissionRequest>();
   }
 }

@@ -5,8 +5,8 @@ namespace ECER.Engines.Transformation;
 public abstract record TransformRequest();
 public abstract record TransformResponse();
 
-public record EncryptInviteTokenRequest(Guid portalInvitation, InviteType inviteType, int validDays) : TransformRequest;
-public record EncryptInviteTokenResponse(Guid portalInvitation, string verificationToken) : TransformResponse;
+public record EncryptInviteTokenRequest(Guid PortalInvitation, InviteType InviteType, int ValidDays) : TransformRequest;
+public record EncryptInviteTokenResponse(Guid PortalInvitation, string VerificationToken) : TransformResponse;
 
-public record DecryptInviteTokenRequest(string verificationToken) : TransformRequest;
-public record DecryptInviteTokenResponse(Guid portalInvitation, InviteType inviteType) : TransformResponse;
+public record DecryptInviteTokenRequest(string VerificationToken) : TransformRequest;
+public record DecryptInviteTokenResponse(Guid PortalInvitation, InviteType InviteType) : TransformResponse;
