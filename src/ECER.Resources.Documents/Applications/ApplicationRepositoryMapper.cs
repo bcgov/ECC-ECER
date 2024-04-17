@@ -110,6 +110,11 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId))
           .ValidateMemberList(MemberList.Destination);
 
+    CreateMap<ecer_Province, Province>(MemberList.Source)
+      .ForCtorParam(nameof(Province.ProvinceId), opt => opt.MapFrom(src => src.ecer_ProvinceId))
+      .ForCtorParam(nameof(Province.ProvinceName), opt => opt.MapFrom(src => src.ecer_Name))
+      .ValidateMemberList(MemberList.Destination);
+
     CreateMap<ApplicationStatus, ecer_Application_StatusCode>()
     .ConvertUsingEnumMapping(opts => opts.MapByName(true))
     .ReverseMap();

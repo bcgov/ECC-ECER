@@ -29,7 +29,7 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.LanguageofInstruction,
              opts => opts.MapFrom(src => src.LanguageofInstruction))
       .ReverseMap();
-    
+
     CreateMap<CharacterReference, Managers.Registry.Contract.Applications.CharacterReference>()
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.FirstName),
         opt => opt.MapFrom(src => src.FirstName))
@@ -59,5 +59,8 @@ public class ApplicationMapper : Profile
 
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>()
       ;
+
+    CreateMap<Managers.Registry.Contract.Applications.Province, Province>()
+  ;
   }
 }

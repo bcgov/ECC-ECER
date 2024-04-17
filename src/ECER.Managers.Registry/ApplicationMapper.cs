@@ -26,6 +26,8 @@ internal class ApplicationMapper : Profile
     CreateMap<Contract.Applications.WorkExperienceReference, WorkExperienceReference>().ReverseMap();
     CreateMap<Contract.Applications.CharacterReference, CharacterReference>().ReverseMap();
 
+    CreateMap<Province, Contract.Applications.Province>();
+
     CreateMap<Contract.Applications.ReferenceContactInformation, ReferenceContactInformation>();
     CreateMap<Contract.Applications.ReferenceEvaluation, ReferenceEvaluation>();
     CreateMap<Contract.Applications.ReferenceSubmissionRequest, ReferenceSubmissionRequest>()

@@ -208,6 +208,12 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return applicationId;
   }
 
+  public async Task<IEnumerable<Province>> QueryProvinces(CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    return mapper.Map<IEnumerable<Province>>(context.ecer_ProvinceSet)!.ToList();
+  }
+
   public Task<bool> SubmitCharacterReference(ReferenceSubmissionRequest request, CancellationToken ct)
   {
     throw new NotImplementedException();

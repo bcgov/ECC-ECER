@@ -20,7 +20,8 @@ public class ApplicationHandlers(IPortalInvitationTransformationEngine transform
     IRequestHandler<CancelDraftApplicationCommand, string>,
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
-    IRequestHandler<ReferenceSubmissionRequest, ReferenceSubmissionResult>
+    IRequestHandler<ReferenceSubmissionRequest, ReferenceSubmissionResult>,
+    IRequestHandler<ProvincesQuery, ProvincesQueryResults>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -135,6 +136,29 @@ public class ApplicationHandlers(IPortalInvitationTransformationEngine transform
     return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
   }
 
+  /// <summary>
+  ///
+  /// </summary>
+  /// <param name="request"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  public async Task<ProvincesQueryResults> Handle(ProvincesQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(applicationRepository);
+    ArgumentNullException.ThrowIfNull(mapper);
+    ArgumentNullException.ThrowIfNull(request);
+
+    var provinces = await applicationRepository.QueryProvinces(cancellationToken);
+    return new ProvincesQueryResults(mapper.Map<IEnumerable<Contract.Applications.Province>>(provinces)!);
+  }
+
+  /// <summary>
+  /// Handles Reference Submission
+  /// </summary>
+  /// <param name="request"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  /// <exception cref="InvalidCastException"></exception>
   public async Task<ReferenceSubmissionResult> Handle(ReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(portalInvitationRepository);

@@ -19,6 +19,20 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetProvinces_ReturnsProvinces()
+  {
+    var provincesResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url("/api/provincelist");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var provinces = await provincesResponse.ReadAsJsonAsync<Province[]>();
+    provinces.ShouldNotBeNull();
+  }
+
+  [Fact]
   public async Task GetApplications_ReturnsApplications()
   {
     var applicationsResponse = await Host.Scenario(_ =>
