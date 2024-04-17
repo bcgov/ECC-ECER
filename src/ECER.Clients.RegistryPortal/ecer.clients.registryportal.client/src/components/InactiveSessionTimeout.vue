@@ -27,7 +27,7 @@ export default defineComponent({
     const oidcStore = useOidcStore();
     const showTimeoutDialog = ref(false);
     const timer = ref(60);
-    const idle = useIdle(2 * 1 * 1000); // 2 minutes
+    const idle = useIdle(2 * 60 * 1000); // 2 minutes
 
     const { pause, resume } = useIntervalFn(
       () => {
