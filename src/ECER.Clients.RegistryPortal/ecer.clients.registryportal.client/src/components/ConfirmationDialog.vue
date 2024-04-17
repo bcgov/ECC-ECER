@@ -80,8 +80,6 @@ export default defineComponent({
     },
     accept() {
       this.$emit("accept");
-      /* creating a delay before emitting accept - helps prevent warning dialog overlay in print preview */
-      // setTimeout(this.$emit, 500, "accept");
     },
   },
 });
