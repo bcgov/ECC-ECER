@@ -52,37 +52,6 @@ public class Program
       builder.Services
         .AddTransient<AuthenticationService>()
         .AddAuthentication()
-        .AddJwtBearer("bceid", opts =>
-        {
-          opts.Events = new JwtBearerEvents
-          {
-            OnTokenValidated = async ctx =>
-              {
-                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
-                {
-                  new Claim(ClaimTypes.NameIdentifier, ctx.Principal!.FindFirstValue("bceid_user_guid") ?? string.Empty)
-                }));
-                ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal, ctx.HttpContext.RequestAborted);
-              }
-          };
-          opts.Validate();
-        })
-        .AddJwtBearer("bcsc", opts =>
-        {
-          opts.Events = new JwtBearerEvents
-          {
-            OnTokenValidated = async ctx =>
-              {
-                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
-                {
-                  new Claim("identity_provider", "bcsc"),
-                  new Claim(RegistryPortalClaims.IdentityId, ctx.Principal!.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty)
-                }));
-                ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal, ctx.HttpContext.RequestAborted);
-              }
-          };
-          opts.Validate();
-        })
         .AddJwtBearer("kc", opts =>
          {
            opts.Events = new JwtBearerEvents
@@ -103,7 +72,7 @@ public class Program
         .AddDefaultPolicy("registry_user", policy =>
         {
           policy
-            .AddAuthenticationSchemes("bcsc", "bceid", "kc")
+            .AddAuthenticationSchemes("kc")
             .RequireClaim(RegistryPortalClaims.IdenityProvider)
             .RequireClaim(RegistryPortalClaims.IdentityId)
             .RequireClaim(RegistryPortalClaims.UserId)
@@ -112,7 +81,7 @@ public class Program
         .AddPolicy("registry_new_user", policy =>
         {
           policy
-            .AddAuthenticationSchemes("bcsc", "bceid", "kc")
+            .AddAuthenticationSchemes("kc")
             .RequireClaim(RegistryPortalClaims.IdentityId)
             .RequireClaim(ClaimTypes.NameIdentifier)
             .RequireAuthenticatedUser();
