@@ -148,7 +148,7 @@ public class ApplicationHandlers(IPortalInvitationTransformationEngine transform
     ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
-    var provinces = await applicationRepository.QueryProvinces(cancellationToken);
+    var provinces = await applicationRepository.QueryProvinces(new ProvinceQuery() { ById = request.ById }, cancellationToken);
     return new ProvincesQueryResults(mapper.Map<IEnumerable<Contract.Applications.Province>>(provinces)!);
   }
 

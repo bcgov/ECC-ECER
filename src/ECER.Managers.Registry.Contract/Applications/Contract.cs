@@ -37,7 +37,10 @@ public record ApplicationsQueryResults(IEnumerable<Application> Items);
 /// <summary>
 /// Invokes provinces use case
 /// </summary>
-public record ProvincesQuery : IRequest<ProvincesQueryResults>;
+public record ProvincesQuery : IRequest<ProvincesQueryResults>
+{
+  public string? ById { get; set; }
+}
 /// <summary>
 /// Container for <see cref="ProvincesQuery"/> results
 /// </summary>

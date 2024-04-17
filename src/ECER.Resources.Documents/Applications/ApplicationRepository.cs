@@ -208,10 +208,13 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return applicationId;
   }
 
-  public async Task<IEnumerable<Province>> QueryProvinces(CancellationToken cancellationToken)
+  public async Task<IEnumerable<Province>> QueryProvinces(ProvinceQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    return mapper.Map<IEnumerable<Province>>(context.ecer_ProvinceSet)!.ToList();
+    var provinces = context.ecer_ProvinceSet;
+    if (query.ById != null) provinces = provinces.Where(r => r.ecer_ProvinceId == Guid.Parse(query.ById));
+
+    return mapper.Map<IEnumerable<Province>>(provinces)!.ToList();
   }
 
   public Task<bool> SubmitCharacterReference(ReferenceSubmissionRequest request, CancellationToken ct)
