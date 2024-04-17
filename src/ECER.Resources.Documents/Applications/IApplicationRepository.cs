@@ -1,4 +1,6 @@
-﻿namespace ECER.Resources.Documents.Applications;
+﻿using ECER.Resources.Documents.PortalInvitations;
+
+namespace ECER.Resources.Documents.Applications;
 
 public interface IApplicationRepository
 {
@@ -89,6 +91,9 @@ public record CharacterReference(string? FirstName, string? LastName, string? Ph
   public string? Id { get; set; }
 }
 
-public record ReferenceSubmissionRequest(string Token, ReferenceContactInformation ReferenceContactInformation, ReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation);
+public record ReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, ReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation)
+{
+  public PortalInvitation? PortalInvitation { get; set; }
+}
 public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvince);
 public record ReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool Confirmed);

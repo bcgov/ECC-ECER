@@ -215,6 +215,8 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
   public Task<bool> SubmitWorkexperienceReference(ReferenceSubmissionRequest request, CancellationToken ct)
   {
+    var workexperienceReference = context.ecer_WorkExperienceRefSet.Single(w => w.Id == Guid.Parse(request.PortalInvitation!.WorkexperienceReferenceId!));
+
     throw new NotImplementedException();
   }
 }

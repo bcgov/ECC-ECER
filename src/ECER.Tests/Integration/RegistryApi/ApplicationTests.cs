@@ -1,9 +1,14 @@
 ﻿using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Applications;
+using ECER.Clients.RegistryPortal.Server.References;
+using ECER.Managers.Admin.Contract.PortalInvitations;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Net;
 using Xunit.Abstractions;
+using InviteType = ECER.Managers.Admin.Contract.PortalInvitations.InviteType;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
@@ -99,6 +104,41 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     });
   }
 
+  private ReferenceSubmissionRequest CreateReferenceSubmissionRequest(string token)
+  {
+    var faker = new Faker("en_CA");
+
+    // Generating random data for ReferenceContactInformation
+    var referenceContactInfo = new ReferenceContactInformation(
+        faker.Person.LastName,
+        faker.Person.FirstName,
+        faker.Person.Email,
+        faker.Phone.PhoneNumber(),
+        faker.Random.AlphaNumeric(8), // Random certificate number
+        faker.Address.StateAbbr() // Random Canadian province abbreviation
+    );
+
+    // Generating random data for ReferenceEvaluation
+    var referenceEvaluation = new ReferenceEvaluation(
+        faker.Random.Word(), // Relationship
+        faker.Random.Word(), // LengthOfAcquaintance
+        faker.Random.Bool(), // WorkedWithChildren
+        faker.Lorem.Paragraph(), // ChildInteractionObservations
+        faker.Lorem.Paragraph(), // ApplicantTemperamentAssessment
+        faker.Random.Bool() // Confirmed
+    );
+
+    // Creating the ReferenceSubmissionRequest record
+    var referenceSubmissionRequest = new ReferenceSubmissionRequest(
+        token,
+        referenceContactInfo,
+        referenceEvaluation,
+        faker.Random.Bool() // ResponseAccuracyConfirmation
+    );
+
+    return referenceSubmissionRequest;
+  }
+
   private DraftApplication CreateDraftApplication()
   {
     var application = new Faker<DraftApplication>("en_CA")
@@ -176,6 +216,23 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
       _.Delete.Url($"/api/draftApplications/{randomGuid}");
       _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
+    });
+  }
+
+  [Fact]
+  public async Task SubmitWorkExperienceReference_ShouldReturnOk()
+  {
+    var bus = Fixture.Services.GetRequiredService<IMediator>();
+    var portalInvitation = Fixture.portalInvitationId;
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
+    packingResponse.ShouldNotBeNull();
+
+    var token = packingResponse.VerificationLink.Split('/')[2];
+    var referenceSubmissionRequest = CreateReferenceSubmissionRequest(token);
+    await Host.Scenario(_ =>
+    {
+      _.Post.Json(referenceSubmissionRequest).ToUrl($"/api/References");
+      _.StatusCodeShouldBeOk();
     });
   }
 
