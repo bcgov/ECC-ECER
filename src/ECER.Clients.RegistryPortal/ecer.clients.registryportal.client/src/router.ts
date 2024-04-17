@@ -38,14 +38,14 @@ const router = createRouter({
           ],
         },
         {
-          path: "messages",
-          component: () => import("./components/Messages.vue"),
-        },
-        {
           path: "settings",
           component: () => import("./components/Settings.vue"),
         },
       ],
+    },
+    {
+      path: "/messages",
+      component: () => import("./components/Messages.vue"),
     },
 
     {
