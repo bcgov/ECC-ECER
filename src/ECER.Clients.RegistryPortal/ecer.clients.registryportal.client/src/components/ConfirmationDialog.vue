@@ -21,9 +21,9 @@
         </v-card-text>
         <v-card-actions>
           <v-row>
-            <v-col class="text-right">
+            <v-col class="text-right d-flex flex-row justify-end ga-3 flex-wrap">
               <v-btn rounded="lg" variant="outlined" @click="cancel">{{ cancelButtonText }}</v-btn>
-              <v-btn rounded="lg" color="warning" variant="outlined" @click="accept">{{ acceptButtonText }}</v-btn>
+              <v-btn rounded="lg" class="ma-0" color="warning" variant="outlined" @click="accept">{{ acceptButtonText }}</v-btn>
             </v-col>
           </v-row>
         </v-card-actions>

@@ -48,12 +48,13 @@
                 <p class="small">Complete and submit your application for certification in early childhood education.</p>
               </v-card-item>
               <v-card-actions class="ma-4">
-                <v-row v-if="applications && applications?.length > 0 && applicationStore.hasDraftApplication">
-                  <v-col>
-                    <v-btn variant="flat" rounded="lg" color="primary" @click="$router.push('/application')">Continue Your Application</v-btn>
-                    <v-btn rounded="lg" variant="outlined" @click="showCancelDialog = true">Cancel Application</v-btn>
-                  </v-col>
-                </v-row>
+                <div
+                  v-if="applications && applications?.length > 0 && applicationStore.hasDraftApplication"
+                  class="d-flex flex-row justify-start ga-3 flex-wrap"
+                >
+                  <v-btn variant="flat" rounded="lg" color="primary" @click="$router.push('/application')">Continue Your Application</v-btn>
+                  <v-btn class="ma-0" rounded="lg" variant="outlined" @click="showCancelDialog = true">Cancel Application</v-btn>
+                </div>
                 <v-btn v-else variant="flat" rounded="lg" color="primary" @click="handleStartNewApplication">Start New Application</v-btn>
               </v-card-actions>
             </v-card>
