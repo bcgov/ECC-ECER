@@ -1,11 +1,5 @@
 <template>
-  <v-dialog v-model="showDialog" width="auto" :disabled="isDialogDisabled">
-    <template #activator="{ props: activatorProps }">
-      <v-btn v-bind="activatorProps" rounded="lg" :variant="customButtonVariant">
-        <slot name="activator">Cancel</slot>
-      </v-btn>
-    </template>
-
+  <v-dialog :model-value="show" width="auto" :disabled="disabled">
     <template #default>
       <v-card class="no-scroll">
         <v-card-title>
@@ -41,15 +35,39 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import { useDisplay } from "vuetify";
-
-import type { ConfirmationDialogProps } from "@/types/confirmation-dialog";
+import { VBtn } from "vuetify/components";
+type TVariant = VBtn["$props"]["variant"];
 
 export default defineComponent({
   name: "ConfirmationDialog",
   props: {
-    config: {
-      type: Object as PropType<ConfirmationDialogProps>,
-      default: () => ({}),
+    show: {
+      type: Boolean,
+      default: false,
+    },
+    hasActivator: {
+      type: Boolean,
+      default: true,
+    },
+    title: {
+      type: String,
+      default: "Please Confirm",
+    },
+    cancelButtonText: {
+      type: String,
+      default: "Cancel",
+    },
+    acceptButtonText: {
+      type: String,
+      default: "Proceed",
+    },
+    customButtonVariant: {
+      type: String as PropType<TVariant>,
+      default: "outlined",
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: {
@@ -60,25 +78,15 @@ export default defineComponent({
     const { smAndDown } = useDisplay();
     return { smAndDown };
   },
-  data() {
-    return {
-      showDialog: false,
-      cancelButtonText: this.config?.cancelButtonText || "Cancel",
-      acceptButtonText: this.config?.acceptButtonText || "Proceed",
-      title: this.config?.title || "Please Confirm",
-      customButtonVariant: this.config?.customButtonVariant || "outlined",
-      isDialogDisabled: this.config?.isDialogDisabled || false,
-    };
-  },
+
   methods: {
     cancel() {
       this.$emit("cancel");
-      this.showDialog = false;
     },
     accept() {
-      this.showDialog = false;
+      this.$emit("accept");
       /* creating a delay before emitting accept - helps prevent warning dialog overlay in print preview */
-      setTimeout(this.$emit, 500, "accept");
+      // setTimeout(this.$emit, 500, "accept");
     },
   },
 });

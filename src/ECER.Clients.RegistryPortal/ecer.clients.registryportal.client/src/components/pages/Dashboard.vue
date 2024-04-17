@@ -51,16 +51,7 @@
                 <v-row v-if="applications && applications?.length > 0 && applicationStore.hasDraftApplication">
                   <v-col>
                     <v-btn variant="flat" rounded="lg" color="primary" @click="$router.push('/application')">Continue Your Application</v-btn>
-                    <ConfirmationDialog
-                      :config="{ cancelButtonText: 'Keep Application', acceptButtonText: 'Cancel Application', title: 'Cancel Application' }"
-                      @accept="cancelApplication"
-                    >
-                      <template #activator>Cancel Application</template>
-                      <template #confirmation-text>
-                        <p>By cancelling your application, it will be removed from the system. You cannot undo this.</p>
-                        <p><b>Are you sure you want to proceed?</b></p>
-                      </template>
-                    </ConfirmationDialog>
+                    <v-btn rounded="lg" variant="outlined" @click="showCancelDialog = true">Cancel Application</v-btn>
                   </v-col>
                 </v-row>
                 <v-btn v-else variant="flat" rounded="lg" color="primary" @click="handleStartNewApplication">Start New Application</v-btn>
@@ -86,6 +77,19 @@
           </v-col>
         </v-row>
       </v-container>
+      <ConfirmationDialog
+        :cancel-button-text="'Keep Application'"
+        :accept-button-text="'Cancel Application'"
+        :title="'Cancel Application'"
+        :show="showCancelDialog"
+        @cancel="showCancelDialog = false"
+        @accept="cancelApplication"
+      >
+        <template #confirmation-text>
+          <p>By cancelling your application, it will be removed from the system. You cannot undo this.</p>
+          <p><b>Are you sure you want to proceed?</b></p>
+        </template>
+      </ConfirmationDialog>
     </v-main>
   </v-app>
 </template>
@@ -126,6 +130,7 @@ export default defineComponent({
     return { userStore, applicationStore, navigationOptions, alertStore, applications };
   },
   data: () => ({
+    showCancelDialog: false,
     drawer: null as boolean | null | undefined,
   }),
   methods: {
@@ -135,6 +140,7 @@ export default defineComponent({
       this.$router.push("/application");
     },
     async cancelApplication() {
+      this.showCancelDialog = false;
       const { data: cancelledApplicationId } = await cancelDraftApplication(this.applicationStore.draftApplication.id!);
       if (cancelledApplicationId) {
         this.applicationStore.fetchApplications();
