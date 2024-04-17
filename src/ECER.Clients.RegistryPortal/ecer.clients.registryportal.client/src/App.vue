@@ -4,6 +4,7 @@
       <v-app>
         <NavigationBar />
         <v-main>
+          <InactiveSessionTimeout />
           <Snackbar />
           <router-view></router-view>
         </v-main>
@@ -22,6 +23,7 @@ import { useUserStore } from "@/store/user";
 import { getProfile } from "./api/profile";
 import { getUserInfo } from "./api/user";
 import EceFooter from "./components/Footer.vue";
+import InactiveSessionTimeout from "./components/InactiveSessionTimeout.vue";
 import NavigationBar from "./components/NavigationBar.vue";
 import Snackbar from "./components/Snackbar.vue";
 import { useOidcStore } from "./store/oidc";
@@ -33,11 +35,11 @@ export default defineComponent({
     NavigationBar,
     EceFooter,
     Snackbar,
+    InactiveSessionTimeout,
   },
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
-
     const router = useRouter();
 
     oidcStore.userManager.events.addUserLoaded(async () => {
