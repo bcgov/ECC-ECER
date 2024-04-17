@@ -1,6 +1,6 @@
 import OpenAPIClientAxios from "openapi-client-axios";
 
-import { useUserStore } from "@/store/user";
+import { useOidcStore } from "@/store/oidc";
 import type { Client } from "@/types/openapi";
 
 export const getClient = async (appendToken: boolean = true) => {
@@ -11,8 +11,9 @@ export const getClient = async (appendToken: boolean = true) => {
   const axiosClient = await api.init<Client>();
 
   if (appendToken) {
-    const userStore = useUserStore();
-    const access_token = userStore.accessToken;
+    const oidcStore = useOidcStore();
+    const user = await oidcStore.getUser();
+    const access_token = user?.access_token ?? "";
 
     // Add a request interceptor to append the access token to the request
     axiosClient.interceptors.request.use((config) => {
@@ -27,7 +28,7 @@ export const getClient = async (appendToken: boolean = true) => {
       (response) => response,
       (error) => {
         if (error.response.status === 401) {
-          userStore.logout();
+          oidcStore.logout();
         } else {
           return Promise.reject(error);
         }
