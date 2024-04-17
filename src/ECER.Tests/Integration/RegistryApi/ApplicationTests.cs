@@ -120,12 +120,13 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     // Generating random data for ReferenceEvaluation
     var referenceEvaluation = new ReferenceEvaluation(
-        faker.Random.Word(), // Relationship
+        ReferenceRelationships.CoWorker, // Relationship
         faker.Random.Word(), // LengthOfAcquaintance
         faker.Random.Bool(), // WorkedWithChildren
         faker.Lorem.Paragraph(), // ChildInteractionObservations
         faker.Lorem.Paragraph(), // ApplicantTemperamentAssessment
-        faker.Random.Bool() // Confirmed
+        faker.Random.Bool(), // Confirmed
+        faker.Lorem.Paragraph()
     );
 
     // Creating the ReferenceSubmissionRequest record

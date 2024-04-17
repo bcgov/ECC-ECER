@@ -155,15 +155,19 @@ public class ApplicationHandlers(IPortalInvitationTransformationEngine transform
 
     var referenceRequest = mapper.Map<Resources.Documents.Applications.ReferenceSubmissionRequest>(request);
     referenceRequest.PortalInvitation = portalInvitation;
-    if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.WorkExperienceReference)
+    if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.WorkExperienceReference && !string.IsNullOrEmpty(portalInvitation.WorkexperienceReferenceId))
     {
       var result = await applicationRepository.SubmitWorkexperienceReference(referenceRequest, cancellationToken);
       if (!result) return ReferenceSubmissionResult.Failure("Failed to submit work experience reference");
     }
-    else if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.CharacterReference)
+    else if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.CharacterReference && !string.IsNullOrEmpty(portalInvitation.CharacterReferenceId))
     {
       var result = await applicationRepository.SubmitCharacterReference(referenceRequest, cancellationToken);
       if (!result) return ReferenceSubmissionResult.Failure("Failed to submit character reference");
+    }
+    else
+    {
+      return ReferenceSubmissionResult.Failure("Portal Invitation does not have a character reference or work experience references");
     }
     return ReferenceSubmissionResult.Success();
   }

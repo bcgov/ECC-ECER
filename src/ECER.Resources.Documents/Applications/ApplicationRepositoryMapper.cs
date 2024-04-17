@@ -109,5 +109,25 @@ internal class ApplicationRepositoryMapper : Profile
           .ForCtorParam(nameof(CharacterReference.PhoneNumber), opt => opt.MapFrom(src => src.ecer_PhoneNumber))
           .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId))
           .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<ApplicationStatus, ecer_Application_StatusCode>()
+    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+    .ReverseMap();
+
+    CreateMap<ReferenceSubmissionRequest, ecer_CharacterReference>(MemberList.Source)
+      .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.ReferenceContactInformation.FirstName))
+      .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.ReferenceContactInformation.LastName))
+      .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.PhoneNumber))
+      .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.ReferenceContactInformation.Email))
+      .ForMember(d => d.ecer_ReferenceCertifiedProvinceId, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateProvinceId))
+      .ForMember(d => d.ecer_ReferenceCertificationNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateNumber))
+      .ForMember(d => d.ecer_KnowApplicantsTime, opts => opts.MapFrom(s => s.ReferenceEvaluation.LengthOfAcquaintance))
+      .ForMember(d => d.ecer_RelationshipwithApplicant, opts => opts.MapFrom(s => s.ReferenceEvaluation.Relationship))
+      .ForMember(d => d.ecer_ApplicantSituationDescription, opts => opts.MapFrom(s => s.ReferenceEvaluation.ChildInteractionObservations))
+      .ForMember(d => d.ecer_ApplicantSuitableReason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantTemperamentAssessment))
+      .ForMember(d => d.ecer_ApplicantShouldNOTbeECE, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantShouldNotBeECE))
+      .ForMember(d => d.ecer_applicantnotqualifiedreason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantNotQualifiedReason))
+
+      .ValidateMemberList(MemberList.Destination);
   }
 }
