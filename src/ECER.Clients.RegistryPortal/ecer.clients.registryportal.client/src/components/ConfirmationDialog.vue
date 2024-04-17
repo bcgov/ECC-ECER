@@ -22,7 +22,7 @@
         <v-card-actions>
           <v-row>
             <v-col class="text-right">
-              <v-btn rounded="lg" :class="{ 'mb-2': smAndDown }" variant="outlined" @click="cancel">{{ cancelButtonText }}</v-btn>
+              <v-btn rounded="lg" variant="outlined" @click="cancel">{{ cancelButtonText }}</v-btn>
               <v-btn rounded="lg" color="warning" variant="outlined" @click="accept">{{ acceptButtonText }}</v-btn>
             </v-col>
           </v-row>
@@ -34,7 +34,6 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import { useDisplay } from "vuetify";
 import { VBtn } from "vuetify/components";
 type TVariant = VBtn["$props"]["variant"];
 
@@ -73,10 +72,6 @@ export default defineComponent({
   emits: {
     accept: () => true,
     cancel: () => true,
-  },
-  setup() {
-    const { smAndDown } = useDisplay();
-    return { smAndDown };
   },
 
   methods: {
