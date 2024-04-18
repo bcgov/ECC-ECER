@@ -126,6 +126,7 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.ReferenceContactInformation.Email))
       .ForMember(d => d.ecer_ReferenceCertifiedProvince, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateProvinceOther))
       .ForMember(d => d.ecer_ReferenceCertificationNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateNumber))
+      .ForMember(d => d.ecer_HaveObservedApplicantwithChildren, opts => opts.MapFrom(s => s.ReferenceEvaluation.WorkedWithChildren ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_KnowApplicantsTime, opts => opts.MapFrom(s => s.ReferenceEvaluation.LengthOfAcquaintance))
       .ForMember(d => d.ecer_RelationshipwithApplicant, opts => opts.MapFrom(s => s.ReferenceEvaluation.Relationship))
       .ForMember(d => d.ecer_ApplicantSituationDescription, opts => opts.MapFrom(s => s.ReferenceEvaluation.ChildInteractionObservations))
