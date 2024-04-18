@@ -171,6 +171,18 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     if (portalInvitation == null)
     {
       var guid = Guid.NewGuid();
+      var wpGuid = Guid.NewGuid();
+
+      var workexperienceReference = new ecer_WorkExperienceRef
+      {
+        Id = wpGuid,
+        ecer_WorkExperienceRefId = wpGuid,
+        ecer_Name = "Reference Test name",
+        ecer_FirstName = "Reference Test firstname",
+        ecer_LastName = "Reference Test lastname",
+        ecer_EmailAddress = "reference_test@test.com"
+      };
+
       portalInvitation = new ecer_PortalInvitation
       {
         Id = guid,
@@ -181,8 +193,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_EmailAddress = "test@email.com",
       };
 
+      context.AddObject(workexperienceReference);
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, testApplication);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_WorkExperienceRefId, workexperienceReference);
     }
 
     return portalInvitation;
