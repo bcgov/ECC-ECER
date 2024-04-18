@@ -217,7 +217,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return mapper.Map<IEnumerable<Province>>(provinces)!.ToList();
   }
 
-  public async Task<bool> SubmitCharacterReference(ReferenceSubmissionRequest request, CancellationToken ct)
+  public async Task<bool> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken ct)
   {
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
@@ -235,7 +235,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return true;
   }
 
-  public Task<bool> SubmitWorkexperienceReference(ReferenceSubmissionRequest request, CancellationToken ct)
+  public Task<bool> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken ct)
   {
     throw new NotImplementedException();
   }

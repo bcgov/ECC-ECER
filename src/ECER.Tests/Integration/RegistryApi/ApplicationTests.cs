@@ -118,12 +118,12 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     });
   }
 
-  private ReferenceSubmissionRequest CreateReferenceSubmissionRequest(string token)
+  private CharacterReferenceSubmissionRequest CreateReferenceSubmissionRequest(string token)
   {
     var faker = new Faker("en_CA");
 
     // Generating random data for ReferenceContactInformation
-    var referenceContactInfo = new ReferenceContactInformation(
+    var referenceContactInfo = new CharacterReferenceContactInformation(
         faker.Person.LastName,
         faker.Person.FirstName,
         faker.Person.Email,
@@ -134,7 +134,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     );
 
     // Generating random data for ReferenceEvaluation
-    var referenceEvaluation = new ReferenceEvaluation(
+    var referenceEvaluation = new CharacterReferenceEvaluation(
         faker.Random.Word(), // Relationship
         faker.Random.Word(), // LengthOfAcquaintance
         faker.Random.Bool(), // WorkedWithChildren
@@ -145,7 +145,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     );
 
     // Creating the ReferenceSubmissionRequest record
-    var referenceSubmissionRequest = new ReferenceSubmissionRequest(
+    var referenceSubmissionRequest = new CharacterReferenceSubmissionRequest(
         token,
         referenceContactInfo,
         referenceEvaluation,
@@ -247,7 +247,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var referenceSubmissionRequest = CreateReferenceSubmissionRequest(token);
     await Host.Scenario(_ =>
     {
-      _.Post.Json(referenceSubmissionRequest).ToUrl($"/api/References");
+      _.Post.Json(referenceSubmissionRequest).ToUrl($"/api/CharacterReference");
       _.StatusCodeShouldBeOk();
     });
   }

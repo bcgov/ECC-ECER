@@ -28,9 +28,9 @@ internal class ApplicationMapper : Profile
 
     CreateMap<Province, Contract.Applications.Province>();
 
-    CreateMap<Contract.Applications.ReferenceContactInformation, ReferenceContactInformation>();
-    CreateMap<Contract.Applications.ReferenceEvaluation, ReferenceEvaluation>();
-    CreateMap<Contract.Applications.ReferenceSubmissionRequest, ReferenceSubmissionRequest>()
+    CreateMap<Contract.Applications.CharacterReferenceContactInformation, CharacterReferenceContactInformation>();
+    CreateMap<Contract.Applications.CharacterReferenceEvaluation, CharacterReferenceEvaluation>();
+    CreateMap<Contract.Applications.CharacterReferenceSubmissionRequest, CharacterReferenceSubmissionRequest>()
       .ForMember(d => d.PortalInvitation, opts => opts.Ignore());
   }
 }

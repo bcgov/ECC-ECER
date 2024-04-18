@@ -58,7 +58,7 @@ internal class ApplicationRepositoryMapper : Profile
            .ForSourceMember(s => s.EndDate, opts => opts.DoNotValidate())
            .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
            .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
-           .ForMember(d => d.ecer_ProgramName, opts => opts.MapFrom(s => s.ProgramName))
+           .ForMember(d => d.ecer_ProgramCourseName, opts => opts.MapFrom(s => s.ProgramName))
            .ForMember(d => d.ecer_CampusLocation, opts => opts.MapFrom(s => s.CampusLocation))
            .ForMember(d => d.ecer_StudentName, opts => opts.MapFrom(s => s.StudentName))
            .ForMember(d => d.ecer_StudentNumber, opts => opts.MapFrom(s => s.StudentNumber))
@@ -69,7 +69,7 @@ internal class ApplicationRepositoryMapper : Profile
     CreateMap<ecer_Transcript, Transcript>(MemberList.Source)
           .ForCtorParam(nameof(Transcript.Id), opt => opt.MapFrom(src => src.ecer_TranscriptId))
           .ForCtorParam(nameof(Transcript.EducationalInstitutionName), opt => opt.MapFrom(src => src.ecer_EducationInstitutionFullName))
-          .ForCtorParam(nameof(Transcript.ProgramName), opt => opt.MapFrom(src => src.ecer_ProgramName))
+          .ForCtorParam(nameof(Transcript.ProgramName), opt => opt.MapFrom(src => src.ecer_ProgramCourseName))
           .ForCtorParam(nameof(Transcript.StudentName), opt => opt.MapFrom(src => src.ecer_StudentName))
           .ForCtorParam(nameof(Transcript.StudentNumber), opt => opt.MapFrom(src => src.ecer_StudentNumber))
           .ForCtorParam(nameof(Transcript.StartDate), opt => opt.MapFrom(src => src.ecer_StartDate))
@@ -119,7 +119,7 @@ internal class ApplicationRepositoryMapper : Profile
     .ConvertUsingEnumMapping(opts => opts.MapByName(true))
     .ReverseMap();
 
-    CreateMap<ReferenceSubmissionRequest, ecer_CharacterReference>(MemberList.Source)
+    CreateMap<CharacterReferenceSubmissionRequest, ecer_CharacterReference>(MemberList.Source)
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.ReferenceContactInformation.FirstName))
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.ReferenceContactInformation.LastName))
       .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.PhoneNumber))

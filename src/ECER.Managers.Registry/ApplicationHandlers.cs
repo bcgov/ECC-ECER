@@ -9,7 +9,7 @@ using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
-using ReferenceSubmissionRequest = ECER.Managers.Registry.Contract.Applications.ReferenceSubmissionRequest;
+using CharacterReferenceSubmissionRequest = ECER.Managers.Registry.Contract.Applications.CharacterReferenceSubmissionRequest;
 
 namespace ECER.Managers.Registry;
 
@@ -28,7 +28,7 @@ public class ApplicationHandlers(
     IRequestHandler<CancelDraftApplicationCommand, string>,
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
-    IRequestHandler<ReferenceSubmissionRequest, ReferenceSubmissionResult>,
+    IRequestHandler<CharacterReferenceSubmissionRequest, ReferenceSubmissionResult>,
     IRequestHandler<ProvincesQuery, ProvincesQueryResults>
 {
   /// <summary>
@@ -167,7 +167,7 @@ public class ApplicationHandlers(
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="InvalidCastException"></exception>
-  public async Task<ReferenceSubmissionResult> Handle(ReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  public async Task<ReferenceSubmissionResult> Handle(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(portalInvitationRepository);
     ArgumentNullException.ThrowIfNull(registrantRepository);
@@ -182,22 +182,19 @@ public class ApplicationHandlers(
     var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(transformationResponse.PortalInvitation), cancellationToken);
     var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
 
-    var applicant = registrantResult.SingleOrDefault();
-    if (applicant == null) return ReferenceSubmissionResult.Failure("Applicant not found");
+    if (registrantResult.SingleOrDefault() == null) return ReferenceSubmissionResult.Failure("Applicant not found");
 
-    var referenceRequest = mapper.Map<Resources.Documents.Applications.ReferenceSubmissionRequest>(request);
+    var referenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request);
     referenceRequest.PortalInvitation = portalInvitation;
 
     ecerContext.BeginTransaction();
     if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.WorkExperienceReference)
     {
-      var result = await applicationRepository.SubmitWorkexperienceReference(referenceRequest, cancellationToken);
-      if (!result) return ReferenceSubmissionResult.Failure("Failed to submit work experience reference");
+      await applicationRepository.SubmitWorkexperienceReference(referenceRequest, cancellationToken);
     }
     else if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.CharacterReference)
     {
-      var result = await applicationRepository.SubmitCharacterReference(referenceRequest, cancellationToken);
-      if (!result) return ReferenceSubmissionResult.Failure("Failed to submit character reference");
+      await applicationRepository.SubmitCharacterReference(referenceRequest, cancellationToken);
     }
 
     await portalInvitationRepository.Expire(new ExpirePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);

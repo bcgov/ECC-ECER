@@ -14,9 +14,9 @@ public interface IApplicationRepository
 
   Task<string> Cancel(string applicationId, CancellationToken cancellationToken);
 
-  Task<bool> SubmitCharacterReference(ReferenceSubmissionRequest request, CancellationToken ct);
+  Task<bool> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken ct);
 
-  Task<bool> SubmitWorkexperienceReference(ReferenceSubmissionRequest request, CancellationToken ct);
+  Task<bool> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken ct);
 }
 
 public record ApplicationQuery
@@ -99,9 +99,9 @@ public record CharacterReference(string? FirstName, string? LastName, string? Ph
   public string? Id { get; set; }
 }
 
-public record ReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, ReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation)
+public record CharacterReferenceSubmissionRequest(CharacterReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation)
 {
   public PortalInvitation? PortalInvitation { get; set; }
 }
-public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvinceId, string CertificateProvinceOther);
-public record ReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
+public record CharacterReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvinceId, string CertificateProvinceOther);
+public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
