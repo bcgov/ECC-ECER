@@ -129,12 +129,13 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         faker.Person.Email,
         faker.Phone.PhoneNumber(),
         faker.Random.AlphaNumeric(8), // Random certificate number
-        faker.Address.StateAbbr() // Random Canadian province abbreviation
+        "98fbb5c5-68da-ee11-904c-000d3af4645f", // Random Canadian province abbreviation,
+        faker.Lorem.Paragraph()
     );
 
     // Generating random data for ReferenceEvaluation
     var referenceEvaluation = new ReferenceEvaluation(
-        ReferenceRelationships.CoWorker, // Relationship
+        faker.Random.Word(), // Relationship
         faker.Random.Word(), // LengthOfAcquaintance
         faker.Random.Bool(), // WorkedWithChildren
         faker.Lorem.Paragraph(), // ChildInteractionObservations
@@ -235,11 +236,11 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task SubmitWorkExperienceReference_ShouldReturnOk()
+  public async Task SubmitCharacterReference_ShouldReturnOk()
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
     var portalInvitation = Fixture.portalInvitationId;
-    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.CharacterReference, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.VerificationLink.Split('/')[2];

@@ -170,6 +170,17 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
     if (portalInvitation == null)
     {
+      var characterGuid = Guid.NewGuid();
+      var chracterReference = new ecer_CharacterReference
+      {
+        Id = characterGuid,
+        ecer_CharacterReferenceId = characterGuid,
+        ecer_Name = "Test name",
+        ecer_FirstName = "Test firstname",
+        ecer_LastName = "Test lastname",
+        ecer_EmailAddress = "test@email.com",
+      };
+
       var guid = Guid.NewGuid();
       portalInvitation = new ecer_PortalInvitation
       {
@@ -181,7 +192,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_EmailAddress = "test@email.com",
       };
 
+      context.AddObject(chracterReference);
       context.AddObject(portalInvitation);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_CharacterReferenceId, chracterReference);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, testApplication);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
     }
 
