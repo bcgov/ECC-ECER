@@ -21,4 +21,16 @@ internal class PortalInvitationRepository : IPortalInvitationRepository
     var result = mapper.Map<PortalInvitation>(portalInvitation);
     return result!;
   }
+
+  public async Task<bool> Expire(ExpirePortalInvitationCommand command, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    var portalInvitation = context.ecer_PortalInvitationSet.SingleOrDefault(pi => pi.ecer_PortalInvitationId == command.portalInvitationId);
+    if (portalInvitation == null) return false;
+    portalInvitation.StateCode = ecer_portalinvitation_statecode.Inactive;
+    portalInvitation.StatusCode = ecer_PortalInvitation_StatusCode.Expired;
+    context.UpdateObject(portalInvitation);
+    context.SaveChanges();
+    return true;
+  }
 }
