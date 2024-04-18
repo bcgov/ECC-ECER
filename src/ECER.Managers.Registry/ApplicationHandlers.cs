@@ -7,6 +7,7 @@ using ECER.Managers.Registry.Contract.Applications;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
+using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
 using ReferenceSubmissionRequest = ECER.Managers.Registry.Contract.Applications.ReferenceSubmissionRequest;
 
@@ -15,7 +16,14 @@ namespace ECER.Managers.Registry;
 /// <summary>
 /// Message handlers
 /// </summary>
-public class ApplicationHandlers(IPortalInvitationTransformationEngine transformationEngine, IPortalInvitationRepository portalInvitationRepository, IRegistrantRepository registrantRepository, IApplicationRepository applicationRepository, IMapper mapper, IApplicationSubmissionValidationEngine validationEngine)
+public class ApplicationHandlers(
+    IPortalInvitationTransformationEngine transformationEngine,
+    IPortalInvitationRepository portalInvitationRepository,
+    IRegistrantRepository registrantRepository,
+     IApplicationRepository applicationRepository,
+     IMapper mapper,
+     IApplicationSubmissionValidationEngine validationEngine,
+     EcerContext ecerContext)
   : IRequestHandler<SaveDraftApplicationCommand, string>,
     IRequestHandler<CancelDraftApplicationCommand, string>,
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
@@ -179,20 +187,21 @@ public class ApplicationHandlers(IPortalInvitationTransformationEngine transform
 
     var referenceRequest = mapper.Map<Resources.Documents.Applications.ReferenceSubmissionRequest>(request);
     referenceRequest.PortalInvitation = portalInvitation;
-    if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.WorkExperienceReference && !string.IsNullOrEmpty(portalInvitation.WorkexperienceReferenceId))
+
+    ecerContext.BeginTransaction();
+    if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.WorkExperienceReference)
     {
       var result = await applicationRepository.SubmitWorkexperienceReference(referenceRequest, cancellationToken);
       if (!result) return ReferenceSubmissionResult.Failure("Failed to submit work experience reference");
     }
-    else if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.CharacterReference && !string.IsNullOrEmpty(portalInvitation.CharacterReferenceId))
+    else if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.CharacterReference)
     {
       var result = await applicationRepository.SubmitCharacterReference(referenceRequest, cancellationToken);
       if (!result) return ReferenceSubmissionResult.Failure("Failed to submit character reference");
     }
-    else
-    {
-      return ReferenceSubmissionResult.Failure("Portal Invitation does not have a character reference or work experience references");
-    }
+
+    await portalInvitationRepository.Expire(new ExpirePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
+    ecerContext.CommitTransaction();
     return ReferenceSubmissionResult.Success();
   }
 }

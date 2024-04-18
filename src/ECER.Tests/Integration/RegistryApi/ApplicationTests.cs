@@ -130,7 +130,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         faker.Phone.PhoneNumber(),
         faker.Random.AlphaNumeric(8), // Random certificate number
         "98fbb5c5-68da-ee11-904c-000d3af4645f", // Random Canadian province abbreviation,
-        faker.Lorem.Paragraph()
+        faker.Address.City()
     );
 
     // Generating random data for ReferenceEvaluation

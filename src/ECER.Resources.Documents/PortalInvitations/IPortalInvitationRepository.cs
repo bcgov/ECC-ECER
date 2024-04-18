@@ -4,7 +4,7 @@ public interface IPortalInvitationRepository
 {
   Task<PortalInvitation> Query(PortalInvitationQuery query, CancellationToken ct);
 
-  Task<bool> Expire(ExpirePortalInvitationCommand command, CancellationToken ct);
+  Task Expire(ExpirePortalInvitationCommand command, CancellationToken ct);
 }
 
 public record PortalInvitationQuery(Guid portalInvitationId);

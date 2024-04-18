@@ -220,8 +220,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
   public async Task<bool> SubmitCharacterReference(ReferenceSubmissionRequest request, CancellationToken ct)
   {
     await Task.CompletedTask;
-    var characterReference = context.ecer_CharacterReferenceSet.SingleOrDefault(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
-    if (characterReference == null) return false;
+    var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
 
     mapper.Map(request, characterReference);
 
