@@ -133,23 +133,8 @@ public enum ApplicationStatus
 }
 
 public record ReferenceSubmissionRequest(string Token, ReferenceContactInformation ReferenceContactInformation, ReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation) : IRequest<ReferenceSubmissionResult>;
-public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvinceId);
-public record ReferenceEvaluation(ReferenceRelationships Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
-
-public enum ReferenceRelationships
-{
-  CoWorker,
-  Other,
-  Supervisor
-}
-
-public enum LikertScales
-{
-  SomewhatAgree,
-  SomewhatDisagree,
-  StronglyAgree,
-  StronglyDisagree
-}
+public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvinceId, string CertificateProvinceOther);
+public record ReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
 
 public class ReferenceSubmissionResult
 {
