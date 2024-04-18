@@ -217,9 +217,23 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return mapper.Map<IEnumerable<Province>>(provinces)!.ToList();
   }
 
-  public Task<bool> SubmitCharacterReference(ReferenceSubmissionRequest request, CancellationToken ct)
+  public async Task<bool> SubmitCharacterReference(ReferenceSubmissionRequest request, CancellationToken ct)
   {
-    throw new NotImplementedException();
+    await Task.CompletedTask;
+    var characterReference = context.ecer_CharacterReferenceSet.SingleOrDefault(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
+    if (characterReference == null) return false;
+
+    mapper.Map(request, characterReference);
+
+    var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == Guid.Parse(request.ReferenceContactInformation.CertificateProvinceId));
+    if (province != null)
+    {
+      context.AddLink(characterReference, ecer_CharacterReference.Fields.ecer_characterreference_RefCertifiedProvinceId, province);
+    }
+    characterReference.StatusCode = ecer_CharacterReference_StatusCode.Submitted;
+    context.UpdateObject(characterReference);
+    context.SaveChanges();
+    return true;
   }
 
   public Task<bool> SubmitWorkexperienceReference(ReferenceSubmissionRequest request, CancellationToken ct)
