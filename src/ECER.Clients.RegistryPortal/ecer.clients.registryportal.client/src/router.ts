@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import { useApplicationStore } from "./store/application";
+import { useOidcStore } from "./store/oidc";
 import { useUserStore } from "./store/user";
 
 const router = createRouter({
@@ -123,12 +124,13 @@ const router = createRouter({
 });
 
 // Gaurd for authenticated routes
-router.beforeEach((to, _) => {
-  const userStore = useUserStore();
+router.beforeEach(async (to, _) => {
+  const oidcStore = useOidcStore();
+  const user = await oidcStore.getUser();
 
   // instead of having to check every route record with
   // to.matched.some(record => record.meta.requiresAuth)
-  if (to.meta.requiresAuth && !userStore.isAuthenticated) {
+  if (to.meta.requiresAuth && !user) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     return {
@@ -138,12 +140,14 @@ router.beforeEach((to, _) => {
 });
 
 // Guard for authenticated routes that require user info
-router.beforeEach((to, _) => {
+router.beforeEach(async (to, _) => {
   const userStore = useUserStore();
+  const oidcStore = useOidcStore();
+  const user = await oidcStore.getUser();
 
   // instead of having to check every route record with
   // to.matched.some(record => record.meta.requiresAuth)
-  if (!to.path.startsWith("/new-user") && to.meta.requiresAuth && userStore.isAuthenticated && !userStore.hasUserInfo) {
+  if (!to.path.startsWith("/new-user") && to.meta.requiresAuth && user && !userStore.hasUserInfo) {
     return {
       path: "/new-user",
     };
@@ -151,18 +155,21 @@ router.beforeEach((to, _) => {
 });
 
 // Guard for login page (redirect to dashboard if already authenticated)
-router.beforeEach((to, _, next) => {
-  const userStore = useUserStore();
+router.beforeEach(async (to, _, next) => {
+  const oidcStore = useOidcStore();
+  const user = await oidcStore.getUser();
 
-  if (to.path === "/login" && userStore.isAuthenticated) next({ path: "/" });
+  if (to.path === "/login" && user) next({ path: "/" });
   else next();
 });
 
 // Guard for /new-user page(s) (redirect to dashboard if already authenticated and has user info)
-router.beforeEach((to, _, next) => {
+router.beforeEach(async (to, _, next) => {
   const userStore = useUserStore();
+  const oidcStore = useOidcStore();
+  const user = await oidcStore.getUser();
 
-  if (to.path.startsWith("/new-user") && userStore.isAuthenticated && userStore.hasUserInfo) next({ path: "/" });
+  if (to.path.startsWith("/new-user") && user && userStore.hasUserInfo) next({ path: "/" });
   else next();
 });
 

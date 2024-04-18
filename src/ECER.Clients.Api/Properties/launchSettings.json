@@ -7,7 +7,9 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5051",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DataProtection__DirectoryPath": "../",
+        "DataProtection__ApplicationName": "ECER"
       }
     }
   }

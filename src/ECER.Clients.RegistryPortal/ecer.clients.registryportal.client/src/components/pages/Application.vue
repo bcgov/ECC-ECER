@@ -18,15 +18,20 @@
       </v-stepper-header>
     </template>
     <template #PrintPreview>
+      <v-btn rounded="lg" variant="text" @click="wizardStore.allStageValidations ? printPage() : (showPrintDialog = true)">
+        <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
+        <a class="small">Print Preview</a>
+      </v-btn>
+
       <ConfirmationDialog
-        :config="{
-          cancelButtonText: 'Cancel',
-          acceptButtonText: 'Yes',
-          title: 'Print Confirmation',
-          customButtonVariant: 'text',
-          isDialogDisabled: wizardStore.allStageValidations,
-        }"
-        @accept="printPage"
+        :cancel-button-text="'Cancel'"
+        :accept-button-text="'Yes'"
+        :title="'Print Confirmation'"
+        :custom-button-variant="'text'"
+        :show="showPrintDialog"
+        :disabled="wizardStore.allStageValidations"
+        @cancel="showPrintDialog = false"
+        @accept="handleAcceptPrint"
       >
         <template #activator>
           <span @click="wizardStore.allStageValidations ? printPage() : {}">
@@ -89,7 +94,7 @@ import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 
-import { AddressType } from "../inputs/EceAddresses.vue";
+import { AddressType } from "@/utils/constant";
 
 export default defineComponent({
   name: "Application",
@@ -109,9 +114,15 @@ export default defineComponent({
     }
 
     certificationTypeStore.$reset();
-    wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
+
+    await wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
 
     return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore, loadingStore };
+  },
+  data() {
+    return {
+      showPrintDialog: false,
+    };
   },
   computed: {
     showSaveButtons() {
@@ -235,6 +246,11 @@ export default defineComponent({
           dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
         });
       }
+    },
+    handleAcceptPrint() {
+      this.showPrintDialog = false;
+      /* creating a delay before printing - helps prevent warning dialog overlay in print preview */
+      setTimeout(this.printPage, 500);
     },
     printPage() {
       window.print();

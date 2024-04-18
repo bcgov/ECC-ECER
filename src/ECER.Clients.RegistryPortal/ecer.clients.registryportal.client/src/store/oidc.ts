@@ -1,51 +1,73 @@
-import type { SignoutResponse, User } from "oidc-client-ts";
+import { type SignoutResponse, User } from "oidc-client-ts";
 import { UserManager } from "oidc-client-ts";
 import { defineStore } from "pinia";
 
-import type { Authority } from "@/types/authority";
+import type { Components } from "@/types/openapi";
 
 import { useConfigStore } from "./config";
 
 export interface UserState {
-  userManagers: Record<Authority, { manager: UserManager }>;
+  userManager: UserManager;
 }
 
 export const useOidcStore = defineStore("oidc", {
   state: (): UserState => ({
-    userManagers: {
-      bcsc: { manager: new UserManager(useConfigStore().bcscOidcConfiguration) },
-      bceid: { manager: new UserManager(useConfigStore().bceidOidcConfiguration) },
-      kc: { manager: new UserManager(useConfigStore().kcOidcConfiguration) },
-    },
+    userManager: new UserManager(useConfigStore().kcOidcConfiguration),
   }),
-
   actions: {
-    async login(authority: Authority, provider: string): Promise<void> {
-      return await this.userManagers[authority].manager.signinRedirect({ extraQueryParams: { kc_idp_hint: provider } });
+    async oidcUserInfo(): Promise<Components.Schemas.UserInfo> {
+      const user = await this.getUser();
+
+      return {
+        dateOfBirth: user ? user.profile.birthdate ?? undefined : undefined,
+        firstName: user ? user.profile.given_name ?? "" : "",
+        lastName: user ? user.profile.family_name ?? "" : "",
+        phone: user ? user.profile.phone_number ?? "" : "",
+        email: user ? user.profile.email ?? "" : "",
+      };
+    },
+    async oidcAddress(): Promise<Components.Schemas.Address> {
+      const user = await this.getUser();
+      return {
+        line1: user ? user.profile.address?.street_address ?? "" : "",
+        line2: "",
+        city: user ? user.profile.address?.locality ?? "" : "",
+        province: user ? user.profile.address?.region ?? "" : "",
+        country: user ? user.profile.address?.country ?? "" : "",
+        postalCode: user ? user.profile.address?.postal_code ?? "" : "",
+      };
     },
 
-    async removeUser(authority: Authority): Promise<void> {
-      return await this.userManagers[authority].manager.removeUser();
+    async getUser(): Promise<User | null> {
+      return await this.userManager.getUser();
     },
 
-    async signinCallback(authority: Authority): Promise<User> {
-      return await this.userManagers[authority].manager.signinRedirectCallback();
+    async login(provider: string): Promise<void> {
+      return await this.userManager.signinRedirect({ extraQueryParams: { kc_idp_hint: provider } });
     },
 
-    async silentCallback(authority: Authority): Promise<void> {
-      return await this.userManagers[authority].manager.signinSilentCallback();
+    async removeUser(): Promise<void> {
+      return await this.userManager.removeUser();
     },
 
-    async signinSilent(authority: Authority): Promise<User | null> {
-      return await this.userManagers[authority].manager.signinSilent();
+    async signinCallback(): Promise<User> {
+      return await this.userManager.signinRedirectCallback();
     },
 
-    async logout(authority: Authority): Promise<void> {
-      return await this.userManagers[authority].manager.signoutRedirect();
+    async silentCallback(): Promise<void> {
+      return await this.userManager.signinSilentCallback();
     },
 
-    async completeLogout(authority: Authority): Promise<SignoutResponse> {
-      return await this.userManagers[authority].manager.signoutRedirectCallback();
+    async signinSilent(): Promise<User | null> {
+      return await this.userManager.signinSilent();
+    },
+
+    async logout(): Promise<void> {
+      return await this.userManager.signoutRedirect();
+    },
+
+    async completeLogout(): Promise<SignoutResponse> {
+      return await this.userManager.signoutRedirectCallback();
     },
   },
 });

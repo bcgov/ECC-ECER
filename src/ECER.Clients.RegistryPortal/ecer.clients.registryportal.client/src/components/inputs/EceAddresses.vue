@@ -19,17 +19,8 @@ import { defineComponent } from "vue";
 import EceAddress from "@/components/inputs/EceAddress.vue";
 import type { EceAddressesProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
+import { AddressType } from "@/utils/constant";
 import * as Functions from "@/utils/functions";
-
-export interface AddressesData {
-  residential: Components.Schemas.Address;
-  mailing: Components.Schemas.Address;
-}
-
-export enum AddressType {
-  RESIDENTIAL = "residential",
-  MAILING = "mailing",
-}
 
 export default defineComponent({
   name: "EceAddresses",

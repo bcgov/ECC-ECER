@@ -15,7 +15,7 @@
       <img src="../assets/bc-gov-logo.svg" width="155" class="logo ms-6" alt="B.C. Government Logo" />
     </router-link>
     <v-toolbar-title>My ECE Registry</v-toolbar-title>
-    <v-btn v-if="userStore.isAuthenticated" color="white" @click="userStore.logout">Logout</v-btn>
+    <v-btn v-if="userStore.hasUserInfo" color="white" @click="oidcStore.logout">Logout</v-btn>
   </v-app-bar>
 </template>
 
