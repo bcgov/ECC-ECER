@@ -183,6 +183,7 @@ public class ApplicationHandlers(
     var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
 
     if (registrantResult.SingleOrDefault() == null) return ReferenceSubmissionResult.Failure("Applicant not found");
+    if (portalInvitation.StatusCode != PortalInvitationStatusCode.Sent) return ReferenceSubmissionResult.Failure("Portal Invitation is not valid or expired");
 
     var referenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request);
     referenceRequest.PortalInvitation = portalInvitation;
@@ -197,7 +198,7 @@ public class ApplicationHandlers(
       await applicationRepository.SubmitCharacterReference(referenceRequest, cancellationToken);
     }
 
-    await portalInvitationRepository.Expire(new ExpirePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
+    await portalInvitationRepository.Complete(new CompletePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
     ecerContext.CommitTransaction();
     return ReferenceSubmissionResult.Success();
   }

@@ -190,6 +190,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_FirstName = "Test firstname",
         ecer_LastName = "Test lastname",
         ecer_EmailAddress = "test@email.com",
+        StatusCode = ecer_PortalInvitation_StatusCode.Sent,
       };
 
       context.AddObject(chracterReference);
