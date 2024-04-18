@@ -79,6 +79,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
 			public const string ecer_CharacterReferenceId = "ecer_characterreferenceid";
 			public const string ecer_CharacterReferenceIdName = "ecer_characterreferenceidname";
+			public const string ecer_Consumed = "ecer_consumed";
+			public const string ecer_consumedName = "ecer_consumedname";
 			public const string ecer_EmailAddress = "ecer_emailaddress";
 			public const string ecer_ErrorMessage = "ecer_errormessage";
 			public const string ecer_FirstName = "ecer_firstname";
@@ -105,6 +107,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PortalUserIdName = "ecer_portaluseridname";
 			public const string ecer_ProfessionalDevelopmentId = "ecer_professionaldevelopmentid";
 			public const string ecer_ProfessionalDevelopmentIdName = "ecer_professionaldevelopmentidname";
+			public const string ecer_ValidDays = "ecer_validdays";
 			public const string ecer_Views = "ecer_views";
 			public const string ecer_WorkExperienceReferenceId = "ecer_workexperiencereferenceid";
 			public const string ecer_WorkExperienceReferenceIdName = "ecer_workexperiencereferenceidname";
@@ -389,6 +392,41 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_characterreferenceid"))
 				{
 					return this.FormattedValues["ecer_characterreferenceid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Link Consumed
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_consumed")]
+		public System.Nullable<bool> ecer_Consumed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_consumed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_consumed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_consumedname")]
+		public string ecer_consumedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_consumed"))
+				{
+					return this.FormattedValues["ecer_consumed"];
 				}
 				else
 				{
@@ -686,6 +724,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_validdays")]
+		public System.Nullable<int> ecer_ValidDays
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_validdays");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_validdays", value);
 			}
 		}
 		

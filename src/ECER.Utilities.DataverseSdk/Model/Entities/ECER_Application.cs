@@ -139,6 +139,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DateofBirth = "ecer_dateofbirth";
 			public const string ecer_DateSigned = "ecer_datesigned";
 			public const string ecer_DateSubmitted = "ecer_datesubmitted";
+			public const string ecer_DeclarationConfirmation = "ecer_declarationconfirmation";
+			public const string ecer_declarationconfirmationName = "ecer_declarationconfirmationname";
 			public const string ecer_DeclarationDisciplinaryActionsAgainst = "ecer_declarationdisciplinaryactionsagainst";
 			public const string ecer_declarationdisciplinaryactionsagainstName = "ecer_declarationdisciplinaryactionsagainstname";
 			public const string ecer_DeclarationECEmayrequireinformation = "ecer_declarationecemayrequireinformation";
@@ -147,6 +149,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_declarationinformationcanbeauditedName = "ecer_declarationinformationcanbeauditedname";
 			public const string ecer_DeclarationInformationCompleteAccurate = "ecer_declarationinformationcompleteaccurate";
 			public const string ecer_declarationinformationcompleteaccurateName = "ecer_declarationinformationcompleteaccuratename";
+			public const string ecer_DeclarationStatements = "ecer_declarationstatements";
 			public const string ecer_DenialReasonExplanation = "ecer_denialreasonexplanation";
 			public const string ecer_DenialReasonType = "ecer_denialreasontype";
 			public const string ecer_DenialReasonTypeName = "ecer_denialreasontypename";
@@ -953,6 +956,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_declarationconfirmation")]
+		public System.Nullable<bool> ecer_DeclarationConfirmation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_declarationconfirmation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_declarationconfirmation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_declarationconfirmationname")]
+		public string ecer_declarationconfirmationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_declarationconfirmation"))
+				{
+					return this.FormattedValues["ecer_declarationconfirmation"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// I understand that the ECE Registry may take disciplinary action against me, including action to cancel my
 ///certification, if I have, by omission or commission, knowingly given false or misleading information in the course of
@@ -1095,6 +1130,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_declarationstatements")]
+		public string ecer_DeclarationStatements
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_declarationstatements");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_declarationstatements", value);
 			}
 		}
 		

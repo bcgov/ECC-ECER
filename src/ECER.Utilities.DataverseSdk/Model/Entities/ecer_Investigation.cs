@@ -402,6 +402,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_portalsubmissionName = "ecer_portalsubmissionname";
 			public const string ecer_PreviouslyInvestigatedIntake = "ecer_previouslyinvestigatedintake";
 			public const string ecer_previouslyinvestigatedintakeName = "ecer_previouslyinvestigatedintakename";
+			public const string ecer_PreviousStatus = "ecer_previousstatus";
 			public const string ecer_ReadyforAssignment = "ecer_readyforassignment";
 			public const string ecer_readyforassignmentName = "ecer_readyforassignmentname";
 			public const string ecer_ReconRequest = "ecer_reconrequest";
@@ -3494,6 +3495,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		/// <summary>
+		/// Capture the previous status reason
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_previousstatus")]
+		public string ecer_PreviousStatus
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_previousstatus");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_previousstatus", value);
 			}
 		}
 		
