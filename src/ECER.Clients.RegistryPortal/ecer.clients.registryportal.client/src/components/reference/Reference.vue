@@ -1,8 +1,12 @@
 <template>
-  <Wizard :ref="'wizard'" :wizard="referenceWizardConfig" :config="{ showSteps: false }">
+  <Wizard
+    :ref="'wizard'"
+    :wizard="wizardStore.wizardData?.inviteType === PortalInviteType.WORK_EXPERIENCE ? workExperienceReferenceWizardConfig : characterReferenceWizardConfig"
+    :config="{ showSteps: false }"
+  >
     <template #header>
       <v-container fluid class="bg-white">
-        <h2>{{ referenceType + " reference" }}</h2>
+        <h2>{{ inviteType + " reference" }}</h2>
         <div role="doc-subtitle">{{ `For applicant: ${applicantFirstName} ${applicantLastName}` }}</div>
         <v-btn v-if="wizardStore.step !== 1" variant="text" rounded="lg" color="primary" @click="handleBack">{{ "< back" }}</v-btn>
       </v-container>
@@ -23,23 +27,35 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import referenceWizardConfig from "@/config/reference-wizard";
+import workExperienceReferenceWizardConfig from "@/config/work-experience-reference-wizard";
+import characterReferenceWizardConfig from "@/config/character-reference-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useWizardStore } from "@/store/wizard";
+import { getReference } from "@/api/reference";
+import { PortalInviteType } from "@/utils/constant";
 
 import Wizard from "../Wizard.vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "Reference",
   components: { Wizard },
-  setup() {
+  async setup() {
+    const route = useRoute();
+    const { data } = await getReference(route.params.token as string);
     const wizardStore = useWizardStore();
     const alertStore = useAlertStore();
-    return { alertStore, referenceWizardConfig, wizardStore };
+    if (data?.portalInvitation?.inviteType === PortalInviteType.WORK_EXPERIENCE) {
+      wizardStore.initializeWizardForReference(workExperienceReferenceWizardConfig, data.portalInvitation);
+    } else if (data?.portalInvitation?.inviteType === PortalInviteType.CHARACTER) {
+      wizardStore.initializeWizardForReference(characterReferenceWizardConfig, data.portalInvitation);
+    }
+
+    return { alertStore, workExperienceReferenceWizardConfig, characterReferenceWizardConfig, wizardStore, PortalInviteType };
   },
   data() {
     return {
-      referenceType: "",
+      inviteType: "",
       applicantFirstName: "",
       applicantLastName: "",
     };
@@ -52,12 +68,10 @@ export default defineComponent({
       return this.wizardStore.steps.findIndex((step) => step.stage === "Review") + 1;
     },
   },
-  mounted() {
-    //TODO: implement check here whether we are doing a character or work reference and load the correct config
-    this.wizardStore.initializeWizardForReference(referenceWizardConfig);
-    this.referenceType = this.wizardStore.wizardData?.referenceType || "empty";
-    this.applicantFirstName = this.wizardStore.wizardData?.applicantFirstName || "empty";
-    this.applicantLastName = this.wizardStore.wizardData?.applicantLastName || "empty";
+  async mounted() {
+    this.inviteType = this.wizardStore.wizardData?.inviteType === PortalInviteType.WORK_EXPERIENCE ? "Work experience" : "Character";
+    this.applicantFirstName = this.wizardStore.wizardData?.applicantFirstName;
+    this.applicantLastName = this.wizardStore.wizardData?.applicantLastName;
   },
   methods: {
     async handleContinue() {

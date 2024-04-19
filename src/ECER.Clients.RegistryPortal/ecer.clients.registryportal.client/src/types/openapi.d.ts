@@ -110,11 +110,26 @@ declare namespace Components {
         [name: string]: string[];
       } | null;
     }
+    export type InviteType = "CharacterReference" | "WorkExperienceReference";
     export interface OidcAuthenticationSettings {
       authority?: string | null;
       clientId?: string | null;
       scope?: string | null;
       idp?: string | null;
+    }
+    export interface PortalInvitation {
+      id?: string | null;
+      name?: string | null;
+      referenceFirstName?: string | null;
+      referenceLastName?: string | null;
+      referenceEmailAddress?: string | null;
+      applicantId?: string | null;
+      applicantFirstName?: string | null;
+      applicantLastName?: string | null;
+      applicationId?: string | null;
+      workexperienceReferenceId?: string | null;
+      characterReferenceId?: string | null;
+      inviteType?: InviteType;
     }
     export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
     export interface ProblemDetails {
@@ -124,6 +139,9 @@ declare namespace Components {
       status?: number | null; // int32
       detail?: string | null;
       instance?: string | null;
+    }
+    export interface ReferenceQueryResult {
+      portalInvitation?: PortalInvitation;
     }
     /**
      * Save draft application request
@@ -181,10 +199,14 @@ declare namespace Components {
 declare namespace Paths {
   namespace ApplicationGet {
     namespace Parameters {
+      export type ByStatus = Components.Schemas.ApplicationStatus[];
       export type Id = string;
     }
     export interface PathParameters {
       id?: Parameters.Id;
+    }
+    export interface QueryParameters {
+      byStatus?: Parameters.ByStatus;
     }
     namespace Responses {
       export type $200 = Components.Schemas.Application[];
@@ -251,6 +273,18 @@ declare namespace Paths {
       export interface $200 {}
     }
   }
+  namespace ReferencesGet {
+    namespace Parameters {
+      export type Token = string;
+    }
+    export interface PathParameters {
+      token?: Parameters.Token;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ReferenceQueryResult;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
   namespace UserinfoGet {
     namespace Responses {
       export type $200 = Components.Schemas.UserInfo;
@@ -308,6 +342,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.UserinfoPost.Responses.$200>;
   /**
+   * references_get - Handles references queries
+   */
+  "references_get"(
+    parameters?: Parameters<Paths.ReferencesGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ReferencesGet.Responses.$200>;
+  /**
    * message_get - Handles messages queries
    */
   "message_get"(
@@ -343,7 +385,7 @@ export interface OperationMethods {
    * application_get - Handles application queries
    */
   "application_get"(
-    parameters?: Parameters<Paths.ApplicationGet.PathParameters> | null,
+    parameters?: Parameters<Paths.ApplicationGet.PathParameters & Paths.ApplicationGet.QueryParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
@@ -398,6 +440,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UserinfoPost.Responses.$200>;
   };
+  ["/api/PortalInvitations/{token}"]: {
+    /**
+     * references_get - Handles references queries
+     */
+    "get"(
+      parameters?: Parameters<Paths.ReferencesGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ReferencesGet.Responses.$200>;
+  };
   ["/api/messages"]: {
     /**
      * message_get - Handles messages queries
@@ -439,7 +491,7 @@ export interface PathsDictionary {
      * application_get - Handles application queries
      */
     "get"(
-      parameters?: Parameters<Paths.ApplicationGet.PathParameters> | null,
+      parameters?: Parameters<Paths.ApplicationGet.PathParameters & Paths.ApplicationGet.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationGet.Responses.$200>;

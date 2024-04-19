@@ -150,11 +150,15 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.workReference.form.inputs.referenceList.id]: workReferencesDict,
       };
     },
-    initializeWizardForReference(wizard: Wizard) {
+    initializeWizardForReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
       this.$reset();
       this.wizardConfig = wizard;
 
-      this.setWizardData({ applicantFirstName: "JANE", applicantLastName: "DOE", referenceType: "Work" });
+      this.setWizardData({
+        applicantFirstName: portalInvitation.applicantFirstName,
+        applicantLastName: portalInvitation.applicantLastName,
+        inviteType: portalInvitation.inviteType,
+      });
     },
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };

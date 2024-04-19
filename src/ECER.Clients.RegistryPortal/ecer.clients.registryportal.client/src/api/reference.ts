@@ -1,5 +1,5 @@
 import { getClient } from "@/api/client";
-import type { Components, Paths } from "@/types/openapi";
+import type { Components } from "@/types/openapi";
 import ApiResultHandler, { type ApiResponse } from "@/utils/apiResultHandler";
 
 const apiResultHandler = new ApiResultHandler();

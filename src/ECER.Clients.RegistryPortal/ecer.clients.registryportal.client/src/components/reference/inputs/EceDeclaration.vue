@@ -31,7 +31,7 @@
           <h2>Requirements to be a reference</h2>
           <p>You need to:</p>
           <ul class="ml-10">
-            <li>Have directly supervised (observed) all hours during which the applicant worked or volunteerd</li>
+            <li>Have directly supervised (observed) all hours during which the applicant worked or volunteer</li>
             <li>Have held a valid Canadian ECE certification/registration during the hours you supervised the applicant</li>
             <li>Be able to speak to the applicant's knowledge, skills, and ability (competencies) as an ECE</li>
           </ul>

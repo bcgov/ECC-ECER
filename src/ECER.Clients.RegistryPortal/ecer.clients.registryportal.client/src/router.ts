@@ -116,7 +116,7 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
-      path: "/verify/:id",
+      path: "/verify/:token",
       component: () => import("./components/reference/Reference.vue"),
       meta: { requiresAuth: false },
     },

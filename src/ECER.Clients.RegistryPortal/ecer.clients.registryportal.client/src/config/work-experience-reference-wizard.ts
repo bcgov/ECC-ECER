@@ -1,11 +1,11 @@
-import assessmentForm from "@/config/reference-assessment-form-public copy";
-import contactInformationForm from "@/config/reference-contact-information-form-public";
-import declarationForm from "@/config/reference-declaration-form-public";
-import declineForm from "@/config/reference-decline-form-public";
-import reviewForm from "@/config/reference-review-form-public";
+import assessmentForm from "@/config/work-experience-reference-assessment-form-public";
+import contactInformationForm from "@/config/work-experience-contact-information-form-public";
+import declarationForm from "@/config/work-experience-reference-declaration-form-public";
+import declineForm from "@/config/work-experience-reference-decline-form-public";
+import reviewForm from "@/config/work-experience-reference-review-form-public";
 import type { Wizard } from "@/types/wizard";
 
-const referenceWizardConfig: Wizard = {
+const workExperienceReferenceWizardConfig: Wizard = {
   id: "workReferenceWizard",
   steps: {
     declaration: {
@@ -41,4 +41,4 @@ const referenceWizardConfig: Wizard = {
   },
 };
 
-export default referenceWizardConfig;
+export default workExperienceReferenceWizardConfig;
