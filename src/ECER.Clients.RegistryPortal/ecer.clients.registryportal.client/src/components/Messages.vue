@@ -3,21 +3,16 @@
     <v-row>
       <v-col cols="12">
         <v-breadcrumbs class="pa-0" :items="items" color="primary">
-          <template #divider>
-            <v-icon icon="mdi-chevron-right" size="sm"></v-icon>
-          </template>
+          <template #divider>/</template>
         </v-breadcrumbs>
       </v-col>
     </v-row>
     <v-row>
       <v-col class="ml-1" cols="12">
-        <h1>
-          Messages
-          <span v-if="messageStore.messageCount > 0">({{ messageStore.messageCount }})</span>
-        </h1>
+        <h1>Messages</h1>
       </v-col>
     </v-row>
-    <MessageList />
+    <MessageList class="message-list" />
   </PageContainer>
 </template>
 

@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <v-row>
-    <v-list lines="three">
+    <v-list lines="two">
       <MessageListItem v-for="(message, index) in messageStore.messages" :key="index" :message="message" />
     </v-list>
   </v-row>

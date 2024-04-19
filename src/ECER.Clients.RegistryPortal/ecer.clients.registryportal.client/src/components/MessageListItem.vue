@@ -2,9 +2,14 @@
 <template>
   <v-list-item :key="String(message.id)" :title="String(message.subject)" :subtitle="messageDate" :value="String(message.id)">
     <template #prepend>
-      <v-badge color="alternate" inline></v-badge>
+      <div class="d-inline-flex flex-nowrap">
+        <svg v-if="!message.acknowledged" class="mr-3" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+          <circle cx="7.5" cy="7.5" r="7.5" fill="#1976D2" />
+        </svg>
+      </div>
     </template>
   </v-list-item>
+  <v-divider></v-divider>
 </template>
 
 <script lang="ts">
