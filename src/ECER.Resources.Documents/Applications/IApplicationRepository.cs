@@ -14,9 +14,13 @@ public interface IApplicationRepository
 
   Task<string> Cancel(string applicationId, CancellationToken cancellationToken);
 
-  Task<bool> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken ct);
+  Task<bool> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
 
-  Task<bool> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken ct);
+  Task<bool> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
+
+  Task<bool> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
+
+  Task<bool> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery
@@ -97,6 +101,20 @@ public enum ApplicationStatus
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
   public string? Id { get; set; }
+}
+
+public record OptOutReferenceRequest(UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons)
+{
+  public PortalInvitation? PortalInvitation { get; set; }
+}
+
+public enum UnabletoProvideReferenceReasons
+{
+  Iamunabletoatthistime,
+  Idonothavetheinformationrequired,
+  Idonotknowthisperson,
+  Idonotmeettherequirementstoprovideareference,
+  Other
 }
 
 public record CharacterReferenceSubmissionRequest(CharacterReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation)

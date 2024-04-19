@@ -217,7 +217,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return mapper.Map<IEnumerable<Province>>(provinces)!.ToList();
   }
 
-  public async Task<bool> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken ct)
+  public async Task<bool> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
@@ -235,8 +235,27 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return true;
   }
 
-  public Task<bool> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken ct)
+  public Task<bool> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
+    throw new NotImplementedException();
+  }
+
+  public async Task<bool> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
+
+    mapper.Map(request, characterReference);
+    characterReference.StatusCode = ecer_CharacterReference_StatusCode.Rejected;
+    characterReference.StateCode = ecer_characterreference_statecode.Inactive;
+    context.UpdateObject(characterReference);
+    context.SaveChanges();
+    return true;
+  }
+
+  public async Task<bool> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
     throw new NotImplementedException();
   }
 }

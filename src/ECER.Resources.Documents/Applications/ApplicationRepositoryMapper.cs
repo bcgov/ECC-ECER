@@ -116,8 +116,8 @@ internal class ApplicationRepositoryMapper : Profile
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ApplicationStatus, ecer_Application_StatusCode>()
-    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-    .ReverseMap();
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
 
     CreateMap<CharacterReferenceSubmissionRequest, ecer_CharacterReference>(MemberList.Source)
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.ReferenceContactInformation.FirstName))
@@ -133,7 +133,14 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_ApplicantSuitableReason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantTemperamentAssessment))
       .ForMember(d => d.ecer_ApplicantShouldNOTbeECE, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_applicantnotqualifiedreason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantNotQualifiedReason))
+      .ValidateMemberList(MemberList.Destination);
 
+    CreateMap<UnabletoProvideReferenceReasons, ecer_UnabletoProvideReferenceReasons>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+
+    CreateMap<OptOutReferenceRequest, ecer_CharacterReference>(MemberList.Source)
+      .ForMember(d => d.ecer_UnabletoProvideReferenceReason, opts => opts.MapFrom(s => s.UnabletoProvideReferenceReasons))
       .ValidateMemberList(MemberList.Destination);
   }
 }

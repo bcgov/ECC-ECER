@@ -135,6 +135,16 @@ public enum ApplicationStatus
 public record CharacterReferenceSubmissionRequest(string Token, CharacterReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation) : IRequest<ReferenceSubmissionResult>;
 public record CharacterReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvinceId, string CertificateProvinceOther);
 public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
+public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons) : IRequest<ReferenceSubmissionResult>;
+
+public enum UnabletoProvideReferenceReasons
+{
+  Iamunabletoatthistime,
+  Idonothavetheinformationrequired,
+  Idonotknowthisperson,
+  Idonotmeettherequirementstoprovideareference,
+  Other
+}
 
 public class ReferenceSubmissionResult
 {
