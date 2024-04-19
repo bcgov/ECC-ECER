@@ -28,8 +28,7 @@ public class ApplicationHandlers(
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
     IRequestHandler<CharacterReferenceSubmissionRequest, ReferenceSubmissionResult>,
-    IRequestHandler<OptOutReferenceRequest, ReferenceSubmissionResult>,
-    IRequestHandler<ProvincesQuery, ProvincesQueryResults>
+    IRequestHandler<OptOutReferenceRequest, ReferenceSubmissionResult>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -144,21 +143,6 @@ public class ApplicationHandlers(
     return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
   }
 
-  /// <summary>
-  ///
-  /// </summary>
-  /// <param name="request"></param>
-  /// <param name="cancellationToken"></param>
-  /// <returns></returns>
-  public async Task<ProvincesQueryResults> Handle(ProvincesQuery request, CancellationToken cancellationToken)
-  {
-    ArgumentNullException.ThrowIfNull(applicationRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
-    ArgumentNullException.ThrowIfNull(request);
-
-    var provinces = await applicationRepository.QueryProvinces(new ProvinceQuery() { ById = request.ById }, cancellationToken);
-    return new ProvincesQueryResults(mapper.Map<IEnumerable<Contract.Applications.Province>>(provinces)!);
-  }
 
   /// <summary>
   /// Handles Reference Submission

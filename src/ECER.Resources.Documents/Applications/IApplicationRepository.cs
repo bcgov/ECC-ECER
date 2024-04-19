@@ -6,8 +6,6 @@ public interface IApplicationRepository
 {
   Task<IEnumerable<Application>> Query(ApplicationQuery query, CancellationToken cancellationToken);
 
-  Task<IEnumerable<Province>> QueryProvinces(ProvinceQuery query, CancellationToken cancellationToken);
-
   Task<string> SaveDraft(Application application, CancellationToken cancellationToken);
 
   Task<string> Submit(string applicationId, CancellationToken cancellationToken);
@@ -30,11 +28,7 @@ public record ApplicationQuery
   public string? ByApplicantId { get; set; }
 }
 
-public record ProvinceQuery
-{
-  public string? ById { get; set; }
-}
-public record Province(string ProvinceId, string ProvinceName);
+
 
 public record Application(string? Id, string ApplicantId, IEnumerable<CertificationType> CertificationTypes)
 {

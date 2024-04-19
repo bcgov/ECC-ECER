@@ -96,14 +96,6 @@ public class ApplicationsEndpoints : IRegisterEndpoints
        .RequireAuthorization()
        .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/provincelist", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
-    {
-      var results = await messageBus.Send(new ProvincesQuery(), ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<Province>>(results.Items));
-    })
-    .WithOpenApi("Handles province queries", string.Empty, "province_get")
-    .RequireAuthorization()
-    .WithParameterValidation();
   }
 }
 
@@ -238,5 +230,3 @@ public record CharacterReference([Required] string? FirstName, [Required] string
 {
   public string? Id { get; set; }
 }
-
-public record Province(string ProvinceId, string ProvinceName);

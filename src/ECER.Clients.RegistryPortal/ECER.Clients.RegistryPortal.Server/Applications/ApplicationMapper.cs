@@ -60,7 +60,5 @@ public class ApplicationMapper : Profile
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>()
       ;
 
-    CreateMap<Managers.Registry.Contract.Applications.Province, Province>()
-  ;
   }
 }

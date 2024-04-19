@@ -34,18 +34,6 @@ public record ApplicationsQuery : IRequest<ApplicationsQueryResults>
 /// </summary>
 /// <param name="Items">The </param>
 public record ApplicationsQueryResults(IEnumerable<Application> Items);
-/// <summary>
-/// Invokes provinces use case
-/// </summary>
-public record ProvincesQuery : IRequest<ProvincesQueryResults>
-{
-  public string? ById { get; set; }
-}
-/// <summary>
-/// Container for <see cref="ProvincesQuery"/> results
-/// </summary>
-/// <param name="Items">The </param>
-public record ProvincesQueryResults(IEnumerable<Province> Items);
 
 /// <summary>
 /// Application submission result
@@ -57,7 +45,7 @@ public record ApplicationSubmissionResult()
   public IEnumerable<string>? ValidationErrors { get; set; }
   public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
 }
-public record Province(string ProvinceId, string ProvinceName);
+
 
 public record Application(string? Id, string RegistrantId, ApplicationStatus Status)
 {
