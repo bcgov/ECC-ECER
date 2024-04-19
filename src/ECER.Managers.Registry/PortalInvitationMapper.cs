@@ -9,6 +9,6 @@ public class PortalInvitationMapper : Profile
   {
     CreateMap<PortalInvitation, Registry.Contract.PortalInvitations.PortalInvitation>()
          .ForMember(dest => dest.ApplicantFirstName, opt => opt.Ignore())
-            .ForMember(dest => dest.ApplicantLastName, opt => opt.Ignore());
+         .ForMember(dest => dest.ApplicantLastName, opt => opt.Ignore());
   }
 }
