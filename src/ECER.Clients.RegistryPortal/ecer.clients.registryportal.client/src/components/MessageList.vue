@@ -1,20 +1,19 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <v-row>
-    <v-list lines="two" class="flex-grow-1 message-list">
-      <MessageListItem v-for="(message, index) in messageStore.paginatedMessages" :key="index" :message="message" />
-      <v-pagination
-        v-if="messageStore.totalPages > 1"
-        v-model="currentPage"
-        size="small"
-        class="mt-4"
-        elevation="2"
-        :length="messageStore.totalPages"
-      ></v-pagination>
-    </v-list>
-  </v-row>
-  <v-row>
-    <v-col cols="12"></v-col>
+    <v-col cols="12" md="6" lg="4">
+      <v-list lines="two" class="flex-grow-1 message-list">
+        <MessageListItem v-for="(message, index) in messageStore.paginatedMessages" :key="index" :message="message" />
+        <v-pagination
+          v-if="messageStore.totalPages > 1"
+          v-model="currentPage"
+          size="small"
+          class="mt-4"
+          elevation="2"
+          :length="messageStore.totalPages"
+        ></v-pagination>
+      </v-list>
+    </v-col>
   </v-row>
 </template>
 
