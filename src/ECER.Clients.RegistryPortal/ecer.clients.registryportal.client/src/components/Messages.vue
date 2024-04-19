@@ -34,7 +34,7 @@ export default defineComponent({
   data: () => ({
     items: [
       {
-        title: "Dashboard",
+        title: "Home",
         disabled: false,
         href: "/",
       },
