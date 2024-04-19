@@ -1,14 +1,8 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
-  <v-row class="ma-4">
+  <v-row>
     <v-list lines="two">
-      <v-list-item
-        v-for="(message, index) in messageStore.messages"
-        :key="message.id ? `id-${message.id}` : `index-${index}`"
-        prepend-icon="mdi-message-alert-outline"
-      >
-        <div v-html="message.text"></div>
-      </v-list-item>
+      <MessageListItem v-for="(message, index) in messageStore.messages" :key="index" :message="message" />
     </v-list>
   </v-row>
 </template>
@@ -16,10 +10,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import MessageListItem from "@/components/MessageListItem.vue";
 import { useMessageStore } from "@/store/message";
 
 export default defineComponent({
   name: "MessageList",
+  components: { MessageListItem },
   setup() {
     const messageStore = useMessageStore();
     return { messageStore };

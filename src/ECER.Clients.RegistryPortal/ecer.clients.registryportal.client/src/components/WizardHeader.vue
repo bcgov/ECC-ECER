@@ -3,9 +3,7 @@
     <v-row>
       <v-col cols="12">
         <v-breadcrumbs :items="items" color="primary">
-          <template #divider>
-            <v-icon icon="mdi-chevron-right" size="sm"></v-icon>
-          </template>
+          <template #divider>/</template>
         </v-breadcrumbs>
       </v-col>
     </v-row>
@@ -37,7 +35,7 @@ export default defineComponent({
   data: () => ({
     items: [
       {
-        title: "Dashboard",
+        title: "Home",
         disabled: false,
         href: "/",
       },
