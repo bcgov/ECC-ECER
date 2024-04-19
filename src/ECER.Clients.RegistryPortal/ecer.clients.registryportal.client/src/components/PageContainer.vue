@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white">
+  <div class="bg-white fill-height">
     <v-container class="py-12">
       <slot></slot>
     </v-container>
