@@ -57,7 +57,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
   public async Task SubmitCharacterReference_ShouldReturnOk()
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
-    var portalInvitation = Fixture.portalInvitationId;
+    var portalInvitation = Fixture.portalInvitationOneId;
     var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.CharacterReference, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
@@ -74,7 +74,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
   public async Task OptOutReference_ShouldReturnOk()
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
-    var portalInvitation = Fixture.portalInvitationId;
+    var portalInvitation = Fixture.portalInvitationTwoId;
     var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.CharacterReference, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 

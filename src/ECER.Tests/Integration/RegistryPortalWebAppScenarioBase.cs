@@ -28,7 +28,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private Contact authenticatedBcscUser = null!;
   private ecer_Application testApplication = null!;
   private ecer_Communication testCommunication = null!;
-  private ecer_PortalInvitation testPortalInvitation = null!;
+  private ecer_PortalInvitation testPortalInvitationOne = null!;
+  private ecer_PortalInvitation testPortalInvitationTwo = null!;
 
   private Contact authenticatedBcscUser2 = null!;
   private ecer_Application testApplication2 = null!;
@@ -38,7 +39,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
   public string communicationId => testCommunication.Id.ToString();
   public string applicationId => testApplication.Id.ToString();
-  public Guid portalInvitationId => testPortalInvitation.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationTwoId => testPortalInvitationTwo.ecer_PortalInvitationId ?? Guid.Empty;
 
   public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
@@ -73,7 +75,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     authenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user1");
     testApplication = GetOrAddApplication(context, authenticatedBcscUser);
     testCommunication = GetOrAddCommunication(context, testApplication);
-    testPortalInvitation = GetOrAddPortalInvitation(context, authenticatedBcscUser);
+    testPortalInvitationOne = GetOrAddPortalInvitation(context, authenticatedBcscUser, "name1");
+    testPortalInvitationTwo = GetOrAddPortalInvitation(context, authenticatedBcscUser, "name2");
     context.SaveChanges();
 
     //load dependent properties
@@ -162,10 +165,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return communication;
   }
 
-  private ecer_PortalInvitation GetOrAddPortalInvitation(EcerContext context, Contact registrant)
+  private ecer_PortalInvitation GetOrAddPortalInvitation(EcerContext context, Contact registrant, string name)
   {
     var portalInvitation = context.ecer_PortalInvitationSet.FirstOrDefault(p => p.ecer_ApplicantId != null &&
                                                                                 p.ecer_ApplicationId != null &&
+                                                                                p.ecer_Name == name &&
                                                                                 p.ecer_CharacterReferenceId != null &&
                                                                                 p.StatusCode == ecer_PortalInvitation_StatusCode.Sent);
     if (portalInvitation == null)
@@ -186,7 +190,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         Id = guid,
         ecer_PortalInvitationId = guid,
-        ecer_Name = "Test name",
+        ecer_Name = name,
         ecer_FirstName = "Test firstname",
         ecer_LastName = "Test lastname",
         ecer_EmailAddress = "test@email.com",
