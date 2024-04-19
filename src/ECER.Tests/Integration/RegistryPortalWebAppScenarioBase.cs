@@ -164,10 +164,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_PortalInvitation GetOrAddPortalInvitation(EcerContext context, Contact registrant)
   {
-    var portalInvitation = (from a in context.ecer_PortalInvitationSet
-                            where a.ecer_ApplicantId.Id == registrant.Id
-                            select a).FirstOrDefault();
-
+    var portalInvitation = context.ecer_PortalInvitationSet.FirstOrDefault(p => p.ecer_ApplicantId != null &&
+                                                                                p.ecer_ApplicationId != null &&
+                                                                                p.ecer_CharacterReferenceId != null &&
+                                                                                p.StatusCode == ecer_PortalInvitation_StatusCode.Sent);
     if (portalInvitation == null)
     {
       var characterGuid = Guid.NewGuid();
