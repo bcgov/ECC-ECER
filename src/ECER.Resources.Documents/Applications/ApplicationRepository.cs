@@ -217,7 +217,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return mapper.Map<IEnumerable<Province>>(provinces)!.ToList();
   }
 
-  public async Task<bool> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  public async Task<string> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
@@ -232,15 +232,15 @@ internal sealed class ApplicationRepository : IApplicationRepository
     characterReference.StatusCode = ecer_CharacterReference_StatusCode.Submitted;
     context.UpdateObject(characterReference);
     context.SaveChanges();
-    return true;
+    return characterReference.ecer_CharacterReferenceId.ToString()!;
   }
 
-  public Task<bool> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  public Task<string> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
     throw new NotImplementedException();
   }
 
-  public async Task<bool> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  public async Task<string> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
@@ -250,10 +250,10 @@ internal sealed class ApplicationRepository : IApplicationRepository
     characterReference.StateCode = ecer_characterreference_statecode.Inactive;
     context.UpdateObject(characterReference);
     context.SaveChanges();
-    return true;
+    return characterReference.ecer_CharacterReferenceId.ToString()!;
   }
 
-  public async Task<bool> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  public async Task<string> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     throw new NotImplementedException();

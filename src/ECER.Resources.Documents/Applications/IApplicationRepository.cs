@@ -14,13 +14,13 @@ public interface IApplicationRepository
 
   Task<string> Cancel(string applicationId, CancellationToken cancellationToken);
 
-  Task<bool> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
+  Task<string> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
 
-  Task<bool> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
+  Task<string> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
 
-  Task<bool> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
+  Task<string> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
 
-  Task<bool> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
+  Task<string> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery

@@ -3,6 +3,7 @@ using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Utilities.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ECER.Clients.RegistryPortal.Server.References;
 
@@ -10,14 +11,17 @@ public class PortalInvitationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/PortalInvitations/{token?}", async Task<Results<Ok<PortalInvitationQueryResult>, BadRequest<string>>> (string? token, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/PortalInvitations/{token?}", async Task<Results<Ok<PortalInvitationQueryResult>, BadRequest<ProblemDetails>>> (string? token, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
     {
-      if (token == null) return TypedResults.BadRequest("Token is required");
+      if (token == null)
+      {
+        return TypedResults.BadRequest(new ProblemDetails { Status = StatusCodes.Status400BadRequest, Detail = "Provided token is not valid" });
+      }
       var result = await messageBus.Send(new PortalInvitationVerificationQuery(token), ct);
 
       if (!result.IsSuccess)
       {
-        return TypedResults.BadRequest(result.ErrorMessage);
+        return TypedResults.BadRequest(new ProblemDetails { Status = StatusCodes.Status400BadRequest, Detail = result.ErrorMessage });
       }
       return TypedResults.Ok(new PortalInvitationQueryResult(mapper.Map<PortalInvitation>(result.Invitation)));
     }).WithOpenApi("Handles references queries", string.Empty, "references_get").WithParameterValidation();
@@ -35,21 +39,10 @@ public record PortalInvitation(string? Id, string Name, string ReferenceFirstNam
   public string? WorkexperienceReferenceId { get; set; }
   public string? CharacterReferenceId { get; set; }
   public InviteType? InviteType { get; set; }
-  public PortalInvitationStatusCode? StatusCode { get; set; }
 }
 
 public enum InviteType
 {
   CharacterReference,
   WorkExperienceReference
-}
-
-public enum PortalInvitationStatusCode
-{
-  Cancelled,
-  Completed,
-  Draft,
-  Expired,
-  Failed,
-  Sent,
 }

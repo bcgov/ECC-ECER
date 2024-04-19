@@ -4,7 +4,6 @@ using ECER.Engines.Transformation.PortalInvitations;
 using ECER.Engines.Validation.Applications;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
-using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
@@ -20,7 +19,6 @@ namespace ECER.Managers.Registry;
 public class ApplicationHandlers(
     IPortalInvitationTransformationEngine transformationEngine,
     IPortalInvitationRepository portalInvitationRepository,
-    IRegistrantRepository registrantRepository,
      IApplicationRepository applicationRepository,
      IMapper mapper,
      IApplicationSubmissionValidationEngine validationEngine,
@@ -172,7 +170,6 @@ public class ApplicationHandlers(
   public async Task<ReferenceSubmissionResult> Handle(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(portalInvitationRepository);
-    ArgumentNullException.ThrowIfNull(registrantRepository);
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(transformationEngine);
     ArgumentNullException.ThrowIfNull(mapper);
@@ -182,9 +179,7 @@ public class ApplicationHandlers(
     if (transformationResponse.PortalInvitation == Guid.Empty) return ReferenceSubmissionResult.Failure("Invalid Token");
 
     var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(transformationResponse.PortalInvitation), cancellationToken);
-    var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
 
-    if (registrantResult.SingleOrDefault() == null) return ReferenceSubmissionResult.Failure("Applicant not found");
     if (portalInvitation.StatusCode != PortalInvitationStatusCode.Sent) return ReferenceSubmissionResult.Failure("Portal Invitation is not valid or expired");
 
     var referenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request);
@@ -215,7 +210,6 @@ public class ApplicationHandlers(
   public async Task<ReferenceSubmissionResult> Handle(OptOutReferenceRequest request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(portalInvitationRepository);
-    ArgumentNullException.ThrowIfNull(registrantRepository);
     ArgumentNullException.ThrowIfNull(applicationRepository);
     ArgumentNullException.ThrowIfNull(transformationEngine);
     ArgumentNullException.ThrowIfNull(mapper);
@@ -225,9 +219,7 @@ public class ApplicationHandlers(
     if (transformationResponse.PortalInvitation == Guid.Empty) return ReferenceSubmissionResult.Failure("Invalid Token");
 
     var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(transformationResponse.PortalInvitation), cancellationToken);
-    var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
 
-    if (registrantResult.SingleOrDefault() == null) return ReferenceSubmissionResult.Failure("Applicant not found");
     if (portalInvitation.StatusCode != PortalInvitationStatusCode.Sent) return ReferenceSubmissionResult.Failure("Portal Invitation is not valid or expired");
 
     var referenceRequest = mapper.Map<Resources.Documents.Applications.OptOutReferenceRequest>(request);
