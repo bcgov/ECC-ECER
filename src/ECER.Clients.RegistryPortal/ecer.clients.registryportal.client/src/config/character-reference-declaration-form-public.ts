@@ -1,7 +1,7 @@
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Form } from "@/types/form";
 
-const characterReferencePublicForm: Form = {
+const characterReferenceForm: Form = {
   id: "characterReferenceDeclarationForm",
   title: "Declaration Reference",
   inputs: {
@@ -18,4 +18,4 @@ const characterReferencePublicForm: Form = {
   },
 };
 
-export default characterReferencePublicForm;
+export default characterReferenceForm;

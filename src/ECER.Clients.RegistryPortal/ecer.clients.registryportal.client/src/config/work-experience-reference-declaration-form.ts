@@ -1,7 +1,7 @@
 import EceDeclaration from "@/components/reference/inputs/EceDeclaration.vue";
 import type { Form } from "@/types/form";
 
-const referencePublicForm: Form = {
+const workExpereinceDeclarationForm: Form = {
   id: "declarationForm",
   title: "Declaration Reference",
   inputs: {
@@ -18,4 +18,4 @@ const referencePublicForm: Form = {
   },
 };
 
-export default referencePublicForm;
+export default workExpereinceDeclarationForm;

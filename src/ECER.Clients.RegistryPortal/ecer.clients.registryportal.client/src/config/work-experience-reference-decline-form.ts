@@ -1,8 +1,8 @@
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Form } from "@/types/form";
 
-const referencePublicForm: Form = {
-  id: "referenceForm",
+const workExperienceDeclineForm: Form = {
+  id: "declineForm",
   title: "Experience Reference",
   inputs: {
     referenceDecline: {
@@ -18,4 +18,4 @@ const referencePublicForm: Form = {
   },
 };
 
-export default referencePublicForm;
+export default workExperienceDeclineForm;

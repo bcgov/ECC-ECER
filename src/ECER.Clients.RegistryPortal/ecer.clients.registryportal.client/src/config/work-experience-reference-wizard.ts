@@ -1,8 +1,8 @@
-import contactInformationForm from "@/config/work-experience-contact-information-form-public";
-import assessmentForm from "@/config/work-experience-reference-assessment-form-public";
-import declarationForm from "@/config/work-experience-reference-declaration-form-public";
-import declineForm from "@/config/work-experience-reference-decline-form-public";
-import reviewForm from "@/config/work-experience-reference-review-form-public";
+import workExperienceContactForm from "@/config/work-experience-contact-information-form";
+import workExperienceAssessmentForm from "@/config/work-experience-reference-assessment-form";
+import workExperienceDeclarationForm from "@/config/work-experience-reference-declaration-form";
+import workExperienceDeclineForm from "@/config/work-experience-reference-decline-form";
+import workExperienceReviewForm from "@/config/work-experience-reference-review-form";
 import type { Wizard } from "@/types/wizard";
 
 const workExperienceReferenceWizardConfig: Wizard = {
@@ -11,31 +11,31 @@ const workExperienceReferenceWizardConfig: Wizard = {
     declaration: {
       title: "",
       stage: "Declaration",
-      form: declarationForm,
+      form: workExperienceDeclarationForm,
       key: "item.1",
     },
     contactInformation: {
       title: "Contact information",
       stage: "ContactInformation",
-      form: contactInformationForm,
+      form: workExperienceContactForm,
       key: "item.2",
     },
     assessment: {
       title: "Assessment",
       stage: "Assessment",
-      form: assessmentForm,
+      form: workExperienceAssessmentForm,
       key: "item.3",
     },
     review: {
       title: "Review",
       stage: "Review",
-      form: reviewForm,
+      form: workExperienceReviewForm,
       key: "item.5",
     },
     decline: {
       title: "",
       stage: "Decline",
-      form: declineForm,
+      form: workExperienceDeclineForm,
       key: "item.5",
     },
   },

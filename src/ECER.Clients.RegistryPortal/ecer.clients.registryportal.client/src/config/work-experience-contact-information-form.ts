@@ -1,7 +1,7 @@
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Form } from "@/types/form";
 
-const referencePublicForm: Form = {
+const workExperienceContactForm: Form = {
   id: "responseForm",
   title: "contact information form",
   inputs: {
@@ -18,4 +18,4 @@ const referencePublicForm: Form = {
   },
 };
 
-export default referencePublicForm;
+export default workExperienceContactForm;
