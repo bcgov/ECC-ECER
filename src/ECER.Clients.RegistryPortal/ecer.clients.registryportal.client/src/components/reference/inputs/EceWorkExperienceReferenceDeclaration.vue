@@ -4,7 +4,7 @@
       <v-row no-gutters>
         <v-col>
           <p>
-            <b>{{ `${applicantFirstName} ${applicantLastName}` }}</b>
+            <b>{{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</b>
             is requesting a work reference for ECE 5 Year certification. We'll review your reference when assessing if the applicant is eligible for
             certification
           </p>
@@ -70,14 +70,7 @@ export default defineComponent({
     return {
       selection: undefined,
       Rules,
-      applicantFirstName: "",
-      applicantLastName: "",
     };
   },
-  mounted() {
-    this.applicantFirstName = this.wizardStore?.wizardData?.applicantFirstName;
-    this.applicantLastName = this.wizardStore?.wizardData?.applicantLastName;
-  },
-  methods: {},
 });
 </script>

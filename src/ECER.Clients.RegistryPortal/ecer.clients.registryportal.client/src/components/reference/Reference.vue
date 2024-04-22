@@ -6,8 +6,8 @@
   >
     <template #header>
       <v-container fluid class="bg-white">
-        <h2>{{ inviteType + " reference" }}</h2>
-        <div role="doc-subtitle">{{ `For applicant: ${applicantFirstName} ${applicantLastName}` }}</div>
+        <h2>{{ inviteTypeTitle }}</h2>
+        <div role="doc-subtitle">{{ `For applicant: ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</div>
         <v-btn v-if="wizardStore.step !== 1" variant="text" rounded="lg" color="primary" @click="handleBack">{{ "< back" }}</v-btn>
       </v-container>
     </template>
@@ -53,13 +53,6 @@ export default defineComponent({
 
     return { alertStore, workExperienceReferenceWizardConfig, characterReferenceWizardConfig, wizardStore, PortalInviteType };
   },
-  data() {
-    return {
-      inviteType: "",
-      applicantFirstName: "",
-      applicantLastName: "",
-    };
-  },
   computed: {
     userDeclinedStep(): number {
       return this.wizardStore.steps.findIndex((step) => step.stage === "Decline") + 1;
@@ -67,11 +60,9 @@ export default defineComponent({
     userReviewStep(): number {
       return this.wizardStore.steps.findIndex((step) => step.stage === "Review") + 1;
     },
-  },
-  async mounted() {
-    this.inviteType = this.wizardStore.wizardData?.inviteType === PortalInviteType.WORK_EXPERIENCE ? "Work experience" : "Character";
-    this.applicantFirstName = this.wizardStore.wizardData?.applicantFirstName;
-    this.applicantLastName = this.wizardStore.wizardData?.applicantLastName;
+    inviteTypeTitle(): string {
+      return this.wizardStore.wizardData?.inviteType === PortalInviteType.WORK_EXPERIENCE ? "Work experience reference" : "Character reference";
+    },
   },
   methods: {
     async handleContinue() {

@@ -2,7 +2,7 @@
   <slot name="header"></slot>
   <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :mobile="$vuetify.display.mobile">
     <slot name="stepperHeader">
-      <v-stepper-header v-if="$props.showSteps">
+      <v-stepper-header v-if="showSteps">
         <template v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage">
           <v-stepper-item color="primary" :step="wizardStore.step" :value="index + 1" :title="step.title"></v-stepper-item>
           <v-divider v-if="index !== Object.values(wizard.steps).length - 1" :key="`divider-${index}`" />
