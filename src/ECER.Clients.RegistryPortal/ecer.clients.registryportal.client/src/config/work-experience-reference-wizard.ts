@@ -9,7 +9,7 @@ const workExperienceReferenceWizardConfig: Wizard = {
   id: "workReferenceWizard",
   steps: {
     declaration: {
-      title: "Declaration",
+      title: "",
       stage: "Declaration",
       form: declarationForm,
       key: "item.1",
@@ -33,7 +33,7 @@ const workExperienceReferenceWizardConfig: Wizard = {
       key: "item.5",
     },
     decline: {
-      title: "Decline",
+      title: "",
       stage: "Decline",
       form: declineForm,
       key: "item.5",
