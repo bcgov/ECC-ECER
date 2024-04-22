@@ -1,3 +1,4 @@
+import DeclarationStepContent from "@/components/DeclarationStepContent.vue";
 import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Form } from "@/types/form";
@@ -7,6 +8,16 @@ const declarationForm: Form = {
   id: "declarationForm",
   title: "Declaration & Consent",
   inputs: {
+    declarationStepContent: {
+      id: "declarationStepContent",
+      component: DeclarationStepContent,
+      props: {},
+      cols: {
+        md: 12,
+        lg: 12,
+        xl: 12,
+      },
+    },
     consentCheckbox: {
       id: "consentCheckbox",
       component: EceCheckbox,

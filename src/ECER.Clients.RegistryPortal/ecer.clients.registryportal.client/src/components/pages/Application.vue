@@ -3,6 +3,20 @@
     <template #header>
       <WizardHeader class="mb-6" />
     </template>
+    <template #stepperHeader>
+      <v-stepper-header>
+        <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
+          <v-stepper-item
+            color="primary"
+            :step="wizardStore.step"
+            :value="index + 1"
+            :title="step.title"
+            :rules="wizardStore.step <= index + 1 ? [] : [() => wizardStore.validationState[step.stage as Components.Schemas.PortalStage]]"
+          ></v-stepper-item>
+          <v-divider v-if="index !== Object.values(wizardStore.steps).length - 1" :key="`divider-${index}`" />
+        </template>
+      </v-stepper-header>
+    </template>
     <template #PrintPreview>
       <v-btn rounded="lg" variant="text" @click="wizardStore.allStageValidations ? printPage() : (showPrintDialog = true)">
         <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
@@ -70,6 +84,7 @@ import { defineComponent } from "vue";
 import { getProfile, putProfile } from "@/api/profile";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import Wizard from "@/components/Wizard.vue";
+import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -77,9 +92,8 @@ import { useCertificationTypeStore } from "@/store/certificationType";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
+import type { Components } from "@/types/openapi";
 import { AddressType } from "@/utils/constant";
-
-import WizardHeader from "../WizardHeader.vue";
 
 export default defineComponent({
   name: "Application",
@@ -123,11 +137,14 @@ export default defineComponent({
   },
   methods: {
     async handleSubmit() {
-      const submitApplicationResponse = await this.applicationStore.submitApplication();
-      if (submitApplicationResponse?.applicationId) {
-        this.$router.push({ path: "/submitted" });
-      } else {
+      if (!this.wizardStore.allStageValidations) {
         this.alertStore.setFailureAlert("Your application is incomplete. You need to complete it before you can submit.");
+      } else {
+        const submitApplicationResponse = await this.applicationStore.submitApplication();
+
+        if (submitApplicationResponse?.applicationId) {
+          this.$router.push({ path: "/submitted" });
+        }
       }
     },
     async handleSaveAndContinue() {
@@ -163,11 +180,11 @@ export default defineComponent({
     },
     incrementWizard() {
       this.wizardStore.incrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as Components.Schemas.PortalStage;
     },
     decrementWizard() {
       this.wizardStore.decrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as Components.Schemas.PortalStage;
     },
     handleBack() {
       switch (this.wizardStore.currentStepStage) {
