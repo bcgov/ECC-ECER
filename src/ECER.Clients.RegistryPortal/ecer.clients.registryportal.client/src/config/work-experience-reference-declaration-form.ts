@@ -1,4 +1,4 @@
-import EceDeclaration from "@/components/reference/inputs/EceDeclaration.vue";
+import EceWorkExperienceDeclaration from "@/components/reference/inputs/EceWorkExperienceReferenceDeclaration.vue";
 import type { Form } from "@/types/form";
 
 const workExpereinceDeclarationForm: Form = {
@@ -7,7 +7,7 @@ const workExpereinceDeclarationForm: Form = {
   inputs: {
     declarationForm: {
       id: "declaration",
-      component: EceDeclaration,
+      component: EceWorkExperienceDeclaration,
       props: {},
       cols: {
         md: 12,
