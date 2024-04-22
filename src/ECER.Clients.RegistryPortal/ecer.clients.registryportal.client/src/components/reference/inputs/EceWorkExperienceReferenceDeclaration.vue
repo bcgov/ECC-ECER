@@ -13,7 +13,7 @@
           <h2>Information you'll need</h2>
           <p>
             It should take about 5 minutes to enter your reference. Make sure you get together all the information you need for you continue. If you're not
-            ready now, you can come back later using hte link in your email.
+            ready now, you can come back later using the link in your email.
           </p>
           <br />
 
@@ -75,8 +75,8 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.applicantFirstName = this.wizardStore.wizardData.applicantFirstName;
-    this.applicantLastName = this.wizardStore.wizardData.applicantLastName;
+    this.applicantFirstName = this.wizardStore?.wizardData?.applicantFirstName;
+    this.applicantLastName = this.wizardStore?.wizardData?.applicantLastName;
   },
   methods: {},
 });
