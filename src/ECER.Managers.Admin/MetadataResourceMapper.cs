@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ECER.Resources.Documents.MetadataResources;
 
-namespace ECER.Managers.Registry;
+namespace ECER.Managers.Admin;
 
 internal class MetadataResourceMapper : Profile
 {

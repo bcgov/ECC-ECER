@@ -1,17 +1,15 @@
 ﻿using AutoMapper;
-using ECER.Managers.Registry.Contract.MetadataResources;
+using ECER.Managers.Admin.Contract.MetadataResources;
 using ECER.Resources.Documents.MetadataResources;
 using MediatR;
 
-
-namespace ECER.Managers.Registry;
+namespace ECER.Managers.Admin;
 
 public class MetadataResourceHandlers(
    IMetadataResourceRepository metadataResourceRepository,
    IMapper mapper
   ) : IRequestHandler<Contract.MetadataResources.ProvincesQuery, ProvincesQueryResults>
 {
-
   public async Task<ProvincesQueryResults> Handle(Contract.MetadataResources.ProvincesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(metadataResourceRepository);

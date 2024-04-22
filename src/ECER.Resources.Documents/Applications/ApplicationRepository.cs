@@ -208,7 +208,6 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return applicationId;
   }
 
-
   public async Task<string> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
@@ -238,8 +237,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
 
     mapper.Map(request, characterReference);
-    characterReference.StatusCode = ecer_CharacterReference_StatusCode.Rejected;
-    characterReference.StateCode = ecer_characterreference_statecode.Inactive;
+    characterReference.ecer_WillProvideReference = ecer_YesNoNull.No;
     context.UpdateObject(characterReference);
     context.SaveChanges();
     return characterReference.ecer_CharacterReferenceId.ToString()!;

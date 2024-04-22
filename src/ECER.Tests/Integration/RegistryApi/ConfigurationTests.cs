@@ -1,15 +1,14 @@
 ﻿using Alba;
-using ECER.Clients.RegistryPortal.Server.MetadataResources;
+using ECER.Clients.RegistryPortal.Server;
 using Shouldly;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
-public class MetadataResourceTests : RegistryPortalWebAppScenarioBase
+public class ConfigurationTests : RegistryPortalWebAppScenarioBase
 {
-  public MetadataResourceTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
+  public ConfigurationTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
-
   }
 
   [Fact]

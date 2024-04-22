@@ -1,4 +1,7 @@
-﻿using ECER.Utilities.Hosting;
+﻿using AutoMapper;
+using ECER.Managers.Admin.Contract.MetadataResources;
+using ECER.Utilities.Hosting;
+using MediatR;
 
 namespace ECER.Clients.RegistryPortal.Server;
 
@@ -13,6 +16,14 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       var appConfig = configuration.Get<ApplicationConfiguration>();
       return TypedResults.Ok(appConfig);
     }).WithOpenApi("Returns the UI initial configuration", string.Empty, "configuration_get");
+
+    endpointRouteBuilder.MapGet("/api/provincelist", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var results = await messageBus.Send(new ProvincesQuery(), ct);
+      return TypedResults.Ok(mapper.Map<IEnumerable<Province>>(results.Items));
+    }).WithOpenApi("Handles province queries", string.Empty, "province_get")
+      .RequireAuthorization()
+      .WithParameterValidation();
   }
 }
 
@@ -32,3 +43,5 @@ public record OidcAuthenticationSettings
   public string Scope { get; set; } = null!;
   public string? Idp { get; set; }
 }
+
+public record Province(string ProvinceId, string ProvinceName);

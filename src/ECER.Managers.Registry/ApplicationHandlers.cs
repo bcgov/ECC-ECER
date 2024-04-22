@@ -8,8 +8,6 @@ using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
-using CharacterReferenceSubmissionRequest = ECER.Managers.Registry.Contract.Applications.CharacterReferenceSubmissionRequest;
-using OptOutReferenceRequest = ECER.Managers.Registry.Contract.Applications.OptOutReferenceRequest;
 
 namespace ECER.Managers.Registry;
 
@@ -27,8 +25,8 @@ public class ApplicationHandlers(
     IRequestHandler<CancelDraftApplicationCommand, string>,
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
-    IRequestHandler<CharacterReferenceSubmissionRequest, ReferenceSubmissionResult>,
-    IRequestHandler<OptOutReferenceRequest, ReferenceSubmissionResult>
+    IRequestHandler<Contract.Applications.CharacterReferenceSubmissionRequest, ReferenceSubmissionResult>,
+    IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -143,7 +141,6 @@ public class ApplicationHandlers(
     return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
   }
 
-
   /// <summary>
   /// Handles Reference Submission
   /// </summary>
@@ -151,7 +148,7 @@ public class ApplicationHandlers(
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="InvalidCastException"></exception>
-  public async Task<ReferenceSubmissionResult> Handle(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  public async Task<ReferenceSubmissionResult> Handle(Contract.Applications.CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(portalInvitationRepository);
     ArgumentNullException.ThrowIfNull(applicationRepository);
@@ -191,7 +188,7 @@ public class ApplicationHandlers(
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="InvalidCastException"></exception>
-  public async Task<ReferenceSubmissionResult> Handle(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  public async Task<ReferenceSubmissionResult> Handle(Contract.Applications.OptOutReferenceRequest request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(portalInvitationRepository);
     ArgumentNullException.ThrowIfNull(applicationRepository);
