@@ -12,7 +12,7 @@
         <h1>Messages</h1>
       </v-col>
     </v-row>
-    <MessageList class="message-list" />
+    <MessageList />
   </PageContainer>
 </template>
 
