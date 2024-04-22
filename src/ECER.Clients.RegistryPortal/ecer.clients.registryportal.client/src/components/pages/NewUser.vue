@@ -56,10 +56,12 @@ export default defineComponent({
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
 
-    const phoneNumber = ref(userStore.oidcUserAsUserInfo.phone);
-    const email = ref(userStore.oidcUserAsUserInfo.email);
+    const oidcUserInfo = await oidcStore.oidcUserInfo();
 
-    return { userStore, oidcStore, phoneNumber, email };
+    const phoneNumber = ref(oidcUserInfo.phone);
+    const email = ref(oidcUserInfo.email);
+
+    return { userStore, oidcStore, phoneNumber, email, oidcUserInfo };
   },
 
   data: () => ({
@@ -88,12 +90,12 @@ export default defineComponent({
     async submit() {
       const { valid } = await (this.$refs.form as any).validate();
       if (valid) {
-        const userCreated: boolean = await postUserInfo({ ...this.userStore.oidcUserInfo, phone: this.phoneNumber });
+        const userCreated: boolean = await postUserInfo({ ...this.oidcUserInfo, phone: this.phoneNumber });
 
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {
           this.userStore.setUserInfo({
-            ...this.userStore.oidcUserAsUserInfo,
+            ...this.oidcUserInfo,
             phone: this.phoneNumber,
             email: this.email,
           });
@@ -104,7 +106,7 @@ export default defineComponent({
     },
 
     async logout() {
-      this.userStore.logout();
+      this.oidcStore.logout();
     },
   },
 });

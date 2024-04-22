@@ -1,1 +1,1 @@
-type DateFormat = "yyyy-MMM-dd" | "yyyy-MM-ddZhh:mm:ss" | "yyyy-MM-dd";
+type DateFormat = "yyyy-MMM-dd" | "yyyy-MM-ddZhh:mm:ss" | "yyyy-MM-dd" | "LLL dd, yyyy t";

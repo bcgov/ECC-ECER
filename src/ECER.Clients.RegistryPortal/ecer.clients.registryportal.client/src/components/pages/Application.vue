@@ -3,16 +3,35 @@
     <template #header>
       <WizardHeader class="mb-6" />
     </template>
+    <template #stepperHeader>
+      <v-stepper-header>
+        <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
+          <v-stepper-item
+            color="primary"
+            :step="wizardStore.step"
+            :value="index + 1"
+            :title="step.title"
+            :rules="wizardStore.step <= index + 1 ? [] : [() => wizardStore.validationState[step.stage as Components.Schemas.PortalStage]]"
+          ></v-stepper-item>
+          <v-divider v-if="index !== Object.values(wizardStore.steps).length - 1" :key="`divider-${index}`" />
+        </template>
+      </v-stepper-header>
+    </template>
     <template #PrintPreview>
+      <v-btn rounded="lg" variant="text" @click="wizardStore.allStageValidations ? printPage() : (showPrintDialog = true)">
+        <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
+        <a class="small">Print Preview</a>
+      </v-btn>
+
       <ConfirmationDialog
-        :config="{
-          cancelButtonText: 'Cancel',
-          acceptButtonText: 'Yes',
-          title: 'Print Confirmation',
-          customButtonVariant: 'text',
-          isDialogDisabled: wizardStore.allStageValidations,
-        }"
-        @accept="printPage"
+        :cancel-button-text="'Cancel'"
+        :accept-button-text="'Yes'"
+        :title="'Print Confirmation'"
+        :custom-button-variant="'text'"
+        :show="showPrintDialog"
+        :disabled="wizardStore.allStageValidations"
+        @cancel="showPrintDialog = false"
+        @accept="handleAcceptPrint"
       >
         <template #activator>
           <span @click="wizardStore.allStageValidations ? printPage() : {}">
@@ -49,7 +68,9 @@
           <v-col cols="auto">
             <v-btn v-if="showSaveButtons" rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
             <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and Continue</v-btn>
-            <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" @click="handleSubmit">Submit Application</v-btn>
+            <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
+              Submit Application
+            </v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -63,15 +84,16 @@ import { defineComponent } from "vue";
 import { getProfile, putProfile } from "@/api/profile";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import Wizard from "@/components/Wizard.vue";
+import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationTypeStore } from "@/store/certificationType";
+import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
-
-import { AddressType } from "../inputs/EceAddresses.vue";
-import WizardHeader from "../WizardHeader.vue";
+import type { Components } from "@/types/openapi";
+import { AddressType } from "@/utils/constant";
 
 export default defineComponent({
   name: "Application",
@@ -82,6 +104,7 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const applicationStore = useApplicationStore();
     const certificationTypeStore = useCertificationTypeStore();
+    const loadingStore = useLoadingStore();
 
     // Refresh userProfile from the server
     const userProfile = await getProfile();
@@ -90,9 +113,15 @@ export default defineComponent({
     }
 
     certificationTypeStore.$reset();
-    wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
 
-    return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore };
+    await wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
+
+    return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore, loadingStore };
+  },
+  data() {
+    return {
+      showPrintDialog: false,
+    };
   },
   computed: {
     showSaveButtons() {
@@ -108,11 +137,14 @@ export default defineComponent({
   },
   methods: {
     async handleSubmit() {
-      const submitApplicationResponse = await this.applicationStore.submitApplication();
-      if (submitApplicationResponse?.applicationId) {
-        this.$router.push({ path: "/submitted" });
-      } else {
+      if (!this.wizardStore.allStageValidations) {
         this.alertStore.setFailureAlert("Your application is incomplete. You need to complete it before you can submit.");
+      } else {
+        const submitApplicationResponse = await this.applicationStore.submitApplication();
+
+        if (submitApplicationResponse?.applicationId) {
+          this.$router.push({ path: "/submitted" });
+        }
       }
     },
     async handleSaveAndContinue() {
@@ -148,11 +180,11 @@ export default defineComponent({
     },
     incrementWizard() {
       this.wizardStore.incrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as Components.Schemas.PortalStage;
     },
     decrementWizard() {
       this.wizardStore.decrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as Components.Schemas.PortalStage;
     },
     handleBack() {
       switch (this.wizardStore.currentStepStage) {
@@ -213,6 +245,11 @@ export default defineComponent({
           dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
         });
       }
+    },
+    handleAcceptPrint() {
+      this.showPrintDialog = false;
+      /* creating a delay before printing - helps prevent warning dialog overlay in print preview */
+      setTimeout(this.printPage, 500);
     },
     printPage() {
       window.print();

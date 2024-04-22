@@ -15,3 +15,13 @@ export enum AlertNotificationType {
   SUCCESS = "success",
   INFO = "primary",
 }
+
+export enum AddressType {
+  RESIDENTIAL = "residential",
+  MAILING = "mailing",
+}
+
+export enum PortalInviteType {
+  WORK_EXPERIENCE = "WorkExperienceReference",
+  CHARACTER = "CharacterReference",
+}

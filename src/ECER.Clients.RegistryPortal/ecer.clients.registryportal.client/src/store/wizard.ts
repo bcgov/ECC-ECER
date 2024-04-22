@@ -1,9 +1,10 @@
 import { defineStore } from "pinia";
 
-import { AddressType } from "@/components/inputs/EceAddresses.vue";
 import type { Components } from "@/types/openapi";
-import type { Step, Wizard } from "@/types/wizard";
+import type { ReferenceStage, Step, Wizard } from "@/types/wizard";
+import { AddressType } from "@/utils/constant";
 
+import { useOidcStore } from "./oidc";
 import { useUserStore } from "./user";
 export interface WizardData {
   [key: string]: any;
@@ -38,7 +39,7 @@ export const useWizardStore = defineStore("wizard", {
     currentStepId(state): string {
       return this.steps[state.step - 1].id;
     },
-    currentStepStage(state): Components.Schemas.PortalStage {
+    currentStepStage(state): Components.Schemas.PortalStage | ReferenceStage {
       return this.steps[state.step - 1].stage;
     },
     validationState(state): PortalStageValidation {
@@ -83,8 +84,12 @@ export const useWizardStore = defineStore("wizard", {
     },
   },
   actions: {
-    initializeWizard(wizard: Wizard, draftApplication: Components.Schemas.DraftApplication): void {
+    async initializeWizard(wizard: Wizard, draftApplication: Components.Schemas.DraftApplication): Promise<void> {
       const userStore = useUserStore();
+      const oidcStore = useOidcStore();
+
+      const oidcUserInfo = await oidcStore.oidcUserInfo();
+      const oidcAddress = await oidcStore.oidcAddress();
 
       this.wizardConfig = wizard;
 
@@ -120,18 +125,18 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.declaration.form.inputs.consentCheckbox.id]: draftApplication.signedDate ? true : false,
 
         // Contact Information step data
-        [wizard.steps.profile.form.inputs.legalLastName.id]: userStore.userProfile?.lastName || userStore.oidcUserInfo?.lastName,
-        [wizard.steps.profile.form.inputs.legalFirstName.id]: userStore.userProfile?.firstName || userStore.oidcUserInfo?.firstName,
+        [wizard.steps.profile.form.inputs.legalLastName.id]: userStore.userProfile?.lastName || oidcUserInfo?.lastName,
+        [wizard.steps.profile.form.inputs.legalFirstName.id]: userStore.userProfile?.firstName || oidcUserInfo?.firstName,
         [wizard.steps.profile.form.inputs.legalMiddleName.id]: userStore.userProfile?.middleName,
         [wizard.steps.profile.form.inputs.preferredName.id]: userStore.userProfile?.preferredName,
-        [wizard.steps.profile.form.inputs.dateOfBirth.id]: userStore.userProfile?.dateOfBirth || userStore.oidcUserInfo?.dateOfBirth,
+        [wizard.steps.profile.form.inputs.dateOfBirth.id]: userStore.userProfile?.dateOfBirth || oidcUserInfo?.dateOfBirth,
         [wizard.steps.profile.form.inputs.addresses.id]: {
-          [AddressType.RESIDENTIAL]: userStore.userProfile?.residentialAddress || userStore.oidcAddress,
-          [AddressType.MAILING]: userStore.userProfile?.mailingAddress || userStore.oidcAddress,
+          [AddressType.RESIDENTIAL]: userStore.userProfile?.residentialAddress || oidcAddress,
+          [AddressType.MAILING]: userStore.userProfile?.mailingAddress || oidcAddress,
         },
-        [wizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.userProfile?.phone || userStore.oidcUserInfo?.phone,
+        [wizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.userProfile?.phone || oidcUserInfo?.phone,
         [wizard.steps.profile.form.inputs.alternateContactNumber.id]: userStore.userProfile?.alternateContactPhone,
-        [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || userStore.oidcUserInfo?.email,
+        [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || oidcUserInfo?.email,
 
         // Education step data
         [wizard.steps.education.form.inputs.educationList.id]: transcriptsDict,
@@ -145,10 +150,20 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.workReference.form.inputs.referenceList.id]: workReferencesDict,
       };
     },
+    initializeWizardForReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
+      this.$reset();
+      this.wizardConfig = wizard;
+
+      this.setWizardData({
+        applicantFirstName: portalInvitation.applicantFirstName,
+        applicantLastName: portalInvitation.applicantLastName,
+        inviteType: portalInvitation.inviteType,
+      });
+    },
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };
     },
-    setCurrentStep(stage: Components.Schemas.PortalStage): void {
+    setCurrentStep(stage: Components.Schemas.PortalStage | ReferenceStage): void {
       const item = Object.values(this.wizardConfig.steps).findIndex((step) => step.stage === stage) + 1;
       this.step = item;
     },
@@ -163,6 +178,10 @@ export const useWizardStore = defineStore("wizard", {
         this.step -= 1;
         window.scrollTo(0, 0);
       }
+    },
+    setStep(step: number): void {
+      this.step = step;
+      window.scrollTo(0, 0);
     },
   },
 });
