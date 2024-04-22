@@ -256,6 +256,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DaysBetweenIntakeCompleteConcludedDate = "ecer_daysbetweenintakecompleteconcludeddate";
 			public const string ecer_ecer_application_ecer_investigation_OpenApplication = "ecer_ecer_application_ecer_investigation_OpenApplication";
 			public const string ecer_ecer_certificate_ecer_investigation_CurrentCertificate = "ecer_ecer_certificate_ecer_investigation_CurrentCertificate";
+			public const string ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId = "ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId";
 			public const string ecer_EducationalInstitution = "ecer_educationalinstitution";
 			public const string ecer_EmailAddress = "ecer_emailaddress";
 			public const string ecer_EmailAddressContact = "ecer_emailaddresscontact";
@@ -4697,6 +4698,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_Investigation_ecer_investig", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication> ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication>("ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication>("ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId", null, value);
 			}
 		}
 		

@@ -110,7 +110,6 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId))
           .ValidateMemberList(MemberList.Destination);
 
-
     CreateMap<CharacterReferenceSubmissionRequest, ecer_CharacterReference>(MemberList.Source)
       .ForSourceMember(s => s.ReferenceContactInformation, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ReferenceEvaluation, opts => opts.DoNotValidate())
@@ -135,6 +134,10 @@ internal class ApplicationRepositoryMapper : Profile
       .ReverseMap();
 
     CreateMap<OptOutReferenceRequest, ecer_CharacterReference>(MemberList.Source)
+      .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
+      .ForMember(d => d.ecer_UnabletoProvideReferenceReason, opts => opts.MapFrom(s => s.UnabletoProvideReferenceReasons));
+
+    CreateMap<OptOutReferenceRequest, ecer_WorkExperienceRef>(MemberList.Source)
       .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_UnabletoProvideReferenceReason, opts => opts.MapFrom(s => s.UnabletoProvideReferenceReasons));
   }

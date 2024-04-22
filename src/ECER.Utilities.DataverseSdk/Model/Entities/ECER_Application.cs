@@ -156,6 +156,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DoesECERegistryHaveTranscript = "ecer_doeseceregistryhavetranscript";
 			public const string ecer_doeseceregistryhavetranscriptName = "ecer_doeseceregistryhavetranscriptname";
 			public const string ecer_ecer_application_ecer_investigation_OpenApplication = "ecer_ecer_application_ecer_investigation_OpenApplication";
+			public const string ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId = "ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId";
 			public const string ecer_ecer_professionaldevelopment_Applicationi = "ecer_ecer_professionaldevelopment_Applicationi";
 			public const string ecer_EducationOrigin = "ecer_educationorigin";
 			public const string ecer_educationoriginName = "ecer_educationoriginname";
@@ -3167,6 +3168,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_ecer_application_ecer_investigation_OpenApplication", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication> ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication>("ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication>("ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId", null, value);
 			}
 		}
 		

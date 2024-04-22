@@ -140,6 +140,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_typeName = "ecer_typename";
 			public const string ecer_TypeofChildrenProgram = "ecer_typeofchildrenprogram";
 			public const string ecer_typeofchildrenprogramName = "ecer_typeofchildrenprogramname";
+			public const string ecer_UnabletoProvideReferenceReason = "ecer_unabletoprovidereferencereason";
+			public const string ecer_unabletoprovidereferencereasonName = "ecer_unabletoprovidereferencereasonname";
+			public const string ecer_WillProvideReference = "ecer_willprovidereference";
+			public const string ecer_willprovidereferenceName = "ecer_willprovidereferencename";
 			public const string ecer_workexperienceref_Applicantid = "ecer_workexperienceref_Applicantid";
 			public const string ecer_workexperienceref_Applicationid_ecer = "ecer_workexperienceref_Applicationid_ecer";
 			public const string ecer_workexperienceref_RefCertifiedProvinceId = "ecer_workexperienceref_RefCertifiedProvinceId";
@@ -1257,6 +1261,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_typeofchildrenprogram"))
 				{
 					return this.FormattedValues["ecer_typeofchildrenprogram"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_unabletoprovidereferencereason")]
+		public virtual ecer_UnabletoProvideReferenceReasons? ecer_UnabletoProvideReferenceReason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_UnabletoProvideReferenceReasons?)(EntityOptionSetEnum.GetEnum(this, "ecer_unabletoprovidereferencereason")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_unabletoprovidereferencereason", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_unabletoprovidereferencereasonname")]
+		public string ecer_unabletoprovidereferencereasonName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_unabletoprovidereferencereason"))
+				{
+					return this.FormattedValues["ecer_unabletoprovidereferencereason"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_willprovidereference")]
+		public virtual ecer_YesNoNull? ecer_WillProvideReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_willprovidereference")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_willprovidereference", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_willprovidereferencename")]
+		public string ecer_willprovidereferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_willprovidereference"))
+				{
+					return this.FormattedValues["ecer_willprovidereference"];
 				}
 				else
 				{

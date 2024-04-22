@@ -246,6 +246,12 @@ internal sealed class ApplicationRepository : IApplicationRepository
   public async Task<string> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    throw new NotImplementedException();
+    var workexperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(request.PortalInvitation!.WorkexperienceReferenceId!));
+
+    mapper.Map(request, workexperienceReference);
+    workexperienceReference.ecer_WillProvideReference = ecer_YesNoNull.No;
+    context.UpdateObject(workexperienceReference);
+    context.SaveChanges();
+    return workexperienceReference.ecer_WorkExperienceRefId.ToString()!;
   }
 }

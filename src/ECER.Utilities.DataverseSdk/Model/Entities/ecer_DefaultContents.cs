@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Default Content
+	/// Status of the Default Contents
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_defaultcontent_statecode
+	public enum ecer_defaultcontents_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Default Content
+	/// Reason for the status of the Default Contents
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_DefaultContent_StatusCode
+	public enum ecer_DefaultContents_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -43,13 +43,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_defaultcontent")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_defaultcontents")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ecer_DefaultContent : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_DefaultContents : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_defaultcontent entity
+		/// Available fields, a the time of codegen, for the ecer_defaultcontents entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,11 +60,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_DefaultContentId = "ecer_defaultcontentid";
-			public const string Id = "ecer_defaultcontentid";
+			public const string ecer_DefaultContentsId = "ecer_defaultcontentsid";
+			public const string Id = "ecer_defaultcontentsid";
 			public const string ecer_Group = "ecer_group";
-			public const string ecer_Key = "ecer_key";
 			public const string ecer_MultipleLineofText = "ecer_multiplelineoftext";
+			public const string ecer_Name = "ecer_name";
 			public const string ecer_SingleLineofText = "ecer_singlelineoftext";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -92,19 +92,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DefaultContent(System.Guid id) : 
+		public ecer_DefaultContents(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DefaultContent(string keyName, object keyValue) : 
+		public ecer_DefaultContents(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DefaultContent(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_DefaultContents(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -113,22 +113,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DefaultContent() : 
+		public ecer_DefaultContents() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_defaultcontentid";
+		public const string PrimaryIdAttribute = "ecer_defaultcontentsid";
 		
-		public const string PrimaryNameAttribute = "ecer_key";
+		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_DefaultContent";
+		public const string EntitySchemaName = "ecer_DefaultContents";
 		
-		public const string EntityLogicalName = "ecer_defaultcontent";
+		public const string EntityLogicalName = "ecer_defaultcontents";
 		
-		public const string EntityLogicalCollectionName = "ecer_defaultcontents";
+		public const string EntityLogicalCollectionName = "ecer_defaultcontentses";
 		
-		public const string EntitySetName = "ecer_defaultcontents";
+		public const string EntitySetName = "ecer_defaultcontentses";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -245,18 +245,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_defaultcontentid")]
-		public System.Nullable<System.Guid> ecer_DefaultContentId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_defaultcontentsid")]
+		public System.Nullable<System.Guid> ecer_DefaultContentsId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_defaultcontentid");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_defaultcontentsid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_defaultcontentid", value);
+				this.SetAttributeValue("ecer_defaultcontentsid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -268,7 +268,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_defaultcontentid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_defaultcontentsid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -279,7 +279,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_DefaultContentId = value;
+				this.ecer_DefaultContentsId = value;
 			}
 		}
 		
@@ -298,21 +298,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_key")]
-		public string ecer_Key
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_key");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_key", value);
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_multiplelineoftext")]
 		public string ecer_MultipleLineofText
 		{
@@ -325,6 +310,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_multiplelineoftext", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
+		public string ecer_Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_name", value);
 			}
 		}
 		
@@ -606,15 +606,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Default Content
+		/// Status of the Default Contents
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_defaultcontent_statecode? StateCode
+		public virtual ecer_defaultcontents_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_defaultcontent_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_defaultcontents_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -641,15 +641,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Default Content
+		/// Reason for the status of the Default Contents
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_DefaultContent_StatusCode? StatusCode
+		public virtual ecer_DefaultContents_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_DefaultContent_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_DefaultContents_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -729,7 +729,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DefaultContent(object anonymousType) : 
+		public ecer_DefaultContents(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -747,9 +747,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_defaultcontentid"] = base.Id;
+                        Attributes["ecer_defaultcontentsid"] = base.Id;
                         break;
-                    case "ecer_defaultcontentid":
+                    case "ecer_defaultcontentsid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

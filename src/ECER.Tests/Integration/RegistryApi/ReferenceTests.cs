@@ -71,11 +71,28 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task OptOutReference_ShouldReturnOk()
+  public async Task OptOutCharacterReference_ShouldReturnOk()
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
-    var portalInvitation = Fixture.portalInvitationTwoId;
+    var portalInvitation = Fixture.portalInvitationCharacterReferenceId;
     var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.CharacterReference, 7), CancellationToken.None);
+    packingResponse.ShouldNotBeNull();
+
+    var token = packingResponse.VerificationLink.Split('/')[2];
+    var optOutReferenceRequest = new OptOutReferenceRequest(token, UnabletoProvideReferenceReasons.Idonotknowthisperson);
+    await Host.Scenario(_ =>
+    {
+      _.Post.Json(optOutReferenceRequest).ToUrl($"/api/OptOutReference");
+      _.StatusCodeShouldBeOk();
+    });
+  }
+
+  [Fact]
+  public async Task OptOutWorkExperienceReference_ShouldReturnOk()
+  {
+    var bus = Fixture.Services.GetRequiredService<IMediator>();
+    var portalInvitation = Fixture.portalInvitationWorkExperienceReferenceId;
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.VerificationLink.Split('/')[2];
