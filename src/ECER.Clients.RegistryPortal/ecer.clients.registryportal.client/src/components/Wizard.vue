@@ -2,7 +2,7 @@
   <slot name="header"></slot>
   <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :mobile="$vuetify.display.mobile">
     <slot name="stepperHeader">
-      <v-stepper-header v-if="$props.config!.showSteps">
+      <v-stepper-header v-if="$props.showSteps">
         <template v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage">
           <v-stepper-item color="primary" :step="wizardStore.step" :value="index + 1" :title="step.title"></v-stepper-item>
           <v-divider v-if="index !== Object.values(wizard.steps).length - 1" :key="`divider-${index}`" />
@@ -43,7 +43,7 @@ import applicationWizard from "@/config/application-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
-import type { Step, Wizard, WizardConfigProps } from "@/types/wizard";
+import type { Step, Wizard } from "@/types/wizard";
 
 export default defineComponent({
   name: "Wizard",
@@ -53,11 +53,9 @@ export default defineComponent({
       type: Object as PropType<Wizard>,
       default: () => applicationWizard,
     },
-    config: {
-      type: Object as PropType<WizardConfigProps>,
-      default: () => {
-        return { showSteps: true };
-      },
+    showSteps: {
+      type: Boolean,
+      default: true,
     },
   },
   setup: async () => {

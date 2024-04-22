@@ -2,7 +2,7 @@
   <Wizard
     :ref="'wizard'"
     :wizard="wizardStore.wizardData?.inviteType === PortalInviteType.WORK_EXPERIENCE ? workExperienceReferenceWizardConfig : characterReferenceWizardConfig"
-    :config="{ showSteps: false }"
+    :show-steps="false"
   >
     <template #header>
       <v-container fluid class="bg-white">
@@ -26,16 +26,16 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useRoute } from "vue-router";
 
-import workExperienceReferenceWizardConfig from "@/config/work-experience-reference-wizard";
+import { getReference } from "@/api/reference";
 import characterReferenceWizardConfig from "@/config/character-reference-wizard";
+import workExperienceReferenceWizardConfig from "@/config/work-experience-reference-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useWizardStore } from "@/store/wizard";
-import { getReference } from "@/api/reference";
 import { PortalInviteType } from "@/utils/constant";
 
 import Wizard from "../Wizard.vue";
-import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "Reference",

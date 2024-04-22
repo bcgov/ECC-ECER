@@ -93,7 +93,6 @@ import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
-
 import { AddressType } from "@/utils/constant";
 
 export default defineComponent({

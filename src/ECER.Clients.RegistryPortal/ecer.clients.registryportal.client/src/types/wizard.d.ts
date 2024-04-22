@@ -24,8 +24,4 @@ interface Wizard {
   };
 }
 
-interface WizardConfigProps {
-  showSteps: boolean;
-}
-
 type ReferenceStage = "Declaration" | "Decline" | "ContactInformation" | "Assessment" | "Review";

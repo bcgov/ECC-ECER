@@ -1,5 +1,5 @@
-import assessmentForm from "@/config/work-experience-reference-assessment-form-public";
 import contactInformationForm from "@/config/work-experience-contact-information-form-public";
+import assessmentForm from "@/config/work-experience-reference-assessment-form-public";
 import declarationForm from "@/config/work-experience-reference-declaration-form-public";
 import declineForm from "@/config/work-experience-reference-decline-form-public";
 import reviewForm from "@/config/work-experience-reference-review-form-public";
@@ -9,7 +9,7 @@ const workExperienceReferenceWizardConfig: Wizard = {
   id: "workReferenceWizard",
   steps: {
     declaration: {
-      title: "",
+      title: "Declaration",
       stage: "Declaration",
       form: declarationForm,
       key: "item.1",
@@ -33,7 +33,7 @@ const workExperienceReferenceWizardConfig: Wizard = {
       key: "item.5",
     },
     decline: {
-      title: "",
+      title: "Decline",
       stage: "Decline",
       form: declineForm,
       key: "item.5",
