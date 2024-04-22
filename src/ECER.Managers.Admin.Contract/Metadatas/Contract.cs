@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ECER.Managers.Admin.Contract.MetadataResources;
+namespace ECER.Managers.Admin.Contract.Metadatas;
 
 /// <summary>
 /// Invokes provinces use case

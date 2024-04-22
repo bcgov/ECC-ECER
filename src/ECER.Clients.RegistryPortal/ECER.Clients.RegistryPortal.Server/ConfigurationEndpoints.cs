@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ECER.Managers.Admin.Contract.MetadataResources;
+using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
 using MediatR;
 

@@ -6,6 +6,6 @@ public class ConfigurationMapper : Profile
 {
   public ConfigurationMapper()
   {
-    CreateMap<Managers.Admin.Contract.MetadataResources.Province, Province>();
+    CreateMap<Managers.Admin.Contract.Metadatas.Province, Province>();
   }
 }
