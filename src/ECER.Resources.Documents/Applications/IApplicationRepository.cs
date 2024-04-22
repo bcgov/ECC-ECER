@@ -1,4 +1,6 @@
-﻿namespace ECER.Resources.Documents.Applications;
+﻿using ECER.Resources.Documents.PortalInvitations;
+
+namespace ECER.Resources.Documents.Applications;
 
 public interface IApplicationRepository
 {
@@ -9,6 +11,14 @@ public interface IApplicationRepository
   Task<string> Submit(string applicationId, CancellationToken cancellationToken);
 
   Task<string> Cancel(string applicationId, CancellationToken cancellationToken);
+
+  Task<string> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
+
+  Task<string> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
+
+  Task<string> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
+
+  Task<string> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery
@@ -17,6 +27,8 @@ public record ApplicationQuery
   public IEnumerable<ApplicationStatus>? ByStatus { get; set; }
   public string? ByApplicantId { get; set; }
 }
+
+
 
 public record Application(string? Id, string ApplicantId, IEnumerable<CertificationType> CertificationTypes)
 {
@@ -84,3 +96,24 @@ public record CharacterReference(string? FirstName, string? LastName, string? Ph
 {
   public string? Id { get; set; }
 }
+
+public record OptOutReferenceRequest(UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons)
+{
+  public PortalInvitation? PortalInvitation { get; set; }
+}
+
+public enum UnabletoProvideReferenceReasons
+{
+  Iamunabletoatthistime,
+  Idonothavetheinformationrequired,
+  Idonotknowthisperson,
+  Idonotmeettherequirementstoprovideareference,
+  Other
+}
+
+public record CharacterReferenceSubmissionRequest(CharacterReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation)
+{
+  public PortalInvitation? PortalInvitation { get; set; }
+}
+public record CharacterReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvinceId, string CertificateProvinceOther);
+public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);

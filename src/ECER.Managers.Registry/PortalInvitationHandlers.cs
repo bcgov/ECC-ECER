@@ -16,10 +16,9 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
     ArgumentNullException.ThrowIfNull(request);
     ArgumentNullException.ThrowIfNull(transformationEngine);
     var response = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.VerificationToken))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
-    if (response.portalInvitation == Guid.Empty) return PortalInvitationVerificationQueryResult.Failure("Invalid Token");
+    if (response.PortalInvitation == Guid.Empty) return PortalInvitationVerificationQueryResult.Failure("Invalid Token");
 
-    var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(response.portalInvitation), cancellationToken);
-
+    var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(response.PortalInvitation), cancellationToken);
     var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
 
     var applicant = registrantResult.SingleOrDefault();

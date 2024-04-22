@@ -20,7 +20,7 @@ public class PortalInvitationRepositoryTests : RegistryPortalWebAppScenarioBase
   public async Task QueryPortalInvitations_ById_Found()
   {
     // Arrange
-    var portalInvitationId = Fixture.portalInvitationId;
+    var portalInvitationId = Fixture.portalInvitationOneId;
 
     // Act
     var portalInvitation = await repository.Query(new PortalInvitationQuery(portalInvitationId), default);

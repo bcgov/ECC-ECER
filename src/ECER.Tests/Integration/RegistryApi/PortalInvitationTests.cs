@@ -20,7 +20,7 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
   public async Task CanGetPortalInvitationData()
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
-    var portalInvitation = Fixture.portalInvitationId;
+    var portalInvitation = Fixture.portalInvitationOneId;
     var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
@@ -35,7 +35,7 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var queryResult = await inviteLinkResponse.ReadAsJsonAsync<ReferenceQueryResult>();
+    var queryResult = await inviteLinkResponse.ReadAsJsonAsync<PortalInvitationQueryResult>();
     queryResult.ShouldNotBeNull();
   }
 }

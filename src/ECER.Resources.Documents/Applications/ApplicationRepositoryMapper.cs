@@ -58,7 +58,7 @@ internal class ApplicationRepositoryMapper : Profile
            .ForSourceMember(s => s.EndDate, opts => opts.DoNotValidate())
            .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
            .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
-           .ForMember(d => d.ecer_ProgramName, opts => opts.MapFrom(s => s.ProgramName))
+           .ForMember(d => d.ecer_ProgramCourseName, opts => opts.MapFrom(s => s.ProgramName))
            .ForMember(d => d.ecer_CampusLocation, opts => opts.MapFrom(s => s.CampusLocation))
            .ForMember(d => d.ecer_StudentName, opts => opts.MapFrom(s => s.StudentName))
            .ForMember(d => d.ecer_StudentNumber, opts => opts.MapFrom(s => s.StudentNumber))
@@ -69,7 +69,7 @@ internal class ApplicationRepositoryMapper : Profile
     CreateMap<ecer_Transcript, Transcript>(MemberList.Source)
           .ForCtorParam(nameof(Transcript.Id), opt => opt.MapFrom(src => src.ecer_TranscriptId))
           .ForCtorParam(nameof(Transcript.EducationalInstitutionName), opt => opt.MapFrom(src => src.ecer_EducationInstitutionFullName))
-          .ForCtorParam(nameof(Transcript.ProgramName), opt => opt.MapFrom(src => src.ecer_ProgramName))
+          .ForCtorParam(nameof(Transcript.ProgramName), opt => opt.MapFrom(src => src.ecer_ProgramCourseName))
           .ForCtorParam(nameof(Transcript.StudentName), opt => opt.MapFrom(src => src.ecer_StudentName))
           .ForCtorParam(nameof(Transcript.StudentNumber), opt => opt.MapFrom(src => src.ecer_StudentNumber))
           .ForCtorParam(nameof(Transcript.StartDate), opt => opt.MapFrom(src => src.ecer_StartDate))
@@ -109,5 +109,33 @@ internal class ApplicationRepositoryMapper : Profile
           .ForCtorParam(nameof(CharacterReference.PhoneNumber), opt => opt.MapFrom(src => src.ecer_PhoneNumber))
           .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId))
           .ValidateMemberList(MemberList.Destination);
+
+
+    CreateMap<CharacterReferenceSubmissionRequest, ecer_CharacterReference>(MemberList.Source)
+      .ForSourceMember(s => s.ReferenceContactInformation, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ReferenceEvaluation, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ResponseAccuracyConfirmation, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
+      .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.ReferenceContactInformation.FirstName))
+      .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.ReferenceContactInformation.LastName))
+      .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.PhoneNumber))
+      .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.ReferenceContactInformation.Email))
+      .ForMember(d => d.ecer_ReferenceCertifiedProvince, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateProvinceOther))
+      .ForMember(d => d.ecer_ReferenceCertificationNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateNumber))
+      .ForMember(d => d.ecer_HaveObservedApplicantwithChildren, opts => opts.MapFrom(s => s.ReferenceEvaluation.WorkedWithChildren ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
+      .ForMember(d => d.ecer_KnowApplicantsTime, opts => opts.MapFrom(s => s.ReferenceEvaluation.LengthOfAcquaintance))
+      .ForMember(d => d.ecer_RelationshipwithApplicant, opts => opts.MapFrom(s => s.ReferenceEvaluation.Relationship))
+      .ForMember(d => d.ecer_ApplicantSituationDescription, opts => opts.MapFrom(s => s.ReferenceEvaluation.ChildInteractionObservations))
+      .ForMember(d => d.ecer_ApplicantSuitableReason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantTemperamentAssessment))
+      .ForMember(d => d.ecer_ApplicantShouldNOTbeECE, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
+      .ForMember(d => d.ecer_applicantnotqualifiedreason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantNotQualifiedReason));
+
+    CreateMap<UnabletoProvideReferenceReasons, ecer_UnabletoProvideReferenceReasons>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+
+    CreateMap<OptOutReferenceRequest, ecer_CharacterReference>(MemberList.Source)
+      .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
+      .ForMember(d => d.ecer_UnabletoProvideReferenceReason, opts => opts.MapFrom(s => s.UnabletoProvideReferenceReasons));
   }
 }

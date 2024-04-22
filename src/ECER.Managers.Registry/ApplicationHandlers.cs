@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
+using ECER.Engines.Transformation;
+using ECER.Engines.Transformation.PortalInvitations;
 using ECER.Engines.Validation.Applications;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Resources.Documents.Applications;
+using ECER.Resources.Documents.PortalInvitations;
+using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
 
 namespace ECER.Managers.Registry;
@@ -10,11 +14,19 @@ namespace ECER.Managers.Registry;
 /// <summary>
 /// Message handlers
 /// </summary>
-public class ApplicationHandlers(IApplicationRepository applicationRepository, IMapper mapper, IApplicationSubmissionValidationEngine validationEngine)
+public class ApplicationHandlers(
+    IPortalInvitationTransformationEngine transformationEngine,
+    IPortalInvitationRepository portalInvitationRepository,
+     IApplicationRepository applicationRepository,
+     IMapper mapper,
+     IApplicationSubmissionValidationEngine validationEngine,
+     EcerContext ecerContext)
   : IRequestHandler<SaveDraftApplicationCommand, string>,
     IRequestHandler<CancelDraftApplicationCommand, string>,
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
-    IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>
+    IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
+    IRequestHandler<Contract.Applications.CharacterReferenceSubmissionRequest, ReferenceSubmissionResult>,
+    IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -127,5 +139,85 @@ public class ApplicationHandlers(IApplicationRepository applicationRepository, I
       ByStatus = request.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
     }, cancellationToken);
     return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
+  }
+
+  /// <summary>
+  /// Handles Reference Submission
+  /// </summary>
+  /// <param name="request"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  /// <exception cref="InvalidCastException"></exception>
+  public async Task<ReferenceSubmissionResult> Handle(Contract.Applications.CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(portalInvitationRepository);
+    ArgumentNullException.ThrowIfNull(applicationRepository);
+    ArgumentNullException.ThrowIfNull(transformationEngine);
+    ArgumentNullException.ThrowIfNull(mapper);
+    ArgumentNullException.ThrowIfNull(request);
+
+    var transformationResponse = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.Token))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
+    if (transformationResponse.PortalInvitation == Guid.Empty) return ReferenceSubmissionResult.Failure("Invalid Token");
+
+    var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(transformationResponse.PortalInvitation), cancellationToken);
+
+    if (portalInvitation.StatusCode != PortalInvitationStatusCode.Sent) return ReferenceSubmissionResult.Failure("Portal Invitation is not valid or expired");
+
+    var referenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request);
+    referenceRequest.PortalInvitation = portalInvitation;
+
+    ecerContext.BeginTransaction();
+    if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.WorkExperienceReference)
+    {
+      await applicationRepository.SubmitWorkexperienceReference(referenceRequest, cancellationToken);
+    }
+    else if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.CharacterReference)
+    {
+      await applicationRepository.SubmitCharacterReference(referenceRequest, cancellationToken);
+    }
+
+    await portalInvitationRepository.Complete(new CompletePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
+    ecerContext.CommitTransaction();
+    return ReferenceSubmissionResult.Success();
+  }
+
+  /// <summary>
+  /// Handles Reference Opt out
+  /// </summary>
+  /// <param name="request"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  /// <exception cref="InvalidCastException"></exception>
+  public async Task<ReferenceSubmissionResult> Handle(Contract.Applications.OptOutReferenceRequest request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(portalInvitationRepository);
+    ArgumentNullException.ThrowIfNull(applicationRepository);
+    ArgumentNullException.ThrowIfNull(transformationEngine);
+    ArgumentNullException.ThrowIfNull(mapper);
+    ArgumentNullException.ThrowIfNull(request);
+
+    var transformationResponse = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.Token))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
+    if (transformationResponse.PortalInvitation == Guid.Empty) return ReferenceSubmissionResult.Failure("Invalid Token");
+
+    var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(transformationResponse.PortalInvitation), cancellationToken);
+
+    if (portalInvitation.StatusCode != PortalInvitationStatusCode.Sent) return ReferenceSubmissionResult.Failure("Portal Invitation is not valid or expired");
+
+    var referenceRequest = mapper.Map<Resources.Documents.Applications.OptOutReferenceRequest>(request);
+    referenceRequest.PortalInvitation = portalInvitation;
+
+    ecerContext.BeginTransaction();
+    if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.WorkExperienceReference)
+    {
+      await applicationRepository.OptOutWorkExperienceReference(referenceRequest, cancellationToken);
+    }
+    else if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.CharacterReference)
+    {
+      await applicationRepository.OptOutCharacterReference(referenceRequest, cancellationToken);
+    }
+
+    await portalInvitationRepository.Complete(new CompletePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
+    ecerContext.CommitTransaction();
+    return ReferenceSubmissionResult.Success();
   }
 }
