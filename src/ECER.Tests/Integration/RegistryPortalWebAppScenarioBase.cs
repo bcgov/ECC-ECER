@@ -127,7 +127,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Application GetOrAddApplication(EcerContext context, Contact applicant)
   {
     var application = (from a in context.ecer_ApplicationSet
-                       where a.ecer_Applicantid.Id == applicant.Id
+                       where a.ecer_Applicantid.Id == applicant.Id && a.ecer_isECE5YR == true && a.StatusCode == ecer_Application_StatusCode.InProgress
                        select a).FirstOrDefault();
 
     if (application == null)
@@ -135,6 +135,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       application = new ecer_Application
       {
         Id = Guid.NewGuid(),
+        ecer_isECE5YR = true,
+        StatusCode = ecer_Application_StatusCode.InProgress,
+        StateCode = ecer_application_statecode.Active,
+        ecer_CertificateType = "ECE 5 YR",
       };
       context.AddObject(application);
       context.AddLink(application, ecer_Application.Fields.ecer_application_Applicantid_contact, applicant);
@@ -172,6 +176,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
                                                                                 p.ecer_Name == name &&
                                                                                 p.ecer_CharacterReferenceId != null &&
                                                                                 p.StatusCode == ecer_PortalInvitation_StatusCode.Sent);
+
     if (portalInvitation == null)
     {
       var characterGuid = Guid.NewGuid();
@@ -213,7 +218,6 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       context.AddObject(workexperienceReference);
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_CharacterReferenceId, characterReference);
-      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, testApplication);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, testApplication);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_WorkExperienceRefId, workexperienceReference);

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Utilities.Hosting;
 using MediatR;
@@ -32,10 +33,10 @@ public record PortalInvitationQueryResult(PortalInvitation PortalInvitation);
 
 public record PortalInvitation(string? Id, string Name, string ReferenceFirstName, string ReferenceLastName, string ReferenceEmailAddress)
 {
-  public string? ApplicantId { get; set; }
   public string? ApplicantFirstName { get; set; }
   public string? ApplicantLastName { get; set; }
   public string? ApplicationId { get; set; }
+  public IEnumerable<CertificationType>? CertificationTypes { get; set; }
   public string? WorkexperienceReferenceId { get; set; }
   public string? CharacterReferenceId { get; set; }
   public InviteType? InviteType { get; set; }
