@@ -24,4 +24,4 @@ interface Wizard {
   };
 }
 
-type ReferenceStage = "Declaration" | "Decline" | "ContactInformation" | "Assessment" | "Review";
+type ReferenceStage = "Declaration" | "Decline" | "ContactInformation" | "Assessment" | "Review" | "ReferenceEvaluation";
