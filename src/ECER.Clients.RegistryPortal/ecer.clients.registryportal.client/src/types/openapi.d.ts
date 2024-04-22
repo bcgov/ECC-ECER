@@ -73,7 +73,11 @@ declare namespace Components {
       id?: string | null;
       subject?: string | null;
       text?: string | null;
+      acknowledged?: boolean;
+      notifiedOn?: string; // date-time
+      status?: CommunicationStatus;
     }
+    export type CommunicationStatus = "Draft" | "NotifiedRecipient" | "Acknowledged" | "Inactive";
     export interface CommunicationsStatus {
       count?: number; // int32
       hasUnread?: boolean;

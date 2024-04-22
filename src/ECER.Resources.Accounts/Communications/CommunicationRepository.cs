@@ -22,15 +22,23 @@ internal class CommunicationRepository : ICommunicationRepository
                          join a in context.ecer_ApplicationSet on c.ecer_Applicationid.Id equals a.ecer_ApplicationId
                          select new { c, a };
 
+    // Filtering by status
     if (query.ByStatus != null)
     {
       var statuses = mapper.Map<IEnumerable<ecer_Communication_StatusCode>>(query.ByStatus)!.ToList();
       communications = communications.WhereIn(communication => communication.c.StatusCode!.Value, statuses);
     }
 
+    // Filtering by ID  
     if (query.ById != null) communications = communications.Where(r => r.c.ecer_CommunicationId == Guid.Parse(query.ById));
+    
+    // Filtering by registrant ID
     if (query.ByRegistrantId != null) communications = communications.Where(r => r.c.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
-    var data = communications.Select(r => r.c).ToList();
+
+    //Sort by notifiedOn in descending order
+    var sortedCommunications = communications.OrderByDescending(r => r.c.ecer_DateNotified);
+    
+    var data = sortedCommunications.Select(r => r.c).ToList();
     var result = mapper.Map<IEnumerable<Communication>>(data);
     return result!;
   }
