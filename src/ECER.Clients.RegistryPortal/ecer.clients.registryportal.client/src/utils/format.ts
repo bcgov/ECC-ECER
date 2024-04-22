@@ -21,7 +21,7 @@ export function formatPhoneNumber(input: string): string {
   return input;
 }
 
-export function formatDate(inputDate: string, toFormat: string = "yyyy-MM-dd") {
+export function formatDate(inputDate: string, toFormat: DateFormat = "yyyy-MM-dd") {
   if (inputDate) {
     const formattedDate = DateTime.fromISO(inputDate).toFormat(toFormat);
 
