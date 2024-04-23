@@ -167,11 +167,11 @@ public class ApplicationHandlers(
     referenceRequest.PortalInvitation = portalInvitation;
 
     ecerContext.BeginTransaction();
-    if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.WorkExperienceReference)
+    if (portalInvitation.InviteType == InviteType.WorkExperienceReference)
     {
       await applicationRepository.SubmitWorkexperienceReference(referenceRequest, cancellationToken);
     }
-    else if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.CharacterReference)
+    else if (portalInvitation.InviteType == InviteType.CharacterReference)
     {
       await applicationRepository.SubmitCharacterReference(referenceRequest, cancellationToken);
     }
@@ -207,11 +207,11 @@ public class ApplicationHandlers(
     referenceRequest.PortalInvitation = portalInvitation;
 
     ecerContext.BeginTransaction();
-    if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.WorkExperienceReference)
+    if (portalInvitation.InviteType == InviteType.WorkExperienceReference)
     {
       await applicationRepository.OptOutWorkExperienceReference(referenceRequest, cancellationToken);
     }
-    else if (transformationResponse.InviteType == Admin.Contract.PortalInvitations.InviteType.CharacterReference)
+    else if (portalInvitation.InviteType == InviteType.CharacterReference)
     {
       await applicationRepository.OptOutCharacterReference(referenceRequest, cancellationToken);
     }
