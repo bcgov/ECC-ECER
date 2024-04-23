@@ -15,7 +15,8 @@
       <v-container class="mb-8">
         <v-row no-gutters>
           <v-col>
-            <v-btn v-if="wizardStore.step === userReviewStep" rounded="lg" variant="flat" color="primary" @click="handleSubmit">Submit</v-btn>
+            <v-btn v-if="wizardStore.step === userDeclinedStep" rounded="lg" variant="flat" color="primary" @click="handleDecline">Submit</v-btn>
+            <v-btn v-else-if="wizardStore.step === userReviewStep" rounded="lg" variant="flat" color="primary" @click="handleSubmit">Submit</v-btn>
             <v-btn v-else rounded="lg" variant="flat" color="primary" @click="handleContinue">Continue</v-btn>
           </v-col>
         </v-row>
@@ -28,7 +29,7 @@
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 
-import { getReference } from "@/api/reference";
+import { getReference,optOutReference } from "@/api/reference";
 import characterReferenceWizardConfig from "@/config/character-reference-wizard";
 import workExperienceReferenceWizardConfig from "@/config/work-experience-reference-wizard";
 import { useAlertStore } from "@/store/alert";
@@ -36,6 +37,8 @@ import { useWizardStore } from "@/store/wizard";
 import { PortalInviteType } from "@/utils/constant";
 
 import Wizard from "../Wizard.vue";
+import { Console } from "console";
+import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "Reference",
@@ -91,8 +94,13 @@ export default defineComponent({
       }
     },
     handleSubmit() {
-      this.alertStore.setWarningAlert("Submit does not work yet");
+
+      this.alertStore.setWarningAlert("User Accepted");
     },
+    async handleDecline() {
+      const reason = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.referenceDecline.id];
+      await optOutReference(this.$route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons);
+    }
   },
 });
 </script>

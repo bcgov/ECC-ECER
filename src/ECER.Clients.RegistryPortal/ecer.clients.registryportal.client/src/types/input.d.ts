@@ -23,6 +23,16 @@ interface EceTextFieldProps {
   maxLength?: number;
 }
 
+interface EceRadioFieldProps {
+  options: EceRadioOption[];
+  title: string;
+}
+
+interface EceRadioOption {
+  key: string;
+  label: string;
+}
+
 interface EceEducationProps {}
 interface EceWorkExperienceReferencesProps {}
 
