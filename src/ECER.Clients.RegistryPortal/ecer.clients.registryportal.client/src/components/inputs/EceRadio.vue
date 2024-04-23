@@ -23,7 +23,7 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_reference: string) => "",
+    "update:model-value": (_reference: string) => true,
   },
 });
 </script>

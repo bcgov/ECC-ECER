@@ -15,7 +15,7 @@
       <v-container class="mb-8">
         <v-row no-gutters>
           <v-col>
-            <v-btn v-if="wizardStore.step === userDeclinedStep" rounded="lg" variant="flat" color="primary" @click="handleDecline">Submit</v-btn>
+            <v-btn :loading="loadingStore.isLoading('reference_optout')" v-if="wizardStore.step === userDeclinedStep" rounded="lg" variant="flat" color="primary" @click="handleDecline">Submit</v-btn>
             <v-btn v-else-if="wizardStore.step === userReviewStep" rounded="lg" variant="flat" color="primary" @click="handleSubmit">Submit</v-btn>
             <v-btn v-else rounded="lg" variant="flat" color="primary" @click="handleContinue">Continue</v-btn>
           </v-col>
@@ -35,7 +35,7 @@ import workExperienceReferenceWizardConfig from "@/config/work-experience-refere
 import { useAlertStore } from "@/store/alert";
 import { useWizardStore } from "@/store/wizard";
 import { PortalInviteType } from "@/utils/constant";
-
+import { useLoadingStore } from "@/store/loading";
 import Wizard from "../Wizard.vue";
 import type { Components } from "@/types/openapi";
 
@@ -46,14 +46,14 @@ export default defineComponent({
     const route = useRoute();
     const { data } = await getReference(route.params.token as string);
     const wizardStore = useWizardStore();
+    const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
     if (data?.portalInvitation?.inviteType === PortalInviteType.WORK_EXPERIENCE) {
       wizardStore.initializeWizardForReference(workExperienceReferenceWizardConfig, data.portalInvitation);
     } else if (data?.portalInvitation?.inviteType === PortalInviteType.CHARACTER) {
       wizardStore.initializeWizardForReference(characterReferenceWizardConfig, data.portalInvitation);
     }
-
-    return { alertStore, workExperienceReferenceWizardConfig, characterReferenceWizardConfig, wizardStore, PortalInviteType };
+    return { alertStore, workExperienceReferenceWizardConfig, characterReferenceWizardConfig, wizardStore, PortalInviteType, loadingStore };
   },
   computed: {
     userDeclinedStep(): number {
@@ -109,7 +109,6 @@ export default defineComponent({
 
       const reason = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.referenceDecline.id];
       const result = await optOutReference(this.$route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons);
-      console.log(result);
       if (result.data) {
           this.$router.push({ path: "/reference-submitted" });
         }
