@@ -16,6 +16,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { watch } from "vue";
 import { useRouter } from "vue-router";
 
 import { useUserStore } from "@/store/user";
@@ -51,12 +52,21 @@ export default defineComponent({
         // Set user info and profile info in the store
         userStore.setUserInfo(userInfo);
         userStore.setUserProfile(profileInfo);
-
-        router.push("/");
       } else {
+        // Push user to the new user page if they don't have user info
         router.push("/new-user");
       }
     });
+
+    watch(
+      () => userStore.hasUserInfo,
+      async (user) => {
+        if (user) {
+          // Push user to the home page after login
+          router.push("/");
+        }
+      },
+    );
 
     return { userStore, oidcStore };
   },
