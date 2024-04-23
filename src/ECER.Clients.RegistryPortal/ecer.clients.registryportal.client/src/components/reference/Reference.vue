@@ -109,7 +109,7 @@ export default defineComponent({
 
       const reason = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.referenceDecline.id];
       const result = await optOutReference(this.$route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons);
-      if (result.data) {
+      if (!result.error) {
           this.$router.push({ path: "/reference-submitted" });
         }
     }
