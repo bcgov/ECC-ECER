@@ -1,11 +1,13 @@
 <template>
-  <h3>
+  <div>
+    <h3>
     {{ props.title }}
   </h3>
   <br />
   <v-radio-group @update:model-value="(value) => $emit('update:model-value', value as string)">
     <v-radio v-for="option in props.options" :key="option.key" :label="option.label" :value="option.key"></v-radio>
   </v-radio-group>
+  </div>
 </template>
 
 <script lang="ts">
