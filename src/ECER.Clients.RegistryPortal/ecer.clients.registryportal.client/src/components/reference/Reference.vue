@@ -37,7 +37,6 @@ import { useWizardStore } from "@/store/wizard";
 import { PortalInviteType } from "@/utils/constant";
 
 import Wizard from "../Wizard.vue";
-import { Console } from "console";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
@@ -98,8 +97,22 @@ export default defineComponent({
       this.alertStore.setWarningAlert("User Accepted");
     },
     async handleDecline() {
+
+      const currentStepFormId = this.wizardStore.currentStep.form.id;
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const { valid } = await formRef.validate();
+
+      if (!valid) {
+        this.alertStore.setFailureAlert("Please fill out all required fields");
+        return;
+      }
+
       const reason = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.referenceDecline.id];
-      await optOutReference(this.$route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons);
+      const result = await optOutReference(this.$route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons);
+      console.log(result);
+      if (result.data) {
+          this.$router.push({ path: "/reference-submitted" });
+        }
     }
   },
 });
