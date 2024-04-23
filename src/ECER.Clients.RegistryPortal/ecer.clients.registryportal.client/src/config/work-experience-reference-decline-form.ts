@@ -1,5 +1,6 @@
 import EceRadio from "@/components/inputs/EceRadio.vue";
 import type { Form } from "@/types/form";
+import * as Rules from "@/utils/formRules";
 
 const workExperienceDeclineForm: Form = {
   id: "declineForm",
@@ -20,6 +21,7 @@ const workExperienceDeclineForm: Form = {
           { key: "Other", label: "Other" },
         ],
         title: "Tell us why you're unable to provide a reference",
+        rules: [Rules.required()],
       },
       cols: {
         md: 12,

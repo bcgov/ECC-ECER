@@ -4,7 +4,7 @@
     {{ props.title }}
   </h3>
   <br />
-  <v-radio-group :rules="[Rules.requiredRadio()]" @update:model-value="(value) => $emit('update:model-value', value as string)">
+  <v-radio-group :rules="props.rules" @update:model-value="(value) => $emit('update:model-value', value as string)">
     <v-radio v-for="option in props.options" :key="option.key" :label="option.label" :value="option.key"></v-radio>
   </v-radio-group>
   </div>
@@ -12,7 +12,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import * as Rules from "@/utils/formRules";
 import type { EceRadioFieldProps } from "@/types/input";
 
 export default defineComponent({
@@ -25,11 +24,6 @@ export default defineComponent({
   },
   emits: {
     "update:model-value": (_reference: string) => "",
-  },
-  data() {
-    return {
-      Rules,
-    };
   },
 });
 </script>

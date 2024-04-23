@@ -24,6 +24,7 @@ interface EceTextFieldProps {
 }
 
 interface EceRadioFieldProps {
+  rules: readonly ValidationRule$1[];
   options: EceRadioOption[];
   title: string;
 }
