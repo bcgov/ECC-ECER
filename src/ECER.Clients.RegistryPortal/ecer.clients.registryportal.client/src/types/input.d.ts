@@ -23,6 +23,17 @@ interface EceTextFieldProps {
   maxLength?: number;
 }
 
+interface EceRadioFieldProps {
+  rules: readonly ValidationRule$1[];
+  options: EceRadioOption[];
+  title: string;
+}
+
+interface EceRadioOption {
+  key: string;
+  label: string;
+}
+
 interface EceEducationProps {}
 interface EceWorkExperienceReferencesProps {}
 

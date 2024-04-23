@@ -1,4 +1,10 @@
-import type { AxiosRequestConfig, OpenAPIClient, OperationResponse, Parameters, UnknownParamsObject } from "openapi-client-axios";
+import type {
+  OpenAPIClient,
+  Parameters,
+  UnknownParamsObject,
+  OperationResponse,
+  AxiosRequestConfig,
+} from 'openapi-client-axios';
 
 declare namespace Components {
   namespace Schemas {
@@ -30,19 +36,7 @@ declare namespace Components {
         [name: string]: OidcAuthenticationSettings;
       } | null;
     }
-    export type ApplicationStatus =
-      | "Draft"
-      | "Submitted"
-      | "Complete"
-      | "Reconsideration"
-      | "Cancelled"
-      | "Escalated"
-      | "Decision"
-      | "Withdrawn"
-      | "Ready"
-      | "InProgress"
-      | "PendingQueue"
-      | "ReconsiderationDecision";
+    export type ApplicationStatus = "Draft" | "Submitted" | "Complete" | "Reconsideration" | "Cancelled" | "Escalated" | "Decision" | "Withdrawn" | "Ready" | "InProgress" | "PendingQueue" | "ReconsiderationDecision";
     /**
      * Submit application request
      */
@@ -68,6 +62,30 @@ declare namespace Components {
       phoneNumber?: string | null;
       emailAddress?: string | null;
       id?: string | null;
+    }
+    export interface CharacterReferenceContactInformation {
+      lastName?: string | null;
+      firstName?: string | null;
+      email?: string | null;
+      phoneNumber?: string | null;
+      certificateNumber?: string | null;
+      certificateProvinceId?: string | null;
+      certificateProvinceOther?: string | null;
+    }
+    export interface CharacterReferenceEvaluation {
+      relationship?: string | null;
+      lengthOfAcquaintance?: string | null;
+      workedWithChildren?: boolean;
+      childInteractionObservations?: string | null;
+      applicantTemperamentAssessment?: string | null;
+      applicantShouldNotBeECE?: boolean;
+      applicantNotQualifiedReason?: string | null;
+    }
+    export interface CharacterReferenceSubmissionRequest {
+      token?: string | null;
+      referenceContactInformation?: CharacterReferenceContactInformation;
+      referenceEvaluation?: CharacterReferenceEvaluation;
+      responseAccuracyConfirmation?: boolean;
     }
     export interface Communication {
       id?: string | null;
@@ -121,19 +139,26 @@ declare namespace Components {
       scope?: string | null;
       idp?: string | null;
     }
+    export interface OptOutReferenceRequest {
+      token?: string | null;
+      unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
+    }
     export interface PortalInvitation {
       id?: string | null;
       name?: string | null;
       referenceFirstName?: string | null;
       referenceLastName?: string | null;
       referenceEmailAddress?: string | null;
-      applicantId?: string | null;
       applicantFirstName?: string | null;
       applicantLastName?: string | null;
       applicationId?: string | null;
+      certificationTypes?: CertificationType[] | null;
       workexperienceReferenceId?: string | null;
       characterReferenceId?: string | null;
       inviteType?: InviteType;
+    }
+    export interface PortalInvitationQueryResult {
+      portalInvitation?: PortalInvitation;
     }
     export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
     export interface ProblemDetails {
@@ -144,8 +169,9 @@ declare namespace Components {
       detail?: string | null;
       instance?: string | null;
     }
-    export interface ReferenceQueryResult {
-      portalInvitation?: PortalInvitation;
+    export interface Province {
+      provinceId?: string | null;
+      provinceName?: string | null;
     }
     /**
      * Save draft application request
@@ -167,6 +193,7 @@ declare namespace Components {
       startDate: string; // date-time
       endDate: string; // date-time
     }
+    export type UnabletoProvideReferenceReasons = "Iamunabletoatthistime" | "Idonothavetheinformationrequired" | "Idonotknowthisperson" | "Idonotmeettherequirementstoprovideareference" | "Other";
     export interface UserInfo {
       firstName?: string | null;
       lastName?: string | null;
@@ -222,7 +249,16 @@ declare namespace Paths {
     namespace Responses {
       export type $200 = Components.Schemas.SubmitApplicationResponse;
       export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
-      export interface $404 {}
+      export interface $404 {
+      }
+    }
+  }
+  namespace CharacterReferencePost {
+    export type RequestBody = Components.Schemas.CharacterReferenceSubmissionRequest;
+    namespace Responses {
+      export interface $200 {
+      }
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace ConfigurationGet {
@@ -268,13 +304,28 @@ declare namespace Paths {
   namespace ProfileGet {
     namespace Responses {
       export type $200 = /* User profile information */ Components.Schemas.UserProfile;
-      export interface $404 {}
+      export interface $404 {
+      }
     }
   }
   namespace ProfilePut {
     export type RequestBody = /* User profile information */ Components.Schemas.UserProfile;
     namespace Responses {
-      export interface $200 {}
+      export interface $200 {
+      }
+    }
+  }
+  namespace ProvinceGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.Province[];
+    }
+  }
+  namespace ReferenceOptout {
+    export type RequestBody = Components.Schemas.OptOutReferenceRequest;
+    namespace Responses {
+      export interface $200 {
+      }
+      export type $400 = string;
     }
   }
   namespace ReferencesGet {
@@ -285,20 +336,22 @@ declare namespace Paths {
       token?: Parameters.Token;
     }
     namespace Responses {
-      export type $200 = Components.Schemas.ReferenceQueryResult;
+      export type $200 = Components.Schemas.PortalInvitationQueryResult;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace UserinfoGet {
     namespace Responses {
       export type $200 = Components.Schemas.UserInfo;
-      export interface $404 {}
+      export interface $404 {
+      }
     }
   }
   namespace UserinfoPost {
     export type RequestBody = Components.Schemas.UserInfo;
     namespace Responses {
-      export interface $200 {}
+      export interface $200 {
+      }
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
@@ -308,210 +361,276 @@ export interface OperationMethods {
   /**
    * configuration_get - Returns the UI initial configuration
    */
-  "configuration_get"(
+  'configuration_get'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.ConfigurationGet.Responses.$200>
+  /**
+   * province_get - Handles province queries
+   */
+  'province_get'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.ProvinceGet.Responses.$200>
   /**
    * profile_get - Gets the current user profile
    */
-  "profile_get"(
+  'profile_get'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ProfileGet.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.ProfileGet.Responses.$200>
   /**
    * profile_put - Gets the current user profile
    */
-  "profile_put"(
+  'profile_put'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.ProfilePut.RequestBody,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ProfilePut.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.ProfilePut.Responses.$200>
   /**
    * userinfo_get - Gets the currently logged in user profile or NotFound if no profile found
    */
-  "userinfo_get"(
+  'userinfo_get'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.UserinfoGet.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.UserinfoGet.Responses.$200>
   /**
    * userinfo_post - Creates or updates the currently logged on user's profile
    */
-  "userinfo_post"(
+  'userinfo_post'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.UserinfoPost.RequestBody,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.UserinfoPost.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.UserinfoPost.Responses.$200>
   /**
    * references_get - Handles references queries
    */
-  "references_get"(
+  'references_get'(
     parameters?: Parameters<Paths.ReferencesGet.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ReferencesGet.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.ReferencesGet.Responses.$200>
+  /**
+   * character_reference_post - Handles character reference submission
+   */
+  'character_reference_post'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.CharacterReferencePost.RequestBody,
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.CharacterReferencePost.Responses.$200>
+  /**
+   * reference_optout - Handles reference optout
+   */
+  'reference_optout'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.ReferenceOptout.RequestBody,
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.ReferenceOptout.Responses.$200>
   /**
    * message_get - Handles messages queries
    */
-  "message_get"(
+  'message_get'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.MessageGet.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.MessageGet.Responses.$200>
   /**
    * message_status_get - Handles messages status
    */
-  "message_status_get"(
+  'message_status_get'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.MessageStatusGet.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.MessageStatusGet.Responses.$200>
   /**
    * draftapplication_put - Save a draft application for the current user
    */
-  "draftapplication_put"(
+  'draftapplication_put'(
     parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,
     data?: Paths.DraftapplicationPut.RequestBody,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.DraftapplicationPut.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.DraftapplicationPut.Responses.$200>
   /**
    * application_post - Submit an application
    */
-  "application_post"(
+  'application_post'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.ApplicationPost.RequestBody,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ApplicationPost.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.ApplicationPost.Responses.$200>
   /**
    * application_get - Handles application queries
    */
-  "application_get"(
+  'application_get'(
     parameters?: Parameters<Paths.ApplicationGet.PathParameters & Paths.ApplicationGet.QueryParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.ApplicationGet.Responses.$200>
   /**
    * draftapplication_delete - Cancel a draft application for the current user
-   *
+   * 
    * Changes status to cancelled
    */
-  "draftapplication_delete"(
+  'draftapplication_delete'(
     parameters?: Parameters<Paths.DraftapplicationDelete.PathParameters> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.DraftapplicationDelete.Responses.$200>;
+    config?: AxiosRequestConfig
+  ): OperationResponse<Paths.DraftapplicationDelete.Responses.$200>
 }
 
 export interface PathsDictionary {
-  ["/api/configuration"]: {
+  ['/api/configuration']: {
     /**
      * configuration_get - Returns the UI initial configuration
      */
-    "get"(
+    'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
-  };
-  ["/api/profile"]: {
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.ConfigurationGet.Responses.$200>
+  }
+  ['/api/provincelist']: {
+    /**
+     * province_get - Handles province queries
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.ProvinceGet.Responses.$200>
+  }
+  ['/api/profile']: {
     /**
      * profile_get - Gets the current user profile
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProfileGet.Responses.$200>;
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.ProfileGet.Responses.$200>
     /**
      * profile_put - Gets the current user profile
      */
-    "put"(
+    'put'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.ProfilePut.RequestBody,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.ProfilePut.Responses.$200>;
-  };
-  ["/api/userinfo"]: {
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.ProfilePut.Responses.$200>
+  }
+  ['/api/userinfo']: {
     /**
      * userinfo_get - Gets the currently logged in user profile or NotFound if no profile found
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.UserinfoGet.Responses.$200>;
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.UserinfoGet.Responses.$200>
     /**
      * userinfo_post - Creates or updates the currently logged on user's profile
      */
-    "post"(
+    'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.UserinfoPost.RequestBody,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.UserinfoPost.Responses.$200>;
-  };
-  ["/api/PortalInvitations/{token}"]: {
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.UserinfoPost.Responses.$200>
+  }
+  ['/api/PortalInvitations/{token}']: {
     /**
      * references_get - Handles references queries
      */
-    "get"(
+    'get'(
       parameters?: Parameters<Paths.ReferencesGet.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.ReferencesGet.Responses.$200>;
-  };
-  ["/api/messages"]: {
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.ReferencesGet.Responses.$200>
+  }
+  ['/api/CharacterReference']: {
+    /**
+     * character_reference_post - Handles character reference submission
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.CharacterReferencePost.RequestBody,
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.CharacterReferencePost.Responses.$200>
+  }
+  ['/api/OptOutReference']: {
+    /**
+     * reference_optout - Handles reference optout
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.ReferenceOptout.RequestBody,
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.ReferenceOptout.Responses.$200>
+  }
+  ['/api/messages']: {
     /**
      * message_get - Handles messages queries
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.MessageGet.Responses.$200>;
-  };
-  ["/api/messages/status"]: {
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.MessageGet.Responses.$200>
+  }
+  ['/api/messages/status']: {
     /**
      * message_status_get - Handles messages status
      */
-    "get"(
+    'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.MessageStatusGet.Responses.$200>;
-  };
-  ["/api/draftapplications/{id}"]: {
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.MessageStatusGet.Responses.$200>
+  }
+  ['/api/draftapplications/{id}']: {
     /**
      * draftapplication_put - Save a draft application for the current user
      */
-    "put"(
+    'put'(
       parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,
       data?: Paths.DraftapplicationPut.RequestBody,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.DraftapplicationPut.Responses.$200>;
-  };
-  ["/api/applications"]: {
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.DraftapplicationPut.Responses.$200>
+  }
+  ['/api/applications']: {
     /**
      * application_post - Submit an application
      */
-    "post"(
+    'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.ApplicationPost.RequestBody,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.ApplicationPost.Responses.$200>;
-  };
-  ["/api/applications/{id}"]: {
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.ApplicationPost.Responses.$200>
+  }
+  ['/api/applications/{id}']: {
     /**
      * application_get - Handles application queries
      */
-    "get"(
+    'get'(
       parameters?: Parameters<Paths.ApplicationGet.PathParameters & Paths.ApplicationGet.QueryParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
-  };
-  ["/api/draftApplications/{id}"]: {
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.ApplicationGet.Responses.$200>
+  }
+  ['/api/draftApplications/{id}']: {
     /**
      * draftapplication_delete - Cancel a draft application for the current user
-     *
+     * 
      * Changes status to cancelled
      */
-    "delete"(
+    'delete'(
       parameters?: Parameters<Paths.DraftapplicationDelete.PathParameters> | null,
       data?: any,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.DraftapplicationDelete.Responses.$200>;
-  };
+      config?: AxiosRequestConfig
+    ): OperationResponse<Paths.DraftapplicationDelete.Responses.$200>
+  }
 }
 
-export type Client = OpenAPIClient<OperationMethods, PathsDictionary>;
+export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
