@@ -1,10 +1,10 @@
 import characterReferenceDeclarationForm from "@/config/character-reference-declaration-form";
-import characterReferenceContactForm from "./character-reference-contact-information-form";
-import characterReferenceReviewForm from "./character-reference-review-form";
-import characterReferenceReferenceEvaluationForm from "./character-reference-reference-evaluation-form";
-
-import type { Wizard } from "@/types/wizard";
 import characterReferenceDeclineForm from "@/config/character-reference-decline-form";
+import type { Wizard } from "@/types/wizard";
+
+import characterReferenceContactForm from "./character-reference-contact-information-form";
+import characterReferenceReferenceEvaluationForm from "./character-reference-reference-evaluation-form";
+import characterReferenceReviewForm from "./character-reference-review-form";
 
 const characterReferenceWizardConfig: Wizard = {
   id: "characterReferenceWizard",
