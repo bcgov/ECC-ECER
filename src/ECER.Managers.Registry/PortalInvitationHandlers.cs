@@ -3,23 +3,22 @@ using ECER.Engines.Transformation;
 using ECER.Engines.Transformation.PortalInvitations;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Resources.Accounts.Registrants;
+using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
 using MediatR;
 
 namespace ECER.Managers.Registry;
 
-public class PortalInvitationHandlers(IPortalInvitationTransformationEngine transformationEngine, IPortalInvitationRepository portalInvitationRepository, IRegistrantRepository registrantRepository, IMapper mapper)
+public class PortalInvitationHandlers(IPortalInvitationTransformationEngine transformationEngine, IPortalInvitationRepository portalInvitationRepository, IApplicationRepository applicationRepository, IRegistrantRepository registrantRepository, IMapper mapper)
   : IRequestHandler<PortalInvitationVerificationQuery, PortalInvitationVerificationQueryResult>
 {
   public async Task<PortalInvitationVerificationQueryResult> Handle(PortalInvitationVerificationQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    ArgumentNullException.ThrowIfNull(transformationEngine);
     var response = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.VerificationToken))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
-    if (response.portalInvitation == Guid.Empty) return PortalInvitationVerificationQueryResult.Failure("Invalid Token");
+    if (response.PortalInvitation == Guid.Empty) return PortalInvitationVerificationQueryResult.Failure("Invalid Token");
 
-    var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(response.portalInvitation), cancellationToken);
-
+    var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(response.PortalInvitation), cancellationToken);
     var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
 
     var applicant = registrantResult.SingleOrDefault();
@@ -29,6 +28,12 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
     result.ApplicantFirstName = applicant.Profile.FirstName;
     result.ApplicantLastName = applicant.Profile.LastName;
 
+    var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
+    var application = applications.SingleOrDefault();
+    if (application != null)
+    {
+      result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;
+    }
     return PortalInvitationVerificationQueryResult.Success(result);
   }
 }

@@ -87,7 +87,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_completedcourse_Transcriptid = "ecer_completedcourse_Transcriptid";
 			public const string ecer_CompletedOnline = "ecer_completedonline";
 			public const string ecer_completedonlineName = "ecer_completedonlinename";
-			public const string ecer_CourseName = "ecer_coursename";
 			public const string ecer_DoesECERegistryHaveTranscript = "ecer_doeseceregistryhavetranscript";
 			public const string ecer_doeseceregistryhavetranscriptName = "ecer_doeseceregistryhavetranscriptname";
 			public const string ecer_EducationInstitutionFullName = "ecer_educationinstitutionfullname";
@@ -102,7 +101,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PostSecondaryInstituteidName = "ecer_postsecondaryinstituteidname";
 			public const string ecer_PostSecondaryInstituteidYomiName = "ecer_postsecondaryinstituteidyominame";
 			public const string ecer_ProgramCourseName = "ecer_programcoursename";
-			public const string ecer_ProgramName = "ecer_programname";
 			public const string ecer_StartDate = "ecer_startdate";
 			public const string ecer_StudentName = "ecer_studentname";
 			public const string ecer_StudentNumber = "ecer_studentnumber";
@@ -414,21 +412,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_coursename")]
-		public string ecer_CourseName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_coursename");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_coursename", value);
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_doeseceregistryhavetranscript")]
 		public System.Nullable<bool> ecer_DoesECERegistryHaveTranscript
 		{
@@ -646,21 +629,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_programcoursename", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programname")]
-		public string ecer_ProgramName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_programname");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_programname", value);
 			}
 		}
 		

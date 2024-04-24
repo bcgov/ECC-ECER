@@ -99,6 +99,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ecer_characterreference_Applicantid_conta = "ecer_ecer_characterreference_Applicantid_conta";
 			public const string ecer_EmailAddress = "ecer_emailaddress";
 			public const string ecer_FirstName = "ecer_firstname";
+			public const string ecer_HaveObservedApplicantwithChildren = "ecer_haveobservedapplicantwithchildren";
+			public const string ecer_haveobservedapplicantwithchildrenName = "ecer_haveobservedapplicantwithchildrenname";
 			public const string ecer_KnowApplicantsTime = "ecer_knowapplicantstime";
 			public const string ecer_LastName = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
@@ -574,6 +576,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_firstname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_haveobservedapplicantwithchildren")]
+		public virtual ecer_YesNoNull? ecer_HaveObservedApplicantwithChildren
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_haveobservedapplicantwithchildren")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_haveobservedapplicantwithchildren", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_haveobservedapplicantwithchildrenname")]
+		public string ecer_haveobservedapplicantwithchildrenName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_haveobservedapplicantwithchildren"))
+				{
+					return this.FormattedValues["ecer_haveobservedapplicantwithchildren"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

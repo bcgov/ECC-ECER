@@ -7,8 +7,9 @@ public class PortalInvitationMapper : Profile
 {
   public PortalInvitationMapper()
   {
-    CreateMap<PortalInvitation, Registry.Contract.PortalInvitations.PortalInvitation>()
+    CreateMap<PortalInvitation, Contract.PortalInvitations.PortalInvitation>()
          .ForMember(dest => dest.ApplicantFirstName, opt => opt.Ignore())
-            .ForMember(dest => dest.ApplicantLastName, opt => opt.Ignore());
+         .ForMember(dest => dest.ApplicantLastName, opt => opt.Ignore())
+         .ForMember(dest => dest.CertificationTypes, opt => opt.Ignore());
   }
 }

@@ -25,5 +25,14 @@ internal class ApplicationMapper : Profile
     CreateMap<Contract.Applications.Transcript, Transcript>().ReverseMap();
     CreateMap<Contract.Applications.WorkExperienceReference, WorkExperienceReference>().ReverseMap();
     CreateMap<Contract.Applications.CharacterReference, CharacterReference>().ReverseMap();
+
+
+    CreateMap<Contract.Applications.CharacterReferenceContactInformation, CharacterReferenceContactInformation>();
+    CreateMap<Contract.Applications.CharacterReferenceEvaluation, CharacterReferenceEvaluation>();
+    CreateMap<Contract.Applications.CharacterReferenceSubmissionRequest, CharacterReferenceSubmissionRequest>()
+      .ForMember(d => d.PortalInvitation, opts => opts.Ignore());
+
+    CreateMap<Contract.Applications.OptOutReferenceRequest, OptOutReferenceRequest>()
+      .ForMember(d => d.PortalInvitation, opts => opts.Ignore());
   }
 }

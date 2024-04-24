@@ -14,8 +14,6 @@ public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfigur
   public async Task Handle(SaveFileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    ArgumentNullException.ThrowIfNull(objectStorageProvider);
-    ArgumentNullException.ThrowIfNull(configuration);
 
     var bucket = GetBucketName(configuration);
     await Parallel.ForEachAsync(request.Items, cancellationToken, async (file, ct) =>

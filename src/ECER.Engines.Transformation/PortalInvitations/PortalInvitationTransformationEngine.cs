@@ -20,22 +20,22 @@ internal sealed class PortalInvitationTransformationEngine(IDataProtectionProvid
   {
     await Task.CompletedTask;
 
-    var expiryDate = DateTime.UtcNow.AddDays(request.validDays); // Example expiry date
+    var expiryDate = DateTime.UtcNow.AddDays(request.ValidDays); // Example expiry date
     var protector = dataProtectionProvider.CreateProtector(nameof(PortalInvitationTransformationEngine)).ToTimeLimitedDataProtector();
 
     // Combine referenceType and portalInvitation into a single string
-    var combinedData = $"{request.inviteType}:{request.portalInvitation}";
+    var combinedData = $"{request.InviteType}:{request.PortalInvitation}";
     var encryptedData = protector.Protect(combinedData, expiryDate);
 
     var referenceLink = WebUtility.UrlEncode(encryptedData);
-    return new EncryptInviteTokenResponse(request.portalInvitation, referenceLink);
+    return new EncryptInviteTokenResponse(request.PortalInvitation, referenceLink);
   }
 
   private async Task<DecryptInviteTokenResponse> DecryptInviteToken(DecryptInviteTokenRequest request)
   {
     await Task.CompletedTask;
 
-    var encryptedData = WebUtility.UrlDecode(request.verificationToken);
+    var encryptedData = WebUtility.UrlDecode(request.VerificationToken);
 
     var protector = dataProtectionProvider.CreateProtector(nameof(PortalInvitationTransformationEngine)).ToTimeLimitedDataProtector();
     var decryptedData = protector.Unprotect(encryptedData);

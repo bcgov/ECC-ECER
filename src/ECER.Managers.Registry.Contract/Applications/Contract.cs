@@ -46,6 +46,7 @@ public record ApplicationSubmissionResult()
   public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
 }
 
+
 public record Application(string? Id, string RegistrantId, ApplicationStatus Status)
 {
   public DateTime? SubmittedOn { get; set; }
@@ -117,4 +118,28 @@ public enum ApplicationStatus
   InProgress,
   PendingQueue,
   ReconsiderationDecision
+}
+
+public record CharacterReferenceSubmissionRequest(string Token, CharacterReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation) : IRequest<ReferenceSubmissionResult>;
+public record CharacterReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvinceId, string CertificateProvinceOther);
+public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
+public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons) : IRequest<ReferenceSubmissionResult>;
+
+public enum UnabletoProvideReferenceReasons
+{
+  Iamunabletoatthistime,
+  Idonothavetheinformationrequired,
+  Idonotknowthisperson,
+  Idonotmeettherequirementstoprovideareference,
+  Other
+}
+
+public class ReferenceSubmissionResult
+{
+  public bool IsSuccess { get; set; }
+  public string? ErrorMessage { get; set; }
+
+  public static ReferenceSubmissionResult Success() => new ReferenceSubmissionResult { IsSuccess = true };
+
+  public static ReferenceSubmissionResult Failure(string message) => new ReferenceSubmissionResult { IsSuccess = false, ErrorMessage = message };
 }
