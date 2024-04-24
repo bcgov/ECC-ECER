@@ -69,6 +69,30 @@ declare namespace Components {
       emailAddress?: string | null;
       id?: string | null;
     }
+    export interface CharacterReferenceContactInformation {
+      lastName?: string | null;
+      firstName?: string | null;
+      email?: string | null;
+      phoneNumber?: string | null;
+      certificateNumber?: string | null;
+      certificateProvinceId?: string | null;
+      certificateProvinceOther?: string | null;
+    }
+    export interface CharacterReferenceEvaluation {
+      relationship?: string | null;
+      lengthOfAcquaintance?: string | null;
+      workedWithChildren?: boolean;
+      childInteractionObservations?: string | null;
+      applicantTemperamentAssessment?: string | null;
+      applicantShouldNotBeECE?: boolean;
+      applicantNotQualifiedReason?: string | null;
+    }
+    export interface CharacterReferenceSubmissionRequest {
+      token?: string | null;
+      referenceContactInformation?: CharacterReferenceContactInformation;
+      referenceEvaluation?: CharacterReferenceEvaluation;
+      responseAccuracyConfirmation?: boolean;
+    }
     export interface Communication {
       id?: string | null;
       subject?: string | null;
@@ -121,19 +145,26 @@ declare namespace Components {
       scope?: string | null;
       idp?: string | null;
     }
+    export interface OptOutReferenceRequest {
+      token?: string | null;
+      unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
+    }
     export interface PortalInvitation {
       id?: string | null;
       name?: string | null;
       referenceFirstName?: string | null;
       referenceLastName?: string | null;
       referenceEmailAddress?: string | null;
-      applicantId?: string | null;
       applicantFirstName?: string | null;
       applicantLastName?: string | null;
       applicationId?: string | null;
+      certificationTypes?: CertificationType[] | null;
       workexperienceReferenceId?: string | null;
       characterReferenceId?: string | null;
       inviteType?: InviteType;
+    }
+    export interface PortalInvitationQueryResult {
+      portalInvitation?: PortalInvitation;
     }
     export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
     export interface ProblemDetails {
@@ -144,8 +175,9 @@ declare namespace Components {
       detail?: string | null;
       instance?: string | null;
     }
-    export interface ReferenceQueryResult {
-      portalInvitation?: PortalInvitation;
+    export interface Province {
+      provinceId?: string | null;
+      provinceName?: string | null;
     }
     /**
      * Save draft application request
@@ -167,6 +199,12 @@ declare namespace Components {
       startDate: string; // date-time
       endDate: string; // date-time
     }
+    export type UnabletoProvideReferenceReasons =
+      | "Iamunabletoatthistime"
+      | "Idonothavetheinformationrequired"
+      | "Idonotknowthisperson"
+      | "Idonotmeettherequirementstoprovideareference"
+      | "Other";
     export interface UserInfo {
       firstName?: string | null;
       lastName?: string | null;
@@ -225,6 +263,13 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
+  namespace CharacterReferencePost {
+    export type RequestBody = Components.Schemas.CharacterReferenceSubmissionRequest;
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
   namespace ConfigurationGet {
     namespace Responses {
       export type $200 = Components.Schemas.ApplicationConfiguration;
@@ -277,6 +322,18 @@ declare namespace Paths {
       export interface $200 {}
     }
   }
+  namespace ProvinceGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.Province[];
+    }
+  }
+  namespace ReferenceOptout {
+    export type RequestBody = Components.Schemas.OptOutReferenceRequest;
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = string;
+    }
+  }
   namespace ReferencesGet {
     namespace Parameters {
       export type Token = string;
@@ -285,7 +342,7 @@ declare namespace Paths {
       token?: Parameters.Token;
     }
     namespace Responses {
-      export type $200 = Components.Schemas.ReferenceQueryResult;
+      export type $200 = Components.Schemas.PortalInvitationQueryResult;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
@@ -313,6 +370,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
+  /**
+   * province_get - Handles province queries
+   */
+  "province_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ProvinceGet.Responses.$200>;
   /**
    * profile_get - Gets the current user profile
    */
@@ -353,6 +418,22 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ReferencesGet.Responses.$200>;
+  /**
+   * character_reference_post - Handles character reference submission
+   */
+  "character_reference_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.CharacterReferencePost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CharacterReferencePost.Responses.$200>;
+  /**
+   * reference_optout - Handles reference optout
+   */
+  "reference_optout"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.ReferenceOptout.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
   /**
    * message_get - Handles messages queries
    */
@@ -416,6 +497,12 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
   };
+  ["/api/provincelist"]: {
+    /**
+     * province_get - Handles province queries
+     */
+    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProvinceGet.Responses.$200>;
+  };
   ["/api/profile"]: {
     /**
      * profile_get - Gets the current user profile
@@ -453,6 +540,26 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ReferencesGet.Responses.$200>;
+  };
+  ["/api/References/Character"]: {
+    /**
+     * character_reference_post - Handles character reference submission
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.CharacterReferencePost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CharacterReferencePost.Responses.$200>;
+  };
+  ["/api/References/OptOut"]: {
+    /**
+     * reference_optout - Handles reference optout
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.ReferenceOptout.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
   };
   ["/api/messages"]: {
     /**

@@ -1,5 +1,6 @@
 ﻿using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.Applications;
+using ECER.Resources.Documents.MetadataResources;
 using ECER.Resources.Documents.PortalInvitations;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
@@ -12,5 +13,6 @@ public class Configurer : IConfigureComponents
   {
     configurationContext.Services.AddTransient<IApplicationRepository, ApplicationRepository>();
     configurationContext.Services.AddTransient<IPortalInvitationRepository, PortalInvitationRepository>();
+    configurationContext.Services.AddTransient<IMetadataResourceRepository, MetadataResourceRepository>();
   }
 }

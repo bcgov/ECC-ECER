@@ -12,12 +12,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 {
 	
 	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	public enum ecer_ParallelProcessCommunication_ecer_InitiatedFrom
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Investigation = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Registry = 621870000,
+	}
+	
 	/// <summary>
-	/// Status of the Portal Invitation
+	/// Status of the Parallel Process Communication
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_portalinvitation_statecode
+	public enum ecer_parallelprocesscommunication_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,40 +40,31 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Portal Invitation
+	/// Reason for the status of the Parallel Process Communication
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_PortalInvitation_StatusCode
+	public enum ecer_ParallelProcessCommunication_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Cancelled = 621870003,
+		Active = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Completed = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Draft = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Expired = 621870004,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Failed = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Sent = 621870001,
+		Inactive = 2,
 	}
 	
+	/// <summary>
+	/// This table is designed for communication between Investigation and Certification teams for the Parallel Process
+	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_portalinvitation")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_parallelprocesscommunication")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ecer_PortalInvitation : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_ParallelProcessCommunication : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_portalinvitation entity
+		/// Available fields, a the time of codegen, for the ecer_parallelprocesscommunication entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -72,45 +75,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_ApplicantId = "ecer_applicantid";
-			public const string ecer_ApplicantIdName = "ecer_applicantidname";
-			public const string ecer_ApplicantIdYomiName = "ecer_applicantidyominame";
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
-			public const string ecer_CharacterReferenceId = "ecer_characterreferenceid";
-			public const string ecer_CharacterReferenceIdName = "ecer_characterreferenceidname";
-			public const string ecer_Consumed = "ecer_consumed";
-			public const string ecer_consumedName = "ecer_consumedname";
-			public const string ecer_EmailAddress = "ecer_emailaddress";
-			public const string ecer_ErrorMessage = "ecer_errormessage";
-			public const string ecer_FirstName = "ecer_firstname";
-			public const string ecer_GuardianReferenceId = "ecer_guardianreferenceid";
-			public const string ecer_GuardianReferenceIdName = "ecer_guardianreferenceidname";
-			public const string ecer_InvitationLink = "ecer_invitationlink";
-			public const string ecer_InvitationNumber = "ecer_invitationnumber";
-			public const string ecer_InvitedById = "ecer_invitedbyid";
-			public const string ecer_InvitedByIdName = "ecer_invitedbyidname";
-			public const string ecer_LastName = "ecer_lastname";
+			public const string ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId = "ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId";
+			public const string ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId = "ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId";
+			public const string Referencingecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_CommunicationId = "ecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_CommunicationId";
+			public const string ecer_InitiatedFrom = "ecer_initiatedfrom";
+			public const string ecer_initiatedfromName = "ecer_initiatedfromname";
+			public const string ecer_InvestigationId = "ecer_investigationid";
+			public const string ecer_InvestigationIdName = "ecer_investigationidname";
 			public const string ecer_Message = "ecer_message";
-			public const string ecer_Name = "ecer_name";
-			public const string ecer_portalinvitation_ApplicantId = "ecer_portalinvitation_ApplicantId";
-			public const string ecer_portalinvitation_ApplicationId = "ecer_portalinvitation_ApplicationId";
-			public const string ecer_portalinvitation_CharacterReferenceId = "ecer_portalinvitation_CharacterReferenceId";
-			public const string ecer_portalinvitation_GuardianReferenceId = "ecer_portalinvitation_GuardianReferenceId";
-			public const string ecer_portalinvitation_InvitedById = "ecer_portalinvitation_InvitedById";
-			public const string ecer_portalinvitation_PortalUserId = "ecer_portalinvitation_PortalUserId";
-			public const string ecer_portalinvitation_ProfessionalDevelopment = "ecer_portalinvitation_ProfessionalDevelopment";
-			public const string ecer_portalinvitation_WorkExperienceRefId = "ecer_portalinvitation_WorkExperienceRefId";
-			public const string ecer_PortalInvitationId = "ecer_portalinvitationid";
-			public const string Id = "ecer_portalinvitationid";
-			public const string ecer_PortalUserId = "ecer_portaluserid";
-			public const string ecer_PortalUserIdName = "ecer_portaluseridname";
-			public const string ecer_ProfessionalDevelopmentId = "ecer_professionaldevelopmentid";
-			public const string ecer_ProfessionalDevelopmentIdName = "ecer_professionaldevelopmentidname";
-			public const string ecer_ValidDays = "ecer_validdays";
-			public const string ecer_Views = "ecer_views";
-			public const string ecer_WorkExperienceReferenceId = "ecer_workexperiencereferenceid";
-			public const string ecer_WorkExperienceReferenceIdName = "ecer_workexperiencereferenceidname";
+			public const string ecer_ParallelProcessCommunicationId = "ecer_parallelprocesscommunicationid";
+			public const string Id = "ecer_parallelprocesscommunicationid";
+			public const string ecer_PPCommunicationId = "ecer_ppcommunicationid";
+			public const string ecer_PPCommunicationIdName = "ecer_ppcommunicationidname";
+			public const string ecer_Subject = "ecer_subject";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -127,6 +106,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningBusinessUnitName = "owningbusinessunitname";
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
+			public const string Referencedecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_CommunicationId = "Referencedecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_CommunicationId";
 			public const string StateCode = "statecode";
 			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
@@ -137,19 +117,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PortalInvitation(System.Guid id) : 
+		public ecer_ParallelProcessCommunication(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PortalInvitation(string keyName, object keyValue) : 
+		public ecer_ParallelProcessCommunication(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PortalInvitation(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_ParallelProcessCommunication(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -158,22 +138,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PortalInvitation() : 
+		public ecer_ParallelProcessCommunication() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_portalinvitationid";
+		public const string PrimaryIdAttribute = "ecer_parallelprocesscommunicationid";
 		
-		public const string PrimaryNameAttribute = "ecer_name";
+		public const string PrimaryNameAttribute = "ecer_subject";
 		
-		public const string EntitySchemaName = "ecer_PortalInvitation";
+		public const string EntitySchemaName = "ecer_ParallelProcessCommunication";
 		
-		public const string EntityLogicalName = "ecer_portalinvitation";
+		public const string EntityLogicalName = "ecer_parallelprocesscommunication";
 		
-		public const string EntityLogicalCollectionName = "ecer_portalinvitations";
+		public const string EntityLogicalCollectionName = "ecer_parallelprocesscommunications";
 		
-		public const string EntitySetName = "ecer_portalinvitations";
+		public const string EntitySetName = "ecer_parallelprocesscommunications";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -287,55 +267,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_ApplicantId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_applicantid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_applicantid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantidname")]
-		public string ecer_ApplicantIdName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_applicantid"))
-				{
-					return this.FormattedValues["ecer_applicantid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantidyominame")]
-		public string ecer_ApplicantIdYomiName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_applicantid"))
-				{
-					return this.FormattedValues["ecer_applicantid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_ApplicationId
 		{
@@ -368,30 +299,30 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferenceid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_CharacterReferenceId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_initiatedfrom")]
+		public virtual ecer_ParallelProcessCommunication_ecer_InitiatedFrom? ecer_InitiatedFrom
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_characterreferenceid");
+				return ((ecer_ParallelProcessCommunication_ecer_InitiatedFrom?)(EntityOptionSetEnum.GetEnum(this, "ecer_initiatedfrom")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_characterreferenceid", value);
+				this.SetAttributeValue("ecer_initiatedfrom", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferenceidname")]
-		public string ecer_CharacterReferenceIdName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_initiatedfromname")]
+		public string ecer_initiatedfromName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_characterreferenceid"))
+				if (this.FormattedValues.Contains("ecer_initiatedfrom"))
 				{
-					return this.FormattedValues["ecer_characterreferenceid"];
+					return this.FormattedValues["ecer_initiatedfrom"];
 				}
 				else
 				{
@@ -400,33 +331,30 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Link Consumed
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_consumed")]
-		public System.Nullable<bool> ecer_Consumed
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_InvestigationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_consumed");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigationid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_consumed", value);
+				this.SetAttributeValue("ecer_investigationid", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_consumedname")]
-		public string ecer_consumedName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationidname")]
+		public string ecer_InvestigationIdName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_consumed"))
+				if (this.FormattedValues.Contains("ecer_investigationid"))
 				{
-					return this.FormattedValues["ecer_consumed"];
+					return this.FormattedValues["ecer_investigationid"];
 				}
 				else
 				{
@@ -435,163 +363,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_emailaddress")]
-		public string ecer_EmailAddress
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_emailaddress");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_emailaddress", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_errormessage")]
-		public string ecer_ErrorMessage
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_errormessage");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_errormessage", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_firstname")]
-		public string ecer_FirstName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_firstname");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_firstname", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_guardianreferenceid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_GuardianReferenceId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_guardianreferenceid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_guardianreferenceid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_guardianreferenceidname")]
-		public string ecer_GuardianReferenceIdName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_guardianreferenceid"))
-				{
-					return this.FormattedValues["ecer_guardianreferenceid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_invitationlink")]
-		public string ecer_InvitationLink
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_invitationlink");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_invitationlink", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_invitationnumber")]
-		public string ecer_InvitationNumber
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_invitationnumber");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_invitationnumber", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_invitedbyid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_InvitedById
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_invitedbyid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_invitedbyid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_invitedbyidname")]
-		public string ecer_InvitedByIdName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_invitedbyid"))
-				{
-					return this.FormattedValues["ecer_invitedbyid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lastname")]
-		public string ecer_LastName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_lastname");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_lastname", value);
-			}
-		}
-		
-		/// <summary>
-		/// Invitation Message
-		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_message")]
 		public string ecer_Message
 		{
@@ -607,36 +378,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ecer_Name
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_name");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_name", value);
-			}
-		}
-		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portalinvitationid")]
-		public System.Nullable<System.Guid> ecer_PortalInvitationId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parallelprocesscommunicationid")]
+		public System.Nullable<System.Guid> ecer_ParallelProcessCommunicationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_portalinvitationid");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_parallelprocesscommunicationid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_portalinvitationid", value);
+				this.SetAttributeValue("ecer_parallelprocesscommunicationid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -648,7 +404,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portalinvitationid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parallelprocesscommunicationid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -659,34 +415,34 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_PortalInvitationId = value;
+				this.ecer_ParallelProcessCommunicationId = value;
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portaluserid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_PortalUserId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ppcommunicationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_PPCommunicationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_portaluserid");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_ppcommunicationid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_portaluserid", value);
+				this.SetAttributeValue("ecer_ppcommunicationid", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portaluseridname")]
-		public string ecer_PortalUserIdName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ppcommunicationidname")]
+		public string ecer_PPCommunicationIdName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_portaluserid"))
+				if (this.FormattedValues.Contains("ecer_ppcommunicationid"))
 				{
-					return this.FormattedValues["ecer_portaluserid"];
+					return this.FormattedValues["ecer_ppcommunicationid"];
 				}
 				else
 				{
@@ -695,97 +451,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_ProfessionalDevelopmentId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_subject")]
+		public string ecer_Subject
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_professionaldevelopmentid");
+				return this.GetAttributeValue<string>("ecer_subject");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_professionaldevelopmentid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentidname")]
-		public string ecer_ProfessionalDevelopmentIdName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_professionaldevelopmentid"))
-				{
-					return this.FormattedValues["ecer_professionaldevelopmentid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_validdays")]
-		public System.Nullable<int> ecer_ValidDays
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<int>>("ecer_validdays");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_validdays", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_views")]
-		public System.Nullable<int> ecer_Views
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<int>>("ecer_views");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_views", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_workexperiencereferenceid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_WorkExperienceReferenceId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_workexperiencereferenceid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_workexperiencereferenceid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_workexperiencereferenceidname")]
-		public string ecer_WorkExperienceReferenceIdName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_workexperiencereferenceid"))
-				{
-					return this.FormattedValues["ecer_workexperiencereferenceid"];
-				}
-				else
-				{
-					return default(string);
-				}
+				this.SetAttributeValue("ecer_subject", value);
 			}
 		}
 		
@@ -1052,15 +729,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Portal Invitation
+		/// Status of the Parallel Process Communication
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_portalinvitation_statecode? StateCode
+		public virtual ecer_parallelprocesscommunication_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_portalinvitation_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_parallelprocesscommunication_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -1087,15 +764,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Portal Invitation
+		/// Reason for the status of the Parallel Process Communication
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_PortalInvitation_StatusCode? StatusCode
+		public virtual ecer_ParallelProcessCommunication_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_PortalInvitation_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_ParallelProcessCommunication_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -1171,154 +848,83 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// N:1 ecer_portalinvitation_ApplicantId
+		/// 1:N ecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_CommunicationId
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_ApplicantId")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ecer_portalinvitation_ApplicantId
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_Communic" +
+			"ationId", Microsoft.Xrm.Sdk.EntityRole.Referenced)]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication> Referencedecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_CommunicationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_portalinvitation_ApplicantId", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication>("ecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_Communic" +
+						"ationId", Microsoft.Xrm.Sdk.EntityRole.Referenced);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_portalinvitation_ApplicantId", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication>("ecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_Communic" +
+						"ationId", Microsoft.Xrm.Sdk.EntityRole.Referenced, value);
 			}
 		}
 		
 		/// <summary>
-		/// N:1 ecer_portalinvitation_ApplicationId
+		/// N:1 ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_ApplicationId")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_Application ecer_portalinvitation_ApplicationId
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Application ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_portalinvitation_ApplicationId", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_portalinvitation_ApplicationId", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_ecer_application_ecer_parallelprocesscommunication_ApplicationId", null, value);
 			}
 		}
 		
 		/// <summary>
-		/// N:1 ecer_portalinvitation_CharacterReferenceId
+		/// N:1 ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferenceid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_CharacterReferenceId")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference ecer_portalinvitation_CharacterReferenceId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_portalinvitation_CharacterReferenceId", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_portalinvitation_CharacterReferenceId", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId", null, value);
 			}
 		}
 		
 		/// <summary>
-		/// N:1 ecer_portalinvitation_GuardianReferenceId
+		/// N:1 ecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_CommunicationId
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_guardianreferenceid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_GuardianReferenceId")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference ecer_portalinvitation_GuardianReferenceId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ppcommunicationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_Communic" +
+			"ationId", Microsoft.Xrm.Sdk.EntityRole.Referencing)]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication Referencingecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_CommunicationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference>("ecer_portalinvitation_GuardianReferenceId", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication>("ecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_Communic" +
+						"ationId", Microsoft.Xrm.Sdk.EntityRole.Referencing);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference>("ecer_portalinvitation_GuardianReferenceId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_portalinvitation_InvitedById
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_invitedbyid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_InvitedById")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_PortalUser ecer_portalinvitation_InvitedById
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser>("ecer_portalinvitation_InvitedById", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser>("ecer_portalinvitation_InvitedById", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_portalinvitation_PortalUserId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portaluserid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_PortalUserId")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_PortalUser ecer_portalinvitation_PortalUserId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser>("ecer_portalinvitation_PortalUserId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser>("ecer_portalinvitation_PortalUserId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_portalinvitation_ProfessionalDevelopment
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_ProfessionalDevelopment")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment ecer_portalinvitation_ProfessionalDevelopment
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment>("ecer_portalinvitation_ProfessionalDevelopment", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment>("ecer_portalinvitation_ProfessionalDevelopment", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_portalinvitation_WorkExperienceRefId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_workexperiencereferenceid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_WorkExperienceRefId")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef ecer_portalinvitation_WorkExperienceRefId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_portalinvitation_WorkExperienceRefId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_portalinvitation_WorkExperienceRefId", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ParallelProcessCommunication>("ecer_ecer_parallelprocesscommunication_ecer_parallelprocesscommunication_Communic" +
+						"ationId", Microsoft.Xrm.Sdk.EntityRole.Referencing, value);
 			}
 		}
 		
@@ -1327,7 +933,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PortalInvitation(object anonymousType) : 
+		public ecer_ParallelProcessCommunication(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -1345,9 +951,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_portalinvitationid"] = base.Id;
+                        Attributes["ecer_parallelprocesscommunicationid"] = base.Id;
                         break;
-                    case "ecer_portalinvitationid":
+                    case "ecer_parallelprocesscommunicationid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

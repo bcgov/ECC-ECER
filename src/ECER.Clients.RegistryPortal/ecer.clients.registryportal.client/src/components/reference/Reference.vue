@@ -15,7 +15,17 @@
       <v-container class="mb-8">
         <v-row no-gutters>
           <v-col>
-            <v-btn v-if="wizardStore.step === userReviewStep" rounded="lg" variant="flat" color="primary" @click="handleSubmit">Submit</v-btn>
+            <v-btn
+              v-if="wizardStore.step === userDeclinedStep"
+              :loading="loadingStore.isLoading('reference_optout')"
+              rounded="lg"
+              variant="flat"
+              color="primary"
+              @click="handleDecline"
+            >
+              Submit
+            </v-btn>
+            <v-btn v-else-if="wizardStore.step === userReviewStep" rounded="lg" variant="flat" color="primary" @click="handleSubmit">Submit</v-btn>
             <v-btn v-else rounded="lg" variant="flat" color="primary" @click="handleContinue">Continue</v-btn>
           </v-col>
         </v-row>
@@ -28,11 +38,13 @@
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 
-import { getReference } from "@/api/reference";
+import { getReference, optOutReference } from "@/api/reference";
 import characterReferenceWizardConfig from "@/config/character-reference-wizard";
 import workExperienceReferenceWizardConfig from "@/config/work-experience-reference-wizard";
 import { useAlertStore } from "@/store/alert";
+import { useLoadingStore } from "@/store/loading";
 import { useWizardStore } from "@/store/wizard";
+import type { Components } from "@/types/openapi";
 import { PortalInviteType } from "@/utils/constant";
 
 import Wizard from "../Wizard.vue";
@@ -44,14 +56,14 @@ export default defineComponent({
     const route = useRoute();
     const { data } = await getReference(route.params.token as string);
     const wizardStore = useWizardStore();
+    const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
     if (data?.portalInvitation?.inviteType === PortalInviteType.WORK_EXPERIENCE) {
       wizardStore.initializeWizardForReference(workExperienceReferenceWizardConfig, data.portalInvitation);
     } else if (data?.portalInvitation?.inviteType === PortalInviteType.CHARACTER) {
       wizardStore.initializeWizardForReference(characterReferenceWizardConfig, data.portalInvitation);
     }
-
-    return { alertStore, workExperienceReferenceWizardConfig, characterReferenceWizardConfig, wizardStore, PortalInviteType };
+    return { alertStore, workExperienceReferenceWizardConfig, characterReferenceWizardConfig, wizardStore, PortalInviteType, loadingStore };
   },
   computed: {
     userDeclinedStep(): number {
@@ -91,7 +103,23 @@ export default defineComponent({
       }
     },
     handleSubmit() {
-      this.alertStore.setWarningAlert("Submit does not work yet");
+      this.alertStore.setWarningAlert("User Accepted");
+    },
+    async handleDecline() {
+      const currentStepFormId = this.wizardStore.currentStep.form.id;
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const { valid } = await formRef.validate();
+
+      if (!valid) {
+        this.alertStore.setFailureAlert("Please fill out all required fields");
+        return;
+      }
+
+      const reason = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.referenceDecline.id];
+      const result = await optOutReference(this.$route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons);
+      if (!result.error) {
+        this.$router.push({ path: "/reference-submitted" });
+      }
     },
   },
 });

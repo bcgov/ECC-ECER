@@ -207,4 +207,51 @@ internal sealed class ApplicationRepository : IApplicationRepository
     context.SaveChanges();
     return applicationId;
   }
+
+  public async Task<string> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
+
+    mapper.Map(request, characterReference);
+
+    var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == Guid.Parse(request.ReferenceContactInformation.CertificateProvinceId));
+    if (province != null)
+    {
+      context.AddLink(characterReference, ecer_CharacterReference.Fields.ecer_characterreference_RefCertifiedProvinceId, province);
+    }
+    characterReference.StatusCode = ecer_CharacterReference_StatusCode.Submitted;
+    context.UpdateObject(characterReference);
+    context.SaveChanges();
+    return characterReference.ecer_CharacterReferenceId.ToString()!;
+  }
+
+  public Task<string> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  {
+    throw new NotImplementedException();
+  }
+
+  public async Task<string> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
+
+    mapper.Map(request, characterReference);
+    characterReference.ecer_WillProvideReference = ecer_YesNoNull.No;
+    context.UpdateObject(characterReference);
+    context.SaveChanges();
+    return characterReference.ecer_CharacterReferenceId.ToString()!;
+  }
+
+  public async Task<string> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var workexperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(request.PortalInvitation!.WorkexperienceReferenceId!));
+
+    mapper.Map(request, workexperienceReference);
+    workexperienceReference.ecer_WillProvideReference = ecer_YesNoNull.No;
+    context.UpdateObject(workexperienceReference);
+    context.SaveChanges();
+    return workexperienceReference.ecer_WorkExperienceRefId.ToString()!;
+  }
 }

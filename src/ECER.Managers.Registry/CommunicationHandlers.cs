@@ -12,8 +12,6 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
 {
   public async Task<CommunicationsStatusResults> Handle(UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(communicationRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
     var statuses = new List<Resources.Accounts.Communications.CommunicationStatus>();

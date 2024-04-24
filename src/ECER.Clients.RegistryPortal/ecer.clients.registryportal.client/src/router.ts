@@ -120,6 +120,11 @@ const router = createRouter({
       component: () => import("./components/reference/Reference.vue"),
       meta: { requiresAuth: false },
     },
+    {
+      path: "/reference-submitted",
+      component: () => import("./components/pages/ReferenceSubmitted.vue"),
+      meta: { requiresAuth: false },
+    },
   ],
 });
 

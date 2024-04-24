@@ -18,10 +18,8 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, IMap
   /// Handles search registrants use case
   /// </summary>
   /// <returns>Query results</returns>
-  public async Task<RegistrantQueryResults> Handle(Contract.Registrants.SearchRegistrantQuery request, CancellationToken cancellationToken)
+  public async Task<RegistrantQueryResults> Handle(SearchRegistrantQuery request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(registrantRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
     var registrants = await registrantRepository.Query(new RegistrantQuery
@@ -39,11 +37,9 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, IMap
   /// <exception cref="InvalidOperationException"></exception>
   public async Task<string> Handle(RegisterNewUserCommand request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(registrantRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
-    var registrants = await registrantRepository.Query(new Resources.Accounts.Registrants.RegistrantQuery
+    var registrants = await registrantRepository.Query(new RegistrantQuery
     {
       ByIdentity = request.Identity
     }, cancellationToken);
@@ -61,19 +57,15 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, IMap
   /// <returns></returns>
   public async Task<string> Handle(UpdateRegistrantProfileCommand request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(registrantRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
-    var registrant = (await registrantRepository.Query(new Resources.Accounts.Registrants.RegistrantQuery
+    var registrant = (await registrantRepository.Query(new RegistrantQuery
     {
       ByUserId = request.Registrant.UserId
     }, cancellationToken)).SingleOrDefault();
 
     if (registrant == null) throw new InvalidOperationException($"Registrant {request.Registrant.UserId} wasn't found");
-
     var profile = mapper.Map<Resources.Accounts.Registrants.UserProfile>(request.Registrant.Profile)!;
-
     await registrantRepository.Save(new Resources.Accounts.Registrants.Registrant { Id = request.Registrant.UserId, Profile = profile }, cancellationToken);
 
     return request.Registrant.UserId;

@@ -95,6 +95,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
        .WithOpenApi("Cancel a draft application for the current user", "Changes status to cancelled", "draftapplication_delete")
        .RequireAuthorization()
        .WithParameterValidation();
+
   }
 }
 

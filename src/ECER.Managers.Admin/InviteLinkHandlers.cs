@@ -12,9 +12,9 @@ public class InviteLinkHandlers(IPortalInvitationTransformationEngine transforma
   public async Task<GenerateInviteLinkCommandResponse> Handle(GenerateInviteLinkCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    ArgumentNullException.ThrowIfNull(transformationEngine);
+
     var response = await transformationEngine.Transform(new EncryptInviteTokenRequest(request.PortalInvitation, request.InviteType, request.ValidDays))! as EncryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
-    string verificationLink = $"{portalAppSettings.Value.BaseUrl}/{portalAppSettings.Value.ReferenceVerificationRoute}/{response.verificationToken}";
-    return new GenerateInviteLinkCommandResponse(response.portalInvitation, verificationLink);
+    string verificationLink = $"{portalAppSettings.Value.BaseUrl}/{portalAppSettings.Value.ReferenceVerificationRoute}/{response.VerificationToken}";
+    return new GenerateInviteLinkCommandResponse(response.PortalInvitation, verificationLink);
   }
 }

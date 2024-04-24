@@ -28,7 +28,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private Contact authenticatedBcscUser = null!;
   private ecer_Application testApplication = null!;
   private ecer_Communication testCommunication = null!;
-  private ecer_PortalInvitation testPortalInvitation = null!;
+  private ecer_PortalInvitation testPortalInvitationOne = null!;
+  private ecer_PortalInvitation testPortalInvitationCharacterReference = null!;
+  private ecer_PortalInvitation testPortalInvitationWorkExperienceReference = null!;
 
   private Contact authenticatedBcscUser2 = null!;
   private ecer_Application testApplication2 = null!;
@@ -38,7 +40,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
   public string communicationId => testCommunication.Id.ToString();
   public string applicationId => testApplication.Id.ToString();
-  public Guid portalInvitationId => testPortalInvitation.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationCharacterReferenceId => testPortalInvitationCharacterReference.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationWorkExperienceReferenceId => testPortalInvitationWorkExperienceReference.ecer_PortalInvitationId ?? Guid.Empty;
 
   public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
@@ -73,7 +77,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     authenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user1");
     testApplication = GetOrAddApplication(context, authenticatedBcscUser);
     testCommunication = GetOrAddCommunication(context, testApplication);
-    testPortalInvitation = GetOrAddPortalInvitation(context, authenticatedBcscUser);
+    testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
+    testPortalInvitationCharacterReference = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
+    testPortalInvitationWorkExperienceReference = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");
     context.SaveChanges();
 
     //load dependent properties
@@ -124,7 +130,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Application GetOrAddApplication(EcerContext context, Contact applicant)
   {
     var application = (from a in context.ecer_ApplicationSet
-                       where a.ecer_Applicantid.Id == applicant.Id
+                       where a.ecer_Applicantid.Id == applicant.Id && a.ecer_isECE5YR == true && a.StatusCode == ecer_Application_StatusCode.InProgress
                        select a).FirstOrDefault();
 
     if (application == null)
@@ -132,6 +138,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       application = new ecer_Application
       {
         Id = Guid.NewGuid(),
+        ecer_isECE5YR = true,
+        StatusCode = ecer_Application_StatusCode.InProgress,
+        StateCode = ecer_application_statecode.Active,
+        ecer_CertificateType = "ECE 5 YR",
       };
       context.AddObject(application);
       context.AddLink(application, ecer_Application.Fields.ecer_application_Applicantid_contact, applicant);
@@ -162,15 +172,60 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return communication;
   }
 
-  private ecer_PortalInvitation GetOrAddPortalInvitation(EcerContext context, Contact registrant)
+  private ecer_PortalInvitation GetOrAddPortalInvitation_CharacterReference(EcerContext context, Contact registrant, string name)
   {
-    var portalInvitation = (from a in context.ecer_PortalInvitationSet
-                            where a.ecer_ApplicantId.Id == registrant.Id
-                            select a).FirstOrDefault();
+    var portalInvitation = context.ecer_PortalInvitationSet.FirstOrDefault(p => p.ecer_ApplicantId != null &&
+                                                                                p.ecer_ApplicationId != null &&
+                                                                                p.ecer_Name == name &&
+                                                                                p.ecer_CharacterReferenceId != null &&
+                                                                                p.StatusCode == ecer_PortalInvitation_StatusCode.Sent);
 
     if (portalInvitation == null)
     {
+      var charGuid = Guid.NewGuid();
+
+      var characterReference = new ecer_CharacterReference
+      {
+        Id = charGuid,
+        ecer_CharacterReferenceId = charGuid,
+        ecer_Name = "Reference Test name",
+        ecer_FirstName = "Reference Test firstname",
+        ecer_LastName = "Reference Test lastname",
+        ecer_EmailAddress = "reference_test@test.com"
+      };
+
       var guid = Guid.NewGuid();
+      portalInvitation = new ecer_PortalInvitation
+      {
+        Id = guid,
+        ecer_PortalInvitationId = guid,
+        ecer_Name = name,
+        ecer_FirstName = "Test firstname",
+        ecer_LastName = "Test lastname",
+        ecer_EmailAddress = "test@email.com",
+        StatusCode = ecer_PortalInvitation_StatusCode.Sent,
+      };
+
+      context.AddObject(characterReference);
+      context.AddObject(portalInvitation);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_CharacterReferenceId, characterReference);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, testApplication);
+    }
+
+    return portalInvitation;
+  }
+
+  private ecer_PortalInvitation GetOrAddPortalInvitation_WorkExperienceReference(EcerContext context, Contact registrant, string name)
+  {
+    var portalInvitation = context.ecer_PortalInvitationSet.FirstOrDefault(p => p.ecer_ApplicantId != null &&
+                                                                                p.ecer_ApplicationId != null &&
+                                                                                p.ecer_Name == name &&
+                                                                                p.ecer_WorkExperienceReferenceId != null &&
+                                                                                p.StatusCode == ecer_PortalInvitation_StatusCode.Sent);
+
+    if (portalInvitation == null)
+    {
       var wpGuid = Guid.NewGuid();
 
       var workexperienceReference = new ecer_WorkExperienceRef
@@ -183,14 +238,16 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_EmailAddress = "reference_test@test.com"
       };
 
+      var guid = Guid.NewGuid();
       portalInvitation = new ecer_PortalInvitation
       {
         Id = guid,
         ecer_PortalInvitationId = guid,
-        ecer_Name = "Test name",
+        ecer_Name = name,
         ecer_FirstName = "Test firstname",
         ecer_LastName = "Test lastname",
         ecer_EmailAddress = "test@email.com",
+        StatusCode = ecer_PortalInvitation_StatusCode.Sent,
       };
 
       context.AddObject(workexperienceReference);
