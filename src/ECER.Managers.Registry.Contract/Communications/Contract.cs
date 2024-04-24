@@ -2,6 +2,11 @@
 
 namespace ECER.Managers.Registry.Contract.Communications;
 
+/// <summary>
+/// Invokes communication seen use case
+/// </summary>
+public record CommunicationSeenCommand(string communicationId, string userId) : IRequest<string>;
+
 public record UserCommunicationsStatusQuery : IRequest<CommunicationsStatusResults>
 {
   public string ByRegistrantId { get; set; } = null!;

@@ -42,4 +42,22 @@ internal class CommunicationRepository : ICommunicationRepository
     var result = mapper.Map<IEnumerable<Communication>>(data);
     return result!;
   }
+  
+  public async Task<string> Seen(string communicationId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+
+    var communication =
+      context.ecer_CommunicationSet.Single(c => c.ecer_CommunicationId == Guid.Parse(communicationId));
+    
+    if (communication == null) throw new InvalidOperationException($"Application '{communicationId}' not found");
+      
+    communication.ecer_DateAcknowledged = DateTime.Now;
+    communication.ecer_Acknowledged = true;
+    communication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
+    context.UpdateObject(communication);
+    
+    context.SaveChanges();
+    return communication.Id.ToString();
+  }
 }
