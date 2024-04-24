@@ -10,6 +10,7 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
     "lintfix": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write .",
     "gen-api": "npx openapicmd typegen http://localhost:5120/swagger/v1/swagger.json > src/types/openapi.d.ts"
   },
   "dependencies": {
