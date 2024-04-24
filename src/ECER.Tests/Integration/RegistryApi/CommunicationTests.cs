@@ -39,6 +39,32 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
 
     var communicationsStatus = await communicationsStatusResponse.ReadAsJsonAsync<CommunicationsStatusResults>();
     communicationsStatus.ShouldNotBeNull();
-
+  }
+  
+  
+  [Fact]
+  public async Task SeenCommunication_ReturnId()
+  {
+    var communicationSeenResponse =  await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new CommunicationSeenRequest(Fixture.communicationId)).ToUrl($"/api/messages/{Fixture.communicationId}/seen");
+      _.StatusCodeShouldBeOk();
+    });
+    
+    (await communicationSeenResponse.ReadAsJsonAsync<CommunicationResponse>()).ShouldNotBeNull().CommunicationId.ShouldBe(Fixture.communicationId);
+  }
+  
+  [Fact]
+  public async Task SeenCommunication_MarkedAsSeen()
+  {
+    var communicationSeenResponse =  await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new CommunicationSeenRequest(Fixture.communicationId)).ToUrl($"/api/messages/{Fixture.communicationId}/seen");
+      _.StatusCodeShouldBeOk();
+    });
+    
+    (await communicationSeenResponse.ReadAsJsonAsync<CommunicationResponse>()).ShouldNotBeNull().CommunicationId.ShouldBe(Fixture.communicationId);
   }
 }
