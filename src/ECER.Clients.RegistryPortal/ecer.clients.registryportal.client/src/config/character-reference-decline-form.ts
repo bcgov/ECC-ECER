@@ -32,5 +32,4 @@ const characterReferenceDeclineForm: Form = {
   },
 };
 
-
 export default characterReferenceDeclineForm;
