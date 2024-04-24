@@ -36,8 +36,6 @@ public class ApplicationHandlers(
   /// <returns></returns>
   public async Task<string> Handle(SaveDraftApplicationCommand request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(applicationRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
     if (request.Application.Id == null)
@@ -64,8 +62,6 @@ public class ApplicationHandlers(
 
   public async Task<string> Handle(CancelDraftApplicationCommand request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(applicationRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
     var applications = await applicationRepository.Query(new ApplicationQuery
@@ -93,8 +89,6 @@ public class ApplicationHandlers(
   /// <returns></returns>
   public async Task<ApplicationSubmissionResult> Handle(SubmitApplicationCommand request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(applicationRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
     var applications = await applicationRepository.Query(new ApplicationQuery
@@ -128,8 +122,6 @@ public class ApplicationHandlers(
   /// <returns></returns>
   public async Task<ApplicationsQueryResults> Handle(ApplicationsQuery request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(applicationRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
     var applications = await applicationRepository.Query(new ApplicationQuery
@@ -150,10 +142,6 @@ public class ApplicationHandlers(
   /// <exception cref="InvalidCastException"></exception>
   public async Task<ReferenceSubmissionResult> Handle(Contract.Applications.CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(portalInvitationRepository);
-    ArgumentNullException.ThrowIfNull(applicationRepository);
-    ArgumentNullException.ThrowIfNull(transformationEngine);
-    ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
     var transformationResponse = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.Token))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
@@ -190,10 +178,6 @@ public class ApplicationHandlers(
   /// <exception cref="InvalidCastException"></exception>
   public async Task<ReferenceSubmissionResult> Handle(Contract.Applications.OptOutReferenceRequest request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(portalInvitationRepository);
-    ArgumentNullException.ThrowIfNull(applicationRepository);
-    ArgumentNullException.ThrowIfNull(transformationEngine);
-    ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
     var transformationResponse = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.Token))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");

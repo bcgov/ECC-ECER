@@ -21,9 +21,7 @@ public class ConfigurationEndpoints : IRegisterEndpoints
     {
       var results = await messageBus.Send(new ProvincesQuery(), ct);
       return TypedResults.Ok(mapper.Map<IEnumerable<Province>>(results.Items));
-    }).WithOpenApi("Handles province queries", string.Empty, "province_get")
-      .RequireAuthorization()
-      .WithParameterValidation();
+    }).WithOpenApi("Handles province queries", string.Empty, "province_get");
   }
 }
 
