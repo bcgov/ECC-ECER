@@ -72,7 +72,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
     authenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user1");
     testApplication = GetOrAddApplication(context, authenticatedBcscUser);
-    testCommunication = GetOrAddCommunication(context, testApplication);
+    testCommunication = GetOrAddCommunication(context, testApplication, authenticatedBcscUser);
     testPortalInvitation = GetOrAddPortalInvitation(context, authenticatedBcscUser);
     context.SaveChanges();
 
@@ -139,10 +139,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return application;
   }
 
-  private ecer_Communication GetOrAddCommunication(EcerContext context, ecer_Application application)
+  private ecer_Communication GetOrAddCommunication(EcerContext context, ecer_Application application, Contact registrant)
   {
     var communication = (from a in context.ecer_CommunicationSet
                          where a.ecer_Applicationid.Id == application.Id
+                         & a.ecer_Registrantid.Id == registrant.Id
                          select a).FirstOrDefault();
 
     if (communication == null)
@@ -156,7 +157,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       };
 
       context.AddObject(communication);
-      context.AddLink(communication, ecer_Communication.Fields.ecer_communication_Applicationid, testApplication);
+      context.AddLink(communication, ecer_Communication.Fields.ecer_communication_Applicationid, application);
+      context.AddLink( registrant, ecer_Communication.Fields.ecer_contact_ecer_communication_122, communication);
     }
 
     return communication;
