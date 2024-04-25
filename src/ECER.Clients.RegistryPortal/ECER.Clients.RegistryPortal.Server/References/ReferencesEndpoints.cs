@@ -33,9 +33,13 @@ public class ReferencesEndpoints : IRegisterEndpoints
   }
 }
 
-public record CharacterReferenceSubmissionRequest(string Token, CharacterReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation);
-public record CharacterReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvinceId, string CertificateProvinceOther);
-public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
+public record CharacterReferenceSubmissionRequest(string Token, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
+public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateProvinceId, string CertificateProvinceOther)
+{
+  public string? CertificateNumber { get; set; }
+  public string? DateOfBirth { get; set; }
+}
+public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons);
 
 public enum UnabletoProvideReferenceReasons
@@ -45,4 +49,41 @@ public enum UnabletoProvideReferenceReasons
   Idonotknowthisperson,
   Idonotmeettherequirementstoprovideareference,
   Other
+}
+
+public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, string AgeOfChildrenCaredFor, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
+public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, LikertScale ChildGuidance, LikertScale HealthSafetyAndNutrition, LikertScale DevelopAnEceCurriculum, LikertScale ImplementAnEceCurriculum, LikertScale FosteringPositiveRelationChild, LikertScale FosteringPositiveRelationFamily, LikertScale FosteringPositiveRelationCoworker);
+public record WorkExperienceReferenceSubmissionRequest(string Token, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
+
+public enum WorkHoursType
+{
+  FullTime,
+  PartTime,
+}
+
+public enum ChildrenProgramType
+{
+  Childminding,
+  Familychildcare,
+  Groupchildcare,
+  InHomeMultiAgechildcare,
+  MultiAgechildcare,
+  Occasionalchildcare,
+  Other,
+  Preschool,
+}
+
+public enum ReferenceRelationship
+{
+  CoWorker,
+  Other,
+  Supervisor,
+}
+
+public enum LikertScale
+{
+  SomewhatAgree,
+  SomewhatDisagree,
+  StronglyAgree,
+  StronglyDisagree,
 }

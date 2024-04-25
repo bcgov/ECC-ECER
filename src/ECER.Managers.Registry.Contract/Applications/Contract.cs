@@ -46,7 +46,6 @@ public record ApplicationSubmissionResult()
   public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
 }
 
-
 public record Application(string? Id, string RegistrantId, ApplicationStatus Status)
 {
   public DateTime? SubmittedOn { get; set; }
@@ -120,9 +119,13 @@ public enum ApplicationStatus
   ReconsiderationDecision
 }
 
-public record CharacterReferenceSubmissionRequest(string Token, CharacterReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation) : IRequest<ReferenceSubmissionResult>;
-public record CharacterReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvinceId, string CertificateProvinceOther);
-public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
+public record CharacterReferenceSubmissionRequest(string Token, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight) : IRequest<ReferenceSubmissionResult>;
+public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateProvinceId, string CertificateProvinceOther)
+{
+  public string? CertificateNumber { get; set; }
+  public string? DateOfBirth { get; set; }
+}
+public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons) : IRequest<ReferenceSubmissionResult>;
 
 public enum UnabletoProvideReferenceReasons
