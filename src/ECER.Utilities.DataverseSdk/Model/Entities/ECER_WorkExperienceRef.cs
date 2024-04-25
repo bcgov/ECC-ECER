@@ -90,10 +90,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ChildCareProgramName = "ecer_childcareprogramname";
 			public const string ecer_CompetenceChildDevelopment = "ecer_competencechilddevelopment";
 			public const string ecer_competencechilddevelopmentName = "ecer_competencechilddevelopmentname";
+			public const string ecer_CompetenceChildDevelopmentReason = "ecer_competencechilddevelopmentreason";
 			public const string ecer_CompetenceChildGuidance = "ecer_competencechildguidance";
 			public const string ecer_competencechildguidanceName = "ecer_competencechildguidancename";
+			public const string ecer_CompetenceChildGuidanceReason = "ecer_competencechildguidancereason";
 			public const string ecer_CompetenceDevelopanECECurriculum = "ecer_competencedevelopanececurriculum";
 			public const string ecer_competencedevelopanececurriculumName = "ecer_competencedevelopanececurriculumname";
+			public const string ecer_CompetenceDevelopanECECurriculumReason = "ecer_competencedevelopanececurriculumreason";
 			public const string ecer_CompetenceDisagreeReason = "ecer_competencedisagreereason";
 			public const string ecer_CompetenceFosteringPositiveRelationChild = "ecer_competencefosteringpositiverelationchild";
 			public const string ecer_competencefosteringpositiverelationchildName = "ecer_competencefosteringpositiverelationchildname";
@@ -101,10 +104,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_competencefosteringpositiverelationcoworkerName = "ecer_competencefosteringpositiverelationcoworkername";
 			public const string ecer_CompetenceFosteringPositiveRelationFamily = "ecer_competencefosteringpositiverelationfamily";
 			public const string ecer_competencefosteringpositiverelationfamilyName = "ecer_competencefosteringpositiverelationfamilyname";
+			public const string ecer_CompetenceFosteringRelationChildReason = "ecer_competencefosteringrelationchildreason";
+			public const string ecer_CompetenceFosteringRelationCoworkerReason = "ecer_competencefosteringrelationcoworkerreason";
+			public const string ecer_CompetenceFosteringRelationFamilyReason = "ecer_competencefosteringrelationfamilyreason";
 			public const string ecer_CompetenceHealthSafetyandNutrition = "ecer_competencehealthsafetyandnutrition";
 			public const string ecer_competencehealthsafetyandnutritionName = "ecer_competencehealthsafetyandnutritionname";
+			public const string ecer_CompetenceHealthSafetyandNutritionReason = "ecer_competencehealthsafetyandnutritionreason";
 			public const string ecer_CompetenceImplementanECECurriculum = "ecer_competenceimplementanececurriculum";
 			public const string ecer_competenceimplementanececurriculumName = "ecer_competenceimplementanececurriculumname";
+			public const string ecer_CompetenceImplementECECurriculumReason = "ecer_competenceimplementececurriculumreason";
 			public const string ecer_DateSigned = "ecer_datesigned";
 			public const string ecer_DateSubmitted = "ecer_datesubmitted";
 			public const string ecer_ecer_workexperienceref_ReferenceContactid = "ecer_ecer_workexperienceref_ReferenceContactid";
@@ -484,12 +492,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencechilddevelopment")]
-		public virtual ecer_LikertScales? ecer_CompetenceChildDevelopment
+		public virtual ecer_likertscales? ecer_CompetenceChildDevelopment
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_LikertScales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencechilddevelopment")));
+				return ((ecer_likertscales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencechilddevelopment")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -515,13 +523,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencechildguidance")]
-		public virtual ecer_LikertScales? ecer_CompetenceChildGuidance
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencechilddevelopmentreason")]
+		public string ecer_CompetenceChildDevelopmentReason
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_LikertScales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencechildguidance")));
+				return this.GetAttributeValue<string>("ecer_competencechilddevelopmentreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_competencechilddevelopmentreason", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencechildguidance")]
+		public virtual ecer_likertscales? ecer_CompetenceChildGuidance
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_likertscales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencechildguidance")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -547,13 +570,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencedevelopanececurriculum")]
-		public virtual ecer_LikertScales? ecer_CompetenceDevelopanECECurriculum
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencechildguidancereason")]
+		public string ecer_CompetenceChildGuidanceReason
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_LikertScales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencedevelopanececurriculum")));
+				return this.GetAttributeValue<string>("ecer_competencechildguidancereason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_competencechildguidancereason", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencedevelopanececurriculum")]
+		public virtual ecer_likertscales? ecer_CompetenceDevelopanECECurriculum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_likertscales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencedevelopanececurriculum")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -579,6 +617,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencedevelopanececurriculumreason")]
+		public string ecer_CompetenceDevelopanECECurriculumReason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_competencedevelopanececurriculumreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_competencedevelopanececurriculumreason", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencedisagreereason")]
 		public string ecer_CompetenceDisagreeReason
 		{
@@ -595,12 +648,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencefosteringpositiverelationchild")]
-		public virtual ecer_LikertScales? ecer_CompetenceFosteringPositiveRelationChild
+		public virtual ecer_likertscales? ecer_CompetenceFosteringPositiveRelationChild
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_LikertScales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencefosteringpositiverelationchild")));
+				return ((ecer_likertscales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencefosteringpositiverelationchild")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -627,12 +680,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencefosteringpositiverelationcoworker")]
-		public virtual ecer_LikertScales? ecer_CompetenceFosteringPositiveRelationCoworker
+		public virtual ecer_likertscales? ecer_CompetenceFosteringPositiveRelationCoworker
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_LikertScales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencefosteringpositiverelationcoworker")));
+				return ((ecer_likertscales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencefosteringpositiverelationcoworker")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -659,12 +712,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencefosteringpositiverelationfamily")]
-		public virtual ecer_LikertScales? ecer_CompetenceFosteringPositiveRelationFamily
+		public virtual ecer_likertscales? ecer_CompetenceFosteringPositiveRelationFamily
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_LikertScales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencefosteringpositiverelationfamily")));
+				return ((ecer_likertscales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencefosteringpositiverelationfamily")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -690,13 +743,58 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencehealthsafetyandnutrition")]
-		public virtual ecer_LikertScales? ecer_CompetenceHealthSafetyandNutrition
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencefosteringrelationchildreason")]
+		public string ecer_CompetenceFosteringRelationChildReason
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_LikertScales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencehealthsafetyandnutrition")));
+				return this.GetAttributeValue<string>("ecer_competencefosteringrelationchildreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_competencefosteringrelationchildreason", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencefosteringrelationcoworkerreason")]
+		public string ecer_CompetenceFosteringRelationCoworkerReason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_competencefosteringrelationcoworkerreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_competencefosteringrelationcoworkerreason", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencefosteringrelationfamilyreason")]
+		public string ecer_CompetenceFosteringRelationFamilyReason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_competencefosteringrelationfamilyreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_competencefosteringrelationfamilyreason", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencehealthsafetyandnutrition")]
+		public virtual ecer_likertscales? ecer_CompetenceHealthSafetyandNutrition
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_likertscales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competencehealthsafetyandnutrition")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -722,13 +820,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competenceimplementanececurriculum")]
-		public virtual ecer_LikertScales? ecer_CompetenceImplementanECECurriculum
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencehealthsafetyandnutritionreason")]
+		public string ecer_CompetenceHealthSafetyandNutritionReason
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_LikertScales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competenceimplementanececurriculum")));
+				return this.GetAttributeValue<string>("ecer_competencehealthsafetyandnutritionreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_competencehealthsafetyandnutritionreason", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competenceimplementanececurriculum")]
+		public virtual ecer_likertscales? ecer_CompetenceImplementanECECurriculum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_likertscales?)(EntityOptionSetEnum.GetEnum(this, "ecer_competenceimplementanececurriculum")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -751,6 +864,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competenceimplementececurriculumreason")]
+		public string ecer_CompetenceImplementECECurriculumReason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_competenceimplementececurriculumreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_competenceimplementececurriculumreason", value);
 			}
 		}
 		
