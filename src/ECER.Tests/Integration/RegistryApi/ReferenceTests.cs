@@ -32,7 +32,8 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
 
     // Generating random data for ReferenceEvaluation
     var referenceEvaluation = new CharacterReferenceEvaluation(
-        faker.Random.Word(), // Relationship
+        ReferenceRelationship.Supervisor, // Relationship
+        string.Empty,        // RelationshipOther
         faker.Random.Word(), // LengthOfAcquaintance
         faker.Random.Bool(), // WorkedWithChildren
         faker.Lorem.Paragraph(), // ChildInteractionObservations
