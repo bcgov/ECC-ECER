@@ -49,10 +49,10 @@ export default defineComponent({
         certificationType = "Five Year";
 
         if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Sne")) {
-          certificationType += " & Special Needs Educator (SNE)";
+          certificationType += " and Special Needs Educator (SNE)";
         }
         if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Ite")) {
-          certificationType += " & Infant and Toddle Educator (ITE)";
+          certificationType += " and Infant and Toddler Educator (ITE)";
         }
       }
       return certificationType;
