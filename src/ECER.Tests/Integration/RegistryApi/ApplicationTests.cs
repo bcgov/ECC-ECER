@@ -109,7 +109,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         .RuleFor(f => f.WorkExperienceReferences, f => f.Make(f.Random.Number(2, 5), () => CreateWorkExperienceReference()))
         .Generate();
 
-    application.Id = this.Fixture.applicationId;
+    application.Id = this.Fixture.draftTestApplicationId;
     return application;
   }
 
@@ -131,7 +131,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   [Fact]
   public async Task SubmitApplication_WithoutEducation_ReturnsBadRequest()
   {
-    var submissionRequest = new ApplicationSubmissionRequest(this.Fixture.applicationId);
+    var submissionRequest = new ApplicationSubmissionRequest(this.Fixture.draftTestApplicationId3);
 
     await Host.Scenario(_ =>
     {
@@ -145,7 +145,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   public async Task CancelApplication_ById_ShouldReturnId_QueryApplications_ShouldNotReturnCancelledApplications()
   {
     var application = CreateDraftApplication();
-    application.Id = this.Fixture.applicationId2;
+    application.Id = this.Fixture.draftTestApplicationId2;
 
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
