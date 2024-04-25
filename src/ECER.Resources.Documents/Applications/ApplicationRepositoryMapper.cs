@@ -141,6 +141,7 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.ReferenceContactInformation.Email))
       .ForMember(d => d.ecer_ReferenceECECertifiedProvince, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateProvinceOther))
       .ForMember(d => d.ecer_ReferenceECECertificationNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateNumber))
+      .ForMember(d => d.ecer_ReferenceBirthDate, opts => opts.MapFrom(s => s.ReferenceContactInformation.DateOfBirth))
       .ForMember(d => d.ecer_TotalNumberofHoursObserved, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.Hours))
       .ForMember(d => d.ecer_WorkHoursType, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.WorkHoursType))
       .ForMember(d => d.ecer_ChildCareProgramName, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramName))

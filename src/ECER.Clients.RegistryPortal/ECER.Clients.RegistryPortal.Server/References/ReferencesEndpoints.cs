@@ -56,7 +56,7 @@ public record CharacterReferenceSubmissionRequest(string Token, ReferenceContact
 public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateProvinceId, string CertificateProvinceOther)
 {
   public string? CertificateNumber { get; set; }
-  public string? DateOfBirth { get; set; }
+  public DateTime? DateOfBirth { get; set; }
 }
 public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons);
