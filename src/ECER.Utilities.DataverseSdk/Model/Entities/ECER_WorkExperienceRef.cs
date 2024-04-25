@@ -87,6 +87,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicantNOTQualifiedReason = "ecer_applicantnotqualifiedreason";
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
+			public const string ecer_ChildcareAgeRange = "ecer_childcareagerange";
+			public const string ecer_childcareagerangeName = "ecer_childcareagerangename";
 			public const string ecer_ChildCareProgramName = "ecer_childcareprogramname";
 			public const string ecer_CompetenceChildDevelopment = "ecer_competencechilddevelopment";
 			public const string ecer_competencechilddevelopmentName = "ecer_competencechilddevelopmentname";
@@ -469,6 +471,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_applicationid"))
 				{
 					return this.FormattedValues["ecer_applicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_childcareagerange")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_ChildcareAgeRanges> ecer_ChildcareAgeRange
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_ChildcareAgeRanges>(this, "ecer_childcareagerange");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_childcareagerange", EntityOptionSetEnum.GetMultiEnum(this, "ecer_childcareagerange", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_childcareagerangename")]
+		public string ecer_childcareagerangeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_childcareagerange"))
+				{
+					return this.FormattedValues["ecer_childcareagerange"];
 				}
 				else
 				{
