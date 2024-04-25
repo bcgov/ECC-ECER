@@ -12,13 +12,9 @@ public interface IApplicationRepository
 
   Task<string> Cancel(string applicationId, CancellationToken cancellationToken);
 
-  Task<string> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
+  Task<string> SubmitReference(SubmitReference request, CancellationToken cancellationToken);
 
-  Task<string> SubmitWorkexperienceReference(WorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken);
-
-  Task<string> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
-
-  Task<string> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
+  Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery
@@ -109,10 +105,7 @@ public enum UnabletoProvideReferenceReasons
   Other
 }
 
-public record CharacterReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight)
-{
-  public PortalInvitation? PortalInvitation { get; set; }
-}
+public record CharacterReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
 public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateProvinceId, string CertificateProvinceOther)
 {
   public string? CertificateNumber { get; set; }
@@ -120,10 +113,7 @@ public record ReferenceContactInformation(string LastName, string FirstName, str
 }
 public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 
-public record WorkExperienceReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight)
-{
-  public PortalInvitation? PortalInvitation { get; set; }
-}
+public record WorkExperienceReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
 public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, string AgeOfChildrenCaredFor, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
 public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
 
@@ -158,4 +148,11 @@ public enum LikertScale
   NotCompetent,
   SomewhatCompetent,
   VeryCompetent,
+}
+
+public record SubmitReference()
+{
+  public PortalInvitation? PortalInvitation { get; set; }
+  public WorkExperienceReferenceSubmissionRequest? WorkExperienceReferenceSubmissionRequest { get; set; }
+  public CharacterReferenceSubmissionRequest? CharacterReferenceSubmissionRequest { get; set; }
 }

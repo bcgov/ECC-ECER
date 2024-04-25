@@ -152,18 +152,13 @@ public class ApplicationHandlers(
     if (portalInvitation.StatusCode != PortalInvitationStatusCode.Sent) return ReferenceSubmissionResult.Failure("Portal Invitation is not valid or expired");
 
     ecerContext.BeginTransaction();
-    if (portalInvitation.InviteType == InviteType.WorkExperienceReference)
+
+    await applicationRepository.SubmitReference(new SubmitReference()
     {
-      var referenceRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
-      referenceRequest.PortalInvitation = portalInvitation;
-      await applicationRepository.SubmitWorkexperienceReference(referenceRequest, cancellationToken);
-    }
-    else if (portalInvitation.InviteType == InviteType.CharacterReference)
-    {
-      var referenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request.CharacterReferenceSubmissionRequest);
-      referenceRequest.PortalInvitation = portalInvitation;
-      await applicationRepository.SubmitCharacterReference(referenceRequest, cancellationToken);
-    }
+      PortalInvitation = portalInvitation,
+      CharacterReferenceSubmissionRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request.CharacterReferenceSubmissionRequest),
+      WorkExperienceReferenceSubmissionRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest)
+    }, cancellationToken);
 
     await portalInvitationRepository.Complete(new CompletePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
     ecerContext.CommitTransaction();
@@ -192,15 +187,7 @@ public class ApplicationHandlers(
     referenceRequest.PortalInvitation = portalInvitation;
 
     ecerContext.BeginTransaction();
-    if (portalInvitation.InviteType == InviteType.WorkExperienceReference)
-    {
-      await applicationRepository.OptOutWorkExperienceReference(referenceRequest, cancellationToken);
-    }
-    else if (portalInvitation.InviteType == InviteType.CharacterReference)
-    {
-      await applicationRepository.OptOutCharacterReference(referenceRequest, cancellationToken);
-    }
-
+    await applicationRepository.OptOutReference(referenceRequest, cancellationToken);
     await portalInvitationRepository.Complete(new CompletePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
     ecerContext.CommitTransaction();
     return ReferenceSubmissionResult.Success();
