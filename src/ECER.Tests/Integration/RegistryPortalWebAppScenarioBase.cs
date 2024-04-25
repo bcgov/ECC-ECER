@@ -29,8 +29,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Application testApplication = null!;
   private ecer_Communication testCommunication = null!;
   private ecer_PortalInvitation testPortalInvitationOne = null!;
-  private ecer_PortalInvitation testPortalInvitationCharacterReference = null!;
-  private ecer_PortalInvitation testPortalInvitationWorkExperienceReference = null!;
+  private ecer_PortalInvitation testPortalInvitationCharacterReferenceSubmit = null!;
+  private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceSubmit = null!;
+  private ecer_PortalInvitation testPortalInvitationCharacterReferenceOptout = null!;
+  private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceOptout = null!;
 
   private Contact authenticatedBcscUser2 = null!;
   private ecer_Application testApplication2 = null!;
@@ -41,8 +43,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string communicationId => testCommunication.Id.ToString();
   public string applicationId => testApplication.Id.ToString();
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
-  public Guid portalInvitationCharacterReferenceId => testPortalInvitationCharacterReference.ecer_PortalInvitationId ?? Guid.Empty;
-  public Guid portalInvitationWorkExperienceReferenceId => testPortalInvitationWorkExperienceReference.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationCharacterReferenceIdSubmit => testPortalInvitationCharacterReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationWorkExperienceReferenceIdSubmit => testPortalInvitationWorkExperienceReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationCharacterReferenceIdOptout => testPortalInvitationCharacterReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationWorkExperienceReferenceIdOptout => testPortalInvitationWorkExperienceReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
 
   public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
@@ -78,8 +82,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testApplication = GetOrAddApplication(context, authenticatedBcscUser);
     testCommunication = GetOrAddCommunication(context, testApplication);
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
-    testPortalInvitationCharacterReference = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
-    testPortalInvitationWorkExperienceReference = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");
+    testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
+    testPortalInvitationWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");
+    testPortalInvitationCharacterReferenceOptout = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name4");
+    testPortalInvitationWorkExperienceReferenceOptout = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name5");
     context.SaveChanges();
 
     //load dependent properties

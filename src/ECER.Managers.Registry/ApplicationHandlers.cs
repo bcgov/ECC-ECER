@@ -25,7 +25,7 @@ public class ApplicationHandlers(
     IRequestHandler<CancelDraftApplicationCommand, string>,
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
-    IRequestHandler<Contract.Applications.CharacterReferenceSubmissionRequest, ReferenceSubmissionResult>,
+    IRequestHandler<Contract.Applications.SubmitReferenceCommand, ReferenceSubmissionResult>,
     IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>
 {
   /// <summary>
@@ -140,7 +140,7 @@ public class ApplicationHandlers(
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="InvalidCastException"></exception>
-  public async Task<ReferenceSubmissionResult> Handle(Contract.Applications.CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  public async Task<ReferenceSubmissionResult> Handle(SubmitReferenceCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -151,16 +151,17 @@ public class ApplicationHandlers(
 
     if (portalInvitation.StatusCode != PortalInvitationStatusCode.Sent) return ReferenceSubmissionResult.Failure("Portal Invitation is not valid or expired");
 
-    var referenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request);
-    referenceRequest.PortalInvitation = portalInvitation;
-
     ecerContext.BeginTransaction();
     if (portalInvitation.InviteType == InviteType.WorkExperienceReference)
     {
+      var referenceRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
+      referenceRequest.PortalInvitation = portalInvitation;
       await applicationRepository.SubmitWorkexperienceReference(referenceRequest, cancellationToken);
     }
     else if (portalInvitation.InviteType == InviteType.CharacterReference)
     {
+      var referenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request.CharacterReferenceSubmissionRequest);
+      referenceRequest.PortalInvitation = portalInvitation;
       await applicationRepository.SubmitCharacterReference(referenceRequest, cancellationToken);
     }
 

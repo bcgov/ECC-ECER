@@ -14,7 +14,7 @@ public interface IApplicationRepository
 
   Task<string> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
 
-  Task<string> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
+  Task<string> SubmitWorkexperienceReference(WorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken);
 
   Task<string> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
 
@@ -119,3 +119,43 @@ public record ReferenceContactInformation(string LastName, string FirstName, str
   public string? DateOfBirth { get; set; }
 }
 public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
+
+public record WorkExperienceReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight)
+{
+  public PortalInvitation? PortalInvitation { get; set; }
+}
+public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, string AgeOfChildrenCaredFor, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
+public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
+
+public enum WorkHoursType
+{
+  FullTime,
+  PartTime,
+}
+
+public enum ChildrenProgramType
+{
+  Childminding,
+  Familychildcare,
+  Groupchildcare,
+  InHomeMultiAgechildcare,
+  MultiAgechildcare,
+  Occasionalchildcare,
+  Other,
+  Preschool,
+}
+
+public enum ReferenceRelationship
+{
+  CoWorker,
+  Other,
+  Supervisor,
+}
+
+public enum LikertScale
+{
+  Competent,
+  NotCompetent,
+  SomewhatCompetent,
+  VeryCompetent,
+}

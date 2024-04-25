@@ -12,13 +12,32 @@ public class ReferencesEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapPost("/api/References/Character", async Task<Results<Ok, BadRequest<string>>> (CharacterReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
     {
       if (request.Token == null) return TypedResults.BadRequest("Token is required");
-      var result = await messageBus.Send(mapper.Map<Managers.Registry.Contract.Applications.CharacterReferenceSubmissionRequest>(request), ct);
+      var mappedCharacterReferenceRequest = mapper.Map<Managers.Registry.Contract.Applications.CharacterReferenceSubmissionRequest>(request);
+      var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
+      {
+        CharacterReferenceSubmissionRequest = mappedCharacterReferenceRequest
+      }, ct);
       if (!result.IsSuccess)
       {
         return TypedResults.BadRequest(result.ErrorMessage);
       }
       return TypedResults.Ok();
     }).WithOpenApi("Handles character reference submission", string.Empty, "character_reference_post").WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/References/WorkExperience", async Task<Results<Ok, BadRequest<string>>> (WorkExperienceReferenceSubmissionRequest request, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
+    {
+      if (request.Token == null) return TypedResults.BadRequest("Token is required");
+      var mappedWorkExperienceRequest = mapper.Map<Managers.Registry.Contract.Applications.WorkExperienceReferenceSubmissionRequest>(request);
+      var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
+      {
+        WorkExperienceReferenceSubmissionRequest = mappedWorkExperienceRequest
+      }, ct);
+      if (!result.IsSuccess)
+      {
+        return TypedResults.BadRequest(result.ErrorMessage);
+      }
+      return TypedResults.Ok();
+    }).WithOpenApi("Handles work experience reference submission", string.Empty, "workExperience_reference_post").WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/References/OptOut", async Task<Results<Ok, BadRequest<string>>> (OptOutReferenceRequest request, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
     {
@@ -52,7 +71,7 @@ public enum UnabletoProvideReferenceReasons
 }
 
 public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, string AgeOfChildrenCaredFor, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
-public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, LikertScale ChildGuidance, LikertScale HealthSafetyAndNutrition, LikertScale DevelopAnEceCurriculum, LikertScale ImplementAnEceCurriculum, LikertScale FosteringPositiveRelationChild, LikertScale FosteringPositiveRelationFamily, LikertScale FosteringPositiveRelationCoworker);
+public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
 public record WorkExperienceReferenceSubmissionRequest(string Token, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
 
 public enum WorkHoursType
@@ -82,8 +101,8 @@ public enum ReferenceRelationship
 
 public enum LikertScale
 {
-  SomewhatAgree,
-  SomewhatDisagree,
-  StronglyAgree,
-  StronglyDisagree,
+  Competent,
+  NotCompetent,
+  SomewhatCompetent,
+  VeryCompetent,
 }

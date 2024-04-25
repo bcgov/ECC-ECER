@@ -130,7 +130,65 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_ApplicantShouldNOTbeECE, opts => opts.MapFrom(s => s.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_applicantnotqualifiedreason, opts => opts.MapFrom(s => s.ApplicantNotQualifiedReason));
 
+    CreateMap<WorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
+      .ForSourceMember(s => s.ReferenceContactInformation, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.WorkExperienceReferenceDetails, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.WorkExperienceReferenceCompetenciesAssessment, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ApplicantShouldNotBeECE, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.ConfirmProvidedInformationIsRight, opts => opts.DoNotValidate())
+      .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.ReferenceContactInformation.FirstName))
+      .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.ReferenceContactInformation.LastName))
+      .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.PhoneNumber))
+      .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.ReferenceContactInformation.Email))
+      .ForMember(d => d.ecer_ReferenceECECertifiedProvince, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateProvinceOther))
+      .ForMember(d => d.ecer_ReferenceECECertificationNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateNumber))
+      .ForMember(d => d.ecer_TotalNumberofHoursObserved, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.Hours))
+      .ForMember(d => d.ecer_WorkHoursType, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.WorkHoursType))
+      .ForMember(d => d.ecer_ChildCareProgramName, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramName))
+      .ForMember(d => d.ecer_TypeofChildrenProgram, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramType))
+      .ForMember(d => d.ecer_OtherChildProgramType, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramTypeOther))
+      .ForMember(d => d.ecer_AgeofChildrenCaredFor, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.AgeOfChildrenCaredFor))
+      .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.StartDate))
+      .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.EndDate))
+      .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ReferenceRelationship))
+      .ForMember(d => d.ecer_RelationshiptoApplicantOther, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ReferenceRelationshipOther))
+      .ForMember(d => d.ecer_CompetenceChildDevelopment, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopment))
+      .ForMember(d => d.ecer_CompetenceChildDevelopmentReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopmentReason))
+      .ForMember(d => d.ecer_CompetenceChildGuidance, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildGuidance))
+      .ForMember(d => d.ecer_CompetenceChildGuidanceReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildGuidanceReason))
+      .ForMember(d => d.ecer_CompetenceHealthSafetyandNutrition, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutrition))
+      .ForMember(d => d.ecer_CompetenceHealthSafetyandNutritionReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.HealthSafetyAndNutritionReason))
+      .ForMember(d => d.ecer_CompetenceDevelopanECECurriculum, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculum))
+      .ForMember(d => d.ecer_CompetenceDevelopanECECurriculumReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.DevelopAnEceCurriculumReason))
+      .ForMember(d => d.ecer_CompetenceImplementanECECurriculum, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculum))
+      .ForMember(d => d.ecer_CompetenceImplementECECurriculumReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ImplementAnEceCurriculumReason))
+      .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationChild, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChild))
+      .ForMember(d => d.ecer_CompetenceFosteringRelationChildReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationChildReason))
+      .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationFamily, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamily))
+      .ForMember(d => d.ecer_CompetenceFosteringRelationFamilyReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamilyReason))
+      .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationCoworker, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworker))
+      .ForMember(d => d.ecer_CompetenceFosteringRelationCoworkerReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworkerReason))
+      .ForMember(d => d.ecer_IsApplicantQualified, opts => opts.MapFrom(s => s.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
+      .ForMember(d => d.ecer_ApplicantNOTQualifiedReason, opts => opts.MapFrom(s => s.ApplicantNotQualifiedReason));
+
     CreateMap<UnabletoProvideReferenceReasons, ecer_UnabletoProvideReferenceReasons>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+
+    CreateMap<LikertScale, ecer_likertscales>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+
+    CreateMap<ReferenceRelationship, ecer_ReferenceRelationships>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+
+    CreateMap<ChildrenProgramType, ecer_ChildrenProgramTypes>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+
+    CreateMap<WorkHoursType, ecer_WorkHoursType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
 

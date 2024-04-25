@@ -226,9 +226,22 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return characterReference.ecer_CharacterReferenceId.ToString()!;
   }
 
-  public Task<string> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  public async Task<string> SubmitWorkexperienceReference(WorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
-    throw new NotImplementedException();
+    await Task.CompletedTask;
+    var workExperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(request.PortalInvitation!.WorkexperienceReferenceId!));
+
+    mapper.Map(request, workExperienceReference);
+
+    var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == Guid.Parse(request.ReferenceContactInformation.CertificateProvinceId));
+    if (province != null)
+    {
+      context.AddLink(workExperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_RefCertifiedProvinceId, province);
+    }
+    workExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.Submitted;
+    context.UpdateObject(workExperienceReference);
+    context.SaveChanges();
+    return workExperienceReference.ecer_WorkExperienceRefId.ToString()!;
   }
 
   public async Task<string> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
