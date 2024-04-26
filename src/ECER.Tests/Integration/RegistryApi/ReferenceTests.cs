@@ -74,7 +74,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         faker.Random.Word(), // ChildrenProgramName
         faker.PickRandom<ChildrenProgramType>(), // ChildrenProgramType
         faker.Random.Word(), // ChildrenProgramTypeOther
-        faker.Random.Word(), // AgeOfChildrenCaredFor
+        new List<ChildcareAgeRanges>() { ChildcareAgeRanges.Grade1 }, // AgeOfChildrenCaredFor
         faker.Date.Between(DateTime.Now.AddYears(-10), DateTime.Now), // StartDate
         faker.Date.Between(DateTime.Now, DateTime.Now.AddYears(10)), // EndDate
         faker.PickRandom<ReferenceRelationship>(), // ReferenceRelationship

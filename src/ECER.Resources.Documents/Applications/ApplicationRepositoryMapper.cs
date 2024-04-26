@@ -123,7 +123,8 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_ReferenceCertificationNumber, opts => opts.MapFrom(s => s.ReferenceContactInformation.CertificateNumber))
       .ForMember(d => d.ecer_HaveObservedApplicantwithChildren, opts => opts.MapFrom(s => s.ReferenceEvaluation.WorkedWithChildren ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_KnowApplicantsTime, opts => opts.MapFrom(s => s.ReferenceEvaluation.LengthOfAcquaintance))
-      .ForMember(d => d.ecer_RelationshipwithApplicant, opts => opts.MapFrom(s => s.ReferenceEvaluation.ReferenceRelationship))
+      .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.ReferenceEvaluation.ReferenceRelationship))
+      .ForMember(d => d.ecer_RelationshipwithApplicantOther, opts => opts.MapFrom(s => s.ReferenceEvaluation.ReferenceRelationshipOther))
       .ForMember(d => d.ecer_ApplicantSituationDescription, opts => opts.MapFrom(s => s.ReferenceEvaluation.ChildInteractionObservations))
       .ForMember(d => d.ecer_ApplicantSuitableReason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantTemperamentAssessment))
       .ForMember(d => d.ecer_ApplicantShouldNOTbeECE, opts => opts.MapFrom(s => s.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
@@ -147,7 +148,6 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_ChildCareProgramName, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramName))
       .ForMember(d => d.ecer_TypeofChildrenProgram, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramType))
       .ForMember(d => d.ecer_OtherChildProgramType, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramTypeOther))
-      .ForMember(d => d.ecer_AgeofChildrenCaredFor, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.AgeOfChildrenCaredFor))
       .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.StartDate))
       .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.EndDate))
       .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ReferenceRelationship))
@@ -169,7 +169,9 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationCoworker, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworker))
       .ForMember(d => d.ecer_CompetenceFosteringRelationCoworkerReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworkerReason))
       .ForMember(d => d.ecer_IsApplicantQualified, opts => opts.MapFrom(s => s.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
-      .ForMember(d => d.ecer_ApplicantNOTQualifiedReason, opts => opts.MapFrom(s => s.ApplicantNotQualifiedReason));
+      .ForMember(d => d.ecer_ApplicantNOTQualifiedReason, opts => opts.MapFrom(s => s.ApplicantNotQualifiedReason))
+      .ForMember(d => d.ecer_ChildcareAgeRange, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildcareAgeRanges))
+      ;
 
     CreateMap<UnabletoProvideReferenceReasons, ecer_UnabletoProvideReferenceReasons>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
@@ -190,7 +192,9 @@ internal class ApplicationRepositoryMapper : Profile
     CreateMap<WorkHoursType, ecer_WorkHoursType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
-
+    CreateMap<ChildcareAgeRanges, ecer_ChildcareAgeRanges>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
     CreateMap<OptOutReferenceRequest, ecer_CharacterReference>(MemberList.Source)
       .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_UnabletoProvideReferenceReason, opts => opts.MapFrom(s => s.UnabletoProvideReferenceReasons));

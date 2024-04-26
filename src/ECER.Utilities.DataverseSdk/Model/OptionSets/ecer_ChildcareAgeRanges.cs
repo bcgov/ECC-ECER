@@ -18,16 +18,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		_0to12Months = 621870000,
+		From0to12Months = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		_12to24Months = 621870001,
+		From12to24Months = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		_25to30Months = 621870002,
+		From25to30Months = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		_31to36Months = 621870003,
+		From31to36Months = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Grade1 = 621870005,

@@ -71,7 +71,7 @@ public enum UnabletoProvideReferenceReasons
   Other
 }
 
-public record WorkExperienceReferenceDetails([Required] int Hours, [Required] WorkHoursType WorkHoursType, [Required] string ChildrenProgramName, [Required] ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, [Required] string AgeOfChildrenCaredFor, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
+public record WorkExperienceReferenceDetails([Required] int Hours, [Required] WorkHoursType WorkHoursType, [Required] string ChildrenProgramName, [Required] ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, [Required] IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
 public record WorkExperienceReferenceCompetenciesAssessment([Required] LikertScale ChildDevelopment, string ChildDevelopmentReason, [Required] LikertScale ChildGuidance, string ChildGuidanceReason, [Required] LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, [Required] LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, [Required] LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, [Required] LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, [Required] LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, [Required] LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
 public record WorkExperienceReferenceSubmissionRequest([Required] string Token, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, [Required] bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
 
@@ -97,7 +97,9 @@ public enum ReferenceRelationship
 {
   CoWorker,
   Other,
+  ParentGuardianofChildinCare,
   Supervisor,
+  Teacher,
 }
 
 public enum LikertScale
@@ -106,4 +108,14 @@ public enum LikertScale
   NotCompetent,
   SomewhatCompetent,
   VeryCompetent,
+}
+
+public enum ChildcareAgeRanges
+{
+  From0to12Months,
+  From12to24Months,
+  From25to30Months,
+  From31to36Months,
+  Grade1,
+  Preschool,
 }
