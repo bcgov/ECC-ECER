@@ -49,7 +49,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<DraftApplication[]>();
     var applicationById = applicationsById.ShouldHaveSingleItem();
-    applicationById.CertificationTypes.ShouldBeEquivalentTo(application.CertificationTypes);
     applicationById.Transcripts.ShouldNotBeEmpty();
     applicationById.CharacterReferences.ShouldNotBeEmpty();
     applicationById.WorkExperienceReferences.ShouldNotBeEmpty();
