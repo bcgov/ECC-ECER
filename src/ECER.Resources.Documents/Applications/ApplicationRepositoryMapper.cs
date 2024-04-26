@@ -64,7 +64,10 @@ internal class ApplicationRepositoryMapper : Profile
            .ForMember(d => d.ecer_StudentNumber, opts => opts.MapFrom(s => s.StudentNumber))
            .ForMember(d => d.ecer_EducationInstitutionFullName, opts => opts.MapFrom(s => s.EducationalInstitutionName))
            .ForMember(d => d.ecer_LanguageofInstruction, opts => opts.MapFrom(s => s.LanguageofInstruction))
-           .ForMember(d => d.ecer_TranscriptId, opts => opts.MapFrom(s => s.Id));
+           .ForMember(d => d.ecer_TranscriptId, opts => opts.MapFrom(s => s.Id))
+           .ForMember(d => d.ecer_iseceassistantName, opts => opts.MapFrom(s => s.IsECEAssistant))
+           .ForMember(d => d.ecer_DoesECERegistryHaveTranscript, opts => opts.MapFrom(s => s.DoesECERegistryHaveTranscript))
+           .ForMember(d => d.ecer_IsOfficialTranscriptRequested, opts => opts.MapFrom(s => s.IsOfficialTranscriptRequested));
 
     CreateMap<ecer_Transcript, Transcript>(MemberList.Source)
           .ForCtorParam(nameof(Transcript.Id), opt => opt.MapFrom(src => src.ecer_TranscriptId))
@@ -74,6 +77,9 @@ internal class ApplicationRepositoryMapper : Profile
           .ForCtorParam(nameof(Transcript.StudentNumber), opt => opt.MapFrom(src => src.ecer_StudentNumber))
           .ForCtorParam(nameof(Transcript.StartDate), opt => opt.MapFrom(src => src.ecer_StartDate))
           .ForCtorParam(nameof(Transcript.EndDate), opt => opt.MapFrom(src => src.ecer_EndDate))
+          .ForCtorParam(nameof(Transcript.IsECEAssistant), opt => opt.MapFrom(src => src.ecer_iseceassistantName))
+          .ForCtorParam(nameof(Transcript.DoesECERegistryHaveTranscript), opt => opt.MapFrom(src => src.ecer_DoesECERegistryHaveTranscript))
+          .ForCtorParam(nameof(Transcript.IsOfficialTranscriptRequested), opt => opt.MapFrom(src => src.ecer_IsOfficialTranscriptRequested))
           .ForMember(d => d.CampusLocation, opts => opts.MapFrom(s => s.ecer_CampusLocation))
           .ForMember(d => d.LanguageofInstruction, opts => opts.MapFrom(s => s.ecer_LanguageofInstruction))
     .ValidateMemberList(MemberList.Destination);

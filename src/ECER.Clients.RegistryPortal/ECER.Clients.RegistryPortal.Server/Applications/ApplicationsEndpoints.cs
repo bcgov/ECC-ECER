@@ -173,6 +173,9 @@ public record Transcript()
   public DateTime StartDate { get; set; }
   [Required]
   public DateTime EndDate { get; set; }
+  public bool IsECEAssistant { get; set; }
+  public bool DoesECERegistryHaveTranscript { get; set; }
+  public bool IsOfficialTranscriptRequested { get; set; }
 }
 public record WorkExperienceReference([Required] string? FirstName, [Required] string? LastName, [Required] string? EmailAddress, [Required] int? Hours)
 {
