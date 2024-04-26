@@ -68,6 +68,23 @@
           maxlength="50"
           class="my-8"
         ></v-text-field>
+        <v-row>
+          <v-checkbox
+            v-model="officialTranscriptRequested"
+            :class="{ 'error-message': !atLeastOneChecked }"
+            color="primary"
+            label="I have requested the official transcript from my education institution"
+          ></v-checkbox>
+          <v-checkbox
+            v-model="officialTranscriptReceived"
+            :class="{ 'error-message': !atLeastOneChecked }"
+            color="primary"
+            label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
+          ></v-checkbox>
+          <div v-if="!atLeastOneChecked" class="v-messages error-message" role="alert">Please select at least one Option</div>
+        </v-row>
+        <!-- <v-checkbox v-model="isECEAssistant" color="primary" label="Is ECE assistant?"></v-checkbox> -->
+
         <v-row justify="start" class="ml-1">
           <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Education</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
@@ -82,20 +99,6 @@
         <v-row justify="start" class="ml-1">
           <v-btn prepend-icon="mdi-plus" rounded="lg" color="alternate" @click="handleAddEducation">Add Education</v-btn>
         </v-row>
-      </v-col>
-      <v-col class="mt-4" md="8">
-        <form ref="checkboxForm">
-          <v-checkbox
-            v-model="officialTranscriptRequested"
-            color="primary"
-            label="I have requested the official transcript from my education institution"
-          ></v-checkbox>
-          <v-checkbox
-            v-model="officialTranscriptReceived"
-            color="primary"
-            label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
-          ></v-checkbox>
-        </form>
       </v-col>
     </div>
   </v-row>
@@ -158,6 +161,9 @@ export default defineComponent({
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
     },
+    atLeastOneChecked() {
+      return this.officialTranscriptRequested == true || this.officialTranscriptReceived == true;
+    },
   },
   mounted() {
     if (Object.keys(this.modelValue).length === 0) {
@@ -183,6 +189,8 @@ export default defineComponent({
           languageofInstruction: this.language,
           startDate: this.startYear,
           endDate: this.endYear,
+          doesECERegistryHaveTranscript: this.officialTranscriptReceived,
+          isOfficialTranscriptRequested: this.officialTranscriptRequested,
         };
 
         // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
@@ -229,6 +237,8 @@ export default defineComponent({
       this.language = educationData.education.languageofInstruction ?? "";
       this.startYear = formatDate(educationData.education.startDate) ?? "";
       this.endYear = formatDate(educationData.education.endDate) ?? "";
+      this.officialTranscriptRequested = educationData.education.isOfficialTranscriptRequested ?? false;
+      this.officialTranscriptReceived = educationData.education.doesECERegistryHaveTranscript ?? false;
       // Change mode to add
       this.mode = "add";
     },
@@ -262,3 +272,8 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+.error-message {
+  color: rgb(var(--v-theme-error));
+}
+</style>
