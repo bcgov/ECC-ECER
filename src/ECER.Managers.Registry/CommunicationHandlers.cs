@@ -9,7 +9,7 @@ namespace ECER.Managers.Registry;
 public class CommunicationHandlers(ICommunicationRepository communicationRepository, IMapper mapper)
   : IRequestHandler<UserCommunicationsStatusQuery, CommunicationsStatusResults>,
     IRequestHandler<Contract.Communications.UserCommunicationQuery, CommunicationsQueryResults>,
-    IRequestHandler<CommunicationSeenCommand, string>
+    IRequestHandler<MarkCommunicationAsSeenCommand, string>
 
 {
   public async Task<CommunicationsStatusResults> Handle(UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
@@ -52,10 +52,8 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
   /// <param name="request">The command</param>
   /// <param name="cancellationToken">cancellation token</param>
   /// <returns></returns>
-  public async Task<string> Handle(CommunicationSeenCommand request, CancellationToken cancellationToken)
+  public async Task<string> Handle(MarkCommunicationAsSeenCommand request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(communicationRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
     var statuses = new List<Resources.Accounts.Communications.CommunicationStatus>();
@@ -73,7 +71,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
       throw new InvalidOperationException($"Communication not found id '{request.communicationId}'");
     }
 
-    var seenCommunicationId = await communicationRepository.Seen(request.communicationId, cancellationToken);
+    var seenCommunicationId = await communicationRepository.MarkAsSeen(request.communicationId, cancellationToken);
 
     return seenCommunicationId;
   }

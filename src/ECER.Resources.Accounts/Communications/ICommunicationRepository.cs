@@ -10,7 +10,7 @@ namespace ECER.Resources.Accounts.Communications;
 public interface ICommunicationRepository
 {
   Task<IEnumerable<Communication>> Query(UserCommunicationQuery query);
-  Task<string> Seen(string communicationId, CancellationToken cancellationToken);
+  Task<string> MarkAsSeen(string communicationId, CancellationToken cancellationToken);
 }
 
 public record UserCommunicationQuery

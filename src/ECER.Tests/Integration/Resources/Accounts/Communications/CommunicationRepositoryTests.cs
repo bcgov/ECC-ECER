@@ -23,7 +23,7 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
   public async Task QueryCommunications_ById_Found()
   {
     // Arrange
-    var communicationId = Fixture.communicationId;
+    var communicationId = Fixture.communicationTwoId;
 
     // Act
     var communications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
@@ -35,7 +35,7 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
   [Fact]
   public async Task SeenCommunications_MarkAsSeen()
   {
-    var communicationId = Fixture.communicationId;
+    var communicationId = Fixture.communicationOneId;
     
     // Ensure test message is not "seen"
     var communications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
@@ -44,7 +44,7 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
     communications.First().Status.ShouldBe(CommunicationStatus.NotifiedRecipient);
 
     // Act
-    await repository.Seen(communicationId, default);
+    await repository.MarkAsSeen(communicationId, default);
     var seenCommunications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
 
     // Assert communication has been marked "seen"

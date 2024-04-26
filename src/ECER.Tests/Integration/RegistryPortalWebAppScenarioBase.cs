@@ -27,7 +27,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private IServiceScope serviceScope = null!;
   private Contact authenticatedBcscUser = null!;
   private ecer_Application testApplication = null!;
-  private ecer_Communication testCommunication = null!;
+  private ecer_Communication testCommunicationOne = null!;
+  private ecer_Communication testCommunicationTwo = null!;
+  private ecer_Communication testCommunicationThree = null!;
   private ecer_PortalInvitation testPortalInvitationOne = null!;
   private ecer_PortalInvitation testPortalInvitationCharacterReference = null!;
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReference = null!;
@@ -38,7 +40,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedBcscUserIdentity => authenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
-  public string communicationId => testCommunication.Id.ToString();
+  public string communicationOneId => testCommunicationOne.Id.ToString();
+  public string communicationTwoId => testCommunicationTwo.Id.ToString();
+  public string communicationThreeId => testCommunicationThree.Id.ToString();
   public string applicationId => testApplication.Id.ToString();
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationCharacterReferenceId => testPortalInvitationCharacterReference.ecer_PortalInvitationId ?? Guid.Empty;
@@ -76,7 +80,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
     authenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user1");
     testApplication = GetOrAddApplication(context, authenticatedBcscUser);
-    testCommunication = GetOrAddCommunication(context, testApplication, authenticatedBcscUser);
+    testCommunicationOne = GetOrAddCommunication(context, testApplication, authenticatedBcscUser, "comm1");
+    testCommunicationTwo = GetOrAddCommunication(context, testApplication, authenticatedBcscUser, "comm2");
+    testCommunicationThree = GetOrAddCommunication(context, testApplication, authenticatedBcscUser, "comm3");
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
     testPortalInvitationCharacterReference = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
     testPortalInvitationWorkExperienceReference = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");
@@ -149,11 +155,12 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return application;
   }
 
-  private ecer_Communication GetOrAddCommunication(EcerContext context, ecer_Application application, Contact registrant)
+  private ecer_Communication GetOrAddCommunication(EcerContext context, ecer_Application application, Contact registrant, string name)
   {
     var communication = (from a in context.ecer_CommunicationSet
                          where a.ecer_Applicationid.Id == application.Id
                          & a.ecer_Registrantid.Id == registrant.Id
+                         & a.ecer_Name == name
                          select a).FirstOrDefault();
 
     if (communication == null)
@@ -164,11 +171,19 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Message = "Test message",
         ecer_Acknowledged = false,
         StatusCode = ecer_Communication_StatusCode.NotifiedRecipient,
+        ecer_Name = name
       };
 
       context.AddObject(communication);
       context.AddLink(communication, ecer_Communication.Fields.ecer_communication_Applicationid, application);
       context.AddLink(registrant, ecer_Communication.Fields.ecer_contact_ecer_communication_122, communication);
+    }
+    else
+    {
+      // Reset to notified (not yet marked as seen)
+      communication.ecer_Acknowledged = false;
+      communication.StatusCode = ecer_Communication_StatusCode.NotifiedRecipient;
+      context.UpdateObject(communication);
     }
 
     return communication;

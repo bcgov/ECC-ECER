@@ -34,7 +34,6 @@ public class CommunicationsEndpoints : IRegisterEndpoints
         {
           var userId = ctx.User.GetUserContext()?.UserId;
 
-
           bool IdIsNotGuid = !Guid.TryParse(id, out _);
           bool CommunicationIdIsNotGuid = !Guid.TryParse(request.CommunicationId, out _);
 
@@ -42,7 +41,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
           if (request.CommunicationId != id) return TypedResults.BadRequest("resource id and payload id do not match");
 
           var communicationId =
-            await messageBus.Send(new CommunicationSeenCommand(request.CommunicationId, userId!), ct);
+            await messageBus.Send(new MarkCommunicationAsSeenCommand(request.CommunicationId, userId!), ct);
           return TypedResults.Ok(new CommunicationResponse(communicationId));
         })
       .WithOpenApi("Marks a communication as seen", string.Empty, "communication_put")

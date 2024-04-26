@@ -43,14 +43,14 @@ internal class CommunicationRepository : ICommunicationRepository
     return result!;
   }
   
-  public async Task<string> Seen(string communicationId, CancellationToken cancellationToken)
+  public async Task<string> MarkAsSeen(string communicationId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
     var communication =
       context.ecer_CommunicationSet.Single(c => c.ecer_CommunicationId == Guid.Parse(communicationId));
     
-    if (communication == null) throw new InvalidOperationException($"Application '{communicationId}' not found");
+    if (communication == null) throw new InvalidOperationException($"Communication '{communicationId}' not found");
       
     communication.ecer_DateAcknowledged = DateTime.Now;
     communication.ecer_Acknowledged = true;
