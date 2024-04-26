@@ -32,6 +32,9 @@ export const useMessageStore = defineStore("message", {
     },
   },
   actions: {
+    messageById(id: string): Components.Schemas.Communication | undefined {
+      return this.messages?.find((message) => message.id === id);
+    },
     async fetchMessages() {
       this.messages = (await getMessages()).data;
     },
