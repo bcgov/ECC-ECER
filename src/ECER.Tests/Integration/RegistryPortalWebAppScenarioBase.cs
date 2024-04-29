@@ -183,7 +183,6 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   {
     var communication = context.ecer_CommunicationSet.FirstOrDefault(c => c.ecer_Applicationid.Id == application.Id && c.ecer_Registrantid.Id == authenticatedBcscUser.Id && c.ecer_Message == message && c.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient);
 
-
     if (communication == null)
     {
       communication = new ecer_Communication
@@ -192,15 +191,15 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Message = message,
         ecer_Acknowledged = false,
         StatusCode = ecer_Communication_StatusCode.NotifiedRecipient,
-        ecer_Name = name
       };
 
       context.AddObject(communication);
       context.AddLink(communication, ecer_Communication.Fields.ecer_communication_Applicationid, inProgressTestApplication);
 
+#pragma warning disable S125 // Sections of code should not be commented out
       // Adding this statement causes duplicate key issue for all tests "Cannot insert duplicate key"
       //context.AddLink(authenticatedBcscUser, ecer_Communication.Fields.ecer_contact_ecer_communication_122, communication);
-
+#pragma warning restore S125 // Sections of code should not be commented out
     }
 
     return communication;
