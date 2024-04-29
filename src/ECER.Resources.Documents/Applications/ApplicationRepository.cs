@@ -209,28 +209,24 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return applicationId;
   }
 
-  public async Task<string> SubmitReference(SubmitReference request, CancellationToken cancellationToken)
+  public async Task<string> SubmitReference(SubmitReferenceRequest request, CancellationToken cancellationToken)
   {
-    if (request.PortalInvitation!.InviteType == InviteType.CharacterReference)
+    return request switch
     {
-      return await SubmitCharacterReference(request.PortalInvitation!.CharacterReferenceId!, request.CharacterReferenceSubmissionRequest!);
-    }
-    else
-    {
-      return await SubmitWorkexperienceReference(request.PortalInvitation!.WorkexperienceReferenceId!, request.WorkExperienceReferenceSubmissionRequest!);
-    }
+      CharacterReferenceSubmissionRequest req => await SubmitCharacterReference(request.PortalInvitation!.CharacterReferenceId!, req),
+      WorkExperienceReferenceSubmissionRequest req => await SubmitWorkexperienceReference(request.PortalInvitation!.WorkexperienceReferenceId!, req),
+      _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
+    };
   }
 
   public async Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
   {
-    if (request.PortalInvitation!.InviteType == InviteType.CharacterReference)
+    return request.PortalInvitation!.InviteType switch
     {
-      return await OptOutCharacterReference(request);
-    }
-    else
-    {
-      return await OptOutWorkExperienceReference(request);
-    }
+      InviteType.CharacterReference => await OptOutCharacterReference(request),
+      InviteType.WorkExperienceReference => await OptOutWorkExperienceReference(request),
+      _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
+    };
   }
 
   #region implementationDetails

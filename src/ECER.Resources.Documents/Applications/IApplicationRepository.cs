@@ -12,7 +12,7 @@ public interface IApplicationRepository
 
   Task<string> Cancel(string applicationId, CancellationToken cancellationToken);
 
-  Task<string> SubmitReference(SubmitReference request, CancellationToken cancellationToken);
+  Task<string> SubmitReference(SubmitReferenceRequest request, CancellationToken cancellationToken);
 
   Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
 }
@@ -105,7 +105,11 @@ public enum UnabletoProvideReferenceReasons
   Other
 }
 
-public record CharacterReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
+public record SubmitReferenceRequest()
+{
+  public PortalInvitation? PortalInvitation { get; set; }
+}
+public record CharacterReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight) : SubmitReferenceRequest;
 public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateProvinceId, string CertificateProvinceOther)
 {
   public string? CertificateNumber { get; set; }
@@ -113,7 +117,7 @@ public record ReferenceContactInformation(string LastName, string FirstName, str
 }
 public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 
-public record WorkExperienceReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
+public record WorkExperienceReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight) : SubmitReferenceRequest;
 public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
 public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
 
@@ -160,11 +164,4 @@ public enum ChildcareAgeRanges
   From31to36Months,
   Grade1,
   Preschool,
-}
-
-public record SubmitReference()
-{
-  public PortalInvitation? PortalInvitation { get; set; }
-  public WorkExperienceReferenceSubmissionRequest? WorkExperienceReferenceSubmissionRequest { get; set; }
-  public CharacterReferenceSubmissionRequest? CharacterReferenceSubmissionRequest { get; set; }
 }

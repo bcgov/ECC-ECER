@@ -148,18 +148,23 @@ public class ApplicationHandlers(
     if (transformationResponse.PortalInvitation == Guid.Empty) return ReferenceSubmissionResult.Failure("Invalid Token");
 
     var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(transformationResponse.PortalInvitation), cancellationToken);
-
     if (portalInvitation.StatusCode != PortalInvitationStatusCode.Sent) return ReferenceSubmissionResult.Failure("Portal Invitation is not valid or expired");
 
     ecerContext.BeginTransaction();
 
-    await applicationRepository.SubmitReference(new SubmitReference()
+    SubmitReferenceRequest submitReferenceRequest = new SubmitReferenceRequest();
+    switch (portalInvitation.InviteType)
     {
-      PortalInvitation = portalInvitation,
-      CharacterReferenceSubmissionRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request.CharacterReferenceSubmissionRequest),
-      WorkExperienceReferenceSubmissionRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest)
-    }, cancellationToken);
+      case InviteType.CharacterReference:
+        submitReferenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request.CharacterReferenceSubmissionRequest);
+        break;
 
+      case InviteType.WorkExperienceReference:
+        submitReferenceRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
+        break;
+    }
+    submitReferenceRequest.PortalInvitation = portalInvitation;
+    await applicationRepository.SubmitReference(submitReferenceRequest, cancellationToken);
     await portalInvitationRepository.Complete(new CompletePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
     ecerContext.CommitTransaction();
     return ReferenceSubmissionResult.Success();
