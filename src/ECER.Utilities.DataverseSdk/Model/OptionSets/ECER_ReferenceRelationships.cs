@@ -24,7 +24,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Other = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ParentGuardianofChildinCare = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Supervisor = 621870000,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Teacher = 621870003,
 	}
 }
 #pragma warning restore CS1591

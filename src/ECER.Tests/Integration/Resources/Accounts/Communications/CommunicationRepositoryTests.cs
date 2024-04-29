@@ -23,7 +23,8 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
   public async Task QueryCommunications_ById_Found()
   {
     // Arrange
-    var communicationId = Fixture.communicationTwoId;
+    var communicationId = Fixture.communicationOneId;
+
 
     // Act
     var communications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
@@ -31,12 +32,12 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
     // Assert
     communications.ShouldHaveSingleItem();
   }
-  
+
   [Fact]
   public async Task SeenCommunications_MarkAsSeen()
   {
     var communicationId = Fixture.communicationOneId;
-    
+
     // Ensure test message is not "seen"
     var communications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
     communications.ShouldHaveSingleItem();

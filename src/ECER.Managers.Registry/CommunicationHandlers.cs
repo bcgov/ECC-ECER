@@ -45,7 +45,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
     });
     return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communications)!);
   }
-  
+
   /// <summary>
   /// Handles marking a communication as seen use case
   /// </summary>
@@ -56,9 +56,12 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    var statuses = new List<Resources.Accounts.Communications.CommunicationStatus>();
-    statuses.Add(Resources.Accounts.Communications.CommunicationStatus.NotifiedRecipient);
-    
+
+    var statuses = new List<Resources.Accounts.Communications.CommunicationStatus>
+    {
+      Resources.Accounts.Communications.CommunicationStatus.NotifiedRecipient
+    };
+
     var communications = await communicationRepository.Query(new Resources.Accounts.Communications.UserCommunicationQuery
     {
       ById = request.communicationId,
@@ -68,7 +71,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
 
     if (!communications.Any())
     {
-      throw new InvalidOperationException($"Communication not found id '{request.communicationId}'");
+      throw new InvalidOperationException($"Communication '{request.communicationId}' not found");
     }
 
     var seenCommunicationId = await communicationRepository.MarkAsSeen(request.communicationId, cancellationToken);
