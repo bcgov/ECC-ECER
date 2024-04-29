@@ -101,6 +101,24 @@ declare namespace Components {
       notifiedOn?: string; // date-time
       status?: CommunicationStatus;
     }
+    /**
+     * Save communication response
+     */
+    export interface CommunicationResponse {
+      /**
+       * The communication id
+       */
+      communicationId?: string | null;
+    }
+    /**
+     * Communication seen request
+     */
+    export interface CommunicationSeenRequest {
+      /**
+       * The communication ID
+       */
+      communicationId?: string | null;
+    }
     export type CommunicationStatus = "Draft" | "NotifiedRecipient" | "Acknowledged" | "Inactive";
     export interface CommunicationsStatus {
       count?: number; // int32
@@ -268,6 +286,19 @@ declare namespace Paths {
     namespace Responses {
       export interface $200 {}
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace CommunicationPut {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id?: Parameters.Id;
+    }
+    export type RequestBody = /* Communication seen request */ Components.Schemas.CommunicationSeenRequest;
+    namespace Responses {
+      export type $200 = /* Save communication response */ Components.Schemas.CommunicationResponse;
+      export type $400 = string;
     }
   }
   namespace ConfigurationGet {
@@ -443,6 +474,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.MessageGet.Responses.$200>;
   /**
+   * communication_put - Marks a communication as seen
+   */
+  "communication_put"(
+    parameters?: Parameters<Paths.CommunicationPut.PathParameters> | null,
+    data?: Paths.CommunicationPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CommunicationPut.Responses.$200>;
+  /**
    * message_status_get - Handles messages status
    */
   "message_status_get"(
@@ -566,6 +605,16 @@ export interface PathsDictionary {
      * message_get - Handles messages queries
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.MessageGet.Responses.$200>;
+  };
+  ["/api/messages/{id}/seen"]: {
+    /**
+     * communication_put - Marks a communication as seen
+     */
+    "put"(
+      parameters?: Parameters<Paths.CommunicationPut.PathParameters> | null,
+      data?: Paths.CommunicationPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CommunicationPut.Responses.$200>;
   };
   ["/api/messages/status"]: {
     /**

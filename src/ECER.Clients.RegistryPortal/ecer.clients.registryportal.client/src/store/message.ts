@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { getMessages } from "@/api/message";
+import { getMessages, markMessageAsRead } from "@/api/message";
 import { useUserStore } from "@/store/user"; // Adjust the path to your useUserStore file
 import type { Components } from "@/types/openapi";
 
@@ -33,7 +33,11 @@ export const useMessageStore = defineStore("message", {
   },
   actions: {
     async fetchMessages() {
-      this.messages = await getMessages();
+      this.messages = (await getMessages()).data;
+    },
+    async markMessageAsRead(messageId: string) {
+      await markMessageAsRead(messageId);
+      this.fetchMessages();
     },
     setPage(pageNumber: number) {
       if (pageNumber < 1 || pageNumber > this.totalPages) {

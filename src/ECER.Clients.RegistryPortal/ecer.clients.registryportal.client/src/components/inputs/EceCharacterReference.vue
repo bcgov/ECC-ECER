@@ -46,12 +46,12 @@
         v-model="phoneNumber"
         :rules="[Rules.phoneNumber('Enter your reference\'s 10-digit phone number')]"
         label="Reference Phone Number (Optional)"
+        length="10"
         variant="outlined"
         color="primary"
-        type="number"
-        maxlength="100"
-        hide-spin-buttons
+        maxlength="10"
         @update:model-value="updateCharacterReference()"
+        @keypress="isNumber($event)"
       ></v-text-field>
     </v-col>
   </v-row>
@@ -79,6 +79,7 @@ import { defineComponent } from "vue";
 import { useAlertStore } from "@/store/alert";
 import type { EceCharacterReferenceProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
+import { isNumber } from "@/utils/formInput";
 import { isNotSpecialCharacterName } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
@@ -116,6 +117,7 @@ export default defineComponent({
     };
   },
   methods: {
+    isNumber,
     async updateCharacterReference() {
       this.$emit("update:model-value", [
         { firstName: this.firstName, lastName: this.lastName, emailAddress: this.emailAddress, phoneNumber: this.phoneNumber },

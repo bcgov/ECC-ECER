@@ -14,8 +14,8 @@
         ></v-text-field>
         <v-text-field
           v-model="program"
-          :rules="[Rules.required('Enter the name of your program/course')]"
-          label="Name of Program/Course"
+          :rules="[Rules.required(`Enter the name of your ${getLabelOnCertificateType.toLowerCase()}`)]"
+          :label="`Name of ${getLabelOnCertificateType}`"
           variant="outlined"
           color="primary"
           maxlength="100"
@@ -50,8 +50,8 @@
         ></v-text-field>
         <v-text-field
           v-model="startYear"
-          :rules="[Rules.required('Enter the start date of your program')]"
-          label="Start Date of Program"
+          :rules="[Rules.required(`Enter the start date of your ${getLabelOnCertificateType.toLowerCase()}`)]"
+          :label="`Start Date of ${getLabelOnCertificateType}`"
           type="date"
           variant="outlined"
           color="primary"
@@ -60,8 +60,8 @@
         ></v-text-field>
         <v-text-field
           v-model="endYear"
-          :rules="[Rules.required('Enter the end date of your program')]"
-          label="End Date of Program"
+          :rules="[Rules.required(`Enter the end date of your ${getLabelOnCertificateType.toLowerCase()}`)]"
+          :label="`End Date of ${getLabelOnCertificateType}`"
           type="date"
           variant="outlined"
           color="primary"
@@ -130,9 +130,11 @@ export default defineComponent({
   },
   setup: () => {
     const alertStore = useAlertStore();
+    const wizardStore = useWizardStore();
 
     return {
       alertStore,
+      wizardStore,
     };
   },
   data: function () {
@@ -157,6 +159,13 @@ export default defineComponent({
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
+    },
+    getLabelOnCertificateType() {
+      if (this.wizardStore.wizardData.certificationSelection.includes("FiveYears")) {
+        return "Program";
+      } else {
+        return "Course";
+      }
     },
   },
   mounted() {
