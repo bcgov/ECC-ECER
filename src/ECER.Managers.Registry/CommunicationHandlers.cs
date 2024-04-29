@@ -56,6 +56,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
   {
     ArgumentNullException.ThrowIfNull(request);
 
+
     var statuses = new List<Resources.Accounts.Communications.CommunicationStatus>
     {
       Resources.Accounts.Communications.CommunicationStatus.NotifiedRecipient

@@ -26,12 +26,14 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 {
   private IServiceScope serviceScope = null!;
   private Contact authenticatedBcscUser = null!;
+
   private ecer_Application inProgressTestApplication = null!;
   private ecer_Application draftTestApplication = null!;
 
   private ecer_Communication testCommunication1 = null!;
   private ecer_Communication testCommunication2 = null!;
   private ecer_Communication testCommunication3 = null!;
+
   private ecer_PortalInvitation testPortalInvitationOne = null!;
   private ecer_PortalInvitation testPortalInvitationCharacterReferenceSubmit = null!;
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceSubmit = null!;
@@ -43,11 +45,13 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedBcscUserIdentity => authenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
+
   public string communicationOneId => testCommunication1.Id.ToString();
   public string communicationTwoId => testCommunication2.Id.ToString();
   public string communicationThreeId => testCommunication3.Id.ToString();
   public string inProgressApplicationId => inProgressTestApplication.Id.ToString();
   public string draftTestApplicationId => draftTestApplication.Id.ToString();
+
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationCharacterReferenceIdSubmit => testPortalInvitationCharacterReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationWorkExperienceReferenceIdSubmit => testPortalInvitationWorkExperienceReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
@@ -90,6 +94,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     await Task.CompletedTask;
 
     authenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user1");
+
     inProgressTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.InProgress);
     inProgressTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.InProgress);
     draftTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
@@ -98,6 +103,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1");
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2");
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3");
+
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
     testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
     testPortalInvitationWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");
@@ -177,6 +183,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   {
     var communication = context.ecer_CommunicationSet.FirstOrDefault(c => c.ecer_Applicationid.Id == application.Id && c.ecer_Registrantid.Id == authenticatedBcscUser.Id && c.ecer_Message == message && c.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient);
 
+
     if (communication == null)
     {
       communication = new ecer_Communication
@@ -185,6 +192,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Message = message,
         ecer_Acknowledged = false,
         StatusCode = ecer_Communication_StatusCode.NotifiedRecipient,
+        ecer_Name = name
       };
 
       context.AddObject(communication);
@@ -192,6 +200,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
       // Adding this statement causes duplicate key issue for all tests "Cannot insert duplicate key"
       //context.AddLink(authenticatedBcscUser, ecer_Communication.Fields.ecer_contact_ecer_communication_122, communication);
+
     }
 
     return communication;

@@ -1,4 +1,5 @@
-﻿using ECER.Resources.Accounts.Communications;
+﻿using ECER.Managers.Registry.Contract.Communications;
+using ECER.Resources.Accounts.Communications;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
@@ -23,6 +24,7 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     // Arrange
     var communicationId = Fixture.communicationOneId;
+
 
     // Act
     var communications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
