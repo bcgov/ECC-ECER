@@ -14,20 +14,26 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_likertscales
+	public enum ecer_ChildcareAgeRanges
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Competent = 621870001,
+		From0to12Months = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NotCompetent = 621870003,
+		From12to24Months = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		SomewhatCompetent = 621870002,
+		From25to30Months = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		VeryCompetent = 621870000,
+		From31to36Months = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Grade1 = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Preschool = 621870004,
 	}
 }
 #pragma warning restore CS1591

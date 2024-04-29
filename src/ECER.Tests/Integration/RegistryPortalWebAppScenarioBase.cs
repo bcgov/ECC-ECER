@@ -26,27 +26,38 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 {
   private IServiceScope serviceScope = null!;
   private Contact authenticatedBcscUser = null!;
-  private ecer_Application testApplication = null!;
+  private ecer_Application inProgressTestApplication = null!;
+  private ecer_Application draftTestApplication = null!;
+
   private ecer_Communication testCommunication = null!;
   private ecer_PortalInvitation testPortalInvitationOne = null!;
-  private ecer_PortalInvitation testPortalInvitationCharacterReference = null!;
-  private ecer_PortalInvitation testPortalInvitationWorkExperienceReference = null!;
+  private ecer_PortalInvitation testPortalInvitationCharacterReferenceSubmit = null!;
+  private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceSubmit = null!;
+  private ecer_PortalInvitation testPortalInvitationCharacterReferenceOptout = null!;
+  private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceOptout = null!;
 
   private Contact authenticatedBcscUser2 = null!;
-  private ecer_Application testApplication2 = null!;
 
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedBcscUserIdentity => authenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
   public string communicationId => testCommunication.Id.ToString();
-  public string applicationId => testApplication.Id.ToString();
+  public string inProgressApplicationId => inProgressTestApplication.Id.ToString();
+  public string draftTestApplicationId => draftTestApplication.Id.ToString();
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
-  public Guid portalInvitationCharacterReferenceId => testPortalInvitationCharacterReference.ecer_PortalInvitationId ?? Guid.Empty;
-  public Guid portalInvitationWorkExperienceReferenceId => testPortalInvitationWorkExperienceReference.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationCharacterReferenceIdSubmit => testPortalInvitationCharacterReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationWorkExperienceReferenceIdSubmit => testPortalInvitationWorkExperienceReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationCharacterReferenceIdOptout => testPortalInvitationCharacterReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationWorkExperienceReferenceIdOptout => testPortalInvitationWorkExperienceReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
 
   public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
-  public string applicationId2 => testApplication2.Id.ToString();
+  private ecer_Application inProgressTestApplication2 = null!;
+  private ecer_Application draftTestApplication2 = null!;
+  private ecer_Application draftTestApplication3 = null!;
+  public string inprogressTestApplicationId2 => inProgressTestApplication2.Id.ToString();
+  public string draftTestApplicationId2 => draftTestApplication2.Id.ToString();
+  public string draftTestApplicationId3 => draftTestApplication3.Id.ToString();
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -75,11 +86,17 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     await Task.CompletedTask;
 
     authenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user1");
-    testApplication = GetOrAddApplication(context, authenticatedBcscUser);
-    testCommunication = GetOrAddCommunication(context, testApplication);
+    inProgressTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.InProgress);
+    inProgressTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.InProgress);
+    draftTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
+    draftTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
+    draftTestApplication3 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
+    testCommunication = GetOrAddCommunication(context, inProgressTestApplication);
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
-    testPortalInvitationCharacterReference = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
-    testPortalInvitationWorkExperienceReference = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");
+    testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
+    testPortalInvitationWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");
+    testPortalInvitationCharacterReferenceOptout = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name4");
+    testPortalInvitationWorkExperienceReferenceOptout = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name5");
     context.SaveChanges();
 
     //load dependent properties
@@ -88,7 +105,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
     //load user 2
     authenticatedBcscUser2 = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user2");
-    testApplication2 = GetOrAddApplication(context, authenticatedBcscUser2);
+    inProgressTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser2, ecer_Application_StatusCode.InProgress);
+    draftTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser2, ecer_Application_StatusCode.Draft);
 
     context.SaveChanges();
 
@@ -127,10 +145,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return contact;
   }
 
-  private ecer_Application GetOrAddApplication(EcerContext context, Contact applicant)
+  private ecer_Application GetOrAddApplication(EcerContext context, Contact applicant, ecer_Application_StatusCode status)
   {
     var application = (from a in context.ecer_ApplicationSet
-                       where a.ecer_Applicantid.Id == applicant.Id && a.ecer_isECE5YR == true && a.StatusCode == ecer_Application_StatusCode.InProgress
+                       where a.ecer_Applicantid.Id == applicant.Id && a.ecer_isECE5YR == true && a.StatusCode == status
                        select a).FirstOrDefault();
 
     if (application == null)
@@ -139,7 +157,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         Id = Guid.NewGuid(),
         ecer_isECE5YR = true,
-        StatusCode = ecer_Application_StatusCode.InProgress,
+        StatusCode = status,
         StateCode = ecer_application_statecode.Active,
         ecer_CertificateType = "ECE 5 YR",
       };
@@ -166,7 +184,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       };
 
       context.AddObject(communication);
-      context.AddLink(communication, ecer_Communication.Fields.ecer_communication_Applicationid, testApplication);
+      context.AddLink(communication, ecer_Communication.Fields.ecer_communication_Applicationid, inProgressTestApplication);
     }
 
     return communication;
@@ -210,7 +228,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_CharacterReferenceId, characterReference);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
-      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, testApplication);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication);
     }
 
     return portalInvitation;
@@ -253,7 +271,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       context.AddObject(workexperienceReference);
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
-      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, testApplication);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_WorkExperienceRefId, workexperienceReference);
     }
 

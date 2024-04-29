@@ -20,7 +20,7 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
   public async Task CanGetPortalInvitationData()
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
-    var portalInvitation = Fixture.portalInvitationWorkExperienceReferenceId;
+    var portalInvitation = Fixture.portalInvitationWorkExperienceReferenceIdSubmit;
     var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 

@@ -46,7 +46,6 @@ public record ApplicationSubmissionResult()
   public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
 }
 
-
 public record Application(string? Id, string RegistrantId, ApplicationStatus Status)
 {
   public DateTime? SubmittedOn { get; set; }
@@ -120,9 +119,13 @@ public enum ApplicationStatus
   ReconsiderationDecision
 }
 
-public record CharacterReferenceSubmissionRequest(string Token, CharacterReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation) : IRequest<ReferenceSubmissionResult>;
-public record CharacterReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvinceId, string CertificateProvinceOther);
-public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
+public record CharacterReferenceSubmissionRequest(string Token, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
+public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateProvinceId, string CertificateProvinceOther)
+{
+  public string? CertificateNumber { get; set; }
+  public DateTime? DateOfBirth { get; set; }
+}
+public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons) : IRequest<ReferenceSubmissionResult>;
 
 public enum UnabletoProvideReferenceReasons
@@ -142,4 +145,59 @@ public class ReferenceSubmissionResult
   public static ReferenceSubmissionResult Success() => new ReferenceSubmissionResult { IsSuccess = true };
 
   public static ReferenceSubmissionResult Failure(string message) => new ReferenceSubmissionResult { IsSuccess = false, ErrorMessage = message };
+}
+
+public record WorkExperienceReferenceSubmissionRequest(string Token, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
+public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
+public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
+
+public enum WorkHoursType
+{
+  FullTime,
+  PartTime,
+}
+
+public enum ChildrenProgramType
+{
+  Childminding,
+  Familychildcare,
+  Groupchildcare,
+  InHomeMultiAgechildcare,
+  MultiAgechildcare,
+  Occasionalchildcare,
+  Other,
+  Preschool,
+}
+
+public enum ReferenceRelationship
+{
+  CoWorker,
+  Other,
+  ParentGuardianofChildinCare,
+  Supervisor,
+  Teacher,
+}
+
+public enum ChildcareAgeRanges
+{
+  From0to12Months,
+  From12to24Months,
+  From25to30Months,
+  From31to36Months,
+  Grade1,
+  Preschool,
+}
+
+public enum LikertScale
+{
+  Competent,
+  NotCompetent,
+  SomewhatCompetent,
+  VeryCompetent,
+}
+
+public record SubmitReferenceCommand(string Token) : IRequest<ReferenceSubmissionResult>
+{
+  public WorkExperienceReferenceSubmissionRequest? WorkExperienceReferenceSubmissionRequest { get; set; }
+  public CharacterReferenceSubmissionRequest? CharacterReferenceSubmissionRequest { get; set; }
 }
