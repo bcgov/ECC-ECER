@@ -70,21 +70,21 @@
         ></v-text-field>
         <v-row>
           <v-checkbox
+            ref="refOfficialTranscriptRequested"
             v-model="officialTranscriptRequested"
-            :class="{ 'error-message': !atLeastOneChecked }"
+            :rules="[atLeastOneCheckedRule]"
             color="primary"
             label="I have requested the official transcript from my education institution"
           ></v-checkbox>
           <v-checkbox
+            ref="refOfficialTranscriptReceived"
             v-model="officialTranscriptReceived"
-            :class="{ 'error-message': !atLeastOneChecked }"
+            :rules="[atLeastOneCheckedRule]"
             color="primary"
             label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
           ></v-checkbox>
-          <div v-if="!atLeastOneChecked" class="v-messages error-message" role="alert">Please select at least one Option</div>
+          <!-- <div v-if="!atLeastOneCheckedError" class="v-messages error-message" role="alert" aria-live="polite">Please select at least one Option</div> -->
         </v-row>
-        <!-- <v-checkbox v-model="isECEAssistant" color="primary" label="Is ECE assistant?"></v-checkbox> -->
-
         <v-row justify="start" class="ml-1">
           <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Education</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
@@ -161,10 +161,12 @@ export default defineComponent({
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
     },
-    atLeastOneChecked() {
+
+    atLeastOneCheckedError() {
       return this.officialTranscriptRequested == true || this.officialTranscriptReceived == true;
     },
   },
+
   mounted() {
     if (Object.keys(this.modelValue).length === 0) {
       this.mode = "add";
@@ -269,11 +271,13 @@ export default defineComponent({
       this.endYear = "";
     },
     formatDate,
+
+    atLeastOneCheckedRule() {
+      if (!this.officialTranscriptRequested && !this.officialTranscriptReceived) {
+        return "Select at least one";
+      }
+      return true;
+    },
   },
 });
 </script>
-<style>
-.error-message {
-  color: rgb(var(--v-theme-error));
-}
-</style>
