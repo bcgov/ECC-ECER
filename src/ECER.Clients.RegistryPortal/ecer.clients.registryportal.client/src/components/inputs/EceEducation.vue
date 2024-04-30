@@ -83,7 +83,7 @@
             color="primary"
             label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
           ></v-checkbox>
-          <div v-if="!atLeastOneCheckedError" class="v-messages error-message mb-5" role="alert">Indicate the status of your transcript(s)</div>
+          <div v-if="!atLeastOneChecked" class="v-messages error-message mb-5" role="alert">Indicate the status of your transcript(s)</div>
         </v-row>
         <v-row justify="start" class="ml-1">
           <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Education</v-btn>
@@ -164,7 +164,7 @@ export default defineComponent({
       return Object.keys(this.modelValue).length + 1;
     },
 
-    atLeastOneCheckedError() {
+    atLeastOneChecked(): boolean {
       return this.officialTranscriptRequested == true || this.officialTranscriptReceived == true;
     },
     getLabelOnCertificateType() {
