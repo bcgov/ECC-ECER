@@ -83,7 +83,7 @@
             :label="`ECE Certification/Registration Number${userSelectProvinceIdBC ? '' : ' (Optional)'}`"
             variant="outlined"
             color="primary"
-            maxlength="10"
+            maxlength="25"
             hide-details="auto"
             @update:model-value="(value) => $emit('update:model-value', value, { certificateNumber: value })"
             @keypress="isNumber($event)"
