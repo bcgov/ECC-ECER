@@ -225,7 +225,10 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       StudentName = null,
       StudentNumber = faker.Random.Number(1000, 9999).ToString(),
       StartDate = faker.Date.Recent(),
-      EndDate = faker.Date.Soon()
+      EndDate = faker.Date.Soon(),
+      IsECEAssistant = faker.Random.Bool(),
+      DoesECERegistryHaveTranscript = faker.Random.Bool(),
+      IsOfficialTranscriptRequested = faker.Random.Bool()
     };
 
     return invalidTranscript;
