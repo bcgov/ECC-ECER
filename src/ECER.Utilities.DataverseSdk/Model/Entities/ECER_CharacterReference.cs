@@ -115,7 +115,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ReferenceContactidYomiName = "ecer_referencecontactidyominame";
 			public const string ecer_ReferenceFullName = "ecer_referencefullname";
 			public const string ecer_ReferenceSignature = "ecer_referencesignature";
+			public const string ecer_RelationshiptoApplicant = "ecer_relationshiptoapplicant";
+			public const string ecer_relationshiptoapplicantName = "ecer_relationshiptoapplicantname";
 			public const string ecer_RelationshipwithApplicant = "ecer_relationshipwithapplicant";
+			public const string ecer_RelationshipwithApplicantOther = "ecer_relationshipwithapplicantother";
 			public const string ecer_UnabletoProvideReferenceReason = "ecer_unabletoprovidereferencereason";
 			public const string ecer_unabletoprovidereferencereasonName = "ecer_unabletoprovidereferencereasonname";
 			public const string ecer_WillProvideReference = "ecer_willprovidereference";
@@ -821,6 +824,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_relationshiptoapplicant")]
+		public virtual ecer_ReferenceRelationships? ecer_RelationshiptoApplicant
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_ReferenceRelationships?)(EntityOptionSetEnum.GetEnum(this, "ecer_relationshiptoapplicant")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_relationshiptoapplicant", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_relationshiptoapplicantname")]
+		public string ecer_relationshiptoapplicantName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_relationshiptoapplicant"))
+				{
+					return this.FormattedValues["ecer_relationshiptoapplicant"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// What is your relationship with the applicant?
 		/// </summary>
@@ -836,6 +871,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_relationshipwithapplicant", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_relationshipwithapplicantother")]
+		public string ecer_RelationshipwithApplicantOther
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_relationshipwithapplicantother");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_relationshipwithapplicantother", value);
 			}
 		}
 		

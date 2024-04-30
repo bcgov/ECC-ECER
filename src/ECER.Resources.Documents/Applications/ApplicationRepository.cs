@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
 
@@ -208,13 +209,34 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return applicationId;
   }
 
-  public async Task<string> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  public async Task<string> SubmitReference(SubmitReferenceRequest request, CancellationToken cancellationToken)
+  {
+    return request switch
+    {
+      CharacterReferenceSubmissionRequest req => await SubmitCharacterReference(request.PortalInvitation!.CharacterReferenceId!, req),
+      WorkExperienceReferenceSubmissionRequest req => await SubmitWorkexperienceReference(request.PortalInvitation!.WorkexperienceReferenceId!, req),
+      _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
+    };
+  }
+
+  public async Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  {
+    return request.PortalInvitation!.InviteType switch
+    {
+      InviteType.CharacterReference => await OptOutCharacterReference(request),
+      InviteType.WorkExperienceReference => await OptOutWorkExperienceReference(request),
+      _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
+    };
+  }
+
+  #region implementationDetails
+
+  private async Task<string> SubmitCharacterReference(string characterReferenceId, CharacterReferenceSubmissionRequest request)
   {
     await Task.CompletedTask;
-    var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
+    var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(characterReferenceId));
 
     mapper.Map(request, characterReference);
-
     var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == Guid.Parse(request.ReferenceContactInformation.CertificateProvinceId));
     if (province != null)
     {
@@ -226,12 +248,24 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return characterReference.ecer_CharacterReferenceId.ToString()!;
   }
 
-  public Task<string> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  private async Task<string> SubmitWorkexperienceReference(string workExperienceReferenceId, WorkExperienceReferenceSubmissionRequest request)
   {
-    throw new NotImplementedException();
+    await Task.CompletedTask;
+    var workExperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(workExperienceReferenceId));
+
+    mapper.Map(request, workExperienceReference);
+    var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == Guid.Parse(request.ReferenceContactInformation.CertificateProvinceId));
+    if (province != null)
+    {
+      context.AddLink(workExperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_RefCertifiedProvinceId, province);
+    }
+    workExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.Submitted;
+    context.UpdateObject(workExperienceReference);
+    context.SaveChanges();
+    return workExperienceReference.ecer_WorkExperienceRefId.ToString()!;
   }
 
-  public async Task<string> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  private async Task<string> OptOutCharacterReference(OptOutReferenceRequest request)
   {
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
@@ -243,7 +277,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return characterReference.ecer_CharacterReferenceId.ToString()!;
   }
 
-  public async Task<string> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  private async Task<string> OptOutWorkExperienceReference(OptOutReferenceRequest request)
   {
     await Task.CompletedTask;
     var workexperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(request.PortalInvitation!.WorkexperienceReferenceId!));
@@ -254,4 +288,6 @@ internal sealed class ApplicationRepository : IApplicationRepository
     context.SaveChanges();
     return workexperienceReference.ecer_WorkExperienceRefId.ToString()!;
   }
+
+  #endregion implementationDetails
 }

@@ -26,7 +26,6 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
     communications.ShouldNotBeNull();
   }
 
-
   [Fact]
   public async Task GetMessageStatus_ReturnsStatus()
   {
@@ -39,6 +38,18 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
 
     var communicationsStatus = await communicationsStatusResponse.ReadAsJsonAsync<CommunicationsStatusResults>();
     communicationsStatus.ShouldNotBeNull();
+  }
 
+  [Fact(Skip = "Adding registrant reference to communication causes duplicate key in all tests, without that this test fails")]
+  public async Task SeenCommunication_ReturnId()
+  {
+    var communicationSeenResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new CommunicationSeenRequest(Fixture.communicationTwoId)).ToUrl($"/api/messages/{Fixture.communicationTwoId}/seen");
+      _.StatusCodeShouldBeOk();
+    });
+
+    (await communicationSeenResponse.ReadAsJsonAsync<CommunicationResponse>()).ShouldNotBeNull().CommunicationId.ShouldBe(Fixture.communicationTwoId);
   }
 }

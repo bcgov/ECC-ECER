@@ -10,7 +10,7 @@
     <v-row justify="space-between" class="pb-6">
       <v-col offset-md="1" cols="12" sm="8">
         <h3>{{ `Application for ECE ${certificationType} Certification` }}</h3>
-        <div v-if="certificationType === 'Five Year'" role="doc-subtitle">{{ certificationTypeSubTitleForFiveYear }}</div>
+        <div v-if="certificationType === 'Five Year'" role="doc-subtitle">{{ certificationTypeSubtitleForFiveYear }}</div>
       </v-col>
       <v-col v-if="false" cols="auto" offset="1">
         <v-btn class="mr-2" rounded="lg" variant="outlined" color="primary">Cancel Application</v-btn>
@@ -62,22 +62,23 @@ export default defineComponent({
       }
       return certificationType;
     },
-    certificationTypeSubTitleForFiveYear() {
+    certificationTypeSubtitleForFiveYear() {
+      let certificationTypeSubtitle = "";
       if (
         this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Ite") &&
         this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Sne")
       ) {
-        return "Including certification for Special Needs Education (SNE) and Infant and Toddler Educator (ITE)";
+        certificationTypeSubtitle = "Including certification for Special Needs Education (SNE) and Infant and Toddler Educator (ITE)";
       }
 
       if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Sne")) {
-        return "Including certification for Special Needs Educator (SNE)";
+        certificationTypeSubtitle = "Including certification for Special Needs Educator (SNE)";
       }
       if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Ite")) {
-        return "Including certification for Infant and Toddler Eductor (ITE)";
+        certificationTypeSubtitle = "Including certification for Infant and Toddler Eductor (ITE)";
       }
 
-      return "";
+      return certificationTypeSubtitle;
     },
   },
 });
