@@ -1,8 +1,7 @@
-<!-- eslint-disable vue/no-v-html -->
 <template>
-  <h3>{{ messageStore.messageById(id)?.subject }}</h3>
+  <h3>{{ messageStore.currentMessage?.subject }}</h3>
   <p class="small mt-2">{{ messageDate }}</p>
-  <p class="small mt-6">{{ messageStore.messageById(id)?.text }}</p>
+  <p class="small mt-6">{{ messageStore.currentMessage?.text }}</p>
 </template>
 
 <script lang="ts">
@@ -13,12 +12,6 @@ import { formatDate } from "@/utils/format";
 
 export default defineComponent({
   name: "Message",
-  props: {
-    id: {
-      type: String,
-      required: true,
-    },
-  },
   setup() {
     const messageStore = useMessageStore();
 
@@ -26,7 +19,7 @@ export default defineComponent({
   },
   computed: {
     messageDate(): string {
-      let message = this.messageStore.messageById(this.id);
+      let message = this.messageStore.currentMessage;
       return message ? formatDate(String(message.notifiedOn), "LLL dd, yyyy t") : "";
     },
   },

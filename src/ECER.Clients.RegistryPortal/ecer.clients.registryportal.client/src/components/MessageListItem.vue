@@ -28,6 +28,11 @@ export default defineComponent({
       required: true,
     },
   },
+  setup() {
+    const messageStore = useMessageStore();
+
+    return { messageStore };
+  },
   computed: {
     messageDate(): string {
       return formatDate(String(this.message.notifiedOn), "LLL dd, yyyy t");
@@ -37,6 +42,7 @@ export default defineComponent({
     ...mapActions(useMessageStore, ["markMessageAsRead"]),
     formatDate,
     handleClick() {
+      this.messageStore.currentMessage = this.message;
       if (!this.message.acknowledged) this.markMessageAsRead(this.message.id ?? "");
     },
   },
