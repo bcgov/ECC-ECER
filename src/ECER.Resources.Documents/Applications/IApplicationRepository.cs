@@ -12,13 +12,9 @@ public interface IApplicationRepository
 
   Task<string> Cancel(string applicationId, CancellationToken cancellationToken);
 
-  Task<string> SubmitCharacterReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
+  Task<string> SubmitReference(SubmitReferenceRequest request, CancellationToken cancellationToken);
 
-  Task<string> SubmitWorkexperienceReference(CharacterReferenceSubmissionRequest request, CancellationToken cancellationToken);
-
-  Task<string> OptOutCharacterReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
-
-  Task<string> OptOutWorkExperienceReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
+  Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery
@@ -27,8 +23,6 @@ public record ApplicationQuery
   public IEnumerable<ApplicationStatus>? ByStatus { get; set; }
   public string? ByApplicantId { get; set; }
 }
-
-
 
 public record Application(string? Id, string ApplicantId, IEnumerable<CertificationType> CertificationTypes)
 {
@@ -111,9 +105,63 @@ public enum UnabletoProvideReferenceReasons
   Other
 }
 
-public record CharacterReferenceSubmissionRequest(CharacterReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ResponseAccuracyConfirmation)
+public record SubmitReferenceRequest()
 {
   public PortalInvitation? PortalInvitation { get; set; }
 }
-public record CharacterReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateNumber, string CertificateProvinceId, string CertificateProvinceOther);
-public record CharacterReferenceEvaluation(string Relationship, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
+public record CharacterReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight) : SubmitReferenceRequest;
+public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateProvinceId, string CertificateProvinceOther)
+{
+  public string? CertificateNumber { get; set; }
+  public DateTime? DateOfBirth { get; set; }
+}
+public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, string LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
+
+public record WorkExperienceReferenceSubmissionRequest(ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight) : SubmitReferenceRequest;
+public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
+public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
+
+public enum WorkHoursType
+{
+  FullTime,
+  PartTime,
+}
+
+public enum ChildrenProgramType
+{
+  Childminding,
+  Familychildcare,
+  Groupchildcare,
+  InHomeMultiAgechildcare,
+  MultiAgechildcare,
+  Occasionalchildcare,
+  Other,
+  Preschool,
+}
+
+public enum ReferenceRelationship
+{
+  CoWorker,
+  Other,
+  ParentGuardianofChildinCare,
+  Supervisor,
+  Teacher,
+}
+
+public enum LikertScale
+{
+  Competent,
+  NotCompetent,
+  SomewhatCompetent,
+  VeryCompetent,
+}
+
+public enum ChildcareAgeRanges
+{
+  From0to12Months,
+  From12to24Months,
+  From25to30Months,
+  From31to36Months,
+  Grade1,
+  Preschool,
+}

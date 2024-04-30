@@ -3,6 +3,9 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using AutoMapper;
+using ECER.Clients.RegistryPortal.Server.Applications;
+using ECER.Managers.Registry.Contract.Applications;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ECER.Clients.RegistryPortal.Server.Communications;
 
@@ -25,6 +28,25 @@ public class CommunicationsEndpoints : IRegisterEndpoints
      .WithOpenApi("Handles messages queries", string.Empty, "message_get")
      .RequireAuthorization();
 
+    endpointRouteBuilder.MapPut("/api/messages/{id}/seen",
+        async Task<Results<Ok<CommunicationResponse>, BadRequest<string>>> (string? id,
+          CommunicationSeenRequest request, HttpContext ctx, IMediator messageBus, CancellationToken ct) =>
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+
+          bool IdIsNotGuid = !Guid.TryParse(id, out _);
+          bool CommunicationIdIsNotGuid = !Guid.TryParse(request.CommunicationId, out _);
+
+          if (IdIsNotGuid || CommunicationIdIsNotGuid) return TypedResults.BadRequest("invalid id");
+          if (request.CommunicationId != id) return TypedResults.BadRequest("resource id and payload id do not match");
+
+          var communicationId =
+            await messageBus.Send(new MarkCommunicationAsSeenCommand(request.CommunicationId, userId!), ct);
+          return TypedResults.Ok(new CommunicationResponse(communicationId));
+        })
+      .WithOpenApi("Marks a communication as seen", string.Empty, "communication_put")
+      .RequireAuthorization();
+
     endpointRouteBuilder.MapGet("/api/messages/status", async (HttpContext httpContext, IMediator messageBus) =>
     {
       var userContext = httpContext.User.GetUserContext();
@@ -37,6 +59,18 @@ public class CommunicationsEndpoints : IRegisterEndpoints
      .RequireAuthorization();
   }
 }
+
+/// <summary>
+/// Save communication response
+/// </summary>
+/// <param name="CommunicationId">The communication id</param>
+public record CommunicationResponse(string CommunicationId);
+
+/// <summary>
+/// Communication seen request
+/// </summary>
+/// <param name="CommunicationId">The communication ID</param>
+public record CommunicationSeenRequest(string CommunicationId);
 
 public record Communication
 {

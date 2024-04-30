@@ -9,7 +9,8 @@
     </v-row>
     <v-row justify="space-between" class="pb-6">
       <v-col offset-md="1" cols="12" sm="8">
-        <h3>{{ `Application for ${certificationType} Certification` }}</h3>
+        <h3>{{ `Application for ECE ${certificationType} Certification` }}</h3>
+        <div v-if="certificationType === 'Five Year'" role="" doc-subtitle>{{ certificationTypeSubtitleForFiveYear }}</div>
       </v-col>
       <v-col v-if="false" cols="auto" offset="1">
         <v-btn class="mr-2" rounded="lg" variant="outlined" color="primary">Cancel Application</v-btn>
@@ -51,24 +52,33 @@ export default defineComponent({
     certificationType() {
       let certificationType = "";
       if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("EceAssistant")) {
-        certificationType = "ECE Assistant";
+        certificationType = "Assistant";
       } else if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("OneYear")) {
         certificationType = "One Year";
       } else if (
         this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("FiveYears")
       ) {
         certificationType = "Five Year";
-
-        if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Sne")) {
-          certificationType += " & Special Needs Educator (SNE)";
-        }
-        if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Ite")) {
-          certificationType += " & Infant and Toddle Educator (ITE)";
-        }
-      } else {
-        certificationType += "ECE Assistant";
       }
       return certificationType;
+    },
+    certificationTypeSubtitleForFiveYear() {
+      let certificationTypeSubtitle = "";
+      if (
+        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Ite") &&
+        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Sne")
+      ) {
+        certificationTypeSubtitle = "Including certification for Special Needs Education (SNE) and Infant and Toddler Educator (ITE)";
+      }
+
+      if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Sne")) {
+        certificationTypeSubtitle = "Including certification for Special Needs Educator (SNE)";
+      }
+      if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Ite")) {
+        certificationTypeSubtitle = "Including certification for Infant and Toddler Eductor (ITE)";
+      }
+
+      return certificationTypeSubtitle;
     },
   },
 });
