@@ -1,6 +1,13 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
-  <v-list-item :key="String(message.id)" :title="String(message.subject)" :subtitle="messageDate" :value="String(message.id)" @click="handleClick">
+  <v-list-item
+    :key="String(message.id)"
+    :title="String(message.subject)"
+    :subtitle="messageDate"
+    :value="String(message.id)"
+    :active="message.id == messageStore.currentMessage?.id"
+    @click="handleClick"
+  >
     <template #prepend>
       <div class="d-inline-flex flex-nowrap">
         <svg v-if="!message.acknowledged" class="mr-3" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none" alt="unread">
