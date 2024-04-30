@@ -16,7 +16,7 @@ const characterReferenceWizardConfig: Wizard = {
       key: "item.1",
     },
     contactInformation: {
-      title: "Contact information",
+      title: "",
       stage: "ContactInformation",
       form: characterReferenceContactForm,
       key: "item.2",

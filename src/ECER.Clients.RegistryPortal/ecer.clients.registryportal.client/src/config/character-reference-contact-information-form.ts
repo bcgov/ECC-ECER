@@ -1,4 +1,4 @@
-import EceTextField from "@/components/inputs/EceTextField.vue";
+import EceCharacterReferenceContact from "@/components/reference/inputs/EceCharacterReferenceContact.vue";
 import type { Form } from "@/types/form";
 
 const characterReferenceContactForm: Form = {
@@ -7,8 +7,8 @@ const characterReferenceContactForm: Form = {
   inputs: {
     responseAccept: {
       id: "response",
-      component: EceTextField,
-      props: { label: "contact information form reference accepted this does not work" },
+      component: EceCharacterReferenceContact,
+      props: {},
       cols: {
         md: 12,
         lg: 12,
