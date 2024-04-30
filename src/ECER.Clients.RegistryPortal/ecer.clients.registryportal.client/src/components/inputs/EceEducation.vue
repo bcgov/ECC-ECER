@@ -70,14 +70,12 @@
         ></v-text-field>
         <v-row>
           <v-checkbox
-            ref="refOfficialTranscriptRequested"
             v-model="officialTranscriptRequested"
             :rules="[atLeastOneCheckedRule]"
             color="primary"
             label="I have requested the official transcript from my education institution"
           ></v-checkbox>
           <v-checkbox
-            ref="refOfficialTranscriptReceived"
             v-model="officialTranscriptReceived"
             :rules="[atLeastOneCheckedRule]"
             color="primary"
@@ -163,7 +161,6 @@ export default defineComponent({
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
     },
-
     atLeastOneChecked(): boolean {
       return this.officialTranscriptRequested == true || this.officialTranscriptReceived == true;
     },
@@ -281,7 +278,7 @@ export default defineComponent({
     },
     formatDate,
     atLeastOneCheckedRule() {
-      if (!this.officialTranscriptRequested && !this.officialTranscriptReceived) {
+      if (!this.atLeastOneChecked) {
         return "";
       }
       return true;
