@@ -7,6 +7,7 @@ import type { Components } from "@/types/openapi";
 export interface MessageState {
   messages: Components.Schemas.Communication[] | null | undefined;
   currentPage: number;
+  currentMessage: Components.Schemas.Communication | null;
   messagesPerPage: number;
 }
 
@@ -14,6 +15,7 @@ export const useMessageStore = defineStore("message", {
   state: (): MessageState => ({
     messages: [],
     currentPage: 1,
+    currentMessage: null,
     messagesPerPage: 10,
   }),
   getters: {
@@ -32,6 +34,9 @@ export const useMessageStore = defineStore("message", {
     },
   },
   actions: {
+    messageById(id: string): Components.Schemas.Communication | undefined {
+      return this.messages?.find((message) => message.id === id);
+    },
     async fetchMessages() {
       this.messages = (await getMessages()).data;
     },

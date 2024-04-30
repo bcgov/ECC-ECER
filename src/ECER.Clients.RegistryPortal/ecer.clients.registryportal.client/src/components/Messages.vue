@@ -12,20 +12,28 @@
         <h1>Messages</h1>
       </v-col>
     </v-row>
-    <MessageList />
+    <v-row class="ga-10">
+      <v-col cols="12" md="6" lg="4">
+        <MessageList />
+      </v-col>
+      <v-col>
+        <Message />
+      </v-col>
+    </v-row>
   </PageContainer>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import Message from "@/components/Message.vue";
 import MessageList from "@/components/MessageList.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import { useMessageStore } from "@/store/message";
 
 export default defineComponent({
   name: "Messages",
-  components: { MessageList, PageContainer },
+  components: { MessageList, Message, PageContainer },
   setup() {
     const messageStore = useMessageStore();
 
@@ -36,13 +44,11 @@ export default defineComponent({
       {
         title: "Home",
         disabled: false,
-        href: "/",
+        to: "/",
       },
 
       {
         title: "Messages",
-        disabled: true,
-        href: "messages",
       },
     ],
   }),
