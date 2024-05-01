@@ -24,6 +24,12 @@ public class ApplicationMapper : Profile
                opt => opt.MapFrom(src => src.StartDate))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.EndDate),
                opt => opt.MapFrom(src => src.EndDate))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.IsECEAssistant),
+               opt => opt.MapFrom(src => src.IsECEAssistant))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.DoesECERegistryHaveTranscript),
+               opt => opt.MapFrom(src => src.DoesECERegistryHaveTranscript))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.IsOfficialTranscriptRequested),
+               opt => opt.MapFrom(src => src.IsOfficialTranscriptRequested))
       .ForMember(d => d.CampusLocation,
              opts => opts.MapFrom(src => src.CampusLocation))
       .ForMember(d => d.LanguageofInstruction,

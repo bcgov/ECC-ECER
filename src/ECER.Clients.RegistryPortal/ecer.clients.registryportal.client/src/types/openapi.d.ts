@@ -216,6 +216,9 @@ declare namespace Components {
       languageofInstruction?: string | null;
       startDate: string; // date-time
       endDate: string; // date-time
+      isECEAssistant?: boolean;
+      doesECERegistryHaveTranscript?: boolean;
+      isOfficialTranscriptRequested?: boolean;
     }
     export type UnabletoProvideReferenceReasons =
       | "Iamunabletoatthistime"
