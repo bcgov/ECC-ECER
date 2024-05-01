@@ -115,7 +115,6 @@ import { defineComponent } from "vue";
 import type { VTextField } from "vuetify/components";
 
 import type { FormData } from "@/store/form";
-import { useWizardStore } from "@/store/wizard";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
@@ -125,10 +124,6 @@ export default defineComponent({
   components: {},
   emits: {
     "update:model-value": (_value: any, _updateFormData?: FormData) => true,
-  },
-  setup: () => {
-    const wizardStore = useWizardStore();
-    return { wizardStore };
   },
   data() {
     return {
