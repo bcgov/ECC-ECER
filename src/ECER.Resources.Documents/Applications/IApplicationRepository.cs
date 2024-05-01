@@ -15,6 +15,8 @@ public interface IApplicationRepository
   Task<string> SubmitReference(SubmitReferenceRequest request, CancellationToken cancellationToken);
 
   Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
+
+  Task<SubmittedApplicationStatus> Status(ApplicationStatusQuery query, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery
@@ -24,6 +26,7 @@ public record ApplicationQuery
   public string? ByApplicantId { get; set; }
 }
 
+public record ApplicationStatusQuery(string Id);
 public record Application(string? Id, string ApplicantId, IEnumerable<CertificationType> CertificationTypes)
 {
   public ApplicationStatus Status { get; set; }

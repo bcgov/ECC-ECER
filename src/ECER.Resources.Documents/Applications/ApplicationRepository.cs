@@ -229,6 +229,15 @@ internal sealed class ApplicationRepository : IApplicationRepository
     };
   }
 
+  public async Task<SubmittedApplicationStatus> Status(ApplicationStatusQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+
+    var application = context.ecer_ApplicationSet.Single(a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled && a.ecer_ApplicationId == Guid.Parse(query.Id));
+
+    return mapper.Map<SubmittedApplicationStatus>(application);
+  }
+
   #region implementationDetails
 
   private async Task<string> SubmitCharacterReference(string characterReferenceId, CharacterReferenceSubmissionRequest request)

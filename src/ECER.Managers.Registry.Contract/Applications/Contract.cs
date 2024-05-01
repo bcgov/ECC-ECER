@@ -36,6 +36,19 @@ public record ApplicationsQuery : IRequest<ApplicationsQueryResults>
 public record ApplicationsQueryResults(IEnumerable<Application> Items);
 
 /// <summary>
+/// Invokes Application Status query
+/// </summary>
+/// <param name="Id"></param>
+public record ApplicationStatusQuery(string Id) : IRequest<ApplicationStatusQueryResults>;
+
+/// <summary>
+/// Container for <see cref="ApplicationStatusQuery"/> results
+/// </summary>
+/// <param name="status"></param>
+public record ApplicationStatusQueryResults(SubmittedApplicationStatus status);
+
+
+/// <summary>
 /// Application submission result
 /// </summary>
 public record ApplicationSubmissionResult()
