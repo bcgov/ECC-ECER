@@ -158,6 +158,7 @@ export const useWizardStore = defineStore("wizard", {
         applicantFirstName: portalInvitation.applicantFirstName,
         applicantLastName: portalInvitation.applicantLastName,
         inviteType: portalInvitation.inviteType,
+        [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
       });
     },
     setWizardData(wizardData: WizardData): void {
