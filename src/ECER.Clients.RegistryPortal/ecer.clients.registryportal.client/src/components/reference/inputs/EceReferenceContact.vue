@@ -124,7 +124,7 @@ import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
-  name: "EceCharacterReferenceContact",
+  name: "EceReferenceContact",
   props: {
     modelValue: {
       type: Object as () => Components.Schemas.ReferenceContactInformation,
@@ -136,7 +136,6 @@ export default defineComponent({
   },
   data() {
     return {
-      selection: undefined,
       Rules,
     };
   },
