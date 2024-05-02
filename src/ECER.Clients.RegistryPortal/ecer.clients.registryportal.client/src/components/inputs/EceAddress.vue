@@ -81,7 +81,7 @@ export default defineComponent({
     };
   },
   methods: {
-    updateField(fieldName: string, event: any) {
+    updateField(fieldName: keyof Components.Schemas.Address, event: any) {
       this.$emit("update:model-value", {
         ...this.modelValue,
         [fieldName]: event.target.value,

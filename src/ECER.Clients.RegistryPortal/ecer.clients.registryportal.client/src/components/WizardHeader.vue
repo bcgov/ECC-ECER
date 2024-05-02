@@ -10,7 +10,7 @@
     <v-row justify="space-between" class="pb-6">
       <v-col offset-md="1" cols="12" sm="8">
         <h3>{{ `Application for ECE ${certificationType} Certification` }}</h3>
-        <div v-if="certificationType === 'Five Year'" role="" doc-subtitle>{{ certificationTypeSubtitleForFiveYear }}</div>
+        <div v-if="certificationType === 'Five Year'" role="doc-subtitle">{{ certificationTypeSubtitleForFiveYear }}</div>
       </v-col>
       <v-col v-if="false" cols="auto" offset="1">
         <v-btn class="mr-2" rounded="lg" variant="outlined" color="primary">Cancel Application</v-btn>
