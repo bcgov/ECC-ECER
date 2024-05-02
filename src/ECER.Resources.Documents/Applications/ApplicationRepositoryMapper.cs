@@ -206,9 +206,9 @@ internal class ApplicationRepositoryMapper : Profile
         case ecer_CharacterReference_StatusCode.InProgress:
         case ecer_CharacterReference_StatusCode.UnderReview:
         case ecer_CharacterReference_StatusCode.WaitingResponse:
+        case ecer_CharacterReference_StatusCode.Submitted:
           return SubmittedApplicationStageStatus.InProgress;
         case ecer_CharacterReference_StatusCode.ApplicationSubmitted:
-        case ecer_CharacterReference_StatusCode.Submitted:
         case ecer_CharacterReference_StatusCode.Draft:
         case ecer_CharacterReference_StatusCode.Rejected:
           return SubmittedApplicationStageStatus.InComplete;
@@ -228,9 +228,9 @@ internal class ApplicationRepositoryMapper : Profile
         case ecer_WorkExperienceRef_StatusCode.InProgress:
         case ecer_WorkExperienceRef_StatusCode.UnderReview:
         case ecer_WorkExperienceRef_StatusCode.WaitingforResponse:
+        case ecer_WorkExperienceRef_StatusCode.Submitted:
           return SubmittedApplicationStageStatus.InProgress;
         case ecer_WorkExperienceRef_StatusCode.ApplicationSubmitted:
-        case ecer_WorkExperienceRef_StatusCode.Submitted:
         case ecer_WorkExperienceRef_StatusCode.Draft:
         case ecer_WorkExperienceRef_StatusCode.Rejected: 
           return SubmittedApplicationStageStatus.InComplete;
@@ -246,9 +246,11 @@ internal class ApplicationRepositoryMapper : Profile
       switch (src)
       {
         case ecer_Transcript_StatusCode.Accepted: return SubmittedApplicationStageStatus.Complete;
-        case ecer_Transcript_StatusCode.InProgress: return SubmittedApplicationStageStatus.InProgress;
-        case ecer_Transcript_StatusCode.ApplicationSubmitted:
+        case ecer_Transcript_StatusCode.InProgress:
         case ecer_Transcript_StatusCode.Submitted:
+          return SubmittedApplicationStageStatus.InProgress;
+        case ecer_Transcript_StatusCode.ApplicationSubmitted:
+
         case ecer_Transcript_StatusCode.DRAFT:
         case ecer_Transcript_StatusCode.Rejected:
           return SubmittedApplicationStageStatus.InComplete;
