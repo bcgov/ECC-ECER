@@ -2,9 +2,9 @@ import characterReferenceDeclarationForm from "@/config/character-reference-decl
 import characterReferenceDeclineForm from "@/config/character-reference-decline-form";
 import type { Wizard } from "@/types/wizard";
 
-import characterReferenceContactForm from "./character-reference-contact-information-form";
 import characterReferenceReferenceEvaluationForm from "./character-reference-reference-evaluation-form";
 import characterReferenceReviewForm from "./character-reference-review-form";
+import referenceContactInformationForm from "./reference-contact-information-form";
 
 const characterReferenceWizardConfig: Wizard = {
   id: "characterReferenceWizard",
@@ -18,7 +18,7 @@ const characterReferenceWizardConfig: Wizard = {
     contactInformation: {
       title: "",
       stage: "ContactInformation",
-      form: characterReferenceContactForm,
+      form: referenceContactInformationForm,
       key: "item.2",
     },
     ReferenceErrorEvaluation: {

@@ -1,9 +1,10 @@
-import workExperienceContactForm from "@/config/work-experience-contact-information-form";
 import workExperienceAssessmentForm from "@/config/work-experience-reference-assessment-form";
 import workExperienceDeclarationForm from "@/config/work-experience-reference-declaration-form";
 import workExperienceDeclineForm from "@/config/work-experience-reference-decline-form";
 import workExperienceReviewForm from "@/config/work-experience-reference-review-form";
 import type { Wizard } from "@/types/wizard";
+
+import referenceContactInformationForm from "./reference-contact-information-form";
 
 const workExperienceReferenceWizardConfig: Wizard = {
   id: "workReferenceWizard",
@@ -17,7 +18,7 @@ const workExperienceReferenceWizardConfig: Wizard = {
     contactInformation: {
       title: "Contact information",
       stage: "ContactInformation",
-      form: workExperienceContactForm,
+      form: referenceContactInformationForm,
       key: "item.2",
     },
     assessment: {

@@ -1,12 +1,13 @@
 import EceCharacterReferenceContact from "@/components/reference/inputs/EceCharacterReferenceContact.vue";
 import type { Form } from "@/types/form";
 
-const characterReferenceContactForm: Form = {
-  id: "responseForm",
+const referenceContactInformationForm: Form = {
+  id: "referenceContactInformationForm",
   title: "contact information form",
   inputs: {
-    responseAccept: {
-      id: "response",
+    referenceContactInformation: {
+      id: "referenceContactInformation",
+      // Can we use the same component for both forms? Maybe we config with props for CHAR vs WE reference?
       component: EceCharacterReferenceContact,
       props: {},
       cols: {
@@ -18,4 +19,4 @@ const characterReferenceContactForm: Form = {
   },
 };
 
-export default characterReferenceContactForm;
+export default referenceContactInformationForm;
