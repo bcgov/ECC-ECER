@@ -2,6 +2,7 @@
 using ECER.Resources.Documents.Applications;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using System;
 using Xunit.Abstractions;
 using Xunit.Categories;
 using Application = ECER.Resources.Documents.Applications.Application;
@@ -127,6 +128,27 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var applications = await repository.Query(new ApplicationQuery { ByApplicantId = applicantId, ByStatus = statuses }, default);
     applications.ShouldNotBeEmpty();
     applications.ShouldBeAssignableTo<IEnumerable<Application>>()!.ShouldAllBe(ca => ca.ApplicantId == applicantId && statuses.Contains(ca.Status));
+  }
+
+  [Fact]
+  public async Task QueryApplicationStatus_ByApplictionId_Found()
+  {
+    var applicationId = Fixture.draftTestApplicationId;
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear })
+    {
+      Transcripts = new List<Transcript> { CreateTranscript() },
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateWorkExperienceReference() },
+      CharacterReferences = new List<CharacterReference> { CreateCharacterReference() },
+
+    };
+    await repository.SaveDraft(application, CancellationToken.None);
+
+    var applicationStatus = await repository.Status(new ApplicationStatusQuery(applicationId), default);
+    applicationStatus.Id.ShouldBe(applicationId);
+    applicationStatus.CharacterReferences.ShouldNotBeEmpty();
+    applicationStatus.Transcripts.ShouldNotBeEmpty();
+    applicationStatus.WorkExperienceReferences.ShouldNotBeEmpty();
   }
 
   [Fact]

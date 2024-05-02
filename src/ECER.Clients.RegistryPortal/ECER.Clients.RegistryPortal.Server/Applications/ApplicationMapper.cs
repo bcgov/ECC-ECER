@@ -66,7 +66,7 @@ public class ApplicationMapper : Profile
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>()
       ;
 
-    CreateMap<SubmittedApplicationStatus, Managers.Registry.Contract.Applications.SubmittedApplicationStatus>();
+    CreateMap<Managers.Registry.Contract.Applications.SubmittedApplicationStatus, SubmittedApplicationStatus>();
 
   }
 }
