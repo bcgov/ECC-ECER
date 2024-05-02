@@ -6,52 +6,56 @@
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
+            :model-value="modelValue.lastName"
             :rules="[Rules.required('Enter your last name')]"
             label="Last Name"
             variant="outlined"
             color="primary"
             maxlength="100"
             hide-details="auto"
-            @update:model-value="(value) => $emit('update:model-value', value, { lastName: value })"
+            @input="updateField('lastName', $event)"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
+            :model-value="modelValue.firstName"
             :rules="[Rules.required('Enter your first name')]"
             label="First Name"
             variant="outlined"
             color="primary"
             maxlength="100"
             hide-details="auto"
-            @update:model-value="(value) => $emit('update:model-value', value, { firstName: value })"
+            @input="updateField('firstName', $event)"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
+            :model-value="modelValue.email"
             :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]"
             label="Email"
             variant="outlined"
             color="primary"
             maxlength="200"
             hide-details="auto"
-            @update:model-value="(value) => $emit('update:model-value', value, { email: value })"
+            @input="updateField('email', $event)"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
+            :model-value="modelValue.phoneNumber"
             :rules="[Rules.required(), Rules.phoneNumber('Enter your 10-digit phone number')]"
             label="Phone Number"
             variant="outlined"
             color="primary"
             maxlength="10"
             hide-details="auto"
-            @update:model-value="(value) => $emit('update:model-value', value, { phoneNumber: value })"
+            @input="updateField('phoneNumber', $event)"
             @keypress="isNumber($event)"
           ></v-text-field>
         </v-col>
@@ -61,7 +65,7 @@
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-autocomplete
-            v-model="certificateProvinceId"
+            :model-value="modelValue.certificateProvinceId"
             label="Province/Territory Certified/Registered In (Optional)"
             variant="outlined"
             color="primary"
@@ -76,16 +80,16 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
-            v-if="certificateProvinceId"
+            v-if="modelValue.certificateProvinceId"
             ref="certificateNumberRef"
-            v-model="certificateNumber"
+            :model-value="modelValue.certificateNumber"
             :rules="[customOptionalIfNotBCRule()]"
             :label="`ECE Certification/Registration Number${userSelectProvinceIdBC ? '' : ' (Optional)'}`"
             variant="outlined"
             color="primary"
             maxlength="25"
             hide-details="auto"
-            @update:model-value="(value) => $emit('update:model-value', value, { certificateNumber: value })"
+            @input="updateField('certificateNumber', $event)"
             @keypress="isNumber($event)"
           ></v-text-field>
         </v-col>
@@ -93,15 +97,15 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
-            v-if="certificateProvinceId && !userSelectProvinceIdBC"
-            v-model="dateOfBirth"
+            v-if="modelValue.certificateProvinceId && !userSelectProvinceIdBC"
+            :model-value="modelValue.dateOfBirth"
             label="Your date of birth (Optional)"
             variant="outlined"
             color="primary"
             hide-details="auto"
             type="date"
             :max="today"
-            @update:model-value="(value) => $emit('update:model-value', value, { dateOfBirth: value })"
+            @input="updateField('dateOfBirth', $event)"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -114,24 +118,26 @@ import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 import type { VTextField } from "vuetify/components";
 
-import type { FormData } from "@/store/form";
+import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
   name: "EceCharacterReferenceContact",
-  components: {},
+  props: {
+    modelValue: {
+      type: Object as () => Components.Schemas.ReferenceContactInformation,
+      required: true,
+    },
+  },
   emits: {
-    "update:model-value": (_value: any, _updateFormData?: FormData) => true,
+    "update:model-value": (_contactInformationData: Components.Schemas.ReferenceContactInformation) => true,
   },
   data() {
     return {
       selection: undefined,
       Rules,
-      certificateProvinceId: "",
-      dateOfBirth: "",
-      certificateNumber: "",
     };
   },
   computed: {
@@ -143,7 +149,7 @@ export default defineComponent({
       ];
     },
     userSelectProvinceIdBC(): boolean {
-      return this.certificateProvinceId === "BC";
+      return this.modelValue.certificateProvinceId === "BC";
     },
     today() {
       return formatDate(DateTime.now().toString());
@@ -151,6 +157,12 @@ export default defineComponent({
   },
   methods: {
     isNumber,
+    updateField(fieldName: keyof Components.Schemas.ReferenceContactInformation, event: any) {
+      this.$emit("update:model-value", {
+        ...this.modelValue,
+        [fieldName]: event.target.value,
+      });
+    },
     customOptionalIfNotBCRule() {
       if (this.userSelectProvinceIdBC) {
         return (v: string) => !!(v && v?.trim()) || "Required";
@@ -160,17 +172,25 @@ export default defineComponent({
     certificateProvinceIdChanged(value: string) {
       (this.$refs.certificateNumberRef as VTextField)?.resetValidation();
       if (value === "BC") {
-        this.$emit("update:model-value", value, { dateOfBirth: "", certificateProvinceId: value });
-        this.dateOfBirth = "";
+        this.$emit("update:model-value", {
+          ...this.modelValue,
+          certificateProvinceId: value,
+          dateOfBirth: "",
+        });
       } else {
-        this.$emit("update:model-value", value, { certificateProvinceId: value });
+        this.$emit("update:model-value", {
+          ...this.modelValue,
+          certificateProvinceId: value,
+        });
       }
     },
     provinceClearClicked() {
-      this.certificateNumber = "";
-      this.dateOfBirth = "";
-      this.certificateProvinceId = "";
-      this.$emit("update:model-value", "", { dateOfBirth: "", certificateNumber: "", certificateProvinceId: "" });
+      this.$emit("update:model-value", {
+        ...this.modelValue,
+        certificateNumber: "",
+        certificateProvinceId: "",
+        dateOfBirth: "",
+      });
     },
   },
 });
