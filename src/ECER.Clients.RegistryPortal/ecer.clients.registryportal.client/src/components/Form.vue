@@ -7,7 +7,7 @@
             :is="input.component"
             v-bind="{ props: input.props }"
             :model-value="formData[input.id as keyof {}]"
-            @update:model-value="(value: any, updateFormData?: FormData) => onInputChanged(updateFormData ?? { [input.id]: value })"
+            @update:model-value="(value: any) => onInputChanged(input.id, value)"
           />
         </v-col>
       </v-row>
@@ -21,7 +21,6 @@ import { defineComponent, type PropType } from "vue";
 import FormContainer from "@/components/FormContainer.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import profileInformationForm from "@/config/profile-information-form";
-import type { FormData } from "@/store/form";
 import type { Form } from "@/types/form";
 
 export default defineComponent({
@@ -42,8 +41,8 @@ export default defineComponent({
     updatedValidation: (_validation: boolean | null) => true,
   },
   methods: {
-    onInputChanged(updateFormData: FormData) {
-      this.$emit("updatedFormData", { ...this.formData, ...updateFormData });
+    onInputChanged(id: string, value: any) {
+      this.$emit("updatedFormData", { ...this.formData, [id]: value });
     },
     onFormValidationChanged(value: boolean | null) {
       this.$emit("updatedValidation", value);

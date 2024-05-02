@@ -293,6 +293,305 @@ declare namespace Components {
         }
         export type WorkHoursType = "FullTime" | "PartTime";
     }
+    export interface Application {
+      id?: string | null;
+      createdOn?: string; // date-time
+      submittedOn?: string | null; // date-time
+      signedDate?: string | null; // date-time
+      certificationTypes?: CertificationType[] | null;
+      transcripts?: Transcript[] | null;
+      workExperienceReferences?: WorkExperienceReference[] | null;
+      status?: ApplicationStatus;
+      stage?: PortalStage;
+      characterReferences?: CharacterReference[] | null;
+    }
+    export interface ApplicationConfiguration {
+      clientAuthenticationMethods?: {
+        [name: string]: OidcAuthenticationSettings;
+      } | null;
+    }
+    export type ApplicationStatus =
+      | "Draft"
+      | "Submitted"
+      | "Complete"
+      | "Reconsideration"
+      | "Cancelled"
+      | "Escalated"
+      | "Decision"
+      | "Withdrawn"
+      | "Ready"
+      | "InProgress"
+      | "PendingQueue"
+      | "ReconsiderationDecision";
+    /**
+     * Submit application request
+     */
+    export interface ApplicationSubmissionRequest {
+      /**
+       * The application id
+       */
+      id?: string | null;
+    }
+    /**
+     * delete draft application response
+     */
+    export interface CancelDraftApplicationResponse {
+      /**
+       * The application id
+       */
+      applicationId?: string | null;
+    }
+    export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
+    export interface CharacterReference {
+      firstName?: string | null;
+      lastName?: string | null;
+      phoneNumber?: string | null;
+      emailAddress?: string | null;
+      id?: string | null;
+    }
+    export interface CharacterReferenceEvaluation {
+      referenceRelationship?: ReferenceRelationship;
+      referenceRelationshipOther?: string | null;
+      lengthOfAcquaintance?: string | null;
+      workedWithChildren?: boolean;
+      childInteractionObservations?: string | null;
+      applicantTemperamentAssessment?: string | null;
+    }
+    export interface CharacterReferenceSubmissionRequest {
+      token?: string | null;
+      referenceContactInformation?: ReferenceContactInformation;
+      referenceEvaluation?: CharacterReferenceEvaluation;
+      applicantShouldNotBeECE?: boolean;
+      applicantNotQualifiedReason?: string | null;
+      confirmProvidedInformationIsRight?: boolean;
+    }
+    export type ChildcareAgeRanges = "From0to12Months" | "From12to24Months" | "From25to30Months" | "From31to36Months" | "Grade1" | "Preschool";
+    export type ChildrenProgramType =
+      | "Childminding"
+      | "Familychildcare"
+      | "Groupchildcare"
+      | "InHomeMultiAgechildcare"
+      | "MultiAgechildcare"
+      | "Occasionalchildcare"
+      | "Other"
+      | "Preschool";
+    export interface Communication {
+      id?: string | null;
+      subject?: string | null;
+      text?: string | null;
+      acknowledged?: boolean;
+      notifiedOn?: string; // date-time
+      status?: CommunicationStatus;
+    }
+    /**
+     * Save communication response
+     */
+    export interface CommunicationResponse {
+      /**
+       * The communication id
+       */
+      communicationId?: string | null;
+    }
+    /**
+     * Communication seen request
+     */
+    export interface CommunicationSeenRequest {
+      /**
+       * The communication ID
+       */
+      communicationId?: string | null;
+    }
+    export type CommunicationStatus = "Draft" | "NotifiedRecipient" | "Acknowledged" | "Inactive";
+    export interface CommunicationsStatus {
+      count?: number; // int32
+      hasUnread?: boolean;
+    }
+    export interface CommunicationsStatusResults {
+      status?: CommunicationsStatus;
+    }
+    export interface DraftApplication {
+      id?: string | null;
+      signedDate?: string | null; // date-time
+      certificationTypes?: CertificationType[] | null;
+      transcripts?: Transcript[] | null;
+      workExperienceReferences?: WorkExperienceReference[] | null;
+      stage?: PortalStage;
+      characterReferences?: CharacterReference[] | null;
+    }
+    /**
+     * Save draft application response
+     */
+    export interface DraftApplicationResponse {
+      /**
+       * The application id
+       */
+      applicationId?: string | null;
+    }
+    export interface HttpValidationProblemDetails {
+      [name: string]: any;
+      type?: string | null;
+      title?: string | null;
+      status?: number | null; // int32
+      detail?: string | null;
+      instance?: string | null;
+      errors?: {
+        [name: string]: string[];
+      } | null;
+    }
+    export type InviteType = "CharacterReference" | "WorkExperienceReference";
+    export type LikertScale = "Competent" | "NotCompetent" | "SomewhatCompetent" | "VeryCompetent";
+    export interface OidcAuthenticationSettings {
+      authority?: string | null;
+      clientId?: string | null;
+      scope?: string | null;
+      idp?: string | null;
+    }
+    export interface OptOutReferenceRequest {
+      token?: string | null;
+      unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
+    }
+    export interface PortalInvitation {
+      id?: string | null;
+      name?: string | null;
+      referenceFirstName?: string | null;
+      referenceLastName?: string | null;
+      referenceEmailAddress?: string | null;
+      applicantFirstName?: string | null;
+      applicantLastName?: string | null;
+      applicationId?: string | null;
+      certificationTypes?: CertificationType[] | null;
+      workexperienceReferenceId?: string | null;
+      characterReferenceId?: string | null;
+      inviteType?: InviteType;
+    }
+    export interface PortalInvitationQueryResult {
+      portalInvitation?: PortalInvitation;
+    }
+    export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
+    export interface ProblemDetails {
+      [name: string]: any;
+      type?: string | null;
+      title?: string | null;
+      status?: number | null; // int32
+      detail?: string | null;
+      instance?: string | null;
+    }
+    export interface Province {
+      provinceId?: string | null;
+      provinceName?: string | null;
+    }
+    export interface ReferenceContactInformation {
+      lastName?: string | null;
+      firstName?: string | null;
+      email?: string | null;
+      phoneNumber?: string | null;
+      certificateProvinceId?: string | null;
+      certificateProvinceOther?: string | null;
+      certificateNumber?: string | null;
+      dateOfBirth?: string | null; // date-time
+    }
+    export type ReferenceRelationship = "CoWorker" | "Other" | "ParentGuardianofChildinCare" | "Supervisor" | "Teacher";
+    /**
+     * Save draft application request
+     */
+    export interface SaveDraftApplicationRequest {
+      draftApplication?: DraftApplication;
+    }
+    export interface SubmitApplicationResponse {
+      applicationId?: string | null;
+    }
+    export interface Transcript {
+      id?: string | null;
+      educationalInstitutionName: string;
+      programName: string;
+      campusLocation?: string | null;
+      studentName: string;
+      studentNumber: string;
+      languageofInstruction?: string | null;
+      startDate: string; // date-time
+      endDate: string; // date-time
+      isECEAssistant?: boolean;
+      doesECERegistryHaveTranscript?: boolean;
+      isOfficialTranscriptRequested?: boolean;
+    }
+    export type UnabletoProvideReferenceReasons =
+      | "Iamunabletoatthistime"
+      | "Idonothavetheinformationrequired"
+      | "Idonotknowthisperson"
+      | "Idonotmeettherequirementstoprovideareference"
+      | "Other";
+    export interface UserInfo {
+      firstName?: string | null;
+      lastName?: string | null;
+      dateOfBirth?: string; // date
+      email?: string | null;
+      phone?: string | null;
+      unreadMessagesCount?: number; // int32
+    }
+    /**
+     * User profile information
+     */
+    export interface UserProfile {
+      firstName?: string | null;
+      lastName?: string | null;
+      middleName?: string | null;
+      preferredName?: string | null;
+      alternateContactPhone?: string | null;
+      dateOfBirth?: string | null; // date
+      email?: string | null;
+      phone?: string | null;
+      residentialAddress?: /* Address */ Address;
+      mailingAddress?: /* Address */ Address;
+    }
+    export interface WorkExperienceReference {
+      firstName?: string | null;
+      lastName?: string | null;
+      emailAddress?: string | null;
+      hours?: number | null; // int32
+      id?: string | null;
+      phoneNumber?: string | null;
+    }
+    export interface WorkExperienceReferenceCompetenciesAssessment {
+      childDevelopment?: LikertScale;
+      childDevelopmentReason?: string | null;
+      childGuidance?: LikertScale;
+      childGuidanceReason?: string | null;
+      healthSafetyAndNutrition?: LikertScale;
+      healthSafetyAndNutritionReason?: string | null;
+      developAnEceCurriculum?: LikertScale;
+      developAnEceCurriculumReason?: string | null;
+      implementAnEceCurriculum?: LikertScale;
+      implementAnEceCurriculumReason?: string | null;
+      fosteringPositiveRelationChild?: LikertScale;
+      fosteringPositiveRelationChildReason?: string | null;
+      fosteringPositiveRelationFamily?: LikertScale;
+      fosteringPositiveRelationFamilyReason?: string | null;
+      fosteringPositiveRelationCoworker?: LikertScale;
+      fosteringPositiveRelationCoworkerReason?: string | null;
+    }
+    export interface WorkExperienceReferenceDetails {
+      hours?: number; // int32
+      workHoursType?: WorkHoursType;
+      childrenProgramName?: string | null;
+      childrenProgramType?: ChildrenProgramType;
+      childrenProgramTypeOther?: string | null;
+      childcareAgeRanges?: ChildcareAgeRanges[] | null;
+      startDate?: string; // date-time
+      endDate?: string; // date-time
+      referenceRelationship?: ReferenceRelationship;
+      referenceRelationshipOther?: string | null;
+    }
+    export interface WorkExperienceReferenceSubmissionRequest {
+      token?: string | null;
+      referenceContactInformation?: ReferenceContactInformation;
+      workExperienceReferenceDetails?: WorkExperienceReferenceDetails;
+      workExperienceReferenceCompetenciesAssessment?: WorkExperienceReferenceCompetenciesAssessment;
+      applicantShouldNotBeECE?: boolean;
+      applicantNotQualifiedReason?: string | null;
+      confirmProvidedInformationIsRight?: boolean;
+    }
+    export type WorkHoursType = "FullTime" | "PartTime";
+  }
 }
 declare namespace Paths {
     namespace ApplicationGet {
@@ -443,6 +742,68 @@ declare namespace Paths {
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
         }
     }
+  }
+  namespace MessageStatusGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.CommunicationsStatusResults;
+    }
+  }
+  namespace ProfileGet {
+    namespace Responses {
+      export type $200 = /* User profile information */ Components.Schemas.UserProfile;
+      export interface $404 {}
+    }
+  }
+  namespace ProfilePut {
+    export type RequestBody = /* User profile information */ Components.Schemas.UserProfile;
+    namespace Responses {
+      export interface $200 {}
+    }
+  }
+  namespace ProvinceGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.Province[];
+    }
+  }
+  namespace ReferenceOptout {
+    export type RequestBody = Components.Schemas.OptOutReferenceRequest;
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace ReferencesGet {
+    namespace Parameters {
+      export type Token = string;
+    }
+    export interface PathParameters {
+      token?: Parameters.Token;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.PortalInvitationQueryResult;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace UserinfoGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.UserInfo;
+      export interface $404 {}
+    }
+  }
+  namespace UserinfoPost {
+    export type RequestBody = Components.Schemas.UserInfo;
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace WorkExperienceReferencePost {
+    export type RequestBody = Components.Schemas.WorkExperienceReferenceSubmissionRequest;
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
 }
 
 export interface OperationMethods {
@@ -518,6 +879,14 @@ export interface OperationMethods {
     data?: Paths.WorkExperienceReferencePost.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.WorkExperienceReferencePost.Responses.$200>
+  /**
+   * workExperience_reference_post - Handles work experience reference submission
+   */
+  "workExperience_reference_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.WorkExperienceReferencePost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.WorkExperienceReferencePost.Responses.$200>;
   /**
    * reference_optout - Handles reference optout
    */
@@ -660,20 +1029,20 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.CharacterReferencePost.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CharacterReferencePost.Responses.$200>
-  }
-  ['/api/References/WorkExperience']: {
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CharacterReferencePost.Responses.$200>;
+  };
+  ["/api/References/WorkExperience"]: {
     /**
      * workExperience_reference_post - Handles work experience reference submission
      */
-    'post'(
+    "post"(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.WorkExperienceReferencePost.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.WorkExperienceReferencePost.Responses.$200>
-  }
-  ['/api/References/OptOut']: {
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.WorkExperienceReferencePost.Responses.$200>;
+  };
+  ["/api/References/OptOut"]: {
     /**
      * reference_optout - Handles reference optout
      */
