@@ -69,30 +69,32 @@ declare namespace Components {
       emailAddress?: string | null;
       id?: string | null;
     }
-    export interface CharacterReferenceContactInformation {
-      lastName?: string | null;
-      firstName?: string | null;
-      email?: string | null;
-      phoneNumber?: string | null;
-      certificateNumber?: string | null;
-      certificateProvinceId?: string | null;
-      certificateProvinceOther?: string | null;
-    }
     export interface CharacterReferenceEvaluation {
-      relationship?: string | null;
+      referenceRelationship?: ReferenceRelationship;
+      referenceRelationshipOther?: string | null;
       lengthOfAcquaintance?: string | null;
       workedWithChildren?: boolean;
       childInteractionObservations?: string | null;
       applicantTemperamentAssessment?: string | null;
-      applicantShouldNotBeECE?: boolean;
-      applicantNotQualifiedReason?: string | null;
     }
     export interface CharacterReferenceSubmissionRequest {
       token?: string | null;
-      referenceContactInformation?: CharacterReferenceContactInformation;
+      referenceContactInformation?: ReferenceContactInformation;
       referenceEvaluation?: CharacterReferenceEvaluation;
-      responseAccuracyConfirmation?: boolean;
+      applicantShouldNotBeECE?: boolean;
+      applicantNotQualifiedReason?: string | null;
+      confirmProvidedInformationIsRight?: boolean;
     }
+    export type ChildcareAgeRanges = "From0to12Months" | "From12to24Months" | "From25to30Months" | "From31to36Months" | "Grade1" | "Preschool";
+    export type ChildrenProgramType =
+      | "Childminding"
+      | "Familychildcare"
+      | "Groupchildcare"
+      | "InHomeMultiAgechildcare"
+      | "MultiAgechildcare"
+      | "Occasionalchildcare"
+      | "Other"
+      | "Preschool";
     export interface Communication {
       id?: string | null;
       subject?: string | null;
@@ -157,6 +159,7 @@ declare namespace Components {
       } | null;
     }
     export type InviteType = "CharacterReference" | "WorkExperienceReference";
+    export type LikertScale = "Competent" | "NotCompetent" | "SomewhatCompetent" | "VeryCompetent";
     export interface OidcAuthenticationSettings {
       authority?: string | null;
       clientId?: string | null;
@@ -197,6 +200,17 @@ declare namespace Components {
       provinceId?: string | null;
       provinceName?: string | null;
     }
+    export interface ReferenceContactInformation {
+      lastName?: string | null;
+      firstName?: string | null;
+      email?: string | null;
+      phoneNumber?: string | null;
+      certificateProvinceId?: string | null;
+      certificateProvinceOther?: string | null;
+      certificateNumber?: string | null;
+      dateOfBirth?: string | null; // date-time
+    }
+    export type ReferenceRelationship = "CoWorker" | "Other" | "ParentGuardianofChildinCare" | "Supervisor" | "Teacher";
     /**
      * Save draft application request
      */
@@ -257,6 +271,46 @@ declare namespace Components {
       id?: string | null;
       phoneNumber?: string | null;
     }
+    export interface WorkExperienceReferenceCompetenciesAssessment {
+      childDevelopment?: LikertScale;
+      childDevelopmentReason?: string | null;
+      childGuidance?: LikertScale;
+      childGuidanceReason?: string | null;
+      healthSafetyAndNutrition?: LikertScale;
+      healthSafetyAndNutritionReason?: string | null;
+      developAnEceCurriculum?: LikertScale;
+      developAnEceCurriculumReason?: string | null;
+      implementAnEceCurriculum?: LikertScale;
+      implementAnEceCurriculumReason?: string | null;
+      fosteringPositiveRelationChild?: LikertScale;
+      fosteringPositiveRelationChildReason?: string | null;
+      fosteringPositiveRelationFamily?: LikertScale;
+      fosteringPositiveRelationFamilyReason?: string | null;
+      fosteringPositiveRelationCoworker?: LikertScale;
+      fosteringPositiveRelationCoworkerReason?: string | null;
+    }
+    export interface WorkExperienceReferenceDetails {
+      hours?: number; // int32
+      workHoursType?: WorkHoursType;
+      childrenProgramName?: string | null;
+      childrenProgramType?: ChildrenProgramType;
+      childrenProgramTypeOther?: string | null;
+      childcareAgeRanges?: ChildcareAgeRanges[] | null;
+      startDate?: string; // date-time
+      endDate?: string; // date-time
+      referenceRelationship?: ReferenceRelationship;
+      referenceRelationshipOther?: string | null;
+    }
+    export interface WorkExperienceReferenceSubmissionRequest {
+      token?: string | null;
+      referenceContactInformation?: ReferenceContactInformation;
+      workExperienceReferenceDetails?: WorkExperienceReferenceDetails;
+      workExperienceReferenceCompetenciesAssessment?: WorkExperienceReferenceCompetenciesAssessment;
+      applicantShouldNotBeECE?: boolean;
+      applicantNotQualifiedReason?: string | null;
+      confirmProvidedInformationIsRight?: boolean;
+    }
+    export type WorkHoursType = "FullTime" | "PartTime";
   }
 }
 declare namespace Paths {
@@ -365,7 +419,7 @@ declare namespace Paths {
     export type RequestBody = Components.Schemas.OptOutReferenceRequest;
     namespace Responses {
       export interface $200 {}
-      export type $400 = string;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace ReferencesGet {
@@ -388,6 +442,13 @@ declare namespace Paths {
   }
   namespace UserinfoPost {
     export type RequestBody = Components.Schemas.UserInfo;
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace WorkExperienceReferencePost {
+    export type RequestBody = Components.Schemas.WorkExperienceReferenceSubmissionRequest;
     namespace Responses {
       export interface $200 {}
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
@@ -460,6 +521,14 @@ export interface OperationMethods {
     data?: Paths.CharacterReferencePost.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CharacterReferencePost.Responses.$200>;
+  /**
+   * workExperience_reference_post - Handles work experience reference submission
+   */
+  "workExperience_reference_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.WorkExperienceReferencePost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.WorkExperienceReferencePost.Responses.$200>;
   /**
    * reference_optout - Handles reference optout
    */
@@ -592,6 +661,16 @@ export interface PathsDictionary {
       data?: Paths.CharacterReferencePost.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CharacterReferencePost.Responses.$200>;
+  };
+  ["/api/References/WorkExperience"]: {
+    /**
+     * workExperience_reference_post - Handles work experience reference submission
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.WorkExperienceReferencePost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.WorkExperienceReferencePost.Responses.$200>;
   };
   ["/api/References/OptOut"]: {
     /**
