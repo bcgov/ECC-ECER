@@ -132,7 +132,6 @@ export default defineComponent({
   },
   data() {
     return {
-      selection: undefined,
       Rules,
       certificateProvinceId: "",
       dateOfBirth: "",

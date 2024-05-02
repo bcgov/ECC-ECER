@@ -7,3 +7,9 @@ interface Form {
     [id: string]: Input;
   };
 }
+
+// Wrap any type to type a dropdown list for v-select and v-autocomplete
+interface DropdownWrapper<T> {
+  title: string;
+  value: T;
+}
