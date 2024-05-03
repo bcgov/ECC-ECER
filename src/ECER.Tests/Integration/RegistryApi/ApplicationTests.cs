@@ -77,9 +77,9 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationStatusById = await applicationStatusByIdResponse.ReadAsJsonAsync<SubmittedApplicationStatus>();
     applicationStatusById!.Id.ShouldBe(application.Id);
-    applicationStatusById.Transcripts.ShouldNotBeEmpty();
-    applicationStatusById.CharacterReferences.ShouldNotBeEmpty();
-    applicationStatusById.WorkExperienceReferences.ShouldNotBeEmpty();
+    applicationStatusById.TranscriptsStatus.ShouldNotBeEmpty();
+    applicationStatusById.CharacterReferencesStatus.ShouldNotBeEmpty();
+    applicationStatusById.WorkExperienceReferencesStatus.ShouldNotBeEmpty();
   }
 
   [Fact]

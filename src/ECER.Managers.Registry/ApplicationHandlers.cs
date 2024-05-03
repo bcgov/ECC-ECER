@@ -8,7 +8,6 @@ using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
-using ApplicationStatusQuery = ECER.Managers.Registry.Contract.Applications.ApplicationStatusQuery;
 
 namespace ECER.Managers.Registry;
 
@@ -27,8 +26,7 @@ public class ApplicationHandlers(
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
     IRequestHandler<Contract.Applications.SubmitReferenceCommand, ReferenceSubmissionResult>,
-    IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>,
-  IRequestHandler<Contract.Applications.ApplicationStatusQuery, ApplicationStatusQueryResults>
+    IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -200,11 +198,4 @@ public class ApplicationHandlers(
     return ReferenceSubmissionResult.Success();
   }
 
-  public async Task<ApplicationStatusQueryResults> Handle(ApplicationStatusQuery request, CancellationToken cancellationToken)
-  {
-    ArgumentNullException.ThrowIfNull(request);
-
-    var applicationStatus = await applicationRepository.Status(new Resources.Documents.Applications.ApplicationStatusQuery(request.Id), cancellationToken);
-    return new ApplicationStatusQueryResults(mapper.Map<Contract.Applications.SubmittedApplicationStatus>(applicationStatus));
-  }
 }

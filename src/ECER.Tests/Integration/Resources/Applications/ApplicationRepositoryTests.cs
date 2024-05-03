@@ -131,27 +131,6 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task QueryApplicationStatus_ByApplictionId_Found()
-  {
-    var applicationId = Fixture.draftTestApplicationId;
-    var applicantId = Fixture.AuthenticatedBcscUserId;
-    var application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear })
-    {
-      Transcripts = new List<Transcript> { CreateTranscript() },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateWorkExperienceReference() },
-      CharacterReferences = new List<CharacterReference> { CreateCharacterReference() },
-
-    };
-    await repository.SaveDraft(application, CancellationToken.None);
-
-    var applicationStatus = await repository.Status(new ApplicationStatusQuery(applicationId), default);
-    applicationStatus.Id.ShouldBe(applicationId);
-    applicationStatus.CharacterReferences.ShouldNotBeEmpty();
-    applicationStatus.Transcripts.ShouldNotBeEmpty();
-    applicationStatus.WorkExperienceReferences.ShouldNotBeEmpty();
-  }
-
-  [Fact]
   public async Task SaveDraftApplication_WithTranscripts_Created()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;

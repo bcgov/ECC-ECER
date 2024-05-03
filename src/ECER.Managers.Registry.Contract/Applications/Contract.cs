@@ -36,19 +36,6 @@ public record ApplicationsQuery : IRequest<ApplicationsQueryResults>
 public record ApplicationsQueryResults(IEnumerable<Application> Items);
 
 /// <summary>
-/// Invokes Application Status query
-/// </summary>
-/// <param name="Id"></param>
-public record ApplicationStatusQuery(string Id) : IRequest<ApplicationStatusQueryResults>;
-
-/// <summary>
-/// Container for <see cref="ApplicationStatusQuery"/> results
-/// </summary>
-/// <param name="status"></param>
-public record ApplicationStatusQueryResults(SubmittedApplicationStatus status);
-
-
-/// <summary>
 /// Application submission result
 /// </summary>
 public record ApplicationSubmissionResult()
@@ -75,7 +62,7 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
 {
   public string? CampusLocation { get; set; }
   public string? LanguageofInstruction { get; set; }
-  public SubmittedApplicationStageStatus? Status { get; set; }
+  public StageStatus? Status { get; set; }
 }
 
 public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
@@ -84,14 +71,14 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
 
   public string? PhoneNumber { get; set; }
 
-  public SubmittedApplicationStageStatus? Status { get; set; }
+  public StageStatus? Status { get; set; }
 }
 
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
   public string? Id { get; set; }
 
-  public SubmittedApplicationStageStatus? Status { get; set; }
+  public StageStatus? Status { get; set; }
 }
 
 public enum PortalStage
@@ -220,14 +207,8 @@ public record SubmitReferenceCommand(string Token) : IRequest<ReferenceSubmissio
   public CharacterReferenceSubmissionRequest? CharacterReferenceSubmissionRequest { get; set; }
 }
 
-public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn)
-{
-  public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
-  public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
-  public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
-}
 
-public enum SubmittedApplicationStageStatus
+public enum StageStatus
 {
   Complete,
   InComplete,

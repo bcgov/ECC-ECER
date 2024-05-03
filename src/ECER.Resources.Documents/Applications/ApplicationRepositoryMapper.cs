@@ -94,7 +94,7 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
           .ForMember(d => d.ecer_TotalNumberofHoursAnticipated, opts => opts.MapFrom(s => s.Hours))
           .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
-          
+
 
     CreateMap<ecer_WorkExperienceRef, WorkExperienceReference>(MemberList.Source)
       .ForCtorParam(nameof(WorkExperienceReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
@@ -188,80 +188,81 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_ChildcareAgeRange, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildcareAgeRanges))
       ;
 
-    CreateMap<ecer_Application, SubmittedApplicationStatus>(MemberList.Source)
-   .ForCtorParam(nameof(SubmittedApplicationStatus.Id), opts => opts.MapFrom(s => s.ecer_ApplicationId!.ToString()))
-   .ForCtorParam(nameof(SubmittedApplicationStatus.SubmittedOn), opts => opts.MapFrom(s => s.ecer_DateSubmitted))
-   .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.ecer_transcript_Applicationid))
-   .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.ecer_workexperienceref_Applicationid_ecer))
-   .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.ecer_characterreference_Applicationid))
-   .ValidateMemberList(MemberList.Destination);
 
-    CreateMap<ecer_CharacterReference_StatusCode, SubmittedApplicationStageStatus>()
+    CreateMap<ecer_CharacterReference_StatusCode, StageStatus>()
     .ConvertUsing((src, dest) =>
     {
       switch (src)
       {
         case ecer_CharacterReference_StatusCode.Approved:
-          return SubmittedApplicationStageStatus.Complete;
+          return StageStatus.Complete;
+
         case ecer_CharacterReference_StatusCode.InProgress:
         case ecer_CharacterReference_StatusCode.UnderReview:
         case ecer_CharacterReference_StatusCode.WaitingResponse:
         case ecer_CharacterReference_StatusCode.Submitted:
-          return SubmittedApplicationStageStatus.InProgress;
+          return StageStatus.InProgress;
+
         case ecer_CharacterReference_StatusCode.ApplicationSubmitted:
         case ecer_CharacterReference_StatusCode.Draft:
         case ecer_CharacterReference_StatusCode.Rejected:
-          return SubmittedApplicationStageStatus.InComplete;
+          return StageStatus.InComplete;
+
         default:
-          // Optionally handle unexpected cases.
           throw new ArgumentOutOfRangeException(nameof(src), $"Not expected status value: {src}");
       }
     });
 
 
-    CreateMap<ecer_WorkExperienceRef_StatusCode, SubmittedApplicationStageStatus>()
-    .ConvertUsing((src, dest) => {
+    CreateMap<ecer_WorkExperienceRef_StatusCode, StageStatus>()
+    .ConvertUsing((src, dest) =>
+    {
       switch (src)
       {
         case ecer_WorkExperienceRef_StatusCode.Approved:
-          return SubmittedApplicationStageStatus.Complete;
+          return StageStatus.Complete;
+
         case ecer_WorkExperienceRef_StatusCode.InProgress:
         case ecer_WorkExperienceRef_StatusCode.UnderReview:
         case ecer_WorkExperienceRef_StatusCode.WaitingforResponse:
         case ecer_WorkExperienceRef_StatusCode.Submitted:
-          return SubmittedApplicationStageStatus.InProgress;
+          return StageStatus.InProgress;
+
         case ecer_WorkExperienceRef_StatusCode.ApplicationSubmitted:
         case ecer_WorkExperienceRef_StatusCode.Draft:
-        case ecer_WorkExperienceRef_StatusCode.Rejected: 
-          return SubmittedApplicationStageStatus.InComplete;
-        default:
+        case ecer_WorkExperienceRef_StatusCode.Rejected:
+          return StageStatus.InComplete;
 
+        default:
           throw new ArgumentOutOfRangeException(nameof(src), $"Not expected status value: {src}");
       }
     });
 
 
-    CreateMap<ecer_Transcript_StatusCode, SubmittedApplicationStageStatus>().ConvertUsing((src, dest) =>
+    CreateMap<ecer_Transcript_StatusCode, StageStatus>().ConvertUsing((src, dest) =>
     {
       switch (src)
       {
-        case ecer_Transcript_StatusCode.Accepted: return SubmittedApplicationStageStatus.Complete;
+        case ecer_Transcript_StatusCode.Accepted:
+          return StageStatus.Complete;
+
         case ecer_Transcript_StatusCode.InProgress:
         case ecer_Transcript_StatusCode.Submitted:
-          return SubmittedApplicationStageStatus.InProgress;
-        case ecer_Transcript_StatusCode.ApplicationSubmitted:
+          return StageStatus.InProgress;
 
+        case ecer_Transcript_StatusCode.ApplicationSubmitted:
         case ecer_Transcript_StatusCode.DRAFT:
         case ecer_Transcript_StatusCode.Rejected:
-          return SubmittedApplicationStageStatus.InComplete;
+          return StageStatus.InComplete;
+
         default:
           throw new ArgumentOutOfRangeException(nameof(src), $"Not expected status value: {src}");
       }
     });
 
     CreateMap<UnabletoProvideReferenceReasons, ecer_UnabletoProvideReferenceReasons>()
-.ConvertUsingEnumMapping(opts => opts.MapByName(true))
-.ReverseMap();
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
 
     CreateMap<LikertScale, ecer_likertscales>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))

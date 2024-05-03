@@ -229,18 +229,6 @@ internal sealed class ApplicationRepository : IApplicationRepository
     };
   }
 
-  public async Task<SubmittedApplicationStatus> Status(ApplicationStatusQuery query, CancellationToken cancellationToken)
-  {
-    await Task.CompletedTask;
-
-    var application = context.ecer_ApplicationSet.Single(a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled && a.ecer_ApplicationId == Guid.Parse(query.Id));
-
-    context.LoadProperty(application, ecer_Application.Fields.ecer_transcript_Applicationid);
-    context.LoadProperty(application, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer);
-    context.LoadProperty(application, ecer_Application.Fields.ecer_characterreference_Applicationid);
-
-    return mapper.Map<SubmittedApplicationStatus>(application);
-  }
 
   #region implementationDetails
 

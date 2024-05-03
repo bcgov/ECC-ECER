@@ -7,9 +7,11 @@ public class ApplicationMapper : Profile
   public ApplicationMapper()
   {
     CreateMap<WorkExperienceReference, Managers.Registry.Contract.Applications.WorkExperienceReference>()
+      .ForMember(d => d.Status, opts => opts.Ignore())
       .ReverseMap();
 
     CreateMap<Transcript, Managers.Registry.Contract.Applications.Transcript>()
+      .ForMember(d => d.Status, opts => opts.Ignore())
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.Id),
                opt => opt.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.EducationalInstitutionName),
@@ -37,6 +39,7 @@ public class ApplicationMapper : Profile
       .ReverseMap();
 
     CreateMap<CharacterReference, Managers.Registry.Contract.Applications.CharacterReference>()
+      .ForMember(d => d.Status, opts => opts.Ignore())
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.FirstName),
         opt => opt.MapFrom(src => src.FirstName))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.LastName),
@@ -66,7 +69,54 @@ public class ApplicationMapper : Profile
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>()
       ;
 
-    CreateMap<Managers.Registry.Contract.Applications.SubmittedApplicationStatus, SubmittedApplicationStatus>();
+    CreateMap<Managers.Registry.Contract.Applications.Application, SubmittedApplicationStatus>()
+      .ForCtorParam(nameof(SubmittedApplicationStatus.Id),
+        opt => opt.MapFrom(s => s.Id))
+      .ForCtorParam(nameof(SubmittedApplicationStatus.SubmittedOn),
+        opt => opt.MapFrom(s => s.SubmittedOn))
+      .ForCtorParam(nameof(SubmittedApplicationStatus.Status),
+        opt => opt.MapFrom(s => s.Status))
+      .ForMember(d => d.TranscriptsStatus, opts => opts.MapFrom(s => s.Transcripts))
+      .ForMember(d => d.WorkExperienceReferencesStatus, opts => opts.MapFrom(s => s.WorkExperienceReferences))
+      .ForMember(d => d.CharacterReferencesStatus, opts => opts.MapFrom(s => s.CharacterReferences));
+
+
+    CreateMap<Managers.Registry.Contract.Applications.CharacterReference, ReferenceStatus>()
+      .ForMember(d => d.Hours, opts => opts.Ignore())
+      .ForCtorParam(nameof(ReferenceStatus.FirstName),
+        opt => opt.MapFrom(src => src.FirstName))
+      .ForCtorParam(nameof(ReferenceStatus.LastName),
+        opt => opt.MapFrom(src => src.LastName))
+      .ForCtorParam(nameof(ReferenceStatus.EmailAddress),
+        opt => opt.MapFrom(src => src.EmailAddress))
+      .ForCtorParam(nameof(ReferenceStatus.Id),
+        opt => opt.MapFrom(src => src.Id))
+      .ForCtorParam(nameof(ReferenceStatus.Status),
+        opt => opt.MapFrom(src => src.Status))
+      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber));
+
+    CreateMap<Managers.Registry.Contract.Applications.WorkExperienceReference, ReferenceStatus>()
+      .ForCtorParam(nameof(ReferenceStatus.FirstName),
+        opt => opt.MapFrom(src => src.FirstName))
+      .ForCtorParam(nameof(ReferenceStatus.LastName),
+        opt => opt.MapFrom(src => src.LastName))
+      .ForCtorParam(nameof(ReferenceStatus.EmailAddress),
+        opt => opt.MapFrom(src => src.EmailAddress))
+      .ForCtorParam(nameof(ReferenceStatus.Id),
+        opt => opt.MapFrom(src => src.Id))
+      .ForCtorParam(nameof(ReferenceStatus.Status),
+        opt => opt.MapFrom(src => src.Status))
+      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
+      .ForMember(d => d.Hours, opts => opts.MapFrom(s => s.Hours));
+
+    CreateMap<Managers.Registry.Contract.Applications.Transcript, TranscriptStatus>()
+      .ForCtorParam(nameof(TranscriptStatus.Id),
+        opt => opt.MapFrom(src => src.Id))
+      .ForCtorParam(nameof(TranscriptStatus.EducationalInstitutionName),
+        opt => opt.MapFrom(src => src.EducationalInstitutionName))
+      .ForCtorParam(nameof(TranscriptStatus.Status),
+        opt => opt.MapFrom(src => src.Status));
+
 
   }
 }

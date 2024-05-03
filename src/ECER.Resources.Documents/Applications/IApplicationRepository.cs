@@ -16,7 +16,6 @@ public interface IApplicationRepository
 
   Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
 
-  Task<SubmittedApplicationStatus> Status(ApplicationStatusQuery query, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery
@@ -26,7 +25,6 @@ public record ApplicationQuery
   public string? ByApplicantId { get; set; }
 }
 
-public record ApplicationStatusQuery(string Id);
 public record Application(string? Id, string ApplicantId, IEnumerable<CertificationType> CertificationTypes)
 {
   public ApplicationStatus Status { get; set; }
@@ -43,14 +41,14 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
 {
   public string? CampusLocation { get; set; }
   public string? LanguageofInstruction { get; set; }
-  public SubmittedApplicationStageStatus? Status { get; set; }
+  public StageStatus? Status { get; set; }
 }
 
 public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
 {
   public string? Id { get; set; }
   public string? PhoneNumber { get; set; }
-  public SubmittedApplicationStageStatus? Status { get; set; }
+  public StageStatus? Status { get; set; }
 }
 
 public enum PortalStage
@@ -94,8 +92,8 @@ public enum ApplicationStatus
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
   public string? Id { get; set; }
+  public StageStatus? Status { get; set; }
 
-  public SubmittedApplicationStageStatus? Status { get; set; }
 }
 
 public record OptOutReferenceRequest(UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons)
@@ -128,14 +126,8 @@ public record WorkExperienceReferenceSubmissionRequest(ReferenceContactInformati
 public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
 public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
 
-public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn)
-{
-  public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
-  public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
-  public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
-}
 
-public enum SubmittedApplicationStageStatus
+public enum StageStatus
 {
   Complete,
   InComplete,
