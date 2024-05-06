@@ -37,7 +37,9 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         faker.Random.Word(), // LengthOfAcquaintance
         faker.Random.Bool(), // WorkedWithChildren
         faker.Lorem.Paragraph(), // ChildInteractionObservations
-        faker.Lorem.Paragraph() // ApplicantTemperamentAssessment
+        faker.Lorem.Paragraph(), // ApplicantTemperamentAssessment
+        faker.Random.Bool(), // Confirmed
+        faker.Lorem.Paragraph()
     );
 
     // Creating the ReferenceSubmissionRequest record
@@ -45,8 +47,6 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         token,
         referenceContactInfo,
         referenceEvaluation,
-        faker.Random.Bool(), // Confirmed
-        faker.Lorem.Paragraph(),
         true
     );
 

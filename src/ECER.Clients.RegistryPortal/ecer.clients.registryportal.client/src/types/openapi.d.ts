@@ -76,13 +76,13 @@ declare namespace Components {
       workedWithChildren?: boolean;
       childInteractionObservations?: string | null;
       applicantTemperamentAssessment?: string | null;
+      applicantShouldNotBeECE?: boolean;
+      applicantNotQualifiedReason?: string | null;
     }
     export interface CharacterReferenceSubmissionRequest {
       token?: string | null;
       referenceContactInformation?: ReferenceContactInformation;
       referenceEvaluation?: CharacterReferenceEvaluation;
-      applicantShouldNotBeECE?: boolean;
-      applicantNotQualifiedReason?: string | null;
       confirmProvidedInformationIsRight?: boolean;
     }
     export type ChildcareAgeRanges = "From0to12Months" | "From12to24Months" | "From25to30Months" | "From31to36Months" | "Grade1" | "Preschool";

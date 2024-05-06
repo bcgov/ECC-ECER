@@ -83,7 +83,7 @@ export default defineComponent({
       const { valid } = await formRef.validate();
 
       if (!valid) {
-        this.alertStore.setFailureAlert("Please fill out all required fields");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue");
       } else {
         if (
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.declarationForm.id] === false &&
@@ -111,7 +111,7 @@ export default defineComponent({
       const { valid } = await formRef.validate();
 
       if (!valid) {
-        this.alertStore.setFailureAlert("Please fill out all required fields");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue");
         return;
       }
 
