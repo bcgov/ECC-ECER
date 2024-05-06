@@ -71,8 +71,8 @@
             color="primary"
             maxlength="1000"
             hide-details="auto"
-            @update:model-value="updateField('childInteractionObservations', $event)"
             :auto-grow="true"
+            @update:model-value="updateField('childInteractionObservations', $event)"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -119,8 +119,8 @@
             color="primary"
             maxlength="1000"
             hide-details="auto"
-            @update:model-value="updateField('applicantNotQualifiedReason', $event)"
             :auto-grow="true"
+            @update:model-value="updateField('applicantNotQualifiedReason', $event)"
           ></v-textarea>
         </v-col>
       </v-row>
