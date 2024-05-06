@@ -164,7 +164,7 @@ export default defineComponent({
     },
     customOptionalIfNotBCRule() {
       if (this.userSelectProvinceIdBC) {
-        return (v: string) => !!(v && v?.trim()) || "Required";
+        return (v: string) => !!(v && v?.trim()) || "Enter your ECE certification/registration in a numeric format";
       }
       return true;
     },

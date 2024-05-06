@@ -13,7 +13,7 @@
             label="What is your relationship with the applicant?"
             variant="outlined"
             color="primary"
-            :rules="[Rules.required()]"
+            :rules="[Rules.required('Select an option')]"
             :items="referenceRelationshipDropdown"
             hide-details="auto"
             @update:model-value="referenceRelationshipChanged"
@@ -26,7 +26,7 @@
             label="Specify your relationship with applicant"
             variant="outlined"
             color="primary"
-            :rules="[Rules.required()]"
+            :rules="[Rules.required('Enter your relationship with the applicant')]"
             hide-details="auto"
             @update:model-value="updateField('referenceRelationshipOther', $event)"
           ></v-text-field>
@@ -38,7 +38,7 @@
             label="How long have you known the applicant?"
             variant="outlined"
             color="primary"
-            :rules="[Rules.required()]"
+            :rules="[Rules.required('Select an option')]"
             :items="['less than 6 months', '6 months to 1 year', '1 to 2 years', '2 to 5 years', '5 or more years']"
             hide-details="auto"
             @update:model-value="updateField('lengthOfAcquaintance', $event)"
@@ -48,7 +48,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <p>Have you observed the applicant working with young children?</p>
-          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio()]" @update:model-value="updateField('workedWithChildren', $event)">
+          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="updateField('workedWithChildren', $event)">
             <v-radio label="Yes" :value="true"></v-radio>
             <v-radio label="No" :value="false"></v-radio>
           </v-radio-group>
@@ -65,13 +65,14 @@
           </label>
           <v-textarea
             id="childInteractionObservations"
-            :rules="[Rules.required()]"
+            :rules="[Rules.required('Enter your response')]"
             counter="1000"
             variant="outlined"
             color="primary"
             maxlength="1000"
             hide-details="auto"
             @update:model-value="updateField('childInteractionObservations', $event)"
+            :auto-grow="true"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -82,7 +83,7 @@
           </label>
           <v-textarea
             id="applicantTempermentAssessmentTextField"
-            :rules="[Rules.required()]"
+            :rules="[Rules.required('Enter your response')]"
             counter="1000"
             variant="outlined"
             color="primary"
@@ -99,7 +100,7 @@
             If certified, the applicant may work alone in a licensed childcare facility with children 0-5 years of age for extended periods of time. Do you
             believe the applicant should be granted authorization to be an ECE or ECE Assistant?
           </p>
-          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio()]" @update:model-value="applicantShouldNotBeECEChanged">
+          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="applicantShouldNotBeECEChanged">
             <v-radio label="Yes" :value="false"></v-radio>
             <v-radio label="No" :value="true"></v-radio>
           </v-radio-group>
@@ -112,13 +113,14 @@
           </label>
           <v-textarea
             id="applicantShouldNotBeECETextArea"
-            :rules="[Rules.required()]"
+            :rules="[Rules.required('Enter your response')]"
             counter="1000"
             variant="outlined"
             color="primary"
             maxlength="1000"
             hide-details="auto"
             @update:model-value="updateField('applicantNotQualifiedReason', $event)"
+            :auto-grow="true"
           ></v-textarea>
         </v-col>
       </v-row>
