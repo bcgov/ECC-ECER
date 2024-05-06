@@ -35,7 +35,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-autocomplete
-            label="How long have you known the applicant?"
+            label="How long have you known the applicant? (Approximately)"
             variant="outlined"
             color="primary"
             :rules="[Rules.required('Select an option')]"
