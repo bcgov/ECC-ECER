@@ -10,7 +10,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">{{`Name of ${getLabelOnCertificateType}`}}</p>
+            <p class="small">{{ `Name of ${getLabelOnCertificateType}` }}</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ education.programName }}</p>
@@ -105,7 +105,7 @@ export default defineComponent({
       } else {
         return "Course";
       }
-    }
+    },
   },
   methods: {
     formatDate,

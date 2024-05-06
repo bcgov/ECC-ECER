@@ -119,7 +119,6 @@ internal class ApplicationRepositoryMapper : Profile
     CreateMap<CharacterReferenceSubmissionRequest, ecer_CharacterReference>(MemberList.Source)
       .ForSourceMember(s => s.ReferenceContactInformation, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ReferenceEvaluation, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ApplicantShouldNotBeECE, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ConfirmProvidedInformationIsRight, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.ReferenceContactInformation.FirstName))
@@ -134,8 +133,8 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_RelationshipwithApplicantOther, opts => opts.MapFrom(s => s.ReferenceEvaluation.ReferenceRelationshipOther))
       .ForMember(d => d.ecer_ApplicantSituationDescription, opts => opts.MapFrom(s => s.ReferenceEvaluation.ChildInteractionObservations))
       .ForMember(d => d.ecer_ApplicantSuitableReason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantTemperamentAssessment))
-      .ForMember(d => d.ecer_ApplicantShouldNOTbeECE, opts => opts.MapFrom(s => s.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
-      .ForMember(d => d.ecer_applicantnotqualifiedreason, opts => opts.MapFrom(s => s.ApplicantNotQualifiedReason));
+      .ForMember(d => d.ecer_ApplicantShouldNOTbeECE, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
+      .ForMember(d => d.ecer_applicantnotqualifiedreason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantNotQualifiedReason));
 
     CreateMap<WorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
       .ForSourceMember(s => s.ReferenceContactInformation, opts => opts.DoNotValidate())

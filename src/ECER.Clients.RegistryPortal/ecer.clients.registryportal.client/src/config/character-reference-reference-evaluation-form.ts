@@ -5,8 +5,8 @@ const characterReferenceReferenceEvaluationForm: Form = {
   id: "characterEvaluationForm",
   title: "character evaluation form",
   inputs: {
-    responseAccept: {
-      id: "characterEvaluation",
+    characterReferenceEvaluation: {
+      id: "characterReferenceEvaluation",
       component: EceCharacterReferenceEvaluation,
       props: {},
       cols: {

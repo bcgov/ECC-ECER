@@ -21,7 +21,7 @@ const characterReferenceWizardConfig: Wizard = {
       form: referenceContactInformationForm,
       key: "item.2",
     },
-    ReferenceEvaluation: {
+    referenceEvaluation: {
       title: "",
       stage: "ReferenceEvaluation",
       form: characterReferenceReferenceEvaluationForm,
