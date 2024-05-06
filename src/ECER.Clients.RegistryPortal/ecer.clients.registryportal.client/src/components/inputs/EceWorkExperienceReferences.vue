@@ -296,7 +296,7 @@ export default defineComponent({
         this.$emit("update:model-value", updatedModelValue);
       }
 
-      this.alertStore.setWarningAlert("You have Deleted your Reference.");
+      this.alertStore.setWarningAlert("You have deleted your reference.");
     },
     resetFormData() {
       this.id = null;

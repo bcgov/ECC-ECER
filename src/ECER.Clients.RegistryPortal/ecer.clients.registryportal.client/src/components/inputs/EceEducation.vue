@@ -262,7 +262,7 @@ export default defineComponent({
         this.$emit("update:model-value", updatedModelValue);
       }
 
-      this.alertStore.setSuccessAlert("You have Deleted your Education.");
+      this.alertStore.setSuccessAlert("You have deleted your education.");
     },
     resetFormData() {
       this.id = "";
