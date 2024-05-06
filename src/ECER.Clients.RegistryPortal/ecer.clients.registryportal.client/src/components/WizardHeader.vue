@@ -69,12 +69,9 @@ export default defineComponent({
         this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Sne")
       ) {
         certificationTypeSubtitle = "Including certification for Special Needs Education (SNE) and Infant and Toddler Educator (ITE)";
-      }
-
-      if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Sne")) {
+      } else if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Sne")) {
         certificationTypeSubtitle = "Including certification for Special Needs Educator (SNE)";
-      }
-      if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Ite")) {
+      } else if (this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes("Ite")) {
         certificationTypeSubtitle = "Including certification for Infant and Toddler Eductor (ITE)";
       }
 
