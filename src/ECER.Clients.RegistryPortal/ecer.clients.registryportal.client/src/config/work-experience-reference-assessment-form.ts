@@ -1,14 +1,14 @@
-import EceTextField from "@/components/inputs/EceTextField.vue";
+import EceWorkExperienceReferenceDetails from "@/components/reference/inputs/EceWorkExperienceReferenceDetails.vue";
 import type { Form } from "@/types/form";
 
 const workExperienceAssessmentForm: Form = {
-  id: "assessmentForm",
+  id: "wokrExAssessmentForm",
   title: "Assessment form",
   inputs: {
-    assessment: {
-      id: "assessment",
-      component: EceTextField,
-      props: { label: "assessment form reference accepted this does not work" },
+    workExAssessment: {
+      id: "workExAssessment",
+      component: EceWorkExperienceReferenceDetails,
+      props: {},
       cols: {
         md: 12,
         lg: 12,

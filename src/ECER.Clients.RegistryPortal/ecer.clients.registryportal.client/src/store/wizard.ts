@@ -56,11 +56,11 @@ export const useWizardStore = defineStore("wizard", {
       const duplicateCharacterReferenceFound = references.some((workExperienceReference: Components.Schemas.WorkExperienceReference) => {
         return (
           workExperienceReference.firstName ===
-            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName &&
+          state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName &&
           workExperienceReference.lastName ===
-            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName &&
+          state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName &&
           workExperienceReference.emailAddress ===
-            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress
+          state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress
         );
       });
 
@@ -150,7 +150,7 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.workReference.form.inputs.referenceList.id]: workReferencesDict,
       };
     },
-    initializeWizardForReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
+    initializeWizardForCharacterReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
       this.$reset();
       this.wizardConfig = wizard;
 
@@ -160,6 +160,18 @@ export const useWizardStore = defineStore("wizard", {
         inviteType: portalInvitation.inviteType,
         [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
         [wizard.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]: {} as Components.Schemas.CharacterReferenceEvaluation,
+      });
+    },
+    initializeWizardForWorkExReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
+      this.$reset();
+      this.wizardConfig = wizard;
+
+      this.setWizardData({
+        applicantFirstName: portalInvitation.applicantFirstName,
+        applicantLastName: portalInvitation.applicantLastName,
+        inviteType: portalInvitation.inviteType,
+        [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
+        [wizard.steps.assessment.form.inputs.workExAssessment.id]: {} as Components.Schemas.WorkExperienceReferenceDetails,
       });
     },
     setWizardData(wizardData: WizardData): void {
