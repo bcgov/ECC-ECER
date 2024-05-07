@@ -222,25 +222,6 @@ export default defineComponent({
         this.$emit("update:model-value", { ...this.modelValue, referenceRelationship: value });
       }
     },
-    applicantShouldNotBeECEChanged(value: any) {
-      // if (value === true) {
-      //   this.$emit("update:model-value", { ...this.modelValue, applicantShouldNotBeECE: value });
-      // } else {
-      //   this.$emit("update:model-value", { ...this.modelValue, applicantShouldNotBeECE: value, applicantNotQualifiedReason: "" });
-      // }
-    },
   },
 });
 </script>
-<!-- <style>
-.v-checkbox {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-.inline-checkbox {
-  margin: 0;
-  padding: 0;
-}
-</style> -->
