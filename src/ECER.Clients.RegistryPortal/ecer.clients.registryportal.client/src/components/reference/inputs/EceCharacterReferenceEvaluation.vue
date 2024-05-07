@@ -89,7 +89,8 @@
             color="primary"
             maxlength="1000"
             hide-details="auto"
-            @update:model-value="updateField('childInteractionObservations', $event)"
+            :auto-grow="true"
+            @update:model-value="updateField('applicantTemperamentAssessment', $event)"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -108,9 +109,7 @@
       </v-row>
       <v-row v-if="modelValue.applicantShouldNotBeECE" class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
-          <label for="applicantShouldNotBeECETextArea">
-            Explain why you consider the applicant to have the temperment and ability to manage or work with young children.
-          </label>
+          <label for="applicantShouldNotBeECETextArea">Why do you believe the applicant should NOT be granted authorization to be ECE or ECE Assistant.</label>
           <v-textarea
             id="applicantShouldNotBeECETextArea"
             :rules="[Rules.required('Enter your response')]"
