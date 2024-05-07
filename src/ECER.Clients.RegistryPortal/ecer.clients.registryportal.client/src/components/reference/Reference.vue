@@ -102,8 +102,17 @@ export default defineComponent({
         this.wizardStore.decrementStep();
       }
     },
-    handleSubmit() {
-      this.alertStore.setWarningAlert("User Accepted");
+    async handleSubmit() {
+      const currentStepFormId = this.wizardStore.currentStep.form.id;
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const { valid } = await formRef.validate();
+
+      if (!valid) {
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue");
+        return;
+      }
+
+      this.alertStore.setWarningAlert("Submit feature not implemented yet");
     },
     async handleDecline() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
