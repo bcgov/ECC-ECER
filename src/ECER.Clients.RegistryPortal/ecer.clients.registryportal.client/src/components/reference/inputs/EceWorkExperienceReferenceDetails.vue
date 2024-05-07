@@ -59,7 +59,7 @@
             :rules="[Rules.required('Select an option')]"
             :items="childrenProgramTypeDropdown"
             hide-details="auto"
-            @update:model-value="updateField('childrenProgramType', $event)"
+            @update:model-value="childrenProgramTypeChanged"
           ></v-autocomplete>
         </v-col>
       </v-row>
@@ -133,11 +133,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <p>What is your relationship to the applicant?</p>
-          <v-radio-group
-            hide-details="auto"
-            :rules="[Rules.requiredRadio('Select an option')]"
-            @update:model-value="updateField('referenceRelationship', $event)"
-          >
+          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="referenceRelationshipChanged">
             <v-radio
               v-for="(workReferenceRelationship, index) in workReferenceRelationshipRadio"
               :key="index"
@@ -170,10 +166,7 @@ import { defineComponent } from "vue";
 
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
-import { childrenProgramTypeDropdown } from "@/utils/constant";
-import { workHoursTypeRadio } from "@/utils/constant";
-import { childcareAgeRangesCheckBox } from "@/utils/constant";
-import { workReferenceRelationshipRadio } from "@/utils/constant";
+import { childcareAgeRangesCheckBox, childrenProgramTypeDropdown, workHoursTypeRadio, workReferenceRelationshipRadio } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 
@@ -211,15 +204,24 @@ export default defineComponent({
         [fieldName]: value,
       });
     },
-    referenceRelationshipChanged(value: Components.Schemas.ReferenceRelationship) {
+
+    childrenProgramTypeChanged(value: Components.Schemas.ChildrenProgramType) {
       if (value !== "Other") {
         this.$emit("update:model-value", {
           ...this.modelValue,
-          referenceRelationship: value,
-          referenceRelationshipOther: "",
+          childrenProgramType: value,
+          childrenProgramTypeOther: "",
         });
       } else {
+        this.$emit("update:model-value", { ...this.modelValue, childrenProgramType: value });
+      }
+    },
+
+    referenceRelationshipChanged(value: any) {
+      if (value === "Other") {
         this.$emit("update:model-value", { ...this.modelValue, referenceRelationship: value });
+      } else {
+        this.$emit("update:model-value", { ...this.modelValue, referenceRelationship: value, referenceRelationshipOther: "" });
       }
     },
   },

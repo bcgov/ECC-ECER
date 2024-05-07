@@ -2,8 +2,8 @@ import EceWorkExperienceReferenceDetails from "@/components/reference/inputs/Ece
 import type { Form } from "@/types/form";
 
 const workExperienceAssessmentForm: Form = {
-  id: "wokrExAssessmentForm",
-  title: "Assessment form",
+  id: "workExAssessmentForm",
+  title: "Work Experience Assessment form",
   inputs: {
     workExAssessment: {
       id: "workExAssessment",

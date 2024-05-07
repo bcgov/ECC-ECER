@@ -16,13 +16,13 @@ const workExperienceReferenceWizardConfig: Wizard = {
       key: "item.1",
     },
     contactInformation: {
-      title: " ",
+      title: "",
       stage: "ContactInformation",
       form: referenceContactInformationForm,
       key: "item.2",
     },
     assessment: {
-      title: " ",
+      title: "",
       stage: "Assessment",
       form: workExperienceAssessmentForm,
       key: "item.3",
