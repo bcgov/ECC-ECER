@@ -12,7 +12,7 @@
 
           <h2>Information you'll need</h2>
           <p>
-            It should take about 5 minutes to enter your reference. Make sure you get together all the information you need for you continue. If you're not
+            It should take about 5 minutes to enter your reference. Make sure you get together all the information you need before you continue. If you're not
             ready now, you can come back later using the link in your email.
           </p>
           <br />
