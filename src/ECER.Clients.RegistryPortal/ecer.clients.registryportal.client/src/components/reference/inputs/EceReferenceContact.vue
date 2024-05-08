@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
-      <h3>Contact Information</h3>
+      <h3>Contact information</h3>
       <div role="doc-subtitle">We may contact you to verify or clarify information you provide.</div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
@@ -60,7 +60,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <h3 class="mt-5">ECE Certification</h3>
+      <h3 class="mt-5">ECE certification</h3>
       <div role="doc-subtitle">If you are registered as an ECE in Canada, please provide your certification number if applicable.</div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
@@ -69,7 +69,7 @@
             label="Province/Territory Certified/Registered In (Optional)"
             variant="outlined"
             color="primary"
-            :items="provinces"
+            :items="configStore?.provinceList"
             clearable
             hide-details="auto"
             @update:model-value="certificateProvinceIdChanged"
@@ -118,6 +118,7 @@ import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 import type { VTextField } from "vuetify/components";
 
+import { useConfigStore } from "@/store/config";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
@@ -134,6 +135,11 @@ export default defineComponent({
   emits: {
     "update:model-value": (_contactInformationData: Components.Schemas.ReferenceContactInformation) => true,
   },
+  setup() {
+    const configStore = useConfigStore();
+
+    return { configStore };
+  },
   data() {
     return {
       Rules,
@@ -148,7 +154,8 @@ export default defineComponent({
       ];
     },
     userSelectProvinceIdBC(): boolean {
-      return this.modelValue.certificateProvinceId === "BC";
+      const provinceName = this.configStore.provinceName(this.modelValue?.certificateProvinceId as string);
+      return provinceName === "British Columbia";
     },
     today() {
       return formatDate(DateTime.now().toString());
@@ -174,7 +181,7 @@ export default defineComponent({
         this.$emit("update:model-value", {
           ...this.modelValue,
           certificateProvinceId: value,
-          dateOfBirth: "",
+          dateOfBirth: null,
         });
       } else {
         this.$emit("update:model-value", {
@@ -188,7 +195,7 @@ export default defineComponent({
         ...this.modelValue,
         certificateNumber: "",
         certificateProvinceId: "",
-        dateOfBirth: "",
+        dateOfBirth: null,
       });
     },
   },

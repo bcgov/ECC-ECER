@@ -4,7 +4,7 @@
       <h3>Reference evaluation</h3>
       <div role="doc-subtitle">
         {{
-          `Tell us about your personal experience with the applicant ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}`
+          `Tell us about your personal experience with the applicant ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}.`
         }}
       </div>
       <v-row class="mt-5">
@@ -54,7 +54,7 @@
           </v-radio-group>
         </v-col>
       </v-row>
-      <v-row v-if="modelValue.workedWithChildren !== null">
+      <v-row v-if="modelValue.workedWithChildren !== undefined">
         <v-col cols="12" md="8" lg="6" xl="4">
           <label for="childInteractionObservations">
             {{

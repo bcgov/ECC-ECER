@@ -57,12 +57,13 @@
 import { defineComponent } from "vue";
 
 import ReferencePreviewCard from "@/components/reference/inputs/ReferencePreviewCard.vue";
+import { useConfigStore } from "@/store/config";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
-  name: "EceEcharacterReferenceContactPreview",
+  name: "EceReferenceContactPreview",
   components: {
     ReferencePreviewCard,
   },
@@ -74,20 +75,24 @@ export default defineComponent({
   },
   setup: () => {
     const wizardStore = useWizardStore();
+    const configStore = useConfigStore();
     return {
       wizardStore,
+      configStore,
     };
   },
   computed: {
     reference(): Components.Schemas.ReferenceContactInformation {
+      const provinceName = this.configStore.provinceName(
+        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.certificateProvinceId,
+      );
       return {
         firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.firstName,
         lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.lastName,
         email: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.email,
         phoneNumber:
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.phoneNumber,
-        certificateProvinceId:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.certificateProvinceId,
+        certificateProvinceId: provinceName,
         certificateProvinceOther:
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]
             ?.certificateProvinceOther,
