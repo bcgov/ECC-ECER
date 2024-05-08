@@ -5,7 +5,7 @@
         <v-col>
           <div>
             {{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}
-            is requesting a character reference for an
+            is requesting a character reference for
             <b>{{ certificationType }}.</b>
             We'll review your reference when assessing if the applicant is eligible for certification.
           </div>
