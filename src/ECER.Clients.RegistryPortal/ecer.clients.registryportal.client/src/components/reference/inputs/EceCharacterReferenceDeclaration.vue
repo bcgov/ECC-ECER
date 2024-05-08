@@ -4,16 +4,16 @@
       <v-row no-gutters>
         <v-col>
           <div>
-            <b>{{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</b>
+            {{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}
             is requesting a character reference for an
             <b>{{ certificationType }}.</b>
-            We'll review your reference when assessing if the applicant is eligible for certification
+            We'll review your reference when assessing if the applicant is eligible for certification.
           </div>
           <br />
 
           <h2>Information you'll need</h2>
           <div>
-            It should take about 5 minutes to enter your reference. Make sure you get together all the information you need for you continue. If you're not
+            It should take about 5 minutes to enter your reference. Make sure you get together all the information you need for you to continue. If you're not
             ready now, you can come back later using the link in your email.
           </div>
           <br />
@@ -21,7 +21,7 @@
           <p>You'll be asked to provide:</p>
           <ul class="ml-10">
             <li>Your contact information</li>
-            <li>Your ECE certification Information (optional)</li>
+            <li>Your ECE certification information (optional)</li>
             <li>How long you've known the applicant</li>
             <li>Your relationship with the applicant</li>
             <li>Your personal observations of the applicant</li>

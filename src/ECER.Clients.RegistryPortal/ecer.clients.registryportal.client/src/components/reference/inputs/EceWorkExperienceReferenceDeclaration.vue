@@ -4,9 +4,9 @@
       <v-row no-gutters>
         <v-col>
           <p>
-            <b>{{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</b>
-            is requesting a work reference for ECE 5 Year Certification. We'll review your reference when assessing if the applicant is eligible for
-            certification
+            {{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}
+            is requesting a work experience reference for an ECE 5 Year Certification. We'll review your reference when assessing if the applicant is eligible
+            for certification
           </p>
           <br />
 

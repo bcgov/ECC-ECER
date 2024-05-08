@@ -33,7 +33,7 @@ export const referenceRelationshipDropdown: DropdownWrapper<Components.Schemas.R
   { title: "Supervisor", value: "Supervisor" },
   { title: "Co Worker", value: "CoWorker" },
   { title: "Teacher", value: "Teacher" },
-  { title: "Parent Guardian of Child in Care", value: "ParentGuardianofChildinCare" },
+  { title: "Parent or Guardian of Child in Care", value: "ParentGuardianofChildinCare" },
   { title: "Other", value: "Other" },
 ];
 
@@ -54,7 +54,7 @@ export const workHoursTypeRadio: RadioButtonWrapper<Components.Schemas.WorkHours
 
 export const workReferenceRelationshipRadio: RadioButtonWrapper<Components.Schemas.ReferenceRelationship>[] = [
   { label: "Supervisor", value: "Supervisor" },
-  { label: "Co-Worker", value: "CoWorker" },
+  { label: "Co-worker", value: "CoWorker" },
   { label: "Other", value: "Other" },
 ];
 

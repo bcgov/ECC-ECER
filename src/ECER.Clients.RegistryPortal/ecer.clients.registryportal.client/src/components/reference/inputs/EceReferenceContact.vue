@@ -61,7 +61,7 @@
         </v-col>
       </v-row>
       <h3 class="mt-5">ECE certification</h3>
-      <div role="doc-subtitle">If you are registered as an ECE in Canada, please provide your certification number if applicable.</div>
+      <div role="doc-subtitle">If you are registered as an ECE in Canada, please provide your certification number.</div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-autocomplete
