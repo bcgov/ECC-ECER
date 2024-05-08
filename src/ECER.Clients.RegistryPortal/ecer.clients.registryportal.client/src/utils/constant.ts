@@ -29,6 +29,11 @@ export enum PortalInviteType {
   CHARACTER = "CharacterReference",
 }
 
+export enum ProvinceTerritoryType {
+  BC = "British Columbia",
+  OTHER = "Other",
+}
+
 export const referenceRelationshipDropdown: DropdownWrapper<Components.Schemas.ReferenceRelationship>[] = [
   { title: "Supervisor", value: "Supervisor" },
   { title: "Co Worker", value: "CoWorker" },
