@@ -12,20 +12,20 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
-            type="number"
             :rules="[Rules.required('Enter a whole number greater than zero (0)')]"
             label="Total number of hours you observed the applicant working"
             variant="outlined"
             color="primary"
             maxlength="10"
             hide-details="auto"
+            @keypress="isNumber($event)"
             @input="updateField('hours', $event)"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <p>How often did the applicant work or valunteer?</p>
+          <p>How often did the applicant work or volunteer?</p>
           <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="updateField('workHoursType', $event)">
             <v-radio v-for="(workHoursType, index) in workHoursTypeRadio" :key="index" :label="workHoursType.label" :value="workHoursType.value"></v-radio>
           </v-radio-group>
@@ -168,6 +168,7 @@ import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import { childcareAgeRangesCheckBox, childrenProgramTypeDropdown, workHoursTypeRadio, workReferenceRelationshipRadio } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
+import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
@@ -198,6 +199,7 @@ export default defineComponent({
     },
   },
   methods: {
+    isNumber,
     updateField(fieldName: keyof Components.Schemas.WorkExperienceReferenceDetails, value: any) {
       this.$emit("update:model-value", {
         ...this.modelValue,
