@@ -61,7 +61,7 @@
         </v-col>
       </v-row>
       <h3 class="mt-5">ECE certification</h3>
-      <div role="doc-subtitle">If you are registered as an ECE in Canada, please provide your certification number if applicable.</div>
+      <div role="doc-subtitle">If you are registered as an ECE in Canada, please provide your certification number.</div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-autocomplete
@@ -120,6 +120,7 @@ import type { VTextField } from "vuetify/components";
 
 import { useConfigStore } from "@/store/config";
 import type { Components } from "@/types/openapi";
+import { ProvinceTerritoryType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
@@ -146,16 +147,9 @@ export default defineComponent({
     };
   },
   computed: {
-    provinces() {
-      return [
-        { title: "British Columbia", value: "BC" },
-        { title: "Alberta", value: "AB" },
-        { title: "Prince Edward Island", value: "PEI" },
-      ];
-    },
     userSelectProvinceIdBC(): boolean {
       const provinceName = this.configStore.provinceName(this.modelValue?.certificateProvinceId as string);
-      return provinceName === "British Columbia";
+      return provinceName === ProvinceTerritoryType.BC;
     },
     today() {
       return formatDate(DateTime.now().toString());

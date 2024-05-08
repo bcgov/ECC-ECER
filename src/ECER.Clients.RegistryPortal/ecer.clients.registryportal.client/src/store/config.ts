@@ -5,6 +5,8 @@ import { getConfiguration, getProvinceList } from "@/api/configuration";
 import oidcConfig from "@/oidc-config";
 import type { DropdownWrapper } from "@/types/form";
 import type { Components } from "@/types/openapi";
+import { ProvinceTerritoryType } from "@/utils/constant";
+import { sortArray } from "@/utils/functions";
 
 export interface UserState {
   applicationConfiguration: Components.Schemas.ApplicationConfiguration;
@@ -48,12 +50,14 @@ export const useConfigStore = defineStore("config", {
 
       const provinceList = await getProvinceList();
       if (provinceList !== null && provinceList !== undefined) {
-        this.provinceList = provinceList.map((province) => {
-          return {
-            value: province.provinceId as string,
-            title: province.provinceName as string,
-          };
-        });
+        this.provinceList = provinceList
+          .map((province) => {
+            return {
+              value: province.provinceId as string,
+              title: province.provinceName as string,
+            };
+          })
+          .sort((a, b) => sortArray(a, b, "title", [ProvinceTerritoryType.OTHER]));
       }
       return configuration;
     },

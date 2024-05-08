@@ -22,3 +22,27 @@ export function areObjectsEqual(obj1: any, obj2: any): boolean {
 
   return true;
 }
+
+/**
+ * Sorts an array of objects by a specified key, while keeping exceptions at the end.
+ * @param {Array<Object>} a - The first object to compare.
+ * @param {Array<Object>} b - The second object to compare.
+ * @param {string} key - The key by which the objects should be sorted.
+ * @param {Array<string>} [exceptions=[]] - An array of strings representing exceptions that should be kept at the end of the sorted array.
+ * @returns {number} A negative value if a should come before b, a positive value if a should come after b, or 0 if they are equal.
+ */
+export function sortArray(a: any, b: any, key: string, exceptions: string[] = []) {
+  if (exceptions.includes(a[key])) {
+    return 1;
+  }
+
+  if (a[key] < b[key]) {
+    return -1;
+  }
+
+  if (a[key] > b[key]) {
+    return 1;
+  }
+
+  return 0;
+}

@@ -4,15 +4,15 @@
       <v-row no-gutters>
         <v-col>
           <p>
-            <b>{{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</b>
-            is requesting a work reference for ECE 5 Year Certification. We'll review your reference when assessing if the applicant is eligible for
+            {{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}
+            is requesting a work experience reference for ECE 5 Year Certification. We'll review your reference when assessing if the applicant is eligible for
             certification
           </p>
           <br />
 
           <h2>Information you'll need</h2>
           <p>
-            It should take about 5 minutes to enter your reference. Make sure you get together all the information you need for you continue. If you're not
+            It should take about 5 minutes to enter your reference. Make sure you get together all the information you need before you continue. If you're not
             ready now, you can come back later using the link in your email.
           </p>
           <br />
