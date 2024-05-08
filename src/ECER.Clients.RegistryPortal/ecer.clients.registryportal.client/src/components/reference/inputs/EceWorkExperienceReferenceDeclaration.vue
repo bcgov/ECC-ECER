@@ -5,7 +5,7 @@
         <v-col>
           <p>
             <b>{{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</b>
-            is requesting a work reference for ECE 5 Year certification. We'll review your reference when assessing if the applicant is eligible for
+            is requesting a work reference for ECE 5 Year Certification. We'll review your reference when assessing if the applicant is eligible for
             certification
           </p>
           <br />
@@ -27,6 +27,14 @@
             <li>Age of children the applicant cared for</li>
             <li>Dates the applicant worked the hours</li>
           </ul>
+          <br />
+          <div>
+            All personal information is collected by the Ministry of Education and Child Care under the authority of the Freedom of Information and Protection
+            of Privacy Act s. 26(a), and will be used to determine if the applicant has the, experience and other qualifications required by the regulations. If
+            you have any questions about the collection, use or disclosure of this information, contact the Early Childhood Educator (ECE) Registry, PO Box
+            9961, STN PROV GOVT, Victoria BC V8W 9R4, Phone toll free: 1-888-338-6622, or email
+            <a style="text-decoration: underline" href="mailto:ECERegistry@gov.bc.ca">ECERegistry@gov.bc.ca</a>
+          </div>
           <br />
           <h2>Requirements to be a reference</h2>
           <p>You need to:</p>
