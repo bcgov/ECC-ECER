@@ -25,7 +25,16 @@
             >
               Submit
             </v-btn>
-            <v-btn v-else-if="wizardStore.step === userReviewStep" rounded="lg" variant="flat" color="primary" @click="handleSubmit">Submit</v-btn>
+            <v-btn
+              v-else-if="wizardStore.step === userReviewStep"
+              :loading="loadingStore.isLoading('character_reference_post')"
+              rounded="lg"
+              variant="flat"
+              color="primary"
+              @click="handleSubmit"
+            >
+              Submit
+            </v-btn>
             <v-btn v-else rounded="lg" variant="flat" color="primary" @click="handleContinue">Continue</v-btn>
           </v-col>
         </v-row>
@@ -38,7 +47,7 @@
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 
-import { getReference, optOutReference } from "@/api/reference";
+import { getReference, optOutReference, postCharacterReference } from "@/api/reference";
 import characterReferenceWizardConfig from "@/config/character-reference-wizard";
 import workExperienceReferenceWizardConfig from "@/config/work-experience-reference-wizard";
 import { useAlertStore } from "@/store/alert";
@@ -112,7 +121,20 @@ export default defineComponent({
         return;
       }
 
-      this.alertStore.setWarningAlert("Submit feature not implemented yet");
+      if (this.wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER) {
+        const response = await postCharacterReference({
+          token: this.$route.params.token as string,
+          referenceContactInformation:
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id],
+          referenceEvaluation: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id],
+          confirmProvidedInformationIsRight:
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
+        });
+
+        if (!response?.error) {
+          this.$router.push({ path: "/reference-submitted" });
+        }
+      }
     },
     async handleDecline() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;

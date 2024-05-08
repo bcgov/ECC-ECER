@@ -23,4 +23,9 @@ const optOutReference = async (token: string, optOutReason: Components.Schemas.U
   return apiResultHandler.execute(client.reference_optout(null, body), "reference_optout");
 };
 
-export { getReference, optOutReference };
+const postCharacterReference = async (characterReferenceSubmission: Components.Schemas.CharacterReferenceSubmissionRequest): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute(client.character_reference_post(null, characterReferenceSubmission), "character_reference_post");
+};
+
+export { getReference, optOutReference, postCharacterReference };

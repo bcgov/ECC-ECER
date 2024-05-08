@@ -1,5 +1,5 @@
 <template>
-  <ReferencePreviewCard :is-valid="true" title="Reference Evaluation" reference-stage="ReferenceEvaluation">
+  <ReferencePreviewCard :is-valid="true" title="Reference evaluation" reference-stage="ReferenceEvaluation">
     <template #content>
       <v-row>
         <v-col cols="4">

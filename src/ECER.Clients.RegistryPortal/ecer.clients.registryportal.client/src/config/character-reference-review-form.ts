@@ -1,6 +1,6 @@
-import EceCharacterReferenceContactPreview from "@/components/reference/inputs/EceCharacterReferenceContactPreview.vue";
-import EceCharacterReferenceEvaluationPreview from "@/components/reference/inputs/EceCharacterReferenceEvaluationPreview.vue";
 import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
+import EceCharacterReferenceEvaluationPreview from "@/components/reference/inputs/EceCharacterReferenceEvaluationPreview.vue";
+import EceReferenceContactPreview from "@/components/reference/inputs/EceReferenceContactPreview.vue";
 import type { Form } from "@/types/form";
 import { hasCheckbox } from "@/utils/formRules";
 
@@ -8,9 +8,9 @@ const characterReferenceReviewForm: Form = {
   id: "reviewForm",
   title: "Review form",
   inputs: {
-    eceCharacterReferenceContactPreview: {
-      id: "eceCharacterReferenceContactPreview",
-      component: EceCharacterReferenceContactPreview,
+    eceReferenceContactPreview: {
+      id: "eceReferenceContactPreview",
+      component: EceReferenceContactPreview,
       props: {},
       cols: {
         md: 12,

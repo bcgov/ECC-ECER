@@ -3,19 +3,19 @@
     <v-col cols="12" md="12" lg="12" xl="12">
       <v-row no-gutters>
         <v-col>
-          <p>
+          <div>
             <b>{{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</b>
             is requesting a character reference for an
             <b>ECE Certificate</b>
             . We'll review your reference when assessing if the applicant is eligible for certification
-          </p>
+          </div>
           <br />
 
           <h2>Information you'll need</h2>
-          <p>
+          <div>
             It should take about 5 minutes to enter your reference. Make sure you get together all the information you need for you continue. If you're not
             ready now, you can come back later using the link in your email.
-          </p>
+          </div>
           <br />
 
           <p>You'll be asked to provide:</p>
@@ -35,7 +35,7 @@
           </div>
           <br />
           <h2>Requirements to be a reference</h2>
-          <p>You need to:</p>
+          <div>You need to:</div>
           <ul class="ml-10">
             <li>Have known the applicant for at least 6 months</li>
             <li>Be able to speak to the character of the applicant</li>
