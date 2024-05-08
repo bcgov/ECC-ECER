@@ -59,9 +59,9 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
     if (data?.portalInvitation?.inviteType === PortalInviteType.WORK_EXPERIENCE) {
-      wizardStore.initializeWizardForReference(workExperienceReferenceWizardConfig, data.portalInvitation);
+      wizardStore.initializeWizardForWorkExReference(workExperienceReferenceWizardConfig, data.portalInvitation);
     } else if (data?.portalInvitation?.inviteType === PortalInviteType.CHARACTER) {
-      wizardStore.initializeWizardForReference(characterReferenceWizardConfig, data.portalInvitation);
+      wizardStore.initializeWizardForCharacterReference(characterReferenceWizardConfig, data.portalInvitation);
     }
     return { alertStore, workExperienceReferenceWizardConfig, characterReferenceWizardConfig, wizardStore, PortalInviteType, loadingStore };
   },

@@ -1,6 +1,6 @@
+import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
 import EceCharacterReferenceContactPreview from "@/components/reference/inputs/EceCharacterReferenceContactPreview.vue";
 import EceCharacterReferenceEvaluationPreview from "@/components/reference/inputs/EceCharacterReferenceEvaluationPreview.vue";
-import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
 import type { Form } from "@/types/form";
 import { hasCheckbox } from "@/utils/formRules";
 

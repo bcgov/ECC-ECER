@@ -13,3 +13,15 @@ interface DropdownWrapper<T> {
   title: string;
   value: T;
 }
+
+// Wrap any type to a Radio button list for v-radio
+interface RadioButtonWrapper<T> {
+  label: string;
+  value: T;
+}
+
+// Wrap any type to a checkbox list for v-checkbox
+interface CheckBoxWrapper<T> {
+  label: string;
+  value: T;
+}
