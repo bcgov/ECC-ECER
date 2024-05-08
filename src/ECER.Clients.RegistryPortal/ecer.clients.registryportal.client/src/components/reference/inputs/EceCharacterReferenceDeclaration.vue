@@ -6,8 +6,8 @@
           <div>
             <b>{{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</b>
             is requesting a character reference for an
-            <b>ECE Certificate</b>
-            . We'll review your reference when assessing if the applicant is eligible for certification
+            <b>{{ certificationType }}.</b>
+            We'll review your reference when assessing if the applicant is eligible for certification
           </div>
           <br />
 
@@ -79,6 +79,19 @@ export default defineComponent({
       selection: undefined,
       Rules,
     };
+  },
+  computed: {
+    certificationType() {
+      let certificationType = "Certificate type not found";
+      if (this.wizardStore.wizardData.certificationTypes?.includes("EceAssistant")) {
+        certificationType = "ECE Assistant certificate";
+      } else if (this.wizardStore.wizardData.certificationTypes?.includes("OneYear")) {
+        certificationType = "ECE One Year certificate";
+      } else if (this.wizardStore.wizardData.certificationTypes?.includes("FiveYears")) {
+        certificationType = "ECE Five Year certificate";
+      }
+      return certificationType;
+    },
   },
 });
 </script>

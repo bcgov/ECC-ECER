@@ -158,6 +158,7 @@ export const useWizardStore = defineStore("wizard", {
         applicantFirstName: portalInvitation.applicantFirstName,
         applicantLastName: portalInvitation.applicantLastName,
         inviteType: portalInvitation.inviteType,
+        certificationTypes: portalInvitation.certificationTypes,
         [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
         [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
         [wizard.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]: {} as Components.Schemas.CharacterReferenceEvaluation,
