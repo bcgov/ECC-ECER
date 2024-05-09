@@ -13,29 +13,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/ecer/")]
-	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("ecer_ECERRefertoinvestigationaction")]
+	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("ecer_ECERWorkExperienceReferenceVerification")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ecer_ECERRefertoinvestigationactionRequest : Microsoft.Xrm.Sdk.OrganizationRequest
+	public partial class ecer_ECERWorkExperienceReferenceVerificationRequest : Microsoft.Xrm.Sdk.OrganizationRequest
 	{
-		
-		public string ReferrerGUID
-		{
-			get
-			{
-				if (this.Parameters.Contains("ReferrerGUID"))
-				{
-					return ((string)(this.Parameters["ReferrerGUID"]));
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-			set
-			{
-				this.Parameters["ReferrerGUID"] = value;
-			}
-		}
 		
 		public string Description
 		{
@@ -53,6 +34,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.Parameters["Description"] = value;
+			}
+		}
+		
+		public string ReferrerGUID
+		{
+			get
+			{
+				if (this.Parameters.Contains("ReferrerGUID"))
+				{
+					return ((string)(this.Parameters["ReferrerGUID"]));
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+			set
+			{
+				this.Parameters["ReferrerGUID"] = value;
 			}
 		}
 		
@@ -75,20 +75,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		public ecer_ECERRefertoinvestigationactionRequest()
+		public ecer_ECERWorkExperienceReferenceVerificationRequest()
 		{
-			this.RequestName = "ecer_ECERRefertoinvestigationaction";
+			this.RequestName = "ecer_ECERWorkExperienceReferenceVerification";
 			this.Target = default(Microsoft.Xrm.Sdk.EntityReference);
 		}
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/ecer/")]
-	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("ecer_ECERRefertoinvestigationaction")]
+	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("ecer_ECERWorkExperienceReferenceVerification")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ecer_ECERRefertoinvestigationactionResponse : Microsoft.Xrm.Sdk.OrganizationResponse
+	public partial class ecer_ECERWorkExperienceReferenceVerificationResponse : Microsoft.Xrm.Sdk.OrganizationResponse
 	{
 		
-		public ecer_ECERRefertoinvestigationactionResponse()
+		public ecer_ECERWorkExperienceReferenceVerificationResponse()
 		{
 		}
 	}

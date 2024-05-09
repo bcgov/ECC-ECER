@@ -36,6 +36,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Complaint = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ReferenceVerification = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Referral = 621870001,
 	}
 	
@@ -233,6 +236,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CertificationExpireIntake = "ecer_certificationexpireintake";
 			public const string ecer_certificationexpireintakeName = "ecer_certificationexpireintakename";
 			public const string ecer_CertificationType = "ecer_certificationtype";
+			public const string ecer_CharacterReferenceId = "ecer_characterreferenceid";
+			public const string ecer_CharacterReferenceIdName = "ecer_characterreferenceidname";
 			public const string ecer_ClientId = "ecer_clientid";
 			public const string ecer_ClosedWithoutFindings = "ecer_closedwithoutfindings";
 			public const string ecer_closedwithoutfindingsName = "ecer_closedwithoutfindingsname";
@@ -355,6 +360,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_IntakeReceivedDate = "ecer_intakereceiveddate";
 			public const string ecer_IntakeType = "ecer_intaketype";
 			public const string ecer_intaketypeName = "ecer_intaketypename";
+			public const string ecer_investigation_CharacterReferenceId_ecer_c = "ecer_investigation_CharacterReferenceId_ecer_c";
+			public const string ecer_investigation_WorkExperienceReferenceId_e = "ecer_investigation_WorkExperienceReferenceId_e";
 			public const string ecer_InvestigationComplexity = "ecer_investigationcomplexity";
 			public const string ecer_investigationcomplexityName = "ecer_investigationcomplexityname";
 			public const string ecer_InvestigationConcludedDate = "ecer_investigationconcludeddate";
@@ -408,6 +415,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_readyforassignmentName = "ecer_readyforassignmentname";
 			public const string ecer_ReconRequest = "ecer_reconrequest";
 			public const string ecer_reconrequestName = "ecer_reconrequestname";
+			public const string ecer_Referrer = "ecer_referrer";
+			public const string ecer_ReferrerGUID = "ecer_referrerguid";
+			public const string ecer_ReferrerName = "ecer_referrername";
+			public const string ecer_ReferrerYomiName = "ecer_referreryominame";
 			public const string ecer_RegistrantCertificateNumber = "ecer_registrantcertificatenumber";
 			public const string ecer_RegistrantFirstName = "ecer_registrantfirstname";
 			public const string ecer_RegistrantIsMinor = "ecer_registrantisminor";
@@ -452,6 +463,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_TelephoneNumberContact = "ecer_telephonenumbercontact";
 			public const string ecer_TelephoneNumberIncident = "ecer_telephonenumberincident";
 			public const string ecer_TimeToAssignment = "ecer_timetoassignment";
+			public const string ecer_WorkExperienceReferenceId = "ecer_workexperiencereferenceid";
+			public const string ecer_WorkExperienceReferenceIdName = "ecer_workexperiencereferenceidname";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -975,6 +988,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_certificationtype", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferenceid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CharacterReferenceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_characterreferenceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_characterreferenceid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferenceidname")]
+		public string ecer_CharacterReferenceIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_characterreferenceid"))
+				{
+					return this.FormattedValues["ecer_characterreferenceid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3581,6 +3626,73 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Name of supervisor or manager who triggered the referral
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referrer")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Referrer
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_referrer");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referrer", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referrerguid")]
+		public string ecer_ReferrerGUID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_referrerguid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referrerguid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referrername")]
+		public string ecer_ReferrerName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_referrer"))
+				{
+					return this.FormattedValues["ecer_referrer"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referreryominame")]
+		public string ecer_ReferrerYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_referrer"))
+				{
+					return this.FormattedValues["ecer_referrer"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantcertificatenumber")]
 		public string ecer_RegistrantCertificateNumber
 		{
@@ -4284,6 +4396,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_workexperiencereferenceid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_WorkExperienceReferenceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_workexperiencereferenceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_workexperiencereferenceid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_workexperiencereferenceidname")]
+		public string ecer_WorkExperienceReferenceIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_workexperiencereferenceid"))
+				{
+					return this.FormattedValues["ecer_workexperiencereferenceid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Sequence number of the import that created this record.
 		/// </summary>
@@ -4935,6 +5079,44 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_ecer_certificate_ecer_investigation_CurrentCertificate", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_investigation_CharacterReferenceId_ecer_c
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferenceid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigation_CharacterReferenceId_ecer_c")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference ecer_investigation_CharacterReferenceId_ecer_c
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_investigation_CharacterReferenceId_ecer_c", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_investigation_CharacterReferenceId_ecer_c", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_investigation_WorkExperienceReferenceId_e
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_workexperiencereferenceid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigation_WorkExperienceReferenceId_e")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef ecer_investigation_WorkExperienceReferenceId_e
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_investigation_WorkExperienceReferenceId_e", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_investigation_WorkExperienceReferenceId_e", null, value);
 			}
 		}
 		

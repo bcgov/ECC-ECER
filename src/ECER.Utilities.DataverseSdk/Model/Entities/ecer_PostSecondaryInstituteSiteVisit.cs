@@ -65,8 +65,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_IdNumber = "ecer_idnumber";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_postsecondaryinstitutesitevisit_PostSecon = "ecer_postsecondaryinstitutesitevisit_PostSecon";
+			public const string ecer_postsecondaryinstitutesitevisit_ProgramPr = "ecer_postsecondaryinstitutesitevisit_ProgramPr";
 			public const string ecer_PostSecondaryInstituteSiteVisitId = "ecer_postsecondaryinstitutesitevisitid";
 			public const string Id = "ecer_postsecondaryinstitutesitevisitid";
+			public const string ecer_PostSecondaryInstitution = "ecer_postsecondaryinstitution";
+			public const string ecer_PostSecondaryInstitutionName = "ecer_postsecondaryinstitutionname";
+			public const string ecer_ProgramProfile = "ecer_programprofile";
+			public const string ecer_ProgramProfileName = "ecer_programprofilename";
 			public const string ecer_Type = "ecer_type";
 			public const string ecer_typeName = "ecer_typename";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -313,6 +319,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_PostSecondaryInstituteSiteVisitId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstitution")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_PostSecondaryInstitution
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_postsecondaryinstitution");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_postsecondaryinstitution", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstitutionname")]
+		public string ecer_PostSecondaryInstitutionName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_postsecondaryinstitution"))
+				{
+					return this.FormattedValues["ecer_postsecondaryinstitution"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programprofile")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramProfile
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programprofile");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programprofile", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programprofilename")]
+		public string ecer_ProgramProfileName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programprofile"))
+				{
+					return this.FormattedValues["ecer_programprofile"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -726,6 +796,44 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstitutesitevisit_PostSecon
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstitution")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstitutesitevisit_PostSecon")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute ecer_postsecondaryinstitutesitevisit_PostSecon
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_postsecondaryinstitutesitevisit_PostSecon", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_postsecondaryinstitutesitevisit_PostSecon", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstitutesitevisit_ProgramPr
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programprofile")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstitutesitevisit_ProgramPr")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Program ecer_postsecondaryinstitutesitevisit_ProgramPr
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_postsecondaryinstitutesitevisit_ProgramPr", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_postsecondaryinstitutesitevisit_ProgramPr", null, value);
 			}
 		}
 		

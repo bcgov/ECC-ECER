@@ -101,7 +101,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_FirstName = "ecer_firstname";
 			public const string ecer_HaveObservedApplicantwithChildren = "ecer_haveobservedapplicantwithchildren";
 			public const string ecer_haveobservedapplicantwithchildrenName = "ecer_haveobservedapplicantwithchildrenname";
+			public const string ecer_investigation_CharacterReferenceId_ecer_c = "ecer_investigation_CharacterReferenceId_ecer_c";
+			public const string ecer_InviteAgain = "ecer_inviteagain";
+			public const string ecer_inviteagainName = "ecer_inviteagainname";
 			public const string ecer_KnowApplicantsTime = "ecer_knowapplicantstime";
+			public const string ecer_KnownApplicantTimeChoice = "ecer_knownapplicanttimechoice";
+			public const string ecer_knownapplicanttimechoiceName = "ecer_knownapplicanttimechoicename";
+			public const string ecer_LastInvitationEmailSent = "ecer_lastinvitationemailsent";
 			public const string ecer_LastName = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
@@ -114,10 +120,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ReferenceContactidName = "ecer_referencecontactidname";
 			public const string ecer_ReferenceContactidYomiName = "ecer_referencecontactidyominame";
 			public const string ecer_ReferenceFullName = "ecer_referencefullname";
-			public const string ecer_ReferenceSignature = "ecer_referencesignature";
 			public const string ecer_RelationshiptoApplicant = "ecer_relationshiptoapplicant";
 			public const string ecer_relationshiptoapplicantName = "ecer_relationshiptoapplicantname";
-			public const string ecer_RelationshipwithApplicant = "ecer_relationshipwithapplicant";
 			public const string ecer_RelationshipwithApplicantOther = "ecer_relationshipwithapplicantother";
 			public const string ecer_UnabletoProvideReferenceReason = "ecer_unabletoprovidereferencereason";
 			public const string ecer_unabletoprovidereferencereasonName = "ecer_unabletoprovidereferencereasonname";
@@ -614,6 +618,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_inviteagain")]
+		public System.Nullable<bool> ecer_InviteAgain
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_inviteagain");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_inviteagain", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_inviteagainname")]
+		public string ecer_inviteagainName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_inviteagain"))
+				{
+					return this.FormattedValues["ecer_inviteagain"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// How long have you known the applicant
 		/// </summary>
@@ -629,6 +665,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_knowapplicantstime", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_knownapplicanttimechoice")]
+		public virtual ecer_ReferenceKnownTime? ecer_KnownApplicantTimeChoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_ReferenceKnownTime?)(EntityOptionSetEnum.GetEnum(this, "ecer_knownapplicanttimechoice")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_knownapplicanttimechoice", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_knownapplicanttimechoicename")]
+		public string ecer_knownapplicanttimechoiceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_knownapplicanttimechoice"))
+				{
+					return this.FormattedValues["ecer_knownapplicanttimechoice"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lastinvitationemailsent")]
+		public System.Nullable<System.DateTime> ecer_LastInvitationEmailSent
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_lastinvitationemailsent");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_lastinvitationemailsent", value);
 			}
 		}
 		
@@ -806,24 +889,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Reference BC Service Card ID if signed from Portal
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencesignature")]
-		public string ecer_ReferenceSignature
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_referencesignature");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_referencesignature", value);
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_relationshiptoapplicant")]
 		public virtual ecer_ReferenceRelationships? ecer_RelationshiptoApplicant
 		{
@@ -853,24 +918,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
-			}
-		}
-		
-		/// <summary>
-		/// What is your relationship with the applicant?
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_relationshipwithapplicant")]
-		public string ecer_RelationshipwithApplicant
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_relationshipwithapplicant");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_relationshipwithapplicant", value);
 			}
 		}
 		
@@ -1331,6 +1378,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_investigation_CharacterReferenceId_ecer_c
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigation_CharacterReferenceId_ecer_c")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Investigation> ecer_investigation_CharacterReferenceId_ecer_c
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigation_CharacterReferenceId_ecer_c", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigation_CharacterReferenceId_ecer_c", null, value);
 			}
 		}
 		

@@ -122,6 +122,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_AssessorYomiName = "ecer_assessoryominame";
 			public const string ecer_Certificateid = "ecer_certificateid";
 			public const string ecer_CertificateidName = "ecer_certificateidname";
+			public const string ecer_CertificateLevel = "ecer_certificatelevel";
 			public const string ecer_CertificateType = "ecer_certificatetype";
 			public const string ecer_characterreference_Applicationid = "ecer_characterreference_Applicationid";
 			public const string ecer_CharacterReferenceApproved = "ecer_characterreferenceapproved";
@@ -172,6 +173,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_GenerateCertificateRecord = "ecer_generatecertificaterecord";
 			public const string ecer_generatecertificaterecordName = "ecer_generatecertificaterecordname";
 			public const string ecer_guardianreference_Applicationid = "ecer_guardianreference_Applicationid";
+			public const string ecer_HasCurrentCertificateConditions = "ecer_hascurrentcertificateconditions";
+			public const string ecer_hascurrentcertificateconditionsName = "ecer_hascurrentcertificateconditionsname";
 			public const string ecer_HasProfessionalDevelopment = "ecer_hasprofessionaldevelopment";
 			public const string ecer_hasprofessionaldevelopmentName = "ecer_hasprofessionaldevelopmentname";
 			public const string ecer_HasProvided400HoursWorkExperience = "ecer_hasprovided400hoursworkexperience";
@@ -199,8 +202,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_issecondaryidentificationprovidedName = "ecer_issecondaryidentificationprovidedname";
 			public const string ecer_isSNE = "ecer_issne";
 			public const string ecer_issneName = "ecer_issnename";
+			public const string ecer_IsUnder19 = "ecer_isunder19";
+			public const string ecer_isunder19Name = "ecer_isunder19name";
 			public const string ecer_IsWorkExperienceReferenceProvided = "ecer_isworkexperiencereferenceprovided";
 			public const string ecer_isworkexperiencereferenceprovidedName = "ecer_isworkexperiencereferenceprovidedname";
+			public const string ecer_LegacyApplicationID = "ecer_legacyapplicationid";
+			public const string ecer_LegacyClientID = "ecer_legacyclientid";
 			public const string ecer_LegalFirstName = "ecer_legalfirstname";
 			public const string ecer_LegalLastName = "ecer_legallastname";
 			public const string ecer_LegalMiddleName = "ecer_legalmiddlename";
@@ -238,6 +245,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_StatusReasonDetail = "ecer_statusreasondetail";
 			public const string ecer_statusreasondetailName = "ecer_statusreasondetailname";
 			public const string ecer_street = "ecer_street";
+			public const string ecer_Street1 = "ecer_street1";
+			public const string ecer_Street2 = "ecer_street2";
+			public const string ecer_Street3 = "ecer_street3";
 			public const string ecer_TotalApprovedWorkExperienceHours = "ecer_totalapprovedworkexperiencehours";
 			public const string ecer_transcript_Applicationid = "ecer_transcript_Applicationid";
 			public const string ecer_TranscriptReceived = "ecer_transcriptreceived";
@@ -245,6 +255,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_transcriptreceivedName = "ecer_transcriptreceivedname";
 			public const string ecer_Type = "ecer_type";
 			public const string ecer_typeName = "ecer_typename";
+			public const string ecer_UnderInvestigation = "ecer_underinvestigation";
+			public const string ecer_underinvestigationName = "ecer_underinvestigationname";
+			public const string ecer_Verified = "ecer_verified";
+			public const string ecer_verifiedName = "ecer_verifiedname";
 			public const string ecer_WorkExperienceReceived = "ecer_workexperiencereceived";
 			public const string ecer_WorkExperienceReceivedDate = "ecer_workexperiencereceiveddate";
 			public const string ecer_workexperiencereceivedName = "ecer_workexperiencereceivedname";
@@ -731,6 +745,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		/// <summary>
+		/// Applicant's certification level, look up to Contacts table
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatelevel")]
+		public string ecer_CertificateLevel
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_certificatelevel");
 			}
 		}
 		
@@ -1440,6 +1467,33 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascurrentcertificateconditions")]
+		public virtual ecer_YesNoNull? ecer_HasCurrentCertificateConditions
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_hascurrentcertificateconditions")));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascurrentcertificateconditionsname")]
+		public string ecer_hascurrentcertificateconditionsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hascurrentcertificateconditions"))
+				{
+					return this.FormattedValues["ecer_hascurrentcertificateconditions"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasprofessionaldevelopment")]
 		public System.Nullable<bool> ecer_HasProfessionalDevelopment
 		{
@@ -1856,6 +1910,33 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isunder19")]
+		public virtual ecer_YesNoNull? ecer_IsUnder19
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_isunder19")));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isunder19name")]
+		public string ecer_isunder19Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isunder19"))
+				{
+					return this.FormattedValues["ecer_isunder19"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isworkexperiencereferenceprovided")]
 		public System.Nullable<bool> ecer_IsWorkExperienceReferenceProvided
 		{
@@ -1885,6 +1966,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyapplicationid")]
+		public string ecer_LegacyApplicationID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyapplicationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyapplicationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyclientid")]
+		public string ecer_LegacyClientID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyclientid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyclientid", value);
 			}
 		}
 		
@@ -2455,6 +2566,45 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Applicant's street 1 from Contacts table
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_street1")]
+		public string ecer_Street1
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_street1");
+			}
+		}
+		
+		/// <summary>
+		/// Applicant's street 2 from Contacts table
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_street2")]
+		public string ecer_Street2
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_street2");
+			}
+		}
+		
+		/// <summary>
+		/// Applicant's street 3 from Contacts table
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_street3")]
+		public string ecer_Street3
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_street3");
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_totalapprovedworkexperiencehours")]
 		public System.Nullable<decimal> ecer_TotalApprovedWorkExperienceHours
 		{
@@ -2541,6 +2691,60 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_type"))
 				{
 					return this.FormattedValues["ecer_type"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_underinvestigation")]
+		public virtual ecer_YesNoNull? ecer_UnderInvestigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_underinvestigation")));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_underinvestigationname")]
+		public string ecer_underinvestigationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_underinvestigation"))
+				{
+					return this.FormattedValues["ecer_underinvestigation"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_verified")]
+		public System.Nullable<bool> ecer_Verified
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_verified");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_verifiedname")]
+		public string ecer_verifiedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_verified"))
+				{
+					return this.FormattedValues["ecer_verified"];
 				}
 				else
 				{

@@ -14,20 +14,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_psiinstitutiontype
+	public enum ecer_PSIProgramType
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ContinuingEducation = 621870002,
+		Basic = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Private = 621870000,
+		ITE = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Public = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PublicOOP = 621870003,
+		SNE = 621870002,
 	}
 }
 #pragma warning restore CS1591

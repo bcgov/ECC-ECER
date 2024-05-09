@@ -90,6 +90,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ineligiblereferenceName = "ecer_ineligiblereferencename";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PrintedDate = "ecer_printeddate";
+			public const string ecer_ReadyforCertificateCoverLetter = "ecer_readyforcertificatecoverletter";
+			public const string ecer_readyforcertificatecoverletterName = "ecer_readyforcertificatecoverlettername";
 			public const string ecer_Registrantid = "ecer_registrantid";
 			public const string ecer_RegistrantidName = "ecer_registrantidname";
 			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
@@ -497,6 +499,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_printeddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_readyforcertificatecoverletter")]
+		public virtual ecer_YesNoNull? ecer_ReadyforCertificateCoverLetter
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_readyforcertificatecoverletter")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_readyforcertificatecoverletter", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_readyforcertificatecoverlettername")]
+		public string ecer_readyforcertificatecoverletterName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_readyforcertificatecoverletter"))
+				{
+					return this.FormattedValues["ecer_readyforcertificatecoverletter"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

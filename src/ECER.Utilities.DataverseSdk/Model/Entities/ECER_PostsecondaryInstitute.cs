@@ -65,6 +65,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_City = "ecer_city";
 			public const string ecer_Country = "ecer_country";
 			public const string ecer_eceprogramrepresentative_PostSecondaryIns = "ecer_eceprogramrepresentative_PostSecondaryIns";
+			public const string ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution = "ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution";
 			public const string ecer_IdNumber = "ecer_idnumber";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_OfferBasicECE = "ecer_offerbasicece";
@@ -77,6 +78,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PostSecondaryInstituteId = "ecer_postsecondaryinstituteid";
 			public const string Id = "ecer_postsecondaryinstituteid";
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_ = "ecer_postsecondaryinstituteprogramapplicaiton_";
+			public const string ecer_postsecondaryinstitutesitevisit_PostSecon = "ecer_postsecondaryinstitutesitevisit_PostSecon";
 			public const string ecer_PrimaryProgramRepresentative = "ecer_primaryprogramrepresentative";
 			public const string ecer_PrimaryProgramRepresentativeName = "ecer_primaryprogramrepresentativename";
 			public const string ecer_PrimaryProgramRepresentativeYomiName = "ecer_primaryprogramrepresentativeyominame";
@@ -548,12 +550,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiinstitutiontype")]
-		public virtual ecer_PSIInstitutionType? ecer_PSIInstitutionType
+		public virtual ecer_psiinstitutiontype? ecer_PSIInstitutionType
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_PSIInstitutionType?)(EntityOptionSetEnum.GetEnum(this, "ecer_psiinstitutiontype")));
+				return ((ecer_psiinstitutiontype?)(EntityOptionSetEnum.GetEnum(this, "ecer_psiinstitutiontype")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -1087,6 +1089,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Course> ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_postsecondaryinstituteprogramapplicaiton_
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_")]
@@ -1101,6 +1121,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_postsecondaryinstitutesitevisit_PostSecon
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstitutesitevisit_PostSecon")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit> ecer_postsecondaryinstitutesitevisit_PostSecon
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_postsecondaryinstitutesitevisit_PostSecon", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_postsecondaryinstitutesitevisit_PostSecon", null, value);
 			}
 		}
 		
