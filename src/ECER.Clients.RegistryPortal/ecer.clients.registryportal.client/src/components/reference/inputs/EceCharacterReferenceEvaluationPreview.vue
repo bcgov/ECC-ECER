@@ -38,7 +38,7 @@
           <p class="small">
             {{
               evaluation.workedWithChildren
-                ? "Describe sutuation(s) in which you have observed the applicant working with young chidlren"
+                ? "Describe situation(s) in which you have observed the applicant working with young children"
                 : "What characteristics and/or qualities have you seen the applicant demonstrate that would be valuable when working with children?"
             }}
           </p>
@@ -49,7 +49,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Explain why you consider the applicant to have the temperment and ability to manage or work with young children.</p>
+          <p class="small">Explain why you consider the applicant to have the temperament and ability to manage or work with young children.</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ evaluation.applicantTemperamentAssessment }}</p>
@@ -85,10 +85,10 @@ import ReferencePreviewCard from "@/components/reference/inputs/ReferencePreview
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
-import { lengthOfAcquaintenceDropdown, referenceRelationshipDropdown } from "@/utils/constant";
+import { lengthOfAcquaintanceDropdown, referenceRelationshipDropdown } from "@/utils/constant";
 
 export default defineComponent({
-  name: "EceEcharacterReferenceEvaluationPreview",
+  name: "EceCharacterReferenceEvaluationPreview",
   components: {
     ReferencePreviewCard,
   },
@@ -113,7 +113,7 @@ export default defineComponent({
             ?.referenceRelationship,
       )?.title;
 
-      const lengthOfAcquaintanceDisplay = lengthOfAcquaintenceDropdown.find(
+      const lengthOfAcquaintanceDisplay = lengthOfAcquaintanceDropdown.find(
         (value) =>
           value.value ===
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]

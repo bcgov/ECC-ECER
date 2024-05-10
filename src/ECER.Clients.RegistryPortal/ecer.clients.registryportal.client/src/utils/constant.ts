@@ -72,7 +72,7 @@ export const childcareAgeRangesCheckBox: CheckBoxWrapper<Components.Schemas.Chil
   { label: "Preschool", value: "Preschool" },
 ];
 
-export const lengthOfAcquaintenceDropdown: DropdownWrapper<Components.Schemas.ReferenceKnownTime>[] = [
+export const lengthOfAcquaintanceDropdown: DropdownWrapper<Components.Schemas.ReferenceKnownTime>[] = [
   { title: "less than 6 months", value: "Lessthan6months" },
   { title: "6 months to 1 year", value: "From6monthsto1year" },
   { title: "1 to 2 years", value: "From1to2years" },

@@ -39,7 +39,7 @@
             variant="outlined"
             color="primary"
             :rules="[Rules.required('Select an option')]"
-            :items="lengthOfAcquaintenceDropdown"
+            :items="lengthOfAcquaintanceDropdown"
             hide-details="auto"
             @update:model-value="updateField('lengthOfAcquaintance', $event)"
           ></v-autocomplete>
@@ -78,11 +78,11 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <label for="applicantTempermentAssessmentTextField">
-            Explain why you consider the applicant to have the temperment and ability to manage or work with young children.
+          <label for="applicantTemperamentAssessmentTextField">
+            Explain why you consider the applicant to have the temperament and ability to manage or work with young children.
           </label>
           <v-textarea
-            id="applicantTempermentAssessmentTextField"
+            id="applicantTemperamentAssessmentTextField"
             :rules="[Rules.required('Enter your response')]"
             counter="1000"
             variant="outlined"
@@ -132,7 +132,7 @@ import { defineComponent } from "vue";
 
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
-import { lengthOfAcquaintenceDropdown, referenceRelationshipDropdown } from "@/utils/constant";
+import { lengthOfAcquaintanceDropdown, referenceRelationshipDropdown } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
@@ -149,7 +149,7 @@ export default defineComponent({
   setup: () => {
     const wizardStore = useWizardStore();
 
-    return { wizardStore, referenceRelationshipDropdown, lengthOfAcquaintenceDropdown };
+    return { wizardStore, referenceRelationshipDropdown, lengthOfAcquaintanceDropdown };
   },
   data() {
     return {
