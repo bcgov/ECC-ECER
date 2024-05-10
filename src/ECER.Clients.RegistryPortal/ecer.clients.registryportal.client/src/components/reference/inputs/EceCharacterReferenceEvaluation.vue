@@ -39,7 +39,7 @@
             variant="outlined"
             color="primary"
             :rules="[Rules.required('Select an option')]"
-            :items="['less than 6 months', '6 months to 1 year', '1 to 2 years', '2 to 5 years', '5 or more years']"
+            :items="lengthOfAcquaintenceDropdown"
             hide-details="auto"
             @update:model-value="updateField('lengthOfAcquaintance', $event)"
           ></v-autocomplete>
@@ -132,7 +132,7 @@ import { defineComponent } from "vue";
 
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
-import { referenceRelationshipDropdown } from "@/utils/constant";
+import { lengthOfAcquaintenceDropdown, referenceRelationshipDropdown } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
@@ -149,7 +149,7 @@ export default defineComponent({
   setup: () => {
     const wizardStore = useWizardStore();
 
-    return { wizardStore, referenceRelationshipDropdown };
+    return { wizardStore, referenceRelationshipDropdown, lengthOfAcquaintenceDropdown };
   },
   data() {
     return {

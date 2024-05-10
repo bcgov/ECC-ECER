@@ -95,7 +95,7 @@ export default defineComponent({
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue");
       } else {
         if (
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.declarationForm.id] === false &&
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id] === false &&
           this.wizardStore.step === 1
         ) {
           this.wizardStore.setStep(this.userDeclinedStep);
@@ -124,6 +124,7 @@ export default defineComponent({
       if (this.wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER) {
         const response = await postCharacterReference({
           token: this.$route.params.token as string,
+          willProvideReference: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id],
           referenceContactInformation:
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id],
           referenceEvaluation: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id],

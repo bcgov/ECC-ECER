@@ -85,7 +85,7 @@ import ReferencePreviewCard from "@/components/reference/inputs/ReferencePreview
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
-import { referenceRelationshipDropdown } from "@/utils/constant";
+import { lengthOfAcquaintenceDropdown, referenceRelationshipDropdown } from "@/utils/constant";
 
 export default defineComponent({
   name: "EceEcharacterReferenceEvaluationPreview",
@@ -113,14 +113,19 @@ export default defineComponent({
             ?.referenceRelationship,
       )?.title;
 
+      const lengthOfAcquaintanceDisplay = lengthOfAcquaintenceDropdown.find(
+        (value) =>
+          value.value ===
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]
+            ?.lengthOfAcquaintance,
+      )?.title;
+
       return {
         referenceRelationship: referenceReferenceDisplay as Components.Schemas.ReferenceRelationship,
         referenceRelationshipOther:
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]
             ?.referenceRelationshipOther,
-        lengthOfAcquaintance:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]
-            ?.lengthOfAcquaintance,
+        lengthOfAcquaintance: lengthOfAcquaintanceDisplay as Components.Schemas.ReferenceKnownTime,
         workedWithChildren:
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]?.workedWithChildren,
         childInteractionObservations:
