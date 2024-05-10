@@ -42,7 +42,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		ApplicationSubmitted = 621870006,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DRAFT = 1,
+		Draft = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		InProgress = 621870002,
@@ -52,6 +52,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Submitted = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		WaitingforDetails = 621870007,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
@@ -100,6 +103,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_StudentNumber = "ecer_studentnumber";
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
 			public const string ecer_transcript_Applicationid = "ecer_transcript_Applicationid";
+			public const string ecer_TranscriptDocumentId = "ecer_transcriptdocumentid";
+			public const string ecer_TranscriptDocumentIdName = "ecer_transcriptdocumentidname";
 			public const string ecer_TranscriptId = "ecer_transcriptid";
 			public const string Id = "ecer_transcriptid";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -668,6 +673,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_studentnumber", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_transcriptdocumentid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_TranscriptDocumentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_transcriptdocumentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_transcriptdocumentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_transcriptdocumentidname")]
+		public string ecer_TranscriptDocumentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_transcriptdocumentid"))
+				{
+					return this.FormattedValues["ecer_transcriptdocumentid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

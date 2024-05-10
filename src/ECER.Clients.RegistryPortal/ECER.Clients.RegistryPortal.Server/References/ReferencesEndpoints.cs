@@ -53,13 +53,13 @@ public class ReferencesEndpoints : IRegisterEndpoints
   }
 }
 
-public record CharacterReferenceSubmissionRequest(string Token, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight);
+public record CharacterReferenceSubmissionRequest(string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight);
 public record ReferenceContactInformation([Required] string LastName, [Required] string FirstName, [Required] string Email, [Required] string PhoneNumber, string CertificateProvinceId, string CertificateProvinceOther)
 {
   public string? CertificateNumber { get; set; }
   public DateTime? DateOfBirth { get; set; }
 }
-public record CharacterReferenceEvaluation([Required] ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, [Required] string LengthOfAcquaintance, [Required] bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, [Required] bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
+public record CharacterReferenceEvaluation([Required] ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, [Required] ReferenceKnownTime LengthOfAcquaintance, [Required] bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, [Required] bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
 public record OptOutReferenceRequest(string Token, [Required] UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons);
 
 public enum UnabletoProvideReferenceReasons
@@ -73,7 +73,7 @@ public enum UnabletoProvideReferenceReasons
 
 public record WorkExperienceReferenceDetails([Required] int Hours, [Required] WorkHoursType WorkHoursType, [Required] string ChildrenProgramName, [Required] ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, [Required] IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
 public record WorkExperienceReferenceCompetenciesAssessment([Required] LikertScale ChildDevelopment, string ChildDevelopmentReason, [Required] LikertScale ChildGuidance, string ChildGuidanceReason, [Required] LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, [Required] LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, [Required] LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, [Required] LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, [Required] LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, [Required] LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
-public record WorkExperienceReferenceSubmissionRequest([Required] string Token, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, [Required] bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
+public record WorkExperienceReferenceSubmissionRequest([Required] string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, [Required] bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason, bool ConfirmProvidedInformationIsRight);
 
 public enum WorkHoursType
 {
@@ -118,4 +118,13 @@ public enum ChildcareAgeRanges
   From31to36Months,
   Grade1,
   Preschool,
+}
+
+public enum ReferenceKnownTime
+{
+  From1to2years,
+  From2to5years,
+  From6monthsto1year,
+  Lessthan6months,
+  Morethan5years,
 }
