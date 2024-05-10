@@ -229,6 +229,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     };
   }
 
+
   #region implementationDetails
 
   private async Task<string> SubmitCharacterReference(string characterReferenceId, CharacterReferenceSubmissionRequest request)

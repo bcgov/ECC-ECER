@@ -62,6 +62,7 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
 {
   public string? CampusLocation { get; set; }
   public string? LanguageofInstruction { get; set; }
+  public StageStatus? Status { get; set; }
 }
 
 public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
@@ -69,11 +70,15 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
   public string? Id { get; set; }
 
   public string? PhoneNumber { get; set; }
+
+  public StageStatus? Status { get; set; }
 }
 
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
   public string? Id { get; set; }
+
+  public StageStatus? Status { get; set; }
 }
 
 public enum PortalStage
@@ -200,4 +205,12 @@ public record SubmitReferenceCommand(string Token) : IRequest<ReferenceSubmissio
 {
   public WorkExperienceReferenceSubmissionRequest? WorkExperienceReferenceSubmissionRequest { get; set; }
   public CharacterReferenceSubmissionRequest? CharacterReferenceSubmissionRequest { get; set; }
+}
+
+
+public enum StageStatus
+{
+  Complete,
+  InComplete,
+  InProgress
 }

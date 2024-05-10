@@ -2,6 +2,7 @@
 using ECER.Resources.Documents.Applications;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using System;
 using Xunit.Abstractions;
 using Xunit.Categories;
 using Application = ECER.Resources.Documents.Applications.Application;

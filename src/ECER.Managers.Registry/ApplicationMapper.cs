@@ -38,5 +38,6 @@ internal class ApplicationMapper : Profile
 
     CreateMap<Contract.Applications.OptOutReferenceRequest, OptOutReferenceRequest>()
       .ForMember(d => d.PortalInvitation, opts => opts.Ignore());
+
   }
 }
