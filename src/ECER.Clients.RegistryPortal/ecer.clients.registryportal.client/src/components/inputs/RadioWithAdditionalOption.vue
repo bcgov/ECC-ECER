@@ -18,6 +18,7 @@
 <script lang="ts">
 import type { PropType } from "vue";
 import { defineComponent } from "vue";
+
 import type { RadioWithAdditionalOption, RadioWithAdditionalOptionProps } from "@/types/input";
 
 export default defineComponent({
@@ -54,6 +55,7 @@ export default defineComponent({
     additionalInfoProps: {
       type: Object as PropType<RadioWithAdditionalOptionProps>,
       required: false,
+      default: () => {},
     },
   },
   emits: {
