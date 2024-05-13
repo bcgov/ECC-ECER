@@ -1,6 +1,6 @@
 <template>
   <slot name="radioLabel" :for="`${valueKey}Label`"></slot>
-  <v-radio-group id="`${valueKey}Label`" v-model="itemSelection" :rules="radioRules" hide-details="auto" @update:model-value="modalValueUpdated">
+  <v-radio-group id="`${valueKey}Label`" :rules="radioRules" hide-details="auto" @update:model-value="modalValueUpdated">
     <v-radio v-for="(item, index) in items" :key="index" :label="item[itemLabel]" :value="item[itemValue]"></v-radio>
   </v-radio-group>
   <slot v-if="triggerForAdditionalInformation" name="textAreaLabel" :for="`${additionalInfoKey}Label`"></slot>
@@ -24,6 +24,9 @@ import type { RadioWithAdditionalOption, RadioWithAdditionalOptionProps } from "
 export default defineComponent({
   name: "RadioWithAdditionalOption",
   props: {
+    modelValue: {
+      type: String as PropType<any>,
+    },
     items: {
       type: Array as PropType<RadioWithAdditionalOption[]>,
       required: true,
@@ -61,14 +64,9 @@ export default defineComponent({
   emits: {
     "update:model-value": (_itemSelection: any) => true,
   },
-  data() {
-    return {
-      itemSelection: undefined,
-    };
-  },
   computed: {
     triggerForAdditionalInformation() {
-      return this.triggerValues.includes(this?.itemSelection);
+      return this.triggerValues.includes(this.modelValue);
     },
   },
   methods: {
