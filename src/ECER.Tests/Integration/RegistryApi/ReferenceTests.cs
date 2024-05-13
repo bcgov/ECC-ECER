@@ -26,9 +26,11 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         faker.Person.FirstName,
         faker.Person.Email,
         faker.Phone.PhoneNumber(),
-        "98fbb5c5-68da-ee11-904c-000d3af4645f", // Random Canadian province abbreviation,
         faker.Address.City()
-    );
+    )
+    {
+      CertificateProvinceId = null// Random Canadian province abbreviation
+    };
 
     // Generating random data for ReferenceEvaluation
     var referenceEvaluation = new CharacterReferenceEvaluation(
@@ -48,7 +50,8 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         true,
         referenceContactInfo,
         referenceEvaluation,
-        true
+        true,
+        DateTime.Today
     );
 
     return referenceSubmissionRequest;
@@ -64,9 +67,11 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         faker.Person.FirstName,
         faker.Person.Email,
         faker.Phone.PhoneNumber(),
-        "98fbb5c5-68da-ee11-904c-000d3af4645f", // Random Canadian province abbreviation,
         faker.Address.City()
-    );
+    )
+    {
+      CertificateProvinceId = "98fbb5c5-68da-ee11-904c-000d3af4645f" // Random Canadian province abbreviation
+    };
 
     // Generating random data for WorkExperienceReferenceDetails
     var workExperienceReferenceDetails = new WorkExperienceReferenceDetails(
@@ -111,7 +116,8 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         workExperienceReferenceCompetenciesAssessment,
         faker.Random.Bool(), // ApplicantShouldNotBeECE
         faker.Lorem.Paragraph(), // ApplicantNotQualifiedReason
-        faker.Random.Bool() // ConfirmProvidedInformationIsRight
+        faker.Random.Bool(),// ConfirmProvidedInformationIsRight
+        DateTime.Today
     );
 
     return workExperienceReferenceSubmissionRequest;

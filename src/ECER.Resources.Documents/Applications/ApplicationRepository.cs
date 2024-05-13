@@ -237,10 +237,13 @@ internal sealed class ApplicationRepository : IApplicationRepository
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(characterReferenceId));
 
     mapper.Map(request, characterReference);
-    var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == Guid.Parse(request.ReferenceContactInformation.CertificateProvinceId));
-    if (province != null)
+    if (!string.IsNullOrWhiteSpace(request.ReferenceContactInformation.CertificateProvinceId))
     {
-      context.AddLink(characterReference, ecer_CharacterReference.Fields.ecer_characterreference_RefCertifiedProvinceId, province);
+      var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == Guid.Parse(request.ReferenceContactInformation.CertificateProvinceId));
+      if (province != null)
+      {
+        context.AddLink(characterReference, ecer_CharacterReference.Fields.ecer_characterreference_RefCertifiedProvinceId, province);
+      }
     }
     characterReference.StatusCode = ecer_CharacterReference_StatusCode.Submitted;
     context.UpdateObject(characterReference);
@@ -254,10 +257,13 @@ internal sealed class ApplicationRepository : IApplicationRepository
     var workExperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(workExperienceReferenceId));
 
     mapper.Map(request, workExperienceReference);
-    var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == Guid.Parse(request.ReferenceContactInformation.CertificateProvinceId));
-    if (province != null)
+    if (!string.IsNullOrWhiteSpace(request.ReferenceContactInformation.CertificateProvinceId))
     {
-      context.AddLink(workExperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_RefCertifiedProvinceId, province);
+      var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == Guid.Parse(request.ReferenceContactInformation.CertificateProvinceId));
+      if (province != null)
+      {
+        context.AddLink(workExperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_RefCertifiedProvinceId, province);
+      }
     }
     workExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.Submitted;
     context.UpdateObject(workExperienceReference);
