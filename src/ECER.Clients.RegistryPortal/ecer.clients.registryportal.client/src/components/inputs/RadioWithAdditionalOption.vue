@@ -25,7 +25,8 @@ export default defineComponent({
   name: "RadioWithAdditionalOption",
   props: {
     modelValue: {
-      type: String as PropType<any>,
+      type: String,
+      default: undefined,
     },
     items: {
       type: Array as PropType<RadioWithAdditionalOption[]>,
