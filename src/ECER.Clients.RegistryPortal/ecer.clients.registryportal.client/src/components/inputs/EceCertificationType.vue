@@ -8,20 +8,20 @@
               <v-radio color="primary" :label="option.title" :value="option.id"></v-radio>
             </v-radio-group>
           </v-col>
-          <v-col v-if="option.id === 'FiveYears' && selection !== 'FiveYears'" cols="11" offset="1">
+          <v-col v-if="option.id === CertificationType.FIVE_YEAR && selection !== CertificationType.FIVE_YEAR" cols="11" offset="1">
             <p class="small">If you are eligible for an ECE Five Year Certificate, you may also be eligible for one or both specializations:</p>
             <v-checkbox
               v-model="certificationTypeStore.subSelection"
               color="primary"
               label="Infant and Toddler Educator (ITE)"
-              value="Ite"
+              :value="CertificationType.ITE"
               hide-details="auto"
             ></v-checkbox>
             <v-checkbox
               v-model="certificationTypeStore.subSelection"
               color="primary"
               label="Special Needs Educator (SNE)"
-              value="Sne"
+              :value="CertificationType.SNE"
               hide-details="auto"
             ></v-checkbox>
           </v-col>
@@ -35,19 +35,19 @@
   </v-expansion-panels>
   <div v-if="certificationTypeStore.mode == 'terms'">
     <div v-for="certificationType in certificationTypes" :key="certificationType">
-      <template v-if="certificationType === 'EceAssistant'">
+      <template v-if="certificationType === CertificationType.ECE_ASSISTANT">
         <ECEAssistantRequirements />
       </template>
-      <template v-if="certificationType === 'OneYear'">
+      <template v-if="certificationType === CertificationType.ONE_YEAR">
         <ECEOneYearRequirements />
       </template>
-      <template v-if="certificationType === 'FiveYears'">
+      <template v-if="certificationType === CertificationType.FIVE_YEAR">
         <ECEFiveYearRequirements />
       </template>
-      <template v-if="certificationType === 'Sne'">
+      <template v-if="certificationType === CertificationType.SNE">
         <SneRequirements />
       </template>
-      <template v-if="certificationType === 'Ite'">
+      <template v-if="certificationType === CertificationType.ITE">
         <IteRequirements />
       </template>
     </div>
@@ -66,6 +66,7 @@ import SneRequirements from "@/components/SneRequirements.vue";
 import { useCertificationTypeStore } from "@/store/certificationType";
 import type { EceCertificateTypeProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
+import { CertificationType } from "@/utils/constant";
 
 export default defineComponent({
   name: "EceCertificationType",
@@ -89,23 +90,23 @@ export default defineComponent({
   setup: (props) => {
     const certificationTypeStore = useCertificationTypeStore();
     // If props.modelValue contains "Ite" or "Sne", set the subSelection to those values
-    if (props.modelValue.includes("Ite")) {
-      certificationTypeStore.subSelection.push("Ite");
+    if (props.modelValue.includes(CertificationType.ITE)) {
+      certificationTypeStore.subSelection.push(CertificationType.ITE);
     }
-    if (props.modelValue.includes("Sne")) {
-      certificationTypeStore.subSelection.push("Sne");
+    if (props.modelValue.includes(CertificationType.SNE)) {
+      certificationTypeStore.subSelection.push(CertificationType.SNE);
     }
 
     // Set selection to value in props.modelValue
-    if (props.modelValue.includes("FiveYears")) {
-      certificationTypeStore.selection = "FiveYears";
-    } else if (props.modelValue.includes("EceAssistant")) {
-      certificationTypeStore.selection = "EceAssistant";
-    } else if (props.modelValue.includes("OneYear")) {
-      certificationTypeStore.selection = "OneYear";
+    if (props.modelValue.includes(CertificationType.FIVE_YEAR)) {
+      certificationTypeStore.selection = CertificationType.FIVE_YEAR;
+    } else if (props.modelValue.includes(CertificationType.ECE_ASSISTANT)) {
+      certificationTypeStore.selection = CertificationType.ECE_ASSISTANT;
+    } else if (props.modelValue.includes(CertificationType.ONE_YEAR)) {
+      certificationTypeStore.selection = CertificationType.ONE_YEAR;
     }
 
-    return { certificationTypeStore };
+    return { certificationTypeStore, CertificationType };
   },
   computed: {
     selection: {
@@ -113,7 +114,7 @@ export default defineComponent({
         return this.certificationTypeStore.selection;
       },
       set(newValue: Components.Schemas.CertificationType) {
-        if (newValue !== "FiveYears") {
+        if (newValue !== CertificationType.FIVE_YEAR) {
           this.certificationTypeStore.subSelection = [];
         }
         this.certificationTypeStore.selection = newValue;

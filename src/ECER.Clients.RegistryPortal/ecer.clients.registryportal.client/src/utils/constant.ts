@@ -34,6 +34,14 @@ export enum ProvinceTerritoryType {
   OTHER = "Other",
 }
 
+export enum CertificationType {
+  ITE = "Ite",
+  SNE = "Sne",
+  FIVE_YEAR = "FiveYears",
+  ONE_YEAR = "OneYear",
+  ECE_ASSISTANT = "EceAssistant",
+}
+
 export const referenceRelationshipDropdown: DropdownWrapper<Components.Schemas.ReferenceRelationship>[] = [
   { title: "Supervisor", value: "Supervisor" },
   { title: "Co Worker", value: "CoWorker" },
