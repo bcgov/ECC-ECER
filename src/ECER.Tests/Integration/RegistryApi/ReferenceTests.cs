@@ -29,7 +29,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         faker.Address.City()
     )
     {
-      CertificateProvinceId = null// Random Canadian province abbreviation
+      CertificateProvinceId = "98fbb5c5-68da-ee11-904c-000d3af4645f" // Random Canadian province abbreviation
     };
 
     // Generating random data for ReferenceEvaluation
