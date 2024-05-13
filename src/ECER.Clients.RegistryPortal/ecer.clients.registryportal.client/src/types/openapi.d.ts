@@ -72,7 +72,7 @@ declare namespace Components {
     export interface CharacterReferenceEvaluation {
       referenceRelationship?: ReferenceRelationship;
       referenceRelationshipOther?: string | null;
-      lengthOfAcquaintance?: string | null;
+      lengthOfAcquaintance?: ReferenceKnownTime;
       workedWithChildren?: boolean;
       childInteractionObservations?: string | null;
       applicantTemperamentAssessment?: string | null;
@@ -81,6 +81,7 @@ declare namespace Components {
     }
     export interface CharacterReferenceSubmissionRequest {
       token?: string | null;
+      willProvideReference?: boolean;
       referenceContactInformation?: ReferenceContactInformation;
       referenceEvaluation?: CharacterReferenceEvaluation;
       confirmProvidedInformationIsRight?: boolean;
@@ -210,6 +211,7 @@ declare namespace Components {
       certificateNumber?: string | null;
       dateOfBirth?: string | null; // date-time
     }
+    export type ReferenceKnownTime = "From1to2years" | "From2to5years" | "From6monthsto1year" | "Lessthan6months" | "Morethan5years";
     export type ReferenceRelationship = "CoWorker" | "Other" | "ParentGuardianofChildinCare" | "Supervisor" | "Teacher";
     /**
      * Save draft application request
@@ -303,6 +305,7 @@ declare namespace Components {
     }
     export interface WorkExperienceReferenceSubmissionRequest {
       token?: string | null;
+      willProvideReference?: boolean;
       referenceContactInformation?: ReferenceContactInformation;
       workExperienceReferenceDetails?: WorkExperienceReferenceDetails;
       workExperienceReferenceCompetenciesAssessment?: WorkExperienceReferenceCompetenciesAssessment;
