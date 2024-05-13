@@ -53,6 +53,10 @@ interface EceCheckboxProps {
   checkableOnce?: boolean;
 }
 
+interface CheckboxMultipleDropdownItems {
+  [key: string]: any;
+}
+
 interface EceCertificateTypeProps {
   options: ExpandSelectOption[];
 }

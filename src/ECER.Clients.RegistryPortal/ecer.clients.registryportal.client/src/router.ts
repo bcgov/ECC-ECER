@@ -179,10 +179,10 @@ router.beforeEach(async (to, _, next) => {
 });
 
 // Guard to save draft application before navigating away from /application
-router.beforeEach((_, from, next) => {
+router.beforeEach((to, from, next) => {
   const applicationStore = useApplicationStore();
 
-  if (from.path === "/application" && applicationStore.hasDraftApplication) {
+  if (from.path === "/application" && to.path !== "/submitted" && applicationStore.hasDraftApplication) {
     applicationStore.saveDraft();
     next();
   } else next();

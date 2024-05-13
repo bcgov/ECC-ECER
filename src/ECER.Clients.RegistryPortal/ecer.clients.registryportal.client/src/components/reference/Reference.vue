@@ -25,7 +25,16 @@
             >
               Submit
             </v-btn>
-            <v-btn v-else-if="wizardStore.step === userReviewStep" rounded="lg" variant="flat" color="primary" @click="handleSubmit">Submit</v-btn>
+            <v-btn
+              v-else-if="wizardStore.step === userReviewStep"
+              :loading="loadingStore.isLoading('character_reference_post')"
+              rounded="lg"
+              variant="flat"
+              color="primary"
+              @click="handleSubmit"
+            >
+              Submit
+            </v-btn>
             <v-btn v-else rounded="lg" variant="flat" color="primary" @click="handleContinue">Continue</v-btn>
           </v-col>
         </v-row>
@@ -38,7 +47,7 @@
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 
-import { getReference, optOutReference } from "@/api/reference";
+import { getReference, optOutReference, postCharacterReference } from "@/api/reference";
 import characterReferenceWizardConfig from "@/config/character-reference-wizard";
 import workExperienceReferenceWizardConfig from "@/config/work-experience-reference-wizard";
 import { useAlertStore } from "@/store/alert";
@@ -59,9 +68,9 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
     if (data?.portalInvitation?.inviteType === PortalInviteType.WORK_EXPERIENCE) {
-      wizardStore.initializeWizardForReference(workExperienceReferenceWizardConfig, data.portalInvitation);
+      wizardStore.initializeWizardForWorkExReference(workExperienceReferenceWizardConfig, data.portalInvitation);
     } else if (data?.portalInvitation?.inviteType === PortalInviteType.CHARACTER) {
-      wizardStore.initializeWizardForReference(characterReferenceWizardConfig, data.portalInvitation);
+      wizardStore.initializeWizardForCharacterReference(characterReferenceWizardConfig, data.portalInvitation);
     }
     return { alertStore, workExperienceReferenceWizardConfig, characterReferenceWizardConfig, wizardStore, PortalInviteType, loadingStore };
   },
@@ -83,10 +92,10 @@ export default defineComponent({
       const { valid } = await formRef.validate();
 
       if (!valid) {
-        this.alertStore.setFailureAlert("Please fill out all required fields");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue");
       } else {
         if (
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.declarationForm.id] === false &&
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id] === false &&
           this.wizardStore.step === 1
         ) {
           this.wizardStore.setStep(this.userDeclinedStep);
@@ -102,8 +111,31 @@ export default defineComponent({
         this.wizardStore.decrementStep();
       }
     },
-    handleSubmit() {
-      this.alertStore.setWarningAlert("User Accepted");
+    async handleSubmit() {
+      const currentStepFormId = this.wizardStore.currentStep.form.id;
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const { valid } = await formRef.validate();
+
+      if (!valid) {
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue");
+        return;
+      }
+
+      if (this.wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER) {
+        const response = await postCharacterReference({
+          token: this.$route.params.token as string,
+          willProvideReference: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id],
+          referenceContactInformation:
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id],
+          referenceEvaluation: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id],
+          confirmProvidedInformationIsRight:
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
+        });
+
+        if (!response?.error) {
+          this.$router.push({ path: "/reference-submitted" });
+        }
+      }
     },
     async handleDecline() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
@@ -111,7 +143,7 @@ export default defineComponent({
       const { valid } = await formRef.validate();
 
       if (!valid) {
-        this.alertStore.setFailureAlert("Please fill out all required fields");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue");
         return;
       }
 

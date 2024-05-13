@@ -34,19 +34,20 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     var referenceEvaluation = new CharacterReferenceEvaluation(
         ReferenceRelationship.Supervisor, // Relationship
         string.Empty,        // RelationshipOther
-        faker.Random.Word(), // LengthOfAcquaintance
+        ReferenceKnownTime.From1to2years, // LengthOfAcquaintance
         faker.Random.Bool(), // WorkedWithChildren
         faker.Lorem.Paragraph(), // ChildInteractionObservations
-        faker.Lorem.Paragraph() // ApplicantTemperamentAssessment
+        faker.Lorem.Paragraph(), // ApplicantTemperamentAssessment
+        faker.Random.Bool(), // Confirmed
+        faker.Lorem.Paragraph()
     );
 
     // Creating the ReferenceSubmissionRequest record
     var referenceSubmissionRequest = new CharacterReferenceSubmissionRequest(
         token,
+        true,
         referenceContactInfo,
         referenceEvaluation,
-        faker.Random.Bool(), // Confirmed
-        faker.Lorem.Paragraph(),
         true
     );
 
@@ -104,6 +105,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     // Creating the WorkExperienceReferenceSubmissionRequest record
     var workExperienceReferenceSubmissionRequest = new WorkExperienceReferenceSubmissionRequest(
         token,
+        true,
         referenceContactInfo,
         workExperienceReferenceDetails,
         workExperienceReferenceCompetenciesAssessment,

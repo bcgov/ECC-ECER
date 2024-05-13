@@ -121,9 +121,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EmailAddress = "ecer_emailaddress";
 			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_FirstName = "ecer_firstname";
+			public const string ecer_investigation_WorkExperienceReferenceId_e = "ecer_investigation_WorkExperienceReferenceId_e";
+			public const string ecer_InviteAgain = "ecer_inviteagain";
+			public const string ecer_inviteagainName = "ecer_inviteagainname";
 			public const string ecer_IsApplicantQualified = "ecer_isapplicantqualified";
 			public const string ecer_isapplicantqualifiedName = "ecer_isapplicantqualifiedname";
 			public const string ecer_LastFollowUpDate = "ecer_lastfollowupdate";
+			public const string ecer_LastInvitationEmailSent = "ecer_lastinvitationemailsent";
 			public const string ecer_LastName = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_OtherChildProgramType = "ecer_otherchildprogramtype";
@@ -992,6 +996,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_inviteagain")]
+		public System.Nullable<bool> ecer_InviteAgain
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_inviteagain");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_inviteagain", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_inviteagainname")]
+		public string ecer_inviteagainName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_inviteagain"))
+				{
+					return this.FormattedValues["ecer_inviteagain"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isapplicantqualified")]
 		public virtual ecer_YesNoNull? ecer_IsApplicantQualified
 		{
@@ -1036,6 +1072,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_lastfollowupdate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lastinvitationemailsent")]
+		public System.Nullable<System.DateTime> ecer_LastInvitationEmailSent
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_lastinvitationemailsent");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_lastinvitationemailsent", value);
 			}
 		}
 		
@@ -1962,6 +2013,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_investigation_WorkExperienceReferenceId_e
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigation_WorkExperienceReferenceId_e")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Investigation> ecer_investigation_WorkExperienceReferenceId_e
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigation_WorkExperienceReferenceId_e", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigation_WorkExperienceReferenceId_e", null, value);
 			}
 		}
 		

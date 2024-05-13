@@ -10,7 +10,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Name of Program</p>
+            <p class="small">{{ `Name of ${getLabelOnCertificateType}` }}</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ education.programName }}</p>
@@ -98,6 +98,13 @@ export default defineComponent({
   computed: {
     educations(): { [id: string]: Components.Schemas.Transcript } {
       return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.education.form.inputs.educationList.id];
+    },
+    getLabelOnCertificateType() {
+      if (this.wizardStore.wizardData.certificationSelection.includes("FiveYears")) {
+        return "Program";
+      } else {
+        return "Course";
+      }
     },
   },
   methods: {

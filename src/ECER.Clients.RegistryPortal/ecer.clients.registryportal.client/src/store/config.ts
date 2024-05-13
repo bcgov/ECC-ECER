@@ -1,12 +1,16 @@
 import type { UserManagerSettings } from "oidc-client-ts";
 import { defineStore } from "pinia";
 
-import { getConfiguration } from "@/api/configuration";
+import { getConfiguration, getProvinceList } from "@/api/configuration";
 import oidcConfig from "@/oidc-config";
+import type { DropdownWrapper } from "@/types/form";
 import type { Components } from "@/types/openapi";
+import { ProvinceTerritoryType } from "@/utils/constant";
+import { sortArray } from "@/utils/functions";
 
 export interface UserState {
   applicationConfiguration: Components.Schemas.ApplicationConfiguration;
+  provinceList: DropdownWrapper<String>[];
 }
 
 export const useConfigStore = defineStore("config", {
@@ -15,6 +19,7 @@ export const useConfigStore = defineStore("config", {
   },
   state: (): UserState => ({
     applicationConfiguration: {} as Components.Schemas.ApplicationConfiguration,
+    provinceList: [] as DropdownWrapper<String>[],
   }),
   getters: {
     kcOidcConfiguration: (state): UserManagerSettings => {
@@ -31,12 +36,28 @@ export const useConfigStore = defineStore("config", {
 
       return combinedConfig;
     },
+    provinceName(state) {
+      return (provinceId: string) => state.provinceList.find((province) => province.value === provinceId)?.title;
+    },
   },
+
   actions: {
     async initialize(): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> {
       const configuration = await getConfiguration();
       if (configuration !== null && configuration !== undefined) {
         this.applicationConfiguration = configuration;
+      }
+
+      const provinceList = await getProvinceList();
+      if (provinceList !== null && provinceList !== undefined) {
+        this.provinceList = provinceList
+          .map((province) => {
+            return {
+              value: province.provinceId as string,
+              title: province.provinceName as string,
+            };
+          })
+          .sort((a, b) => sortArray(a, b, "title", [ProvinceTerritoryType.OTHER]));
       }
       return configuration;
     },

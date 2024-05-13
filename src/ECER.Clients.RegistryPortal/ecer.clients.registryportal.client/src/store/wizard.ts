@@ -150,7 +150,7 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.workReference.form.inputs.referenceList.id]: workReferencesDict,
       };
     },
-    initializeWizardForReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
+    initializeWizardForCharacterReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
       this.$reset();
       this.wizardConfig = wizard;
 
@@ -158,6 +158,22 @@ export const useWizardStore = defineStore("wizard", {
         applicantFirstName: portalInvitation.applicantFirstName,
         applicantLastName: portalInvitation.applicantLastName,
         inviteType: portalInvitation.inviteType,
+        certificationTypes: portalInvitation.certificationTypes,
+        [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
+        [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
+        [wizard.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]: {} as Components.Schemas.CharacterReferenceEvaluation,
+      });
+    },
+    initializeWizardForWorkExReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
+      this.$reset();
+      this.wizardConfig = wizard;
+
+      this.setWizardData({
+        applicantFirstName: portalInvitation.applicantFirstName,
+        applicantLastName: portalInvitation.applicantLastName,
+        inviteType: portalInvitation.inviteType,
+        [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
+        [wizard.steps.assessment.form.inputs.workExAssessment.id]: {} as Components.Schemas.WorkExperienceReferenceDetails,
       });
     },
     setWizardData(wizardData: WizardData): void {

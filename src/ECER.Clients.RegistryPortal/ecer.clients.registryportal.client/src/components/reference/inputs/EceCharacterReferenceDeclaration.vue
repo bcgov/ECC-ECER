@@ -3,39 +3,40 @@
     <v-col cols="12" md="12" lg="12" xl="12">
       <v-row no-gutters>
         <v-col>
-          <p>
-            <b>{{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</b>
-            is requesting a character reference for an
-            <b>ECE Certificate</b>
-            . We'll review your reference when assessing if the applicant is eligible for certification
-          </p>
+          <div>
+            {{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}
+            is requesting a character reference for
+            <b>{{ certificationType }}.</b>
+            We'll review your reference when assessing if the applicant is eligible for certification.
+          </div>
           <br />
 
           <h2>Information you'll need</h2>
-          <p>
-            It should take about 5 minutes to enter your reference. Make sure you get together all the information you need for you continue. If you're not
+          <div>
+            It should take about 5 minutes to enter your reference. Make sure you get together all the information you need before you continue. If you're not
             ready now, you can come back later using the link in your email.
-          </p>
+          </div>
           <br />
 
           <p>You'll be asked to provide:</p>
           <ul class="ml-10">
             <li>Your contact information</li>
-            <li>Your ECE certification Information (optional)</li>
+            <li>Your ECE certification information (optional)</li>
             <li>How long you've known the applicant</li>
             <li>Your relationship with the applicant</li>
             <li>Your personal observations of the applicant</li>
           </ul>
           <br />
           <div>
-            All personal information is collection by the Ministry of Education and Child Care under the authority of hte Freedom of Information and Protection
+            All personal information is collected by the Ministry of Education and Child Care under the authority of the Freedom of Information and Protection
             of Privacy Act s. 26(a), and will be used to determine if the applicant has the, experience and other qualifications required by the regulations. If
             you have any questions about the collection, use or disclosure of this information, contact the Early Childhood Educator (ECE) Registry, PO Box
-            9961, STN PROV GOVT, Victoria BC V8W 9R4, Phone toll free: 1-888-338-6622, or email ECERegistry@gov.bc.ca.
+            9961, STN PROV GOVT, Victoria BC V8W 9R4, Phone toll free: 1-888-338-6622, or email
+            <a style="text-decoration: underline" href="mailto:ECERegistry@gov.bc.ca">ECERegistry@gov.bc.ca</a>
           </div>
           <br />
           <h2>Requirements to be a reference</h2>
-          <p>You need to:</p>
+          <div>You need to:</div>
           <ul class="ml-10">
             <li>Have known the applicant for at least 6 months</li>
             <li>Be able to speak to the character of the applicant</li>
@@ -47,7 +48,7 @@
       <v-row>
         <v-col>
           <p>Will you provide a reference?</p>
-          <v-radio-group :rules="[Rules.requiredRadio()]" @update:model-value="(value) => $emit('update:model-value', value as boolean)">
+          <v-radio-group :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="(value) => $emit('update:model-value', value as boolean)">
             <v-radio label="Yes" :value="true"></v-radio>
             <v-radio label="No" :value="false"></v-radio>
           </v-radio-group>
@@ -78,6 +79,19 @@ export default defineComponent({
       selection: undefined,
       Rules,
     };
+  },
+  computed: {
+    certificationType() {
+      let certificationType = "Certificate type not found";
+      if (this.wizardStore.wizardData.certificationTypes?.includes("EceAssistant")) {
+        certificationType = "ECE Assistant certificate";
+      } else if (this.wizardStore.wizardData.certificationTypes?.includes("OneYear")) {
+        certificationType = "ECE One Year certificate";
+      } else if (this.wizardStore.wizardData.certificationTypes?.includes("FiveYears")) {
+        certificationType = "ECE Five Year certificate";
+      }
+      return certificationType;
+    },
   },
 });
 </script>

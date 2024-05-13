@@ -21,7 +21,7 @@ const characterReferenceDeclineForm: Form = {
           { key: "Other", label: "Other" },
         ],
         title: "Tell us why you're unable to provide a reference",
-        rules: [Rules.required()],
+        rules: [Rules.required("Select an option to continue")],
       },
       cols: {
         md: 12,

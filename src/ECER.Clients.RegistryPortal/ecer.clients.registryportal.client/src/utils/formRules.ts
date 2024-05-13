@@ -107,6 +107,14 @@ const requiredRadio = (message = "This field is required") => {
 };
 
 /**
+ * Rule to check that at least one option was selected in a dropdown/multi select checkboxes
+ * @param {String} message
+ * @returns Function
+ */
+const atLeastOneOptionRequired = (message = "Please select at least one option") => {
+  return (v: any[]) => v.length > 0 || message;
+};
+/**
  * Custom endDate Rule! Checks that we have start date and that end date
  * happens after start date. Date format should be 2022-12-10 YYYY-MM-DD.
  * @param {String} effectiveDate
@@ -134,6 +142,7 @@ const website = (message = "Website must be valid and secure (i.e., https)") => 
 };
 
 export {
+  atLeastOneOptionRequired,
   email,
   endDateRule,
   hasCheckbox,
