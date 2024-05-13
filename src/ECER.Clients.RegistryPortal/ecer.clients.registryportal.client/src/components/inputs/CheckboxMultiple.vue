@@ -37,7 +37,7 @@ export default defineComponent({
       default: "value",
     },
     rules: {
-      type: Array as PropType<any>,
+      type: Array as PropType<any[]>,
       default: () => [],
     },
     selectAll: {

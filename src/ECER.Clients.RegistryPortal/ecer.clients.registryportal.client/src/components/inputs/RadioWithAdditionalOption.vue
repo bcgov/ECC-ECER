@@ -1,27 +1,24 @@
 <template>
   <slot name="radioLabel" :for="`${valueKey}Label`"></slot>
-  <v-radio-group id="`${valueKey}Label`" v-model="itemSelection" :rules="valueRules" hide-details="auto" @update:model-value="modalValueUpdated">
+  <v-radio-group id="`${valueKey}Label`" v-model="itemSelection" :rules="radioRules" hide-details="auto" @update:model-value="modalValueUpdated">
     <v-radio v-for="(item, index) in items" :key="index" :label="item[itemLabel]" :value="item[itemValue]"></v-radio>
   </v-radio-group>
-  <slot v-if="triggerForAdditionalInformation" name="textFieldLabel" :for="`${additionalInfoKey}Label`"></slot>
-  <v-text-field
+  <slot v-if="triggerForAdditionalInformation" name="textAreaLabel" :for="`${additionalInfoKey}Label`"></slot>
+  <v-textarea
     v-if="triggerForAdditionalInformation"
+    v-bind="additionalInfoProps"
     :id="`${valueKey}Label`"
-    variant="outlined"
-    counter="1000"
     color="primary"
-    maxlength="1000"
+    variant="outlined"
     hide-details="auto"
-    :auto-grow="true"
-    :rules="additionalInfoRules"
     @update:model-value="$emit('update:model-value', { [additionalInfoKey]: $event })"
-  ></v-text-field>
+  ></v-textarea>
 </template>
 
 <script lang="ts">
 import type { PropType } from "vue";
 import { defineComponent } from "vue";
-import type { RadioWithAdditionalOption } from "@/types/input";
+import type { RadioWithAdditionalOption, RadioWithAdditionalOptionProps } from "@/types/input";
 
 export default defineComponent({
   name: "RadioWithAdditionalOption",
@@ -38,12 +35,8 @@ export default defineComponent({
       type: String,
       default: "value",
     },
-    valueRules: {
-      type: Array as PropType<any>,
-      default: () => [],
-    },
-    additionalInfoRules: {
-      type: Array as PropType<any>,
+    radioRules: {
+      type: Array as PropType<any[]>,
       default: () => [],
     },
     triggerValues: {
@@ -57,6 +50,10 @@ export default defineComponent({
     valueKey: {
       type: String,
       required: true,
+    },
+    additionalInfoProps: {
+      type: Object as PropType<RadioWithAdditionalOptionProps>,
+      required: false,
     },
   },
   emits: {

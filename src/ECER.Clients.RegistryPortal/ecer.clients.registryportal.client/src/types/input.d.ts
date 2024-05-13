@@ -61,6 +61,13 @@ interface RadioWithAdditionalOption {
   [key: string]: any;
 }
 
+interface RadioWithAdditionalOptionProps {
+  rules?: readonly ValidationRule$1[];
+  maxlength?: string | number;
+  counter?: string | number | true;
+  autoGrow?: boolean;
+}
+
 interface EceCertificateTypeProps {
   options: ExpandSelectOption[];
 }
