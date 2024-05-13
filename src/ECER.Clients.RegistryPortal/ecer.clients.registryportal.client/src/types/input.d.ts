@@ -57,6 +57,10 @@ interface CheckboxMultipleDropdownItems {
   [key: string]: any;
 }
 
+interface RadioWithAdditionalOption {
+  [key: string]: any;
+}
+
 interface EceCertificateTypeProps {
   options: ExpandSelectOption[];
 }

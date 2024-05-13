@@ -38,7 +38,7 @@ export default defineComponent({
     },
     rules: {
       type: Array as PropType<any>,
-      default: null,
+      default: () => [],
     },
     selectAll: {
       type: Boolean,
