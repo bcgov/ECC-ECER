@@ -76,6 +76,7 @@ import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
+import { CertificationType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 
 export default defineComponent({
@@ -100,7 +101,7 @@ export default defineComponent({
       return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.education.form.inputs.educationList.id];
     },
     getLabelOnCertificateType() {
-      if (this.wizardStore.wizardData.certificationSelection.includes("FiveYears")) {
+      if (this.wizardStore.wizardData.certificationSelection.includes(CertificationType.FIVE_YEAR)) {
         return "Program";
       } else {
         return "Course";

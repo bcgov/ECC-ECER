@@ -62,6 +62,7 @@
 import { defineComponent } from "vue";
 
 import { useWizardStore } from "@/store/wizard";
+import { CertificationType } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
@@ -83,11 +84,11 @@ export default defineComponent({
   computed: {
     certificationType() {
       let certificationType = "Certificate type not found";
-      if (this.wizardStore.wizardData.certificationTypes?.includes("EceAssistant")) {
+      if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.ECE_ASSISTANT)) {
         certificationType = "ECE Assistant certificate";
-      } else if (this.wizardStore.wizardData.certificationTypes?.includes("OneYear")) {
+      } else if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.ONE_YEAR)) {
         certificationType = "ECE One Year certificate";
-      } else if (this.wizardStore.wizardData.certificationTypes?.includes("FiveYears")) {
+      } else if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
         certificationType = "ECE Five Year certificate";
       }
       return certificationType;

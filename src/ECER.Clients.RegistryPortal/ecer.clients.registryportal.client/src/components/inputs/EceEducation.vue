@@ -105,6 +105,7 @@ import { useAlertStore } from "@/store/alert";
 import { useWizardStore } from "@/store/wizard";
 import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
+import { CertificationType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 
@@ -172,7 +173,7 @@ export default defineComponent({
       return Object.keys(this.modelValue).length + 1;
     },
     getLabelOnCertificateType() {
-      if (this.wizardStore.wizardData.certificationSelection.includes("FiveYears")) {
+      if (this.wizardStore.wizardData.certificationSelection.includes(CertificationType.FIVE_YEAR)) {
         return "Program";
       } else {
         return "Course";
