@@ -250,11 +250,12 @@ internal class ApplicationRepositoryMapper : Profile
           return StageStatus.Complete;
 
         case ecer_Transcript_StatusCode.InProgress:
+        case ecer_Transcript_StatusCode.WaitingforDetails:
         case ecer_Transcript_StatusCode.Submitted:
           return StageStatus.InProgress;
 
         case ecer_Transcript_StatusCode.ApplicationSubmitted:
-        case ecer_Transcript_StatusCode.DRAFT:
+        case ecer_Transcript_StatusCode.Draft:
         case ecer_Transcript_StatusCode.Rejected:
           return StageStatus.InComplete;
 
