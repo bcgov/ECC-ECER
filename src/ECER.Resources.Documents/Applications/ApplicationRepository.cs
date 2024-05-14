@@ -237,9 +237,11 @@ internal sealed class ApplicationRepository : IApplicationRepository
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(characterReferenceId));
 
     mapper.Map(request, characterReference);
-    if (!string.IsNullOrWhiteSpace(request.ReferenceContactInformation.CertificateProvinceId))
+    bool certificateProvinceIdIsGuid = Guid.TryParse(request.ReferenceContactInformation.CertificateProvinceId, out Guid certificateProvinceId);
+
+    if (certificateProvinceIdIsGuid)
     {
-      var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == Guid.Parse(request.ReferenceContactInformation.CertificateProvinceId));
+      var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == certificateProvinceId);
       if (province != null)
       {
         context.AddLink(characterReference, ecer_CharacterReference.Fields.ecer_characterreference_RefCertifiedProvinceId, province);
@@ -257,9 +259,10 @@ internal sealed class ApplicationRepository : IApplicationRepository
     var workExperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(workExperienceReferenceId));
 
     mapper.Map(request, workExperienceReference);
-    if (!string.IsNullOrWhiteSpace(request.ReferenceContactInformation.CertificateProvinceId))
+    bool certificateProvinceIdIsGuid = Guid.TryParse(request.ReferenceContactInformation.CertificateProvinceId, out Guid certificateProvinceId);
+    if (certificateProvinceIdIsGuid)
     {
-      var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == Guid.Parse(request.ReferenceContactInformation.CertificateProvinceId));
+      var province = context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == certificateProvinceId);
       if (province != null)
       {
         context.AddLink(workExperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_RefCertifiedProvinceId, province);

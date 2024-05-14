@@ -50,8 +50,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         true,
         referenceContactInfo,
         referenceEvaluation,
-        true,
-        DateTime.Today
+        true
     );
 
     return referenceSubmissionRequest;
@@ -116,8 +115,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         workExperienceReferenceCompetenciesAssessment,
         faker.Random.Bool(), // ApplicantShouldNotBeECE
         faker.Lorem.Paragraph(), // ApplicantNotQualifiedReason
-        faker.Random.Bool(),// ConfirmProvidedInformationIsRight
-        DateTime.Today
+        faker.Random.Bool() // ConfirmProvidedInformationIsRight
     );
 
     return workExperienceReferenceSubmissionRequest;

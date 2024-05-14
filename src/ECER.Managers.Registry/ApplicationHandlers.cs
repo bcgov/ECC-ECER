@@ -164,6 +164,7 @@ public class ApplicationHandlers(
         break;
     }
     submitReferenceRequest.PortalInvitation = portalInvitation;
+    submitReferenceRequest.DateSigned = DateTime.Today;
     await applicationRepository.SubmitReference(submitReferenceRequest, cancellationToken);
     await portalInvitationRepository.Complete(new CompletePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
     ecerContext.CommitTransaction();
