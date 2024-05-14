@@ -79,6 +79,32 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
+
+    endpointRouteBuilder.MapGet("/api/applications/{id}/status", async Task<Results<Ok<SubmittedApplicationStatus>, BadRequest<ProblemDetails>, NotFound<ProblemDetails>>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var userId = ctx.User.GetUserContext()?.UserId;
+      bool IdIsNotGuid = !Guid.TryParse(id, out _);
+      if (IdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
+      }
+      var query = new ApplicationsQuery
+      {
+        ById = id,
+        ByApplicantId = userId
+      };
+      var result = await messageBus.Send(query, ct);
+      var application = result.Items.FirstOrDefault();
+      if (application == null)
+      {
+        return TypedResults.NotFound(new ProblemDetails() { Title = "Application not found" });
+      }
+      return TypedResults.Ok(mapper.Map<SubmittedApplicationStatus>(application));
+    })
+    .WithOpenApi("Handles application status queries", string.Empty, "application_status_get")
+    .RequireAuthorization()
+    .WithParameterValidation();
+
     endpointRouteBuilder.MapDelete("/api/draftApplications/{id}", async Task<Results<Ok<CancelDraftApplicationResponse>, BadRequest<ProblemDetails>>> (string id, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
        {
          var userId = ctx.User.GetUserContext()?.UserId;
@@ -176,12 +202,14 @@ public record Transcript()
   public bool IsECEAssistant { get; set; }
   public bool DoesECERegistryHaveTranscript { get; set; }
   public bool IsOfficialTranscriptRequested { get; set; }
+
 }
 public record WorkExperienceReference([Required] string? FirstName, [Required] string? LastName, [Required] string? EmailAddress, [Required] int? Hours)
 {
   public string? Id { get; set; }
 
   public string? PhoneNumber { get; set; }
+
 }
 
 public enum CertificationType
@@ -232,4 +260,28 @@ public enum ApplicationStatus
 public record CharacterReference([Required] string? FirstName, [Required] string? LastName, string? PhoneNumber, [Required] string? EmailAddress)
 {
   public string? Id { get; set; }
+}
+
+public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, ApplicationStatus Status)
+{
+
+  public IEnumerable<TranscriptStatus> TranscriptsStatus { get; set; } = Array.Empty<TranscriptStatus>();
+  public IEnumerable<ReferenceStatus> WorkExperienceReferencesStatus { get; set; } = Array.Empty<ReferenceStatus>();
+  public IEnumerable<ReferenceStatus> CharacterReferencesStatus { get; set; } = Array.Empty<ReferenceStatus>();
+}
+
+public record TranscriptStatus(string Id, StageStatus Status, string EducationalInstitutionName);
+
+public record ReferenceStatus(string Id, StageStatus Status, string FirstName, string LastName, string EmailAddress)
+{
+  public string? PhoneNumber { get; set; }
+  public int? Hours { get; set; }
+}
+
+
+public enum StageStatus
+{
+  Complete,
+  InComplete,
+  InProgress
 }
