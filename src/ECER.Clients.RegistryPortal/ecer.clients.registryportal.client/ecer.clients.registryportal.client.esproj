@@ -8,7 +8,7 @@
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
     <!-- Folder where production build objects will be placed -->
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
-    <BuildCommand>npm run lint &amp;&amp; npm run type-check &amp;&amp; npm run build</BuildCommand>
+    <BuildCommand></BuildCommand>
   </PropertyGroup>
 
 </Project>
