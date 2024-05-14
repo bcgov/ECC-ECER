@@ -5,8 +5,8 @@ const workExpereinceDeclarationForm: Form = {
   id: "declarationForm",
   title: "Declaration Reference",
   inputs: {
-    declarationForm: {
-      id: "declaration",
+    willProvideReference: {
+      id: "willProvideReference",
       component: EceWorkExperienceDeclaration,
       props: {},
       cols: {
