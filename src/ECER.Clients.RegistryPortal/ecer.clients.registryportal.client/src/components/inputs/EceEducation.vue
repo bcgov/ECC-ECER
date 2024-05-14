@@ -68,20 +68,14 @@
           maxlength="50"
           class="my-8"
         ></v-text-field>
-        <v-row>
-          <v-checkbox
-            v-model="officialTranscriptRequested"
-            :rules="[atLeastOneCheckedRule]"
-            color="primary"
-            label="I have requested the official transcript from my education institution"
-          ></v-checkbox>
-          <v-checkbox
-            v-model="officialTranscriptReceived"
-            :rules="[atLeastOneCheckedRule]"
-            color="primary"
-            label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
-          ></v-checkbox>
-          <div v-if="!atLeastOneChecked" class="v-messages error-message mb-5" role="alert">Indicate the status of your transcript(s)</div>
+        <v-row class="mb-10">
+          <v-radio-group v-model="transcriptStatus" :rules="[Rules.required('Indicate the status of your transcript(s)')]" color="primary">
+            <v-radio label="I have requested the official transcript from my education institution" value="requested"></v-radio>
+            <v-radio
+              label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
+              value="received"
+            ></v-radio>
+          </v-radio-group>
         </v-row>
         <v-row justify="start" class="ml-1">
           <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Education</v-btn>
@@ -113,6 +107,23 @@ import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
+
+interface EceEducationData {
+  clientId: string;
+  id: string;
+  previousSchool: string;
+  school: string;
+  program: string;
+  campusLocation: string;
+  studentName: string;
+  studentNumber: string;
+  language: string;
+  startYear: string;
+  endYear: string;
+  transcriptStatus: "received" | "requested" | "";
+  Rules: typeof Rules;
+}
+
 export default defineComponent({
   name: "EceEducation",
   components: { EducationList },
@@ -138,7 +149,7 @@ export default defineComponent({
       wizardStore,
     };
   },
-  data: function () {
+  data: function (): EceEducationData {
     return {
       clientId: "",
       id: "",
@@ -151,8 +162,7 @@ export default defineComponent({
       language: "",
       startYear: "",
       endYear: "",
-      officialTranscriptRequested: false,
-      officialTranscriptReceived: false,
+      transcriptStatus: "",
       Rules,
     };
   },
@@ -160,9 +170,6 @@ export default defineComponent({
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
-    },
-    atLeastOneChecked(): boolean {
-      return this.officialTranscriptRequested == true || this.officialTranscriptReceived == true;
     },
     getLabelOnCertificateType() {
       if (this.wizardStore.wizardData.certificationSelection.includes("FiveYears")) {
@@ -197,8 +204,8 @@ export default defineComponent({
           languageofInstruction: this.language,
           startDate: this.startYear,
           endDate: this.endYear,
-          doesECERegistryHaveTranscript: this.officialTranscriptReceived,
-          isOfficialTranscriptRequested: this.officialTranscriptRequested,
+          doesECERegistryHaveTranscript: this.transcriptStatus === "received",
+          isOfficialTranscriptRequested: this.transcriptStatus === "requested",
         };
 
         // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
@@ -245,8 +252,13 @@ export default defineComponent({
       this.language = educationData.education.languageofInstruction ?? "";
       this.startYear = formatDate(educationData.education.startDate) ?? "";
       this.endYear = formatDate(educationData.education.endDate) ?? "";
-      this.officialTranscriptRequested = educationData.education.isOfficialTranscriptRequested ?? false;
-      this.officialTranscriptReceived = educationData.education.doesECERegistryHaveTranscript ?? false;
+      if (educationData.education.isOfficialTranscriptRequested) {
+        this.transcriptStatus = "requested";
+      } else if (educationData.education.doesECERegistryHaveTranscript) {
+        this.transcriptStatus = "received";
+      } else {
+        this.transcriptStatus = "";
+      }
       // Change mode to add
       this.mode = "add";
     },
@@ -275,14 +287,9 @@ export default defineComponent({
       this.language = "";
       this.startYear = "";
       this.endYear = "";
+      this.transcriptStatus = "";
     },
     formatDate,
-    atLeastOneCheckedRule() {
-      if (!this.atLeastOneChecked) {
-        return "";
-      }
-      return true;
-    },
   },
 });
 </script>

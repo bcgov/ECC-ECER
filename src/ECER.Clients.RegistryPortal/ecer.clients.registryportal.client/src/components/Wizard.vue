@@ -10,7 +10,13 @@
       </v-stepper-header>
     </slot>
     <v-stepper-window v-model="wizardStore.step">
-      <v-stepper-window-item v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage" :value="index + 1">
+      <v-stepper-window-item
+        v-for="(step, index) in Object.values(wizard.steps)"
+        :key="step.stage"
+        :value="index + 1"
+        :transition="false"
+        :reverse-transition="false"
+      >
         <v-container>
           <v-row class="justify-space-between">
             <v-col cols="auto">
