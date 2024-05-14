@@ -2,6 +2,7 @@
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Resources.Accounts.Communications;
+using Ganss.Xss;
 using MediatR;
 
 namespace ECER.Managers.Registry;
@@ -43,6 +44,14 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
       ByRegistrantId = request.ByRegistrantId,
       ByStatus = request.ByStatus?.Convert<Contract.Communications.CommunicationStatus, Resources.Accounts.Communications.CommunicationStatus>(),
     });
+    
+    // Sanitize rich text
+    var sanitizer = new HtmlSanitizer();
+    foreach (var communication in communications)
+    {
+      communication.Body = sanitizer.Sanitize(communication.Body);
+    }
+    
     return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communications)!);
   }
 
