@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Net.NetworkInformation;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
@@ -84,7 +83,8 @@ public class ApplicationsEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapGet("/api/applications/{id}/status", async Task<Results<Ok<SubmittedApplicationStatus>, BadRequest<ProblemDetails>, NotFound<ProblemDetails>>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       var userId = ctx.User.GetUserContext()?.UserId;
-      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid)
+      bool IdIsNotGuid = !Guid.TryParse(id, out _);
+      if (IdIsNotGuid)
       {
         return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
       }
