@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <div v-if="smAndDown">
     <v-dialog
@@ -13,7 +14,9 @@
         <v-card-text>
           <h3>{{ messageStore.currentMessage?.subject }}</h3>
           <p class="small mt-2">{{ messageDate }}</p>
-          <p class="small mt-6">{{ messageStore.currentMessage?.text }}</p>
+          <p class="small mt-6">
+            <span v-html="messageStore.currentMessage?.text"></span>
+          </p>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -21,7 +24,9 @@
   <div v-if="mdAndUp">
     <h3>{{ messageStore.currentMessage?.subject }}</h3>
     <p class="small mt-2">{{ messageDate }}</p>
-    <p class="small mt-6">{{ messageStore.currentMessage?.text }}</p>
+    <p class="small mt-6">
+      <span v-html="messageStore.currentMessage?.text"></span>
+    </p>
   </div>
 </template>
 

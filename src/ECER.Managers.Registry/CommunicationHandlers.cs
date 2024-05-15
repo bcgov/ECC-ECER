@@ -43,6 +43,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
       ByRegistrantId = request.ByRegistrantId,
       ByStatus = request.ByStatus?.Convert<Contract.Communications.CommunicationStatus, Resources.Accounts.Communications.CommunicationStatus>(),
     });
+    
     return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communications)!);
   }
 

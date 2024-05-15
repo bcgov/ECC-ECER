@@ -6,4 +6,8 @@
     <ProjectReference Include="..\ECER.Utilities.Security\ECER.Utilities.Security.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="HtmlSanitizer" />
+  </ItemGroup>
+
 </Project>
