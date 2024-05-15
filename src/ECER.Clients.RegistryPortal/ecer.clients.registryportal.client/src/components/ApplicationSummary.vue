@@ -45,12 +45,5 @@ export default defineComponent({
       ],
     };
   },
-  computed: {},
-  methods: {},
 });
 </script>
-<style scoped>
-.test {
-  border-top: 1px solid black;
-}
-</style>
