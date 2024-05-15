@@ -7,7 +7,7 @@
       </p>
     </v-card-item>
     <v-card-actions class="ma-4">
-      <!-- Application status DRAFT -->
+      <!-- Application status Draft -->
       <div v-if="applicationStore.applicationStatus === 'Draft'" class="d-flex flex-row justify-start ga-3 flex-wrap">
         <v-btn size="large" variant="flat" color="warning" @click="$router.push('/application')">
           <v-icon size="large" icon="mdi-arrow-right" />
@@ -16,8 +16,16 @@
         <v-btn class="ma-0" size="large" variant="outlined" color="white" @click="$emit('cancel-application')">Cancel application</v-btn>
       </div>
 
-      <!-- Application status Submitted -->
-      <div v-if="applicationStore.applicationStatus === 'Submitted'" class="d-flex flex-row justify-start ga-3 flex-wrap">
+      <!-- Application status Submitted, Ready, In Progress, Pending Queue -->
+      <div
+        v-if="
+          applicationStore.applicationStatus === 'Submitted' ||
+          applicationStore.applicationStatus === 'Ready' ||
+          applicationStore.applicationStatus === 'InProgress' ||
+          applicationStore.applicationStatus === 'PendingQueue'
+        "
+        class="d-flex flex-row justify-start ga-3 flex-wrap"
+      >
         <v-btn variant="flat" size="large" color="warning" @click="handleManageApplication">
           <v-icon size="large" icon="mdi-arrow-right" />
           Manage Application

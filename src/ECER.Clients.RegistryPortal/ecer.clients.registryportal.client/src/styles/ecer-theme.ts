@@ -14,7 +14,7 @@ const ecerTheme: ThemeDefinition = {
     info: "#003366",
     error: "#D8292F",
     success: "#2E8540",
-    warning: "#FCBA19",
+    warning: "#FFC72C",
   },
 };
 
