@@ -13,42 +13,19 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/my-certifications",
       component: () => import("./components/pages/Dashboard.vue"),
       meta: { requiresAuth: true },
-      children: [
-        {
-          path: "profile",
-          component: () => import("./components/Profile.vue"),
-        },
-        {
-          path: "my-certifications",
-          redirect: "/my-certifications/in-progress",
-          component: () => import("./components/CertificationTabs.vue"),
-          children: [
-            {
-              path: "in-progress",
-              name: "in-progress",
-              component: () => import("./components/Certifications.vue"),
-            },
-            {
-              path: "completed",
-              name: "completed",
-              component: () => import("./components/Certifications.vue"),
-            },
-          ],
-        },
-        {
-          path: "settings",
-          component: () => import("./components/Settings.vue"),
-        },
-      ],
+    },
+    {
+      path: "/profile",
+      component: () => import("./components/Profile.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/messages",
       component: () => import("./components/Messages.vue"),
+      meta: { requiresAuth: true },
     },
-
     {
       path: "/login",
       component: () => import("./components/pages/Login.vue"),
