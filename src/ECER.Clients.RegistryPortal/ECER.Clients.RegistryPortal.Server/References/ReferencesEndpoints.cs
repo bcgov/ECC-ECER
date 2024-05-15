@@ -54,10 +54,12 @@ public class ReferencesEndpoints : IRegisterEndpoints
 }
 
 public record CharacterReferenceSubmissionRequest(string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight);
-public record ReferenceContactInformation([Required] string LastName, [Required] string FirstName, [Required] string Email, [Required] string PhoneNumber, string CertificateProvinceId, string CertificateProvinceOther)
+public record ReferenceContactInformation([Required] string LastName, [Required] string FirstName, [Required] string Email, [Required] string PhoneNumber, string CertificateProvinceOther)
 {
+  public string? CertificateProvinceId { get; set; }
   public string? CertificateNumber { get; set; }
   public DateTime? DateOfBirth { get; set; }
+
 }
 public record CharacterReferenceEvaluation([Required] ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, [Required] ReferenceKnownTime LengthOfAcquaintance, [Required] bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, [Required] bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
 public record OptOutReferenceRequest(string Token, [Required] UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons);

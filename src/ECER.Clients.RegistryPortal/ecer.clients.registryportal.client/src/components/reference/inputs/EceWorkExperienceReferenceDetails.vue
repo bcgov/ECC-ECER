@@ -19,7 +19,7 @@
             maxlength="10"
             hide-details="auto"
             @keypress="isNumber($event)"
-            @input="updateField('hours', $event)"
+            @update:model-value="updateField('hours', $event)"
           />
         </v-col>
       </v-row>
@@ -46,7 +46,7 @@
             color="primary"
             maxlength="100"
             hide-details="auto"
-            @input="updateField('childrenProgramName', $event)"
+            @update:model-value="updateField('childrenProgramName', $event)"
           />
         </v-col>
       </v-row>
@@ -81,15 +81,12 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <p>What ages of children were present?</p>
           <p>Choose all that apply.</p>
-          <v-checkbox
-            v-for="(item, index) in childcareAgeRangesCheckBox"
-            :key="index"
-            :rules="[Rules.hasCheckbox()]"
-            :label="item.label"
-            :value="item.value"
-            hide-details="auto"
+          <CheckboxMultiple
+            :items="childcareAgeRangesCheckBox"
+            :select-all="true"
+            :rules="[Rules.atLeastOneOptionRequired()]"
             @update:model-value="updateField('childcareAgeRanges', $event)"
-          ></v-checkbox>
+          />
         </v-col>
       </v-row>
 
@@ -107,7 +104,7 @@
             hide-details="auto"
             type="date"
             :max="today"
-            @input="updateField('startDate', $event)"
+            @update:model-value="updateField('startDate', $event)"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -120,7 +117,7 @@
             hide-details="auto"
             type="date"
             :max="today"
-            @input="updateField('endDate', $event)"
+            @update:model-value="updateField('endDate', $event)"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -164,6 +161,7 @@
 import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 
+import CheckboxMultiple from "@/components/inputs/CheckboxMultiple.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import { childcareAgeRangesCheckBox, childrenProgramTypeDropdown, workHoursTypeRadio, workReferenceRelationshipRadio } from "@/utils/constant";
@@ -173,6 +171,9 @@ import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
   name: "EceWorkExperienceReferenceDetails",
+  components: {
+    CheckboxMultiple,
+  },
   props: {
     modelValue: {
       type: Object as () => Components.Schemas.WorkExperienceReferenceDetails,

@@ -26,9 +26,11 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         faker.Person.FirstName,
         faker.Person.Email,
         faker.Phone.PhoneNumber(),
-        "98fbb5c5-68da-ee11-904c-000d3af4645f", // Random Canadian province abbreviation,
         faker.Address.City()
-    );
+    )
+    {
+      CertificateProvinceId = "98fbb5c5-68da-ee11-904c-000d3af4645f" // Random Canadian province abbreviation
+    };
 
     // Generating random data for ReferenceEvaluation
     var referenceEvaluation = new CharacterReferenceEvaluation(
@@ -64,9 +66,11 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         faker.Person.FirstName,
         faker.Person.Email,
         faker.Phone.PhoneNumber(),
-        "98fbb5c5-68da-ee11-904c-000d3af4645f", // Random Canadian province abbreviation,
         faker.Address.City()
-    );
+    )
+    {
+      CertificateProvinceId = "98fbb5c5-68da-ee11-904c-000d3af4645f" // Random Canadian province abbreviation
+    };
 
     // Generating random data for WorkExperienceReferenceDetails
     var workExperienceReferenceDetails = new WorkExperienceReferenceDetails(

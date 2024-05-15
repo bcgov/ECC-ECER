@@ -67,7 +67,8 @@ internal class ApplicationRepositoryMapper : Profile
            .ForMember(d => d.ecer_TranscriptId, opts => opts.MapFrom(s => s.Id))
            .ForMember(d => d.ecer_IsECEAssistant, opts => opts.MapFrom(s => s.IsECEAssistant))
            .ForMember(d => d.ecer_DoesECERegistryHaveTranscript, opts => opts.MapFrom(s => s.DoesECERegistryHaveTranscript))
-           .ForMember(d => d.ecer_IsOfficialTranscriptRequested, opts => opts.MapFrom(s => s.IsOfficialTranscriptRequested));
+           .ForMember(d => d.ecer_IsOfficialTranscriptRequested, opts => opts.MapFrom(s => s.IsOfficialTranscriptRequested))
+           .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
 
     CreateMap<ecer_Transcript, Transcript>(MemberList.Source)
           .ForCtorParam(nameof(Transcript.Id), opt => opt.MapFrom(src => src.ecer_TranscriptId))
@@ -82,6 +83,7 @@ internal class ApplicationRepositoryMapper : Profile
           .ForCtorParam(nameof(Transcript.IsOfficialTranscriptRequested), opt => opt.MapFrom(src => src.ecer_IsOfficialTranscriptRequested))
           .ForMember(d => d.CampusLocation, opts => opts.MapFrom(s => s.ecer_CampusLocation))
           .ForMember(d => d.LanguageofInstruction, opts => opts.MapFrom(s => s.ecer_LanguageofInstruction))
+          .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
     .ValidateMemberList(MemberList.Destination);
 
     CreateMap<WorkExperienceReference, ecer_WorkExperienceRef>(MemberList.Source)
@@ -90,7 +92,9 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
           .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
           .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
-          .ForMember(d => d.ecer_TotalNumberofHoursAnticipated, opts => opts.MapFrom(s => s.Hours));
+          .ForMember(d => d.ecer_TotalNumberofHoursAnticipated, opts => opts.MapFrom(s => s.Hours))
+          .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
+
 
     CreateMap<ecer_WorkExperienceRef, WorkExperienceReference>(MemberList.Source)
       .ForCtorParam(nameof(WorkExperienceReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
@@ -99,6 +103,7 @@ internal class ApplicationRepositoryMapper : Profile
       .ForCtorParam(nameof(WorkExperienceReference.Hours), opt => opt.MapFrom(src => src.ecer_TotalNumberofHoursAnticipated))
       .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_WorkExperienceRefId))
+      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<CharacterReference, ecer_CharacterReference>(MemberList.Source)
@@ -106,7 +111,8 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
       .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
-      .ForMember(d => d.ecer_CharacterReferenceId, opts => opts.MapFrom(s => s.Id));
+      .ForMember(d => d.ecer_CharacterReferenceId, opts => opts.MapFrom(s => s.Id))
+      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
 
     CreateMap<ecer_CharacterReference, CharacterReference>(MemberList.Source)
           .ForCtorParam(nameof(CharacterReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
@@ -114,6 +120,7 @@ internal class ApplicationRepositoryMapper : Profile
           .ForCtorParam(nameof(CharacterReference.EmailAddress), opt => opt.MapFrom(src => src.ecer_EmailAddress))
           .ForCtorParam(nameof(CharacterReference.PhoneNumber), opt => opt.MapFrom(src => src.ecer_PhoneNumber))
           .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId))
+          .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
           .ValidateMemberList(MemberList.Destination);
 
     CreateMap<CharacterReferenceSubmissionRequest, ecer_CharacterReference>(MemberList.Source)
@@ -136,7 +143,8 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_ApplicantSuitableReason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantTemperamentAssessment))
       .ForMember(d => d.ecer_ApplicantShouldNOTbeECE, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_applicantnotqualifiedreason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantNotQualifiedReason))
-      .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No));
+      .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
+      .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
 
     CreateMap<WorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
       .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
@@ -181,8 +189,82 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_IsApplicantQualified, opts => opts.MapFrom(s => s.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_ApplicantNOTQualifiedReason, opts => opts.MapFrom(s => s.ApplicantNotQualifiedReason))
       .ForMember(d => d.ecer_ChildcareAgeRange, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildcareAgeRanges))
-      .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No));
+      .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
+      .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
 
+
+
+    CreateMap<ecer_CharacterReference_StatusCode, StageStatus>()
+    .ConvertUsing((src, dest) =>
+    {
+      switch (src)
+      {
+        case ecer_CharacterReference_StatusCode.Approved:
+          return StageStatus.Complete;
+
+        case ecer_CharacterReference_StatusCode.InProgress:
+        case ecer_CharacterReference_StatusCode.UnderReview:
+        case ecer_CharacterReference_StatusCode.WaitingResponse:
+        case ecer_CharacterReference_StatusCode.Submitted:
+          return StageStatus.InProgress;
+
+        case ecer_CharacterReference_StatusCode.ApplicationSubmitted:
+        case ecer_CharacterReference_StatusCode.Draft:
+        case ecer_CharacterReference_StatusCode.Rejected:
+          return StageStatus.InComplete;
+
+        default:
+          throw new ArgumentOutOfRangeException(nameof(src), $"Not expected status value: {src}");
+      }
+    });
+
+
+    CreateMap<ecer_WorkExperienceRef_StatusCode, StageStatus>()
+    .ConvertUsing((src, dest) =>
+    {
+      switch (src)
+      {
+        case ecer_WorkExperienceRef_StatusCode.Approved:
+          return StageStatus.Complete;
+
+        case ecer_WorkExperienceRef_StatusCode.InProgress:
+        case ecer_WorkExperienceRef_StatusCode.UnderReview:
+        case ecer_WorkExperienceRef_StatusCode.WaitingforResponse:
+        case ecer_WorkExperienceRef_StatusCode.Submitted:
+          return StageStatus.InProgress;
+
+        case ecer_WorkExperienceRef_StatusCode.ApplicationSubmitted:
+        case ecer_WorkExperienceRef_StatusCode.Draft:
+        case ecer_WorkExperienceRef_StatusCode.Rejected:
+          return StageStatus.InComplete;
+
+        default:
+          throw new ArgumentOutOfRangeException(nameof(src), $"Not expected status value: {src}");
+      }
+    });
+
+
+    CreateMap<ecer_Transcript_StatusCode, StageStatus>().ConvertUsing((src, dest) =>
+    {
+      switch (src)
+      {
+        case ecer_Transcript_StatusCode.Accepted:
+          return StageStatus.Complete;
+
+        case ecer_Transcript_StatusCode.InProgress:
+        case ecer_Transcript_StatusCode.WaitingforDetails:
+        case ecer_Transcript_StatusCode.Submitted:
+          return StageStatus.InProgress;
+
+        case ecer_Transcript_StatusCode.ApplicationSubmitted:
+        case ecer_Transcript_StatusCode.Draft:
+        case ecer_Transcript_StatusCode.Rejected:
+          return StageStatus.InComplete;
+
+        default:
+          throw new ArgumentOutOfRangeException(nameof(src), $"Not expected status value: {src}");
+      }
+    });
 
     CreateMap<UnabletoProvideReferenceReasons, ecer_UnabletoProvideReferenceReasons>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
