@@ -16,6 +16,7 @@
             :radio-rules="[Rules.requiredRadio()]"
             :model-value="modelValue.childDevelopment"
             @update:model-value="updateFields"
+            :additional-info-props="{ autoGrow: true, counter: 1000, maxlength: 1000, rules: [Rules.required()] }"
           >
             <template #radioLabel>
               <label>
