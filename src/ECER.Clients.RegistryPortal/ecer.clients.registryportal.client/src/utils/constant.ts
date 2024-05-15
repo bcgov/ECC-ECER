@@ -71,6 +71,13 @@ export const workReferenceRelationshipRadio: RadioButtonWrapper<Components.Schem
   { label: "Other", value: "Other" },
 ];
 
+export const likertScaleRadio: RadioButtonWrapper<Components.Schemas.LikertScale>[] = [
+  { label: "Very Competent", value: "VeryCompetent" },
+  { label: "Competent", value: "Competent" },
+  { label: "Somewhat Competent", value: "SomewhatCompetent" },
+  { label: "Not Competent", value: "NotCompetent" },
+];
+
 export const childcareAgeRangesCheckBox: CheckBoxWrapper<Components.Schemas.ChildcareAgeRanges>[] = [
   { label: "0 to 12 Months", value: "From0to12Months" },
   { label: "12 to 24 Months", value: "From12to24Months" },
