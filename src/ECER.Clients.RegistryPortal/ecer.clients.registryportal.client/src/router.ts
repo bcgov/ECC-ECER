@@ -70,7 +70,7 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
-      path: "/application/summary",
+      path: "/manage-application",
       component: () => import("./components/ApplicationSummary.vue"),
       meta: { requiresAuth: true },
     },
