@@ -6,6 +6,7 @@ import { AddressType } from "@/utils/constant";
 
 import { useOidcStore } from "./oidc";
 import { useUserStore } from "./user";
+
 export interface WizardData {
   [key: string]: any;
 }
