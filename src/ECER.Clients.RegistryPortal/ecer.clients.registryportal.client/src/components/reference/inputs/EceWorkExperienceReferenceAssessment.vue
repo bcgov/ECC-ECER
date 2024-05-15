@@ -11,11 +11,11 @@
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
             :trigger-values="['SomewhatCompetent', 'NotCompetent']"
-            additional-info-key="additional"
-            value-key="valuekey"
+            additional-info-key="childDevelopmentReason"
+            value-key="childDevelopment"
             :radio-rules="[Rules.requiredRadio()]"
             :model-value="modelValue.childDevelopment"
-            @update:model-value="update"
+            @update:model-value="updateFields"
           >
             <template #radioLabel>
               <label>
@@ -57,7 +57,7 @@ export default defineComponent({
     },
   },
   emits: {
-    //"update:model-value": (_workExAssessmentData: Components.Schemas.WorkExperienceReferenceCompetenciesAssessment) => true,
+    "update:model-value": (_workExAssessmentData: Components.Schemas.WorkExperienceReferenceCompetenciesAssessment) => true,
   },
   setup: () => {
     const wizardStore = useWizardStore();
@@ -79,9 +79,8 @@ export default defineComponent({
     },
   },
   methods: {
-    update(value: any) {
-      console.log(value);
-      this.test = value.valuekey;
+    updateFields(value: { [key in keyof Components.Schemas.WorkExperienceReferenceCompetenciesAssessment]: any }) {
+      this.$emit("update:model-value", { ...this.modelValue, ...value });
     },
   },
 });

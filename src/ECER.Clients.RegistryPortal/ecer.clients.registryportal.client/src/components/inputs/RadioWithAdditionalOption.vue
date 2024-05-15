@@ -72,7 +72,7 @@ export default defineComponent({
   },
   methods: {
     modalValueUpdated(value: any) {
-      if (this.triggerForAdditionalInformation) {
+      if (this.triggerValues.includes(value)) {
         this.$emit("update:model-value", { [this.valueKey]: value });
       } else {
         this.$emit("update:model-value", { [this.additionalInfoKey]: "", [this.valueKey]: value });
