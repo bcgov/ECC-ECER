@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
+using Ganss.Xss;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Accounts.Communications;
@@ -37,6 +38,13 @@ internal class CommunicationRepository : ICommunicationRepository
 
     //Sort by notifiedOn in descending order
     var sortedCommunications = communications.OrderByDescending(r => r.c.ecer_DateNotified);
+    
+    // Sanitize rich text
+    var sanitizer = new HtmlSanitizer();
+    foreach (var communication in sortedCommunications)
+    {
+      communication.c.ecer_Message = sanitizer.Sanitize(communication.c.ecer_Message);
+    }
     
     var data = sortedCommunications.Select(r => r.c).ToList();
     var result = mapper.Map<IEnumerable<Communication>>(data);
