@@ -113,10 +113,12 @@ public enum UnabletoProvideReferenceReasons
 public record SubmitReferenceRequest()
 {
   public PortalInvitation? PortalInvitation { get; set; }
+  public DateTime DateSigned { get; set; }
 }
 public record CharacterReferenceSubmissionRequest(bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight) : SubmitReferenceRequest;
-public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateProvinceId, string CertificateProvinceOther)
+public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateProvinceOther)
 {
+  public string? CertificateProvinceId { get; set; }
   public string? CertificateNumber { get; set; }
   public DateTime? DateOfBirth { get; set; }
 }
