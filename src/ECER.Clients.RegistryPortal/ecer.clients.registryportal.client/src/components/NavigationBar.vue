@@ -4,7 +4,6 @@
       <img src="../assets/bc-gov-logo.png" width="155" class="logo ms-6" alt="B.C. Government Logo" />
     </router-link>
     <v-toolbar-title>My ECE Registry</v-toolbar-title>
-
     <template v-if="userStore.hasUserInfo">
       <v-menu v-if="$vuetify.display.smAndDown" offset-y bottom transition="slide-y-transition">
         <template #activator="{ props }">
@@ -12,7 +11,6 @@
             <v-icon>mdi-menu</v-icon>
           </v-btn>
         </template>
-
         <v-list>
           <v-list-item link>
             <v-list-item-title>
@@ -49,7 +47,6 @@
           <template #activator="{ props }">
             <v-btn color="primary" v-bind="props" prepend-icon="mdi-account-circle" append-icon="mdi-chevron-down">{{ userStore.firstName }}</v-btn>
           </template>
-
           <v-list>
             <v-list-item link>
               <v-list-item-title>

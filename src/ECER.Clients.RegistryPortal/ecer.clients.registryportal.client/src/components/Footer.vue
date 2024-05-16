@@ -18,7 +18,6 @@
         </div>
       </div>
       <v-divider class="border-opacity-100 w-100 my-6"></v-divider>
-
       <p class="small text-black">© 2024 Government of British Columbia</p>
     </v-container>
   </v-footer>
