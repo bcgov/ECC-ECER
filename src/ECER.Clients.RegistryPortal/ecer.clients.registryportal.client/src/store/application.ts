@@ -7,6 +7,7 @@ import { useWizardStore } from "./wizard";
 export interface ApplicationState {
   applications: Components.Schemas.Application[] | null | undefined;
   draftApplication: Components.Schemas.DraftApplication;
+  application: Components.Schemas.Application | null;
 }
 
 export const useApplicationStore = defineStore("application", {
@@ -21,6 +22,7 @@ export const useApplicationStore = defineStore("application", {
       characterReferences: [] as Components.Schemas.CharacterReference[],
       workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
     },
+    application: null,
   }),
   persist: {
     paths: ["draftApplication"],
@@ -29,11 +31,11 @@ export const useApplicationStore = defineStore("application", {
     hasDraftApplication(state): boolean {
       return state.draftApplication.id !== undefined;
     },
-    inProgressCount(state): number {
-      return state.applications?.length ?? 0;
+    hasApplication(state): boolean {
+      return state.application !== null;
     },
-    completedCount(): number {
-      return 0;
+    applicationStatus(state): Components.Schemas.ApplicationStatus | undefined {
+      return state.application?.status;
     },
   },
   actions: {
@@ -45,7 +47,11 @@ export const useApplicationStore = defineStore("application", {
       // Load the first application as the current draft application
       if (applications?.length) {
         this.applications = applications;
-        this.draftApplication = this.applications[0];
+        this.application = applications[0];
+
+        if (this.application.status === "Draft") {
+          this.draftApplication = this.application;
+        }
       }
 
       return applications;

@@ -96,7 +96,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import type { AddressesData } from "@/components/inputs/EceAddresses.vue";
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";

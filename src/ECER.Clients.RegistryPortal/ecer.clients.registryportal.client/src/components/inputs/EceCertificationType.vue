@@ -87,6 +87,9 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: {
+    "update:model-value": (_certificationTypes: Components.Schemas.CertificationType[]) => true,
+  },
   setup: (props) => {
     const certificationTypeStore = useCertificationTypeStore();
     // If props.modelValue contains "Ite" or "Sne", set the subSelection to those values

@@ -1,9 +1,7 @@
 <template>
-  <div class="bg-white fill-height">
-    <v-container class="py-12">
-      <slot></slot>
-    </v-container>
-  </div>
+  <v-container :class="{ 'py-12': marginTop }">
+    <slot></slot>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -11,5 +9,11 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "PageContainer",
+  props: {
+    marginTop: {
+      type: Boolean,
+      default: true,
+    },
+  },
 });
 </script>

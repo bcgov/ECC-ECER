@@ -1,134 +1,99 @@
 <template>
-  <v-app>
-    <v-navigation-drawer v-model="drawer" floating class="bg-white">
-      <v-list>
-        <v-list-item prepend-icon="mdi-account-edit " :title="userStore.fullName" subtitle="sandra_a88@gmail.com">
-          <template #subtitle>
-            <v-list-item-title>
-              <p class="small">{{ userStore.email }}</p>
-            </v-list-item-title>
-            <v-list-item-title>
-              <p class="small">{{ formatPhoneNumber(userStore.phoneNumber) }}</p>
-            </v-list-item-title>
-          </template>
-        </v-list-item>
-      </v-list>
-
-      <v-divider></v-divider>
-
-      <v-list density="compact" base-color="black" color="links" nav>
-        <v-list-item
-          v-for="item in navigationOptions"
-          :key="item.path"
-          :active="$router.currentRoute.value.path.includes(item.path)"
-          :title="item.name"
-          @click="$router.push(item.path)"
-        >
-          <template #prepend>
-            <v-badge v-if="item.badge" color="error" :content="item.badge">
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-badge>
-            <v-icon v-else>{{ item.icon }}</v-icon>
-          </template>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-app-bar v-if="$vuetify.display.mobile" height="40" elevation="0" color="warning">
-      <v-icon class="ms-6" size="large" color="grey-dark" icon="mdi-menu" @click="drawer = !drawer"></v-icon>
-    </v-app-bar>
-
-    <v-main>
-      <v-container fluid>
+  <ApplicationCard v-if="applications && smAndDown" :is-rounded="false" @cancel-application="showCancelDialog = true" />
+  <PageContainer :margin-top="false">
+    <v-row justify="center">
+      <v-col cols="12" xl="8">
         <v-row>
-          <v-col cols="12" md="8" lg="8" xl="8">
-            <v-card class="rounded-lg fill-height" flat color="white">
-              <v-card-item class="ma-4">
-                <h3>Welcome {{ userStore.fullName }}</h3>
-                <p class="small">Complete and submit your application for certification in early childhood education.</p>
-              </v-card-item>
-              <v-card-actions class="ma-4">
-                <div
-                  v-if="applications && applications?.length > 0 && applicationStore.hasDraftApplication"
-                  class="d-flex flex-row justify-start ga-3 flex-wrap"
-                >
-                  <v-btn variant="flat" rounded="lg" color="primary" @click="$router.push('/application')">Continue Your Application</v-btn>
-                  <v-btn class="ma-0" rounded="lg" variant="outlined" @click="showCancelDialog = true">Cancel Application</v-btn>
-                </div>
-                <v-btn v-else variant="flat" rounded="lg" color="primary" @click="handleStartNewApplication">Start New Application</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-          <v-col cols="12" md="4" lg="4" xl="4">
-            <v-card class="rounded-lg fill-height" flat color="white">
-              <v-card-item class="ma-4">
-                <p class="small">Not sure which certificate to apply for? Fill out a quick self-assessment to see your certification options.</p>
-              </v-card-item>
-              <v-card-actions class="ma-4">
-                <v-btn variant="flat" rounded="lg" color="warning">Check Eligibility</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-          <v-col cols="12" class="order-first order-lg-last order-xl-last">
-            <v-card class="rounded-lg" flat color="white">
-              <v-card-item>
-                <router-view></router-view>
-              </v-card-item>
-            </v-card>
+          <v-col cols="12">
+            <ApplicationCard v-if="applications && mdAndUp" @cancel-application="showCancelDialog = true" />
           </v-col>
         </v-row>
-      </v-container>
-      <ConfirmationDialog
-        :cancel-button-text="'Keep Application'"
-        :accept-button-text="'Cancel Application'"
-        :title="'Cancel Application'"
-        :show="showCancelDialog"
-        @cancel="showCancelDialog = false"
-        @accept="cancelApplication"
-      >
-        <template #confirmation-text>
-          <p>By cancelling your application, it will be removed from the system. You cannot undo this.</p>
-          <p><b>Are you sure you want to proceed?</b></p>
-        </template>
-      </ConfirmationDialog>
-    </v-main>
-  </v-app>
+        <v-row>
+          <v-col cols="12" class="mt-4">
+            <ECEHeader title="Your certificate" />
+            <p class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" class="mt-4">
+            <ECEHeader title="Your My ECE Registry account" />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" sm="6" lg="4">
+            <ActionCard
+              title="Messages"
+              icon="mdi-bell"
+              body="You have no new messages."
+              :links="[
+                {
+                  text: 'Read messages',
+                  to: '/messages',
+                },
+              ]"
+            />
+          </v-col>
+          <v-col cols="12" sm="6" lg="4">
+            <ActionCard
+              title="Your profile"
+              icon="mdi-account-circle"
+              body="Manage your names, address and contact information."
+              :links="[
+                {
+                  text: 'Edit profile',
+                  to: '/profile',
+                },
+              ]"
+            />
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </PageContainer>
+
+  <ConfirmationDialog
+    :cancel-button-text="'Keep Application'"
+    :accept-button-text="'Cancel Application'"
+    :title="'Cancel Application'"
+    :show="showCancelDialog"
+    @cancel="showCancelDialog = false"
+    @accept="cancelApplication"
+  >
+    <template #confirmation-text>
+      <p>By cancelling your application, it will be removed from the system. You cannot undo this.</p>
+      <p><b>Are you sure you want to proceed?</b></p>
+    </template>
+  </ConfirmationDialog>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useDisplay } from "vuetify";
 
 import { cancelDraftApplication } from "@/api/application";
+import ActionCard from "@/components/ActionCard.vue";
+import ApplicationCard from "@/components/ApplicationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
+import ECEHeader from "@/components/ECEHeader.vue";
+import PageContainer from "@/components/PageContainer.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
-import { useMessageStore } from "@/store/message";
 import { useUserStore } from "@/store/user";
 import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "Dashboard",
-  components: { ConfirmationDialog },
+  components: { ConfirmationDialog, PageContainer, ApplicationCard, ECEHeader, ActionCard },
   async setup() {
     const userStore = useUserStore();
-    const messageStore = useMessageStore();
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
 
+    const { smAndDown, mdAndUp } = useDisplay();
+
     const applications = await applicationStore.fetchApplications();
 
-    const navigationOptions = [
-      { name: "My Certifications", path: "/my-certifications", icon: "mdi-folder" },
-      {
-        name: `Messages${messageStore.unreadMessageCount > 0 ? ` (${messageStore.unreadMessageCount})` : ""}`,
-        path: "/messages",
-        icon: "mdi-bell",
-        badge: messageStore.unreadMessageCount,
-      },
-      { name: "Profile", path: "/profile", icon: "mdi-account-edit" },
-    ];
-
-    return { userStore, applicationStore, navigationOptions, alertStore, applications };
+    return { userStore, applicationStore, alertStore, applications, smAndDown, mdAndUp };
   },
   data: () => ({
     showCancelDialog: false,
@@ -136,10 +101,6 @@ export default defineComponent({
   }),
   methods: {
     formatPhoneNumber,
-    handleStartNewApplication() {
-      this.applicationStore.upsertDraftApplication();
-      this.$router.push("/application");
-    },
     async cancelApplication() {
       this.showCancelDialog = false;
       const { data: cancelledApplicationId } = await cancelDraftApplication(this.applicationStore.draftApplication.id!);

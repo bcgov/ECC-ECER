@@ -7,7 +7,7 @@
       $vuetify.display.mobile
         ? {}
         : {
-            'border-bottom': '2px solid #FCBA19',
+            'border-bottom': '2px solid #FFC72C',
           }
     "
   >

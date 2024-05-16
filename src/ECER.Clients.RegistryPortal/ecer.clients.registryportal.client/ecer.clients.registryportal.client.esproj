@@ -8,6 +8,7 @@
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
     <!-- Folder where production build objects will be placed -->
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
+    <BuildCommand></BuildCommand>
   </PropertyGroup>
 
 </Project>
