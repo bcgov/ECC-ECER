@@ -1,4 +1,4 @@
-import type { CheckBoxWrapper, DropdownWrapper, RadioButtonWrapper, TypeToArrayWrapper } from "@/types/form";
+import type { CheckBoxWrapper, DropdownWrapper, RadioButtonWrapper } from "@/types/form";
 import type { Components } from "@/types/openapi";
 
 export enum ApplicationState {
@@ -96,4 +96,4 @@ export const lengthOfAcquaintanceDropdown: DropdownWrapper<Components.Schemas.Re
   { title: "5 or more years", value: "Morethan5years" },
 ];
 
-export const likertScaleTrigger: TypeToArrayWrapper<Components.Schemas.LikertScale>[] = [{ value: "SomewhatCompetent" }, { value: "NotCompetent" }];
+export const likertScaleTrigger: Components.Schemas.LikertScale[] = ["SomewhatCompetent", "NotCompetent"];

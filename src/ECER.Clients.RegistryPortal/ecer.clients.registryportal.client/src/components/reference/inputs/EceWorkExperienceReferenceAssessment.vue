@@ -10,7 +10,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger.map((item) => item.value)"
+            :trigger-values="likertScaleTrigger"
             additional-info-key="childDevelopmentReason"
             value-key="childDevelopment"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -19,10 +19,9 @@
             @update:model-value="updateFields"
           >
             <template #radioLabel>
+              <!-- prettier-ignore -->
               <label>
-                In
-                <b>child development</b>
-                , how competent do you think the applicant is?
+                In <b>child development</b>, how competent do you think the applicant is?
               </label>
             </template>
             <template #textAreaLabel>
@@ -35,7 +34,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger.map((item) => item.value)"
+            :trigger-values="likertScaleTrigger"
             additional-info-key="childGuidanceReason"
             value-key="childGuidance"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -44,10 +43,9 @@
             @update:model-value="updateFields"
           >
             <template #radioLabel>
+              <!-- prettier-ignore -->
               <label>
-                In
-                <b>child guidance</b>
-                , how competent do you think the applicant is?
+                In <b>child guidance</b>, how competent do you think the applicant is?
               </label>
             </template>
             <template #textAreaLabel>
@@ -60,7 +58,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger.map((item) => item.value)"
+            :trigger-values="likertScaleTrigger"
             additional-info-key="healthSafetyAndNutritionReason"
             value-key="healthSafetyAndNutrition"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -69,10 +67,9 @@
             @update:model-value="updateFields"
           >
             <template #radioLabel>
+              <!-- prettier-ignore -->
               <label>
-                In
-                <b>health, safety and nutrition</b>
-                , how competent do you think the applicant is?
+                In <b>health, safety and nutrition</b>, how competent do you think the applicant is?
               </label>
             </template>
             <template #textAreaLabel>
@@ -85,7 +82,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger.map((item) => item.value)"
+            :trigger-values="likertScaleTrigger"
             additional-info-key="developAnEceCurriculumReason"
             value-key="developAnEceCurriculum"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -94,10 +91,9 @@
             @update:model-value="updateFields"
           >
             <template #radioLabel>
+              <!-- prettier-ignore -->
               <label>
-                In
-                <b>developing an early childhood education curriculum</b>
-                , how competent do you think the applicant is?
+                In <b>developing an early childhood education curriculum</b>, how competent do you think the applicant is?
               </label>
             </template>
             <template #textAreaLabel>
@@ -110,7 +106,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger.map((item) => item.value)"
+            :trigger-values="likertScaleTrigger"
             additional-info-key="implementAnEceCurriculumReason"
             value-key="implementAnEceCurriculum"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -119,10 +115,9 @@
             @update:model-value="updateFields"
           >
             <template #radioLabel>
+              <!-- prettier-ignore -->
               <label>
-                In
-                <b>implementing an early childhood education curriculum</b>
-                , how competent do you think the applicant is?
+                In <b>implementing an early childhood education curriculum</b>, how competent do you think the applicant is?
               </label>
             </template>
             <template #textAreaLabel>
@@ -135,7 +130,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger.map((item) => item.value)"
+            :trigger-values="likertScaleTrigger"
             additional-info-key="fosteringPositiveRelationChildReason"
             value-key="fosteringPositiveRelationChild"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -144,10 +139,9 @@
             @update:model-value="updateFields"
           >
             <template #radioLabel>
+              <!-- prettier-ignore -->
               <label>
-                In
-                <b>fostering positive relationships with children under their care</b>
-                , how competent do you think the applicant is?
+                In <b>fostering positive relationships with children under their care</b>, how competent do you think the applicant is?
               </label>
             </template>
             <template #textAreaLabel>
@@ -160,7 +154,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger.map((item) => item.value)"
+            :trigger-values="likertScaleTrigger"
             additional-info-key="fosteringPositiveRelationFamilyReason"
             value-key="fosteringPositiveRelationFamily"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -169,10 +163,9 @@
             @update:model-value="updateFields"
           >
             <template #radioLabel>
+              <!-- prettier-ignore -->
               <label>
-                In
-                <b>fostering positive relationships with the families of children</b>
-                , how competent do you think the applicant is?
+                In <b>fostering positive relationships with the families of children</b>, how competent do you think the applicant is?
               </label>
             </template>
             <template #textAreaLabel>
@@ -185,7 +178,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger.map((item) => item.value)"
+            :trigger-values="likertScaleTrigger"
             additional-info-key="fosteringPositiveRelationCoworkerReason"
             value-key="fosteringPositiveRelationCoworker"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -194,10 +187,9 @@
             @update:model-value="updateFields"
           >
             <template #radioLabel>
+              <!-- prettier-ignore -->
               <label>
-                In
-                <b>fostering positive relationships with co-workers</b>
-                , how competent do you think the applicant is?
+                In <b>fostering positive relationships with co-workers</b>, how competent do you think the applicant is?
               </label>
             </template>
             <template #textAreaLabel>
@@ -217,7 +209,7 @@
           </v-radio-group>
         </v-col>
       </v-row>
-      <v-row v-if="modelValue.isApplicantQualified !== undefined">
+      <v-row v-if="modelValue.isApplicantQualified !== undefined && !modelValue.isApplicantQualified">
         <v-col cols="12" md="8" lg="6" xl="4">
           <label for="applicantNotQualifiedTextArea">Please explain why</label>
           <v-textarea
@@ -239,14 +231,11 @@
 </template>
 
 <script lang="ts">
-import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 
 import RadioWithAdditionalOption from "@/components/inputs/RadioWithAdditionalOption.vue";
-import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import { likertScaleRadio, likertScaleTrigger } from "@/utils/constant";
-import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
@@ -264,9 +253,7 @@ export default defineComponent({
     "update:model-value": (_workExAssessmentData: Components.Schemas.WorkExperienceReferenceCompetenciesAssessment) => true,
   },
   setup: () => {
-    const wizardStore = useWizardStore();
-
-    return { wizardStore, likertScaleRadio, likertScaleTrigger };
+    return { likertScaleRadio, likertScaleTrigger };
   },
 
   data() {
@@ -275,11 +262,6 @@ export default defineComponent({
     };
   },
 
-  computed: {
-    today() {
-      return formatDate(DateTime.now().toString());
-    },
-  },
   methods: {
     updateFields(value: { [key in keyof Components.Schemas.WorkExperienceReferenceCompetenciesAssessment]: any }) {
       this.$emit("update:model-value", { ...this.modelValue, ...value });
