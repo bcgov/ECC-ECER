@@ -217,7 +217,7 @@
           </v-radio-group>
         </v-col>
       </v-row>
-      <v-row v-if="!modelValue.isApplicantQualified">
+      <v-row v-if="modelValue.isApplicantQualified !== undefined">
         <v-col cols="12" md="8" lg="6" xl="4">
           <label for="applicantNotQualifiedTextArea">Please explain why</label>
           <v-textarea
@@ -272,8 +272,6 @@ export default defineComponent({
   data() {
     return {
       Rules,
-      selectedOption: null,
-      test: "",
     };
   },
 
