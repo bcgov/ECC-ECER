@@ -77,7 +77,7 @@ export const useWizardStore = defineStore("wizard", {
           state.wizardData[this.wizardConfig.steps.declaration.form.inputs.signedDate.id] !== null &&
           state.wizardData[this.wizardConfig.steps.declaration.form.inputs.consentCheckbox.id] === true,
         ContactInformation: true,
-        Education: Object.values(state.wizardData[this.wizardConfig.steps.education.form.inputs.educationList.id]).length > numOfEducationRequired,
+        Education: Object.values(state.wizardData[this.wizardConfig.steps.education.form.inputs.educationList.id]).length >= numOfEducationRequired,
         CharacterReferences: (state.wizardData[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id].length || []) > 0,
         WorkReferences:
           Object.values(state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id]).length > 0 &&
