@@ -1,13 +1,14 @@
 <template>
   <slot name="radioLabel" :for="`${valueKey}Label`"></slot>
-  <v-radio-group id="`${valueKey}Label`" :rules="radioRules" hide-details="auto" @update:model-value="modalValueUpdated">
+  <v-radio-group :id="`${valueKey}Label`" :rules="radioRules" hide-details="auto" @update:model-value="modalValueUpdated">
     <v-radio v-for="(item, index) in items" :key="index" :label="item[itemLabel]" :value="item[itemValue]"></v-radio>
   </v-radio-group>
   <slot v-if="triggerForAdditionalInformation" name="textAreaLabel" :for="`${additionalInfoKey}Label`"></slot>
   <v-textarea
     v-if="triggerForAdditionalInformation"
     v-bind="additionalInfoProps"
-    :id="`${valueKey}Label`"
+    :id="`${additionalInfoKey}Label`"
+    class="mt-2"
     color="primary"
     variant="outlined"
     hide-details="auto"
@@ -72,7 +73,7 @@ export default defineComponent({
   },
   methods: {
     modalValueUpdated(value: any) {
-      if (this.triggerForAdditionalInformation) {
+      if (this.triggerValues.includes(value)) {
         this.$emit("update:model-value", { [this.valueKey]: value });
       } else {
         this.$emit("update:model-value", { [this.additionalInfoKey]: "", [this.valueKey]: value });

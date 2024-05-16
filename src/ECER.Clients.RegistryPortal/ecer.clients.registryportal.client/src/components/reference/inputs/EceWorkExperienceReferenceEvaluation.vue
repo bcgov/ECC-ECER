@@ -170,7 +170,7 @@ import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
-  name: "EceWorkExperienceReferenceDetails",
+  name: "EceWorkExperienceReferenceEvaluation",
   components: {
     CheckboxMultiple,
   },

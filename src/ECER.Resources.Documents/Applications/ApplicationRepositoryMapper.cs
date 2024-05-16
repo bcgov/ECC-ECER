@@ -152,7 +152,6 @@ internal class ApplicationRepositoryMapper : Profile
       .ForSourceMember(s => s.WorkExperienceReferenceDetails, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.WorkExperienceReferenceCompetenciesAssessment, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.ApplicantShouldNotBeECE, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.ConfirmProvidedInformationIsRight, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.ReferenceContactInformation.FirstName))
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.ReferenceContactInformation.LastName))
@@ -186,8 +185,8 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_CompetenceFosteringRelationFamilyReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamilyReason))
       .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationCoworker, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworker))
       .ForMember(d => d.ecer_CompetenceFosteringRelationCoworkerReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworkerReason))
-      .ForMember(d => d.ecer_IsApplicantQualified, opts => opts.MapFrom(s => s.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
-      .ForMember(d => d.ecer_ApplicantNOTQualifiedReason, opts => opts.MapFrom(s => s.ApplicantNotQualifiedReason))
+      .ForMember(d => d.ecer_IsApplicantQualified, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.IsApplicantQualified ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
+      .ForMember(d => d.ecer_ApplicantNOTQualifiedReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ApplicantNotQualifiedReason))
       .ForMember(d => d.ecer_ChildcareAgeRange, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildcareAgeRanges))
       .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));

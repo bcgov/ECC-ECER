@@ -1,13 +1,13 @@
-import EceWorkExperienceReferenceDetails from "@/components/reference/inputs/EceWorkExperienceReferenceDetails.vue";
+import EceWorkExperienceReferenceAssessment from "@/components/reference/inputs/EceWorkExperienceReferenceAssessment.vue";
 import type { Form } from "@/types/form";
 
 const workExperienceAssessmentForm: Form = {
-  id: "workExAssessmentForm",
+  id: "workExperienceAssessmentForm",
   title: "Work Experience Assessment form",
   inputs: {
-    workExAssessment: {
-      id: "workExAssessment",
-      component: EceWorkExperienceReferenceDetails,
+    workExperienceAssessment: {
+      id: "workExperienceAssessment",
+      component: EceWorkExperienceReferenceAssessment,
       props: {},
       cols: {
         md: 12,
