@@ -1,4 +1,4 @@
-import type { CheckBoxWrapper, DropdownWrapper, RadioButtonWrapper } from "@/types/form";
+import type { CheckBoxWrapper, DropdownWrapper, RadioButtonWrapper, TypeToArrayWrapper } from "@/types/form";
 import type { Components } from "@/types/openapi";
 
 export enum ApplicationState {
@@ -51,12 +51,13 @@ export const referenceRelationshipDropdown: DropdownWrapper<Components.Schemas.R
 ];
 
 export const childrenProgramTypeDropdown: DropdownWrapper<Components.Schemas.ChildrenProgramType>[] = [
-  { title: "Child minding", value: "Childminding" },
-  { title: "Family child care", value: "Familychildcare" },
-  { title: "In home multi age child care", value: "InHomeMultiAgechildcare" },
-  { title: "Multi age child care", value: "MultiAgechildcare" },
-  { title: "Occasional child care", value: "Occasionalchildcare" },
+  { title: "Group child care", value: "Groupchildcare" },
   { title: "Preschool", value: "Preschool" },
+  { title: "Family child care", value: "Familychildcare" },
+  { title: "Occasional child care", value: "Occasionalchildcare" },
+  { title: "Multi-Age child care", value: "MultiAgechildcare" },
+  { title: "In-Home Multi-Age child care", value: "InHomeMultiAgechildcare" },
+  { title: "Child-minding", value: "Childminding" },
   { title: "Other", value: "Other" },
 ];
 
@@ -83,8 +84,8 @@ export const childcareAgeRangesCheckBox: CheckBoxWrapper<Components.Schemas.Chil
   { label: "12 to 24 Months", value: "From12to24Months" },
   { label: "25 to 30 Months", value: "From25to30Months" },
   { label: "31 to 36 Months", value: "From31to36Months" },
-  { label: "Grade 1", value: "Grade1" },
-  { label: "Preschool", value: "Preschool" },
+  { label: "In preschool", value: "Preschool" },
+  { label: "In grade 1", value: "Grade1" },
 ];
 
 export const lengthOfAcquaintanceDropdown: DropdownWrapper<Components.Schemas.ReferenceKnownTime>[] = [
@@ -94,3 +95,5 @@ export const lengthOfAcquaintanceDropdown: DropdownWrapper<Components.Schemas.Re
   { title: "2 to 5 years", value: "From2to5years" },
   { title: "5 or more years", value: "Morethan5years" },
 ];
+
+export const likertScaleTrigger: TypeToArrayWrapper<Components.Schemas.LikertScale>[] = [{ value: "SomewhatCompetent" }, { value: "NotCompetent" }];

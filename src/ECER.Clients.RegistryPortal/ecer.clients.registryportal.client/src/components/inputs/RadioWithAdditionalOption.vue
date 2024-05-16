@@ -8,6 +8,7 @@
     v-if="triggerForAdditionalInformation"
     v-bind="additionalInfoProps"
     :id="`${additionalInfoKey}Label`"
+    class="mt-2"
     color="primary"
     variant="outlined"
     hide-details="auto"
@@ -72,7 +73,7 @@ export default defineComponent({
   },
   methods: {
     modalValueUpdated(value: any) {
-      if (this.triggerForAdditionalInformation) {
+      if (this.triggerValues.includes(value)) {
         this.$emit("update:model-value", { [this.valueKey]: value });
       } else {
         this.$emit("update:model-value", { [this.additionalInfoKey]: "", [this.valueKey]: value });

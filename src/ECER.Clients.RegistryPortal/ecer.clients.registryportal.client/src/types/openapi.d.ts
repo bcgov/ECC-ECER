@@ -290,6 +290,8 @@ declare namespace Components {
       fosteringPositiveRelationFamilyReason?: string | null;
       fosteringPositiveRelationCoworker?: LikertScale;
       fosteringPositiveRelationCoworkerReason?: string | null;
+      isApplicantQualified?: boolean;
+      applicantNotQualifiedReason?: string | null;
     }
     export interface WorkExperienceReferenceDetails {
       hours?: number; // int32
@@ -309,8 +311,6 @@ declare namespace Components {
       referenceContactInformation?: ReferenceContactInformation;
       workExperienceReferenceDetails?: WorkExperienceReferenceDetails;
       workExperienceReferenceCompetenciesAssessment?: WorkExperienceReferenceCompetenciesAssessment;
-      applicantShouldNotBeECE?: boolean;
-      applicantNotQualifiedReason?: string | null;
       confirmProvidedInformationIsRight?: boolean;
     }
     export type WorkHoursType = "FullTime" | "PartTime";
