@@ -95,5 +95,3 @@ export const lengthOfAcquaintanceDropdown: DropdownWrapper<Components.Schemas.Re
   { title: "2 to 5 years", value: "From2to5years" },
   { title: "5 or more years", value: "Morethan5years" },
 ];
-
-export const likertScaleTrigger: Components.Schemas.LikertScale[] = ["SomewhatCompetent", "NotCompetent"];

@@ -25,7 +25,3 @@ interface CheckBoxWrapper<T> {
   label: string;
   value: T;
 }
-
-interface TypeToArrayWrapper<T> {
-  value: T;
-}

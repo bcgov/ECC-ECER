@@ -10,7 +10,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger"
+            :trigger-values="likertScaleTriggerValues"
             additional-info-key="childDevelopmentReason"
             value-key="childDevelopment"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -34,7 +34,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger"
+            :trigger-values="likertScaleTriggerValues"
             additional-info-key="childGuidanceReason"
             value-key="childGuidance"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -58,7 +58,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger"
+            :trigger-values="likertScaleTriggerValues"
             additional-info-key="healthSafetyAndNutritionReason"
             value-key="healthSafetyAndNutrition"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -82,7 +82,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger"
+            :trigger-values="likertScaleTriggerValues"
             additional-info-key="developAnEceCurriculumReason"
             value-key="developAnEceCurriculum"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -106,7 +106,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger"
+            :trigger-values="likertScaleTriggerValues"
             additional-info-key="implementAnEceCurriculumReason"
             value-key="implementAnEceCurriculum"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -130,7 +130,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger"
+            :trigger-values="likertScaleTriggerValues"
             additional-info-key="fosteringPositiveRelationChildReason"
             value-key="fosteringPositiveRelationChild"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -154,7 +154,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger"
+            :trigger-values="likertScaleTriggerValues"
             additional-info-key="fosteringPositiveRelationFamilyReason"
             value-key="fosteringPositiveRelationFamily"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -178,7 +178,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
-            :trigger-values="likertScaleTrigger"
+            :trigger-values="likertScaleTriggerValues"
             additional-info-key="fosteringPositiveRelationCoworkerReason"
             value-key="fosteringPositiveRelationCoworker"
             :radio-rules="[Rules.requiredRadio('Select an option')]"
@@ -235,7 +235,7 @@ import { defineComponent } from "vue";
 
 import RadioWithAdditionalOption from "@/components/inputs/RadioWithAdditionalOption.vue";
 import type { Components } from "@/types/openapi";
-import { likertScaleRadio, likertScaleTrigger } from "@/utils/constant";
+import { likertScaleRadio } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
@@ -253,7 +253,8 @@ export default defineComponent({
     "update:model-value": (_workExAssessmentData: Components.Schemas.WorkExperienceReferenceCompetenciesAssessment) => true,
   },
   setup: () => {
-    return { likertScaleRadio, likertScaleTrigger };
+    const likertScaleTriggerValues: Components.Schemas.LikertScale[] = ["SomewhatCompetent", "NotCompetent"];
+    return { likertScaleRadio, likertScaleTriggerValues };
   },
 
   data() {
