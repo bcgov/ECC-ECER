@@ -3,7 +3,6 @@ import type { ThemeDefinition } from "vuetify";
 const ecerTheme: ThemeDefinition = {
   dark: false,
   colors: {
-    background: "#F2F2F2",
     primary: "#003366",
     alternate: "#1976D2",
     secondary: "#38598A",
