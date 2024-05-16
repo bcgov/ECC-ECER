@@ -1,11 +1,11 @@
 <template>
-  <ApplicationCard v-if="applications && applications?.length > 0 && smAndDown" :is-rounded="false" @cancel-application="showCancelDialog = true" />
+  <ApplicationCard v-if="applications && smAndDown" :is-rounded="false" @cancel-application="showCancelDialog = true" />
   <PageContainer :margin-top="false">
     <v-row justify="center">
       <v-col cols="12" xl="8">
         <v-row>
           <v-col cols="12">
-            <ApplicationCard v-if="applications && applications?.length > 0 && mdAndUp" @cancel-application="showCancelDialog = true" />
+            <ApplicationCard v-if="applications && mdAndUp" @cancel-application="showCancelDialog = true" />
           </v-col>
         </v-row>
         <v-row>
