@@ -1,5 +1,5 @@
 <template>
-  <v-footer border app absolute :style="{ 'min-height': '50px' }">
+  <v-footer app absolute :style="{ 'min-height': '50px' }">
     <v-container>
       <div class="d-flex w-100 justify-space-between">
         <router-link to="/">
