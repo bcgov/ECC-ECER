@@ -27,7 +27,7 @@
           </ul>
         </div>
       </v-row>
-      <router-link :to="'/my-certifications/in-progress'">
+      <router-link :to="'/'">
         <v-btn class="mt-5" type="" rounded="lg" color="primary">Go to Dashboard</v-btn>
       </router-link>
     </v-col>

@@ -4,12 +4,25 @@
       <v-card-text>
         {{ body }}
       </v-card-text>
+      <div class="d-flex flex-column align-start">
+        <v-btn v-for="(link, index) in links" :key="index" variant="text">
+          <router-link :to="link.to">
+            {{ link.text }}
+          </router-link>
+        </v-btn>
+      </div>
     </v-card>
   </v-responsive>
 </template>
 
 <script lang="ts">
+import type { PropType } from "vue";
 import { defineComponent } from "vue";
+
+interface Link {
+  text: string;
+  to: string;
+}
 
 export default defineComponent({
   name: "ActionCard",
@@ -25,6 +38,11 @@ export default defineComponent({
     body: {
       type: String,
       required: true,
+    },
+    links: {
+      type: Array as PropType<Link[]>,
+      required: false,
+      default: () => [],
     },
   },
 });

@@ -19,11 +19,31 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="4">
-            <ActionCard title="Messages" icon="mdi-bell" body="You have no new messages." />
+          <v-col cols="12" sm="6" lg="4">
+            <ActionCard
+              title="Messages"
+              icon="mdi-bell"
+              body="You have no new messages."
+              :links="[
+                {
+                  text: 'Read messages',
+                  to: '/messages',
+                },
+              ]"
+            />
           </v-col>
-          <v-col cols="4">
-            <ActionCard title="Your profile" icon="mdi-account-circle" body="Manage your names, address and contact information." />
+          <v-col cols="12" sm="6" lg="4">
+            <ActionCard
+              title="Your profile"
+              icon="mdi-account-circle"
+              body="Manage your names, address and contact information."
+              :links="[
+                {
+                  text: 'Edit profile',
+                  to: '/profile',
+                },
+              ]"
+            />
           </v-col>
         </v-row>
       </v-col>
