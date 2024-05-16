@@ -1,5 +1,5 @@
 <template>
-  <v-card class="fill-height" flat color="primary">
+  <v-card :rounded="!isRounded ? '0' : ''" flat color="primary">
     <v-card-item class="ma-4">
       <h3 class="text-white">{{ title }}</h3>
       <p class="small text-white mt-4">
@@ -51,6 +51,12 @@ import { formatDate } from "@/utils/format";
 
 export default defineComponent({
   name: "ApplicationCard",
+  props: {
+    isRounded: {
+      type: Boolean,
+      default: true,
+    },
+  },
   emits: ["cancel-application"],
   setup() {
     const applicationStore = useApplicationStore();

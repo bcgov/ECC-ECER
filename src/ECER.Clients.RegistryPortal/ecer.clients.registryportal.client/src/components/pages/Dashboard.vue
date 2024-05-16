@@ -1,20 +1,21 @@
 <template>
-  <PageContainer>
+  <ApplicationCard v-if="applications && applications?.length > 0 && smAndDown" :is-rounded="false" @cancel-application="showCancelDialog = true" />
+  <PageContainer :margin-top="false">
     <v-row justify="center">
       <v-col cols="12" xl="8">
         <v-row>
           <v-col cols="12">
-            <ApplicationCard v-if="applications && applications?.length > 0" @cancel-application="showCancelDialog = true" />
+            <ApplicationCard v-if="applications && applications?.length > 0 && mdAndUp" @cancel-application="showCancelDialog = true" />
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" class="mt-6">
+          <v-col cols="12" class="mt-4">
             <ECEHeader title="Your certificate" />
             <p class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" class="mt-6">
+          <v-col cols="12" class="mt-4">
             <ECEHeader title="Your My ECE Registry account" />
           </v-col>
         </v-row>
@@ -67,6 +68,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useDisplay } from "vuetify";
 
 import { cancelDraftApplication } from "@/api/application";
 import ActionCard from "@/components/ActionCard.vue";
@@ -87,9 +89,11 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
 
+    const { smAndDown, mdAndUp } = useDisplay();
+
     const applications = await applicationStore.fetchApplications();
 
-    return { userStore, applicationStore, alertStore, applications };
+    return { userStore, applicationStore, alertStore, applications, smAndDown, mdAndUp };
   },
   data: () => ({
     showCancelDialog: false,
