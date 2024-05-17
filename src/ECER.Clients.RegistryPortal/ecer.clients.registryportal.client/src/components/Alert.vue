@@ -2,9 +2,10 @@
   <v-alert
     :type="type"
     :color="type"
+    :icon="icon"
     closable
     variant="outlined"
-    rounded="lg"
+    :rounded="rounded ? 'lg' : 0"
     :class="{
       error: type === 'error',
       warning: type === 'warning',
@@ -26,6 +27,14 @@ export default defineComponent({
     type: {
       type: String as PropType<"info" | "warning" | "error" | "success">,
       default: "info",
+    },
+    icon: {
+      type: String,
+      default: "mdi-alert-circle",
+    },
+    rounded: {
+      type: Boolean,
+      default: true,
     },
   },
 });

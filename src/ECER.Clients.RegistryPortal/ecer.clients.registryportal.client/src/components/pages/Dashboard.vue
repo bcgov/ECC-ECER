@@ -1,11 +1,17 @@
 <template>
-  <ApplicationCard v-if="applications && smAndDown" :is-rounded="false" @cancel-application="showCancelDialog = true" />
+  <template v-if="smAndDown">
+    <Alert v-if="messageStore.unreadMessageCount > 0" icon="mdi-bell" :rounded="false"><UnreadMessages /></Alert>
+    <ApplicationCard v-if="applications" :is-rounded="false" @cancel-application="showCancelDialog = true" />
+  </template>
   <PageContainer :margin-top="false">
     <v-row justify="center">
       <v-col cols="12" xl="8">
-        <v-row>
+        <v-row v-if="mdAndUp">
+          <v-col v-if="messageStore.unreadMessageCount > 0" cols="12">
+            <Alert icon="mdi-bell"><UnreadMessages /></Alert>
+          </v-col>
           <v-col cols="12">
-            <ApplicationCard v-if="applications && mdAndUp" @cancel-application="showCancelDialog = true" />
+            <ApplicationCard v-if="applications" @cancel-application="showCancelDialog = true" />
           </v-col>
         </v-row>
         <v-row>
@@ -24,27 +30,29 @@
             <ActionCard
               title="Messages"
               icon="mdi-bell"
-              body="You have no new messages."
               :links="[
                 {
                   text: 'Read messages',
                   to: '/messages',
                 },
               ]"
-            />
+            >
+              <UnreadMessages :linkable="false" />
+            </ActionCard>
           </v-col>
           <v-col cols="12" sm="6" lg="4">
             <ActionCard
               title="Your profile"
               icon="mdi-account-circle"
-              body="Manage your names, address and contact information."
               :links="[
                 {
                   text: 'Edit profile',
                   to: '/profile',
                 },
               ]"
-            />
+            >
+              Manage your names, address and contact information.
+            </ActionCard>
           </v-col>
         </v-row>
       </v-col>
@@ -56,7 +64,7 @@
     :accept-button-text="'Cancel Application'"
     :title="'Cancel Application'"
     :show="showCancelDialog"
-    @cancel="showCancelDialog = false"
+    @cancel="() => (showCancelDialog = false)"
     @accept="cancelApplication"
   >
     <template #confirmation-text>
@@ -71,34 +79,45 @@ import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
 
 import { cancelDraftApplication } from "@/api/application";
+import { getUserInfo } from "@/api/user";
 import ActionCard from "@/components/ActionCard.vue";
+import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
+import UnreadMessages from "@/components/UnreadMessages.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
+import { useMessageStore } from "@/store/message";
 import { useUserStore } from "@/store/user";
 import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "Dashboard",
-  components: { ConfirmationDialog, PageContainer, ApplicationCard, ECEHeader, ActionCard },
+  components: { ConfirmationDialog, PageContainer, ApplicationCard, ECEHeader, ActionCard, Alert, UnreadMessages },
   async setup() {
     const userStore = useUserStore();
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
-
+    const messageStore = useMessageStore();
     const { smAndDown, mdAndUp } = useDisplay();
 
     const applications = await applicationStore.fetchApplications();
 
-    return { userStore, applicationStore, alertStore, applications, smAndDown, mdAndUp };
+    // Refresh userInfo from the server
+    const userInfo = await getUserInfo();
+    if (userInfo !== null) {
+      userStore.setUserInfo(userInfo);
+    }
+
+    return { userStore, applicationStore, alertStore, messageStore, applications, smAndDown, mdAndUp };
   },
   data: () => ({
     showCancelDialog: false,
     drawer: null as boolean | null | undefined,
   }),
+
   methods: {
     formatPhoneNumber,
     async cancelApplication() {
