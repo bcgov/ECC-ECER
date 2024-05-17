@@ -28,4 +28,11 @@ const postCharacterReference = async (characterReferenceSubmission: Components.S
   return apiResultHandler.execute(client.character_reference_post(null, characterReferenceSubmission), "character_reference_post");
 };
 
-export { getReference, optOutReference, postCharacterReference };
+const postWorkExperienceReference = async (
+  workExperienceReferenceSubmission: Components.Schemas.WorkExperienceReferenceSubmissionRequest,
+): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute(client.workExperience_reference_post(null, workExperienceReferenceSubmission), "workExperience_reference_post");
+};
+
+export { getReference, optOutReference, postCharacterReference, postWorkExperienceReference };

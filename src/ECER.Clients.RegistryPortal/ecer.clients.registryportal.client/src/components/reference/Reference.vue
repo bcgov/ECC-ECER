@@ -33,7 +33,11 @@
             </v-btn>
             <v-btn
               v-else-if="wizardStore.step === userReviewStep"
-              :loading="loadingStore.isLoading('character_reference_post')"
+              :loading="
+                wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER
+                  ? loadingStore.isLoading('character_reference_post')
+                  : loadingStore.isLoading('workExperience_reference_post')
+              "
               rounded="lg"
               variant="flat"
               color="primary"
@@ -53,7 +57,7 @@
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 
-import { getReference, optOutReference, postCharacterReference } from "@/api/reference";
+import { getReference, optOutReference, postCharacterReference, postWorkExperienceReference } from "@/api/reference";
 import characterReferenceWizardConfig from "@/config/character-reference-wizard";
 import workExperienceReferenceWizardConfig from "@/config/work-experience-reference-wizard";
 import { useAlertStore } from "@/store/alert";
@@ -138,6 +142,22 @@ export default defineComponent({
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
         });
 
+        if (!response?.error) {
+          this.$router.push({ path: "/reference-submitted" });
+        }
+      } else if (this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE) {
+        const response = await postWorkExperienceReference({
+          token: this.$route.params.token as string,
+          willProvideReference: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id],
+          referenceContactInformation:
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id],
+          workExperienceReferenceDetails:
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id],
+          workExperienceReferenceCompetenciesAssessment:
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id],
+          confirmProvidedInformationIsRight:
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
+        });
         if (!response?.error) {
           this.$router.push({ path: "/reference-submitted" });
         }
