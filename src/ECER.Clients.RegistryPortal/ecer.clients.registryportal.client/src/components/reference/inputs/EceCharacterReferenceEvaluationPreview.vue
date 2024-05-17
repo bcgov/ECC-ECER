@@ -5,7 +5,7 @@
         <v-col cols="4">
           <p class="small">What is your relationship with the applicant?</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ evaluation.referenceRelationship }}</p>
         </v-col>
       </v-row>
@@ -13,7 +13,7 @@
         <v-col cols="4">
           <p class="small">Specify your relationship with the applicant</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ evaluation.referenceRelationshipOther }}</p>
         </v-col>
       </v-row>
@@ -21,7 +21,7 @@
         <v-col cols="4">
           <p class="small">How long have you known the applicant?</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ evaluation.lengthOfAcquaintance }}</p>
         </v-col>
       </v-row>
@@ -29,7 +29,7 @@
         <v-col cols="4">
           <p class="small">Have you observed the applicant working with young children?</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ evaluation.workedWithChildren ? "Yes" : "No" }}</p>
         </v-col>
       </v-row>
@@ -43,7 +43,7 @@
             }}
           </p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ evaluation.childInteractionObservations }}</p>
         </v-col>
       </v-row>
@@ -51,7 +51,7 @@
         <v-col cols="4">
           <p class="small">Explain why you consider the applicant to have the temperament and ability to manage or work with young children.</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ evaluation.applicantTemperamentAssessment }}</p>
         </v-col>
       </v-row>
@@ -62,7 +62,7 @@
             Do you believe/think the applicant should be granted authorization to be an ECE or ECE Assistant
           </p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ evaluation.applicantShouldNotBeECE ? "No" : "Yes" }}</p>
         </v-col>
       </v-row>
@@ -70,7 +70,7 @@
         <v-col cols="4">
           <p class="small">Why do you think the applicant should NOT be granted authorization to be an ECE or ECE Assistant</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ evaluation.applicantNotQualifiedReason }}</p>
         </v-col>
       </v-row>

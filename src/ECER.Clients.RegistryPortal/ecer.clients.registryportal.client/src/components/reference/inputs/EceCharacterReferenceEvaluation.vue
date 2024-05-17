@@ -26,6 +26,7 @@
             label="Specify your relationship with applicant"
             variant="outlined"
             color="primary"
+            maxlength="100"
             :rules="[Rules.required('Enter your relationship with the applicant')]"
             hide-details="auto"
             @update:model-value="updateField('referenceRelationshipOther', $event)"
