@@ -5,7 +5,7 @@
         <v-col cols="4">
           <p class="small">Last Name</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ reference.lastName }}</p>
         </v-col>
       </v-row>
@@ -13,7 +13,7 @@
         <v-col cols="4">
           <p class="small">First Name</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ reference.firstName }}</p>
         </v-col>
       </v-row>
@@ -21,7 +21,7 @@
         <v-col cols="4">
           <p class="small">Email</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ reference.email }}</p>
         </v-col>
       </v-row>
@@ -29,7 +29,7 @@
         <v-col cols="4">
           <p class="small">Phone Number</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ reference.phoneNumber }}</p>
         </v-col>
       </v-row>
@@ -37,7 +37,7 @@
         <v-col cols="4">
           <p class="small">Province/Territory Certified/Registered In</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ reference.certificateProvinceId }}</p>
         </v-col>
       </v-row>
@@ -45,7 +45,7 @@
         <v-col cols="4">
           <p class="small">ECE Certification/Registration Number</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ reference.certificateNumber }}</p>
         </v-col>
       </v-row>
@@ -53,7 +53,7 @@
         <v-col cols="4">
           <p class="small">Your date of birth</p>
         </v-col>
-        <v-col>
+        <v-col cols="8">
           <p class="small font-weight-bold">{{ formatDate(reference.dateOfBirth, "LLLL dd, yyyy") }}</p>
         </v-col>
       </v-row>
