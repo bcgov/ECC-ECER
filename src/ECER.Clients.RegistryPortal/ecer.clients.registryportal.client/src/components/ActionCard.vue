@@ -2,7 +2,7 @@
   <v-responsive :aspect-ratio="16 / 9">
     <v-card height="100%" :prepend-icon="icon" :title="title" class="custom-card-styling">
       <v-card-text>
-        {{ body }}
+        <slot></slot>
       </v-card-text>
       <div class="d-flex flex-column align-start">
         <v-btn v-for="(link, index) in links" :key="index" variant="text">
@@ -32,10 +32,6 @@ export default defineComponent({
       required: true,
     },
     icon: {
-      type: String,
-      required: true,
-    },
-    body: {
       type: String,
       required: true,
     },
