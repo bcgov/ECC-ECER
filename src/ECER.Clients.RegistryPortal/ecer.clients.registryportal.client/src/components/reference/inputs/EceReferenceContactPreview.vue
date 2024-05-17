@@ -33,6 +33,14 @@
           <p class="small font-weight-bold">{{ reference.phoneNumber }}</p>
         </v-col>
       </v-row>
+      <v-row v-if="reference.certificateProvinceId">
+        <v-col cols="4">
+          <p class="small">Province/Territory Certified/Registered In</p>
+        </v-col>
+        <v-col>
+          <p class="small font-weight-bold">{{ reference.certificateProvinceId }}</p>
+        </v-col>
+      </v-row>
       <v-row v-if="reference.certificateNumber">
         <v-col cols="4">
           <p class="small">ECE Certification/Registration Number</p>
@@ -41,12 +49,12 @@
           <p class="small font-weight-bold">{{ reference.certificateNumber }}</p>
         </v-col>
       </v-row>
-      <v-row v-if="reference.certificateProvinceId">
+      <v-row v-if="reference.dateOfBirth">
         <v-col cols="4">
-          <p class="small">Province/Territory Certified/Registered In</p>
+          <p class="small">Your date of birth</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ reference.certificateProvinceId }}</p>
+          <p class="small font-weight-bold">{{ formatDate(reference.dateOfBirth, "LLLL dd, yyyy") }}</p>
         </v-col>
       </v-row>
     </template>
@@ -61,6 +69,7 @@ import { useConfigStore } from "@/store/config";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
+import { formatDate } from "@/utils/format";
 
 export default defineComponent({
   name: "EceReferenceContactPreview",
@@ -98,8 +107,13 @@ export default defineComponent({
             ?.certificateProvinceOther,
         certificateNumber:
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.certificateNumber,
+        dateOfBirth:
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.dateOfBirth,
       };
     },
+  },
+  methods: {
+    formatDate,
   },
 });
 </script>

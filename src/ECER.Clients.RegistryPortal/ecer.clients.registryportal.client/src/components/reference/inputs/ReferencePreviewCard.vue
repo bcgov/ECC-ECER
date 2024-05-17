@@ -12,6 +12,7 @@
       <v-row align="center">
         <v-col>
           <h3 :class="isValid ? 'text-black' : 'text-error'">{{ title }}</h3>
+          <div class="small text-black">{{ subtitle }}</div>
           <p v-if="!isValid" class="small text-error">
             <v-icon icon="mdi-alert-circle" color="error" class="mr-2"></v-icon>
             You must enter all required information in a valid format before submitting your application
@@ -41,6 +42,10 @@ export default defineComponent({
     title: {
       type: String,
       required: true,
+    },
+    subtitle: {
+      type: String,
+      default: "",
     },
     referenceStage: {
       type: String as PropType<ReferenceStage>,
