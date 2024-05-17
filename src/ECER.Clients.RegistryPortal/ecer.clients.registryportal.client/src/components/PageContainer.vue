@@ -1,5 +1,5 @@
 <template>
-  <v-container :class="{ 'py-12': marginTop }">
+  <v-container :class="{ 'mb-12': true, 'pt-12': marginTop }">
     <slot></slot>
   </v-container>
 </template>
