@@ -20,7 +20,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="8.0.4" />
     <PackageVersion Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="8.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="8.0.5" />
-    <PackageVersion Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.4" />
+    <PackageVersion Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.5" />
     <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.4" />
