@@ -11,7 +11,7 @@ public class PortalInvitationMapper : Profile
          .ForMember(dest => dest.ApplicantFirstName, opt => opt.Ignore())
          .ForMember(dest => dest.ApplicantLastName, opt => opt.Ignore())
          .ForMember(dest => dest.CertificationTypes, opt => opt.Ignore())
-         .ForMember(dest => dest.WorkExperinceReferenceHours, opt => opt.Ignore());
+         .ForMember(dest => dest.WorkExperienceReferenceHours, opt => opt.Ignore());
 
   }
 }

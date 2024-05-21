@@ -38,7 +38,7 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
         var workExRef = application.WorkExperienceReferences.SingleOrDefault(work => work.Id == portalInvitation.WorkexperienceReferenceId);
         if (workExRef != null)
         {
-          result.WorkExperinceReferenceHours = workExRef.Hours;
+          result.WorkExperienceReferenceHours = workExRef.Hours;
         }
       }
     }
