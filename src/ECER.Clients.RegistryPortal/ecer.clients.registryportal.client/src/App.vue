@@ -8,7 +8,7 @@
           <Snackbar />
           <router-view></router-view>
         </v-main>
-        <EceFooter />
+        <!-- <EceFooter /> -->
       </v-app>
     </Suspense>
   </main>
@@ -23,7 +23,7 @@ import { useUserStore } from "@/store/user";
 
 import { getProfile } from "./api/profile";
 import { getUserInfo } from "./api/user";
-import EceFooter from "./components/Footer.vue";
+// import EceFooter from "./components/Footer.vue";
 import InactiveSessionTimeout from "./components/InactiveSessionTimeout.vue";
 import NavigationBar from "./components/NavigationBar.vue";
 import Snackbar from "./components/Snackbar.vue";
@@ -34,7 +34,7 @@ export default defineComponent({
   name: "App",
   components: {
     NavigationBar,
-    EceFooter,
+    // EceFooter,
     Snackbar,
     InactiveSessionTimeout,
   },
