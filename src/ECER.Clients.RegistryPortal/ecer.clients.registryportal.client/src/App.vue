@@ -8,7 +8,7 @@
           <Snackbar />
           <router-view></router-view>
         </v-main>
-        <EceFooter />
+        <!-- <EceFooter /> -->
       </v-app>
     </Suspense>
   </main>
