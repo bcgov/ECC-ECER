@@ -10,6 +10,8 @@ public class PortalInvitationMapper : Profile
     CreateMap<PortalInvitation, Contract.PortalInvitations.PortalInvitation>()
          .ForMember(dest => dest.ApplicantFirstName, opt => opt.Ignore())
          .ForMember(dest => dest.ApplicantLastName, opt => opt.Ignore())
-         .ForMember(dest => dest.CertificationTypes, opt => opt.Ignore());
+         .ForMember(dest => dest.CertificationTypes, opt => opt.Ignore())
+         .ForMember(dest => dest.WorkExperinceReferenceHours, opt => opt.Ignore());
+
   }
 }
