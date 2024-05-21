@@ -54,7 +54,7 @@
           <p class="small">Your date of birth</p>
         </v-col>
         <v-col cols="8">
-          <p class="small font-weight-bold">{{ formatDate(reference.dateOfBirth, "LLLL dd, yyyy") }}</p>
+          <p class="small font-weight-bold">{{ formatDate(reference.dateOfBirth, "LLLL d, yyyy") }}</p>
         </v-col>
       </v-row>
     </template>

@@ -79,9 +79,9 @@ export default defineComponent({
     subTitle(): string {
       switch (this.applicationStore.application?.status) {
         case "Draft":
-          return `Started ${formatDate(this.applicationStore.application?.createdOn || "", "LLL dd, yyyy")}`;
+          return `Started ${formatDate(this.applicationStore.application?.createdOn || "", "LLL d, yyyy")}`;
         case "Submitted":
-          return `Submitted ${formatDate(this.applicationStore.application?.submittedOn || "", "LLL dd, yyyy")}`;
+          return `Submitted ${formatDate(this.applicationStore.application?.submittedOn || "", "LLL d, yyyy")}`;
         default:
           return "There are different types of certifications you can apply for. Visit the B.C. government website to learn about the types of Early Childhood Educator (ECE) certificates and which one you may qualify for.";
       }
