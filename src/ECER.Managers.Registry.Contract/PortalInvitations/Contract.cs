@@ -27,6 +27,7 @@ public record PortalInvitation(string? Id, string Name, string ReferenceFirstNam
   public string? CharacterReferenceId { get; set; }
   public InviteType? InviteType { get; set; }
   public PortalInvitationStatusCode? StatusCode { get; set; }
+  public int? WorkExperienceReferenceHours { get; set; }
 }
 
 public enum InviteType

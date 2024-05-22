@@ -18,7 +18,7 @@
         :reverse-transition="false"
       >
         <v-container>
-          <v-row class="justify-space-between">
+          <v-row class="justify-space-between mb-4">
             <v-col cols="auto">
               <h3>{{ step.title }}</h3>
             </v-col>

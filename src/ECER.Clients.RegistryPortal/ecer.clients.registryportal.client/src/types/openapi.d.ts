@@ -184,6 +184,7 @@ declare namespace Components {
       workexperienceReferenceId?: string | null;
       characterReferenceId?: string | null;
       inviteType?: InviteType;
+      workExperienceReferenceHours?: number | null;
     }
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;

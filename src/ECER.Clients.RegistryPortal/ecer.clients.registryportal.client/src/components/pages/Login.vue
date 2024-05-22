@@ -63,17 +63,18 @@
       </div>
     </div>
   </PageContainer>
-  <div class="bg-black text-center border-t-lg border-b-lg border-warning border-opacity-100">
+  <!-- <div class="bg-black text-center border-t-lg border-b-lg border-warning border-opacity-100">
     <p class="small text-white py-4 px-10">
       The B.C. Public Service acknowledges the territories of First Nations around B.C. and is grateful to carry out our work on these lands. We acknowledge the
       rights, interests, priorities, and concerns of all Indigenous Peoples - First Nations, Métis, and Inuit - respecting and acknowledging their distinct
       cultures, histories, rights, laws, and governments.
     </p>
-  </div>
+  </div> -->
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useRoute } from "vue-router";
 
 import LoginCard from "@/components/LoginCard.vue";
 import PageContainer from "@/components/PageContainer.vue";
@@ -86,11 +87,16 @@ export default defineComponent({
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
-    return { userStore, oidcStore };
+    const route = useRoute();
+
+    return { userStore, oidcStore, route };
   },
   methods: {
     async handleLogin(provider: string) {
-      await this.oidcStore.login(provider == "bceid" ? "bceidbasic" : "bcsc");
+      // check for redirect_to query param
+      const redirectTo = this.route.query.redirect_to as string;
+
+      await this.oidcStore.login(provider == "bceid" ? "bceidbasic" : "bcsc", redirectTo);
     },
   },
 });

@@ -47,9 +47,7 @@
           <p class="small">When applicant completed the hours</p>
         </v-col>
         <v-col cols="8">
-          <p class="small font-weight-bold">
-            {{ formatDate(evaluation.startDate!, "LLLL dd, yyyy") }} to {{ formatDate(evaluation.endDate!, "LLLL dd, yyyy") }}
-          </p>
+          <p class="small font-weight-bold">{{ formatDate(evaluation.startDate!, "LLLL d, yyyy") }} to {{ formatDate(evaluation.endDate!, "LLLL d, yyyy") }}</p>
         </v-col>
       </v-row>
       <v-row>

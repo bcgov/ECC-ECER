@@ -123,6 +123,7 @@ router.beforeEach(async (to, _) => {
     // if not, redirect to login page.
     return {
       path: "/login",
+      query: { redirect_to: to.fullPath },
     };
   }
 });

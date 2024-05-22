@@ -3,7 +3,7 @@
     <v-container>
       <div class="d-flex w-100 justify-space-between">
         <router-link to="/">
-          <img src="../assets/bc-gov-logo.png" width="155" class="logo ms-6" alt="B.C. Government Logo" />
+          <img src="../assets/bc-gov-logo.png" width="155" class="logo" alt="B.C. Government Logo" />
         </router-link>
         <div class="w-lg-25 w-50">
           <p><b>More information</b></p>

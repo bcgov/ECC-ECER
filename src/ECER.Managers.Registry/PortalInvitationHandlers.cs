@@ -33,6 +33,14 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
     if (application != null)
     {
       result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;
+      if (result.InviteType == Contract.PortalInvitations.InviteType.WorkExperienceReference)
+      {
+        var workExRef = application.WorkExperienceReferences.SingleOrDefault(work => work.Id == portalInvitation.WorkexperienceReferenceId);
+        if (workExRef != null)
+        {
+          result.WorkExperienceReferenceHours = workExRef.Hours;
+        }
+      }
     }
     return PortalInvitationVerificationQueryResult.Success(result);
   }
