@@ -98,7 +98,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
-            label="Start date of hours (DD MMM YYY)"
+            label="Start date of hours"
             variant="outlined"
             color="primary"
             hide-details="auto"
@@ -111,7 +111,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
-            label="End date of hours (DD MMM YYY)"
+            label="End date of hours"
             variant="outlined"
             color="primary"
             hide-details="auto"
