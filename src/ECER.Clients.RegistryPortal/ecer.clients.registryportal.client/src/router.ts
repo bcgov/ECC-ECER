@@ -47,7 +47,8 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
-      path: "/manage-application",
+      path: "/manage-application/:applicationId",
+      name: "manageApplication",
       component: () => import("./components/ApplicationSummary.vue"),
       meta: { requiresAuth: true },
     },

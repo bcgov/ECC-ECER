@@ -206,21 +206,39 @@ declare namespace Components {
       firstName?: string | null;
       email?: string | null;
       phoneNumber?: string | null;
-      certificateProvinceId?: string | null;
       certificateProvinceOther?: string | null;
+      certificateProvinceId?: string | null;
       certificateNumber?: string | null;
       dateOfBirth?: string | null; // date-time
     }
     export type ReferenceKnownTime = "From1to2years" | "From2to5years" | "From6monthsto1year" | "Lessthan6months" | "Morethan5years";
     export type ReferenceRelationship = "CoWorker" | "Other" | "ParentGuardianofChildinCare" | "Supervisor" | "Teacher";
+    export interface ReferenceStatus {
+      id?: string | null;
+      status?: StageStatus;
+      firstName?: string | null;
+      lastName?: string | null;
+      emailAddress?: string | null;
+      phoneNumber?: string | null;
+      hours?: number | null; // int32
+    }
     /**
      * Save draft application request
      */
     export interface SaveDraftApplicationRequest {
       draftApplication?: DraftApplication;
     }
+    export type StageStatus = "Complete" | "InComplete" | "InProgress";
     export interface SubmitApplicationResponse {
       applicationId?: string | null;
+    }
+    export interface SubmittedApplicationStatus {
+      id?: string | null;
+      submittedOn?: string; // date-time
+      status?: ApplicationStatus;
+      transcriptsStatus?: TranscriptStatus[] | null;
+      workExperienceReferencesStatus?: ReferenceStatus[] | null;
+      characterReferencesStatus?: ReferenceStatus[] | null;
     }
     export interface Transcript {
       id?: string | null;
@@ -235,6 +253,11 @@ declare namespace Components {
       isECEAssistant?: boolean;
       doesECERegistryHaveTranscript?: boolean;
       isOfficialTranscriptRequested?: boolean;
+    }
+    export interface TranscriptStatus {
+      id?: string | null;
+      status?: StageStatus;
+      educationalInstitutionName?: string | null;
     }
     export type UnabletoProvideReferenceReasons =
       | "Iamunabletoatthistime"
@@ -339,6 +362,19 @@ declare namespace Paths {
       export type $200 = Components.Schemas.SubmitApplicationResponse;
       export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
+    }
+  }
+  namespace ApplicationStatusGet {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.SubmittedApplicationStatus;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export type $404 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace CharacterReferencePost {
@@ -589,6 +625,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
   /**
+   * application_status_get - Handles application status queries
+   */
+  "application_status_get"(
+    parameters?: Parameters<Paths.ApplicationStatusGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ApplicationStatusGet.Responses.$200>;
+  /**
    * draftapplication_delete - Cancel a draft application for the current user
    *
    * Changes status to cancelled
@@ -740,6 +784,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
+  };
+  ["/api/applications/{id}/status"]: {
+    /**
+     * application_status_get - Handles application status queries
+     */
+    "get"(
+      parameters?: Parameters<Paths.ApplicationStatusGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ApplicationStatusGet.Responses.$200>;
   };
   ["/api/draftApplications/{id}"]: {
     /**
