@@ -89,6 +89,19 @@ export default defineComponent({
             phone: this.formStore.formData[profileInformationForm.inputs.primaryContactNumber.id],
             dateOfBirth: this.formStore.formData[profileInformationForm.inputs.dateOfBirth.id],
           });
+
+          this.userStore.setUserProfile({
+            firstName: this.formStore.formData[profileInformationForm.inputs.legalFirstName.id],
+            middleName: this.formStore.formData[profileInformationForm.inputs.legalMiddleName.id],
+            preferredName: this.formStore.formData[profileInformationForm.inputs.preferredName.id],
+            lastName: this.formStore.formData[profileInformationForm.inputs.legalLastName.id],
+            dateOfBirth: this.formStore.formData[profileInformationForm.inputs.dateOfBirth.id],
+            residentialAddress: this.formStore.formData[profileInformationForm.inputs.addresses.id][AddressType.RESIDENTIAL],
+            mailingAddress: this.formStore.formData[profileInformationForm.inputs.addresses.id][AddressType.MAILING],
+            email: this.formStore.formData[profileInformationForm.inputs.email.id],
+            phone: this.formStore.formData[profileInformationForm.inputs.primaryContactNumber.id],
+            alternateContactPhone: this.formStore.formData[profileInformationForm.inputs.alternateContactNumber.id],
+          });
         } else {
           this.alertStore.setFailureAlert("Profile save failed");
         }

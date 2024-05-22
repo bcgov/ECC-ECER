@@ -6,7 +6,7 @@
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
           Applicant indicated you observed them work:
-          <b>50 hours</b>
+          <b>{{ `${wizardStore.wizardData.workExperienceReferenceHours}` }} hours</b>
         </v-col>
       </v-row>
       <v-row>

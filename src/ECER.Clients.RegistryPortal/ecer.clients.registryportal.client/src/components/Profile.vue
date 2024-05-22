@@ -1,6 +1,6 @@
 <template>
   <PageContainer>
-    <v-row class="ma-4">
+    <v-row>
       <v-col cols="12">
         <h1>Profile</h1>
         <p>Edit your profile information, we use this information for your application process.</p>

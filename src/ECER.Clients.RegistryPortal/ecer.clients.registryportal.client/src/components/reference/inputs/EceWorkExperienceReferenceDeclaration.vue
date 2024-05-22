@@ -5,8 +5,9 @@
         <v-col>
           <p>
             {{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}
-            is requesting a work experience reference for ECE 5 Year certification. We'll review your reference when assessing if the applicant is eligible for
-            certification
+            is requesting a work experience reference for
+            <b>{{ certificationType }}.</b>
+            We'll review your reference when assessing if the applicant is eligible for certification
           </p>
           <br />
 
@@ -39,7 +40,7 @@
           <h2>Requirements to be a reference</h2>
           <p>You need to:</p>
           <ul class="ml-10">
-            <li>Have directly supervised (observed) all hours during which the applicant worked or volunteer</li>
+            <li>Have directly supervised (observed) all hours during which the applicant worked or volunteered</li>
             <li>Have held a valid Canadian ECE certification/registration during the hours you supervised the applicant</li>
             <li>Be able to speak to the applicant's knowledge, skills, and ability (competencies) as an ECE</li>
           </ul>
@@ -62,6 +63,7 @@
 import { defineComponent } from "vue";
 
 import { useWizardStore } from "@/store/wizard";
+import { CertificationType } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
@@ -79,6 +81,19 @@ export default defineComponent({
       selection: undefined,
       Rules,
     };
+  },
+  computed: {
+    certificationType() {
+      let certificationType = "Certificate type not found";
+      if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.ECE_ASSISTANT)) {
+        certificationType = "ECE Assistant certificate";
+      } else if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.ONE_YEAR)) {
+        certificationType = "ECE One Year certificate";
+      } else if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
+        certificationType = "ECE Five Year certificate";
+      }
+      return certificationType;
+    },
   },
 });
 </script>

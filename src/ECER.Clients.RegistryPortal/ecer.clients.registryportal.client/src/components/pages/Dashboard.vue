@@ -1,17 +1,17 @@
 <template>
   <template v-if="smAndDown">
     <Alert v-if="messageStore.unreadMessageCount > 0" icon="mdi-bell" :rounded="false"><UnreadMessages /></Alert>
-    <ApplicationCard v-if="applications" :is-rounded="false" @cancel-application="showCancelDialog = true" />
+    <ApplicationCard v-if="applications && showApplicationCard" :is-rounded="false" @cancel-application="showCancelDialog = true" />
   </template>
   <PageContainer :margin-top="false">
     <v-row justify="center">
-      <v-col cols="12" xl="8">
+      <v-col>
         <v-row v-if="mdAndUp">
           <v-col v-if="messageStore.unreadMessageCount > 0" cols="12">
             <Alert icon="mdi-bell"><UnreadMessages /></Alert>
           </v-col>
           <v-col cols="12">
-            <ApplicationCard v-if="applications" @cancel-application="showCancelDialog = true" />
+            <ApplicationCard v-if="applications && showApplicationCard" @cancel-application="showCancelDialog = true" />
           </v-col>
         </v-row>
         <v-row>
@@ -117,6 +117,18 @@ export default defineComponent({
     showCancelDialog: false,
     drawer: null as boolean | null | undefined,
   }),
+  computed: {
+    showApplicationCard(): boolean {
+      return (
+        this.applicationStore.applicationStatus === undefined ||
+        this.applicationStore.applicationStatus === "Draft" ||
+        this.applicationStore.applicationStatus === "Submitted" ||
+        this.applicationStore.applicationStatus === "Ready" ||
+        this.applicationStore.applicationStatus === "InProgress" ||
+        this.applicationStore.applicationStatus === "PendingQueue"
+      );
+    },
+  },
 
   methods: {
     formatPhoneNumber,

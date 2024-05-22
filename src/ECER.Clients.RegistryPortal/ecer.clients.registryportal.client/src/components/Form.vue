@@ -1,7 +1,7 @@
 <template>
   <v-form :id="form.id" :ref="form.id" validate-on="input" @update:model-value="onFormValidationChanged" @submit.prevent>
     <template v-for="input in form.inputs" :key="input.id">
-      <v-row class="ma-sm-4">
+      <v-row>
         <v-col cols="12" :md="input.cols.md" :lg="input.cols.lg" :xl="input.cols.xl">
           <Component
             :is="input.component"
