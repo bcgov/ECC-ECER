@@ -42,7 +42,7 @@ export default defineComponent({
   },
   computed: {
     messageDate(): string {
-      return formatDate(String(this.message.notifiedOn), "LLL dd, yyyy t");
+      return formatDate(String(this.message.notifiedOn), "LLL d, yyyy t");
     },
   },
   methods: {

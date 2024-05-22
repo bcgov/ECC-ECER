@@ -74,6 +74,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useRoute } from "vue-router";
 
 import LoginCard from "@/components/LoginCard.vue";
 import PageContainer from "@/components/PageContainer.vue";
@@ -86,11 +87,16 @@ export default defineComponent({
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
-    return { userStore, oidcStore };
+    const route = useRoute();
+
+    return { userStore, oidcStore, route };
   },
   methods: {
     async handleLogin(provider: string) {
-      await this.oidcStore.login(provider == "bceid" ? "bceidbasic" : "bcsc");
+      // check for redirect_to query param
+      const redirectTo = this.route.query.redirect_to as string;
+
+      await this.oidcStore.login(provider == "bceid" ? "bceidbasic" : "bcsc", redirectTo);
     },
   },
 });

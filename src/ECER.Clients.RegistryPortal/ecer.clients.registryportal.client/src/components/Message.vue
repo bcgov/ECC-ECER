@@ -48,7 +48,7 @@ export default defineComponent({
   computed: {
     messageDate(): string {
       let message = this.messageStore.currentMessage;
-      return message ? formatDate(String(message.notifiedOn), "LLL dd, yyyy t") : "";
+      return message ? formatDate(String(message.notifiedOn), "LLL d, yyyy t") : "";
     },
   },
   methods: {

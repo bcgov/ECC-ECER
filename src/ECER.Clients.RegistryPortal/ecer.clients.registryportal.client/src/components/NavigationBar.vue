@@ -24,11 +24,8 @@
                   <router-link class="small" to="/messages">Messages</router-link>
                 </v-list-item-title>
               </v-list-item>
-              <v-list-item>
-                <p>
-                  <b>{{ userStore.firstName }}</b>
-                </p>
-              </v-list-item>
+              <v-divider />
+              <v-list-subheader>{{ userStore.firstName }}</v-list-subheader>
               <v-list-item link>
                 <v-list-item-title>
                   <router-link class="small" to="/profile">Edit profile</router-link>
