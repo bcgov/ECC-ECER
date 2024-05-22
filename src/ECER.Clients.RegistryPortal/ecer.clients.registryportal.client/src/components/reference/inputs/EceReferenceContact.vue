@@ -61,10 +61,16 @@
         </v-col>
       </v-row>
       <h3 class="mt-5">ECE certification</h3>
-      <div role="doc-subtitle">If you are registered as an ECE in Canada, please provide your certification number.</div>
+      <div v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER" role="doc-subtitle">
+        If you are registered as an ECE in Canada, please provide your certification number.
+      </div>
+      <div v-if="wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE" role="doc-subtitle">
+        We need this information to look up your certificate. Only people with a valid certificate can be a work reference.
+      </div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-autocomplete
+            v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER"
             :model-value="modelValue.certificateProvinceId"
             label="Province/Territory Certified/Registered In (Optional)"
             variant="outlined"
@@ -74,6 +80,16 @@
             hide-details="auto"
             @update:model-value="certificateProvinceIdChanged"
             @click:clear="provinceClearClicked"
+          ></v-autocomplete>
+          <v-autocomplete
+            v-if="wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE"
+            :model-value="modelValue.certificateProvinceId"
+            label="Province/Territory Certified/Registered In"
+            variant="outlined"
+            color="primary"
+            :items="configStore?.provinceList.filter((province) => province.title !== ProvinceTerritoryType.OTHER)"
+            hide-details="auto"
+            @update:model-value="certificateProvinceIdChanged"
           ></v-autocomplete>
         </v-col>
       </v-row>
@@ -119,7 +135,9 @@ import { defineComponent } from "vue";
 import type { VTextField } from "vuetify/components";
 
 import { useConfigStore } from "@/store/config";
+import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
+import { PortalInviteType } from "@/utils/constant";
 import { ProvinceTerritoryType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
@@ -138,8 +156,9 @@ export default defineComponent({
   },
   setup() {
     const configStore = useConfigStore();
+    const wizardStore = useWizardStore();
 
-    return { configStore };
+    return { configStore, wizardStore, PortalInviteType, ProvinceTerritoryType };
   },
   data() {
     return {
@@ -154,6 +173,12 @@ export default defineComponent({
     today() {
       return formatDate(DateTime.now().toString());
     },
+  },
+  mounted() {
+    if (this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE) {
+      const bcProvinceId = this.configStore?.provinceList.find((province) => province.title === ProvinceTerritoryType.BC)?.value;
+      this.certificateProvinceIdChanged(bcProvinceId as string);
+    }
   },
   methods: {
     isNumber,
