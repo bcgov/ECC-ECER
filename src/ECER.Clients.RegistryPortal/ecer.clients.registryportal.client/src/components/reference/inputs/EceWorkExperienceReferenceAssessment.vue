@@ -1,13 +1,13 @@
 <template>
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
-      <h3>Competencies Assessment</h3>
+      <h3>Competencies assessment</h3>
       <div role="doc-subtitle">
         Tell us your opinion on the competency of the applicant in the following areas. This should be based on your personal observations.
       </div>
 
       <v-row class="mt-5">
-        <v-col cols="12" md="8" lg="6" xl="4">
+        <v-col>
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
             :trigger-values="likertScaleTriggerValues"
@@ -31,7 +31,7 @@
         </v-col>
       </v-row>
       <v-row class="mt-5">
-        <v-col cols="12" md="8" lg="6" xl="4">
+        <v-col>
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
             :trigger-values="likertScaleTriggerValues"
@@ -55,7 +55,7 @@
         </v-col>
       </v-row>
       <v-row class="mt-5">
-        <v-col cols="12" md="8" lg="6" xl="4">
+        <v-col>
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
             :trigger-values="likertScaleTriggerValues"
@@ -79,7 +79,7 @@
         </v-col>
       </v-row>
       <v-row class="mt-5">
-        <v-col cols="12" md="8" lg="6" xl="4">
+        <v-col>
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
             :trigger-values="likertScaleTriggerValues"
@@ -103,7 +103,7 @@
         </v-col>
       </v-row>
       <v-row class="mt-5">
-        <v-col cols="12" md="8" lg="6" xl="4">
+        <v-col>
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
             :trigger-values="likertScaleTriggerValues"
@@ -127,7 +127,7 @@
         </v-col>
       </v-row>
       <v-row class="mt-5">
-        <v-col cols="12" md="8" lg="6" xl="4">
+        <v-col>
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
             :trigger-values="likertScaleTriggerValues"
@@ -151,7 +151,7 @@
         </v-col>
       </v-row>
       <v-row class="mt-5">
-        <v-col cols="12" md="8" lg="6" xl="4">
+        <v-col>
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
             :trigger-values="likertScaleTriggerValues"
@@ -175,7 +175,7 @@
         </v-col>
       </v-row>
       <v-row class="mt-5">
-        <v-col cols="12" md="8" lg="6" xl="4">
+        <v-col>
           <RadioWithAdditionalOption
             :items="likertScaleRadio"
             :trigger-values="likertScaleTriggerValues"
@@ -199,7 +199,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" md="8" lg="6" xl="4">
+        <v-col>
           <h3>Please confirm</h3>
           <div role="doc-subtitle">When answering the folowing question, please consider your responses above and your personal obserations.</div>
           <p class="mt-4">Do you believe that the applicant has the personality, ability and temperament necessary to work with children?</p>
@@ -210,7 +210,7 @@
         </v-col>
       </v-row>
       <v-row v-if="modelValue.isApplicantQualified !== undefined && !modelValue.isApplicantQualified">
-        <v-col cols="12" md="8" lg="6" xl="4">
+        <v-col>
           <label for="applicantNotQualifiedTextArea">Please explain why</label>
           <v-textarea
             id="applicantNotQualifiedTextArea"

@@ -8,7 +8,11 @@
       <v-container class="bg-white">
         <h2>{{ inviteTypeTitle }}</h2>
         <div role="doc-subtitle">{{ `For applicant: ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</div>
-        <v-btn v-if="wizardStore.step !== 1" variant="text" rounded="lg" color="primary" @click="handleBack">{{ "< Back" }}</v-btn>
+
+        <v-btn v-if="wizardStore.step !== 1" slim variant="text" rounded="lg" color="primary" @click="handleBack">
+          <v-icon size="x-large" icon="mdi-chevron-left" />
+          Back
+        </v-btn>
       </v-container>
     </template>
     <template #PrintPreview>
