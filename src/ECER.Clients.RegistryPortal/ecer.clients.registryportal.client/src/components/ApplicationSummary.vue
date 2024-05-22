@@ -24,7 +24,7 @@
     </v-card>
     <v-card elevation="0" rounded="0" class="border-t border-b">
       <v-card-text>
-        <div>Completed on {{ formatDate(applicationStatus?.submittedOn as string, "LLL dd, yyyy") }}</div>
+        <div>Completed on {{ formatDate(applicationStatus?.submittedOn as string, "LLL d, yyyy") }}</div>
       </v-card-text>
     </v-card>
     <!-- Step 1 End-->
