@@ -89,6 +89,7 @@
             color="primary"
             :items="configStore?.provinceList.filter((province) => province.title !== ProvinceTerritoryType.OTHER)"
             hide-details="auto"
+            :rules="[Rules.required()]"
             @update:model-value="certificateProvinceIdChanged"
           ></v-autocomplete>
         </v-col>
