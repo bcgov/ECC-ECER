@@ -62,8 +62,8 @@ export const childrenProgramTypeDropdown: DropdownWrapper<Components.Schemas.Chi
 ];
 
 export const workHoursTypeRadio: RadioButtonWrapper<Components.Schemas.WorkHoursType>[] = [
-  { label: "Full Time", value: "FullTime" },
-  { label: "Part Time", value: "PartTime" },
+  { label: "Full time", value: "FullTime" },
+  { label: "Part time", value: "PartTime" },
 ];
 
 export const workReferenceRelationshipRadio: RadioButtonWrapper<Components.Schemas.ReferenceRelationship>[] = [
