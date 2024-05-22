@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar height="80" elevation="0" border>
+  <v-app-bar height="80" elevation="0" border absolute>
     <router-link to="/">
       <img src="../assets/bc-gov-logo.png" width="155" class="logo ms-6" alt="B.C. Government Logo" />
     </router-link>
