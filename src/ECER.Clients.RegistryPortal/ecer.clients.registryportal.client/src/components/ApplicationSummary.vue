@@ -29,7 +29,13 @@
     </v-card>
     <!-- Step 1 End-->
     <!-- Step 2 Start-->
-    <v-card elevation="0" color="#003366" class="mt-5" rounded="0">
+    <v-card
+      elevation="0"
+      :color="step2Progress === IN_PROGRESS ? '#003366' : '#f8f8f8'"
+      class="mt-5"
+      :class="[{ 'border-top': step2Progress !== IN_PROGRESS }]"
+      rounded="0"
+    >
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
           <v-row no-gutters>
@@ -69,7 +75,13 @@
     />
     <!-- Step 2 End-->
     <!-- Step 3 Start-->
-    <v-card elevation="0" color="#f8f8f8" class="border-top mt-5" rounded="0">
+    <v-card
+      elevation="0"
+      :color="step3Progress === IN_PROGRESS ? '#003366' : '#f8f8f8'"
+      class="mt-5"
+      :class="[{ 'border-top': step3Progress !== IN_PROGRESS }]"
+      rounded="0"
+    >
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
           <v-row no-gutters>
