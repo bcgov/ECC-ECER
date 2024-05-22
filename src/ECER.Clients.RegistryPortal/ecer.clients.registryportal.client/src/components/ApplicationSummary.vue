@@ -7,6 +7,7 @@
     <ApplicationCertificationTypeHeader :certification-types="applicationStore.applications?.[0]?.certificationTypes || []" class="pb-5" />
     <h3>Status</h3>
     <div class="pb-3">It's a 3-step process to apply</div>
+    <!-- Step 1 Start-->
     <v-card elevation="0" color="#f8f8f8" class="border-top mt-5" rounded="0">
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
@@ -21,6 +22,13 @@
         </div>
       </v-card-text>
     </v-card>
+    <v-card elevation="0" rounded="0" class="border-t border-b">
+      <v-card-text>
+        <div>Completed on {{ formatDate(applicationStatus?.submittedOn as string, "LLL dd, yyyy") }}</div>
+      </v-card-text>
+    </v-card>
+    <!-- Step 1 End-->
+    <!-- Step 2 Start-->
     <v-card elevation="0" color="#003366" class="mt-5" rounded="0">
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
@@ -35,6 +43,32 @@
         </div>
       </v-card-text>
     </v-card>
+    <ApplicationSummaryTranscriptReferenceListItem
+      v-for="transcript in applicationStatus?.transcriptsStatus"
+      :key="transcript.id?.toString()"
+      :name="transcript.educationalInstitutionName"
+      type="transcript"
+      :status="transcript.status"
+      :go-to="() => goTo(transcript.id?.toString())"
+    />
+    <ApplicationSummaryTranscriptReferenceListItem
+      v-for="reference in applicationStatus?.characterReferencesStatus"
+      :key="reference.id?.toString()"
+      :name="`${reference.firstName} ${reference.lastName}`"
+      type="character"
+      :status="reference.status"
+      :go-to="() => goTo(reference.id?.toString())"
+    />
+    <ApplicationSummaryTranscriptReferenceListItem
+      v-for="reference in applicationStatus?.workExperienceReferencesStatus"
+      :key="reference.id?.toString()"
+      :name="`${reference.firstName} ${reference.lastName}`"
+      type="workExperience"
+      :status="reference.status"
+      :go-to="() => goTo(reference.id?.toString())"
+    />
+    <!-- Step 2 End-->
+    <!-- Step 3 Start-->
     <v-card elevation="0" color="#f8f8f8" class="border-top mt-5" rounded="0">
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
@@ -49,6 +83,13 @@
         </div>
       </v-card-text>
     </v-card>
+    <v-card elevation="0" rounded="0" class="border-t border-b">
+      <v-card-text>
+        <div v-if="step3Progress === NOT_STARTED">We'll review your application after we receive all references and documents.</div>
+        <div v-if="step3Progress === IN_PROGRESS">We're reviewing your application. We'll contact you with questions or once assessment is complete.</div>
+      </v-card-text>
+    </v-card>
+    <!-- Step 3 End-->
   </v-container>
 </template>
 
@@ -61,12 +102,14 @@ import { getApplicationStatus } from "@/api/application";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { CertificationType } from "@/utils/constant";
+import { formatDate } from "@/utils/format";
 
 import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHeader.vue";
+import ApplicationSummaryTranscriptReferenceListItem from "./ApplicationSummaryTranscriptReferenceListItem.vue";
 
 export default defineComponent({
   name: "ApplicationSummary",
-  components: { ApplicationCertificationTypeHeader },
+  components: { ApplicationCertificationTypeHeader, ApplicationSummaryTranscriptReferenceListItem },
   setup: async () => {
     const { smAndUp } = useDisplay();
     const route = useRoute();
@@ -75,8 +118,11 @@ export default defineComponent({
 
     await applicationStore.fetchApplications();
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
+    const IN_PROGRESS = "inProgress";
+    const NOT_STARTED = "notStarted";
+    const COMPLETE = "complete";
 
-    return { applicationStore, alertStore, CertificationType, applicationStatus, smAndUp };
+    return { applicationStore, alertStore, CertificationType, applicationStatus, smAndUp, formatDate, IN_PROGRESS, NOT_STARTED, COMPLETE };
   },
   data() {
     return {
@@ -96,54 +142,74 @@ export default defineComponent({
   },
   computed: {
     step2ReferenceDocumentIcon() {
-      switch (this.applicationStatus?.status) {
-        case "Submitted":
-        case "InProgress":
+      switch (this.step2Progress) {
+        case this.IN_PROGRESS:
           return "mdi-arrow-right";
-        case "Ready":
-        case "PendingQueue":
-        case "Escalated":
+        case this.COMPLETE:
           return "mdi-check";
         default:
           return "";
       }
     },
     step2ReferenceDocumentText() {
-      switch (this.applicationStatus?.status) {
-        case "Submitted":
-        case "InProgress":
+      switch (this.step2Progress) {
+        case this.IN_PROGRESS:
           return "In Progress";
-        case "Ready":
-        case "PendingQueue":
-        case "Escalated":
+        case this.COMPLETE:
           return "Complete";
         default:
           return "";
       }
     },
     step3RegistryAssessmentIcon() {
-      switch (this.applicationStatus?.status) {
-        case "Submitted":
-        case "InProgress":
+      switch (this.step3Progress) {
+        case this.NOT_STARTED:
           return "";
-        case "Ready":
-        case "PendingQueue":
+        case this.IN_PROGRESS:
           return "mdi-arrow-right";
         default:
           return "";
       }
     },
     step3RegistryAssessmentText() {
-      switch (this.applicationStatus?.status) {
-        case "Submitted":
-        case "InProgress":
+      switch (this.step3Progress) {
+        case this.NOT_STARTED:
           return "Not yet started";
-        case "Ready":
-        case "PendingQueue":
+        case this.IN_PROGRESS:
           return "In progress";
         default:
           return "";
       }
+    },
+    step2Progress() {
+      switch (this.applicationStatus?.status) {
+        case "Submitted":
+        case "InProgress":
+          return this.IN_PROGRESS;
+        case "Ready":
+        case "PendingQueue":
+        case "Escalated":
+          return this.COMPLETE;
+        default:
+          return "";
+      }
+    },
+    step3Progress() {
+      switch (this.applicationStatus?.status) {
+        case "Submitted":
+        case "InProgress":
+          return this.NOT_STARTED;
+        case "Ready":
+        case "PendingQueue":
+          return this.IN_PROGRESS;
+        default:
+          return "";
+      }
+    },
+  },
+  methods: {
+    goTo(id: string | undefined) {
+      this.alertStore.setSuccessAlert("not implemented yet this will go to another route " + id);
     },
   },
 });
@@ -153,10 +219,6 @@ export default defineComponent({
   border-top: 2px solid black;
 }
 .breadcrumb {
-  padding-left: 0;
-}
-
-.breadcrumb li {
   padding-left: 0;
 }
 </style>
