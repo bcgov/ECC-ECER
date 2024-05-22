@@ -42,8 +42,15 @@ export const useOidcStore = defineStore("oidc", {
       return await this.userManager.getUser();
     },
 
-    async login(provider: string): Promise<void> {
-      return await this.userManager.signinRedirect({ extraQueryParams: { kc_idp_hint: provider } });
+    async login(provider: string, redirectTo?: string): Promise<void> {
+      const params: any = { extraQueryParams: { kc_idp_hint: provider } };
+
+      // Include redirect_to in state to round trip with auth provider
+      if (redirectTo) {
+        params.state = { redirect_to: redirectTo };
+      }
+
+      return await this.userManager.signinRedirect(params);
     },
 
     async removeUser(): Promise<void> {
