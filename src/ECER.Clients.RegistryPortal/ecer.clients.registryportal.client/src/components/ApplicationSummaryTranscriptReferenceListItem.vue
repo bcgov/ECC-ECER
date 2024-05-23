@@ -59,17 +59,24 @@ export default defineComponent({
       }
     },
     statusText() {
-      if (this.status === "Complete") {
-        return "Complete";
-      } else {
-        return "Incomplete";
+      switch (this.status) {
+        case "Complete":
+          return "Complete";
+        case "InProgress":
+          return "Incomplete";
+        default:
+          return "Cancelled";
       }
     },
     sheetColor() {
-      if (this.status === "Complete") {
-        return "#f8f8f8";
-      } else {
-        return "#D9EAFD";
+      switch (this.status) {
+        case "Complete":
+          return "#f8f8f8";
+        case "InProgress":
+        case "InComplete":
+          return "#D9EAFD";
+        default:
+          return "#D9EAFD";
       }
     },
   },
