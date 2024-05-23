@@ -282,6 +282,8 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
     mapper.Map(request, characterReference);
     characterReference.ecer_WillProvideReference = ecer_YesNoNull.No;
+    characterReference.StatusCode = ecer_CharacterReference_StatusCode.Rejected;
+    characterReference.StateCode = ecer_characterreference_statecode.Inactive;
     context.UpdateObject(characterReference);
     context.SaveChanges();
     return characterReference.ecer_CharacterReferenceId.ToString()!;
@@ -294,6 +296,8 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
     mapper.Map(request, workexperienceReference);
     workexperienceReference.ecer_WillProvideReference = ecer_YesNoNull.No;
+    workexperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.Rejected;
+    workexperienceReference.StateCode = ecer_workexperienceref_statecode.Inactive;
     context.UpdateObject(workexperienceReference);
     context.SaveChanges();
     return workexperienceReference.ecer_WorkExperienceRefId.ToString()!;
