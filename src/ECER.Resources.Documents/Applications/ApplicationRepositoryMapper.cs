@@ -141,8 +141,6 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_RelationshipwithApplicantOther, opts => opts.MapFrom(s => s.ReferenceEvaluation.ReferenceRelationshipOther))
       .ForMember(d => d.ecer_ApplicantSituationDescription, opts => opts.MapFrom(s => s.ReferenceEvaluation.ChildInteractionObservations))
       .ForMember(d => d.ecer_ApplicantSuitableReason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantTemperamentAssessment))
-      .ForMember(d => d.ecer_ApplicantShouldNOTbeECE, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantShouldNotBeECE ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
-      .ForMember(d => d.ecer_applicantnotqualifiedreason, opts => opts.MapFrom(s => s.ReferenceEvaluation.ApplicantNotQualifiedReason))
       .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
 

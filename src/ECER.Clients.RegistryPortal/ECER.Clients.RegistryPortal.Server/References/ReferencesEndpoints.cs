@@ -61,7 +61,7 @@ public record ReferenceContactInformation([Required] string LastName, [Required]
   public DateTime? DateOfBirth { get; set; }
 
 }
-public record CharacterReferenceEvaluation([Required] ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, [Required] ReferenceKnownTime LengthOfAcquaintance, [Required] bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, [Required] bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
+public record CharacterReferenceEvaluation([Required] ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, [Required] ReferenceKnownTime LengthOfAcquaintance, [Required] bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 public record OptOutReferenceRequest(string Token, [Required] UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons);
 
 public enum UnabletoProvideReferenceReasons

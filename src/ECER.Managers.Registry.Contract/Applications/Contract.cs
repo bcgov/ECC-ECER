@@ -131,7 +131,7 @@ public record ReferenceContactInformation(string LastName, string FirstName, str
   public string? CertificateNumber { get; set; }
   public DateTime? DateOfBirth { get; set; }
 }
-public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, ReferenceKnownTime LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
+public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, ReferenceKnownTime LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons) : IRequest<ReferenceSubmissionResult>;
 
 public enum UnabletoProvideReferenceReasons
