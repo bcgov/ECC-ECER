@@ -27,6 +27,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Online = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Satellite = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		WorkIntegratedLearning = 621870003,
 	}
 }
