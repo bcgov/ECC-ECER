@@ -66,6 +66,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_FirstName = "ecer_firstname";
 			public const string ecer_LastName = "ecer_lastname";
+			public const string ecer_legacypreviousnameid = "ecer_legacypreviousnameid";
 			public const string ecer_LinktoIDDocument = "ecer_linktoiddocument";
 			public const string ecer_MiddleName = "ecer_middlename";
 			public const string ecer_Name = "ecer_name";
@@ -118,6 +119,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacypreviousnameid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -343,6 +346,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_lastname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacypreviousnameid")]
+		public string ecer_legacypreviousnameid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacypreviousnameid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacypreviousnameid", value);
 			}
 		}
 		

@@ -14,17 +14,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_PSISiteVisitType
+	public enum ecer_AssessmentRank
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		InPersonBasic = 621870000,
+		Full = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		InPersonPostBasic = 621870002,
+		NoEquivalency = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Virtual = 621870001,
+		Partial = 621870001,
 	}
 }
 #pragma warning restore CS1591

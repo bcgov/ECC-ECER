@@ -64,11 +64,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_addresstypeName = "ecer_addresstypename";
 			public const string ecer_City = "ecer_city";
 			public const string ecer_contact_ecer_previousaddress_251 = "ecer_contact_ecer_previousaddress_251";
+			public const string ecer_contact_ecer_previousaddress_legacycontactid = "ecer_contact_ecer_previousaddress_legacycontactid";
 			public const string ecer_Country = "ecer_country";
 			public const string ecer_Customerid = "ecer_customerid";
 			public const string ecer_CustomeridName = "ecer_customeridname";
 			public const string ecer_CustomeridYomiName = "ecer_customeridyominame";
 			public const string ecer_EndDate = "ecer_enddate";
+			public const string ecer_legacycontactid = "ecer_legacycontactid";
+			public const string ecer_legacycontactidName = "ecer_legacycontactidname";
+			public const string ecer_legacycontactidYomiName = "ecer_legacycontactidyominame";
+			public const string ecer_legacypreviousaddressid = "ecer_legacypreviousaddressid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PostalCode = "ecer_postalcode";
 			public const string ecer_PreviousAddressId = "ecer_previousaddressid";
@@ -120,6 +125,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacypreviousaddressid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -377,6 +384,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_enddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacycontactid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_legacycontactid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_legacycontactid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacycontactid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacycontactidname")]
+		public string ecer_legacycontactidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_legacycontactid"))
+				{
+					return this.FormattedValues["ecer_legacycontactid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacycontactidyominame")]
+		public string ecer_legacycontactidYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_legacycontactid"))
+				{
+					return this.FormattedValues["ecer_legacycontactid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacypreviousaddressid")]
+		public string ecer_legacypreviousaddressid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacypreviousaddressid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacypreviousaddressid", value);
 			}
 		}
 		
@@ -923,6 +994,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_contact_ecer_previousaddress_251", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_contact_ecer_previousaddress_legacycontactid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacycontactid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_previousaddress_legacycontactid")]
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_contact_ecer_previousaddress_legacycontactid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_contact_ecer_previousaddress_legacycontactid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_contact_ecer_previousaddress_legacycontactid", null, value);
 			}
 		}
 		

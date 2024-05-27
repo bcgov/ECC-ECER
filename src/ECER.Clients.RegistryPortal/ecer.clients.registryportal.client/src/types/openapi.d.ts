@@ -76,8 +76,6 @@ declare namespace Components {
       workedWithChildren?: boolean;
       childInteractionObservations?: string | null;
       applicantTemperamentAssessment?: string | null;
-      applicantShouldNotBeECE?: boolean;
-      applicantNotQualifiedReason?: string | null;
     }
     export interface CharacterReferenceSubmissionRequest {
       token?: string | null;
@@ -222,7 +220,6 @@ declare namespace Components {
       emailAddress?: string | null;
       phoneNumber?: string | null;
       hours?: number | null; // int32
-      willProvideReference?: boolean | null;
     }
     /**
      * Save draft application request
@@ -230,7 +227,7 @@ declare namespace Components {
     export interface SaveDraftApplicationRequest {
       draftApplication?: DraftApplication;
     }
-    export type StageStatus = "Complete" | "InComplete" | "InProgress" | "Rejected";
+    export type StageStatus = "Complete" | "InComplete" | "InProgress";
     export interface SubmitApplicationResponse {
       applicationId?: string | null;
     }

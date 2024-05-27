@@ -39,9 +39,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         ReferenceKnownTime.From1to2years, // LengthOfAcquaintance
         faker.Random.Bool(), // WorkedWithChildren
         faker.Lorem.Paragraph(), // ChildInteractionObservations
-        faker.Lorem.Paragraph(), // ApplicantTemperamentAssessment
-        faker.Random.Bool(), // Confirmed
-        faker.Lorem.Paragraph()
+        faker.Lorem.Paragraph() // ApplicantTemperamentAssessment
     );
 
     // Creating the ReferenceSubmissionRequest record

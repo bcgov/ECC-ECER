@@ -60,12 +60,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_appassessmentresult_EducationLevelId = "ecer_appassessmentresult_EducationLevelId";
 			public const string ecer_Certificate_ecer_CertificateTypes = "ecer_Certificate_ecer_CertificateTypes";
 			public const string ecer_CertificateTypeId = "ecer_certificatetypeid";
 			public const string Id = "ecer_certificatetypeid";
 			public const string ecer_course_CertificateTypeid = "ecer_course_CertificateTypeid";
+			public const string ecer_LegacyEducationLevelID = "ecer_legacyeducationlevelid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_program_CertificateTypeid = "ecer_program_CertificateTypeid";
+			public const string ecer_provincialrequirement_CertificateTypeId = "ecer_provincialrequirement_CertificateTypeId";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -280,6 +283,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_CertificateTypeId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyeducationlevelid")]
+		public string ecer_LegacyEducationLevelID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyeducationlevelid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyeducationlevelid", value);
 			}
 		}
 		
@@ -680,6 +698,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_appassessmentresult_EducationLevelId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_appassessmentresult_EducationLevelId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessmentResult> ecer_appassessmentresult_EducationLevelId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessmentResult>("ecer_appassessmentresult_EducationLevelId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessmentResult>("ecer_appassessmentresult_EducationLevelId", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_course_CertificateTypeid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_course_CertificateTypeid")]
@@ -712,6 +748,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_program_CertificateTypeid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_provincialrequirement_CertificateTypeId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_provincialrequirement_CertificateTypeId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement> ecer_provincialrequirement_CertificateTypeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement>("ecer_provincialrequirement_CertificateTypeId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement>("ecer_provincialrequirement_CertificateTypeId", null, value);
 			}
 		}
 		

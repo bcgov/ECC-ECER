@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Assessment Training Location
+	/// Status of the PSP Interview Question Template
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_assessmenttraininglocation_statecode
+	public enum ecer_pspinterviewquestiontemplate_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Assessment Training Location
+	/// Reason for the status of the PSP Interview Question Template
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public enum ecer_AssessmentTrainingLocation_StatusCode
+	public enum ecer_PSPInterviewQuestionTemplate_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -42,14 +42,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Inactive = 2,
 	}
 	
+	/// <summary>
+	/// PSP Interview Question Template
+	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_assessmenttraininglocation")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_pspinterviewquestiontemplate")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
-	public partial class ecer_AssessmentTrainingLocation : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_PSPInterviewQuestionTemplate : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_assessmenttraininglocation entity
+		/// Available fields, a the time of codegen, for the ecer_pspinterviewquestiontemplate entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,12 +63,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_applicationassessment_TrainingReceivedId = "ecer_applicationassessment_TrainingReceivedId";
-			public const string ecer_AssessmentTrainingLocationId = "ecer_assessmenttraininglocationid";
-			public const string Id = "ecer_assessmenttraininglocationid";
-			public const string ecer_Code = "ecer_code";
-			public const string ecer_Description = "ecer_description";
-			public const string ecer_LegacyID = "ecer_legacyid";
+			public const string ecer_IntervieweeType = "ecer_intervieweetype";
+			public const string ecer_intervieweetypeName = "ecer_intervieweetypename";
+			public const string ecer_PSPInterviewQuestionTemplateId = "ecer_pspinterviewquestiontemplateid";
+			public const string Id = "ecer_pspinterviewquestiontemplateid";
+			public const string ecer_Question = "ecer_question";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -92,19 +94,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_AssessmentTrainingLocation(System.Guid id) : 
+		public ecer_PSPInterviewQuestionTemplate(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_AssessmentTrainingLocation(string keyName, object keyValue) : 
+		public ecer_PSPInterviewQuestionTemplate(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_AssessmentTrainingLocation(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_PSPInterviewQuestionTemplate(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -113,22 +115,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_AssessmentTrainingLocation() : 
+		public ecer_PSPInterviewQuestionTemplate() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_assessmenttraininglocationid";
+		public const string PrimaryIdAttribute = "ecer_pspinterviewquestiontemplateid";
 		
-		public const string PrimaryNameAttribute = "ecer_code";
+		public const string PrimaryNameAttribute = "ecer_question";
 		
-		public const string EntitySchemaName = "ecer_AssessmentTrainingLocation";
+		public const string EntitySchemaName = "ecer_PSPInterviewQuestionTemplate";
 		
-		public const string EntityLogicalName = "ecer_assessmenttraininglocation";
+		public const string EntityLogicalName = "ecer_pspinterviewquestiontemplate";
 		
-		public const string EntityLogicalCollectionName = "ecer_assessmenttraininglocations";
+		public const string EntityLogicalCollectionName = "ecer_pspinterviewquestiontemplates";
 		
-		public const string EntitySetName = "ecer_assessmenttraininglocations";
+		public const string EntitySetName = "ecer_pspinterviewquestiontemplates";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -242,21 +244,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assessmenttraininglocationid")]
-		public System.Nullable<System.Guid> ecer_AssessmentTrainingLocationId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_intervieweetype")]
+		public virtual ecer_PSPIntervieweeType? ecer_IntervieweeType
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_assessmenttraininglocationid");
+				return ((ecer_PSPIntervieweeType?)(EntityOptionSetEnum.GetEnum(this, "ecer_intervieweetype")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_assessmenttraininglocationid", value);
+				this.SetAttributeValue("ecer_intervieweetype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_intervieweetypename")]
+		public string ecer_intervieweetypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_intervieweetype"))
+				{
+					return this.FormattedValues["ecer_intervieweetype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspinterviewquestiontemplateid")]
+		public System.Nullable<System.Guid> ecer_PSPInterviewQuestionTemplateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_pspinterviewquestiontemplateid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_pspinterviewquestiontemplateid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -268,7 +302,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assessmenttraininglocationid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspinterviewquestiontemplateid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -279,52 +313,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_AssessmentTrainingLocationId = value;
+				this.ecer_PSPInterviewQuestionTemplateId = value;
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_code")]
-		public string ecer_Code
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_question")]
+		public string ecer_Question
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_code");
+				return this.GetAttributeValue<string>("ecer_question");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_code", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_description")]
-		public string ecer_Description
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_description");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_description", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyid")]
-		public System.Nullable<int> ecer_LegacyID
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<int>>("ecer_legacyid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_legacyid", value);
+				this.SetAttributeValue("ecer_question", value);
 			}
 		}
 		
@@ -591,15 +595,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Assessment Training Location
+		/// Status of the PSP Interview Question Template
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_assessmenttraininglocation_statecode? StateCode
+		public virtual ecer_pspinterviewquestiontemplate_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_assessmenttraininglocation_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_pspinterviewquestiontemplate_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -626,15 +630,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Assessment Training Location
+		/// Reason for the status of the PSP Interview Question Template
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_AssessmentTrainingLocation_StatusCode? StatusCode
+		public virtual ecer_PSPInterviewQuestionTemplate_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_AssessmentTrainingLocation_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_PSPInterviewQuestionTemplate_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -710,29 +714,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_applicationassessment_TrainingReceivedId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_applicationassessment_TrainingReceivedId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment> ecer_applicationassessment_TrainingReceivedId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_applicationassessment_TrainingReceivedId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_applicationassessment_TrainingReceivedId", null, value);
-			}
-		}
-		
-		/// <summary>
 		/// Constructor for populating via LINQ queries given a LINQ anonymous type
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_AssessmentTrainingLocation(object anonymousType) : 
+		public ecer_PSPInterviewQuestionTemplate(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -750,9 +736,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_assessmenttraininglocationid"] = base.Id;
+                        Attributes["ecer_pspinterviewquestiontemplateid"] = base.Id;
                         break;
-                    case "ecer_assessmenttraininglocationid":
+                    case "ecer_pspinterviewquestiontemplateid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;
