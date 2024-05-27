@@ -1,4 +1,5 @@
 import EceRadio from "@/components/inputs/EceRadio.vue";
+import Recaptcha from "@/components/inputs/Recaptcha.vue";
 import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
 
@@ -21,6 +22,18 @@ const characterReferenceDeclineForm: Form = {
           { key: "Other", label: "Other" },
         ],
         title: "Tell us why you're unable to provide a reference",
+        rules: [Rules.required("Select an option to continue")],
+      },
+      cols: {
+        md: 12,
+        lg: 12,
+        xl: 12,
+      },
+    },
+    recaptchaKey: {
+      id: "recaptchaKey",
+      component: Recaptcha,
+      props: {
         rules: [Rules.required("Select an option to continue")],
       },
       cols: {
