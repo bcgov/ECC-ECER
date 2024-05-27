@@ -58,6 +58,8 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.RegistrantId, opts => opts.Ignore())
       .ForMember(d => d.CreatedOn, opts => opts.Ignore())
       .ForMember(d => d.SubmittedOn, opts => opts.Ignore())
+      .ForMember(d => d.SubStatus, opts => opts.Ignore())
+      .ForMember(d => d.ReadyForAssessmentDate, opts => opts.Ignore())
       .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.Transcripts))
       .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.WorkExperienceReferences))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.Id), opts => opts.MapFrom(s => s.Id))
@@ -78,6 +80,10 @@ public class ApplicationMapper : Profile
         opt => opt.MapFrom(s => s.SubmittedOn))
       .ForCtorParam(nameof(SubmittedApplicationStatus.Status),
         opt => opt.MapFrom(s => s.Status))
+      .ForCtorParam(nameof(SubmittedApplicationStatus.SubStatus),
+        opt => opt.MapFrom(s => s.SubStatus))
+      .ForCtorParam(nameof(SubmittedApplicationStatus.ReadyForAssessmentDate),
+        opt => opt.MapFrom(s => s.ReadyForAssessmentDate))
       .ForMember(d => d.TranscriptsStatus, opts => opts.MapFrom(s => s.Transcripts))
       .ForMember(d => d.WorkExperienceReferencesStatus, opts => opts.MapFrom(s => s.WorkExperienceReferences))
       .ForMember(d => d.CharacterReferencesStatus, opts => opts.MapFrom(s => s.CharacterReferences));

@@ -257,12 +257,31 @@ public enum ApplicationStatus
   ReconsiderationDecision
 }
 
+public enum ApplicationStatusReasonDetail
+{
+  Actioned,
+  BeingAssessed,
+  Certified,
+  Denied,
+  ForReview,
+  InvestigationsConsultationNeeded,
+  MoreInformationRequired,
+  OperationSupervisorManagerofCertificationsConsultationNeeded,
+  PendingDocuments,
+  ProgramAnalystReview,
+  ReadyforAssessment,
+  ReceivedPending,
+  ReceivePhysicalTranscripts,
+  SupervisorConsultationNeeded,
+  ValidatingIDs,
+}
+
 public record CharacterReference([Required] string? FirstName, [Required] string? LastName, string? PhoneNumber, [Required] string? EmailAddress)
 {
   public string? Id { get; set; }
 }
 
-public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, ApplicationStatus Status)
+public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, DateTime ReadyForAssessmentDate, ApplicationStatus Status, ApplicationStatusReasonDetail SubStatus)
 {
 
   public IEnumerable<TranscriptStatus> TranscriptsStatus { get; set; } = Array.Empty<TranscriptStatus>();

@@ -16,6 +16,8 @@ internal class ApplicationRepositoryMapper : Profile
        .ForSourceMember(s => s.Transcripts, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.WorkExperienceReferences, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.CharacterReferences, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.SubStatus, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.ReadyForAssessmentDate, opts => opts.DoNotValidate())
        .ForMember(d => d.ecer_ApplicationId, opts => opts.MapFrom(s => s.Id))
        .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
        .ForMember(d => d.ecer_IsECEAssistant, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.EceAssistant)))
@@ -31,11 +33,13 @@ internal class ApplicationRepositoryMapper : Profile
        .ForCtorParam(nameof(Application.ApplicantId), opts => opts.MapFrom(s => s.ecer_Applicantid.Id.ToString()))
        .ForCtorParam(nameof(Application.CertificationTypes), opts => opts.MapFrom(s => s))
        .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+       .ForMember(d => d.SubStatus, opts => opts.MapFrom(s => s.ecer_StatusReasonDetail))
        .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted))
        .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.ecer_DateSigned))
        .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.ecer_transcript_Applicationid))
        .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.ecer_workexperienceref_Applicationid_ecer))
-       .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.ecer_characterreference_Applicationid));
+       .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.ecer_characterreference_Applicationid))
+       .ForMember(d => d.ReadyForAssessmentDate, opts => opts.MapFrom(s => s.ecer_ReadyforAssessmentDate));
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
         .ConstructUsing((s, _) =>
@@ -52,6 +56,10 @@ internal class ApplicationRepositoryMapper : Profile
     CreateMap<ApplicationStatus, ecer_Application_StatusCode>()
         .ConvertUsingEnumMapping(opts => opts.MapByName(true))
         .ReverseMap();
+
+    CreateMap<ApplicationStatusReasonDetail, ecer_ApplicationStatusReasonDetail>()
+    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+    .ReverseMap();
 
     CreateMap<Transcript, ecer_Transcript>(MemberList.Source)
            .ForSourceMember(s => s.StartDate, opts => opts.DoNotValidate())

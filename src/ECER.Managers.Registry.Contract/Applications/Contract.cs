@@ -56,6 +56,8 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public ApplicationStatusReasonDetail SubStatus { get; set; }
+  public DateTime? ReadyForAssessmentDate { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)
@@ -126,6 +128,25 @@ public enum ApplicationStatus
   InProgress,
   PendingQueue,
   ReconsiderationDecision
+}
+
+public enum ApplicationStatusReasonDetail
+{
+  Actioned,
+  BeingAssessed,
+  Certified,
+  Denied,
+  ForReview,
+  InvestigationsConsultationNeeded,
+  MoreInformationRequired,
+  OperationSupervisorManagerofCertificationsConsultationNeeded,
+  PendingDocuments,
+  ProgramAnalystReview,
+  ReadyforAssessment,
+  ReceivedPending,
+  ReceivePhysicalTranscripts,
+  SupervisorConsultationNeeded,
+  ValidatingIDs,
 }
 
 public record CharacterReferenceSubmissionRequest(string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight);
