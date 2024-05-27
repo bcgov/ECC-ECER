@@ -87,6 +87,7 @@ internal class ApplicationRepositoryMapper : Profile
     .ValidateMemberList(MemberList.Destination);
 
     CreateMap<WorkExperienceReference, ecer_WorkExperienceRef>(MemberList.Source)
+          .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
           .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => s.Id))
           .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
           .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
@@ -96,17 +97,20 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
 
 
+
     CreateMap<ecer_WorkExperienceRef, WorkExperienceReference>(MemberList.Source)
       .ForCtorParam(nameof(WorkExperienceReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
       .ForCtorParam(nameof(WorkExperienceReference.LastName), opt => opt.MapFrom(src => src.ecer_LastName))
       .ForCtorParam(nameof(WorkExperienceReference.EmailAddress), opt => opt.MapFrom(src => src.ecer_EmailAddress))
       .ForCtorParam(nameof(WorkExperienceReference.Hours), opt => opt.MapFrom(src => src.ecer_TotalNumberofHoursAnticipated))
+      .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.ecer_WillProvideReference.HasValue ? s.ecer_WillProvideReference.Equals(ecer_YesNoNull.Yes) : default(bool?)))
       .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_WorkExperienceRefId))
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<CharacterReference, ecer_CharacterReference>(MemberList.Source)
+      .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
@@ -119,6 +123,7 @@ internal class ApplicationRepositoryMapper : Profile
           .ForCtorParam(nameof(CharacterReference.LastName), opt => opt.MapFrom(src => src.ecer_LastName))
           .ForCtorParam(nameof(CharacterReference.EmailAddress), opt => opt.MapFrom(src => src.ecer_EmailAddress))
           .ForCtorParam(nameof(CharacterReference.PhoneNumber), opt => opt.MapFrom(src => src.ecer_PhoneNumber))
+          .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.ecer_WillProvideReference.HasValue ? s.ecer_WillProvideReference.Equals(ecer_YesNoNull.Yes) : default(bool?)))
           .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId))
           .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
           .ValidateMemberList(MemberList.Destination);
@@ -199,18 +204,18 @@ internal class ApplicationRepositoryMapper : Profile
       switch (src)
       {
         case ecer_CharacterReference_StatusCode.Approved:
-          return StageStatus.Complete;
-
         case ecer_CharacterReference_StatusCode.InProgress:
         case ecer_CharacterReference_StatusCode.UnderReview:
         case ecer_CharacterReference_StatusCode.WaitingResponse:
         case ecer_CharacterReference_StatusCode.Submitted:
-          return StageStatus.InProgress;
+          return StageStatus.Complete;
 
         case ecer_CharacterReference_StatusCode.ApplicationSubmitted:
         case ecer_CharacterReference_StatusCode.Draft:
-        case ecer_CharacterReference_StatusCode.Rejected:
           return StageStatus.InComplete;
+
+        case ecer_CharacterReference_StatusCode.Rejected:
+          return StageStatus.Rejected;
 
         default:
           throw new ArgumentOutOfRangeException(nameof(src), $"Not expected status value: {src}");
@@ -224,18 +229,18 @@ internal class ApplicationRepositoryMapper : Profile
       switch (src)
       {
         case ecer_WorkExperienceRef_StatusCode.Approved:
-          return StageStatus.Complete;
-
         case ecer_WorkExperienceRef_StatusCode.InProgress:
         case ecer_WorkExperienceRef_StatusCode.UnderReview:
         case ecer_WorkExperienceRef_StatusCode.WaitingforResponse:
         case ecer_WorkExperienceRef_StatusCode.Submitted:
-          return StageStatus.InProgress;
+          return StageStatus.Complete;
 
         case ecer_WorkExperienceRef_StatusCode.ApplicationSubmitted:
         case ecer_WorkExperienceRef_StatusCode.Draft:
-        case ecer_WorkExperienceRef_StatusCode.Rejected:
           return StageStatus.InComplete;
+
+        case ecer_WorkExperienceRef_StatusCode.Rejected:
+          return StageStatus.Rejected;
 
         default:
           throw new ArgumentOutOfRangeException(nameof(src), $"Not expected status value: {src}");
@@ -248,12 +253,10 @@ internal class ApplicationRepositoryMapper : Profile
       switch (src)
       {
         case ecer_Transcript_StatusCode.Accepted:
-          return StageStatus.Complete;
-
         case ecer_Transcript_StatusCode.InProgress:
         case ecer_Transcript_StatusCode.WaitingforDetails:
         case ecer_Transcript_StatusCode.Submitted:
-          return StageStatus.InProgress;
+          return StageStatus.Complete;
 
         case ecer_Transcript_StatusCode.ApplicationSubmitted:
         case ecer_Transcript_StatusCode.Draft:

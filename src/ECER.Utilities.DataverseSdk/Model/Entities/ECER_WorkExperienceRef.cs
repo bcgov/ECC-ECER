@@ -129,6 +129,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_LastFollowUpDate = "ecer_lastfollowupdate";
 			public const string ecer_LastInvitationEmailSent = "ecer_lastinvitationemailsent";
 			public const string ecer_LastName = "ecer_lastname";
+			public const string ecer_legacyworkexperiencereferenceid = "ecer_legacyworkexperiencereferenceid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_OtherChildProgramType = "ecer_otherchildprogramtype";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
@@ -159,6 +160,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_unabletoprovidereferencereasonName = "ecer_unabletoprovidereferencereasonname";
 			public const string ecer_WillProvideReference = "ecer_willprovidereference";
 			public const string ecer_willprovidereferenceName = "ecer_willprovidereferencename";
+			public const string ecer_workexperienceassessment_WorkExpRefId = "ecer_workexperienceassessment_WorkExpRefId";
 			public const string ecer_workexperienceref_Applicantid = "ecer_workexperienceref_Applicantid";
 			public const string ecer_workexperienceref_Applicationid_ecer = "ecer_workexperienceref_Applicationid_ecer";
 			public const string ecer_workexperienceref_RefCertifiedProvinceId = "ecer_workexperienceref_RefCertifiedProvinceId";
@@ -208,6 +210,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacyworkexperiencereferenceid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -1102,6 +1106,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_lastname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyworkexperiencereferenceid")]
+		public string ecer_legacyworkexperiencereferenceid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyworkexperiencereferenceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyworkexperiencereferenceid", value);
 			}
 		}
 		
@@ -2049,6 +2068,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_WorkExperienceRefId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_workexperienceassessment_WorkExpRefId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_workexperienceassessment_WorkExpRefId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment> ecer_workexperienceassessment_WorkExpRefId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment>("ecer_workexperienceassessment_WorkExpRefId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment>("ecer_workexperienceassessment_WorkExpRefId", null, value);
 			}
 		}
 		

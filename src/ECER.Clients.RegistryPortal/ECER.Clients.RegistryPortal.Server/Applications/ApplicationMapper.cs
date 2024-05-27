@@ -8,6 +8,7 @@ public class ApplicationMapper : Profile
   {
     CreateMap<WorkExperienceReference, Managers.Registry.Contract.Applications.WorkExperienceReference>()
       .ForMember(d => d.Status, opts => opts.Ignore())
+      .ForMember(d => d.WillProvideReference, opts => opts.Ignore())
       .ReverseMap();
 
     CreateMap<Transcript, Managers.Registry.Contract.Applications.Transcript>()
@@ -40,6 +41,7 @@ public class ApplicationMapper : Profile
 
     CreateMap<CharacterReference, Managers.Registry.Contract.Applications.CharacterReference>()
       .ForMember(d => d.Status, opts => opts.Ignore())
+      .ForMember(d => d.WillProvideReference, opts => opts.Ignore())
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.FirstName),
         opt => opt.MapFrom(src => src.FirstName))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.CharacterReference.LastName),
@@ -93,7 +95,8 @@ public class ApplicationMapper : Profile
         opt => opt.MapFrom(src => src.Id))
       .ForCtorParam(nameof(ReferenceStatus.Status),
         opt => opt.MapFrom(src => src.Status))
-      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber));
+      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
+      .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference));
 
     CreateMap<Managers.Registry.Contract.Applications.WorkExperienceReference, ReferenceStatus>()
       .ForCtorParam(nameof(ReferenceStatus.FirstName),
@@ -107,7 +110,8 @@ public class ApplicationMapper : Profile
       .ForCtorParam(nameof(ReferenceStatus.Status),
         opt => opt.MapFrom(src => src.Status))
       .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
-      .ForMember(d => d.Hours, opts => opts.MapFrom(s => s.Hours));
+      .ForMember(d => d.Hours, opts => opts.MapFrom(s => s.Hours))
+      .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference));
 
     CreateMap<Managers.Registry.Contract.Applications.Transcript, TranscriptStatus>()
       .ForCtorParam(nameof(TranscriptStatus.Id),

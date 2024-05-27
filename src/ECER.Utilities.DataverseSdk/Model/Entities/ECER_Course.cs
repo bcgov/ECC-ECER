@@ -84,6 +84,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_postsecondaryinstitutionidName = "ecer_postsecondaryinstitutionidname";
 			public const string ecer_Programid = "ecer_programid";
 			public const string ecer_ProgramidName = "ecer_programidname";
+			public const string ecer_ProgramType = "ecer_programtype";
+			public const string ecer_programtypeName = "ecer_programtypename";
 			public const string ecer_ProvincialRequirement = "ecer_provincialrequirement";
 			public const string ecer_ProvincialRequirementName = "ecer_provincialrequirementname";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -504,6 +506,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_programid"))
 				{
 					return this.FormattedValues["ecer_programid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programtype")]
+		public virtual ecer_PSIProgramType? ecer_ProgramType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSIProgramType?)(EntityOptionSetEnum.GetEnum(this, "ecer_programtype")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programtype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programtypename")]
+		public string ecer_programtypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programtype"))
+				{
+					return this.FormattedValues["ecer_programtype"];
 				}
 				else
 				{

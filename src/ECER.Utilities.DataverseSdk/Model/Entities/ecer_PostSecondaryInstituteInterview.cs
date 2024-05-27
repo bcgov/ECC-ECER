@@ -64,9 +64,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_IdNumber = "ecer_idnumber";
+			public const string ecer_IntervieweeType = "ecer_intervieweetype";
+			public const string ecer_intervieweetypeName = "ecer_intervieweetypename";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_postsecondaryinstituteinterview_SiteVisit = "ecer_postsecondaryinstituteinterview_SiteVisit";
 			public const string ecer_PostSecondaryInstituteInterviewId = "ecer_postsecondaryinstituteinterviewid";
 			public const string Id = "ecer_postsecondaryinstituteinterviewid";
+			public const string ecer_pspinterviewquestion_PSPInterview_ecer_po = "ecer_pspinterviewquestion_PSPInterview_ecer_po";
+			public const string ecer_SiteVisitId = "ecer_sitevisitid";
+			public const string ecer_SiteVisitIdName = "ecer_sitevisitidname";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -258,6 +264,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_intervieweetype")]
+		public virtual ecer_PSPIntervieweeType? ecer_IntervieweeType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PSPIntervieweeType?)(EntityOptionSetEnum.GetEnum(this, "ecer_intervieweetype")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_intervieweetype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_intervieweetypename")]
+		public string ecer_intervieweetypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_intervieweetype"))
+				{
+					return this.FormattedValues["ecer_intervieweetype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -311,6 +349,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_PostSecondaryInstituteInterviewId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_SiteVisitId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_sitevisitid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_sitevisitid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitidname")]
+		public string ecer_SiteVisitIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_sitevisitid"))
+				{
+					return this.FormattedValues["ecer_sitevisitid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -692,6 +762,43 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_pspinterviewquestion_PSPInterview_ecer_po
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_pspinterviewquestion_PSPInterview_ecer_po")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PSPInterviewQuestion> ecer_pspinterviewquestion_PSPInterview_ecer_po
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PSPInterviewQuestion>("ecer_pspinterviewquestion_PSPInterview_ecer_po", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PSPInterviewQuestion>("ecer_pspinterviewquestion_PSPInterview_ecer_po", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_postsecondaryinstituteinterview_SiteVisit
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteinterview_SiteVisit")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit ecer_postsecondaryinstituteinterview_SiteVisit
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_postsecondaryinstituteinterview_SiteVisit", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_postsecondaryinstituteinterview_SiteVisit", null, value);
 			}
 		}
 		

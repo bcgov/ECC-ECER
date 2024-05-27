@@ -72,6 +72,8 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
   public string? PhoneNumber { get; set; }
 
   public StageStatus? Status { get; set; }
+
+  public bool? WillProvideReference { get; set; }
 }
 
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
@@ -79,6 +81,8 @@ public record CharacterReference(string? FirstName, string? LastName, string? Ph
   public string? Id { get; set; }
 
   public StageStatus? Status { get; set; }
+
+  public bool? WillProvideReference { get; set; }
 }
 
 public enum PortalStage
@@ -222,5 +226,6 @@ public enum StageStatus
 {
   Complete,
   InComplete,
-  InProgress
+  InProgress,
+  Rejected
 }
