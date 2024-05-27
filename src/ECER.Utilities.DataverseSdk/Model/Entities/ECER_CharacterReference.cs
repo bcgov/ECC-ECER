@@ -104,11 +104,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_investigation_CharacterReferenceId_ecer_c = "ecer_investigation_CharacterReferenceId_ecer_c";
 			public const string ecer_InviteAgain = "ecer_inviteagain";
 			public const string ecer_inviteagainName = "ecer_inviteagainname";
-			public const string ecer_KnowApplicantsTime = "ecer_knowapplicantstime";
 			public const string ecer_KnownApplicantTimeChoice = "ecer_knownapplicanttimechoice";
 			public const string ecer_knownapplicanttimechoiceName = "ecer_knownapplicanttimechoicename";
 			public const string ecer_LastInvitationEmailSent = "ecer_lastinvitationemailsent";
 			public const string ecer_LastName = "ecer_lastname";
+			public const string ecer_legacycharacterreferenceid = "ecer_legacycharacterreferenceid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
 			public const string ecer_portalinvitation_CharacterReferenceId = "ecer_portalinvitation_CharacterReferenceId";
@@ -169,6 +169,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacycharacterreferenceid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -650,24 +652,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// How long have you known the applicant
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_knowapplicantstime")]
-		public string ecer_KnowApplicantsTime
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_knowapplicantstime");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_knowapplicantstime", value);
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_knownapplicanttimechoice")]
 		public virtual ecer_ReferenceKnownTime? ecer_KnownApplicantTimeChoice
 		{
@@ -727,6 +711,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_lastname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacycharacterreferenceid")]
+		public string ecer_legacycharacterreferenceid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacycharacterreferenceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacycharacterreferenceid", value);
 			}
 		}
 		

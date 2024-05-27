@@ -60,8 +60,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_CertificateTypeId = "ecer_certificatetypeid";
+			public const string ecer_CertificateTypeIdName = "ecer_certificatetypeidname";
 			public const string ecer_course_ProvincialRequirement_ecer_provinc = "ecer_course_ProvincialRequirement_ecer_provinc";
+			public const string ecer_educationassessment_RequirementAreaId = "ecer_educationassessment_RequirementAreaId";
+			public const string ecer_LegacyRequiredAreaID = "ecer_legacyrequiredareaid";
+			public const string ecer_MinimumHours = "ecer_minimumhours";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_ProgramDevelopmentInProgress = "ecer_programdevelopmentinprogress";
+			public const string ecer_programdevelopmentinprogressName = "ecer_programdevelopmentinprogressname";
+			public const string ecer_provincialrequirement_CertificateTypeId = "ecer_provincialrequirement_CertificateTypeId";
 			public const string ecer_ProvincialRequirementId = "ecer_provincialrequirementid";
 			public const string Id = "ecer_provincialrequirementid";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -240,6 +248,68 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypeid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CertificateTypeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_certificatetypeid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificatetypeid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypeidname")]
+		public string ecer_CertificateTypeIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_certificatetypeid"))
+				{
+					return this.FormattedValues["ecer_certificatetypeid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyrequiredareaid")]
+		public string ecer_LegacyRequiredAreaID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyrequiredareaid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyrequiredareaid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_minimumhours")]
+		public System.Nullable<int> ecer_MinimumHours
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_minimumhours");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_minimumhours", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -252,6 +322,41 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		/// <summary>
+		/// When YES, Education Level and Min Hours is NOT Required
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programdevelopmentinprogress")]
+		public System.Nullable<bool> ecer_ProgramDevelopmentInProgress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_programdevelopmentinprogress");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programdevelopmentinprogress", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programdevelopmentinprogressname")]
+		public string ecer_programdevelopmentinprogressName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programdevelopmentinprogress"))
+				{
+					return this.FormattedValues["ecer_programdevelopmentinprogress"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -692,6 +797,43 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_course_ProvincialRequirement_ecer_provinc", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_educationassessment_RequirementAreaId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_educationassessment_RequirementAreaId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_EducationAssessment> ecer_educationassessment_RequirementAreaId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_EducationAssessment>("ecer_educationassessment_RequirementAreaId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_EducationAssessment>("ecer_educationassessment_RequirementAreaId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_provincialrequirement_CertificateTypeId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypeid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_provincialrequirement_CertificateTypeId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_CertificateType ecer_provincialrequirement_CertificateTypeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType>("ecer_provincialrequirement_CertificateTypeId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType>("ecer_provincialrequirement_CertificateTypeId", null, value);
 			}
 		}
 		
