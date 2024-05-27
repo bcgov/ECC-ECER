@@ -64,6 +64,7 @@
       type="character"
       :status="reference.status"
       :go-to="() => goTo(reference.id?.toString())"
+      :will-provide-reference="reference.willProvideReference"
     />
     <ApplicationSummaryTranscriptReferenceListItem
       v-for="reference in applicationStatus?.workExperienceReferencesStatus"
@@ -72,6 +73,7 @@
       type="workExperience"
       :status="reference.status"
       :go-to="() => goTo(reference.id?.toString())"
+      :will-provide-reference="reference.willProvideReference"
     />
     <!-- Step 2 End-->
     <!-- Step 3 Start-->
@@ -173,6 +175,19 @@ export default defineComponent({
           return "";
       }
     },
+    step2Progress() {
+      switch (this.applicationStatus?.status) {
+        case "Submitted":
+        case "InProgress":
+          return this.IN_PROGRESS;
+        case "Ready":
+        case "PendingQueue":
+        case "Escalated":
+          return this.COMPLETE;
+        default:
+          return "";
+      }
+    },
     step3RegistryAssessmentIcon() {
       switch (this.step3Progress) {
         case this.NOT_STARTED:
@@ -189,19 +204,6 @@ export default defineComponent({
           return "Not yet started";
         case this.IN_PROGRESS:
           return "In progress";
-        default:
-          return "";
-      }
-    },
-    step2Progress() {
-      switch (this.applicationStatus?.status) {
-        case "Submitted":
-        case "InProgress":
-          return this.IN_PROGRESS;
-        case "Ready":
-        case "PendingQueue":
-        case "Escalated":
-          return this.COMPLETE;
         default:
           return "";
       }

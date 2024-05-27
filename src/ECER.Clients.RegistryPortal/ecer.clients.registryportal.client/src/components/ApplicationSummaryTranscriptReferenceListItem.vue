@@ -38,46 +38,61 @@ export default defineComponent({
       type: Function,
       required: true,
     },
+    willProvideReference: {
+      type: Object as PropType<Boolean | null>,
+      required: false,
+      default: undefined,
+    },
   },
   setup: async () => {
     const { smAndUp } = useDisplay();
     return { smAndUp };
   },
-  data() {
-    return {};
-  },
   computed: {
     text() {
       if (this.type === "transcript") {
         return `Transcript provided by ${this.name}`;
-      } else if (this.type === "character") {
-        return `Character reference provided by ${this.name}`;
-      } else if (this.type === "workExperience") {
-        return `Work experience reference provided by ${this.name}`;
-      } else {
-        return "";
       }
+
+      if (this.type === "character") {
+        return `Character reference provided by ${this.name}`;
+      }
+
+      if (this.type === "workExperience") {
+        return `Work experience reference provided by ${this.name}`;
+      }
+
+      return "";
     },
     statusText() {
-      switch (this.status) {
-        case "Complete":
-          return "Complete";
-        case "InProgress":
-          return "Incomplete";
-        default:
-          return "Cancelled";
+      if (this.status === "Complete") {
+        return "Complete";
       }
+
+      if (this.status === "InComplete") {
+        return "Incomplete";
+      }
+
+      if (this.status === "Rejected" && !this.willProvideReference) {
+        return "Cancelled";
+      }
+
+      return "Unhandled Status";
     },
     sheetColor() {
-      switch (this.status) {
-        case "Complete":
-          return "#f8f8f8";
-        case "InProgress":
-        case "InComplete":
-          return "#D9EAFD";
-        default:
-          return "#D9EAFD";
+      if (this.status === "Complete") {
+        return "#f8f8f8";
       }
+
+      if (this.status === "InComplete") {
+        return "#D9EAFD";
+      }
+
+      if (this.status === "Rejected" && !this.willProvideReference) {
+        return "#D9EAFD";
+      }
+
+      return "";
     },
   },
   methods: {

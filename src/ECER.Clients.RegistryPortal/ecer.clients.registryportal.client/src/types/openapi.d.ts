@@ -184,7 +184,7 @@ declare namespace Components {
       workexperienceReferenceId?: string | null;
       characterReferenceId?: string | null;
       inviteType?: InviteType;
-      workExperienceReferenceHours?: number | null;
+      workExperienceReferenceHours?: number | null; // int32
     }
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
@@ -222,6 +222,7 @@ declare namespace Components {
       emailAddress?: string | null;
       phoneNumber?: string | null;
       hours?: number | null; // int32
+      willProvideReference?: boolean | null;
     }
     /**
      * Save draft application request
@@ -229,7 +230,7 @@ declare namespace Components {
     export interface SaveDraftApplicationRequest {
       draftApplication?: DraftApplication;
     }
-    export type StageStatus = "Complete" | "InComplete" | "InProgress";
+    export type StageStatus = "Complete" | "InComplete" | "InProgress" | "Rejected";
     export interface SubmitApplicationResponse {
       applicationId?: string | null;
     }
