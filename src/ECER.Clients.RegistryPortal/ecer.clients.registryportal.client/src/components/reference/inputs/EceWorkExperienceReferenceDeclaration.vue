@@ -22,7 +22,7 @@
           <ul class="ml-10">
             <li>Your contact information</li>
             <li>Your ECE certification information</li>
-            <li>An assessment of how competent you think the applicant is in a variety of areas</li>
+            <li>An assessment if you think the applicant is competent in a variety of areas - if not, we'll ask you to provide more details</li>
             <li>Total number of hours you directly supervised the applicant working</li>
             <li>Name and type of child care program</li>
             <li>Age of children the applicant cared for</li>
