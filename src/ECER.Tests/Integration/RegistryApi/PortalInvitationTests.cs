@@ -38,4 +38,27 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
     var queryResult = await inviteLinkResponse.ReadAsJsonAsync<PortalInvitationQueryResult>();
     queryResult.ShouldNotBeNull();
   }
+  
+  [Fact]
+  public async Task DoNotReturnCompletedPortalInvitationData()
+  {
+    var bus = Fixture.Services.GetRequiredService<IMediator>();
+    var portalInvitation = Fixture.portalInvitationWorkExperienceReferenceIdCompleted;
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
+    packingResponse.ShouldNotBeNull();
+
+    var token = packingResponse.VerificationLink.Split('/')[2];
+    var verifyResponse = await bus.Send(new PortalInvitationVerificationQuery(token), CancellationToken.None);
+
+    verifyResponse.Invitation!.Id.ShouldBe(portalInvitation.ToString());
+
+    var inviteLinkResponse = await Host.Scenario(_ =>
+    {
+      _.Get.Url($"/api/PortalInvitations/{token}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var queryResult = await inviteLinkResponse.ReadAsJsonAsync<PortalInvitationQueryResult>();
+    queryResult.ShouldBeNull();
+  }
 }
