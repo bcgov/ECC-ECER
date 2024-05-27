@@ -39,8 +39,6 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceSubmit = null!;
   private ecer_PortalInvitation testPortalInvitationCharacterReferenceOptout = null!;
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceOptout = null!;
-  private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceCancelled = null!;
-  private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceExpired = null!;
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceCompleted = null!;
   private Contact authenticatedBcscUser2 = null!;
 
@@ -60,8 +58,6 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public Guid portalInvitationCharacterReferenceIdOptout => testPortalInvitationCharacterReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationWorkExperienceReferenceIdOptout => testPortalInvitationWorkExperienceReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationWorkExperienceReferenceIdCompleted => testPortalInvitationWorkExperienceReferenceCompleted.ecer_PortalInvitationId ?? Guid.Empty;
-  public Guid portalInvitationWorkExperienceReferenceIdExpired => testPortalInvitationWorkExperienceReferenceExpired.ecer_PortalInvitationId ?? Guid.Empty;
-  public Guid portalInvitationWorkExperienceReferenceIdCancelled => testPortalInvitationWorkExperienceReferenceCancelled.ecer_PortalInvitationId ?? Guid.Empty;
   public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
   private ecer_Application inProgressTestApplication2 = null!;
@@ -113,11 +109,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testPortalInvitationWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");
     testPortalInvitationCharacterReferenceOptout = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name4");
     testPortalInvitationWorkExperienceReferenceOptout = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name5");
-    testPortalInvitationWorkExperienceReferenceCompleted = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name6", ecer_PortalInvitation_StatusCode.Completed);
-    testPortalInvitationWorkExperienceReferenceExpired = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name7", ecer_PortalInvitation_StatusCode.Expired);
-    testPortalInvitationWorkExperienceReferenceCancelled = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name8", ecer_PortalInvitation_StatusCode.Cancelled);
+    testPortalInvitationWorkExperienceReferenceCompleted = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name6");
 
     context.SaveChanges();
+
+    CompletePortalInvitation_WorkExperienceReference(context, "name6");
 
     //load dependent properties
     context.Attach(authenticatedBcscUser);
@@ -257,13 +253,32 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return portalInvitation;
   }
 
-  private ecer_PortalInvitation GetOrAddPortalInvitation_WorkExperienceReference(EcerContext context, Contact registrant, string name, ecer_PortalInvitation_StatusCode status = ecer_PortalInvitation_StatusCode.Sent)
+  private void CompletePortalInvitation_WorkExperienceReference(EcerContext context, string name)
+  {
+    var portalInvitations = context.ecer_PortalInvitationSet
+      .Where(p => p.ecer_ApplicantId != null &&
+                  p.ecer_ApplicationId != null &&
+                  p.ecer_Name == name &&
+                  p.ecer_WorkExperienceReferenceId != null)
+      .ToList(); 
+
+    foreach (var portalInvitation in portalInvitations)
+    {
+      portalInvitation.StateCode = ecer_portalinvitation_statecode.Inactive;
+      portalInvitation.StatusCode = ecer_PortalInvitation_StatusCode.Completed;
+      context.UpdateObject(portalInvitation);
+    }
+
+    context.SaveChanges();
+  }
+  
+  private ecer_PortalInvitation GetOrAddPortalInvitation_WorkExperienceReference(EcerContext context, Contact registrant, string name)
   {
     var portalInvitation = context.ecer_PortalInvitationSet.FirstOrDefault(p => p.ecer_ApplicantId != null &&
                                                                                 p.ecer_ApplicationId != null &&
                                                                                 p.ecer_Name == name &&
                                                                                 p.ecer_WorkExperienceReferenceId != null &&
-                                                                                p.StatusCode == status);
+                                                                                p.StatusCode == ecer_PortalInvitation_StatusCode.Sent);
 
     if (portalInvitation == null)
       {
@@ -276,7 +291,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
           ecer_Name = "Reference Test name",
           ecer_FirstName = "Reference Test firstname",
           ecer_LastName = "Reference Test lastname",
-          ecer_EmailAddress = "reference_test@test.com"
+          ecer_EmailAddress = "reference_test@test.com",
         };
 
         var guid = Guid.NewGuid();
@@ -288,15 +303,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
           ecer_FirstName = "Test firstname",
           ecer_LastName = "Test lastname",
           ecer_EmailAddress = "test@email.com",
-          StatusCode = status,
         };
-
-        // Set StateCode based on StatusCode
-        portalInvitation.StateCode =
-          status is ecer_PortalInvitation_StatusCode.Cancelled or ecer_PortalInvitation_StatusCode.Completed
-            or ecer_PortalInvitation_StatusCode.Expired
-            ? ecer_portalinvitation_statecode.Inactive
-            : ecer_portalinvitation_statecode.Active;
 
         context.AddObject(workexperienceReference);
         context.AddObject(portalInvitation);
