@@ -276,6 +276,8 @@ public record ReferenceStatus(string Id, StageStatus Status, string FirstName, s
 {
   public string? PhoneNumber { get; set; }
   public int? Hours { get; set; }
+  public bool? WillProvideReference { get; set; }
+
 }
 
 
@@ -283,5 +285,6 @@ public enum StageStatus
 {
   Complete,
   InComplete,
-  InProgress
+  InProgress,
+  Rejected
 }
