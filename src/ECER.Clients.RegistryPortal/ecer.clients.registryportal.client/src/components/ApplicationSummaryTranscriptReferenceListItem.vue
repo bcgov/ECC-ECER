@@ -6,7 +6,9 @@
         <a v-else href="#" @click.prevent="buttonClick">{{ text }}</a>
 
         <v-spacer></v-spacer>
-        <v-sheet :width="smAndUp ? '' : '200px'" rounded class="sheet" :class="{ 'mt-2': !smAndUp }" :color="sheetColor">{{ statusText }}</v-sheet>
+        <v-sheet rounded width="200px" class="py-2 text-center" :class="{ 'mt-2': !smAndUp }" :color="sheetColor">
+          {{ statusText }}
+        </v-sheet>
       </div>
     </v-card-text>
   </v-card>
@@ -81,15 +83,15 @@ export default defineComponent({
     },
     sheetColor() {
       if (this.status === "Complete") {
-        return "#f8f8f8";
+        return "white-smoke";
       }
 
       if (this.status === "InComplete") {
-        return "#D9EAFD";
+        return "hawkes-blue";
       }
 
       if (this.status === "Rejected" && !this.willProvideReference) {
-        return "#D9EAFD";
+        return "hawkes-blue";
       }
 
       return "";
@@ -102,9 +104,3 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
-.sheet {
-  padding: 1rem 3rem;
-  text-align: center;
-}
-</style>

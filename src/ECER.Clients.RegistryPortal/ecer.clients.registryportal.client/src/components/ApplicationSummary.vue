@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-breadcrumbs class="breadcrumb" :items="items" color="primary">
+    <v-breadcrumbs class="pl-0" :items="items" color="primary">
       <template #divider>/</template>
     </v-breadcrumbs>
 
@@ -8,7 +8,7 @@
     <h3>Status</h3>
     <div class="pb-3">It's a 3-step process to apply</div>
     <!-- Step 1 Start-->
-    <v-card elevation="0" color="#f8f8f8" class="border-top mt-5" rounded="0">
+    <v-card elevation="0" color="white-smoke" class="border-top mt-5" rounded="0">
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
           <v-row no-gutters>
@@ -31,7 +31,7 @@
     <!-- Step 2 Start-->
     <v-card
       elevation="0"
-      :color="step2Progress === IN_PROGRESS ? '#003366' : '#f8f8f8'"
+      :color="step2Progress === IN_PROGRESS ? 'primary' : 'white-smoke'"
       class="mt-5"
       :class="[{ 'border-top': step2Progress !== IN_PROGRESS }]"
       rounded="0"
@@ -79,7 +79,7 @@
     <!-- Step 3 Start-->
     <v-card
       elevation="0"
-      :color="step3Progress === IN_PROGRESS ? '#003366' : '#f8f8f8'"
+      :color="step3Progress === IN_PROGRESS ? 'primary' : 'white-smoke'"
       class="mt-5"
       :class="[{ 'border-top': step3Progress !== IN_PROGRESS }]"
       rounded="0"
@@ -231,8 +231,5 @@ export default defineComponent({
 <style scoped>
 .border-top {
   border-top: 2px solid black;
-}
-.breadcrumb {
-  padding-left: 0;
 }
 </style>
