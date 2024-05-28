@@ -18,16 +18,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Competent = 621870001,
+		No = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NotCompetent = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		SomewhatCompetent = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		VeryCompetent = 621870000,
+		Yes = 621870000,
 	}
 }
 #pragma warning restore CS1591

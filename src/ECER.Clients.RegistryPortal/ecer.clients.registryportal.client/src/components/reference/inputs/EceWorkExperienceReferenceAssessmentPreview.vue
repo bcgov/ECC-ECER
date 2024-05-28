@@ -1,8 +1,8 @@
 <template>
   <ReferencePreviewCard
     :is-valid="true"
-    title="Competencies assessment"
-    subtitle="How competent you think the applicant is in following areas."
+    title="Are you satisfied that the applicant is competent in the following areas?"
+    subtitle="This must be based on your own observations of the applicant."
     reference-stage="Assessment"
   >
     <template #content>
@@ -78,15 +78,6 @@
           <p v-if="assessment.fosteringPositiveRelationCoworkerReason" class="small">
             {{ assessment.fosteringPositiveRelationCoworkerReason }}
           </p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">You believe the applicant has the personality, ability and temperament necessary to work with children</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ assessment.isApplicantQualified ? "Yes" : "No" }}</p>
-          <p v-if="!assessment.isApplicantQualified" class="small">{{ assessment.applicantNotQualifiedReason }}</p>
         </v-col>
       </v-row>
     </template>
@@ -177,8 +168,6 @@ export default defineComponent({
         fosteringPositiveRelationChild: fosteringPositiveRelationChildDisplay as Components.Schemas.LikertScale,
         fosteringPositiveRelationFamily: fosteringPositiveRelationFamilyDisplay as Components.Schemas.LikertScale,
         fosteringPositiveRelationCoworker: fosteringPositiveRelationCoworkerDisplay as Components.Schemas.LikertScale,
-        isApplicantQualified:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.isApplicantQualified,
         childDevelopmentReason:
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.childDevelopmentReason,
         childGuidanceReason:
@@ -198,8 +187,6 @@ export default defineComponent({
         fosteringPositiveRelationCoworkerReason:
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]
             ?.fosteringPositiveRelationCoworkerReason,
-        applicantNotQualifiedReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.applicantNotQualifiedReason,
       };
     },
   },

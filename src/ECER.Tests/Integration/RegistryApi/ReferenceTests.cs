@@ -101,9 +101,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         faker.PickRandom<LikertScale>(), // FosteringPositiveRelationFamily
         faker.Lorem.Paragraph(), // FosteringPositiveRelationFamilyReason
         faker.PickRandom<LikertScale>(), // FosteringPositiveRelationCoworker
-        faker.Lorem.Paragraph(), // FosteringPositiveRelationCoworkerReason
-        faker.Random.Bool(), // IsApplicantQualified
-        faker.Lorem.Paragraph() // ApplicantNotQualifiedReason
+        faker.Lorem.Paragraph() // FosteringPositiveRelationCoworkerReason
     );
 
     // Creating the WorkExperienceReferenceSubmissionRequest record

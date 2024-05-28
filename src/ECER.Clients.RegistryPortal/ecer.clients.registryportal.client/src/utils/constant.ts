@@ -73,10 +73,8 @@ export const workReferenceRelationshipRadio: RadioButtonWrapper<Components.Schem
 ];
 
 export const likertScaleRadio: RadioButtonWrapper<Components.Schemas.LikertScale>[] = [
-  { label: "Very Competent", value: "VeryCompetent" },
-  { label: "Competent", value: "Competent" },
-  { label: "Somewhat Competent", value: "SomewhatCompetent" },
-  { label: "Not Competent", value: "NotCompetent" },
+  { label: "Yes", value: "Yes" },
+  { label: "No", value: "No" },
 ];
 
 export const childcareAgeRangesCheckBox: CheckBoxWrapper<Components.Schemas.ChildcareAgeRanges>[] = [
