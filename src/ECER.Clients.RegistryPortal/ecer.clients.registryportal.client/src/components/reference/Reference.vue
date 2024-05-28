@@ -59,7 +59,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import { getReference, optOutReference, postCharacterReference, postWorkExperienceReference } from "@/api/reference";
 import characterReferenceWizardConfig from "@/config/character-reference-wizard";
@@ -77,7 +77,13 @@ export default defineComponent({
   components: { Wizard },
   async setup() {
     const route = useRoute();
-    const { data } = await getReference(route.params.token as string);
+    const router = useRouter();
+    const { data, error } = await getReference(route.params.token as string);
+
+    if (error) {
+      router.push("/invalid-reference");
+    }
+
     const wizardStore = useWizardStore();
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
