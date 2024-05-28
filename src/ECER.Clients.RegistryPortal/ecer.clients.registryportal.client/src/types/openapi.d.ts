@@ -158,7 +158,7 @@ declare namespace Components {
       } | null;
     }
     export type InviteType = "CharacterReference" | "WorkExperienceReference";
-    export type LikertScale = "Competent" | "NotCompetent" | "SomewhatCompetent" | "VeryCompetent";
+    export type LikertScale = "Yes" | "No";
     export interface OidcAuthenticationSettings {
       authority?: string | null;
       clientId?: string | null;
@@ -312,8 +312,6 @@ declare namespace Components {
       fosteringPositiveRelationFamilyReason?: string | null;
       fosteringPositiveRelationCoworker?: LikertScale;
       fosteringPositiveRelationCoworkerReason?: string | null;
-      isApplicantQualified?: boolean;
-      applicantNotQualifiedReason?: string | null;
     }
     export interface WorkExperienceReferenceDetails {
       hours?: number; // int32
