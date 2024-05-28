@@ -37,11 +37,13 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
     switch (result.StatusCode)
     {
       case PortalInvitationStatusCode.Completed:
-        return PortalInvitationVerificationQueryResult.Failure("Reference already submitted");
+        return PortalInvitationVerificationQueryResult.Failure("Reference has already been submitted.");
       case PortalInvitationStatusCode.Expired:
-        return PortalInvitationVerificationQueryResult.Failure("Reference expired");
+        return PortalInvitationVerificationQueryResult.Failure("Reference has expired.");
       case PortalInvitationStatusCode.Cancelled:
-        return PortalInvitationVerificationQueryResult.Failure("Reference cancelled");
+        return PortalInvitationVerificationQueryResult.Failure("Reference has been cancelled.");
+      case PortalInvitationStatusCode.Failed:
+        return PortalInvitationVerificationQueryResult.Failure("Reference has failed.");
     }
     
     if (result.InviteType == Contract.PortalInvitations.InviteType.WorkExperienceReference)
