@@ -74,8 +74,10 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
-      path: "/submitted",
+      path: "/submitted/:applicationId",
+      name: "submitted",
       component: () => import("./components/pages/Submitted.vue"),
+      props: true,
       meta: { requiresAuth: true },
     },
     {
@@ -171,7 +173,7 @@ router.beforeEach(async (to, _, next) => {
 router.beforeEach((to, from, next) => {
   const applicationStore = useApplicationStore();
 
-  if (from.path === "/application" && to.path !== "/submitted" && applicationStore.hasDraftApplication) {
+  if (from.path === "/application" && to.name !== "submitted" && applicationStore.hasDraftApplication) {
     applicationStore.saveDraft();
     next();
   } else next();
