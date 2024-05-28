@@ -27,7 +27,7 @@
           </ul>
         </div>
       </v-row>
-      <router-link :to="'/manage-application'">
+      <router-link :to="{ name: 'manageApplication', params: { applicationId: applicationId } }">
         <v-btn class="mt-5" type="" rounded="lg" color="primary">Go to application summary</v-btn>
       </router-link>
     </v-col>
@@ -41,6 +41,11 @@ import PageContainer from "@/components/PageContainer.vue";
 export default defineComponent({
   name: "Submitted",
   components: { PageContainer },
-  props: {},
+  props: {
+    applicationId: {
+      type: String,
+      required: true,
+    },
+  },
 });
 </script>
