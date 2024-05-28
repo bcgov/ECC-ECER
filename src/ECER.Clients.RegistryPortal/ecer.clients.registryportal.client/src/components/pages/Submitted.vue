@@ -27,8 +27,8 @@
           </ul>
         </div>
       </v-row>
-      <router-link :to="'/'">
-        <v-btn class="mt-5" type="" rounded="lg" color="primary">Go to Dashboard</v-btn>
+      <router-link :to="'/manage-application'">
+        <v-btn class="mt-5" type="" rounded="lg" color="primary">Go to application summary</v-btn>
       </router-link>
     </v-col>
   </PageContainer>
