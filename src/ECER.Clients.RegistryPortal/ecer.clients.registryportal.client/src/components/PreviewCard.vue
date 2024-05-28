@@ -68,7 +68,7 @@ export default defineComponent({
   methods: {
     setWizard(stage: Components.Schemas.PortalStage) {
       this.wizardStore.setCurrentStep(stage);
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+      this.applicationStore.draftApplication.stage = stage;
     },
   },
 });

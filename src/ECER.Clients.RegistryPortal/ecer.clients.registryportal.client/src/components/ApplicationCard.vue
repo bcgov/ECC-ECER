@@ -93,7 +93,7 @@ export default defineComponent({
       this.$router.push("/application");
     },
     handleManageApplication() {
-      this.$router.push("/manage-application");
+      this.$router.push({ name: "manageApplication", params: { applicationId: this.applicationStore?.application?.id } });
     },
   },
 });
