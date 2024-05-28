@@ -28,6 +28,7 @@ public record ApplicationQuery
 public record Application(string? Id, string ApplicantId, IEnumerable<CertificationType> CertificationTypes)
 {
   public ApplicationStatus Status { get; set; }
+  public ApplicationStatusReasonDetail SubStatus { get; set; }
   public DateTime CreatedOn { get; set; }
   public DateTime? SignedDate { get; set; }
   public DateTime? SubmittedOn { get; set; }
@@ -35,6 +36,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public DateTime? ReadyForAssessmentDate { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)
@@ -88,6 +90,25 @@ public enum ApplicationStatus
   PendingQueue,
   ReconsiderationDecision,
   AppealDecision
+}
+
+public enum ApplicationStatusReasonDetail
+{
+  Actioned,
+  BeingAssessed,
+  Certified,
+  Denied,
+  ForReview,
+  InvestigationsConsultationNeeded,
+  MoreInformationRequired,
+  OperationSupervisorManagerofCertificationsConsultationNeeded,
+  PendingDocuments,
+  ProgramAnalystReview,
+  ReadyforAssessment,
+  ReceivedPending,
+  ReceivePhysicalTranscripts,
+  SupervisorConsultationNeeded,
+  ValidatingIDs,
 }
 
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
