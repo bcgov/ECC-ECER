@@ -6,6 +6,8 @@ using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
 using MediatR;
+using InviteType = ECER.Managers.Registry.Contract.PortalInvitations.InviteType;
+using PortalInvitationStatusCode = ECER.Managers.Registry.Contract.PortalInvitations.PortalInvitationStatusCode;
 
 namespace ECER.Managers.Registry;
 
@@ -19,29 +21,45 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
     if (response.PortalInvitation == Guid.Empty) return PortalInvitationVerificationQueryResult.Failure("Invalid Token");
 
     var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(response.PortalInvitation), cancellationToken);
+    if (portalInvitation == null) return PortalInvitationVerificationQueryResult.Failure("Portal Invitation not found");
+
     var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
 
     var applicant = registrantResult.SingleOrDefault();
     if (applicant == null) return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
 
-    var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation)!;
+    var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
+    var application = applications.SingleOrDefault();
+    if (application == null) return PortalInvitationVerificationQueryResult.Failure("Application not found");
+
+    var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);
+    
+    switch (result.StatusCode)
+    {
+      case PortalInvitationStatusCode.Completed:
+        return PortalInvitationVerificationQueryResult.Failure("Reference has already been submitted.");
+      case PortalInvitationStatusCode.Expired:
+        return PortalInvitationVerificationQueryResult.Failure("Reference has expired.");
+      case PortalInvitationStatusCode.Cancelled:
+        return PortalInvitationVerificationQueryResult.Failure("Reference has been cancelled.");
+      case PortalInvitationStatusCode.Failed:
+        return PortalInvitationVerificationQueryResult.Failure("Reference has failed.");
+    }
+    
+    if (result.InviteType == Contract.PortalInvitations.InviteType.WorkExperienceReference)
+    {
+      var workExRef =
+        application.WorkExperienceReferences.SingleOrDefault(work =>
+          work.Id == portalInvitation.WorkexperienceReferenceId);
+      if (workExRef != null)
+      {
+        result.WorkExperienceReferenceHours = workExRef.Hours;
+      }
+    }
+    result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;
     result.ApplicantFirstName = applicant.Profile.FirstName;
     result.ApplicantLastName = applicant.Profile.LastName;
 
-    var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
-    var application = applications.SingleOrDefault();
-    if (application != null)
-    {
-      result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;
-      if (result.InviteType == Contract.PortalInvitations.InviteType.WorkExperienceReference)
-      {
-        var workExRef = application.WorkExperienceReferences.SingleOrDefault(work => work.Id == portalInvitation.WorkexperienceReferenceId);
-        if (workExRef != null)
-        {
-          result.WorkExperienceReferenceHours = workExRef.Hours;
-        }
-      }
-    }
     return PortalInvitationVerificationQueryResult.Success(result);
   }
 }

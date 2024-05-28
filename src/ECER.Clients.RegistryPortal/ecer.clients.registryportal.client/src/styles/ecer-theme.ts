@@ -14,6 +14,10 @@ const ecerTheme: ThemeDefinition = {
     error: "#D8292F",
     success: "#2E8540",
     warning: "#FFC72C",
+    "alert-info": "#D4EAFF",
+    "alert-warning": "#FEF1D8",
+    "alert-error": "#F4E1E2",
+    "alert-success": "#99ff99",
   },
 };
 

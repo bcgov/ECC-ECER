@@ -103,6 +103,11 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: "/invalid-reference",
+      component: () => import("./components/reference/Invalid.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
       path: "/reference-submitted",
       component: () => import("./components/pages/ReferenceSubmitted.vue"),
       meta: { requiresAuth: false },
