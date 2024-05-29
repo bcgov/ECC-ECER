@@ -43,6 +43,22 @@ declare namespace Components {
       | "InProgress"
       | "PendingQueue"
       | "ReconsiderationDecision";
+    export type ApplicationStatusReasonDetail =
+      | "Actioned"
+      | "BeingAssessed"
+      | "Certified"
+      | "Denied"
+      | "ForReview"
+      | "InvestigationsConsultationNeeded"
+      | "MoreInformationRequired"
+      | "OperationSupervisorManagerofCertificationsConsultationNeeded"
+      | "PendingDocuments"
+      | "ProgramAnalystReview"
+      | "ReadyforAssessment"
+      | "ReceivedPending"
+      | "ReceivePhysicalTranscripts"
+      | "SupervisorConsultationNeeded"
+      | "ValidatingIDs";
     /**
      * Submit application request
      */
@@ -76,8 +92,6 @@ declare namespace Components {
       workedWithChildren?: boolean;
       childInteractionObservations?: string | null;
       applicantTemperamentAssessment?: string | null;
-      applicantShouldNotBeECE?: boolean;
-      applicantNotQualifiedReason?: string | null;
     }
     export interface CharacterReferenceSubmissionRequest {
       token?: string | null;
@@ -237,7 +251,9 @@ declare namespace Components {
     export interface SubmittedApplicationStatus {
       id?: string | null;
       submittedOn?: string; // date-time
+      readyForAssessmentDate?: string; // date-time
       status?: ApplicationStatus;
+      subStatus?: ApplicationStatusReasonDetail;
       transcriptsStatus?: TranscriptStatus[] | null;
       workExperienceReferencesStatus?: ReferenceStatus[] | null;
       characterReferencesStatus?: ReferenceStatus[] | null;
