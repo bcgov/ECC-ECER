@@ -246,7 +246,7 @@ export default defineComponent({
       }
     },
     step2Progress() {
-      return this.findStepProgress(Step2ApplicationStatusSubDetailMap, "step2");
+      return this.findApplicationStepProgress(Step2ApplicationStatusSubDetailMap, "step2");
     },
     step3RegistryAssessmentIcon() {
       switch (this.step3Progress) {
@@ -273,14 +273,14 @@ export default defineComponent({
       }
     },
     step3Progress() {
-      return this.findStepProgress(Step3ApplicationStatusSubDetailMap, "step3");
+      return this.findApplicationStepProgress(Step3ApplicationStatusSubDetailMap, "step3");
     },
   },
   methods: {
     goTo(id: string | undefined) {
       this.alertStore.setSuccessAlert("not implemented yet this will go to another route " + id);
     },
-    findStepProgress(applicationProcessMap: ApplicationProcessMap, step: string) {
+    findApplicationStepProgress(applicationProcessMap: ApplicationProcessMap, step: string) {
       const status = this.applicationStatus?.status;
       const statusReasonDetail = this.applicationStatus?.subStatus;
 
