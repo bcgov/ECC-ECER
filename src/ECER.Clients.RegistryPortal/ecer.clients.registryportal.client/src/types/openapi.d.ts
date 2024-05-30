@@ -251,7 +251,7 @@ declare namespace Components {
     export interface SubmittedApplicationStatus {
       id?: string | null;
       submittedOn?: string; // date-time
-      readyForAssessmentDate?: string; // date-time
+      readyForAssessmentDate?: string | null; // date-time
       status?: ApplicationStatus;
       subStatus?: ApplicationStatusReasonDetail;
       transcriptsStatus?: TranscriptStatus[] | null;

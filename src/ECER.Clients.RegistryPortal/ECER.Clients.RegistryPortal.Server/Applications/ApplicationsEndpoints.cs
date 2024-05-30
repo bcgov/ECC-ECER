@@ -281,7 +281,7 @@ public record CharacterReference([Required] string? FirstName, [Required] string
   public string? Id { get; set; }
 }
 
-public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, DateTime ReadyForAssessmentDate, ApplicationStatus Status, ApplicationStatusReasonDetail SubStatus)
+public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, DateTime? ReadyForAssessmentDate, ApplicationStatus Status, ApplicationStatusReasonDetail SubStatus)
 {
 
   public IEnumerable<TranscriptStatus> TranscriptsStatus { get; set; } = Array.Empty<TranscriptStatus>();
