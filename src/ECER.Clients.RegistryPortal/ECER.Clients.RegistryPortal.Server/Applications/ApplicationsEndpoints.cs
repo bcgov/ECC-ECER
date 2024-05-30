@@ -281,9 +281,9 @@ public record CharacterReference([Required] string? FirstName, [Required] string
   public string? Id { get; set; }
 }
 
-public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, DateTime? ReadyForAssessmentDate, ApplicationStatus Status, ApplicationStatusReasonDetail SubStatus)
+public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, ApplicationStatus Status, ApplicationStatusReasonDetail SubStatus)
 {
-
+  public DateTime? ReadyForAssessmentDate { get; set; }
   public IEnumerable<TranscriptStatus> TranscriptsStatus { get; set; } = Array.Empty<TranscriptStatus>();
   public IEnumerable<ReferenceStatus> WorkExperienceReferencesStatus { get; set; } = Array.Empty<ReferenceStatus>();
   public IEnumerable<ReferenceStatus> CharacterReferencesStatus { get; set; } = Array.Empty<ReferenceStatus>();
