@@ -25,7 +25,7 @@ export const useApplicationStore = defineStore("application", {
     application: null,
   }),
   persist: {
-    paths: ["draftApplication"],
+    paths: ["draftApplication", "application"],
   },
   getters: {
     hasDraftApplication(state): boolean {
@@ -39,6 +39,9 @@ export const useApplicationStore = defineStore("application", {
     },
     workExperienceReferenceById: (state) => {
       return (referenceId: string) => state.application?.workExperienceReferences?.find((ref) => ref.id === referenceId);
+    },
+    characterReferenceById: (state) => {
+      return (referenceId: string) => state.application?.characterReferences?.find((ref) => ref.id === referenceId);
     },
   },
   actions: {

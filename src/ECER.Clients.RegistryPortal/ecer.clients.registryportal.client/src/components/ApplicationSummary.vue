@@ -63,7 +63,13 @@
       :name="`${reference.firstName} ${reference.lastName}`"
       type="character"
       :status="reference.status"
-      :go-to="() => goTo(reference.id?.toString())"
+      :go-to="
+        () =>
+          $router.push({
+            name: 'viewCharacterReference',
+            params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
+          })
+      "
       :will-provide-reference="reference.willProvideReference"
     />
     <ApplicationSummaryTranscriptReferenceListItem
@@ -72,7 +78,13 @@
       :name="`${reference.firstName} ${reference.lastName}`"
       type="workExperience"
       :status="reference.status"
-      :go-to="() => goTo(reference.id?.toString())"
+      :go-to="
+        () =>
+          $router.push({
+            name: 'viewWorkExperienceReference',
+            params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
+          })
+      "
       :will-provide-reference="reference.willProvideReference"
     />
     <!-- Step 2 End-->
