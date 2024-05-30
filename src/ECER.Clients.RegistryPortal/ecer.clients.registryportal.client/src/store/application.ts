@@ -37,6 +37,9 @@ export const useApplicationStore = defineStore("application", {
     applicationStatus(state): Components.Schemas.ApplicationStatus | undefined {
       return state.application?.status;
     },
+    workExperienceReferenceById: (state) => {
+      return (referenceId: string) => state.application?.workExperienceReferences?.find((ref) => ref.id === referenceId);
+    },
   },
   actions: {
     async fetchApplications() {

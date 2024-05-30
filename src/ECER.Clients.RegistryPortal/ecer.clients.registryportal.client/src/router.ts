@@ -53,6 +53,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/manage-application/:applicationId/work-experience-reference/:referenceId",
+      name: "viewWorkExperienceReference",
+      component: () => import("./components/ViewWorkExperienceReference.vue"),
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
       path: "/application",
       component: () => import("./components/pages/Application.vue"),
       meta: { requiresAuth: true },
