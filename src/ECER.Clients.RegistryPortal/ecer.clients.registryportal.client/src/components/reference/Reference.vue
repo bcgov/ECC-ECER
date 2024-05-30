@@ -6,7 +6,7 @@
   >
     <template #header>
       <v-container class="bg-white">
-        <h2>{{ inviteTypeTitle }}</h2>
+        <h1>{{ inviteTypeTitle }}</h1>
         <div role="doc-subtitle">{{ `For applicant: ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</div>
 
         <v-btn v-if="wizardStore.step !== 1" slim variant="text" rounded="lg" color="primary" @click="handleBack">

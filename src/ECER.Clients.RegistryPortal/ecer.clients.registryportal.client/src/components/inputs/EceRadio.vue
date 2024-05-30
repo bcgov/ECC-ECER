@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h3>
+    <h2>
       {{ props.title }}
-    </h3>
+    </h2>
     <br />
     <v-radio-group :rules="props.rules" @update:model-value="(value) => $emit('update:model-value', value as string)">
       <v-radio v-for="option in props.options" :key="option.key" :label="option.label" :value="option.key"></v-radio>

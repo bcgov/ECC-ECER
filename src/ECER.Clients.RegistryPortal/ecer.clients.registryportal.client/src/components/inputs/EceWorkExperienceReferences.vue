@@ -1,8 +1,8 @@
 <template>
   <v-row>
     <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
-      <h3 v-if="!clientId">Reference {{ newClientId }} [Up to 6]</h3>
-      <h3 v-if="clientId">Edit {{ previousFullName }}</h3>
+      <h2 v-if="!clientId">Reference {{ newClientId }} [Up to 6]</h2>
+      <h2 v-if="clientId">Edit {{ previousFullName }}</h2>
       <v-form ref="addWorkExperienceReferenceForm" validate-on="input" class="mt-6">
         <v-text-field
           v-model="lastName"

@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
-      <h3>Contact information</h3>
+      <h2>Contact information</h2>
       <div role="doc-subtitle">We may contact you to verify or clarify information you provide.</div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
@@ -60,7 +60,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <h3 class="mt-5">ECE certification</h3>
+      <h2 class="mt-5">ECE certification</h2>
       <div v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER" role="doc-subtitle">
         If you are registered as an ECE in Canada, please provide your certification number.
       </div>

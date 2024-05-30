@@ -4,7 +4,7 @@
       <div>
         <div class="text-center mb-10">
           <v-icon size="106px" color="#42814A" icon="mdi-check-circle" class="mr-2"></v-icon>
-          <h3>Thank you</h3>
+          <h2>Thank you</h2>
           <br />
           <p>We will notify the applicant that you have responded to their request for a reference.</p>
         </div>

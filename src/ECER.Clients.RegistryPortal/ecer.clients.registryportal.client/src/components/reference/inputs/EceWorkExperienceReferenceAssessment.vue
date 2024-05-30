@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
-      <h3>Are you satisfied that the applicant is competent in the following areas?</h3>
+      <h2>Are you satisfied that the applicant is competent in the following areas?</h2>
       <div role="doc-subtitle">This must be based on your own observations of the applicant.</div>
 
       <v-row class="mt-5">

@@ -20,7 +20,7 @@
         <v-container>
           <v-row class="justify-space-between mb-4">
             <v-col cols="auto">
-              <h3>{{ step.title }}</h3>
+              <h2>{{ step.title }}</h2>
             </v-col>
             <v-col v-if="wizardStore.currentStepStage === 'Review'" cols="auto">
               <slot name="PrintPreview"></slot>
