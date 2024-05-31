@@ -27,7 +27,7 @@ public class ApplicationHandlers(
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
     IRequestHandler<Contract.Applications.SubmitReferenceCommand, ReferenceSubmissionResult>,
     IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>,
-    IRequestHandler<Contract.Applications.ResendReferenceInviteRequest, string> //TODO see if we want to return a success or not? 
+    IRequestHandler<Contract.Applications.ResendReferenceInviteRequest, string>
 {
   /// <summary>
   /// Handles submitting a new application use case
