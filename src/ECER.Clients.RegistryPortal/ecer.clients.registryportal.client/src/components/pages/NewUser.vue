@@ -3,7 +3,7 @@
     <FormContainer>
       <div class="d-flex flex-column ga-8">
         <div>
-          <h3>Profile Information</h3>
+          <h2>Profile Information</h2>
           <p class="small">The Registry will notify you of important updates regarding your certification</p>
         </div>
         <v-form ref="form" v-model="isValid" validate-on="input">

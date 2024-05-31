@@ -3,7 +3,7 @@
     <v-card-title>
       <div class="d-flex justify-space-between align-center">
         <div>
-          <h3 class="text-wrap" :class="isValid ? 'text-black' : 'text-error'">{{ title }}</h3>
+          <h2 class="text-wrap" :class="isValid ? 'text-black' : 'text-error'">{{ title }}</h2>
           <p v-if="!isValid" class="small text-error text-wrap">
             <v-icon icon="mdi-alert-circle" color="error" class="mr-2"></v-icon>
             You must enter all required information in a valid format before submitting your application

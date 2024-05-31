@@ -5,7 +5,7 @@
     </v-breadcrumbs>
 
     <ApplicationCertificationTypeHeader :certification-types="applicationStore.applications?.[0]?.certificationTypes || []" class="pb-5" />
-    <h3>Status</h3>
+    <h2>Status</h2>
     <div class="pb-3">It's a 3-step process to apply</div>
     <!-- Step 1 Start-->
     <v-card elevation="0" color="white-smoke" class="border-top mt-5" rounded="0">
@@ -63,7 +63,13 @@
       :name="`${reference.firstName} ${reference.lastName}`"
       type="character"
       :status="reference.status"
-      :go-to="() => goTo(reference.id?.toString())"
+      :go-to="
+        () =>
+          $router.push({
+            name: 'viewCharacterReference',
+            params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
+          })
+      "
       :will-provide-reference="reference.willProvideReference"
     />
     <ApplicationSummaryTranscriptReferenceListItem
@@ -72,7 +78,13 @@
       :name="`${reference.firstName} ${reference.lastName}`"
       type="workExperience"
       :status="reference.status"
-      :go-to="() => goTo(reference.id?.toString())"
+      :go-to="
+        () =>
+          $router.push({
+            name: 'viewWorkExperienceReference',
+            params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
+          })
+      "
       :will-provide-reference="reference.willProvideReference"
     />
     <!-- Step 2 End-->

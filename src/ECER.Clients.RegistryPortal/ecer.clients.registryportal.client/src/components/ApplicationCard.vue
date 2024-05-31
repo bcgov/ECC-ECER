@@ -1,7 +1,7 @@
 <template>
   <v-card :rounded="!isRounded ? '0' : ''" flat color="primary">
     <v-card-item class="ma-4">
-      <h3 class="text-white">{{ title }}</h3>
+      <h2 class="text-white">{{ title }}</h2>
       <p class="small text-white mt-4">
         {{ subTitle }}
       </p>

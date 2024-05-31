@@ -60,6 +60,13 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/manage-application/:applicationId/character-reference/:referenceId",
+      name: "viewCharacterReference",
+      component: () => import("./components/ViewCharacterReference.vue"),
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
       path: "/application",
       component: () => import("./components/pages/Application.vue"),
       meta: { requiresAuth: true },

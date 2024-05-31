@@ -2,7 +2,7 @@
   <svg width="36" height="4">
     <rect width="36" height="4" fill="#FFC72C" />
   </svg>
-  <h3>{{ title }}</h3>
+  <h2>{{ title }}</h2>
 </template>
 
 <script lang="ts">
