@@ -159,6 +159,8 @@ public record ReferenceContactInformation(string LastName, string FirstName, str
 public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, ReferenceKnownTime LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons) : IRequest<ReferenceSubmissionResult>;
 
+public record ResendReferenceInviteRequest(string ApplicationId, string ReferenceId, string UserId, InviteType InviteType) : IRequest<string>;
+
 public enum UnabletoProvideReferenceReasons
 {
   Iamunabletoatthistime,
@@ -247,4 +249,9 @@ public enum StageStatus
   InComplete,
   InProgress,
   Rejected
+}
+public enum InviteType
+{
+  CharacterReference,
+  WorkExperienceReference
 }
