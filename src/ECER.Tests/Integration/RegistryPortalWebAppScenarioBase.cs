@@ -63,9 +63,13 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Application inProgressTestApplication2 = null!;
   private ecer_Application draftTestApplication2 = null!;
   private ecer_Application draftTestApplication3 = null!;
+  private ecer_Application submittedTestApplication = null!;
+  private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef = null!;
   public string inprogressTestApplicationId2 => inProgressTestApplication2.Id.ToString();
   public string draftTestApplicationId2 => draftTestApplication2.Id.ToString();
   public string draftTestApplicationId3 => draftTestApplication3.Id.ToString();
+  public string submittedTestApplicationId => submittedTestApplication.Id.ToString();
+  public string submittedTestApplicationWorkExperienceRefId => submittedTestApplicationWorkExperienceRef.Id.ToString();
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -100,6 +104,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     draftTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
     draftTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
     draftTestApplication3 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
+    submittedTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
+    submittedTestApplicationWorkExperienceRef = AddWorkExperienceReferenceToApplication(context, submittedTestApplication);
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1");
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2");
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3");
@@ -183,6 +189,29 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return application;
   }
 
+  private ecer_WorkExperienceRef AddWorkExperienceReferenceToApplication(EcerContext context, ecer_Application application)
+  {
+    var wpGuid = Guid.NewGuid();
+
+    var workexperienceReference = new ecer_WorkExperienceRef
+    {
+      Id = wpGuid,
+      ecer_WorkExperienceRefId = wpGuid,
+      ecer_Name = "Resend Test name",
+      ecer_FirstName = "Resend Test firstname",
+      ecer_LastName = "Resend Test lastname",
+      ecer_EmailAddress = "reference_test@test.com",
+      ecer_PhoneNumber = "9999999999",
+      ecer_StartDate = DateTime.Now,
+      ecer_EndDate = DateTime.Now,
+    };
+
+    context.AddObject(workexperienceReference);
+    context.AddLink(workexperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_Applicationid_ecer, application);
+
+    return workexperienceReference;
+  }
+
   private ecer_Communication GetOrAddCommunication(EcerContext context, ecer_Application application, string message)
   {
     var communication = context.ecer_CommunicationSet.FirstOrDefault(c => c.ecer_Applicationid.Id == application.Id && c.ecer_Registrantid.Id == authenticatedBcscUser.Id && c.ecer_Message == message && c.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient);
@@ -260,7 +289,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
                   p.ecer_ApplicationId != null &&
                   p.ecer_Name == name &&
                   p.ecer_WorkExperienceReferenceId != null)
-      .ToList(); 
+      .ToList();
 
     foreach (var portalInvitation in portalInvitations)
     {
@@ -271,7 +300,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
     context.SaveChanges();
   }
-  
+
   private ecer_PortalInvitation GetOrAddPortalInvitation_WorkExperienceReference(EcerContext context, Contact registrant, string name)
   {
     var portalInvitation = context.ecer_PortalInvitationSet.FirstOrDefault(p => p.ecer_ApplicantId != null &&
@@ -281,39 +310,40 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
                                                                                 p.StatusCode == ecer_PortalInvitation_StatusCode.Sent);
 
     if (portalInvitation == null)
+    {
+      var wpGuid = Guid.NewGuid();
+
+      var workexperienceReference = new ecer_WorkExperienceRef
       {
-        var wpGuid = Guid.NewGuid();
+        Id = wpGuid,
+        ecer_WorkExperienceRefId = wpGuid,
+        ecer_Name = "Reference Test name",
+        ecer_FirstName = "Reference Test firstname",
+        ecer_LastName = "Reference Test lastname",
+        ecer_EmailAddress = "reference_test@test.com",
+      };
 
-        var workexperienceReference = new ecer_WorkExperienceRef
-        {
-          Id = wpGuid,
-          ecer_WorkExperienceRefId = wpGuid,
-          ecer_Name = "Reference Test name",
-          ecer_FirstName = "Reference Test firstname",
-          ecer_LastName = "Reference Test lastname",
-          ecer_EmailAddress = "reference_test@test.com",
-        };
+      var guid = Guid.NewGuid();
+      portalInvitation = new ecer_PortalInvitation
+      {
+        Id = guid,
+        ecer_PortalInvitationId = guid,
+        ecer_Name = name,
+        ecer_FirstName = "Test firstname",
+        ecer_LastName = "Test lastname",
+        ecer_EmailAddress = "test@email.com",
+        StatusCode = ecer_PortalInvitation_StatusCode.Sent,
+      };
 
-        var guid = Guid.NewGuid();
-        portalInvitation = new ecer_PortalInvitation
-        {
-          Id = guid,
-          ecer_PortalInvitationId = guid,
-          ecer_Name = name,
-          ecer_FirstName = "Test firstname",
-          ecer_LastName = "Test lastname",
-          ecer_EmailAddress = "test@email.com",
-        };
-
-        context.AddObject(workexperienceReference);
-        context.AddObject(portalInvitation);
-        context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
-        context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId,
-          inProgressTestApplication);
-        context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_WorkExperienceRefId,
-          workexperienceReference);
-      }
-
-      return portalInvitation;
+      context.AddObject(workexperienceReference);
+      context.AddObject(portalInvitation);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId,
+        inProgressTestApplication);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_WorkExperienceRefId,
+        workexperienceReference);
     }
+
+    return portalInvitation;
   }
+}

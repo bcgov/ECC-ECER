@@ -229,7 +229,6 @@ internal sealed class ApplicationRepository : IApplicationRepository
     };
   }
 
-
   #region implementationDetails
 
   private async Task<string> SubmitCharacterReference(string characterReferenceId, CharacterReferenceSubmissionRequest request)
@@ -306,7 +305,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
   public async Task<string> ResendCharacterReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.ReferenceId!));
+    var characterReference = context.ecer_CharacterReferenceSet.SingleOrDefault(c => c.ecer_CharacterReferenceId == Guid.Parse(request.ReferenceId!));
 
     if (characterReference == null) throw new InvalidOperationException($"Character reference '{request.ReferenceId}' not found");
 
@@ -323,7 +322,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
   public async Task<string> ResendWorkExperienceReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    var workexperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(request.ReferenceId!));
+    var workexperienceReference = context.ecer_WorkExperienceRefSet.SingleOrDefault(c => c.ecer_WorkExperienceRefId == Guid.Parse(request.ReferenceId!));
 
     if (workexperienceReference == null) throw new InvalidOperationException($"Work experience reference '{request.ReferenceId}' not found");
 

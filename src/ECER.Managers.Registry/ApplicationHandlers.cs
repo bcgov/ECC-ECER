@@ -27,7 +27,7 @@ public class ApplicationHandlers(
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
     IRequestHandler<Contract.Applications.SubmitReferenceCommand, ReferenceSubmissionResult>,
     IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>,
-    IRequestHandler<ResendCharacterReferenceInviteRequest, string>
+    IRequestHandler<ResendCharacterReferenceInviteRequest, string>,
     IRequestHandler<ResendWorkExperienceReferenceInviteRequest, string>
 {
   /// <summary>
@@ -225,7 +225,7 @@ public class ApplicationHandlers(
     }
     ArgumentNullException.ThrowIfNull(request);
 
-    return await applicationRepository.ResendCharacterReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken)
+    return await applicationRepository.ResendCharacterReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken);
   }
 
   /// <summary>
