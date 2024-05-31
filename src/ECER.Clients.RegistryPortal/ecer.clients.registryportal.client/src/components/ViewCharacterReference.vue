@@ -12,6 +12,7 @@
     <p class="mt-6"><b>Email</b></p>
     <p class="mb-10">{{ reference?.emailAddress }}</p>
     <ECEHeader class="mt-10" title="Options" />
+    <ResendEmail />
     <div class="d-flex flex-column ga-3 mt-10">
       <h3 class="mt-4">Change your reference</h3>
       <p>This will delete this individual as your reference and let you add someone new. Or correct any information in the reference listed above.</p>
@@ -25,13 +26,14 @@ import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
 import ECEHeader from "@/components/ECEHeader.vue";
+import ResendEmail from "@/components/ResendEmail.vue";
 import { useApplicationStore } from "@/store/application";
 import type { Components } from "@/types/openapi";
 import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "ViewCharacterReference",
-  components: { ECEHeader },
+  components: { ECEHeader, ResendEmail },
   props: {
     applicationId: {
       type: String,
