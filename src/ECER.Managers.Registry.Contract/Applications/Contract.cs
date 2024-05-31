@@ -159,7 +159,9 @@ public record ReferenceContactInformation(string LastName, string FirstName, str
 public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, ReferenceKnownTime LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons) : IRequest<ReferenceSubmissionResult>;
 
-public record ResendReferenceInviteRequest(string ApplicationId, string ReferenceId, string UserId, InviteType InviteType) : IRequest<string>;
+public record ResendCharacterReferenceInviteRequest(string ApplicationId, string ReferenceId, string UserId) : IRequest<string>;
+
+public record ResendWorkExperienceReferenceInviteRequest(string ApplicationId, string ReferenceId, string UserId) : IRequest<string>;
 
 public enum UnabletoProvideReferenceReasons
 {
@@ -242,16 +244,10 @@ public enum ReferenceKnownTime
   Morethan5years,
 }
 
-
 public enum StageStatus
 {
   Complete,
   InComplete,
   InProgress,
   Rejected
-}
-public enum InviteType
-{
-  CharacterReference,
-  WorkExperienceReference
 }

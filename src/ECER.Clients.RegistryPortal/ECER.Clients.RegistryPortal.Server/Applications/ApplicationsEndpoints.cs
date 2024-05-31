@@ -79,7 +79,6 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-
     endpointRouteBuilder.MapGet("/api/applications/{id}/status", async Task<Results<Ok<SubmittedApplicationStatus>, BadRequest<ProblemDetails>, NotFound<ProblemDetails>>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       var userId = ctx.User.GetUserContext()?.UserId;
@@ -122,7 +121,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
        .RequireAuthorization()
        .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications/{applicationId}/character-reference/{referenceId}", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+    endpointRouteBuilder.MapPost("/api/applications/{applicationId}/character-reference/{referenceId}/resend-invite", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
     {
       var userId = ctx.User.GetUserContext()?.UserId;
 
@@ -136,13 +135,13 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails() { Title = "ReferenceId is not a valid guid" });
       }
 
-      return TypedResults.Ok(new ResendReferenceInviteResponse(await messageBus.Send(new ResendReferenceInviteRequest(applicationId, referenceId, userId!, InviteType.WorkExperienceReference), ct)));
+      return TypedResults.Ok(new ResendReferenceInviteResponse(await messageBus.Send(new ResendCharacterReferenceInviteRequest(applicationId, referenceId, userId!), ct)));
     })
    .WithOpenApi("Resend a character reference invite", "Changes character reference invite again status to true", "application_character_reference_resend_invite_post")
    .RequireAuthorization()
    .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications/{applicationId}/work-experience-reference/{referenceId}", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+    endpointRouteBuilder.MapPost("/api/applications/{applicationId}/work-experience-reference/{referenceId}/resend-invite", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
     {
       var userId = ctx.User.GetUserContext()?.UserId;
 
@@ -156,18 +155,12 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails() { Title = "ReferenceId is not a valid guid" });
       }
 
-      return TypedResults.Ok(new ResendReferenceInviteResponse(await messageBus.Send(new ResendReferenceInviteRequest(applicationId, referenceId, userId!, InviteType.WorkExperienceReference), ct)));
+      return TypedResults.Ok(new ResendReferenceInviteResponse(await messageBus.Send(new ResendWorkExperienceReferenceInviteRequest(applicationId, referenceId, userId!), ct)));
     })
 .WithOpenApi("Resend a work experience reference invite", "Changes work experience reference invite again status to true", "application_work_experience_reference_resend_invite_post")
 .RequireAuthorization()
 .WithParameterValidation();
-
-
   }
-
-
-
-
 }
 
 /// <summary>
@@ -253,14 +246,12 @@ public record Transcript()
   public bool IsECEAssistant { get; set; }
   public bool DoesECERegistryHaveTranscript { get; set; }
   public bool IsOfficialTranscriptRequested { get; set; }
-
 }
 public record WorkExperienceReference([Required] string? FirstName, [Required] string? LastName, [Required] string? EmailAddress, [Required] int? Hours)
 {
   public string? Id { get; set; }
 
   public string? PhoneNumber { get; set; }
-
 }
 
 public enum CertificationType
@@ -347,9 +338,7 @@ public record ReferenceStatus(string Id, StageStatus Status, string FirstName, s
   public string? PhoneNumber { get; set; }
   public int? Hours { get; set; }
   public bool? WillProvideReference { get; set; }
-
 }
-
 
 public enum StageStatus
 {

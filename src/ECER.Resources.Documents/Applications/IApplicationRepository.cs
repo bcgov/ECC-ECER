@@ -128,9 +128,7 @@ public record OptOutReferenceRequest(UnabletoProvideReferenceReasons UnabletoPro
   public PortalInvitation? PortalInvitation { get; set; }
 }
 
-public record ResendReferenceInviteRequest(string ReferenceId)
-{
-}
+public record ResendReferenceInviteRequest(string ReferenceId);
 
 public enum UnabletoProvideReferenceReasons
 {

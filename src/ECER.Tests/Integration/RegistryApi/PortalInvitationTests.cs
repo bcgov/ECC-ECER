@@ -38,7 +38,7 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
     var queryResult = await inviteLinkResponse.ReadAsJsonAsync<PortalInvitationQueryResult>();
     queryResult.ShouldNotBeNull();
   }
-  
+
   [Fact]
   public async Task DoNotReturnCompletedPortalInvitationData()
   {
@@ -51,7 +51,7 @@ public class PortalInvitationTests : RegistryPortalWebAppScenarioBase
     var verifyResponse = await bus.Send(new PortalInvitationVerificationQuery(token), CancellationToken.None);
 
     verifyResponse.Invitation.ShouldBeNull();
-    verifyResponse.ErrorMessage.ShouldBe("Reference already submitted");
+    verifyResponse.ErrorMessage.ShouldBe("Reference has already been submitted.");
     verifyResponse.IsSuccess.ShouldBeFalse();
 
     await Host.Scenario(_ =>

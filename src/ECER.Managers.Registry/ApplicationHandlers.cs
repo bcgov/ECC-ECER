@@ -27,7 +27,8 @@ public class ApplicationHandlers(
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
     IRequestHandler<Contract.Applications.SubmitReferenceCommand, ReferenceSubmissionResult>,
     IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>,
-    IRequestHandler<Contract.Applications.ResendReferenceInviteRequest, string>
+    IRequestHandler<ResendCharacterReferenceInviteRequest, string>
+    IRequestHandler<ResendWorkExperienceReferenceInviteRequest, string>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -201,13 +202,13 @@ public class ApplicationHandlers(
   }
 
   /// <summary>
-  /// Handles Character Reference or Work Experience Reference resend invite
+  /// Handles Character Reference resend invite
   /// </summary>
   /// <param name="request"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="InvalidCastException"></exception>
-  public async Task<string> Handle(Contract.Applications.ResendReferenceInviteRequest request, CancellationToken cancellationToken)
+  public async Task<string> Handle(ResendCharacterReferenceInviteRequest request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -224,11 +225,33 @@ public class ApplicationHandlers(
     }
     ArgumentNullException.ThrowIfNull(request);
 
-    return request.InviteType switch
+    return await applicationRepository.ResendCharacterReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken)
+  }
+
+  /// <summary>
+  /// Handles Work Experience Reference resend invite
+  /// </summary>
+  /// <param name="request"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  /// <exception cref="InvalidCastException"></exception>
+  public async Task<string> Handle(ResendWorkExperienceReferenceInviteRequest request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var applications = await applicationRepository.Query(new ApplicationQuery
     {
-      Contract.Applications.InviteType.CharacterReference => await applicationRepository.ResendCharacterReferenceInvite(new Resources.Documents.Applications.ResendReferenceInviteRequest(request.ReferenceId), cancellationToken),
-      Contract.Applications.InviteType.WorkExperienceReference => await applicationRepository.ResendWorkExperienceReferenceInvite(new Resources.Documents.Applications.ResendReferenceInviteRequest(request.ReferenceId), cancellationToken),
-      _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
-    };
+      ById = request.ApplicationId,
+      ByApplicantId = request.UserId,
+      ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Submitted }
+    }, cancellationToken);
+
+    if (!applications.Any())
+    {
+      throw new InvalidOperationException($"Application not found id '{request.ApplicationId}' or application is past submitted stage");
+    }
+    ArgumentNullException.ThrowIfNull(request);
+
+    return await applicationRepository.ResendWorkExperienceReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken);
   }
 }
