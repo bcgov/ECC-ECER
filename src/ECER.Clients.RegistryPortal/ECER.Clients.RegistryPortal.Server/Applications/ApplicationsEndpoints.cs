@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using static StackExchange.Redis.Role;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 

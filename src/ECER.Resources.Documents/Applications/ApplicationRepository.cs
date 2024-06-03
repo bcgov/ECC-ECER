@@ -2,7 +2,6 @@
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
-using System;
 
 namespace ECER.Resources.Documents.Applications;
 

@@ -367,10 +367,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       context.AddObject(workexperienceReference);
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
-      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId,
-        inProgressTestApplication);
-      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_WorkExperienceRefId,
-        workexperienceReference);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_WorkExperienceRefId, workexperienceReference);
     }
 
     return portalInvitation;
