@@ -229,7 +229,6 @@ internal sealed class ApplicationRepository : IApplicationRepository
     };
   }
 
-
   #region implementationDetails
 
   private async Task<string> SubmitCharacterReference(string characterReferenceId, CharacterReferenceSubmissionRequest request)
@@ -298,6 +297,50 @@ internal sealed class ApplicationRepository : IApplicationRepository
     workexperienceReference.ecer_WillProvideReference = ecer_YesNoNull.No;
     workexperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.Rejected;
     workexperienceReference.StateCode = ecer_workexperienceref_statecode.Inactive;
+    context.UpdateObject(workexperienceReference);
+    context.SaveChanges();
+    return workexperienceReference.ecer_WorkExperienceRefId.ToString()!;
+  }
+
+  public async Task<string> ResendCharacterReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var characterReference = context.ecer_CharacterReferenceSet.SingleOrDefault(c => c.ecer_CharacterReferenceId == Guid.Parse(request.ReferenceId!));
+
+    if (characterReference == null)
+    {
+      throw new InvalidOperationException($"Character reference '{request.ReferenceId}' not found");
+    }
+
+    if (characterReference.StatusCode == ecer_CharacterReference_StatusCode.Rejected || characterReference.StatusCode == ecer_CharacterReference_StatusCode.Submitted)
+    {
+      throw new InvalidOperationException($"Character reference '{request.ReferenceId}' already responded");
+    }
+
+    mapper.Map(request, characterReference);
+    characterReference.ecer_InviteAgain = true;
+    context.UpdateObject(characterReference);
+    context.SaveChanges();
+
+    return characterReference.ecer_CharacterReferenceId.ToString()!;
+  }
+
+  public async Task<string> ResendWorkExperienceReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var workexperienceReference = context.ecer_WorkExperienceRefSet.SingleOrDefault(c => c.ecer_WorkExperienceRefId == Guid.Parse(request.ReferenceId!));
+
+    if (workexperienceReference == null)
+    {
+      throw new InvalidOperationException($"Work experience reference '{request.ReferenceId}' not found");
+    }
+
+    if (workexperienceReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Rejected || workexperienceReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Submitted)
+    {
+      throw new InvalidOperationException($"Work experience reference '{request.ReferenceId}' already responded");
+    }
+
+    workexperienceReference.ecer_InviteAgain = true;
     context.UpdateObject(workexperienceReference);
     context.SaveChanges();
     return workexperienceReference.ecer_WorkExperienceRefId.ToString()!;

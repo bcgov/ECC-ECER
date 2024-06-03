@@ -16,6 +16,10 @@ public interface IApplicationRepository
 
   Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
 
+  Task<string> ResendCharacterReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
+
+  Task<string> ResendWorkExperienceReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
+
 }
 
 public record ApplicationQuery
@@ -123,6 +127,8 @@ public record OptOutReferenceRequest(UnabletoProvideReferenceReasons UnabletoPro
 {
   public PortalInvitation? PortalInvitation { get; set; }
 }
+
+public record ResendReferenceInviteRequest(string ReferenceId);
 
 public enum UnabletoProvideReferenceReasons
 {
