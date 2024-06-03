@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using static StackExchange.Redis.Role;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
@@ -79,7 +80,6 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-
     endpointRouteBuilder.MapGet("/api/applications/{id}/status", async Task<Results<Ok<SubmittedApplicationStatus>, BadRequest<ProblemDetails>, NotFound<ProblemDetails>>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       var userId = ctx.User.GetUserContext()?.UserId;
@@ -122,6 +122,87 @@ public class ApplicationsEndpoints : IRegisterEndpoints
        .RequireAuthorization()
        .WithParameterValidation();
 
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/workexperiencereference/{reference_id}/update", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, WorkExperienceReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+          bool AppIdIsNotGuid = !Guid.TryParse(application_id, out _);
+          if (AppIdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
+          }
+
+          if (!string.IsNullOrEmpty(reference_id))
+          {
+            bool RefIdIsNotGuid = !Guid.TryParse(reference_id, out _);
+            if (RefIdIsNotGuid)
+            {
+              return TypedResults.BadRequest(new ProblemDetails() { Title = "Reference Id is not valid" });
+            }
+          }
+          else
+          {
+            reference_id = "";
+          }
+          var mappedWorkExperienceReference = mapper.Map<Managers.Registry.Contract.Applications.WorkExperienceReference>(request);
+          var cmd = new UpdateWorkExperienceReferenceCommand(mappedWorkExperienceReference, application_id, reference_id, userId!);
+          var result = await messageBus.Send(cmd, ct);
+
+          if (!result.IsSuccess)
+          {
+            var problemDetails = new ProblemDetails
+            {
+              Status = StatusCodes.Status400BadRequest,
+              Title = "Work Experience reference updation failed",
+              Extensions = { ["errors"] = result.ErrorMessage }
+            };
+            return TypedResults.BadRequest(problemDetails);
+          }
+          return TypedResults.Ok(new UpdateReferenceResponse(result.ReferenceId!));
+        })
+        .WithOpenApi("Update work experience reference", string.Empty, "workexperiencereference_post")
+        .RequireAuthorization()
+        .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/characterreference/{reference_id}/update", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, CharacterReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+          bool AppIdIsNotGuid = !Guid.TryParse(application_id, out _);
+          if (AppIdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
+          }
+
+          if (!string.IsNullOrEmpty(reference_id))
+          {
+            bool RefIdIsNotGuid = !Guid.TryParse(reference_id, out _);
+            if (RefIdIsNotGuid)
+            {
+              return TypedResults.BadRequest(new ProblemDetails() { Title = "Reference Id is not valid" });
+            }
+          }
+          else
+          {
+            reference_id = "";
+          }
+          var mappedCharacterReference = mapper.Map<Managers.Registry.Contract.Applications.CharacterReference>(request);
+          var cmd = new UpdateCharacterReferenceCommand(mappedCharacterReference, application_id, reference_id, userId!);
+          var result = await messageBus.Send(cmd, ct);
+
+          if (!result.IsSuccess)
+          {
+            var problemDetails = new ProblemDetails
+            {
+              Status = StatusCodes.Status400BadRequest,
+              Title = "Work Experience reference updation failed",
+              Extensions = { ["errors"] = result.ErrorMessage }
+            };
+            return TypedResults.BadRequest(problemDetails);
+          }
+          return TypedResults.Ok(new UpdateReferenceResponse(result.ReferenceId!));
+        })
+        .WithOpenApi("Update work experience reference", string.Empty, "workexperiencereference_post")
+        .RequireAuthorization()
+        .WithParameterValidation();
   }
 }
 
@@ -150,6 +231,8 @@ public record DraftApplicationResponse(string ApplicationId);
 public record CancelDraftApplicationResponse(string ApplicationId);
 
 public record SubmitApplicationResponse(string ApplicationId);
+
+public record UpdateReferenceResponse(string ReferenceId);
 
 /// <summary>
 /// Application query response
@@ -202,14 +285,12 @@ public record Transcript()
   public bool IsECEAssistant { get; set; }
   public bool DoesECERegistryHaveTranscript { get; set; }
   public bool IsOfficialTranscriptRequested { get; set; }
-
 }
 public record WorkExperienceReference([Required] string? FirstName, [Required] string? LastName, [Required] string? EmailAddress, [Required] int? Hours)
 {
   public string? Id { get; set; }
 
   public string? PhoneNumber { get; set; }
-
 }
 
 public enum CertificationType
@@ -283,7 +364,6 @@ public record CharacterReference([Required] string? FirstName, [Required] string
 
 public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, DateTime ReadyForAssessmentDate, ApplicationStatus Status, ApplicationStatusReasonDetail SubStatus)
 {
-
   public IEnumerable<TranscriptStatus> TranscriptsStatus { get; set; } = Array.Empty<TranscriptStatus>();
   public IEnumerable<ReferenceStatus> WorkExperienceReferencesStatus { get; set; } = Array.Empty<ReferenceStatus>();
   public IEnumerable<ReferenceStatus> CharacterReferencesStatus { get; set; } = Array.Empty<ReferenceStatus>();
@@ -296,9 +376,7 @@ public record ReferenceStatus(string Id, StageStatus Status, string FirstName, s
   public string? PhoneNumber { get; set; }
   public int? Hours { get; set; }
   public bool? WillProvideReference { get; set; }
-
 }
-
 
 public enum StageStatus
 {

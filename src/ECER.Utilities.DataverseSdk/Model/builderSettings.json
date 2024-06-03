@@ -32,6 +32,7 @@
     "localOptionSetFormat": "{0}_{1}",
     "makeAllFieldsEditable": false,
     "makeReadonlyFieldsEditable": false,
+    "makeReferenceTypesNullable": false,
     "makeResponseMessagesEditable": false,
     "messageBlacklist": [
       "upsertmultiple"

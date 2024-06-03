@@ -205,6 +205,38 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     });
   }
 
+  [Fact]
+  public async Task UpdateWorkExReference_ByReferenceId()
+  {
+    var applicationId = this.Fixture.submittedTestApplicationId;
+    var referenceId = this.Fixture.submittedTestApplicationWorkExperienceRefId;
+    WorkExperienceReference newWork = CreateWorkExperienceReference();
+    var UpdateWorkExRefResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Post.Json(newWork).ToUrl($"/api/applications/{applicationId}/workexperiencereference/{referenceId}/update");
+      _.StatusCodeShouldBeOk();
+    });
+    var UpdateWorkExReferenceResponseId = await UpdateWorkExRefResponse.ReadAsJsonAsync<UpdateReferenceResponse>();
+    UpdateWorkExReferenceResponseId!.ReferenceId.ShouldNotBeEmpty();
+  }
+
+  [Fact]
+  public async Task UpdateCharacterReference_ByReferenceId()
+  {
+    var applicationId = this.Fixture.submittedTestApplicationId2;
+    var referenceId = this.Fixture.submittedTestApplicationCharacterRefId;
+    CharacterReference newCharacter = CreateCharacterReference();
+    var UpdateCharacterRefResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Post.Json(newCharacter).ToUrl($"/api/applications/{applicationId}/characterreference/{referenceId}/update");
+      _.StatusCodeShouldBeOk();
+    });
+    var UpdateCharacterRefResponseId = await UpdateCharacterRefResponse.ReadAsJsonAsync<UpdateReferenceResponse>();
+    UpdateCharacterRefResponseId!.ReferenceId.ShouldNotBeEmpty();
+  }
+
   private Transcript CreateTranscript()
   {
     var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };

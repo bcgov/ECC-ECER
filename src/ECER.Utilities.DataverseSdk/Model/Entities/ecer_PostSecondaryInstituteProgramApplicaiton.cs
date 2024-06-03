@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Post Secondary Institute Program Applicaiton
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_postsecondaryinstituteprogramapplicaiton_statecode
 	{
 		
@@ -31,18 +31,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Post Secondary Institute Program Applicaiton
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_PostSecondaryInstituteProgramApplicaiton_StatusCode
 	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Approved = 621870006,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Denied = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		InterimRecognition = 621870006,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		OnGoingRecognition = 621870008,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		PendingDecision = 621870004,
@@ -65,7 +68,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_PostSecondaryInstituteProgramApplicaiton : Microsoft.Xrm.Sdk.Entity
 	{
 		

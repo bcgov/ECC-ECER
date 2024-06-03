@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Account role of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_AccountRoleCode
 	{
 		
@@ -34,7 +34,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Type of address for address 1, such as billing, shipping, or primary address.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address1_AddressTypeCode
 	{
 		
@@ -55,7 +55,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Freight terms for address 1.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address1_FreightTermsCode
 	{
 		
@@ -70,7 +70,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Method of shipment for address 1.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address1_ShippingMethodCode
 	{
 		
@@ -100,7 +100,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Type of address for address 2, such as billing, shipping, or primary address.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address2_AddressTypeCode
 	{
 		
@@ -112,7 +112,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Freight terms for address 2.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address2_FreightTermsCode
 	{
 		
@@ -124,7 +124,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Method of shipment for address 2.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address2_ShippingMethodCode
 	{
 		
@@ -136,7 +136,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Type of address for address 3, such as billing, shipping, or primary address.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address3_AddressTypeCode
 	{
 		
@@ -148,7 +148,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Freight terms for address 3.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address3_FreightTermsCode
 	{
 		
@@ -160,7 +160,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Method of shipment for address 3.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address3_ShippingMethodCode
 	{
 		
@@ -172,7 +172,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Size of the contact's business.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_CustomerSizeCode
 	{
 		
@@ -184,7 +184,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Type of business associated with the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_CustomerTypeCode
 	{
 		
@@ -196,7 +196,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Formal education level that the contact has attained.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_EducationCode
 	{
 		
@@ -208,7 +208,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Marital status of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_FamilyStatusCode
 	{
 		
@@ -229,7 +229,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Gender of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_GenderCode
 	{
 		
@@ -244,7 +244,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Information about whether the contact has children.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_HasChildrenCode
 	{
 		
@@ -256,7 +256,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Source of the lead of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_LeadSourceCode
 	{
 		
@@ -268,7 +268,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Indicate buying influence using label
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_msdyn_decisioninfluencetag
 	{
 		
@@ -289,7 +289,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// For Internal Use only
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_msdyn_orgchangestatus
 	{
 		
@@ -307,7 +307,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Payment terms for the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_PaymentTermsCode
 	{
 		
@@ -328,7 +328,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Day of the week that the contact prefers for scheduling service activities.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_PreferredAppointmentDayCode
 	{
 		
@@ -358,7 +358,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Time of day that the contact prefers for scheduling service activities.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_PreferredAppointmentTimeCode
 	{
 		
@@ -376,7 +376,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Preferred contact method for the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_PreferredContactMethodCode
 	{
 		
@@ -400,7 +400,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Method of shipping for the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_ShippingMethodCode
 	{
 		
@@ -412,7 +412,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum contact_statecode
 	{
 		
@@ -427,7 +427,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_StatusCode
 	{
 		
@@ -442,7 +442,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Unique identifier of the territory to which the contact is assigned.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_TerritoryCode
 	{
 		
@@ -455,7 +455,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("contact")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class Contact : Microsoft.Xrm.Sdk.Entity
 	{
 		
