@@ -1,14 +1,14 @@
 <template>
   <ConfirmationDialog
     :show="showTimeoutDialog"
-    :cancel-button-text="'Keep me logged in'"
+    :cancel-button-text="'Continue'"
     :accept-button-text="'Logout'"
-    :title="'Inactive Session'"
+    :title="'You will be logged out soon'"
     @accept="oidcStore.logout"
     @cancel="showTimeoutDialog = false"
   >
     <template #confirmation-text>
-      <p>Your session will expire in {{ timer }} seconds</p>
+      <p>Your session is about to expire due to inactivity. For your security, you will be logged out in {{ timer }} seconds</p>
     </template>
   </ConfirmationDialog>
 </template>
