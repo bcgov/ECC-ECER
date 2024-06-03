@@ -45,8 +45,5 @@ import Banner from "@/components/Banner.vue";
 export default {
   name: "PageNotFound",
   components: { Banner },
-  setup() {
-    console.log("PageNotFound");
-  },
 };
 </script>
