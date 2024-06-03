@@ -8,7 +8,10 @@
     @cancel="showTimeoutDialog = false"
   >
     <template #confirmation-text>
-      <p>Your session is about to expire due to inactivity. For your security, you will be logged out in {{ timer }} seconds</p>
+      <p>
+        Your session is about to expire due to inactivity. For your security, you will be logged out in
+        <b>{{ timer }} seconds</b>
+      </p>
     </template>
   </ConfirmationDialog>
 </template>
