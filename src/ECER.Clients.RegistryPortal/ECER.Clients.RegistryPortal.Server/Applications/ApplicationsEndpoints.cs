@@ -125,12 +125,14 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         {
           var userId = ctx.User.GetUserContext()?.UserId;
 
-          bool IdIsNotGuid = !Guid.TryParse(applicationId, out _); if (IdIsNotGuid)
+          bool IdIsNotGuid = !Guid.TryParse(applicationId, out _);
+          if (IdIsNotGuid)
           {
             return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not a valid guid" });
           }
 
-          bool ReferenceIdIsNotGuid = !Guid.TryParse(referenceId, out _); if (ReferenceIdIsNotGuid)
+          bool ReferenceIdIsNotGuid = !Guid.TryParse(referenceId, out _);
+          if (ReferenceIdIsNotGuid)
           {
             return TypedResults.BadRequest(new ProblemDetails() { Title = "ReferenceId is not a valid guid" });
           }
@@ -145,12 +147,14 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         {
           var userId = ctx.User.GetUserContext()?.UserId;
 
-          bool IdIsNotGuid = !Guid.TryParse(applicationId, out _); if (IdIsNotGuid)
+          bool IdIsNotGuid = !Guid.TryParse(applicationId, out _);
+          if (IdIsNotGuid)
           {
             return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not a valid guid" });
           }
 
-          bool ReferenceIdIsNotGuid = !Guid.TryParse(referenceId, out _); if (ReferenceIdIsNotGuid)
+          bool ReferenceIdIsNotGuid = !Guid.TryParse(referenceId, out _);
+          if (ReferenceIdIsNotGuid)
           {
             return TypedResults.BadRequest(new ProblemDetails() { Title = "ReferenceId is not a valid guid" });
           }
