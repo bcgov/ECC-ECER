@@ -224,8 +224,8 @@ public class ApplicationHandlers(
       throw new InvalidOperationException($"Application not found id '{request.ApplicationId}' or application is past submitted stage");
     }
     ArgumentNullException.ThrowIfNull(request);
-
-    return await applicationRepository.ResendCharacterReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken);
+    var characterReferenceId = await applicationRepository.ResendCharacterReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken);
+    return characterReferenceId;
   }
 
   /// <summary>
@@ -252,6 +252,7 @@ public class ApplicationHandlers(
     }
     ArgumentNullException.ThrowIfNull(request);
 
-    return await applicationRepository.ResendWorkExperienceReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken);
+    var workExperienceReferenceId = await applicationRepository.ResendWorkExperienceReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken);
+    return workExperienceReferenceId;
   }
 }

@@ -160,7 +160,6 @@ public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelati
 public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons) : IRequest<ReferenceSubmissionResult>;
 
 public record ResendCharacterReferenceInviteRequest(string ApplicationId, string ReferenceId, string UserId) : IRequest<string>;
-
 public record ResendWorkExperienceReferenceInviteRequest(string ApplicationId, string ReferenceId, string UserId) : IRequest<string>;
 
 public enum UnabletoProvideReferenceReasons

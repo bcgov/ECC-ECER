@@ -307,9 +307,15 @@ internal sealed class ApplicationRepository : IApplicationRepository
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.SingleOrDefault(c => c.ecer_CharacterReferenceId == Guid.Parse(request.ReferenceId!));
 
-    if (characterReference == null) throw new InvalidOperationException($"Character reference '{request.ReferenceId}' not found");
+    if (characterReference == null)
+    {
+      throw new InvalidOperationException($"Character reference '{request.ReferenceId}' not found");
+    }
 
-    if (characterReference.StatusCode == ecer_CharacterReference_StatusCode.Rejected || characterReference.StatusCode == ecer_CharacterReference_StatusCode.Submitted) throw new InvalidOperationException($"Character reference '{request.ReferenceId}' already responded");
+    if (characterReference.StatusCode == ecer_CharacterReference_StatusCode.Rejected || characterReference.StatusCode == ecer_CharacterReference_StatusCode.Submitted)
+    {
+      throw new InvalidOperationException($"Character reference '{request.ReferenceId}' already responded");
+    }
 
     mapper.Map(request, characterReference);
     characterReference.ecer_InviteAgain = true;
@@ -324,9 +330,15 @@ internal sealed class ApplicationRepository : IApplicationRepository
     await Task.CompletedTask;
     var workexperienceReference = context.ecer_WorkExperienceRefSet.SingleOrDefault(c => c.ecer_WorkExperienceRefId == Guid.Parse(request.ReferenceId!));
 
-    if (workexperienceReference == null) throw new InvalidOperationException($"Work experience reference '{request.ReferenceId}' not found");
+    if (workexperienceReference == null)
+    {
+      throw new InvalidOperationException($"Work experience reference '{request.ReferenceId}' not found");
+    }
 
-    if (workexperienceReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Rejected || workexperienceReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Submitted) throw new InvalidOperationException($"Work experience reference '{request.ReferenceId}' already responded");
+    if (workexperienceReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Rejected || workexperienceReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Submitted)
+    {
+      throw new InvalidOperationException($"Work experience reference '{request.ReferenceId}' already responded");
+    }
 
     workexperienceReference.ecer_InviteAgain = true;
     context.UpdateObject(workexperienceReference);
