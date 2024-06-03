@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :model-value="show" width="auto" :disabled="disabled" @click:outside="cancel">
+  <v-dialog :model-value="show" width="650" :disabled="disabled" @click:outside="cancel">
     <template #default>
       <v-container>
         <v-card class="no-scroll">
