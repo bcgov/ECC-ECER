@@ -1,14 +1,17 @@
 <template>
   <ConfirmationDialog
     :show="showTimeoutDialog"
-    :cancel-button-text="'Keep me logged in'"
+    :cancel-button-text="'Continue'"
     :accept-button-text="'Logout'"
-    :title="'Inactive Session'"
+    :title="'You will be logged out soon'"
     @accept="oidcStore.logout"
     @cancel="showTimeoutDialog = false"
   >
     <template #confirmation-text>
-      <p>Your session will expire in {{ timer }} seconds</p>
+      <p>
+        Your session is about to expire due to inactivity. For your security, you will be logged out in
+        <b>{{ timer }} seconds</b>
+      </p>
     </template>
   </ConfirmationDialog>
 </template>
@@ -27,7 +30,7 @@ export default defineComponent({
     const oidcStore = useOidcStore();
     const showTimeoutDialog = ref(false);
     const timer = ref(60);
-    const idle = useIdle(2 * 60 * 1000); // 2 minutes
+    const idle = useIdle(15 * 60 * 1000); // 15 minutes
 
     const { pause, resume } = useIntervalFn(
       () => {
