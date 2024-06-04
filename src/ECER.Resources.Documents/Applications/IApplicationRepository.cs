@@ -19,6 +19,11 @@ public interface IApplicationRepository
   Task<string> UpdateWorkExReferenceForSubmittedApplication(WorkExperienceReference updatedReference, string applicationId, string referenceId, string userId, CancellationToken cancellationToken);
 
   Task<string> UpdateCharacterReferenceForSubmittedApplication(CharacterReference updatedReference, string applicationId, string referenceId, string userId, CancellationToken cancellationToken);
+
+  Task<string> ResendCharacterReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
+
+  Task<string> ResendWorkExperienceReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
+
 }
 
 public record ApplicationQuery
@@ -125,6 +130,8 @@ public record OptOutReferenceRequest(UnabletoProvideReferenceReasons UnabletoPro
 {
   public PortalInvitation? PortalInvitation { get; set; }
 }
+
+public record ResendReferenceInviteRequest(string ReferenceId);
 
 public enum UnabletoProvideReferenceReasons
 {

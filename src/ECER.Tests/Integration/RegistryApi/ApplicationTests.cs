@@ -237,6 +237,32 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     UpdateCharacterRefResponseId!.ReferenceId.ShouldNotBeEmpty();
   }
 
+  [Fact]
+  public async Task ResendWorkExperienceReferenceInvite_ShouldReturnOk()
+  {
+    var applicationId = this.Fixture.submittedTestApplicationId;
+    var referenceId = this.Fixture.submittedTestApplicationWorkExperienceRefId;
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Post.Url($"/api/applications/{applicationId}/work-experience-reference/{referenceId}/resend-invite");
+      _.StatusCodeShouldBeOk();
+    });
+  }
+
+  [Fact]
+  public async Task ResendWorkExperienceReferenceInvite_WithBadReferenceId_ShouldReturnBadRequest()
+  {
+    var applicationId = this.Fixture.submittedTestApplicationId;
+    var referenceId = Guid.NewGuid();
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Post.Url($"/api/applications/{applicationId}/work-experience-reference/{referenceId}/resend-invite");
+      _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
+    });
+  }
+
   private Transcript CreateTranscript()
   {
     var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };

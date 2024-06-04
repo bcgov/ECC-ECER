@@ -64,19 +64,18 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Application draftTestApplication2 = null!;
   private ecer_Application draftTestApplication3 = null!;
   private ecer_Application submittedTestApplication = null!;
-
   private ecer_Application submittedTestApplication2 = null!;
   private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef = null!;
-
   private ecer_CharacterReference submittedTestApplicationCharacterRef = null!;
+  private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef = null!;
   public string inprogressTestApplicationId2 => inProgressTestApplication2.Id.ToString();
   public string draftTestApplicationId2 => draftTestApplication2.Id.ToString();
   public string draftTestApplicationId3 => draftTestApplication3.Id.ToString();
   public string submittedTestApplicationId => submittedTestApplication.Id.ToString();
-
   public string submittedTestApplicationId2 => submittedTestApplication2.Id.ToString();
   public string submittedTestApplicationWorkExperienceRefId => submittedTestApplicationWorkExperienceRef.Id.ToString();
   public string submittedTestApplicationCharacterRefId => submittedTestApplicationCharacterRef.Id.ToString();
+  public string submittedTestApplicationWorkExperienceRefId => submittedTestApplicationWorkExperienceRef.Id.ToString();
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -362,6 +361,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_FirstName = "Test firstname",
         ecer_LastName = "Test lastname",
         ecer_EmailAddress = "test@email.com",
+        StatusCode = ecer_PortalInvitation_StatusCode.Sent,
       };
 
       context.AddObject(workexperienceReference);
