@@ -16,6 +16,9 @@ public interface IApplicationRepository
 
   Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken);
 
+  Task<string> UpdateWorkExReferenceForSubmittedApplication(WorkExperienceReference updatedReference, string applicationId, string referenceId, string userId, CancellationToken cancellationToken);
+
+  Task<string> UpdateCharacterReferenceForSubmittedApplication(CharacterReference updatedReference, string applicationId, string referenceId, string userId, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery
@@ -116,7 +119,6 @@ public record CharacterReference(string? FirstName, string? LastName, string? Ph
   public string? Id { get; set; }
   public StageStatus? Status { get; set; }
   public bool? WillProvideReference { get; set; }
-
 }
 
 public record OptOutReferenceRequest(UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons)
@@ -138,6 +140,8 @@ public record SubmitReferenceRequest()
   public PortalInvitation? PortalInvitation { get; set; }
   public DateTime DateSigned { get; set; }
 }
+
+public record UpdateWorkExperienceReferenceCommand(WorkExperienceReference workExperienceRef, string applicationId, string userId);
 public record CharacterReferenceSubmissionRequest(bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight) : SubmitReferenceRequest;
 public record ReferenceContactInformation(string LastName, string FirstName, string Email, string PhoneNumber, string CertificateProvinceOther)
 {
@@ -151,7 +155,6 @@ public record WorkExperienceReferenceSubmissionRequest(bool WillProvideReference
 public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
 public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
 
-
 public enum StageStatus
 {
   Complete,
@@ -159,7 +162,6 @@ public enum StageStatus
   InProgress,
   Rejected
 }
-
 
 public enum WorkHoursType
 {
@@ -212,4 +214,3 @@ public enum ReferenceKnownTime
   Lessthan6months,
   Morethan5years,
 }
-

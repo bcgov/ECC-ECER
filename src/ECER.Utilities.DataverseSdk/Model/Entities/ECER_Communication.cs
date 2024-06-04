@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Communication
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_communication_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Communication
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_Communication_StatusCode
 	{
 		
@@ -53,7 +53,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_communication")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_Communication : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -97,6 +97,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_RegistrantidName = "ecer_registrantidname";
 			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
 			public const string ecer_Reply = "ecer_reply";
+			public const string ecer_RequestAdditionalCharacterReference = "ecer_requestadditionalcharacterreference";
+			public const string ecer_requestadditionalcharacterreferenceName = "ecer_requestadditionalcharacterreferencename";
+			public const string ecer_RequestAdditionalWorkExperience = "ecer_requestadditionalworkexperience";
+			public const string ecer_requestadditionalworkexperienceName = "ecer_requestadditionalworkexperiencename";
 			public const string ecer_RichText = "ecer_richtext";
 			public const string ecer_Type = "ecer_type";
 			public const string ecer_typeName = "ecer_typename";
@@ -655,6 +659,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_reply", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requestadditionalcharacterreference")]
+		public System.Nullable<bool> ecer_RequestAdditionalCharacterReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_requestadditionalcharacterreference");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requestadditionalcharacterreference", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requestadditionalcharacterreferencename")]
+		public string ecer_requestadditionalcharacterreferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requestadditionalcharacterreference"))
+				{
+					return this.FormattedValues["ecer_requestadditionalcharacterreference"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requestadditionalworkexperience")]
+		public System.Nullable<bool> ecer_RequestAdditionalWorkExperience
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_requestadditionalworkexperience");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requestadditionalworkexperience", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requestadditionalworkexperiencename")]
+		public string ecer_requestadditionalworkexperienceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requestadditionalworkexperience"))
+				{
+					return this.FormattedValues["ecer_requestadditionalworkexperience"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

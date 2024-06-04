@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Work Experience Reference
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_workexperienceref_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Work Experience Reference
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_WorkExperienceRef_StatusCode
 	{
 		
@@ -62,7 +62,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_workexperienceref")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_WorkExperienceRef : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -124,6 +124,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_investigation_WorkExperienceReferenceId_e = "ecer_investigation_WorkExperienceReferenceId_e";
 			public const string ecer_InviteAgain = "ecer_inviteagain";
 			public const string ecer_inviteagainName = "ecer_inviteagainname";
+			public const string ecer_IsAdditional = "ecer_isadditional";
+			public const string ecer_isadditionalName = "ecer_isadditionalname";
 			public const string ecer_IsApplicantQualified = "ecer_isapplicantqualified";
 			public const string ecer_isapplicantqualifiedName = "ecer_isapplicantqualifiedname";
 			public const string ecer_LastFollowUpDate = "ecer_lastfollowupdate";
@@ -1024,6 +1026,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_inviteagain"))
 				{
 					return this.FormattedValues["ecer_inviteagain"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isadditional")]
+		public System.Nullable<bool> ecer_IsAdditional
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_isadditional");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_isadditional", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isadditionalname")]
+		public string ecer_isadditionalName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isadditional"))
+				{
+					return this.FormattedValues["ecer_isadditional"];
 				}
 				else
 				{

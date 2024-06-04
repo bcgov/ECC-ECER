@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Post Secondary Institute Site Visit
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_postsecondaryinstitutesitevisit_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Post Secondary Institute Site Visit
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_PostSecondaryInstituteSiteVisit_StatusCode
 	{
 		
@@ -47,7 +47,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_postsecondaryinstitutesitevisit")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_PostSecondaryInstituteSiteVisit : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -80,6 +80,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramApplicationName = "ecer_programapplicationname";
 			public const string ecer_ProgramProfile = "ecer_programprofile";
 			public const string ecer_ProgramProfileName = "ecer_programprofilename";
+			public const string ecer_PSIProgramRepresentativeId = "ecer_psiprogramrepresentativeid";
+			public const string ecer_PSIProgramRepresentativeIdName = "ecer_psiprogramrepresentativeidname";
+			public const string ecer_PSIProgramRepresentativeIdYomiName = "ecer_psiprogramrepresentativeidyominame";
 			public const string ecer_sitevisitchecklist_SiteVisitId_ecer_po = "ecer_sitevisitchecklist_SiteVisitId_ecer_po";
 			public const string ecer_SiteVisitDate = "ecer_sitevisitdate";
 			public const string ecer_Type = "ecer_type";
@@ -468,6 +471,55 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_programprofile"))
 				{
 					return this.FormattedValues["ecer_programprofile"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiprogramrepresentativeid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_PSIProgramRepresentativeId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_psiprogramrepresentativeid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_psiprogramrepresentativeid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiprogramrepresentativeidname")]
+		public string ecer_PSIProgramRepresentativeIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_psiprogramrepresentativeid"))
+				{
+					return this.FormattedValues["ecer_psiprogramrepresentativeid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiprogramrepresentativeidyominame")]
+		public string ecer_PSIProgramRepresentativeIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_psiprogramrepresentativeid"))
+				{
+					return this.FormattedValues["ecer_psiprogramrepresentativeid"];
 				}
 				else
 				{

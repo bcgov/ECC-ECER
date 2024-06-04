@@ -229,7 +229,6 @@ internal sealed class ApplicationRepository : IApplicationRepository
     };
   }
 
-
   #region implementationDetails
 
   private async Task<string> SubmitCharacterReference(string characterReferenceId, CharacterReferenceSubmissionRequest request)
@@ -301,6 +300,76 @@ internal sealed class ApplicationRepository : IApplicationRepository
     context.UpdateObject(workexperienceReference);
     context.SaveChanges();
     return workexperienceReference.ecer_WorkExperienceRefId.ToString()!;
+  }
+
+  public async Task<string> UpdateWorkExReferenceForSubmittedApplication(WorkExperienceReference updatedReference, string applicationId, string referenceId, string userId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var application = context.ecer_ApplicationSet.FirstOrDefault(
+      d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.StatusCode == ecer_Application_StatusCode.Submitted && d.ecer_Applicantid.Id == Guid.Parse(userId)
+      );
+    if (application == null)
+    {
+      throw new InvalidOperationException($"Application '{applicationId}' not found");
+    }
+
+    var ecerWorkExperienceReference = mapper.Map<ecer_WorkExperienceRef>(updatedReference);
+
+    var existingWorkExperiences = context.ecer_WorkExperienceRefSet.Where(t => t.ecer_Applicationid.Id == Guid.Parse(applicationId)).ToList();
+
+    var oldReference = existingWorkExperiences.SingleOrDefault(t => t.Id == Guid.Parse(referenceId));
+    // 1. Remove existing WorkExperienceReference
+
+    if (oldReference != null)
+    {
+      context.DeleteObject(oldReference);
+    }
+
+    // 2. Add New WorkExperienceReferences
+
+    ecerWorkExperienceReference.ecer_WorkExperienceRefId = Guid.NewGuid();
+    ecerWorkExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.ApplicationSubmitted;
+    ecerWorkExperienceReference.ecer_IsAdditional = true;
+    context.AddObject(ecerWorkExperienceReference);
+    context.AddLink(application, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer, ecerWorkExperienceReference);
+    context.SaveChanges();
+
+    return ecerWorkExperienceReference.ecer_WorkExperienceRefId.ToString()!;
+  }
+
+  public async Task<string> UpdateCharacterReferenceForSubmittedApplication(CharacterReference updatedReference, string applicationId, string referenceId, string userId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var application = context.ecer_ApplicationSet.FirstOrDefault(
+      d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.StatusCode == ecer_Application_StatusCode.Submitted && d.ecer_Applicantid.Id == Guid.Parse(userId)
+      );
+    if (application == null)
+    {
+      throw new InvalidOperationException($"Application '{applicationId}' not found");
+    }
+
+    var ecerCharacterReference = mapper.Map<ecer_CharacterReference>(updatedReference);
+
+    var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == Guid.Parse(applicationId)).ToList();
+
+    var oldReference = existingCharacterReferences.SingleOrDefault(t => t.Id == Guid.Parse(referenceId));
+    // 1. Remove existing WorkExperienceReference
+
+    if (oldReference != null)
+    {
+      context.DeleteObject(oldReference);
+    }
+
+    // 2. Add New WorkExperienceReferences
+
+    ecerCharacterReference.ecer_CharacterReferenceId = Guid.NewGuid();
+    ecerCharacterReference.StatusCode = ecer_CharacterReference_StatusCode.ApplicationSubmitted;
+    ecerCharacterReference.ecer_IsAdditional = true;
+    context.AddObject(ecerCharacterReference);
+    context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, ecerCharacterReference);
+    context.SaveChanges();
+
+    return ecerCharacterReference.ecer_CharacterReferenceId.ToString()!;
   }
 
   #endregion implementationDetails

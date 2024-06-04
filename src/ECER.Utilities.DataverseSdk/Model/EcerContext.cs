@@ -17,7 +17,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// <summary>
 	/// Represents a source of entities bound to a Dataverse service. It tracks and manages changes made to the retrieved entities.
 	/// </summary>
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class EcerContext : Microsoft.Xrm.Sdk.Client.OrganizationServiceContext
 	{
 		

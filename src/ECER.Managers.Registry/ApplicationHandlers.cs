@@ -26,7 +26,9 @@ public class ApplicationHandlers(
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
     IRequestHandler<Contract.Applications.SubmitReferenceCommand, ReferenceSubmissionResult>,
-    IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>
+    IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>,
+    IRequestHandler<Contract.Applications.UpdateWorkExperienceReferenceCommand, UpdateWorkExperienceReferenceResult>,
+    IRequestHandler<Contract.Applications.UpdateCharacterReferenceCommand, UpdateCharacterReferenceResult>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -199,4 +201,31 @@ public class ApplicationHandlers(
     return ReferenceSubmissionResult.Success();
   }
 
+  /// <summary>
+  ///
+  /// </summary>
+  /// <param name="request"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  public async Task<UpdateWorkExperienceReferenceResult> Handle(Contract.Applications.UpdateWorkExperienceReferenceCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var WorkExpReference = mapper.Map<Resources.Documents.Applications.WorkExperienceReference>(request.workExperienceRef);
+    var UpdatedWorkExReferenceId = await applicationRepository.UpdateWorkExReferenceForSubmittedApplication(WorkExpReference, request.applicationId, request.referenceId, request.userId, cancellationToken);
+    return new UpdateWorkExperienceReferenceResult() { ReferenceId = UpdatedWorkExReferenceId, IsSuccess = true };
+  }
+
+  /// <summary>
+  ///
+  /// </summary>
+  /// <param name="request"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  public async Task<UpdateCharacterReferenceResult> Handle(Contract.Applications.UpdateCharacterReferenceCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var CharacterReference = mapper.Map<Resources.Documents.Applications.CharacterReference>(request.characterRef);
+    var UpdatedCharacterReferenceId = await applicationRepository.UpdateCharacterReferenceForSubmittedApplication(CharacterReference, request.applicationId, request.referenceId, request.userId, cancellationToken);
+    return new UpdateCharacterReferenceResult() { ReferenceId = UpdatedCharacterReferenceId, IsSuccess = true };
+  }
 }

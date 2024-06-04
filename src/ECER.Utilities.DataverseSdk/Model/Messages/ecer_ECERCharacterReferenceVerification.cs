@@ -14,7 +14,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/ecer/")]
 	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("ecer_ECERCharacterReferenceVerification")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_ECERCharacterReferenceVerificationRequest : Microsoft.Xrm.Sdk.OrganizationRequest
 	{
 		
@@ -84,7 +84,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/ecer/")]
 	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("ecer_ECERCharacterReferenceVerification")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_ECERCharacterReferenceVerificationResponse : Microsoft.Xrm.Sdk.OrganizationResponse
 	{
 		
