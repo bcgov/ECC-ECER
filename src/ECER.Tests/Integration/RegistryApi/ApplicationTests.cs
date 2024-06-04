@@ -240,8 +240,8 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   [Fact]
   public async Task ResendWorkExperienceReferenceInvite_ShouldReturnOk()
   {
-    var applicationId = this.Fixture.submittedTestApplicationId;
-    var referenceId = this.Fixture.submittedTestApplicationWorkExperienceRefId;
+    var applicationId = this.Fixture.submittedTestApplicationId3;
+    var referenceId = this.Fixture.submittedTestApplicationWorkExperienceRefId2;
     await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
@@ -253,7 +253,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   [Fact]
   public async Task ResendWorkExperienceReferenceInvite_WithBadReferenceId_ShouldReturnBadRequest()
   {
-    var applicationId = this.Fixture.submittedTestApplicationId;
+    var applicationId = this.Fixture.submittedTestApplicationId3;
     var referenceId = Guid.NewGuid();
     await Host.Scenario(_ =>
     {

@@ -65,15 +65,21 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Application draftTestApplication3 = null!;
   private ecer_Application submittedTestApplication = null!;
   private ecer_Application submittedTestApplication2 = null!;
+  private ecer_Application submittedTestApplication3 = null!;
   private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef = null!;
+  private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef2 = null!;
   private ecer_CharacterReference submittedTestApplicationCharacterRef = null!;
   public string inprogressTestApplicationId2 => inProgressTestApplication2.Id.ToString();
   public string draftTestApplicationId2 => draftTestApplication2.Id.ToString();
   public string draftTestApplicationId3 => draftTestApplication3.Id.ToString();
   public string submittedTestApplicationId => submittedTestApplication.Id.ToString();
   public string submittedTestApplicationId2 => submittedTestApplication2.Id.ToString();
+  public string submittedTestApplicationId3 => submittedTestApplication3.Id.ToString();
   public string submittedTestApplicationWorkExperienceRefId => submittedTestApplicationWorkExperienceRef.Id.ToString();
+  public string submittedTestApplicationWorkExperienceRefId2 => submittedTestApplicationWorkExperienceRef2.Id.ToString();
+
   public string submittedTestApplicationCharacterRefId => submittedTestApplicationCharacterRef.Id.ToString();
+
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -110,7 +116,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     draftTestApplication3 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
     submittedTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
     submittedTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
+    submittedTestApplication3 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
     submittedTestApplicationWorkExperienceRef = AddWorkExperienceReferenceToApplication(context, submittedTestApplication);
+    submittedTestApplicationWorkExperienceRef2 = AddWorkExperienceReferenceToApplication(context, submittedTestApplication3);
     submittedTestApplicationCharacterRef = AddCharacterReferenceToApplication(context, submittedTestApplication2);
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1");
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2");
