@@ -13,14 +13,31 @@
     </ul>
     <p>If you need to correct any information, choose to use a new reference below.</p>
   </div>
-  <v-btn class="mt-6" size="large" variant="outlined" @click="$emit('resend')">Resend email</v-btn>
+  <v-btn
+    :loading="
+      loadingStore.isLoading('application_character_reference_resend_invite_post') ||
+      loadingStore.isLoading('application_work_experience_reference_resend_invite_post')
+    "
+    class="mt-6"
+    size="large"
+    variant="outlined"
+    @click="$emit('resend')"
+  >
+    Resend email
+  </v-btn>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { useLoadingStore } from "@/store/loading";
+
 export default defineComponent({
   name: "ResendEmail",
   emits: ["resend"],
+  setup() {
+    const loadingStore = useLoadingStore();
+    return { loadingStore };
+  },
 });
 </script>
