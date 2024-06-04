@@ -82,8 +82,7 @@ public class ApplicationMapper : Profile
         opt => opt.MapFrom(s => s.Status))
       .ForCtorParam(nameof(SubmittedApplicationStatus.SubStatus),
         opt => opt.MapFrom(s => s.SubStatus))
-      .ForCtorParam(nameof(SubmittedApplicationStatus.ReadyForAssessmentDate),
-        opt => opt.MapFrom(s => s.ReadyForAssessmentDate))
+      .ForMember(d => d.ReadyForAssessmentDate, opts => opts.MapFrom(s => s.ReadyForAssessmentDate))
       .ForMember(d => d.TranscriptsStatus, opts => opts.MapFrom(s => s.Transcripts))
       .ForMember(d => d.WorkExperienceReferencesStatus, opts => opts.MapFrom(s => s.WorkExperienceReferences))
       .ForMember(d => d.CharacterReferencesStatus, opts => opts.MapFrom(s => s.CharacterReferences));

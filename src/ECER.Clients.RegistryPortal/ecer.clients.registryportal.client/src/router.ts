@@ -116,8 +116,10 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
-      path: "/submitted",
+      path: "/submitted/:applicationId",
+      name: "submitted",
       component: () => import("./components/pages/Submitted.vue"),
+      props: true,
       meta: { requiresAuth: true },
     },
     {
@@ -155,6 +157,7 @@ const router = createRouter({
       component: () => import("./components/pages/ReferenceSubmitted.vue"),
       meta: { requiresAuth: false },
     },
+    { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("./components/pages/PageNotFound.vue") },
   ],
 });
 
@@ -213,7 +216,7 @@ router.beforeEach(async (to, _, next) => {
 router.beforeEach((to, from, next) => {
   const applicationStore = useApplicationStore();
 
-  if (from.path === "/application" && to.path !== "/submitted" && applicationStore.hasDraftApplication) {
+  if (from.path === "/application" && to.name !== "submitted" && applicationStore.hasDraftApplication) {
     applicationStore.saveDraft();
     next();
   } else next();

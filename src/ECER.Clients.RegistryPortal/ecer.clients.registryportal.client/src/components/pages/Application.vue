@@ -143,7 +143,7 @@ export default defineComponent({
         const submitApplicationResponse = await this.applicationStore.submitApplication();
 
         if (submitApplicationResponse?.applicationId) {
-          this.$router.push({ path: "/submitted" });
+          this.$router.push({ name: "submitted", params: { applicationId: submitApplicationResponse.applicationId } });
         }
       }
     },

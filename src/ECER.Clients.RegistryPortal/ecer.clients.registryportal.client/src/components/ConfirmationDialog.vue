@@ -1,33 +1,34 @@
 <template>
-  <v-dialog :model-value="show" width="auto" :disabled="disabled" @click:outside="cancel">
+  <v-dialog :model-value="show" width="650" :disabled="disabled" @click:outside="cancel">
     <template #default>
-      <v-card class="no-scroll">
-        <v-card-title>
-          <div class="d-flex justify-center align-center">
-            <v-icon size="large" icon="mdi-alert-circle" color="warning" class="mr-2"></v-icon>
-            <div>
-              {{ title }}
+      <v-container>
+        <v-card class="no-scroll">
+          <v-card-title>
+            <div class="d-flex justify-center align-center">
+              <h2>
+                {{ title }}
+              </h2>
+              <v-spacer></v-spacer>
+              <v-btn icon elevation="0" @click="cancel">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
             </div>
-            <v-spacer></v-spacer>
-            <v-btn icon elevation="0" @click="cancel">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </div>
-        </v-card-title>
-        <v-card-text>
-          <slot name="confirmation-text">
-            <p><b>Are you sure you want to proceed?</b></p>
-          </slot>
-        </v-card-text>
-        <v-card-actions>
-          <v-row>
-            <v-col class="text-right d-flex flex-row justify-end ga-3 flex-wrap">
-              <v-btn rounded="lg" variant="outlined" @click="cancel">{{ cancelButtonText }}</v-btn>
-              <v-btn rounded="lg" class="ma-0" color="warning" variant="outlined" @click="accept">{{ acceptButtonText }}</v-btn>
-            </v-col>
-          </v-row>
-        </v-card-actions>
-      </v-card>
+          </v-card-title>
+          <v-card-text class="pb-12">
+            <slot name="confirmation-text">
+              <p><b>Are you sure you want to proceed?</b></p>
+            </slot>
+          </v-card-text>
+          <v-card-actions>
+            <v-row>
+              <v-col class="text-right d-flex flex-row justify-end flex-wrap">
+                <v-btn class="ma-0" color="primary" variant="outlined" @click="accept">{{ acceptButtonText }}</v-btn>
+                <v-btn color="primary" variant="flat" @click="cancel">{{ cancelButtonText }}</v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-container>
     </template>
   </v-dialog>
 </template>
