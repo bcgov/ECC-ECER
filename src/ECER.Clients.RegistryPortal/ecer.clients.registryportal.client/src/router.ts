@@ -115,6 +115,7 @@ const router = createRouter({
       component: () => import("./components/pages/ReferenceSubmitted.vue"),
       meta: { requiresAuth: false },
     },
+    { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("./components/pages/PageNotFound.vue") },
   ],
 });
 
