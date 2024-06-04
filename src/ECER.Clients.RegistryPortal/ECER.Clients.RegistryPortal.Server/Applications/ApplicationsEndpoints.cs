@@ -286,7 +286,7 @@ public record ApplicationQueryResponse(IEnumerable<Application> Items);
 /// <summary>
 /// delete draft application response
 /// </summary>
-/// <param name="ReferenceId">The application id</param>
+/// <param name="ReferenceId">The reference id</param>
 public record ResendReferenceInviteResponse(string ReferenceId);
 
 public record DraftApplication
