@@ -199,7 +199,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           }
           return TypedResults.Ok(new UpdateReferenceResponse(result.ReferenceId!));
         })
-        .WithOpenApi("Update work experience reference", string.Empty, "workexperiencereference_post")
+        .WithOpenApi("Update character reference", string.Empty, "characterreference_post")
         .RequireAuthorization()
         .WithParameterValidation();
 

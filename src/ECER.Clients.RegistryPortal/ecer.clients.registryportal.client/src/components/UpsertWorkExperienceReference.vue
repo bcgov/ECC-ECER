@@ -42,8 +42,10 @@
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
+import { upsertWorkExperienceReference } from "@/api/reference";
 import EceForm from "@/components/Form.vue";
 import workExperienceReferenceUpsertForm from "@/config/work-experience-reference-upsert-form";
+import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useFormStore } from "@/store/form";
 import type { Components } from "@/types/openapi";
@@ -64,6 +66,7 @@ export default defineComponent({
   },
   setup: async (props) => {
     const applicationStore = useApplicationStore();
+    const alertStore = useAlertStore();
     const router = useRouter();
     const formStore = useFormStore();
 
@@ -74,7 +77,7 @@ export default defineComponent({
       router.back();
     }
 
-    return { applicationStore, reference, formStore, workExperienceReferenceUpsertForm };
+    return { applicationStore, alertStore, reference, formStore, workExperienceReferenceUpsertForm, router };
   },
   data() {
     return {
@@ -109,9 +112,15 @@ export default defineComponent({
       const { valid } = await (this.$refs.upsertWorkExperienceReferenceForm as typeof EceForm).$refs[workExperienceReferenceUpsertForm.id].validate();
 
       if (valid) {
-        console.log("Form is valid we are ready to submit the new work experience reference");
+        const { error } = await upsertWorkExperienceReference({ application_id: this.applicationId, reference_id: this.referenceId }, this.formStore.formData);
+        if (error) {
+          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+        } else {
+          this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
+          this.router.push(`/manage-application/${this.applicationId}`);
+        }
       } else {
-        console.log("Form is invalid");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
       }
     },
   },

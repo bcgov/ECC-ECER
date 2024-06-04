@@ -48,4 +48,20 @@ const resendWorkExperienceReference = async (params: Paths.ApplicationCharacterR
   );
 };
 
-export { getReference, optOutReference, postCharacterReference, postWorkExperienceReference, resendCharacterReference, resendWorkExperienceReference };
+const upsertWorkExperienceReference = async (
+  params: Paths.WorkexperiencereferencePost.PathParameters,
+  body: Paths.WorkexperiencereferencePost.RequestBody,
+): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute(client.workexperiencereference_post(params, body), "workexperiencereference_post");
+};
+
+export {
+  getReference,
+  optOutReference,
+  postCharacterReference,
+  postWorkExperienceReference,
+  resendCharacterReference,
+  resendWorkExperienceReference,
+  upsertWorkExperienceReference,
+};
