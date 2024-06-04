@@ -31,8 +31,10 @@
     </div>
     <v-row class="mt-6">
       <v-col class="d-flex flex-row ga-3 flex-wrap">
-        <v-btn size="large" color="primary" @click="handleSubmitReference">Save new reference</v-btn>
-        <v-btn size="large" variant="outlined" color="primary">Cancel</v-btn>
+        <v-btn size="large" color="primary" :loading="loadingStore.isLoading('application_workexperiencereference_update_post')" @click="handleSubmitReference">
+          Save new reference
+        </v-btn>
+        <v-btn size="large" variant="outlined" color="primary" @click="router.back()">Cancel</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -48,6 +50,7 @@ import workExperienceReferenceUpsertForm from "@/config/work-experience-referenc
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useFormStore } from "@/store/form";
+import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
@@ -67,17 +70,20 @@ export default defineComponent({
   setup: async (props) => {
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
-    const router = useRouter();
     const formStore = useFormStore();
+    const loadingStore = useLoadingStore();
+    const router = useRouter();
 
     // Check store for existing reference
     const reference: Components.Schemas.WorkExperienceReference | undefined = applicationStore.workExperienceReferenceById(props.referenceId);
 
     if (!reference) {
       router.back();
+    } else {
+      formStore.initializeForm({});
     }
 
-    return { applicationStore, alertStore, reference, formStore, workExperienceReferenceUpsertForm, router };
+    return { applicationStore, alertStore, reference, formStore, loadingStore, workExperienceReferenceUpsertForm, router };
   },
   data() {
     return {
