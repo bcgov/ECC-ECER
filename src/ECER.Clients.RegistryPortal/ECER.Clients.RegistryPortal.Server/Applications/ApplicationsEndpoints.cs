@@ -158,7 +158,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           }
           return TypedResults.Ok(new UpdateReferenceResponse(result.ReferenceId!));
         })
-        .WithOpenApi("Update work experience reference", string.Empty, "workexperiencereference_post")
+        .WithOpenApi("Update work experience reference", string.Empty, "application_workexperiencereference_update_post")
         .RequireAuthorization()
         .WithParameterValidation();
 
@@ -199,7 +199,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           }
           return TypedResults.Ok(new UpdateReferenceResponse(result.ReferenceId!));
         })
-        .WithOpenApi("Update work experience reference", string.Empty, "workexperiencereference_post")
+        .WithOpenApi("Update character reference", string.Empty, "application_characterreference_update_post")
         .RequireAuthorization()
         .WithParameterValidation();
 
@@ -284,7 +284,7 @@ public record UpdateReferenceResponse(string ReferenceId);
 public record ApplicationQueryResponse(IEnumerable<Application> Items);
 
 /// <summary>
-/// delete draft application response
+/// Resend reference invite response
 /// </summary>
 /// <param name="ReferenceId">The reference id</param>
 public record ResendReferenceInviteResponse(string ReferenceId);
