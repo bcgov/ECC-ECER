@@ -28,7 +28,7 @@ public class ApplicationHandlers(
     IRequestHandler<Contract.Applications.SubmitReferenceCommand, ReferenceSubmissionResult>,
     IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>,
     IRequestHandler<Contract.Applications.UpdateWorkExperienceReferenceCommand, UpdateWorkExperienceReferenceResult>,
-    IRequestHandler<Contract.Applications.UpdateCharacterReferenceCommand, UpdateCharacterReferenceResult>
+    IRequestHandler<Contract.Applications.UpdateCharacterReferenceCommand, UpdateCharacterReferenceResult>,
     IRequestHandler<ResendCharacterReferenceInviteRequest, string>,
     IRequestHandler<ResendWorkExperienceReferenceInviteRequest, string>
 {
