@@ -14,7 +14,7 @@
     <p class="mt-6"><b>Work Experience Hours</b></p>
     <p class="mb-10">{{ reference?.hours }}</p>
     <ECEHeader title="Options" />
-    <ResendEmail />
+    <ResendEmail @resend="handleResendReference" />
     <div class="d-flex flex-column ga-3 mt-10">
       <h3 class="mt-4">Change your reference</h3>
       <p>This will delete this individual as your reference and let you add someone new. Or correct any information in the reference listed above.</p>
@@ -27,8 +27,10 @@
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
+import { resendWorkExperienceReference } from "@/api/reference";
 import ECEHeader from "@/components/ECEHeader.vue";
 import ResendEmail from "@/components/ResendEmail.vue";
+import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import type { Components } from "@/types/openapi";
 import { formatPhoneNumber } from "@/utils/format";
@@ -49,6 +51,7 @@ export default defineComponent({
   },
   setup: async (props) => {
     const applicationStore = useApplicationStore();
+    const alertStore = useAlertStore();
     const router = useRouter();
 
     // Check store for existing reference
@@ -58,7 +61,7 @@ export default defineComponent({
       router.back();
     }
 
-    return { applicationStore, reference };
+    return { applicationStore, reference, alertStore };
   },
   data() {
     return {
@@ -84,6 +87,18 @@ export default defineComponent({
 
   methods: {
     formatPhoneNumber,
+    async handleResendReference() {
+      const { error } = await resendWorkExperienceReference({
+        applicationId: this.applicationId,
+        referenceId: this.referenceId,
+      });
+
+      if (error) {
+        this.alertStore.setFailureAlert("Failed to resend email");
+      } else {
+        this.alertStore.setSuccessAlert("Email resent to this reference with link to respond");
+      }
+    },
   },
 });
 </script>
