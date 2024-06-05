@@ -239,7 +239,7 @@ declare namespace Components {
       willProvideReference?: boolean | null;
     }
     /**
-     * delete draft application response
+     * Resend reference invite response
      */
     export interface ResendReferenceInviteResponse {
       /**
@@ -378,8 +378,24 @@ declare namespace Paths {
       referenceId: Parameters.ReferenceId;
     }
     namespace Responses {
-      export type $200 = /* delete draft application response */ Components.Schemas.ResendReferenceInviteResponse;
+      export type $200 = /* Resend reference invite response */ Components.Schemas.ResendReferenceInviteResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace ApplicationCharacterreferenceUpdatePost {
+    namespace Parameters {
+      export type ApplicationId = string;
+      export type ReferenceId = string;
+    }
+    export interface PathParameters {
+      application_id: Parameters.ApplicationId;
+      reference_id?: Parameters.ReferenceId;
+    }
+    export type RequestBody = Components.Schemas.CharacterReference;
+    namespace Responses {
+      export type $200 = Components.Schemas.UpdateReferenceResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
     }
   }
   namespace ApplicationGet {
@@ -429,8 +445,24 @@ declare namespace Paths {
       referenceId: Parameters.ReferenceId;
     }
     namespace Responses {
-      export type $200 = /* delete draft application response */ Components.Schemas.ResendReferenceInviteResponse;
+      export type $200 = /* Resend reference invite response */ Components.Schemas.ResendReferenceInviteResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace ApplicationWorkexperiencereferenceUpdatePost {
+    namespace Parameters {
+      export type ApplicationId = string;
+      export type ReferenceId = string;
+    }
+    export interface PathParameters {
+      application_id: Parameters.ApplicationId;
+      reference_id?: Parameters.ReferenceId;
+    }
+    export type RequestBody = Components.Schemas.WorkExperienceReference;
+    namespace Responses {
+      export type $200 = Components.Schemas.UpdateReferenceResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
     }
   }
   namespace CharacterReferencePost {
@@ -547,22 +579,6 @@ declare namespace Paths {
     namespace Responses {
       export interface $200 {}
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
-    }
-  }
-  namespace WorkexperiencereferencePost {
-    namespace Parameters {
-      export type ApplicationId = string;
-      export type ReferenceId = string;
-    }
-    export interface PathParameters {
-      application_id: Parameters.ApplicationId;
-      reference_id?: Parameters.ReferenceId;
-    }
-    export type RequestBody = Components.Schemas.WorkExperienceReference;
-    namespace Responses {
-      export type $200 = Components.Schemas.UpdateReferenceResponse;
-      export type $400 = Components.Schemas.HttpValidationProblemDetails;
-      export interface $404 {}
     }
   }
 }
@@ -715,21 +731,21 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.DraftapplicationDelete.Responses.$200>;
   /**
-   * workexperiencereference_post - Update work experience reference
+   * application_workexperiencereference_update_post - Update work experience reference
    */
-  "workexperiencereference_post"(
-    parameters?: Parameters<Paths.WorkexperiencereferencePost.PathParameters> | null,
-    data?: Paths.WorkexperiencereferencePost.RequestBody,
+  "application_workexperiencereference_update_post"(
+    parameters?: Parameters<Paths.ApplicationWorkexperiencereferenceUpdatePost.PathParameters> | null,
+    data?: Paths.ApplicationWorkexperiencereferenceUpdatePost.RequestBody,
     config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.WorkexperiencereferencePost.Responses.$200>;
+  ): OperationResponse<Paths.ApplicationWorkexperiencereferenceUpdatePost.Responses.$200>;
   /**
-   * workexperiencereference_post - Update work experience reference
+   * application_characterreference_update_post - Update character reference
    */
-  "workexperiencereference_post"(
-    parameters?: Parameters<Paths.WorkexperiencereferencePost.PathParameters> | null,
-    data?: Paths.WorkexperiencereferencePost.RequestBody,
+  "application_characterreference_update_post"(
+    parameters?: Parameters<Paths.ApplicationCharacterreferenceUpdatePost.PathParameters> | null,
+    data?: Paths.ApplicationCharacterreferenceUpdatePost.RequestBody,
     config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.WorkexperiencereferencePost.Responses.$200>;
+  ): OperationResponse<Paths.ApplicationCharacterreferenceUpdatePost.Responses.$200>;
   /**
    * application_character_reference_resend_invite_post - Resend a character reference invite
    *
@@ -917,23 +933,23 @@ export interface PathsDictionary {
   };
   ["/api/applications/{application_id}/workexperiencereference/{reference_id}/update"]: {
     /**
-     * workexperiencereference_post - Update work experience reference
+     * application_workexperiencereference_update_post - Update work experience reference
      */
     "post"(
-      parameters?: Parameters<Paths.WorkexperiencereferencePost.PathParameters> | null,
-      data?: Paths.WorkexperiencereferencePost.RequestBody,
+      parameters?: Parameters<Paths.ApplicationWorkexperiencereferenceUpdatePost.PathParameters> | null,
+      data?: Paths.ApplicationWorkexperiencereferenceUpdatePost.RequestBody,
       config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.WorkexperiencereferencePost.Responses.$200>;
+    ): OperationResponse<Paths.ApplicationWorkexperiencereferenceUpdatePost.Responses.$200>;
   };
   ["/api/applications/{application_id}/characterreference/{reference_id}/update"]: {
     /**
-     * workexperiencereference_post - Update work experience reference
+     * application_characterreference_update_post - Update character reference
      */
     "post"(
-      parameters?: Parameters<Paths.WorkexperiencereferencePost.PathParameters> | null,
-      data?: Paths.WorkexperiencereferencePost.RequestBody,
+      parameters?: Parameters<Paths.ApplicationCharacterreferenceUpdatePost.PathParameters> | null,
+      data?: Paths.ApplicationCharacterreferenceUpdatePost.RequestBody,
       config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.WorkexperiencereferencePost.Responses.$200>;
+    ): OperationResponse<Paths.ApplicationCharacterreferenceUpdatePost.Responses.$200>;
   };
   ["/api/applications/{applicationId}/character-reference/{referenceId}/resend-invite"]: {
     /**

@@ -48,4 +48,29 @@ const resendWorkExperienceReference = async (params: Paths.ApplicationCharacterR
   );
 };
 
-export { getReference, optOutReference, postCharacterReference, postWorkExperienceReference, resendCharacterReference, resendWorkExperienceReference };
+const upsertWorkExperienceReference = async (
+  params: Paths.ApplicationWorkexperiencereferenceUpdatePost.PathParameters,
+  body: Paths.ApplicationWorkexperiencereferenceUpdatePost.RequestBody,
+): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute(client.application_workexperiencereference_update_post(params, body), "application_workexperiencereference_update_post");
+};
+
+const upsertCharacterReference = async (
+  params: Paths.ApplicationCharacterreferenceUpdatePost.PathParameters,
+  body: Paths.ApplicationCharacterreferenceUpdatePost.RequestBody,
+): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute(client.application_characterreference_update_post(params, body), "application_characterreference_update_post");
+};
+
+export {
+  getReference,
+  optOutReference,
+  postCharacterReference,
+  postWorkExperienceReference,
+  resendCharacterReference,
+  resendWorkExperienceReference,
+  upsertCharacterReference,
+  upsertWorkExperienceReference,
+};

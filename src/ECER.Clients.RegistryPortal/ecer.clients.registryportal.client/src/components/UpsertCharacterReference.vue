@@ -33,8 +33,10 @@
     </div>
     <v-row class="mt-6">
       <v-col class="d-flex flex-row ga-3 flex-wrap">
-        <v-btn size="large" color="primary" @click="handleSubmitReference">Save new reference</v-btn>
-        <v-btn size="large" variant="outlined" color="primary">Cancel</v-btn>
+        <v-btn size="large" color="primary" :loading="loadingStore.isLoading('application_characterreference_update_post')" @click="handleSubmitReference">
+          Save new reference
+        </v-btn>
+        <v-btn size="large" variant="outlined" color="primary" @click="router.back()">Cancel</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -44,12 +46,14 @@
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
+import { upsertCharacterReference } from "@/api/reference";
 import EceForm from "@/components/Form.vue";
 import characterReferenceUpsertForm from "@/config/character-references-upsert-form";
+import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useFormStore } from "@/store/form";
+import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
-import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "UpsertCharacterReference",
@@ -67,6 +71,8 @@ export default defineComponent({
   },
   setup: async (props) => {
     const applicationStore = useApplicationStore();
+    const alertStore = useAlertStore();
+    const loadingStore = useLoadingStore();
     const router = useRouter();
     const formStore = useFormStore();
 
@@ -75,9 +81,11 @@ export default defineComponent({
 
     if (!reference) {
       router.back();
+    } else {
+      formStore.initializeForm({});
     }
 
-    return { applicationStore, reference, formStore, characterReferenceUpsertForm };
+    return { applicationStore, alertStore, reference, formStore, loadingStore, characterReferenceUpsertForm, router };
   },
   data() {
     return {
@@ -107,15 +115,20 @@ export default defineComponent({
   },
 
   methods: {
-    formatPhoneNumber,
     async handleSubmitReference() {
       // Validate the form
       const { valid } = await (this.$refs.upsertCharacterReferenceForm as typeof EceForm).$refs[characterReferenceUpsertForm.id].validate();
 
       if (valid) {
-        console.log("Form is valid we are ready to submit the new character reference");
+        const { error } = await upsertCharacterReference({ application_id: this.applicationId, reference_id: this.referenceId }, this.formStore.formData);
+        if (error) {
+          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+        } else {
+          this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
+          this.router.push(`/manage-application/${this.applicationId}`);
+        }
       } else {
-        console.log("Form is invalid");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
       }
     },
   },

@@ -34,8 +34,8 @@ const workExperienceReferencesUpsertForm: Form = {
         xl: 4,
       },
     },
-    email: {
-      id: "email",
+    emailAddress: {
+      id: "emailAddress",
       component: EceTextField,
       props: {
         label: "Email",
