@@ -192,7 +192,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             var problemDetails = new ProblemDetails
             {
               Status = StatusCodes.Status400BadRequest,
-              Title = "Work Experience reference updation failed",
+              Title = "Character reference updation failed",
               Extensions = { ["errors"] = result.ErrorMessage }
             };
             return TypedResults.BadRequest(problemDetails);
