@@ -206,7 +206,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task UpdateWorkExReference_ByReferenceId()
+  public async Task UpdateWorkExReference_ForSubmittedApplication_ByReferenceId()
   {
     var applicationId = this.Fixture.submittedTestApplicationId;
     var referenceId = this.Fixture.submittedTestApplicationWorkExperienceRefId;
@@ -214,7 +214,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var UpdateWorkExRefResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Post.Json(newWork).ToUrl($"/api/applications/{applicationId}/workexperiencereference/{referenceId}/update");
+      _.Post.Json(newWork).ToUrl($"/api/applications/{applicationId}/workexperiencereference/{referenceId}");
       _.StatusCodeShouldBeOk();
     });
     var UpdateWorkExReferenceResponseId = await UpdateWorkExRefResponse.ReadAsJsonAsync<UpdateReferenceResponse>();
@@ -222,15 +222,45 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task UpdateCharacterReference_ByReferenceId()
+  public async Task AddNewWorkExReference_ForSubmittedApplication()
   {
-    var applicationId = this.Fixture.submittedTestApplicationId2;
+    var applicationId = this.Fixture.submittedTestApplicationId4;
+    WorkExperienceReference newWork = CreateWorkExperienceReference();
+    var UpdateWorkExRefResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Post.Json(newWork).ToUrl($"/api/applications/{applicationId}/workexperiencereference");
+      _.StatusCodeShouldBeOk();
+    });
+    var UpdateWorkExReferenceResponseId = await UpdateWorkExRefResponse.ReadAsJsonAsync<UpdateReferenceResponse>();
+    UpdateWorkExReferenceResponseId!.ReferenceId.ShouldNotBeEmpty();
+  }
+
+  [Fact]
+  public async Task UpdateCharacterReference_ForSubmittedApplication_ByReferenceId()
+  {
+    var applicationId = this.Fixture.submittedTestApplicationId3;
     var referenceId = this.Fixture.submittedTestApplicationCharacterRefId;
     CharacterReference newCharacter = CreateCharacterReference();
     var UpdateCharacterRefResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Post.Json(newCharacter).ToUrl($"/api/applications/{applicationId}/characterreference/{referenceId}/update");
+      _.Post.Json(newCharacter).ToUrl($"/api/applications/{applicationId}/characterreference/{referenceId}");
+      _.StatusCodeShouldBeOk();
+    });
+    var UpdateCharacterRefResponseId = await UpdateCharacterRefResponse.ReadAsJsonAsync<UpdateReferenceResponse>();
+    UpdateCharacterRefResponseId!.ReferenceId.ShouldNotBeEmpty();
+  }
+
+  [Fact]
+  public async Task AddNewCharacterReference_ForSubmittedApplication()
+  {
+    var applicationId = this.Fixture.submittedTestApplicationId4;
+    CharacterReference newCharacter = CreateCharacterReference();
+    var UpdateCharacterRefResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Post.Json(newCharacter).ToUrl($"/api/applications/{applicationId}/characterreference");
       _.StatusCodeShouldBeOk();
     });
     var UpdateCharacterRefResponseId = await UpdateCharacterRefResponse.ReadAsJsonAsync<UpdateReferenceResponse>();
@@ -240,7 +270,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   [Fact]
   public async Task ResendWorkExperienceReferenceInvite_ShouldReturnOk()
   {
-    var applicationId = this.Fixture.submittedTestApplicationId3;
+    var applicationId = this.Fixture.submittedTestApplicationId2;
     var referenceId = this.Fixture.submittedTestApplicationWorkExperienceRefId2;
     await Host.Scenario(_ =>
     {
@@ -284,7 +314,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
 
     return new CharacterReference(
-      faker.Name.FirstName(), faker.Name.LastName(), faker.Phone.PhoneNumber(), faker.Internet.Email()
+      faker.Name.FirstName(), faker.Name.LastName(), faker.Phone.PhoneNumber(), "Character_Reference@example.com"
     );
   }
 
@@ -293,7 +323,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
 
     return new WorkExperienceReference(
-       faker.Name.FirstName(), faker.Name.FirstName(), faker.Internet.Email(), faker.Random.Number(10, 150)
+       faker.Name.FirstName(), faker.Name.FirstName(), "WorkExperience_Reference@example.com", faker.Random.Number(10, 150)
     )
     {
       PhoneNumber = faker.Phone.PhoneNumber()

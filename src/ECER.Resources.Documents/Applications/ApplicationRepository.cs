@@ -317,12 +317,16 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
     var existingWorkExperiences = context.ecer_WorkExperienceRefSet.Where(t => t.ecer_Applicationid.Id == Guid.Parse(applicationId)).ToList();
 
-    var oldReference = existingWorkExperiences.SingleOrDefault(t => t.Id == Guid.Parse(referenceId));
-    // 1. Remove existing WorkExperienceReference
-
-    if (oldReference != null)
+    bool RefIdIsGuid = Guid.TryParse(referenceId, out Guid referenceIdGuid);
+    if (RefIdIsGuid)
     {
-      context.DeleteObject(oldReference);
+      var oldReference = existingWorkExperiences.SingleOrDefault(t => t.Id == referenceIdGuid);
+      // 1. Remove existing WorkExperienceReference
+
+      if (oldReference != null)
+      {
+        context.DeleteObject(oldReference);
+      }
     }
 
     // 2. Add New WorkExperienceReferences
@@ -352,15 +356,20 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
     var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == Guid.Parse(applicationId)).ToList();
 
-    var oldReference = existingCharacterReferences.SingleOrDefault(t => t.Id == Guid.Parse(referenceId));
-    // 1. Remove existing WorkExperienceReference
-
-    if (oldReference != null)
+    bool RefIdIsGuid = Guid.TryParse(referenceId, out Guid referenceIdGuid);
+    if (RefIdIsGuid)
     {
-      context.DeleteObject(oldReference);
+      var oldReference = existingCharacterReferences.SingleOrDefault(t => t.Id == referenceIdGuid);
+
+      // 1. Remove existing Character Reference
+
+      if (oldReference != null)
+      {
+        context.DeleteObject(oldReference);
+      }
     }
 
-    // 2. Add New WorkExperienceReferences
+    // 2. Add New Character Reference
 
     ecerCharacterReference.ecer_CharacterReferenceId = Guid.NewGuid();
     ecerCharacterReference.StatusCode = ecer_CharacterReference_StatusCode.ApplicationSubmitted;
