@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Program
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_program_statecode
 	{
 		
@@ -31,9 +31,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Program
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_Program_StatusCode
 	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Approved = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Denied = 621870003,
@@ -42,13 +45,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Inactive = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		InterimRecognition = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
 		NotSubmitted = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		OngoingRecognition = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		UnderReview = 621870001,
@@ -59,7 +56,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_program")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_Program : Microsoft.Xrm.Sdk.Entity
 	{
 		

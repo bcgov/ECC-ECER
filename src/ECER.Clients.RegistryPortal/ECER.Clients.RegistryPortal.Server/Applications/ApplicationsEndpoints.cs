@@ -79,49 +79,173 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-
     endpointRouteBuilder.MapGet("/api/applications/{id}/status", async Task<Results<Ok<SubmittedApplicationStatus>, BadRequest<ProblemDetails>, NotFound<ProblemDetails>>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
-    {
-      var userId = ctx.User.GetUserContext()?.UserId;
-      bool IdIsNotGuid = !Guid.TryParse(id, out _);
-      if (IdIsNotGuid)
-      {
-        return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
-      }
-      var query = new ApplicationsQuery
-      {
-        ById = id,
-        ByApplicantId = userId
-      };
-      var result = await messageBus.Send(query, ct);
-      var application = result.Items.FirstOrDefault();
-      if (application == null)
-      {
-        return TypedResults.NotFound(new ProblemDetails() { Title = "Application not found" });
-      }
-      return TypedResults.Ok(mapper.Map<SubmittedApplicationStatus>(application));
-    })
-    .WithOpenApi("Handles application status queries", string.Empty, "application_status_get")
-    .RequireAuthorization()
-    .WithParameterValidation();
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+          bool IdIsNotGuid = !Guid.TryParse(id, out _);
+          if (IdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
+          }
+          var query = new ApplicationsQuery
+          {
+            ById = id,
+            ByApplicantId = userId
+          };
+          var result = await messageBus.Send(query, ct);
+          var application = result.Items.FirstOrDefault();
+          if (application == null)
+          {
+            return TypedResults.NotFound(new ProblemDetails() { Title = "Application not found" });
+          }
+          return TypedResults.Ok(mapper.Map<SubmittedApplicationStatus>(application));
+        })
+        .WithOpenApi("Handles application status queries", string.Empty, "application_status_get")
+        .RequireAuthorization()
+        .WithParameterValidation();
 
     endpointRouteBuilder.MapDelete("/api/draftApplications/{id}", async Task<Results<Ok<CancelDraftApplicationResponse>, BadRequest<ProblemDetails>>> (string id, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
-       {
-         var userId = ctx.User.GetUserContext()?.UserId;
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
 
-         bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid)
-         {
-           return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
-         }
+          bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not valid" });
+          }
 
-         var cancelledApplicationId = await messageBus.Send(new CancelDraftApplicationCommand(id, userId!), ct);
+          var cancelledApplicationId = await messageBus.Send(new CancelDraftApplicationCommand(id, userId!), ct);
 
-         return TypedResults.Ok(new CancelDraftApplicationResponse(cancelledApplicationId));
-       })
-       .WithOpenApi("Cancel a draft application for the current user", "Changes status to cancelled", "draftapplication_delete")
-       .RequireAuthorization()
-       .WithParameterValidation();
+          return TypedResults.Ok(new CancelDraftApplicationResponse(cancelledApplicationId));
+        })
+        .WithOpenApi("Cancel a draft application for the current user", "Changes status to cancelled", "draftapplication_delete")
+        .RequireAuthorization()
+        .WithParameterValidation();
 
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/workexperiencereference/{reference_id}/update", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, WorkExperienceReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+          bool AppIdIsNotGuid = !Guid.TryParse(application_id, out _);
+          if (AppIdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
+          }
+
+          if (!string.IsNullOrEmpty(reference_id))
+          {
+            bool RefIdIsNotGuid = !Guid.TryParse(reference_id, out _);
+            if (RefIdIsNotGuid)
+            {
+              return TypedResults.BadRequest(new ProblemDetails() { Title = "Reference Id is not valid" });
+            }
+          }
+          else
+          {
+            reference_id = "";
+          }
+          var mappedWorkExperienceReference = mapper.Map<Managers.Registry.Contract.Applications.WorkExperienceReference>(request);
+          var cmd = new UpdateWorkExperienceReferenceCommand(mappedWorkExperienceReference, application_id, reference_id, userId!);
+          var result = await messageBus.Send(cmd, ct);
+
+          if (!result.IsSuccess)
+          {
+            var problemDetails = new ProblemDetails
+            {
+              Status = StatusCodes.Status400BadRequest,
+              Title = "Work Experience reference updation failed",
+              Extensions = { ["errors"] = result.ErrorMessage }
+            };
+            return TypedResults.BadRequest(problemDetails);
+          }
+          return TypedResults.Ok(new UpdateReferenceResponse(result.ReferenceId!));
+        })
+        .WithOpenApi("Update work experience reference", string.Empty, "application_workexperiencereference_update_post")
+        .RequireAuthorization()
+        .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/characterreference/{reference_id}/update", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, CharacterReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+          bool AppIdIsNotGuid = !Guid.TryParse(application_id, out _);
+          if (AppIdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
+          }
+
+          if (!string.IsNullOrEmpty(reference_id))
+          {
+            bool RefIdIsNotGuid = !Guid.TryParse(reference_id, out _);
+            if (RefIdIsNotGuid)
+            {
+              return TypedResults.BadRequest(new ProblemDetails() { Title = "Reference Id is not valid" });
+            }
+          }
+          else
+          {
+            reference_id = "";
+          }
+          var mappedCharacterReference = mapper.Map<Managers.Registry.Contract.Applications.CharacterReference>(request);
+          var cmd = new UpdateCharacterReferenceCommand(mappedCharacterReference, application_id, reference_id, userId!);
+          var result = await messageBus.Send(cmd, ct);
+
+          if (!result.IsSuccess)
+          {
+            var problemDetails = new ProblemDetails
+            {
+              Status = StatusCodes.Status400BadRequest,
+              Title = "Work Experience reference updation failed",
+              Extensions = { ["errors"] = result.ErrorMessage }
+            };
+            return TypedResults.BadRequest(problemDetails);
+          }
+          return TypedResults.Ok(new UpdateReferenceResponse(result.ReferenceId!));
+        })
+        .WithOpenApi("Update character reference", string.Empty, "application_characterreference_update_post")
+        .RequireAuthorization()
+        .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/applications/{applicationId}/character-reference/{referenceId}/resend-invite", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+
+          bool IdIsNotGuid = !Guid.TryParse(applicationId, out _);
+          if (IdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not a valid guid" });
+          }
+
+          bool ReferenceIdIsNotGuid = !Guid.TryParse(referenceId, out _);
+          if (ReferenceIdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "ReferenceId is not a valid guid" });
+          }
+
+          return TypedResults.Ok(new ResendReferenceInviteResponse(await messageBus.Send(new ResendCharacterReferenceInviteRequest(applicationId, referenceId, userId!), ct)));
+        })
+        .WithOpenApi("Resend a character reference invite", "Changes character reference invite again status to true", "application_character_reference_resend_invite_post")
+        .RequireAuthorization()
+        .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/applications/{applicationId}/work-experience-reference/{referenceId}/resend-invite", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+
+          bool IdIsNotGuid = !Guid.TryParse(applicationId, out _);
+          if (IdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "ApplicationId is not a valid guid" });
+          }
+
+          bool ReferenceIdIsNotGuid = !Guid.TryParse(referenceId, out _);
+          if (ReferenceIdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "ReferenceId is not a valid guid" });
+          }
+
+          return TypedResults.Ok(new ResendReferenceInviteResponse(await messageBus.Send(new ResendWorkExperienceReferenceInviteRequest(applicationId, referenceId, userId!), ct)));
+        })
+        .WithOpenApi("Resend a work experience reference invite", "Changes work experience reference invite again status to true", "application_work_experience_reference_resend_invite_post")
+        .RequireAuthorization()
+        .WithParameterValidation();
   }
 }
 
@@ -151,11 +275,19 @@ public record CancelDraftApplicationResponse(string ApplicationId);
 
 public record SubmitApplicationResponse(string ApplicationId);
 
+public record UpdateReferenceResponse(string ReferenceId);
+
 /// <summary>
 /// Application query response
 /// </summary>
 /// <param name="Items">The found applications</param>
 public record ApplicationQueryResponse(IEnumerable<Application> Items);
+
+/// <summary>
+/// Resend reference invite response
+/// </summary>
+/// <param name="ReferenceId">The reference id</param>
+public record ResendReferenceInviteResponse(string ReferenceId);
 
 public record DraftApplication
 {
@@ -202,14 +334,12 @@ public record Transcript()
   public bool IsECEAssistant { get; set; }
   public bool DoesECERegistryHaveTranscript { get; set; }
   public bool IsOfficialTranscriptRequested { get; set; }
-
 }
 public record WorkExperienceReference([Required] string? FirstName, [Required] string? LastName, [Required] string? EmailAddress, [Required] int? Hours)
 {
   public string? Id { get; set; }
 
   public string? PhoneNumber { get; set; }
-
 }
 
 public enum CertificationType
@@ -296,9 +426,7 @@ public record ReferenceStatus(string Id, StageStatus Status, string FirstName, s
   public string? PhoneNumber { get; set; }
   public int? Hours { get; set; }
   public bool? WillProvideReference { get; set; }
-
 }
-
 
 public enum StageStatus
 {

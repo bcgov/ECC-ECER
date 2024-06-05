@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
-      <h3>Reference evaluation</h3>
+      <h2>Reference evaluation</h2>
       <div role="doc-subtitle">
         {{
           `Tell us about your personal experience with the applicant ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}.`

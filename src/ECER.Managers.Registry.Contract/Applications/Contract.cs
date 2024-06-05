@@ -159,6 +159,9 @@ public record ReferenceContactInformation(string LastName, string FirstName, str
 public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, ReferenceKnownTime LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons) : IRequest<ReferenceSubmissionResult>;
 
+public record ResendCharacterReferenceInviteRequest(string ApplicationId, string ReferenceId, string UserId) : IRequest<string>;
+public record ResendWorkExperienceReferenceInviteRequest(string ApplicationId, string ReferenceId, string UserId) : IRequest<string>;
+
 public enum UnabletoProvideReferenceReasons
 {
   Iamunabletoatthistime,
@@ -231,6 +234,32 @@ public record SubmitReferenceCommand(string Token) : IRequest<ReferenceSubmissio
   public CharacterReferenceSubmissionRequest? CharacterReferenceSubmissionRequest { get; set; }
 }
 
+public record UpdateWorkExperienceReferenceCommand(WorkExperienceReference workExperienceRef, string applicationId, string referenceId, string userId) : IRequest<UpdateWorkExperienceReferenceResult>;
+
+public class UpdateWorkExperienceReferenceResult
+{
+  public string? ReferenceId { get; set; }
+  public bool IsSuccess { get; set; }
+  public string? ErrorMessage { get; set; }
+
+  public static UpdateWorkExperienceReferenceResult Success() => new UpdateWorkExperienceReferenceResult { IsSuccess = true };
+
+  public static UpdateWorkExperienceReferenceResult Failure(string message) => new UpdateWorkExperienceReferenceResult { IsSuccess = false, ErrorMessage = message };
+}
+
+public record UpdateCharacterReferenceCommand(CharacterReference characterRef, string applicationId, string referenceId, string userId) : IRequest<UpdateCharacterReferenceResult>;
+
+public class UpdateCharacterReferenceResult
+{
+  public string? ReferenceId { get; set; }
+  public bool IsSuccess { get; set; }
+  public string? ErrorMessage { get; set; }
+
+  public static UpdateCharacterReferenceResult Success() => new UpdateCharacterReferenceResult { IsSuccess = true };
+
+  public static UpdateCharacterReferenceResult Failure(string message) => new UpdateCharacterReferenceResult { IsSuccess = false, ErrorMessage = message };
+}
+
 public enum ReferenceKnownTime
 {
   From1to2years,
@@ -239,7 +268,6 @@ public enum ReferenceKnownTime
   Lessthan6months,
   Morethan5years,
 }
-
 
 public enum StageStatus
 {

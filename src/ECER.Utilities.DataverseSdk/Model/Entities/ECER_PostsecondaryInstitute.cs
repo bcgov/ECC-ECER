@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Post Secondary Institute
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_postsecondaryinstitute_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Post Secondary Institute
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_PostSecondaryInstitute_StatusCode
 	{
 		
@@ -44,7 +44,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_postsecondaryinstitute")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_PostSecondaryInstitute : Microsoft.Xrm.Sdk.Entity
 	{
 		

@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Renewal Assessment
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_renewalassessment_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Renewal Assessment
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_RenewalAssessment_StatusCode
 	{
 		
@@ -44,7 +44,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_renewalassessment")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_RenewalAssessment : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -75,6 +75,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_hoursworkedacceptedName = "ecer_hoursworkedacceptedname";
 			public const string ecer_HoursWorkedSNCST = "ecer_hoursworkedsncst";
 			public const string ecer_hoursworkedsncstName = "ecer_hoursworkedsncstname";
+			public const string ecer_legacyrenewalassessmentid = "ecer_legacyrenewalassessmentid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_Notes = "ecer_notes";
 			public const string ecer_ProofofProfessionalDevelopment = "ecer_proofofprofessionaldevelopment";
@@ -132,6 +133,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacyrenewalassessmentid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -505,6 +508,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyrenewalassessmentid")]
+		public string ecer_legacyrenewalassessmentid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyrenewalassessmentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyrenewalassessmentid", value);
 			}
 		}
 		

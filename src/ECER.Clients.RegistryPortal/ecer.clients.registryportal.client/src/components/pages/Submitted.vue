@@ -6,7 +6,7 @@
           <div class="text-center mb-10">
             <v-icon size="106px" color="#42814A" icon="mdi-check-circle" class="mr-2"></v-icon>
 
-            <h3>Application Submitted Successfully</h3>
+            <h2>Application Submitted Successfully</h2>
             <p class="small">Thank you for submitting your application</p>
           </div>
           <p>What to expect next?</p>

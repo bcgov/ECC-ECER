@@ -12,7 +12,7 @@
           <v-btn prepend-icon="mdi-close" text="Close" @click="messageStore.currentMessage = null"></v-btn>
         </v-toolbar>
         <v-card-text>
-          <h3>{{ messageStore.currentMessage?.subject }}</h3>
+          <h2>{{ messageStore.currentMessage?.subject }}</h2>
           <p class="small mt-2">{{ messageDate }}</p>
           <p class="small mt-6">
             <span v-html="messageStore.currentMessage?.text"></span>
@@ -22,7 +22,7 @@
     </v-dialog>
   </div>
   <div v-if="mdAndUp">
-    <h3>{{ messageStore.currentMessage?.subject }}</h3>
+    <h2>{{ messageStore.currentMessage?.subject }}</h2>
     <p class="small mt-2">{{ messageDate }}</p>
     <p class="small mt-6">
       <span v-html="messageStore.currentMessage?.text"></span>

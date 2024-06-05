@@ -11,7 +11,7 @@
     <v-container>
       <v-row align="center">
         <v-col>
-          <h3 :class="isValid ? 'text-black' : 'text-error'">{{ title }}</h3>
+          <h2 :class="isValid ? 'text-black' : 'text-error'">{{ title }}</h2>
           <div class="small text-black">{{ subtitle }}</div>
           <p v-if="!isValid" class="small text-error">
             <v-icon icon="mdi-alert-circle" color="error" class="mr-2"></v-icon>

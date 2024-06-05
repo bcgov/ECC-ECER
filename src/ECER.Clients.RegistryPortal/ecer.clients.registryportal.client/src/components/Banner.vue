@@ -8,7 +8,7 @@
             fill="#CE3E39"
           />
         </svg>
-        <h2 class="align-self-center ml-6">{{ title }}</h2>
+        <h1 class="align-self-center ml-6">{{ title }}</h1>
       </div>
     </v-container>
   </v-card>

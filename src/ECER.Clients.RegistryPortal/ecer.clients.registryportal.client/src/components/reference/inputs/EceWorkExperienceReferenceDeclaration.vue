@@ -11,7 +11,7 @@
           </p>
           <br />
 
-          <h2>Information you'll need</h2>
+          <h1>Information you'll need</h1>
           <p>
             It should take about 5 minutes to enter your reference. Make sure you get together all the information you need before you continue. If you're not
             ready now, you can come back later using the link in your email.
@@ -37,7 +37,7 @@
             <a style="text-decoration: underline" href="mailto:ECERegistry@gov.bc.ca">ECERegistry@gov.bc.ca</a>
           </div>
           <br />
-          <h2>Requirements to be a reference</h2>
+          <h1>Requirements to be a reference</h1>
           <p>You need to:</p>
           <ul class="ml-10">
             <li>Have directly supervised (observed) all hours during which the applicant worked or volunteered</li>

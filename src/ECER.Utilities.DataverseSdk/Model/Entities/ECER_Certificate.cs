@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Certificate
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_certificate_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Certificate
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_Certificate_StatusCode
 	{
 		
@@ -56,7 +56,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_certificate")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_Certificate : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -84,6 +84,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ecer_certificate_ecer_investigation_CurrentCertificate = "ecer_ecer_certificate_ecer_investigation_CurrentCertificate";
 			public const string ecer_EffectiveDate = "ecer_effectivedate";
 			public const string ecer_ExpiryDate = "ecer_expirydate";
+			public const string ecer_GenerateCertificate = "ecer_generatecertificate";
+			public const string ecer_generatecertificateName = "ecer_generatecertificatename";
 			public const string ecer_HasConditions = "ecer_hasconditions";
 			public const string ecer_hasconditionsName = "ecer_hasconditionsname";
 			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
@@ -406,6 +408,41 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_expirydate", value);
+			}
+		}
+		
+		/// <summary>
+		/// Trigger to generate certificate via SSRS Report
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecertificate")]
+		public System.Nullable<bool> ecer_GenerateCertificate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_generatecertificate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_generatecertificate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecertificatename")]
+		public string ecer_generatecertificateName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_generatecertificate"))
+				{
+					return this.FormattedValues["ecer_generatecertificate"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

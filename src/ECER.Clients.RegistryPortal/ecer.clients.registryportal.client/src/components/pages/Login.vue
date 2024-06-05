@@ -12,7 +12,7 @@
           <LoginCard is-preferred>
             <div class="d-flex flex-column ga-8 align-center justify-center fill-height">
               <img src="@/assets/BCSC.svg" class="logo ms-6" width="62" alt="BCSC Logo" />
-              <h2>Login with BC Services Card</h2>
+              <h1>Login with BC Services Card</h1>
               <div class="d-flex flex-column ga-2" :style="{ height: '140px' }">
                 <div class="d-flex flex-row align-center">
                   <v-icon size="small" color="grey-dark" icon="mdi-check" class="mr-2"></v-icon>
@@ -43,7 +43,7 @@
           <LoginCard>
             <div class="d-flex flex-column ga-8 align-center justify-center fill-height">
               <img src="@/assets/BCeID.png" alt="BCeID Logo" />
-              <h2>Login with Basic BCeID</h2>
+              <h1>Login with Basic BCeID</h1>
               <div class="mx-10" :style="{ height: '140px' }">
                 <p class="small">
                   If you do not have ID issued in Canada you can use a BCeID for secure login. Identity verification will be required later in the application

@@ -26,7 +26,11 @@ public class ApplicationHandlers(
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
     IRequestHandler<Contract.Applications.SubmitReferenceCommand, ReferenceSubmissionResult>,
-    IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>
+    IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>,
+    IRequestHandler<Contract.Applications.UpdateWorkExperienceReferenceCommand, UpdateWorkExperienceReferenceResult>,
+    IRequestHandler<Contract.Applications.UpdateCharacterReferenceCommand, UpdateCharacterReferenceResult>,
+    IRequestHandler<ResendCharacterReferenceInviteRequest, string>,
+    IRequestHandler<ResendWorkExperienceReferenceInviteRequest, string>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -155,11 +159,11 @@ public class ApplicationHandlers(
     SubmitReferenceRequest submitReferenceRequest = new SubmitReferenceRequest();
     switch (portalInvitation.InviteType)
     {
-      case InviteType.CharacterReference:
+      case Resources.Documents.PortalInvitations.InviteType.CharacterReference:
         submitReferenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request.CharacterReferenceSubmissionRequest);
         break;
 
-      case InviteType.WorkExperienceReference:
+      case Resources.Documents.PortalInvitations.InviteType.WorkExperienceReference:
         submitReferenceRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
         break;
     }
@@ -199,4 +203,84 @@ public class ApplicationHandlers(
     return ReferenceSubmissionResult.Success();
   }
 
+  /// <summary>
+  /// Handles Work Experience Reference update
+  /// </summary>
+  /// <param name="request"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  public async Task<UpdateWorkExperienceReferenceResult> Handle(Contract.Applications.UpdateWorkExperienceReferenceCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var WorkExpReference = mapper.Map<Resources.Documents.Applications.WorkExperienceReference>(request.workExperienceRef);
+    var UpdatedWorkExReferenceId = await applicationRepository.UpdateWorkExReferenceForSubmittedApplication(WorkExpReference, request.applicationId, request.referenceId, request.userId, cancellationToken);
+    return new UpdateWorkExperienceReferenceResult() { ReferenceId = UpdatedWorkExReferenceId, IsSuccess = true };
+  }
+
+  /// <summary>
+  /// Handles Character Reference update
+  /// </summary>
+  /// <param name="request"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  public async Task<UpdateCharacterReferenceResult> Handle(Contract.Applications.UpdateCharacterReferenceCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var CharacterReference = mapper.Map<Resources.Documents.Applications.CharacterReference>(request.characterRef);
+    var UpdatedCharacterReferenceId = await applicationRepository.UpdateCharacterReferenceForSubmittedApplication(CharacterReference, request.applicationId, request.referenceId, request.userId, cancellationToken);
+    return new UpdateCharacterReferenceResult() { ReferenceId = UpdatedCharacterReferenceId, IsSuccess = true };
+  }
+
+  /// <summary>
+  /// Handles Character Reference resend invite
+  /// </summary>
+  /// <param name="request"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  public async Task<string> Handle(ResendCharacterReferenceInviteRequest request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var applications = await applicationRepository.Query(new ApplicationQuery
+    {
+      ById = request.ApplicationId,
+      ByApplicantId = request.UserId,
+      ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Submitted }
+    }, cancellationToken);
+
+    if (!applications.Any())
+    {
+      throw new InvalidOperationException($"Application not found id '{request.ApplicationId}' or application is past submitted stage");
+    }
+    ArgumentNullException.ThrowIfNull(request);
+    var characterReferenceId = await applicationRepository.ResendCharacterReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken);
+    return characterReferenceId;
+  }
+
+  /// <summary>
+  /// Handles Work Experience Reference resend invite
+  /// </summary>
+  /// <param name="request"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  public async Task<string> Handle(ResendWorkExperienceReferenceInviteRequest request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var applications = await applicationRepository.Query(new ApplicationQuery
+    {
+      ById = request.ApplicationId,
+      ByApplicantId = request.UserId,
+      ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Submitted }
+    }, cancellationToken);
+
+    if (!applications.Any())
+    {
+      throw new InvalidOperationException($"Application not found id '{request.ApplicationId}' or application is past submitted stage");
+    }
+    ArgumentNullException.ThrowIfNull(request);
+
+    var workExperienceReferenceId = await applicationRepository.ResendWorkExperienceReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken);
+    return workExperienceReferenceId;
+  }
 }

@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Power Pages Languages
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum powerpagelanguages
 	{
 		
