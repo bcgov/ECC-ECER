@@ -182,11 +182,7 @@ export default defineComponent({
   },
 
   mounted() {
-    if (Object.keys(this.modelValue).length === 0) {
-      this.mode = "add";
-    } else {
-      this.mode = "list";
-    }
+    this.mode = "list";
   },
   methods: {
     async handleSubmit() {
