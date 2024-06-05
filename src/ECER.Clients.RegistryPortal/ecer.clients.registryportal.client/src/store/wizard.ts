@@ -28,7 +28,7 @@ export const useWizardStore = defineStore("wizard", {
     step: 1,
     wizardData: {} as WizardData,
     wizardConfig: {} as Wizard,
-    listComponentMode: "add",
+    listComponentMode: "list",
   }),
   persist: true,
   getters: {

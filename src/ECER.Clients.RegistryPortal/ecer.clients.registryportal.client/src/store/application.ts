@@ -66,7 +66,7 @@ export const useApplicationStore = defineStore("application", {
       const wizardStore = useWizardStore();
 
       // Set wizard stage to the current step stage
-      this.draftApplication.stage = wizardStore.currentStepStage;
+      this.draftApplication.stage = wizardStore.currentStepStage as Components.Schemas.PortalStage;
 
       // Certification selection step data
       this.draftApplication.certificationTypes = wizardStore.wizardData[wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id];
