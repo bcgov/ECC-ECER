@@ -22,11 +22,14 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
 
     var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(response.PortalInvitation), cancellationToken);
     if (portalInvitation == null) return PortalInvitationVerificationQueryResult.Failure("Portal Invitation not found");
+    
+    if (portalInvitation.WorkexperienceReferenceId == null && portalInvitation.CharacterReferenceId == null) return PortalInvitationVerificationQueryResult.Failure("Reference not found");
 
     var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
 
     var applicant = registrantResult.SingleOrDefault();
     if (applicant == null) return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
+    
 
     var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
     var application = applications.SingleOrDefault();
