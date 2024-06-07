@@ -327,6 +327,10 @@ internal sealed class ApplicationRepository : IApplicationRepository
       {
         context.DeleteObject(oldReference);
       }
+      else
+      {
+        throw new InvalidOperationException($"Reference '{referenceIdGuid}' not found for application '{applicationId}'");
+      }
     }
 
     // 2. Add New WorkExperienceReferences
@@ -362,10 +366,13 @@ internal sealed class ApplicationRepository : IApplicationRepository
       var oldReference = existingCharacterReferences.SingleOrDefault(t => t.Id == referenceIdGuid);
 
       // 1. Remove existing Character Reference
-
       if (oldReference != null)
       {
         context.DeleteObject(oldReference);
+      }
+      else
+      {
+        throw new InvalidOperationException($"Reference '{referenceIdGuid}' not found for application '{applicationId}'");
       }
     }
 
