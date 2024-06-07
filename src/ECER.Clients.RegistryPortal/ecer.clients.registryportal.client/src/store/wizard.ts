@@ -5,6 +5,7 @@ import type { ReferenceStage, Step, Wizard } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
 import { CertificationType } from "@/utils/constant";
 
+import { useApplicationStore } from "./application";
 import { useOidcStore } from "./oidc";
 import { useUserStore } from "./user";
 
@@ -45,26 +46,7 @@ export const useWizardStore = defineStore("wizard", {
       return this.steps[state.step - 1].stage;
     },
     validationState(state): PortalStageValidation {
-      let totalHours = 0;
-      const references: Components.Schemas.WorkExperienceReference[] = Object.values(
-        state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id],
-      );
-      if (references.length > 0) {
-        totalHours = references.reduce((sum, currentReference) => {
-          return sum + (currentReference.hours || 0);
-        }, 0);
-      }
-
-      const duplicateCharacterReferenceFound = references.some((workExperienceReference: Components.Schemas.WorkExperienceReference) => {
-        return (
-          workExperienceReference.firstName ===
-            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName &&
-          workExperienceReference.lastName ===
-            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName &&
-          workExperienceReference.emailAddress ===
-            state.wizardData?.[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress
-        );
-      });
+      const applicationStore = useApplicationStore();
 
       let numOfEducationRequired = 1;
       state.wizardData[this.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id]?.includes(CertificationType.SNE) &&
@@ -79,11 +61,13 @@ export const useWizardStore = defineStore("wizard", {
           state.wizardData[this.wizardConfig.steps.declaration.form.inputs.consentCheckbox.id] === true,
         ContactInformation: true,
         Education: Object.values(state.wizardData[this.wizardConfig.steps.education.form.inputs.educationList.id]).length >= numOfEducationRequired,
-        CharacterReferences: (state.wizardData[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id].length || []) > 0,
+        CharacterReferences:
+          (state.wizardData[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id].length || []) > 0 &&
+          !applicationStore.hasDuplicateReferences,
         WorkReferences:
           Object.values(state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id]).length > 0 &&
-          totalHours >= 500 &&
-          !duplicateCharacterReferenceFound,
+          applicationStore.totalWorkExperienceHours >= 500 &&
+          !applicationStore.hasDuplicateReferences,
         Review: true,
       };
     },
