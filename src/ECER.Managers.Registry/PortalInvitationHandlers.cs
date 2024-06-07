@@ -18,37 +18,54 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
   {
     ArgumentNullException.ThrowIfNull(request);
     var response = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.VerificationToken))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
-    if (response.PortalInvitation == Guid.Empty) return PortalInvitationVerificationQueryResult.Failure("Invalid Token");
+    if (response.PortalInvitation == Guid.Empty)
+    {
+      return PortalInvitationVerificationQueryResult.Failure("Invalid Token");
+    }
 
     var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(response.PortalInvitation), cancellationToken);
-    if (portalInvitation == null) return PortalInvitationVerificationQueryResult.Failure("Portal Invitation not found");
-    
-    if (portalInvitation.WorkexperienceReferenceId == null && portalInvitation.CharacterReferenceId == null) return PortalInvitationVerificationQueryResult.Failure("Reference not found");
+    if (portalInvitation == null)
+    {
+      return PortalInvitationVerificationQueryResult.Failure("Portal Invitation not found");
+    }
+    var emptyGuidString = Guid.Empty.ToString();
+    if (portalInvitation.WorkexperienceReferenceId == emptyGuidString && portalInvitation.CharacterReferenceId == emptyGuidString)
+    {
+      return PortalInvitationVerificationQueryResult.Failure("Reference not found");
+    }
 
     var registrantResult = await registrantRepository.Query(new RegistrantQuery() { ByUserId = portalInvitation.ApplicantId }, cancellationToken);
 
     var applicant = registrantResult.SingleOrDefault();
-    if (applicant == null) return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
-    
+    if (applicant == null)
+    {
+      return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
+    }
 
     var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
     var application = applications.SingleOrDefault();
-    if (application == null) return PortalInvitationVerificationQueryResult.Failure("Application not found");
+    if (application == null)
+    {
+      return PortalInvitationVerificationQueryResult.Failure("Application not found");
+    }
 
     var result = mapper.Map<Contract.PortalInvitations.PortalInvitation>(portalInvitation);
-    
+
     switch (result.StatusCode)
     {
       case PortalInvitationStatusCode.Completed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has already been submitted.");
+
       case PortalInvitationStatusCode.Expired:
         return PortalInvitationVerificationQueryResult.Failure("Reference has expired.");
+
       case PortalInvitationStatusCode.Cancelled:
         return PortalInvitationVerificationQueryResult.Failure("Reference has been cancelled.");
+
       case PortalInvitationStatusCode.Failed:
         return PortalInvitationVerificationQueryResult.Failure("Reference has failed.");
     }
-    
+
     if (result.InviteType == Contract.PortalInvitations.InviteType.WorkExperienceReference)
     {
       var workExRef =
