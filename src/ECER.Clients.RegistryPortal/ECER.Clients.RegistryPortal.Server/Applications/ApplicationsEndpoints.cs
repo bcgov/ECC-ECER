@@ -121,7 +121,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications/{application_id}/workexperiencereference/{reference_id}/update", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, WorkExperienceReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/workexperiencereference/{reference_id?}", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, WorkExperienceReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool AppIdIsNotGuid = !Guid.TryParse(application_id, out _);
@@ -162,7 +162,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications/{application_id}/characterreference/{reference_id}/update", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, CharacterReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/characterreference/{reference_id?}", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, CharacterReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool AppIdIsNotGuid = !Guid.TryParse(application_id, out _);
@@ -192,7 +192,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             var problemDetails = new ProblemDetails
             {
               Status = StatusCodes.Status400BadRequest,
-              Title = "Work Experience reference updation failed",
+              Title = "Character reference updation failed",
               Extensions = { ["errors"] = result.ErrorMessage }
             };
             return TypedResults.BadRequest(problemDetails);
