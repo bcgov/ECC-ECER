@@ -104,8 +104,6 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.ecer_TotalNumberofHoursAnticipated, opts => opts.MapFrom(s => s.Hours))
           .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
 
-
-
     CreateMap<ecer_WorkExperienceRef, WorkExperienceReference>(MemberList.Source)
       .ForCtorParam(nameof(WorkExperienceReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
       .ForCtorParam(nameof(WorkExperienceReference.LastName), opt => opt.MapFrom(src => src.ecer_LastName))
@@ -200,77 +198,17 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
 
+    CreateMap<ecer_Transcript_StatusCode, TranscriptStage>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
 
+    CreateMap<ecer_CharacterReference_StatusCode, CharacterReferenceStage>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
 
-    CreateMap<ecer_CharacterReference_StatusCode, StageStatus>()
-    .ConvertUsing((src, dest) =>
-    {
-      switch (src)
-      {
-        case ecer_CharacterReference_StatusCode.Approved:
-        case ecer_CharacterReference_StatusCode.InProgress:
-        case ecer_CharacterReference_StatusCode.UnderReview:
-        case ecer_CharacterReference_StatusCode.WaitingResponse:
-        case ecer_CharacterReference_StatusCode.Submitted:
-          return StageStatus.Complete;
-
-        case ecer_CharacterReference_StatusCode.ApplicationSubmitted:
-        case ecer_CharacterReference_StatusCode.Draft:
-          return StageStatus.InComplete;
-
-        case ecer_CharacterReference_StatusCode.Rejected:
-          return StageStatus.Rejected;
-
-        default:
-          throw new ArgumentOutOfRangeException(nameof(src), $"Not expected status value: {src}");
-      }
-    });
-
-
-    CreateMap<ecer_WorkExperienceRef_StatusCode, StageStatus>()
-    .ConvertUsing((src, dest) =>
-    {
-      switch (src)
-      {
-        case ecer_WorkExperienceRef_StatusCode.Approved:
-        case ecer_WorkExperienceRef_StatusCode.InProgress:
-        case ecer_WorkExperienceRef_StatusCode.UnderReview:
-        case ecer_WorkExperienceRef_StatusCode.WaitingforResponse:
-        case ecer_WorkExperienceRef_StatusCode.Submitted:
-          return StageStatus.Complete;
-
-        case ecer_WorkExperienceRef_StatusCode.ApplicationSubmitted:
-        case ecer_WorkExperienceRef_StatusCode.Draft:
-          return StageStatus.InComplete;
-
-        case ecer_WorkExperienceRef_StatusCode.Rejected:
-          return StageStatus.Rejected;
-
-        default:
-          throw new ArgumentOutOfRangeException(nameof(src), $"Not expected status value: {src}");
-      }
-    });
-
-
-    CreateMap<ecer_Transcript_StatusCode, StageStatus>().ConvertUsing((src, dest) =>
-    {
-      switch (src)
-      {
-        case ecer_Transcript_StatusCode.Accepted:
-        case ecer_Transcript_StatusCode.InProgress:
-        case ecer_Transcript_StatusCode.WaitingforDetails:
-        case ecer_Transcript_StatusCode.Submitted:
-          return StageStatus.Complete;
-
-        case ecer_Transcript_StatusCode.ApplicationSubmitted:
-        case ecer_Transcript_StatusCode.Draft:
-        case ecer_Transcript_StatusCode.Rejected:
-          return StageStatus.InComplete;
-
-        default:
-          throw new ArgumentOutOfRangeException(nameof(src), $"Not expected status value: {src}");
-      }
-    });
+    CreateMap<ecer_WorkExperienceRef_StatusCode, WorkExperienceRefStage>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
 
     CreateMap<UnabletoProvideReferenceReasons, ecer_UnabletoProvideReferenceReasons>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))

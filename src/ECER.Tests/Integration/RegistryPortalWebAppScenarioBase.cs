@@ -80,7 +80,6 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   public string submittedTestApplicationCharacterRefId => submittedTestApplicationCharacterRef.Id.ToString();
 
-
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
     ArgumentNullException.ThrowIfNull(opts);
@@ -214,7 +213,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       ecer_Name = "Test name",
       ecer_FirstName = "Test firstname",
       ecer_LastName = "Test lastname",
-      ecer_EmailAddress = "reference_test@test.com",
+      ecer_EmailAddress = "Work_Experience_Reference@example.com",
       ecer_PhoneNumber = "9999999999",
       ecer_StartDate = DateTime.Now,
       ecer_EndDate = DateTime.Now,
@@ -237,7 +236,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       ecer_Name = "Test name",
       ecer_FirstName = "Test firstname",
       ecer_LastName = "Test lastname",
-      ecer_EmailAddress = "reference_test@test.com",
+      ecer_EmailAddress = "Character_Reference@example.com",
       ecer_PhoneNumber = "9999999999"
     };
 
@@ -292,7 +291,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Name = "Reference Test name",
         ecer_FirstName = "Reference Test firstname",
         ecer_LastName = "Reference Test lastname",
-        ecer_EmailAddress = "reference_test@test.com"
+        ecer_EmailAddress = "reference_test@example.com"
       };
 
       var guid = Guid.NewGuid();
@@ -303,7 +302,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Name = name,
         ecer_FirstName = "Test firstname",
         ecer_LastName = "Test lastname",
-        ecer_EmailAddress = "test@email.com",
+        ecer_EmailAddress = "test@example.com",
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
       };
 
@@ -355,7 +354,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Name = "Reference Test name",
         ecer_FirstName = "Reference Test firstname",
         ecer_LastName = "Reference Test lastname",
-        ecer_EmailAddress = "reference_test@test.com",
+        ecer_EmailAddress = "reference_test@example.com",
       };
 
       var guid = Guid.NewGuid();
@@ -366,7 +365,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Name = name,
         ecer_FirstName = "Test firstname",
         ecer_LastName = "Test lastname",
-        ecer_EmailAddress = "test@email.com",
+        ecer_EmailAddress = "test@example.com",
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
       };
 
