@@ -931,7 +931,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DraftapplicationDelete.Responses.$200>;
   };
-  ["/api/applications/{application_id}/workexperiencereference/{reference_id}/update"]: {
+  ["/api/applications/{application_id}/workexperiencereference/{reference_id}"]: {
     /**
      * application_workexperiencereference_update_post - Update work experience reference
      */
@@ -941,7 +941,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationWorkexperiencereferenceUpdatePost.Responses.$200>;
   };
-  ["/api/applications/{application_id}/characterreference/{reference_id}/update"]: {
+  ["/api/applications/{application_id}/characterreference/{reference_id}"]: {
     /**
      * application_characterreference_update_post - Update character reference
      */
