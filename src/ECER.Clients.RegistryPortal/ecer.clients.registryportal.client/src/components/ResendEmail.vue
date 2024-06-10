@@ -5,6 +5,8 @@
       We’ll send another email to the reference. It’ll include a link to the My ECE Registry to provide a reference for you. It may take a few minutes to
       receive the email.
       <br />
+      <br />
+
       If they do not receive the email:
     </p>
     <ul class="ml-10">
