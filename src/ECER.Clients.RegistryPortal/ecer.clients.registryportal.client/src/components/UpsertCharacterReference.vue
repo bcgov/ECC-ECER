@@ -76,41 +76,53 @@ export default defineComponent({
     const router = useRouter();
     const formStore = useFormStore();
 
-    // Check store for existing reference
-    const reference: Components.Schemas.CharacterReference | undefined = applicationStore.characterReferenceById(props.referenceId);
+    let reference: Components.Schemas.CharacterReference | undefined = undefined;
 
-    if (!reference) {
-      router.back();
-    } else {
-      formStore.initializeForm({});
+    if (props.referenceId) {
+      // Check store for existing reference
+      reference = applicationStore.characterReferenceById(props.referenceId);
+
+      if (!reference) {
+        router.back();
+      } else {
+        formStore.initializeForm({});
+      }
     }
 
     return { applicationStore, alertStore, reference, formStore, loadingStore, characterReferenceUpsertForm, router };
   },
   data() {
+    // Define a base array of always-present items.
+    const items = [
+      {
+        title: "Home",
+        disabled: false,
+        href: "/",
+      },
+      {
+        title: "Application",
+        disabled: false,
+        href: `/manage-application/${this.applicationId}`,
+      },
+      {
+        title: "Add",
+        disabled: true,
+        href: `/manage-application/${this.applicationId}/character-reference/${this.referenceId}/add`,
+      },
+    ];
+
+    // Add the "Character reference" item only if `reference` is defined.
+    if (this.reference) {
+      items.splice(2, 0, {
+        // Insert at index 2, before "Add"
+        title: "Character reference",
+        disabled: false,
+        href: `/manage-application/${this.applicationId}/character-reference/${this.referenceId}`,
+      });
+    }
+
     return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}`,
-        },
-        {
-          title: "Character reference",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}/character-reference/${this.referenceId}`,
-        },
-        {
-          title: "Add",
-          disabled: true,
-          href: `/manage-application/${this.applicationId}/character-reference/${this.referenceId}/add`,
-        },
-      ],
+      items,
     };
   },
 
