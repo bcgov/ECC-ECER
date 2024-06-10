@@ -23,7 +23,6 @@ public interface IApplicationRepository
   Task<string> ResendCharacterReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
 
   Task<string> ResendWorkExperienceReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
-
 }
 
 public record ApplicationQuery
@@ -51,14 +50,14 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
 {
   public string? CampusLocation { get; set; }
   public string? LanguageofInstruction { get; set; }
-  public StageStatus? Status { get; set; }
+  public TranscriptStage? Status { get; set; }
 }
 
 public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
 {
   public string? Id { get; set; }
   public string? PhoneNumber { get; set; }
-  public StageStatus? Status { get; set; }
+  public WorkExperienceRefStage? Status { get; set; }
   public bool? WillProvideReference { get; set; }
 }
 
@@ -122,7 +121,7 @@ public enum ApplicationStatusReasonDetail
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
   public string? Id { get; set; }
-  public StageStatus? Status { get; set; }
+  public CharacterReferenceStage? Status { get; set; }
   public bool? WillProvideReference { get; set; }
 }
 
@@ -162,12 +161,39 @@ public record WorkExperienceReferenceSubmissionRequest(bool WillProvideReference
 public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
 public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
 
-public enum StageStatus
+public enum TranscriptStage
 {
-  Complete,
-  InComplete,
+  Accepted,
+  ApplicationSubmitted,
+  Draft,
   InProgress,
-  Rejected
+  Rejected,
+  Submitted,
+  WaitingforDetails
+}
+
+public enum WorkExperienceRefStage
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  InProgress,
+  Rejected,
+  Submitted,
+  UnderReview,
+  WaitingforResponse
+}
+
+public enum CharacterReferenceStage
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  InProgress,
+  Rejected,
+  Submitted,
+  UnderReview,
+  WaitingResponse
 }
 
 public enum WorkHoursType

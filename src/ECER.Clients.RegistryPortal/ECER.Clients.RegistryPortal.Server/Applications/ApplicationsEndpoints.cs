@@ -415,23 +415,56 @@ public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, Applic
 {
   public DateTime? ReadyForAssessmentDate { get; set; }
   public IEnumerable<TranscriptStatus> TranscriptsStatus { get; set; } = Array.Empty<TranscriptStatus>();
-  public IEnumerable<ReferenceStatus> WorkExperienceReferencesStatus { get; set; } = Array.Empty<ReferenceStatus>();
-  public IEnumerable<ReferenceStatus> CharacterReferencesStatus { get; set; } = Array.Empty<ReferenceStatus>();
+  public IEnumerable<WorkExperienceReferenceStatus> WorkExperienceReferencesStatus { get; set; } = Array.Empty<WorkExperienceReferenceStatus>();
+  public IEnumerable<CharacterReferenceStatus> CharacterReferencesStatus { get; set; } = Array.Empty<CharacterReferenceStatus>();
 }
 
-public record TranscriptStatus(string Id, StageStatus Status, string EducationalInstitutionName);
+public record TranscriptStatus(string Id, TranscriptStage Status, string EducationalInstitutionName);
 
-public record ReferenceStatus(string Id, StageStatus Status, string FirstName, string LastName, string EmailAddress)
+public record WorkExperienceReferenceStatus(string Id, WorkExperienceRefStage Status, string FirstName, string LastName, string EmailAddress)
 {
   public string? PhoneNumber { get; set; }
   public int? Hours { get; set; }
   public bool? WillProvideReference { get; set; }
 }
 
-public enum StageStatus
+public record CharacterReferenceStatus(string Id, CharacterReferenceStage Status, string FirstName, string LastName, string EmailAddress)
 {
-  Complete,
-  InComplete,
+  public string? PhoneNumber { get; set; }
+  public bool? WillProvideReference { get; set; }
+}
+
+public enum TranscriptStage
+{
+  Accepted,
+  ApplicationSubmitted,
+  Draft,
   InProgress,
-  Rejected
+  Rejected,
+  Submitted,
+  WaitingforDetails
+}
+
+public enum WorkExperienceRefStage
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  InProgress,
+  Rejected,
+  Submitted,
+  UnderReview,
+  WaitingforResponse
+}
+
+public enum CharacterReferenceStage
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  InProgress,
+  Rejected,
+  Submitted,
+  UnderReview,
+  WaitingResponse
 }
