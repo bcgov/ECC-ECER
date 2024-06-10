@@ -22,7 +22,7 @@ import { useDisplay } from "vuetify";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
-  name: "ApplicationSummary",
+  name: "ApplicationSummaryTranscriptReferenceListItem",
   props: {
     status: {
       type: String as PropType<Components.Schemas.StageStatus | undefined>,
@@ -41,9 +41,9 @@ export default defineComponent({
       required: true,
     },
     willProvideReference: {
-      type: Object as PropType<Boolean | null>,
+      type: Boolean,
       required: false,
-      default: undefined,
+      default: true,
     },
   },
   setup: async () => {

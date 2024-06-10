@@ -16,7 +16,7 @@
     <div class="d-flex flex-column ga-3 mt-10">
       <h3 class="mt-4">Change your reference</h3>
       <p>This will delete this individual as your reference and let you add someone new. Or correct any information in the reference listed above.</p>
-      <router-link :to="{ name: 'upsertCharacterReference', params: { applicationId: applicationId, referenceId: referenceId } }">
+      <router-link :to="{ name: 'updateCharacterReference', params: { applicationId: applicationId, referenceId: referenceId } }">
         <b>Choose a new reference</b>
       </router-link>
     </div>

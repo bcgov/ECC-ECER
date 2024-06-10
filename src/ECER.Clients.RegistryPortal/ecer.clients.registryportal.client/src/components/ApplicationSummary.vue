@@ -71,7 +71,7 @@
               params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
             })
         "
-        :will-provide-reference="reference.willProvideReference"
+        :will-provide-reference="reference.willProvideReference ? true : false"
       />
       <ApplicationSummaryTranscriptReferenceListItem
         v-for="reference in applicationStatus?.workExperienceReferencesStatus"
@@ -86,7 +86,12 @@
               params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
             })
         "
-        :will-provide-reference="reference.willProvideReference"
+        :will-provide-reference="reference.willProvideReference ? true : false"
+      />
+      <ApplicationSummaryActionListItem
+        v-if="!hasCharacterReference"
+        text="Add character reference"
+        :go-to="() => $router.push({ name: 'addCharacterReference', params: { applicationId: $route.params.applicationId } })"
       />
     </div>
     <v-card v-if="step2Progress === COMPLETE" elevation="0" rounded="0" class="border-t border-b">
@@ -139,6 +144,7 @@ import { CertificationType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 
 import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHeader.vue";
+import ApplicationSummaryActionListItem from "./ApplicationSummaryActionListItem.vue";
 import ApplicationSummaryTranscriptReferenceListItem from "./ApplicationSummaryTranscriptReferenceListItem.vue";
 
 type ApplicationStepProgress = "complete" | "inProgress" | "actionRequired" | "notStarted";
@@ -193,7 +199,7 @@ const Step3ApplicationStatusSubDetailMap: ApplicationProcessMap = {
 
 export default defineComponent({
   name: "ApplicationSummary",
-  components: { ApplicationCertificationTypeHeader, ApplicationSummaryTranscriptReferenceListItem },
+  components: { ApplicationCertificationTypeHeader, ApplicationSummaryTranscriptReferenceListItem, ApplicationSummaryActionListItem },
   setup: async () => {
     const { smAndUp } = useDisplay();
     const route = useRoute();
@@ -286,6 +292,9 @@ export default defineComponent({
     },
     step3Progress() {
       return this.findApplicationStepProgress(Step3ApplicationStatusSubDetailMap, "step3");
+    },
+    hasCharacterReference(): boolean {
+      return this.applicationStatus?.characterReferencesStatus?.some((reference) => reference.status !== "Rejected") || false;
     },
   },
   methods: {
