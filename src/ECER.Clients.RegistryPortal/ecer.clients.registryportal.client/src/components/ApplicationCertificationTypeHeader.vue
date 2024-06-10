@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ `Application for ECE ${certificationType} Certification` }}</h1>
+    <h1>{{ `Application for ECE ${certificationType} certification` }}</h1>
     <div v-if="certificationTypes.includes(CertificationType.FIVE_YEAR)" role="doc-subtitle">
       {{ certificationTypeSubtitleForFiveYear }}
     </div>
