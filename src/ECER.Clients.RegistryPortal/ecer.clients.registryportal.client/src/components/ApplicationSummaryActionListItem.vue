@@ -2,9 +2,16 @@
   <v-card elevation="0" rounded="0" class="border-t border-b">
     <v-card-text>
       <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
-        <a href="#" @click.prevent="buttonClick">{{ text }}</a>
+        <div v-if="!active">
+          <p>{{ text }}</p>
+        </div>
+        <a v-else href="#" @click.prevent="buttonClick">
+          <p class="text-links">{{ text }}</p>
+        </a>
         <v-spacer></v-spacer>
-        <v-sheet rounded width="200px" class="py-2 text-center" :class="{ 'mt-2': !smAndUp }" color="hawkes-blue">Incomplete</v-sheet>
+        <v-sheet rounded width="200px" class="py-2 text-center" :class="{ 'mt-2': !smAndUp }" :color="sheetColor">
+          <p>{{ statusText }}</p>
+        </v-sheet>
       </div>
     </v-card-text>
   </v-card>
@@ -21,6 +28,11 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    active: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
     goTo: {
       type: Function,
       required: true,
@@ -29,6 +41,14 @@ export default defineComponent({
   setup: async () => {
     const { smAndUp } = useDisplay();
     return { smAndUp };
+  },
+  computed: {
+    statusText() {
+      return this.active ? "Incomplete" : "Complete";
+    },
+    sheetColor() {
+      return this.active ? "hawkes-blue" : "white-smoke";
+    },
   },
   methods: {
     buttonClick() {

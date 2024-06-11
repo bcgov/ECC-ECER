@@ -31,15 +31,6 @@ export default defineComponent({
       type: String as PropType<String | undefined | null>,
       required: true,
     },
-    goTo: {
-      type: Function,
-      required: true,
-    },
-    willProvideReference: {
-      type: Object as PropType<Boolean | null>,
-      required: false,
-      default: undefined,
-    },
   },
   setup: async () => {
     const { smAndUp } = useDisplay();
