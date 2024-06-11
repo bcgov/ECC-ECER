@@ -302,11 +302,13 @@ internal sealed class ApplicationRepository : IApplicationRepository
     return workexperienceReference.ecer_WorkExperienceRefId.ToString()!;
   }
 
+  #endregion implementationDetails
+
   public async Task<string> UpdateWorkExReferenceForSubmittedApplication(WorkExperienceReference updatedReference, string applicationId, string referenceId, string userId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     var application = context.ecer_ApplicationSet.FirstOrDefault(
-      d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.StatusCode == ecer_Application_StatusCode.Submitted && d.ecer_Applicantid.Id == Guid.Parse(userId)
+      d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.ecer_Applicantid.Id == Guid.Parse(userId)
       );
     if (application == null)
     {
@@ -349,7 +351,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
   {
     await Task.CompletedTask;
     var application = context.ecer_ApplicationSet.FirstOrDefault(
-      d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.StatusCode == ecer_Application_StatusCode.Submitted && d.ecer_Applicantid.Id == Guid.Parse(userId)
+      d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.ecer_Applicantid.Id == Guid.Parse(userId)
       );
     if (application == null)
     {
@@ -431,6 +433,4 @@ internal sealed class ApplicationRepository : IApplicationRepository
     context.SaveChanges();
     return workexperienceReference.ecer_WorkExperienceRefId.ToString()!;
   }
-
-  #endregion implementationDetails
 }

@@ -413,6 +413,7 @@ public record CharacterReference([Required] string? FirstName, [Required] string
 
 public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, ApplicationStatus Status, ApplicationStatusReasonDetail SubStatus)
 {
+  public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public DateTime? ReadyForAssessmentDate { get; set; }
   public IEnumerable<TranscriptStatus> TranscriptsStatus { get; set; } = Array.Empty<TranscriptStatus>();
   public IEnumerable<WorkExperienceReferenceStatus> WorkExperienceReferencesStatus { get; set; } = Array.Empty<WorkExperienceReferenceStatus>();
@@ -424,7 +425,9 @@ public record TranscriptStatus(string Id, TranscriptStage Status, string Educati
 public record WorkExperienceReferenceStatus(string Id, WorkExperienceRefStage Status, string FirstName, string LastName, string EmailAddress)
 {
   public string? PhoneNumber { get; set; }
-  public int? Hours { get; set; }
+  public int? TotalNumberofHoursAnticipated { get; set; }
+  public int? TotalNumberofHoursApproved { get; set; }
+  public int? TotalNumberofHoursObserved { get; set; }
   public bool? WillProvideReference { get; set; }
 }
 

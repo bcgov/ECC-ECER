@@ -205,6 +205,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_LegacyClientID = "ecer_legacyclientid";
 			public const string ecer_legacycreatedon = "ecer_legacycreatedon";
 			public const string ecer_legacyenteredby = "ecer_legacyenteredby";
+			public const string ecer_legacyrenewalid = "ecer_legacyrenewalid";
 			public const string ecer_LegalFirstName = "ecer_legalfirstname";
 			public const string ecer_LegalLastName = "ecer_legallastname";
 			public const string ecer_LegalMiddleName = "ecer_legalmiddlename";
@@ -1916,6 +1917,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyenteredby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyrenewalid")]
+		public string ecer_legacyrenewalid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyrenewalid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyrenewalid", value);
 			}
 		}
 		

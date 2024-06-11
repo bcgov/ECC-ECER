@@ -9,6 +9,8 @@ public class ApplicationMapper : Profile
     CreateMap<WorkExperienceReference, Managers.Registry.Contract.Applications.WorkExperienceReference>()
       .ForMember(d => d.Status, opts => opts.Ignore())
       .ForMember(d => d.WillProvideReference, opts => opts.Ignore())
+      .ForMember(d => d.TotalNumberofHoursApproved, opts => opts.Ignore())
+      .ForMember(d => d.TotalNumberofHoursObserved, opts => opts.Ignore())
       .ReverseMap();
 
     CreateMap<Transcript, Managers.Registry.Contract.Applications.Transcript>()
@@ -82,6 +84,7 @@ public class ApplicationMapper : Profile
         opt => opt.MapFrom(s => s.Status))
       .ForCtorParam(nameof(SubmittedApplicationStatus.SubStatus),
         opt => opt.MapFrom(s => s.SubStatus))
+      .ForMember(d => d.CertificationTypes, opts => opts.MapFrom(s => s.CertificationTypes))
       .ForMember(d => d.ReadyForAssessmentDate, opts => opts.MapFrom(s => s.ReadyForAssessmentDate))
       .ForMember(d => d.TranscriptsStatus, opts => opts.MapFrom(s => s.Transcripts))
       .ForMember(d => d.WorkExperienceReferencesStatus, opts => opts.MapFrom(s => s.WorkExperienceReferences))
@@ -113,7 +116,9 @@ public class ApplicationMapper : Profile
       .ForCtorParam(nameof(WorkExperienceReferenceStatus.Status),
         opt => opt.MapFrom(src => src.Status))
       .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
-      .ForMember(d => d.Hours, opts => opts.MapFrom(s => s.Hours))
+      .ForMember(d => d.TotalNumberofHoursAnticipated, opts => opts.MapFrom(s => s.Hours))
+      .ForMember(d => d.TotalNumberofHoursApproved, opts => opts.MapFrom(s => s.TotalNumberofHoursApproved))
+      .ForMember(d => d.TotalNumberofHoursObserved, opts => opts.MapFrom(s => s.TotalNumberofHoursObserved))
       .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference));
 
     CreateMap<Managers.Registry.Contract.Applications.Transcript, TranscriptStatus>()

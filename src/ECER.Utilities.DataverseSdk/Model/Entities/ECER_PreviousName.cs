@@ -36,10 +36,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		Archived = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
+		ReadyforVerification = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Unverified = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Verified = 621870002,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
@@ -76,6 +82,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
 			public const string ecer_PreviousNameId = "ecer_previousnameid";
 			public const string Id = "ecer_previousnameid";
+			public const string ecer_Source = "ecer_source";
+			public const string ecer_sourceName = "ecer_sourcename";
 			public const string ecer_StartDate = "ecer_startdate";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -494,6 +502,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_PreviousNameId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_source")]
+		public virtual ecer_PreviousNameSources? ecer_Source
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PreviousNameSources?)(EntityOptionSetEnum.GetEnum(this, "ecer_source")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_source", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sourcename")]
+		public string ecer_sourceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_source"))
+				{
+					return this.FormattedValues["ecer_source"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

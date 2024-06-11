@@ -12,6 +12,54 @@ namespace ECER.Utilities.DataverseSdk.Model
 {
 	
 	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum ecer_InvolvedPerson_ecer_RelationshiptoIncident
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		AllegedVictim = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Directlyinvolved = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Unknown = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Witness = 621870000,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum ecer_InvolvedPerson_ecer_TitleSet
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Child = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Licensee = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Manager = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Parent = 621870006,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Responsibleadult = 621870000,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Staff = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Supervisor = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Unknown = 621870007,
+	}
+	
 	/// <summary>
 	/// Status of the Involved Person
 	/// </summary>
@@ -64,6 +112,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_CertificationNumber = "ecer_certificationnumber";
+			public const string ecer_CertificationType = "ecer_certificationtype";
+			public const string ecer_certificationtypeName = "ecer_certificationtypename";
 			public const string ecer_DateOfBirth = "ecer_dateofbirth";
 			public const string ecer_Initials = "ecer_initials";
 			public const string ecer_Investigation = "ecer_investigation";
@@ -72,9 +122,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_InvolvedPersonId = "ecer_involvedpersonid";
 			public const string Id = "ecer_involvedpersonid";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_RegistrationNumber = "ecer_registrationnumber";
-			public const string ecer_RelationshipToIncidents = "ecer_relationshiptoincidents";
-			public const string ecer_Title = "ecer_title";
+			public const string ecer_RelationshiptoIncident = "ecer_relationshiptoincident";
+			public const string ecer_relationshiptoincidentName = "ecer_relationshiptoincidentname";
+			public const string ecer_TitleSet = "ecer_titleset";
+			public const string ecer_titlesetName = "ecer_titlesetname";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -266,6 +317,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationtype")]
+		public virtual ecer_CertificationType? ecer_CertificationType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_CertificationType?)(EntityOptionSetEnum.GetEnum(this, "ecer_certificationtype")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificationtype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationtypename")]
+		public string ecer_certificationtypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_certificationtype"))
+				{
+					return this.FormattedValues["ecer_certificationtype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateofbirth")]
 		public System.Nullable<System.DateTime> ecer_DateOfBirth
 		{
@@ -384,48 +467,67 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrationnumber")]
-		public string ecer_RegistrationNumber
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_relationshiptoincident")]
+		public virtual ecer_InvolvedPerson_ecer_RelationshiptoIncident? ecer_RelationshiptoIncident
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_registrationnumber");
+				return ((ecer_InvolvedPerson_ecer_RelationshiptoIncident?)(EntityOptionSetEnum.GetEnum(this, "ecer_relationshiptoincident")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_registrationnumber", value);
+				this.SetAttributeValue("ecer_relationshiptoincident", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_relationshiptoincidents")]
-		public string ecer_RelationshipToIncidents
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_relationshiptoincidentname")]
+		public string ecer_relationshiptoincidentName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_relationshiptoincidents");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_relationshiptoincidents", value);
+				if (this.FormattedValues.Contains("ecer_relationshiptoincident"))
+				{
+					return this.FormattedValues["ecer_relationshiptoincident"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_title")]
-		public string ecer_Title
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_titleset")]
+		public virtual ecer_InvolvedPerson_ecer_TitleSet? ecer_TitleSet
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_title");
+				return ((ecer_InvolvedPerson_ecer_TitleSet?)(EntityOptionSetEnum.GetEnum(this, "ecer_titleset")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_title", value);
+				this.SetAttributeValue("ecer_titleset", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_titlesetname")]
+		public string ecer_titlesetName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_titleset"))
+				{
+					return this.FormattedValues["ecer_titleset"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
