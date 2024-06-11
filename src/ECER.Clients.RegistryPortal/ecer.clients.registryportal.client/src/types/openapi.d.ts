@@ -93,6 +93,24 @@ declare namespace Components {
       childInteractionObservations?: string | null;
       applicantTemperamentAssessment?: string | null;
     }
+    export type CharacterReferenceStage =
+      | "ApplicationSubmitted"
+      | "Approved"
+      | "Draft"
+      | "InProgress"
+      | "Rejected"
+      | "Submitted"
+      | "UnderReview"
+      | "WaitingResponse";
+    export interface CharacterReferenceStatus {
+      id?: string | null;
+      status?: CharacterReferenceStage;
+      firstName?: string | null;
+      lastName?: string | null;
+      emailAddress?: string | null;
+      phoneNumber?: string | null;
+      willProvideReference?: boolean | null;
+    }
     export interface CharacterReferenceSubmissionRequest {
       token?: string | null;
       willProvideReference?: boolean;
@@ -228,16 +246,6 @@ declare namespace Components {
     }
     export type ReferenceKnownTime = "From1to2years" | "From2to5years" | "From6monthsto1year" | "Lessthan6months" | "Morethan5years";
     export type ReferenceRelationship = "CoWorker" | "Other" | "ParentGuardianofChildinCare" | "Supervisor" | "Teacher";
-    export interface ReferenceStatus {
-      id?: string | null;
-      status?: StageStatus;
-      firstName?: string | null;
-      lastName?: string | null;
-      emailAddress?: string | null;
-      phoneNumber?: string | null;
-      hours?: number | null; // int32
-      willProvideReference?: boolean | null;
-    }
     /**
      * Resend reference invite response
      */
@@ -253,7 +261,6 @@ declare namespace Components {
     export interface SaveDraftApplicationRequest {
       draftApplication?: DraftApplication;
     }
-    export type StageStatus = "Complete" | "InComplete" | "InProgress" | "Rejected";
     export interface SubmitApplicationResponse {
       applicationId?: string | null;
     }
@@ -264,8 +271,8 @@ declare namespace Components {
       subStatus?: ApplicationStatusReasonDetail;
       readyForAssessmentDate?: string | null; // date-time
       transcriptsStatus?: TranscriptStatus[] | null;
-      workExperienceReferencesStatus?: ReferenceStatus[] | null;
-      characterReferencesStatus?: ReferenceStatus[] | null;
+      workExperienceReferencesStatus?: WorkExperienceReferenceStatus[] | null;
+      characterReferencesStatus?: CharacterReferenceStatus[] | null;
     }
     export interface Transcript {
       id?: string | null;
@@ -281,9 +288,10 @@ declare namespace Components {
       doesECERegistryHaveTranscript?: boolean;
       isOfficialTranscriptRequested?: boolean;
     }
+    export type TranscriptStage = "Accepted" | "ApplicationSubmitted" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "WaitingforDetails";
     export interface TranscriptStatus {
       id?: string | null;
-      status?: StageStatus;
+      status?: TranscriptStage;
       educationalInstitutionName?: string | null;
     }
     export type UnabletoProvideReferenceReasons =
@@ -318,6 +326,15 @@ declare namespace Components {
       residentialAddress?: /* Address */ Address;
       mailingAddress?: /* Address */ Address;
     }
+    export type WorkExperienceRefStage =
+      | "ApplicationSubmitted"
+      | "Approved"
+      | "Draft"
+      | "InProgress"
+      | "Rejected"
+      | "Submitted"
+      | "UnderReview"
+      | "WaitingforResponse";
     export interface WorkExperienceReference {
       firstName?: string | null;
       lastName?: string | null;
@@ -355,6 +372,16 @@ declare namespace Components {
       endDate?: string; // date-time
       referenceRelationship?: ReferenceRelationship;
       referenceRelationshipOther?: string | null;
+    }
+    export interface WorkExperienceReferenceStatus {
+      id?: string | null;
+      status?: WorkExperienceRefStage;
+      firstName?: string | null;
+      lastName?: string | null;
+      emailAddress?: string | null;
+      phoneNumber?: string | null;
+      hours?: number | null; // int32
+      willProvideReference?: boolean | null;
     }
     export interface WorkExperienceReferenceSubmissionRequest {
       token?: string | null;
