@@ -50,11 +50,11 @@ export default defineComponent({
       switch (this.status) {
         case "Accepted":
         case "InProgress":
-        case "WaitingforDetails":
         case "Submitted":
           return "Complete";
         case "ApplicationSubmitted":
         case "Draft":
+        case "WaitingforDetails":
         case "Rejected":
           return "Incomplete";
         default:
