@@ -76,6 +76,8 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
   public WorkExperienceRefStage? Status { get; set; }
 
   public bool? WillProvideReference { get; set; }
+  public int? TotalNumberofHoursApproved { get; set; }
+  public int? TotalNumberofHoursObserved { get; set; }
 }
 
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)

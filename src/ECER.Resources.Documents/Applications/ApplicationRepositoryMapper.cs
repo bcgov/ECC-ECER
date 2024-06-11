@@ -96,6 +96,8 @@ internal class ApplicationRepositoryMapper : Profile
 
     CreateMap<WorkExperienceReference, ecer_WorkExperienceRef>(MemberList.Source)
           .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
+          .ForSourceMember(s => s.TotalNumberofHoursApproved, opts => opts.DoNotValidate())
+          .ForSourceMember(s => s.TotalNumberofHoursObserved, opts => opts.DoNotValidate())
           .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => s.Id))
           .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
           .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
@@ -109,6 +111,8 @@ internal class ApplicationRepositoryMapper : Profile
       .ForCtorParam(nameof(WorkExperienceReference.LastName), opt => opt.MapFrom(src => src.ecer_LastName))
       .ForCtorParam(nameof(WorkExperienceReference.EmailAddress), opt => opt.MapFrom(src => src.ecer_EmailAddress))
       .ForCtorParam(nameof(WorkExperienceReference.Hours), opt => opt.MapFrom(src => src.ecer_TotalNumberofHoursAnticipated))
+      .ForMember(d => d.TotalNumberofHoursApproved, opts => opts.MapFrom(s => s.ecer_TotalNumberofHoursApproved))
+      .ForMember(d => d.TotalNumberofHoursObserved, opts => opts.MapFrom(s => s.ecer_TotalNumberofHoursObserved))
       .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.ecer_WillProvideReference.HasValue ? s.ecer_WillProvideReference.Equals(ecer_YesNoNull.Yes) : default(bool?)))
       .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_WorkExperienceRefId))

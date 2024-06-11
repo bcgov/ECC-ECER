@@ -90,6 +90,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_IsECEAssistant = "ecer_iseceassistant";
 			public const string ecer_iseceassistantName = "ecer_iseceassistantname";
+			public const string ecer_IsNameUnverified = "ecer_isnameunverified";
+			public const string ecer_isnameunverifiedName = "ecer_isnameunverifiedname";
 			public const string ecer_IsOfficialTranscriptRequested = "ecer_isofficialtranscriptrequested";
 			public const string ecer_isofficialtranscriptrequestedName = "ecer_isofficialtranscriptrequestedname";
 			public const string ecer_LanguageofInstruction = "ecer_languageofinstruction";
@@ -100,6 +102,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PostSecondaryInstituteidYomiName = "ecer_postsecondaryinstituteidyominame";
 			public const string ecer_ProgramCourseName = "ecer_programcoursename";
 			public const string ecer_StartDate = "ecer_startdate";
+			public const string ecer_StudentFirstName = "ecer_studentfirstname";
+			public const string ecer_StudentLastName = "ecer_studentlastname";
+			public const string ecer_StudentMiddleName = "ecer_studentmiddlename";
 			public const string ecer_StudentName = "ecer_studentname";
 			public const string ecer_StudentNumber = "ecer_studentnumber";
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
@@ -508,6 +513,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isnameunverified")]
+		public System.Nullable<bool> ecer_IsNameUnverified
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_isnameunverified");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_isnameunverified", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isnameunverifiedname")]
+		public string ecer_isnameunverifiedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isnameunverified"))
+				{
+					return this.FormattedValues["ecer_isnameunverified"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isofficialtranscriptrequested")]
 		public System.Nullable<bool> ecer_IsOfficialTranscriptRequested
 		{
@@ -661,6 +698,51 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_startdate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_studentfirstname")]
+		public string ecer_StudentFirstName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_studentfirstname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_studentfirstname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_studentlastname")]
+		public string ecer_StudentLastName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_studentlastname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_studentlastname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_studentmiddlename")]
+		public string ecer_StudentMiddleName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_studentmiddlename");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_studentmiddlename", value);
 			}
 		}
 		
