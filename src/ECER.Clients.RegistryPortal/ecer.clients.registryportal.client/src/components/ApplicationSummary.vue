@@ -6,25 +6,25 @@
 
     <ApplicationCertificationTypeHeader :certification-types="applicationStore.applications?.[0]?.certificationTypes || []" class="pb-5" />
     <h2>Status</h2>
-    <div class="pb-3">It's a 3-step process to apply</div>
+    <p class="pb-3">It's a 3-step process to apply.</p>
     <!-- Step 1 Start-->
     <v-card elevation="0" color="white-smoke" class="border-top mt-5" rounded="0">
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
-          <v-row no-gutters>
-            <v-col cols="12"><strong>Step 1</strong></v-col>
-            <v-col cols="12"><strong>Submit Application</strong></v-col>
+          <v-row>
+            <v-col cols="12"><h3>Step 1</h3></v-col>
+            <v-col cols="12"><h3>Submit application</h3></v-col>
           </v-row>
-          <div>
-            <v-icon icon="mdi-check" size="x-large" />
+          <p class="large">
+            <v-icon icon="mdi-check" />
             Complete
-          </div>
+          </p>
         </div>
       </v-card-text>
     </v-card>
     <v-card elevation="0" rounded="0" class="border-t border-b">
       <v-card-text>
-        <div>Completed on {{ formatDate(applicationStatus?.submittedOn as string, "LLL d, yyyy") }}</div>
+        <p>Completed on {{ formatDate(applicationStatus?.submittedOn as string, "LLL d, yyyy") }}</p>
       </v-card-text>
     </v-card>
     <!-- Step 1 End-->
@@ -38,31 +38,29 @@
     >
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
-          <v-row no-gutters>
-            <v-col cols="12"><strong>Step 2</strong></v-col>
-            <v-col cols="12"><strong>References and documents</strong></v-col>
+          <v-row>
+            <v-col cols="12"><h3>Step 2</h3></v-col>
+            <v-col cols="12"><h3>References and documents</h3></v-col>
           </v-row>
-          <div>
-            <v-icon v-if="step2ReferenceDocumentIcon" :icon="step2ReferenceDocumentIcon" size="x-large" />
+          <p class="large">
+            <v-icon v-if="step2ReferenceDocumentIcon" :icon="step2ReferenceDocumentIcon" />
             {{ step2ReferenceDocumentText }}
-          </div>
+          </p>
         </div>
       </v-card-text>
     </v-card>
     <div v-if="step2Progress !== COMPLETE">
-      <ApplicationSummaryTranscriptReferenceListItem
+      <ApplicationSummaryTranscriptListItem
         v-for="transcript in applicationStatus?.transcriptsStatus"
         :key="transcript.id?.toString()"
         :name="transcript.educationalInstitutionName"
-        type="transcript"
         :status="transcript.status"
         :go-to="() => goTo(transcript.id?.toString())"
       />
-      <ApplicationSummaryTranscriptReferenceListItem
+      <ApplicationSummaryCharacterReferenceListItem
         v-for="reference in applicationStatus?.characterReferencesStatus"
         :key="reference.id?.toString()"
         :name="`${reference.firstName} ${reference.lastName}`"
-        type="character"
         :status="reference.status"
         :go-to="
           () =>
@@ -71,27 +69,17 @@
               params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
             })
         "
-        :will-provide-reference="reference.willProvideReference"
+        :will-provide-reference="reference.willProvideReference ? true : false"
       />
-      <ApplicationSummaryTranscriptReferenceListItem
-        v-for="reference in applicationStatus?.workExperienceReferencesStatus"
-        :key="reference.id?.toString()"
-        :name="`${reference.firstName} ${reference.lastName}`"
-        type="workExperience"
-        :status="reference.status"
-        :go-to="
-          () =>
-            $router.push({
-              name: 'viewWorkExperienceReference',
-              params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
-            })
-        "
-        :will-provide-reference="reference.willProvideReference"
+      <ApplicationSummaryActionListItem
+        v-if="!hasCharacterReference"
+        text="Add character reference"
+        :go-to="() => $router.push({ name: 'addCharacterReference', params: { applicationId: $route.params.applicationId } })"
       />
     </div>
     <v-card v-if="step2Progress === COMPLETE" elevation="0" rounded="0" class="border-t border-b">
       <v-card-text>
-        <div>Completed on {{ formatDate(applicationStatus?.readyForAssessmentDate as string, "LLL d, yyyy") }}</div>
+        <p>Completed on {{ formatDate(applicationStatus?.readyForAssessmentDate as string, "LLL d, yyyy") }}</p>
       </v-card-text>
     </v-card>
     <!-- Step 2 End-->
@@ -105,21 +93,21 @@
     >
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
-          <v-row no-gutters>
-            <v-col cols="12"><strong>Step 3</strong></v-col>
-            <v-col cols="12"><strong>Ece Registry assessment</strong></v-col>
+          <v-row>
+            <v-col cols="12"><h3>Step 3</h3></v-col>
+            <v-col cols="12"><h3>ECE Registry assessment</h3></v-col>
           </v-row>
-          <div>
-            <v-icon v-if="step3RegistryAssessmentIcon" :icon="step3RegistryAssessmentIcon" size="x-large" />
+          <p class="large">
+            <v-icon v-if="step3RegistryAssessmentIcon" :icon="step3RegistryAssessmentIcon" />
             {{ step3RegistryAssessmentText }}
-          </div>
+          </p>
         </div>
       </v-card-text>
     </v-card>
     <v-card elevation="0" rounded="0" class="border-t border-b">
       <v-card-text>
-        <div v-if="step3Progress === NOT_STARTED">We'll review your application after we receive all references and documents.</div>
-        <div v-if="step3Progress === IN_PROGRESS">We're reviewing your application. We'll contact you with questions or once assessment is complete.</div>
+        <p v-if="step3Progress === NOT_STARTED">We'll review your application after we receive all references and documents.</p>
+        <p v-if="step3Progress === IN_PROGRESS">We're reviewing your application. We'll contact you with questions or once assessment is complete.</p>
       </v-card-text>
     </v-card>
     <!-- Step 3 End-->
@@ -139,7 +127,9 @@ import { CertificationType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 
 import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHeader.vue";
-import ApplicationSummaryTranscriptReferenceListItem from "./ApplicationSummaryTranscriptReferenceListItem.vue";
+import ApplicationSummaryActionListItem from "./ApplicationSummaryActionListItem.vue";
+import ApplicationSummaryCharacterReferenceListItem from "./ApplicationSummaryCharacterReferenceListItem.vue";
+import ApplicationSummaryTranscriptListItem from "./ApplicationSummaryTranscriptListItem.vue";
 
 type ApplicationStepProgress = "complete" | "inProgress" | "actionRequired" | "notStarted";
 type ApplicationProcessMap = {
@@ -193,7 +183,12 @@ const Step3ApplicationStatusSubDetailMap: ApplicationProcessMap = {
 
 export default defineComponent({
   name: "ApplicationSummary",
-  components: { ApplicationCertificationTypeHeader, ApplicationSummaryTranscriptReferenceListItem },
+  components: {
+    ApplicationCertificationTypeHeader,
+    ApplicationSummaryTranscriptListItem,
+    ApplicationSummaryCharacterReferenceListItem,
+    ApplicationSummaryActionListItem,
+  },
   setup: async () => {
     const { smAndUp } = useDisplay();
     const route = useRoute();
@@ -250,7 +245,7 @@ export default defineComponent({
     step2ReferenceDocumentText() {
       switch (this.step2Progress) {
         case this.IN_PROGRESS:
-          return "In Progress";
+          return "In progress";
         case this.COMPLETE:
           return "Complete";
         default:
@@ -286,6 +281,9 @@ export default defineComponent({
     },
     step3Progress() {
       return this.findApplicationStepProgress(Step3ApplicationStatusSubDetailMap, "step3");
+    },
+    hasCharacterReference(): boolean {
+      return this.applicationStatus?.characterReferencesStatus?.some((reference) => reference.status !== "Rejected") || false;
     },
   },
   methods: {
