@@ -2,11 +2,11 @@
   <v-card elevation="0" rounded="0" class="border-t border-b">
     <v-card-text>
       <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
-        <div v-if="status === 'Complete' || status === 'Rejected'">
-          <p>{{ text }}</p>
+        <div v-if="statusText === 'Complete' || statusText === 'Cancelled'">
+          <p>Character reference provided by {{ name }}</p>
         </div>
         <a v-else href="#" @click.prevent="buttonClick">
-          <p class="text-links">{{ text }}</p>
+          <p class="text-links">Character reference provided by {{ name }}</p>
         </a>
 
         <v-spacer></v-spacer>
@@ -29,15 +29,11 @@ export default defineComponent({
   name: "ApplicationSummaryTranscriptReferenceListItem",
   props: {
     status: {
-      type: String as PropType<Components.Schemas.StageStatus | undefined>,
+      type: String as PropType<Components.Schemas.CharacterReferenceStage | undefined>,
       required: true,
     },
     name: {
       type: String as PropType<String | undefined | null>,
-      required: true,
-    },
-    type: {
-      type: String as PropType<"transcript" | "character" | "workExperience" | undefined>,
       required: true,
     },
     goTo: {
@@ -55,50 +51,34 @@ export default defineComponent({
     return { smAndUp };
   },
   computed: {
-    text() {
-      if (this.type === "transcript") {
-        return `Transcript provided by ${this.name}`;
-      }
-
-      if (this.type === "character") {
-        return `Character reference provided by ${this.name}`;
-      }
-
-      if (this.type === "workExperience") {
-        return `Work experience reference provided by ${this.name}`;
-      }
-
-      return "";
-    },
     statusText() {
-      if (this.status === "Complete") {
-        return "Complete";
+      switch (this.status) {
+        case "Approved":
+        case "InProgress":
+        case "UnderReview":
+        case "WaitingResponse":
+        case "Submitted":
+          return "Complete";
+        case "ApplicationSubmitted":
+        case "Draft":
+          return "Incomplete";
+        case "Rejected":
+          return this.willProvideReference ? "" : "Cancelled";
+        default:
+          return "Unhandled Status";
       }
-
-      if (this.status === "InComplete") {
-        return "Incomplete";
-      }
-
-      if (this.status === "Rejected" && !this.willProvideReference) {
-        return "Cancelled";
-      }
-
-      return "Unhandled Status";
     },
     sheetColor() {
-      if (this.status === "Complete") {
-        return "white-smoke";
+      switch (this.statusText) {
+        case "Complete":
+          return "hawkes-blue";
+        case "Incomplete":
+          return "white-smoke";
+        case "Cancelled":
+          return "white-smoke";
+        default:
+          return "";
       }
-
-      if (this.status === "InComplete") {
-        return "hawkes-blue";
-      }
-
-      if (this.status === "Rejected" && !this.willProvideReference) {
-        return "white-smoke";
-      }
-
-      return "";
     },
   },
   methods: {

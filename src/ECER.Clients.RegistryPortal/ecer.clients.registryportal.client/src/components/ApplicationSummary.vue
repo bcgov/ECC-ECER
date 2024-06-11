@@ -50,39 +50,22 @@
       </v-card-text>
     </v-card>
     <div v-if="step2Progress !== COMPLETE">
-      <ApplicationSummaryTranscriptReferenceListItem
+      <ApplicationSummaryTranscriptListItem
         v-for="transcript in applicationStatus?.transcriptsStatus"
         :key="transcript.id?.toString()"
         :name="transcript.educationalInstitutionName"
-        type="transcript"
         :status="transcript.status"
         :go-to="() => goTo(transcript.id?.toString())"
       />
-      <ApplicationSummaryTranscriptReferenceListItem
+      <ApplicationSummaryCharacterReferenceListItem
         v-for="reference in applicationStatus?.characterReferencesStatus"
         :key="reference.id?.toString()"
         :name="`${reference.firstName} ${reference.lastName}`"
-        type="character"
         :status="reference.status"
         :go-to="
           () =>
             $router.push({
               name: 'viewCharacterReference',
-              params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
-            })
-        "
-        :will-provide-reference="reference.willProvideReference ? true : false"
-      />
-      <ApplicationSummaryTranscriptReferenceListItem
-        v-for="reference in applicationStatus?.workExperienceReferencesStatus"
-        :key="reference.id?.toString()"
-        :name="`${reference.firstName} ${reference.lastName}`"
-        type="workExperience"
-        :status="reference.status"
-        :go-to="
-          () =>
-            $router.push({
-              name: 'viewWorkExperienceReference',
               params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
             })
         "
@@ -145,7 +128,8 @@ import { formatDate } from "@/utils/format";
 
 import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHeader.vue";
 import ApplicationSummaryActionListItem from "./ApplicationSummaryActionListItem.vue";
-import ApplicationSummaryTranscriptReferenceListItem from "./ApplicationSummaryTranscriptReferenceListItem.vue";
+import ApplicationSummaryCharacterReferenceListItem from "./ApplicationSummaryCharacterReferenceListItem.vue";
+import ApplicationSummaryTranscriptListItem from "./ApplicationSummaryTranscriptListItem.vue";
 
 type ApplicationStepProgress = "complete" | "inProgress" | "actionRequired" | "notStarted";
 type ApplicationProcessMap = {
@@ -199,7 +183,12 @@ const Step3ApplicationStatusSubDetailMap: ApplicationProcessMap = {
 
 export default defineComponent({
   name: "ApplicationSummary",
-  components: { ApplicationCertificationTypeHeader, ApplicationSummaryTranscriptReferenceListItem, ApplicationSummaryActionListItem },
+  components: {
+    ApplicationCertificationTypeHeader,
+    ApplicationSummaryTranscriptListItem,
+    ApplicationSummaryCharacterReferenceListItem,
+    ApplicationSummaryActionListItem,
+  },
   setup: async () => {
     const { smAndUp } = useDisplay();
     const route = useRoute();
