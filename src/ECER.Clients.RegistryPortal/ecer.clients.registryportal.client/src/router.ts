@@ -75,7 +75,14 @@ const router = createRouter({
     },
     {
       path: "/manage-application/:applicationId/character-reference/:referenceId/edit",
-      name: "upsertCharacterReference",
+      name: "updateCharacterReference",
+      component: () => import("./components/UpsertCharacterReference.vue"),
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/manage-application/:applicationId/character-reference/add",
+      name: "addCharacterReference",
       component: () => import("./components/UpsertCharacterReference.vue"),
       meta: { requiresAuth: true },
       props: true,

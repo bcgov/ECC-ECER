@@ -66,6 +66,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Application submittedTestApplication = null!;
   private ecer_Application submittedTestApplication2 = null!;
   private ecer_Application submittedTestApplication3 = null!;
+  private ecer_Application submittedTestApplication4 = null!;
   private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef = null!;
   private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef2 = null!;
   private ecer_CharacterReference submittedTestApplicationCharacterRef = null!;
@@ -75,6 +76,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string submittedTestApplicationId => submittedTestApplication.Id.ToString();
   public string submittedTestApplicationId2 => submittedTestApplication2.Id.ToString();
   public string submittedTestApplicationId3 => submittedTestApplication3.Id.ToString();
+  public string submittedTestApplicationId4 => submittedTestApplication4.Id.ToString();
   public string submittedTestApplicationWorkExperienceRefId => submittedTestApplicationWorkExperienceRef.Id.ToString();
   public string submittedTestApplicationWorkExperienceRefId2 => submittedTestApplicationWorkExperienceRef2.Id.ToString();
 
@@ -116,9 +118,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     submittedTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
     submittedTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
     submittedTestApplication3 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
+    submittedTestApplication4 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
     submittedTestApplicationWorkExperienceRef = AddWorkExperienceReferenceToApplication(context, submittedTestApplication);
-    submittedTestApplicationWorkExperienceRef2 = AddWorkExperienceReferenceToApplication(context, submittedTestApplication3);
-    submittedTestApplicationCharacterRef = AddCharacterReferenceToApplication(context, submittedTestApplication2);
+    submittedTestApplicationWorkExperienceRef2 = AddWorkExperienceReferenceToApplication(context, submittedTestApplication2);
+    submittedTestApplicationCharacterRef = AddCharacterReferenceToApplication(context, submittedTestApplication3);
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1");
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2");
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3");
