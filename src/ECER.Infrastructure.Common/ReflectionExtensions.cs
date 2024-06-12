@@ -49,7 +49,7 @@ public static class ReflectionExtensions
   /// <typeparam name="T">The type to instantiate</typeparam>
   /// <param name="assembly">The assembly to search</param>
   /// <returns>Array of instances of type T</returns>
-  public static T[] CreateInstancesOf<T>(this Assembly assembly)
+  public static T[] CreateInstancesOf<T>(this Assembly assembly) where T : class
   {
     ArgumentNullException.ThrowIfNull(assembly);
     return assembly.GetTypesImplementing<T>().Select(t => (T?)Activator.CreateInstance(t)).Where(i => i != null).Select(i => i!).ToArray();
