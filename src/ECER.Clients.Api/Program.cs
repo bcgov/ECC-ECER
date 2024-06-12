@@ -1,14 +1,15 @@
+using System.Reflection;
+using System.Text.Json.Serialization;
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
-using System.Reflection;
-using System.Text.Json.Serialization;
 
 namespace ECER.Clients.Api;
 
 #pragma warning disable RCS1102 // Make class static
 #pragma warning disable S1118 // Utility classes should not have public constructors
+#pragma warning disable S2139 // Exceptions should be either logged or rethrown but not both
 
 public class Program
 {

@@ -60,7 +60,7 @@ public static class DataverseExtensions
   /// <returns>The uploaded file id</returns>
   public static async Task<string?> UploadFileAsync([NotNull] this IOrganizationServiceAsync organizationService, [NotNull] Entity entity, string? fileFieldName, [NotNull] FileContainer file, CancellationToken ct = default)
   {
-    var response = (InitializeFileBlocksUploadResponse)organizationService.Execute(new InitializeFileBlocksUploadRequest
+    var response = (InitializeFileBlocksUploadResponse)await organizationService.ExecuteAsync(new InitializeFileBlocksUploadRequest
     {
       Target = new EntityReference(entity.LogicalName, entity.Id),
       FileAttributeName = fileFieldName,
@@ -104,7 +104,7 @@ public static class DataverseExtensions
       return null;
     }
 
-    var commitFileBlocksUploadResponse = (CommitFileBlocksUploadResponse)organizationService.Execute(new CommitFileBlocksUploadRequest
+    var commitFileBlocksUploadResponse = (CommitFileBlocksUploadResponse)await organizationService.ExecuteAsync(new CommitFileBlocksUploadRequest
     {
       BlockList = blockIds.ToArray(),
       FileContinuationToken = fileContinuationToken,
@@ -138,7 +138,7 @@ public static class DataverseExtensions
     InitializeFileBlocksDownloadResponse response;
     try
     {
-      response = (InitializeFileBlocksDownloadResponse)organizationService.Execute(new InitializeFileBlocksDownloadRequest
+      response = (InitializeFileBlocksDownloadResponse)await organizationService.ExecuteAsync(new InitializeFileBlocksDownloadRequest
 
       {
         Target = new EntityReference(entity.LogicalName, entity.Id),
@@ -156,13 +156,13 @@ public static class DataverseExtensions
     while (offset < response.FileSizeInBytes)
     {
       if (ct.IsCancellationRequested) break;
-      var dlResponse = (DownloadBlockResponse)organizationService.Execute(new DownloadBlockRequest
+      var dlResponse = (DownloadBlockResponse)await organizationService.ExecuteAsync(new DownloadBlockRequest
       {
         FileContinuationToken = response.FileContinuationToken,
         BlockLength = FileBlockSize,
         Offset = offset
       });
-      ms.Write(dlResponse.Data);
+      await ms.WriteAsync(dlResponse.Data, ct);
       offset += dlResponse.Data.Length;
     }
 
