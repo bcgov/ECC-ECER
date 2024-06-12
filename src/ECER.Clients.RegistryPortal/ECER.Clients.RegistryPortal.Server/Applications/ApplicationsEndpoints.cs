@@ -418,6 +418,8 @@ public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, Applic
   public IEnumerable<TranscriptStatus> TranscriptsStatus { get; set; } = Array.Empty<TranscriptStatus>();
   public IEnumerable<WorkExperienceReferenceStatus> WorkExperienceReferencesStatus { get; set; } = Array.Empty<WorkExperienceReferenceStatus>();
   public IEnumerable<CharacterReferenceStatus> CharacterReferencesStatus { get; set; } = Array.Empty<CharacterReferenceStatus>();
+  public bool? AddMoreCharacterReference { get; set; }
+  public bool? AddMoreWorkExperienceReference { get; set; }
 }
 
 public record TranscriptStatus(string Id, TranscriptStage Status, string EducationalInstitutionName);

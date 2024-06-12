@@ -58,6 +58,8 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public ApplicationStatusReasonDetail SubStatus { get; set; }
   public DateTime? ReadyForAssessmentDate { get; set; }
+  public bool? AddMoreCharacterReference { get; set; }
+  public bool? AddMoreWorkExperienceReference { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)

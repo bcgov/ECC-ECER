@@ -100,6 +100,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_AddMoreCharacterReference = "ecer_addmorecharacterreference";
+			public const string ecer_addmorecharacterreferenceName = "ecer_addmorecharacterreferencename";
+			public const string ecer_AddMoreWorkExperienceReference = "ecer_addmoreworkexperiencereference";
+			public const string ecer_addmoreworkexperiencereferenceName = "ecer_addmoreworkexperiencereferencename";
 			public const string ecer_AlternatePhoneNumber = "ecer_alternatephonenumber";
 			public const string ecer_ApplicantAge = "ecer_applicantage";
 			public const string ecer_ApplicantFullName = "ecer_applicantfullname";
@@ -442,6 +446,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addmorecharacterreference")]
+		public System.Nullable<bool> ecer_AddMoreCharacterReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_addmorecharacterreference");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_addmorecharacterreference", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addmorecharacterreferencename")]
+		public string ecer_addmorecharacterreferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_addmorecharacterreference"))
+				{
+					return this.FormattedValues["ecer_addmorecharacterreference"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addmoreworkexperiencereference")]
+		public System.Nullable<bool> ecer_AddMoreWorkExperienceReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_addmoreworkexperiencereference");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_addmoreworkexperiencereference", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addmoreworkexperiencereferencename")]
+		public string ecer_addmoreworkexperiencereferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_addmoreworkexperiencereference"))
+				{
+					return this.FormattedValues["ecer_addmoreworkexperiencereference"];
 				}
 				else
 				{

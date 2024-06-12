@@ -44,6 +44,8 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public DateTime? ReadyForAssessmentDate { get; set; }
+  public bool? AddMoreCharacterReference { get; set; }
+  public bool? AddMoreWorkExperienceReference { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)
