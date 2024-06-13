@@ -82,10 +82,9 @@ export default defineComponent({
 
       if (!reference) {
         router.back();
-      } else {
-        formStore.initializeForm({});
       }
     }
+    formStore.initializeForm({});
 
     return { applicationStore, alertStore, reference, formStore, loadingStore, workExperienceReferenceUpsertForm, router };
   },
@@ -142,7 +141,7 @@ export default defineComponent({
           this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
         } else {
           this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
-          this.router.push(`/manage-application/${this.applicationId}`);
+          this.router.push({ name: "manageWorkExperienceReferences", params: { applicationId: this.applicationId } });
         }
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
