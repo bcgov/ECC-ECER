@@ -31,15 +31,6 @@ export default defineComponent({
       type: String as PropType<String | undefined | null>,
       required: true,
     },
-    goTo: {
-      type: Function,
-      required: true,
-    },
-    willProvideReference: {
-      type: Object as PropType<Boolean | null>,
-      required: false,
-      default: undefined,
-    },
   },
   setup: async () => {
     const { smAndUp } = useDisplay();
@@ -50,11 +41,11 @@ export default defineComponent({
       switch (this.status) {
         case "Accepted":
         case "InProgress":
-        case "WaitingforDetails":
         case "Submitted":
           return "Complete";
         case "ApplicationSubmitted":
         case "Draft":
+        case "WaitingforDetails":
         case "Rejected":
           return "Incomplete";
         default:
@@ -70,11 +61,6 @@ export default defineComponent({
         default:
           return "";
       }
-    },
-  },
-  methods: {
-    buttonClick() {
-      this.goTo();
     },
   },
 });

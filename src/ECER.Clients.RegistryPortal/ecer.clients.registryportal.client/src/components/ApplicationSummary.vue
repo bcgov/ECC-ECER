@@ -55,7 +55,6 @@
         :key="transcript.id?.toString()"
         :name="transcript.educationalInstitutionName"
         :status="transcript.status"
-        :go-to="() => goTo(transcript.id?.toString())"
       />
       <ApplicationSummaryCharacterReferenceListItem
         v-for="reference in applicationStatus?.characterReferencesStatus"
@@ -75,6 +74,11 @@
         v-if="!hasCharacterReference"
         text="Add character reference"
         :go-to="() => $router.push({ name: 'addCharacterReference', params: { applicationId: $route.params.applicationId } })"
+      />
+      <ApplicationSummaryActionListItem
+        :active="totalObservedWorkExperienceHours < 500"
+        text="500 approved hours of work experience with reference"
+        :go-to="() => $router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: $route.params.applicationId } })"
       />
     </div>
     <v-card v-if="step2Progress === COMPLETE" elevation="0" rounded="0" class="border-t border-b">
@@ -284,6 +288,9 @@ export default defineComponent({
     },
     hasCharacterReference(): boolean {
       return this.applicationStatus?.characterReferencesStatus?.some((reference) => reference.status !== "Rejected") || false;
+    },
+    totalObservedWorkExperienceHours(): number {
+      return this.applicationStatus?.workExperienceReferencesStatus?.reduce((acc, reference) => acc + (reference.totalNumberofHoursObserved ?? 0), 0) || 0;
     },
   },
   methods: {

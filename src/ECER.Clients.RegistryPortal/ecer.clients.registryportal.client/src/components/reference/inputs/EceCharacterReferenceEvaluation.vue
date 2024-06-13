@@ -71,6 +71,7 @@
             variant="outlined"
             color="primary"
             maxlength="1000"
+            persistent-counter
             hide-details="auto"
             :auto-grow="true"
             @update:model-value="updateField('childInteractionObservations', $event)"
@@ -89,6 +90,7 @@
             variant="outlined"
             color="primary"
             maxlength="1000"
+            persistent-counter
             hide-details="auto"
             :auto-grow="true"
             @update:model-value="updateField('applicantTemperamentAssessment', $event)"

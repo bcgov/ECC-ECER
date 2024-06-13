@@ -269,6 +269,7 @@ declare namespace Components {
       submittedOn?: string; // date-time
       status?: ApplicationStatus;
       subStatus?: ApplicationStatusReasonDetail;
+      certificationTypes?: CertificationType[] | null;
       readyForAssessmentDate?: string | null; // date-time
       transcriptsStatus?: TranscriptStatus[] | null;
       workExperienceReferencesStatus?: WorkExperienceReferenceStatus[] | null;
@@ -380,7 +381,9 @@ declare namespace Components {
       lastName?: string | null;
       emailAddress?: string | null;
       phoneNumber?: string | null;
-      hours?: number | null; // int32
+      totalNumberofHoursAnticipated?: number | null; // int32
+      totalNumberofHoursApproved?: number | null; // int32
+      totalNumberofHoursObserved?: number | null; // int32
       willProvideReference?: boolean | null;
     }
     export interface WorkExperienceReferenceSubmissionRequest {

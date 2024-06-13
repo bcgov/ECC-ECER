@@ -1,6 +1,9 @@
 @import "./_colors.scss";
 
 .v-alert {
+  .v-alert-title {
+    font-weight: bold;
+  }
   &.info {
     background-color: #{$alert-info};
   }

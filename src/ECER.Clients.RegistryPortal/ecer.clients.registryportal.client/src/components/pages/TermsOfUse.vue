@@ -16,7 +16,7 @@
       </v-row>
       <v-row>
         <v-card variant="outlined" color="grey-lightest" class="pa-10 mt-5">
-          <p class="small">
+          <p class="small text-grey-dark">
             <b>Notification of Collection</b>
             <br />
             <br />

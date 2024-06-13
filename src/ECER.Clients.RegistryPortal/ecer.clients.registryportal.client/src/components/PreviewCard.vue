@@ -19,7 +19,7 @@
         </div>
       </div>
     </v-card-title>
-    <v-card-text>
+    <v-card-text class="text-grey-dark">
       <slot name="content"></slot>
     </v-card-text>
   </v-card>
