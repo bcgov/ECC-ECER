@@ -74,42 +74,60 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const router = useRouter();
 
-    // Check store for existing reference
-    const reference: Components.Schemas.WorkExperienceReference | undefined = applicationStore.workExperienceReferenceById(props.referenceId);
+    let reference: Components.Schemas.WorkExperienceReference | undefined = undefined;
 
-    if (!reference) {
-      router.back();
-    } else {
-      formStore.initializeForm({});
+    if (props.referenceId) {
+      // Check store for existing reference
+      const reference = applicationStore.workExperienceReferenceById(props.referenceId);
+
+      if (!reference) {
+        router.back();
+      }
     }
+    formStore.initializeForm({});
 
     return { applicationStore, alertStore, reference, formStore, loadingStore, workExperienceReferenceUpsertForm, router };
   },
   data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}`,
-        },
-        {
-          title: "Work experience reference",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}/work-experience-reference/${this.referenceId}`,
-        },
-        {
-          title: "Add",
-          disabled: true,
-          href: `/manage-application/${this.applicationId}/work-experience-reference/${this.referenceId}/add`,
-        },
-      ],
-    };
+    const items = [
+      {
+        title: "Home",
+        disabled: false,
+        href: "/",
+      },
+      {
+        title: "Application",
+        disabled: false,
+        href: `/manage-application/${this.applicationId}`,
+      },
+      {
+        title: "Work experience references",
+        disabled: false,
+        href: `/manage-application/${this.applicationId}/work-experience-references`,
+      },
+    ];
+
+    if (this.referenceId) {
+      // Check if referenceId is valid
+      items.push({
+        title: "Reference",
+        disabled: false,
+        href: `/manage-application/${this.applicationId}/work-experience-reference/${this.referenceId}`,
+      });
+      items.push({
+        title: "Add",
+        disabled: true,
+        href: `/manage-application/${this.applicationId}/work-experience-reference/${this.referenceId}/add`,
+      });
+    } else {
+      items.push({
+        title: "Add",
+        disabled: true,
+        href: `/manage-application/${this.applicationId}/work-experience-references/add`,
+      });
+    }
+
+    return { items };
   },
 
   methods: {
@@ -123,7 +141,7 @@ export default defineComponent({
           this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
         } else {
           this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
-          this.router.push(`/manage-application/${this.applicationId}`);
+          this.router.push({ name: "manageWorkExperienceReferences", params: { applicationId: this.applicationId } });
         }
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");

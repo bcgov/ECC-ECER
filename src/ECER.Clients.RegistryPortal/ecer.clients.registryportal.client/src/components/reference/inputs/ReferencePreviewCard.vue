@@ -17,7 +17,7 @@
             <v-icon icon="mdi-alert-circle" color="error" class="mr-2"></v-icon>
             You must enter all required information in a valid format before submitting your application
           </p>
-          <div class="mt-5"><slot name="content"></slot></div>
+          <div class="mt-5 text-grey-dark"><slot name="content"></slot></div>
         </v-col>
       </v-row>
     </v-container>

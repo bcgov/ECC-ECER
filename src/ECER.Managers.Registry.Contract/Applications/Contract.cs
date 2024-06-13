@@ -58,13 +58,15 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public ApplicationStatusReasonDetail SubStatus { get; set; }
   public DateTime? ReadyForAssessmentDate { get; set; }
+  public bool? AddMoreCharacterReference { get; set; }
+  public bool? AddMoreWorkExperienceReference { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)
 {
   public string? CampusLocation { get; set; }
   public string? LanguageofInstruction { get; set; }
-  public StageStatus? Status { get; set; }
+  public TranscriptStage? Status { get; set; }
 }
 
 public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
@@ -73,16 +75,18 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
 
   public string? PhoneNumber { get; set; }
 
-  public StageStatus? Status { get; set; }
+  public WorkExperienceRefStage? Status { get; set; }
 
   public bool? WillProvideReference { get; set; }
+  public int? TotalNumberofHoursApproved { get; set; }
+  public int? TotalNumberofHoursObserved { get; set; }
 }
 
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
   public string? Id { get; set; }
 
-  public StageStatus? Status { get; set; }
+  public CharacterReferenceStage? Status { get; set; }
 
   public bool? WillProvideReference { get; set; }
 }
@@ -269,10 +273,37 @@ public enum ReferenceKnownTime
   Morethan5years,
 }
 
-public enum StageStatus
+public enum TranscriptStage
 {
-  Complete,
-  InComplete,
+  Accepted,
+  ApplicationSubmitted,
+  Draft,
   InProgress,
-  Rejected
+  Rejected,
+  Submitted,
+  WaitingforDetails
+}
+
+public enum WorkExperienceRefStage
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  InProgress,
+  Rejected,
+  Submitted,
+  UnderReview,
+  WaitingforResponse
+}
+
+public enum CharacterReferenceStage
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  InProgress,
+  Rejected,
+  Submitted,
+  UnderReview,
+  WaitingResponse
 }

@@ -10,6 +10,7 @@
     :id="`${additionalInfoKey}Label`"
     class="mt-2"
     color="primary"
+    persistent-counter
     variant="outlined"
     hide-details="auto"
     @update:model-value="$emit('update:model-value', { [additionalInfoKey]: $event })"

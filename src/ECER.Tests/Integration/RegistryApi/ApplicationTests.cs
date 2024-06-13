@@ -323,7 +323,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
 
     return new WorkExperienceReference(
-       faker.Name.FirstName(), faker.Name.FirstName(), "WorkExperience_Reference@example.com", faker.Random.Number(10, 150)
+       faker.Name.FirstName(), faker.Name.LastName(), "Work_Experience_Reference@example.com", faker.Random.Number(10, 150)
     )
     {
       PhoneNumber = faker.Phone.PhoneNumber()
