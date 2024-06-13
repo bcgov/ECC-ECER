@@ -68,7 +68,7 @@ const router = createRouter({
     },
     {
       path: "/manage-application/:applicationId/work-experience-reference/:referenceId/edit",
-      name: "upsertWorkExperienceReference",
+      name: "updateWorkExperienceReference",
       component: () => import("./components/UpsertWorkExperienceReference.vue"),
       meta: { requiresAuth: true },
       props: true,
@@ -88,13 +88,6 @@ const router = createRouter({
       props: true,
     },
     {
-      path: "/manage-application/:applicationId/work-experience-reference",
-      name: "manageWorkExperienceReferences",
-      component: () => import("./components/ManageWorkExperienceReferenceList.vue"),
-      meta: { requiresAuth: true },
-      props: true,
-    },
-    {
       path: "/manage-application/:applicationId/work-experience-reference/add",
       name: "addWorkExperienceReference",
       component: () => import("./components/UpsertWorkExperienceReference.vue"),
@@ -102,9 +95,9 @@ const router = createRouter({
       props: true,
     },
     {
-      path: "/manage-application/:applicationId/character-reference/add",
-      name: "addCharacterReference",
-      component: () => import("./components/UpsertCharacterReference.vue"),
+      path: "/manage-application/:applicationId/work-experience-reference",
+      name: "manageWorkExperienceReferences",
+      component: () => import("./components/ManageWorkExperienceReferenceList.vue"),
       meta: { requiresAuth: true },
       props: true,
     },
