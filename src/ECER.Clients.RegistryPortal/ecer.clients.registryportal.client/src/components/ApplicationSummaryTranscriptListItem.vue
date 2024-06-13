@@ -63,10 +63,5 @@ export default defineComponent({
       }
     },
   },
-  methods: {
-    buttonClick() {
-      this.goTo();
-    },
-  },
 });
 </script>
