@@ -39,10 +39,12 @@ declare namespace Components {
       | "Escalated"
       | "Decision"
       | "Withdrawn"
+      | "Pending"
       | "Ready"
       | "InProgress"
       | "PendingQueue"
-      | "ReconsiderationDecision";
+      | "ReconsiderationDecision"
+      | "AppealDecision";
     export type ApplicationStatusReasonDetail =
       | "Actioned"
       | "BeingAssessed"
@@ -274,6 +276,8 @@ declare namespace Components {
       transcriptsStatus?: TranscriptStatus[] | null;
       workExperienceReferencesStatus?: WorkExperienceReferenceStatus[] | null;
       characterReferencesStatus?: CharacterReferenceStatus[] | null;
+      addMoreCharacterReference?: boolean | null;
+      addMoreWorkExperienceReference?: boolean | null;
     }
     export interface Transcript {
       id?: string | null;

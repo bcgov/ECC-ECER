@@ -381,10 +381,12 @@ public enum ApplicationStatus
   Escalated,
   Decision,
   Withdrawn,
+  Pending,
   Ready,
   InProgress,
   PendingQueue,
-  ReconsiderationDecision
+  ReconsiderationDecision,
+  AppealDecision
 }
 
 public enum ApplicationStatusReasonDetail
