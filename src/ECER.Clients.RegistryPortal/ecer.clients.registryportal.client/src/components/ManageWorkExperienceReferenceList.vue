@@ -28,19 +28,45 @@
         "
       />
     </div>
-    <v-card elevation="0" rounded="0" class="border-t border-b">
+    <v-card elevation="0" rounded="0" class="border-t">
       <v-card-text>
-        <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
-          <p><b>Total hours</b></p>
+        <v-row class="d-flex" :class="[smAndUp ? 'justify-space-between align-center' : 'flex-column']">
+          <v-col cols="4">
+            <div>
+              <p><b>Total hours</b></p>
+            </div>
+          </v-col>
 
+          <v-col cols="12" sm="4" :align="smAndUp ? 'center' : ''">
+            <p>
+              <b>{{ totalHours }} hours</b>
+            </p>
+          </v-col>
           <v-spacer></v-spacer>
-          <p>
-            <b>{{ totalHours }} hours</b>
-          </p>
-          <v-spacer></v-spacer>
-        </div>
+        </v-row>
       </v-card-text>
     </v-card>
+    <div v-if="totalHours < 500" class="mt-10">
+      <p>You need {{ 500 - totalHours }} more hours of work experience.</p>
+      <v-btn
+        prepend-icon="mdi-plus"
+        class="mt-10"
+        color="primary"
+        @click.prevent="$router.push({ name: 'addWorkExperienceReference', params: { applicationId: applicationId } })"
+      >
+        Add reference
+      </v-btn>
+    </div>
+    <Callout v-if="totalHours >= 500 && applicationStatus?.status != 'Submitted'" title="Please wait" type="warning" class="mt-10">
+      No additional work references needed. You’ve provided the required hours. We will contact you shortly. We’re either waiting on a response from your
+      reference or have not had a chance to assess the reference’s response yet.
+    </Callout>
+    <Callout v-if="totalHours >= 500 && applicationStatus?.status == 'Submitted'" title="Waiting for references to respond" type="warning" class="mt-10">
+      No additional work references needed. You’ve provided the required hours. We’re waiting on a response from your one or more of your references.
+    </Callout>
+    <div class="mt-10">
+      <a href="#" @click.prevent="$router.push({ name: 'manageApplication', params: { applicationId: applicationId } })">Back to application summary</a>
+    </div>
   </v-container>
 </template>
 
@@ -50,13 +76,14 @@ import { useRoute } from "vue-router";
 import { useDisplay } from "vuetify";
 
 import { getApplicationStatus } from "@/api/application";
-
-import ManageWorkExperienceReferenceListItem from "./ManageWorkExperienceReferenceListItem.vue";
+import Callout from "@/components/Callout.vue";
+import ManageWorkExperienceReferenceListItem from "@/components/ManageWorkExperienceReferenceListItem.vue";
 
 export default defineComponent({
   name: "ManageWorkExperienceReferenceList",
   components: {
     ManageWorkExperienceReferenceListItem,
+    Callout,
   },
   props: {
     applicationId: {

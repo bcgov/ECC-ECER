@@ -95,7 +95,7 @@ const router = createRouter({
       props: true,
     },
     {
-      path: "/manage-application/:applicationId/work-experience-reference",
+      path: "/manage-application/:applicationId/work-experience-references",
       name: "manageWorkExperienceReferences",
       component: () => import("./components/ManageWorkExperienceReferenceList.vue"),
       meta: { requiresAuth: true },

@@ -18,7 +18,9 @@
     <div class="d-flex flex-column ga-3 mt-10">
       <h3 class="mt-4">Change your reference</h3>
       <p>This will delete this individual as your reference and let you add someone new. Or correct any information in the reference listed above.</p>
-      <router-link :to="`/manage-application/${applicationId}/work-experience-reference/${referenceId}/edit`"><b>Choose a new reference</b></router-link>
+      <router-link :to="{ name: 'updateWorkExperienceReference', params: { applicationId: applicationId, referenceId: referenceId } }">
+        <b>Choose a new reference</b>
+      </router-link>
     </div>
   </v-container>
 </template>
@@ -77,7 +79,12 @@ export default defineComponent({
           href: `/manage-application/${this.applicationId}`,
         },
         {
-          title: "Work experience reference",
+          title: "Work experience references",
+          disabled: false,
+          href: `/manage-application/${this.applicationId}/work-experience-references`,
+        },
+        {
+          title: "Reference",
           disabled: true,
           href: `/manage-application/${this.applicationId}/work-experience-reference/${this.referenceId}`,
         },
