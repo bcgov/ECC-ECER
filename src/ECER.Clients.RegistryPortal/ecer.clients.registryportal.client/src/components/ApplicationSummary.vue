@@ -162,6 +162,8 @@ const Step2ApplicationStatusSubDetailMap: ApplicationProcessMap = {
     InvestigationsConsultationNeeded: "complete",
   },
   ReconsiderationDecision: undefined,
+  Pending: undefined,
+  AppealDecision: undefined,
 };
 
 const Step3ApplicationStatusSubDetailMap: ApplicationProcessMap = {
@@ -183,6 +185,8 @@ const Step3ApplicationStatusSubDetailMap: ApplicationProcessMap = {
     InvestigationsConsultationNeeded: "inProgress",
   },
   ReconsiderationDecision: undefined,
+  Pending: undefined,
+  AppealDecision: undefined,
 };
 
 export default defineComponent({
