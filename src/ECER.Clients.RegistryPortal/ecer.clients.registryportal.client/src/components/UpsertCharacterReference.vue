@@ -18,7 +18,7 @@
         <li>Is not your relative, partner, spouse, or yourself</li>
       </ul>
       <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
-      <p class="mb-6">
+      <p v-if="applicationStatus?.certificationTypes?.includes(CertificationType.FIVE_YEAR)" class="mb-6">
         The person
         <b>cannot</b>
         be any of your work experience references.
@@ -44,8 +44,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
+import { getApplicationStatus } from "@/api/application";
 import { upsertCharacterReference } from "@/api/reference";
 import EceForm from "@/components/Form.vue";
 import characterReferenceUpsertForm from "@/config/character-references-upsert-form";
@@ -54,6 +55,7 @@ import { useApplicationStore } from "@/store/application";
 import { useFormStore } from "@/store/form";
 import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
+import { CertificationType } from "@/utils/constant";
 
 export default defineComponent({
   name: "UpsertCharacterReference",
@@ -74,7 +76,9 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
+    const route = useRoute();
     const formStore = useFormStore();
+    const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
 
     let reference: Components.Schemas.CharacterReference | undefined = undefined;
 
@@ -89,7 +93,7 @@ export default defineComponent({
       }
     }
 
-    return { applicationStore, alertStore, reference, formStore, loadingStore, characterReferenceUpsertForm, router };
+    return { applicationStore, alertStore, reference, formStore, loadingStore, characterReferenceUpsertForm, router, applicationStatus, CertificationType };
   },
   data() {
     // Define a base array of always-present items.
