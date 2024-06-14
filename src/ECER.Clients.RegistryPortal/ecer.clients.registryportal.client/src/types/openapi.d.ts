@@ -39,10 +39,12 @@ declare namespace Components {
       | "Escalated"
       | "Decision"
       | "Withdrawn"
+      | "Pending"
       | "Ready"
       | "InProgress"
       | "PendingQueue"
-      | "ReconsiderationDecision";
+      | "ReconsiderationDecision"
+      | "AppealDecision";
     export type ApplicationStatusReasonDetail =
       | "Actioned"
       | "BeingAssessed"

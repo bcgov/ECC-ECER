@@ -22,7 +22,9 @@
           applicationStore.applicationStatus === 'Submitted' ||
           applicationStore.applicationStatus === 'Ready' ||
           applicationStore.applicationStatus === 'InProgress' ||
-          applicationStore.applicationStatus === 'PendingQueue'
+          applicationStore.applicationStatus === 'PendingQueue' ||
+          applicationStore.applicationStatus === 'Pending' ||
+          applicationStore.applicationStatus === 'Escalated'
         "
         class="d-flex flex-row justify-start ga-3 flex-wrap"
       >
