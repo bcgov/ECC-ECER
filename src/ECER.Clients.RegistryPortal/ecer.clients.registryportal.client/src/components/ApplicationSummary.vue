@@ -112,6 +112,18 @@
       <v-card-text>
         <p v-if="step3Progress === NOT_STARTED">We'll review your application after we receive all references and documents.</p>
         <p v-if="step3Progress === IN_PROGRESS">We're reviewing your application. We'll contact you with questions or once assessment is complete.</p>
+        <p
+          v-if="
+            applicationStatus?.status === 'PendingQueue' &&
+            (applicationStatus?.subStatus === 'MoreInformationRequired' || applicationStatus.subStatus === 'PendingDocuments')
+          "
+        >
+          We’re waiting for additional information before we continue to review your application.
+          <router-link to="/messages">Read your messages</router-link>
+          or
+          <a href="https://www2.gov.bc.ca/gov/content?id=9376DE7539D44C64B3E667DB53320E71">contact us</a>
+          for more information.
+        </p>
       </v-card-text>
     </v-card>
     <!-- Step 3 End-->
