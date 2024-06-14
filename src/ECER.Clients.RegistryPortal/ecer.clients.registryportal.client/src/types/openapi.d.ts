@@ -274,6 +274,8 @@ declare namespace Components {
       transcriptsStatus?: TranscriptStatus[] | null;
       workExperienceReferencesStatus?: WorkExperienceReferenceStatus[] | null;
       characterReferencesStatus?: CharacterReferenceStatus[] | null;
+      addMoreCharacterReference?: boolean | null;
+      addMoreWorkExperienceReference?: boolean | null;
     }
     export interface Transcript {
       id?: string | null;
