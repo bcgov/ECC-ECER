@@ -108,12 +108,49 @@
         </div>
       </v-card-text>
     </v-card>
-    <v-card elevation="0" rounded="0" class="border-t border-b">
+    <v-card v-if="!hasStep3Tasks" elevation="0" rounded="0" class="border-t border-b">
       <v-card-text>
         <p v-if="step3Progress === NOT_STARTED">We'll review your application after we receive all references and documents.</p>
         <p v-if="step3Progress === IN_PROGRESS">We're reviewing your application. We'll contact you with questions or once assessment is complete.</p>
       </v-card-text>
     </v-card>
+    <div v-if="(step3Progress === IN_PROGRESS || step3Progress === ACTION_REQUIRED) && hasStep3Tasks">
+      <v-card elevation="0" rounded="0" class="border-t border-b">
+        <v-card-text>
+          <p>You need to provide the following items.</p>
+        </v-card-text>
+      </v-card>
+      <ApplicationSummaryTranscriptListItem
+        v-for="transcript in waitingForDetailsTranscripts"
+        :key="transcript.id?.toString()"
+        :name="transcript.educationalInstitutionName"
+        :status="transcript.status"
+      />
+      <ApplicationSummaryActionListItem
+        v-if="!hasCharacterReference"
+        text="Add character reference"
+        :go-to="() => $router.push({ name: 'addCharacterReference', params: { applicationId: $route.params.applicationId } })"
+      />
+      <ApplicationSummaryCharacterReferenceListItem
+        v-for="reference in waitingForResponseCharacterReferences"
+        :key="reference.id?.toString()"
+        :name="`${reference.firstName} ${reference.lastName}`"
+        :status="reference.status"
+        :go-to="
+          () =>
+            $router.push({
+              name: 'viewCharacterReference',
+              params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
+            })
+        "
+        :will-provide-reference="reference.willProvideReference ? true : false"
+      />
+      <ApplicationSummaryActionListItem
+        v-if="addMoreWorkExperienceReferencesFlag"
+        text="500 approved hours of work experience with reference"
+        :go-to="() => $router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: $route.params.applicationId } })"
+      />
+    </div>
     <!-- Step 3 End-->
   </v-container>
 </template>
@@ -288,6 +325,24 @@ export default defineComponent({
     },
     hasCharacterReference(): boolean {
       return this.applicationStatus?.characterReferencesStatus?.some((reference) => reference.status !== "Rejected") || false;
+    },
+    addMoreWorkExperienceReferencesFlag(): boolean {
+      return this.applicationStatus?.addMoreWorkExperienceReference ?? false;
+    },
+    hasWaitingForDetailsTranscript(): boolean {
+      return this.applicationStatus?.transcriptsStatus?.some((transcript) => transcript.status === "WaitingforDetails") || false;
+    },
+    waitingForDetailsTranscripts(): Components.Schemas.TranscriptStatus[] {
+      return this.applicationStatus?.transcriptsStatus?.filter((transcript) => transcript.status === "WaitingforDetails") || [];
+    },
+    waitingForResponseCharacterReferences(): Components.Schemas.CharacterReferenceStatus[] {
+      return (
+        this.applicationStatus?.characterReferencesStatus?.filter((reference) => reference.status === "Draft" || reference.status === "ApplicationSubmitted") ||
+        []
+      );
+    },
+    hasStep3Tasks(): boolean {
+      return !this.hasCharacterReference || this.addMoreWorkExperienceReferencesFlag || this.hasWaitingForDetailsTranscript;
     },
     totalObservedWorkExperienceHours(): number {
       return this.applicationStatus?.workExperienceReferencesStatus?.reduce((acc, reference) => acc + (reference.totalNumberofHoursObserved ?? 0), 0) || 0;
