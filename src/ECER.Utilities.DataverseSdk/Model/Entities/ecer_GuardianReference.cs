@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Guardian Reference
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_guardianreference_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Guardian Reference
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_GuardianReference_StatusCode
 	{
 		
@@ -59,7 +59,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_guardianreference")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_GuardianReference : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -91,6 +91,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_GuardianReferenceId = "ecer_guardianreferenceid";
 			public const string Id = "ecer_guardianreferenceid";
 			public const string ecer_LastName = "ecer_lastname";
+			public const string ecer_legacyguardianid = "ecer_legacyguardianid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_ParentalConsent = "ecer_parentalconsent";
 			public const string ecer_parentalconsentName = "ecer_parentalconsentname";
@@ -143,6 +144,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacyguardianid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -501,6 +504,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_lastname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyguardianid")]
+		public string ecer_legacyguardianid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyguardianid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyguardianid", value);
 			}
 		}
 		

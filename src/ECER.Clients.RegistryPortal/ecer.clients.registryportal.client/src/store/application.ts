@@ -25,7 +25,7 @@ export const useApplicationStore = defineStore("application", {
     application: null,
   }),
   persist: {
-    paths: ["draftApplication"],
+    paths: ["draftApplication", "application"],
   },
   getters: {
     hasDraftApplication(state): boolean {
@@ -36,6 +36,36 @@ export const useApplicationStore = defineStore("application", {
     },
     applicationStatus(state): Components.Schemas.ApplicationStatus | undefined {
       return state.application?.status;
+    },
+    workExperienceReferenceById: (state) => {
+      return (referenceId: string) => state.application?.workExperienceReferences?.find((ref) => ref.id === referenceId);
+    },
+    characterReferenceById: (state) => {
+      return (referenceId: string) => state.application?.characterReferences?.find((ref) => ref.id === referenceId);
+    },
+    totalWorkExperienceHours(state): number {
+      return (
+        state.draftApplication.workExperienceReferences?.reduce((sum, currentReference) => {
+          return sum + (currentReference.hours || 0);
+        }, 0) ?? 0
+      );
+    },
+    hasDuplicateReferences(state): boolean {
+      if (!state.draftApplication.characterReferences || !state.draftApplication.workExperienceReferences) return false;
+
+      const refSet = new Set<string>();
+
+      for (const ref of state.draftApplication.characterReferences) {
+        refSet.add(`${ref.firstName} ${ref.lastName} ${ref.emailAddress}`);
+      }
+
+      for (const ref of state.draftApplication.workExperienceReferences) {
+        if (refSet.has(`${ref.firstName} ${ref.lastName} ${ref.emailAddress}`)) {
+          return true;
+        }
+      }
+
+      return false;
     },
   },
   actions: {
@@ -60,7 +90,7 @@ export const useApplicationStore = defineStore("application", {
       const wizardStore = useWizardStore();
 
       // Set wizard stage to the current step stage
-      this.draftApplication.stage = wizardStore.currentStepStage;
+      this.draftApplication.stage = wizardStore.currentStepStage as Components.Schemas.PortalStage;
 
       // Certification selection step data
       this.draftApplication.certificationTypes = wizardStore.wizardData[wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id];

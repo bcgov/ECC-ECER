@@ -1,25 +1,27 @@
 <template>
   <v-card variant="outlined" :color="cardColor" rounded="lg">
-    <div class="float-right">
-      <v-tooltip v-model="show" location="top">
-        <template #activator="{ props }">
-          <v-btn icon="mdi-pencil" v-bind="props" :color="isValid ? 'primary' : 'error'" variant="plain" @click="setWizard(portalStage)" />
-        </template>
-        <span>Edit {{ title }}</span>
-      </v-tooltip>
-    </div>
-    <v-container>
-      <v-row align="center">
-        <v-col>
-          <h3 :class="isValid ? 'text-black' : 'text-error'">{{ title }}</h3>
-          <p v-if="!isValid" class="small text-error">
+    <v-card-title>
+      <div class="d-flex justify-space-between align-center">
+        <div>
+          <h2 class="text-wrap" :class="isValid ? 'text-black' : 'text-error'">{{ title }}</h2>
+          <p v-if="!isValid" class="small text-error text-wrap">
             <v-icon icon="mdi-alert-circle" color="error" class="mr-2"></v-icon>
             You must enter all required information in a valid format before submitting your application
           </p>
-        </v-col>
-      </v-row>
+        </div>
+        <div>
+          <v-tooltip v-model="show" location="top">
+            <template #activator="{ props }">
+              <v-btn icon="mdi-pencil" v-bind="props" :color="isValid ? 'primary' : 'error'" variant="plain" @click="setWizard(portalStage)" />
+            </template>
+            <span>Edit {{ title }}</span>
+          </v-tooltip>
+        </div>
+      </div>
+    </v-card-title>
+    <v-card-text class="text-grey-dark">
       <slot name="content"></slot>
-    </v-container>
+    </v-card-text>
   </v-card>
 </template>
 
@@ -66,7 +68,7 @@ export default defineComponent({
   methods: {
     setWizard(stage: Components.Schemas.PortalStage) {
       this.wizardStore.setCurrentStep(stage);
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage;
+      this.applicationStore.draftApplication.stage = stage;
     },
   },
 });

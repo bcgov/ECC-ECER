@@ -13,7 +13,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_PSIDeliveryType
 	{
 		
@@ -25,6 +25,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Online = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Satellite = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		WorkIntegratedLearning = 621870003,

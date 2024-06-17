@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col>
+    <v-col md="10" lg="8" xl="6">
       <Alert type="info">
         <p>The Registry will not assess an application until references have been submitted. Please make sure your reference:</p>
         <ul class="pl-5">
@@ -9,6 +9,13 @@
           <li>Is NOT a relative, partner, spouse or myself.</li>
           <li>(Recommended) Is a certified ECE who has directly observed you working with young children.</li>
         </ul>
+      </Alert>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col v-if="applicationStore.hasDuplicateReferences" md="10" lg="8" xl="6">
+      <Alert type="error">
+        <p class="small">Your character reference cannot be the same as your work experience reference(s)</p>
       </Alert>
     </v-col>
   </v-row>
@@ -77,6 +84,7 @@
 import { defineComponent } from "vue";
 
 import { useAlertStore } from "@/store/alert";
+import { useApplicationStore } from "@/store/application";
 import type { EceCharacterReferenceProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { isNumber } from "@/utils/formInput";
@@ -102,8 +110,10 @@ export default defineComponent({
     updatedValidation: (_errorState: boolean) => true,
   },
   setup: () => {
+    const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
     return {
+      applicationStore,
       alertStore,
     };
   },

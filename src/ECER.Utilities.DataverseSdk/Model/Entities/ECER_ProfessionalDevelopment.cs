@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Professional Development
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_professionaldevelopment_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Professional Development
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_ProfessionalDevelopment_StatusCode
 	{
 		
@@ -65,7 +65,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_professionaldevelopment")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_ProfessionalDevelopment : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -96,6 +96,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_HostOrganizationContactInformation = "ecer_hostorganizationcontactinformation";
 			public const string ecer_InstructorName = "ecer_instructorname";
+			public const string ecer_legacyprofessionaldevelopmentid = "ecer_legacyprofessionaldevelopmentid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NumberofHours = "ecer_numberofhours";
 			public const string ecer_OrganizationName = "ecer_organizationname";
@@ -145,6 +146,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacyprofessionaldevelopmentid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -483,6 +486,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_instructorname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyprofessionaldevelopmentid")]
+		public string ecer_legacyprofessionaldevelopmentid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyprofessionaldevelopmentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyprofessionaldevelopmentid", value);
 			}
 		}
 		

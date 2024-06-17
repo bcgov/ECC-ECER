@@ -1,8 +1,8 @@
 <template>
   <v-row>
     <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
-      <h3 v-if="!clientId">Education {{ newClientId }}</h3>
-      <h3 v-if="clientId">Edit {{ previousSchool }}</h3>
+      <h2 v-if="!clientId">Education {{ newClientId }}</h2>
+      <h2 v-if="clientId">Edit {{ previousSchool }}</h2>
       <v-form ref="addEducationForm" validate-on="input" class="mt-6">
         <v-text-field
           v-model="school"
@@ -182,11 +182,7 @@ export default defineComponent({
   },
 
   mounted() {
-    if (Object.keys(this.modelValue).length === 0) {
-      this.mode = "add";
-    } else {
-      this.mode = "list";
-    }
+    this.mode = "list";
   },
   methods: {
     async handleSubmit() {

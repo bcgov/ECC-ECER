@@ -24,7 +24,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     var referenceContactInfo = new ReferenceContactInformation(
         faker.Person.LastName,
         faker.Person.FirstName,
-        faker.Person.Email,
+        "Reference_Contact@example.com",
         faker.Phone.PhoneNumber(),
         faker.Address.City()
     )
@@ -39,9 +39,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         ReferenceKnownTime.From1to2years, // LengthOfAcquaintance
         faker.Random.Bool(), // WorkedWithChildren
         faker.Lorem.Paragraph(), // ChildInteractionObservations
-        faker.Lorem.Paragraph(), // ApplicantTemperamentAssessment
-        faker.Random.Bool(), // Confirmed
-        faker.Lorem.Paragraph()
+        faker.Lorem.Paragraph() // ApplicantTemperamentAssessment
     );
 
     // Creating the ReferenceSubmissionRequest record
@@ -64,7 +62,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     var referenceContactInfo = new ReferenceContactInformation(
         faker.Person.LastName,
         faker.Person.FirstName,
-        faker.Person.Email,
+        "Reference_Contact@example.com",
         faker.Phone.PhoneNumber(),
         faker.Address.City()
     )
@@ -103,9 +101,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         faker.PickRandom<LikertScale>(), // FosteringPositiveRelationFamily
         faker.Lorem.Paragraph(), // FosteringPositiveRelationFamilyReason
         faker.PickRandom<LikertScale>(), // FosteringPositiveRelationCoworker
-        faker.Lorem.Paragraph(), // FosteringPositiveRelationCoworkerReason
-        faker.Random.Bool(), // IsApplicantQualified
-        faker.Lorem.Paragraph() // ApplicantNotQualifiedReason
+        faker.Lorem.Paragraph() // FosteringPositiveRelationCoworkerReason
     );
 
     // Creating the WorkExperienceReferenceSubmissionRequest record

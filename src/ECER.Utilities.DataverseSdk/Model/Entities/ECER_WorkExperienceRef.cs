@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Work Experience Reference
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_workexperienceref_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Work Experience Reference
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_WorkExperienceRef_StatusCode
 	{
 		
@@ -62,7 +62,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_workexperienceref")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_WorkExperienceRef : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -124,11 +124,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_investigation_WorkExperienceReferenceId_e = "ecer_investigation_WorkExperienceReferenceId_e";
 			public const string ecer_InviteAgain = "ecer_inviteagain";
 			public const string ecer_inviteagainName = "ecer_inviteagainname";
+			public const string ecer_IsAdditional = "ecer_isadditional";
+			public const string ecer_isadditionalName = "ecer_isadditionalname";
 			public const string ecer_IsApplicantQualified = "ecer_isapplicantqualified";
 			public const string ecer_isapplicantqualifiedName = "ecer_isapplicantqualifiedname";
 			public const string ecer_LastFollowUpDate = "ecer_lastfollowupdate";
 			public const string ecer_LastInvitationEmailSent = "ecer_lastinvitationemailsent";
 			public const string ecer_LastName = "ecer_lastname";
+			public const string ecer_legacyworkexperiencereferenceid = "ecer_legacyworkexperiencereferenceid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_OtherChildProgramType = "ecer_otherchildprogramtype";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
@@ -159,6 +162,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_unabletoprovidereferencereasonName = "ecer_unabletoprovidereferencereasonname";
 			public const string ecer_WillProvideReference = "ecer_willprovidereference";
 			public const string ecer_willprovidereferenceName = "ecer_willprovidereferencename";
+			public const string ecer_workexperienceassessment_WorkExpRefId = "ecer_workexperienceassessment_WorkExpRefId";
 			public const string ecer_workexperienceref_Applicantid = "ecer_workexperienceref_Applicantid";
 			public const string ecer_workexperienceref_Applicationid_ecer = "ecer_workexperienceref_Applicationid_ecer";
 			public const string ecer_workexperienceref_RefCertifiedProvinceId = "ecer_workexperienceref_RefCertifiedProvinceId";
@@ -208,6 +212,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacyworkexperiencereferenceid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -1028,6 +1034,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isadditional")]
+		public System.Nullable<bool> ecer_IsAdditional
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_isadditional");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_isadditional", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isadditionalname")]
+		public string ecer_isadditionalName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isadditional"))
+				{
+					return this.FormattedValues["ecer_isadditional"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isapplicantqualified")]
 		public virtual ecer_YesNoNull? ecer_IsApplicantQualified
 		{
@@ -1102,6 +1140,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_lastname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyworkexperiencereferenceid")]
+		public string ecer_legacyworkexperiencereferenceid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyworkexperiencereferenceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyworkexperiencereferenceid", value);
 			}
 		}
 		
@@ -2049,6 +2102,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_WorkExperienceRefId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_workexperienceassessment_WorkExpRefId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_workexperienceassessment_WorkExpRefId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment> ecer_workexperienceassessment_WorkExpRefId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment>("ecer_workexperienceassessment_WorkExpRefId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment>("ecer_workexperienceassessment_WorkExpRefId", null, value);
 			}
 		}
 		

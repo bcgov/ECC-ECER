@@ -55,25 +55,6 @@
           <p class="small font-weight-bold">{{ evaluation.applicantTemperamentAssessment }}</p>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">
-            Once certified, an ECE or ECE Assistant may work alone in a licensed childcare facility with children 0-5 years of age for extended periods of time.
-            Do you believe/think the applicant should be granted authorization to be an ECE or ECE Assistant
-          </p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ evaluation.applicantShouldNotBeECE ? "No" : "Yes" }}</p>
-        </v-col>
-      </v-row>
-      <v-row v-if="evaluation.applicantShouldNotBeECE">
-        <v-col cols="4">
-          <p class="small">Why do you think the applicant should NOT be granted authorization to be an ECE or ECE Assistant</p>
-        </v-col>
-        <v-col cols="8">
-          <p class="small font-weight-bold">{{ evaluation.applicantNotQualifiedReason }}</p>
-        </v-col>
-      </v-row>
     </template>
   </ReferencePreviewCard>
 </template>
@@ -134,12 +115,6 @@ export default defineComponent({
         applicantTemperamentAssessment:
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]
             ?.applicantTemperamentAssessment,
-        applicantShouldNotBeECE:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]
-            ?.applicantShouldNotBeECE,
-        applicantNotQualifiedReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]
-            ?.applicantNotQualifiedReason,
       };
     },
   },

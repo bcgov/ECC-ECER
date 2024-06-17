@@ -1,10 +1,8 @@
 <template>
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
-      <h3>Competencies assessment</h3>
-      <div role="doc-subtitle">
-        Tell us your opinion on the competency of the applicant in the following areas. This should be based on your personal observations.
-      </div>
+      <h2>Are you satisfied that the applicant is competent in the following areas?</h2>
+      <div role="doc-subtitle">This must be based on your own observations of the applicant.</div>
 
       <v-row class="mt-5">
         <v-col>
@@ -21,7 +19,7 @@
             <template #radioLabel>
               <!-- prettier-ignore -->
               <label>
-                In <b>child development</b>, how competent do you think the applicant is?
+                Is the applicant competent in <b>child development</b>?
               </label>
             </template>
             <template #textAreaLabel>
@@ -45,7 +43,7 @@
             <template #radioLabel>
               <!-- prettier-ignore -->
               <label>
-                In <b>child guidance</b>, how competent do you think the applicant is?
+                Is the applicant competent in <b>child guidance</b>?
               </label>
             </template>
             <template #textAreaLabel>
@@ -69,7 +67,7 @@
             <template #radioLabel>
               <!-- prettier-ignore -->
               <label>
-                In <b>health, safety and nutrition</b>, how competent do you think the applicant is?
+                Is the applicant competent in <b>health, safety and nutrition</b>?
               </label>
             </template>
             <template #textAreaLabel>
@@ -93,7 +91,7 @@
             <template #radioLabel>
               <!-- prettier-ignore -->
               <label>
-                In <b>developing an early childhood education curriculum</b>, how competent do you think the applicant is?
+                Is the applicant competent in <b>developing an early childhood education curriculum</b>?
               </label>
             </template>
             <template #textAreaLabel>
@@ -117,7 +115,7 @@
             <template #radioLabel>
               <!-- prettier-ignore -->
               <label>
-                In <b>implementing an early childhood education curriculum</b>, how competent do you think the applicant is?
+                Is the applicant competent in <b>implementing an early childhood education curriculum</b>?
               </label>
             </template>
             <template #textAreaLabel>
@@ -141,7 +139,7 @@
             <template #radioLabel>
               <!-- prettier-ignore -->
               <label>
-                In <b>fostering positive relationships with children under their care</b>, how competent do you think the applicant is?
+                Is the applicant competent in <b>fostering positive relationships with children under their care</b>?
               </label>
             </template>
             <template #textAreaLabel>
@@ -165,7 +163,7 @@
             <template #radioLabel>
               <!-- prettier-ignore -->
               <label>
-                In <b>fostering positive relationships with the families of children</b>, how competent do you think the applicant is?
+                Is the applicant competent in <b>fostering positive relationships with the families of children</b>?
               </label>
             </template>
             <template #textAreaLabel>
@@ -189,41 +187,13 @@
             <template #radioLabel>
               <!-- prettier-ignore -->
               <label>
-                In <b>fostering positive relationships with co-workers</b>, how competent do you think the applicant is?
+                Is the applicant competent in <b>fostering positive relationships with co-workers</b>?
               </label>
             </template>
             <template #textAreaLabel>
               <label>Please explain why</label>
             </template>
           </RadioWithAdditionalOption>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <h3>Please confirm</h3>
-          <div role="doc-subtitle">When answering the folowing question, please consider your responses above and your personal obserations.</div>
-          <p class="mt-4">Do you believe that the applicant has the personality, ability and temperament necessary to work with children?</p>
-          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="applicantQualifiedChanged">
-            <v-radio label="Yes" :value="true"></v-radio>
-            <v-radio label="No" :value="false"></v-radio>
-          </v-radio-group>
-        </v-col>
-      </v-row>
-      <v-row v-if="modelValue.isApplicantQualified !== undefined && !modelValue.isApplicantQualified">
-        <v-col>
-          <label for="applicantNotQualifiedTextArea">Please explain why</label>
-          <v-textarea
-            id="applicantNotQualifiedTextArea"
-            class="mt-2"
-            :rules="[Rules.required('Enter your response')]"
-            counter="1000"
-            variant="outlined"
-            color="primary"
-            maxlength="1000"
-            hide-details="auto"
-            :auto-grow="true"
-            @update:model-value="updateTextField('applicantNotQualifiedReason', $event)"
-          ></v-textarea>
         </v-col>
       </v-row>
     </v-col>
@@ -253,7 +223,7 @@ export default defineComponent({
     "update:model-value": (_workExAssessmentData: Components.Schemas.WorkExperienceReferenceCompetenciesAssessment) => true,
   },
   setup: () => {
-    const likertScaleTriggerValues: Components.Schemas.LikertScale[] = ["SomewhatCompetent", "NotCompetent"];
+    const likertScaleTriggerValues: Components.Schemas.LikertScale[] = ["No"];
     return { likertScaleRadio, likertScaleTriggerValues };
   },
 
@@ -266,19 +236,6 @@ export default defineComponent({
   methods: {
     updateFields(value: { [key in keyof Components.Schemas.WorkExperienceReferenceCompetenciesAssessment]: any }) {
       this.$emit("update:model-value", { ...this.modelValue, ...value });
-    },
-    updateTextField(fieldName: keyof Components.Schemas.WorkExperienceReferenceCompetenciesAssessment, value: any) {
-      this.$emit("update:model-value", {
-        ...this.modelValue,
-        [fieldName]: value,
-      });
-    },
-    applicantQualifiedChanged(value: any) {
-      if (value === true) {
-        this.$emit("update:model-value", { ...this.modelValue, isApplicantQualified: value, applicantNotQualifiedReason: "" });
-      } else {
-        this.$emit("update:model-value", { ...this.modelValue, isApplicantQualified: value });
-      }
     },
   },
 });

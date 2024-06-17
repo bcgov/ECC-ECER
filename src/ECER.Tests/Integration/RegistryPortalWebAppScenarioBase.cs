@@ -39,7 +39,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceSubmit = null!;
   private ecer_PortalInvitation testPortalInvitationCharacterReferenceOptout = null!;
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceOptout = null!;
-
+  private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceCompleted = null!;
   private Contact authenticatedBcscUser2 = null!;
 
   public IServiceProvider Services => serviceScope.ServiceProvider;
@@ -57,15 +57,30 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public Guid portalInvitationWorkExperienceReferenceIdSubmit => testPortalInvitationWorkExperienceReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationCharacterReferenceIdOptout => testPortalInvitationCharacterReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationWorkExperienceReferenceIdOptout => testPortalInvitationWorkExperienceReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
-
+  public Guid portalInvitationWorkExperienceReferenceIdCompleted => testPortalInvitationWorkExperienceReferenceCompleted.ecer_PortalInvitationId ?? Guid.Empty;
   public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
   private ecer_Application inProgressTestApplication2 = null!;
   private ecer_Application draftTestApplication2 = null!;
   private ecer_Application draftTestApplication3 = null!;
+  private ecer_Application submittedTestApplication = null!;
+  private ecer_Application submittedTestApplication2 = null!;
+  private ecer_Application submittedTestApplication3 = null!;
+  private ecer_Application submittedTestApplication4 = null!;
+  private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef = null!;
+  private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef2 = null!;
+  private ecer_CharacterReference submittedTestApplicationCharacterRef = null!;
   public string inprogressTestApplicationId2 => inProgressTestApplication2.Id.ToString();
   public string draftTestApplicationId2 => draftTestApplication2.Id.ToString();
   public string draftTestApplicationId3 => draftTestApplication3.Id.ToString();
+  public string submittedTestApplicationId => submittedTestApplication.Id.ToString();
+  public string submittedTestApplicationId2 => submittedTestApplication2.Id.ToString();
+  public string submittedTestApplicationId3 => submittedTestApplication3.Id.ToString();
+  public string submittedTestApplicationId4 => submittedTestApplication4.Id.ToString();
+  public string submittedTestApplicationWorkExperienceRefId => submittedTestApplicationWorkExperienceRef.Id.ToString();
+  public string submittedTestApplicationWorkExperienceRefId2 => submittedTestApplicationWorkExperienceRef2.Id.ToString();
+
+  public string submittedTestApplicationCharacterRefId => submittedTestApplicationCharacterRef.Id.ToString();
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -100,6 +115,13 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     draftTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
     draftTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
     draftTestApplication3 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
+    submittedTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
+    submittedTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
+    submittedTestApplication3 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
+    submittedTestApplication4 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
+    submittedTestApplicationWorkExperienceRef = AddWorkExperienceReferenceToApplication(context, submittedTestApplication);
+    submittedTestApplicationWorkExperienceRef2 = AddWorkExperienceReferenceToApplication(context, submittedTestApplication2);
+    submittedTestApplicationCharacterRef = AddCharacterReferenceToApplication(context, submittedTestApplication3);
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1");
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2");
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3");
@@ -109,7 +131,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testPortalInvitationWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");
     testPortalInvitationCharacterReferenceOptout = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name4");
     testPortalInvitationWorkExperienceReferenceOptout = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name5");
+    testPortalInvitationWorkExperienceReferenceCompleted = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name6");
+
     context.SaveChanges();
+
+    CompletePortalInvitation_WorkExperienceReference(context, "name6");
 
     //load dependent properties
     context.Attach(authenticatedBcscUser);
@@ -179,6 +205,50 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return application;
   }
 
+  private ecer_WorkExperienceRef AddWorkExperienceReferenceToApplication(EcerContext context, ecer_Application application)
+  {
+    var wpGuid = Guid.NewGuid();
+
+    var workexperienceReference = new ecer_WorkExperienceRef
+    {
+      Id = wpGuid,
+      ecer_WorkExperienceRefId = wpGuid,
+      ecer_Name = "Test name",
+      ecer_FirstName = "Test firstname",
+      ecer_LastName = "Test lastname",
+      ecer_EmailAddress = "Work_Experience_Reference@example.com",
+      ecer_PhoneNumber = "9999999999",
+      ecer_StartDate = DateTime.Now,
+      ecer_EndDate = DateTime.Now,
+    };
+
+    context.AddObject(workexperienceReference);
+    context.AddLink(workexperienceReference, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_Applicationid_ecer, application);
+
+    return workexperienceReference;
+  }
+
+  private ecer_CharacterReference AddCharacterReferenceToApplication(EcerContext context, ecer_Application application)
+  {
+    var wpGuid = Guid.NewGuid();
+
+    var characterReference = new ecer_CharacterReference
+    {
+      Id = wpGuid,
+      ecer_CharacterReferenceId = wpGuid,
+      ecer_Name = "Test name",
+      ecer_FirstName = "Test firstname",
+      ecer_LastName = "Test lastname",
+      ecer_EmailAddress = "Character_Reference@example.com",
+      ecer_PhoneNumber = "9999999999"
+    };
+
+    context.AddObject(characterReference);
+    context.AddLink(characterReference, ecer_CharacterReference.Fields.ecer_characterreference_Applicationid, application);
+
+    return characterReference;
+  }
+
   private ecer_Communication GetOrAddCommunication(EcerContext context, ecer_Application application, string message)
   {
     var communication = context.ecer_CommunicationSet.FirstOrDefault(c => c.ecer_Applicationid.Id == application.Id && c.ecer_Registrantid.Id == authenticatedBcscUser.Id && c.ecer_Message == message && c.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient);
@@ -224,7 +294,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Name = "Reference Test name",
         ecer_FirstName = "Reference Test firstname",
         ecer_LastName = "Reference Test lastname",
-        ecer_EmailAddress = "reference_test@test.com"
+        ecer_EmailAddress = "reference_test@example.com"
       };
 
       var guid = Guid.NewGuid();
@@ -235,7 +305,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Name = name,
         ecer_FirstName = "Test firstname",
         ecer_LastName = "Test lastname",
-        ecer_EmailAddress = "test@email.com",
+        ecer_EmailAddress = "test@example.com",
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
       };
 
@@ -247,6 +317,25 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     }
 
     return portalInvitation;
+  }
+
+  private void CompletePortalInvitation_WorkExperienceReference(EcerContext context, string name)
+  {
+    var portalInvitations = context.ecer_PortalInvitationSet
+      .Where(p => p.ecer_ApplicantId != null &&
+                  p.ecer_ApplicationId != null &&
+                  p.ecer_Name == name &&
+                  p.ecer_WorkExperienceReferenceId != null)
+      .ToList();
+
+    foreach (var portalInvitation in portalInvitations)
+    {
+      portalInvitation.StateCode = ecer_portalinvitation_statecode.Inactive;
+      portalInvitation.StatusCode = ecer_PortalInvitation_StatusCode.Completed;
+      context.UpdateObject(portalInvitation);
+    }
+
+    context.SaveChanges();
   }
 
   private ecer_PortalInvitation GetOrAddPortalInvitation_WorkExperienceReference(EcerContext context, Contact registrant, string name)
@@ -268,7 +357,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Name = "Reference Test name",
         ecer_FirstName = "Reference Test firstname",
         ecer_LastName = "Reference Test lastname",
-        ecer_EmailAddress = "reference_test@test.com"
+        ecer_EmailAddress = "reference_test@example.com",
       };
 
       var guid = Guid.NewGuid();
@@ -279,7 +368,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Name = name,
         ecer_FirstName = "Test firstname",
         ecer_LastName = "Test lastname",
-        ecer_EmailAddress = "test@email.com",
+        ecer_EmailAddress = "test@example.com",
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
       };
 

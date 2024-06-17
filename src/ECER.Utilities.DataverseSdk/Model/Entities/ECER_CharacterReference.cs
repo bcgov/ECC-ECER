@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Character Reference
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_characterreference_statecode
 	{
 		
@@ -31,7 +31,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Character Reference
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_CharacterReference_StatusCode
 	{
 		
@@ -62,7 +62,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_characterreference")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_CharacterReference : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -104,11 +104,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_investigation_CharacterReferenceId_ecer_c = "ecer_investigation_CharacterReferenceId_ecer_c";
 			public const string ecer_InviteAgain = "ecer_inviteagain";
 			public const string ecer_inviteagainName = "ecer_inviteagainname";
-			public const string ecer_KnowApplicantsTime = "ecer_knowapplicantstime";
+			public const string ecer_IsAdditional = "ecer_isadditional";
+			public const string ecer_isadditionalName = "ecer_isadditionalname";
 			public const string ecer_KnownApplicantTimeChoice = "ecer_knownapplicanttimechoice";
 			public const string ecer_knownapplicanttimechoiceName = "ecer_knownapplicanttimechoicename";
 			public const string ecer_LastInvitationEmailSent = "ecer_lastinvitationemailsent";
 			public const string ecer_LastName = "ecer_lastname";
+			public const string ecer_legacycharacterreferenceid = "ecer_legacycharacterreferenceid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
 			public const string ecer_portalinvitation_CharacterReferenceId = "ecer_portalinvitation_CharacterReferenceId";
@@ -169,6 +171,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacycharacterreferenceid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -650,21 +654,35 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// How long have you known the applicant
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_knowapplicantstime")]
-		public string ecer_KnowApplicantsTime
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isadditional")]
+		public System.Nullable<bool> ecer_IsAdditional
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_knowapplicantstime");
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_isadditional");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_knowapplicantstime", value);
+				this.SetAttributeValue("ecer_isadditional", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isadditionalname")]
+		public string ecer_isadditionalName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isadditional"))
+				{
+					return this.FormattedValues["ecer_isadditional"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -727,6 +745,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_lastname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacycharacterreferenceid")]
+		public string ecer_legacycharacterreferenceid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacycharacterreferenceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacycharacterreferenceid", value);
 			}
 		}
 		

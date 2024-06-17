@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Previous Name
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_previousname_statecode
 	{
 		
@@ -31,20 +31,26 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Previous Name
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_PreviousName_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		Archived = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
+		ReadyforVerification = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Unverified = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Verified = 621870002,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_previousname")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_PreviousName : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -66,6 +72,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_FirstName = "ecer_firstname";
 			public const string ecer_LastName = "ecer_lastname";
+			public const string ecer_legacypreviousnameid = "ecer_legacypreviousnameid";
 			public const string ecer_LinktoIDDocument = "ecer_linktoiddocument";
 			public const string ecer_MiddleName = "ecer_middlename";
 			public const string ecer_Name = "ecer_name";
@@ -75,6 +82,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
 			public const string ecer_PreviousNameId = "ecer_previousnameid";
 			public const string Id = "ecer_previousnameid";
+			public const string ecer_Source = "ecer_source";
+			public const string ecer_sourceName = "ecer_sourcename";
 			public const string ecer_StartDate = "ecer_startdate";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -118,6 +127,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacypreviousnameid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -346,6 +357,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacypreviousnameid")]
+		public string ecer_legacypreviousnameid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacypreviousnameid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacypreviousnameid", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_linktoiddocument")]
 		public string ecer_LinktoIDDocument
 		{
@@ -476,6 +502,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_PreviousNameId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_source")]
+		public virtual ecer_PreviousNameSources? ecer_Source
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PreviousNameSources?)(EntityOptionSetEnum.GetEnum(this, "ecer_source")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_source", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sourcename")]
+		public string ecer_sourceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_source"))
+				{
+					return this.FormattedValues["ecer_source"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

@@ -4,7 +4,7 @@
     You have
     <template v-if="linkable">
       <!-- prettier-ignore -->
-      <router-link to="/messages">1 new message</router-link>
+      <router-link to="/messages"><b>1 new message</b></router-link>
       <span>.</span>
     </template>
     <template v-else>1 new message.</template>
@@ -12,7 +12,9 @@
   <template v-if="messageStore.unreadMessageCount > 1">
     You have
     <template v-if="linkable">
-      <router-link to="/messages">{{ messageStore.unreadMessageCount }} new messages</router-link>
+      <router-link to="/messages">
+        <b>{{ messageStore.unreadMessageCount }} new messages</b>
+      </router-link>
       <span>.</span>
     </template>
     <template v-else>{{ messageStore.unreadMessageCount }} new messages.</template>

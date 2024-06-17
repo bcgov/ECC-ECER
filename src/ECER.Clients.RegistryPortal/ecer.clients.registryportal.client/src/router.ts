@@ -47,9 +47,59 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
-      path: "/manage-application",
+      path: "/manage-application/:applicationId",
+      name: "manageApplication",
       component: () => import("./components/ApplicationSummary.vue"),
       meta: { requiresAuth: true },
+    },
+    {
+      path: "/manage-application/:applicationId/work-experience-reference/:referenceId",
+      name: "viewWorkExperienceReference",
+      component: () => import("./components/ViewWorkExperienceReference.vue"),
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/manage-application/:applicationId/character-reference/:referenceId",
+      name: "viewCharacterReference",
+      component: () => import("./components/ViewCharacterReference.vue"),
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/manage-application/:applicationId/work-experience-reference/:referenceId/edit",
+      name: "updateWorkExperienceReference",
+      component: () => import("./components/UpsertWorkExperienceReference.vue"),
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/manage-application/:applicationId/character-reference/:referenceId/edit",
+      name: "updateCharacterReference",
+      component: () => import("./components/UpsertCharacterReference.vue"),
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/manage-application/:applicationId/character-reference/add",
+      name: "addCharacterReference",
+      component: () => import("./components/UpsertCharacterReference.vue"),
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/manage-application/:applicationId/work-experience-reference/add",
+      name: "addWorkExperienceReference",
+      component: () => import("./components/UpsertWorkExperienceReference.vue"),
+      meta: { requiresAuth: true },
+      props: true,
+    },
+    {
+      path: "/manage-application/:applicationId/work-experience-references",
+      name: "manageWorkExperienceReferences",
+      component: () => import("./components/ManageWorkExperienceReferenceList.vue"),
+      meta: { requiresAuth: true },
+      props: true,
     },
     {
       path: "/application",
@@ -73,8 +123,10 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
-      path: "/submitted",
+      path: "/submitted/:applicationId",
+      name: "submitted",
       component: () => import("./components/pages/Submitted.vue"),
+      props: true,
       meta: { requiresAuth: true },
     },
     {
@@ -103,10 +155,16 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: "/invalid-reference",
+      component: () => import("./components/reference/Invalid.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
       path: "/reference-submitted",
       component: () => import("./components/pages/ReferenceSubmitted.vue"),
       meta: { requiresAuth: false },
     },
+    { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("./components/pages/PageNotFound.vue") },
   ],
 });
 
@@ -165,7 +223,7 @@ router.beforeEach(async (to, _, next) => {
 router.beforeEach((to, from, next) => {
   const applicationStore = useApplicationStore();
 
-  if (from.path === "/application" && to.path !== "/submitted" && applicationStore.hasDraftApplication) {
+  if (from.path === "/application" && to.name !== "submitted" && applicationStore.hasDraftApplication) {
     applicationStore.saveDraft();
     next();
   } else next();

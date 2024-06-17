@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
-      <h3>Work experience hours</h3>
+      <h2>Work experience hours</h2>
       <div role="doc-subtitle">Please provide as much detail as possible.</div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
@@ -33,7 +33,7 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <h3>Program and age of children</h3>
+          <h2>Program and age of children</h2>
         </v-col>
       </v-row>
 
@@ -92,7 +92,7 @@
 
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <h3>When did the applicant complete the hours</h3>
+          <h2>When did the applicant complete the hours</h2>
         </v-col>
       </v-row>
       <v-row>
@@ -123,7 +123,7 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <h3>Relationship to applicant</h3>
+          <h2>Relationship to applicant</h2>
           <div role="doc-subtitle">You must have directly supervised (observed) the applicant working with children</div>
         </v-col>
       </v-row>

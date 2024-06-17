@@ -13,7 +13,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_Investigation_ecer_ContactMethod
 	{
 		
@@ -28,7 +28,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_Investigation_ecer_IntakeType
 	{
 		
@@ -43,7 +43,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_Investigation_ecer_InvestigationComplexity
 	{
 		
@@ -52,10 +52,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Low = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Moderate = 621870002,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum ecer_investigation_ecer_ReasonforPriorityAssignment
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ApplicationinProgress = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		CertificationExpiredExpiring = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		LawyerInvolved = 621870006,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		OpenInvestigation = 621870000,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PreviouslyInvestigated = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Suspended = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		TCsAttached = 621870004,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_Investigation_ecer_Source
 	{
 		
@@ -133,7 +163,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the Investigation
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_investigation_statecode
 	{
 		
@@ -148,7 +178,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the Investigation
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_Investigation_StatusCode
 	{
 		
@@ -197,7 +227,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_investigation")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_Investigation : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -206,6 +236,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		public partial class Fields
 		{
+			public const string bpf_ecer_investigation_ecer_investigationprocess = "bpf_ecer_investigation_ecer_investigationprocess";
 			public const string CreatedBy = "createdby";
 			public const string CreatedByName = "createdbyname";
 			public const string CreatedByYomiName = "createdbyyominame";
@@ -353,6 +384,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_IdNumber = "ecer_idnumber";
 			public const string ecer_ImmediateAction = "ecer_immediateaction";
 			public const string ecer_immediateactionName = "ecer_immediateactionname";
+			public const string ecer_ImmediateActionReason = "ecer_immediateactionreason";
 			public const string ecer_ImmediateCertificateAction = "ecer_immediatecertificateaction";
 			public const string ecer_immediatecertificateactionName = "ecer_immediatecertificateactionname";
 			public const string ecer_ImmediateInvestigatorAssignment = "ecer_immediateinvestigatorassignment";
@@ -413,6 +445,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PreviousStatus = "ecer_previousstatus";
 			public const string ecer_ReadyforAssignment = "ecer_readyforassignment";
 			public const string ecer_readyforassignmentName = "ecer_readyforassignmentname";
+			public const string ecer_ReasonforPriorityAssignment = "ecer_reasonforpriorityassignment";
+			public const string ecer_reasonforpriorityassignmentName = "ecer_reasonforpriorityassignmentname";
+			public const string ecer_RecommendforPriorityAssignment = "ecer_recommendforpriorityassignment";
+			public const string ecer_recommendforpriorityassignmentName = "ecer_recommendforpriorityassignmentname";
 			public const string ecer_ReconRequest = "ecer_reconrequest";
 			public const string ecer_reconrequestName = "ecer_reconrequestname";
 			public const string ecer_Referrer = "ecer_referrer";
@@ -481,11 +517,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningBusinessUnitName = "owningbusinessunitname";
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
+			public const string processid = "processid";
+			public const string stageid = "stageid";
 			public const string StateCode = "statecode";
 			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
 			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
+			public const string traversedpath = "traversedpath";
 			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
@@ -2780,6 +2819,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionreason")]
+		public string ecer_ImmediateActionReason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_immediateactionreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_immediateactionreason", value);
+			}
+		}
+		
 		/// <summary>
 		/// Recommended to supervisor for Immediate Action (Suspension of Certificate/Terms and Conditions)
 		/// </summary>
@@ -3586,6 +3640,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_readyforassignment"))
 				{
 					return this.FormattedValues["ecer_readyforassignment"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reasonforpriorityassignment")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_investigation_ecer_ReasonforPriorityAssignment> ecer_ReasonforPriorityAssignment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_investigation_ecer_ReasonforPriorityAssignment>(this, "ecer_reasonforpriorityassignment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reasonforpriorityassignment", EntityOptionSetEnum.GetMultiEnum(this, "ecer_reasonforpriorityassignment", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reasonforpriorityassignmentname")]
+		public string ecer_reasonforpriorityassignmentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_reasonforpriorityassignment"))
+				{
+					return this.FormattedValues["ecer_reasonforpriorityassignment"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendforpriorityassignment")]
+		public virtual ecer_YesNoNull? ecer_RecommendforPriorityAssignment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_recommendforpriorityassignment")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendforpriorityassignment", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendforpriorityassignmentname")]
+		public string ecer_recommendforpriorityassignmentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_recommendforpriorityassignment"))
+				{
+					return this.FormattedValues["ecer_recommendforpriorityassignment"];
 				}
 				else
 				{
@@ -4691,6 +4809,42 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Contains the id of the process associated with the entity.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("processid")]
+		public System.Nullable<System.Guid> processid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("processid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("processid", value);
+			}
+		}
+		
+		/// <summary>
+		/// Contains the id of the stage where the entity is located.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("stageid")]
+		public System.Nullable<System.Guid> stageid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("stageid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("stageid", value);
+			}
+		}
+		
+		/// <summary>
 		/// Status of the Investigation
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
@@ -4779,6 +4933,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// A comma separated list of string values representing the unique identifiers of stages in a Business Process Flow Instance in the order that they occur.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("traversedpath")]
+		public string traversedpath
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("traversedpath");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("traversedpath", value);
+			}
+		}
+		
+		/// <summary>
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
@@ -4806,6 +4978,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N bpf_ecer_investigation_ecer_investigationprocess
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bpf_ecer_investigation_ecer_investigationprocess")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_investigationprocess> bpf_ecer_investigation_ecer_investigationprocess
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_investigationprocess>("bpf_ecer_investigation_ecer_investigationprocess", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_investigationprocess>("bpf_ecer_investigation_ecer_investigationprocess", null, value);
 			}
 		}
 		

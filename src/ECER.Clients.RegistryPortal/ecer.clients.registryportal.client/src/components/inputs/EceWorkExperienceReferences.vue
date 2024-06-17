@@ -1,8 +1,8 @@
 <template>
   <v-row>
     <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
-      <h3 v-if="!clientId">Reference {{ newClientId }} [Up to 6]</h3>
-      <h3 v-if="clientId">Edit {{ previousFullName }}</h3>
+      <h2 v-if="!clientId">Reference {{ newClientId }} [Up to 6]</h2>
+      <h2 v-if="clientId">Edit {{ previousFullName }}</h2>
       <v-form ref="addWorkExperienceReferenceForm" validate-on="input" class="mt-6">
         <v-text-field
           v-model="lastName"
@@ -116,7 +116,7 @@
           <p class="small">You must enter 500 hours of work experience to submit your application.</p>
         </Alert>
       </v-col>
-      <v-col v-if="duplicateCharacterReference" sm="12" md="10" lg="8" xl="6">
+      <v-col v-if="applicationStore.hasDuplicateReferences" sm="12" md="10" lg="8" xl="6">
         <Alert type="error">
           <p class="small">Your work experience reference(s) cannot be the same as your character reference</p>
         </Alert>
@@ -144,6 +144,7 @@ import Alert from "@/components/Alert.vue";
 import WorkExperienceReferenceList, { type WorkExperienceReferenceData } from "@/components/WorkExperienceReferenceList.vue";
 import WorkExperienceReferenceProgressBar from "@/components/WorkExperienceReferenceProgressBar.vue";
 import { useAlertStore } from "@/store/alert";
+import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { EceWorkExperienceReferencesProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
@@ -169,10 +170,12 @@ export default defineComponent({
   setup: () => {
     const alertStore = useAlertStore();
     const wizardStore = useWizardStore();
+    const applicationStore = useApplicationStore();
 
     return {
       alertStore,
       wizardStore,
+      applicationStore,
     };
   },
   data: function () {
@@ -204,24 +207,9 @@ export default defineComponent({
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
     },
-    duplicateCharacterReference() {
-      const check = Object.values(this.modelValue).some((workExperienceReference: Components.Schemas.WorkExperienceReference) => {
-        const characterReferenceKey = this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id;
-        return (
-          workExperienceReference.firstName === this.wizardStore.wizardData?.[characterReferenceKey]?.[0]?.firstName &&
-          workExperienceReference.lastName === this.wizardStore.wizardData?.[characterReferenceKey]?.[0]?.lastName &&
-          workExperienceReference.emailAddress === this.wizardStore.wizardData?.[characterReferenceKey]?.[0]?.emailAddress
-        );
-      });
-      return check;
-    },
   },
   mounted() {
-    if (Object.keys(this.modelValue).length === 0) {
-      this.mode = "add";
-    } else {
-      this.mode = "list";
-    }
+    this.mode = "list";
   },
   methods: {
     isNumber,

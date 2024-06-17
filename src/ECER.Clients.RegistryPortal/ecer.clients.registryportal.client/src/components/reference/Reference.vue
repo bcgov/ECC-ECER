@@ -6,7 +6,7 @@
   >
     <template #header>
       <v-container class="bg-white">
-        <h2>{{ inviteTypeTitle }}</h2>
+        <h1>{{ inviteTypeTitle }}</h1>
         <div role="doc-subtitle">{{ `For applicant: ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</div>
 
         <v-btn v-if="wizardStore.step !== 1" slim variant="text" rounded="lg" color="primary" @click="handleBack">
@@ -59,7 +59,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import { getReference, optOutReference, postCharacterReference, postWorkExperienceReference } from "@/api/reference";
 import characterReferenceWizardConfig from "@/config/character-reference-wizard";
@@ -77,7 +77,13 @@ export default defineComponent({
   components: { Wizard },
   async setup() {
     const route = useRoute();
-    const { data } = await getReference(route.params.token as string);
+    const router = useRouter();
+    const { data, error } = await getReference(route.params.token as string);
+
+    if (error) {
+      router.push("/invalid-reference");
+    }
+
     const wizardStore = useWizardStore();
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();

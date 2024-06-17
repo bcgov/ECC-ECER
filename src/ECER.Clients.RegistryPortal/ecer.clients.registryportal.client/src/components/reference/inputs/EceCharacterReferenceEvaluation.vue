@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
-      <h3>Reference evaluation</h3>
+      <h2>Reference evaluation</h2>
       <div role="doc-subtitle">
         {{
           `Tell us about your personal experience with the applicant ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}.`
@@ -71,6 +71,7 @@
             variant="outlined"
             color="primary"
             maxlength="1000"
+            persistent-counter
             hide-details="auto"
             :auto-grow="true"
             @update:model-value="updateField('childInteractionObservations', $event)"
@@ -89,38 +90,10 @@
             variant="outlined"
             color="primary"
             maxlength="1000"
+            persistent-counter
             hide-details="auto"
             :auto-grow="true"
             @update:model-value="updateField('applicantTemperamentAssessment', $event)"
-          ></v-textarea>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="8" lg="6" xl="4">
-          <h3>Please confirm</h3>
-          <p>
-            If certified, the applicant may work alone in a licensed childcare facility with children 0-5 years of age for extended periods of time. Do you
-            believe the applicant should be granted authorization to be an ECE or ECE Assistant?
-          </p>
-          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="applicantShouldNotBeECEChanged">
-            <v-radio label="Yes" :value="false"></v-radio>
-            <v-radio label="No" :value="true"></v-radio>
-          </v-radio-group>
-        </v-col>
-      </v-row>
-      <v-row v-if="modelValue.applicantShouldNotBeECE" class="mt-5">
-        <v-col cols="12" md="8" lg="6" xl="4">
-          <label for="applicantShouldNotBeECETextArea">Why do you believe the applicant should NOT be granted authorization to be ECE or ECE Assistant.</label>
-          <v-textarea
-            id="applicantShouldNotBeECETextArea"
-            :rules="[Rules.required('Enter your response')]"
-            counter="1000"
-            variant="outlined"
-            color="primary"
-            maxlength="1000"
-            hide-details="auto"
-            :auto-grow="true"
-            @update:model-value="updateField('applicantNotQualifiedReason', $event)"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -174,13 +147,6 @@ export default defineComponent({
         });
       } else {
         this.$emit("update:model-value", { ...this.modelValue, referenceRelationship: value });
-      }
-    },
-    applicantShouldNotBeECEChanged(value: any) {
-      if (value === true) {
-        this.$emit("update:model-value", { ...this.modelValue, applicantShouldNotBeECE: value });
-      } else {
-        this.$emit("update:model-value", { ...this.modelValue, applicantShouldNotBeECE: value, applicantNotQualifiedReason: "" });
       }
     },
   },

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
-using Ganss.Xss;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Accounts.Communications;
@@ -30,41 +29,30 @@ internal class CommunicationRepository : ICommunicationRepository
       communications = communications.WhereIn(communication => communication.c.StatusCode!.Value, statuses);
     }
 
-    // Filtering by ID  
+    // Filtering by ID
     if (query.ById != null) communications = communications.Where(r => r.c.ecer_CommunicationId == Guid.Parse(query.ById));
-    
+
     // Filtering by registrant ID
     if (query.ByRegistrantId != null) communications = communications.Where(r => r.c.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
 
-    //Sort by notifiedOn in descending order
-    var sortedCommunications = communications.OrderByDescending(r => r.c.ecer_DateNotified);
-    
-    // Sanitize rich text
-    var sanitizer = new HtmlSanitizer();
-    foreach (var communication in sortedCommunications)
-    {
-      communication.c.ecer_Message = sanitizer.Sanitize(communication.c.ecer_Message);
-    }
-    
-    var data = sortedCommunications.Select(r => r.c).ToList();
-    var result = mapper.Map<IEnumerable<Communication>>(data);
-    return result!;
+    communications = communications.OrderByDescending(r => r.c.ecer_DateNotified);
+    return mapper.Map<IEnumerable<Communication>>(communications.Select(r => r.c).ToList());
   }
-  
+
   public async Task<string> MarkAsSeen(string communicationId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
     var communication =
       context.ecer_CommunicationSet.Single(c => c.ecer_CommunicationId == Guid.Parse(communicationId));
-    
+
     if (communication == null) throw new InvalidOperationException($"Communication '{communicationId}' not found");
-      
+
     communication.ecer_DateAcknowledged = DateTime.Now;
     communication.ecer_Acknowledged = true;
     communication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
     context.UpdateObject(communication);
-    
+
     context.SaveChanges();
     return communication.Id.ToString();
   }

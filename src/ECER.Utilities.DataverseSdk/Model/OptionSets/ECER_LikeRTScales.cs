@@ -13,21 +13,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_likertscales
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Competent = 621870001,
+		No = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NotCompetent = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		SomewhatCompetent = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		VeryCompetent = 621870000,
+		Yes = 621870000,
 	}
 }
 #pragma warning restore CS1591

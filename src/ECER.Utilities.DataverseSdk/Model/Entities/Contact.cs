@@ -16,7 +16,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Account role of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_AccountRoleCode
 	{
 		
@@ -34,7 +34,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Type of address for address 1, such as billing, shipping, or primary address.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address1_AddressTypeCode
 	{
 		
@@ -55,7 +55,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Freight terms for address 1.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address1_FreightTermsCode
 	{
 		
@@ -70,7 +70,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Method of shipment for address 1.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address1_ShippingMethodCode
 	{
 		
@@ -100,7 +100,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Type of address for address 2, such as billing, shipping, or primary address.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address2_AddressTypeCode
 	{
 		
@@ -112,7 +112,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Freight terms for address 2.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address2_FreightTermsCode
 	{
 		
@@ -124,7 +124,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Method of shipment for address 2.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address2_ShippingMethodCode
 	{
 		
@@ -136,7 +136,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Type of address for address 3, such as billing, shipping, or primary address.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address3_AddressTypeCode
 	{
 		
@@ -148,7 +148,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Freight terms for address 3.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address3_FreightTermsCode
 	{
 		
@@ -160,7 +160,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Method of shipment for address 3.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_Address3_ShippingMethodCode
 	{
 		
@@ -172,7 +172,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Size of the contact's business.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_CustomerSizeCode
 	{
 		
@@ -184,7 +184,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Type of business associated with the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_CustomerTypeCode
 	{
 		
@@ -196,7 +196,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Formal education level that the contact has attained.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_EducationCode
 	{
 		
@@ -208,7 +208,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Marital status of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_FamilyStatusCode
 	{
 		
@@ -229,7 +229,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Gender of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_GenderCode
 	{
 		
@@ -244,7 +244,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Information about whether the contact has children.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_HasChildrenCode
 	{
 		
@@ -256,7 +256,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Source of the lead of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_LeadSourceCode
 	{
 		
@@ -268,7 +268,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Indicate buying influence using label
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_msdyn_decisioninfluencetag
 	{
 		
@@ -289,7 +289,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// For Internal Use only
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_msdyn_orgchangestatus
 	{
 		
@@ -307,7 +307,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Payment terms for the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_PaymentTermsCode
 	{
 		
@@ -328,7 +328,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Day of the week that the contact prefers for scheduling service activities.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_PreferredAppointmentDayCode
 	{
 		
@@ -358,7 +358,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Time of day that the contact prefers for scheduling service activities.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_PreferredAppointmentTimeCode
 	{
 		
@@ -376,7 +376,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Preferred contact method for the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_PreferredContactMethodCode
 	{
 		
@@ -400,7 +400,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Method of shipping for the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_ShippingMethodCode
 	{
 		
@@ -412,7 +412,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Status of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum contact_statecode
 	{
 		
@@ -427,7 +427,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Reason for the status of the contact.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_StatusCode
 	{
 		
@@ -442,7 +442,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// Unique identifier of the territory to which the contact is assigned.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum Contact_TerritoryCode
 	{
 		
@@ -455,7 +455,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("contact")]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.6")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class Contact : Microsoft.Xrm.Sdk.Entity
 	{
 		
@@ -651,6 +651,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_AgreetoTermsandConditionsDate = "ecer_agreetotermsandconditionsdate";
 			public const string ecer_agreetotermsandconditionsName = "ecer_agreetotermsandconditionsname";
 			public const string ecer_application_Applicantid_contact = "ecer_application_Applicantid_contact";
+			public const string ecer_applicationassessment_ApplicantId = "ecer_applicationassessment_ApplicantId";
 			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
 			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
 			public const string ecer_CertificationLevel = "ecer_certificationlevel";
@@ -664,10 +665,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_contact_ecer_investigation_Applicant = "ecer_contact_ecer_investigation_Applicant";
 			public const string ecer_contact_ecer_portaluser_474 = "ecer_contact_ecer_portaluser_474";
 			public const string ecer_contact_ecer_previousaddress_251 = "ecer_contact_ecer_previousaddress_251";
+			public const string ecer_contact_ecer_previousaddress_legacycontactid = "ecer_contact_ecer_previousaddress_legacycontactid";
 			public const string ecer_eceprogramrepresentative_ContactId_contac = "ecer_eceprogramrepresentative_ContactId_contac";
 			public const string ecer_ecer_characterreference_Applicantid_conta = "ecer_ecer_characterreference_Applicantid_conta";
 			public const string ecer_ecer_professionaldevelopment_Applicantid_ = "ecer_ecer_professionaldevelopment_Applicantid_";
 			public const string ecer_ecer_workexperienceref_ReferenceContactid = "ecer_ecer_workexperienceref_ReferenceContactid";
+			public const string ecer_educationassessment_ApplicantId = "ecer_educationassessment_ApplicantId";
 			public const string ecer_guardianreference_Applicantid = "ecer_guardianreference_Applicantid";
 			public const string ecer_HasCurrentCertificateConditions = "ecer_hascurrentcertificateconditions";
 			public const string ecer_hascurrentcertificateconditionsName = "ecer_hascurrentcertificateconditionsname";
@@ -681,9 +684,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_portalinvitation_ApplicantId = "ecer_portalinvitation_ApplicantId";
 			public const string ecer_portaluser_Contactid = "ecer_portaluser_Contactid";
 			public const string ecer_postsecondaryinstitute_PrimaryProgramRepr = "ecer_postsecondaryinstitute_PrimaryProgramRepr";
+			public const string ecer_postsecondaryinstitutesitevisit_ProgramRe = "ecer_postsecondaryinstitutesitevisit_ProgramRe";
 			public const string ecer_PreferredName = "ecer_preferredname";
 			public const string ecer_PreviousName = "ecer_previousname";
 			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
+			public const string ecer_renewalassessment_ApplicantId = "ecer_renewalassessment_ApplicantId";
 			public const string ecer_Role = "ecer_role";
 			public const string ecer_TermsandConditionsText = "ecer_termsandconditionstext";
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
@@ -767,6 +772,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string msdyn_orgchangestatus = "msdyn_orgchangestatus";
 			public const string msdyn_orgchangestatusName = "msdyn_orgchangestatusname";
 			public const string msdyn_portaltermsagreementdate = "msdyn_portaltermsagreementdate";
+			public const string msdyn_PrimaryTimeZone = "msdyn_primarytimezone";
 			public const string msdyn_segmentid = "msdyn_segmentid";
 			public const string msdyn_segmentidName = "msdyn_segmentidname";
 			public const string mspp_userpreferredlcid = "mspp_userpreferredlcid";
@@ -5613,6 +5619,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Indicates the primary time zone that the contact works on.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_primarytimezone")]
+		public System.Nullable<int> msdyn_PrimaryTimeZone
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("msdyn_primarytimezone");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("msdyn_primarytimezone", value);
+			}
+		}
+		
+		/// <summary>
 		/// Unique identifier for Segment associated with contact.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("msdyn_segmentid")]
@@ -6963,6 +6987,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_applicationassessment_ApplicantId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_applicationassessment_ApplicantId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment> ecer_applicationassessment_ApplicantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_applicationassessment_ApplicantId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_applicationassessment_ApplicantId", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_certificate_Registrantid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificate_Registrantid")]
@@ -7161,6 +7203,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_contact_ecer_previousaddress_legacycontactid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_previousaddress_legacycontactid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PreviousAddress> ecer_contact_ecer_previousaddress_legacycontactid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PreviousAddress>("ecer_contact_ecer_previousaddress_legacycontactid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PreviousAddress>("ecer_contact_ecer_previousaddress_legacycontactid", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_eceprogramrepresentative_ContactId_contac
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_eceprogramrepresentative_ContactId_contac")]
@@ -7229,6 +7289,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_ecer_workexperienceref_ReferenceContactid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_educationassessment_ApplicantId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_educationassessment_ApplicantId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_EducationAssessment> ecer_educationassessment_ApplicantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_EducationAssessment>("ecer_educationassessment_ApplicantId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_EducationAssessment>("ecer_educationassessment_ApplicantId", null, value);
 			}
 		}
 		
@@ -7305,6 +7383,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_postsecondaryinstitutesitevisit_ProgramRe
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstitutesitevisit_ProgramRe")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit> ecer_postsecondaryinstitutesitevisit_ProgramRe
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_postsecondaryinstitutesitevisit_ProgramRe", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_postsecondaryinstitutesitevisit_ProgramRe", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_previousname_Contactid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_previousname_Contactid")]
@@ -7319,6 +7415,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName>("ecer_previousname_Contactid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_renewalassessment_ApplicantId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_renewalassessment_ApplicantId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_RenewalAssessment> ecer_renewalassessment_ApplicantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_RenewalAssessment>("ecer_renewalassessment_ApplicantId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_RenewalAssessment>("ecer_renewalassessment_ApplicantId", null, value);
 			}
 		}
 		

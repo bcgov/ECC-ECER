@@ -39,10 +39,28 @@ declare namespace Components {
       | "Escalated"
       | "Decision"
       | "Withdrawn"
+      | "Pending"
       | "Ready"
       | "InProgress"
       | "PendingQueue"
-      | "ReconsiderationDecision";
+      | "ReconsiderationDecision"
+      | "AppealDecision";
+    export type ApplicationStatusReasonDetail =
+      | "Actioned"
+      | "BeingAssessed"
+      | "Certified"
+      | "Denied"
+      | "ForReview"
+      | "InvestigationsConsultationNeeded"
+      | "MoreInformationRequired"
+      | "OperationSupervisorManagerofCertificationsConsultationNeeded"
+      | "PendingDocuments"
+      | "ProgramAnalystReview"
+      | "ReadyforAssessment"
+      | "ReceivedPending"
+      | "ReceivePhysicalTranscripts"
+      | "SupervisorConsultationNeeded"
+      | "ValidatingIDs";
     /**
      * Submit application request
      */
@@ -76,8 +94,24 @@ declare namespace Components {
       workedWithChildren?: boolean;
       childInteractionObservations?: string | null;
       applicantTemperamentAssessment?: string | null;
-      applicantShouldNotBeECE?: boolean;
-      applicantNotQualifiedReason?: string | null;
+    }
+    export type CharacterReferenceStage =
+      | "ApplicationSubmitted"
+      | "Approved"
+      | "Draft"
+      | "InProgress"
+      | "Rejected"
+      | "Submitted"
+      | "UnderReview"
+      | "WaitingResponse";
+    export interface CharacterReferenceStatus {
+      id?: string | null;
+      status?: CharacterReferenceStage;
+      firstName?: string | null;
+      lastName?: string | null;
+      emailAddress?: string | null;
+      phoneNumber?: string | null;
+      willProvideReference?: boolean | null;
     }
     export interface CharacterReferenceSubmissionRequest {
       token?: string | null;
@@ -160,7 +194,7 @@ declare namespace Components {
       } | null;
     }
     export type InviteType = "CharacterReference" | "WorkExperienceReference";
-    export type LikertScale = "Competent" | "NotCompetent" | "SomewhatCompetent" | "VeryCompetent";
+    export type LikertScale = "Yes" | "No";
     export interface OidcAuthenticationSettings {
       authority?: string | null;
       clientId?: string | null;
@@ -184,7 +218,7 @@ declare namespace Components {
       workexperienceReferenceId?: string | null;
       characterReferenceId?: string | null;
       inviteType?: InviteType;
-      workExperienceReferenceHours?: number | null;
+      workExperienceReferenceHours?: number | null; // int32
     }
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
@@ -207,13 +241,22 @@ declare namespace Components {
       firstName?: string | null;
       email?: string | null;
       phoneNumber?: string | null;
-      certificateProvinceId?: string | null;
       certificateProvinceOther?: string | null;
+      certificateProvinceId?: string | null;
       certificateNumber?: string | null;
       dateOfBirth?: string | null; // date-time
     }
     export type ReferenceKnownTime = "From1to2years" | "From2to5years" | "From6monthsto1year" | "Lessthan6months" | "Morethan5years";
     export type ReferenceRelationship = "CoWorker" | "Other" | "ParentGuardianofChildinCare" | "Supervisor" | "Teacher";
+    /**
+     * Resend reference invite response
+     */
+    export interface ResendReferenceInviteResponse {
+      /**
+       * The reference id
+       */
+      referenceId?: string | null;
+    }
     /**
      * Save draft application request
      */
@@ -222,6 +265,19 @@ declare namespace Components {
     }
     export interface SubmitApplicationResponse {
       applicationId?: string | null;
+    }
+    export interface SubmittedApplicationStatus {
+      id?: string | null;
+      submittedOn?: string; // date-time
+      status?: ApplicationStatus;
+      subStatus?: ApplicationStatusReasonDetail;
+      certificationTypes?: CertificationType[] | null;
+      readyForAssessmentDate?: string | null; // date-time
+      transcriptsStatus?: TranscriptStatus[] | null;
+      workExperienceReferencesStatus?: WorkExperienceReferenceStatus[] | null;
+      characterReferencesStatus?: CharacterReferenceStatus[] | null;
+      addMoreCharacterReference?: boolean | null;
+      addMoreWorkExperienceReference?: boolean | null;
     }
     export interface Transcript {
       id?: string | null;
@@ -237,12 +293,21 @@ declare namespace Components {
       doesECERegistryHaveTranscript?: boolean;
       isOfficialTranscriptRequested?: boolean;
     }
+    export type TranscriptStage = "Accepted" | "ApplicationSubmitted" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "WaitingforDetails";
+    export interface TranscriptStatus {
+      id?: string | null;
+      status?: TranscriptStage;
+      educationalInstitutionName?: string | null;
+    }
     export type UnabletoProvideReferenceReasons =
       | "Iamunabletoatthistime"
       | "Idonothavetheinformationrequired"
       | "Idonotknowthisperson"
       | "Idonotmeettherequirementstoprovideareference"
       | "Other";
+    export interface UpdateReferenceResponse {
+      referenceId?: string | null;
+    }
     export interface UserInfo {
       firstName?: string | null;
       lastName?: string | null;
@@ -266,6 +331,15 @@ declare namespace Components {
       residentialAddress?: /* Address */ Address;
       mailingAddress?: /* Address */ Address;
     }
+    export type WorkExperienceRefStage =
+      | "ApplicationSubmitted"
+      | "Approved"
+      | "Draft"
+      | "InProgress"
+      | "Rejected"
+      | "Submitted"
+      | "UnderReview"
+      | "WaitingforResponse";
     export interface WorkExperienceReference {
       firstName?: string | null;
       lastName?: string | null;
@@ -291,8 +365,6 @@ declare namespace Components {
       fosteringPositiveRelationFamilyReason?: string | null;
       fosteringPositiveRelationCoworker?: LikertScale;
       fosteringPositiveRelationCoworkerReason?: string | null;
-      isApplicantQualified?: boolean;
-      applicantNotQualifiedReason?: string | null;
     }
     export interface WorkExperienceReferenceDetails {
       hours?: number; // int32
@@ -306,6 +378,18 @@ declare namespace Components {
       referenceRelationship?: ReferenceRelationship;
       referenceRelationshipOther?: string | null;
     }
+    export interface WorkExperienceReferenceStatus {
+      id?: string | null;
+      status?: WorkExperienceRefStage;
+      firstName?: string | null;
+      lastName?: string | null;
+      emailAddress?: string | null;
+      phoneNumber?: string | null;
+      totalNumberofHoursAnticipated?: number | null; // int32
+      totalNumberofHoursApproved?: number | null; // int32
+      totalNumberofHoursObserved?: number | null; // int32
+      willProvideReference?: boolean | null;
+    }
     export interface WorkExperienceReferenceSubmissionRequest {
       token?: string | null;
       willProvideReference?: boolean;
@@ -318,6 +402,36 @@ declare namespace Components {
   }
 }
 declare namespace Paths {
+  namespace ApplicationCharacterReferenceResendInvitePost {
+    namespace Parameters {
+      export type ApplicationId = string;
+      export type ReferenceId = string;
+    }
+    export interface PathParameters {
+      applicationId: Parameters.ApplicationId;
+      referenceId: Parameters.ReferenceId;
+    }
+    namespace Responses {
+      export type $200 = /* Resend reference invite response */ Components.Schemas.ResendReferenceInviteResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace ApplicationCharacterreferenceUpdatePost {
+    namespace Parameters {
+      export type ApplicationId = string;
+      export type ReferenceId = string;
+    }
+    export interface PathParameters {
+      application_id: Parameters.ApplicationId;
+      reference_id?: Parameters.ReferenceId;
+    }
+    export type RequestBody = Components.Schemas.CharacterReference;
+    namespace Responses {
+      export type $200 = Components.Schemas.UpdateReferenceResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace ApplicationGet {
     namespace Parameters {
       export type ByStatus = Components.Schemas.ApplicationStatus[];
@@ -339,6 +453,49 @@ declare namespace Paths {
     namespace Responses {
       export type $200 = Components.Schemas.SubmitApplicationResponse;
       export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ApplicationStatusGet {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.SubmittedApplicationStatus;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export type $404 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace ApplicationWorkExperienceReferenceResendInvitePost {
+    namespace Parameters {
+      export type ApplicationId = string;
+      export type ReferenceId = string;
+    }
+    export interface PathParameters {
+      applicationId: Parameters.ApplicationId;
+      referenceId: Parameters.ReferenceId;
+    }
+    namespace Responses {
+      export type $200 = /* Resend reference invite response */ Components.Schemas.ResendReferenceInviteResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace ApplicationWorkexperiencereferenceUpdatePost {
+    namespace Parameters {
+      export type ApplicationId = string;
+      export type ReferenceId = string;
+    }
+    export interface PathParameters {
+      application_id: Parameters.ApplicationId;
+      reference_id?: Parameters.ReferenceId;
+    }
+    export type RequestBody = Components.Schemas.WorkExperienceReference;
+    namespace Responses {
+      export type $200 = Components.Schemas.UpdateReferenceResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
@@ -590,6 +747,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
   /**
+   * application_status_get - Handles application status queries
+   */
+  "application_status_get"(
+    parameters?: Parameters<Paths.ApplicationStatusGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ApplicationStatusGet.Responses.$200>;
+  /**
    * draftapplication_delete - Cancel a draft application for the current user
    *
    * Changes status to cancelled
@@ -599,6 +764,42 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.DraftapplicationDelete.Responses.$200>;
+  /**
+   * application_workexperiencereference_update_post - Update work experience reference
+   */
+  "application_workexperiencereference_update_post"(
+    parameters?: Parameters<Paths.ApplicationWorkexperiencereferenceUpdatePost.PathParameters> | null,
+    data?: Paths.ApplicationWorkexperiencereferenceUpdatePost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ApplicationWorkexperiencereferenceUpdatePost.Responses.$200>;
+  /**
+   * application_characterreference_update_post - Update character reference
+   */
+  "application_characterreference_update_post"(
+    parameters?: Parameters<Paths.ApplicationCharacterreferenceUpdatePost.PathParameters> | null,
+    data?: Paths.ApplicationCharacterreferenceUpdatePost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ApplicationCharacterreferenceUpdatePost.Responses.$200>;
+  /**
+   * application_character_reference_resend_invite_post - Resend a character reference invite
+   *
+   * Changes character reference invite again status to true
+   */
+  "application_character_reference_resend_invite_post"(
+    parameters?: Parameters<Paths.ApplicationCharacterReferenceResendInvitePost.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ApplicationCharacterReferenceResendInvitePost.Responses.$200>;
+  /**
+   * application_work_experience_reference_resend_invite_post - Resend a work experience reference invite
+   *
+   * Changes work experience reference invite again status to true
+   */
+  "application_work_experience_reference_resend_invite_post"(
+    parameters?: Parameters<Paths.ApplicationWorkExperienceReferenceResendInvitePost.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ApplicationWorkExperienceReferenceResendInvitePost.Responses.$200>;
 }
 
 export interface PathsDictionary {
@@ -742,6 +943,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
   };
+  ["/api/applications/{id}/status"]: {
+    /**
+     * application_status_get - Handles application status queries
+     */
+    "get"(
+      parameters?: Parameters<Paths.ApplicationStatusGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ApplicationStatusGet.Responses.$200>;
+  };
   ["/api/draftApplications/{id}"]: {
     /**
      * draftapplication_delete - Cancel a draft application for the current user
@@ -753,6 +964,50 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DraftapplicationDelete.Responses.$200>;
+  };
+  ["/api/applications/{application_id}/workexperiencereference/{reference_id}"]: {
+    /**
+     * application_workexperiencereference_update_post - Update work experience reference
+     */
+    "post"(
+      parameters?: Parameters<Paths.ApplicationWorkexperiencereferenceUpdatePost.PathParameters> | null,
+      data?: Paths.ApplicationWorkexperiencereferenceUpdatePost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ApplicationWorkexperiencereferenceUpdatePost.Responses.$200>;
+  };
+  ["/api/applications/{application_id}/characterreference/{reference_id}"]: {
+    /**
+     * application_characterreference_update_post - Update character reference
+     */
+    "post"(
+      parameters?: Parameters<Paths.ApplicationCharacterreferenceUpdatePost.PathParameters> | null,
+      data?: Paths.ApplicationCharacterreferenceUpdatePost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ApplicationCharacterreferenceUpdatePost.Responses.$200>;
+  };
+  ["/api/applications/{applicationId}/character-reference/{referenceId}/resend-invite"]: {
+    /**
+     * application_character_reference_resend_invite_post - Resend a character reference invite
+     *
+     * Changes character reference invite again status to true
+     */
+    "post"(
+      parameters?: Parameters<Paths.ApplicationCharacterReferenceResendInvitePost.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ApplicationCharacterReferenceResendInvitePost.Responses.$200>;
+  };
+  ["/api/applications/{applicationId}/work-experience-reference/{referenceId}/resend-invite"]: {
+    /**
+     * application_work_experience_reference_resend_invite_post - Resend a work experience reference invite
+     *
+     * Changes work experience reference invite again status to true
+     */
+    "post"(
+      parameters?: Parameters<Paths.ApplicationWorkExperienceReferenceResendInvitePost.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ApplicationWorkExperienceReferenceResendInvitePost.Responses.$200>;
   };
 }
 

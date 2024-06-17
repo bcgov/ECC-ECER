@@ -1,7 +1,7 @@
 <template>
   <v-card :rounded="!isRounded ? '0' : ''" flat color="primary">
     <v-card-item class="ma-4">
-      <h3 class="text-white">{{ title }}</h3>
+      <h2 class="text-white">{{ title }}</h2>
       <p class="small text-white mt-4">
         {{ subTitle }}
       </p>
@@ -22,7 +22,9 @@
           applicationStore.applicationStatus === 'Submitted' ||
           applicationStore.applicationStatus === 'Ready' ||
           applicationStore.applicationStatus === 'InProgress' ||
-          applicationStore.applicationStatus === 'PendingQueue'
+          applicationStore.applicationStatus === 'PendingQueue' ||
+          applicationStore.applicationStatus === 'Pending' ||
+          applicationStore.applicationStatus === 'Escalated'
         "
         class="d-flex flex-row justify-start ga-3 flex-wrap"
       >
@@ -93,7 +95,7 @@ export default defineComponent({
       this.$router.push("/application");
     },
     handleManageApplication() {
-      this.$router.push("/manage-application");
+      this.$router.push({ name: "manageApplication", params: { applicationId: this.applicationStore?.application?.id } });
     },
   },
 });

@@ -56,13 +56,17 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public ApplicationStatusReasonDetail SubStatus { get; set; }
+  public DateTime? ReadyForAssessmentDate { get; set; }
+  public bool? AddMoreCharacterReference { get; set; }
+  public bool? AddMoreWorkExperienceReference { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)
 {
   public string? CampusLocation { get; set; }
   public string? LanguageofInstruction { get; set; }
-  public StageStatus? Status { get; set; }
+  public TranscriptStage? Status { get; set; }
 }
 
 public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
@@ -71,14 +75,20 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
 
   public string? PhoneNumber { get; set; }
 
-  public StageStatus? Status { get; set; }
+  public WorkExperienceRefStage? Status { get; set; }
+
+  public bool? WillProvideReference { get; set; }
+  public int? TotalNumberofHoursApproved { get; set; }
+  public int? TotalNumberofHoursObserved { get; set; }
 }
 
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
   public string? Id { get; set; }
 
-  public StageStatus? Status { get; set; }
+  public CharacterReferenceStage? Status { get; set; }
+
+  public bool? WillProvideReference { get; set; }
 }
 
 public enum PortalStage
@@ -121,7 +131,27 @@ public enum ApplicationStatus
   Ready,
   InProgress,
   PendingQueue,
-  ReconsiderationDecision
+  ReconsiderationDecision,
+  AppealDecision
+}
+
+public enum ApplicationStatusReasonDetail
+{
+  Actioned,
+  BeingAssessed,
+  Certified,
+  Denied,
+  ForReview,
+  InvestigationsConsultationNeeded,
+  MoreInformationRequired,
+  OperationSupervisorManagerofCertificationsConsultationNeeded,
+  PendingDocuments,
+  ProgramAnalystReview,
+  ReadyforAssessment,
+  ReceivedPending,
+  ReceivePhysicalTranscripts,
+  SupervisorConsultationNeeded,
+  ValidatingIDs,
 }
 
 public record CharacterReferenceSubmissionRequest(string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight);
@@ -131,8 +161,11 @@ public record ReferenceContactInformation(string LastName, string FirstName, str
   public string? CertificateNumber { get; set; }
   public DateTime? DateOfBirth { get; set; }
 }
-public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, ReferenceKnownTime LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment, bool ApplicantShouldNotBeECE, string ApplicantNotQualifiedReason);
+public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, ReferenceKnownTime LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 public record OptOutReferenceRequest(string Token, UnabletoProvideReferenceReasons UnabletoProvideReferenceReasons) : IRequest<ReferenceSubmissionResult>;
+
+public record ResendCharacterReferenceInviteRequest(string ApplicationId, string ReferenceId, string UserId) : IRequest<string>;
+public record ResendWorkExperienceReferenceInviteRequest(string ApplicationId, string ReferenceId, string UserId) : IRequest<string>;
 
 public enum UnabletoProvideReferenceReasons
 {
@@ -155,7 +188,7 @@ public class ReferenceSubmissionResult
 
 public record WorkExperienceReferenceSubmissionRequest(string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ConfirmProvidedInformationIsRight);
 public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
-public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason, bool IsApplicantQualified, string ApplicantNotQualifiedReason);
+public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
 
 public enum WorkHoursType
 {
@@ -196,16 +229,40 @@ public enum ChildcareAgeRanges
 
 public enum LikertScale
 {
-  Competent,
-  NotCompetent,
-  SomewhatCompetent,
-  VeryCompetent,
+  Yes,
+  No
 }
 
 public record SubmitReferenceCommand(string Token) : IRequest<ReferenceSubmissionResult>
 {
   public WorkExperienceReferenceSubmissionRequest? WorkExperienceReferenceSubmissionRequest { get; set; }
   public CharacterReferenceSubmissionRequest? CharacterReferenceSubmissionRequest { get; set; }
+}
+
+public record UpdateWorkExperienceReferenceCommand(WorkExperienceReference workExperienceRef, string applicationId, string referenceId, string userId) : IRequest<UpdateWorkExperienceReferenceResult>;
+
+public class UpdateWorkExperienceReferenceResult
+{
+  public string? ReferenceId { get; set; }
+  public bool IsSuccess { get; set; }
+  public string? ErrorMessage { get; set; }
+
+  public static UpdateWorkExperienceReferenceResult Success() => new UpdateWorkExperienceReferenceResult { IsSuccess = true };
+
+  public static UpdateWorkExperienceReferenceResult Failure(string message) => new UpdateWorkExperienceReferenceResult { IsSuccess = false, ErrorMessage = message };
+}
+
+public record UpdateCharacterReferenceCommand(CharacterReference characterRef, string applicationId, string referenceId, string userId) : IRequest<UpdateCharacterReferenceResult>;
+
+public class UpdateCharacterReferenceResult
+{
+  public string? ReferenceId { get; set; }
+  public bool IsSuccess { get; set; }
+  public string? ErrorMessage { get; set; }
+
+  public static UpdateCharacterReferenceResult Success() => new UpdateCharacterReferenceResult { IsSuccess = true };
+
+  public static UpdateCharacterReferenceResult Failure(string message) => new UpdateCharacterReferenceResult { IsSuccess = false, ErrorMessage = message };
 }
 
 public enum ReferenceKnownTime
@@ -217,10 +274,37 @@ public enum ReferenceKnownTime
   Morethan5years,
 }
 
-
-public enum StageStatus
+public enum TranscriptStage
 {
-  Complete,
-  InComplete,
-  InProgress
+  Accepted,
+  ApplicationSubmitted,
+  Draft,
+  InProgress,
+  Rejected,
+  Submitted,
+  WaitingforDetails
+}
+
+public enum WorkExperienceRefStage
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  InProgress,
+  Rejected,
+  Submitted,
+  UnderReview,
+  WaitingforResponse
+}
+
+public enum CharacterReferenceStage
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  InProgress,
+  Rejected,
+  Submitted,
+  UnderReview,
+  WaitingResponse
 }

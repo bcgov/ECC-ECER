@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
-      <h3>Contact information</h3>
+      <h2>Contact information</h2>
       <div role="doc-subtitle">We may contact you to verify or clarify information you provide.</div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
@@ -9,6 +9,7 @@
             :model-value="modelValue.lastName"
             :rules="[Rules.required('Enter your last name')]"
             label="Last Name"
+            autocomplete="family-name"
             variant="outlined"
             color="primary"
             maxlength="100"
@@ -23,6 +24,7 @@
             :model-value="modelValue.firstName"
             :rules="[Rules.required('Enter your first name')]"
             label="First Name"
+            autocomplete="given-name"
             variant="outlined"
             color="primary"
             maxlength="100"
@@ -37,6 +39,7 @@
             :model-value="modelValue.email"
             :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]"
             label="Email"
+            autocomplete="email"
             variant="outlined"
             color="primary"
             maxlength="200"
@@ -51,6 +54,7 @@
             :model-value="modelValue.phoneNumber"
             :rules="[Rules.required(), Rules.phoneNumber('Enter your 10-digit phone number')]"
             label="Phone Number"
+            autocomplete="tel"
             variant="outlined"
             color="primary"
             maxlength="10"
@@ -60,7 +64,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <h3 class="mt-5">ECE certification</h3>
+      <h2 class="mt-5">ECE certification</h2>
       <div v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER" role="doc-subtitle">
         If you are registered as an ECE in Canada, please provide your certification number.
       </div>
