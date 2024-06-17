@@ -6,6 +6,7 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ECER.Clients.RegistryPortal.Server;
 
@@ -45,7 +46,7 @@ public class Program
 
       builder.Services.Configure<JsonOptions>(opts => opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
       builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-
+      builder.Services.Configure<PaginationSettings>(builder.Configuration.GetSection("Pagination"));
       builder.Services.AddProblemDetails();
 
       builder.Services.AddCorsPolicy(builder.Configuration.GetSection("cors").Get<CorsSettings>());
@@ -131,4 +132,10 @@ public class Program
       throw;
     }
   }
+}
+
+public class PaginationSettings
+{
+  public int DefaultPageSize { get; set; }
+  public int DefaultPageNumber { get; set; }
 }
