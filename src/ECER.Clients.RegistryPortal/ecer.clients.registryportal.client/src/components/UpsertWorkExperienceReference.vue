@@ -3,6 +3,17 @@
     <v-breadcrumbs class="pl-0" :items="items" color="primary">
       <template #divider>/</template>
     </v-breadcrumbs>
+    <v-row>
+      <v-col>
+        <Alert v-model="isDuplicateReference" type="error">
+          <p class="small">
+            <b>choose someone else</b>
+            <br />
+            This person is already your character reference. Your work experience reference and character reference must be different people.
+          </p>
+        </Alert>
+      </v-col>
+    </v-row>
     <div class="d-flex flex-column ga-3">
       <h2 class="mt-10">Add work experience reference</h2>
 
@@ -42,9 +53,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
+import { getApplicationStatus } from "@/api/application";
 import { upsertWorkExperienceReference } from "@/api/reference";
+import Alert from "@/components/Alert.vue";
 import EceForm from "@/components/Form.vue";
 import workExperienceReferenceUpsertForm from "@/config/work-experience-reference-upsert-form";
 import { useAlertStore } from "@/store/alert";
@@ -55,7 +68,7 @@ import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "UpsertWorkExperienceReference",
-  components: { EceForm },
+  components: { EceForm, Alert },
   props: {
     applicationId: {
       type: String,
@@ -73,6 +86,8 @@ export default defineComponent({
     const formStore = useFormStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
+    const route = useRoute();
+    const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
 
     let reference: Components.Schemas.WorkExperienceReference | undefined = undefined;
 
@@ -86,7 +101,7 @@ export default defineComponent({
     }
     formStore.initializeForm({});
 
-    return { applicationStore, alertStore, reference, formStore, loadingStore, workExperienceReferenceUpsertForm, router };
+    return { applicationStore, alertStore, reference, formStore, loadingStore, workExperienceReferenceUpsertForm, router, applicationStatus };
   },
   data() {
     const items = [
@@ -127,7 +142,7 @@ export default defineComponent({
       });
     }
 
-    return { items };
+    return { items, isDuplicateReference: false };
   },
 
   methods: {
@@ -136,12 +151,26 @@ export default defineComponent({
       const { valid } = await (this.$refs.upsertWorkExperienceReferenceForm as typeof EceForm).$refs[workExperienceReferenceUpsertForm.id].validate();
 
       if (valid) {
-        const { error } = await upsertWorkExperienceReference({ application_id: this.applicationId, reference_id: this.referenceId }, this.formStore.formData);
-        if (error) {
-          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+        //check for duplicate reference
+        this.isDuplicateReference = false;
+        if (this.applicationStatus?.characterReferencesStatus?.some((reference) => reference.firstName === this.formStore.formData.firstName)) {
+          this.isDuplicateReference = true;
+          //scroll to top of page
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
         } else {
-          this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
-          this.router.push({ name: "manageWorkExperienceReferences", params: { applicationId: this.applicationId } });
+          const { error } = await upsertWorkExperienceReference(
+            { application_id: this.applicationId, reference_id: this.referenceId },
+            this.formStore.formData,
+          );
+          if (error) {
+            this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+          } else {
+            this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
+            this.router.push({ name: "manageWorkExperienceReferences", params: { applicationId: this.applicationId } });
+          }
         }
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
