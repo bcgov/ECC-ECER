@@ -18,7 +18,7 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
     var communicationsResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Get.Url("/api/messages");
+      _.Get.Url("/api/messages?page=2&&pageSize=20");
       _.StatusCodeShouldBeOk();
     });
 
