@@ -1,5 +1,5 @@
 import EceRadio from "@/components/inputs/EceRadio.vue";
-import Recaptcha from "@/components/inputs/Recaptcha.vue";
+import EceRecaptcha from "@/components/inputs/EceRecaptcha.vue";
 import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
 
@@ -30,9 +30,9 @@ const characterReferenceDeclineForm: Form = {
         xl: 12,
       },
     },
-    recaptchaKey: {
-      id: "recaptchaKey",
-      component: Recaptcha,
+    recaptchaToken: {
+      id: "recaptchaToken",
+      component: EceRecaptcha,
       props: {
         rules: [Rules.required("Select an option to continue")],
       },

@@ -1,9 +1,9 @@
-using System.Reflection;
-using System.Text.Json.Serialization;
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace ECER.Clients.Api;
 
@@ -76,6 +76,7 @@ public class Program
       builder.Services.AddResponseCompression(opts => opts.EnableForHttps = true);
       builder.Services.AddResponseCaching();
       builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
+      builder.Services.AddHttpClient();
 
       builder.ConfigureComponents();
 

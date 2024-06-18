@@ -25,7 +25,7 @@ export default defineComponent({
     "update:model-value": (_recaptchaToken: string) => true,
   },
   async setup() {
-    const siteKey = "6LfrTccpAAAAABegrjoiYef-YK45zY2_05X-xq13"; //TODO change this to an environment variable
+    const siteKey = "6LfrTccpAAAAABegrjoiYef-YK45zY2_05X-xq13";
     useScriptTag("https://www.recaptcha.net/recaptcha/api.js");
 
     return { siteKey };

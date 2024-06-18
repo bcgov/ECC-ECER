@@ -14,11 +14,16 @@ const getReference = async (token: string): Promise<ApiResponse<Components.Schem
   return apiResultHandler.execute<Components.Schemas.PortalInvitationQueryResult | null | undefined>(client.references_get(pathParameters));
 };
 
-const optOutReference = async (token: string, optOutReason: Components.Schemas.UnabletoProvideReferenceReasons): Promise<ApiResponse<any>> => {
+const optOutReference = async (
+  token: string,
+  optOutReason: Components.Schemas.UnabletoProvideReferenceReasons,
+  recaptchaToken: string,
+): Promise<ApiResponse<any>> => {
   const client = await getClient();
   const body: Components.Schemas.OptOutReferenceRequest = {
     token: token,
     unabletoProvideReferenceReasons: optOutReason,
+    recaptchaToken: recaptchaToken,
   };
   return apiResultHandler.execute(client.reference_optout(null, body), "reference_optout");
 };

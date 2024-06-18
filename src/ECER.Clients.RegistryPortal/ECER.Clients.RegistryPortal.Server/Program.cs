@@ -1,11 +1,11 @@
-using System.Reflection;
-using System.Security.Claims;
-using System.Text.Json.Serialization;
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using System.Reflection;
+using System.Security.Claims;
+using System.Text.Json.Serialization;
 
 namespace ECER.Clients.RegistryPortal.Server;
 
@@ -95,6 +95,7 @@ public class Program
       builder.Services.AddResponseCaching();
       builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
       builder.Services.ConfigureHealthChecks();
+      builder.Services.AddHttpClient();
 
       builder.ConfigureComponents();
 

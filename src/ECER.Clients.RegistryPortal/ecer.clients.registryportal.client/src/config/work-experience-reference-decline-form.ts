@@ -1,4 +1,5 @@
 import EceRadio from "@/components/inputs/EceRadio.vue";
+import EceRecaptcha from "@/components/inputs/EceRecaptcha.vue";
 import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
 
@@ -22,6 +23,18 @@ const workExperienceDeclineForm: Form = {
         ],
         title: "Tell us why you're unable to provide a reference",
         rules: [Rules.required()],
+      },
+      cols: {
+        md: 12,
+        lg: 12,
+        xl: 12,
+      },
+    },
+    recaptchaToken: {
+      id: "recaptchaToken",
+      component: EceRecaptcha,
+      props: {
+        rules: [Rules.required("Select an option to continue")],
       },
       cols: {
         md: 12,

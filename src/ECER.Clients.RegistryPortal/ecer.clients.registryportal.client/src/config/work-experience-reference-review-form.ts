@@ -1,9 +1,10 @@
 import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
+import EceRecaptcha from "@/components/inputs/EceRecaptcha.vue";
 import EceReferenceContactPreview from "@/components/reference/inputs/EceReferenceContactPreview.vue";
 import EceWorkExperienceReferenceAssessmentPreview from "@/components/reference/inputs/EceWorkExperienceReferenceAssessmentPreview.vue";
 import EceWorkExperienceReferenceEvaluationPreview from "@/components/reference/inputs/EceWorkExperienceReferenceEvaluationPreview.vue";
 import type { Form } from "@/types/form";
-import { hasCheckbox } from "@/utils/formRules";
+import * as Rules from "@/utils/formRules";
 
 const workExperienceReviewForm: Form = {
   id: "reviewForm",
@@ -45,7 +46,19 @@ const workExperienceReviewForm: Form = {
       props: {
         label:
           "To the best of my knowledge the provided information is complete and correct. I am aware the ECE Registry may contact me to verify or clarify the provided information.",
-        rules: [hasCheckbox("You must agree with the above statement to submit your reference")],
+        rules: [Rules.hasCheckbox("You must agree with the above statement to submit your reference")],
+      },
+      cols: {
+        md: 12,
+        lg: 12,
+        xl: 12,
+      },
+    },
+    recaptchaToken: {
+      id: "recaptchaToken",
+      component: EceRecaptcha,
+      props: {
+        rules: [Rules.required("Select an option to continue")],
       },
       cols: {
         md: 12,

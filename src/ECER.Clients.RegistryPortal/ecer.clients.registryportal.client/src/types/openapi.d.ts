@@ -119,6 +119,7 @@ declare namespace Components {
       referenceContactInformation?: ReferenceContactInformation;
       referenceEvaluation?: CharacterReferenceEvaluation;
       confirmProvidedInformationIsRight?: boolean;
+      recaptchaToken?: string | null;
     }
     export type ChildcareAgeRanges = "From0to12Months" | "From12to24Months" | "From25to30Months" | "From31to36Months" | "Grade1" | "Preschool";
     export type ChildrenProgramType =
@@ -204,6 +205,7 @@ declare namespace Components {
     export interface OptOutReferenceRequest {
       token?: string | null;
       unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
+      recaptchaToken?: string | null;
     }
     export interface PortalInvitation {
       id?: string | null;
@@ -397,6 +399,7 @@ declare namespace Components {
       workExperienceReferenceDetails?: WorkExperienceReferenceDetails;
       workExperienceReferenceCompetenciesAssessment?: WorkExperienceReferenceCompetenciesAssessment;
       confirmProvidedInformationIsRight?: boolean;
+      recaptchaToken?: string | null;
     }
     export type WorkHoursType = "FullTime" | "PartTime";
   }
