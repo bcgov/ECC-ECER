@@ -56,11 +56,11 @@ export const useApplicationStore = defineStore("application", {
       const refSet = new Set<string>();
 
       for (const ref of state.draftApplication.characterReferences) {
-        refSet.add(`${ref.firstName} ${ref.lastName} ${ref.emailAddress}`);
+        refSet.add(`${ref.firstName} ${ref.lastName}`);
       }
 
       for (const ref of state.draftApplication.workExperienceReferences) {
-        if (refSet.has(`${ref.firstName} ${ref.lastName} ${ref.emailAddress}`)) {
+        if (refSet.has(`${ref.firstName} ${ref.lastName}`)) {
           return true;
         }
       }

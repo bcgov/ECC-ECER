@@ -5,12 +5,8 @@
     </v-breadcrumbs>
     <v-row>
       <v-col>
-        <Alert v-model="isDuplicateReference" type="error">
-          <p class="small">
-            <b>choose someone else</b>
-            <br />
-            This person is your work experience reference. Your character reference and work experience reference must be different people.
-          </p>
+        <Alert v-model="isDuplicateReference" type="error" title="choose someone else" prominent>
+          <p>This person is your work experience reference. Your character reference and work experience reference must be different people.</p>
         </Alert>
       </v-col>
     </v-row>
@@ -149,8 +145,20 @@ export default defineComponent({
       const { valid } = await (this.$refs.upsertCharacterReferenceForm as typeof EceForm).$refs[characterReferenceUpsertForm.id].validate();
       if (valid) {
         //check for duplicate reference
+
         this.isDuplicateReference = false;
-        if (this.applicationStatus?.workExperienceReferencesStatus?.some((reference) => reference.firstName === this.formStore.formData.firstName)) {
+
+        const refSet = new Set<string>();
+
+        if (this.applicationStatus?.workExperienceReferencesStatus) {
+          for (const ref of this.applicationStatus.workExperienceReferencesStatus) {
+            if (ref.status !== "Rejected") {
+              refSet.add(`${ref.firstName?.toLowerCase()} ${ref.lastName?.toLowerCase()}`);
+            }
+          }
+        }
+
+        if (refSet.has(`${this.formStore.formData.firstName.toLowerCase()} ${this.formStore.formData.lastName.toLowerCase()}`)) {
           this.isDuplicateReference = true;
           //scroll to top of page
           window.scrollTo({

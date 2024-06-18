@@ -5,12 +5,8 @@
     </v-breadcrumbs>
     <v-row>
       <v-col>
-        <Alert v-model="isDuplicateReference" type="error">
-          <p class="small">
-            <b>choose someone else</b>
-            <br />
-            This person is already your character reference. Your work experience reference and character reference must be different people.
-          </p>
+        <Alert v-model="isDuplicateReference" type="error" title="choose someone else" prominent>
+          <p>This person is already your character reference. Your work experience reference and character reference must be different people.</p>
         </Alert>
       </v-col>
     </v-row>
@@ -153,7 +149,17 @@ export default defineComponent({
       if (valid) {
         //check for duplicate reference
         this.isDuplicateReference = false;
-        if (this.applicationStatus?.characterReferencesStatus?.some((reference) => reference.firstName === this.formStore.formData.firstName)) {
+        const refSet = new Set<string>();
+
+        if (this.applicationStatus?.characterReferencesStatus) {
+          for (const ref of this.applicationStatus.characterReferencesStatus) {
+            if (ref.status !== "Rejected") {
+              refSet.add(`${ref.firstName?.toLowerCase()} ${ref.lastName?.toLowerCase()}`);
+            }
+          }
+        }
+
+        if (refSet.has(`${this.formStore.formData.firstName.toLowerCase()} ${this.formStore.formData.lastName.toLowerCase()}`)) {
           this.isDuplicateReference = true;
           //scroll to top of page
           window.scrollTo({

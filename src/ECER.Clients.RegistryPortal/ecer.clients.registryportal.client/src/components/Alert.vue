@@ -3,6 +3,8 @@
     :type="type"
     :color="type"
     :icon="icon"
+    :title="title"
+    :prominent="prominent"
     closable
     variant="outlined"
     :rounded="rounded ? 'lg' : 0"
@@ -35,6 +37,14 @@ export default defineComponent({
     rounded: {
       type: Boolean,
       default: true,
+    },
+    title: {
+      type: String,
+      default: "",
+    },
+    prominent: {
+      type: Boolean,
+      default: false,
     },
   },
 });
