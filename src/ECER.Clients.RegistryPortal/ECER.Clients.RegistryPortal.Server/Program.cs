@@ -138,4 +138,6 @@ public class PaginationSettings
 {
   public int DefaultPageSize { get; set; }
   public int DefaultPageNumber { get; set; }
+  public string PageProperty { get; set; } = string.Empty;
+  public string PageSizeProperty { get; set; } = string.Empty;
 }

@@ -3,9 +3,8 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using AutoMapper;
-using ECER.Clients.RegistryPortal.Server.Applications;
-using ECER.Managers.Registry.Contract.Applications;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Options;
 
 namespace ECER.Clients.RegistryPortal.Server.Communications;
 
@@ -13,13 +12,20 @@ public class CommunicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/messages", async (HttpContext httpContext, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapGet("/api/messages", async (HttpContext httpContext, IMediator messageBus, IMapper mapper, IOptions<PaginationSettings> paginationOptions) =>
     {
       var userContext = httpContext.User.GetUserContext();
+
+      // Get pagination parameters from the query string with default values
+      var pageNumber = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageProperty], out var page) ? page : paginationOptions.Value.DefaultPageNumber;
+      var pageSize = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageSizeProperty], out var size) ? size : paginationOptions.Value.DefaultPageSize;
+
       var query = new UserCommunicationQuery
       {
         ByRegistrantId = userContext!.UserId,
-        ByStatus = [ECER.Managers.Registry.Contract.Communications.CommunicationStatus.NotifiedRecipient, ECER.Managers.Registry.Contract.Communications.CommunicationStatus.Acknowledged]
+        ByStatus = [ECER.Managers.Registry.Contract.Communications.CommunicationStatus.NotifiedRecipient, ECER.Managers.Registry.Contract.Communications.CommunicationStatus.Acknowledged],
+        PageNumber = pageNumber,
+        PageSize = pageSize
       };
       var results = await messageBus.Send<CommunicationsQueryResults>(query);
 
