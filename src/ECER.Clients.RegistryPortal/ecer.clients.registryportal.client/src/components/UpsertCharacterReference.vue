@@ -3,6 +3,13 @@
     <v-breadcrumbs class="pl-0" :items="items" color="primary">
       <template #divider>/</template>
     </v-breadcrumbs>
+    <v-row>
+      <v-col>
+        <Alert v-model="isDuplicateReference" type="error" title="choose someone else" prominent>
+          <p>This person is your work experience reference. Your character reference and work experience reference must be different people.</p>
+        </Alert>
+      </v-col>
+    </v-row>
     <div class="d-flex flex-column ga-3">
       <h2 class="mt-10">Add character reference</h2>
 
@@ -18,7 +25,7 @@
         <li>Is not your relative, partner, spouse, or yourself</li>
       </ul>
       <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
-      <p class="mb-6">
+      <p v-if="applicationStatus?.certificationTypes?.includes(CertificationType.FIVE_YEAR)" class="mb-6">
         The person
         <b>cannot</b>
         be any of your work experience references.
@@ -44,9 +51,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
+import { getApplicationStatus } from "@/api/application";
 import { upsertCharacterReference } from "@/api/reference";
+import Alert from "@/components/Alert.vue";
 import EceForm from "@/components/Form.vue";
 import characterReferenceUpsertForm from "@/config/character-references-upsert-form";
 import { useAlertStore } from "@/store/alert";
@@ -54,10 +63,11 @@ import { useApplicationStore } from "@/store/application";
 import { useFormStore } from "@/store/form";
 import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
+import { CertificationType } from "@/utils/constant";
 
 export default defineComponent({
   name: "UpsertCharacterReference",
-  components: { EceForm },
+  components: { EceForm, Alert },
   props: {
     applicationId: {
       type: String,
@@ -74,7 +84,9 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
+    const route = useRoute();
     const formStore = useFormStore();
+    const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
 
     let reference: Components.Schemas.CharacterReference | undefined = undefined;
 
@@ -89,7 +101,7 @@ export default defineComponent({
       }
     }
 
-    return { applicationStore, alertStore, reference, formStore, loadingStore, characterReferenceUpsertForm, router };
+    return { applicationStore, alertStore, reference, formStore, loadingStore, characterReferenceUpsertForm, router, applicationStatus, CertificationType };
   },
   data() {
     // Define a base array of always-present items.
@@ -123,6 +135,7 @@ export default defineComponent({
 
     return {
       items,
+      isDuplicateReference: false,
     };
   },
 
@@ -130,14 +143,36 @@ export default defineComponent({
     async handleSubmitReference() {
       // Validate the form
       const { valid } = await (this.$refs.upsertCharacterReferenceForm as typeof EceForm).$refs[characterReferenceUpsertForm.id].validate();
-
       if (valid) {
-        const { error } = await upsertCharacterReference({ application_id: this.applicationId, reference_id: this.referenceId }, this.formStore.formData);
-        if (error) {
-          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+        //check for duplicate reference
+
+        this.isDuplicateReference = false;
+
+        const refSet = new Set<string>();
+
+        if (this.applicationStatus?.workExperienceReferencesStatus) {
+          for (const ref of this.applicationStatus.workExperienceReferencesStatus) {
+            if (ref.status !== "Rejected") {
+              refSet.add(`${ref.firstName?.toLowerCase()} ${ref.lastName?.toLowerCase()}`);
+            }
+          }
+        }
+
+        if (refSet.has(`${this.formStore.formData.firstName.toLowerCase()} ${this.formStore.formData.lastName.toLowerCase()}`)) {
+          this.isDuplicateReference = true;
+          //scroll to top of page
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
         } else {
-          this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
-          this.router.push(`/manage-application/${this.applicationId}`);
+          const { error } = await upsertCharacterReference({ application_id: this.applicationId, reference_id: this.referenceId }, this.formStore.formData);
+          if (error) {
+            this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+          } else {
+            this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
+            this.router.push(`/manage-application/${this.applicationId}`);
+          }
         }
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");

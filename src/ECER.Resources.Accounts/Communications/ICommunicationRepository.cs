@@ -10,6 +10,7 @@ namespace ECER.Resources.Accounts.Communications;
 public interface ICommunicationRepository
 {
   Task<IEnumerable<Communication>> Query(UserCommunicationQuery query);
+
   Task<string> MarkAsSeen(string communicationId, CancellationToken cancellationToken);
 }
 
@@ -18,6 +19,8 @@ public record UserCommunicationQuery
   public string? ById { get; set; }
   public IEnumerable<CommunicationStatus>? ByStatus { get; set; }
   public string? ByRegistrantId { get; set; }
+  public int PageNumber { get; set; }
+  public int PageSize { get; set; }
 }
 
 public record Communication(string? Id)
@@ -42,4 +45,3 @@ public record CommunicationsStatus
   public int Count { get; set; }
   public bool HasUnread { get; set; }
 }
-

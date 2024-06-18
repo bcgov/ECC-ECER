@@ -42,8 +42,10 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
       ById = request.ById,
       ByRegistrantId = request.ByRegistrantId,
       ByStatus = request.ByStatus?.Convert<Contract.Communications.CommunicationStatus, Resources.Accounts.Communications.CommunicationStatus>(),
+      PageNumber = request.PageNumber,
+      PageSize = request.PageSize,
     });
-    
+
     return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communications)!);
   }
 
@@ -56,7 +58,6 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
   public async Task<string> Handle(MarkCommunicationAsSeenCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-
 
     var statuses = new List<Resources.Accounts.Communications.CommunicationStatus>
     {
