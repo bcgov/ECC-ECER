@@ -99,13 +99,10 @@
     <v-card v-if="!hasStepThreeTasks" elevation="0" rounded="0" class="border-t border-b">
       <v-card-text>
         <p v-if="currentStep !== 3">We'll review your application after we receive all references and documents.</p>
-        <p v-if="currentStep === 3">We're reviewing your application. We'll contact you with questions or once assessment is complete.</p>
-        <p
-          v-if="
-            applicationStatus?.status === 'PendingQueue' &&
-            (applicationStatus?.subStatus === 'MoreInformationRequired' || applicationStatus.subStatus === 'PendingDocuments')
-          "
-        >
+        <p v-if="currentStep === 3 && stepThreeStatusText !== 'Action required'">
+          We're reviewing your application. We'll contact you with questions or once assessment is complete.
+        </p>
+        <p v-if="currentStep === 3 && stepThreeStatusText === 'Action required'">
           We’re waiting for additional information before we continue to review your application.
           <router-link to="/messages">Read your messages</router-link>
           or
