@@ -294,7 +294,12 @@ export default defineComponent({
       );
     },
     hasStepThreeTasks(): boolean {
-      return !this.hasCharacterReference || this.addMoreWorkExperienceReferencesFlag || this.hasWaitingForDetailsTranscript;
+      return (
+        !this.hasCharacterReference ||
+        this.waitingForResponseCharacterReferences.length > 0 ||
+        this.addMoreWorkExperienceReferencesFlag ||
+        this.hasWaitingForDetailsTranscript
+      );
     },
     totalObservedWorkExperienceHours(): number {
       return this.applicationStatus?.workExperienceReferencesStatus?.reduce((acc, reference) => acc + (reference.totalNumberofHoursObserved ?? 0), 0) || 0;
