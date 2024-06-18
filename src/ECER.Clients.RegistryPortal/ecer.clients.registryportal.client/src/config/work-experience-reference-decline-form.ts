@@ -34,7 +34,7 @@ const workExperienceDeclineForm: Form = {
       id: "recaptchaToken",
       component: EceRecaptcha,
       props: {
-        rules: [Rules.required("Select an option to continue")],
+        rules: [Rules.required("Check to confirm you are not a robot")],
       },
       cols: {
         md: 12,
