@@ -71,9 +71,9 @@ export default defineComponent({
     sheetColor() {
       switch (this.statusText) {
         case "Complete":
-          return "hawkes-blue";
-        case "Incomplete":
           return "white-smoke";
+        case "Incomplete":
+          return "hawkes-blue";
         case "Cancelled":
           return "white-smoke";
         default:
