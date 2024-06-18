@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
+using System.Drawing.Printing;
 
 namespace ECER.Resources.Accounts.Communications;
 
@@ -35,7 +36,7 @@ internal class CommunicationRepository : ICommunicationRepository
     // Filtering by registrant ID
     if (query.ByRegistrantId != null) communications = communications.Where(r => r.c.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
 
-    communications = communications.OrderByDescending(r => r.c.ecer_DateNotified);
+    communications = communications.OrderByDescending(r => r.c.ecer_DateNotified).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
     return mapper.Map<IEnumerable<Communication>>(communications.Select(r => r.c).ToList());
   }
 

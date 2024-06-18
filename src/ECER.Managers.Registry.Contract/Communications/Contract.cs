@@ -17,6 +17,8 @@ public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>
   public string? ById { get; set; }
   public string? ByRegistrantId { get; set; }
   public IEnumerable<CommunicationStatus>? ByStatus { get; set; }
+  public int PageNumber { get; set; }
+  public int PageSize { get; set; }
 }
 public record CommunicationsQueryResults(IEnumerable<Communication> Items);
 
