@@ -29,13 +29,7 @@
     </v-card>
     <!-- Step 1 End-->
     <!-- Step 2 Start-->
-    <v-card
-      elevation="0"
-      :color="step2Progress === IN_PROGRESS ? 'primary' : 'white-smoke'"
-      class="mt-5"
-      :class="[{ 'border-top': step2Progress !== IN_PROGRESS }]"
-      rounded="0"
-    >
+    <v-card elevation="0" :color="currentStep === 2 ? 'primary' : 'white-smoke'" class="mt-5" :class="[{ 'border-top': currentStep !== 2 }]" rounded="0">
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
           <v-row>
@@ -43,13 +37,13 @@
             <v-col cols="12"><h3>References and documents</h3></v-col>
           </v-row>
           <p class="large">
-            <v-icon v-if="step2ReferenceDocumentIcon" :icon="step2ReferenceDocumentIcon" />
-            {{ step2ReferenceDocumentText }}
+            <v-icon v-if="stepTwoIcon" :icon="stepTwoIcon" />
+            {{ stepTwoStatusText }}
           </p>
         </div>
       </v-card-text>
     </v-card>
-    <div v-if="step2Progress !== COMPLETE">
+    <div v-if="currentStep === 2">
       <ApplicationSummaryTranscriptListItem
         v-for="transcript in applicationStatus?.transcriptsStatus"
         :key="transcript.id?.toString()"
@@ -81,20 +75,14 @@
         :go-to="() => $router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: $route.params.applicationId } })"
       />
     </div>
-    <v-card v-if="step2Progress === COMPLETE" elevation="0" rounded="0" class="border-t border-b">
+    <v-card v-if="currentStep === 3" elevation="0" rounded="0" class="border-t border-b">
       <v-card-text>
         <p>Completed on {{ formatDate(applicationStatus?.readyForAssessmentDate as string, "LLL d, yyyy") }}</p>
       </v-card-text>
     </v-card>
     <!-- Step 2 End-->
     <!-- Step 3 Start-->
-    <v-card
-      elevation="0"
-      :color="step3Progress === IN_PROGRESS || step3Progress === ACTION_REQUIRED ? 'primary' : 'white-smoke'"
-      class="mt-5"
-      :class="[{ 'border-top': step3Progress !== IN_PROGRESS }]"
-      rounded="0"
-    >
+    <v-card elevation="0" :color="currentStep === 3 ? 'primary' : 'white-smoke'" class="mt-5" :class="[{ 'border-top': currentStep !== 3 }]" rounded="0">
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
           <v-row>
@@ -102,22 +90,19 @@
             <v-col cols="12"><h3>ECE Registry assessment</h3></v-col>
           </v-row>
           <p class="large">
-            <v-icon v-if="step3RegistryAssessmentIcon" :icon="step3RegistryAssessmentIcon" />
-            {{ step3RegistryAssessmentText }}
+            <v-icon v-if="stepThreeIcon" :icon="stepThreeIcon" />
+            {{ stepThreeStatusText }}
           </p>
         </div>
       </v-card-text>
     </v-card>
-    <v-card elevation="0" rounded="0" class="border-t border-b">
+    <v-card v-if="!hasStepThreeTasks" elevation="0" rounded="0" class="border-t border-b">
       <v-card-text>
-        <p v-if="step3Progress === NOT_STARTED">We'll review your application after we receive all references and documents.</p>
-        <p v-if="step3Progress === IN_PROGRESS">We're reviewing your application. We'll contact you with questions or once assessment is complete.</p>
-        <p
-          v-if="
-            applicationStatus?.status === 'PendingQueue' &&
-            (applicationStatus?.subStatus === 'MoreInformationRequired' || applicationStatus.subStatus === 'PendingDocuments')
-          "
-        >
+        <p v-if="currentStep !== 3">We'll review your application after we receive all references and documents.</p>
+        <p v-if="currentStep === 3 && stepThreeStatusText !== 'Action required'">
+          We're reviewing your application. We'll contact you with questions or once assessment is complete.
+        </p>
+        <p v-if="currentStep === 3 && stepThreeStatusText === 'Action required'">
           We’re waiting for additional information before we continue to review your application.
           <router-link to="/messages">Read your messages</router-link>
           or
@@ -126,6 +111,43 @@
         </p>
       </v-card-text>
     </v-card>
+    <div v-if="currentStep === 3 && hasStepThreeTasks">
+      <v-card elevation="0" rounded="0" class="border-t border-b">
+        <v-card-text>
+          <p>You need to provide the following items.</p>
+        </v-card-text>
+      </v-card>
+      <ApplicationSummaryTranscriptListItem
+        v-for="transcript in waitingForDetailsTranscripts"
+        :key="transcript.id?.toString()"
+        :name="transcript.educationalInstitutionName"
+        :status="transcript.status"
+      />
+      <ApplicationSummaryActionListItem
+        v-if="!hasCharacterReference"
+        text="Add character reference"
+        :go-to="() => $router.push({ name: 'addCharacterReference', params: { applicationId: $route.params.applicationId } })"
+      />
+      <ApplicationSummaryCharacterReferenceListItem
+        v-for="reference in waitingForResponseCharacterReferences"
+        :key="reference.id?.toString()"
+        :name="`${reference.firstName} ${reference.lastName}`"
+        :status="reference.status"
+        :go-to="
+          () =>
+            $router.push({
+              name: 'viewCharacterReference',
+              params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
+            })
+        "
+        :will-provide-reference="reference.willProvideReference ? true : false"
+      />
+      <ApplicationSummaryActionListItem
+        v-if="addMoreWorkExperienceReferencesFlag"
+        text="500 approved hours of work experience with reference"
+        :go-to="() => $router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: $route.params.applicationId } })"
+      />
+    </div>
     <!-- Step 3 End-->
   </v-container>
 </template>
@@ -147,60 +169,6 @@ import ApplicationSummaryActionListItem from "./ApplicationSummaryActionListItem
 import ApplicationSummaryCharacterReferenceListItem from "./ApplicationSummaryCharacterReferenceListItem.vue";
 import ApplicationSummaryTranscriptListItem from "./ApplicationSummaryTranscriptListItem.vue";
 
-type ApplicationStepProgress = "complete" | "inProgress" | "actionRequired" | "notStarted";
-type ApplicationProcessMap = {
-  [key in Components.Schemas.ApplicationStatus]:
-    | { [key in Components.Schemas.ApplicationStatusReasonDetail]?: ApplicationStepProgress }
-    | ApplicationStepProgress
-    | undefined;
-};
-
-const Step2ApplicationStatusSubDetailMap: ApplicationProcessMap = {
-  Complete: undefined,
-  InProgress: { BeingAssessed: "complete" },
-  Draft: undefined,
-  Submitted: { PendingDocuments: "inProgress", ValidatingIDs: "inProgress", ReceivePhysicalTranscripts: "inProgress" },
-  Reconsideration: { Denied: undefined, Certified: undefined },
-  Cancelled: undefined,
-  Escalated: "complete",
-  Decision: { Certified: undefined, Denied: undefined },
-  Withdrawn: undefined,
-  Ready: { ReadyforAssessment: "complete" },
-  PendingQueue: {
-    MoreInformationRequired: "complete",
-    PendingDocuments: "complete",
-    SupervisorConsultationNeeded: "complete",
-    OperationSupervisorManagerofCertificationsConsultationNeeded: "complete",
-    InvestigationsConsultationNeeded: "complete",
-  },
-  ReconsiderationDecision: undefined,
-  Pending: undefined,
-  AppealDecision: undefined,
-};
-
-const Step3ApplicationStatusSubDetailMap: ApplicationProcessMap = {
-  Complete: undefined,
-  InProgress: { BeingAssessed: "inProgress" },
-  Draft: undefined,
-  Submitted: { PendingDocuments: "notStarted", ValidatingIDs: "notStarted", ReceivePhysicalTranscripts: "notStarted" },
-  Reconsideration: { Denied: undefined, Certified: undefined },
-  Cancelled: undefined,
-  Escalated: "inProgress",
-  Decision: { Certified: undefined, Denied: undefined },
-  Withdrawn: undefined,
-  Ready: { ReadyforAssessment: "inProgress" },
-  PendingQueue: {
-    MoreInformationRequired: "actionRequired",
-    PendingDocuments: "actionRequired",
-    SupervisorConsultationNeeded: "inProgress",
-    OperationSupervisorManagerofCertificationsConsultationNeeded: "inProgress",
-    InvestigationsConsultationNeeded: "inProgress",
-  },
-  ReconsiderationDecision: undefined,
-  Pending: undefined,
-  AppealDecision: undefined,
-};
-
 export default defineComponent({
   name: "ApplicationSummary",
   components: {
@@ -217,10 +185,6 @@ export default defineComponent({
 
     await applicationStore.fetchApplications();
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
-    const IN_PROGRESS: ApplicationStepProgress = "inProgress";
-    const NOT_STARTED: ApplicationStepProgress = "notStarted";
-    const COMPLETE: ApplicationStepProgress = "complete";
-    const ACTION_REQUIRED: ApplicationStepProgress = "actionRequired";
 
     return {
       applicationStore,
@@ -229,10 +193,6 @@ export default defineComponent({
       applicationStatus,
       smAndUp,
       formatDate,
-      IN_PROGRESS,
-      NOT_STARTED,
-      COMPLETE,
-      ACTION_REQUIRED,
     };
   },
   data() {
@@ -252,58 +212,89 @@ export default defineComponent({
     };
   },
   computed: {
-    step2ReferenceDocumentIcon() {
-      switch (this.step2Progress) {
-        case this.IN_PROGRESS:
-          return "mdi-arrow-right";
-        case this.COMPLETE:
-          return "mdi-check";
+    currentStep() {
+      switch (this.applicationStatus?.status) {
+        case "InProgress":
+        case "Escalated":
+        case "PendingQueue":
+        case "Ready":
+          return 3;
+        case "Submitted":
+          return 2;
         default:
-          return "";
+          console.warn(`This should not happen, unmapped application status ${this.applicationStatus?.status}`);
+          return 1;
       }
     },
-    step2ReferenceDocumentText() {
-      switch (this.step2Progress) {
-        case this.IN_PROGRESS:
-          return "In progress";
-        case this.COMPLETE:
+    stepTwoStatusText() {
+      switch (this.currentStep) {
+        case 2:
+          return "In Progress";
+        case 3:
           return "Complete";
         default:
           return "";
       }
     },
-    step2Progress() {
-      return this.findApplicationStepProgress(Step2ApplicationStatusSubDetailMap, "step2");
-    },
-    step3RegistryAssessmentIcon() {
-      switch (this.step3Progress) {
-        case this.NOT_STARTED:
+    stepThreeStatusText() {
+      switch (this.currentStep) {
+        case 2:
+          return "Not yet started";
+        case 3:
+          if (
+            this.applicationStatus?.status === "PendingQueue" &&
+            (this.applicationStatus?.subStatus === "MoreInformationRequired" || this.applicationStatus.subStatus === "PendingDocuments")
+          ) {
+            return "Action required";
+          } else {
+            return "In progress";
+          }
+        default:
           return "";
-        case this.IN_PROGRESS:
+      }
+    },
+    stepTwoIcon() {
+      switch (this.stepTwoStatusText) {
+        case "In Progress":
           return "mdi-arrow-right";
-        case this.ACTION_REQUIRED:
+        case "Complete":
+          return "mdi-check";
+        default:
+          return "";
+      }
+    },
+    stepThreeIcon() {
+      switch (this.stepThreeStatusText) {
+        case "Not yet started":
+          return "";
+        case "In progress":
+          return "mdi-arrow-right";
+        case "Action required":
           return "mdi-alert-circle";
         default:
           return "";
       }
     },
-    step3RegistryAssessmentText() {
-      switch (this.step3Progress) {
-        case this.NOT_STARTED:
-          return "Not yet started";
-        case this.IN_PROGRESS:
-          return "In progress";
-        case this.ACTION_REQUIRED:
-          return "Action required";
-        default:
-          return "";
-      }
-    },
-    step3Progress() {
-      return this.findApplicationStepProgress(Step3ApplicationStatusSubDetailMap, "step3");
-    },
     hasCharacterReference(): boolean {
       return this.applicationStatus?.characterReferencesStatus?.some((reference) => reference.status !== "Rejected") || false;
+    },
+    addMoreWorkExperienceReferencesFlag(): boolean {
+      return this.applicationStatus?.addMoreWorkExperienceReference ?? false;
+    },
+    hasWaitingForDetailsTranscript(): boolean {
+      return this.applicationStatus?.transcriptsStatus?.some((transcript) => transcript.status === "WaitingforDetails") || false;
+    },
+    waitingForDetailsTranscripts(): Components.Schemas.TranscriptStatus[] {
+      return this.applicationStatus?.transcriptsStatus?.filter((transcript) => transcript.status === "WaitingforDetails") || [];
+    },
+    waitingForResponseCharacterReferences(): Components.Schemas.CharacterReferenceStatus[] {
+      return (
+        this.applicationStatus?.characterReferencesStatus?.filter((reference) => reference.status === "Draft" || reference.status === "ApplicationSubmitted") ||
+        []
+      );
+    },
+    hasStepThreeTasks(): boolean {
+      return !this.hasCharacterReference || this.addMoreWorkExperienceReferencesFlag || this.hasWaitingForDetailsTranscript;
     },
     totalObservedWorkExperienceHours(): number {
       return this.applicationStatus?.workExperienceReferencesStatus?.reduce((acc, reference) => acc + (reference.totalNumberofHoursObserved ?? 0), 0) || 0;
@@ -312,30 +303,6 @@ export default defineComponent({
   methods: {
     goTo(id: string | undefined) {
       this.alertStore.setSuccessAlert("not implemented yet this will go to another route " + id);
-    },
-    findApplicationStepProgress(applicationProcessMap: ApplicationProcessMap, step: string) {
-      const status = this.applicationStatus?.status;
-      const statusReasonDetail = this.applicationStatus?.subStatus;
-
-      if (status) {
-        const subDetail = applicationProcessMap[status];
-
-        //this checks if we have found the ApplicationStepProgress.
-        if (typeof subDetail === "string") {
-          return subDetail;
-        }
-
-        if (subDetail && statusReasonDetail) {
-          if (subDetail[statusReasonDetail]) {
-            return subDetail[statusReasonDetail];
-          }
-        }
-      }
-
-      console.warn(
-        `This should not happen, unmapped status and statusReasonDetail combination please check ApplicationStatusSubDetailMap for ${step} :: status: ${status} statusReasonDetail: ${statusReasonDetail}`,
-      );
-      return "";
     },
   },
 });
