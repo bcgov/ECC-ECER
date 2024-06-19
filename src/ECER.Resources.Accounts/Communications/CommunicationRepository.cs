@@ -36,7 +36,14 @@ internal class CommunicationRepository : ICommunicationRepository
     // Filtering by registrant ID
     if (query.ByRegistrantId != null) communications = communications.Where(r => r.c.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
 
-    communications = communications.OrderByDescending(r => r.c.ecer_DateNotified).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
+    if (query.PageNumber > 0)
+    {
+      communications = communications.OrderByDescending(r => r.c.ecer_DateNotified).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
+    }
+    else
+    {
+      communications = communications.OrderByDescending(r => r.c.ecer_DateNotified);
+    }
     return mapper.Map<IEnumerable<Communication>>(communications.Select(r => r.c).ToList());
   }
 
