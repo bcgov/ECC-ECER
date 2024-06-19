@@ -11,7 +11,7 @@
           </a>
         </v-col>
         <v-col cols="12" sm="4" :align="smAndUp ? 'center' : ''">
-          <p>{{ hours }} hours</p>
+          <p>{{ hoursText }}</p>
         </v-col>
         <v-col cols="12" sm="4" :align="smAndUp ? 'right' : ''">
           <v-sheet rounded width="200px" class="py-2 text-center" :class="{ 'mt-2': !smAndUp }" :color="sheetColor">
@@ -72,19 +72,19 @@ export default defineComponent({
           return "Unhandled Status";
       }
     },
-    hours(): string | number {
+    hoursText(): string {
       switch (this.statusText) {
         case "Not yet received":
-          return this.reference.totalNumberofHoursAnticipated ?? 0;
+          return `${this.reference.totalNumberofHoursAnticipated ?? 0} hours`;
         case "Approved":
-          return this.reference.totalNumberofHoursApproved ?? 0;
+          return `${this.reference.totalNumberofHoursApproved ?? 0} hours`;
         case "Cancelled":
           return "—";
         case "Received":
         case "Received, pending review":
-          return this.reference.totalNumberofHoursObserved ?? 0;
+          return `${this.reference.totalNumberofHoursObserved ?? 0} hours`;
         default:
-          return 0;
+          return "0 hours";
       }
     },
     link(): boolean {
