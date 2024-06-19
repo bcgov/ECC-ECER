@@ -55,6 +55,7 @@ interface EceCheckboxProps {
 
 interface EceRecaptchaProps {
   rules?: readonly ValidationRule$1[];
+  recaptchaElementId: string;
 }
 
 interface CheckboxMultipleDropdownItems {

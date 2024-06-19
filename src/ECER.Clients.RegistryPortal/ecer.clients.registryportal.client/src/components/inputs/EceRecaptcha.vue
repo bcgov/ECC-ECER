@@ -1,6 +1,12 @@
 <template>
   <v-input :model-value="modelValue" :rules="props.rules" hide-details="auto">
-    <div class="g-recaptcha" :data-sitekey="siteKey" data-callback="recaptchaSuccessCallback" data-expired-callback="recaptchaExpiredCallback"></div>
+    <div
+      :id="props.recaptchaElementId"
+      class="g-recaptcha"
+      :data-sitekey="siteKey"
+      data-callback="recaptchaSuccessCallback"
+      data-expired-callback="recaptchaExpiredCallback"
+    ></div>
   </v-input>
 </template>
 <script lang="ts">
@@ -26,13 +32,19 @@ export default defineComponent({
   },
   async setup() {
     const siteKey = "6LfrTccpAAAAABegrjoiYef-YK45zY2_05X-xq13";
-    useScriptTag("https://www.recaptcha.net/recaptcha/api.js");
+    useScriptTag("https://www.recaptcha.net/recaptcha/api.js?onload=recaptchaOnloadCallback&render=explicit", () => {}, { async: true, defer: true });
 
     return { siteKey };
   },
   mounted() {
     window.recaptchaSuccessCallback = this.recaptchaSuccessCallback;
     window.recaptchaExpiredCallback = this.recaptchaExpiredCallback;
+    window.recaptchaOnloadCallback = this.recaptchaOnloadCallback;
+
+    if (window.grecaptcha) {
+      //checks to see if we've already loaded the grecaptcha script.
+      window.grecaptcha.render(this.props.recaptchaElementId);
+    }
   },
   methods: {
     recaptchaSuccessCallback(data: string) {
@@ -40,6 +52,9 @@ export default defineComponent({
     },
     recaptchaExpiredCallback() {
       this.$emit("update:model-value", "");
+    },
+    recaptchaOnloadCallback() {
+      window.grecaptcha.render(this.props.recaptchaElementId);
     },
   },
 });

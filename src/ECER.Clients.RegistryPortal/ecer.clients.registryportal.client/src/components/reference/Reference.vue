@@ -105,6 +105,17 @@ export default defineComponent({
       return this.wizardStore.wizardData?.inviteType === PortalInviteType.WORK_EXPERIENCE ? "Work experience reference" : "Character reference";
     },
   },
+  watch: {
+    "wizardStore.step"(step) {
+      //Resets recaptcha(s) if we navigate away. Prevents expiry bug if multiple recaptchas expire.
+      if (step !== this.userDeclinedStep && step !== this.userReviewStep && window.grecaptcha) {
+        for (let i = 0; i < document.querySelectorAll(".g-recaptcha").length; i++) {
+          window.grecaptcha.reset(i);
+        }
+        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id] = "";
+      }
+    },
+  },
   methods: {
     async handleContinue() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;

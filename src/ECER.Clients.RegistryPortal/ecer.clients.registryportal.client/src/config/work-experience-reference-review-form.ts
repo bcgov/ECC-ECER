@@ -59,6 +59,7 @@ const workExperienceReviewForm: Form = {
       component: EceRecaptcha,
       props: {
         rules: [Rules.required("Check to confirm you are not a robot")],
+        recaptchaElementId: "recaptchaSubmit",
       },
       cols: {
         md: 12,

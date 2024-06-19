@@ -2,10 +2,12 @@ declare global {
   interface Window {
     grecaptcha: {
       getResponse(): string;
-      reset(): void;
+      reset(string): void;
+      render(string): string;
     };
     recaptchaSuccessCallback: function;
     recaptchaExpiredCallback: function;
+    recaptchaOnloadCallback: function;
   }
 }
 
