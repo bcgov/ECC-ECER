@@ -1,9 +1,9 @@
 import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
+import EceRecaptcha from "@/components/inputs/EceRecaptcha.vue";
 import EceCharacterReferenceEvaluationPreview from "@/components/reference/inputs/EceCharacterReferenceEvaluationPreview.vue";
 import EceReferenceContactPreview from "@/components/reference/inputs/EceReferenceContactPreview.vue";
 import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
-import EceRecaptcha from "@/components/inputs/EceRecaptcha.vue";
 
 const characterReferenceReviewForm: Form = {
   id: "reviewForm",
