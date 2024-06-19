@@ -579,6 +579,11 @@ declare namespace Paths {
       export type $200 = Components.Schemas.Province[];
     }
   }
+  namespace RecaptchaSiteKeyGet {
+    namespace Responses {
+      export type $200 = string;
+    }
+  }
   namespace ReferenceOptout {
     export type RequestBody = Components.Schemas.OptOutReferenceRequest;
     namespace Responses {
@@ -637,6 +642,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProvinceGet.Responses.$200>;
+  /**
+   * recaptcha_site_key_get - Obtains site key for recaptcha
+   */
+  "recaptcha_site_key_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.RecaptchaSiteKeyGet.Responses.$200>;
   /**
    * profile_get - Gets the current user profile
    */
@@ -821,6 +834,16 @@ export interface PathsDictionary {
      * province_get - Handles province queries
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProvinceGet.Responses.$200>;
+  };
+  ["/api/recaptcha-site-key"]: {
+    /**
+     * recaptcha_site_key_get - Obtains site key for recaptcha
+     */
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.RecaptchaSiteKeyGet.Responses.$200>;
   };
   ["/api/profile"]: {
     /**

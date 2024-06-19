@@ -13,6 +13,7 @@
 import { useScriptTag } from "@vueuse/core";
 import { defineComponent } from "vue";
 
+import { getRecaptchaSiteKey } from "@/api/configuration";
 import type { EceRecaptchaProps } from "@/types/input";
 
 export default defineComponent({
@@ -31,7 +32,7 @@ export default defineComponent({
     "update:model-value": (_recaptchaToken: string) => true,
   },
   async setup() {
-    const siteKey = "6LfrTccpAAAAABegrjoiYef-YK45zY2_05X-xq13";
+    const siteKey = await getRecaptchaSiteKey();
     useScriptTag("https://www.recaptcha.net/recaptcha/api.js?onload=recaptchaOnloadCallback&render=explicit", () => {}, { async: true, defer: true });
 
     return { siteKey };

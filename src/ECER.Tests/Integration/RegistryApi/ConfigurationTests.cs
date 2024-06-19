@@ -24,4 +24,18 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
     var provinces = await provincesResponse.ReadAsJsonAsync<Province[]>();
     provinces.ShouldNotBeNull();
   }
+
+  [Fact]
+  public async Task GetRecaptchaSiteKey_ReturnsSiteKey()
+  {
+    var siteKeyResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url("/api/recaptcha-site-key");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var siteKey = await siteKeyResponse.ReadAsJsonAsync<string>();
+    siteKey.ShouldNotBeNull();
+  }
 }
