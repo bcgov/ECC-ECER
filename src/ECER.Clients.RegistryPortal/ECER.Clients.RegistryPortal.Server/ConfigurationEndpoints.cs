@@ -24,7 +24,7 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       return TypedResults.Ok(mapper.Map<IEnumerable<Province>>(results.Items));
     }).WithOpenApi("Handles province queries", string.Empty, "province_get");
 
-    endpointRouteBuilder.MapGet("/api/recaptcha-site-key", async (IOptions<RecaptchaSettings> recaptchaSettings, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/recaptchaSiteKey", async (IOptions<RecaptchaSettings> recaptchaSettings, CancellationToken ct) =>
     {
       await Task.CompletedTask;
       return TypedResults.Ok(recaptchaSettings.Value.SiteKey);

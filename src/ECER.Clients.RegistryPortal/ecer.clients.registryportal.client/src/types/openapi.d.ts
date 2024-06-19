@@ -835,7 +835,7 @@ export interface PathsDictionary {
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProvinceGet.Responses.$200>;
   };
-  ["/api/recaptcha-site-key"]: {
+  ["/api/recaptchaSiteKey"]: {
     /**
      * recaptcha_site_key_get - Obtains site key for recaptcha
      */
@@ -1011,7 +1011,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationCharacterreferenceUpdatePost.Responses.$200>;
   };
-  ["/api/applications/{applicationId}/character-reference/{referenceId}/resend-invite"]: {
+  ["/api/applications/{applicationId}/characterReference/{referenceId}/resendInvite"]: {
     /**
      * application_character_reference_resend_invite_post - Resend a character reference invite
      *
@@ -1023,7 +1023,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationCharacterReferenceResendInvitePost.Responses.$200>;
   };
-  ["/api/applications/{applicationId}/work-experience-reference/{referenceId}/resend-invite"]: {
+  ["/api/applications/{applicationId}/workExperienceReference/{referenceId}/resendInvite"]: {
     /**
      * application_work_experience_reference_resend_invite_post - Resend a work experience reference invite
      *

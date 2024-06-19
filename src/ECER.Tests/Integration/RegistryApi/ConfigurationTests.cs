@@ -31,7 +31,7 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
     var siteKeyResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Get.Url("/api/recaptcha-site-key");
+      _.Get.Url("/api/recaptchaSiteKey");
       _.StatusCodeShouldBeOk();
     });
 
