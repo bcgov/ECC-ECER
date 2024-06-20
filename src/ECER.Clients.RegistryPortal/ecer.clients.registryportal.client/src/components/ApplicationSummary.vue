@@ -24,7 +24,7 @@
     </v-card>
     <v-card elevation="0" rounded="0" class="border-t border-b">
       <v-card-text>
-        <p>Completed on {{ formatDate(applicationStatus?.submittedOn as string, "LLL d, yyyy") }}</p>
+        <p>Completed on {{ formatDate(applicationStatus?.submittedOn as string, "LLLL d, yyyy") }}</p>
       </v-card-text>
     </v-card>
     <!-- Step 1 End-->
@@ -77,7 +77,7 @@
     </div>
     <v-card v-if="currentStep === 3" elevation="0" rounded="0" class="border-t border-b">
       <v-card-text>
-        <p>Completed on {{ formatDate(applicationStatus?.readyForAssessmentDate as string, "LLL d, yyyy") }}</p>
+        <p>Completed on {{ formatDate(applicationStatus?.readyForAssessmentDate as string, "LLLL d, yyyy") }}</p>
       </v-card-text>
     </v-card>
     <!-- Step 2 End-->
