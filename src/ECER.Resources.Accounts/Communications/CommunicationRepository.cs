@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 using System.Drawing.Printing;
 
@@ -63,5 +64,46 @@ internal class CommunicationRepository : ICommunicationRepository
 
     context.SaveChanges();
     return communication.Id.ToString();
+  }
+
+  public async Task<string> SendMessage(Communication communication, string userId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var existingCommunication = context.ecer_CommunicationSet.FirstOrDefault(
+      d => d.ecer_CommunicationId == Guid.Parse(communication.Id!)
+      );
+    if (existingCommunication == null)
+    {
+      throw new InvalidOperationException($"Communication '{communication.Id}' not found");
+    }
+    else
+    {
+      var application = context.ecer_ApplicationSet.FirstOrDefault(a => a.ecer_ApplicationId == existingCommunication.ecer_Applicationid.Id && a.ecer_Applicantid.Id == Guid.Parse(userId));
+
+      if (application == null)
+      {
+        throw new InvalidOperationException($"Application '{existingCommunication.ecer_Applicationid.Id}' not found");
+      }
+      var registrant = context.ContactSet.FirstOrDefault(r => r.ContactId == Guid.Parse(userId));
+      if (registrant == null)
+      {
+        throw new InvalidOperationException($"Registrant '{userId}' not found");
+      }
+      var ecerCommunication = mapper.Map<ecer_Communication>(communication);
+
+      ecerCommunication.ecer_CommunicationId = Guid.NewGuid();
+      ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.Registrant;
+      context.AddObject(ecerCommunication);
+      context.AddLink(registrant, ecer_Communication.Fields.ecer_contact_ecer_communication_122, ecerCommunication);
+      var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
+      {
+        PrimaryEntityRole = EntityRole.Referencing
+      };
+      context.AddLink(ecerCommunication, Referencingecer_communication_ParentCommunicationid, existingCommunication);
+      context.AddLink(application, ecer_Communication.Fields.ecer_communication_Applicationid, ecerCommunication);
+      context.SaveChanges();
+
+      return ecerCommunication.ecer_CommunicationId.ToString()!;
+    }
   }
 }

@@ -1,4 +1,5 @@
 ﻿using Alba;
+using Bogus;
 using ECER.Clients.RegistryPortal.Server.Communications;
 using ECER.Managers.Registry.Contract.Communications;
 using Shouldly;
@@ -51,5 +52,33 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
     });
 
     (await communicationSeenResponse.ReadAsJsonAsync<CommunicationResponse>()).ShouldNotBeNull().CommunicationId.ShouldBe(Fixture.communicationTwoId);
+  }
+
+  [Fact]
+  public async Task SendMessage_ReturnsCommunicationId()
+  {
+    var communication = CreateNewReply();
+
+    var sendMessageResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Post.Json(new SendMessageRequest(communication)).ToUrl($"/api/messages");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var sendMessageResponseId = await sendMessageResponse.ReadAsJsonAsync<SendMessageResponse>();
+    sendMessageResponseId!.CommunicationId.ShouldNotBeEmpty();
+  }
+
+  private Clients.RegistryPortal.Server.Communications.Communication CreateNewReply()
+  {
+    var faker = new Faker("en_CA");
+    var communication = new Clients.RegistryPortal.Server.Communications.Communication()
+    {
+      Text = faker.Lorem.Paragraph()
+    };
+
+    communication.Id = this.Fixture.communicationOneId;
+    return communication;
   }
 }

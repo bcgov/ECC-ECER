@@ -9,8 +9,8 @@ namespace ECER.Managers.Registry;
 public class CommunicationHandlers(ICommunicationRepository communicationRepository, IMapper mapper)
   : IRequestHandler<UserCommunicationsStatusQuery, CommunicationsStatusResults>,
     IRequestHandler<Contract.Communications.UserCommunicationQuery, CommunicationsQueryResults>,
-    IRequestHandler<MarkCommunicationAsSeenCommand, string>
-
+    IRequestHandler<MarkCommunicationAsSeenCommand, string>,
+    IRequestHandler<SendMessageCommand, SendMessageResult>
 {
   public async Task<CommunicationsStatusResults> Handle(UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
   {
@@ -79,5 +79,13 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
     var seenCommunicationId = await communicationRepository.MarkAsSeen(request.communicationId, cancellationToken);
 
     return seenCommunicationId;
+  }
+
+  public async Task<SendMessageResult> Handle(SendMessageCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var Communication = mapper.Map<Resources.Accounts.Communications.Communication>(request.communication);
+    var CommunicationId = await communicationRepository.SendMessage(Communication, request.userId, cancellationToken);
+    return new SendMessageResult() { CommunicationId = CommunicationId, IsSuccess = true };
   }
 }

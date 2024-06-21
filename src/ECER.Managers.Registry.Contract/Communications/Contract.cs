@@ -22,6 +22,19 @@ public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>
 }
 public record CommunicationsQueryResults(IEnumerable<Communication> Items);
 
+public record SendMessageCommand(Communication communication, string userId) : IRequest<SendMessageResult>;
+
+public class SendMessageResult
+{
+  public string? CommunicationId { get; set; }
+  public bool IsSuccess { get; set; }
+  public string? ErrorMessage { get; set; }
+
+  public static SendMessageResult Success() => new SendMessageResult { IsSuccess = true };
+
+  public static SendMessageResult Failure(string message) => new SendMessageResult { IsSuccess = false, ErrorMessage = message };
+}
+
 public record Communication
 {
   public string Id { get; set; } = null!;
