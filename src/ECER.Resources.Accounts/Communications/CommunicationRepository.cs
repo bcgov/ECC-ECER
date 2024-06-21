@@ -69,7 +69,7 @@ internal class CommunicationRepository : ICommunicationRepository
   public async Task<string> SendMessage(Communication communication, string userId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    var existingCommunication = context.ecer_CommunicationSet.FirstOrDefault(
+    var existingCommunication = context.ecer_CommunicationSet.SingleOrDefault(
       d => d.ecer_CommunicationId == Guid.Parse(communication.Id!)
       );
     if (existingCommunication == null)
@@ -78,13 +78,13 @@ internal class CommunicationRepository : ICommunicationRepository
     }
     else
     {
-      var application = context.ecer_ApplicationSet.FirstOrDefault(a => a.ecer_ApplicationId == existingCommunication.ecer_Applicationid.Id && a.ecer_Applicantid.Id == Guid.Parse(userId));
+      var application = context.ecer_ApplicationSet.SingleOrDefault(a => a.ecer_ApplicationId == existingCommunication.ecer_Applicationid.Id && a.ecer_Applicantid.Id == Guid.Parse(userId));
 
       if (application == null)
       {
         throw new InvalidOperationException($"Application '{existingCommunication.ecer_Applicationid.Id}' not found");
       }
-      var registrant = context.ContactSet.FirstOrDefault(r => r.ContactId == Guid.Parse(userId));
+      var registrant = context.ContactSet.SingleOrDefault(r => r.ContactId == Guid.Parse(userId));
       if (registrant == null)
       {
         throw new InvalidOperationException($"Registrant '{userId}' not found");
