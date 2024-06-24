@@ -44,20 +44,19 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
             f.Address.State(), f.Address.Country()
             ));
 
-    var userProfile = new Faker<UserProfile>("en_CA")
-        .CustomInstantiator(f => new UserProfile(
-            f.Person.FirstName,
-            f.Person.LastName,
-            f.Person.FirstName,
-            f.Person.FirstName,
-            f.Person.Phone,
-            DateOnly.FromDateTime(f.Person.DateOfBirth),
-            f.Person.Email,
-            f.Person.Phone,
-            address.Generate(),
-            address.Generate().OrNull(f)
-            ));
-
-    return userProfile.Generate();
+    
+    return new Faker<UserProfile>("en_CA")
+      .RuleFor(f => f.FirstName, f => f.Name.FirstName())
+      .RuleFor(f => f.LastName, f => f.Name.LastName())
+      .RuleFor(f => f.MiddleName, f => f.Name.FirstName())
+      .RuleFor(f => f.PreferredName, f => f.Name.FirstName())
+      .RuleFor(f => f.AlternateContactPhone, f => f.Phone.PhoneNumber())
+      .RuleFor(f => f.DateOfBirth, f => f.Date.PastDateOnly())
+      .RuleFor(f => f.Email, f => f.Internet.Email())
+      .RuleFor(f => f.Phone, f => f.Phone.PhoneNumber())
+      .RuleFor(f => f.ResidentialAddress, address)
+      .RuleFor(f => f.MailingAddress, address)
+      .RuleFor(f => f.PreviousNames, Array.Empty<PreviousName>())
+      .Generate();
   }
 }
