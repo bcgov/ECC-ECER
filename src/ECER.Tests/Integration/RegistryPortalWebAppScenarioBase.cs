@@ -42,6 +42,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceCompleted = null!;
   private Contact authenticatedBcscUser2 = null!;
 
+  private ecer_PreviousName previousName = null!;
+
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedBcscUserIdentity => authenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
@@ -125,6 +127,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1");
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2");
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3");
+    previousName = GetOrAddPreviousName(context, authenticatedBcscUser);
+    
 
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
     testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
@@ -181,6 +185,30 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     }
 
     return contact;
+  }
+
+  private ecer_PreviousName GetOrAddPreviousName(EcerContext context, Contact applicant)
+  {
+    var previousName = (from p in context.ecer_PreviousNameSet
+                        where p.ecer_Contactid.Id == applicant.Id 
+                        select p).FirstOrDefault();
+    
+    if (previousName == null)
+    {
+      previousName = new ecer_PreviousName
+      {
+        Id = Guid.NewGuid(),
+        ecer_Source = ecer_PreviousNameSources.Transcript,
+        ecer_FirstName = "Previously",
+        ecer_MiddleName = "I",
+        ecer_LastName = "Was",
+        ecer_PreferredName = "Longtimeago",
+      };
+      context.AddObject(previousName);
+      context.AddLink(previousName, ecer_PreviousName.Fields.ecer_previousname_Contactid, applicant);
+    }
+    
+    return previousName;
   }
 
   private ecer_Application GetOrAddApplication(EcerContext context, Contact applicant, ecer_Application_StatusCode status)

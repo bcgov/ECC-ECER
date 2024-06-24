@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -34,30 +35,29 @@ public class ProfileEndpoints : IRegisterEndpoints
 /// <summary>
 /// User profile information
 /// </summary>
-public record UserProfile(
-    string? FirstName,
-    string? LastName,
-    string? MiddleName,
-    string? PreferredName,
-    string? AlternateContactPhone,
-    DateOnly? DateOfBirth,
-    string Email,
-    string Phone,
-    Address? ResidentialAddress,
-    Address? MailingAddress,
-    PreviousName[] PreviousNames
-    );
+public record UserProfile {
+  public string? FirstName { get; set; }
+  public string? LastName { get; set; }
+  public string? MiddleName { get; set; }
+  public string? PreferredName { get; set; }
+  public string? AlternateContactPhone { get; set; }
+  public DateOnly? DateOfBirth { get; set; }
+  public string Email { get; set; } = null!;
+  public string Phone { get; set; } = null!;
+  public Address? ResidentialAddress { get; set; }
+  public Address? MailingAddress { get; set; }
+  public IEnumerable<PreviousName>? PreviousNames { get; set; } = Array.Empty<PreviousName>();
+};
 
 /// <summary>
 /// Previous Name
 /// </summary>
-public record PreviousName(
-  string? FirstName,
-  string? LastName, 
-  string? MiddleName,
-  string? PreferredName,
-  string? Status
-);
+public record PreviousName ([Required] string? FirstName, [Required] string? LastName)
+{
+  public string? MiddleName { get; set; }
+  public string? PreferredName { get; set; }
+  public string? Status { get; set; }
+}
 
 /// <summary>
 /// Address
