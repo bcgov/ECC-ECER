@@ -13,11 +13,7 @@
     <div class="d-flex flex-column ga-3">
       <h2 class="mt-10">Add character reference</h2>
 
-      <p>
-        Make sure you choose a person that:
-        <br />
-        If they do not receive the email:
-      </p>
+      <p>Make sure you choose a person that:</p>
       <ul class="ml-10">
         <li>Can speak to your character</li>
         <li>Can speak to your ability to educate and care for young children</li>

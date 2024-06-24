@@ -6,9 +6,7 @@ namespace ECER.Clients.RegistryPortal.Server.Communications
   {
     public CommunicationMapper()
     {
-      CreateMap<Managers.Registry.Contract.Communications.Communication, Communication>();
-
+      CreateMap<Managers.Registry.Contract.Communications.Communication, Communication>().ReverseMap();
     }
-      
   }
 }
