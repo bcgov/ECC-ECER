@@ -61,10 +61,10 @@ public record PreviousName ([Required] string? FirstName, [Required] string? Las
 
 public enum PreviousNameStage
 {
-  Unverfied,
-  ReadyForVerification,
+  Unverified,
+  ReadyforVerification,
   Verified,
-  Archived
+  Archived,
 }
 
 /// <summary>

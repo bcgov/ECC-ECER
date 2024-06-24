@@ -52,8 +52,8 @@ public record PreviousName (string? FirstName, string? LastName)
 
 public enum PreviousNameStage
 {
-  Unverfied,
-  ReadyForVerification,
+  Unverified,
+  ReadyforVerification,
   Verified,
   Archived,
 }
