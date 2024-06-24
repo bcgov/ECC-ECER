@@ -9,7 +9,8 @@ internal class CommunicationMapper : Profile
   {
     CreateMap<Communication, Contract.Communications.Communication>()
         .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id ?? string.Empty))
-        .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Body));
+        .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Body))
+        .ReverseMap();
 
     CreateMap<CommunicationsStatus, Contract.Communications.CommunicationsStatus>();
   }

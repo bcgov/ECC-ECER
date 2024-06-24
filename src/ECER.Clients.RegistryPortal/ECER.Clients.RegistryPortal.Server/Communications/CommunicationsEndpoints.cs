@@ -5,6 +5,7 @@ using MediatR;
 using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ECER.Clients.RegistryPortal.Server.Communications;
 
@@ -33,6 +34,34 @@ public class CommunicationsEndpoints : IRegisterEndpoints
     })
      .WithOpenApi("Handles messages queries", string.Empty, "message_get")
      .RequireAuthorization();
+
+    endpointRouteBuilder.MapPost("/api/messages", async Task<Results<Ok<SendMessageResponse>, BadRequest<ProblemDetails>, NotFound>> (SendMessageRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    {
+      var userId = ctx.User.GetUserContext()?.UserId;
+      bool IsNotGuid = !Guid.TryParse(request.Communication.Id, out _);
+      if (IsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "Communication Id is not valid" });
+      }
+
+      var mappedCommunication = mapper.Map<Managers.Registry.Contract.Communications.Communication>(request.Communication);
+      var cmd = new SendMessageCommand(mappedCommunication, userId!);
+      var result = await messageBus.Send(cmd, ct);
+
+      if (!result.IsSuccess)
+      {
+        var problemDetails = new ProblemDetails
+        {
+          Status = StatusCodes.Status400BadRequest,
+          Title = "Failed to send message.",
+          Extensions = { ["errors"] = result.ErrorMessage }
+        };
+        return TypedResults.BadRequest(problemDetails);
+      }
+      return TypedResults.Ok(new SendMessageResponse(result.CommunicationId!));
+    })
+      .WithOpenApi("Handles message send request", string.Empty, "message_post")
+      .RequireAuthorization();
 
     endpointRouteBuilder.MapPut("/api/messages/{id}/seen",
         async Task<Results<Ok<CommunicationResponse>, BadRequest<string>>> (string? id,
@@ -71,6 +100,18 @@ public class CommunicationsEndpoints : IRegisterEndpoints
 /// </summary>
 /// <param name="CommunicationId">The communication id</param>
 public record CommunicationResponse(string CommunicationId);
+
+/// <summary>
+/// Send Message Request
+/// </summary>
+/// <param name="Communication"></param>
+public record SendMessageRequest(Communication Communication);
+
+/// <summary>
+/// Send Message Response
+/// </summary>
+/// <param name="CommunicationId"></param>
+public record SendMessageResponse(string CommunicationId);
 
 /// <summary>
 /// Communication seen request

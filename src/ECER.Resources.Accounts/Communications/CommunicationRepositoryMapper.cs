@@ -19,6 +19,14 @@ internal class CommunicationRepositoryMapper : Profile
      .ForMember(d => d.NotifiedOn, opts => opts.MapFrom(s => s.ecer_DateNotified))
      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode));
 
+    CreateMap<Communication, ecer_Communication>(MemberList.Source)
+     .ForSourceMember(s => s.Subject, opts => opts.DoNotValidate())
+     .ForSourceMember(s => s.NotifiedOn, opts => opts.DoNotValidate())
+     .ForSourceMember(s => s.Acknowledged, opts => opts.DoNotValidate())
+     .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
+     .ForSourceMember(s => s.Body, opts => opts.DoNotValidate())
+     .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)));
+
     CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true));
   }

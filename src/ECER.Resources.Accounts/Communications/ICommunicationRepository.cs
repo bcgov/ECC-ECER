@@ -12,6 +12,8 @@ public interface ICommunicationRepository
   Task<IEnumerable<Communication>> Query(UserCommunicationQuery query);
 
   Task<string> MarkAsSeen(string communicationId, CancellationToken cancellationToken);
+
+  Task<string> SendMessage(Communication communication, string userId, CancellationToken cancellationToken);
 }
 
 public record UserCommunicationQuery
