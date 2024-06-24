@@ -13,11 +13,7 @@
     <div class="d-flex flex-column ga-3">
       <h2 class="mt-10">Add work experience reference</h2>
 
-      <p>
-        Make sure you choose a person that:
-        <br />
-        If they do not receive the email:
-      </p>
+      <p>Make sure you choose a person that:</p>
       <ul class="ml-10">
         <li>Can speak to your knowledge, skill, ability and competencies as an ECE</li>
         <li>Has directly supervised (observed) the hours they attest to</li>
