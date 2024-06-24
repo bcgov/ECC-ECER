@@ -33,6 +33,15 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
     });
   }
 
+  private PreviousName CreatePreviousName()
+  {
+    var faker = new Faker("en_CA");
+
+    return new PreviousName(
+      faker.Name.FirstName(), faker.Name.LastName()
+    );
+  }
+  
   private UserProfile CreateNewUser()
   {
     var address = new Faker<Address>("en_CA")
@@ -56,7 +65,7 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
       .RuleFor(f => f.Phone, f => f.Phone.PhoneNumber())
       .RuleFor(f => f.ResidentialAddress, address)
       .RuleFor(f => f.MailingAddress, address)
-      .RuleFor(f => f.PreviousNames, Array.Empty<PreviousName>())
+      .RuleFor(f => f.PreviousNames, f => f.Make(1, () => CreatePreviousName()))
       .Generate();
   }
 }

@@ -29,18 +29,34 @@ public record RegistrantQueryResults(IEnumerable<Registrant> Items);
 
 public record Registrant(string UserId, UserProfile Profile);
 
-public record UserProfile(
-    string FirstName,
-    string LastName,
-    DateOnly? DateOfBirth,
-    string Email,
-    string Phone,
-    Address? ResidentialAddress,
-    Address? MailingAddress,
-    string? PreferredName,
-    string? MiddleName,
-    string? AlternateContactPhone
-    );
+public record UserProfile {
+  public string? FirstName { get; set; }
+  public string? LastName { get; set; }
+  public string? MiddleName { get; set; }
+  public string? PreferredName { get; set; }
+  public string? AlternateContactPhone { get; set; }
+  public DateOnly? DateOfBirth { get; set; }
+  public string Email { get; set; } = null!;
+  public string Phone { get; set; } = null!;
+  public Address? ResidentialAddress { get; set; }
+  public Address? MailingAddress { get; set; }
+  public IEnumerable<PreviousName>? PreviousNames { get; set; } = Array.Empty<PreviousName>();
+};
+
+public record PreviousName (string? FirstName, string? LastName)
+{
+  public string? MiddleName { get; set; }
+  public string? PreferredName { get; set; }
+  public PreviousNameStage? Status { get; set; }
+}
+
+public enum PreviousNameStage
+{
+  Unverfied,
+  ReadyForVerification,
+  Verified,
+  Archived,
+}
 
 public record Address(
     string Line1,

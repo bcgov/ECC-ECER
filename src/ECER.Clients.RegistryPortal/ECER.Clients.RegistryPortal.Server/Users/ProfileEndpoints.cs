@@ -56,7 +56,15 @@ public record PreviousName ([Required] string? FirstName, [Required] string? Las
 {
   public string? MiddleName { get; set; }
   public string? PreferredName { get; set; }
-  public string? Status { get; set; }
+  public PreviousNameStage? Status { get; set; }
+}
+
+public enum PreviousNameStage
+{
+  Unverfied,
+  ReadyForVerification,
+  Verified,
+  Archived
 }
 
 /// <summary>
