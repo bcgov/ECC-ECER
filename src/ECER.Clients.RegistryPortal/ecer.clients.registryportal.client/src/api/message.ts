@@ -28,4 +28,9 @@ const markMessageAsRead = async (messageId: string): Promise<ApiResponse<Compone
   );
 };
 
-export { getMessages, getMessagesStatus, markMessageAsRead };
+const sendMessage = async (sendMessageRequest: Components.Schemas.SendMessageRequest): Promise<ApiResponse<Components.Schemas.SendMessageResponse>> => {
+  const client = await getClient();
+  return apiResultHandler.execute<Components.Schemas.SendMessageResponse>(client.message_post(null, sendMessageRequest), "message_post");
+};
+
+export { getMessages, getMessagesStatus, markMessageAsRead, sendMessage };
