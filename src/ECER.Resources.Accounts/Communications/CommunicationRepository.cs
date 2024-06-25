@@ -37,6 +37,16 @@ internal class CommunicationRepository : ICommunicationRepository
     // Filtering by registrant ID
     if (query.ByRegistrantId != null) communications = communications.Where(r => r.c.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
 
+    // returning just child communications based on parent id
+    if (query.ByParentId != null)
+    {
+      communications = communications.Where(r => r.c.ecer_ParentCommunicationid.Id == Guid.Parse(query.ByParentId));
+    }
+    // otherwise returning just parent communications
+    else
+    {
+      communications = communications.Where(r => r.c.ecer_ParentCommunicationid == null);
+    }
     if (query.PageNumber > 0)
     {
       communications = communications.OrderByDescending(r => r.c.ecer_DateNotified).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
@@ -69,9 +79,7 @@ internal class CommunicationRepository : ICommunicationRepository
   public async Task<string> SendMessage(Communication communication, string userId, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    var existingCommunication = context.ecer_CommunicationSet.SingleOrDefault(
-      d => d.ecer_CommunicationId == Guid.Parse(communication.Id!)
-      );
+    var existingCommunication = context.ecer_CommunicationSet.SingleOrDefault(d => d.ecer_CommunicationId == Guid.Parse(communication.Id!));
     if (existingCommunication == null)
     {
       throw new InvalidOperationException($"Communication '{communication.Id}' not found");

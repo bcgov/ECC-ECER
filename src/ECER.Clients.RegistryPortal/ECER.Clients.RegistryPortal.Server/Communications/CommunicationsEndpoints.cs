@@ -13,7 +13,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/messages", async (HttpContext httpContext, IMediator messageBus, IMapper mapper, IOptions<PaginationSettings> paginationOptions) =>
+    endpointRouteBuilder.MapGet("/api/messages/{parentId?}", async (string? parentId, HttpContext httpContext, IMediator messageBus, IMapper mapper, IOptions<PaginationSettings> paginationOptions) =>
     {
       var userContext = httpContext.User.GetUserContext();
 
@@ -24,6 +24,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
       var query = new UserCommunicationQuery
       {
         ByRegistrantId = userContext!.UserId,
+        ByParentId = parentId,
         ByStatus = [ECER.Managers.Registry.Contract.Communications.CommunicationStatus.NotifiedRecipient, ECER.Managers.Registry.Contract.Communications.CommunicationStatus.Acknowledged],
         PageNumber = pageNumber,
         PageSize = pageSize
