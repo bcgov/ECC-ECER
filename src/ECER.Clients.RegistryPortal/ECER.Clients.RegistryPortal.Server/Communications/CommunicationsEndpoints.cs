@@ -125,6 +125,7 @@ public record Communication
   public string Id { get; set; } = null!;
   public string Subject { get; set; } = null!;
   public string Text { get; set; } = null!;
+  public string From { get; set; } = string.Empty;
   public bool Acknowledged { get; set; }
   public DateTime NotifiedOn { get; set; }
   public CommunicationStatus Status { get; set; }

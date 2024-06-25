@@ -30,6 +30,7 @@ public record Communication(string? Id)
 {
   public string Subject { get; set; } = string.Empty;
   public string Body { get; set; } = string.Empty;
+  public string From { get; set; } = string.Empty;
   public DateTime NotifiedOn { get; set; }
   public bool Acknowledged { get; set; }
   public CommunicationStatus Status { get; set; }
