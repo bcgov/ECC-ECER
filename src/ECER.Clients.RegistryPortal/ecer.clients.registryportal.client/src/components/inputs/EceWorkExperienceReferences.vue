@@ -233,25 +233,6 @@ export default defineComponent({
   },
   methods: {
     isNumber,
-    // hasDuplicateReferences() {
-    //   if (Object.values(this.wizardStore.wizardData.referenceList).length === 0 || this.wizardStore.wizardData.characterReferences.length === 0) {
-    //     return false;
-    //   }
-
-    //   const refSet = new Set<string>();
-
-    //   for (const ref of this.wizardStore.wizardData.characterReferences) {
-    //     refSet.add(`${ref.firstName} ${ref.lastName}`);
-    //   }
-
-    //   for (const ref of Object.values(this.wizardStore.wizardData.referenceList) as [Components.Schemas.WorkExperienceReference]) {
-    //     if (refSet.has(`${ref.firstName} ${ref.lastName}`)) {
-    //       return true;
-    //     }
-    //   }
-
-    //   return false;
-    // },
     async handleSubmit() {
       // Validate the form
       const { valid } = await (this.$refs.addWorkExperienceReferenceForm as any).validate();
