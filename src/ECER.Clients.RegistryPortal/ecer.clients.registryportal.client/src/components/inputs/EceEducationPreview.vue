@@ -1,5 +1,5 @@
 <template>
-  <PreviewCard :is-valid="wizardStore.validationState.Education" title="Education" portal-stage="Education">
+  <PreviewCard title="Education" portal-stage="Education">
     <template #content>
       <div v-for="(education, id, index) in educations" :key="id">
         <v-divider v-if="index !== 0" :thickness="2" color="grey-lightest" class="border-opacity-100 my-6" />

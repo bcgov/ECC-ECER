@@ -13,7 +13,7 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col v-if="applicationStore.hasDuplicateReferences" md="10" lg="8" xl="6">
+    <v-col v-if="hasDuplicateReferences" md="10" lg="8" xl="6">
       <Alert type="error">
         <p class="small">Your character reference cannot be the same as your work experience reference(s)</p>
       </Alert>
@@ -78,6 +78,8 @@
       ></v-text-field>
     </v-col>
   </v-row>
+  <!-- this prevents form from proceeding if there are duplicates -->
+  <v-input auto-hide="auto" :model-value="modelValue" :rules="[!hasDuplicateReferences]"></v-input>
 </template>
 
 <script lang="ts">
@@ -85,6 +87,7 @@ import { defineComponent } from "vue";
 
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
+import { useWizardStore } from "@/store/wizard";
 import type { EceCharacterReferenceProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { isNumber } from "@/utils/formInput";
@@ -111,10 +114,12 @@ export default defineComponent({
   },
   setup: () => {
     const applicationStore = useApplicationStore();
+    const wizardStore = useWizardStore();
     const alertStore = useAlertStore();
     return {
       applicationStore,
       alertStore,
+      wizardStore,
     };
   },
   data() {
@@ -134,6 +139,27 @@ export default defineComponent({
       ] as Components.Schemas.CharacterReference);
     },
     isNotSpecialCharacterName,
+  },
+  computed: {
+    hasDuplicateReferences() {
+      if (Object.values(this.wizardStore.wizardData.referenceList).length === 0 || this.wizardStore.wizardData.characterReferences.length === 0) {
+        return false;
+      }
+
+      const refSet = new Set<string>();
+
+      for (const ref of this.wizardStore.wizardData.characterReferences) {
+        refSet.add(`${ref.firstName} ${ref.lastName}`);
+      }
+
+      for (const ref of Object.values(this.wizardStore.wizardData.referenceList) as [Components.Schemas.WorkExperienceReference]) {
+        if (refSet.has(`${ref.firstName} ${ref.lastName}`)) {
+          return true;
+        }
+      }
+
+      return false;
+    },
   },
 });
 </script>
