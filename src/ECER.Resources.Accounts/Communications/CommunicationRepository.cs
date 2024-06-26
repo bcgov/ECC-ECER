@@ -1,9 +1,7 @@
-﻿using AngleSharp.Io;
-using AutoMapper;
+﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
-using System.Drawing.Printing;
 
 namespace ECER.Resources.Accounts.Communications;
 
