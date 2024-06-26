@@ -128,7 +128,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2", null);
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3", null);
-    testCommunication4 = GetOrAddCommunication(context, inProgressTestApplication, "comm4", testCommunication1.Id);
+    testCommunication4 = GetOrAddCommunication(context, inProgressTestApplication, "comm4", null);
 
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
     testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
