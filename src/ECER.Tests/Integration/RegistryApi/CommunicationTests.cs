@@ -14,12 +14,26 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task GetCommunications_ReturnsCommunications()
+  public async Task GetCommunications_ReturnsParentCommunications_byPage()
   {
     var communicationsResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
       _.Get.Url("/api/messages?page=2&&pageSize=20");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var communications = await communicationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Communications.Communication[]>();
+    communications.ShouldNotBeNull();
+  }
+
+  [Fact]
+  public async Task GetCommunications_ReturnsChildCommunications_byPage()
+  {
+    var communicationsResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url($"/api/messages/{this.Fixture.communicationOneId}?page=2&&pageSize=20");
       _.StatusCodeShouldBeOk();
     });
 

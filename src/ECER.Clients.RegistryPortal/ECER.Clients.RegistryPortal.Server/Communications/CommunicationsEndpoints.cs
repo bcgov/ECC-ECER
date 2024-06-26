@@ -13,10 +13,10 @@ public class CommunicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/messages", async (HttpContext httpContext, IMediator messageBus, IMapper mapper, IOptions<PaginationSettings> paginationOptions) =>
+    endpointRouteBuilder.MapGet("/api/messages/{parentId?}", async (string? parentId, HttpContext httpContext, IMediator messageBus, IMapper mapper, IOptions<PaginationSettings> paginationOptions) =>
     {
       var userContext = httpContext.User.GetUserContext();
-
+      bool IdIsNotGuid = !Guid.TryParse(parentId, out _); if (IdIsNotGuid && parentId != null) { parentId = null; }
       // Get pagination parameters from the query string with default values
       var pageNumber = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageProperty], out var page) ? page : paginationOptions.Value.DefaultPageNumber;
       var pageSize = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageSizeProperty], out var size) ? size : paginationOptions.Value.DefaultPageSize;
@@ -24,6 +24,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
       var query = new UserCommunicationQuery
       {
         ByRegistrantId = userContext!.UserId,
+        ByParentId = parentId,
         ByStatus = [ECER.Managers.Registry.Contract.Communications.CommunicationStatus.NotifiedRecipient, ECER.Managers.Registry.Contract.Communications.CommunicationStatus.Acknowledged],
         PageNumber = pageNumber,
         PageSize = pageSize
@@ -124,9 +125,17 @@ public record Communication
   public string Id { get; set; } = null!;
   public string Subject { get; set; } = null!;
   public string Text { get; set; } = null!;
+  public InitiatedFrom From { get; set; }
   public bool Acknowledged { get; set; }
   public DateTime NotifiedOn { get; set; }
   public CommunicationStatus Status { get; set; }
+}
+
+public enum InitiatedFrom
+{
+  Investigation,
+  Registrant,
+  Registry,
 }
 
 public enum CommunicationStatus

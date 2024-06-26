@@ -21,6 +21,7 @@ public record UserCommunicationQuery
   public string? ById { get; set; }
   public IEnumerable<CommunicationStatus>? ByStatus { get; set; }
   public string? ByRegistrantId { get; set; }
+  public string? ByParentId { get; set; }
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
 }
@@ -29,6 +30,7 @@ public record Communication(string? Id)
 {
   public string Subject { get; set; } = string.Empty;
   public string Body { get; set; } = string.Empty;
+  public InitiatedFrom From { get; set; }
   public DateTime NotifiedOn { get; set; }
   public bool Acknowledged { get; set; }
   public CommunicationStatus Status { get; set; }
@@ -40,6 +42,13 @@ public enum CommunicationStatus
   NotifiedRecipient,
   Acknowledged,
   Inactive
+}
+
+public enum InitiatedFrom
+{
+  Investigation,
+  Registrant,
+  Registry,
 }
 
 public record CommunicationsStatus

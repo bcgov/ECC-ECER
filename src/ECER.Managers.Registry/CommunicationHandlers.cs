@@ -41,6 +41,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
     {
       ById = request.ById,
       ByRegistrantId = request.ByRegistrantId,
+      ByParentId = request.ByParentId,
       ByStatus = request.ByStatus?.Convert<Contract.Communications.CommunicationStatus, Resources.Accounts.Communications.CommunicationStatus>(),
       PageNumber = request.PageNumber,
       PageSize = request.PageSize,

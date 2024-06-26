@@ -3,6 +3,7 @@ using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 using System.Globalization;
 using Xunit.Abstractions;
@@ -33,6 +34,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Communication testCommunication1 = null!;
   private ecer_Communication testCommunication2 = null!;
   private ecer_Communication testCommunication3 = null!;
+  private ecer_Communication testCommunication4 = null!;
 
   private ecer_PortalInvitation testPortalInvitationOne = null!;
   private ecer_PortalInvitation testPortalInvitationCharacterReferenceSubmit = null!;
@@ -49,6 +51,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string communicationOneId => testCommunication1.Id.ToString();
   public string communicationTwoId => testCommunication2.Id.ToString();
   public string communicationThreeId => testCommunication3.Id.ToString();
+  public string communicationFourId => testCommunication4.Id.ToString();
   public string inProgressApplicationId => inProgressTestApplication.Id.ToString();
   public string draftTestApplicationId => draftTestApplication.Id.ToString();
 
@@ -122,9 +125,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     submittedTestApplicationWorkExperienceRef = AddWorkExperienceReferenceToApplication(context, submittedTestApplication);
     submittedTestApplicationWorkExperienceRef2 = AddWorkExperienceReferenceToApplication(context, submittedTestApplication2);
     submittedTestApplicationCharacterRef = AddCharacterReferenceToApplication(context, submittedTestApplication3);
-    testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1");
-    testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2");
-    testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3");
+    testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1", null);
+    testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2", null);
+    testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3", null);
+    testCommunication4 = GetOrAddCommunication(context, inProgressTestApplication, "comm4", null);
 
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
     testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
@@ -249,7 +253,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return characterReference;
   }
 
-  private ecer_Communication GetOrAddCommunication(EcerContext context, ecer_Application application, string message)
+  private ecer_Communication GetOrAddCommunication(EcerContext context, ecer_Application application, string message, Guid? parentCommunicationId)
   {
     var communication = context.ecer_CommunicationSet.FirstOrDefault(c => c.ecer_Applicationid.Id == application.Id && c.ecer_Registrantid.Id == authenticatedBcscUser.Id && c.ecer_Message == message && c.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient);
 
@@ -262,8 +266,17 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Acknowledged = false,
         StatusCode = ecer_Communication_StatusCode.NotifiedRecipient,
       };
-
       context.AddObject(communication);
+
+      if (parentCommunicationId != null)
+      {
+        var parent = context.ecer_CommunicationSet.SingleOrDefault(d => d.ecer_CommunicationId == parentCommunicationId);
+        var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
+        {
+          PrimaryEntityRole = EntityRole.Referencing
+        };
+        context.AddLink(communication, Referencingecer_communication_ParentCommunicationid, parent);
+      }
       context.AddLink(communication, ecer_Communication.Fields.ecer_communication_Applicationid, inProgressTestApplication);
 
 #pragma warning disable S125 // Sections of code should not be commented out
