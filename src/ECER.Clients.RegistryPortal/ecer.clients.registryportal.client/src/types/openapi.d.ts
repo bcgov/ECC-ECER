@@ -119,6 +119,7 @@ declare namespace Components {
       referenceContactInformation?: ReferenceContactInformation;
       referenceEvaluation?: CharacterReferenceEvaluation;
       confirmProvidedInformationIsRight?: boolean;
+      recaptchaToken?: string | null;
     }
     export type ChildcareAgeRanges = "From0to12Months" | "From12to24Months" | "From25to30Months" | "From31to36Months" | "Grade1" | "Preschool";
     export type ChildrenProgramType =
@@ -204,6 +205,7 @@ declare namespace Components {
     export interface OptOutReferenceRequest {
       token?: string | null;
       unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
+      recaptchaToken?: string | null;
     }
     export interface PortalInvitation {
       id?: string | null;
@@ -397,6 +399,7 @@ declare namespace Components {
       workExperienceReferenceDetails?: WorkExperienceReferenceDetails;
       workExperienceReferenceCompetenciesAssessment?: WorkExperienceReferenceCompetenciesAssessment;
       confirmProvidedInformationIsRight?: boolean;
+      recaptchaToken?: string | null;
     }
     export type WorkHoursType = "FullTime" | "PartTime";
   }
@@ -576,6 +579,11 @@ declare namespace Paths {
       export type $200 = Components.Schemas.Province[];
     }
   }
+  namespace RecaptchaSiteKeyGet {
+    namespace Responses {
+      export type $200 = string;
+    }
+  }
   namespace ReferenceOptout {
     export type RequestBody = Components.Schemas.OptOutReferenceRequest;
     namespace Responses {
@@ -634,6 +642,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProvinceGet.Responses.$200>;
+  /**
+   * recaptcha_site_key_get - Obtains site key for recaptcha
+   */
+  "recaptcha_site_key_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.RecaptchaSiteKeyGet.Responses.$200>;
   /**
    * profile_get - Gets the current user profile
    */
@@ -819,6 +835,16 @@ export interface PathsDictionary {
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProvinceGet.Responses.$200>;
   };
+  ["/api/recaptchaSiteKey"]: {
+    /**
+     * recaptcha_site_key_get - Obtains site key for recaptcha
+     */
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.RecaptchaSiteKeyGet.Responses.$200>;
+  };
   ["/api/profile"]: {
     /**
      * profile_get - Gets the current user profile
@@ -985,7 +1011,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationCharacterreferenceUpdatePost.Responses.$200>;
   };
-  ["/api/applications/{applicationId}/character-reference/{referenceId}/resend-invite"]: {
+  ["/api/applications/{applicationId}/characterReference/{referenceId}/resendInvite"]: {
     /**
      * application_character_reference_resend_invite_post - Resend a character reference invite
      *
@@ -997,7 +1023,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationCharacterReferenceResendInvitePost.Responses.$200>;
   };
-  ["/api/applications/{applicationId}/work-experience-reference/{referenceId}/resend-invite"]: {
+  ["/api/applications/{applicationId}/workExperienceReference/{referenceId}/resendInvite"]: {
     /**
      * application_work_experience_reference_resend_invite_post - Resend a work experience reference invite
      *
