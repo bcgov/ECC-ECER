@@ -49,7 +49,6 @@
 import { defineComponent } from "vue";
 
 import { getProfile, putProfile } from "@/api/profile";
-import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import Wizard from "@/components/Wizard.vue";
 import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizard from "@/config/application-wizard";
@@ -64,7 +63,7 @@ import { AddressType } from "@/utils/constant";
 
 export default defineComponent({
   name: "Application",
-  components: { Wizard, WizardHeader, ConfirmationDialog },
+  components: { Wizard, WizardHeader },
   setup: async () => {
     const wizardStore = useWizardStore();
     const userStore = useUserStore();

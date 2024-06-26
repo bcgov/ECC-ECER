@@ -131,15 +131,6 @@ export default defineComponent({
       Rules,
     };
   },
-  methods: {
-    isNumber,
-    async updateCharacterReference() {
-      this.$emit("update:model-value", [
-        { firstName: this.firstName, lastName: this.lastName, emailAddress: this.emailAddress, phoneNumber: this.phoneNumber },
-      ] as Components.Schemas.CharacterReference);
-    },
-    isNotSpecialCharacterName,
-  },
   computed: {
     hasDuplicateReferences() {
       if (Object.values(this.wizardStore.wizardData.referenceList).length === 0 || this.wizardStore.wizardData.characterReferences.length === 0) {
@@ -160,6 +151,15 @@ export default defineComponent({
 
       return false;
     },
+  },
+  methods: {
+    isNumber,
+    async updateCharacterReference() {
+      this.$emit("update:model-value", [
+        { firstName: this.firstName, lastName: this.lastName, emailAddress: this.emailAddress, phoneNumber: this.phoneNumber },
+      ] as Components.Schemas.CharacterReference);
+    },
+    isNotSpecialCharacterName,
   },
 });
 </script>

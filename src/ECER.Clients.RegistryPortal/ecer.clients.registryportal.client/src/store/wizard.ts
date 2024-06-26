@@ -3,9 +3,7 @@ import { defineStore } from "pinia";
 import type { Components } from "@/types/openapi";
 import type { ReferenceStage, Step, Wizard } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
-import { CertificationType } from "@/utils/constant";
 
-import { useApplicationStore } from "./application";
 import { useOidcStore } from "./oidc";
 import { useUserStore } from "./user";
 
