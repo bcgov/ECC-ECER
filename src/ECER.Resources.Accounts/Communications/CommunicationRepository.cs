@@ -41,11 +41,6 @@ internal class CommunicationRepository : ICommunicationRepository
     // returning just child communications based on parent id
     if (query.ByParentId != null)
     {
-      bool IsNotGuid = !Guid.TryParse(query.ByParentId, out _);
-      if (IsNotGuid)
-      {
-        throw new InvalidOperationException($"Communication Id '{query.ByParentId}' is not valid");
-      }
       communications = communications.Where(r => r.c.ecer_ParentCommunicationid.Id == Guid.Parse(query.ByParentId));
     }
     // otherwise returning just parent communications
