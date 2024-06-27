@@ -54,6 +54,7 @@ public record UserProfile {
 
 public record PreviousName (string? FirstName, string? LastName)
 {
+  public string? Id { get; set; }
   public string? MiddleName { get; set; }
   public string? PreferredName { get; set; }
   public PreviousNameStage? Status { get; set; }

@@ -36,6 +36,8 @@ internal sealed class UserMapper : AutoMapper.Profile
       .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.MiddleName))
       .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => s.PreferredName))
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.Status))
+      .ForMember(d => d.Id,
+        opts => opts.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
       .ReverseMap();
 
     

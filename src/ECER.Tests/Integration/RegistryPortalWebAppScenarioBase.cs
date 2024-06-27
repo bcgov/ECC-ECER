@@ -128,8 +128,6 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2");
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3");
     previousName = GetOrAddPreviousName(context, authenticatedBcscUser);
-    
-
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
     testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
     testPortalInvitationWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");

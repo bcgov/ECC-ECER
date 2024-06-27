@@ -1,6 +1,7 @@
 ﻿using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Users;
+using Shouldly;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.RegistryApi;
@@ -38,7 +39,7 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
 
     return new PreviousName(
-      faker.Name.FirstName(), faker.Name.LastName()
+      "Cole", "Palmer"
     );
   }
   
