@@ -50,23 +50,6 @@ export const useApplicationStore = defineStore("application", {
         }, 0) ?? 0
       );
     },
-    hasDuplicateReferences(state): boolean {
-      if (!state.draftApplication.characterReferences || !state.draftApplication.workExperienceReferences) return false;
-
-      const refSet = new Set<string>();
-
-      for (const ref of state.draftApplication.characterReferences) {
-        refSet.add(`${ref.firstName} ${ref.lastName}`);
-      }
-
-      for (const ref of state.draftApplication.workExperienceReferences) {
-        if (refSet.has(`${ref.firstName} ${ref.lastName}`)) {
-          return true;
-        }
-      }
-
-      return false;
-    },
   },
   actions: {
     async fetchApplications() {
