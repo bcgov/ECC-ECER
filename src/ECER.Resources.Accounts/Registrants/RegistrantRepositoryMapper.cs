@@ -21,6 +21,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_PreferredName, opts => opts.MapFrom(s => s.PreferredName))
       .ForMember(d => d.ecer_MiddleName, opts => opts.MapFrom(s => s.MiddleName))
+      .ForMember(d => d.ecer_PreviousNameId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
   
     CreateMap<ecer_PreviousName, PreviousName>(MemberList.Source)
@@ -29,6 +30,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
       .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => s.ecer_PreferredName))
       .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.ecer_MiddleName))
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_PreviousNameId))
       .ValidateMemberList(MemberList.Destination);
       
     CreateMap<ecer_Authentication, UserIdentity>()
