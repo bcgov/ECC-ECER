@@ -6,49 +6,16 @@
     <template #stepperHeader>
       <v-stepper-header>
         <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
-          <v-stepper-item
-            color="primary"
-            :step="wizardStore.step"
-            :value="index + 1"
-            :title="step.title"
-            :rules="wizardStore.step <= index + 1 ? [] : [() => wizardStore.validationState[step.stage as Components.Schemas.PortalStage]]"
-          ></v-stepper-item>
+          <v-stepper-item color="primary" :step="wizardStore.step" :value="index + 1" :title="step.title"></v-stepper-item>
           <v-divider v-if="index !== Object.values(wizardStore.steps).length - 1" :key="`divider-${index}`" />
         </template>
       </v-stepper-header>
     </template>
     <template #PrintPreview>
-      <v-btn rounded="lg" variant="text" @click="wizardStore.allStageValidations ? printPage() : (showPrintDialog = true)">
+      <v-btn rounded="lg" variant="text" @click="printPage()">
         <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
         <a class="small">Print Preview</a>
       </v-btn>
-
-      <ConfirmationDialog
-        :cancel-button-text="'Cancel'"
-        :accept-button-text="'Yes'"
-        :title="'Print Confirmation'"
-        :custom-button-variant="'text'"
-        :show="showPrintDialog"
-        :disabled="wizardStore.allStageValidations"
-        @cancel="showPrintDialog = false"
-        @accept="handleAcceptPrint"
-      >
-        <template #activator>
-          <span @click="wizardStore.allStageValidations ? printPage() : {}">
-            <v-icon color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
-            <a class="small">Print Preview</a>
-          </span>
-        </template>
-        <template #confirmation-text>
-          <p>
-            Your Application contains missing data and/or invalid data.
-            <br />
-            The printed preview will show which sections are incomplete
-          </p>
-          <br />
-          <p><b>Are you sure you want to proceed?</b></p>
-        </template>
-      </ConfirmationDialog>
     </template>
     <template #actions>
       <v-container class="mb-8">
@@ -82,7 +49,6 @@
 import { defineComponent } from "vue";
 
 import { getProfile, putProfile } from "@/api/profile";
-import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import Wizard from "@/components/Wizard.vue";
 import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizard from "@/config/application-wizard";
@@ -97,7 +63,7 @@ import { AddressType } from "@/utils/constant";
 
 export default defineComponent({
   name: "Application",
-  components: { Wizard, WizardHeader, ConfirmationDialog },
+  components: { Wizard, WizardHeader },
   setup: async () => {
     const wizardStore = useWizardStore();
     const userStore = useUserStore();
@@ -118,11 +84,6 @@ export default defineComponent({
 
     return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore, loadingStore };
   },
-  data() {
-    return {
-      showPrintDialog: false,
-    };
-  },
   computed: {
     showSaveButtons() {
       return (
@@ -137,14 +98,10 @@ export default defineComponent({
   },
   methods: {
     async handleSubmit() {
-      if (!this.wizardStore.allStageValidations) {
-        this.alertStore.setFailureAlert("Your application is incomplete. You need to complete it before you can submit.");
-      } else {
-        const submitApplicationResponse = await this.applicationStore.submitApplication();
+      const submitApplicationResponse = await this.applicationStore.submitApplication();
 
-        if (submitApplicationResponse?.applicationId) {
-          this.$router.push({ name: "submitted", params: { applicationId: submitApplicationResponse.applicationId } });
-        }
+      if (submitApplicationResponse?.applicationId) {
+        this.$router.push({ name: "submitted", params: { applicationId: submitApplicationResponse.applicationId } });
       }
     },
     async handleSaveAndContinue() {
@@ -245,11 +202,6 @@ export default defineComponent({
           dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
         });
       }
-    },
-    handleAcceptPrint() {
-      this.showPrintDialog = false;
-      /* creating a delay before printing - helps prevent warning dialog overlay in print preview */
-      setTimeout(this.printPage, 500);
     },
     printPage() {
       window.print();

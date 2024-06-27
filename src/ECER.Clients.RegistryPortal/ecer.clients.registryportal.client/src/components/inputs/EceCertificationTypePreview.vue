@@ -1,5 +1,5 @@
 <template>
-  <PreviewCard :is-valid="wizardStore.validationState.CertificationType" title="Certification Selection" portal-stage="CertificationType">
+  <PreviewCard title="Certification Selection" portal-stage="CertificationType">
     <template #content>
       <v-row>
         <v-col cols="4">

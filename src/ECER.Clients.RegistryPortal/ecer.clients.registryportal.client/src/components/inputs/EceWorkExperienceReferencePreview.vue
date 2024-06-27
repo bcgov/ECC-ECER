@@ -1,5 +1,5 @@
 <template>
-  <PreviewCard :is-valid="wizardStore.validationState.WorkReferences" title="Work Experience References" portal-stage="WorkReferences">
+  <PreviewCard title="Work Experience References" portal-stage="WorkReferences">
     <template #content>
       <div v-for="(experience, id, index) in references" :key="id">
         <v-divider v-if="index !== 0" :thickness="2" color="grey-lightest" class="border-opacity-100 my-6" />
