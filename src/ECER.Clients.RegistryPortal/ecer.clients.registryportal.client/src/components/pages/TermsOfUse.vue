@@ -43,16 +43,15 @@
               BCeID Terms of Use Agreement
             </a>
             or the
-            <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bcservicescardapp/terms-of-use">BC Login Service Terms of Use</a>
+            <a href="https://id.gov.bc.ca/static/termsOfUse.html">BC Services Card Login Terms of Use</a>
             .
             <br />
             <br />
             You acknowledge that sharing your password or failing to log out of your session may compromise your personal information, and may be construed as
-            compromising, altering, or rendering ineffective the BCeID system or BC Services Card systems. You acknowledge that you are responsible for all
-            activities that occur using your BCeID or BC Services Card and your Digital Identity, whether those activities were performed by you or someone
-            else. You agree to log out using the log out button when you are finished your session in My Early Childhood Educator Registry. The Province uses My
-            Early Childhood Educator Registry as a preferred means of communication with registered users. You consent to the provision, receipt and retention
-            of records and information in electronic form through My Early Childhood Educator Registry and related communications.
+            compromising, altering, or rendering ineffective the BCeID system or BC Services Card systems. You agree to log out using the log out button when
+            you are finished your session in My Early Childhood Educator Registry. The Province uses My Early Childhood Educator Registry as a preferred means
+            of communication with registered users. You consent to the provision, receipt and retention of records and information in electronic form through My
+            Early Childhood Educator Registry and related communications.
             <br />
             <br />
             You agree that your electronic signature shall have the same force and effect as a written signature for any functions requiring an electronic
