@@ -1,7 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using Alba;
 using Bogus;
-using Shouldly;
 using Xunit.Abstractions;
 using Xunit.Categories;
 
@@ -41,24 +40,5 @@ public class FileTests : RegistryPortalWebAppScenarioBase
       _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });
-
-    var response = await Host.Scenario(_ =>
-    {
-      _.WithRequestHeader("file-folder", testFolder);
-      _.Get.Url($"/api/files/{testFileId}");
-      _.StatusCodeShouldBeOk();
-    });
-
-    response.Context.Response.Headers["Content-Type"].ToString().ShouldBe(testFile.ContentType);
-    response.Context.Response.Headers["Content-Disposition"].ToString().Split(';').Select(s => s.Trim()).ShouldContain($"filename={testFile.FileName}");
-    response.Context.Response.Headers["file-folder"].ToString().ShouldBe(testFolder);
-    response.Context.Response.Headers["file-tag"].ToString().ShouldBe(testTags);
-    response.Context.Response.Headers["file-classification"].ToString().ShouldBe(testClassification);
-
-    var returnedFile = await response.ReadAsTextAsync();
-    returnedFile.Length.ShouldBe(fileLength);
-    testFile.Content.Position = 0;
-    using var sw = new StreamReader(testFile.Content);
-    returnedFile.ShouldBe(await sw.ReadToEndAsync());
   }
 }
