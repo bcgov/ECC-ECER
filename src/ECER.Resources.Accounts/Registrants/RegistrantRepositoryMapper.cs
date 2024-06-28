@@ -21,9 +21,8 @@ internal sealed class RegistrantRepositoryMapper : Profile
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_PreferredName, opts => opts.MapFrom(s => s.PreferredName))
       .ForMember(d => d.ecer_MiddleName, opts => opts.MapFrom(s => s.MiddleName))
-      .ForMember(d => d.ecer_PreviousNameId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
-  
+
     CreateMap<ecer_PreviousName, PreviousName>(MemberList.Source)
       .ForCtorParam(nameof(PreviousName.FirstName), opts => opts.MapFrom(s => s.ecer_FirstName))
       .ForCtorParam(nameof(PreviousName.LastName), opts => opts.MapFrom(s => s.ecer_LastName))
@@ -32,7 +31,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_PreviousNameId))
       .ValidateMemberList(MemberList.Destination);
-      
+
     CreateMap<ecer_Authentication, UserIdentity>()
         .ForCtorParam(nameof(UserIdentity.UserId), opts => opts.MapFrom(s => s.ecer_ExternalID))
         .ForCtorParam(nameof(UserIdentity.IdentityProvider), opts => opts.MapFrom(s => s.ecer_IdentityProvider))
@@ -53,7 +52,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
         .ForSourceMember(s => s.ResidentialAddress, opts => opts.DoNotValidate())
         .ForSourceMember(s => s.MailingAddress, opts => opts.DoNotValidate())
         .ForSourceMember(s => s.DateOfBirth, opts => opts.DoNotValidate())
-        .ForSourceMember(s => s.PreviousNames, opts => opts.DoNotValidate())
+        .ForMember(d => d.ecer_previousname_Contactid, opts => opts.Ignore())
         .ForMember(d => d.BirthDate, opts => opts.MapFrom(s => s.DateOfBirth == null ? (DateTime?)null : s.DateOfBirth.Value.ToDateTime(TimeOnly.MinValue)))
         .ForMember(d => d.Telephone1, opts => opts.MapFrom(s => s.Phone))
         .ForMember(d => d.ecer_PreferredName, opts => opts.MapFrom(s => s.PreferredName))
@@ -73,7 +72,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
         .ForMember(d => d.Address2_StateOrProvince, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.Province))
         .ForMember(d => d.Address2_Country, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.Country))
         ;
-    
+
     CreateMap<ecer_PreviousName_StatusCode, PreviousNameStage>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
