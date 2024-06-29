@@ -203,7 +203,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications/{applicationId}/character-reference/{referenceId}/resend-invite", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+    endpointRouteBuilder.MapPost("/api/applications/{applicationId}/characterReference/{referenceId}/resendInvite", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
 
@@ -225,7 +225,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications/{applicationId}/work-experience-reference/{referenceId}/resend-invite", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+    endpointRouteBuilder.MapPost("/api/applications/{applicationId}/workExperienceReference/{referenceId}/resendInvite", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
 

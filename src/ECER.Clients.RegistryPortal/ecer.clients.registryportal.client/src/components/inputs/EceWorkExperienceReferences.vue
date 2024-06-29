@@ -116,7 +116,7 @@
           <p class="small">You must enter 500 hours of work experience to submit your application.</p>
         </Alert>
       </v-col>
-      <v-col v-if="applicationStore.hasDuplicateReferences" sm="12" md="10" lg="8" xl="6">
+      <v-col v-if="hasDuplicateReferences" sm="12" md="10" lg="8" xl="6">
         <Alert type="error">
           <p class="small">Your work experience reference(s) cannot be the same as your character reference</p>
         </Alert>
@@ -134,6 +134,7 @@
       </v-col>
     </div>
   </v-row>
+  <v-input auto-hide="auto" :model-value="modelValue" :rules="[!hasDuplicateReferences, totalHours >= 500 || count >= 6]"></v-input>
 </template>
 
 <script lang="ts">
@@ -206,6 +207,25 @@ export default defineComponent({
     },
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
+    },
+    hasDuplicateReferences() {
+      if (Object.values(this.wizardStore.wizardData.referenceList).length === 0 || this.wizardStore.wizardData.characterReferences.length === 0) {
+        return false;
+      }
+
+      const refSet = new Set<string>();
+
+      for (const ref of this.wizardStore.wizardData.characterReferences) {
+        refSet.add(`${ref.firstName} ${ref.lastName}`);
+      }
+
+      for (const ref of Object.values(this.wizardStore.wizardData.referenceList) as [Components.Schemas.WorkExperienceReference]) {
+        if (refSet.has(`${ref.firstName} ${ref.lastName}`)) {
+          return true;
+        }
+      }
+
+      return false;
     },
   },
   mounted() {

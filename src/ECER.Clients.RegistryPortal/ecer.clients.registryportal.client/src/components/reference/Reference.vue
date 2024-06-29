@@ -105,6 +105,17 @@ export default defineComponent({
       return this.wizardStore.wizardData?.inviteType === PortalInviteType.WORK_EXPERIENCE ? "Work experience reference" : "Character reference";
     },
   },
+  watch: {
+    "wizardStore.step"(step) {
+      //Resets recaptcha(s) if we navigate away. Prevents expiry bug if multiple recaptchas expire.
+      if (step !== this.userDeclinedStep && step !== this.userReviewStep && window.grecaptcha) {
+        for (let i = 0; i < document.querySelectorAll(".g-recaptcha").length; i++) {
+          window.grecaptcha.reset(i);
+        }
+        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id] = "";
+      }
+    },
+  },
   methods: {
     async handleContinue() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
@@ -150,6 +161,7 @@ export default defineComponent({
           referenceEvaluation: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id],
           confirmProvidedInformationIsRight:
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
+          recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],
         });
 
         if (!response?.error) {
@@ -167,6 +179,7 @@ export default defineComponent({
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id],
           confirmProvidedInformationIsRight:
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
+          recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],
         });
         if (!response?.error) {
           this.$router.push({ path: "/reference-submitted" });
@@ -184,7 +197,8 @@ export default defineComponent({
       }
 
       const reason = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.referenceDecline.id];
-      const result = await optOutReference(this.$route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons);
+      const recaptchaToken = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.recaptchaToken.id];
+      const result = await optOutReference(this.$route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons, recaptchaToken);
       if (!result.error) {
         this.$router.push({ path: "/reference-submitted" });
       }
