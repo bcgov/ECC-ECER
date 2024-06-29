@@ -65,6 +65,14 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper) 
     context.Attach(contact);
     context.UpdateObject(contact);
 
+    var ecerPreviousNames = mapper.Map<IEnumerable<ecer_PreviousName>>(registrant.Profile.PreviousNames)!;
+    foreach (var previousName in ecerPreviousNames)
+    {
+      previousName.ecer_PreviousNameId = Guid.NewGuid();
+      context.AddObject(previousName);
+      context.AddLink(previousName, ecer_PreviousName.Fields.ecer_previousname_Contactid, contact);
+    }
+
     context.SaveChanges();
     await Task.CompletedTask;
   }
