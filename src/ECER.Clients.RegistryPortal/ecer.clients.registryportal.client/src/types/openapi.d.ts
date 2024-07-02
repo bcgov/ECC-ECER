@@ -265,6 +265,21 @@ declare namespace Components {
     export interface SaveDraftApplicationRequest {
       draftApplication?: DraftApplication;
     }
+    /**
+     * Send Message Request
+     */
+    export interface SendMessageRequest {
+      communication?: Communication;
+    }
+    /**
+     * Send Message Response
+     */
+    export interface SendMessageResponse {
+      /**
+       *
+       */
+      communicationId?: string | null;
+    }
     export interface SubmitApplicationResponse {
       applicationId?: string | null;
     }
@@ -557,6 +572,14 @@ declare namespace Paths {
       export type $200 = Components.Schemas.Communication[];
     }
   }
+  namespace MessagePost {
+    export type RequestBody = /* Send Message Request */ Components.Schemas.SendMessageRequest;
+    namespace Responses {
+      export type $200 = /* Send Message Response */ Components.Schemas.SendMessageResponse;
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace MessageStatusGet {
     namespace Responses {
       export type $200 = Components.Schemas.CommunicationsStatusResults;
@@ -722,6 +745,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.MessageGet.Responses.$200>;
+  /**
+   * message_post - Handles message send request
+   */
+  "message_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.MessagePost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.MessagePost.Responses.$200>;
   /**
    * communication_put - Marks a communication as seen
    */
@@ -918,6 +949,14 @@ export interface PathsDictionary {
      * message_get - Handles messages queries
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.MessageGet.Responses.$200>;
+    /**
+     * message_post - Handles message send request
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.MessagePost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.MessagePost.Responses.$200>;
   };
   ["/api/messages/{id}/seen"]: {
     /**
