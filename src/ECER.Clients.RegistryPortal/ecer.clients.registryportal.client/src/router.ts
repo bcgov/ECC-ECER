@@ -27,6 +27,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/messages/:messageId/reply",
+      name: "replyToMessage",
+      component: () => import("./components/ReplyToMessage.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/login",
       component: () => import("./components/pages/Login.vue"),
       meta: { requiresAuth: false },
