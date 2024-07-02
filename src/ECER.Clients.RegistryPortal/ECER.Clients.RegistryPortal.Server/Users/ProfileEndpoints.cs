@@ -46,7 +46,7 @@ public record UserProfile {
   public string Phone { get; set; } = null!;
   public Address? ResidentialAddress { get; set; }
   public Address? MailingAddress { get; set; }
-  public IEnumerable<PreviousName>? PreviousNames { get; set; } = Array.Empty<PreviousName>();
+  public IEnumerable<PreviousName> PreviousNames { get; set; } = Array.Empty<PreviousName>();
 };
 
 /// <summary>
