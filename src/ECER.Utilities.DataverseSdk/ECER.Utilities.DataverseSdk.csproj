@@ -1,7 +1,25 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 	  <NoWarn>1701;1702;CS8981</NoWarn>
 	</PropertyGroup>
+<ItemGroup>
+    <Compile Include="Model\DataverseContext.cs" />
+    <Compile Include="Model\Entities\ActivityParty.cs" />
+    <Compile Include="Model\Entities\ActivityPointer.cs" />
+    <Compile Include="Model\Entities\BusinessUnit.cs" />
+    <Compile Include="Model\Entities\Contact.cs" />
+    <Compile Include="Model\Entities\Email.cs" />
+    <Compile Include="Model\Entities\SystemUser.cs" />
+    <Compile Include="Model\Entities\TransactionCurrency.cs" />
+    <Compile Include="Model\EntityOptionSetEnum.cs" />
+    <Compile Include="Model\Messages\Analyze.cs" />
+    <Compile Include="Model\Messages\AnalyzeSentiment.cs" />
+    <Compile Include="Model\OptionSets\ActivityPointer_DeliveryPriorityCode.cs" />
+    <Compile Include="Model\OptionSets\ECER_AboriginalType.cs" />
+    <Compile Include="Model\OptionSets\ECER_YesNoNull.cs" />
+    <Compile Include="Model\OptionSets\PowerPageLanguages.cs" />
+    <Compile Include="Model\OptionSets\SocialProfile_Community.cs" />
+</ItemGroup>
   <ItemGroup>
 	  <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" />
 	  <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client.Dynamics" />

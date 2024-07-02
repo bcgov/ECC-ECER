@@ -13,19 +13,23 @@ namespace DataverseModel
 	
 	
 	/// <summary>
-	/// Yes, No, or not selecting.  Depends on level of requirement of the field, it can force to identify whether user has chosen an answer or skip the question
+	/// Priority of delivery of the activity to the email server.
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	public enum ECER_YesNoNull
+	public enum ActivityPointer_DeliveryPriorityCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		[OptionSetMetadataAttribute("No", 1)]
-		No = 621870001,
+		[OptionSetMetadataAttribute("High", 2)]
+		High = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		[OptionSetMetadataAttribute("Yes", 0)]
-		Yes = 621870000,
+		[OptionSetMetadataAttribute("Low", 0)]
+		Low = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		[OptionSetMetadataAttribute("Normal", 1)]
+		Normal = 1,
 	}
 }
 #pragma warning restore CS1591
