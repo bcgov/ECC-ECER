@@ -84,6 +84,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_AdditionalInformationAccess = "ecer_additionalinformationaccess";
+			public const string ecer_AdditionalInformationAdministration = "ecer_additionalinformationadministration";
+			public const string ecer_AdditionalInformationAdmissionCriteria = "ecer_additionalinformationadmissioncriteria";
+			public const string ecer_AdditionalInformationCommunityAssessment = "ecer_additionalinformationcommunityassessment";
+			public const string ecer_AdditionalInformationCurriculum = "ecer_additionalinformationcurriculum";
+			public const string ecer_AdditionalInformationFacility = "ecer_additionalinformationfacility";
+			public const string ecer_AdditionalInformationInstructionalMethods = "ecer_additionalinformationinstructionalmethods";
+			public const string ecer_AdditionalInformationPersonnelStaffing = "ecer_additionalinformationpersonnelstaffing";
+			public const string ecer_AdditionalInformationPracticum = "ecer_additionalinformationpracticum";
+			public const string ecer_AdditionalInformationProgramGoals = "ecer_additionalinformationprogramgoals";
+			public const string ecer_AdditionalInformationProgramReview = "ecer_additionalinformationprogramreview";
+			public const string ecer_AdditionalInformationStatementPurpose = "ecer_additionalinformationstatementpurpose";
+			public const string ecer_AdditionalInformationStudentEvaluation = "ecer_additionalinformationstudentevaluation";
 			public const string ecer_AgreeNotifyofChanges = "ecer_agreenotifyofchanges";
 			public const string ecer_agreenotifyofchangesName = "ecer_agreenotifyofchangesname";
 			public const string ecer_ApplicationType = "ecer_applicationtype";
@@ -112,6 +125,71 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_projectlengthName = "ecer_projectlengthname";
 			public const string ecer_ProvincialCertificationTypeOffered = "ecer_provincialcertificationtypeoffered";
 			public const string ecer_provincialcertificationtypeofferedName = "ecer_provincialcertificationtypeofferedname";
+			public const string ecer_RationaleandAnalysisAccess = "ecer_rationaleandanalysisaccess";
+			public const string ecer_RationaleandAnalysisAdministration = "ecer_rationaleandanalysisadministration";
+			public const string ecer_RationaleandAnalysisAdmissionCriteria = "ecer_rationaleandanalysisadmissioncriteria";
+			public const string ecer_RationaleandAnalysisCommunityAssessment = "ecer_rationaleandanalysiscommunityassessment";
+			public const string ecer_RationaleandAnalysisCurriculum = "ecer_rationaleandanalysiscurriculum";
+			public const string ecer_RationaleandAnalysisFacility = "ecer_rationaleandanalysisfacility";
+			public const string ecer_RationaleandAnalysisInstructionalMethods = "ecer_rationaleandanalysisinstructionalmethods";
+			public const string ecer_RationaleandAnalysisPersonnelStaffing = "ecer_rationaleandanalysispersonnelstaffing";
+			public const string ecer_RationaleandAnalysisPracticum = "ecer_rationaleandanalysispracticum";
+			public const string ecer_RationaleandAnalysisProgramGoals = "ecer_rationaleandanalysisprogramgoals";
+			public const string ecer_RationaleandAnalysisProgramReview = "ecer_rationaleandanalysisprogramreview";
+			public const string ecer_RationaleandAnalysisStatementPurpose = "ecer_rationaleandanalysisstatementpurpose";
+			public const string ecer_RationaleandAnalysisStudentEvaluation = "ecer_rationaleandanalysisstudentevaluation";
+			public const string ecer_RecommendationsRequiredAccess = "ecer_recommendationsrequiredaccess";
+			public const string ecer_RecommendationsRequiredAdministration = "ecer_recommendationsrequiredadministration";
+			public const string ecer_RecommendationsRequiredAdmissionCriteria = "ecer_recommendationsrequiredadmissioncriteria";
+			public const string ecer_RecommendationsRequiredCommunityAssessment = "ecer_recommendationsrequiredcommunityassessment";
+			public const string ecer_RecommendationsRequiredCurriculum = "ecer_recommendationsrequiredcurriculum";
+			public const string ecer_RecommendationsRequiredFacility = "ecer_recommendationsrequiredfacility";
+			public const string ecer_RecommendationsRequiredInstructionalMethods = "ecer_recommendationsrequiredinstructionalmethods";
+			public const string ecer_RecommendationsRequiredPersonnelStaffing = "ecer_recommendationsrequiredpersonnelstaffing";
+			public const string ecer_RecommendationsRequiredPracticum = "ecer_recommendationsrequiredpracticum";
+			public const string ecer_RecommendationsRequiredProgramGoals = "ecer_recommendationsrequiredprogramgoals";
+			public const string ecer_RecommendationsRequiredProgramReview = "ecer_recommendationsrequiredprogramreview";
+			public const string ecer_RecommendationsRequiredStatementPurpose = "ecer_recommendationsrequiredstatementpurpose";
+			public const string ecer_RecommendationsRequiredStudentEvaluation = "ecer_recommendationsrequiredstudentevaluation";
+			public const string ecer_RequirementsMetAccess = "ecer_requirementsmetaccess";
+			public const string ecer_requirementsmetaccessName = "ecer_requirementsmetaccessname";
+			public const string ecer_RequirementsMetAdministration = "ecer_requirementsmetadministration";
+			public const string ecer_requirementsmetadministrationName = "ecer_requirementsmetadministrationname";
+			public const string ecer_RequirementsMetAdmissionCriteria = "ecer_requirementsmetadmissioncriteria";
+			public const string ecer_requirementsmetadmissioncriteriaName = "ecer_requirementsmetadmissioncriterianame";
+			public const string ecer_RequirementsMetCommunityNeedsAssessment = "ecer_requirementsmetcommunityneedsassessment";
+			public const string ecer_requirementsmetcommunityneedsassessmentName = "ecer_requirementsmetcommunityneedsassessmentname";
+			public const string ecer_RequirementsMetCurriculum = "ecer_requirementsmetcurriculum";
+			public const string ecer_requirementsmetcurriculumName = "ecer_requirementsmetcurriculumname";
+			public const string ecer_RequirementsMetFacility = "ecer_requirementsmetfacility";
+			public const string ecer_requirementsmetfacilityName = "ecer_requirementsmetfacilityname";
+			public const string ecer_RequirementsMetInstructionalMethods = "ecer_requirementsmetinstructionalmethods";
+			public const string ecer_requirementsmetinstructionalmethodsName = "ecer_requirementsmetinstructionalmethodsname";
+			public const string ecer_RequirementsMetPersonnelStaffing = "ecer_requirementsmetpersonnelstaffing";
+			public const string ecer_requirementsmetpersonnelstaffingName = "ecer_requirementsmetpersonnelstaffingname";
+			public const string ecer_RequirementsMetPracticum = "ecer_requirementsmetpracticum";
+			public const string ecer_requirementsmetpracticumName = "ecer_requirementsmetpracticumname";
+			public const string ecer_RequirementsMetProgramGoals = "ecer_requirementsmetprogramgoals";
+			public const string ecer_requirementsmetprogramgoalsName = "ecer_requirementsmetprogramgoalsname";
+			public const string ecer_RequirementsMetProgramReview = "ecer_requirementsmetprogramreview";
+			public const string ecer_requirementsmetprogramreviewName = "ecer_requirementsmetprogramreviewname";
+			public const string ecer_RequirementsMetStatementPurpose = "ecer_requirementsmetstatementpurpose";
+			public const string ecer_requirementsmetstatementpurposeName = "ecer_requirementsmetstatementpurposename";
+			public const string ecer_RequirementsMetStudentEvaluation = "ecer_requirementsmetstudentevaluation";
+			public const string ecer_requirementsmetstudentevaluationName = "ecer_requirementsmetstudentevaluationname";
+			public const string ecer_SupportingEvidenceAccess = "ecer_supportingevidenceaccess";
+			public const string ecer_SupportingEvidenceAdministration = "ecer_supportingevidenceadministration";
+			public const string ecer_SupportingEvidenceAdmissionCriteria = "ecer_supportingevidenceadmissioncriteria";
+			public const string ecer_SupportingEvidenceCommunityAssessment = "ecer_supportingevidencecommunityassessment";
+			public const string ecer_SupportingEvidenceCurriculum = "ecer_supportingevidencecurriculum";
+			public const string ecer_SupportingEvidenceFacility = "ecer_supportingevidencefacility";
+			public const string ecer_SupportingEvidenceInstructionalMethods = "ecer_supportingevidenceinstructionalmethods";
+			public const string ecer_SupportingEvidencePersonnelStaffing = "ecer_supportingevidencepersonnelstaffing";
+			public const string ecer_SupportingEvidencePracticum = "ecer_supportingevidencepracticum";
+			public const string ecer_SupportingEvidenceProgramGoals = "ecer_supportingevidenceprogramgoals";
+			public const string ecer_SupportingEvidenceProgramReview = "ecer_supportingevidenceprogramreview";
+			public const string ecer_SupportingEvidenceStatementPurpose = "ecer_supportingevidencestatementpurpose";
+			public const string ecer_SupportingEvidenceStudentEvaluation = "ecer_supportingevidencestudentevaluation";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -285,6 +363,201 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationaccess")]
+		public string ecer_AdditionalInformationAccess
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationaccess");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationaccess", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationadministration")]
+		public string ecer_AdditionalInformationAdministration
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationadministration");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationadministration", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationadmissioncriteria")]
+		public string ecer_AdditionalInformationAdmissionCriteria
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationadmissioncriteria");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationadmissioncriteria", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationcommunityassessment")]
+		public string ecer_AdditionalInformationCommunityAssessment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationcommunityassessment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationcommunityassessment", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationcurriculum")]
+		public string ecer_AdditionalInformationCurriculum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationcurriculum");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationcurriculum", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationfacility")]
+		public string ecer_AdditionalInformationFacility
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationfacility");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationfacility", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationinstructionalmethods")]
+		public string ecer_AdditionalInformationInstructionalMethods
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationinstructionalmethods");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationinstructionalmethods", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationpersonnelstaffing")]
+		public string ecer_AdditionalInformationPersonnelStaffing
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationpersonnelstaffing");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationpersonnelstaffing", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationpracticum")]
+		public string ecer_AdditionalInformationPracticum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationpracticum");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationpracticum", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationprogramgoals")]
+		public string ecer_AdditionalInformationProgramGoals
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationprogramgoals");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationprogramgoals", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationprogramreview")]
+		public string ecer_AdditionalInformationProgramReview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationprogramreview");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationprogramreview", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationstatementpurpose")]
+		public string ecer_AdditionalInformationStatementPurpose
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationstatementpurpose");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationstatementpurpose", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_additionalinformationstudentevaluation")]
+		public string ecer_AdditionalInformationStudentEvaluation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_additionalinformationstudentevaluation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_additionalinformationstudentevaluation", value);
 			}
 		}
 		
@@ -658,6 +931,1007 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysisaccess")]
+		public string ecer_RationaleandAnalysisAccess
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysisaccess");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysisaccess", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysisadministration")]
+		public string ecer_RationaleandAnalysisAdministration
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysisadministration");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysisadministration", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysisadmissioncriteria")]
+		public string ecer_RationaleandAnalysisAdmissionCriteria
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysisadmissioncriteria");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysisadmissioncriteria", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysiscommunityassessment")]
+		public string ecer_RationaleandAnalysisCommunityAssessment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysiscommunityassessment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysiscommunityassessment", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysiscurriculum")]
+		public string ecer_RationaleandAnalysisCurriculum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysiscurriculum");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysiscurriculum", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysisfacility")]
+		public string ecer_RationaleandAnalysisFacility
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysisfacility");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysisfacility", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysisinstructionalmethods")]
+		public string ecer_RationaleandAnalysisInstructionalMethods
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysisinstructionalmethods");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysisinstructionalmethods", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysispersonnelstaffing")]
+		public string ecer_RationaleandAnalysisPersonnelStaffing
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysispersonnelstaffing");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysispersonnelstaffing", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysispracticum")]
+		public string ecer_RationaleandAnalysisPracticum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysispracticum");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysispracticum", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysisprogramgoals")]
+		public string ecer_RationaleandAnalysisProgramGoals
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysisprogramgoals");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysisprogramgoals", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysisprogramreview")]
+		public string ecer_RationaleandAnalysisProgramReview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysisprogramreview");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysisprogramreview", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysisstatementpurpose")]
+		public string ecer_RationaleandAnalysisStatementPurpose
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysisstatementpurpose");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysisstatementpurpose", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rationaleandanalysisstudentevaluation")]
+		public string ecer_RationaleandAnalysisStudentEvaluation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_rationaleandanalysisstudentevaluation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_rationaleandanalysisstudentevaluation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredaccess")]
+		public string ecer_RecommendationsRequiredAccess
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredaccess");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredaccess", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredadministration")]
+		public string ecer_RecommendationsRequiredAdministration
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredadministration");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredadministration", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredadmissioncriteria")]
+		public string ecer_RecommendationsRequiredAdmissionCriteria
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredadmissioncriteria");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredadmissioncriteria", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredcommunityassessment")]
+		public string ecer_RecommendationsRequiredCommunityAssessment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredcommunityassessment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredcommunityassessment", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredcurriculum")]
+		public string ecer_RecommendationsRequiredCurriculum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredcurriculum");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredcurriculum", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredfacility")]
+		public string ecer_RecommendationsRequiredFacility
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredfacility");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredfacility", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredinstructionalmethods")]
+		public string ecer_RecommendationsRequiredInstructionalMethods
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredinstructionalmethods");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredinstructionalmethods", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredpersonnelstaffing")]
+		public string ecer_RecommendationsRequiredPersonnelStaffing
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredpersonnelstaffing");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredpersonnelstaffing", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredpracticum")]
+		public string ecer_RecommendationsRequiredPracticum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredpracticum");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredpracticum", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredprogramgoals")]
+		public string ecer_RecommendationsRequiredProgramGoals
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredprogramgoals");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredprogramgoals", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredprogramreview")]
+		public string ecer_RecommendationsRequiredProgramReview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredprogramreview");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredprogramreview", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredstatementpurpose")]
+		public string ecer_RecommendationsRequiredStatementPurpose
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredstatementpurpose");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredstatementpurpose", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recommendationsrequiredstudentevaluation")]
+		public string ecer_RecommendationsRequiredStudentEvaluation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_recommendationsrequiredstudentevaluation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_recommendationsrequiredstudentevaluation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetaccess")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetAccess
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetaccess")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetaccess", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetaccessname")]
+		public string ecer_requirementsmetaccessName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetaccess"))
+				{
+					return this.FormattedValues["ecer_requirementsmetaccess"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetadministration")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetAdministration
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetadministration")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetadministration", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetadministrationname")]
+		public string ecer_requirementsmetadministrationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetadministration"))
+				{
+					return this.FormattedValues["ecer_requirementsmetadministration"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetadmissioncriteria")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetAdmissionCriteria
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetadmissioncriteria")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetadmissioncriteria", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetadmissioncriterianame")]
+		public string ecer_requirementsmetadmissioncriteriaName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetadmissioncriteria"))
+				{
+					return this.FormattedValues["ecer_requirementsmetadmissioncriteria"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetcommunityneedsassessment")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetCommunityNeedsAssessment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetcommunityneedsassessment")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetcommunityneedsassessment", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetcommunityneedsassessmentname")]
+		public string ecer_requirementsmetcommunityneedsassessmentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetcommunityneedsassessment"))
+				{
+					return this.FormattedValues["ecer_requirementsmetcommunityneedsassessment"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetcurriculum")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetCurriculum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetcurriculum")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetcurriculum", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetcurriculumname")]
+		public string ecer_requirementsmetcurriculumName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetcurriculum"))
+				{
+					return this.FormattedValues["ecer_requirementsmetcurriculum"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetfacility")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetFacility
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetfacility")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetfacility", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetfacilityname")]
+		public string ecer_requirementsmetfacilityName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetfacility"))
+				{
+					return this.FormattedValues["ecer_requirementsmetfacility"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetinstructionalmethods")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetInstructionalMethods
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetinstructionalmethods")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetinstructionalmethods", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetinstructionalmethodsname")]
+		public string ecer_requirementsmetinstructionalmethodsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetinstructionalmethods"))
+				{
+					return this.FormattedValues["ecer_requirementsmetinstructionalmethods"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetpersonnelstaffing")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetPersonnelStaffing
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetpersonnelstaffing")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetpersonnelstaffing", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetpersonnelstaffingname")]
+		public string ecer_requirementsmetpersonnelstaffingName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetpersonnelstaffing"))
+				{
+					return this.FormattedValues["ecer_requirementsmetpersonnelstaffing"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetpracticum")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetPracticum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetpracticum")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetpracticum", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetpracticumname")]
+		public string ecer_requirementsmetpracticumName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetpracticum"))
+				{
+					return this.FormattedValues["ecer_requirementsmetpracticum"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetprogramgoals")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetProgramGoals
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetprogramgoals")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetprogramgoals", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetprogramgoalsname")]
+		public string ecer_requirementsmetprogramgoalsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetprogramgoals"))
+				{
+					return this.FormattedValues["ecer_requirementsmetprogramgoals"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetprogramreview")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetProgramReview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetprogramreview")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetprogramreview", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetprogramreviewname")]
+		public string ecer_requirementsmetprogramreviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetprogramreview"))
+				{
+					return this.FormattedValues["ecer_requirementsmetprogramreview"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetstatementpurpose")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetStatementPurpose
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetstatementpurpose")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetstatementpurpose", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetstatementpurposename")]
+		public string ecer_requirementsmetstatementpurposeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetstatementpurpose"))
+				{
+					return this.FormattedValues["ecer_requirementsmetstatementpurpose"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetstudentevaluation")]
+		public virtual ecer_YesNoNull? ecer_RequirementsMetStudentEvaluation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmetstudentevaluation")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetstudentevaluation", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetstudentevaluationname")]
+		public string ecer_requirementsmetstudentevaluationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_requirementsmetstudentevaluation"))
+				{
+					return this.FormattedValues["ecer_requirementsmetstudentevaluation"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidenceaccess")]
+		public string ecer_SupportingEvidenceAccess
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidenceaccess");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidenceaccess", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidenceadministration")]
+		public string ecer_SupportingEvidenceAdministration
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidenceadministration");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidenceadministration", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidenceadmissioncriteria")]
+		public string ecer_SupportingEvidenceAdmissionCriteria
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidenceadmissioncriteria");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidenceadmissioncriteria", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidencecommunityassessment")]
+		public string ecer_SupportingEvidenceCommunityAssessment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidencecommunityassessment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidencecommunityassessment", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidencecurriculum")]
+		public string ecer_SupportingEvidenceCurriculum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidencecurriculum");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidencecurriculum", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidencefacility")]
+		public string ecer_SupportingEvidenceFacility
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidencefacility");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidencefacility", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidenceinstructionalmethods")]
+		public string ecer_SupportingEvidenceInstructionalMethods
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidenceinstructionalmethods");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidenceinstructionalmethods", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidencepersonnelstaffing")]
+		public string ecer_SupportingEvidencePersonnelStaffing
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidencepersonnelstaffing");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidencepersonnelstaffing", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidencepracticum")]
+		public string ecer_SupportingEvidencePracticum
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidencepracticum");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidencepracticum", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidenceprogramgoals")]
+		public string ecer_SupportingEvidenceProgramGoals
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidenceprogramgoals");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidenceprogramgoals", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidenceprogramreview")]
+		public string ecer_SupportingEvidenceProgramReview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidenceprogramreview");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidenceprogramreview", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidencestatementpurpose")]
+		public string ecer_SupportingEvidenceStatementPurpose
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidencestatementpurpose");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidencestatementpurpose", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_supportingevidencestudentevaluation")]
+		public string ecer_SupportingEvidenceStudentEvaluation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_supportingevidencestudentevaluation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_supportingevidencestudentevaluation", value);
 			}
 		}
 		

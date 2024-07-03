@@ -23,6 +23,7 @@
 import { mapActions } from "pinia";
 import { defineComponent, type PropType } from "vue";
 
+import { getChildMessages } from "@/api/message";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
@@ -48,8 +49,9 @@ export default defineComponent({
   methods: {
     ...mapActions(useMessageStore, ["markMessageAsRead"]),
     formatDate,
-    handleClick() {
+    async handleClick() {
       this.messageStore.currentMessage = this.message;
+      this.messageStore.currentThread = (await getChildMessages({ parentId: this.message.id! })).data?.communications;
       if (!this.message.acknowledged) this.markMessageAsRead(this.message.id ?? "");
     },
   },

@@ -82,11 +82,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_contact_ecer_communication_122 = "ecer_contact_ecer_communication_122";
 			public const string ecer_DateAcknowledged = "ecer_dateacknowledged";
 			public const string ecer_DateNotified = "ecer_datenotified";
+			public const string ecer_DoNotReply = "ecer_donotreply";
+			public const string ecer_donotreplyName = "ecer_donotreplyname";
 			public const string ecer_FromOracle = "ecer_fromoracle";
 			public const string ecer_InitiatedFrom = "ecer_initiatedfrom";
 			public const string ecer_initiatedfromName = "ecer_initiatedfromname";
 			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
+			public const string ecer_IsRoot = "ecer_isroot";
+			public const string ecer_isrootName = "ecer_isrootname";
+			public const string ecer_legacycorrespondenceid = "ecer_legacycorrespondenceid";
+			public const string ecer_legacyenteredby = "ecer_legacyenteredby";
+			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_Message = "ecer_message";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NotifyRecipient = "ecer_notifyrecipient";
@@ -96,12 +103,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Registrantid = "ecer_registrantid";
 			public const string ecer_RegistrantidName = "ecer_registrantidname";
 			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
-			public const string ecer_Reply = "ecer_reply";
 			public const string ecer_RequestAdditionalCharacterReference = "ecer_requestadditionalcharacterreference";
 			public const string ecer_requestadditionalcharacterreferenceName = "ecer_requestadditionalcharacterreferencename";
 			public const string ecer_RequestAdditionalWorkExperience = "ecer_requestadditionalworkexperience";
 			public const string ecer_requestadditionalworkexperienceName = "ecer_requestadditionalworkexperiencename";
-			public const string ecer_RichText = "ecer_richtext";
 			public const string ecer_Type = "ecer_type";
 			public const string ecer_typeName = "ecer_typename";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -147,6 +152,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacycorrespondenceid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -419,6 +426,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_donotreply")]
+		public System.Nullable<bool> ecer_DoNotReply
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_donotreply");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_donotreply", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_donotreplyname")]
+		public string ecer_donotreplyName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_donotreply"))
+				{
+					return this.FormattedValues["ecer_donotreply"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromoracle")]
 		public string ecer_FromOracle
 		{
@@ -495,6 +534,83 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isroot")]
+		public System.Nullable<bool> ecer_IsRoot
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_isroot");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_isroot", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isrootname")]
+		public string ecer_isrootName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isroot"))
+				{
+					return this.FormattedValues["ecer_isroot"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacycorrespondenceid")]
+		public string ecer_legacycorrespondenceid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacycorrespondenceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacycorrespondenceid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyenteredby")]
+		public string ecer_legacyenteredby
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyenteredby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyenteredby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentrydate")]
+		public System.Nullable<System.DateTime> ecer_legacyentrydate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyentrydate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyentrydate", value);
 			}
 		}
 		
@@ -647,21 +763,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reply")]
-		public string ecer_Reply
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_reply");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_reply", value);
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requestadditionalcharacterreference")]
 		public System.Nullable<bool> ecer_RequestAdditionalCharacterReference
 		{
@@ -723,21 +824,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_richtext")]
-		public string ecer_RichText
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_richtext");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_richtext", value);
 			}
 		}
 		

@@ -18,7 +18,8 @@ internal class CommunicationRepositoryMapper : Profile
      .ForMember(d => d.From, opts => opts.MapFrom(s => s.ecer_InitiatedFrom))
      .ForMember(d => d.Acknowledged, opts => opts.MapFrom(s => s.ecer_Acknowledged))
      .ForMember(d => d.NotifiedOn, opts => opts.MapFrom(s => s.ecer_DateNotified))
-     .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode));
+     .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+     .ForMember(d => d.DoNotReply, opts => opts.MapFrom(s => s.ecer_DoNotReply));
 
     CreateMap<Communication, ecer_Communication>(MemberList.Source)
      .ForSourceMember(s => s.Subject, opts => opts.DoNotValidate())
@@ -32,7 +33,7 @@ internal class CommunicationRepositoryMapper : Profile
     CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true));
 
-    CreateMap<ecer_ParallelProcessCommunication_ecer_InitiatedFrom, InitiatedFrom>()
+    CreateMap<ecer_InitiatedFrom, InitiatedFrom>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true));
   }
 }

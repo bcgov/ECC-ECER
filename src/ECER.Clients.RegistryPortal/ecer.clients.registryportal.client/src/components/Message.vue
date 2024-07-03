@@ -13,20 +13,35 @@
         </v-toolbar>
         <v-card-text>
           <h2>{{ messageStore.currentMessage?.subject }}</h2>
-          <p class="small mt-2">{{ messageDate }}</p>
-          <p class="small mt-6">
-            <span v-html="messageStore.currentMessage?.text"></span>
-          </p>
+
+          <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
+            <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+            <br />
+            <br />
+            <span v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></span>
+            <br />
+            <br />
+            <br />
+            <span v-html="message.text"></span>
+            <hr class="grey-line" />
+          </div>
         </v-card-text>
       </v-card>
     </v-dialog>
   </div>
   <div v-if="mdAndUp">
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
-    <p class="small mt-2">{{ messageDate }}</p>
-    <p class="small mt-6">
-      <span v-html="messageStore.currentMessage?.text"></span>
-    </p>
+    <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
+      <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+      <br />
+      <br />
+      <span v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></span>
+      <br />
+      <br />
+      <br />
+      <span v-html="message.text"></span>
+      <hr class="grey-line" />
+    </div>
   </div>
 </template>
 
@@ -56,3 +71,10 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+.grey-line {
+  border: 0;
+  border-top: 1px solid grey;
+  margin: 10px 0; /* Adjust margin as needed */
+}
+</style>

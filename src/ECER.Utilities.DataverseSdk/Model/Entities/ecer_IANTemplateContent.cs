@@ -61,6 +61,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_DisplayOrder = "ecer_displayorder";
+			public const string ecer_DoNotReply = "ecer_donotreply";
+			public const string ecer_donotreplyName = "ecer_donotreplyname";
 			public const string ecer_IANTemplateContentId = "ecer_iantemplatecontentid";
 			public const string Id = "ecer_iantemplatecontentid";
 			public const string ecer_Name = "ecer_name";
@@ -253,6 +255,41 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_displayorder", value);
+			}
+		}
+		
+		/// <summary>
+		/// If template used, copy setting to Communication record
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_donotreply")]
+		public System.Nullable<bool> ecer_DoNotReply
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_donotreply");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_donotreply", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_donotreplyname")]
+		public string ecer_donotreplyName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_donotreply"))
+				{
+					return this.FormattedValues["ecer_donotreply"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

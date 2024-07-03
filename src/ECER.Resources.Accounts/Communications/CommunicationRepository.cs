@@ -16,7 +16,7 @@ internal class CommunicationRepository : ICommunicationRepository
     this.mapper = mapper;
   }
 
-  public async Task<IEnumerable<Communication>> Query(UserCommunicationQuery query)
+  public async Task<CommunicationResult> Query(UserCommunicationQuery query)
   {
     await Task.CompletedTask;
     var communications = from c in context.ecer_CommunicationSet
@@ -44,8 +44,10 @@ internal class CommunicationRepository : ICommunicationRepository
     // otherwise returning just parent communications
     else
     {
-      communications = communications.Where(r => r.c.ecer_ParentCommunicationid == null);
+      communications = communications.Where(r => r.c.ecer_IsRoot == true);
     }
+    var MessageCount = communications.ToList().Count;
+
     if (query.PageNumber > 0)
     {
       communications = communications.OrderByDescending(r => r.c.ecer_DateNotified).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
@@ -54,7 +56,13 @@ internal class CommunicationRepository : ICommunicationRepository
     {
       communications = communications.OrderByDescending(r => r.c.ecer_DateNotified);
     }
-    return mapper.Map<IEnumerable<Communication>>(communications.Select(r => r.c).ToList());
+    var result = new CommunicationResult
+    {
+      Communications = mapper.Map<IEnumerable<Communication>>(communications.Select(r => r.c).ToList()),
+      MessageCount = MessageCount
+    };
+
+    return result;
   }
 
   public async Task<string> MarkAsSeen(string communicationId, CancellationToken cancellationToken)
@@ -99,7 +107,7 @@ internal class CommunicationRepository : ICommunicationRepository
       var ecerCommunication = mapper.Map<ecer_Communication>(communication);
 
       ecerCommunication.ecer_CommunicationId = Guid.NewGuid();
-      ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.Registrant;
+      ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.PortalUser;
       context.AddObject(ecerCommunication);
       context.AddLink(registrant, ecer_Communication.Fields.ecer_contact_ecer_communication_122, ecerCommunication);
       var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)

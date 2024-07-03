@@ -13,7 +13,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/messages/{parentId?}", async (string? parentId, HttpContext httpContext, IMediator messageBus, IMapper mapper, IOptions<PaginationSettings> paginationOptions) =>
+    endpointRouteBuilder.MapGet("/api/messages/{parentId?}", async Task<Results<Ok<GetMessagesResponse>, BadRequest<ProblemDetails>, NotFound>> (string? parentId, HttpContext httpContext, IMediator messageBus, IMapper mapper, IOptions<PaginationSettings> paginationOptions) =>
     {
       var userContext = httpContext.User.GetUserContext();
       bool IdIsNotGuid = !Guid.TryParse(parentId, out _); if (IdIsNotGuid && parentId != null) { parentId = null; }
@@ -31,7 +31,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
       };
       var results = await messageBus.Send<CommunicationsQueryResults>(query);
 
-      return TypedResults.Ok(mapper.Map<IEnumerable<Communication>>(results.Items));
+      return TypedResults.Ok(new GetMessagesResponse() { Communications = mapper.Map<IEnumerable<Communication>>(results.Items), MessageCount = results.MessageCount });
     })
      .WithOpenApi("Handles messages queries", string.Empty, "message_get")
      .RequireAuthorization();
@@ -129,12 +129,19 @@ public record Communication
   public bool Acknowledged { get; set; }
   public DateTime NotifiedOn { get; set; }
   public CommunicationStatus Status { get; set; }
+  public bool DoNotReply { get; set; }
+}
+
+public record GetMessagesResponse
+{
+  public IEnumerable<Communication>? Communications { get; set; }
+  public int MessageCount { get; set; }
 }
 
 public enum InitiatedFrom
 {
   Investigation,
-  Registrant,
+  PortalUser,
   Registry,
 }
 

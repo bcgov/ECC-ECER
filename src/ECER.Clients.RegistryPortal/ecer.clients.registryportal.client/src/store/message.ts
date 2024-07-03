@@ -9,6 +9,7 @@ export interface MessageState {
   currentPage: number;
   currentMessage: Components.Schemas.Communication | null;
   messagesPerPage: number;
+  currentThread: Components.Schemas.Communication[] | null;
 }
 
 export const useMessageStore = defineStore("message", {
@@ -16,6 +17,7 @@ export const useMessageStore = defineStore("message", {
     messages: [],
     currentPage: 1,
     currentMessage: null,
+    currentThread: null,
     messagesPerPage: 10,
   }),
   getters: {
@@ -38,11 +40,11 @@ export const useMessageStore = defineStore("message", {
       return this.messages?.find((message) => message.id === id);
     },
     async fetchMessages() {
-      this.messages = (await getMessages()).data;
+      this.messages = (await getMessages({ page: 1, pageSize: 10 })).data?.communications;
     },
     async markMessageAsRead(messageId: string) {
       await markMessageAsRead(messageId);
-      this.fetchMessages();
+      //this.fetchMessages();
     },
     setPage(pageNumber: number) {
       if (pageNumber < 1 || pageNumber > this.totalPages) {
