@@ -15,6 +15,7 @@ const router = createRouter({
       path: "/",
       component: () => import("./components/pages/Dashboard.vue"),
       meta: { requiresAuth: true },
+      name: "dashboard",
     },
     {
       path: "/profile",
@@ -133,16 +134,19 @@ const router = createRouter({
       path: "/verify/:token",
       component: () => import("./components/reference/Reference.vue"),
       meta: { requiresAuth: false },
+      name: "verify",
     },
     {
       path: "/invalid-reference",
       component: () => import("./components/reference/Invalid.vue"),
       meta: { requiresAuth: false },
+      name: "invalid-reference",
     },
     {
       path: "/reference-submitted",
       component: () => import("./components/pages/ReferenceSubmitted.vue"),
       meta: { requiresAuth: false },
+      name: "reference-submitted",
     },
     { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("./components/pages/PageNotFound.vue") },
   ],

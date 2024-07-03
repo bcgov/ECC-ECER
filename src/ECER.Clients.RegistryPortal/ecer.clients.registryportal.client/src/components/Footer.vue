@@ -2,7 +2,7 @@
   <v-footer app absolute :style="{ 'min-height': '50px' }">
     <v-container>
       <AcknowledgementBanner
-        v-if="routePath === '/'"
+        v-if="acceptedPaths"
         title="The B.C. Public Service acknowledges the territories of First Nations around B.C. and is grateful to carry out our work on these lands. We acknowledge the rights, interests, priorities, and concerns of all Indigenous Peoples - First Nations, Métis, and Inuit - respecting and acknowledging their distinct cultures, histories, rights, laws, and governments."
         color="black"
         class="mb-3"
@@ -35,6 +35,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
+
 import AcknowledgementBanner from "@/components/AcknowledgementBanner.vue";
 
 type FooterLink = {
@@ -68,8 +69,9 @@ export default defineComponent({
     secondColumnLinks() {
       return this.links.slice(2);
     },
-    routePath() {
-      return this.$route.path;
+    acceptedPaths(): boolean {
+      const routeName = this.$route.name?.toString() || "";
+      return ["dashboard", "invalid-reference", "reference-submitted", "verify"].includes(routeName);
     },
   },
 });
