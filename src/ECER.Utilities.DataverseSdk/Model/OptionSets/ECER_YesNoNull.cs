@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataverseModel
+namespace ECER.Utilities.DataverseSdk.Model
 {
 	
 	
@@ -16,15 +16,14 @@ namespace DataverseModel
 	/// Yes, No, or not selecting.  Depends on level of requirement of the field, it can force to identify whether user has chosen an answer or skip the question
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	public enum ECER_YesNoNull
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum ecer_YesNoNull
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		[OptionSetMetadataAttribute("No", 1)]
 		No = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		[OptionSetMetadataAttribute("Yes", 0)]
 		Yes = 621870000,
 	}
 }

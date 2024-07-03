@@ -8,24 +8,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataverseModel
+namespace ECER.Utilities.DataverseSdk.Model
 {
 	
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	public enum ECER_AboriginalType
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum ecer_AboriginalType
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		[OptionSetMetadataAttribute("First Nations", 0)]
 		FirstNations = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		[OptionSetMetadataAttribute("Inuit", 2)]
 		Inuit = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		[OptionSetMetadataAttribute("Metis", 1)]
 		Metis = 621870001,
 	}
 }
