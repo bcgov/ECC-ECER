@@ -130,26 +130,6 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/accessibility",
-      component: () => import("./components/pages/Accessibility.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: "/privacy",
-      component: () => import("./components/pages/Privacy.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: "/contact-us",
-      component: () => import("./components/pages/ContactUs.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: "/disclaimer",
-      component: () => import("./components/pages/Disclaimer.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
       path: "/verify/:token",
       component: () => import("./components/reference/Reference.vue"),
       meta: { requiresAuth: false },
