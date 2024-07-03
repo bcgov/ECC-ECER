@@ -1,56 +1,59 @@
-<!-- eslint-disable vue/no-v-html -->
 <template>
   <v-list lines="two" class="flex-grow-1 message-list">
-    <MessageListItem v-for="(message, index) in Messages" :key="index" :message="message" />
-    <v-pagination v-if="MessageCount > 1" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages"></v-pagination>
+    <MessageListItem v-for="(message, index) in messages" :key="index" :message="message" />
+    <v-pagination v-if="messageCount > 1" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages"></v-pagination>
   </v-list>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 
 import { getMessages } from "@/api/message";
 import MessageListItem from "@/components/MessageListItem.vue";
+import type { Components } from "@/types/openapi";
 
 const PAGE_SIZE = 10;
 
 export default defineComponent({
   name: "MessageList",
   components: { MessageListItem },
-  setup: async () => {
-    const params = {
-      page: 1,
-      pageSize: PAGE_SIZE,
-    };
-    const Messages = (await getMessages(params)).data?.communications;
-    const MessageCount = (await getMessages(params)).data?.messageCount!;
+  setup() {
+    const messages = ref<Components.Schemas.Communication[]>([]);
+    const messageCount = ref(0);
+    const page = ref(1);
 
-    return { Messages, MessageCount };
-  },
-  data() {
-    return {
-      page: 0,
+    const fetchMessages = async (page: number) => {
+      const params = {
+        page,
+        pageSize: PAGE_SIZE,
+      };
+      const response = await getMessages(params);
+      messages.value = response.data?.communications || [];
+      messageCount.value = response.data?.messageCount || 0;
     };
-  },
-  computed: {
-    totalPages(): number {
-      return Math.ceil((this.MessageCount ?? 0) / PAGE_SIZE);
-    },
-    currentPage: {
+
+    onMounted(() => {
+      fetchMessages(page.value);
+    });
+
+    const totalPages = computed(() => Math.ceil(messageCount.value / PAGE_SIZE));
+
+    const currentPage = computed({
       get() {
-        return this.page;
+        return page.value;
       },
       set(newValue: number) {
-        this.page = newValue;
-        this.onPageChange(newValue);
+        page.value = newValue;
+        fetchMessages(newValue);
       },
-    },
-  },
+    });
 
-  methods: {
-    async onPageChange(newPage: number) {
-      this.Messages = (await getMessages({ page: newPage, pageSize: PAGE_SIZE })).data?.communications;
-    },
+    return {
+      messages,
+      messageCount,
+      currentPage,
+      totalPages,
+    };
   },
 });
 </script>

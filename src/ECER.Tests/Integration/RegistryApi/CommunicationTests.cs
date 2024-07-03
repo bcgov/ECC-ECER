@@ -23,8 +23,8 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var communications = await communicationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Communications.Communication[]>();
-    communications.ShouldNotBeNull();
+    var communications = await communicationsResponse.ReadAsJsonAsync<GetMessagesResponse>();
+    communications!.Communications.ShouldNotBeNull();
   }
 
   [Fact]
@@ -37,8 +37,8 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var communications = await communicationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Communications.Communication[]>();
-    communications.ShouldNotBeNull();
+    var communications = await communicationsResponse.ReadAsJsonAsync<GetMessagesResponse>();
+    communications!.Communications.ShouldNotBeNull();
   }
 
   [Fact]

@@ -34,7 +34,6 @@ public record Communication(string? Id)
   public DateTime NotifiedOn { get; set; }
   public bool Acknowledged { get; set; }
   public CommunicationStatus Status { get; set; }
-  public int? MessageCount { get; set; }
   public bool DoNotReply { get; set; }
 }
 

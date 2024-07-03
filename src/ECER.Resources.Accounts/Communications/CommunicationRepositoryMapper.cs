@@ -28,6 +28,7 @@ internal class CommunicationRepositoryMapper : Profile
      .ForSourceMember(s => s.Acknowledged, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.Body, opts => opts.DoNotValidate())
+     .ForSourceMember(s => s.DoNotReply, opts => opts.DoNotValidate())
      .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)));
 
     CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()
