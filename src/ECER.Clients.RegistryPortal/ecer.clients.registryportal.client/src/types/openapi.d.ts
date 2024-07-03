@@ -138,6 +138,7 @@ declare namespace Components {
       acknowledged?: boolean;
       notifiedOn?: string; // date-time
       status?: CommunicationStatus;
+      doNotReply?: boolean;
     }
     /**
      * Save communication response
@@ -198,7 +199,7 @@ declare namespace Components {
         [name: string]: string[];
       } | null;
     }
-    export type InitiatedFrom = "Investigation" | "Registrant" | "Registry";
+    export type InitiatedFrom = "Investigation" | "PortalUser" | "Registry";
     export type InviteType = "CharacterReference" | "WorkExperienceReference";
     export type LikertScale = "Yes" | "No";
     export interface OidcAuthenticationSettings {
