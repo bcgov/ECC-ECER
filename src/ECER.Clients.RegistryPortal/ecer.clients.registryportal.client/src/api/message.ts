@@ -15,7 +15,7 @@ const getMessages = async (params: { page: number; pageSize: number }): Promise<
   const client = await getClient();
 
   const config: AxiosRequestConfig = {
-    params: params, // This will set the query parameters for the request
+    params: params,
   };
 
   return apiResultHandler.execute<Components.Schemas.GetMessagesResponse | null>(client.message_get(null, null, config));
