@@ -40,7 +40,7 @@
       <br />
       <br />
       <span v-html="message.text"></span>
-      <hr class="grey-line" />
+      <v-divider class="mt-5"></v-divider>
     </div>
   </div>
 </template>
