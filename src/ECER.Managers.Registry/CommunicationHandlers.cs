@@ -48,7 +48,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
     });
 
     return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communication.Communications)!)
-    { MessageCount = communication.MessageCount };
+    { TotalMessagesCount = communication.TotalMessagesCount };
   }
 
   /// <summary>

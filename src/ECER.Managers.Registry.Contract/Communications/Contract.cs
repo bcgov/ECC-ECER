@@ -23,7 +23,7 @@ public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>
 }
 public record CommunicationsQueryResults(IEnumerable<Communication> Items)
 {
-  public int MessageCount { get; set; }
+  public int TotalMessagesCount { get; set; }
 }
 
 public record SendMessageCommand(Communication communication, string userId) : IRequest<SendMessageResult>;

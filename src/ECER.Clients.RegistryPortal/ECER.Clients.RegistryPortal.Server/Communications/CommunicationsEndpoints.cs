@@ -31,7 +31,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
       };
       var results = await messageBus.Send<CommunicationsQueryResults>(query);
 
-      return TypedResults.Ok(new GetMessagesResponse() { Communications = mapper.Map<IEnumerable<Communication>>(results.Items), MessageCount = results.MessageCount });
+      return TypedResults.Ok(new GetMessagesResponse() { Communications = mapper.Map<IEnumerable<Communication>>(results.Items), TotalMessagesCount = results.TotalMessagesCount });
     })
      .WithOpenApi("Handles messages queries", string.Empty, "message_get")
      .RequireAuthorization();
@@ -135,7 +135,7 @@ public record Communication
 public record GetMessagesResponse
 {
   public IEnumerable<Communication>? Communications { get; set; }
-  public int MessageCount { get; set; }
+  public int TotalMessagesCount { get; set; }
 }
 
 public enum InitiatedFrom

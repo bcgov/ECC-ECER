@@ -10,6 +10,7 @@ import { computed, defineComponent, onMounted, ref } from "vue";
 
 import { getMessages } from "@/api/message";
 import MessageListItem from "@/components/MessageListItem.vue";
+import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
 
 const PAGE_SIZE = 10;
@@ -18,6 +19,7 @@ export default defineComponent({
   name: "MessageList",
   components: { MessageListItem },
   setup() {
+    const messageStore = useMessageStore();
     const messages = ref<Components.Schemas.Communication[]>([]);
     const messageCount = ref(0);
     const page = ref(1);
@@ -29,7 +31,7 @@ export default defineComponent({
       };
       const response = await getMessages(params);
       messages.value = response.data?.communications || [];
-      messageCount.value = response.data?.messageCount || 0;
+      messageCount.value = response.data?.totalMessagesCount || 0;
     };
 
     onMounted(() => {
@@ -44,6 +46,8 @@ export default defineComponent({
       },
       set(newValue: number) {
         page.value = newValue;
+        messageStore.currentMessage = null;
+        messageStore.currentThread = null;
         fetchMessages(newValue);
       },
     });
@@ -53,6 +57,7 @@ export default defineComponent({
       messageCount,
       currentPage,
       totalPages,
+      messageStore,
     };
   },
 });

@@ -186,7 +186,7 @@ declare namespace Components {
     }
     export interface GetMessagesResponse {
       communications?: Communication[] | null;
-      messageCount?: number; // int32
+      totalMessagesCount?: number; // int32
     }
     export interface HttpValidationProblemDetails {
       [name: string]: any;

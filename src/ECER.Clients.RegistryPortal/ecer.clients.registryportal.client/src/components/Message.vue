@@ -16,14 +16,9 @@
 
           <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
             <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
-            <br />
-            <br />
-            <span v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></span>
-            <br />
-            <br />
-            <br />
-            <span v-html="message.text"></span>
-            <hr class="grey-line" />
+            <div class="mt-3" v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></div>
+            <div class="mt-6" v-html="message.text"></div>
+            <v-divider v-if="index < messageStore.currentThread!.length - 1" class="mt-6"></v-divider>
           </div>
         </v-card-text>
       </v-card>
@@ -33,14 +28,9 @@
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
     <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
       <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
-      <br />
-      <br />
-      <span v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></span>
-      <br />
-      <br />
-      <br />
-      <span v-html="message.text"></span>
-      <v-divider class="mt-5"></v-divider>
+      <div class="mt-3" v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></div>
+      <div class="mt-6" v-html="message.text"></div>
+      <v-divider v-if="index < messageStore.currentThread!.length - 1" class="mt-6"></v-divider>
     </div>
   </div>
 </template>
@@ -71,10 +61,3 @@ export default defineComponent({
   },
 });
 </script>
-<style>
-.grey-line {
-  border: 0;
-  border-top: 1px solid grey;
-  margin: 10px 0; /* Adjust margin as needed */
-}
-</style>

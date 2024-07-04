@@ -40,7 +40,7 @@ public record Communication(string? Id)
 public record CommunicationResult
 {
   public IEnumerable<Communication>? Communications { get; set; }
-  public int MessageCount { get; set; }
+  public int TotalMessagesCount { get; set; }
 }
 
 public enum CommunicationStatus

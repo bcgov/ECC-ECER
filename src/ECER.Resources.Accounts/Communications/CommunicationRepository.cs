@@ -46,7 +46,7 @@ internal class CommunicationRepository : ICommunicationRepository
     {
       communications = communications.Where(r => r.c.ecer_IsRoot == true);
     }
-    var MessageCount = communications.ToList().Count;
+    var TotalMessagesCount = communications.ToList().Count;
 
     if (query.PageNumber > 0)
     {
@@ -59,7 +59,7 @@ internal class CommunicationRepository : ICommunicationRepository
     var result = new CommunicationResult
     {
       Communications = mapper.Map<IEnumerable<Communication>>(communications.Select(r => r.c).ToList()),
-      MessageCount = MessageCount
+      TotalMessagesCount = TotalMessagesCount
     };
 
     return result;
