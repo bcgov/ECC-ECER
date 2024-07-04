@@ -46,6 +46,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper) 
     foreach (var contact in contacts)
     {
       context.LoadProperty(contact, nameof(Contact.ecer_contact_ecer_authentication_455));
+      context.LoadProperty(contact, nameof(Contact.ecer_previousname_Contactid));
     }
     return mapper.Map<IEnumerable<Registrant>>(contacts)!;
   }
