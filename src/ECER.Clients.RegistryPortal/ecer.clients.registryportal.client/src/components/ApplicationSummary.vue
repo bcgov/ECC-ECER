@@ -218,6 +218,7 @@ export default defineComponent({
         case "Escalated":
         case "PendingQueue":
         case "Ready":
+        case "Pending":
           return 3;
         case "Submitted":
           return 2;
@@ -229,7 +230,7 @@ export default defineComponent({
     stepTwoStatusText() {
       switch (this.currentStep) {
         case 2:
-          return "In Progress";
+          return "In progress";
         case 3:
           return "Complete";
         default:
@@ -255,7 +256,7 @@ export default defineComponent({
     },
     stepTwoIcon() {
       switch (this.stepTwoStatusText) {
-        case "In Progress":
+        case "In progress":
           return "mdi-arrow-right";
         case "Complete":
           return "mdi-check";
