@@ -1,43 +1,64 @@
-<!-- eslint-disable vue/no-v-html -->
 <template>
   <v-list lines="two" class="flex-grow-1 message-list">
-    <MessageListItem v-for="(message, index) in messageStore.paginatedMessages" :key="index" :message="message" />
-    <v-pagination
-      v-if="messageStore.totalPages > 1"
-      v-model="currentPage"
-      size="small"
-      class="mt-4"
-      elevation="2"
-      :length="messageStore.totalPages"
-    ></v-pagination>
+    <MessageListItem v-for="(message, index) in messages" :key="index" :message="message" />
+    <v-pagination v-if="messageCount > 1" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages"></v-pagination>
   </v-list>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 
+import { getMessages } from "@/api/message";
 import MessageListItem from "@/components/MessageListItem.vue";
 import { useMessageStore } from "@/store/message";
+import type { Components } from "@/types/openapi";
+
+const PAGE_SIZE = 10;
 
 export default defineComponent({
   name: "MessageList",
   components: { MessageListItem },
   setup() {
     const messageStore = useMessageStore();
-    return { messageStore };
-  },
-  computed: {
-    currentPage: {
+    const messages = ref<Components.Schemas.Communication[]>([]);
+    const messageCount = ref(0);
+    const page = ref(1);
+
+    const fetchMessages = async (page: number) => {
+      const params = {
+        page,
+        pageSize: PAGE_SIZE,
+      };
+      const response = await getMessages(params);
+      messages.value = response.data?.communications || [];
+      messageCount.value = response.data?.totalMessagesCount || 0;
+    };
+
+    onMounted(() => {
+      fetchMessages(page.value);
+    });
+
+    const totalPages = computed(() => Math.ceil(messageCount.value / PAGE_SIZE));
+
+    const currentPage = computed({
       get() {
-        return this.messageStore.currentPage;
+        return page.value;
       },
-      set(value: number) {
-        this.messageStore.setPage(value);
+      set(newValue: number) {
+        page.value = newValue;
+        messageStore.currentMessage = null;
+        messageStore.currentThread = null;
+        fetchMessages(newValue);
       },
-    },
-  },
-  created() {
-    this.messageStore.fetchMessages();
+    });
+
+    return {
+      messages,
+      messageCount,
+      currentPage,
+      totalPages,
+      messageStore,
+    };
   },
 });
 </script>

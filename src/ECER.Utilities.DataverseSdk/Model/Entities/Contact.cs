@@ -655,6 +655,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
 			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
 			public const string ecer_CertificationLevel = "ecer_certificationlevel";
+			public const string ecer_certifiedlevel_RegistrantId = "ecer_certifiedlevel_RegistrantId";
 			public const string ecer_changeofinformation_Contactid = "ecer_changeofinformation_Contactid";
 			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
 			public const string ecer_ClientID = "ecer_clientid";
@@ -681,6 +682,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_IsVerified = "ecer_isverified";
 			public const string ecer_isverifiedName = "ecer_isverifiedname";
 			public const string ecer_LegacyClientID = "ecer_legacyclientid";
+			public const string ecer_legacyenteredby = "ecer_legacyenteredby";
+			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_portalinvitation_ApplicantId = "ecer_portalinvitation_ApplicantId";
 			public const string ecer_portaluser_Contactid = "ecer_portaluser_Contactid";
 			public const string ecer_postsecondaryinstitute_PrimaryProgramRepr = "ecer_postsecondaryinstitute_PrimaryProgramRepr";
@@ -4218,6 +4221,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyenteredby")]
+		public string ecer_legacyenteredby
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyenteredby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyenteredby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentrydate")]
+		public System.Nullable<System.DateTime> ecer_legacyentrydate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyentrydate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyentrydate", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_preferredname")]
 		public string ecer_PreferredName
 		{
@@ -7037,6 +7070,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions>("ecer_certificateconditions_Registrantid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_certifiedlevel_RegistrantId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certifiedlevel_RegistrantId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CertifiedLevel> ecer_certifiedlevel_RegistrantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertifiedLevel>("ecer_certifiedlevel_RegistrantId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertifiedLevel>("ecer_certifiedlevel_RegistrantId", null, value);
 			}
 		}
 		

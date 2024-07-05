@@ -266,6 +266,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_Acknowledged = false,
         StatusCode = ecer_Communication_StatusCode.NotifiedRecipient,
       };
+      if (parentCommunicationId == null)
+      {
+        communication.ecer_IsRoot = true;
+      }
       context.AddObject(communication);
 
       if (parentCommunicationId != null)

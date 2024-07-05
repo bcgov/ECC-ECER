@@ -13,20 +13,25 @@
         </v-toolbar>
         <v-card-text>
           <h2>{{ messageStore.currentMessage?.subject }}</h2>
-          <p class="small mt-2">{{ messageDate }}</p>
-          <p class="small mt-6">
-            <span v-html="messageStore.currentMessage?.text"></span>
-          </p>
+
+          <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
+            <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+            <div class="mt-3" v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></div>
+            <div class="mt-6" v-html="message.text"></div>
+            <v-divider v-if="index < messageStore.currentThread!.length - 1" class="mt-6"></v-divider>
+          </div>
         </v-card-text>
       </v-card>
     </v-dialog>
   </div>
   <div v-if="mdAndUp">
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
-    <p class="small mt-2">{{ messageDate }}</p>
-    <p class="small mt-6">
-      <span v-html="messageStore.currentMessage?.text"></span>
-    </p>
+    <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
+      <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+      <div class="mt-3" v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></div>
+      <div class="mt-6" v-html="message.text"></div>
+      <v-divider v-if="index < messageStore.currentThread!.length - 1" class="mt-6"></v-divider>
+    </div>
   </div>
 </template>
 

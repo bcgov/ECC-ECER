@@ -134,9 +134,11 @@ declare namespace Components {
       id?: string | null;
       subject?: string | null;
       text?: string | null;
+      from?: InitiatedFrom;
       acknowledged?: boolean;
       notifiedOn?: string; // date-time
       status?: CommunicationStatus;
+      doNotReply?: boolean;
     }
     /**
      * Save communication response
@@ -182,6 +184,10 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
+    export interface GetMessagesResponse {
+      communications?: Communication[] | null;
+      totalMessagesCount?: number; // int32
+    }
     export interface HttpValidationProblemDetails {
       [name: string]: any;
       type?: string | null;
@@ -193,6 +199,7 @@ declare namespace Components {
         [name: string]: string[];
       } | null;
     }
+    export type InitiatedFrom = "Investigation" | "PortalUser" | "Registry";
     export type InviteType = "CharacterReference" | "WorkExperienceReference";
     export type LikertScale = "Yes" | "No";
     export interface OidcAuthenticationSettings {
@@ -262,6 +269,21 @@ declare namespace Components {
      */
     export interface SaveDraftApplicationRequest {
       draftApplication?: DraftApplication;
+    }
+    /**
+     * Send Message Request
+     */
+    export interface SendMessageRequest {
+      communication?: Communication;
+    }
+    /**
+     * Send Message Response
+     */
+    export interface SendMessageResponse {
+      /**
+       *
+       */
+      communicationId?: string | null;
     }
     export interface SubmitApplicationResponse {
       applicationId?: string | null;
@@ -550,8 +572,24 @@ declare namespace Paths {
     }
   }
   namespace MessageGet {
+    namespace Parameters {
+      export type ParentId = string;
+    }
+    export interface PathParameters {
+      parentId?: Parameters.ParentId;
+    }
     namespace Responses {
-      export type $200 = Components.Schemas.Communication[];
+      export type $200 = Components.Schemas.GetMessagesResponse;
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace MessagePost {
+    export type RequestBody = /* Send Message Request */ Components.Schemas.SendMessageRequest;
+    namespace Responses {
+      export type $200 = /* Send Message Response */ Components.Schemas.SendMessageResponse;
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
     }
   }
   namespace MessageStatusGet {
@@ -702,10 +740,18 @@ export interface OperationMethods {
    * message_get - Handles messages queries
    */
   "message_get"(
-    parameters?: Parameters<UnknownParamsObject> | null,
+    parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.MessageGet.Responses.$200>;
+  /**
+   * message_post - Handles message send request
+   */
+  "message_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.MessagePost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.MessagePost.Responses.$200>;
   /**
    * communication_put - Marks a communication as seen
    */
@@ -887,11 +933,25 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
   };
-  ["/api/messages"]: {
+  ["/api/messages/{parentId}"]: {
     /**
      * message_get - Handles messages queries
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.MessageGet.Responses.$200>;
+    "get"(
+      parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.MessageGet.Responses.$200>;
+  };
+  ["/api/messages"]: {
+    /**
+     * message_post - Handles message send request
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.MessagePost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.MessagePost.Responses.$200>;
   };
   ["/api/messages/{id}/seen"]: {
     /**
