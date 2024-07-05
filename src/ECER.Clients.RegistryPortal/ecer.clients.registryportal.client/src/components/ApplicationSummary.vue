@@ -218,6 +218,7 @@ export default defineComponent({
         case "Escalated":
         case "PendingQueue":
         case "Ready":
+        case "Pending":
           return 3;
         case "Submitted":
           return 2;
