@@ -226,6 +226,18 @@ declare namespace Components {
       portalInvitation?: PortalInvitation;
     }
     export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
+    /**
+     * Previous Name
+     */
+    export interface PreviousName {
+      firstName?: string | null;
+      lastName?: string | null;
+      id?: string | null;
+      middleName?: string | null;
+      preferredName?: string | null;
+      status?: PreviousNameStage;
+    }
+    export type PreviousNameStage = "Unverified" | "ReadyforVerification" | "Verified" | "Archived";
     export interface ProblemDetails {
       [name: string]: any;
       type?: string | null;
@@ -347,6 +359,7 @@ declare namespace Components {
       phone?: string | null;
       residentialAddress?: /* Address */ Address;
       mailingAddress?: /* Address */ Address;
+      previousNames?: /* Previous Name */ PreviousName[] | null;
     }
     export type WorkExperienceRefStage =
       | "ApplicationSubmitted"
