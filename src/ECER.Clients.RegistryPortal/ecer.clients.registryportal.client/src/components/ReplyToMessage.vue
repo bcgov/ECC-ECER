@@ -32,7 +32,13 @@
             <input ref="fileInput" type="file" style="display: none" accept="application/pdf" @change="handleFileUpload" />
 
             <v-list lines="two" class="flex-grow-1 message-list">
-              <UploadFileItem v-for="(file, index) in selectedFiles" :key="index" :file="file" />
+              <UploadFileItem
+                v-for="(file, index) in selectedFiles"
+                :key="index"
+                :file="file.file"
+                :upload-progress="file.progress"
+                @delete-file="removeFile"
+              />
             </v-list>
           </v-col>
         </v-row>
@@ -61,7 +67,8 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-
+import { uploadFile } from "@/api/file";
+import { v4 as uuidv4 } from 'uuid';
 import { sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import PageContainer from "@/components/PageContainer.vue";
@@ -70,6 +77,7 @@ import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useMessageStore } from "@/store/message";
 import * as Rules from "@/utils/formRules";
+import type { AxiosProgressEvent } from "axios";
 
 export default defineComponent({
   name: "ReplyToMessage",
@@ -79,10 +87,21 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
     const router = useRouter();
-
     const fileInput = ref<HTMLInputElement | null>(null);
-    const selectedFiles = ref<File[]>([]);
+    const selectedFiles = ref<{ file: File; progress: number }[]>([]);
+    const formatFileTags = (file: File): string => {
+    const fileName = file.name;
+    const fileSize = (file.size / 1024).toFixed(2) + ' KB'; // Convert size to KB
+    const fileFormat = file.name.split('.').pop(); // Get file extension
+    
+  const tags = {
+    Name: fileName,
+    Size: fileSize,
+    Format: fileFormat,
+  };
 
+  return Object.entries(tags).map(([key, value]) => `${key}=${value}`).join(',');
+    };
     const triggerFileInput = () => {
       fileInput.value?.click();
     };
@@ -92,16 +111,54 @@ export default defineComponent({
       const file = target.files?.[0];
       if (file) {
         if (file.size > 10 * 1024 * 1024) {
-          // 10MB in bytes
           alertStore.setFailureAlert("File size exceeds the 10MB limit.");
           return;
         }
-        selectedFiles.value.push(file);
-        console.log("File uploaded:", file);
+
+        selectedFiles.value.push({ file, progress: 0 });
+        uploadFileWithProgress(file);
       }
     };
 
-    return { messageStore, loadingStore, alertStore, router, fileInput, triggerFileInput, handleFileUpload, selectedFiles };
+    const uploadFileWithProgress = async (file: File) => {
+      const fileId = uuidv4(); // Generate a unique file ID using uuid
+      const fileClassification = "document";
+      const fileTags = formatFileTags(file);
+      try {
+      const response = await uploadFile(fileId, file, fileClassification, fileTags, (progressEvent: AxiosProgressEvent) => {
+        const total = progressEvent.total?progressEvent.total:10485760;
+        const progress = Math.round((progressEvent.loaded * 100) / total);
+        const fileIndex = selectedFiles.value.findIndex(f => f.file === file);
+        if (fileIndex > -1) {
+          selectedFiles.value[fileIndex].progress = progress;
+        }
+      });
+
+      if (response.data) {
+        
+      } else {
+        alertStore.setFailureAlert("An error occurred during file upload");
+      }
+    } catch (error) {
+       alertStore.setFailureAlert("An error occurred during file upload");
+    }
+    };
+
+    const removeFile = (file: File) => {
+      selectedFiles.value = selectedFiles.value.filter(f => f.file !== file);
+    };
+
+    return {
+      messageStore,
+      loadingStore,
+      alertStore,
+      router,
+      fileInput,
+      triggerFileInput,
+      handleFileUpload,
+      selectedFiles,
+      removeFile,
+    };
   },
   data() {
     return {

@@ -9,7 +9,7 @@
       <!-- Progress Bar or Upload Completed -->
       <v-col cols="4">
         <div v-if="isUploadComplete">Upload completed</div>
-        <v-progress-linear v-else :value="uploadProgress" height="20" color="primary"></v-progress-linear>
+        <v-progress-linear v-else v-model="uploadProgress" height="20" color="primary"></v-progress-linear>
       </v-col>
 
       <!-- Delete Button -->
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, watch } from "vue";
 
 export default defineComponent({
   name: "UploadFileItem",
@@ -38,7 +38,6 @@ export default defineComponent({
   },
   setup(props) {
     const isUploadComplete = computed(() => props.uploadProgress >= 100);
-
     return {
       isUploadComplete,
     };
