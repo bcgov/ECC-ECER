@@ -8,7 +8,7 @@
           <Snackbar />
           <router-view></router-view>
         </v-main>
-        <!-- <EceFooter /> -->
+        <EceFooter />
       </v-app>
     </Suspense>
   </main>
@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-// import EceFooter from "./components/Footer.vue";
+import EceFooter from "./components/Footer.vue";
 import InactiveSessionTimeout from "./components/InactiveSessionTimeout.vue";
 import NavigationBar from "./components/NavigationBar.vue";
 import Snackbar from "./components/Snackbar.vue";
@@ -26,7 +26,7 @@ export default defineComponent({
   name: "App",
   components: {
     NavigationBar,
-    // EceFooter,
+    EceFooter,
     Snackbar,
     InactiveSessionTimeout,
   },
