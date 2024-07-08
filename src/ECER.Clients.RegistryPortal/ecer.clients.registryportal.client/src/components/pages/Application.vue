@@ -109,7 +109,7 @@ export default defineComponent({
       const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
       const { valid } = await formRef.validate();
       if (!valid) {
-        this.alertStore.setFailureAlert("Please fill out all required fields");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       } else {
         switch (this.wizardStore.currentStepStage) {
           case "CertificationType":

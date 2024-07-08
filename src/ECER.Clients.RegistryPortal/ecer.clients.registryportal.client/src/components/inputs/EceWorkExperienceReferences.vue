@@ -266,7 +266,7 @@ export default defineComponent({
         // Change mode to list
         this.mode = "list";
       } else {
-        this.alertStore.setFailureAlert("Please fill out all required fields");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }
     },
     handleCancel() {
