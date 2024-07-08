@@ -15,6 +15,7 @@ const router = createRouter({
       path: "/",
       component: () => import("./components/pages/Dashboard.vue"),
       meta: { requiresAuth: true },
+      name: "dashboard",
     },
     {
       path: "/profile",
@@ -36,6 +37,7 @@ const router = createRouter({
       path: "/login",
       component: () => import("./components/pages/Login.vue"),
       meta: { requiresAuth: false },
+      name: "login",
     },
     {
       path: "/signin-callback",
@@ -136,39 +138,22 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/accessibility",
-      component: () => import("./components/pages/Accessibility.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: "/privacy",
-      component: () => import("./components/pages/Privacy.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: "/contact-us",
-      component: () => import("./components/pages/ContactUs.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: "/disclaimer",
-      component: () => import("./components/pages/Disclaimer.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
       path: "/verify/:token",
       component: () => import("./components/reference/Reference.vue"),
       meta: { requiresAuth: false },
+      name: "verify",
     },
     {
       path: "/invalid-reference",
       component: () => import("./components/reference/Invalid.vue"),
       meta: { requiresAuth: false },
+      name: "invalid-reference",
     },
     {
       path: "/reference-submitted",
       component: () => import("./components/pages/ReferenceSubmitted.vue"),
       meta: { requiresAuth: false },
+      name: "reference-submitted",
     },
     { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("./components/pages/PageNotFound.vue") },
   ],
