@@ -115,18 +115,15 @@ export default defineComponent({
         alertStore.setFailureAlert("File size exceeds the 10MB limit.");
         continue; // Skip this file and continue with the next one
       }
-
       if (selectedFiles.value.some(f => f.file.name === file.name)) {
         alertStore.setFailureAlert("File with the same name already exists.");
         continue; // Skip this file and continue with the next one
       }
-
       selectedFiles.value.push({ file, progress: 0 });
       uploadFileWithProgress(file);
     }
   }
 };
-
 
     const uploadFileWithProgress = async (file: File) => {
       const fileId = uuidv4(); // Generate a unique file ID using uuid
@@ -142,12 +139,12 @@ export default defineComponent({
         }
       });
 
-      if (response.data) {
-        
-      } else {
+      if (!response.data) {
+        removeFile(file);
         alertStore.setFailureAlert("An error occurred during file upload");
       }
     } catch (error) {
+      removeFile(file);
        alertStore.setFailureAlert("An error occurred during file upload");
     }
     };
