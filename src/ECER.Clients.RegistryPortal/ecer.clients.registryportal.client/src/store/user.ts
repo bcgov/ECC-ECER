@@ -25,7 +25,7 @@ export const useUserStore = defineStore("user", {
       }
     },
     unverifiedPreviousNames: (state): Components.Schemas.PreviousName[] => {
-      return state.userProfile?.previousNames?.filter((name) => name.status == "Unverified") ?? [];
+      return state.userProfile?.previousNames?.filter((name) => name.status === "Unverified") ?? [];
     },
     firstName: (state): string => state.userInfo?.firstName ?? "",
     fullName: (state): string => (state.userInfo?.lastName ? `${state.userInfo?.firstName} ${state.userInfo?.lastName}` : `${state.userInfo?.firstName}`),
