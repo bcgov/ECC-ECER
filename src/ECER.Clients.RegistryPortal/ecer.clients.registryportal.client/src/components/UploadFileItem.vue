@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watch } from "vue";
+import { computed, defineComponent} from "vue";
 
 export default defineComponent({
   name: "UploadFileItem",
@@ -36,18 +36,22 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  emits: ['delete-file'], // Declare the delete-file event here
+  setup(props, { emit }) {
     const isUploadComplete = computed(() => props.uploadProgress >= 100);
+
+    const deleteFile = () => {
+      // Emit the delete-file event with the file as payload
+      emit("delete-file", props.file);
+    };
+
     return {
       isUploadComplete,
+      deleteFile, // Expose the deleteFile method to the template
     };
-  },
-  methods: {
-    deleteFile() {
-      this.$emit("delete-file", this.file);
-    },
   },
 });
 </script>
+
 
 <style scoped></style>

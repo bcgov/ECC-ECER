@@ -29,7 +29,7 @@
             </p>
             <p>You can only upload PDF files up to 10MB.</p>
             <v-btn prepend-icon="mdi-plus" variant="text" color="primary" class="mt-3" @click="triggerFileInput">Add file</v-btn>
-            <input ref="fileInput" type="file" style="display: none" accept="application/pdf" @change="handleFileUpload" />
+            <input ref="fileInput" type="file" style="display: none" accept="application/pdf" multiple @change="handleFileUpload" />
 
             <v-list lines="two" class="flex-grow-1 message-list">
               <UploadFileItem
@@ -105,20 +105,28 @@ export default defineComponent({
     const triggerFileInput = () => {
       fileInput.value?.click();
     };
-
     const handleFileUpload = (event: Event) => {
-      const target = event.target as HTMLInputElement;
-      const file = target.files?.[0];
-      if (file) {
-        if (file.size > 10 * 1024 * 1024) {
-          alertStore.setFailureAlert("File size exceeds the 10MB limit.");
-          return;
-        }
-
-        selectedFiles.value.push({ file, progress: 0 });
-        uploadFileWithProgress(file);
+  const target = event.target as HTMLInputElement;
+  const files = target.files;
+  if (files) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.size > 10 * 1024 * 1024) {
+        alertStore.setFailureAlert("File size exceeds the 10MB limit.");
+        continue; // Skip this file and continue with the next one
       }
-    };
+
+      if (selectedFiles.value.some(f => f.file.name === file.name)) {
+        alertStore.setFailureAlert("File with the same name already exists.");
+        continue; // Skip this file and continue with the next one
+      }
+
+      selectedFiles.value.push({ file, progress: 0 });
+      uploadFileWithProgress(file);
+    }
+  }
+};
+
 
     const uploadFileWithProgress = async (file: File) => {
       const fileId = uuidv4(); // Generate a unique file ID using uuid
