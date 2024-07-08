@@ -31,6 +31,7 @@ const router = createRouter({
       path: "/login",
       component: () => import("./components/pages/Login.vue"),
       meta: { requiresAuth: false },
+      name: "login",
     },
     {
       path: "/signin-callback",
