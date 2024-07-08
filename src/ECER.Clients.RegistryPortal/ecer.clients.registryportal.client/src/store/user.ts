@@ -8,9 +8,7 @@ export interface UserState {
 }
 
 export const useUserStore = defineStore("user", {
-  persist: {
-    paths: ["oidcUser", "userInfo", "authority"],
-  },
+  persist: true,
   state: (): UserState => ({
     userInfo: null,
     userProfile: null,
@@ -25,6 +23,9 @@ export const useUserStore = defineStore("user", {
       } else {
         return `${state.userProfile?.firstName} ${state.userProfile?.lastName}`;
       }
+    },
+    unverifiedPreviousNames: (state): Components.Schemas.PreviousName[] => {
+      return state.userProfile?.previousNames?.filter((name) => name.status == "Unverified") ?? [];
     },
     firstName: (state): string => state.userInfo?.firstName ?? "",
     fullName: (state): string => (state.userInfo?.lastName ? `${state.userInfo?.firstName} ${state.userInfo?.lastName}` : `${state.userInfo?.firstName}`),
