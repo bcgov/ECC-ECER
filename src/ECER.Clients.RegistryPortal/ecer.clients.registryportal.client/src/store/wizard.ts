@@ -3,9 +3,7 @@ import { defineStore } from "pinia";
 import type { Components } from "@/types/openapi";
 import type { ReferenceStage, Step, Wizard } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
-import { CertificationType } from "@/utils/constant";
 
-import { useApplicationStore } from "./application";
 import { useOidcStore } from "./oidc";
 import { useUserStore } from "./user";
 
@@ -44,35 +42,6 @@ export const useWizardStore = defineStore("wizard", {
     },
     currentStepStage(state): Components.Schemas.PortalStage | ReferenceStage {
       return this.steps[state.step - 1].stage;
-    },
-    validationState(state): PortalStageValidation {
-      const applicationStore = useApplicationStore();
-
-      let numOfEducationRequired = 1;
-      state.wizardData[this.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id]?.includes(CertificationType.SNE) &&
-        numOfEducationRequired++;
-      state.wizardData[this.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id]?.includes(CertificationType.ITE) &&
-        numOfEducationRequired++;
-
-      return {
-        CertificationType: (state.wizardData[this.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].length || []) > 0,
-        Declaration:
-          state.wizardData[this.wizardConfig.steps.declaration.form.inputs.signedDate.id] !== null &&
-          state.wizardData[this.wizardConfig.steps.declaration.form.inputs.consentCheckbox.id] === true,
-        ContactInformation: true,
-        Education: Object.values(state.wizardData[this.wizardConfig.steps.education.form.inputs.educationList.id]).length >= numOfEducationRequired,
-        CharacterReferences:
-          (state.wizardData[this.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id].length || []) > 0 &&
-          !applicationStore.hasDuplicateReferences,
-        WorkReferences:
-          Object.values(state.wizardData[this.wizardConfig.steps.workReference.form.inputs.referenceList.id]).length > 0 &&
-          applicationStore.totalWorkExperienceHours >= 500 &&
-          !applicationStore.hasDuplicateReferences,
-        Review: true,
-      };
-    },
-    allStageValidations() {
-      return !(Object.values(this.validationState).indexOf(false) > -1);
     },
   },
   actions: {

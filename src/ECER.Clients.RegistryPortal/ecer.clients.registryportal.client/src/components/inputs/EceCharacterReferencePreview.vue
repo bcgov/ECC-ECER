@@ -1,5 +1,5 @@
 <template>
-  <PreviewCard :is-valid="wizardStore.validationState.CharacterReferences" title="Character Reference" portal-stage="CharacterReferences">
+  <PreviewCard title="Character Reference" portal-stage="CharacterReferences">
     <template #content>
       <v-row>
         <v-col cols="4">

@@ -70,6 +70,12 @@
         :go-to="() => $router.push({ name: 'addCharacterReference', params: { applicationId: $route.params.applicationId } })"
       />
       <ApplicationSummaryActionListItem
+        v-for="(previousName, index) in userStore.unverifiedPreviousNames"
+        :key="index"
+        :text="`Proof of previous name ${previousName.firstName} ${previousName.lastName}`"
+        :go-to="() => $router.push({ name: 'profile' })"
+      />
+      <ApplicationSummaryActionListItem
         :active="totalObservedWorkExperienceHours < 500"
         text="500 approved hours of work experience with reference"
         :go-to="() => $router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: $route.params.applicationId } })"
@@ -160,6 +166,7 @@ import { useDisplay } from "vuetify";
 import { getApplicationStatus } from "@/api/application";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
+import { useUserStore } from "@/store/user";
 import type { Components } from "@/types/openapi";
 import { CertificationType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
@@ -182,12 +189,14 @@ export default defineComponent({
     const route = useRoute();
     const alertStore = useAlertStore();
     const applicationStore = useApplicationStore();
+    const userStore = useUserStore();
 
     await applicationStore.fetchApplications();
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
 
     return {
       applicationStore,
+      userStore,
       alertStore,
       CertificationType,
       applicationStatus,
@@ -218,6 +227,7 @@ export default defineComponent({
         case "Escalated":
         case "PendingQueue":
         case "Ready":
+        case "Pending":
           return 3;
         case "Submitted":
           return 2;
@@ -229,7 +239,7 @@ export default defineComponent({
     stepTwoStatusText() {
       switch (this.currentStep) {
         case 2:
-          return "In Progress";
+          return "In progress";
         case 3:
           return "Complete";
         default:
@@ -255,7 +265,7 @@ export default defineComponent({
     },
     stepTwoIcon() {
       switch (this.stepTwoStatusText) {
-        case "In Progress":
+        case "In progress":
           return "mdi-arrow-right";
         case "Complete":
           return "mdi-check";

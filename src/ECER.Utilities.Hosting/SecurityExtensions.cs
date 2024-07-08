@@ -76,6 +76,7 @@ public record CspSettings : IOptions<CspSettings>
   public string FontSource { get; set; } = string.Empty;
   public string FrameAncestors { get; set; } = string.Empty;
   public string FormAction { get; set; } = string.Empty;
+  public string FrameSource { get; set; } = string.Empty;
 
   public CspSettings Value => this;
 
@@ -88,7 +89,8 @@ public record CspSettings : IOptions<CspSettings>
     (string.IsNullOrWhiteSpace(StyleSource) ? "" : $"style-src {StyleSource};") +
     (string.IsNullOrWhiteSpace(FontSource) ? "" : $"font-src {this.FontSource};") +
     (string.IsNullOrWhiteSpace(FrameAncestors) ? "" : $"frame-ancestors {this.FrameAncestors};") +
-    (string.IsNullOrWhiteSpace(FormAction) ? "" : $"form-action {this.FormAction};")
+    (string.IsNullOrWhiteSpace(FormAction) ? "" : $"form-action {this.FormAction};") +
+    (string.IsNullOrWhiteSpace(FrameSource) ? "" : $"frame-src {this.FrameSource};")
   ;
 }
 

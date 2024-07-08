@@ -12,6 +12,7 @@
           <v-btn prepend-icon="mdi-close" text="Close" @click="messageStore.currentMessage = null"></v-btn>
         </v-toolbar>
         <v-card-text>
+          <v-btn prepend-icon="mdi-reply" variant="text" color="primary" text="Reply" @click="handleMessageReply">Reply</v-btn>
           <h2>{{ messageStore.currentMessage?.subject }}</h2>
           <p class="small mt-2">{{ messageDate }}</p>
           <p class="small mt-6">
@@ -21,7 +22,8 @@
       </v-card>
     </v-dialog>
   </div>
-  <div v-if="mdAndUp">
+  <div v-if="mdAndUp && messageStore.currentMessage != null">
+    <v-btn prepend-icon="mdi-reply" variant="text" color="primary" text="Reply" @click="handleMessageReply">Reply</v-btn>
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
     <p class="small mt-2">{{ messageDate }}</p>
     <p class="small mt-6">
@@ -53,6 +55,9 @@ export default defineComponent({
   },
   methods: {
     formatDate,
+    handleMessageReply() {
+      this.$router.push({ name: "replyToMessage", params: { messageId: this.messageStore.currentMessage?.id } });
+    },
   },
 });
 </script>

@@ -46,6 +46,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper) 
     foreach (var contact in contacts)
     {
       context.LoadProperty(contact, nameof(Contact.ecer_contact_ecer_authentication_455));
+      context.LoadProperty(contact, nameof(Contact.ecer_previousname_Contactid));
     }
     return mapper.Map<IEnumerable<Registrant>>(contacts)!;
   }
@@ -64,6 +65,14 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper) 
 
     context.Attach(contact);
     context.UpdateObject(contact);
+
+    var ecerPreviousNames = mapper.Map<IEnumerable<ecer_PreviousName>>(registrant.Profile.PreviousNames)!;
+    foreach (var previousName in ecerPreviousNames)
+    {
+      previousName.ecer_PreviousNameId = Guid.NewGuid();
+      context.AddObject(previousName);
+      context.AddLink(previousName, ecer_PreviousName.Fields.ecer_previousname_Contactid, contact);
+    }
 
     context.SaveChanges();
     await Task.CompletedTask;

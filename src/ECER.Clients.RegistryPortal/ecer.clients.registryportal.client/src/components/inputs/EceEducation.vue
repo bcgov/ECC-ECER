@@ -92,6 +92,17 @@
           <v-btn prepend-icon="mdi-plus" rounded="lg" color="alternate" @click="handleAddEducation">Add Education</v-btn>
         </v-row>
       </v-col>
+      <v-col>
+        <!-- this prevents form from proceeding if rules are not met -->
+        <v-input
+          :model-value="modelValue"
+          :rules="[
+            (v) => Object.keys(v).length > 0 || 'education required',
+            (v) => Object.keys(v).length >= numOfEducationRequired || `at least ${numOfEducationRequired} transcripts required`,
+          ]"
+          auto-hide="auto"
+        ></v-input>
+      </v-col>
     </div>
   </v-row>
 </template>
@@ -179,6 +190,18 @@ export default defineComponent({
         return "Course";
       }
     },
+    numOfEducationRequired() {
+      let numOfEducationRequired = 1;
+
+      this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id]?.includes(
+        CertificationType.SNE,
+      ) && numOfEducationRequired++;
+      this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id]?.includes(
+        CertificationType.ITE,
+      ) && numOfEducationRequired++;
+
+      return numOfEducationRequired;
+    },
   },
 
   mounted() {
@@ -223,7 +246,7 @@ export default defineComponent({
         // Change mode to education list
         this.mode = "list";
       } else {
-        this.alertStore.setFailureAlert("Please fill out all required fields");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }
     },
     handleCancel() {
