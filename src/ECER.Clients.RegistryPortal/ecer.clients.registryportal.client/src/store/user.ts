@@ -18,7 +18,14 @@ export const useUserStore = defineStore("user", {
   getters: {
     hasUserInfo: (state): boolean => state.userInfo !== null,
     hasUserProfile: (state): boolean => state.userProfile !== null,
-    preferredName: (state): string => state.userProfile?.preferredName ?? "",
+    preferredName: (state): string => state.userProfile?.preferredName ?? state.userInfo?.firstName ?? "",
+    legalName: (state): string => {
+      if (state.userProfile?.middleName) {
+        return `${state.userProfile?.firstName} ${state.userProfile?.middleName} ${state.userProfile?.lastName}`;
+      } else {
+        return `${state.userProfile?.firstName} ${state.userProfile?.lastName}`;
+      }
+    },
     firstName: (state): string => state.userInfo?.firstName ?? "",
     fullName: (state): string => (state.userInfo?.lastName ? `${state.userInfo?.firstName} ${state.userInfo?.lastName}` : `${state.userInfo?.firstName}`),
     email: (state): string => state.userInfo?.email ?? "",
