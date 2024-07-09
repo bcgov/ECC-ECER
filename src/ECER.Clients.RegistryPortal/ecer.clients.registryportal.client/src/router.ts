@@ -132,6 +132,25 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: "/profile/edit",
+      component: () => import("./components/pages/EditProfile.vue"),
+      name: "edit-profile",
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/profile/add-previous-name",
+      component: () => import("./components/pages/AddPreviousName.vue"),
+      name: "add-previous-name",
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/profile/verify-previous-name/:previousNameId",
+      component: () => import("./components/pages/VerifyPreviousName.vue"),
+      name: "verify-previous-name",
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/submitted/:applicationId",
       name: "submitted",
       component: () => import("./components/pages/Submitted.vue"),
