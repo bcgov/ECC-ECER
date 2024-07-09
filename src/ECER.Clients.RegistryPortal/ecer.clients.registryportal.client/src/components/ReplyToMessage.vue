@@ -67,7 +67,7 @@
 <script lang="ts">
 import type { AxiosProgressEvent } from "axios";
 import { v4 as uuidv4 } from "uuid";
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
 import { uploadFile } from "@/api/file";
@@ -80,6 +80,18 @@ import { useLoadingStore } from "@/store/loading";
 import { useMessageStore } from "@/store/message";
 import * as Rules from "@/utils/formRules";
 
+interface FileProgress {
+  file: File;
+  progress: number;
+}
+
+interface ReplyToMessageData {
+  selectedFiles: FileProgress[];
+  text: string;
+  Rules: any;
+  showCloseDialog: boolean;
+}
+
 export default defineComponent({
   name: "ReplyToMessage",
   components: { PageContainer, ConfirmationDialog, UploadFileItem },
@@ -88,89 +100,17 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
     const router = useRouter();
-    const fileInput = ref<HTMLInputElement | null>(null);
-    const selectedFiles = ref<{ file: File; progress: number }[]>([]);
-    const formatFileTags = (file: File): string => {
-      const fileName = file.name;
-      const fileSize = (file.size / 1024).toFixed(2) + " KB"; // Convert size to KB
-      const fileFormat = file.name.split(".").pop(); // Get file extension
-
-      const tags = {
-        Name: fileName,
-        Size: fileSize,
-        Format: fileFormat,
-      };
-
-      return Object.entries(tags)
-        .map(([key, value]) => `${key}=${value}`)
-        .join(",");
-    };
-    const triggerFileInput = () => {
-      fileInput.value?.click();
-    };
-    const handleFileUpload = (event: Event) => {
-      const target = event.target as HTMLInputElement;
-      const files = target.files;
-      if (files) {
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          if (file.size > 10 * 1024 * 1024) {
-            alertStore.setFailureAlert("File size exceeds the 10MB limit.");
-            continue; // Skip this file and continue with the next one
-          }
-          if (selectedFiles.value.some((f) => f.file.name === file.name)) {
-            alertStore.setFailureAlert("File with the same name already exists.");
-            continue; // Skip this file and continue with the next one
-          }
-          selectedFiles.value.push({ file, progress: 0 });
-          uploadFileWithProgress(file);
-        }
-      }
-    };
-
-    const uploadFileWithProgress = async (file: File) => {
-      const fileId = uuidv4(); // Generate a unique file ID using uuid
-      const fileClassification = "document";
-      const fileTags = formatFileTags(file);
-      try {
-        const response = await uploadFile(fileId, file, fileClassification, fileTags, (progressEvent: AxiosProgressEvent) => {
-          const total = progressEvent.total ? progressEvent.total : 10485760;
-          const progress = Math.round((progressEvent.loaded * 100) / total);
-          const fileIndex = selectedFiles.value.findIndex((f) => f.file === file);
-          if (fileIndex > -1) {
-            selectedFiles.value[fileIndex].progress = progress;
-          }
-        });
-
-        if (!response.data) {
-          removeFile(file);
-          alertStore.setFailureAlert("An error occurred during file upload");
-        }
-      } catch (error) {
-        removeFile(file);
-        alertStore.setFailureAlert("An error occurred during file upload");
-        console.log(error);
-      }
-    };
-
-    const removeFile = (file: File) => {
-      selectedFiles.value = selectedFiles.value.filter((f) => f.file !== file);
-    };
 
     return {
       messageStore,
       loadingStore,
       alertStore,
       router,
-      fileInput,
-      triggerFileInput,
-      handleFileUpload,
-      selectedFiles,
-      removeFile,
     };
   },
-  data() {
+  data(): ReplyToMessageData {
     return {
+      selectedFiles: [],
       text: " ",
       Rules,
       showCloseDialog: false,
@@ -189,6 +129,70 @@ export default defineComponent({
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
       }
+    },
+    handleFileUpload(event: Event) {
+      const target = event.target as HTMLInputElement;
+      const files = target.files;
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          if (file.size > 10 * 1024 * 1024) {
+            this.alertStore.setFailureAlert("File size exceeds the 10MB limit.");
+            continue; // Skip this file and continue with the next one
+          }
+          if (this.selectedFiles.some((f: FileProgress) => f.file.name === file.name)) {
+            this.alertStore.setFailureAlert("File with the same name already exists.");
+            continue; // Skip this file and continue with the next one
+          }
+          this.selectedFiles.push({ file, progress: 0 });
+          this.uploadFileWithProgress(file);
+        }
+      }
+    },
+    async uploadFileWithProgress(file: File) {
+      const fileId = uuidv4(); // Generate a unique file ID using uuid
+      const fileClassification = "document";
+      const fileTags = this.formatFileTags(file);
+      try {
+        const response = await uploadFile(fileId, file, fileClassification, fileTags, (progressEvent: AxiosProgressEvent) => {
+          const total = progressEvent.total ? progressEvent.total : 10485760;
+          const progress = Math.round((progressEvent.loaded * 100) / total);
+          const fileIndex = this.selectedFiles.findIndex((f: FileProgress) => f.file === file);
+          if (fileIndex > -1) {
+            this.selectedFiles[fileIndex].progress = progress;
+          }
+        });
+
+        if (!response.data) {
+          this.removeFile(file);
+          this.alertStore.setFailureAlert("An error occurred during file upload");
+        }
+      } catch (error) {
+        this.removeFile(file);
+        this.alertStore.setFailureAlert("An error occurred during file upload");
+        console.log(error);
+      }
+    },
+    formatFileTags(file: File): string {
+      const fileName = file.name;
+      const fileSize = (file.size / 1024).toFixed(2) + " KB"; // Convert size to KB
+      const fileFormat = file.name.split(".").pop(); // Get file extension
+
+      const tags = {
+        Name: fileName,
+        Size: fileSize,
+        Format: fileFormat,
+      };
+
+      return Object.entries(tags)
+        .map(([key, value]) => `${key}=${value}`)
+        .join(",");
+    },
+    removeFile(file: File) {
+      this.selectedFiles = this.selectedFiles.filter((f: FileProgress) => f.file !== file);
+    },
+    triggerFileInput() {
+      (this.$refs.fileInput as any).click();
     },
   },
 });
