@@ -24,7 +24,6 @@ class ApiResultHandler {
     try {
       if (key) this.setLoadingState(key, true);
       const response = await request;
-      console.log(response);
       return { data: response.data };
     } catch (error: any) {
       this.handleError(error, suppressErrorToast);
