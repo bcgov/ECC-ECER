@@ -3,7 +3,10 @@
     <v-row class="d-flex align-center">
       <!-- File Name and Size -->
       <v-col cols="4">
-        <div>{{ file.name }} ({{ Functions.humanFileSize(file.size) }})</div>
+        <div class="d-flex justify-start">
+          <p class="text-truncate">{{ file.name }}</p>
+          <p class="text-no-wrap">({{ Functions.humanFileSize(file.size) }})</p>
+        </div>
       </v-col>
 
       <!-- Progress Bar or Upload Completed -->
