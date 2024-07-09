@@ -52,7 +52,7 @@ public record UserProfile {
 /// <summary>
 /// Previous Name
 /// </summary>
-public record PreviousName ([Required] string? FirstName, [Required] string? LastName)
+public record PreviousName ([Required] string FirstName, [Required] string LastName)
 {
   public string? Id { get; set; }
   public string? MiddleName { get; set; }

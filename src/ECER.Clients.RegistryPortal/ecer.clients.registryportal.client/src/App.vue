@@ -3,7 +3,7 @@
     <Suspense>
       <v-app>
         <NavigationBar />
-        <v-main>
+        <v-main class="fill-height">
           <InactiveSessionTimeout />
           <Snackbar />
           <router-view></router-view>
