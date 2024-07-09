@@ -9,7 +9,7 @@
       <!-- Progress Bar or Upload Completed -->
       <v-col cols="4">
         <div v-if="isUploadComplete">Upload completed</div>
-        <v-progress-linear v-else :buffer-value="uploadProgress" height="20" color="primary"></v-progress-linear>
+        <v-progress-linear v-else :model-value="uploadProgress" height="20" color="primary"></v-progress-linear>
       </v-col>
 
       <!-- Delete Button -->
