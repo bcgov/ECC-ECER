@@ -29,7 +29,7 @@
             </p>
             <p>You can only upload PDF files up to 10MB.</p>
             <v-btn prepend-icon="mdi-plus" variant="text" color="primary" class="mt-3" @click="triggerFileInput">Add file</v-btn>
-            <input ref="fileInput" type="file" style="display: none" accept="application/pdf" multiple @change="handleFileUpload" />
+            <v-file-input ref="fileInput" style="display: none" multiple accept="application/pdf" @change="handleFileUpload"></v-file-input>
 
             <v-list lines="two" class="flex-grow-1 message-list">
               <UploadFileItem
@@ -139,6 +139,10 @@ export default defineComponent({
           const file = files[i];
           if (file.size > 10 * 1024 * 1024) {
             this.alertStore.setFailureAlert("File size exceeds the 10MB limit.");
+            continue; // Skip this file and continue with the next one
+          }
+          if (file.type !== "application/pdf") {
+            this.alertStore.setFailureAlert("File type must be PDF.");
             continue; // Skip this file and continue with the next one
           }
           if (this.selectedFiles.some((f: FileProgress) => f.file.name === file.name)) {

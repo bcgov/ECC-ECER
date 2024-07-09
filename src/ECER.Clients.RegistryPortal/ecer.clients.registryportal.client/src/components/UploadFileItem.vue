@@ -5,7 +5,7 @@
       <v-col cols="4">
         <div class="d-flex justify-start">
           <p class="text-truncate">{{ file.name }}</p>
-          <p class="text-no-wrap">({{ Functions.humanFileSize(file.size) }})</p>
+          <p class="text-no-wrap">&nbsp;({{ Functions.humanFileSize(file.size) }})</p>
         </div>
       </v-col>
 
