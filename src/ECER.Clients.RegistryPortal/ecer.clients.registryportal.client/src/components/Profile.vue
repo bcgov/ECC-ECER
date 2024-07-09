@@ -13,6 +13,33 @@
       </v-col>
     </v-row>
     <v-row>
+      <LinkBar
+        :links="[
+          { title: 'Edit profile', to: { name: 'edit-profile' } },
+          { title: 'Add previous name', to: { name: 'add-previous-name' } },
+        ]"
+      ></LinkBar>
+    </v-row>
+    <v-row v-for="(prev, index) in userStore.unverifiedPreviousNames" :key="index">
+      <v-container>
+        <Callout type="warning" :title="`Previous name: ${fullName(prev)}`">
+          <div class="d-flex flex-column ga-3 mt-3">
+            <p>You need to provide proof of name change to add this name to your account.</p>
+            <router-link :to="{ name: 'verify-previous-name', params: { previousNameId: prev.id } }">Add ID for proof of previous name</router-link>
+          </div>
+        </Callout>
+      </v-container>
+    </v-row>
+    <v-row v-for="(prev, index) in userStore.readyForVerificationPreviousNames" :key="index">
+      <v-container>
+        <Callout type="warning" :title="`Previous name: ${fullName(prev)}`">
+          <div class="d-flex flex-column ga-3 mt-3">
+            <p>We’ve received your ID. We’ll review it shortly and add this name to your account.</p>
+          </div>
+        </Callout>
+      </v-container>
+    </v-row>
+    <v-row>
       <v-col cols="12" sm="6">
         <v-col class="mt-6">
           <div class="d-flex flex-column ga-3">
@@ -127,18 +154,23 @@
 import { defineComponent } from "vue";
 
 import { getProfile } from "@/api/profile";
+import Callout from "@/components/Callout.vue";
+import LinkBar from "@/components/LinkBar.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import { useUserStore } from "@/store/user";
+import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { formatPhoneNumber } from "@/utils/format";
 import { areObjectsEqual } from "@/utils/functions";
 
 export default defineComponent({
   name: "Profile",
-  components: { PageContainer },
+  components: { PageContainer, LinkBar, Callout },
   setup: async () => {
     const userProfile = await getProfile();
     const userStore = useUserStore();
+
+    userStore.setUserProfile(userProfile);
 
     return { userProfile, userStore };
   },
@@ -159,6 +191,9 @@ export default defineComponent({
     formatDate,
     formatPhoneNumber,
     areObjectsEqual,
+    fullName(name: Components.Schemas.PreviousName) {
+      return name.middleName ? `${name.firstName} ${name.middleName} ${name.lastName}` : `${name.firstName} ${name.lastName}`;
+    },
   },
 });
 </script>

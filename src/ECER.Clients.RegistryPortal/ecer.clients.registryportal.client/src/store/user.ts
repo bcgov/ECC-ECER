@@ -27,6 +27,9 @@ export const useUserStore = defineStore("user", {
     unverifiedPreviousNames: (state): Components.Schemas.PreviousName[] => {
       return state.userProfile?.previousNames?.filter((name) => name.status === "Unverified") ?? [];
     },
+    readyForVerificationPreviousNames: (state): Components.Schemas.PreviousName[] => {
+      return state.userProfile?.previousNames?.filter((name) => name.status === "ReadyforVerification") ?? [];
+    },
     verifiedPreviousNames: (state): Components.Schemas.PreviousName[] => {
       return state.userProfile?.previousNames?.filter((name) => name.status === "Verified") ?? [];
     },
