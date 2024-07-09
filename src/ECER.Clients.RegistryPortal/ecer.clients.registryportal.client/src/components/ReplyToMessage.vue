@@ -65,10 +65,12 @@
 </template>
 
 <script lang="ts">
+import type { AxiosProgressEvent } from "axios";
+import { v4 as uuidv4 } from "uuid";
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
+
 import { uploadFile } from "@/api/file";
-import { v4 as uuidv4 } from 'uuid';
 import { sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import PageContainer from "@/components/PageContainer.vue";
@@ -77,7 +79,6 @@ import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useMessageStore } from "@/store/message";
 import * as Rules from "@/utils/formRules";
-import type { AxiosProgressEvent } from "axios";
 
 export default defineComponent({
   name: "ReplyToMessage",
@@ -90,67 +91,70 @@ export default defineComponent({
     const fileInput = ref<HTMLInputElement | null>(null);
     const selectedFiles = ref<{ file: File; progress: number }[]>([]);
     const formatFileTags = (file: File): string => {
-    const fileName = file.name;
-    const fileSize = (file.size / 1024).toFixed(2) + ' KB'; // Convert size to KB
-    const fileFormat = file.name.split('.').pop(); // Get file extension
-    
-  const tags = {
-    Name: fileName,
-    Size: fileSize,
-    Format: fileFormat,
-  };
+      const fileName = file.name;
+      const fileSize = (file.size / 1024).toFixed(2) + " KB"; // Convert size to KB
+      const fileFormat = file.name.split(".").pop(); // Get file extension
 
-  return Object.entries(tags).map(([key, value]) => `${key}=${value}`).join(',');
+      const tags = {
+        Name: fileName,
+        Size: fileSize,
+        Format: fileFormat,
+      };
+
+      return Object.entries(tags)
+        .map(([key, value]) => `${key}=${value}`)
+        .join(",");
     };
     const triggerFileInput = () => {
       fileInput.value?.click();
     };
     const handleFileUpload = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  const files = target.files;
-  if (files) {
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      if (file.size > 10 * 1024 * 1024) {
-        alertStore.setFailureAlert("File size exceeds the 10MB limit.");
-        continue; // Skip this file and continue with the next one
+      const target = event.target as HTMLInputElement;
+      const files = target.files;
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          if (file.size > 10 * 1024 * 1024) {
+            alertStore.setFailureAlert("File size exceeds the 10MB limit.");
+            continue; // Skip this file and continue with the next one
+          }
+          if (selectedFiles.value.some((f) => f.file.name === file.name)) {
+            alertStore.setFailureAlert("File with the same name already exists.");
+            continue; // Skip this file and continue with the next one
+          }
+          selectedFiles.value.push({ file, progress: 0 });
+          uploadFileWithProgress(file);
+        }
       }
-      if (selectedFiles.value.some(f => f.file.name === file.name)) {
-        alertStore.setFailureAlert("File with the same name already exists.");
-        continue; // Skip this file and continue with the next one
-      }
-      selectedFiles.value.push({ file, progress: 0 });
-      uploadFileWithProgress(file);
-    }
-  }
-};
+    };
 
     const uploadFileWithProgress = async (file: File) => {
       const fileId = uuidv4(); // Generate a unique file ID using uuid
       const fileClassification = "document";
       const fileTags = formatFileTags(file);
       try {
-      const response = await uploadFile(fileId, file, fileClassification, fileTags, (progressEvent: AxiosProgressEvent) => {
-        const total = progressEvent.total?progressEvent.total:10485760;
-        const progress = Math.round((progressEvent.loaded * 100) / total);
-        const fileIndex = selectedFiles.value.findIndex(f => f.file === file);
-        if (fileIndex > -1) {
-          selectedFiles.value[fileIndex].progress = progress;
-        }
-      });
+        const response = await uploadFile(fileId, file, fileClassification, fileTags, (progressEvent: AxiosProgressEvent) => {
+          const total = progressEvent.total ? progressEvent.total : 10485760;
+          const progress = Math.round((progressEvent.loaded * 100) / total);
+          const fileIndex = selectedFiles.value.findIndex((f) => f.file === file);
+          if (fileIndex > -1) {
+            selectedFiles.value[fileIndex].progress = progress;
+          }
+        });
 
-      if (!response.data) {
+        if (!response.data) {
+          removeFile(file);
+          alertStore.setFailureAlert("An error occurred during file upload");
+        }
+      } catch (error) {
         removeFile(file);
         alertStore.setFailureAlert("An error occurred during file upload");
+        console.log(error);
       }
-    } catch (error) {
-      removeFile(file);
-       alertStore.setFailureAlert("An error occurred during file upload");
-    }
     };
 
     const removeFile = (file: File) => {
-      selectedFiles.value = selectedFiles.value.filter(f => f.file !== file);
+      selectedFiles.value = selectedFiles.value.filter((f) => f.file !== file);
     };
 
     return {

@@ -33,7 +33,11 @@ const uploadFile = async (
     onUploadProgress,
   };
 
+<<<<<<< Updated upstream
   return apiResultHandler.execute<Components.Schemas.UploadFileResponse>({ request: client.upload_file(parameters, formData as unknown as string, config) });
+=======
+  return apiResultHandler.execute<Components.Schemas.UploadFileResponse>(client.upload_file(parameters, formData as unknown as string, config));
+>>>>>>> Stashed changes
 };
 
 export { uploadFile };
