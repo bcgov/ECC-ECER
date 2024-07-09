@@ -9,7 +9,7 @@
       <!-- Progress Bar or Upload Completed -->
       <v-col cols="4">
         <div v-if="isUploadComplete">Upload completed</div>
-        <v-progress-linear v-else v-model="uploadProgress" height="20" color="primary"></v-progress-linear>
+        <v-progress-linear v-else :buffer-value="uploadProgress" height="20" color="primary"></v-progress-linear>
       </v-col>
 
       <!-- Delete Button -->
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "UploadFileItem",
@@ -37,16 +37,16 @@ export default defineComponent({
     },
   },
   emits: ["delete-file"], // Declare the delete-file event here
-  setup(props, { emit }) {
-    const isUploadComplete = computed(() => props.uploadProgress >= 100);
-    const deleteFile = () => {
+  computed: {
+    isUploadComplete() {
+      return this.uploadProgress >= 100;
+    },
+  },
+  methods: {
+    deleteFile() {
       // Emit the delete-file event with the file as payload
-      emit("delete-file", props.file);
-    };
-    return {
-      isUploadComplete,
-      deleteFile, // Expose the deleteFile method to the template
-    };
+      this.$emit("delete-file", this.$props.file);
+    },
   },
 });
 </script>
