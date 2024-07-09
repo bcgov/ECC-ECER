@@ -24,6 +24,21 @@ export function areObjectsEqual(obj1: any, obj2: any): boolean {
 }
 
 /**
+ * Converting bytes to human readable values (KB, MB, GB, TB, PB, EB, ZB, YB)
+ * @param {*} bytes
+ * @param {*} decimals
+ */
+
+export function humanFileSize(bytes: number, decimals = 2) {
+  if (bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+}
+
+/**
  * Sorts an array of objects by a specified key, while keeping exceptions at the end.
  * @param {Array<Object>} a - The first object to compare.
  * @param {Array<Object>} b - The second object to compare.

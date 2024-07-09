@@ -23,7 +23,6 @@ class ApiResultHandler {
   public async execute<T>({ request, key, suppressErrorToast = false }: ExecuteOptions<T>): Promise<ApiResponse<T>> {
     try {
       if (key) this.setLoadingState(key, true);
-
       const response = await request;
       return { data: response.data };
     } catch (error: any) {
@@ -39,7 +38,6 @@ class ApiResultHandler {
     if (error.response) {
       const status = error.response.status;
       if (status === 400) {
-        console.log(error.response.data);
         // Extract error message from server's response
         const errorMessage = error.response.data.message || error.response.data.detail || "Bad request. Please check your input.";
         this.showErrorMessage(errorMessage, suppressErrorToast);

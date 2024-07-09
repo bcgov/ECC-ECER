@@ -29,7 +29,6 @@ public class CommunicationsEndpoints : IRegisterEndpoints
         PageSize = pageSize
       };
       var results = await messageBus.Send<CommunicationsQueryResults>(query);
-
       return TypedResults.Ok(mapper.Map<IEnumerable<Communication>>(results.Items));
     })
      .WithOpenApi("Handles messages queries", string.Empty, "message_get")
