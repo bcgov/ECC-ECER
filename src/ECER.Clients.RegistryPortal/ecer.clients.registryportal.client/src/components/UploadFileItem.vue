@@ -14,7 +14,11 @@
 
       <!-- Delete Button -->
       <v-col cols="4" class="d-flex justify-end">
-        <v-icon @click="deleteFile">mdi-delete</v-icon>
+        <v-tooltip text="Delete" location="top">
+          <template #activator="{ props }">
+            <v-btn v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteFile" />
+          </template>
+        </v-tooltip>
       </v-col>
     </v-row>
   </v-list-item>
