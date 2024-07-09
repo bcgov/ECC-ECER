@@ -3,7 +3,7 @@
     <v-row class="d-flex align-center">
       <!-- File Name and Size -->
       <v-col cols="4">
-        <div>{{ file.name }} ({{ (file.size / 1024).toFixed(2) }} KB)</div>
+        <div>{{ file.name }} ({{ Functions.humanFileSize(file.size) }})</div>
       </v-col>
 
       <!-- Progress Bar or Upload Completed -->
@@ -28,6 +28,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import * as Functions from "@/utils/functions";
+
 export default defineComponent({
   name: "UploadFileItem",
   props: {
@@ -41,6 +43,11 @@ export default defineComponent({
     },
   },
   emits: ["delete-file"], // Declare the delete-file event here
+  data() {
+    return {
+      Functions,
+    };
+  },
   computed: {
     isUploadComplete() {
       return this.uploadProgress >= 100;

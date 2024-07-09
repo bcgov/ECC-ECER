@@ -79,6 +79,7 @@ import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useMessageStore } from "@/store/message";
 import * as Rules from "@/utils/formRules";
+import * as Functions from "@/utils/functions";
 
 interface FileProgress {
   file: File;
@@ -175,7 +176,7 @@ export default defineComponent({
     },
     formatFileTags(file: File): string {
       const fileName = file.name;
-      const fileSize = (file.size / 1024).toFixed(2) + " KB"; // Convert size to KB
+      const fileSize = Functions.humanFileSize(file.size); // Convert size to KB
       const fileFormat = file.name.split(".").pop(); // Get file extension
 
       const tags = {
