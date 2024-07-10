@@ -17,8 +17,7 @@ internal class CertificationRepository : ICertificationRepository
   public async Task<IEnumerable<Certification>> Query(UserCertificationQuery query)
   {
     await Task.CompletedTask;
-    var Certifications = from c in context.ecer_CertificateSet
-                         select c;
+    var Certifications = context.ecer_CertificateSet.AsQueryable();
 
     // Filtering by ID
     if (query.ById != null) Certifications = Certifications.Where(r => r.ecer_CertificateId == Guid.Parse(query.ById));

@@ -19,7 +19,7 @@ internal class CertificationRepositoryMapper : Profile
      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode))
      .ForMember(d => d.IneligibleReference, opts => opts.MapFrom(s => s.ecer_IneligibleReference));
 
-    CreateMap<CertificateStatusCode, ecer_certifications_StatusCode>()
+    CreateMap<CertificateStatusCode, ecer_Certificate_StatusCode>()
     .ConvertUsingEnumMapping(opts => opts.MapByName(true))
     .ReverseMap();
 

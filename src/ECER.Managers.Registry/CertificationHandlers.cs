@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Resources.Documents.Certifications;
 using MediatR;
