@@ -10,11 +10,11 @@ using UserCommunicationQuery = ECER.Resources.Accounts.Communications.UserCommun
 namespace ECER.Tests.Integration.Resources.Accounts.Communications;
 
 [IntegrationTest]
-public class CommunicationsRepositoryTests : RegistryPortalWebAppScenarioBase
+public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
 {
   private readonly ICommunicationRepository repository;
 
-  public CommunicationsRepositoryTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
+  public CommunicationRepositoryTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
     repository = Fixture.Services.GetRequiredService<ICommunicationRepository>();
   }
