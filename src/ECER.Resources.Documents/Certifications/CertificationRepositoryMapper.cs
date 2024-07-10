@@ -14,6 +14,7 @@ internal class CertificationRepositoryMapper : Profile
      .ForMember(d => d.ExpiryDate, opts => opts.MapFrom(s => s.ecer_ExpiryDate))
      .ForMember(d => d.EffectiveDate, opts => opts.MapFrom(s => s.ecer_EffectiveDate))
      .ForMember(d => d.Date, opts => opts.MapFrom(s => s.ecer_Date))
+     .ForMember(d => d.PrintDate, opts => opts.MapFrom(s => s.ecer_PrintedDate))
      .ForMember(d => d.HasConditions, opts => opts.MapFrom(s => s.ecer_HasConditions))
      .ForMember(d => d.Level, opts => opts.MapFrom(s => s.ecer_CertificateLevel))
      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode))

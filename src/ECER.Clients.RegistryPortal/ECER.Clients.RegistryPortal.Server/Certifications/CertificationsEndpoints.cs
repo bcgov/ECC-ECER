@@ -36,6 +36,7 @@ public record Certification(string Id)
   public DateTime? ExpiryDate { get; set; }
   public DateTime? EffectiveDate { get; set; }
   public DateTime? Date { get; set; }
+  public DateTime? PrintDate { get; set; }
   public bool? HasConditions { get; set; }
   public string? Level { get; set; }
   public CertificateStatusCode? StatusCode { get; set; }
