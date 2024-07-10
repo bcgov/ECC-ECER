@@ -22,7 +22,7 @@
       <p class="mb-6">
         The person
         <b>cannot</b>
-        be any of your character reference.
+        be your character reference.
       </p>
       <EceForm
         ref="upsertWorkExperienceReferenceForm"

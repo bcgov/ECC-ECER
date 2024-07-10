@@ -7,7 +7,7 @@ const apiResultHandler = new ApiResultHandler();
 const getApplications = async (): Promise<ApiResponse<Components.Schemas.Application[] | null | undefined>> => {
   const client = await getClient();
 
-  return apiResultHandler.execute<Components.Schemas.Application[] | null | undefined>(client.application_get({ id: "" }));
+  return apiResultHandler.execute<Components.Schemas.Application[] | null | undefined>({ request: client.application_get({ id: "" }) });
 };
 
 const createOrUpdateDraftApplication = async (
@@ -21,7 +21,9 @@ const createOrUpdateDraftApplication = async (
     id: application.id || "",
   };
 
-  return apiResultHandler.execute<Components.Schemas.DraftApplicationResponse | null | undefined>(client.draftapplication_put(pathParameters, body));
+  return apiResultHandler.execute<Components.Schemas.DraftApplicationResponse | null | undefined>({
+    request: client.draftapplication_put(pathParameters, body),
+  });
 };
 
 const submitDraftApplication = async (applicationId: string): Promise<ApiResponse<Components.Schemas.SubmitApplicationResponse | null | undefined>> => {
@@ -30,7 +32,10 @@ const submitDraftApplication = async (applicationId: string): Promise<ApiRespons
     id: applicationId,
   };
 
-  return apiResultHandler.execute<Components.Schemas.SubmitApplicationResponse | null | undefined>(client.application_post(null, body), "application_post");
+  return apiResultHandler.execute<Components.Schemas.SubmitApplicationResponse | null | undefined>({
+    request: client.application_post(null, body),
+    key: "application_post",
+  });
 };
 
 const cancelDraftApplication = async (applicationId: string): Promise<ApiResponse<Components.Schemas.SubmitApplicationResponse | null | undefined>> => {
@@ -39,7 +44,9 @@ const cancelDraftApplication = async (applicationId: string): Promise<ApiRespons
     id: applicationId,
   };
 
-  return await apiResultHandler.execute<Components.Schemas.SubmitApplicationResponse | null | undefined>(client.draftapplication_delete(pathParameters));
+  return await apiResultHandler.execute<Components.Schemas.SubmitApplicationResponse | null | undefined>({
+    request: client.draftapplication_delete(pathParameters),
+  });
 };
 
 const getApplicationStatus = async (applicationId: string): Promise<ApiResponse<Components.Schemas.SubmittedApplicationStatus | null | undefined>> => {
@@ -48,7 +55,9 @@ const getApplicationStatus = async (applicationId: string): Promise<ApiResponse<
     id: applicationId,
   };
 
-  return await apiResultHandler.execute<Components.Schemas.SubmittedApplicationStatus | null | undefined>(client.application_status_get(pathParameters));
+  return await apiResultHandler.execute<Components.Schemas.SubmittedApplicationStatus | null | undefined>({
+    request: client.application_status_get(pathParameters),
+  });
 };
 
 export { cancelDraftApplication, createOrUpdateDraftApplication, getApplications, getApplicationStatus, submitDraftApplication };

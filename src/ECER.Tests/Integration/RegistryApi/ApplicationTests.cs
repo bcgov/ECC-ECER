@@ -275,7 +275,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Post.Url($"/api/applications/{applicationId}/work-experience-reference/{referenceId}/resend-invite");
+      _.Post.Url($"/api/applications/{applicationId}/workExperienceReference/{referenceId}/resendInvite");
       _.StatusCodeShouldBeOk();
     });
   }
@@ -288,7 +288,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Post.Url($"/api/applications/{applicationId}/work-experience-reference/{referenceId}/resend-invite");
+      _.Post.Url($"/api/applications/{applicationId}/workExperienceReference/{referenceId}/resendInvite");
       _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
     });
   }

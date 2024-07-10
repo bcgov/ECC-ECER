@@ -48,7 +48,8 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         true,
         referenceContactInfo,
         referenceEvaluation,
-        true
+        true,
+        faker.Random.Word() //recaptcha token
     );
 
     return referenceSubmissionRequest;
@@ -111,7 +112,8 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         referenceContactInfo,
         workExperienceReferenceDetails,
         workExperienceReferenceCompetenciesAssessment,
-        faker.Random.Bool() // ConfirmProvidedInformationIsRight
+        faker.Random.Bool(), // ConfirmProvidedInformationIsRight
+        faker.Random.Word() //recaptcha token
     );
 
     return workExperienceReferenceSubmissionRequest;
@@ -160,7 +162,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.VerificationLink.Split('/')[2];
-    var optOutReferenceRequest = new OptOutReferenceRequest(token, UnabletoProvideReferenceReasons.Idonotknowthisperson);
+    var optOutReferenceRequest = new OptOutReferenceRequest(token, UnabletoProvideReferenceReasons.Idonotknowthisperson, Faker.Random.Word());
     await Host.Scenario(_ =>
     {
       _.Post.Json(optOutReferenceRequest).ToUrl($"/api/References/OptOut");
@@ -177,7 +179,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.VerificationLink.Split('/')[2];
-    var optOutReferenceRequest = new OptOutReferenceRequest(token, UnabletoProvideReferenceReasons.Idonotknowthisperson);
+    var optOutReferenceRequest = new OptOutReferenceRequest(token, UnabletoProvideReferenceReasons.Idonotknowthisperson, Faker.Random.Word());
     await Host.Scenario(_ =>
     {
       _.Post.Json(optOutReferenceRequest).ToUrl($"/api/References/OptOut");

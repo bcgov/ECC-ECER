@@ -15,10 +15,12 @@ const router = createRouter({
       path: "/",
       component: () => import("./components/pages/Dashboard.vue"),
       meta: { requiresAuth: true },
+      name: "dashboard",
     },
     {
       path: "/profile",
       component: () => import("./components/Profile.vue"),
+      name: "profile",
       meta: { requiresAuth: true },
     },
     {
@@ -27,9 +29,16 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/messages/:messageId/reply",
+      name: "replyToMessage",
+      component: () => import("./components/ReplyToMessage.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/login",
       component: () => import("./components/pages/Login.vue"),
       meta: { requiresAuth: false },
+      name: "login",
     },
     {
       path: "/signin-callback",
@@ -123,6 +132,25 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: "/profile/edit",
+      component: () => import("./components/pages/EditProfile.vue"),
+      name: "edit-profile",
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/profile/add-previous-name",
+      component: () => import("./components/pages/AddPreviousName.vue"),
+      name: "add-previous-name",
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/profile/verify-previous-name/:previousNameId",
+      component: () => import("./components/pages/VerifyPreviousName.vue"),
+      name: "verify-previous-name",
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/submitted/:applicationId",
       name: "submitted",
       component: () => import("./components/pages/Submitted.vue"),
@@ -130,39 +158,22 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/accessibility",
-      component: () => import("./components/pages/Accessibility.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: "/privacy",
-      component: () => import("./components/pages/Privacy.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: "/contact-us",
-      component: () => import("./components/pages/ContactUs.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
-      path: "/disclaimer",
-      component: () => import("./components/pages/Disclaimer.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
       path: "/verify/:token",
       component: () => import("./components/reference/Reference.vue"),
       meta: { requiresAuth: false },
+      name: "verify",
     },
     {
       path: "/invalid-reference",
       component: () => import("./components/reference/Invalid.vue"),
       meta: { requiresAuth: false },
+      name: "invalid-reference",
     },
     {
       path: "/reference-submitted",
       component: () => import("./components/pages/ReferenceSubmitted.vue"),
       meta: { requiresAuth: false },
+      name: "reference-submitted",
     },
     { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("./components/pages/PageNotFound.vue") },
   ],

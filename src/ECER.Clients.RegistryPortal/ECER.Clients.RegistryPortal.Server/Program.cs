@@ -1,12 +1,11 @@
-using System.Reflection;
-using System.Security.Claims;
-using System.Text.Json.Serialization;
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
-using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+using System.Security.Claims;
+using System.Text.Json.Serialization;
 
 namespace ECER.Clients.RegistryPortal.Server;
 
@@ -47,6 +46,8 @@ public class Program
       builder.Services.Configure<JsonOptions>(opts => opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
       builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
       builder.Services.Configure<PaginationSettings>(builder.Configuration.GetSection("Pagination"));
+      builder.Services.Configure<UploaderSettings>(builder.Configuration.GetSection("Uploader"));
+      builder.Services.Configure<RecaptchaSettings>(builder.Configuration.GetSection("Recaptcha"));
       builder.Services.AddProblemDetails();
 
       builder.Services.AddCorsPolicy(builder.Configuration.GetSection("cors").Get<CorsSettings>());
@@ -96,6 +97,7 @@ public class Program
       builder.Services.AddResponseCaching();
       builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
       builder.Services.ConfigureHealthChecks();
+      builder.Services.AddHttpClient();
 
       builder.ConfigureComponents();
 
@@ -140,4 +142,14 @@ public class PaginationSettings
   public int DefaultPageNumber { get; set; }
   public string PageProperty { get; set; } = string.Empty;
   public string PageSizeProperty { get; set; } = string.Empty;
+}
+
+public class UploaderSettings
+{
+  public string TempFolderName { get; set; } = string.Empty;
+}
+
+public class RecaptchaSettings
+{
+  public string SiteKey { get; set; } = string.Empty;
 }

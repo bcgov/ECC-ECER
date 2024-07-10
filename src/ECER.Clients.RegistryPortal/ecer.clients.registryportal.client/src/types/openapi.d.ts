@@ -119,6 +119,7 @@ declare namespace Components {
       referenceContactInformation?: ReferenceContactInformation;
       referenceEvaluation?: CharacterReferenceEvaluation;
       confirmProvidedInformationIsRight?: boolean;
+      recaptchaToken?: string | null;
     }
     export type ChildcareAgeRanges = "From0to12Months" | "From12to24Months" | "From25to30Months" | "From31to36Months" | "Grade1" | "Preschool";
     export type ChildrenProgramType =
@@ -211,6 +212,7 @@ declare namespace Components {
     export interface OptOutReferenceRequest {
       token?: string | null;
       unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
+      recaptchaToken?: string | null;
     }
     export interface PortalInvitation {
       id?: string | null;
@@ -231,6 +233,18 @@ declare namespace Components {
       portalInvitation?: PortalInvitation;
     }
     export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
+    /**
+     * Previous Name
+     */
+    export interface PreviousName {
+      firstName?: string | null;
+      lastName?: string | null;
+      id?: string | null;
+      middleName?: string | null;
+      preferredName?: string | null;
+      status?: PreviousNameStage;
+    }
+    export type PreviousNameStage = "Unverified" | "ReadyforVerification" | "Verified" | "Archived";
     export interface ProblemDetails {
       [name: string]: any;
       type?: string | null;
@@ -330,6 +344,15 @@ declare namespace Components {
     export interface UpdateReferenceResponse {
       referenceId?: string | null;
     }
+    /**
+     * upload file Response
+     */
+    export interface UploadFileResponse {
+      /**
+       *
+       */
+      fileId?: string | null;
+    }
     export interface UserInfo {
       firstName?: string | null;
       lastName?: string | null;
@@ -352,6 +375,7 @@ declare namespace Components {
       phone?: string | null;
       residentialAddress?: /* Address */ Address;
       mailingAddress?: /* Address */ Address;
+      previousNames?: /* Previous Name */ PreviousName[] | null;
     }
     export type WorkExperienceRefStage =
       | "ApplicationSubmitted"
@@ -419,6 +443,7 @@ declare namespace Components {
       workExperienceReferenceDetails?: WorkExperienceReferenceDetails;
       workExperienceReferenceCompetenciesAssessment?: WorkExperienceReferenceCompetenciesAssessment;
       confirmProvidedInformationIsRight?: boolean;
+      recaptchaToken?: string | null;
     }
     export type WorkHoursType = "FullTime" | "PartTime";
   }
@@ -592,6 +617,14 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
+  namespace MessagePost {
+    export type RequestBody = /* Send Message Request */ Components.Schemas.SendMessageRequest;
+    namespace Responses {
+      export type $200 = /* Send Message Response */ Components.Schemas.SendMessageResponse;
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace MessageStatusGet {
     namespace Responses {
       export type $200 = Components.Schemas.CommunicationsStatusResults;
@@ -614,6 +647,11 @@ declare namespace Paths {
       export type $200 = Components.Schemas.Province[];
     }
   }
+  namespace RecaptchaSiteKeyGet {
+    namespace Responses {
+      export type $200 = string;
+    }
+  }
   namespace ReferenceOptout {
     export type RequestBody = Components.Schemas.OptOutReferenceRequest;
     namespace Responses {
@@ -631,6 +669,26 @@ declare namespace Paths {
     namespace Responses {
       export type $200 = Components.Schemas.PortalInvitationQueryResult;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace UploadFile {
+    export interface HeaderParameters {
+      "file-classification": Parameters.FileClassification;
+      "file-tag"?: Parameters.FileTag;
+    }
+    namespace Parameters {
+      export type FileClassification = string;
+      export type FileId = string;
+      export type FileTag = string;
+    }
+    export interface PathParameters {
+      fileId: Parameters.FileId;
+    }
+    export type RequestBody = string; // binary
+    namespace Responses {
+      export type $200 = /* upload file Response */ Components.Schemas.UploadFileResponse;
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
     }
   }
   namespace UserinfoGet {
@@ -672,6 +730,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProvinceGet.Responses.$200>;
+  /**
+   * recaptcha_site_key_get - Obtains site key for recaptcha
+   */
+  "recaptcha_site_key_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.RecaptchaSiteKeyGet.Responses.$200>;
   /**
    * profile_get - Gets the current user profile
    */
@@ -736,6 +802,14 @@ export interface OperationMethods {
     data?: Paths.ReferenceOptout.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
+  /**
+   * upload_file - Handles upload file request
+   */
+  "upload_file"(
+    parameters?: Parameters<Paths.UploadFile.PathParameters & Paths.UploadFile.HeaderParameters> | null,
+    data?: Paths.UploadFile.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.UploadFile.Responses.$200>;
   /**
    * message_get - Handles messages queries
    */
@@ -865,6 +939,16 @@ export interface PathsDictionary {
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProvinceGet.Responses.$200>;
   };
+  ["/api/recaptchaSiteKey"]: {
+    /**
+     * recaptcha_site_key_get - Obtains site key for recaptcha
+     */
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.RecaptchaSiteKeyGet.Responses.$200>;
+  };
   ["/api/profile"]: {
     /**
      * profile_get - Gets the current user profile
@@ -933,6 +1017,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
   };
+  ["/api/files/{fileId}"]: {
+    /**
+     * upload_file - Handles upload file request
+     */
+    "post"(
+      parameters?: Parameters<Paths.UploadFile.PathParameters & Paths.UploadFile.HeaderParameters> | null,
+      data?: Paths.UploadFile.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.UploadFile.Responses.$200>;
+  };
   ["/api/messages/{parentId}"]: {
     /**
      * message_get - Handles messages queries
@@ -944,6 +1038,10 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.MessageGet.Responses.$200>;
   };
   ["/api/messages"]: {
+    /**
+     * message_get - Handles messages queries
+     */
+    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.MessageGet.Responses.$200>;
     /**
      * message_post - Handles message send request
      */
@@ -1045,7 +1143,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationCharacterreferenceUpdatePost.Responses.$200>;
   };
-  ["/api/applications/{applicationId}/character-reference/{referenceId}/resend-invite"]: {
+  ["/api/applications/{applicationId}/characterReference/{referenceId}/resendInvite"]: {
     /**
      * application_character_reference_resend_invite_post - Resend a character reference invite
      *
@@ -1057,7 +1155,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationCharacterReferenceResendInvitePost.Responses.$200>;
   };
-  ["/api/applications/{applicationId}/work-experience-reference/{referenceId}/resend-invite"]: {
+  ["/api/applications/{applicationId}/workExperienceReference/{referenceId}/resendInvite"]: {
     /**
      * application_work_experience_reference_resend_invite_post - Resend a work experience reference invite
      *
