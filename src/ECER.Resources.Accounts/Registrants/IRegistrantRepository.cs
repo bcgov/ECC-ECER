@@ -51,7 +51,7 @@ public record UserProfile {
   public IEnumerable<PreviousName> PreviousNames { get; set; } = Array.Empty<PreviousName>();
 };
 
-public record PreviousName (string? FirstName, string? LastName)
+public record PreviousName (string FirstName, string LastName)
 {
   public string? Id { get; set; }
   public string? MiddleName { get; set; }

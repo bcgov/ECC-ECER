@@ -2,7 +2,9 @@
   <div>
     <v-divider :thickness="3" color="warning" class="border-opacity-100"></v-divider>
     <v-card :rounded="'0'" flat :color="backgroundColour" :style="{ 'min-height': '100px' }" class="d-flex justify-center border-xl">
-      <p class="align-self-center ml-6">{{ title }}</p>
+      <v-container>
+        <p class="align-self-center">{{ title }}</p>
+      </v-container>
     </v-card>
     <v-divider :thickness="3" color="warning" class="border-opacity-100"></v-divider>
   </div>

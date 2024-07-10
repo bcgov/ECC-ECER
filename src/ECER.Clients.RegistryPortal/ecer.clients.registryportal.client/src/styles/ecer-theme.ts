@@ -10,6 +10,7 @@ const ecerTheme: ThemeDefinition = {
     "grey-light": "#757575",
     "grey-lightest": "#dee2e6",
     "white-smoke": "#f8f8f8",
+    "background-light": "#FAF9F8",
     "hawkes-blue": "#d9eafd",
     links: "#1A5A96",
     info: "#003366",

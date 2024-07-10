@@ -337,6 +337,15 @@ declare namespace Components {
     export interface UpdateReferenceResponse {
       referenceId?: string | null;
     }
+    /**
+     * upload file Response
+     */
+    export interface UploadFileResponse {
+      /**
+       *
+       */
+      fileId?: string | null;
+    }
     export interface UserInfo {
       firstName?: string | null;
       lastName?: string | null;
@@ -639,6 +648,26 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace UploadFile {
+    export interface HeaderParameters {
+      "file-classification": Parameters.FileClassification;
+      "file-tag"?: Parameters.FileTag;
+    }
+    namespace Parameters {
+      export type FileClassification = string;
+      export type FileId = string;
+      export type FileTag = string;
+    }
+    export interface PathParameters {
+      fileId: Parameters.FileId;
+    }
+    export type RequestBody = string; // binary
+    namespace Responses {
+      export type $200 = /* upload file Response */ Components.Schemas.UploadFileResponse;
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace UserinfoGet {
     namespace Responses {
       export type $200 = Components.Schemas.UserInfo;
@@ -750,6 +779,14 @@ export interface OperationMethods {
     data?: Paths.ReferenceOptout.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
+  /**
+   * upload_file - Handles upload file request
+   */
+  "upload_file"(
+    parameters?: Parameters<Paths.UploadFile.PathParameters & Paths.UploadFile.HeaderParameters> | null,
+    data?: Paths.UploadFile.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.UploadFile.Responses.$200>;
   /**
    * message_get - Handles messages queries
    */
@@ -956,6 +993,16 @@ export interface PathsDictionary {
       data?: Paths.ReferenceOptout.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
+  };
+  ["/api/files/{fileId}"]: {
+    /**
+     * upload_file - Handles upload file request
+     */
+    "post"(
+      parameters?: Parameters<Paths.UploadFile.PathParameters & Paths.UploadFile.HeaderParameters> | null,
+      data?: Paths.UploadFile.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.UploadFile.Responses.$200>;
   };
   ["/api/messages"]: {
     /**
