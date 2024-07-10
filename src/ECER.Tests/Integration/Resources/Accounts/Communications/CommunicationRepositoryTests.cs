@@ -10,11 +10,11 @@ using UserCommunicationQuery = ECER.Resources.Accounts.Communications.UserCommun
 namespace ECER.Tests.Integration.Resources.Accounts.Communications;
 
 [IntegrationTest]
-public class CertificationsRepositoryTests : RegistryPortalWebAppScenarioBase
+public class CommunicationsRepositoryTests : RegistryPortalWebAppScenarioBase
 {
   private readonly ICommunicationRepository repository;
 
-  public CertificationsRepositoryTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
+  public CommunicationsRepositoryTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
     repository = Fixture.Services.GetRequiredService<ICommunicationRepository>();
   }
@@ -24,7 +24,6 @@ public class CertificationsRepositoryTests : RegistryPortalWebAppScenarioBase
   {
     // Arrange
     var communicationId = Fixture.communicationOneId;
-
 
     // Act
     var communications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
