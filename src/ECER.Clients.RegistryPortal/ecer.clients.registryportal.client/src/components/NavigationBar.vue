@@ -28,7 +28,7 @@
               <v-list-subheader>{{ userStore.firstName }}</v-list-subheader>
               <v-list-item link>
                 <v-list-item-title>
-                  <router-link class="small" to="/profile">Edit profile</router-link>
+                  <router-link class="small" to="/profile">My profile</router-link>
                 </v-list-item-title>
               </v-list-item>
               <v-list-item link>
@@ -51,7 +51,7 @@
               <v-list>
                 <v-list-item link>
                   <v-list-item-title>
-                    <router-link class="small" to="/profile">Edit profile</router-link>
+                    <router-link class="small" to="/profile">My profile</router-link>
                   </v-list-item-title>
                 </v-list-item>
                 <v-list-item link>

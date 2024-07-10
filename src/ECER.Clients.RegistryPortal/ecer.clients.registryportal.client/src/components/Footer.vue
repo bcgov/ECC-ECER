@@ -5,7 +5,7 @@
     color="black"
     class="mb-3"
   />
-  <v-footer :style="{ 'min-height': '50px' }">
+  <v-footer>
     <v-container>
       <div class="w-100 justify-space-between d-sm-flex-column d-md-flex">
         <div>

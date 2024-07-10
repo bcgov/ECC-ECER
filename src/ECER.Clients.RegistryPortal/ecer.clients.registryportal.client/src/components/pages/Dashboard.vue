@@ -46,7 +46,7 @@
               icon="mdi-account-circle"
               :links="[
                 {
-                  text: 'Edit profile',
+                  text: 'My profile',
                   to: '/profile',
                 },
               ]"
