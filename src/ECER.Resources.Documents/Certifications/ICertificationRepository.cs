@@ -18,7 +18,7 @@ public record Certification(string Id)
   public DateTime? EffectiveDate { get; set; }
   public DateTime? Date { get; set; }
   public bool? HasConditions { get; set; }
-  public bool? Level { get; set; }
+  public string? Level { get; set; }
   public CertificateStatusCode? StatusCode { get; set; }
   public YesNoNull? IneligibleReference { get; set; }
 }
