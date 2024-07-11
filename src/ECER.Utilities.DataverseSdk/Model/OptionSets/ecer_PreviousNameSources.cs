@@ -21,6 +21,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		NameLog = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Profile = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Transcript = 621870001,
 	}
 }

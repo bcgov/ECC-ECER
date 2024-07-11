@@ -73,6 +73,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_legacycontactid = "ecer_legacycontactid";
 			public const string ecer_legacycontactidName = "ecer_legacycontactidname";
 			public const string ecer_legacycontactidYomiName = "ecer_legacycontactidyominame";
+			public const string ecer_legacyentryby = "ecer_legacyentryby";
+			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_legacypreviousaddressid = "ecer_legacypreviousaddressid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PostalCode = "ecer_postalcode";
@@ -433,6 +435,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentryby")]
+		public string ecer_legacyentryby
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyentryby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyentryby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentrydate")]
+		public System.Nullable<System.DateTime> ecer_legacyentrydate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyentrydate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyentrydate", value);
 			}
 		}
 		
