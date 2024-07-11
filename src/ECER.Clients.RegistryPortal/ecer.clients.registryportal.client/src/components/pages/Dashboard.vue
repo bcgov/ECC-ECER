@@ -2,6 +2,7 @@
   <template v-if="smAndDown">
     <Alert v-if="messageStore.unreadMessageCount > 0" icon="mdi-bell" :rounded="false"><UnreadMessages /></Alert>
     <ApplicationCard v-if="applications && showApplicationCard" :is-rounded="false" @cancel-application="showCancelDialog = true" />
+    <CerticationCard v-if="certifications" :is-rounded="false" />
   </template>
   <PageContainer :margin-top="false">
     <v-row justify="center">
@@ -10,16 +11,21 @@
           <v-col v-if="messageStore.unreadMessageCount > 0" cols="12">
             <Alert icon="mdi-bell"><UnreadMessages /></Alert>
           </v-col>
-          <v-col cols="12">
-            <ApplicationCard v-if="applications && showApplicationCard" @cancel-application="showCancelDialog = true" />
+          <v-col v-if="applications && showApplicationCard" cols="12">
+            <ApplicationCard @cancel-application="showCancelDialog = true" />
+          </v-col>
+          <v-col v-if="certifications" cols="12">
+            <ECEHeader title="Your ECE certifications" />
+            <p class="mt-4">Ece registration number {{ certificationStore.latestCertification?.number }}</p>
+            <CerticationCard class="mt-6" />
           </v-col>
         </v-row>
-        <v-row>
+        <!-- <v-row>
           <v-col cols="12" class="mt-4">
-            <ECEHeader title="Your certificate" />
+            <ECEHeader title="Your ECE certifications" />
             <p class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
           </v-col>
-        </v-row>
+        </v-row> -->
         <v-row>
           <v-col cols="12" class="mt-4">
             <ECEHeader title="Your My ECE Registry account" />
@@ -83,27 +89,31 @@ import { getUserInfo } from "@/api/user";
 import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
+import CerticationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import UnreadMessages from "@/components/UnreadMessages.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
+import { useCertificationStore } from "@/store/certification";
 import { useMessageStore } from "@/store/message";
 import { useUserStore } from "@/store/user";
 import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "Dashboard",
-  components: { ConfirmationDialog, PageContainer, ApplicationCard, ECEHeader, ActionCard, Alert, UnreadMessages },
+  components: { ConfirmationDialog, PageContainer, ApplicationCard, CerticationCard, ECEHeader, ActionCard, Alert, UnreadMessages },
   async setup() {
     const userStore = useUserStore();
     const applicationStore = useApplicationStore();
+    const certificationStore = useCertificationStore();
     const alertStore = useAlertStore();
     const messageStore = useMessageStore();
     const { smAndDown, mdAndUp } = useDisplay();
 
     const applications = await applicationStore.fetchApplications();
+    const certifications = await certificationStore.fetchCertifications();
 
     // Refresh userInfo from the server
     const userInfo = await getUserInfo();
@@ -111,7 +121,7 @@ export default defineComponent({
       userStore.setUserInfo(userInfo);
     }
 
-    return { userStore, applicationStore, alertStore, messageStore, applications, smAndDown, mdAndUp };
+    return { userStore, applicationStore, alertStore, messageStore, certificationStore, applications, certifications, smAndDown, mdAndUp };
   },
   data: () => ({
     showCancelDialog: false,
