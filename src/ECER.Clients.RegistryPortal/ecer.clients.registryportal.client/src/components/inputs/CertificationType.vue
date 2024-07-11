@@ -156,6 +156,7 @@ export default defineComponent({
       get() {
         return this.certificationTypeStore.selection;
       },
+
       set(newValue: Components.Schemas.CertificationType) {
         if (newValue !== CertificationType.FIVE_YEAR) {
           this.certificationTypeStore.subSelection = [];
@@ -177,6 +178,10 @@ export default defineComponent({
         this.mode = "terms";
       } else {
         this.applicationStore.$patch({ draftApplication: { certificationTypes: this.certificationTypeStore.certificationTypes } });
+
+        if (!this.certificationTypeStore.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
+          this.applicationStore.$patch({ draftApplication: { workExperienceReferences: [] } });
+        }
         this.$router.push({ name: "declaration" });
       }
     },

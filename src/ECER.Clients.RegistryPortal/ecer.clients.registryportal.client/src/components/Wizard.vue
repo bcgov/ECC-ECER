@@ -45,7 +45,7 @@
 import { defineComponent, type PropType } from "vue";
 
 import EceForm from "@/components/Form.vue";
-import applicationWizard from "@/config/application-wizard";
+import applicationWizard from "@/config/application-wizard-assistant-and-one-year";
 import { useAlertStore } from "@/store/alert";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";

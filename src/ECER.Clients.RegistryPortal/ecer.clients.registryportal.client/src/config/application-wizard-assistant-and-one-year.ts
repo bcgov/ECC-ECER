@@ -2,9 +2,8 @@ import type { Wizard } from "@/types/wizard";
 
 import characterReferencesForm from "./character-references-form";
 import educationForm from "./education-form";
-import previewForm from "./preview-form";
+import previewForm from "./preview-form-assistant-and-one-year";
 import profileInformationForm from "./profile-information-form";
-import referencesForm from "./references-form";
 
 const applicationWizard: Wizard = {
   id: "form-1",
@@ -27,17 +26,11 @@ const applicationWizard: Wizard = {
       form: characterReferencesForm,
       key: "item.3",
     },
-    workReference: {
-      stage: "WorkReferences",
-      title: "Work Experience References",
-      form: referencesForm,
-      key: "item.4",
-    },
     review: {
       stage: "Review",
       title: "Preview & Submit",
       form: previewForm,
-      key: "item.5",
+      key: "item.4",
     },
   },
 };

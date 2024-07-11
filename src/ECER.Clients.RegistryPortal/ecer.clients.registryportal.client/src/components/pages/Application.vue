@@ -1,5 +1,12 @@
 <template>
-  <Wizard :ref="'wizard'" :wizard="applicationWizard">
+  <Wizard
+    :ref="'wizard'"
+    :wizard="
+      applicationStore.draftApplication.certificationTypes?.includes(CertificationType.FIVE_YEAR)
+        ? applicationWizardFiveYear
+        : applicationWizardAssistantAndOneYear
+    "
+  >
     <template #header>
       <WizardHeader class="mb-6" />
     </template>
@@ -42,7 +49,8 @@ import { defineComponent } from "vue";
 import { getProfile, putProfile } from "@/api/profile";
 import Wizard from "@/components/Wizard.vue";
 import WizardHeader from "@/components/WizardHeader.vue";
-import applicationWizard from "@/config/application-wizard";
+import applicationWizardAssistantAndOneYear from "@/config/application-wizard-assistant-and-one-year";
+import applicationWizardFiveYear from "@/config/application-wizard-five-year";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationTypeStore } from "@/store/certificationType";
@@ -51,6 +59,7 @@ import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import { AddressType } from "@/utils/constant";
+import { CertificationType } from "@/utils/constant";
 
 export default defineComponent({
   name: "Application",
@@ -69,11 +78,23 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    // certificationTypeStore.$reset();
+    if (applicationStore.draftApplication.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
+      await wizardStore.initializeWizard(applicationWizardFiveYear, applicationStore.draftApplication);
+    } else {
+      await wizardStore.initializeWizard(applicationWizardAssistantAndOneYear, applicationStore.draftApplication);
+    }
 
-    await wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
-
-    return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore, loadingStore };
+    return {
+      applicationStore,
+      wizardStore,
+      alertStore,
+      userStore,
+      certificationTypeStore,
+      loadingStore,
+      CertificationType,
+      applicationWizardFiveYear,
+      applicationWizardAssistantAndOneYear,
+    };
   },
   computed: {
     showSaveButtons() {
@@ -157,26 +178,26 @@ export default defineComponent({
     },
     async saveProfile() {
       const success = await putProfile({
-        firstName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalFirstName.id],
-        middleName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalMiddleName.id],
-        preferredName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.preferredName.id],
-        lastName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalLastName.id],
-        dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
-        residentialAddress: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.addresses.id][AddressType.RESIDENTIAL],
-        mailingAddress: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.addresses.id][AddressType.MAILING],
-        email: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.email.id],
-        phone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.primaryContactNumber.id],
-        alternateContactPhone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.alternateContactNumber.id],
+        firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
+        middleName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalMiddleName.id],
+        preferredName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.preferredName.id],
+        lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalLastName.id],
+        dateOfBirth: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id],
+        residentialAddress: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.addresses.id][AddressType.RESIDENTIAL],
+        mailingAddress: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.addresses.id][AddressType.MAILING],
+        email: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.email.id],
+        phone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.primaryContactNumber.id],
+        alternateContactPhone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.alternateContactNumber.id],
       });
 
       if (success) {
         this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
         this.userStore.setUserInfo({
-          firstName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalFirstName.id],
-          lastName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalLastName.id],
-          email: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.email.id],
-          phone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.primaryContactNumber.id],
-          dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
+          firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
+          lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalLastName.id],
+          email: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.email.id],
+          phone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.primaryContactNumber.id],
+          dateOfBirth: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id],
         });
       }
     },

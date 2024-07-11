@@ -97,8 +97,8 @@ export const useWizardStore = defineStore("wizard", {
           ? draftApplication?.characterReferences
           : [],
 
-        // Work References step data
-        [wizard.steps.workReference.form.inputs.referenceList.id]: workReferencesDict,
+        // wizard data may not have referenceList depending on the certification type. So we need to hardcode the value.
+        referenceList: workReferencesDict,
       };
     },
     initializeWizardForCharacterReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {

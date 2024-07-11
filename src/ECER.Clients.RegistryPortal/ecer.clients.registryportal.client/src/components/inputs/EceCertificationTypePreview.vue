@@ -1,5 +1,5 @@
 <template>
-  <PreviewCard title="Certification Selection" portal-stage="CertificationType">
+  <PreviewCard title="Certification Selection" portal-stage="CertificationType" :editable="false">
     <template #content>
       <v-row>
         <v-col cols="4">
