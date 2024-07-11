@@ -19,9 +19,15 @@ public record Certification(string Id)
   public DateTime? Date { get; set; }
   public DateTime? PrintDate { get; set; }
   public bool? HasConditions { get; set; }
-  public string? Level { get; set; }
+  public string? LevelName { get; set; }
   public CertificateStatusCode? StatusCode { get; set; }
   public YesNoNull? IneligibleReference { get; set; }
+  public IEnumerable<CertificationLevel> Levels { get; set; } = Array.Empty<CertificationLevel>();
+}
+
+public record CertificationLevel(string Id)
+{
+  public string? Type { get; set; }
 }
 
 public enum CertificateStatusCode

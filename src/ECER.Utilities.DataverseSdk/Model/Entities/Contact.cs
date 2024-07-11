@@ -655,6 +655,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
 			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
 			public const string ecer_CertificationLevel = "ecer_certificationlevel";
+			public const string ecer_certifiedlevel_RegistrantId = "ecer_certifiedlevel_RegistrantId";
 			public const string ecer_changeofinformation_Contactid = "ecer_changeofinformation_Contactid";
 			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
 			public const string ecer_ClientID = "ecer_clientid";
@@ -666,12 +667,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_contact_ecer_portaluser_474 = "ecer_contact_ecer_portaluser_474";
 			public const string ecer_contact_ecer_previousaddress_251 = "ecer_contact_ecer_previousaddress_251";
 			public const string ecer_contact_ecer_previousaddress_legacycontactid = "ecer_contact_ecer_previousaddress_legacycontactid";
+			public const string ecer_DateCertificateCancelled = "ecer_datecertificatecancelled";
+			public const string ecer_DateCertificateSuspended = "ecer_datecertificatesuspended";
 			public const string ecer_eceprogramrepresentative_ContactId_contac = "ecer_eceprogramrepresentative_ContactId_contac";
 			public const string ecer_ecer_characterreference_Applicantid_conta = "ecer_ecer_characterreference_Applicantid_conta";
 			public const string ecer_ecer_professionaldevelopment_Applicantid_ = "ecer_ecer_professionaldevelopment_Applicantid_";
 			public const string ecer_ecer_workexperienceref_ReferenceContactid = "ecer_ecer_workexperienceref_ReferenceContactid";
 			public const string ecer_educationassessment_ApplicantId = "ecer_educationassessment_ApplicantId";
 			public const string ecer_guardianreference_Applicantid = "ecer_guardianreference_Applicantid";
+			public const string ecer_HasCertificateCancelled = "ecer_hascertificatecancelled";
+			public const string ecer_hascertificatecancelledName = "ecer_hascertificatecancelledname";
+			public const string ecer_HasCertificateSuspended = "ecer_hascertificatesuspended";
+			public const string ecer_hascertificatesuspendedName = "ecer_hascertificatesuspendedname";
 			public const string ecer_HasCurrentCertificateConditions = "ecer_hascurrentcertificateconditions";
 			public const string ecer_hascurrentcertificateconditionsName = "ecer_hascurrentcertificateconditionsname";
 			public const string ecer_IsBCECE = "ecer_isbcece";
@@ -681,6 +688,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_IsVerified = "ecer_isverified";
 			public const string ecer_isverifiedName = "ecer_isverifiedname";
 			public const string ecer_LegacyClientID = "ecer_legacyclientid";
+			public const string ecer_legacyenteredby = "ecer_legacyenteredby";
+			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
+			public const string ecer_ParentalConsentVerified = "ecer_parentalconsentverified";
+			public const string ecer_parentalconsentverifiedName = "ecer_parentalconsentverifiedname";
 			public const string ecer_portalinvitation_ApplicantId = "ecer_portalinvitation_ApplicantId";
 			public const string ecer_portaluser_Contactid = "ecer_portaluser_Contactid";
 			public const string ecer_postsecondaryinstitute_PrimaryProgramRepr = "ecer_postsecondaryinstitute_PrimaryProgramRepr";
@@ -4072,6 +4083,100 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_datecertificatecancelled")]
+		public System.Nullable<System.DateTime> ecer_DateCertificateCancelled
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_datecertificatecancelled");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_datecertificatecancelled", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_datecertificatesuspended")]
+		public System.Nullable<System.DateTime> ecer_DateCertificateSuspended
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_datecertificatesuspended");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_datecertificatesuspended", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertificatecancelled")]
+		public System.Nullable<bool> ecer_HasCertificateCancelled
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_hascertificatecancelled");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hascertificatecancelled", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertificatecancelledname")]
+		public string ecer_hascertificatecancelledName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hascertificatecancelled"))
+				{
+					return this.FormattedValues["ecer_hascertificatecancelled"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertificatesuspended")]
+		public System.Nullable<bool> ecer_HasCertificateSuspended
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_hascertificatesuspended");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hascertificatesuspended", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertificatesuspendedname")]
+		public string ecer_hascertificatesuspendedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hascertificatesuspended"))
+				{
+					return this.FormattedValues["ecer_hascertificatesuspended"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascurrentcertificateconditions")]
 		public virtual ecer_YesNoNull? ecer_HasCurrentCertificateConditions
 		{
@@ -4215,6 +4320,68 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyclientid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyenteredby")]
+		public string ecer_legacyenteredby
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyenteredby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyenteredby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentrydate")]
+		public System.Nullable<System.DateTime> ecer_legacyentrydate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyentrydate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyentrydate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parentalconsentverified")]
+		public virtual ecer_YesNoNull? ecer_ParentalConsentVerified
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_parentalconsentverified")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_parentalconsentverified", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parentalconsentverifiedname")]
+		public string ecer_parentalconsentverifiedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_parentalconsentverified"))
+				{
+					return this.FormattedValues["ecer_parentalconsentverified"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -7037,6 +7204,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions>("ecer_certificateconditions_Registrantid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_certifiedlevel_RegistrantId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certifiedlevel_RegistrantId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CertifiedLevel> ecer_certifiedlevel_RegistrantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertifiedLevel>("ecer_certifiedlevel_RegistrantId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertifiedLevel>("ecer_certifiedlevel_RegistrantId", null, value);
 			}
 		}
 		
