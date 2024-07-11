@@ -111,6 +111,17 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/application/certification",
+      component: () => import("./components/inputs/CertificationType.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/application/declaration",
+      component: () => import("./components/inputs/Declaration.vue"),
+      meta: { requiresAuth: true },
+      name: "declaration",
+    },
+    {
       path: "/application",
       component: () => import("./components/pages/Application.vue"),
       meta: { requiresAuth: true },

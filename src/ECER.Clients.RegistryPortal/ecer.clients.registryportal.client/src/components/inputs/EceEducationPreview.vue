@@ -73,6 +73,7 @@
 import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
+import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
@@ -92,8 +93,10 @@ export default defineComponent({
   },
   setup: () => {
     const wizardStore = useWizardStore();
+    const applicationStore = useApplicationStore();
     return {
       wizardStore,
+      applicationStore,
     };
   },
   computed: {
@@ -101,7 +104,7 @@ export default defineComponent({
       return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.education.form.inputs.educationList.id];
     },
     getLabelOnCertificateType() {
-      if (this.wizardStore.wizardData.certificationSelection.includes(CertificationType.FIVE_YEAR)) {
+      if (this.applicationStore.draftApplication.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
         return "Program";
       } else {
         return "Course";

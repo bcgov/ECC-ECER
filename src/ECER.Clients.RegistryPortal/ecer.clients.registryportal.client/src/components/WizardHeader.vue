@@ -9,9 +9,7 @@
     </v-row>
     <v-row justify="space-between" class="pb-6">
       <v-col offset-md="1" cols="12" sm="8">
-        <ApplicationCertificationTypeHeader
-          :certification-types="wizardStore.wizardData[wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id]"
-        />
+        <ApplicationCertificationTypeHeader :certification-types="applicationStore.draftApplication.certificationTypes ?? []" />
       </v-col>
       <v-col v-if="false" cols="auto" offset="1">
         <v-btn class="mr-2" rounded="lg" variant="outlined" color="primary">Cancel Application</v-btn>
@@ -23,7 +21,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import { useWizardStore } from "@/store/wizard";
+import { useApplicationStore } from "@/store/application";
 
 import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHeader.vue";
 
@@ -31,10 +29,10 @@ export default defineComponent({
   name: "WizardHeader",
   components: { ApplicationCertificationTypeHeader },
   setup() {
-    const wizardStore = useWizardStore();
+    const applicationStore = useApplicationStore();
 
     return {
-      wizardStore,
+      applicationStore,
     };
   },
   data: () => ({

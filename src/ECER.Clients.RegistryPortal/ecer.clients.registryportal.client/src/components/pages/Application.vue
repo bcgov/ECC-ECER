@@ -21,16 +21,7 @@
       <v-container class="mb-8">
         <v-row class="justify-space-between ga-4" no-gutters>
           <v-col cols="auto" class="mr-auto">
-            <v-btn
-              :disabled="wizardStore.step === 1 && certificationTypeStore.mode === 'selection'"
-              rounded="lg"
-              variant="outlined"
-              color="primary"
-              aut
-              @click="handleBack"
-            >
-              Back
-            </v-btn>
+            <v-btn :disabled="wizardStore.step === 1" rounded="lg" variant="outlined" color="primary" aut @click="handleBack">Back</v-btn>
           </v-col>
           <v-col cols="auto">
             <v-btn v-if="showSaveButtons" rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
@@ -78,7 +69,7 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    certificationTypeStore.$reset();
+    // certificationTypeStore.$reset();
 
     await wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
 
@@ -112,19 +103,10 @@ export default defineComponent({
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       } else {
         switch (this.wizardStore.currentStepStage) {
-          case "CertificationType":
-            if (this.certificationTypeStore.mode == "selection") {
-              this.certificationTypeStore.mode = "terms";
-            } else {
-              this.saveDraftAndAlertSuccess();
-              this.incrementWizard();
-            }
-            break;
           case "ContactInformation":
             this.saveProfile();
             this.incrementWizard();
             break;
-          case "Declaration":
           case "Education":
           case "WorkReferences":
           case "CharacterReferences":
@@ -145,11 +127,6 @@ export default defineComponent({
     },
     handleBack() {
       switch (this.wizardStore.currentStepStage) {
-        case "CertificationType":
-          if (this.certificationTypeStore.mode == "terms") {
-            this.certificationTypeStore.mode = "selection";
-          }
-          break;
         default:
           this.applicationStore.saveDraft();
           this.decrementWizard();

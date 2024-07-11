@@ -17,7 +17,7 @@ export const useApplicationStore = defineStore("application", {
       certificationTypes: [] as Components.Schemas.CertificationType[],
       id: undefined,
       signedDate: null,
-      stage: "CertificationType",
+      stage: "ContactInformation",
       transcripts: [] as Components.Schemas.Transcript[],
       characterReferences: [] as Components.Schemas.CharacterReference[],
       workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
@@ -75,14 +75,6 @@ export const useApplicationStore = defineStore("application", {
       // Set wizard stage to the current step stage
       this.draftApplication.stage = wizardStore.currentStepStage as Components.Schemas.PortalStage;
 
-      // Certification selection step data
-      this.draftApplication.certificationTypes = wizardStore.wizardData[wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id];
-
-      // Declaration step data
-      this.draftApplication.signedDate = wizardStore.wizardData[wizardStore.wizardConfig.steps.declaration.form.inputs.consentCheckbox.id]
-        ? wizardStore.wizardData[wizardStore.wizardConfig.steps.declaration.form.inputs.signedDate.id]
-        : null;
-
       // Education step data
       this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
 
@@ -120,6 +112,10 @@ export const useApplicationStore = defineStore("application", {
     },
     async saveDraft(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       this.prepareDraftApplicationFromWizard();
+      return await this.upsertDraftApplication();
+    },
+    async patchDraft(draftApplication: Components.Schemas.DraftApplication): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
+      this.$patch({ draftApplication: draftApplication });
       return await this.upsertDraftApplication();
     },
   },
