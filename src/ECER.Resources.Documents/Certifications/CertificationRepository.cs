@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
+using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Certifications;
 
@@ -26,6 +27,8 @@ internal class CertificationRepository : ICertificationRepository
     if (query.ByApplicantId != null) Certifications = Certifications.Where(r => r.ecer_Registrantid.Id == Guid.Parse(query.ByApplicantId));
 
     Certifications = Certifications.OrderByDescending(r => r.ecer_ExpiryDate);
+    context.LoadProperties(Certifications, ecer_Certificate.Fields.ecer_certifiedlevel_CertificateId);
+
     return mapper.Map<IEnumerable<Certification>>(Certifications.ToList());
   }
 }
