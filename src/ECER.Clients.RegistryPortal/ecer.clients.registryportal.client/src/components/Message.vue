@@ -12,7 +12,16 @@
           <v-btn prepend-icon="mdi-close" text="Close" @click="messageStore.currentMessage = null"></v-btn>
         </v-toolbar>
         <v-card-text>
-          <v-btn prepend-icon="mdi-reply" variant="text" color="primary" text="Reply" @click="handleMessageReply">Reply</v-btn>
+          <v-btn
+            v-if="messageStore.currentMessage?.doNotReply == false"
+            prepend-icon="mdi-reply"
+            variant="text"
+            color="primary"
+            text="Reply"
+            @click="handleMessageReply"
+          >
+            Reply
+          </v-btn>
           <h2>{{ messageStore.currentMessage?.subject }}</h2>
 
           <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
@@ -26,7 +35,16 @@
     </v-dialog>
   </div>
   <div v-if="mdAndUp && messageStore.currentMessage != null">
-    <v-btn prepend-icon="mdi-reply" variant="text" color="primary" text="Reply" @click="handleMessageReply">Reply</v-btn>
+    <v-btn
+      v-if="messageStore.currentMessage?.doNotReply == false"
+      prepend-icon="mdi-reply"
+      variant="text"
+      color="primary"
+      text="Reply"
+      @click="handleMessageReply"
+    >
+      Reply
+    </v-btn>
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
     <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
       <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>

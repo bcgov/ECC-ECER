@@ -36,6 +36,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["message-read"],
   setup() {
     const messageStore = useMessageStore();
 
@@ -53,6 +54,7 @@ export default defineComponent({
       this.messageStore.currentMessage = this.message;
       this.messageStore.currentThread = (await getChildMessages({ parentId: this.message.id! })).data?.communications;
       if (!this.message.acknowledged) this.markMessageAsRead(this.message.id ?? "");
+      this.$emit("message-read", this.message.id);
     },
   },
 });

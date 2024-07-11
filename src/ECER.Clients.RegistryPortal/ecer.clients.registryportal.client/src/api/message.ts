@@ -18,12 +18,12 @@ const getMessages = async (params: { page: number; pageSize: number }): Promise<
     params: params,
   };
 
-  return apiResultHandler.execute<Components.Schemas.GetMessagesResponse | null>(client.message_get(null, null, config));
+  return apiResultHandler.execute<Components.Schemas.GetMessagesResponse | null>({ request: client.message_get(null, null, config) });
 };
 
 const getChildMessages = async (params: Paths.MessageGet.PathParameters): Promise<ApiResponse<any>> => {
   const client = await getClient();
-  return apiResultHandler.execute(client.message_get(params));
+  return apiResultHandler.execute({ request: client.message_get(params) });
 };
 
 const markMessageAsRead = async (messageId: string): Promise<ApiResponse<Components.Schemas.CommunicationResponse>> => {
@@ -45,4 +45,4 @@ const sendMessage = async (sendMessageRequest: Components.Schemas.SendMessageReq
   return apiResultHandler.execute<Components.Schemas.SendMessageResponse>({ request: client.message_post(null, sendMessageRequest), key: "message_post" });
 };
 
-export { getChildMessages, getMessages, getMessagesStatus, markMessageAsRead };
+export { getChildMessages, getMessages, getMessagesStatus, markMessageAsRead, sendMessage };

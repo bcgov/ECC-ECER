@@ -617,14 +617,6 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
-  namespace MessagePost {
-    export type RequestBody = /* Send Message Request */ Components.Schemas.SendMessageRequest;
-    namespace Responses {
-      export type $200 = /* Send Message Response */ Components.Schemas.SendMessageResponse;
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
-      export interface $404 {}
-    }
-  }
   namespace MessageStatusGet {
     namespace Responses {
       export type $200 = Components.Schemas.CommunicationsStatusResults;
@@ -1038,10 +1030,6 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.MessageGet.Responses.$200>;
   };
   ["/api/messages"]: {
-    /**
-     * message_get - Handles messages queries
-     */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.MessageGet.Responses.$200>;
     /**
      * message_post - Handles message send request
      */

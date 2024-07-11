@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-btn prepend-icon="mdi-close" variant="text" text="Close" @click="showCloseDialog = true"></v-btn>
         <hr class="w-full" />
-        <h1 class="mt-5">{{ messageStore.currentMessage?.subject }}</h1>
+        <h1 class="mt-5">{{ messageThreadSubject }}</h1>
         <v-row class="mt-5">
           <v-col>
             <div>Message</div>
@@ -68,10 +68,10 @@
 import type { AxiosProgressEvent } from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import { uploadFile } from "@/api/file";
-import { sendMessage } from "@/api/message";
+import { getChildMessages, sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import UploadFileItem from "@/components/UploadFileItem.vue";
@@ -96,17 +96,27 @@ interface ReplyToMessageData {
 export default defineComponent({
   name: "ReplyToMessage",
   components: { PageContainer, ConfirmationDialog, UploadFileItem },
-  setup() {
+  async setup() {
     const messageStore = useMessageStore();
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
     const router = useRouter();
+    const route = useRoute();
+    const messageId = route.params.messageId.toString();
+
+    const messageThread = (await getChildMessages({ parentId: messageId })).data?.communications;
+    let messageThreadSubject = "";
+    if (messageThread.length > 0) {
+      messageThreadSubject = messageThread[0].subject;
+    }
 
     return {
       messageStore,
       loadingStore,
       alertStore,
       router,
+      messageId,
+      messageThreadSubject,
     };
   },
   data(): ReplyToMessageData {
@@ -120,7 +130,7 @@ export default defineComponent({
   methods: {
     async handleReplyToMessage() {
       if (this.text.trim().length > 0) {
-        const { error } = await sendMessage({ communication: { id: this.messageStore.currentMessage?.id, text: this.text } });
+        const { error } = await sendMessage({ communication: { id: this.messageId, text: this.text } });
         if (error) {
           this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
         } else {
