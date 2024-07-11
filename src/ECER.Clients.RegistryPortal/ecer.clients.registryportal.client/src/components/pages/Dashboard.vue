@@ -2,8 +2,9 @@
   <template v-if="smAndDown">
     <Alert v-if="messageStore.unreadMessageCount > 0" icon="mdi-bell" :rounded="false"><UnreadMessages /></Alert>
     <ApplicationCard v-if="applications && showApplicationCard" :is-rounded="false" @cancel-application="showCancelDialog = true" />
-    <CerticationCard v-if="certifications" :is-rounded="false" />
   </template>
+
+  <!-- Messages -->
   <PageContainer :margin-top="false">
     <v-row justify="center">
       <v-col>
@@ -11,21 +12,44 @@
           <v-col v-if="messageStore.unreadMessageCount > 0" cols="12">
             <Alert icon="mdi-bell"><UnreadMessages /></Alert>
           </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </PageContainer>
+
+  <!-- Your ECE applications -->
+  <PageContainer :margin-top="false">
+    <v-row justify="center">
+      <v-col>
+        <v-row v-if="mdAndUp">
           <v-col v-if="applications && showApplicationCard" cols="12">
             <ApplicationCard @cancel-application="showCancelDialog = true" />
           </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </PageContainer>
+
+  <!-- Your ECE certifications -->
+  <PageContainer :margin-top="false">
+    <v-row justify="center">
+      <v-col>
+        <v-row v-if="mdAndUp">
           <v-col v-if="certifications" cols="12">
             <ECEHeader title="Your ECE certifications" />
             <p class="mt-4">Ece registration number {{ certificationStore.latestCertification?.number }}</p>
-            <CerticationCard class="mt-6" />
+            <CerticationCard class="mt-6" :is-rounded="false" />
+            <!-- <p class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p> -->
           </v-col>
         </v-row>
-        <!-- <v-row>
-          <v-col cols="12" class="mt-4">
-            <ECEHeader title="Your ECE certifications" />
-            <p class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
-          </v-col>
-        </v-row> -->
+      </v-col>
+    </v-row>
+  </PageContainer>
+
+  <!-- Your My ECE Registry account -->
+  <PageContainer :margin-top="false">
+    <v-row justify="center">
+      <v-col>
         <v-row>
           <v-col cols="12" class="mt-4">
             <ECEHeader title="Your My ECE Registry account" />

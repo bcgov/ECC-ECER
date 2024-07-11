@@ -2,7 +2,11 @@
   <v-card :rounded="!isRounded ? '0' : ''" flat color="background-light" class="pa-4">
     <v-card-item class="ma-4">
       <p class="font-weight-bold">Certification</p>
-      <p class="extra-large mt-2">{{ certificationStore.latestTitle }}</p>
+      <div class="d-flex flex-column mt-2">
+        <p v-for="(title, index) in certificationStore.latestTitleArray" :key="index" class="extra-large">
+          {{ title }}
+        </p>
+      </div>
       <p class="font-weight-bold mt-8">Expires on</p>
       <div class="d-flex flex-row align-center mt-2 ga-4">
         <p>{{ formattedExpiryDate }}</p>
