@@ -287,7 +287,7 @@ export default defineComponent({
       }
     },
     hasCharacterReference(): boolean {
-      return !this.applicationStatus?.characterReferencesStatus?.some((reference) => reference.status !== "Rejected") || false;
+      return this.applicationStatus?.characterReferencesStatus?.some((reference) => reference.status !== "Rejected") || false;
     },
     addMoreWorkExperienceReferencesFlag(): boolean {
       return this.applicationStatus?.addMoreWorkExperienceReference ?? false;

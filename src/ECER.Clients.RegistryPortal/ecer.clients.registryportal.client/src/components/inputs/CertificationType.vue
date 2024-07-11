@@ -110,11 +110,6 @@ export default defineComponent({
     const certificationTypeStore = useCertificationTypeStore();
     const alertStore = useAlertStore();
 
-    //TODO check if we need this.
-    if (!applicationStore.hasDraftApplication) {
-      console.warn("we need to initialize certification types"); //initialize certification type
-    }
-
     // If props.modelValue contains "Ite" or "Sne", set the subSelection to those values
     if (applicationStore.draftApplication.certificationTypes?.includes(CertificationType.ITE)) {
       certificationTypeStore.subSelection.push(CertificationType.ITE);
