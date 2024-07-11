@@ -88,9 +88,14 @@ declare namespace Components {
       date?: string | null; // date-time
       printDate?: string | null; // date-time
       hasConditions?: boolean | null;
-      level?: string | null;
+      levelName?: string | null;
       statusCode?: CertificateStatusCode;
       ineligibleReference?: YesNoNull;
+      levels?: CertificationLevel[] | null;
+    }
+    export interface CertificationLevel {
+      id?: string | null;
+      type?: string | null;
     }
     export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
     export interface CharacterReference {
