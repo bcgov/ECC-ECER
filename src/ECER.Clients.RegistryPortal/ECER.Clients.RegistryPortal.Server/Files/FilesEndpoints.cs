@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AngleSharp.Io;
+using AutoMapper;
 using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.Hosting;
 using MediatR;
@@ -13,7 +14,25 @@ public class FilesEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok<UploadFileResponse>, BadRequest<ProblemDetails>, NotFound>> (string fileId,
+    endpointRouteBuilder.MapDelete("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, NotFound>> (
+        string fileId,
+        IMediator messageBus,
+        HttpContext ctx,
+        IOptions<UploaderSettings> uploaderOptions,
+        CancellationToken ct) =>
+    {
+      var results = await messageBus.Send(new FileQuery([new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty)]), ct);
+      var file = results.Items.SingleOrDefault();
+      if (file == null) return TypedResults.NotFound();
+      await messageBus.Send(new DeleteFileCommand(file), ct);
+      return TypedResults.Ok(new FileResponse(fileId));
+    })
+      .WithOpenApi("Handles delete uploaded file request", string.Empty, "delete_file")
+      .RequireAuthorization()
+      .WithParameterValidation()
+      .DisableAntiforgery();
+
+    endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, BadRequest<ProblemDetails>, NotFound>> (string fileId,
         [FromHeader(Name = "file-classification")][Required] string classification,
         [FromHeader(Name = "file-tag")] string? tags,
         [FromForm(Name = "file")] IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IMapper mapper, IOptions<UploaderSettings> uploaderOptions) =>
@@ -32,7 +51,7 @@ public class FilesEndpoints : IRegisterEndpoints
       var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty), fileProperties, file.FileName, file.ContentType, file.OpenReadStream())).ToList();
       if (files.Count == 0) return TypedResults.BadRequest(new ProblemDetails { Title = "No files were uploaded" });
       await messageBus.Send(new SaveFileCommand(files), ct);
-      return TypedResults.Ok(new UploadFileResponse(fileId));
+      return TypedResults.Ok(new FileResponse(fileId));
     })
       .WithOpenApi("Handles upload file request", string.Empty, "upload_file")
       .RequireAuthorization()
@@ -41,7 +60,7 @@ public class FilesEndpoints : IRegisterEndpoints
 }
 
 /// <summary>
-/// upload file Response
+/// file Response
 /// </summary>
 /// <param name="fileId"></param>
-public record UploadFileResponse(string fileId);
+public record FileResponse(string fileId);
