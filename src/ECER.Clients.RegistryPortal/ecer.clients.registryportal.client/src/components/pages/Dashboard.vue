@@ -1,57 +1,51 @@
 <template>
-  <template v-if="smAndDown">
-    <Alert v-if="messageStore.unreadMessageCount > 0" icon="mdi-bell" :rounded="false"><UnreadMessages /></Alert>
-    <ApplicationCard v-if="applications && showApplicationCard" :is-rounded="false" @cancel-application="showCancelDialog = true" />
-  </template>
-
   <!-- Messages -->
   <PageContainer :margin-top="false">
-    <v-row justify="center">
-      <v-col>
-        <v-row v-if="mdAndUp">
-          <v-col v-if="messageStore.unreadMessageCount > 0" cols="12">
-            <Alert icon="mdi-bell"><UnreadMessages /></Alert>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-  </PageContainer>
-
-  <!-- Your ECE applications -->
-  <PageContainer :margin-top="false">
-    <v-row justify="center">
-      <v-col>
-        <v-row v-if="mdAndUp">
-          <v-col v-if="applications && showApplicationCard" cols="12">
-            <ApplicationCard @cancel-application="showCancelDialog = true" />
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-  </PageContainer>
-
-  <!-- Your ECE certifications -->
-  <PageContainer :margin-top="false">
-    <v-row justify="center">
-      <v-col>
-        <v-row v-if="mdAndUp">
-          <v-col v-if="certifications" cols="12">
-            <ECEHeader title="Your ECE certifications" />
-            <p class="mt-4">Ece registration number {{ certificationStore.latestCertification?.number }}</p>
-            <CerticationCard class="mt-6" :is-rounded="false" />
-            <!-- <p class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p> -->
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-  </PageContainer>
-
-  <!-- Your My ECE Registry account -->
-  <PageContainer :margin-top="false">
-    <v-row justify="center">
+    <v-row v-if="messageStore.unreadMessageCount > 0" justify="center">
       <v-col>
         <v-row>
-          <v-col cols="12" class="mt-4">
+          <v-col cols="12">
+            <Alert :rounded="mdAndUp" :class="smAndDown ? 'mt-n4 mx-n4' : ''" icon="mdi-bell"><UnreadMessages /></Alert>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
+    <!-- Your ECE applications -->
+    <v-row v-if="applications && showApplicationCard" justify="center">
+      <v-col>
+        <v-row>
+          <v-col cols="12">
+            <ApplicationCard :class="smAndDown ? 'mx-n6' : ''" @cancel-application="showCancelDialog = true" />
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
+    <!-- Your ECE certifications -->
+    <v-row justify="center" class="mt-6">
+      <v-col>
+        <v-row>
+          <v-col cols="12">
+            <ECEHeader title="Your ECE certifications" />
+            <div v-if="certificationStore.hasCertifications">
+              <p class="mt-4">
+                ECE registration number
+                <b>{{ certificationStore.latestCertification?.number }}</b>
+              </p>
+              <CerticationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" />
+            </div>
+            <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
+    <!-- Your My ECE Registry account -->
+    <v-row justify="center" class="mt-6">
+      <v-col>
+        <v-row>
+          <v-col cols="12">
             <ECEHeader title="Your My ECE Registry account" />
           </v-col>
         </v-row>
