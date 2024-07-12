@@ -96,6 +96,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_isofficialtranscriptrequestedName = "ecer_isofficialtranscriptrequestedname";
 			public const string ecer_LanguageofInstruction = "ecer_languageofinstruction";
 			public const string ecer_legacyeducationtranscriptid = "ecer_legacyeducationtranscriptid";
+			public const string ecer_legacyentryby = "ecer_legacyentryby";
+			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PostSecondaryInstituteid = "ecer_postsecondaryinstituteid";
 			public const string ecer_PostSecondaryInstituteidName = "ecer_postsecondaryinstituteidname";
@@ -604,6 +606,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyeducationtranscriptid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentryby")]
+		public string ecer_legacyentryby
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyentryby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyentryby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentrydate")]
+		public System.Nullable<System.DateTime> ecer_legacyentrydate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyentrydate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyentrydate", value);
 			}
 		}
 		

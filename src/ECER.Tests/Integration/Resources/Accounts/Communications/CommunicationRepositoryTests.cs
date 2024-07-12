@@ -25,7 +25,6 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
     // Arrange
     var communicationId = Fixture.communicationOneId;
 
-
     // Act
     var communications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
 
