@@ -148,16 +148,17 @@ export default defineComponent({
       const fileClassification = "document";
       const fileTags = this.formatFileTags(selectedFile.file);
       try {
+        const fileIndex = this.selectedFiles.findIndex((f: FileItem) => f.fileId === selectedFile.fileId);
         const response = await uploadFile(selectedFile.fileId, selectedFile.file, fileClassification, fileTags, (progressEvent: AxiosProgressEvent) => {
           const total = progressEvent.total ? progressEvent.total : 10485760;
           const progress = Math.round((progressEvent.loaded * 100) / total);
-          const fileIndex = this.selectedFiles.findIndex((f: FileItem) => f.fileId === selectedFile.fileId);
           if (fileIndex > -1) {
             this.selectedFiles[fileIndex].progress = progress;
           }
         });
-
-        if (!response.data) {
+        if (response.data) {
+          this.selectedFiles[fileIndex].progress = 101; // means API call was successful
+        } else {
           this.removeFile(selectedFile);
           this.alertStore.setFailureAlert("An error occurred during file upload");
         }

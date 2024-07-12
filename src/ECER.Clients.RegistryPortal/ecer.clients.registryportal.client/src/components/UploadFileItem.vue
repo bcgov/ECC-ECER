@@ -58,7 +58,7 @@ export default defineComponent({
   },
   computed: {
     isUploadComplete() {
-      return this.uploadProgress >= 100;
+      return this.uploadProgress > 100; // 101 means api call was successful
     },
   },
   methods: {
