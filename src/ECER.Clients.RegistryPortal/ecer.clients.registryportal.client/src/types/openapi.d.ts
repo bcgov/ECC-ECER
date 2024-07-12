@@ -79,6 +79,24 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
+    export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Reprinted" | "Suspended";
+    export interface Certification {
+      id?: string | null;
+      number?: string | null;
+      expiryDate?: string | null; // date-time
+      effectiveDate?: string | null; // date-time
+      date?: string | null; // date-time
+      printDate?: string | null; // date-time
+      hasConditions?: boolean | null;
+      levelName?: string | null;
+      statusCode?: CertificateStatusCode;
+      ineligibleReference?: YesNoNull;
+      levels?: CertificationLevel[] | null;
+    }
+    export interface CertificationLevel {
+      id?: string | null;
+      type?: string | null;
+    }
     export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
     export interface CharacterReference {
       firstName?: string | null;
@@ -439,6 +457,7 @@ declare namespace Components {
       recaptchaToken?: string | null;
     }
     export type WorkHoursType = "FullTime" | "PartTime";
+    export type YesNoNull = "No" | "Yes";
   }
 }
 declare namespace Paths {
@@ -537,6 +556,18 @@ declare namespace Paths {
       export type $200 = Components.Schemas.UpdateReferenceResponse;
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
+    }
+  }
+  namespace CertificationGet {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id?: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.Certification[];
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace CharacterReferencePost {
@@ -841,6 +872,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.MessageStatusGet.Responses.$200>;
   /**
+   * certification_get - Handles certification queries
+   */
+  "certification_get"(
+    parameters?: Parameters<Paths.CertificationGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CertificationGet.Responses.$200>;
+  /**
    * draftapplication_put - Save a draft application for the current user
    */
   "draftapplication_put"(
@@ -1066,6 +1105,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.MessageStatusGet.Responses.$200>;
+  };
+  ["/api/certifications/{id}"]: {
+    /**
+     * certification_get - Handles certification queries
+     */
+    "get"(
+      parameters?: Parameters<Paths.CertificationGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CertificationGet.Responses.$200>;
   };
   ["/api/draftapplications/{id}"]: {
     /**

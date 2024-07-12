@@ -67,8 +67,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicantId = "ecer_applicantid";
 			public const string ecer_ApplicantIdName = "ecer_applicantidname";
 			public const string ecer_ApplicantIdYomiName = "ecer_applicantidyominame";
+			public const string ecer_CertificateType = "ecer_certificatetype";
+			public const string ecer_CertificateTypeName = "ecer_certificatetypename";
 			public const string ecer_educationassessment_AppAssessmentId = "ecer_educationassessment_AppAssessmentId";
 			public const string ecer_educationassessment_ApplicantId = "ecer_educationassessment_ApplicantId";
+			public const string ecer_educationassessment_CertificateType_ecer_certificatetype = "ecer_educationassessment_CertificateType_ecer_certificatetype";
 			public const string ecer_educationassessment_RequirementAreaId = "ecer_educationassessment_RequirementAreaId";
 			public const string ecer_EducationAssessmentId = "ecer_educationassessmentid";
 			public const string Id = "ecer_educationassessmentid";
@@ -360,6 +363,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_applicantid"))
 				{
 					return this.FormattedValues["ecer_applicantid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetype")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CertificateType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_certificatetype");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificatetype", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypename")]
+		public string ecer_CertificateTypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_certificatetype"))
+				{
+					return this.FormattedValues["ecer_certificatetype"];
 				}
 				else
 				{
@@ -902,6 +937,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_educationassessment_ApplicantId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_educationassessment_CertificateType_ecer_certificatetype
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetype")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_educationassessment_CertificateType_ecer_certificatetype")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_CertificateType ecer_educationassessment_CertificateType_ecer_certificatetype
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType>("ecer_educationassessment_CertificateType_ecer_certificatetype", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateType>("ecer_educationassessment_CertificateType_ecer_certificatetype", null, value);
 			}
 		}
 		

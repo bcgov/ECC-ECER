@@ -34,6 +34,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Communication testCommunication2 = null!;
   private ecer_Communication testCommunication3 = null!;
 
+  private ecer_Certificate testCertification = null!;
+
   private ecer_PortalInvitation testPortalInvitationOne = null!;
   private ecer_PortalInvitation testPortalInvitationCharacterReferenceSubmit = null!;
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceSubmit = null!;
@@ -53,6 +55,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string communicationThreeId => testCommunication3.Id.ToString();
   public string inProgressApplicationId => inProgressTestApplication.Id.ToString();
   public string draftTestApplicationId => draftTestApplication.Id.ToString();
+
+  public string certificationOneId => testCertification.Id.ToString();
 
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationCharacterReferenceIdSubmit => testPortalInvitationCharacterReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
@@ -127,6 +131,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1");
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2");
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3");
+    testCertification = GetOrAddCertification(context);
     previousName = GetOrAddPreviousName(context, authenticatedBcscUser);
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
     testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
@@ -188,9 +193,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_PreviousName GetOrAddPreviousName(EcerContext context, Contact applicant)
   {
     var previousName = (from p in context.ecer_PreviousNameSet
-                        where p.ecer_Contactid.Id == applicant.Id 
+                        where p.ecer_Contactid.Id == applicant.Id
                         select p).FirstOrDefault();
-    
+
     if (previousName == null)
     {
       previousName = new ecer_PreviousName
@@ -205,7 +210,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       context.AddObject(previousName);
       context.AddLink(previousName, ecer_PreviousName.Fields.ecer_previousname_Contactid, applicant);
     }
-    
+
     return previousName;
   }
 
@@ -299,6 +304,35 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     }
 
     return communication;
+  }
+
+  private ecer_Certificate GetOrAddCertification(EcerContext context)
+  {
+    var certification = context.ecer_CertificateSet.FirstOrDefault(c => c.ecer_CertificateNumber == "4321");
+
+    if (certification == null)
+    {
+      certification = new ecer_Certificate
+      {
+        Id = Guid.NewGuid(),
+        ecer_CertificateNumber = "4321",
+        StatusCode = ecer_Certificate_StatusCode.Active,
+      };
+      context.AddObject(certification);
+
+      var level = new ecer_CertifiedLevel
+      {
+        Id = Guid.NewGuid(),
+      };
+      context.AddObject(level);
+
+      var type = context.ecer_CertificateTypeSet.First();
+
+      context.AddLink(certification, ecer_Certificate.Fields.ecer_certifiedlevel_CertificateId, level);
+      context.AddLink(level, ecer_CertifiedLevel.Fields.ecer_certifiedlevel_CertificateTypeId, type);
+    }
+
+    return certification;
   }
 
   private ecer_PortalInvitation GetOrAddPortalInvitation_CharacterReference(EcerContext context, Contact registrant, string name)

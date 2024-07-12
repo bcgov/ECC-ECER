@@ -115,12 +115,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CertificationType = "ecer_certificationtype";
 			public const string ecer_certificationtypeName = "ecer_certificationtypename";
 			public const string ecer_DateOfBirth = "ecer_dateofbirth";
+			public const string ecer_firstname = "ecer_firstname";
 			public const string ecer_Initials = "ecer_initials";
 			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
 			public const string ecer_involvedperson_Investigation_ecer_investi = "ecer_involvedperson_Investigation_ecer_investi";
 			public const string ecer_InvolvedPersonId = "ecer_involvedpersonid";
 			public const string Id = "ecer_involvedpersonid";
+			public const string ecer_lastname = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_RelationshiptoIncident = "ecer_relationshiptoincident";
 			public const string ecer_relationshiptoincidentName = "ecer_relationshiptoincidentname";
@@ -364,6 +366,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_firstname")]
+		public string ecer_firstname
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_firstname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_firstname", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_initials")]
 		public string ecer_Initials
 		{
@@ -449,6 +466,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_InvolvedPersonId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lastname")]
+		public string ecer_lastname
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_lastname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_lastname", value);
 			}
 		}
 		
