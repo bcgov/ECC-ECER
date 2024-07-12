@@ -19,7 +19,7 @@
       <v-col cols="4" class="d-flex justify-end">
         <v-tooltip text="Delete" location="top">
           <template #activator="{ props }">
-            <v-btn v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteFile" />
+            <v-btn v-if="isUploadComplete" v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteFile" />
           </template>
         </v-tooltip>
       </v-col>
