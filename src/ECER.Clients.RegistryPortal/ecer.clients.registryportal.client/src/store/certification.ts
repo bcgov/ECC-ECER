@@ -18,6 +18,10 @@ export const useCertificationStore = defineStore("certification", {
     hasCertifications(state): boolean {
       return state.certifications !== null && state.certifications !== undefined && state.certifications.length > 0;
     },
+    latestHasTermsAndConditions(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.hasConditions ?? false;
+    },
     latestTitleArray(state) {
       if (!state.latestCertification || !state.latestCertification.levels) return null;
       return state.latestCertification?.levels
