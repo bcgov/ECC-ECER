@@ -84,6 +84,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramRepresentativeId = "ecer_programrepresentativeid";
 			public const string ecer_ProgramRepresentativeIdName = "ecer_programrepresentativeidname";
 			public const string ecer_ProgramRepresentativeIdYomiName = "ecer_programrepresentativeidyominame";
+			public const string ecer_pspobservation_sitevisitid_ecer_postsecondaryinstitutesitevisit = "ecer_pspobservation_sitevisitid_ecer_postsecondaryinstitutesitevisit";
 			public const string ecer_sitevisitchecklist_SiteVisitId_ecer_po = "ecer_sitevisitchecklist_SiteVisitId_ecer_po";
 			public const string ecer_SiteVisitDate = "ecer_sitevisitdate";
 			public const string ecer_Type = "ecer_type";
@@ -972,6 +973,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteInterview>("ecer_postsecondaryinstituteinterview_SiteVisit", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_pspobservation_sitevisitid_ecer_postsecondaryinstitutesitevisit
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_pspobservation_sitevisitid_ecer_postsecondaryinstitutesitevisit")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_pspobservation> ecer_pspobservation_sitevisitid_ecer_postsecondaryinstitutesitevisit
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_pspobservation>("ecer_pspobservation_sitevisitid_ecer_postsecondaryinstitutesitevisit", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_pspobservation>("ecer_pspobservation_sitevisitid_ecer_postsecondaryinstitutesitevisit", null, value);
 			}
 		}
 		

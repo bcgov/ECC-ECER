@@ -58,7 +58,7 @@ export const useApplicationStore = defineStore("application", {
 
       const { data: applications } = await getApplications();
       // Load the first application as the current draft application
-      if (applications?.length) {
+      if (applications?.length && applications.length > 0) {
         this.applications = applications;
         this.application = applications[0];
 
