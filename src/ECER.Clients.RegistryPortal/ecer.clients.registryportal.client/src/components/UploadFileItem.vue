@@ -30,6 +30,7 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
+
 import * as Functions from "@/utils/functions";
 
 export interface FileItem {

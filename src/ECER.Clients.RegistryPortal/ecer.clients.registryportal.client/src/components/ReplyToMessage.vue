@@ -32,7 +32,13 @@
             <v-file-input ref="fileInput" style="display: none" multiple accept="application/pdf" @change="handleFileUpload"></v-file-input>
 
             <v-list lines="two" class="flex-grow-1 message-list">
-              <UploadFileItem v-for="(file, index) in selectedFiles" :key="index" :fileItem="file" :upload-progress="file.progress" @delete-file="removeFile" />
+              <UploadFileItem
+                v-for="(file, index) in selectedFiles"
+                :key="index"
+                :file-item="file"
+                :upload-progress="file.progress"
+                @delete-file="removeFile"
+              />
             </v-list>
           </v-col>
         </v-row>
@@ -63,7 +69,8 @@ import type { AxiosProgressEvent } from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import { uploadFile, deleteFile } from "@/api/file";
+
+import { deleteFile, uploadFile } from "@/api/file";
 import { sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import PageContainer from "@/components/PageContainer.vue";

@@ -51,4 +51,4 @@ const deleteFile = async (fileId: string): Promise<ApiResponse<Paths.DeleteFile.
   return apiResultHandler.execute<Paths.DeleteFile.Responses.$200>({ request: client.delete_file(parameters, null, config) });
 };
 
-export { uploadFile, deleteFile };
+export { deleteFile, uploadFile };
