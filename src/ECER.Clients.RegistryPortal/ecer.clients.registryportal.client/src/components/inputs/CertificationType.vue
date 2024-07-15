@@ -3,7 +3,7 @@
     <Breadcrumb :items="items" />
     <h2 class="mb-6">What type of certification do you want to apply for?</h2>
     <v-form ref="certificationForm">
-      <v-expansion-panels v-if="mode === 'selection'" v-model="selection" variant="accordion">
+      <v-expansion-panels v-model="selection" variant="accordion">
         <v-expansion-panel v-for="option in certificationOptions" :key="option.id" :value="option.id" class="rounded-lg">
           <v-expansion-panel-title>
             <v-row no-gutters>
@@ -38,37 +38,6 @@
       </v-expansion-panels>
       <v-input v-model="selection" :rules="[Rules.required('Select a certificate type to begin your application')]"></v-input>
     </v-form>
-    <div v-if="mode === 'terms'">
-      <div v-for="certificationType in certificationTypes" :key="certificationType">
-        <template v-if="certificationType === CertificationType.ECE_ASSISTANT">
-          <ECEAssistantRequirements />
-        </template>
-        <template v-if="certificationType === CertificationType.ONE_YEAR">
-          <ECEOneYearRequirements />
-        </template>
-        <template v-if="certificationType === CertificationType.FIVE_YEAR">
-          <ECEFiveYearRequirements />
-        </template>
-        <template v-if="certificationType === CertificationType.SNE">
-          <SneRequirements />
-        </template>
-        <template v-if="certificationType === CertificationType.ITE">
-          <IteRequirements />
-        </template>
-      </div>
-    </div>
-    <v-btn
-      v-if="mode === 'terms'"
-      class="mt-6 mr-3"
-      rounded="lg"
-      @click="
-        () => {
-          mode = 'selection';
-        }
-      "
-    >
-      Back to selection
-    </v-btn>
     <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Continue</v-btn>
   </v-container>
 </template>
@@ -91,8 +60,6 @@ import { useCertificationTypeStore } from "@/store/certificationType";
 import type { Components } from "@/types/openapi";
 import { CertificationType } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
-
-type Mode = "terms" | "selection";
 
 export default defineComponent({
   name: "CertificationType",
@@ -131,7 +98,6 @@ export default defineComponent({
   },
   data() {
     return {
-      mode: "selection" as Mode,
       items: [
         {
           title: "Home",
@@ -139,7 +105,7 @@ export default defineComponent({
           href: "/",
         },
         {
-          title: "Application Types",
+          title: "Application types",
           disabled: true,
           href: "/application/certification",
         },
@@ -169,16 +135,13 @@ export default defineComponent({
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
         return;
       }
-      if (this.mode === "selection") {
-        this.mode = "terms";
-      } else {
-        this.applicationStore.$patch({ draftApplication: { certificationTypes: this.certificationTypeStore.certificationTypes } });
 
-        if (!this.certificationTypeStore.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
-          this.applicationStore.$patch({ draftApplication: { workExperienceReferences: [] } });
-        }
-        this.$router.push({ name: "declaration" });
+      this.applicationStore.$patch({ draftApplication: { certificationTypes: this.certificationTypeStore.certificationTypes } });
+
+      if (!this.certificationTypeStore.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
+        this.applicationStore.$patch({ draftApplication: { workExperienceReferences: [] } });
       }
+      this.$router.push({ name: "certification-requirements", query: { certificationTypes: this.certificationTypeStore.certificationTypes } });
     },
   },
 });

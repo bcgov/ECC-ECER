@@ -99,7 +99,7 @@ export default defineComponent({
         href: "/",
       },
       {
-        title: "Application Types",
+        title: "Application types",
         disabled: false,
         href: "/application/certification",
       },

@@ -53,7 +53,6 @@ import applicationWizardAssistantAndOneYear from "@/config/application-wizard-as
 import applicationWizardFiveYear from "@/config/application-wizard-five-year";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
-import { useCertificationTypeStore } from "@/store/certificationType";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
@@ -69,7 +68,6 @@ export default defineComponent({
     const userStore = useUserStore();
     const alertStore = useAlertStore();
     const applicationStore = useApplicationStore();
-    const certificationTypeStore = useCertificationTypeStore();
     const loadingStore = useLoadingStore();
 
     // Refresh userProfile from the server
@@ -89,7 +87,6 @@ export default defineComponent({
       wizardStore,
       alertStore,
       userStore,
-      certificationTypeStore,
       loadingStore,
       CertificationType,
       applicationWizardFiveYear,
