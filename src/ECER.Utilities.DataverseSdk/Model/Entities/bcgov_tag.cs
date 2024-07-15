@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Previous Name
+	/// Status of the Tag
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_previousname_statecode
+	public enum bcgov_tag_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,37 +28,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Previous Name
+	/// Reason for the status of the Tag
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_PreviousName_StatusCode
+	public enum bcgov_tag_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Archived = 2,
+		Active = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ReadyforVerification = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Unverified = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Verified = 621870002,
+		Inactive = 2,
 	}
 	
+	/// <summary>
+	/// Identifies a Tag on a document.
+	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_previousname")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("bcgov_tag")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_PreviousName : Microsoft.Xrm.Sdk.Entity
+	public partial class bcgov_tag : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_previousname entity
+		/// Available fields, a the time of codegen, for the bcgov_tag entity
 		/// </summary>
 		public partial class Fields
 		{
+			public const string bcgov_name = "bcgov_name";
+			public const string bcgov_tag1_bcgov_documenturl = "bcgov_tag1_bcgov_documenturl";
+			public const string bcgov_tag2_bcgov_documenturl = "bcgov_tag2_bcgov_documenturl";
+			public const string bcgov_tag3_bcgov_documenturl = "bcgov_tag3_bcgov_documenturl";
+			public const string bcgov_tagId = "bcgov_tagid";
+			public const string Id = "bcgov_tagid";
 			public const string CreatedBy = "createdby";
 			public const string CreatedByName = "createdbyname";
 			public const string CreatedByYomiName = "createdbyyominame";
@@ -66,28 +69,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_Contactid = "ecer_contactid";
-			public const string ecer_ContactidName = "ecer_contactidname";
-			public const string ecer_ContactidYomiName = "ecer_contactidyominame";
-			public const string ecer_documenturl_PreviousNameId = "ecer_documenturl_PreviousNameId";
-			public const string ecer_EndDate = "ecer_enddate";
-			public const string ecer_FirstName = "ecer_firstname";
-			public const string ecer_LastName = "ecer_lastname";
-			public const string ecer_legacyentryby = "ecer_legacyentryby";
-			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
-			public const string ecer_legacypreviousnameid = "ecer_legacypreviousnameid";
-			public const string ecer_LinktoIDDocument = "ecer_linktoiddocument";
-			public const string ecer_MiddleName = "ecer_middlename";
-			public const string ecer_Name = "ecer_name";
-			public const string ecer_NameType = "ecer_nametype";
-			public const string ecer_nametypeName = "ecer_nametypename";
-			public const string ecer_PreferredName = "ecer_preferredname";
-			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
-			public const string ecer_PreviousNameId = "ecer_previousnameid";
-			public const string Id = "ecer_previousnameid";
-			public const string ecer_Source = "ecer_source";
-			public const string ecer_sourceName = "ecer_sourcename";
-			public const string ecer_StartDate = "ecer_startdate";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -114,45 +95,102 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PreviousName(System.Guid id) : 
+		public bcgov_tag(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PreviousName(string keyName, object keyValue) : 
+		public bcgov_tag(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PreviousName(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public bcgov_tag(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
-		
-		public const string AlternateKeys = "ecer_legacypreviousnameid";
 		
 		/// <summary>
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PreviousName() : 
+		public bcgov_tag() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_previousnameid";
+		public const string PrimaryIdAttribute = "bcgov_tagid";
 		
-		public const string PrimaryNameAttribute = "ecer_name";
+		public const string PrimaryNameAttribute = "bcgov_name";
 		
-		public const string EntitySchemaName = "ecer_PreviousName";
+		public const string EntitySchemaName = "bcgov_tag";
 		
-		public const string EntityLogicalName = "ecer_previousname";
+		public const string EntityLogicalName = "bcgov_tag";
 		
-		public const string EntityLogicalCollectionName = "ecer_previousnames";
+		public const string EntityLogicalCollectionName = "bcgov_tags";
 		
-		public const string EntitySetName = "ecer_previousnames";
+		public const string EntitySetName = "bcgov_tags";
+		
+		/// <summary>
+		/// The name of the Tag.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_name")]
+		public string bcgov_name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("bcgov_name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_name", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tagid")]
+		public System.Nullable<System.Guid> bcgov_tagId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("bcgov_tagid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_tagid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tagid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.bcgov_tagId = value;
+			}
+		}
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -263,325 +301,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_Contactid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_contactid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_contactid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactidname")]
-		public string ecer_ContactidName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_contactid"))
-				{
-					return this.FormattedValues["ecer_contactid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactidyominame")]
-		public string ecer_ContactidYomiName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_contactid"))
-				{
-					return this.FormattedValues["ecer_contactid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_enddate")]
-		public System.Nullable<System.DateTime> ecer_EndDate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_enddate");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_enddate", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_firstname")]
-		public string ecer_FirstName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_firstname");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_firstname", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lastname")]
-		public string ecer_LastName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_lastname");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_lastname", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentryby")]
-		public string ecer_legacyentryby
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_legacyentryby");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_legacyentryby", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentrydate")]
-		public System.Nullable<System.DateTime> ecer_legacyentrydate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyentrydate");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_legacyentrydate", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacypreviousnameid")]
-		public string ecer_legacypreviousnameid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_legacypreviousnameid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_legacypreviousnameid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_linktoiddocument")]
-		public string ecer_LinktoIDDocument
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_linktoiddocument");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_linktoiddocument", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_middlename")]
-		public string ecer_MiddleName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_middlename");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_middlename", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ecer_Name
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_name");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_name", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_nametype")]
-		public virtual ecer_NameTypes? ecer_NameType
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_NameTypes?)(EntityOptionSetEnum.GetEnum(this, "ecer_nametype")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_nametype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_nametypename")]
-		public string ecer_nametypeName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_nametype"))
-				{
-					return this.FormattedValues["ecer_nametype"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_preferredname")]
-		public string ecer_PreferredName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_preferredname");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_preferredname", value);
-			}
-		}
-		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_previousnameid")]
-		public System.Nullable<System.Guid> ecer_PreviousNameId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_previousnameid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_previousnameid", value);
-				if (value.HasValue)
-				{
-					base.Id = value.Value;
-				}
-				else
-				{
-					base.Id = System.Guid.Empty;
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_previousnameid")]
-		public override System.Guid Id
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return base.Id;
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.ecer_PreviousNameId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_source")]
-		public virtual ecer_PreviousNameSources? ecer_Source
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_PreviousNameSources?)(EntityOptionSetEnum.GetEnum(this, "ecer_source")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_source", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sourcename")]
-		public string ecer_sourceName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_source"))
-				{
-					return this.FormattedValues["ecer_source"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_startdate")]
-		public System.Nullable<System.DateTime> ecer_StartDate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_startdate");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_startdate", value);
 			}
 		}
 		
@@ -848,15 +567,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Previous Name
+		/// Status of the Tag
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_previousname_statecode? StateCode
+		public virtual bcgov_tag_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_previousname_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((bcgov_tag_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -883,15 +602,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Previous Name
+		/// Reason for the status of the Tag
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_PreviousName_StatusCode? StatusCode
+		public virtual bcgov_tag_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_PreviousName_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((bcgov_tag_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -967,39 +686,56 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_documenturl_PreviousNameId
+		/// 1:N bcgov_tag1_bcgov_documenturl
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_PreviousNameId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_documenturl_PreviousNameId
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_tag1_bcgov_documenturl")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> bcgov_tag1_bcgov_documenturl
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_PreviousNameId", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("bcgov_tag1_bcgov_documenturl", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_PreviousNameId", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("bcgov_tag1_bcgov_documenturl", null, value);
 			}
 		}
 		
 		/// <summary>
-		/// N:1 ecer_previousname_Contactid
+		/// 1:N bcgov_tag2_bcgov_documenturl
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_previousname_Contactid")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ecer_previousname_Contactid
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_tag2_bcgov_documenturl")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> bcgov_tag2_bcgov_documenturl
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_previousname_Contactid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("bcgov_tag2_bcgov_documenturl", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_previousname_Contactid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("bcgov_tag2_bcgov_documenturl", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N bcgov_tag3_bcgov_documenturl
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_tag3_bcgov_documenturl")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> bcgov_tag3_bcgov_documenturl
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("bcgov_tag3_bcgov_documenturl", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("bcgov_tag3_bcgov_documenturl", null, value);
 			}
 		}
 		
@@ -1008,7 +744,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PreviousName(object anonymousType) : 
+		public bcgov_tag(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -1026,9 +762,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_previousnameid"] = base.Id;
+                        Attributes["bcgov_tagid"] = base.Id;
                         break;
-                    case "ecer_previousnameid":
+                    case "bcgov_tagid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

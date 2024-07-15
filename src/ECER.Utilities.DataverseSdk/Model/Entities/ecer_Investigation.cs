@@ -29,6 +29,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum ecer_Investigation_ecer_Immediate_action_type
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Suspension = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		TCs = 621870000,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_Investigation_ecer_IntakeType
 	{
 		
@@ -296,6 +308,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DateofBirth = "ecer_dateofbirth";
 			public const string ecer_DaysBetweenAssignmentConcludedDate = "ecer_daysbetweenassignmentconcludeddate";
 			public const string ecer_DaysBetweenIntakeCompleteConcludedDate = "ecer_daysbetweenintakecompleteconcludeddate";
+			public const string ecer_documenturl_InvestigationId = "ecer_documenturl_InvestigationId";
 			public const string ecer_ecer_application_ecer_investigation_OpenApplication = "ecer_ecer_application_ecer_investigation_OpenApplication";
 			public const string ecer_ecer_certificate_ecer_investigation_CurrentCertificate = "ecer_ecer_certificate_ecer_investigation_CurrentCertificate";
 			public const string ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId = "ecer_ecer_investigation_ecer_parallelprocesscommunication_InvestigationId";
@@ -388,6 +401,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_HealthOfRegistrant = "ecer_healthofregistrant";
 			public const string ecer_healthofregistrantName = "ecer_healthofregistrantname";
 			public const string ecer_IdNumber = "ecer_idnumber";
+			public const string ecer_Immediate_action_type = "ecer_immediate_action_type";
+			public const string ecer_immediate_action_typeName = "ecer_immediate_action_typename";
 			public const string ecer_ImmediateAction = "ecer_immediateaction";
 			public const string ecer_immediateactionName = "ecer_immediateactionname";
 			public const string ecer_ImmediateActionReason = "ecer_immediateactionreason";
@@ -2800,6 +2815,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediate_action_type")]
+		public virtual ecer_Investigation_ecer_Immediate_action_type? ecer_Immediate_action_type
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_Investigation_ecer_Immediate_action_type?)(EntityOptionSetEnum.GetEnum(this, "ecer_immediate_action_type")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_immediate_action_type", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediate_action_typename")]
+		public string ecer_immediate_action_typeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_immediate_action_type"))
+				{
+					return this.FormattedValues["ecer_immediate_action_type"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateaction")]
 		public virtual ecer_immediateaction? ecer_ImmediateAction
 		{
@@ -5109,6 +5156,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_Investigation_ecer_investig", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_documenturl_InvestigationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_InvestigationId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_documenturl_InvestigationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_InvestigationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_InvestigationId", null, value);
 			}
 		}
 		
