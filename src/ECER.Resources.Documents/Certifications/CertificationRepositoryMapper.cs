@@ -20,11 +20,18 @@ internal class CertificationRepositoryMapper : Profile
      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode))
      .ForMember(d => d.IneligibleReference, opts => opts.MapFrom(s => s.ecer_IneligibleReference))
      .ForMember(d => d.Levels, opts => opts.MapFrom(s => s.ecer_certifiedlevel_CertificateId))
-     ;
+     .ForMember(d => d.Files, opts => opts.MapFrom(s => s.ecer_documenturl_CertificateId));
 
     CreateMap<ecer_CertifiedLevel, CertificationLevel>(MemberList.Destination)
     .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CertifiedLevelId))
     .ForMember(d => d.Type, opts => opts.MapFrom(s => s.ecer_CertificateTypeIdName));
+
+    CreateMap<bcgov_DocumentUrl, CertificationFile>(MemberList.Destination)
+    .ForMember(d => d.Id, opts => opts.MapFrom(s => s.bcgov_DocumentUrlId))
+    .ForMember(d => d.Url, opts => opts.MapFrom(s => $"{s.bcgov_Url}/{s.bcgov_DocumentUrlId}{s.bcgov_FileExtension}"))
+    .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension))
+    .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
+    .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName));
 
     CreateMap<CertificateStatusCode, ecer_Certificate_StatusCode>()
     .ConvertUsingEnumMapping(opts => opts.MapByName(true))

@@ -28,7 +28,7 @@ internal class CertificationRepository : ICertificationRepository
 
     Certifications = Certifications.OrderByDescending(r => r.ecer_ExpiryDate);
     context.LoadProperties(Certifications, ecer_Certificate.Fields.ecer_certifiedlevel_CertificateId);
-
+    context.LoadProperties(Certifications, ecer_Certificate.Fields.ecer_documenturl_CertificateId);
     return mapper.Map<IEnumerable<Certification>>(Certifications.ToList());
   }
 }

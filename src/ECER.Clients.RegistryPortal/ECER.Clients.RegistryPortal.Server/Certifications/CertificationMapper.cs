@@ -8,6 +8,7 @@ namespace ECER.Clients.RegistryPortal.Server.Certifications
     {
       CreateMap<Managers.Registry.Contract.Certifications.Certification, Certification>().ReverseMap();
       CreateMap<Managers.Registry.Contract.Certifications.CertificationLevel, CertificationLevel>().ReverseMap();
+      CreateMap<Managers.Registry.Contract.Certifications.CertificationFile, CertificationFile>().ReverseMap();
     }
   }
 }
