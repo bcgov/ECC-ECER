@@ -76,6 +76,7 @@
         :go-to="() => $router.push({ name: 'profile' })"
       />
       <ApplicationSummaryActionListItem
+        v-if="showWorkExperience"
         :active="totalObservedWorkExperienceHours < 500"
         text="500 approved hours of work experience with reference"
         :go-to="() => $router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: $route.params.applicationId } })"
@@ -313,6 +314,9 @@ export default defineComponent({
     },
     totalObservedWorkExperienceHours(): number {
       return this.applicationStatus?.workExperienceReferencesStatus?.reduce((acc, reference) => acc + (reference.totalNumberofHoursObserved ?? 0), 0) || 0;
+    },
+    showWorkExperience(): boolean {
+      return !!this.applicationStatus?.certificationTypes?.includes(CertificationType.FIVE_YEAR);
     },
   },
   methods: {

@@ -113,6 +113,7 @@ import { defineComponent } from "vue";
 
 import EducationList, { type EducationData } from "@/components/EducationList.vue";
 import { useAlertStore } from "@/store/alert";
+import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
@@ -155,10 +156,12 @@ export default defineComponent({
   setup: () => {
     const alertStore = useAlertStore();
     const wizardStore = useWizardStore();
+    const applicationStore = useApplicationStore();
 
     return {
       alertStore,
       wizardStore,
+      applicationStore,
     };
   },
   data: function (): EceEducationData {
@@ -184,7 +187,7 @@ export default defineComponent({
       return Object.keys(this.modelValue).length + 1;
     },
     getLabelOnCertificateType() {
-      if (this.wizardStore.wizardData.certificationSelection.includes(CertificationType.FIVE_YEAR)) {
+      if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR)) {
         return "Program";
       } else {
         return "Course";
@@ -193,12 +196,8 @@ export default defineComponent({
     numOfEducationRequired() {
       let numOfEducationRequired = 1;
 
-      this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id]?.includes(
-        CertificationType.SNE,
-      ) && numOfEducationRequired++;
-      this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id]?.includes(
-        CertificationType.ITE,
-      ) && numOfEducationRequired++;
+      this.applicationStore.draftApplicationIncludesCertification(CertificationType.SNE) && numOfEducationRequired++;
+      this.applicationStore.draftApplicationIncludesCertification(CertificationType.ITE) && numOfEducationRequired++;
 
       return numOfEducationRequired;
     },

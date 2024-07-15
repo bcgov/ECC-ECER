@@ -9,7 +9,7 @@
             You must enter all required information in a valid format before submitting your application
           </p>
         </div>
-        <div>
+        <div v-if="editable">
           <v-tooltip v-model="show" location="top">
             <template #activator="{ props }">
               <v-btn icon="mdi-pencil" v-bind="props" :color="isValid ? 'primary' : 'error'" variant="plain" @click="setWizard(portalStage)" />
@@ -47,6 +47,11 @@ export default defineComponent({
     portalStage: {
       type: String as PropType<Components.Schemas.PortalStage>,
       required: true,
+    },
+    editable: {
+      type: Boolean,
+      required: false,
+      default: true,
     },
   },
   setup: () => {

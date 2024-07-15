@@ -100,8 +100,7 @@ export default defineComponent({
   },
   methods: {
     handleStartNewApplication() {
-      this.applicationStore.upsertDraftApplication();
-      this.$router.push("/application");
+      this.$router.push({ name: "application-certification" });
     },
     handleManageApplication() {
       this.$router.push({ name: "manageApplication", params: { applicationId: this.applicationStore?.application?.id } });
