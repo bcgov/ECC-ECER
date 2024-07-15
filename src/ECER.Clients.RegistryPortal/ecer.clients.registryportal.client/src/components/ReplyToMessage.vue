@@ -35,7 +35,7 @@
               <UploadFileItem
                 v-for="(file, index) in selectedFiles"
                 :key="index"
-                :file="file.file"
+                :file-item="file"
                 :upload-progress="file.progress"
                 @delete-file="removeFile"
               />
@@ -70,24 +70,19 @@ import { v4 as uuidv4 } from "uuid";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
-import { uploadFile } from "@/api/file";
+import { deleteFile, uploadFile } from "@/api/file";
 import { sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import PageContainer from "@/components/PageContainer.vue";
-import UploadFileItem from "@/components/UploadFileItem.vue";
+import UploadFileItem, { type FileItem } from "@/components/UploadFileItem.vue";
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useMessageStore } from "@/store/message";
 import * as Rules from "@/utils/formRules";
 import * as Functions from "@/utils/functions";
 
-interface FileProgress {
-  file: File;
-  progress: number;
-}
-
 interface ReplyToMessageData {
-  selectedFiles: FileProgress[];
+  selectedFiles: FileItem[];
   text: string;
   Rules: any;
   showCloseDialog: boolean;
@@ -145,35 +140,38 @@ export default defineComponent({
             this.alertStore.setFailureAlert("File type must be PDF.");
             continue; // Skip this file and continue with the next one
           }
-          if (this.selectedFiles.some((f: FileProgress) => f.file.name === file.name)) {
+          if (this.selectedFiles.some((f: FileItem) => f.file.name === file.name)) {
             this.alertStore.setFailureAlert("File with the same name already exists.");
             continue; // Skip this file and continue with the next one
           }
-          this.selectedFiles.push({ file, progress: 0 });
-          this.uploadFileWithProgress(file);
+          const fileId = uuidv4(); // Generate a unique file ID using uuid
+          const selectedFile = { file, progress: 0, fileId };
+          this.selectedFiles.push(selectedFile);
+          this.uploadFileWithProgress(selectedFile);
         }
       }
     },
-    async uploadFileWithProgress(file: File) {
-      const fileId = uuidv4(); // Generate a unique file ID using uuid
+    async uploadFileWithProgress(selectedFile: FileItem) {
       const fileClassification = "document";
-      const fileTags = this.formatFileTags(file);
+      const fileTags = this.formatFileTags(selectedFile.file);
       try {
-        const response = await uploadFile(fileId, file, fileClassification, fileTags, (progressEvent: AxiosProgressEvent) => {
+        const response = await uploadFile(selectedFile.fileId, selectedFile.file, fileClassification, fileTags, (progressEvent: AxiosProgressEvent) => {
+          const fileIndex = this.selectedFiles.findIndex((f: FileItem) => f.fileId === selectedFile.fileId);
           const total = progressEvent.total ? progressEvent.total : 10485760;
           const progress = Math.round((progressEvent.loaded * 100) / total);
-          const fileIndex = this.selectedFiles.findIndex((f: FileProgress) => f.file === file);
           if (fileIndex > -1) {
             this.selectedFiles[fileIndex].progress = progress;
           }
         });
-
-        if (!response.data) {
-          this.removeFile(file);
+        if (response.data) {
+          const fileIndex = this.selectedFiles.findIndex((f: FileItem) => f.fileId === selectedFile.fileId);
+          this.selectedFiles[fileIndex].progress = 101; // means API call was successful
+        } else {
+          this.removeFile(selectedFile);
           this.alertStore.setFailureAlert("An error occurred during file upload");
         }
       } catch (error) {
-        this.removeFile(file);
+        this.removeFile(selectedFile);
         this.alertStore.setFailureAlert("An error occurred during file upload");
         console.log(error);
       }
@@ -188,13 +186,17 @@ export default defineComponent({
         Size: fileSize,
         Format: fileFormat,
       };
-
       return Object.entries(tags)
         .map(([key, value]) => `${key}=${value}`)
         .join(",");
     },
-    removeFile(file: File) {
-      this.selectedFiles = this.selectedFiles.filter((f: FileProgress) => f.file !== file);
+    async removeFile(selectedFile: FileItem) {
+      try {
+        this.selectedFiles = this.selectedFiles.filter((f: FileItem) => f.fileId !== selectedFile.fileId);
+        const response = await deleteFile(selectedFile.fileId);
+      } catch (error) {
+        this.alertStore.setFailureAlert("An error occurred during file deletion.");
+      }
     },
     triggerFileInput() {
       (this.$refs.fileInput as any).click();

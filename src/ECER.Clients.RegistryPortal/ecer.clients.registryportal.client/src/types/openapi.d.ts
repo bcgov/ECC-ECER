@@ -201,6 +201,15 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
+    /**
+     * file Response
+     */
+    export interface FileResponse {
+      /**
+       *
+       */
+      fileId?: string | null;
+    }
     export interface HttpValidationProblemDetails {
       [name: string]: any;
       type?: string | null;
@@ -354,15 +363,6 @@ declare namespace Components {
       | "Other";
     export interface UpdateReferenceResponse {
       referenceId?: string | null;
-    }
-    /**
-     * upload file Response
-     */
-    export interface UploadFileResponse {
-      /**
-       *
-       */
-      fileId?: string | null;
     }
     export interface UserInfo {
       firstName?: string | null;
@@ -595,6 +595,19 @@ declare namespace Paths {
       export type $200 = Components.Schemas.ApplicationConfiguration;
     }
   }
+  namespace DeleteFile {
+    namespace Parameters {
+      export type FileId = string;
+    }
+    export interface PathParameters {
+      fileId: Parameters.FileId;
+    }
+    namespace Responses {
+      export type $200 = /* file Response */ Components.Schemas.FileResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace DraftapplicationDelete {
     namespace Parameters {
       export type Id = string;
@@ -694,7 +707,7 @@ declare namespace Paths {
     }
     export type RequestBody = string; // binary
     namespace Responses {
-      export type $200 = /* upload file Response */ Components.Schemas.UploadFileResponse;
+      export type $200 = /* file Response */ Components.Schemas.FileResponse;
       export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
@@ -818,6 +831,14 @@ export interface OperationMethods {
     data?: Paths.UploadFile.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.UploadFile.Responses.$200>;
+  /**
+   * delete_file - Handles delete uploaded file request
+   */
+  "delete_file"(
+    parameters?: Parameters<Paths.DeleteFile.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.DeleteFile.Responses.$200>;
   /**
    * message_get - Handles messages queries
    */
@@ -1034,6 +1055,14 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
   };
   ["/api/files/{fileId}"]: {
+    /**
+     * delete_file - Handles delete uploaded file request
+     */
+    "delete"(
+      parameters?: Parameters<Paths.DeleteFile.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.DeleteFile.Responses.$200>;
     /**
      * upload_file - Handles upload file request
      */

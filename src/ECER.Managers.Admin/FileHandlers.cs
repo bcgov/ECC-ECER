@@ -8,7 +8,7 @@ using System.Collections.Concurrent;
 namespace ECER.Managers.Admin;
 
 public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfiguration configuration)
-  : IRequestHandler<SaveFileCommand>, IRequestHandler<FileQuery, FileQueryResults>
+  : IRequestHandler<SaveFileCommand>, IRequestHandler<DeleteFileCommand>, IRequestHandler<FileQuery, FileQueryResults>
 
 {
   public async Task Handle(SaveFileCommand request, CancellationToken cancellationToken)
@@ -24,6 +24,13 @@ public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfigur
       };
       await objectStorageProvider.StoreAsync(new S3Descriptor(bucket, file.FileLocation.Id, file.FileLocation.Folder), new FileObject(file.FileName, file.ContentType, file.Content, tags), ct);
     });
+  }
+
+  public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var bucket = GetBucketName(configuration);
+    await objectStorageProvider.DeleteAsync(new S3Descriptor(bucket, request.Item.FileLocation.Id, request.Item.FileLocation.Folder), cancellationToken);
   }
 
   public async Task<FileQueryResults> Handle(FileQuery request, CancellationToken cancellationToken)
