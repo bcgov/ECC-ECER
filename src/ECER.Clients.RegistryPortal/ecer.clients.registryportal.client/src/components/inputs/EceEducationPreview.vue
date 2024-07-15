@@ -104,7 +104,7 @@ export default defineComponent({
       return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.education.form.inputs.educationList.id];
     },
     getLabelOnCertificateType() {
-      if (this.applicationStore.draftApplication.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
+      if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR)) {
         return "Program";
       } else {
         return "Course";

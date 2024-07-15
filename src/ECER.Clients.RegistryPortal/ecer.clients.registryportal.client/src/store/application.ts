@@ -50,6 +50,9 @@ export const useApplicationStore = defineStore("application", {
         }, 0) ?? 0
       );
     },
+    draftApplicationIncludesCertification: (state) => {
+      return (certificationType: Components.Schemas.CertificationType) => state.draftApplication.certificationTypes?.includes(certificationType);
+    },
   },
   actions: {
     async fetchApplications() {

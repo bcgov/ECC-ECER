@@ -48,11 +48,6 @@ import { defineComponent } from "vue";
 import type { VForm } from "vuetify/components/VForm";
 
 import Breadcrumb from "@/components/Breadcrumb.vue";
-import ECEAssistantRequirements from "@/components/ECEAssistantRequirements.vue";
-import ECEFiveYearRequirements from "@/components/ECEFiveYearRequirements.vue";
-import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
-import IteRequirements from "@/components/IteRequirements.vue";
-import SneRequirements from "@/components/SneRequirements.vue";
 import certificationOptions from "@/config/certification-types";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -64,11 +59,6 @@ import * as Rules from "@/utils/formRules";
 export default defineComponent({
   name: "CertificationType",
   components: {
-    ECEAssistantRequirements,
-    ECEOneYearRequirements,
-    ECEFiveYearRequirements,
-    SneRequirements,
-    IteRequirements,
     Breadcrumb,
   },
 
@@ -78,19 +68,19 @@ export default defineComponent({
     const alertStore = useAlertStore();
 
     // If props.modelValue contains "Ite" or "Sne", set the subSelection to those values
-    if (applicationStore.draftApplication.certificationTypes?.includes(CertificationType.ITE)) {
+    if (applicationStore.draftApplicationIncludesCertification(CertificationType.ITE)) {
       certificationTypeStore.subSelection.push(CertificationType.ITE);
     }
-    if (applicationStore.draftApplication.certificationTypes?.includes(CertificationType.SNE)) {
+    if (applicationStore.draftApplicationIncludesCertification(CertificationType.SNE)) {
       certificationTypeStore.subSelection.push(CertificationType.SNE);
     }
 
     // Set selection to value in props.modelValue
-    if (applicationStore.draftApplication.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
+    if (applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR)) {
       certificationTypeStore.selection = CertificationType.FIVE_YEAR;
-    } else if (applicationStore.draftApplication.certificationTypes?.includes(CertificationType.ECE_ASSISTANT)) {
+    } else if (applicationStore.draftApplicationIncludesCertification(CertificationType.ECE_ASSISTANT)) {
       certificationTypeStore.selection = CertificationType.ECE_ASSISTANT;
-    } else if (applicationStore.draftApplication.certificationTypes?.includes(CertificationType.ONE_YEAR)) {
+    } else if (applicationStore.draftApplicationIncludesCertification(CertificationType.ONE_YEAR)) {
       certificationTypeStore.selection = CertificationType.ONE_YEAR;
     }
 

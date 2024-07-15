@@ -40,17 +40,17 @@ export default defineComponent({
   computed: {
     certificationType() {
       let certificationType = "";
-      if (this.applicationStore.draftApplication.certificationTypes?.includes(CertificationType.ECE_ASSISTANT)) {
+      if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.ECE_ASSISTANT)) {
         certificationType = "ECE Assistant";
-      } else if (this.applicationStore.draftApplication.certificationTypes?.includes(CertificationType.ONE_YEAR)) {
+      } else if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.ONE_YEAR)) {
         certificationType = "One Year";
-      } else if (this.applicationStore.draftApplication.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
+      } else if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR)) {
         certificationType = "Five Year";
 
-        if (this.applicationStore.draftApplication?.certificationTypes?.includes(CertificationType.SNE)) {
+        if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.SNE)) {
           certificationType += " and Special Needs Educator (SNE)";
         }
-        if (this.applicationStore.draftApplication?.certificationTypes?.includes(CertificationType.ITE)) {
+        if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.ITE)) {
           certificationType += " and Infant and Toddler Educator (ITE)";
         }
       }

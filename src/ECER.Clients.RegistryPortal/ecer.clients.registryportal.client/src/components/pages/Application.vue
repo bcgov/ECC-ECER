@@ -2,9 +2,7 @@
   <Wizard
     :ref="'wizard'"
     :wizard="
-      applicationStore.draftApplication.certificationTypes?.includes(CertificationType.FIVE_YEAR)
-        ? applicationWizardFiveYear
-        : applicationWizardAssistantAndOneYear
+      applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR) ? applicationWizardFiveYear : applicationWizardAssistantAndOneYear
     "
   >
     <template #header>
@@ -76,7 +74,7 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    if (applicationStore.draftApplication.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
+    if (applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR)) {
       await wizardStore.initializeWizard(applicationWizardFiveYear, applicationStore.draftApplication);
     } else {
       await wizardStore.initializeWizard(applicationWizardAssistantAndOneYear, applicationStore.draftApplication);

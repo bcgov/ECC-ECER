@@ -187,7 +187,7 @@ export default defineComponent({
       return Object.keys(this.modelValue).length + 1;
     },
     getLabelOnCertificateType() {
-      if (this.applicationStore.draftApplication?.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
+      if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR)) {
         return "Program";
       } else {
         return "Course";
@@ -196,8 +196,8 @@ export default defineComponent({
     numOfEducationRequired() {
       let numOfEducationRequired = 1;
 
-      this.applicationStore.draftApplication?.certificationTypes?.includes(CertificationType.SNE) && numOfEducationRequired++;
-      this.applicationStore.draftApplication?.certificationTypes?.includes(CertificationType.ITE) && numOfEducationRequired++;
+      this.applicationStore.draftApplicationIncludesCertification(CertificationType.SNE) && numOfEducationRequired++;
+      this.applicationStore.draftApplicationIncludesCertification(CertificationType.ITE) && numOfEducationRequired++;
 
       return numOfEducationRequired;
     },

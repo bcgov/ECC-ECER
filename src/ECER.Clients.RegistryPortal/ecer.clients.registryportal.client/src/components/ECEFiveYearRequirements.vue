@@ -62,7 +62,6 @@
 import { defineComponent } from "vue";
 
 import { useApplicationStore } from "@/store/application";
-import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "ECEFiveYearRequirements",
@@ -72,18 +71,15 @@ export default defineComponent({
   },
   methods: {
     generateTitle() {
-      if (this.hasCertificationType("Ite") && this.hasCertificationType("Sne")) {
+      if (this.applicationStore.draftApplicationIncludesCertification("Ite") && this.applicationStore.draftApplicationIncludesCertification("Sne")) {
         return "Requirements for ECE Five Year Certification, SNE and ITE";
-      } else if (this.hasCertificationType("Ite")) {
+      } else if (this.applicationStore.draftApplicationIncludesCertification("Ite")) {
         return "Requirements for ECE Five Year Certification and ITE";
-      } else if (this.hasCertificationType("Sne")) {
+      } else if (this.applicationStore.draftApplicationIncludesCertification("Sne")) {
         return "Requirements for ECE Five Year Certification and SNE";
       } else {
         return "Requirements for ECE Five Year Certification";
       }
-    },
-    hasCertificationType(type: Components.Schemas.CertificationType) {
-      return this.applicationStore.draftApplication.certificationTypes?.includes(type);
     },
   },
 });
