@@ -2,7 +2,7 @@ import type { Wizard } from "@/types/wizard";
 
 import characterReferencesForm from "./character-references-form";
 import educationForm from "./education-form";
-import previewForm from "./preview-form-assistant-and-one-year";
+import previewFormFiveYear from "./preview-form-five-year";
 import profileInformationForm from "./profile-information-form";
 import referencesForm from "./references-form";
 
@@ -36,7 +36,7 @@ const applicationWizard: Wizard = {
     review: {
       stage: "Review",
       title: "Preview & Submit",
-      form: previewForm,
+      form: previewFormFiveYear,
       key: "item.5",
     },
   },
