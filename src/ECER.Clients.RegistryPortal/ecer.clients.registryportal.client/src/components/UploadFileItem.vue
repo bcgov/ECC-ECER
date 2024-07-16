@@ -4,8 +4,8 @@
       <!-- File Name and Size -->
       <v-col cols="4">
         <div class="d-flex justify-start">
-          <p class="text-truncate">{{ file.name }}</p>
-          <p class="text-no-wrap">&nbsp;({{ Functions.humanFileSize(file.size) }})</p>
+          <p class="text-truncate">{{ fileItem.file.name }}</p>
+          <p class="text-no-wrap">&nbsp;({{ Functions.humanFileSize(fileItem.file.size) }})</p>
         </div>
       </v-col>
 
@@ -19,7 +19,7 @@
       <v-col cols="4" class="d-flex justify-end">
         <v-tooltip text="Delete" location="top">
           <template #activator="{ props }">
-            <v-btn v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteFile" />
+            <v-btn v-if="isUploadComplete" v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteFile" />
           </template>
         </v-tooltip>
       </v-col>
@@ -29,15 +29,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 
 import * as Functions from "@/utils/functions";
+
+export interface FileItem {
+  file: File;
+  fileId: string;
+  progress: number;
+}
 
 export default defineComponent({
   name: "UploadFileItem",
   props: {
-    file: {
-      type: File,
+    fileItem: {
+      type: Object as PropType<FileItem>,
       required: true,
     },
     uploadProgress: {
@@ -53,13 +59,13 @@ export default defineComponent({
   },
   computed: {
     isUploadComplete() {
-      return this.uploadProgress >= 100;
+      return this.uploadProgress > 100; // 101 means api call was successful
     },
   },
   methods: {
     deleteFile() {
       // Emit the delete-file event with the file as payload
-      this.$emit("delete-file", this.$props.file);
+      this.$emit("delete-file", this.$props.fileItem);
     },
   },
 });

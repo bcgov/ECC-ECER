@@ -75,16 +75,6 @@ export const useWizardStore = defineStore("wizard", {
       }
 
       this.wizardData = {
-        // Certification Type step data
-        [wizard.steps.certificationType.form.inputs.certificationSelection.id]: draftApplication.certificationTypes,
-
-        // Declaration & Consent step data
-        [wizard.steps.declaration.form.inputs.applicantLegalName.id]: userStore.fullName,
-        [wizard.steps.declaration.form.inputs.signedDate.id]: draftApplication.signedDate
-          ? new Date(draftApplication.signedDate).toISOString().slice(0, 10)
-          : new Date().toLocaleDateString("en-CA"),
-        [wizard.steps.declaration.form.inputs.consentCheckbox.id]: draftApplication.signedDate ? true : false,
-
         // Contact Information step data
         [wizard.steps.profile.form.inputs.legalLastName.id]: userStore.userProfile?.lastName || oidcUserInfo?.lastName,
         [wizard.steps.profile.form.inputs.legalFirstName.id]: userStore.userProfile?.firstName || oidcUserInfo?.firstName,
@@ -107,8 +97,8 @@ export const useWizardStore = defineStore("wizard", {
           ? draftApplication?.characterReferences
           : [],
 
-        // Work References step data
-        [wizard.steps.workReference.form.inputs.referenceList.id]: workReferencesDict,
+        // wizard data may not have referenceList depending on the certification type. So we need to hardcode the value.
+        referenceList: workReferencesDict,
       };
     },
     initializeWizardForCharacterReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {

@@ -12,7 +12,7 @@ const uploadFile = async (
   fileClassification: string,
   fileTag?: string,
   onUploadProgress?: (progressEvent: AxiosProgressEvent) => void,
-): Promise<ApiResponse<Components.Schemas.UploadFileResponse>> => {
+): Promise<ApiResponse<Components.Schemas.FileResponse>> => {
   const client = await getClient();
 
   const parameters: Paths.UploadFile.PathParameters & Paths.UploadFile.HeaderParameters = {
@@ -32,7 +32,23 @@ const uploadFile = async (
     },
     onUploadProgress,
   };
-  return apiResultHandler.execute<Components.Schemas.UploadFileResponse>({ request: client.upload_file(parameters, formData as unknown as string, config) });
+  return apiResultHandler.execute<Components.Schemas.FileResponse>({ request: client.upload_file(parameters, formData as unknown as string, config) });
 };
 
-export { uploadFile };
+const deleteFile = async (fileId: string): Promise<ApiResponse<Paths.DeleteFile.Responses.$200>> => {
+  const client = await getClient();
+
+  const parameters: Paths.DeleteFile.PathParameters = {
+    fileId,
+  };
+
+  const config: AxiosRequestConfig = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  return apiResultHandler.execute<Paths.DeleteFile.Responses.$200>({ request: client.delete_file(parameters, null, config) });
+};
+
+export { deleteFile, uploadFile };

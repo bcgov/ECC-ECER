@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Communication Line Item
+	/// Status of the Communication Content
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_communicationlineitem_statecode
+	public enum ecer_communicationcontent_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Communication Line Item
+	/// Reason for the status of the Communication Content
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_CommunicationLineItem_StatusCode
+	public enum ecer_CommunicationContent_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -42,14 +42,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Inactive = 2,
 	}
 	
+	/// <summary>
+	/// template contents for Communication messages
+	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_communicationlineitem")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_communicationcontent")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_CommunicationLineItem : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_CommunicationContent : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_communicationlineitem entity
+		/// Available fields, a the time of codegen, for the ecer_communicationcontent entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,14 +63,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_Communicationid = "ecer_communicationid";
-			public const string ecer_CommunicationidName = "ecer_communicationidname";
-			public const string ecer_communicationlineitem_Communicationid = "ecer_communicationlineitem_Communicationid";
-			public const string ecer_CommunicationLineItemId = "ecer_communicationlineitemid";
-			public const string Id = "ecer_communicationlineitemid";
+			public const string ecer_communication_PresetContentsId = "ecer_communication_PresetContentsId";
+			public const string ecer_CommunicationContentId = "ecer_communicationcontentid";
+			public const string Id = "ecer_communicationcontentid";
+			public const string ecer_CommunicationType = "ecer_communicationtype";
+			public const string ecer_communicationtypeName = "ecer_communicationtypename";
 			public const string ecer_DisplayOrder = "ecer_displayorder";
+			public const string ecer_For = "ecer_for";
+			public const string ecer_forName = "ecer_forname";
+			public const string ecer_DoNotReply = "ecer_donotreply";
+			public const string ecer_donotreplyName = "ecer_donotreplyname";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_TEXT = "ecer_text";
+			public const string ecer_Text = "ecer_text";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -94,19 +101,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CommunicationLineItem(System.Guid id) : 
+		public ecer_CommunicationContent(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CommunicationLineItem(string keyName, object keyValue) : 
+		public ecer_CommunicationContent(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CommunicationLineItem(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_CommunicationContent(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -115,22 +122,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CommunicationLineItem() : 
+		public ecer_CommunicationContent() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_communicationlineitemid";
+		public const string PrimaryIdAttribute = "ecer_communicationcontentid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_CommunicationLineItem";
+		public const string EntitySchemaName = "ecer_CommunicationContent";
 		
-		public const string EntityLogicalName = "ecer_communicationlineitem";
+		public const string EntityLogicalName = "ecer_communicationcontent";
 		
-		public const string EntityLogicalCollectionName = "ecer_communicationlineitems";
+		public const string EntityLogicalCollectionName = "ecer_communicationcontents";
 		
-		public const string EntitySetName = "ecer_communicationlineitems";
+		public const string EntitySetName = "ecer_communicationcontents";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -244,53 +251,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_Communicationid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_communicationid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_communicationid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationidname")]
-		public string ecer_CommunicationidName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_communicationid"))
-				{
-					return this.FormattedValues["ecer_communicationid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationlineitemid")]
-		public System.Nullable<System.Guid> ecer_CommunicationLineItemId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationcontentid")]
+		public System.Nullable<System.Guid> ecer_CommunicationContentId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_communicationlineitemid");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_communicationcontentid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_communicationlineitemid", value);
+				this.SetAttributeValue("ecer_communicationcontentid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -302,7 +277,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationlineitemid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationcontentid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -313,7 +288,74 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_CommunicationLineItemId = value;
+				this.ecer_CommunicationContentId = value;
+			}
+		}
+		
+		/// <summary>
+		/// If template used, copy setting to Communication record
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_donotreply")]
+		public System.Nullable<bool> ecer_DoNotReply
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_donotreply");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_donotreply", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_donotreplyname")]
+		public string ecer_donotreplyName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_donotreply"))
+				{
+					return this.FormattedValues["ecer_donotreply"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationtype")]
+		public virtual ecer_CommunicationTypes? ecer_CommunicationType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_CommunicationTypes?)(EntityOptionSetEnum.GetEnum(this, "ecer_communicationtype")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_communicationtype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationtypename")]
+		public string ecer_communicationtypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_communicationtype"))
+				{
+					return this.FormattedValues["ecer_communicationtype"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -329,6 +371,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_displayorder", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_for")]
+		public virtual ecer_InitiatedFrom? ecer_For
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_InitiatedFrom?)(EntityOptionSetEnum.GetEnum(this, "ecer_for")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_for", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_forname")]
+		public string ecer_forName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_for"))
+				{
+					return this.FormattedValues["ecer_for"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -348,7 +422,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_text")]
-		public string ecer_TEXT
+		public string ecer_Text
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -625,15 +699,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Communication Line Item
+		/// Status of the Communication Content
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_communicationlineitem_statecode? StateCode
+		public virtual ecer_communicationcontent_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_communicationlineitem_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_communicationcontent_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -660,15 +734,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Communication Line Item
+		/// Reason for the status of the Communication Content
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_CommunicationLineItem_StatusCode? StatusCode
+		public virtual ecer_CommunicationContent_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_CommunicationLineItem_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_CommunicationContent_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -744,21 +818,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// N:1 ecer_communicationlineitem_Communicationid
+		/// 1:N ecer_communication_PresetContentsId
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communicationlineitem_Communicationid")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_Communication ecer_communicationlineitem_Communicationid
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_PresetContentsId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Communication> ecer_communication_PresetContentsId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communicationlineitem_Communicationid", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_PresetContentsId", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communicationlineitem_Communicationid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_PresetContentsId", null, value);
 			}
 		}
 		
@@ -767,7 +840,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CommunicationLineItem(object anonymousType) : 
+		public ecer_CommunicationContent(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -785,9 +858,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_communicationlineitemid"] = base.Id;
+                        Attributes["ecer_communicationcontentid"] = base.Id;
                         break;
-                    case "ecer_communicationlineitemid":
+                    case "ecer_communicationcontentid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

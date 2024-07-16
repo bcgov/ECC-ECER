@@ -65,14 +65,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_CertificationNumberPlanning = "ecer_certificationnumberplanning";
 			public const string ecer_ChildAge = "ecer_childage";
+			public const string ecer_firstname = "ecer_firstname";
 			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
 			public const string ecer_investigationplanninginvolvedperson_Inves = "ecer_investigationplanninginvolvedperson_Inves";
 			public const string ecer_InvestigationPlanningInvolvedPersonId = "ecer_investigationplanninginvolvedpersonid";
 			public const string Id = "ecer_investigationplanninginvolvedpersonid";
 			public const string ecer_involvedpersonnumber = "ecer_involvedpersonnumber";
+			public const string ecer_lastname = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_RegistrationNumberPlanning = "ecer_registrationnumberplanning";
 			public const string ecer_Role = "ecer_role";
 			public const string ecer_roleName = "ecer_rolename";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -281,6 +282,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_firstname")]
+		public string ecer_firstname
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_firstname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_firstname", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_Investigation
 		{
@@ -369,6 +385,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lastname")]
+		public string ecer_lastname
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_lastname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_lastname", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -381,21 +412,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrationnumberplanning")]
-		public string ecer_RegistrationNumberPlanning
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_registrationnumberplanning");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_registrationnumberplanning", value);
 			}
 		}
 		

@@ -36,13 +36,15 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     private ecer_Communication testCommunication3 = null!;
     private ecer_Communication testCommunication4 = null!;
 
-    private ecer_PortalInvitation testPortalInvitationOne = null!;
-    private ecer_PortalInvitation testPortalInvitationCharacterReferenceSubmit = null!;
-    private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceSubmit = null!;
-    private ecer_PortalInvitation testPortalInvitationCharacterReferenceOptout = null!;
-    private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceOptout = null!;
-    private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceCompleted = null!;
-    private Contact authenticatedBcscUser2 = null!;
+  private ecer_Certificate testCertification = null!;
+
+  private ecer_PortalInvitation testPortalInvitationOne = null!;
+  private ecer_PortalInvitation testPortalInvitationCharacterReferenceSubmit = null!;
+  private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceSubmit = null!;
+  private ecer_PortalInvitation testPortalInvitationCharacterReferenceOptout = null!;
+  private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceOptout = null!;
+  private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceCompleted = null!;
+  private Contact authenticatedBcscUser2 = null!;
 
     private ecer_PreviousName previousName = null!;
 
@@ -57,33 +59,35 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     public string inProgressApplicationId => inProgressTestApplication.Id.ToString();
     public string draftTestApplicationId => draftTestApplication.Id.ToString();
 
-    public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
-    public Guid portalInvitationCharacterReferenceIdSubmit => testPortalInvitationCharacterReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
-    public Guid portalInvitationWorkExperienceReferenceIdSubmit => testPortalInvitationWorkExperienceReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
-    public Guid portalInvitationCharacterReferenceIdOptout => testPortalInvitationCharacterReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
-    public Guid portalInvitationWorkExperienceReferenceIdOptout => testPortalInvitationWorkExperienceReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
-    public Guid portalInvitationWorkExperienceReferenceIdCompleted => testPortalInvitationWorkExperienceReferenceCompleted.ecer_PortalInvitationId ?? Guid.Empty;
-    public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
-    public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
-    private ecer_Application inProgressTestApplication2 = null!;
-    private ecer_Application draftTestApplication2 = null!;
-    private ecer_Application draftTestApplication3 = null!;
-    private ecer_Application submittedTestApplication = null!;
-    private ecer_Application submittedTestApplication2 = null!;
-    private ecer_Application submittedTestApplication3 = null!;
-    private ecer_Application submittedTestApplication4 = null!;
-    private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef = null!;
-    private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef2 = null!;
-    private ecer_CharacterReference submittedTestApplicationCharacterRef = null!;
-    public string inprogressTestApplicationId2 => inProgressTestApplication2.Id.ToString();
-    public string draftTestApplicationId2 => draftTestApplication2.Id.ToString();
-    public string draftTestApplicationId3 => draftTestApplication3.Id.ToString();
-    public string submittedTestApplicationId => submittedTestApplication.Id.ToString();
-    public string submittedTestApplicationId2 => submittedTestApplication2.Id.ToString();
-    public string submittedTestApplicationId3 => submittedTestApplication3.Id.ToString();
-    public string submittedTestApplicationId4 => submittedTestApplication4.Id.ToString();
-    public string submittedTestApplicationWorkExperienceRefId => submittedTestApplicationWorkExperienceRef.Id.ToString();
-    public string submittedTestApplicationWorkExperienceRefId2 => submittedTestApplicationWorkExperienceRef2.Id.ToString();
+  public string certificationOneId => testCertification.Id.ToString();
+
+  public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationCharacterReferenceIdSubmit => testPortalInvitationCharacterReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationWorkExperienceReferenceIdSubmit => testPortalInvitationWorkExperienceReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationCharacterReferenceIdOptout => testPortalInvitationCharacterReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationWorkExperienceReferenceIdOptout => testPortalInvitationWorkExperienceReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
+  public Guid portalInvitationWorkExperienceReferenceIdCompleted => testPortalInvitationWorkExperienceReferenceCompleted.ecer_PortalInvitationId ?? Guid.Empty;
+  public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
+  public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
+  private ecer_Application inProgressTestApplication2 = null!;
+  private ecer_Application draftTestApplication2 = null!;
+  private ecer_Application draftTestApplication3 = null!;
+  private ecer_Application submittedTestApplication = null!;
+  private ecer_Application submittedTestApplication2 = null!;
+  private ecer_Application submittedTestApplication3 = null!;
+  private ecer_Application submittedTestApplication4 = null!;
+  private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef = null!;
+  private ecer_WorkExperienceRef submittedTestApplicationWorkExperienceRef2 = null!;
+  private ecer_CharacterReference submittedTestApplicationCharacterRef = null!;
+  public string inprogressTestApplicationId2 => inProgressTestApplication2.Id.ToString();
+  public string draftTestApplicationId2 => draftTestApplication2.Id.ToString();
+  public string draftTestApplicationId3 => draftTestApplication3.Id.ToString();
+  public string submittedTestApplicationId => submittedTestApplication.Id.ToString();
+  public string submittedTestApplicationId2 => submittedTestApplication2.Id.ToString();
+  public string submittedTestApplicationId3 => submittedTestApplication3.Id.ToString();
+  public string submittedTestApplicationId4 => submittedTestApplication4.Id.ToString();
+  public string submittedTestApplicationWorkExperienceRefId => submittedTestApplicationWorkExperienceRef.Id.ToString();
+  public string submittedTestApplicationWorkExperienceRefId2 => submittedTestApplicationWorkExperienceRef2.Id.ToString();
 
     public string submittedTestApplicationCharacterRefId => submittedTestApplicationCharacterRef.Id.ToString();
 
@@ -131,6 +135,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2", null);
         testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3", null);
         testCommunication4 = GetOrAddCommunication(context, inProgressTestApplication, "comm4", null);
+        testCertification = GetOrAddCertification(context);
         previousName = GetOrAddPreviousName(context, authenticatedBcscUser);
         testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
         testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
@@ -189,29 +194,29 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         return contact;
     }
 
-    private ecer_PreviousName GetOrAddPreviousName(EcerContext context, Contact applicant)
+  private ecer_PreviousName GetOrAddPreviousName(EcerContext context, Contact applicant)
+  {
+    var previousName = (from p in context.ecer_PreviousNameSet
+                        where p.ecer_Contactid.Id == applicant.Id
+                        select p).FirstOrDefault();
+
+    if (previousName == null)
     {
-        var previousName = (from p in context.ecer_PreviousNameSet
-                            where p.ecer_Contactid.Id == applicant.Id
-                            select p).FirstOrDefault();
-
-        if (previousName == null)
-        {
-            previousName = new ecer_PreviousName
-            {
-                Id = Guid.NewGuid(),
-                ecer_Source = ecer_PreviousNameSources.Transcript,
-                ecer_FirstName = "Previously",
-                ecer_MiddleName = "I",
-                ecer_LastName = "Was",
-                ecer_PreferredName = "Longtimeago",
-            };
-            context.AddObject(previousName);
-            context.AddLink(previousName, ecer_PreviousName.Fields.ecer_previousname_Contactid, applicant);
-        }
-
-        return previousName;
+      previousName = new ecer_PreviousName
+      {
+        Id = Guid.NewGuid(),
+        ecer_Source = ecer_PreviousNameSources.Transcript,
+        ecer_FirstName = "Previously",
+        ecer_MiddleName = "I",
+        ecer_LastName = "Was",
+        ecer_PreferredName = "Longtimeago",
+      };
+      context.AddObject(previousName);
+      context.AddLink(previousName, ecer_PreviousName.Fields.ecer_previousname_Contactid, applicant);
     }
+
+    return previousName;
+  }
 
     private ecer_Application GetOrAddApplication(EcerContext context, Contact applicant, ecer_Application_StatusCode status)
     {
@@ -318,13 +323,42 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         return communication;
     }
 
-    private ecer_PortalInvitation GetOrAddPortalInvitation_CharacterReference(EcerContext context, Contact registrant, string name)
+  private ecer_Certificate GetOrAddCertification(EcerContext context)
+  {
+    var certification = context.ecer_CertificateSet.FirstOrDefault(c => c.ecer_CertificateNumber == "4321");
+
+    if (certification == null)
     {
-        var portalInvitation = context.ecer_PortalInvitationSet.FirstOrDefault(p => p.ecer_ApplicantId != null &&
-                                                                                    p.ecer_ApplicationId != null &&
-                                                                                    p.ecer_Name == name &&
-                                                                                    p.ecer_CharacterReferenceId != null &&
-                                                                                    p.StatusCode == ecer_PortalInvitation_StatusCode.Sent);
+      certification = new ecer_Certificate
+      {
+        Id = Guid.NewGuid(),
+        ecer_CertificateNumber = "4321",
+        StatusCode = ecer_Certificate_StatusCode.Active,
+      };
+      context.AddObject(certification);
+
+      var level = new ecer_CertifiedLevel
+      {
+        Id = Guid.NewGuid(),
+      };
+      context.AddObject(level);
+
+      var type = context.ecer_CertificateTypeSet.First();
+
+      context.AddLink(certification, ecer_Certificate.Fields.ecer_certifiedlevel_CertificateId, level);
+      context.AddLink(level, ecer_CertifiedLevel.Fields.ecer_certifiedlevel_CertificateTypeId, type);
+    }
+
+    return certification;
+  }
+
+  private ecer_PortalInvitation GetOrAddPortalInvitation_CharacterReference(EcerContext context, Contact registrant, string name)
+  {
+    var portalInvitation = context.ecer_PortalInvitationSet.FirstOrDefault(p => p.ecer_ApplicantId != null &&
+                                                                                p.ecer_ApplicationId != null &&
+                                                                                p.ecer_Name == name &&
+                                                                                p.ecer_CharacterReferenceId != null &&
+                                                                                p.StatusCode == ecer_PortalInvitation_StatusCode.Sent);
 
         if (portalInvitation == null)
         {

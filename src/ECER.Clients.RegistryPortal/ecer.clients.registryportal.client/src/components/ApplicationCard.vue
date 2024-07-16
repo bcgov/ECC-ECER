@@ -71,8 +71,12 @@ export default defineComponent({
     title(): string {
       switch (this.applicationStore.application?.status) {
         case "Draft":
-          return "Application in progress";
         case "Submitted":
+        case "InProgress":
+        case "Escalated":
+        case "PendingQueue":
+        case "Ready":
+        case "Pending":
           return "Application in progress";
         default:
           return "Apply for ECE Certification";
@@ -83,6 +87,11 @@ export default defineComponent({
         case "Draft":
           return `Started ${formatDate(this.applicationStore.application?.createdOn || "", "LLLL d, yyyy")}`;
         case "Submitted":
+        case "InProgress":
+        case "Escalated":
+        case "PendingQueue":
+        case "Ready":
+        case "Pending":
           return `Submitted ${formatDate(this.applicationStore.application?.submittedOn || "", "LLLL d, yyyy")}`;
         default:
           return "There are different types of certifications you can apply for. Visit the B.C. government website to learn about the types of Early Childhood Educator (ECE) certificates and which one you may qualify for.";
@@ -91,8 +100,7 @@ export default defineComponent({
   },
   methods: {
     handleStartNewApplication() {
-      this.applicationStore.upsertDraftApplication();
-      this.$router.push("/application");
+      this.$router.push({ name: "application-certification" });
     },
     handleManageApplication() {
       this.$router.push({ name: "manageApplication", params: { applicationId: this.applicationStore?.application?.id } });

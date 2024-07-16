@@ -79,6 +79,24 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
+    export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Reprinted" | "Suspended";
+    export interface Certification {
+      id?: string | null;
+      number?: string | null;
+      expiryDate?: string | null; // date-time
+      effectiveDate?: string | null; // date-time
+      date?: string | null; // date-time
+      printDate?: string | null; // date-time
+      hasConditions?: boolean | null;
+      levelName?: string | null;
+      statusCode?: CertificateStatusCode;
+      ineligibleReference?: YesNoNull;
+      levels?: CertificationLevel[] | null;
+    }
+    export interface CertificationLevel {
+      id?: string | null;
+      type?: string | null;
+    }
     export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
     export interface CharacterReference {
       firstName?: string | null;
@@ -184,6 +202,15 @@ declare namespace Components {
        * The application id
        */
       applicationId?: string | null;
+    }
+    /**
+     * file Response
+     */
+    export interface FileResponse {
+      /**
+       *
+       */
+      fileId?: string | null;
     }
     export interface GetMessagesResponse {
       communications?: Communication[] | null;
@@ -344,15 +371,6 @@ declare namespace Components {
     export interface UpdateReferenceResponse {
       referenceId?: string | null;
     }
-    /**
-     * upload file Response
-     */
-    export interface UploadFileResponse {
-      /**
-       *
-       */
-      fileId?: string | null;
-    }
     export interface UserInfo {
       firstName?: string | null;
       lastName?: string | null;
@@ -446,6 +464,7 @@ declare namespace Components {
       recaptchaToken?: string | null;
     }
     export type WorkHoursType = "FullTime" | "PartTime";
+    export type YesNoNull = "No" | "Yes";
   }
 }
 declare namespace Paths {
@@ -546,6 +565,18 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
+  namespace CertificationGet {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id?: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.Certification[];
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
   namespace CharacterReferencePost {
     export type RequestBody = Components.Schemas.CharacterReferenceSubmissionRequest;
     namespace Responses {
@@ -569,6 +600,19 @@ declare namespace Paths {
   namespace ConfigurationGet {
     namespace Responses {
       export type $200 = Components.Schemas.ApplicationConfiguration;
+    }
+  }
+  namespace DeleteFile {
+    namespace Parameters {
+      export type FileId = string;
+    }
+    export interface PathParameters {
+      fileId: Parameters.FileId;
+    }
+    namespace Responses {
+      export type $200 = /* file Response */ Components.Schemas.FileResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
     }
   }
   namespace DraftapplicationDelete {
@@ -678,7 +722,7 @@ declare namespace Paths {
     }
     export type RequestBody = string; // binary
     namespace Responses {
-      export type $200 = /* upload file Response */ Components.Schemas.UploadFileResponse;
+      export type $200 = /* file Response */ Components.Schemas.FileResponse;
       export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
@@ -803,6 +847,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.UploadFile.Responses.$200>;
   /**
+   * delete_file - Handles delete uploaded file request
+   */
+  "delete_file"(
+    parameters?: Parameters<Paths.DeleteFile.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.DeleteFile.Responses.$200>;
+  /**
    * message_get - Handles messages queries
    */
   "message_get"(
@@ -834,6 +886,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.MessageStatusGet.Responses.$200>;
+  /**
+   * certification_get - Handles certification queries
+   */
+  "certification_get"(
+    parameters?: Parameters<Paths.CertificationGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CertificationGet.Responses.$200>;
   /**
    * draftapplication_put - Save a draft application for the current user
    */
@@ -1011,6 +1071,14 @@ export interface PathsDictionary {
   };
   ["/api/files/{fileId}"]: {
     /**
+     * delete_file - Handles delete uploaded file request
+     */
+    "delete"(
+      parameters?: Parameters<Paths.DeleteFile.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.DeleteFile.Responses.$200>;
+    /**
      * upload_file - Handles upload file request
      */
     "post"(
@@ -1058,6 +1126,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.MessageStatusGet.Responses.$200>;
+  };
+  ["/api/certifications/{id}"]: {
+    /**
+     * certification_get - Handles certification queries
+     */
+    "get"(
+      parameters?: Parameters<Paths.CertificationGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CertificationGet.Responses.$200>;
   };
   ["/api/draftapplications/{id}"]: {
     /**

@@ -105,6 +105,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_AddMoreWorkExperienceReference = "ecer_addmoreworkexperiencereference";
 			public const string ecer_addmoreworkexperiencereferenceName = "ecer_addmoreworkexperiencereferencename";
 			public const string ecer_AlternatePhoneNumber = "ecer_alternatephonenumber";
+			public const string ecer_AppealPeriodEndDate = "ecer_appealperiodenddate";
 			public const string ecer_ApplicantAge = "ecer_applicantage";
 			public const string ecer_ApplicantFullName = "ecer_applicantfullname";
 			public const string ecer_Applicantid = "ecer_applicantid";
@@ -167,6 +168,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EscalatetoTeamLead = "ecer_escalatetoteamlead";
 			public const string ecer_escalatetoteamleadName = "ecer_escalatetoteamleadname";
 			public const string ecer_ExplanationLetter = "ecer_explanationletter";
+			public const string ecer_GenerateAssessment = "ecer_generateassessment";
+			public const string ecer_generateassessmentName = "ecer_generateassessmentname";
 			public const string ecer_GenerateCertificateRecord = "ecer_generatecertificaterecord";
 			public const string ecer_generatecertificaterecordName = "ecer_generatecertificaterecordname";
 			public const string ecer_guardianreference_Applicationid = "ecer_guardianreference_Applicationid";
@@ -239,6 +242,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ReadyforAssessment = "ecer_readyforassessment";
 			public const string ecer_ReadyforAssessmentDate = "ecer_readyforassessmentdate";
 			public const string ecer_readyforassessmentName = "ecer_readyforassessmentname";
+			public const string ecer_ReconsiderationPeriodEndDate = "ecer_reconsiderationperiodenddate";
 			public const string ecer_ReferenceLetterSent = "ecer_referencelettersent";
 			public const string ecer_referencelettersentName = "ecer_referencelettersentname";
 			public const string ecer_renewalassessment_ApplicationId = "ecer_renewalassessment_ApplicationId";
@@ -534,6 +538,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_alternatephonenumber", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appealperiodenddate")]
+		public System.Nullable<System.DateTime> ecer_AppealPeriodEndDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_appealperiodenddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_appealperiodenddate", value);
 			}
 		}
 		
@@ -1365,6 +1384,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_explanationletter", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generateassessment")]
+		public System.Nullable<bool> ecer_GenerateAssessment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_generateassessment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_generateassessment", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generateassessmentname")]
+		public string ecer_generateassessmentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_generateassessment"))
+				{
+					return this.FormattedValues["ecer_generateassessment"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -2446,6 +2497,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationperiodenddate")]
+		public System.Nullable<System.DateTime> ecer_ReconsiderationPeriodEndDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_reconsiderationperiodenddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationperiodenddate", value);
 			}
 		}
 		

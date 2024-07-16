@@ -2,6 +2,7 @@
 
 namespace ECER.Managers.Admin.Contract.Files;
 public record SaveFileCommand(IEnumerable<FileData> Items) : IRequest;
+public record DeleteFileCommand(FileData Item) : IRequest;
 
 public record FileQuery(IEnumerable<FileLocation> FileLocations) : IRequest<FileQueryResults>;
 
