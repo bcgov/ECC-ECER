@@ -28,7 +28,7 @@ const applicationWizard: Wizard = {
     },
     review: {
       stage: "Review",
-      title: "Preview and Submit",
+      title: "Review and Submit",
       form: previewFormAssistantAndOneYear,
       key: "item.4",
     },
