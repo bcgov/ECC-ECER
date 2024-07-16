@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-btn prepend-icon="mdi-close" variant="text" text="Close" @click="showCloseDialog = true"></v-btn>
         <hr class="w-full" />
-        <h1 class="mt-5">{{ messageThreadSubject }}</h1>
+        <h1 class="mt-5">Re: {{ messageThreadSubject }}</h1>
         <v-row class="mt-5">
           <v-col>
             <div>Message</div>
@@ -51,10 +51,11 @@
     </v-row>
   </PageContainer>
   <ConfirmationDialog
-    :cancel-button-text="'Cancel'"
+    :cancel-button-text="'Continue editing'"
     :accept-button-text="'Delete message'"
     :title="'Delete Message?'"
     :show="showCloseDialog"
+    :is-cancel-button-first="true"
     @cancel="showCloseDialog = false"
     @accept="router.push('/messages')"
   >

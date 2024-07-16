@@ -43,6 +43,10 @@ export default defineComponent({
         this.messageStore.currentMessage = null;
         this.messageStore.currentThread = null;
         this.fetchMessages(newValue);
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       },
     },
   },

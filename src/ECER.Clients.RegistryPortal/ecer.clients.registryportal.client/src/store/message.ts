@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 
-import { markMessageAsRead } from "@/api/message";
 import { useUserStore } from "@/store/user"; // Adjust the path to your useUserStore file
 import type { Components } from "@/types/openapi";
 
@@ -26,10 +25,6 @@ export const useMessageStore = defineStore("message", {
   actions: {
     messageById(id: string): Components.Schemas.Communication | undefined {
       return this.messages?.find((message) => message.id === id);
-    },
-
-    async markMessageAsRead(messageId: string) {
-      await markMessageAsRead(messageId);
     },
   },
 });
