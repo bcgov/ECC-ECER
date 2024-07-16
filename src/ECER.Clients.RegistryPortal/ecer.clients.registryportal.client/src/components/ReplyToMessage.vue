@@ -55,7 +55,6 @@
     :accept-button-text="'Delete message'"
     :title="'Delete Message?'"
     :show="showCloseDialog"
-    :is-cancel-button-first="true"
     @cancel="showCloseDialog = false"
     @accept="router.push('/messages')"
   >
