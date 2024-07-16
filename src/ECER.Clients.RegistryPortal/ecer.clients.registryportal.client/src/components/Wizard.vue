@@ -1,6 +1,6 @@
 <template>
   <slot name="header"></slot>
-  <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :non-linear="true" :elevation="0">
+  <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :elevation="0">
     <slot v-if="!$vuetify.display.mobile" name="stepperHeader">
       <v-stepper-header v-if="showSteps">
         <template v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage">
