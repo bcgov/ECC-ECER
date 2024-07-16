@@ -705,6 +705,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
 			public const string ecer_UnderInvestigation = "ecer_underinvestigation";
 			public const string ecer_underinvestigationName = "ecer_underinvestigationname";
+			public const string ecer_workexperienceassessment_ReferenceContactId = "ecer_workexperienceassessment_ReferenceContactId";
 			public const string ecer_workexperienceref_Applicantid = "ecer_workexperienceref_Applicantid";
 			public const string EducationCode = "educationcode";
 			public const string EducationCodeName = "educationcodename";
@@ -7636,6 +7637,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_transcript_Applicantid_Contact", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_workexperienceassessment_ReferenceContactId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_workexperienceassessment_ReferenceContactId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment> ecer_workexperienceassessment_ReferenceContactId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment>("ecer_workexperienceassessment_ReferenceContactId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceAssessment>("ecer_workexperienceassessment_ReferenceContactId", null, value);
 			}
 		}
 		

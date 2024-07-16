@@ -29,6 +29,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum ecer_Investigation_ecer_Immediate_action_type
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Suspension = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		TCs = 621870000,
+	}
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_Investigation_ecer_IntakeType
 	{
 		
@@ -388,6 +400,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_HealthOfRegistrant = "ecer_healthofregistrant";
 			public const string ecer_healthofregistrantName = "ecer_healthofregistrantname";
 			public const string ecer_IdNumber = "ecer_idnumber";
+			public const string ecer_Immediate_action_type = "ecer_immediate_action_type";
+			public const string ecer_immediate_action_typeName = "ecer_immediate_action_typename";
 			public const string ecer_ImmediateAction = "ecer_immediateaction";
 			public const string ecer_immediateactionName = "ecer_immediateactionname";
 			public const string ecer_ImmediateActionReason = "ecer_immediateactionreason";
@@ -402,7 +416,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_intaketypeName = "ecer_intaketypename";
 			public const string ecer_investigation_CharacterReferenceId_ecer_c = "ecer_investigation_CharacterReferenceId_ecer_c";
 			public const string Referencingecer_investigation_primaryid = "ecer_investigation_primaryid";
-			public const string ecer_Investigation_ecer_Investigation_ecer_Investigation = "ecer_Investigation_ecer_Investigation_ecer_Investigation";
 			public const string ecer_investigation_WorkExperienceReferenceId_e = "ecer_investigation_WorkExperienceReferenceId_e";
 			public const string ecer_InvestigationComplexity = "ecer_investigationcomplexity";
 			public const string ecer_investigationcomplexityName = "ecer_investigationcomplexityname";
@@ -438,6 +451,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_NoGapsIdentified = "ecer_nogapsidentified";
 			public const string ecer_nogapsidentifiedName = "ecer_nogapsidentifiedname";
 			public const string ecer_Notes = "ecer_notes";
+			public const string ecer_NoticeofInvestigationTemplateContent = "ecer_noticeofinvestigationtemplatecontent";
 			public const string ecer_OccupationalCompetencies = "ecer_occupationalcompetencies";
 			public const string ecer_occupationalcompetenciesName = "ecer_occupationalcompetenciesname";
 			public const string ecer_OpenApplication = "ecer_openapplication";
@@ -2801,6 +2815,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediate_action_type")]
+		public virtual ecer_Investigation_ecer_Immediate_action_type? ecer_Immediate_action_type
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_Investigation_ecer_Immediate_action_type?)(EntityOptionSetEnum.GetEnum(this, "ecer_immediate_action_type")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_immediate_action_type", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediate_action_typename")]
+		public string ecer_immediate_action_typeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_immediate_action_type"))
+				{
+					return this.FormattedValues["ecer_immediate_action_type"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateaction")]
 		public virtual ecer_immediateaction? ecer_ImmediateAction
 		{
@@ -3417,6 +3463,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_notes", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_noticeofinvestigationtemplatecontent")]
+		public string ecer_NoticeofInvestigationTemplateContent
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_noticeofinvestigationtemplatecontent");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_noticeofinvestigationtemplatecontent", value);
 			}
 		}
 		
@@ -5326,42 +5387,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationParallelProcessCommunication>("ecer_parallelprocesscommunicationinvestigation", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:N ecer_Investigation_ecer_Investigation_ecer_Investigation
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_Investigation_ecer_Investigation_ecer_Investigation", Microsoft.Xrm.Sdk.EntityRole.Referencing)]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Investigation> Referencingecer_Investigation_ecer_Investigation_ecer_Investigation
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_Investigation_ecer_Investigation_ecer_Investigation", Microsoft.Xrm.Sdk.EntityRole.Referencing);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_Investigation_ecer_Investigation_ecer_Investigation", Microsoft.Xrm.Sdk.EntityRole.Referencing, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:N ecer_Investigation_ecer_Investigation_ecer_Investigation
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_Investigation_ecer_Investigation_ecer_Investigation", Microsoft.Xrm.Sdk.EntityRole.Referenced)]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Investigation> Referencedecer_Investigation_ecer_Investigation_ecer_Investigation
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_Investigation_ecer_Investigation_ecer_Investigation", Microsoft.Xrm.Sdk.EntityRole.Referenced);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_Investigation_ecer_Investigation_ecer_Investigation", Microsoft.Xrm.Sdk.EntityRole.Referenced, value);
 			}
 		}
 		
