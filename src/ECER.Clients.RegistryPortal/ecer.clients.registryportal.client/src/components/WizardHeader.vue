@@ -8,17 +8,17 @@
             <a href="#" class="text-white" @click.prevent="toggleChangeCertificationConfirmation">Click to change certification</a>
           </div>
           <div>
-            <v-btn v-if="showSaveButton" variant="outlined" @click="saveAndExit">Save and exit</v-btn>
+            <v-btn v-if="showSaveButton" variant="outlined" :loading="loadingStore.isLoading('draftapplication_put')" @click="saveAndExit">Save and exit</v-btn>
           </div>
         </v-col>
       </v-row>
     </v-container>
     <ConfirmationDialog
-      @accept="changeCertification"
-      @cancel="toggleChangeCertificationConfirmation"
       :show="showConfirmation"
       title="Are you sure you want to change the type?"
       accept-button-text="Change type"
+      @accept="changeCertification"
+      @cancel="toggleChangeCertificationConfirmation"
     >
       <template #confirmation-text>
         <div class="pb-3">When you change the type of certification you're applying for</div>
@@ -35,20 +35,14 @@
 import { defineComponent } from "vue";
 
 import { useApplicationStore } from "@/store/application";
-import ConfirmationDialog from "./ConfirmationDialog.vue";
+import { useLoadingStore } from "@/store/loading";
 
 import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHeader.vue";
+import ConfirmationDialog from "./ConfirmationDialog.vue";
 
 export default defineComponent({
   name: "WizardHeader",
   components: { ApplicationCertificationTypeHeader, ConfirmationDialog },
-  setup() {
-    const applicationStore = useApplicationStore();
-
-    return {
-      applicationStore,
-    };
-  },
   props: {
     handleSaveDraft: {
       type: Function,
@@ -58,6 +52,15 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+  },
+  setup() {
+    const applicationStore = useApplicationStore();
+    const loadingStore = useLoadingStore();
+
+    return {
+      applicationStore,
+      loadingStore,
+    };
   },
   data: () => ({
     items: [
@@ -79,11 +82,11 @@ export default defineComponent({
     toggleChangeCertificationConfirmation() {
       this.showConfirmation = !this.showConfirmation;
     },
-    saveAndExit() {
-      this.handleSaveDraft();
+    async saveAndExit() {
+      await this.handleSaveDraft();
       this.$router.push({ name: "dashboard" });
     },
-    changeCertification() {
+    async changeCertification() {
       this.showConfirmation = false;
       this.$router.push({ name: "application-certification" });
     },

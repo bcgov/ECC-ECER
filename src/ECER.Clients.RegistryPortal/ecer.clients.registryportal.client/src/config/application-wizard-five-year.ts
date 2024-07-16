@@ -11,7 +11,7 @@ const applicationWizard: Wizard = {
   steps: {
     profile: {
       stage: "ContactInformation",
-      title: "Contact Information",
+      title: "Contact information",
       form: profileInformationForm,
       key: "item.1",
     },
@@ -23,19 +23,19 @@ const applicationWizard: Wizard = {
     },
     characterReferences: {
       stage: "CharacterReferences",
-      title: "Character Reference",
+      title: "Character references",
       form: characterReferencesForm,
       key: "item.3",
     },
     workReference: {
       stage: "WorkReferences",
-      title: "Work Experience References",
+      title: "Work experience references",
       form: referencesForm,
       key: "item.4",
     },
     review: {
       stage: "Review",
-      title: "Preview & Submit",
+      title: "Preview and submit",
       form: previewFormFiveYear,
       key: "item.5",
     },
