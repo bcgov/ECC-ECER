@@ -22,14 +22,8 @@
           <v-card-actions>
             <v-row>
               <v-col class="text-right d-flex flex-row justify-end flex-wrap">
-                <div v-if="isCancelButtonFirst">
-                  <v-btn class="ma-0" color="primary" variant="outlined" @click="cancel">{{ cancelButtonText }}</v-btn>
-                  <v-btn color="primary" variant="flat" @click="accept">{{ acceptButtonText }}</v-btn>
-                </div>
-                <div v-if="!isCancelButtonFirst">
-                  <v-btn class="ma-0" color="primary" variant="outlined" @click="accept">{{ acceptButtonText }}</v-btn>
-                  <v-btn color="primary" variant="flat" @click="cancel">{{ cancelButtonText }}</v-btn>
-                </div>
+                <v-btn class="ma-0" variant="outlined" @click="cancel">{{ cancelButtonText }}</v-btn>
+                <v-btn color="primary" variant="flat" @click="accept">{{ acceptButtonText }}</v-btn>
               </v-col>
             </v-row>
           </v-card-actions>
@@ -72,10 +66,6 @@ export default defineComponent({
       default: "outlined",
     },
     disabled: {
-      type: Boolean,
-      default: false,
-    },
-    isCancelButtonFirst: {
       type: Boolean,
       default: false,
     },

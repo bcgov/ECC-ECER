@@ -29,6 +29,9 @@ const vuetify = createVuetify({
       mdi,
     },
   },
+  display: {
+    mobileBreakpoint: "sm",
+  },
   components,
   directives,
 });
