@@ -14,8 +14,8 @@
         ></v-text-field>
         <v-text-field
           v-model="program"
-          :rules="[Rules.required(`Enter the name of your ${getLabelOnCertificateType.toLowerCase()}`)]"
-          :label="`Name of ${getLabelOnCertificateType}`"
+          :rules="[Rules.required('Enter the name of your program or course')]"
+          label="Name of program or course"
           variant="outlined"
           color="primary"
           maxlength="100"
@@ -50,8 +50,8 @@
         ></v-text-field>
         <v-text-field
           v-model="startYear"
-          :rules="[Rules.required(`Enter the start date of your ${getLabelOnCertificateType.toLowerCase()}`)]"
-          :label="`Start Date of ${getLabelOnCertificateType}`"
+          :rules="[Rules.required('Enter the start date of your program or course')]"
+          label="Start Date of program or course"
           type="date"
           variant="outlined"
           color="primary"
@@ -60,8 +60,8 @@
         ></v-text-field>
         <v-text-field
           v-model="endYear"
-          :rules="[Rules.required(`Enter the end date of your ${getLabelOnCertificateType.toLowerCase()}`)]"
-          :label="`End Date of ${getLabelOnCertificateType}`"
+          :rules="[Rules.required('Enter the end date of your program or course')]"
+          label="End Date of program or course"
           type="date"
           variant="outlined"
           color="primary"
@@ -117,7 +117,6 @@ import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
-import { CertificationType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 
@@ -186,18 +185,11 @@ export default defineComponent({
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
     },
-    getLabelOnCertificateType() {
-      if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR)) {
-        return "Program";
-      } else {
-        return "Course";
-      }
-    },
     numOfEducationRequired() {
       let numOfEducationRequired = 1;
 
-      this.applicationStore.draftApplicationIncludesCertification(CertificationType.SNE) && numOfEducationRequired++;
-      this.applicationStore.draftApplicationIncludesCertification(CertificationType.ITE) && numOfEducationRequired++;
+      this.applicationStore.isDraftCertificateTypeSne && numOfEducationRequired++;
+      this.applicationStore.isDraftCertificateTypeIte && numOfEducationRequired++;
 
       return numOfEducationRequired;
     },

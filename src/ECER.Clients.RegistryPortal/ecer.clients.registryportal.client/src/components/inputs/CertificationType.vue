@@ -68,19 +68,19 @@ export default defineComponent({
     const alertStore = useAlertStore();
 
     // If props.modelValue contains "Ite" or "Sne", set the subSelection to those values
-    if (applicationStore.draftApplicationIncludesCertification(CertificationType.ITE)) {
+    if (applicationStore.isDraftCertificateTypeIte) {
       certificationTypeStore.subSelection.push(CertificationType.ITE);
     }
-    if (applicationStore.draftApplicationIncludesCertification(CertificationType.SNE)) {
+    if (applicationStore.isDraftCertificateTypeSne) {
       certificationTypeStore.subSelection.push(CertificationType.SNE);
     }
 
     // Set selection to value in props.modelValue
-    if (applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR)) {
+    if (applicationStore.isDraftCertificateTypeFiveYears) {
       certificationTypeStore.selection = CertificationType.FIVE_YEAR;
-    } else if (applicationStore.draftApplicationIncludesCertification(CertificationType.ECE_ASSISTANT)) {
+    } else if (applicationStore.isDraftCertificateTypeEceAssistant) {
       certificationTypeStore.selection = CertificationType.ECE_ASSISTANT;
-    } else if (applicationStore.draftApplicationIncludesCertification(CertificationType.ONE_YEAR)) {
+    } else if (applicationStore.isDraftCertificateTypeOneYear) {
       certificationTypeStore.selection = CertificationType.ONE_YEAR;
     }
 

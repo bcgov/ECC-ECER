@@ -71,11 +71,11 @@ export default defineComponent({
   },
   methods: {
     generateTitle() {
-      if (this.applicationStore.draftApplicationIncludesCertification("Ite") && this.applicationStore.draftApplicationIncludesCertification("Sne")) {
+      if (this.applicationStore.isDraftCertificateTypeIte && this.applicationStore.isDraftCertificateTypeSne) {
         return "Requirements for ECE Five Year Certification, SNE and ITE";
-      } else if (this.applicationStore.draftApplicationIncludesCertification("Ite")) {
+      } else if (this.applicationStore.isDraftCertificateTypeIte) {
         return "Requirements for ECE Five Year Certification and ITE";
-      } else if (this.applicationStore.draftApplicationIncludesCertification("Sne")) {
+      } else if (this.applicationStore.isDraftCertificateTypeSne) {
         return "Requirements for ECE Five Year Certification and SNE";
       } else {
         return "Requirements for ECE Five Year Certification";
