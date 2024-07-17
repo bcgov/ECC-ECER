@@ -80,7 +80,7 @@ export default defineComponent({
           alternateContactPhone: this.formStore.formData[profileInformationForm.inputs.alternateContactNumber.id],
         });
 
-        if (success) {
+        if (!error) {
           this.alertStore.setSuccessAlert("You have successfully edited your profile information.");
           this.userStore.setUserInfo({
             firstName: this.formStore.formData[profileInformationForm.inputs.legalFirstName.id],
