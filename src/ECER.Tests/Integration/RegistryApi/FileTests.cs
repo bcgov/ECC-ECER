@@ -3,6 +3,7 @@ using Alba;
 using Bogus;
 using Xunit.Abstractions;
 using Xunit.Categories;
+using Xunit.Sdk;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
@@ -77,6 +78,18 @@ public class FileTests : RegistryPortalWebAppScenarioBase
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
       _.Delete.Url($"/api/files/{testFileId}");
+      _.StatusCodeShouldBeOk();
+    });
+  }
+
+  [Fact]
+  [Category("VPN")]
+  public async Task CanDownloadCertificateFile()
+  {
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url($"/api/files/certificate/854c5086-c542-ef11-a316-000d3af45c14");
       _.StatusCodeShouldBeOk();
     });
   }
