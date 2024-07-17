@@ -28,7 +28,7 @@
             <div></div>
             <v-row justify="end">
               <v-btn rounded="lg" variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
-              <v-btn rounded="lg" color="primary" :disabled="!isValid" @click="submit">Save and Continue</v-btn>
+              <v-btn rounded="lg" color="primary" :disabled="!isValid" @click="submit">Save and continue</v-btn>
             </v-row>
           </div>
         </v-form>

@@ -1,15 +1,24 @@
 <template>
-  <Wizard :ref="'wizard'" :wizard="applicationWizard">
+  <Wizard :ref="'wizard'" :wizard="applicationStore.isDraftCertificateTypeFiveYears ? applicationWizardFiveYear : applicationWizardAssistantAndOneYear">
     <template #header>
-      <WizardHeader class="mb-6" />
+      <WizardHeader class="mb-6" :handle-save-draft="handleSaveAsDraft" :show-save-button="showSaveButtons" />
     </template>
     <template #stepperHeader>
-      <v-stepper-header>
-        <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
-          <v-stepper-item color="primary" :step="wizardStore.step" :value="index + 1" :title="step.title"></v-stepper-item>
-          <v-divider v-if="index !== Object.values(wizardStore.steps).length - 1" :key="`divider-${index}`" />
-        </template>
-      </v-stepper-header>
+      <v-container>
+        <v-stepper-header class="elevation-0">
+          <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
+            <v-stepper-item
+              color="primary"
+              :step="wizardStore.step"
+              :value="index + 1"
+              :title="step.title"
+              :editable="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'"
+              :complete="index + 1 < wizardStore.step"
+            ></v-stepper-item>
+            <v-divider v-if="index !== Object.values(wizardStore.steps).length - 1" :key="`divider-${index}`" />
+          </template>
+        </v-stepper-header>
+      </v-container>
     </template>
     <template #PrintPreview>
       <v-btn rounded="lg" variant="text" @click="printPage()">
@@ -18,28 +27,22 @@
       </v-btn>
     </template>
     <template #actions>
-      <v-container class="mb-8">
-        <v-row class="justify-space-between ga-4" no-gutters>
-          <v-col cols="auto" class="mr-auto">
-            <v-btn
-              :disabled="wizardStore.step === 1 && certificationTypeStore.mode === 'selection'"
-              rounded="lg"
-              variant="outlined"
-              color="primary"
-              aut
-              @click="handleBack"
-            >
-              Back
-            </v-btn>
-          </v-col>
-          <v-col cols="auto">
-            <v-btn v-if="showSaveButtons" rounded="lg" variant="outlined" color="primary" class="mr-4" primary @click="handleSaveAsDraft">Save as Draft</v-btn>
-            <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and Continue</v-btn>
-            <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
-              Submit Application
-            </v-btn>
-          </v-col>
-        </v-row>
+      <v-container>
+        <v-btn
+          v-if="$vuetify.display.mobile"
+          :disabled="wizardStore.step === 1"
+          rounded="lg"
+          variant="outlined"
+          color="primary"
+          class="mr-3"
+          @click="handleBack"
+        >
+          Back
+        </v-btn>
+        <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and continue</v-btn>
+        <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
+          Submit Application
+        </v-btn>
       </v-container>
     </template>
   </Wizard>
@@ -51,10 +54,10 @@ import { defineComponent } from "vue";
 import { getProfile, putProfile } from "@/api/profile";
 import Wizard from "@/components/Wizard.vue";
 import WizardHeader from "@/components/WizardHeader.vue";
-import applicationWizard from "@/config/application-wizard";
+import applicationWizardAssistantAndOneYear from "@/config/application-wizard-assistant-and-one-year";
+import applicationWizardFiveYear from "@/config/application-wizard-five-year";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
-import { useCertificationTypeStore } from "@/store/certificationType";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
@@ -69,7 +72,6 @@ export default defineComponent({
     const userStore = useUserStore();
     const alertStore = useAlertStore();
     const applicationStore = useApplicationStore();
-    const certificationTypeStore = useCertificationTypeStore();
     const loadingStore = useLoadingStore();
 
     // Refresh userProfile from the server
@@ -78,11 +80,21 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    certificationTypeStore.$reset();
+    if (applicationStore.isDraftCertificateTypeFiveYears) {
+      await wizardStore.initializeWizard(applicationWizardFiveYear, applicationStore.draftApplication);
+    } else {
+      await wizardStore.initializeWizard(applicationWizardAssistantAndOneYear, applicationStore.draftApplication);
+    }
 
-    await wizardStore.initializeWizard(applicationWizard, applicationStore.draftApplication);
-
-    return { applicationWizard, applicationStore, wizardStore, alertStore, userStore, certificationTypeStore, loadingStore };
+    return {
+      applicationStore,
+      wizardStore,
+      alertStore,
+      userStore,
+      loadingStore,
+      applicationWizardFiveYear,
+      applicationWizardAssistantAndOneYear,
+    };
   },
   computed: {
     showSaveButtons() {
@@ -112,19 +124,10 @@ export default defineComponent({
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       } else {
         switch (this.wizardStore.currentStepStage) {
-          case "CertificationType":
-            if (this.certificationTypeStore.mode == "selection") {
-              this.certificationTypeStore.mode = "terms";
-            } else {
-              this.saveDraftAndAlertSuccess();
-              this.incrementWizard();
-            }
-            break;
           case "ContactInformation":
             this.saveProfile();
             this.incrementWizard();
             break;
-          case "Declaration":
           case "Education":
           case "WorkReferences":
           case "CharacterReferences":
@@ -145,11 +148,6 @@ export default defineComponent({
     },
     handleBack() {
       switch (this.wizardStore.currentStepStage) {
-        case "CertificationType":
-          if (this.certificationTypeStore.mode == "terms") {
-            this.certificationTypeStore.mode = "selection";
-          }
-          break;
         default:
           this.applicationStore.saveDraft();
           this.decrementWizard();
@@ -171,35 +169,35 @@ export default defineComponent({
     async handleSaveAsDraft() {
       switch (this.wizardStore.currentStepStage) {
         case "ContactInformation":
-          this.saveProfile();
+          await this.saveProfile();
           break;
         default:
-          this.saveDraftAndAlertSuccess();
+          await this.saveDraftAndAlertSuccess();
           break;
       }
     },
     async saveProfile() {
       const { error } = await putProfile({
-        firstName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalFirstName.id],
-        middleName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalMiddleName.id],
-        preferredName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.preferredName.id],
-        lastName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalLastName.id],
-        dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
-        residentialAddress: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.addresses.id][AddressType.RESIDENTIAL],
-        mailingAddress: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.addresses.id][AddressType.MAILING],
-        email: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.email.id],
-        phone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.primaryContactNumber.id],
-        alternateContactPhone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.alternateContactNumber.id],
+        firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
+        middleName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalMiddleName.id],
+        preferredName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.preferredName.id],
+        lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalLastName.id],
+        dateOfBirth: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id],
+        residentialAddress: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.addresses.id][AddressType.RESIDENTIAL],
+        mailingAddress: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.addresses.id][AddressType.MAILING],
+        email: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.email.id],
+        phone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.primaryContactNumber.id],
+        alternateContactPhone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.alternateContactNumber.id],
       });
 
       if (!error) {
         this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
         this.userStore.setUserInfo({
-          firstName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalFirstName.id],
-          lastName: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.legalLastName.id],
-          email: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.email.id],
-          phone: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.primaryContactNumber.id],
-          dateOfBirth: this.wizardStore.wizardData[applicationWizard.steps.profile.form.inputs.dateOfBirth.id],
+          firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
+          lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalLastName.id],
+          email: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.email.id],
+          phone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.primaryContactNumber.id],
+          dateOfBirth: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id],
         });
       }
     },

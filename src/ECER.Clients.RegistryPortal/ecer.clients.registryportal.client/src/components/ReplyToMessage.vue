@@ -193,7 +193,7 @@ export default defineComponent({
     async removeFile(selectedFile: FileItem) {
       try {
         this.selectedFiles = this.selectedFiles.filter((f: FileItem) => f.fileId !== selectedFile.fileId);
-        const response = await deleteFile(selectedFile.fileId);
+        await deleteFile(selectedFile.fileId);
       } catch (error) {
         this.alertStore.setFailureAlert("An error occurred during file deletion.");
       }
