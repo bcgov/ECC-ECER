@@ -46,15 +46,19 @@ export default defineComponent({
       return formatDate(String(this.message.notifiedOn), "LLL d, yyyy t");
     },
   },
+
   methods: {
     formatDate,
     async handleClick() {
       this.messageStore.currentMessage = this.message;
-      this.messageStore.currentThread = (await getChildMessages({ parentId: this.message.id! })).data?.communications;
+      this.loadChildMessages(this.message.id!);
       if (!this.message.acknowledged) {
         await markMessageAsRead(this.message.id ?? "");
         this.$emit("message-read", this.message.id);
       }
+    },
+    async loadChildMessages(messageId: string) {
+      this.messageStore.currentThread = (await getChildMessages({ parentId: messageId })).data?.communications;
     },
   },
 });

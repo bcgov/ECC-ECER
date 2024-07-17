@@ -40,8 +40,7 @@ export default defineComponent({
       },
       set(newValue: number) {
         this.page = newValue;
-        this.messageStore.currentMessage = null;
-        this.messageStore.currentThread = null;
+        this.resetMessageStore();
         this.fetchMessages(newValue);
         window.scrollTo({
           top: 0,
@@ -51,6 +50,7 @@ export default defineComponent({
     },
   },
   mounted() {
+    this.resetMessageStore();
     this.fetchMessages(this.page);
   },
   methods: {
@@ -62,6 +62,10 @@ export default defineComponent({
       const response = await getMessages(params);
       this.messages = response.data?.communications || [];
       this.messageCount = response.data?.totalMessagesCount || 0;
+    },
+    async resetMessageStore() {
+      this.messageStore.currentMessage = null;
+      this.messageStore.currentThread = null;
     },
   },
 });

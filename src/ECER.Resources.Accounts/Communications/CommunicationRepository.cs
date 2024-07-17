@@ -108,6 +108,7 @@ internal class CommunicationRepository : ICommunicationRepository
 
       ecerCommunication.ecer_CommunicationId = Guid.NewGuid();
       ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.PortalUser;
+      ecerCommunication.ecer_NotifyRecipient = true;
       context.AddObject(ecerCommunication);
       context.AddLink(registrant, ecer_Communication.Fields.ecer_contact_ecer_communication_122, ecerCommunication);
       var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
