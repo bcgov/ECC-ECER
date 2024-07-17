@@ -89,7 +89,7 @@ public class FileTests : RegistryPortalWebAppScenarioBase
     await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Get.Url($"/api/files/certificate/854c5086-c542-ef11-a316-000d3af45c14");
+      _.Get.Url($"/api/files/certificate/854c5086-c542-ef11-a316-000d3af45c14"); // Static certificate with generated pdf file in dynamics
       _.StatusCodeShouldBeOk();
     });
   }
