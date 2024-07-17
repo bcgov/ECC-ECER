@@ -44,7 +44,7 @@
         >
           Back
         </v-btn>
-        <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and Continue</v-btn>
+        <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and continue</v-btn>
         <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
           Submit Application
         </v-btn>
