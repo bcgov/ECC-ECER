@@ -67,7 +67,7 @@ export default defineComponent({
       if (!valid) {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       } else {
-        const success = await putProfile({
+        const { error } = await putProfile({
           firstName: this.formStore.formData[profileInformationForm.inputs.legalFirstName.id],
           middleName: this.formStore.formData[profileInformationForm.inputs.legalMiddleName.id],
           preferredName: this.formStore.formData[profileInformationForm.inputs.preferredName.id],
