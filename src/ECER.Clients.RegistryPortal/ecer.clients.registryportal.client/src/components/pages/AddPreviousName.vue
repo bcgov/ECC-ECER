@@ -1,12 +1,6 @@
 <template>
   <PageContainer>
-    <v-row>
-      <v-col cols="12">
-        <v-breadcrumbs class="pa-0" :items="items" color="primary">
-          <template #divider>/</template>
-        </v-breadcrumbs>
-      </v-col>
-    </v-row>
+    <Breadcrumb :items="items" />
     <v-row>
       <v-col>
         <Alert v-model="duplicatePreviousName" type="error" prominent>
@@ -56,6 +50,7 @@ import { useRouter } from "vue-router";
 
 import { getProfile, putProfile } from "@/api/profile";
 import Alert from "@/components/Alert.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import EceForm from "@/components/Form.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import previousNameForm from "@/config/previous-name-form";
@@ -67,7 +62,7 @@ import type { Components } from "@/types/openapi";
 
 export default {
   name: "AddPreviousName",
-  components: { PageContainer, EceForm, Alert },
+  components: { PageContainer, EceForm, Alert, Breadcrumb },
   setup() {
     const formStore = useFormStore();
     const loadingStore = useLoadingStore();
@@ -84,15 +79,17 @@ export default {
       {
         title: "Home",
         disabled: false,
-        to: "/",
+        href: "/",
       },
       {
         title: "Profile",
         disabled: false,
-        to: "/profile",
+        href: "/profile",
       },
       {
         title: "Add previous name",
+        disabled: true,
+        href: "/profile/add-previous-name",
       },
     ],
   }),
