@@ -11,7 +11,7 @@ const previousNameForm: Form = {
       component: EceTextField,
       props: {
         label: "First name",
-        rules: [Rules.required("Enter your previous first name"), Rules.noSpecialCharactersContactName()],
+        rules: [Rules.required("Enter your legal name"), Rules.noSpecialCharactersContactName()],
         maxLength: 100,
       },
       cols: {
@@ -39,7 +39,7 @@ const previousNameForm: Form = {
       component: EceTextField,
       props: {
         label: "Last name",
-        rules: [Rules.required("Enter your previous last name"), Rules.noSpecialCharactersContactName()],
+        rules: [Rules.required("Enter your legal name"), Rules.noSpecialCharactersContactName()],
         maxLength: 100,
       },
       cols: {

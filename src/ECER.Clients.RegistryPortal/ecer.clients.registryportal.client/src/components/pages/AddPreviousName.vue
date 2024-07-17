@@ -8,6 +8,13 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col>
+        <Alert v-model="duplicatePreviousName" type="error" prominent>
+          <p>This previous name is already in your account. You cannot add the same name again.</p>
+        </Alert>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col class="ml-1" cols="12">
         <h1>Add previous name</h1>
       </v-col>
@@ -47,7 +54,8 @@
 <script lang="ts">
 import { useRouter } from "vue-router";
 
-import { putProfile } from "@/api/profile";
+import { getProfile, putProfile } from "@/api/profile";
+import Alert from "@/components/Alert.vue";
 import EceForm from "@/components/Form.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import previousNameForm from "@/config/previous-name-form";
@@ -55,16 +63,19 @@ import { useAlertStore } from "@/store/alert";
 import { useFormStore } from "@/store/form";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
+import type { Components } from "@/types/openapi";
 
 export default {
   name: "AddPreviousName",
-  components: { PageContainer, EceForm },
+  components: { PageContainer, EceForm, Alert },
   setup() {
     const formStore = useFormStore();
     const loadingStore = useLoadingStore();
     const userStore = useUserStore();
     const alertStore = useAlertStore();
     const router = useRouter();
+
+    formStore.initializeForm({});
 
     return { formStore, loadingStore, alertStore, userStore, previousNameForm, router };
   },
@@ -84,12 +95,23 @@ export default {
         title: "Add previous name",
       },
     ],
-    isDuplicateName: false,
   }),
   computed: {
+    newPreviousName(): Components.Schemas.PreviousName {
+      return {
+        firstName: this.formStore.formData[previousNameForm.inputs.firstName.id],
+        middleName: this.formStore.formData[previousNameForm.inputs.middleName.id] ?? null,
+        lastName: this.formStore.formData[previousNameForm.inputs.lastName.id],
+      };
+    },
     duplicatePreviousName() {
-      // Iterate through previous name array in userStore and check if the new previous name is already in the array
-      return this.userStore.userProfile?.previousNames?.includes(this.formStore.formData[previousNameForm.inputs.previousName.id]);
+      // Check if any existing previous name matches the new previous name
+      return this.userStore.userProfile?.previousNames?.some(
+        (previousName) =>
+          previousName.firstName === this.newPreviousName.firstName &&
+          previousName.middleName === this.newPreviousName.middleName &&
+          previousName.lastName === this.newPreviousName.lastName,
+      );
     },
   },
   methods: {
@@ -98,21 +120,35 @@ export default {
       const { valid } = await (this.$refs.addPreviousNameForm as typeof EceForm).$refs[previousNameForm.id].validate();
       if (valid) {
         //check for duplicate previous name
-        this.isDuplicateName = false;
-
-        if (!this.isDuplicateName) {
+        if (!this.duplicatePreviousName) {
           const { error } = await putProfile({
             ...this.userStore.userProfile,
-            previousNames: this.userStore.userProfile?.previousNames?.push(this.formStore.formData[previousNameForm.inputs.previousName.id]),
+            previousNames: [this.newPreviousName],
           });
+
           if (error) {
-            // this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+            this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
           } else {
-            // this.alertStore.setSuccessAlert("Reference updated. We sent them an email to request a reference.");
+            // Refetch user profile to get the new previous name Id
+            const userProfile = await getProfile();
+            if (userProfile !== null) {
+              this.userStore.setUserProfile(userProfile);
+              const latestPreviousName = userProfile.previousNames?.find(
+                (previousName) =>
+                  previousName.firstName === this.newPreviousName.firstName &&
+                  previousName.middleName === this.newPreviousName.middleName &&
+                  previousName.lastName === this.newPreviousName.lastName,
+              );
+              if (latestPreviousName) {
+                this.router.push({ name: "verify-previous-name", params: { previousNameId: latestPreviousName.id } });
+              }
+            }
           }
+        } else {
+          window.scrollTo(0, 0);
         }
       } else {
-        // this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
       }
     },
   },
