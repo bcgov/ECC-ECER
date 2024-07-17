@@ -50,8 +50,20 @@ export const useApplicationStore = defineStore("application", {
         }, 0) ?? 0
       );
     },
-    draftApplicationIncludesCertification: (state) => {
-      return (certificationType: Components.Schemas.CertificationType) => state.draftApplication.certificationTypes?.includes(certificationType);
+    isDraftCertificateTypeEceAssistant(state): boolean {
+      return !!state.draftApplication.certificationTypes?.includes("EceAssistant");
+    },
+    isDraftCertificateTypeOneYear(state): boolean {
+      return !!state.draftApplication.certificationTypes?.includes("OneYear");
+    },
+    isDraftCertificateTypeFiveYears(state): boolean {
+      return !!state.draftApplication.certificationTypes?.includes("FiveYears");
+    },
+    isDraftCertificateTypeIte(state): boolean {
+      return !!state.draftApplication.certificationTypes?.includes("Ite");
+    },
+    isDraftCertificateTypeSne(state): boolean {
+      return !!state.draftApplication.certificationTypes?.includes("Sne");
     },
   },
   actions: {

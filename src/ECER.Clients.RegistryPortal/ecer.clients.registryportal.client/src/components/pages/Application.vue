@@ -1,10 +1,5 @@
 <template>
-  <Wizard
-    :ref="'wizard'"
-    :wizard="
-      applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR) ? applicationWizardFiveYear : applicationWizardAssistantAndOneYear
-    "
-  >
+  <Wizard :ref="'wizard'" :wizard="applicationStore.isDraftCertificateTypeFiveYears ? applicationWizardFiveYear : applicationWizardAssistantAndOneYear">
     <template #header>
       <WizardHeader class="mb-6" :handle-save-draft="handleSaveAsDraft" :show-save-button="showSaveButtons" />
     </template>
@@ -68,7 +63,6 @@ import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import { AddressType } from "@/utils/constant";
-import { CertificationType } from "@/utils/constant";
 
 export default defineComponent({
   name: "Application",
@@ -86,7 +80,7 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    if (applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR)) {
+    if (applicationStore.isDraftCertificateTypeFiveYears) {
       await wizardStore.initializeWizard(applicationWizardFiveYear, applicationStore.draftApplication);
     } else {
       await wizardStore.initializeWizard(applicationWizardAssistantAndOneYear, applicationStore.draftApplication);
@@ -98,7 +92,6 @@ export default defineComponent({
       alertStore,
       userStore,
       loadingStore,
-      CertificationType,
       applicationWizardFiveYear,
       applicationWizardAssistantAndOneYear,
     };

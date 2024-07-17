@@ -77,7 +77,6 @@ import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
-import { CertificationType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 
 export default defineComponent({

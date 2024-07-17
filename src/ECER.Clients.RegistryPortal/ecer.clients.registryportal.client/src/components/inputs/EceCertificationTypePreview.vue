@@ -19,7 +19,6 @@ import { defineComponent } from "vue";
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useApplicationStore } from "@/store/application";
 import type { EcePreviewProps } from "@/types/input";
-import { CertificationType } from "@/utils/constant";
 export default defineComponent({
   name: "EceCertificationTypePreview",
   components: {
@@ -40,17 +39,17 @@ export default defineComponent({
   computed: {
     certificationType() {
       let certificationType = "";
-      if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.ECE_ASSISTANT)) {
+      if (this.applicationStore.isDraftCertificateTypeEceAssistant) {
         certificationType = "ECE Assistant";
-      } else if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.ONE_YEAR)) {
+      } else if (this.applicationStore.isDraftCertificateTypeOneYear) {
         certificationType = "One Year";
-      } else if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.FIVE_YEAR)) {
+      } else if (this.applicationStore.isDraftCertificateTypeFiveYears) {
         certificationType = "Five Year";
 
-        if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.SNE)) {
+        if (this.applicationStore.isDraftCertificateTypeSne) {
           certificationType += " and Special Needs Educator (SNE)";
         }
-        if (this.applicationStore.draftApplicationIncludesCertification(CertificationType.ITE)) {
+        if (this.applicationStore.isDraftCertificateTypeIte) {
           certificationType += " and Infant and Toddler Educator (ITE)";
         }
       }

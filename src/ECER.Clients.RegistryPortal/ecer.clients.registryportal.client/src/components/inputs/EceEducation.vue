@@ -117,7 +117,6 @@ import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
-import { CertificationType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 
@@ -189,8 +188,8 @@ export default defineComponent({
     numOfEducationRequired() {
       let numOfEducationRequired = 1;
 
-      this.applicationStore.draftApplicationIncludesCertification(CertificationType.SNE) && numOfEducationRequired++;
-      this.applicationStore.draftApplicationIncludesCertification(CertificationType.ITE) && numOfEducationRequired++;
+      this.applicationStore.isDraftCertificateTypeSne && numOfEducationRequired++;
+      this.applicationStore.isDraftCertificateTypeIte && numOfEducationRequired++;
 
       return numOfEducationRequired;
     },
