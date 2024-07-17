@@ -177,7 +177,7 @@ export default defineComponent({
       }
     },
     async saveProfile() {
-      const success = await putProfile({
+      const { error } = await putProfile({
         firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
         middleName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalMiddleName.id],
         preferredName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.preferredName.id],
@@ -190,7 +190,7 @@ export default defineComponent({
         alternateContactPhone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.alternateContactNumber.id],
       });
 
-      if (success) {
+      if (!error) {
         this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
         this.userStore.setUserInfo({
           firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
