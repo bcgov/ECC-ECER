@@ -28,7 +28,7 @@ internal class CertificationRepositoryMapper : Profile
 
     CreateMap<bcgov_DocumentUrl, CertificationFile>(MemberList.Destination)
     .ForMember(d => d.Id, opts => opts.MapFrom(s => s.bcgov_DocumentUrlId))
-    .ForMember(d => d.Url, opts => opts.MapFrom(s => $"{s.bcgov_Url}/{s.bcgov_DocumentUrlId}{s.bcgov_FileExtension}"))
+    .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
     .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension))
     .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
     .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName));

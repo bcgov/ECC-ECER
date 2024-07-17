@@ -29,24 +29,6 @@ public class CertificationsEndpoints : IRegisterEndpoints
   }
 }
 
-public class UrlResolver : IValueResolver<Managers.Registry.Contract.Certifications.CertificationFile, CertificationFile, string>
-{
-  private readonly string _baseUrl;
-  private readonly string _bucketName;
-
-  public UrlResolver(IConfiguration configuration)
-  {
-    _baseUrl = configuration.GetValue<string>("objectStorage:url") ?? throw new InvalidOperationException("objectStorage:url is not set");
-    _bucketName = configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
-  }
-
-  public string Resolve(Managers.Registry.Contract.Certifications.CertificationFile source, CertificationFile destination, string destMember, ResolutionContext context)
-  {
-    ArgumentNullException.ThrowIfNull(source);
-    return $"{_baseUrl}/{_bucketName}/{source.Url}";
-  }
-}
-
 public record Certification(string Id)
 {
   public string? Number { get; set; }
