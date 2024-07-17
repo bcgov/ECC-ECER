@@ -66,6 +66,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Assignee = "ecer_assignee";
 			public const string ecer_AssigneeName = "ecer_assigneename";
 			public const string ecer_AssigneeYomiName = "ecer_assigneeyominame";
+			public const string ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos = "ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos";
 			public const string ecer_IdNumber = "ecer_idnumber";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_postsecondaryinstituteinterview_SiteVisit = "ecer_postsecondaryinstituteinterview_SiteVisit";
@@ -955,6 +956,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos", null, value);
 			}
 		}
 		

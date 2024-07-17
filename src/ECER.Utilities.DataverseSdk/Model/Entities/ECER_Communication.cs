@@ -73,6 +73,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_acknowledgedName = "ecer_acknowledgedname";
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
+			public const string ecer_bcgov_documenturl_CommunicationId_ecer_communication = "ecer_bcgov_documenturl_CommunicationId_ecer_communication";
 			public const string ecer_communication_Applicationid = "ecer_communication_Applicationid";
 			public const string ecer_communication_Investigation_ecer_investig = "ecer_communication_Investigation_ecer_investig";
 			public const string Referencingecer_communication_ParentCommunicationid = "ecer_communication_ParentCommunicationid";
@@ -91,6 +92,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_InvestigationName = "ecer_investigationname";
 			public const string ecer_IsRoot = "ecer_isroot";
 			public const string ecer_isrootName = "ecer_isrootname";
+			public const string ecer_legacyclientid = "ecer_legacyclientid";
 			public const string ecer_legacycorrespondenceid = "ecer_legacycorrespondenceid";
 			public const string ecer_legacyenteredby = "ecer_legacyenteredby";
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
@@ -568,6 +570,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyclientid")]
+		public string ecer_legacyclientid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyclientid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyclientid", value);
 			}
 		}
 		
@@ -1271,6 +1288,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_bcgov_documenturl_CommunicationId_ecer_communication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_CommunicationId_ecer_communication")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_bcgov_documenturl_CommunicationId_ecer_communication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_CommunicationId_ecer_communication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_CommunicationId_ecer_communication", null, value);
 			}
 		}
 		

@@ -89,6 +89,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicationType = "ecer_applicationtype";
 			public const string ecer_applicationtypeName = "ecer_applicationtypename";
 			public const string ecer_articulationagreements = "ecer_articulationagreements";
+			public const string ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton";
 			public const string ecer_CampusId = "ecer_campusid";
 			public const string ecer_CampusIdName = "ecer_campusidname";
 			public const string ecer_clearadmission = "ecer_clearadmission";
@@ -2950,6 +2951,27 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
+			"licaiton")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
+						"licaiton", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
+						"licaiton", null, value);
 			}
 		}
 		
