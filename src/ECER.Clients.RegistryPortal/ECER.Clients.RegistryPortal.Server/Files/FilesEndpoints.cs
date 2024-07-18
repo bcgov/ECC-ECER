@@ -44,6 +44,7 @@ public class FilesEndpoints : IRegisterEndpoints
 
       return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
     })
+      .WithOpenApi("Handles fetching certificate PDF's", string.Empty, "files_certificate_get")
       .RequireAuthorization()
       .WithParameterValidation();
 
