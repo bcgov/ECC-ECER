@@ -9,4 +9,9 @@ const getCertifications = async (): Promise<ApiResponse<Components.Schemas.Certi
   return apiResultHandler.execute<Components.Schemas.Certification[]>({ request: client.certification_get({ id: "" }) });
 };
 
-export { getCertifications };
+const getCertificateFileById = async (id: string): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute<any>({ request: client.files_certificate_get({ certificateId: id }) });
+};
+
+export { getCertificateFileById, getCertifications };

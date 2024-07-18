@@ -103,6 +103,7 @@ import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
 
 import { cancelDraftApplication } from "@/api/application";
+import { getCertificateFileById } from "@/api/certification";
 import { getUserInfo } from "@/api/user";
 import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
@@ -132,6 +133,10 @@ export default defineComponent({
 
     const applications = await applicationStore.fetchApplications();
     const certifications = await certificationStore.fetchCertifications();
+    if (certifications && certifications.length > 0) {
+      const file = await getCertificateFileById(certifications[0].id ?? "");
+      console.log(file);
+    }
 
     // Refresh userInfo from the server
     const userInfo = await getUserInfo();
