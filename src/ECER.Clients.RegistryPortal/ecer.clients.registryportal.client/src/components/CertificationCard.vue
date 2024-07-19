@@ -7,6 +7,8 @@
           {{ title }}
         </p>
       </div>
+      <a :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
+
       <p class="font-weight-bold mt-8">Expires on</p>
       <div class="d-flex flex-row align-center mt-2 ga-4">
         <p>{{ formattedExpiryDate }}</p>
@@ -19,8 +21,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import { getCertificateFileById } from "@/api/certification";
 import { useCertificationStore } from "@/store/certification";
 import { formatDate } from "@/utils/format";
+import { humanFileSize } from "@/utils/functions";
 
 export default defineComponent({
   name: "CertificationCard",
@@ -35,6 +39,12 @@ export default defineComponent({
 
     return {
       certificationStore,
+    };
+  },
+  data() {
+    return {
+      pdfUrl: "",
+      fileSize: "",
     };
   },
   computed: {
@@ -61,6 +71,24 @@ export default defineComponent({
       }
     },
   },
-  methods: {},
+  async mounted() {
+    if (this.certificationStore.certifications && this.certificationStore.certifications.length > 0) {
+      const file = await getCertificateFileById(this.certificationStore.certifications[0].id ?? "");
+
+      this.pdfUrl = window.URL.createObjectURL(file.data);
+      this.fileSize = humanFileSize(file.data.size);
+    }
+  },
+  unmounted() {
+    window.URL.revokeObjectURL(this.pdfUrl);
+  },
+  methods: {
+    generateFileDisplayName() {
+      if (this.certificationStore?.certifications?.[0].files?.[0]) {
+        const file = this.certificationStore?.certifications?.[0].files?.[0];
+        return `${file.name} (${this.fileSize})`;
+      }
+    },
+  },
 });
 </script>

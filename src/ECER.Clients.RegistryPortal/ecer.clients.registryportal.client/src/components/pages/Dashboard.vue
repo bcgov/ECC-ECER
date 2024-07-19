@@ -103,7 +103,6 @@ import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
 
 import { cancelDraftApplication } from "@/api/application";
-import { getCertificateFileById } from "@/api/certification";
 import { getUserInfo } from "@/api/user";
 import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
@@ -132,11 +131,7 @@ export default defineComponent({
     const { smAndDown, mdAndUp } = useDisplay();
 
     const applications = await applicationStore.fetchApplications();
-    const certifications = await certificationStore.fetchCertifications();
-    if (certifications && certifications.length > 0) {
-      const file = await getCertificateFileById(certifications[0].id ?? "");
-      console.log(file);
-    }
+    await certificationStore.fetchCertifications();
 
     // Refresh userInfo from the server
     const userInfo = await getUserInfo();
@@ -144,7 +139,7 @@ export default defineComponent({
       userStore.setUserInfo(userInfo);
     }
 
-    return { userStore, applicationStore, alertStore, messageStore, certificationStore, applications, certifications, smAndDown, mdAndUp };
+    return { userStore, applicationStore, alertStore, messageStore, certificationStore, applications, smAndDown, mdAndUp };
   },
   data: () => ({
     showCancelDialog: false,

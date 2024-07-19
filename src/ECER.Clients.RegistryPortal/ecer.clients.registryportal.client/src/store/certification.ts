@@ -51,6 +51,7 @@ export const useCertificationStore = defineStore("certification", {
   },
   actions: {
     async fetchCertifications() {
+      this.$reset();
       const { data: certifications } = await getCertifications();
       if (certifications?.length && certifications.length > 0) {
         this.certifications = certifications;
