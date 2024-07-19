@@ -18,6 +18,10 @@ export const useCertificationStore = defineStore("certification", {
     hasCertifications(state): boolean {
       return state.certifications !== null && state.certifications !== undefined && state.certifications.length > 0;
     },
+    latestHasTermsAndConditions(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.hasConditions ?? false;
+    },
     latestTitleArray(state) {
       if (!state.latestCertification || !state.latestCertification.levels) return null;
       return state.latestCertification?.levels
@@ -51,6 +55,9 @@ export const useCertificationStore = defineStore("certification", {
   },
   actions: {
     async fetchCertifications() {
+      // Drop any existing certifications
+      this.$reset();
+
       const { data: certifications } = await getCertifications();
       if (certifications?.length && certifications.length > 0) {
         this.certifications = certifications;

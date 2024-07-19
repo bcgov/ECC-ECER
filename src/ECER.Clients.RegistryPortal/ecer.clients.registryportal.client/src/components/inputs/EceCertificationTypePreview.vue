@@ -1,5 +1,5 @@
 <template>
-  <PreviewCard title="Certification Selection" portal-stage="CertificationType">
+  <PreviewCard title="Certification Selection" portal-stage="CertificationType" :editable="false">
     <template #content>
       <v-row>
         <v-col cols="4">
@@ -17,9 +17,8 @@
 import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
-import { useWizardStore } from "@/store/wizard";
+import { useApplicationStore } from "@/store/application";
 import type { EcePreviewProps } from "@/types/input";
-import { CertificationType } from "@/utils/constant";
 export default defineComponent({
   name: "EceCertificationTypePreview",
   components: {
@@ -32,45 +31,25 @@ export default defineComponent({
     },
   },
   setup: () => {
-    const wizardStore = useWizardStore();
+    const applicationStore = useApplicationStore();
     return {
-      wizardStore,
+      applicationStore,
     };
   },
   computed: {
     certificationType() {
       let certificationType = "";
-      if (
-        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes(
-          CertificationType.ECE_ASSISTANT,
-        )
-      ) {
+      if (this.applicationStore.isDraftCertificateTypeEceAssistant) {
         certificationType = "ECE Assistant";
-      } else if (
-        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes(
-          CertificationType.ONE_YEAR,
-        )
-      ) {
+      } else if (this.applicationStore.isDraftCertificateTypeOneYear) {
         certificationType = "One Year";
-      } else if (
-        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes(
-          CertificationType.FIVE_YEAR,
-        )
-      ) {
+      } else if (this.applicationStore.isDraftCertificateTypeFiveYears) {
         certificationType = "Five Year";
 
-        if (
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes(
-            CertificationType.SNE,
-          )
-        ) {
+        if (this.applicationStore.isDraftCertificateTypeSne) {
           certificationType += " and Special Needs Educator (SNE)";
         }
-        if (
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificationType.form.inputs.certificationSelection.id].includes(
-            CertificationType.ITE,
-          )
-        ) {
+        if (this.applicationStore.isDraftCertificateTypeIte) {
           certificationType += " and Infant and Toddler Educator (ITE)";
         }
       }
