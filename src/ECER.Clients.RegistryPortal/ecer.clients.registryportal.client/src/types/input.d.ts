@@ -73,10 +73,6 @@ interface RadioWithAdditionalOptionProps {
   autoGrow?: boolean;
 }
 
-interface EceCertificateTypeProps {
-  options: ExpandSelectOption[];
-}
-
 interface EcePreviewProps {}
 
 interface EceCharacterReferenceProps {}
@@ -104,7 +100,6 @@ interface Input {
     | EceAddressesProps
     | EceEducationProps
     | EceCheckboxProps
-    | EceCertificateTypeProps
     | EcePreviewProps
     | EceCharacterReferenceProps
     | EceRecaptchaProps;

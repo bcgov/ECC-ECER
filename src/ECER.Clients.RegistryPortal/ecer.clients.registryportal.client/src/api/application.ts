@@ -23,6 +23,7 @@ const createOrUpdateDraftApplication = async (
 
   return apiResultHandler.execute<Components.Schemas.DraftApplicationResponse | null | undefined>({
     request: client.draftapplication_put(pathParameters, body),
+    key: "draftapplication_put",
   });
 };
 

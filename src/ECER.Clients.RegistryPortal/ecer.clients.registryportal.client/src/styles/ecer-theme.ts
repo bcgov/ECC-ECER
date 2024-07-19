@@ -9,6 +9,7 @@ const ecerTheme: ThemeDefinition = {
     "grey-dark": "#313231",
     "grey-light": "#757575",
     "grey-lightest": "#dee2e6",
+    "grey-darkest": "#5F6368",
     "white-smoke": "#f8f8f8",
     "background-light": "#FAF9F8",
     "hawkes-blue": "#d9eafd",

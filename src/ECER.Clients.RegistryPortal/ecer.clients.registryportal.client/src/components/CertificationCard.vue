@@ -12,7 +12,8 @@
       <p class="font-weight-bold mt-8">Expires on</p>
       <div class="d-flex flex-row align-center mt-2 ga-4">
         <p>{{ formattedExpiryDate }}</p>
-        <v-chip color="success" variant="flat" size="small">Active</v-chip>
+        <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
+        <v-chip v-if="certificationStore.latestHasTermsAndConditions" color="grey-darkest" variant="outlined" size="small">Has Terms and Conditions</v-chip>
       </div>
     </v-card-item>
   </v-card>
@@ -51,23 +52,35 @@ export default defineComponent({
     formattedExpiryDate(): string {
       return formatDate(this.certificationStore.latestCertification?.expiryDate ?? "", "LLLL d, yyyy");
     },
-    chipText(): string {
+    chipText() {
       // "Active" | "Cancelled" | "Expired" | "Inactive" | "Reprinted" | "Suspended"
       switch (this.certificationStore.latestCertification?.statusCode) {
         case "Active":
+        case "Reprinted":
           return "Active";
         case "Expired":
+        case "Inactive":
           return "Expired";
         case "Cancelled":
           return "Cancelled";
-        case "Inactive":
-          return "Inactive";
-        case "Reprinted":
-          return "Reprinted";
         case "Suspended":
           return "Suspended";
         default:
-          return "Inactive";
+          return "Expired";
+      }
+    },
+    chipColor(): string {
+      // "success" | "error" | "warning" | "info"
+      switch (this.chipText) {
+        case "Active":
+          return "success";
+        case "Expired":
+          return "error";
+        case "Cancelled":
+        case "Suspended":
+          return "grey-darkest";
+        default:
+          return "grey-darkest";
       }
     },
   },

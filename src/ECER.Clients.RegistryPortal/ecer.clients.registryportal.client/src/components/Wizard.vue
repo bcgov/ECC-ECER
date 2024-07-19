@@ -1,10 +1,10 @@
 <template>
   <slot name="header"></slot>
-  <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :mobile="$vuetify.display.mobile">
-    <slot name="stepperHeader">
+  <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :elevation="0">
+    <slot v-if="!$vuetify.display.mobile" name="stepperHeader">
       <v-stepper-header v-if="showSteps">
         <template v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage">
-          <v-stepper-item color="primary" :step="wizardStore.step" :value="index + 1" :title="step.title"></v-stepper-item>
+          <v-stepper-item color="primary" :step="wizardStore.step" :value="index + 1" :title="step.title" :editable="true"></v-stepper-item>
           <v-divider v-if="index !== Object.values(wizard.steps).length - 1" :key="`divider-${index}`" />
         </template>
       </v-stepper-header>
@@ -45,7 +45,7 @@
 import { defineComponent, type PropType } from "vue";
 
 import EceForm from "@/components/Form.vue";
-import applicationWizard from "@/config/application-wizard";
+import applicationWizard from "@/config/application-wizard-assistant-and-one-year";
 import { useAlertStore } from "@/store/alert";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
