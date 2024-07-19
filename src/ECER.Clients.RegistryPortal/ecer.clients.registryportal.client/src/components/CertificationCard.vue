@@ -7,7 +7,7 @@
           {{ title }}
         </p>
       </div>
-      <a :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
+      <a v-if="isLatestCertificateActive" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
 
       <p class="font-weight-bold mt-8">Expires on</p>
       <div class="d-flex flex-row align-center mt-2 ga-4">
@@ -83,9 +83,12 @@ export default defineComponent({
           return "grey-darkest";
       }
     },
+    isLatestCertificateActive(): boolean {
+      return this.certificationStore.latestCertification?.statusCode === "Active";
+    },
   },
   async mounted() {
-    if (this.certificationStore.certifications && this.certificationStore.certifications.length > 0) {
+    if (this.certificationStore.certifications && this.certificationStore.certifications.length > 0 && this.isLatestCertificateActive) {
       const file = await getCertificateFileById(this.certificationStore.certifications[0].id ?? "");
 
       this.pdfUrl = window.URL.createObjectURL(file.data);
@@ -97,10 +100,7 @@ export default defineComponent({
   },
   methods: {
     generateFileDisplayName() {
-      if (this.certificationStore?.certifications?.[0].files?.[0]) {
-        const file = this.certificationStore?.certifications?.[0].files?.[0];
-        return `${file.name} (${this.fileSize})`;
-      }
+      return `Download my certificate (PDF, ${this.fileSize})`;
     },
   },
 });
