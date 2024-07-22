@@ -63,7 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Managers.Admin.Contrac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Managers.Admin", "ECER.Managers.Admin\ECER.Managers.Admin.csproj", "{BAAD73EA-EA04-469F-8F3A-63EB69955D02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECER.Engines.Transformation", "ECER.Engines.Transformation\ECER.Engines.Transformation.csproj", "{3C325134-4511-477F-B96B-88E1FB2753B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECER.Engines.Transformation", "ECER.Engines.Transformation\ECER.Engines.Transformation.csproj", "{3C325134-4511-477F-B96B-88E1FB2753B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
