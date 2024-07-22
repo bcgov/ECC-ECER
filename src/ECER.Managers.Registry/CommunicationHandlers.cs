@@ -24,7 +24,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
       ByStatus = statuses,
     });
 
-    var unreadCount = communications.Where(c => !c.Acknowledged).ToList().Count; // it does not support Any
+    var unreadCount = communications.Communications!.Where(c => !c.Acknowledged).ToList().Count; // it does not support Any
     var hasUnread = unreadCount > 0;
 
     var communicationsStatus = new Contract.Communications.CommunicationsStatus() { HasUnread = hasUnread, Count = unreadCount };
@@ -37,16 +37,18 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
     ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
-    var communications = await communicationRepository.Query(new Resources.Accounts.Communications.UserCommunicationQuery
+    var communication = await communicationRepository.Query(new Resources.Accounts.Communications.UserCommunicationQuery
     {
       ById = request.ById,
       ByRegistrantId = request.ByRegistrantId,
+      ByParentId = request.ByParentId,
       ByStatus = request.ByStatus?.Convert<Contract.Communications.CommunicationStatus, Resources.Accounts.Communications.CommunicationStatus>(),
       PageNumber = request.PageNumber,
       PageSize = request.PageSize,
     });
 
-    return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communications)!);
+    return new CommunicationsQueryResults(mapper.Map<IEnumerable<Contract.Communications.Communication>>(communication.Communications)!)
+    { TotalMessagesCount = communication.TotalMessagesCount };
   }
 
   /// <summary>
@@ -71,7 +73,7 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
       ByStatus = statuses
     });
 
-    if (!communications.Any())
+    if (!communications.Communications!.Any())
     {
       throw new InvalidOperationException($"Communication '{request.communicationId}' not found");
     }
