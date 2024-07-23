@@ -1,23 +1,17 @@
 <template>
-  <ActionCard
-    title="Renew"
-    icon="mdi-autorenew"
-    :links="[
-      {
-        text: 'Renew',
-        to: '/application',
-      },
-    ]"
-  >
-    You can renew your ECE Assistant certification.
+  <ActionCard :title="title" icon="mdi-autorenew" :links="links">
+    <div class="d-flex flex-column ga-3">
+      {{ text }}
+      <div v-if="canRenew && !readyToRenew">{{ dateText }}</div>
+    </div>
   </ActionCard>
 </template>
 
 <script lang="ts">
-import ActionCard from "@components/ActionCard.vue";
 import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 
+import ActionCard from "@/components/ActionCard.vue";
 import { useCertificationStore } from "@/store/certification";
 
 import type { Link } from "./ActionCard.vue";
@@ -26,12 +20,6 @@ export default defineComponent({
   name: "RenewCard",
   components: {
     ActionCard,
-  },
-  props: {
-    isRounded: {
-      type: Boolean,
-      default: true,
-    },
   },
   setup() {
     const certificationStore = useCertificationStore();
@@ -50,25 +38,33 @@ export default defineComponent({
     todaysDate() {
       return DateTime.now();
     },
+    readyToRenew() {
+      return this.todaysDate >= this.earliestRenewalDate;
+    },
     expiredOverFiveYears() {
       return this.todaysDate >= this.latestRenewalDate;
     },
     canRenew() {
-      return !(this.certificationStore.hasMultipleEceOneYearCertifications || this.todaysDate <= this.latestRenewalDate);
+      return !this.certificationStore.hasMultipleEceOneYearCertifications && !this.expiredOverFiveYears;
     },
     title() {
       return this.canRenew ? "Renew" : "Renew unavailable";
     },
     text() {
-      // Not yet read to renew
-      if (this.todaysDate < this.earliestRenewalDate) {
-        return `You can renew after: ${this.earliestRenewalDate.toFormat("LLLL d, yyyy")}`;
+      // Not yet ready to renew
+      if (this.canRenew && !this.readyToRenew) {
+        return "You can renew starting 6 months before your certificate expires.";
+      }
+
+      // Too late to renew
+      if (this.expiredOverFiveYears) {
+        return "You cannot renew your ECE One Year certification because it's been expired for over 5 years.";
       }
 
       // Assistant
       if (this.certificationStore.latestIsEceAssistant) {
         if (this.expiredOverFiveYears) {
-          return "You cannot renew your ECE Assistant certification because it’s been expired for over 5 years.";
+          return "You cannot renew your ECE Assistant certification because it's been expired for over 5 years.";
         }
         return "You can renew your ECE Assistant certification.";
       }
@@ -78,7 +74,7 @@ export default defineComponent({
         if (this.certificationStore.hasMultipleEceOneYearCertifications) {
           return "You cannot renew your ECE One Year certification again. It can only be renewed once.";
         } else if (this.expiredOverFiveYears) {
-          return "You cannot renew your ECE One Year certification because it’s been expired for over 5 years.";
+          return "You cannot renew your ECE One Year certification because it's been expired for over 5 years.";
         }
         return "You can renew your ECE One Year certification.";
       }
@@ -86,7 +82,7 @@ export default defineComponent({
       // Five Year
       if (this.certificationStore.latestIsEceFiveYear) {
         if (this.expiredOverFiveYears) {
-          return "You cannot renew your ECE Five Year certification because it’s been expired for over 5 years.";
+          return "You cannot renew your ECE Five Year certification because it's been expired for over 5 years.";
         }
         if (this.certificationStore.latestHasITE && this.certificationStore.latestHasSNE) {
           return "You can renew your ECE Five Year, SNE and ITE certification.";
@@ -104,10 +100,10 @@ export default defineComponent({
       return `You can renew after: ${this.earliestRenewalDate.toFormat("LLLL d, yyyy")}`;
     },
     showRenewLink(): boolean {
-      return this.certificationStore.latestCertification?.statusCode === "Active";
+      return this.readyToRenew && this.canRenew;
     },
     showRenewalRequirementsLink(): boolean {
-      return this.certificationStore.latestCertification?.statusCode === "Expired";
+      return !this.readyToRenew && this.canRenew;
     },
     links(): Link[] {
       const links: Link[] = [];
