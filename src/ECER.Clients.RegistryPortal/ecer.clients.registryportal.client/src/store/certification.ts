@@ -18,6 +18,40 @@ export const useCertificationStore = defineStore("certification", {
     hasCertifications(state): boolean {
       return state.certifications !== null && state.certifications !== undefined && state.certifications.length > 0;
     },
+    latestNotCancelled(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.statusCode !== "Cancelled";
+    },
+    latestIsEceAssistant(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.levels?.some((level) => level.type === "Assistant") ?? false;
+    },
+    latestIsEceFiveYear(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.levels?.some((level) => level.type === "ECE 5 YR") ?? false;
+    },
+    latestIsEceOneYear(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.levels?.some((level) => level.type === "ECE 1 YR") ?? false;
+    },
+    latestHasSNE(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.levels?.some((level) => level.type === "SNE") ?? false;
+    },
+    latestHasITE(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.levels?.some((level) => level.type === "ITE") ?? false;
+    },
+    hasMultipleEceOneYearCertifications(state): boolean {
+      let count = 0;
+      if (!state.certifications || state.certifications?.length < 2) return false;
+      for (const cert of state.certifications) {
+        if (cert.levels?.some((level) => level.type === "ECE 1 YR")) {
+          count++;
+        }
+      }
+      return count >= 2;
+    },
     latestHasTermsAndConditions(state): boolean {
       if (!state.latestCertification) return false;
       return state.latestCertification.hasConditions ?? false;

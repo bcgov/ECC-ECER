@@ -19,7 +19,7 @@
 import type { PropType } from "vue";
 import { defineComponent } from "vue";
 
-interface Link {
+export interface Link {
   text: string;
   to: string;
 }
