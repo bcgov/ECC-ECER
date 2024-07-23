@@ -31,6 +31,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   public async Task GetApplications_ById()
   {
     var application = CreateDraftApplication();
+    application.Stage = "CertificationType";
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
@@ -52,7 +53,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     applicationById.Transcripts.ShouldNotBeEmpty();
     applicationById.CharacterReferences.ShouldNotBeEmpty();
     applicationById.WorkExperienceReferences.ShouldNotBeEmpty();
-    applicationById.Stage.ShouldBe(PortalStage.CertificationType);
+    applicationById.Stage.ShouldBe("CertificationType");
   }
 
   [Fact]

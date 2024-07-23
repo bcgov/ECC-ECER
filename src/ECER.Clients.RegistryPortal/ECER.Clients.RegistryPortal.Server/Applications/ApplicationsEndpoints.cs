@@ -296,7 +296,7 @@ public record DraftApplication
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
-  public PortalStage Stage { get; set; }
+  public string? Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public ApplicationTypes ApplicationType { get; set; }
   public EducationOrigin? EducationOrigin { get; set; }
@@ -313,7 +313,7 @@ public record Application
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public ApplicationStatus Status { get; set; }
-  public PortalStage Stage { get; set; }
+  public string? Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public ApplicationTypes ApplicationType { get; set; }
   public EducationOrigin? EducationOrigin { get; set; }
@@ -364,17 +364,6 @@ public enum CertificationType
 
   [Description("Sne")]
   Sne,
-}
-
-public enum PortalStage
-{
-  CertificationType,
-  Declaration,
-  ContactInformation,
-  Education,
-  CharacterReferences,
-  WorkReferences,
-  Review,
 }
 
 public enum ApplicationStatus
