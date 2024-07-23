@@ -298,6 +298,9 @@ public record DraftApplication
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public ApplicationTypes ApplicationType { get; set; }
+  public EducationOrigin? EducationOrigin { get; set; }
+  public EducationRecognition? EducationRecognition { get; set; }
 }
 
 public record Application
@@ -312,6 +315,9 @@ public record Application
   public ApplicationStatus Status { get; set; }
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public ApplicationTypes ApplicationType { get; set; }
+  public EducationOrigin? EducationOrigin { get; set; }
+  public EducationRecognition? EducationRecognition { get; set; }
 }
 
 public record Transcript()
@@ -406,6 +412,26 @@ public enum ApplicationStatusReasonDetail
   ReceivePhysicalTranscripts,
   SupervisorConsultationNeeded,
   ValidatingIDs,
+}
+
+public enum ApplicationTypes
+{
+  New,
+  Renewal,
+  LaborMobility,
+}
+
+public enum EducationOrigin
+{
+  InsideBC,
+  OutsideBC,
+  OutsideofCanada
+}
+
+public enum EducationRecognition
+{
+  Recognized,
+  NotRecognized
 }
 
 public record CharacterReference([Required] string? FirstName, [Required] string? LastName, string? PhoneNumber, [Required] string? EmailAddress)
