@@ -56,11 +56,6 @@ export default defineComponent({
         return "You can renew starting 6 months before your certificate expires.";
       }
 
-      // Too late to renew
-      if (this.expiredOverFiveYears) {
-        return "You cannot renew your ECE One Year certification because it's been expired for over 5 years.";
-      }
-
       // Assistant
       if (this.certificationStore.latestIsEceAssistant) {
         if (this.expiredOverFiveYears) {
@@ -110,7 +105,7 @@ export default defineComponent({
       if (this.showRenewLink) {
         links.push({
           text: "Renew",
-          to: "/application",
+          to: "/renew",
         });
       }
       if (this.showRenewalRequirementsLink) {
