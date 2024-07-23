@@ -47,8 +47,8 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
   public ApplicationTypes ApplicationType { get; set; }
-  public EducationOrigin EducationOrigin { get; set; }
-  public EducationRecognition EducationRecognition { get; set; }
+  public EducationOrigin? EducationOrigin { get; set; }
+  public EducationRecognition? EducationRecognition { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)

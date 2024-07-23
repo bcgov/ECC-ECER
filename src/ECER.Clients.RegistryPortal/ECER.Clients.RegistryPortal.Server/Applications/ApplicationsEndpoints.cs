@@ -299,8 +299,8 @@ public record DraftApplication
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public ApplicationTypes ApplicationType { get; set; }
-  public EducationOrigin EducationOrigin { get; set; }
-  public EducationRecognition EducationRecognition { get; set; }
+  public EducationOrigin? EducationOrigin { get; set; }
+  public EducationRecognition? EducationRecognition { get; set; }
 }
 
 public record Application
@@ -316,8 +316,8 @@ public record Application
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public ApplicationTypes ApplicationType { get; set; }
-  public EducationOrigin EducationOrigin { get; set; }
-  public EducationRecognition EducationRecognition { get; set; }
+  public EducationOrigin? EducationOrigin { get; set; }
+  public EducationRecognition? EducationRecognition { get; set; }
 }
 
 public record Transcript()
