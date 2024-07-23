@@ -1,8 +1,7 @@
 import type { Form } from "@/types/form";
-import type { Components } from "@/types/openapi";
 
 interface Step {
-  stage: Components.Schemas.PortalStage | ReferenceStage;
+  stage: ApplicationStage | ReferenceStage;
   title: string;
   subtitle?: string;
   form: Form;
@@ -24,4 +23,5 @@ interface Wizard {
   };
 }
 
+type ApplicationStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
 type ReferenceStage = "Declaration" | "Decline" | "ContactInformation" | "Assessment" | "Review" | "ReferenceEvaluation";
