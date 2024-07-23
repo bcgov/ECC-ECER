@@ -53,7 +53,8 @@ public class FilesEndpoints : IRegisterEndpoints
       var saveResult = response.Items.FirstOrDefault();
       if (saveResult == null || !saveResult.IsSuccessful)
       {
-        return TypedResults.BadRequest(new ProblemDetails { Title = "Save Failed" });
+        var message = saveResult == null ? "Save Failed" : saveResult.Message;
+        return TypedResults.BadRequest(new ProblemDetails { Title = "Save Failed", Detail = message });
       }
       return TypedResults.Ok(new FileResponse(fileId));
     })
