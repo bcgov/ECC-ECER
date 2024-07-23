@@ -41,6 +41,65 @@
       </v-col>
     </v-row>
 
+    <!-- Options -->
+    <v-row v-if="certificationStore.hasCertifications && certificationStore.latestNotCancelled" justify="center" class="mt-6">
+      <v-col>
+        <v-row>
+          <v-col cols="12">
+            <ECEHeader title="Options" />
+          </v-col>
+        </v-row>
+        <v-row v-if="certificationStore.latestIsEceAssistant">
+          <v-col cols="12" sm="6" lg="4">
+            <ActionCard
+              title="Renew"
+              icon="mdi-autorenew"
+              :links="[
+                {
+                  text: 'Renew',
+                  to: '/application',
+                },
+              ]"
+            >
+              You can renew your ECE Assistant certification.
+            </ActionCard>
+          </v-col>
+        </v-row>
+        <v-row v-if="certificationStore.latestIsEceOneYear">
+          <v-col cols="12" sm="6" lg="4">
+            <ActionCard
+              title="Renew"
+              icon="mdi-autorenew"
+              :links="[
+                {
+                  text: 'Renew',
+                  to: '/application',
+                },
+              ]"
+            >
+              You can renew your ECE One Year certification.
+            </ActionCard>
+          </v-col>
+        </v-row>
+        <v-row v-if="certificationStore.latestIsEceFiveYear">
+          <v-col cols="12" sm="6" lg="4">
+            <ActionCard
+              title="Renew"
+              icon="mdi-autorenew"
+              :links="[
+                {
+                  text: 'Renew',
+                  to: '/application',
+                },
+              ]"
+            >
+              You can renew your ECE Five Year certification.
+            </ActionCard>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
     <!-- Your My ECE Registry account -->
     <v-row justify="center" class="mt-6">
       <v-col>
