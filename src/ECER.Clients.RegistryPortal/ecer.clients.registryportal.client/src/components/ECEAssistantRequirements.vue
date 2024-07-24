@@ -42,9 +42,3 @@ export default defineComponent({
   name: "ECEAssistantRequirements",
 });
 </script>
-
-<style>
-.title-header {
-  line-height: 1.25;
-}
-</style>
