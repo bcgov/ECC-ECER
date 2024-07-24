@@ -40,7 +40,7 @@
           <a
             href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
           >
-            Be a program recognized by the ECE Registry 
+            Be a program recognized by the ECE Registry
           </a>
         </li>
       </ul>
@@ -75,11 +75,6 @@ export interface EducationData {
 export default defineComponent({
   name: "EducationList",
   components: { EducationCard },
-  setup() {
-    const applicationStore = useApplicationStore();
-
-    return { applicationStore };
-  },
   props: {
     educations: {
       type: Object as () => { [id: string]: Components.Schemas.Transcript },
@@ -89,6 +84,11 @@ export default defineComponent({
   emits: {
     edit: (_educationData: EducationData) => true,
     delete: (_educationId: string | number) => true,
+  },
+  setup() {
+    const applicationStore = useApplicationStore();
+
+    return { applicationStore };
   },
   computed: {
     educationList() {
