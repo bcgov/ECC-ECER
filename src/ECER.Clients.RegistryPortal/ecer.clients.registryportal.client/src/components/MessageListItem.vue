@@ -20,9 +20,9 @@
 </template>
 
 <script lang="ts">
-import { mapActions } from "pinia";
 import { defineComponent, type PropType } from "vue";
 
+import { getChildMessages, markMessageAsRead } from "@/api/message";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
@@ -35,6 +35,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["message-read"],
   setup() {
     const messageStore = useMessageStore();
 
@@ -45,12 +46,19 @@ export default defineComponent({
       return formatDate(String(this.message.notifiedOn), "LLL d, yyyy t");
     },
   },
+
   methods: {
-    ...mapActions(useMessageStore, ["markMessageAsRead"]),
     formatDate,
-    handleClick() {
+    async handleClick() {
       this.messageStore.currentMessage = this.message;
-      if (!this.message.acknowledged) this.markMessageAsRead(this.message.id ?? "");
+      this.loadChildMessages(this.message.id!);
+      if (!this.message.acknowledged) {
+        await markMessageAsRead(this.message.id ?? "");
+        this.$emit("message-read", this.message.id);
+      }
+    },
+    async loadChildMessages(messageId: string) {
+      this.messageStore.currentThread = (await getChildMessages({ parentId: messageId })).data?.communications;
     },
   },
 });

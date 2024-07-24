@@ -16,11 +16,15 @@ public record UserCommunicationQuery : IRequest<CommunicationsQueryResults>
 {
   public string? ById { get; set; }
   public string? ByRegistrantId { get; set; }
+  public string? ByParentId { get; set; }
   public IEnumerable<CommunicationStatus>? ByStatus { get; set; }
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
 }
-public record CommunicationsQueryResults(IEnumerable<Communication> Items);
+public record CommunicationsQueryResults(IEnumerable<Communication> Items)
+{
+  public int TotalMessagesCount { get; set; }
+}
 
 public record SendMessageCommand(Communication communication, string userId) : IRequest<SendMessageResult>;
 
@@ -36,9 +40,11 @@ public record Communication
   public string Id { get; set; } = null!;
   public string Subject { get; set; } = null!;
   public string Text { get; set; } = null!;
+  public InitiatedFrom From { get; set; }
   public DateTime NotifiedOn { get; set; }
   public bool Acknowledged { get; set; }
   public CommunicationStatus Status { get; set; }
+  public bool DoNotReply { get; set; }
 }
 
 public enum CommunicationStatus
@@ -47,6 +53,13 @@ public enum CommunicationStatus
   NotifiedRecipient,
   Acknowledged,
   Inactive
+}
+
+public enum InitiatedFrom
+{
+  Investigation,
+  PortalUser,
+  Registry,
 }
 
 public record CommunicationsStatusResults(CommunicationsStatus Status);

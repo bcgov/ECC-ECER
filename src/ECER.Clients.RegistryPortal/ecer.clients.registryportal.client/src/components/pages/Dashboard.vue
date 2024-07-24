@@ -41,6 +41,22 @@
       </v-col>
     </v-row>
 
+    <!-- Options -->
+    <v-row v-if="certificationStore.hasCertifications && certificationStore.latestNotCancelled" justify="center" class="mt-6">
+      <v-col>
+        <v-row>
+          <v-col cols="12">
+            <ECEHeader title="Options" />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" sm="6" lg="4">
+            <RenewCard />
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
     <!-- Your My ECE Registry account -->
     <v-row justify="center" class="mt-6">
       <v-col>
@@ -111,6 +127,7 @@ import CerticationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
+import RenewCard from "@/components/RenewCard.vue";
 import UnreadMessages from "@/components/UnreadMessages.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -121,7 +138,7 @@ import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "Dashboard",
-  components: { ConfirmationDialog, PageContainer, ApplicationCard, CerticationCard, ECEHeader, ActionCard, Alert, UnreadMessages },
+  components: { ConfirmationDialog, PageContainer, ApplicationCard, CerticationCard, ECEHeader, ActionCard, Alert, UnreadMessages, RenewCard },
   async setup() {
     const userStore = useUserStore();
     const applicationStore = useApplicationStore();
