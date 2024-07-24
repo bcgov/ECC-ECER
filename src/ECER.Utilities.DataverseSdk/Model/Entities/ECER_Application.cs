@@ -100,6 +100,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_1YRExplanationChoice = "ecer_1yrexplanationchoice";
+			public const string ecer_1yrexplanationchoiceName = "ecer_1yrexplanationchoicename";
 			public const string ecer_AddMoreCharacterReference = "ecer_addmorecharacterreference";
 			public const string ecer_addmorecharacterreferenceName = "ecer_addmorecharacterreferencename";
 			public const string ecer_AddMoreWorkExperienceReference = "ecer_addmoreworkexperiencereference";
@@ -455,6 +457,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_1yrexplanationchoice")]
+		public virtual ecer_yrrenewalexplanations? ecer_1YRExplanationChoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_yrrenewalexplanations?)(EntityOptionSetEnum.GetEnum(this, "ecer_1yrexplanationchoice")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_1yrexplanationchoice", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_1yrexplanationchoicename")]
+		public string ecer_1yrexplanationchoiceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_1yrexplanationchoice"))
+				{
+					return this.FormattedValues["ecer_1yrexplanationchoice"];
 				}
 				else
 				{
