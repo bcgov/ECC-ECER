@@ -4,7 +4,7 @@
       <WizardHeader class="mb-6" :handle-save-draft="handleSaveAsDraft" :show-save-button="showSaveButtons" />
     </template>
     <template #stepperHeader>
-      <v-container>
+      <v-container v-show="!$vuetify.display.mobile">
         <v-stepper-header class="elevation-0">
           <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
             <v-stepper-item

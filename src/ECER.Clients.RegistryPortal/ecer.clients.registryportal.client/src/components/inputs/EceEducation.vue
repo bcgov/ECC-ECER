@@ -1,13 +1,17 @@
 <template>
+  <v-row v-if="mode == 'add'">
+    <v-col>
+      <h2>{{ clientId ? "Edit" : "Add" }} education</h2>
+      <p>Must match your official transcript. It’s important to check your transcript to make sure the information you enter matches what’s on it.</p>
+    </v-col>
+  </v-row>
   <v-row>
     <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
-      <h2 v-if="!clientId">Education {{ newClientId }}</h2>
-      <h2 v-if="clientId">Edit {{ previousSchool }}</h2>
       <v-form ref="addEducationForm" validate-on="input" class="mt-6">
         <v-text-field
           v-model="school"
           :rules="[Rules.required('Enter the full name of your educational institution')]"
-          label="Full Name of Educational Institution"
+          label="Full name of educational institution"
           variant="outlined"
           color="primary"
           maxlength="100"
@@ -24,8 +28,8 @@
         <v-text-field v-model="campusLocation" label="Campus Location (Optional)" variant="outlined" color="primary" maxlength="50" class="my-8"></v-text-field>
         <v-text-field
           v-model="studentName"
-          :rules="[Rules.required('Enter your student name as it appears on your official transcript')]"
-          label="Student Name (as it appears on your official transcript)"
+          :rules="[Rules.required('Enter your student name shown on transcript')]"
+          label="Student name shown on transcript"
           variant="outlined"
           color="primary"
           maxlength="100"
@@ -33,8 +37,8 @@
         ></v-text-field>
         <v-text-field
           v-model="studentNumber"
-          :rules="[Rules.required('Enter your student ID as it appears on your official transcript')]"
-          label="Student ID"
+          :rules="[Rules.required('Enter your student number or ID')]"
+          label="Student number or ID"
           variant="outlined"
           color="primary"
           maxlength="100"
@@ -42,7 +46,7 @@
         ></v-text-field>
         <v-text-field
           v-model="language"
-          label="Language of Institution (Optional)"
+          label="Language of institution (optional)"
           variant="outlined"
           color="primary"
           maxlength="100"
@@ -51,7 +55,7 @@
         <v-text-field
           v-model="startYear"
           :rules="[Rules.required('Enter the start date of your program or course')]"
-          label="Start Date of program or course"
+          label="Start date of program or course"
           type="date"
           variant="outlined"
           color="primary"
@@ -61,7 +65,7 @@
         <v-text-field
           v-model="endYear"
           :rules="[Rules.required('Enter the end date of your program or course')]"
-          label="End Date of program or course"
+          label="End date of program or course"
           type="date"
           variant="outlined"
           color="primary"
