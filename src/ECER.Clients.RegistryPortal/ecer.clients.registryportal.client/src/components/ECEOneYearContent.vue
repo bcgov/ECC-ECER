@@ -2,18 +2,12 @@
   <v-container fluid>
     <v-row>
       <v-col cols="12">
-        <p class="small">
-          ECE One Year certification requires successful completion of a basic early childhood education training program recognized by the ECE Registry.
-          <br />
-          <br />
-          This certification, allows you to work in the position of a fully certified ECE while working towards your 500 hours of work experience.
+        <p>
+          This certification allows you to work as a fully certified ECE while you work towards your 500 hours work experience needed to apply for a ECE Five
+          Year certification.
         </p>
-      </v-col>
-      <v-col cols="12">
-        <div class="d-flex flex-row align-center">
-          <v-icon class="mr-2" size="large" icon="mdi-alert-circle-outline" />
-          <p class="small">NOTE: This certificate may only be renewed ONCE.</p>
-        </div>
+        <br />
+        <p>You must have completed a basic early childhood education program. You will only be able to renew this certification once.</p>
       </v-col>
     </v-row>
   </v-container>
