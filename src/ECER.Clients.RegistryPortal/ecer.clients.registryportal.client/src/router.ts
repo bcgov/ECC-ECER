@@ -121,7 +121,14 @@ const router = createRouter({
       component: () => import("./components/inputs/CertificationTypeRequirements.vue"),
       meta: { requiresAuth: true },
       name: "certification-requirements",
-      props: (route) => ({ certificationTypes: route.query.certificationTypes }),
+      props: (route) => {
+        const { query } = route;
+        let certificationTypes = query.certificationTypes;
+        if (certificationTypes && !Array.isArray(certificationTypes)) {
+          certificationTypes = [certificationTypes];
+        }
+        return { certificationTypes: certificationTypes || [] };
+      },
     },
     {
       path: "/application/declaration",
