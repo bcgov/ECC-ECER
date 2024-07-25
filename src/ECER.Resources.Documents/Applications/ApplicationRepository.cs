@@ -34,6 +34,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     context.LoadProperties(applications, ecer_Application.Fields.ecer_transcript_Applicationid);
     context.LoadProperties(applications, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer);
     context.LoadProperties(applications, ecer_Application.Fields.ecer_characterreference_Applicationid);
+    context.LoadProperties(applications, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi);
 
     return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
   }
@@ -49,8 +50,8 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
     var ecerTranscripts = mapper.Map<IEnumerable<ecer_Transcript>>(application.Transcripts)!.ToList();
     var ecerWorkExperienceReferences = mapper.Map<IEnumerable<ecer_WorkExperienceRef>>(application.WorkExperienceReferences)!.ToList();
-
     var ecerCharacterReferences = mapper.Map<IEnumerable<ecer_CharacterReference>>(application.CharacterReferences)!.ToList();
+    var ecerProfessionalDevelopments = mapper.Map<IEnumerable<ecer_ProfessionalDevelopment>>(application.ProfessionalDevelopments)!.ToList();
 
     if (!ecerApplication.ecer_ApplicationId.HasValue)
     {
@@ -70,6 +71,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.UpdateObject(ecerApplication);
     }
     _ = UpdateApplicationTranscripts(ecerApplication, ecerTranscripts);
+    _ = UpdateApplicationProfessionalDevelopments(ecerApplication, ecerProfessionalDevelopments);
     _ = UpdateApplicationWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     _ = UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
 
@@ -122,6 +124,41 @@ internal sealed class ApplicationRepository : IApplicationRepository
       }
       context.Attach(reference);
       context.UpdateObject(reference);
+    }
+  }
+
+  public async Task UpdateApplicationProfessionalDevelopments(ecer_Application application, List<ecer_ProfessionalDevelopment> updatedProfessionalDevelopments)
+  {
+    await Task.CompletedTask;
+    var existingProfessionalDevelopments = context.ecer_ProfessionalDevelopmentSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
+
+    // 1. Remove professional developments that they exist in the dataverse but not in the application
+    foreach (var professionalDevelopment in existingProfessionalDevelopments)
+    {
+      if (!updatedProfessionalDevelopments.Any(t => t.Id == professionalDevelopment.Id))
+      {
+        context.DeleteObject(professionalDevelopment);
+      }
+    }
+
+    // 2. Add New professional developments that they exist in the application but not in the dataverse
+    foreach (var professionalDevelopment in updatedProfessionalDevelopments.Where(d => d.ecer_ProfessionalDevelopmentId == null))
+    {
+      professionalDevelopment.ecer_ProfessionalDevelopmentId = Guid.NewGuid();
+      context.AddObject(professionalDevelopment);
+      context.AddLink(application, ecer_Application.Fields.ecer_transcript_Applicationid, professionalDevelopment);
+    }
+
+    // 3. Update Existing professional developments
+    foreach (var professionalDevelopment in updatedProfessionalDevelopments.Where(d => d.ecer_ProfessionalDevelopmentId != null))
+    {
+      var oldProfessionalDevelopment = existingProfessionalDevelopments.SingleOrDefault(t => t.Id == professionalDevelopment.Id);
+      if (oldProfessionalDevelopment != null)
+      {
+        context.Detach(oldProfessionalDevelopment);
+      }
+      context.Attach(professionalDevelopment);
+      context.UpdateObject(professionalDevelopment);
     }
   }
 

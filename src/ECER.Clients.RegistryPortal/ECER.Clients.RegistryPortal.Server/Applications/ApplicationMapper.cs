@@ -76,8 +76,7 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.CharacterReferences))
       ;
 
-    CreateMap<Managers.Registry.Contract.Applications.Application, Application>()
-      ;
+    CreateMap<Managers.Registry.Contract.Applications.Application, Application>();
 
     CreateMap<Managers.Registry.Contract.Applications.Application, SubmittedApplicationStatus>()
       .ForCtorParam(nameof(SubmittedApplicationStatus.Id),
