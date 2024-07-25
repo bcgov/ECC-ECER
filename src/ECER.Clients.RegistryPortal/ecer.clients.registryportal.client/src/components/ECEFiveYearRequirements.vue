@@ -69,6 +69,7 @@
       <p>You need to have completed 500 hours of work experience. And be able to provide references to attest to all the hours.</p>
       <br />
       <p>Important information about calculating hours:</p>
+      <br />
       <ul class="ml-10">
         <li>Only include hours you worked after you started your education</li>
         <li>Only include hours completed within the 5 year</li>
@@ -77,6 +78,7 @@
       </ul>
       <br />
       <p>The reference must be someone who:</p>
+      <br />
       <ul class="ml-10">
         <li>Have directly supervised or observed the hours they can attest to</li>
         <li>Can speak to your knowledge, skills, and ability as an ECE</li>
@@ -90,6 +92,7 @@
       <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
       <br />
       <p>Make sure you choose a person that:</p>
+      <br />
       <ul class="ml-10">
         <li>Can speak to your character</li>
         <li>Can speak to your ability to educate and care for young children</li>

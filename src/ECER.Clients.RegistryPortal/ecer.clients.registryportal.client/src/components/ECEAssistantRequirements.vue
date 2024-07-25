@@ -45,6 +45,7 @@
       <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
       <br />
       <p>Make sure you choose a person that:</p>
+      <br />
       <ul class="ml-10">
         <li>Can speak to your character</li>
         <li>Can speak to your ability to educate and care for young children</li>
