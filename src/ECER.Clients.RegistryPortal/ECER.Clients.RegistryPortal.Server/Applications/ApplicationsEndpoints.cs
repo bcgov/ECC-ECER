@@ -298,6 +298,8 @@ public record DraftApplication
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public string? ExplanationLetter { get; set; }
+  public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
 
 public record Application
@@ -312,6 +314,8 @@ public record Application
   public ApplicationStatus Status { get; set; }
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public string? ExplanationLetter { get; set; }
+  public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
 
 public record Transcript()
@@ -369,6 +373,16 @@ public enum PortalStage
   CharacterReferences,
   WorkReferences,
   Review,
+}
+
+public enum OneYearRenewalexplanations
+{
+  Icouldnotfindemploymenttocompletetherequiredhours,
+  Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa,
+  IliveandworkinacommunitywithoutothercertifiedECEs,
+  Iwasunabletoenterthecountryasexpected,
+  Iwasunabletoworkinthechildcarefieldforpersonalreasons,
+  Other,
 }
 
 public enum ApplicationStatus

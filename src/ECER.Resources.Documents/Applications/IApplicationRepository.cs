@@ -46,6 +46,8 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public DateTime? ReadyForAssessmentDate { get; set; }
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
+  public string? ExplanationLetter { get; set; }
+  public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)
@@ -120,6 +122,16 @@ public enum ApplicationStatusReasonDetail
   ReceivePhysicalTranscripts,
   SupervisorConsultationNeeded,
   ValidatingIDs,
+}
+
+public enum OneYearRenewalexplanations
+{
+  Icouldnotfindemploymenttocompletetherequiredhours,
+  Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa,
+  IliveandworkinacommunitywithoutothercertifiedECEs,
+  Iwasunabletoenterthecountryasexpected,
+  Iwasunabletoworkinthechildcarefieldforpersonalreasons,
+  Other,
 }
 
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)

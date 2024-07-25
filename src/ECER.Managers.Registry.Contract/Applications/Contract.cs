@@ -60,6 +60,8 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public DateTime? ReadyForAssessmentDate { get; set; }
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
+  public string? ExplanationLetter { get; set; }
+  public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)
@@ -109,6 +111,16 @@ public enum CertificationType
   FiveYears,
   Ite,
   Sne
+}
+
+public enum OneYearRenewalexplanations
+{
+  Icouldnotfindemploymenttocompletetherequiredhours,
+  Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa,
+  IliveandworkinacommunitywithoutothercertifiedECEs,
+  Iwasunabletoenterthecountryasexpected,
+  Iwasunabletoworkinthechildcarefieldforpersonalreasons,
+  Other,
 }
 
 public enum SubmissionError

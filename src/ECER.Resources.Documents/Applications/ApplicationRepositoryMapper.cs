@@ -29,12 +29,14 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.ecer_isSNE, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.Sne)))
        .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.SignedDate))
        .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.Stage))
+       .ForMember(d => d.ecer_ExplanationLetter, opts => opts.MapFrom(s => s.ExplanationLetter))
        .ReverseMap()
        .ValidateMemberList(MemberList.Destination)
        .ForCtorParam(nameof(Application.Id), opts => opts.MapFrom(s => s.ecer_ApplicationId!.ToString()))
        .ForCtorParam(nameof(Application.ApplicantId), opts => opts.MapFrom(s => s.ecer_Applicantid.Id.ToString()))
        .ForCtorParam(nameof(Application.CertificationTypes), opts => opts.MapFrom(s => s))
        .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+       .ForMember(d => d.OneYearRenewalexplanation, opts => opts.MapFrom(s => s.ecer_1YRExplanationChoice))
        .ForMember(d => d.SubStatus, opts => opts.MapFrom(s => s.ecer_StatusReasonDetail))
        .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted))
        .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.ecer_DateSigned))
@@ -64,6 +66,10 @@ internal class ApplicationRepositoryMapper : Profile
     CreateMap<ApplicationStatusReasonDetail, ecer_ApplicationStatusReasonDetail>()
     .ConvertUsingEnumMapping(opts => opts.MapByName(true))
     .ReverseMap();
+
+    CreateMap<OneYearRenewalexplanations, ecer_yrrenewalexplanations>()
+.ConvertUsingEnumMapping(opts => opts.MapByName(true))
+.ReverseMap();
 
     CreateMap<Transcript, ecer_Transcript>(MemberList.Source)
            .ForSourceMember(s => s.StartDate, opts => opts.DoNotValidate())
