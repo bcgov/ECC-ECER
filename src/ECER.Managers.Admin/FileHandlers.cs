@@ -1,4 +1,5 @@
 ﻿using ECER.Managers.Admin.Contract.Files;
+using ECER.Utilities.FileScanner;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using MediatR;
@@ -7,23 +8,34 @@ using System.Collections.Concurrent;
 
 namespace ECER.Managers.Admin;
 
-public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfiguration configuration)
-  : IRequestHandler<SaveFileCommand>, IRequestHandler<DeleteFileCommand>, IRequestHandler<FileQuery, FileQueryResults>
+public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfiguration configuration, IFileScannerProvider fileScannerProvider)
+  : IRequestHandler<SaveFileCommand, SaveFileCommandResponse>, IRequestHandler<DeleteFileCommand>, IRequestHandler<FileQuery, FileQueryResults>
 
 {
-  public async Task Handle(SaveFileCommand request, CancellationToken cancellationToken)
+  public async Task<SaveFileCommandResponse> Handle(SaveFileCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
     var bucket = GetBucketName(configuration);
+    var saveFileResults = new ConcurrentBag<SaveFileResult>();
     await Parallel.ForEachAsync(request.Items, cancellationToken, async (file, ct) =>
     {
       var tags = new Dictionary<string, string>(file.FileProperties.TagsList ?? Array.Empty<KeyValuePair<string, string>>())
       {
         { "classification", file.FileProperties.Classification }
       };
-      await objectStorageProvider.StoreAsync(new S3Descriptor(bucket, file.FileLocation.Id, file.FileLocation.Folder), new FileObject(file.FileName, file.ContentType, file.Content, tags), ct);
+      var scanResult = await fileScannerProvider.ScanAsync(file.Content, ct);
+      if (scanResult.IsClean)
+      {
+        await objectStorageProvider.StoreAsync(new S3Descriptor(bucket, file.FileLocation.Id, file.FileLocation.Folder), new FileObject(file.FileName, file.ContentType, file.Content, tags), ct);
+        saveFileResults.Add(new SaveFileResult(file, true, "File Saved Successfully"));
+      }
+      else
+      {
+        saveFileResults.Add(new SaveFileResult(file, false, scanResult.Message));
+      }
     });
+    return new SaveFileCommandResponse(saveFileResults);
   }
 
   public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken)

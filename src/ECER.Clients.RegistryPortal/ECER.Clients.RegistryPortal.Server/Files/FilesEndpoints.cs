@@ -49,7 +49,13 @@ public class FilesEndpoints : IRegisterEndpoints
 
       var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty), fileProperties, file.FileName, file.ContentType, file.OpenReadStream())).ToList();
       if (files.Count == 0) return TypedResults.BadRequest(new ProblemDetails { Title = "No files were uploaded" });
-      await messageBus.Send(new SaveFileCommand(files), ct);
+      var response = await messageBus.Send(new SaveFileCommand(files), ct);
+      var saveResult = response.Items.FirstOrDefault();
+      if (saveResult == null || !saveResult.IsSuccessful)
+      {
+        var message = saveResult == null ? "Save Failed" : saveResult.Message;
+        return TypedResults.BadRequest(new ProblemDetails { Title = "Save Failed", Detail = message });
+      }
       return TypedResults.Ok(new FileResponse(fileId));
     })
       .WithOpenApi("Handles upload file request", string.Empty, "upload_file")
