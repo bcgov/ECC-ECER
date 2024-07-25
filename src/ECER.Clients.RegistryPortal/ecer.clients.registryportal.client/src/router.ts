@@ -112,27 +112,19 @@ const router = createRouter({
     },
     {
       path: "/application/certification",
-      component: () => import("./components/inputs/CertificationType.vue"),
+      component: () => import("./components/CertificationType.vue"),
       meta: { requiresAuth: true },
       name: "application-certification",
     },
     {
       path: "/application/certification/requirements",
-      component: () => import("./components/inputs/CertificationTypeRequirements.vue"),
+      component: () => import("./components/CertificationTypeRequirements.vue"),
       meta: { requiresAuth: true },
       name: "certification-requirements",
-      props: (route) => {
-        const { query } = route;
-        let certificationTypes = query.certificationTypes;
-        if (certificationTypes && !Array.isArray(certificationTypes)) {
-          certificationTypes = [certificationTypes];
-        }
-        return { certificationTypes: certificationTypes || [] };
-      },
     },
     {
       path: "/application/declaration",
-      component: () => import("./components/inputs/Declaration.vue"),
+      component: () => import("./components/Declaration.vue"),
       meta: { requiresAuth: true },
       name: "declaration",
     },
