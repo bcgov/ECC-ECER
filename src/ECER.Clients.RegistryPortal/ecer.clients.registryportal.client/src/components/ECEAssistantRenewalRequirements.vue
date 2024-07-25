@@ -12,10 +12,13 @@
       <ul class="ml-10">
         <li>Must have been completed within the last 5 years</li>
         <li>Cannot be one you previously used in an application for an ECE Assistant certification</li>
-        <li>Be part of an early childhood education training program recognized by the ECE Registry</li>
+        <li>
+          Be part of an early childhood education training
+          <a href="https://www2.gov.bc.ca/gov/content?id=62102395C4F64F068A63E42921E67720">program recognized by the ECE Registry</a>
+        </li>
       </ul>
       <p>
-        You’ll need to request an official transcript from your educational institution. It’ll need to be sent directly to the ECE Registry from the educational
+        You’ll need to request an official transcript from your educational institution. It'll need to be sent directly to the ECE Registry from the educational
         institute.
       </p>
     </div>
@@ -23,7 +26,7 @@
   <v-col cols="12">
     <ECEHeader title="Character reference" />
     <div class="d-flex flex-column ga-3 my-6">
-      <p>You will need to provide a character reference. You’ll enter their name and email. We’ll contact them later after you submit your application.</p>
+      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
       <p>The reference must be someone who:</p>
       <ul class="ml-10">
         <li>Can speak to your character</li>

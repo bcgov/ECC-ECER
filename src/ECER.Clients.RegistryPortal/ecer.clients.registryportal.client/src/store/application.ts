@@ -22,6 +22,7 @@ export const useApplicationStore = defineStore("application", {
       transcripts: [] as Components.Schemas.Transcript[],
       characterReferences: [] as Components.Schemas.CharacterReference[],
       workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
+      applicationType: "New",
     },
     application: null,
   }),
@@ -65,6 +66,9 @@ export const useApplicationStore = defineStore("application", {
     },
     isDraftCertificateTypeSne(state): boolean {
       return !!state.draftApplication.certificationTypes?.includes("Sne");
+    },
+    isDraftApplicationRenewal(state): boolean {
+      return state.draftApplication.applicationType === "Renewal";
     },
   },
   actions: {

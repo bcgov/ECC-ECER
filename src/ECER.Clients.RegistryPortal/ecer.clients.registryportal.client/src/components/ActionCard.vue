@@ -18,10 +18,11 @@
 <script lang="ts">
 import type { PropType } from "vue";
 import { defineComponent } from "vue";
+import type { RouteLocationRaw } from "vue-router";
 
 export interface Link {
   text: string;
-  to: string;
+  to: RouteLocationRaw;
 }
 
 export default defineComponent({
