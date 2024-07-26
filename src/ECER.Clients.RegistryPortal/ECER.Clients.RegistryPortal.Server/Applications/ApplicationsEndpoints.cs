@@ -296,6 +296,7 @@ public record DraftApplication
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
+  public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public string? ExplanationLetter { get; set; }
@@ -311,13 +312,22 @@ public record Application
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
+  public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
   public ApplicationStatus Status { get; set; }
   public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public string? ExplanationLetter { get; set; }
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
-
+public record ProfessionalDevelopment([Required] string? CertificationNumber, [Required] DateTime CertificationExpiryDate, [Required] DateTime DateSigned, [Required] string? CourseName, [Required] string? OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate)
+{
+  public string? Id { get; set; }
+  public string? OrganizationContactInformation { get; set; }
+  public string? InstructorName { get; set; }
+  [Required]
+  public int? NumberOfHours { get; set; }
+  public ProfessionalDevelopmentStatusCode? Status { get; set; }
+}
 public record Transcript()
 {
   public string? Id { get; set; }
@@ -488,4 +498,16 @@ public enum CharacterReferenceStage
   Submitted,
   UnderReview,
   WaitingResponse
+}
+
+public enum ProfessionalDevelopmentStatusCode
+{
+  ApplicationSubmitted,
+  Draft,
+  Inactive,
+  InProgress,
+  Rejected,
+  Submitted,
+  UnderReview,
+  WaitingResponse,
 }
