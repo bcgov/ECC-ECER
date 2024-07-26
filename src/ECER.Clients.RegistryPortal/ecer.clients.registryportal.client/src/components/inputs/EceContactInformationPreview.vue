@@ -98,8 +98,8 @@ import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
-import { formatDate } from "@/utils/format";
 import type { EcePreviewProps } from "@/types/input";
+import { formatDate } from "@/utils/format";
 export default defineComponent({
   name: "EceContactInformationPreview",
   components: {

@@ -1,6 +1,6 @@
 <template>
   <v-col cols="12">
-    <h1 class="title-header">{{ generateTitle() }}</h1>
+    <h1>{{ generateTitle() }}</h1>
   </v-col>
   <v-col cols="12">
     <p>Before you proceed, please make sure that you meet the following requirements:</p>
