@@ -1,9 +1,9 @@
 <template>
-  <PreviewCard title="Contact Information" portal-stage="ContactInformation">
+  <PreviewCard title="Contact information" portal-stage="ContactInformation">
     <template #content>
       <v-row>
         <v-col cols="4">
-          <p class="small">Legal Last Name</p>
+          <p class="small">Legal last name</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ legalLastName }}</p>
@@ -11,7 +11,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Legal First Name</p>
+          <p class="small">Legal first name</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ legalFirstName }}</p>
@@ -19,7 +19,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Previous Name</p>
+          <p class="small">Previous name</p>
         </v-col>
         <v-col>
           <p class="small font>weight-bold">{{ previousName }}</p>
@@ -27,7 +27,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Legal Middle Name</p>
+          <p class="small">Legal middle name</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ legalMiddleName }}</p>
@@ -35,7 +35,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Preferred Name</p>
+          <p class="small">Preferred first name</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ preferredName }}</p>
@@ -43,7 +43,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Date of Birth</p>
+          <p class="small">Date of birth</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ dateOfBirth }}</p>
@@ -51,7 +51,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Residential Address</p>
+          <p class="small">Home address</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ residentialAddress }}</p>
@@ -59,7 +59,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Mailing Address</p>
+          <p class="small">Mailing address</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ mailingAddress }}</p>
@@ -75,7 +75,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Primary Phone Number</p>
+          <p class="small">Primary phone</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ primaryPhoneNumber }}</p>
@@ -83,7 +83,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Alternate Phone Number</p>
+          <p class="small">Alternate phone</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ alternatePhoneNumber }}</p>
@@ -98,6 +98,7 @@ import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
+import { formatDate } from "@/utils/format";
 import type { EcePreviewProps } from "@/types/input";
 export default defineComponent({
   name: "EceContactInformationPreview",
@@ -133,7 +134,7 @@ export default defineComponent({
       return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.preferredName.id] ?? "—";
     },
     dateOfBirth() {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id] ?? "—";
+      return formatDate(this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id], "LLLL d, yyyy") ?? "—";
     },
     residentialAddress() {
       const addresses: AddressesData = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.addresses.id];

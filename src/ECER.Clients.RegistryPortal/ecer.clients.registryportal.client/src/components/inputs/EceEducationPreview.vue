@@ -26,7 +26,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Student Name</p>
+            <p class="small">Your full name as shown on transcript</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ education.studentName }}</p>
@@ -34,7 +34,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Student Number</p>
+            <p class="small">Student ID or number</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ education.studentNumber }}</p>
@@ -42,7 +42,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Language of Instruction</p>
+            <p class="small">Language of institution</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ education.languageofInstruction }}</p>
@@ -50,18 +50,18 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Start Date of Program</p>
+            <p class="small">Start date of program</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ formatDate(education.startDate) }}</p>
+            <p class="small font-weight-bold">{{ formatDate(education.startDate, "LLLL d, yyyy") }}</p>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">End Date of Program</p>
+            <p class="small">End date of program</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ formatDate(education.endDate) }}</p>
+            <p class="small font-weight-bold">{{ formatDate(education.endDate, "LLLL d, yyyy") }}</p>
           </v-col>
         </v-row>
       </div>
