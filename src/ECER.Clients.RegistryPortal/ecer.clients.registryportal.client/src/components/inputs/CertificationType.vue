@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <Breadcrumb :items="items" />
-    <h2 class="mb-6">What type of certification do you want to apply for?</h2>
+    <h1 class="mb-6">What type of certification do you want to apply for?</h1>
     <v-form ref="certificationForm">
       <v-expansion-panels v-model="selection" variant="accordion">
         <v-expansion-panel v-for="option in certificationOptions" :key="option.id" :value="option.id" class="rounded-lg">
@@ -13,7 +13,7 @@
                 </v-radio-group>
               </v-col>
               <v-col v-if="option.id === CertificationType.FIVE_YEAR && !selection?.includes(CertificationType.FIVE_YEAR)" cols="11" offset="1">
-                <p class="small">If you are eligible for an ECE Five Year Certificate, you may also be eligible for one or both specializations:</p>
+                <p>If you are eligible for an ECE Five Year Certificate, you may also be eligible for one or both specializations:</p>
                 <v-checkbox
                   v-model="selection"
                   color="primary"
