@@ -31,7 +31,7 @@ import { defineComponent } from "vue";
 
 import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
-import type { Components } from "@/types/openapi";
+import type { ApplicationStage } from "@/types/wizard";
 
 export default defineComponent({
   name: "PreviewCard",
@@ -45,7 +45,7 @@ export default defineComponent({
       required: true,
     },
     portalStage: {
-      type: String as PropType<Components.Schemas.PortalStage>,
+      type: String as PropType<ApplicationStage>,
       required: true,
     },
     editable: {
@@ -71,7 +71,7 @@ export default defineComponent({
     },
   },
   methods: {
-    setWizard(stage: Components.Schemas.PortalStage) {
+    setWizard(stage: ApplicationStage) {
       this.wizardStore.setCurrentStep(stage);
       this.applicationStore.draftApplication.stage = stage;
     },
