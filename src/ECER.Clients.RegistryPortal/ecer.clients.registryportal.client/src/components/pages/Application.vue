@@ -61,7 +61,7 @@ import { useApplicationStore } from "@/store/application";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
-import type { Components } from "@/types/openapi";
+import type { ApplicationStage } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
 
 export default defineComponent({
@@ -140,11 +140,11 @@ export default defineComponent({
     },
     incrementWizard() {
       this.wizardStore.incrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as Components.Schemas.PortalStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as ApplicationStage;
     },
     decrementWizard() {
       this.wizardStore.decrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as Components.Schemas.PortalStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as ApplicationStage;
     },
     handleBack() {
       switch (this.wizardStore.currentStepStage) {

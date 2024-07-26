@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
 import type { Components } from "@/types/openapi";
-import type { ReferenceStage, Step, Wizard } from "@/types/wizard";
+import type { ApplicationStage, ReferenceStage, Step, Wizard } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
 
 import { useOidcStore } from "./oidc";
@@ -17,10 +17,6 @@ export interface WizardState {
   wizardData: WizardData;
   listComponentMode: "add" | "list";
 }
-
-export type PortalStageValidation = {
-  [key in Components.Schemas.PortalStage]: boolean;
-};
 
 export const useWizardStore = defineStore("wizard", {
   state: (): WizardState => ({
@@ -40,7 +36,7 @@ export const useWizardStore = defineStore("wizard", {
     currentStepId(state): string {
       return this.steps[state.step - 1].id;
     },
-    currentStepStage(state): Components.Schemas.PortalStage | ReferenceStage {
+    currentStepStage(state): ApplicationStage | ReferenceStage {
       return this.steps[state.step - 1].stage;
     },
   },
@@ -136,7 +132,7 @@ export const useWizardStore = defineStore("wizard", {
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };
     },
-    setCurrentStep(stage: Components.Schemas.PortalStage | ReferenceStage): void {
+    setCurrentStep(stage: ApplicationStage | ReferenceStage): void {
       const item = Object.values(this.wizardConfig.steps).findIndex((step) => step.stage === stage) + 1;
       this.step = item;
     },

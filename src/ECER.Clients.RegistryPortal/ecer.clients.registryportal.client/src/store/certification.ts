@@ -42,6 +42,25 @@ export const useCertificationStore = defineStore("certification", {
       if (!state.latestCertification) return false;
       return state.latestCertification.levels?.some((level) => level.type === "ITE") ?? false;
     },
+    latestCertificationTypes(): Components.Schemas.CertificationType[] {
+      const certificationTypes = [] as Components.Schemas.CertificationType[];
+      if (this.latestIsEceAssistant) {
+        certificationTypes.push("EceAssistant");
+      }
+      if (this.latestIsEceOneYear) {
+        certificationTypes.push("OneYear");
+      }
+      if (this.latestIsEceFiveYear) {
+        certificationTypes.push("FiveYears");
+      }
+      if (this.latestHasSNE) {
+        certificationTypes.push("Sne");
+      }
+      if (this.latestHasITE) {
+        certificationTypes.push("Ite");
+      }
+      return certificationTypes;
+    },
     hasMultipleEceOneYearCertifications(state): boolean {
       let count = 0;
       if (!state.certifications || state.certifications?.length < 2) return false;

@@ -65,7 +65,7 @@ import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 
-import type { ItemsType } from "../Breadcrumb.vue";
+import type { ItemsType } from "./Breadcrumb.vue";
 
 export default defineComponent({
   name: "Declaration",
