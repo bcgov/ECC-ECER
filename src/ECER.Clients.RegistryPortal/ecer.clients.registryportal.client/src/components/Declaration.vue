@@ -92,6 +92,11 @@ export default defineComponent({
         href: "/application/certification",
       },
       {
+        title: "Requirements",
+        disabled: false,
+        href: "/application/certification/requirements",
+      },
+      {
         title: "Declaration",
         disabled: true,
         href: "/application/declaration",
