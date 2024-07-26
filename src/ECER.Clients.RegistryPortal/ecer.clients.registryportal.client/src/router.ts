@@ -25,6 +25,7 @@ const router = createRouter({
     },
     {
       path: "/messages",
+      name: "messages",
       component: () => import("./components/Messages.vue"),
       meta: { requiresAuth: true },
     },
@@ -118,9 +119,23 @@ const router = createRouter({
     },
     {
       path: "/application/certification/requirements",
-      component: () => import("./components/CertificationTypeRequirements.vue"),
+      component: () => import("./components/ApplicationRequirements.vue"),
+      meta: { requiresAuth: true },
+      name: "application-requirements",
+    },
+    {
+      path: "/certification-requirements",
+      component: () => import("./components/CertificationRequirements.vue"),
       meta: { requiresAuth: true },
       name: "certification-requirements",
+      props: (route) => {
+        const { query } = route;
+        let certificationTypes = query.certificationTypes;
+        if (certificationTypes && !Array.isArray(certificationTypes)) {
+          certificationTypes = [certificationTypes];
+        }
+        return { certificationTypes: certificationTypes || [], isRenewal: query.isRenewal === "true" };
+      },
     },
     {
       path: "/application/declaration",

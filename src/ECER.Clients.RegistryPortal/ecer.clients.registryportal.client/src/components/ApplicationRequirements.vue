@@ -53,25 +53,40 @@ export default defineComponent({
     return { applicationStore };
   },
   data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application types",
-          disabled: false,
-          href: "/application/certification",
-        },
-        {
-          title: "Requirements",
-          disabled: true,
-          href: "/application/certification/requirements",
-        },
-      ],
-    };
+    const applicationStore = useApplicationStore();
+
+    const items = applicationStore.isDraftApplicationRenewal
+      ? [
+          {
+            title: "Home",
+            disabled: false,
+            href: "/",
+          },
+          {
+            title: "Renew",
+            disabled: true,
+            href: "/application/certification/requirements",
+          },
+        ]
+      : [
+          {
+            title: "Home",
+            disabled: false,
+            href: "/",
+          },
+          {
+            title: "Application types",
+            disabled: false,
+            href: "/application/certification",
+          },
+          {
+            title: "Requirements",
+            disabled: true,
+            href: "/application/certification/requirements",
+          },
+        ];
+
+    return { items };
   },
   methods: {
     async continueClick() {
