@@ -12,12 +12,6 @@
       <template v-if="certificationType === CertificationType.FIVE_YEAR">
         <ECEFiveYearRequirements />
       </template>
-      <template v-if="certificationType === CertificationType.SNE">
-        <SneRequirements />
-      </template>
-      <template v-if="certificationType === CertificationType.ITE">
-        <IteRequirements />
-      </template>
     </div>
     <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Continue</v-btn>
   </v-container>
@@ -30,8 +24,6 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import ECEAssistantRequirements from "@/components/ECEAssistantRequirements.vue";
 import ECEFiveYearRequirements from "@/components/ECEFiveYearRequirements.vue";
 import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
-import IteRequirements from "@/components/IteRequirements.vue";
-import SneRequirements from "@/components/SneRequirements.vue";
 import type { Components } from "@/types/openapi";
 import { CertificationType } from "@/utils/constant";
 
@@ -41,8 +33,6 @@ export default defineComponent({
     ECEAssistantRequirements,
     ECEOneYearRequirements,
     ECEFiveYearRequirements,
-    SneRequirements,
-    IteRequirements,
     Breadcrumb,
   },
   props: {
