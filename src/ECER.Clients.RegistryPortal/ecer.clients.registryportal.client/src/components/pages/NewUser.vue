@@ -38,6 +38,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import type { VForm } from "vuetify/components";
 
 import { postUserInfo } from "@/api/user";
 import { useOidcStore } from "@/store/oidc";
@@ -47,7 +48,6 @@ import * as Rules from "@/utils/formRules";
 
 import FormContainer from "../FormContainer.vue";
 import PageContainer from "../PageContainer.vue";
-import type { VForm } from "vuetify/components";
 
 export default defineComponent({
   name: "NewUser",
