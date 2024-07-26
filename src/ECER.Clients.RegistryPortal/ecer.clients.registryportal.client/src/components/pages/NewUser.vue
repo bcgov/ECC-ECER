@@ -3,15 +3,15 @@
     <FormContainer>
       <div class="d-flex flex-column ga-8">
         <div>
-          <h2>Profile Information</h2>
-          <p class="small">The Registry will notify you of important updates regarding your certification</p>
+          <h1>Profile information</h1>
+          <p class="small">The ECE Registry will notify you of important updates regarding your certification</p>
         </div>
-        <v-form ref="form" v-model="isValid" validate-on="input">
+        <v-form ref="form" validate-on="input">
           <div class="d-flex flex-column ga-2">
             <v-text-field v-model="email" label="Email" variant="outlined" color="primary" type="email" :rules="emailRules"></v-text-field>
             <v-text-field
               v-model="phoneNumber"
-              label="Phone Number"
+              label="Phone number"
               variant="outlined"
               color="primary"
               :rules="phoneRules"
@@ -25,13 +25,12 @@
                 </div>
               </template>
             </v-checkbox>
-            <div></div>
-            <v-row justify="end">
-              <v-btn rounded="lg" variant="outlined" class="mr-2" @click="logout">Cancel</v-btn>
-              <v-btn rounded="lg" color="primary" :disabled="!isValid" @click="submit">Save and continue</v-btn>
-            </v-row>
           </div>
         </v-form>
+        <v-row>
+          <v-btn rounded="lg" color="primary" class="mr-2" @click="submit">Save and continue</v-btn>
+          <v-btn rounded="lg" variant="outlined" @click="logout">Cancel</v-btn>
+        </v-row>
       </div>
     </FormContainer>
   </PageContainer>
@@ -48,6 +47,7 @@ import * as Rules from "@/utils/formRules";
 
 import FormContainer from "../FormContainer.vue";
 import PageContainer from "../PageContainer.vue";
+import type { VForm } from "vuetify/components";
 
 export default defineComponent({
   name: "NewUser",
@@ -65,7 +65,6 @@ export default defineComponent({
   },
 
   data: () => ({
-    isValid: false,
     hasAgreed: false,
     hasAgreedRules: [(v: boolean) => !!v || "You must read and accept the Terms of Use"],
     Rules,
@@ -88,7 +87,7 @@ export default defineComponent({
 
     isNumber,
     async submit() {
-      const { valid } = await (this.$refs.form as any).validate();
+      const { valid } = await (this.$refs.form as VForm).validate();
       if (valid) {
         const userCreated: boolean = await postUserInfo({ ...this.oidcUserInfo, phone: this.phoneNumber });
 
