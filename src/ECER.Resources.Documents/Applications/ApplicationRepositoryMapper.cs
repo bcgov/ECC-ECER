@@ -29,6 +29,9 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.ecer_isSNE, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.Sne)))
        .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.SignedDate))
        .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.Stage))
+       .ForMember(d => d.ecer_Type, opts => opts.MapFrom(s => s.ApplicationType))
+       .ForMember(d => d.ecer_EducationOrigin, opts => opts.MapFrom(s => s.EducationOrigin))
+       .ForMember(d => d.ecer_EducationRecognition, opts => opts.MapFrom(s => s.EducationRecognition))
        .ReverseMap()
        .ValidateMemberList(MemberList.Destination)
        .ForCtorParam(nameof(Application.Id), opts => opts.MapFrom(s => s.ecer_ApplicationId!.ToString()))
@@ -62,6 +65,18 @@ internal class ApplicationRepositoryMapper : Profile
         .ReverseMap();
 
     CreateMap<ApplicationStatusReasonDetail, ecer_ApplicationStatusReasonDetail>()
+    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+    .ReverseMap();
+
+    CreateMap<ApplicationTypes, ecer_ApplicationTypes>()
+    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+    .ReverseMap();
+
+    CreateMap<EducationOrigin, ecer_EducationOrigin>()
+    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+    .ReverseMap();
+
+    CreateMap<EducationRecognition, ecer_EducationRecognition>()
     .ConvertUsingEnumMapping(opts => opts.MapByName(true))
     .ReverseMap();
 

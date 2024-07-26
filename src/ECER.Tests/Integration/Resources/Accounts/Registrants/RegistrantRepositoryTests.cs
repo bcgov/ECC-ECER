@@ -85,6 +85,7 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
     var updatedUserProfile = CreateUserProfile();
     await registrantRepository.Save(new Registrant { Profile = updatedUserProfile, Id = registrantId }, default);
     var user = (await registrantRepository.Query(new RegistrantQuery { ByUserId = registrantId }, default)).ShouldHaveSingleItem();
+    user.Profile.PreviousNames = user.Profile.PreviousNames.ToArray();
     user.Profile.ShouldBe(updatedUserProfile);
   }
 
