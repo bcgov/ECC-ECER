@@ -56,6 +56,22 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task SaveDraftApplication_WithProfessionalDevelopment_Saved()
+  {
+    var application = CreateDraftApplication();
+
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var savedApplication = (await response.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull();
+    savedApplication.ApplicationId.ShouldBe(application.Id);
+  }
+
+  [Fact]
   public async Task GetApplicationStatus_ById()
   {
     var application = CreateDraftApplication();
@@ -112,6 +128,20 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task SaveDraftApplication_WithInvalidProfessionalDevelopment_ReturnsBadRequest()
+  {
+    var invalidDraftApplication = CreateDraftApplication();
+    invalidDraftApplication.ProfessionalDevelopments = new List<ProfessionalDevelopment> { CreateInvalidProfessionalDevelopment() };
+
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(invalidDraftApplication)).ToUrl($"/api/draftapplications/{invalidDraftApplication.Id}");
+      _.StatusCodeShouldBe(400);
+    });
+  }
+
+  [Fact]
   public async Task SaveDraftApplication_WithInvalidCharacterReference_ReturnsBadRequest()
   {
     var invalidDraftApplication = CreateDraftApplication();
@@ -133,6 +163,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript()))
         .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference()))
         .RuleFor(f => f.WorkExperienceReferences, f => f.Make(f.Random.Number(2, 5), () => CreateWorkExperienceReference()))
+        .RuleFor(f => f.ProfessionalDevelopments, f => f.Make(f.Random.Number(1, 3), () => CreateProfessionalDevelopment()))
         .Generate();
 
     application.Id = this.Fixture.draftTestApplicationId;
@@ -318,6 +349,27 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     );
   }
 
+  private ProfessionalDevelopment CreateProfessionalDevelopment()
+  {
+    var faker = new Faker("en_CA");
+
+    return new ProfessionalDevelopment(
+        CertificationNumber: faker.Random.AlphaNumeric(10),
+        CertificationExpiryDate: faker.Date.Future(),
+        DateSigned: faker.Date.Recent(),
+        CourseName: faker.Company.CatchPhrase(),
+        OrganizationName: faker.Company.CompanyName(),
+        StartDate: faker.Date.Past(),
+        EndDate: faker.Date.Recent())
+    {
+      Id = faker.Random.Guid().ToString(),
+      OrganizationContactInformation = faker.Phone.PhoneNumber(),
+      InstructorName = faker.Name.FullName(),
+      NumberOfHours = faker.Random.Int(1, 100),
+      Status = faker.PickRandom<ProfessionalDevelopmentStatusCode>()
+    };
+  }
+
   private WorkExperienceReference CreateWorkExperienceReference()
   {
     var faker = new Faker("en_CA");
@@ -327,6 +379,27 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     )
     {
       PhoneNumber = faker.Phone.PhoneNumber()
+    };
+  }
+
+  private ProfessionalDevelopment CreateInvalidProfessionalDevelopment()
+  {
+    var faker = new Faker("en_CA");
+
+    return new ProfessionalDevelopment(
+        CertificationNumber: null,  // Invalid because CertificationNumber should not be null
+        CertificationExpiryDate: faker.Date.Future(),
+        DateSigned: faker.Date.Recent(),
+        CourseName: null,  // Invalid because CourseName should not be null
+        OrganizationName: faker.Company.CompanyName(),
+        StartDate: faker.Date.Past(),
+        EndDate: faker.Date.Recent())
+    {
+      Id = faker.Random.Guid().ToString(),
+      OrganizationContactInformation = faker.Phone.PhoneNumber(),
+      InstructorName = faker.Name.FullName(),
+      NumberOfHours = null,  // Invalid because NumberOfHours should not be null
+      Status = faker.PickRandom<ProfessionalDevelopmentStatusCode>()
     };
   }
 
