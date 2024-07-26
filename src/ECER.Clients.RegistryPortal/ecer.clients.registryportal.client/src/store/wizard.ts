@@ -18,10 +18,6 @@ export interface WizardState {
   listComponentMode: "add" | "list";
 }
 
-export type PortalStageValidation = {
-  [key in ApplicationStage]: boolean;
-};
-
 export const useWizardStore = defineStore("wizard", {
   state: (): WizardState => ({
     step: 1,

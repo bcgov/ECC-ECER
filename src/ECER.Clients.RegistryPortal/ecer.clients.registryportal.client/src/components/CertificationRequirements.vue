@@ -1,16 +1,18 @@
 <template>
   <v-container>
     <Breadcrumb :items="items" />
-
     <div v-for="certificationType in certificationTypes" :key="certificationType">
       <template v-if="certificationType === CertificationType.ECE_ASSISTANT">
-        <ECEAssistantRequirements />
+        <ECEAssistantRequirements v-if="!isRenewal" />
+        <ECEAssistantRenewalRequirements v-else />
       </template>
       <template v-if="certificationType === CertificationType.ONE_YEAR">
-        <ECEOneYearRequirements />
+        <ECEOneYearRequirements v-if="!isRenewal" />
+        <ECEOneYearRenewalRequirements v-else />
       </template>
       <template v-if="certificationType === CertificationType.FIVE_YEAR">
-        <ECEFiveYearRequirements />
+        <ECEFiveYearRequirements v-if="!isRenewal" />
+        <ECEFiveYearRenewalRequirements v-else />
       </template>
       <template v-if="certificationType === CertificationType.SNE">
         <SneRequirements />
@@ -19,7 +21,6 @@
         <IteRequirements />
       </template>
     </div>
-    <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Continue</v-btn>
   </v-container>
 </template>
 
@@ -27,8 +28,11 @@
 import { defineComponent, type PropType } from "vue";
 
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import ECEAssistantRenewalRequirements from "@/components/ECEAssistantRenewalRequirements.vue";
 import ECEAssistantRequirements from "@/components/ECEAssistantRequirements.vue";
+import ECEFiveYearRenewalRequirements from "@/components/ECEFiveYearRenewalRequirements.vue";
 import ECEFiveYearRequirements from "@/components/ECEFiveYearRequirements.vue";
+import ECEOneYearRenewalRequirements from "@/components/ECEOneYearRenewalRequirements.vue";
 import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
 import IteRequirements from "@/components/IteRequirements.vue";
 import SneRequirements from "@/components/SneRequirements.vue";
@@ -43,6 +47,9 @@ export default defineComponent({
     ECEFiveYearRequirements,
     SneRequirements,
     IteRequirements,
+    ECEAssistantRenewalRequirements,
+    ECEOneYearRenewalRequirements,
+    ECEFiveYearRenewalRequirements,
     Breadcrumb,
   },
   props: {
@@ -50,36 +57,47 @@ export default defineComponent({
       type: Array as PropType<Components.Schemas.CertificationType[]>,
       required: true,
     },
+    isRenewal: {
+      type: Boolean,
+      default: false,
+    },
   },
-
   setup: () => {
     return { CertificationType };
   },
-  data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application types",
-          disabled: false,
-          href: "/application/certification",
-        },
-        {
-          title: "Requirements",
-          disabled: true,
-          href: "/application/certification/requirements",
-        },
-      ],
-    };
-  },
-  methods: {
-    async continueClick() {
-      this.$router.push({ name: "declaration" });
-    },
+  data(props) {
+    const items = props.isRenewal
+      ? [
+          {
+            title: "Home",
+            disabled: false,
+            href: "/",
+          },
+          {
+            title: "Renew",
+            disabled: true,
+            href: "/application/certification/requirements",
+          },
+        ]
+      : [
+          {
+            title: "Home",
+            disabled: false,
+            href: "/",
+          },
+          {
+            title: "Application types",
+            disabled: false,
+            href: "/application/certification",
+          },
+          {
+            title: "Requirements",
+            disabled: true,
+            href: "/application/certification/requirements",
+          },
+        ];
+
+    return { items };
   },
 });
 </script>
