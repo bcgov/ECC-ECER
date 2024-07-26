@@ -1,9 +1,19 @@
 <template>
-  <ActionCard :title="title" icon="mdi-autorenew" :links="links">
-    <div class="d-flex flex-column ga-3">
-      {{ text }}
-      <div v-if="canRenew && !readyToRenew">{{ dateText }}</div>
-    </div>
+  <ActionCard :title="title" icon="mdi-autorenew">
+    <template #content>
+      <div class="d-flex flex-column ga-3">
+        {{ text }}
+        <div v-if="canRenew && !readyToRenew">{{ dateText }}</div>
+      </div>
+    </template>
+    <template #action>
+      <v-btn v-if="showRenewLink" variant="text" @click="handleRenewClicked">
+        <a>Renew</a>
+      </v-btn>
+      <v-btn v-else-if="showRenewalRequirementsLink" variant="text" @click="handleLearnAboutRewalRequirementsClicked">
+        <a><u>Learn about renewal requirements</u></a>
+      </v-btn>
+    </template>
   </ActionCard>
 </template>
 
@@ -12,9 +22,8 @@ import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 
 import ActionCard from "@/components/ActionCard.vue";
+import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
-
-import type { Link } from "./ActionCard.vue";
 
 export default defineComponent({
   name: "RenewCard",
@@ -23,9 +32,11 @@ export default defineComponent({
   },
   setup() {
     const certificationStore = useCertificationStore();
+    const applicationStore = useApplicationStore();
 
     return {
       certificationStore,
+      applicationStore,
     };
   },
   computed: {
@@ -100,23 +111,19 @@ export default defineComponent({
     showRenewalRequirementsLink(): boolean {
       return !this.readyToRenew && this.canRenew;
     },
-    links(): Link[] {
-      const links: Link[] = [];
-      if (this.showRenewLink) {
-        links.push({
-          text: "Renew",
-          to: "/renew",
-        });
-      }
-      if (this.showRenewalRequirementsLink) {
-        links.push({
-          text: "Learn about renewal requirements",
-          to: "/renewal-requirements",
-        });
-      }
-      return links;
+  },
+  methods: {
+    handleLearnAboutRewalRequirementsClicked() {
+      this.$router.push({
+        name: "certification-requirements",
+        query: { certificationTypes: this.certificationStore.latestCertificationTypes, isRenewal: "true" },
+      });
+    },
+    handleRenewClicked() {
+      this.applicationStore.$patch({ draftApplication: { applicationType: "Renewal", certificationTypes: this.certificationStore.latestCertificationTypes } });
+
+      this.$router.push({ name: "application-requirements" });
     },
   },
-  methods: {},
 });
 </script>

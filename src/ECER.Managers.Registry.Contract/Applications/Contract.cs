@@ -54,12 +54,15 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
-  public PortalStage Stage { get; set; }
+  public string? Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public ApplicationStatusReasonDetail SubStatus { get; set; }
   public DateTime? ReadyForAssessmentDate { get; set; }
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
+  public ApplicationTypes ApplicationType { get; set; }
+  public EducationOrigin? EducationOrigin { get; set; }
+  public EducationRecognition? EducationRecognition { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)
@@ -89,17 +92,6 @@ public record CharacterReference(string? FirstName, string? LastName, string? Ph
   public CharacterReferenceStage? Status { get; set; }
 
   public bool? WillProvideReference { get; set; }
-}
-
-public enum PortalStage
-{
-  CertificationType,
-  Declaration,
-  ContactInformation,
-  Education,
-  CharacterReferences,
-  WorkReferences,
-  Review,
 }
 
 public enum CertificationType
@@ -152,6 +144,26 @@ public enum ApplicationStatusReasonDetail
   ReceivePhysicalTranscripts,
   SupervisorConsultationNeeded,
   ValidatingIDs,
+}
+
+public enum ApplicationTypes
+{
+  New,
+  Renewal,
+  LaborMobility
+}
+
+public enum EducationOrigin
+{
+  InsideBC,
+  OutsideBC,
+  OutsideofCanada
+}
+
+public enum EducationRecognition
+{
+  Recognized,
+  NotRecognized
 }
 
 public record CharacterReferenceSubmissionRequest(string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight);

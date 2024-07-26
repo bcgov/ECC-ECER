@@ -4,8 +4,8 @@
       <v-row>
         <v-col class="d-flex justify-space-between">
           <div>
-            <ApplicationCertificationTypeHeader :certification-types="applicationStore.draftApplication.certificationTypes ?? []" />
-            <a href="#" class="text-white" @click.prevent="toggleChangeCertificationConfirmation">Click to change certification</a>
+            <ApplicationCertificationTypeHeader :is-renewal="isRenewal" :certification-types="applicationStore.draftApplication.certificationTypes ?? []" />
+            <a v-if="!isRenewal" href="#" class="text-white" @click.prevent="toggleChangeCertificationConfirmation">Click to change certification</a>
           </div>
           <div>
             <v-btn v-if="showSaveButton" variant="outlined" :loading="loadingStore.isLoading('draftapplication_put')" @click="saveAndExit">Save and exit</v-btn>
@@ -51,6 +51,10 @@ export default defineComponent({
     showSaveButton: {
       type: Boolean,
       required: true,
+    },
+    isRenewal: {
+      type: Boolean,
+      default: false,
     },
   },
   setup() {

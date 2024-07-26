@@ -1,43 +1,59 @@
 <template>
-  <v-col cols="12">
-    <h1>Requirements for ECE One Year Certification</h1>
-  </v-col>
-  <v-col cols="12">
-    <p>Before you proceed, please make sure that you meet the following requirements:</p>
-  </v-col>
-  <ul>
-    <v-col cols="11" offset="1">
-      <li>
-        Successful completion of a basic early childhood education training program
+  <v-row>
+    <v-col cols>
+      <h1 class="title-header">Apply for ECE One Year certification</h1>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col>
+      <p>You need the following information to apply:</p>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col>
+      <ECEHeader title="Education Information"></ECEHeader>
+      <p>
+        You must have completed a basic early childhood education program. It must be
         <a
           href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
         >
-          recognized
+          a program recognized by the ECE Registry
         </a>
-        by the ECE Registry
-      </li>
+      </p>
+      <br />
+      <p>
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
+        Registry.
+      </p>
     </v-col>
-    <v-col cols="11" offset="1">
-      <li>You can request an official transcript from your educational institution and ask them to send it directly to the ECE Registry</li>
-    </v-col>
-    <v-col cols="11" offset="1">
-      <li>You can provide a character reference who:</li>
-    </v-col>
-    <v-col cols="10" offset="2">
-      <ul>
-        <li>Can speak to your character and has known you for at least 6 months</li>
+  </v-row>
+  <v-row>
+    <v-col>
+      <ECEHeader title="Character reference" />
+      <p>You will need to provide a character reference. You’ll enter their name and email. We’ll contact them later after you submit your application.</p>
+      <br />
+      <p>Make sure you choose a person that:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Can speak to your character</li>
         <li>Can speak to your ability to educate and care for young children</li>
-        <li>Is not a relative, partner, spouse, or yourself</li>
-        <li>(Recommended) is a certified ECE who has directly observed you working with young children</li>
+        <li>Has known you for at least 6 months</li>
+        <li>Is not your relative, partner, spouse or yourself</li>
+        <li>Is not the same person as your work experience reference</li>
       </ul>
+      <br />
+      <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
     </v-col>
-  </ul>
+  </v-row>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import ECEHeader from "./ECEHeader.vue";
+
 export default defineComponent({
   name: "ECEOneYearRequirements",
+  components: { ECEHeader },
 });
 </script>

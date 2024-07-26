@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 
 import { createOrUpdateDraftApplication, getApplications, submitDraftApplication } from "@/api/application";
 import type { Components } from "@/types/openapi";
+import type { ApplicationStage } from "@/types/wizard";
 
 import { useWizardStore } from "./wizard";
 export interface ApplicationState {
@@ -21,6 +22,7 @@ export const useApplicationStore = defineStore("application", {
       transcripts: [] as Components.Schemas.Transcript[],
       characterReferences: [] as Components.Schemas.CharacterReference[],
       workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
+      applicationType: "New",
     },
     application: null,
   }),
@@ -65,6 +67,9 @@ export const useApplicationStore = defineStore("application", {
     isDraftCertificateTypeSne(state): boolean {
       return !!state.draftApplication.certificationTypes?.includes("Sne");
     },
+    isDraftApplicationRenewal(state): boolean {
+      return state.draftApplication.applicationType === "Renewal";
+    },
   },
   actions: {
     async fetchApplications() {
@@ -88,7 +93,7 @@ export const useApplicationStore = defineStore("application", {
       const wizardStore = useWizardStore();
 
       // Set wizard stage to the current step stage
-      this.draftApplication.stage = wizardStore.currentStepStage as Components.Schemas.PortalStage;
+      this.draftApplication.stage = wizardStore.currentStepStage as ApplicationStage;
 
       // Education step data
       this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
