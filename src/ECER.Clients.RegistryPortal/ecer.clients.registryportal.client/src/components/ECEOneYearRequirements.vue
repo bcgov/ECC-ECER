@@ -57,9 +57,3 @@ export default defineComponent({
   components: { ECEHeader },
 });
 </script>
-
-<style>
-.title-header {
-  line-height: 1.25;
-}
-</style>
