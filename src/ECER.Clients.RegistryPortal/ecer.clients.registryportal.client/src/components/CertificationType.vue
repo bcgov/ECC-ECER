@@ -131,7 +131,7 @@ export default defineComponent({
       if (!this.certificationTypeStore.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
         this.applicationStore.$patch({ draftApplication: { workExperienceReferences: [] } });
       }
-      this.$router.push({ name: "certification-requirements", query: { certificationTypes: this.certificationTypeStore.certificationTypes } });
+      this.$router.push({ name: "application-requirements" });
     },
   },
 });
