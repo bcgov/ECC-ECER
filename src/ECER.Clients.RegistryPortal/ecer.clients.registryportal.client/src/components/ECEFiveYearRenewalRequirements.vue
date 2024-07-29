@@ -5,6 +5,12 @@
   <v-col cols="12">
     <p>You need the following information to renew your certificate.</p>
   </v-col>
+  <v-col v-if="expired && !expiredMoreThan5Years" cols="12">
+    <ECEHeader title="Reason why you’re late renewing your ECE Five Year certification" />
+    <div class="d-flex flex-column ga-3 my-6">
+      <p>You need to provide the reason why you did not submit an application before your certificate expired.</p>
+    </div>
+  </v-col>
   <v-col cols="12">
     <ECEHeader title="Character reference" />
     <div class="d-flex flex-column ga-3 my-6">
@@ -21,7 +27,7 @@
   </v-col>
   <v-col cols="12">
     <ECEHeader title="Work experience" />
-    <div class="d-flex flex-column ga-3 my-6">
+    <div v-if="!expired" class="d-flex flex-column ga-3 my-6">
       <p>
         You need to have completed 400 hours of work experience. And be able to provide references to attest to the hours. If you worked at multiple locations,
         you can provide multiple references.
@@ -36,6 +42,39 @@
         <li>Be able to confirm you’ve completed the hours</li>
         <li>Be a co-worker, supervisor, or a parent/guardian of a child you worked with</li>
         <li>Not be the same person you provide as a character reference</li>
+      </ul>
+    </div>
+    <div v-if="expired && !expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
+      <p>You need to have completed 400 hours of work experience. And be able to provide references to attest to all the hours.</p>
+      <p>Important information about calculating hours:</p>
+      <ul class="ml-10">
+        <li>Only include hours you worked after you started your education</li>
+        <li>Only include hours completed within the last 5 years</li>
+        <li>Cannot include hours you work as part of your practicum</li>
+        <li>Can include hours you volunteered</li>
+      </ul>
+      <p>The reference must be someone who:</p>
+      <ul class="ml-10">
+        <li>Have directly supervised or observed the hours they can attest to</li>
+        <li>Can speak to your knowledge, skills, and ability as an ECE</li>
+        <li>Has held valid Canadian ECE certificate during the hours they supervised or observed you</li>
+      </ul>
+    </div>
+    <div v-if="expired && expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
+      <p>You need to have completed 500 hours of work experience. And be able to provide references to attest to all the hours.</p>
+      <p>Important information about calculating hours:</p>
+      <ul class="ml-10">
+        <li>Only include hours you worked after you started your education</li>
+        <li>Only include hours completed within the last 5 years</li>
+        <li>Cannot include hours you work as part of your practicum</li>
+        <li>Can include hours you volunteered</li>
+      </ul>
+      <p>The reference must be someone who:</p>
+      <ul class="ml-10">
+        <li>Have directly supervised or observed the hours they can attest to</li>
+        <li>Can speak to your knowledge, skills, and ability as an ECE</li>
+        <li>Has held valid Canadian ECE certificate during the hours they supervised or observed you</li>
+        <li>The person cannot be your character reference.</li>
       </ul>
     </div>
   </v-col>
@@ -66,7 +105,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "ECEFiveYearRenewalRequirements",
   props: {
-    expiredLessThanEqualTo5Years: {
+    expired: {
       type: Boolean,
       default: false,
     },
