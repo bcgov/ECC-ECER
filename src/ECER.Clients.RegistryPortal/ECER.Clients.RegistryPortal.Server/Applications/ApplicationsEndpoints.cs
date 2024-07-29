@@ -319,7 +319,7 @@ public record Application
   public string? ExplanationLetter { get; set; }
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
-public record ProfessionalDevelopment([Required] string? CertificationNumber, [Required] DateTime CertificationExpiryDate, [Required] DateTime DateSigned, [Required] string? CourseName, [Required] string? OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate)
+public record ProfessionalDevelopment([Required] string CertificationNumber, [Required] DateTime CertificationExpiryDate, [Required] DateTime DateSigned, [Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate)
 {
   public string? Id { get; set; }
   public string? OrganizationContactInformation { get; set; }
@@ -349,7 +349,7 @@ public record Transcript()
   public bool DoesECERegistryHaveTranscript { get; set; }
   public bool IsOfficialTranscriptRequested { get; set; }
 }
-public record WorkExperienceReference([Required] string? FirstName, [Required] string? LastName, [Required] string? EmailAddress, [Required] int? Hours)
+public record WorkExperienceReference([Required] string FirstName, [Required] string LastName, [Required] string EmailAddress, [Required] int Hours)
 {
   public string? Id { get; set; }
 
@@ -432,7 +432,7 @@ public enum ApplicationStatusReasonDetail
   ValidatingIDs,
 }
 
-public record CharacterReference([Required] string? FirstName, [Required] string? LastName, string? PhoneNumber, [Required] string? EmailAddress)
+public record CharacterReference([Required] string FirstName, [Required] string LastName, string? PhoneNumber, [Required] string EmailAddress)
 {
   public string? Id { get; set; }
 }
