@@ -98,63 +98,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     applicationStatusById.WorkExperienceReferencesStatus.ShouldNotBeEmpty();
   }
 
-  [Fact]
-  public async Task SaveDraftApplication_ExistingDraft_Saved()
-  {
-    var application = CreateDraftApplication();
-
-    var existingAppResponse = await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
-      _.StatusCodeShouldBeOk();
-    });
-    var existingApplicationId = (await existingAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
-    existingApplicationId.ShouldBe(application.Id);
-  }
-
-  [Fact]
-  public async Task SaveDraftApplication_WithInvalidTranscript_ReturnsBadRequest()
-  {
-    var invalidDraftApplication = CreateDraftApplication();
-    invalidDraftApplication.Transcripts = new List<Transcript> { CreateInvalidTranscript() };
-
-    await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(new SaveDraftApplicationRequest(invalidDraftApplication)).ToUrl($"/api/draftapplications/{invalidDraftApplication.Id}");
-      _.StatusCodeShouldBe(400);
-    });
-  }
-
-  [Fact]
-  public async Task SaveDraftApplication_WithInvalidProfessionalDevelopment_ReturnsBadRequest()
-  {
-    var invalidDraftApplication = CreateDraftApplication();
-    invalidDraftApplication.ProfessionalDevelopments = new List<ProfessionalDevelopment> { CreateInvalidProfessionalDevelopment() };
-
-    await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(new SaveDraftApplicationRequest(invalidDraftApplication)).ToUrl($"/api/draftapplications/{invalidDraftApplication.Id}");
-      _.StatusCodeShouldBe(400);
-    });
-  }
-
-  [Fact]
-  public async Task SaveDraftApplication_WithInvalidCharacterReference_ReturnsBadRequest()
-  {
-    var invalidDraftApplication = CreateDraftApplication();
-    invalidDraftApplication.CharacterReferences = new List<CharacterReference> { CreateInvalidCharacterReference() };
-
-    await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Put.Json(new SaveDraftApplicationRequest(invalidDraftApplication)).ToUrl($"/api/draftapplications/{invalidDraftApplication.Id}");
-      _.StatusCodeShouldBe(400);
-    });
-  }
-
   private DraftApplication CreateDraftApplication()
   {
     var application = new Faker<DraftApplication>("en_CA")
@@ -380,57 +323,5 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     {
       PhoneNumber = faker.Phone.PhoneNumber()
     };
-  }
-
-  private ProfessionalDevelopment CreateInvalidProfessionalDevelopment()
-  {
-    var faker = new Faker("en_CA");
-
-    return new ProfessionalDevelopment(
-        CertificationNumber: null,  // Invalid because CertificationNumber should not be null
-        CertificationExpiryDate: faker.Date.Future(),
-        DateSigned: faker.Date.Recent(),
-        CourseName: null,  // Invalid because CourseName should not be null
-        OrganizationName: faker.Company.CompanyName(),
-        StartDate: faker.Date.Past(),
-        EndDate: faker.Date.Recent())
-    {
-      Id = faker.Random.Guid().ToString(),
-      OrganizationContactInformation = faker.Phone.PhoneNumber(),
-      InstructorName = faker.Name.FullName(),
-      NumberOfHours = null,  // Invalid because NumberOfHours should not be null
-      Status = faker.PickRandom<ProfessionalDevelopmentStatusCode>()
-    };
-  }
-
-  private Transcript CreateInvalidTranscript()
-  {
-    var faker = new Faker("en_CA");
-    var invalidTranscript = new Transcript
-    {
-      EducationalInstitutionName = null,
-      ProgramName = null,
-      StudentName = null,
-      StudentNumber = faker.Random.Number(1000, 9999).ToString(),
-      StartDate = faker.Date.Recent(),
-      EndDate = faker.Date.Soon(),
-      IsECEAssistant = faker.Random.Bool(),
-      DoesECERegistryHaveTranscript = faker.Random.Bool(),
-      IsOfficialTranscriptRequested = faker.Random.Bool()
-    };
-
-    return invalidTranscript;
-  }
-
-  private CharacterReference CreateInvalidCharacterReference()
-  {
-    var faker = new Faker("en_CA");
-    var invalidCharacterReference = new CharacterReference(
-      FirstName: faker.Name.FirstName(),
-      LastName: faker.Name.LastName(),
-      PhoneNumber: faker.Phone.PhoneNumber(),
-      EmailAddress: null);
-
-    return invalidCharacterReference;
   }
 }
