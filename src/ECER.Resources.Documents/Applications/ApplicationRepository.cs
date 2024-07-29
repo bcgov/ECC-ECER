@@ -146,7 +146,7 @@ internal sealed class ApplicationRepository : IApplicationRepository
     {
       professionalDevelopment.ecer_ProfessionalDevelopmentId = Guid.NewGuid();
       context.AddObject(professionalDevelopment);
-      context.AddLink(application, ecer_Application.Fields.ecer_transcript_Applicationid, professionalDevelopment);
+      context.AddLink(application, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, professionalDevelopment);
     }
 
     // 3. Update Existing professional developments
