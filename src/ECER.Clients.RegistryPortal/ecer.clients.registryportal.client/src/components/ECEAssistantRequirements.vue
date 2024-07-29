@@ -1,44 +1,71 @@
 <template>
-  <v-col cols="12">
-    <h1 class="title-header">Requirements for ECE Assistant Certification</h1>
-  </v-col>
-  <v-col cols="12">
-    <p>Before you proceed, please make sure that you meet the following requirements:</p>
-  </v-col>
-  <ul>
-    <v-col cols="11" offset="1">
-      <li>
-        Successful completion of at least one early childhood education course in child guidance; child health, safety, and nutrition; or child development,
-        completed within the last 5 years at a program
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          recognized
-        </a>
-        by the ECE Registry
-      </li>
+  <v-row>
+    <v-col cols>
+      <h1 class="title-header">Apply for ECE Assistant certification</h1>
     </v-col>
-    <v-col cols="11" offset="1">
-      <li>You can request an official transcript from your educational institution and ask them to send it directly to the ECE Registry</li>
+  </v-row>
+  <v-row>
+    <v-col>
+      <p>You need the following information to apply:</p>
     </v-col>
-    <v-col cols="11" offset="1">
-      <li>You can provide a character reference who:</li>
-    </v-col>
-    <v-col cols="10" offset="2">
-      <ul>
-        <li>Can speak to your character and has known you for at least 6 months</li>
-        <li>Can speak to your ability to educate and care for young children</li>
-        <li>Is not a relative, partner, spouse, or yourself</li>
-        <li>(Recommended) is a certified ECE who has directly observed you working with young children</li>
+  </v-row>
+  <v-row>
+    <v-col>
+      <ECEHeader title="Education Information"></ECEHeader>
+      <p>You must have completed an early childhood education course in at least one of the following:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Child guidance</li>
+        <li>Child health, safety, and nutrition</li>
+        <li>Child development</li>
       </ul>
+      <br />
+      <p>The course must:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Have been completed within the last 5 years</li>
+        <li>
+          <a
+            href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
+          >
+            Be part of a program recognized by the ECE Registry
+          </a>
+        </li>
+      </ul>
+      <br />
+      <p>
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
+        Registry.
+      </p>
     </v-col>
-  </ul>
+  </v-row>
+  <v-row>
+    <v-col>
+      <ECEHeader title="Character reference" />
+      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
+      <br />
+      <p>Make sure you choose a person that:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Can speak to your character</li>
+        <li>Can speak to your ability to educate and care for young children</li>
+        <li>Has known you for at least 6 months</li>
+        <li>Is not your relative, partner, spouse or yourself</li>
+        <li>Is not the same person as your work experience reference</li>
+      </ul>
+      <br />
+      <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import ECEHeader from "./ECEHeader.vue";
+
 export default defineComponent({
   name: "ECEAssistantRequirements",
+  components: { ECEHeader },
 });
 </script>

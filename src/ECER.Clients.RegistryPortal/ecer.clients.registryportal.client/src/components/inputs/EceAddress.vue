@@ -1,9 +1,10 @@
 <template>
+  <h2>{{ `${props.addressLabel} address` }}</h2>
   <v-text-field
     ref="line1"
     :model-value="modelValue.line1"
     :rules="[Rules.required(`Enter your ${props.addressLabel.toLowerCase()} address`)]"
-    :label="props.addressLabel + ' Street Address'"
+    :label="props.addressLabel + ' street address'"
     variant="outlined"
     color="primary"
     maxlength="100"
@@ -33,7 +34,7 @@
   <v-text-field
     :model-value="modelValue.postalCode"
     :rules="[Rules.required('Postal code required'), Rules.postalCode()]"
-    label="Postal Code"
+    label="Postal code"
     variant="outlined"
     color="primary"
     maxlength="7"

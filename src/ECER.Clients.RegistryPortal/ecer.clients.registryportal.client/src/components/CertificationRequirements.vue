@@ -14,12 +14,6 @@
         <ECEFiveYearRequirements v-if="!isRenewal" />
         <ECEFiveYearRenewalRequirements v-else />
       </template>
-      <template v-if="certificationType === CertificationType.SNE">
-        <SneRequirements />
-      </template>
-      <template v-if="certificationType === CertificationType.ITE">
-        <IteRequirements />
-      </template>
     </div>
   </v-container>
 </template>
@@ -34,8 +28,6 @@ import ECEFiveYearRenewalRequirements from "@/components/ECEFiveYearRenewalRequi
 import ECEFiveYearRequirements from "@/components/ECEFiveYearRequirements.vue";
 import ECEOneYearRenewalRequirements from "@/components/ECEOneYearRenewalRequirements.vue";
 import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
-import IteRequirements from "@/components/IteRequirements.vue";
-import SneRequirements from "@/components/SneRequirements.vue";
 import type { Components } from "@/types/openapi";
 import { CertificationType } from "@/utils/constant";
 
@@ -45,8 +37,6 @@ export default defineComponent({
     ECEAssistantRequirements,
     ECEOneYearRequirements,
     ECEFiveYearRequirements,
-    SneRequirements,
-    IteRequirements,
     ECEAssistantRenewalRequirements,
     ECEOneYearRenewalRequirements,
     ECEFiveYearRenewalRequirements,
