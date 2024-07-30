@@ -11,9 +11,11 @@
     </template>
     <template v-if="applicationStore.isDraftCertificateTypeFiveYears">
       <ECEFiveYearRequirements v-if="!applicationStore.isDraftApplicationRenewal" />
-      <ECEFiveYearRenewalRequirements v-else />
-      <SneRequirements v-if="applicationStore.isDraftCertificateTypeSne" />
-      <IteRequirements v-if="applicationStore.isDraftCertificateTypeIte" />
+      <ECEFiveYearRenewalRequirements
+        v-else
+        :expired="certificationStore.latestCertificateStatus == 'Expired'"
+        :expired-more-than5-years="certificationStore.latestExpiredMoreThan5Years"
+      />
     </template>
     <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Continue</v-btn>
   </v-container>
@@ -29,9 +31,8 @@ import ECEFiveYearRenewalRequirements from "@/components/ECEFiveYearRenewalRequi
 import ECEFiveYearRequirements from "@/components/ECEFiveYearRequirements.vue";
 import ECEOneYearRenewalRequirements from "@/components/ECEOneYearRenewalRequirements.vue";
 import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
-import IteRequirements from "@/components/IteRequirements.vue";
-import SneRequirements from "@/components/SneRequirements.vue";
 import { useApplicationStore } from "@/store/application";
+import { useCertificationStore } from "@/store/certification";
 
 export default defineComponent({
   name: "CertificationTypeRequirements",
@@ -39,8 +40,6 @@ export default defineComponent({
     ECEAssistantRequirements,
     ECEOneYearRequirements,
     ECEFiveYearRequirements,
-    SneRequirements,
-    IteRequirements,
     ECEAssistantRenewalRequirements,
     ECEOneYearRenewalRequirements,
     ECEFiveYearRenewalRequirements,
@@ -49,8 +48,9 @@ export default defineComponent({
 
   setup: () => {
     const applicationStore = useApplicationStore();
+    const certificationStore = useCertificationStore();
 
-    return { applicationStore };
+    return { applicationStore, certificationStore };
   },
   data() {
     const applicationStore = useApplicationStore();

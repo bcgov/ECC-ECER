@@ -102,8 +102,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import ECEHeader from "@/components/ECEHeader.vue";
+
 export default defineComponent({
   name: "ECEFiveYearRenewalRequirements",
+  components: { ECEHeader },
   props: {
     expired: {
       type: Boolean,
