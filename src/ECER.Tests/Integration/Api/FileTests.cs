@@ -30,9 +30,9 @@ public class FileTests : ApiWebAppScenarioBase
     content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
 
     using var formData = new MultipartFormDataContent
-        {
-          { content, "files", testFile.FileName }
-        };
+    {
+       { content, "file", testFile.FileName }
+    };
 
     await Host.Scenario(_ =>
     {
