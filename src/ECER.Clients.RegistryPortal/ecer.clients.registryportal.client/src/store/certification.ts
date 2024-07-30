@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { defineStore } from "pinia";
 
 import { getCertifications } from "@/api/certification";
@@ -17,6 +18,19 @@ export const useCertificationStore = defineStore("certification", {
   getters: {
     hasCertifications(state): boolean {
       return state.certifications !== null && state.certifications !== undefined && state.certifications.length > 0;
+    },
+    latestCertificateStatus(state): Components.Schemas.CertificateStatusCode | undefined {
+      return state.latestCertification?.statusCode;
+    },
+    latestExpiredMoreThan5Years(state): boolean {
+      if (!state.latestCertification?.expiryDate) return false;
+      const dt1 = DateTime.now();
+      const dt2 = DateTime.fromISO(state.latestCertification?.expiryDate);
+      const differenceInYears = Math.abs(dt1.diff(dt2, "years").years);
+      return differenceInYears > 5;
+    },
+    latestCertificationExpiryDate(state): string | null | undefined {
+      return state.latestCertification?.expiryDate;
     },
     latestNotCancelled(state): boolean {
       if (!state.latestCertification) return false;
