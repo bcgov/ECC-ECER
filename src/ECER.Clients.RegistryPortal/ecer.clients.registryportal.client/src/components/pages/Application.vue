@@ -2,6 +2,12 @@
   <Wizard :ref="'wizard'" :wizard="applicationStore.isDraftCertificateTypeFiveYears ? applicationWizardFiveYear : applicationWizardAssistantAndOneYear">
     <template #header>
       <WizardHeader class="mb-6" :handle-save-draft="handleSaveAsDraft" :show-save-button="showSaveButtons" />
+      <v-container>
+        <!-- prettier-ignore -->
+        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" @click.prevent="handleBack" href="#">
+          <v-icon large>mdi-chevron-left</v-icon>Back to previous step
+        </a>
+      </v-container>
     </template>
     <template #stepperHeader>
       <v-container v-show="!$vuetify.display.mobile">
@@ -28,17 +34,6 @@
     </template>
     <template #actions>
       <v-container>
-        <v-btn
-          v-if="$vuetify.display.mobile"
-          :disabled="wizardStore.step === 1"
-          rounded="lg"
-          variant="outlined"
-          color="primary"
-          class="mr-3"
-          @click="handleBack"
-        >
-          Back
-        </v-btn>
         <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and continue</v-btn>
         <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
           Submit Application
