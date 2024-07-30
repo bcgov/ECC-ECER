@@ -93,12 +93,14 @@
   "emitVirtualAttributes": true,
   "entityNamesFilter": [
     "contact",
+    "bcgov_*",
     "ecer_*"
   ],
   "entityTypesFolder": "Entities",
   "generateActions": true,
   "generateGlobalOptionSets": false,
   "messageNamesFilter": [
+    "bcgov_*",
     "ecer_*"
   ],
   "messagesTypesFolder": "Messages",

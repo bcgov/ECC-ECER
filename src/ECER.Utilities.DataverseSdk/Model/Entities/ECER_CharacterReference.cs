@@ -87,6 +87,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_applicantshouldnotbeeceName = "ecer_applicantshouldnotbeecename";
 			public const string ecer_ApplicantSituationDescription = "ecer_applicantsituationdescription";
 			public const string ecer_ApplicantSuitableReason = "ecer_applicantsuitablereason";
+			public const string ecer_applicationassessment_CharacterReferenceReviewedId = "ecer_applicationassessment_CharacterReferenceReviewedId";
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
 			public const string ecer_characterreference_Applicationid = "ecer_characterreference_Applicationid";
@@ -1443,6 +1444,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_applicationassessment_CharacterReferenceReviewedId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_applicationassessment_CharacterReferenceReviewedId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment> ecer_applicationassessment_CharacterReferenceReviewedId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_applicationassessment_CharacterReferenceReviewedId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_applicationassessment_CharacterReferenceReviewedId", null, value);
 			}
 		}
 		

@@ -39,10 +39,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 		ApplicationSubmitted = 621870006,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Draft = 1,
+		Approved = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
+		Draft = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		InProgress = 621870002,

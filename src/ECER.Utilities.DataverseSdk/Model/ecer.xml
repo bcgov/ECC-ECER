@@ -9,7 +9,8 @@
   <EmitVirtualAttributes>true</EmitVirtualAttributes>
   <EntityTypesFolder>Entities</EntityTypesFolder>
   <ExtensionConfig>
-    <ActionPrefixesWhitelist>ecer_*</ActionPrefixesWhitelist>
+    <ActionPrefixesWhitelist>bcgov_*|
+ecer_*</ActionPrefixesWhitelist>
     <ActionsWhitelist />
     <ActionsToSkip>upsertmultiple</ActionsToSkip>
     <AddDebuggerNonUserCode>true</AddDebuggerNonUserCode>
@@ -32,7 +33,8 @@
     <EntityAttributeSpecifiedNames />
     <EntityClassNameOverrides />
     <EntityPrefixesToSkip />
-    <EntityPrefixesWhitelist>ecer_*</EntityPrefixesWhitelist>
+    <EntityPrefixesWhitelist>bcgov_*|
+ecer_*</EntityPrefixesWhitelist>
     <GenerateActionAttributeNameConsts>false</GenerateActionAttributeNameConsts>
     <GenerateAllOptionSetLabelMetadata>false</GenerateAllOptionSetLabelMetadata>
     <GenerateAttributeNameConsts>true</GenerateAttributeNameConsts>

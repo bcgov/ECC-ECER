@@ -111,6 +111,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_StudentNumber = "ecer_studentnumber";
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
 			public const string ecer_transcript_Applicationid = "ecer_transcript_Applicationid";
+			public const string ecer_transcript_TranscriptDocumentId = "ecer_transcript_TranscriptDocumentId";
 			public const string ecer_TranscriptDocumentId = "ecer_transcriptdocumentid";
 			public const string ecer_TranscriptDocumentIdName = "ecer_transcriptdocumentidname";
 			public const string ecer_TranscriptId = "ecer_transcriptid";
@@ -1315,6 +1316,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_transcript_Applicationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_transcript_TranscriptDocumentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_transcriptdocumentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_transcript_TranscriptDocumentId")]
+		public ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl ecer_transcript_TranscriptDocumentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_transcript_TranscriptDocumentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_transcript_TranscriptDocumentId", null, value);
 			}
 		}
 		

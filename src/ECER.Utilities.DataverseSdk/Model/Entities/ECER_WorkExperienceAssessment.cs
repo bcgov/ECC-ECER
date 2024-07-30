@@ -89,6 +89,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ReferenceContactId = "ecer_referencecontactid";
 			public const string ecer_ReferenceContactIdName = "ecer_referencecontactidname";
 			public const string ecer_ReferenceContactIdYomiName = "ecer_referencecontactidyominame";
+			public const string ecer_TotalNumberofHoursApproved = "ecer_totalnumberofhoursapproved";
 			public const string ecer_workexperienceassessment_ApplicationId = "ecer_workexperienceassessment_ApplicationId";
 			public const string ecer_workexperienceassessment_AssessmentId = "ecer_workexperienceassessment_AssessmentId";
 			public const string ecer_workexperienceassessment_ReferenceContactId = "ecer_workexperienceassessment_ReferenceContactId";
@@ -686,6 +687,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_totalnumberofhoursapproved")]
+		public System.Nullable<decimal> ecer_TotalNumberofHoursApproved
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_totalnumberofhoursapproved");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_totalnumberofhoursapproved", value);
 			}
 		}
 		

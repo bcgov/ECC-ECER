@@ -598,6 +598,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string AnnualIncome_Base = "annualincome_base";
 			public const string AssistantName = "assistantname";
 			public const string AssistantPhone = "assistantphone";
+			public const string bcgov_contact_bcgov_documenturl = "bcgov_contact_bcgov_documenturl";
 			public const string BirthDate = "birthdate";
 			public const string Business2 = "business2";
 			public const string BusinessCard = "businesscard";
@@ -701,6 +702,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
 			public const string ecer_renewalassessment_ApplicantId = "ecer_renewalassessment_ApplicantId";
 			public const string ecer_Role = "ecer_role";
+			public const string ecer_TempClientID = "ecer_tempclientid";
 			public const string ecer_TermsandConditionsText = "ecer_termsandconditionstext";
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
 			public const string ecer_UnderInvestigation = "ecer_underinvestigation";
@@ -4435,6 +4437,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Portal User may try to claim a Client ID that is only partial match when compare against last name and DOB.  This Temp ID will be set until the person is verified.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_tempclientid")]
+		public string ecer_TempClientID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_tempclientid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_tempclientid", value);
+			}
+		}
+		
+		/// <summary>
 		/// Portals Terms of Use
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_termsandconditionstext")]
@@ -7097,6 +7117,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("yomimiddlename", value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N bcgov_contact_bcgov_documenturl
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_contact_bcgov_documenturl")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> bcgov_contact_bcgov_documenturl
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("bcgov_contact_bcgov_documenturl", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("bcgov_contact_bcgov_documenturl", null, value);
 			}
 		}
 		

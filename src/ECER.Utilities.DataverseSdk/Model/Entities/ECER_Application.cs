@@ -100,6 +100,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_1YRExplanationChoice = "ecer_1yrexplanationchoice";
+			public const string ecer_1yrexplanationchoiceName = "ecer_1yrexplanationchoicename";
 			public const string ecer_AddMoreCharacterReference = "ecer_addmorecharacterreference";
 			public const string ecer_addmorecharacterreferenceName = "ecer_addmorecharacterreferencename";
 			public const string ecer_AddMoreWorkExperienceReference = "ecer_addmoreworkexperiencereference";
@@ -152,6 +154,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DenialReasonExplanation = "ecer_denialreasonexplanation";
 			public const string ecer_DenialReasonType = "ecer_denialreasontype";
 			public const string ecer_DenialReasonTypeName = "ecer_denialreasontypename";
+			public const string ecer_documenturl_ApplicationId = "ecer_documenturl_ApplicationId";
 			public const string ecer_DoesECERegistryHaveTranscript = "ecer_doeseceregistryhavetranscript";
 			public const string ecer_doeseceregistryhavetranscriptName = "ecer_doeseceregistryhavetranscriptname";
 			public const string ecer_ecer_application_ecer_investigation_OpenApplication = "ecer_ecer_application_ecer_investigation_OpenApplication";
@@ -455,6 +458,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_1yrexplanationchoice")]
+		public virtual ecer_yrrenewalexplanations? ecer_1YRExplanationChoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_yrrenewalexplanations?)(EntityOptionSetEnum.GetEnum(this, "ecer_1yrexplanationchoice")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_1yrexplanationchoice", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_1yrexplanationchoicename")]
+		public string ecer_1yrexplanationchoiceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_1yrexplanationchoice"))
+				{
+					return this.FormattedValues["ecer_1yrexplanationchoice"];
 				}
 				else
 				{
@@ -3595,6 +3630,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_Applicationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_documenturl_ApplicationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_ApplicationId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_documenturl_ApplicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_ApplicationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_ApplicationId", null, value);
 			}
 		}
 		

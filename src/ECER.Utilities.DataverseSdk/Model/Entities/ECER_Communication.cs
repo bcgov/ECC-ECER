@@ -73,6 +73,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_acknowledgedName = "ecer_acknowledgedname";
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
+			public const string ecer_bcgov_documenturl_CommunicationId_ecer_communication = "ecer_bcgov_documenturl_CommunicationId_ecer_communication";
 			public const string ecer_communication_Applicationid = "ecer_communication_Applicationid";
 			public const string ecer_communication_Investigation_ecer_investig = "ecer_communication_Investigation_ecer_investig";
 			public const string Referencingecer_communication_ParentCommunicationid = "ecer_communication_ParentCommunicationid";
@@ -84,6 +85,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DateNotified = "ecer_datenotified";
 			public const string ecer_DoNotReply = "ecer_donotreply";
 			public const string ecer_donotreplyName = "ecer_donotreplyname";
+			public const string ecer_ecer_post_program_app_communication = "ecer_ecer_post_program_app_communication";
+			public const string ecer_ecer_program_application_Id = "ecer_ecer_program_application_id";
+			public const string ecer_ecer_program_application_IdName = "ecer_ecer_program_application_idname";
 			public const string ecer_FromOracle = "ecer_fromoracle";
 			public const string ecer_InitiatedFrom = "ecer_initiatedfrom";
 			public const string ecer_initiatedfromName = "ecer_initiatedfromname";
@@ -453,6 +457,41 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_donotreply"))
 				{
 					return this.FormattedValues["ecer_donotreply"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Program Application associated with Communication.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ecer_program_application_id")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ecer_program_application_Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_ecer_program_application_id");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_ecer_program_application_id", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ecer_program_application_idname")]
+		public string ecer_ecer_program_application_IdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_ecer_program_application_id"))
+				{
+					return this.FormattedValues["ecer_ecer_program_application_id"];
 				}
 				else
 				{
@@ -1291,6 +1330,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_bcgov_documenturl_CommunicationId_ecer_communication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_CommunicationId_ecer_communication")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_bcgov_documenturl_CommunicationId_ecer_communication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_CommunicationId_ecer_communication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_CommunicationId_ecer_communication", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_communication_ParentCommunicationid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ParentCommunicationid", Microsoft.Xrm.Sdk.EntityRole.Referenced)]
@@ -1400,6 +1457,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_contact_ecer_communication_122", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_ecer_post_program_app_communication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ecer_program_application_id")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_post_program_app_communication")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton ecer_ecer_post_program_app_communication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_ecer_post_program_app_communication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_ecer_post_program_app_communication", null, value);
 			}
 		}
 		
