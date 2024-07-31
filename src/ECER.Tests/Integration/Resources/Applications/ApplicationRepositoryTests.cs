@@ -150,6 +150,25 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task SaveDraftApplication_WithProfessionalDevelopments_Created()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var professionalDevelopments = new List<ProfessionalDevelopment>
+    {
+        CreateProfessionalDevelopment()
+    };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear })
+    {
+      ProfessionalDevelopments = professionalDevelopments
+    };
+    var applicationId = await repository.SaveDraft(application, CancellationToken.None);
+    applicationId.ShouldNotBeNull();
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
+    var savedApplication = query.ShouldHaveSingleItem();
+    savedApplication.ProfessionalDevelopments.Count().ShouldBe(professionalDevelopments.Count);
+  }
+
+  [Fact]
   public async Task UpdateApplication_WithModifiedTranscripts_Updated()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
@@ -239,6 +258,30 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task UpdateApplication_WithModifiedProfessionalDevelopments_Updated()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var originalProfessionalDevelopments = new List<ProfessionalDevelopment> {
+        CreateProfessionalDevelopment()
+    };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
+    application.ProfessionalDevelopments = originalProfessionalDevelopments;
+    var applicationId = await repository.SaveDraft(application, CancellationToken.None);
+
+    var query = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
+    var professionalDevelopment = query.First().ProfessionalDevelopments.First();
+    professionalDevelopment.OrganizationContactInformation = "Updated OrganizationContactInformation";
+
+    var updatedProfessionalDevelopments = new List<ProfessionalDevelopment> { professionalDevelopment };
+    application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
+    application.ProfessionalDevelopments = updatedProfessionalDevelopments;
+    await repository.SaveDraft(application, CancellationToken.None);
+
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId }, default)).ShouldHaveSingleItem();
+    updatedApplication.ProfessionalDevelopments.First().OrganizationContactInformation.ShouldBe("Updated OrganizationContactInformation");
+  }
+
+  [Fact]
   public async Task UpdateApplication_RemoveCharacterReferences_Updated()
   {
     var applicantId = Fixture.AuthenticatedBcscUserId;
@@ -300,6 +343,26 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId }, default)).ShouldHaveSingleItem();
     updatedApplication.WorkExperienceReferences.First().PhoneNumber.ShouldBe("987-654-3210");
+  }
+
+  [Fact]
+  public async Task UpdateApplication_RemoveProfessionalDevelopments_Updated()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var originalProfessionalDevelopments = new List<ProfessionalDevelopment> {
+        CreateProfessionalDevelopment()
+    };
+    var application = new Application(null, applicantId, new[] { CertificationType.OneYear });
+    application.ProfessionalDevelopments = originalProfessionalDevelopments;
+    var applicationId = await repository.SaveDraft(application, CancellationToken.None);
+
+    // Update application with empty professional developments list
+    application = new Application(applicationId, applicantId, new[] { CertificationType.OneYear });
+    application.ProfessionalDevelopments = new List<ProfessionalDevelopment>();
+    await repository.SaveDraft(application, CancellationToken.None);
+
+    var updatedApplication = (await repository.Query(new ApplicationQuery { ById = applicationId }, default)).ShouldHaveSingleItem();
+    updatedApplication.ProfessionalDevelopments.ShouldBeEmpty();
   }
 
   [Fact]
@@ -392,6 +455,28 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     )
     {
       PhoneNumber = faker.Phone.PhoneNumber()
+    };
+  }
+
+  private ProfessionalDevelopment CreateProfessionalDevelopment()
+  {
+    var faker = new Faker("en_CA");
+
+    return new ProfessionalDevelopment(
+        faker.Random.Guid().ToString(),
+        faker.Random.String2(10),
+        faker.Date.Future(),
+        faker.Date.Past(),
+        faker.Random.String2(20),
+        faker.Company.CompanyName(),
+        faker.Date.Past(),
+        faker.Date.Recent()
+    )
+    {
+      OrganizationContactInformation = faker.Phone.PhoneNumber(),
+      InstructorName = faker.Name.FullName(),
+      NumberOfHours = faker.Random.Int(1, 100),
+      Status = faker.PickRandom<ProfessionalDevelopmentStatusCode>()
     };
   }
 
