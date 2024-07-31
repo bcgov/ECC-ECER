@@ -2,7 +2,6 @@
 
 using System.Buffers;
 using System.Text.Json;
-using Microsoft.Extensions.Caching.Distributed;
 
 namespace Microsoft.Extensions.Caching.Distributed;
 
@@ -98,15 +97,20 @@ public static class DistributedCacheExtensions
         Func<T> get => get(),
         _ => throw new ArgumentException(null, nameof(getMethod)),
       };
-      bytes = Serialize<T>(result);
-      if (options is null)
-      {   // not recommended; cache expiration should be considered
-          // important, usually
-        await cache.SetAsync(key, bytes, cancellation);
-      }
-      else
+
+      if (result is not null)
       {
-        await cache.SetAsync(key, bytes, options, cancellation);
+        // only cache non-null result
+        bytes = Serialize<T>(result);
+        if (options is null)
+        {   // not recommended; cache expiration should be considered
+            // important, usually
+          await cache.SetAsync(key, bytes, cancellation);
+        }
+        else
+        {
+          await cache.SetAsync(key, bytes, options, cancellation);
+        }
       }
       return result;
     }
