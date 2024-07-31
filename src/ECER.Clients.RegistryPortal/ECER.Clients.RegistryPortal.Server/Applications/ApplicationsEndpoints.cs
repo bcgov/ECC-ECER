@@ -296,9 +296,12 @@ public record DraftApplication
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
-  public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
-  public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
+  public string? Stage { get; set; }
+  public ApplicationTypes ApplicationType { get; set; }
+  public EducationOrigin? EducationOrigin { get; set; }
+  public EducationRecognition? EducationRecognition { get; set; }
   public string? ExplanationLetter { get; set; }
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
@@ -312,10 +315,13 @@ public record Application
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
+  public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
   public ApplicationStatus Status { get; set; }
-  public PortalStage Stage { get; set; }
-  public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public string? Stage { get; set; }
+  public ApplicationTypes ApplicationType { get; set; }
+  public EducationOrigin? EducationOrigin { get; set; }
+  public EducationRecognition? EducationRecognition { get; set; }
   public string? ExplanationLetter { get; set; }
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
@@ -374,17 +380,6 @@ public enum CertificationType
   Sne,
 }
 
-public enum PortalStage
-{
-  CertificationType,
-  Declaration,
-  ContactInformation,
-  Education,
-  CharacterReferences,
-  WorkReferences,
-  Review,
-}
-
 public enum OneYearRenewalexplanations
 {
   Icouldnotfindemploymenttocompletetherequiredhours,
@@ -430,6 +425,26 @@ public enum ApplicationStatusReasonDetail
   ReceivePhysicalTranscripts,
   SupervisorConsultationNeeded,
   ValidatingIDs,
+}
+
+public enum ApplicationTypes
+{
+  New,
+  Renewal,
+  LaborMobility,
+}
+
+public enum EducationOrigin
+{
+  InsideBC,
+  OutsideBC,
+  OutsideofCanada
+}
+
+public enum EducationRecognition
+{
+  Recognized,
+  NotRecognized
 }
 
 public record CharacterReference([Required] string FirstName, [Required] string LastName, string? PhoneNumber, [Required] string EmailAddress)

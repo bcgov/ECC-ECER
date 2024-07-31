@@ -2,9 +2,15 @@
   <Wizard :ref="'wizard'" :wizard="applicationStore.isDraftCertificateTypeFiveYears ? applicationWizardFiveYear : applicationWizardAssistantAndOneYear">
     <template #header>
       <WizardHeader class="mb-6" :handle-save-draft="handleSaveAsDraft" :show-save-button="showSaveButtons" />
+      <v-container>
+        <!-- prettier-ignore -->
+        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" @click.prevent="handleBack" href="#">
+          <v-icon large>mdi-chevron-left</v-icon>Back to previous step
+        </a>
+      </v-container>
     </template>
     <template #stepperHeader>
-      <v-container>
+      <v-container v-show="!$vuetify.display.mobile">
         <v-stepper-header class="elevation-0">
           <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
             <v-stepper-item
@@ -28,17 +34,6 @@
     </template>
     <template #actions>
       <v-container>
-        <v-btn
-          v-if="$vuetify.display.mobile"
-          :disabled="wizardStore.step === 1"
-          rounded="lg"
-          variant="outlined"
-          color="primary"
-          class="mr-3"
-          @click="handleBack"
-        >
-          Back
-        </v-btn>
         <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and continue</v-btn>
         <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
           Submit Application
@@ -61,7 +56,7 @@ import { useApplicationStore } from "@/store/application";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
-import type { Components } from "@/types/openapi";
+import type { ApplicationStage } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
 
 export default defineComponent({
@@ -140,11 +135,11 @@ export default defineComponent({
     },
     incrementWizard() {
       this.wizardStore.incrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as Components.Schemas.PortalStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as ApplicationStage;
     },
     decrementWizard() {
       this.wizardStore.decrementStep();
-      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as Components.Schemas.PortalStage;
+      this.applicationStore.draftApplication.stage = this.wizardStore.currentStepStage as ApplicationStage;
     },
     handleBack() {
       switch (this.wizardStore.currentStepStage) {

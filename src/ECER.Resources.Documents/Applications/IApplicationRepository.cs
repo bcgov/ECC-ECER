@@ -39,7 +39,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public DateTime CreatedOn { get; set; }
   public DateTime? SignedDate { get; set; }
   public DateTime? SubmittedOn { get; set; }
-  public PortalStage Stage { get; set; }
+  public string? Stage { get; set; }
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
   public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
@@ -47,6 +47,9 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public DateTime? ReadyForAssessmentDate { get; set; }
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
+  public ApplicationTypes ApplicationType { get; set; }
+  public EducationOrigin? EducationOrigin { get; set; }
+  public EducationRecognition? EducationRecognition { get; set; }
   public string? ExplanationLetter { get; set; }
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
@@ -74,17 +77,6 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
   public bool? WillProvideReference { get; set; }
   public int? TotalNumberofHoursApproved { get; set; }
   public int? TotalNumberofHoursObserved { get; set; }
-}
-
-public enum PortalStage
-{
-  CertificationType,
-  Declaration,
-  ContactInformation,
-  Education,
-  CharacterReferences,
-  WorkReferences,
-  Review,
 }
 
 public enum CertificationType
@@ -131,6 +123,26 @@ public enum ApplicationStatusReasonDetail
   ReceivePhysicalTranscripts,
   SupervisorConsultationNeeded,
   ValidatingIDs,
+}
+
+public enum ApplicationTypes
+{
+  New,
+  Renewal,
+  LaborMobility
+}
+
+public enum EducationOrigin
+{
+  InsideBC,
+  OutsideBC,
+  OutsideofCanada
+}
+
+public enum EducationRecognition
+{
+  Recognized,
+  NotRecognized
 }
 
 public enum OneYearRenewalexplanations
