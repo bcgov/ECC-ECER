@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Resources.Documents.Applications.Children;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
@@ -9,11 +10,25 @@ internal sealed class ApplicationRepository : IApplicationRepository
 {
   private readonly EcerContext context;
   private readonly IMapper mapper;
+  private readonly IApplicationChildService<ecer_ProfessionalDevelopment> professionalDevelopmentService;
+  private readonly IApplicationChildService<ecer_WorkExperienceRef> workExperienceService;
+  private readonly IApplicationChildService<ecer_CharacterReference> characterReferenceService;
+  private readonly IApplicationChildService<ecer_Transcript> transcriptService;
 
-  public ApplicationRepository(EcerContext context, IMapper mapper)
+  public ApplicationRepository(
+       EcerContext context,
+       IMapper mapper,
+       IApplicationChildService<ecer_ProfessionalDevelopment> professionalDevelopmentService,
+       IApplicationChildService<ecer_WorkExperienceRef> workExperienceService,
+       IApplicationChildService<ecer_CharacterReference> characterReferenceService,
+       IApplicationChildService<ecer_Transcript> transcriptService)
   {
     this.context = context;
     this.mapper = mapper;
+    this.professionalDevelopmentService = professionalDevelopmentService;
+    this.workExperienceService = workExperienceService;
+    this.characterReferenceService = characterReferenceService;
+    this.transcriptService = transcriptService;
   }
 
   public async Task<IEnumerable<Application>> Query(ApplicationQuery query, CancellationToken cancellationToken)
@@ -70,10 +85,10 @@ internal sealed class ApplicationRepository : IApplicationRepository
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);
     }
-    _ = UpdateApplicationTranscripts(ecerApplication, ecerTranscripts);
-    _ = UpdateApplicationProfessionalDevelopments(ecerApplication, ecerProfessionalDevelopments);
-    _ = UpdateApplicationWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
-    _ = UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
+    await professionalDevelopmentService.Update(ecerApplication, ecerProfessionalDevelopments);
+    await workExperienceService.Update(ecerApplication, ecerWorkExperienceReferences);
+    await characterReferenceService.Update(ecerApplication, ecerCharacterReferences);
+    await transcriptService.Update(ecerApplication, ecerTranscripts);
 
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
@@ -90,146 +105,6 @@ internal sealed class ApplicationRepository : IApplicationRepository
 
     context.SaveChanges();
     return applicationId;
-  }
-
-  public async Task UpdateApplicationWorkExperienceReferences(ecer_Application application, List<ecer_WorkExperienceRef> updatedReferences)
-  {
-    await Task.CompletedTask;
-    var existingWorkExpericnes = context.ecer_WorkExperienceRefSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
-
-    // 1. Remove WorkExperienceReferences that they exist in the dataverse but not in the application
-    foreach (var reference in existingWorkExpericnes)
-    {
-      if (!updatedReferences.Any(t => t.Id == reference.Id))
-      {
-        context.DeleteObject(reference);
-      }
-    }
-
-    // 2. Add New WorkExperienceReferences that they exist in the application but not in the dataverse
-    foreach (var reference in updatedReferences.Where(d => d.ecer_WorkExperienceRefId == null))
-    {
-      reference.ecer_WorkExperienceRefId = Guid.NewGuid();
-      context.AddObject(reference);
-      context.AddLink(application, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer, reference);
-    }
-
-    // 3. Update Existing WorkExperienceReferences
-    foreach (var reference in updatedReferences.Where(d => d.ecer_WorkExperienceRefId != null))
-    {
-      var oldReference = existingWorkExpericnes.SingleOrDefault(t => t.Id == reference.Id);
-      if (oldReference != null)
-      {
-        context.Detach(oldReference);
-      }
-      context.Attach(reference);
-      context.UpdateObject(reference);
-    }
-  }
-
-  public async Task UpdateApplicationProfessionalDevelopments(ecer_Application application, List<ecer_ProfessionalDevelopment> updatedProfessionalDevelopments)
-  {
-    await Task.CompletedTask;
-    var existingProfessionalDevelopments = context.ecer_ProfessionalDevelopmentSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
-
-    // 1. Remove professional developments that they exist in the dataverse but not in the application
-    foreach (var professionalDevelopment in existingProfessionalDevelopments)
-    {
-      if (!updatedProfessionalDevelopments.Any(t => t.Id == professionalDevelopment.Id))
-      {
-        context.DeleteObject(professionalDevelopment);
-      }
-    }
-
-    // 2. Add New professional developments that they exist in the application but not in the dataverse
-    foreach (var professionalDevelopment in updatedProfessionalDevelopments.Where(d => d.ecer_ProfessionalDevelopmentId == null))
-    {
-      professionalDevelopment.ecer_ProfessionalDevelopmentId = Guid.NewGuid();
-      context.AddObject(professionalDevelopment);
-      context.AddLink(application, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, professionalDevelopment);
-    }
-
-    // 3. Update Existing professional developments
-    foreach (var professionalDevelopment in updatedProfessionalDevelopments.Where(d => d.ecer_ProfessionalDevelopmentId != null))
-    {
-      var oldProfessionalDevelopment = existingProfessionalDevelopments.SingleOrDefault(t => t.Id == professionalDevelopment.Id);
-      if (oldProfessionalDevelopment != null)
-      {
-        context.Detach(oldProfessionalDevelopment);
-      }
-      context.Attach(professionalDevelopment);
-      context.UpdateObject(professionalDevelopment);
-    }
-  }
-
-  public async Task UpdateApplicationTranscripts(ecer_Application application, List<ecer_Transcript> updatedTranscripts)
-  {
-    await Task.CompletedTask;
-    var existingTranscripts = context.ecer_TranscriptSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
-
-    // 1. Remove Transcripts that they exist in the dataverse but not in the application
-    foreach (var transcript in existingTranscripts)
-    {
-      if (!updatedTranscripts.Any(t => t.Id == transcript.Id))
-      {
-        context.DeleteObject(transcript);
-      }
-    }
-
-    // 2. Add New Transcripts that they exist in the application but not in the dataverse
-    foreach (var transcript in updatedTranscripts.Where(d => d.ecer_TranscriptId == null))
-    {
-      transcript.ecer_TranscriptId = Guid.NewGuid();
-      context.AddObject(transcript);
-      context.AddLink(application, ecer_Application.Fields.ecer_transcript_Applicationid, transcript);
-    }
-
-    // 3. Update Existing Transcripts
-    foreach (var transcript in updatedTranscripts.Where(d => d.ecer_TranscriptId != null))
-    {
-      var oldTranscript = existingTranscripts.SingleOrDefault(t => t.Id == transcript.Id);
-      if (oldTranscript != null)
-      {
-        context.Detach(oldTranscript);
-      }
-      context.Attach(transcript);
-      context.UpdateObject(transcript);
-    }
-  }
-
-  public async Task UpdateCharacterReferences(ecer_Application application, List<ecer_CharacterReference> updatedCharacterReferences)
-  {
-    await Task.CompletedTask;
-    var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
-
-    // 1. Remove Character References that exist in the dataverse but not in the application
-    foreach (var reference in existingCharacterReferences)
-    {
-      if (!updatedCharacterReferences.Any(t => t.Id == reference.Id))
-      {
-        context.DeleteObject(reference);
-      }
-    }
-
-    // 2. Add New Character References that exist in the application but not in the dataverse
-    foreach (var reference in updatedCharacterReferences.Where(d => d.ecer_CharacterReferenceId == null))
-    {
-      reference.ecer_CharacterReferenceId = Guid.NewGuid();
-      context.AddObject(reference);
-      context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, reference);
-    }
-
-    // 3. Update Existing Character References
-    foreach (var reference in updatedCharacterReferences.Where(d => d.ecer_CharacterReferenceId != null))
-    {
-      var oldReference = existingCharacterReferences.SingleOrDefault(t => t.Id == reference.Id);
-      if (oldReference != null)
-      {
-        context.Detach(oldReference);
-      }
-      context.Attach(reference);
-      context.UpdateObject(reference);
-    }
   }
 
   public async Task<string> Cancel(string applicationId, CancellationToken cancellationToken)
