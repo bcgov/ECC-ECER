@@ -20,7 +20,12 @@
               :title="step.title"
               :editable="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'"
               :complete="index + 1 < wizardStore.step"
-            ></v-stepper-item>
+            >
+              <template #title>
+                <a v-if="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'" href="#" @click.prevent>{{ step.title }}</a>
+                <div v-else>{{ step.title }}</div>
+              </template>
+            </v-stepper-item>
             <v-divider v-if="index !== Object.values(wizardStore.steps).length - 1" :key="`divider-${index}`" />
           </template>
         </v-stepper-header>
@@ -202,3 +207,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.v-stepper-item--selected {
+  font-weight: bold;
+}
+</style>
