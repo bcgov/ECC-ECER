@@ -28,12 +28,12 @@
         <v-row>
           <v-col cols="12">
             <ECEHeader title="Your ECE certifications" />
-            <div v-if="certificationStore.hasCertifications">
+            <div v-if="certifications && certificationStore.hasCertifications">
               <p class="mt-4">
                 ECE registration number
                 <b>{{ certificationStore.latestCertification?.number }}</b>
               </p>
-              <CerticationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" />
+              <CertificationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" />
             </div>
             <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
           </v-col>
@@ -107,7 +107,7 @@ import { getUserInfo } from "@/api/user";
 import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
-import CerticationCard from "@/components/CertificationCard.vue";
+import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
@@ -121,7 +121,7 @@ import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "Dashboard",
-  components: { ConfirmationDialog, PageContainer, ApplicationCard, CerticationCard, ECEHeader, ActionCard, Alert, UnreadMessages },
+  components: { ConfirmationDialog, PageContainer, ApplicationCard, CertificationCard, ECEHeader, ActionCard, Alert, UnreadMessages },
   async setup() {
     const userStore = useUserStore();
     const applicationStore = useApplicationStore();
@@ -131,7 +131,7 @@ export default defineComponent({
     const { smAndDown, mdAndUp } = useDisplay();
 
     const applications = await applicationStore.fetchApplications();
-    await certificationStore.fetchCertifications();
+    const certifications = await certificationStore.fetchCertifications();
 
     // Refresh userInfo from the server
     const userInfo = await getUserInfo();
@@ -139,7 +139,7 @@ export default defineComponent({
       userStore.setUserInfo(userInfo);
     }
 
-    return { userStore, applicationStore, alertStore, messageStore, certificationStore, applications, smAndDown, mdAndUp };
+    return { userStore, applicationStore, alertStore, messageStore, certificationStore, certifications, applications, smAndDown, mdAndUp };
   },
   data: () => ({
     showCancelDialog: false,
