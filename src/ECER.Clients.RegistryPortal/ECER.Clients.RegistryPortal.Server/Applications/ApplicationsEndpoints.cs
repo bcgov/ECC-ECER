@@ -447,7 +447,6 @@ public enum EducationRecognition
   NotRecognized
 }
 
-public record CharacterReference([Required] string? FirstName, [Required] string? LastName, string? PhoneNumber, [Required] string? EmailAddress)
 public record CharacterReference([Required] string FirstName, [Required] string LastName, string? PhoneNumber, [Required] string EmailAddress)
 {
   public string? Id { get; set; }
