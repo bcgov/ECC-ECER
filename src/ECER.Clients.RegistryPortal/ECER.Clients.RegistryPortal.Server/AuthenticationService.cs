@@ -31,7 +31,7 @@ public class AuthenticationService(IMediator messageBus, IDistributedCache cache
   {
     // try to find the registrant
     var registrant = await cache.GetAsync($"userinfo:{userIdentity.UserId}@{userIdentity.IdentityProvider}",
-      async ct => (await messageBus.Send<RegistrantQueryResults>(new SearchRegistrantQuery { ByUserIdentity = userIdentity }, ct)).Items.SingleOrDefault(),
+      async ct => (await messageBus.Send(new SearchRegistrantQuery { ByUserIdentity = userIdentity }, ct)).Items.SingleOrDefault(),
       new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) },
       ct);
 
