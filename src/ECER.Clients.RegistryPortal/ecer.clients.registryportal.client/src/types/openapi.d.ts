@@ -92,6 +92,14 @@ declare namespace Components {
       statusCode?: CertificateStatusCode;
       ineligibleReference?: YesNoNull;
       levels?: CertificationLevel[] | null;
+      files?: CertificationFile[] | null;
+    }
+    export interface CertificationFile {
+      id?: string | null;
+      url?: string | null;
+      extention?: string | null;
+      size?: string | null;
+      name?: string | null;
     }
     export interface CertificationLevel {
       id?: string | null;
@@ -633,6 +641,18 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace FilesCertificateGet {
+    namespace Parameters {
+      export type CertificateId = string;
+    }
+    export interface PathParameters {
+      certificateId: Parameters.CertificateId;
+    }
+    namespace Responses {
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace MessageGet {
     namespace Responses {
       export type $200 = Components.Schemas.Communication[];
@@ -824,10 +844,18 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
   /**
+   * files_certificate_get - Handles fetching certificate PDF's
+   */
+  "files_certificate_get"(
+    parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<any>;
+  /**
    * upload_file - Handles upload file request
    */
   "upload_file"(
-    parameters?: Parameters<Paths.UploadFile.PathParameters & Paths.UploadFile.HeaderParameters> | null,
+    parameters?: Parameters<Paths.UploadFile.HeaderParameters & Paths.UploadFile.PathParameters> | null,
     data?: Paths.UploadFile.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.UploadFile.Responses.$200>;
@@ -899,7 +927,7 @@ export interface OperationMethods {
    * application_get - Handles application queries
    */
   "application_get"(
-    parameters?: Parameters<Paths.ApplicationGet.PathParameters & Paths.ApplicationGet.QueryParameters> | null,
+    parameters?: Parameters<Paths.ApplicationGet.QueryParameters & Paths.ApplicationGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
@@ -1054,6 +1082,12 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
   };
+  ["/api/files/certificate/{certificateId}"]: {
+    /**
+     * files_certificate_get - Handles fetching certificate PDF's
+     */
+    "get"(parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<any>;
+  };
   ["/api/files/{fileId}"]: {
     /**
      * delete_file - Handles delete uploaded file request
@@ -1067,7 +1101,7 @@ export interface PathsDictionary {
      * upload_file - Handles upload file request
      */
     "post"(
-      parameters?: Parameters<Paths.UploadFile.PathParameters & Paths.UploadFile.HeaderParameters> | null,
+      parameters?: Parameters<Paths.UploadFile.HeaderParameters & Paths.UploadFile.PathParameters> | null,
       data?: Paths.UploadFile.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UploadFile.Responses.$200>;
@@ -1141,7 +1175,7 @@ export interface PathsDictionary {
      * application_get - Handles application queries
      */
     "get"(
-      parameters?: Parameters<Paths.ApplicationGet.PathParameters & Paths.ApplicationGet.QueryParameters> | null,
+      parameters?: Parameters<Paths.ApplicationGet.QueryParameters & Paths.ApplicationGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
