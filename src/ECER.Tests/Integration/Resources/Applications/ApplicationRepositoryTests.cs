@@ -443,7 +443,8 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     return new CharacterReference(
       faker.Name.FirstName(), faker.Name.LastName(), faker.Phone.PhoneNumber(), faker.Internet.Email()
-    );
+    )
+    { Status = CharacterReferenceStage.Draft };
   }
 
   private WorkExperienceReference CreateWorkExperienceReference()
@@ -454,7 +455,8 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
       faker.Name.FirstName(), faker.Name.FirstName(), faker.Internet.Email(), faker.Random.Number(10, 150)
     )
     {
-      PhoneNumber = faker.Phone.PhoneNumber()
+      PhoneNumber = faker.Phone.PhoneNumber(),
+      Status = WorkExperienceRefStage.Draft,
     };
   }
 
@@ -476,7 +478,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
       OrganizationContactInformation = faker.Phone.PhoneNumber(),
       InstructorName = faker.Name.FullName(),
       NumberOfHours = faker.Random.Int(1, 100),
-      Status = faker.PickRandom<ProfessionalDevelopmentStatusCode>()
+      Status = ProfessionalDevelopmentStatusCode.Draft
     };
   }
 
@@ -491,7 +493,8 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     )
     {
       LanguageofInstruction = faker.PickRandom(languages),
-      CampusLocation = faker.Address.City()
+      CampusLocation = faker.Address.City(),
+      Status = TranscriptStage.Draft
     };
   }
 }
