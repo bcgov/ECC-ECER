@@ -7,7 +7,7 @@
     </template>
     <template v-if="applicationStore.isDraftCertificateTypeOneYear">
       <ECEOneYearRequirements v-if="!applicationStore.isDraftApplicationRenewal" />
-      <ECEOneYearRenewalRequirements v-else />
+      <ECEOneYearRenewalRequirements v-else :expired="certificationStore.latestCertificateStatus == 'Expired'" />
     </template>
     <template v-if="applicationStore.isDraftCertificateTypeFiveYears">
       <ECEFiveYearRequirements v-if="!applicationStore.isDraftApplicationRenewal" />
