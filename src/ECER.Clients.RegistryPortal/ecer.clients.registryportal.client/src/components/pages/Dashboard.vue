@@ -31,7 +31,7 @@
             <div v-if="certificationStore.hasCertifications">
               <p class="mt-4">
                 ECE registration number
-                <b>{{ certificationStore.latestCertification?.number }}</b>
+                {{ certificationStore.latestCertification?.number }}
               </p>
               <CerticationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" />
             </div>
