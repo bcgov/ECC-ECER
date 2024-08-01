@@ -304,6 +304,7 @@ public record DraftApplication
   public EducationRecognition? EducationRecognition { get; set; }
   public string? ExplanationLetter { get; set; }
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
+  public DateTime CreatedOn { get; set; }
 }
 
 public record Application
