@@ -2,20 +2,11 @@
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
 
-namespace ECER.Resources.Documents.Applications.ChildrenServices;
+namespace ECER.Resources.Documents.Applications;
 
-internal class TranscriptsService : IApplicationChildService<ecer_Transcript>
+internal sealed partial class ApplicationRepository
 {
-  private readonly EcerContext context;
-  private readonly IMapper mapper;
-
-  public TranscriptsService(EcerContext context, IMapper mapper)
-  {
-    this.context = context;
-    this.mapper = mapper;
-  }
-
-  public async Task Update(ecer_Application application, List<ecer_Transcript> updatedEntities)
+  public async Task UpdateTranscripts(ecer_Application application, List<ecer_Transcript> updatedEntities)
   {
     await Task.CompletedTask;
     var existingTranscripts = context.ecer_TranscriptSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();

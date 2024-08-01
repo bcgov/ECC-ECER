@@ -7,20 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECER.Resources.Documents.Applications.ChildrenServices;
+namespace ECER.Resources.Documents.Applications;
 
-internal class ProfessionalDevelopmentsService : IApplicationChildService<ecer_ProfessionalDevelopment>
+internal sealed partial class ApplicationRepository
 {
-  private readonly EcerContext context;
-  private readonly IMapper mapper;
-
-  public ProfessionalDevelopmentsService(EcerContext context, IMapper mapper)
-  {
-    this.context = context;
-    this.mapper = mapper;
-  }
-
-  public async Task Update(ecer_Application application, List<ecer_ProfessionalDevelopment> updatedEntities)
+  public async Task UpdateProfessionalDevelopments(ecer_Application application, List<ecer_ProfessionalDevelopment> updatedEntities)
   {
     await Task.CompletedTask;
     var existingProfessionalDevelopments = context.ecer_ProfessionalDevelopmentSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
