@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECER.Resources.Documents.Applications.Children;
+namespace ECER.Resources.Documents.Applications.ChildrenServices;
 
 internal interface IApplicationChildService<T>
 {

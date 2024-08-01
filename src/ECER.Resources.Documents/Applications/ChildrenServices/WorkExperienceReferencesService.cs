@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ECER.Resources.Documents.Applications.Children;
+namespace ECER.Resources.Documents.Applications.ChildrenServices;
 
 internal class WorkExperienceReferencesService : IApplicationChildService<ecer_WorkExperienceRef>
 {

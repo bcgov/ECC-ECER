@@ -1,6 +1,5 @@
 ﻿using ECER.Infrastructure.Common;
 using ECER.Resources.Documents.Applications;
-using ECER.Resources.Documents.Applications.Children;
 using ECER.Resources.Documents.Applications.ChildrenServices;
 using ECER.Resources.Documents.Certifications;
 using ECER.Resources.Documents.MetadataResources;

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ECER.Resources.Documents.Applications.Children;
+using ECER.Resources.Documents.Applications.ChildrenServices;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk.Client;
