@@ -4,7 +4,7 @@
       <WizardHeader class="mb-6" :handle-save-draft="handleSaveAsDraft" :show-save-button="showSaveButtons" />
       <v-container>
         <!-- prettier-ignore -->
-        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" @click.prevent="handleBack" href="#">
+        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" href="#" @click.prevent="handleBack">
           <v-icon large>mdi-chevron-left</v-icon>Back to previous step
         </a>
       </v-container>
@@ -207,9 +207,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.v-stepper-item--selected {
-  font-weight: bold;
-}
-</style>
