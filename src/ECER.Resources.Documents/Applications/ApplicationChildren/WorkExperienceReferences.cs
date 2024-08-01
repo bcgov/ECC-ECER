@@ -6,7 +6,7 @@ namespace ECER.Resources.Documents.Applications;
 
 internal sealed partial class ApplicationRepository
 {
-  public async Task UpdateWorkExperienceReferences(ecer_Application application, List<ecer_WorkExperienceRef> updatedEntities)
+  private async Task UpdateWorkExperienceReferences(ecer_Application application, List<ecer_WorkExperienceRef> updatedEntities)
   {
     await Task.CompletedTask;
     var existingWorkExperiences = context.ecer_WorkExperienceRefSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
@@ -38,7 +38,7 @@ internal sealed partial class ApplicationRepository
     }
   }
 
-  public async Task<string> SubmitWorkexperienceReference(string referenceId, WorkExperienceReferenceSubmissionRequest request)
+  private async Task<string> SubmitWorkexperienceReference(string referenceId, WorkExperienceReferenceSubmissionRequest request)
   {
     await Task.CompletedTask;
     var workExperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(referenceId));
@@ -59,7 +59,7 @@ internal sealed partial class ApplicationRepository
     return workExperienceReference.ecer_WorkExperienceRefId.ToString()!;
   }
 
-  public async Task<string> OptOutWorkExperienceReference(OptOutReferenceRequest request)
+  private async Task<string> OptOutWorkExperienceReference(OptOutReferenceRequest request)
   {
     await Task.CompletedTask;
     var workexperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(request.PortalInvitation!.WorkexperienceReferenceId!));

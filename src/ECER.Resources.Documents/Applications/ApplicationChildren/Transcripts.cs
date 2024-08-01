@@ -6,7 +6,7 @@ namespace ECER.Resources.Documents.Applications;
 
 internal sealed partial class ApplicationRepository
 {
-  public async Task UpdateTranscripts(ecer_Application application, List<ecer_Transcript> updatedEntities)
+  private async Task UpdateTranscripts(ecer_Application application, List<ecer_Transcript> updatedEntities)
   {
     await Task.CompletedTask;
     var existingTranscripts = context.ecer_TranscriptSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();

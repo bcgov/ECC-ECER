@@ -6,7 +6,7 @@ namespace ECER.Resources.Documents.Applications;
 
 internal partial class ApplicationRepository
 {
-  public async Task UpdateCharacterReferences(ecer_Application application, List<ecer_CharacterReference> updatedEntities)
+  private async Task UpdateCharacterReferences(ecer_Application application, List<ecer_CharacterReference> updatedEntities)
   {
     await Task.CompletedTask;
     var existingCharacterReferences = context.ecer_CharacterReferenceSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
@@ -38,7 +38,7 @@ internal partial class ApplicationRepository
     }
   }
 
-  public async Task<string> SubmitCharacterReference(string referenceId, CharacterReferenceSubmissionRequest request)
+  private async Task<string> SubmitCharacterReference(string referenceId, CharacterReferenceSubmissionRequest request)
   {
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(referenceId));
@@ -60,7 +60,7 @@ internal partial class ApplicationRepository
     return characterReference.ecer_CharacterReferenceId.ToString()!;
   }
 
-  public async Task<string> OptOutCharacterReference(OptOutReferenceRequest request)
+  private async Task<string> OptOutCharacterReference(OptOutReferenceRequest request)
   {
     await Task.CompletedTask;
     var characterReference = context.ecer_CharacterReferenceSet.Single(c => c.ecer_CharacterReferenceId == Guid.Parse(request.PortalInvitation!.CharacterReferenceId!));
