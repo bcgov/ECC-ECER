@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 v-if="!isRenewal">{{ `Application for ECE ${certificationType} certification` }}</h1>
-    <h1 v-else>{{ `ECE ${certificationType} renewal` }}</h1>
+    <h1 v-else>{{ `Application to renew ECE ${certificationType} certification` }}</h1>
     <div v-if="certificationTypes.includes(CertificationType.FIVE_YEAR) && !isRenewal" role="doc-subtitle">
       {{ certificationTypeSubtitleForFiveYear }}
     </div>
