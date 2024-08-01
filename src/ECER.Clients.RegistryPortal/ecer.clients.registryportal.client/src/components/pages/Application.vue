@@ -4,7 +4,7 @@
       <WizardHeader class="mb-6" :handle-save-draft="handleSaveAsDraft" :show-save-button="showSaveButtons" />
       <v-container>
         <!-- prettier-ignore -->
-        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" @click.prevent="handleBack" href="#">
+        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" href="#" @click.prevent="handleBack">
           <v-icon large>mdi-chevron-left</v-icon>Back to previous step
         </a>
       </v-container>
@@ -241,14 +241,6 @@ export default defineComponent({
     },
     printPage() {
       window.print();
-    },
-    latestIsExpired(dt: DateTime): boolean {
-      return dt >= DateTime.fromISO(this.certificationStore?.latestCertification?.expiryDate!);
-    },
-    latestExpiredMoreThan5Years(dt1: DateTime): boolean {
-      const dt2 = DateTime.fromISO(this.certificationStore.latestCertification?.expiryDate!);
-      const differenceInYears = Math.abs(dt1.diff(dt2, "years").years);
-      return differenceInYears > 5;
     },
   },
 });
