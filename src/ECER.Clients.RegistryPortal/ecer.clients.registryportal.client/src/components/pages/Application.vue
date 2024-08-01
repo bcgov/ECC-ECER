@@ -4,7 +4,7 @@
       <WizardHeader class="mb-6" :handle-save-draft="handleSaveAsDraft" :show-save-button="showSaveButtons" />
       <v-container>
         <!-- prettier-ignore -->
-        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" @click.prevent="handleBack" href="#">
+        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" href="#" @click.prevent="handleBack">
           <v-icon large>mdi-chevron-left</v-icon>Back to previous step
         </a>
       </v-container>
@@ -20,7 +20,12 @@
               :title="step.title"
               :editable="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'"
               :complete="index + 1 < wizardStore.step"
-            ></v-stepper-item>
+            >
+              <template #title>
+                <a v-if="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'" href="#" @click.prevent>{{ step.title }}</a>
+                <div v-else>{{ step.title }}</div>
+              </template>
+            </v-stepper-item>
             <v-divider v-if="index !== Object.values(wizardStore.steps).length - 1" :key="`divider-${index}`" />
           </template>
         </v-stepper-header>
