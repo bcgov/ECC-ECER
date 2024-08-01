@@ -200,6 +200,7 @@ declare namespace Components {
       applicationType?: ApplicationTypes;
       educationOrigin?: EducationOrigin;
       educationRecognition?: EducationRecognition;
+      createdOn?: string; // date-time
     }
     /**
      * Save draft application response

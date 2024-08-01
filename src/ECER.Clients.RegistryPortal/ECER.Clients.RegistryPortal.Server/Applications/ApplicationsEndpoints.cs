@@ -301,6 +301,7 @@ public record DraftApplication
   public ApplicationTypes ApplicationType { get; set; }
   public EducationOrigin? EducationOrigin { get; set; }
   public EducationRecognition? EducationRecognition { get; set; }
+  public DateTime CreatedOn { get; set; }
 }
 
 public record Application
