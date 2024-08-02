@@ -13,9 +13,9 @@ const previewForm: Form = {
       component: EceCertificationTypePreview,
       props: {},
       cols: {
-        md: 8,
-        lg: 8,
-        xl: 6,
+        md: 12,
+        lg: 12,
+        xl: 12,
       },
     },
     contactInformationPreview: {
@@ -23,9 +23,9 @@ const previewForm: Form = {
       component: EceContactInformationPreview,
       props: {},
       cols: {
-        md: 8,
-        lg: 8,
-        xl: 6,
+        md: 12,
+        lg: 12,
+        xl: 12,
       },
     },
     educationPreview: {
@@ -33,9 +33,9 @@ const previewForm: Form = {
       component: EceEducationPreview,
       props: {},
       cols: {
-        md: 8,
-        lg: 8,
-        xl: 6,
+        md: 12,
+        lg: 12,
+        xl: 12,
       },
     },
     characterReferencePreview: {
@@ -43,9 +43,9 @@ const previewForm: Form = {
       component: EceCharacterReferencePreview,
       props: {},
       cols: {
-        md: 8,
-        lg: 8,
-        xl: 6,
+        md: 12,
+        lg: 12,
+        xl: 12,
       },
     },
   },

@@ -1,7 +1,8 @@
 ﻿using MediatR;
 
 namespace ECER.Managers.Admin.Contract.Files;
-public record SaveFileCommand(IEnumerable<FileData> Items) : IRequest;
+public record SaveFileCommand(IEnumerable<FileData> Items) : IRequest<SaveFileCommandResponse>;
+public record SaveFileCommandResponse(IEnumerable<SaveFileResult> Items);
 public record DeleteFileCommand(FileData Item) : IRequest;
 
 public record FileQuery(IEnumerable<FileLocation> FileLocations) : IRequest<FileQueryResults>;
@@ -35,3 +36,4 @@ public record FileProperties
 public record FileQueryResults(IEnumerable<FileData> Items);
 
 public record FileData(FileLocation FileLocation, FileProperties FileProperties, string FileName, string ContentType, Stream Content);
+public record SaveFileResult(FileData FileData, bool IsSuccessful, string Message);

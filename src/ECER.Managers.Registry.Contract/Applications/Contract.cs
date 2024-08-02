@@ -53,13 +53,19 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
+  public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
-  public PortalStage Stage { get; set; }
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public string? Stage { get; set; }
   public ApplicationStatusReasonDetail SubStatus { get; set; }
   public DateTime? ReadyForAssessmentDate { get; set; }
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
+  public ApplicationTypes ApplicationType { get; set; }
+  public EducationOrigin? EducationOrigin { get; set; }
+  public EducationRecognition? EducationRecognition { get; set; }
+  public string? ExplanationLetter { get; set; }
+  public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)
@@ -72,34 +78,36 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
 public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
 {
   public string? Id { get; set; }
-
   public string? PhoneNumber { get; set; }
-
   public WorkExperienceRefStage? Status { get; set; }
-
   public bool? WillProvideReference { get; set; }
   public int? TotalNumberofHoursApproved { get; set; }
   public int? TotalNumberofHoursObserved { get; set; }
 }
-
+public record ProfessionalDevelopment(string? Id, string? CertificationNumber, DateTime CertificationExpiryDate, DateTime DateSigned, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
+{
+  public string? OrganizationContactInformation { get; set; }
+  public string? InstructorName { get; set; }
+  public int? NumberOfHours { get; set; }
+  public ProfessionalDevelopmentStatusCode? Status { get; set; }
+}
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
   public string? Id { get; set; }
-
   public CharacterReferenceStage? Status { get; set; }
-
   public bool? WillProvideReference { get; set; }
 }
 
-public enum PortalStage
+public enum ProfessionalDevelopmentStatusCode
 {
-  CertificationType,
-  Declaration,
-  ContactInformation,
-  Education,
-  CharacterReferences,
-  WorkReferences,
-  Review,
+  ApplicationSubmitted,
+  Draft,
+  Inactive,
+  InProgress,
+  Rejected,
+  Submitted,
+  UnderReview,
+  WaitingResponse,
 }
 
 public enum CertificationType
@@ -109,6 +117,16 @@ public enum CertificationType
   FiveYears,
   Ite,
   Sne
+}
+
+public enum OneYearRenewalexplanations
+{
+  Icouldnotfindemploymenttocompletetherequiredhours,
+  Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa,
+  IliveandworkinacommunitywithoutothercertifiedECEs,
+  Iwasunabletoenterthecountryasexpected,
+  Iwasunabletoworkinthechildcarefieldforpersonalreasons,
+  Other,
 }
 
 public enum SubmissionError
@@ -152,6 +170,26 @@ public enum ApplicationStatusReasonDetail
   ReceivePhysicalTranscripts,
   SupervisorConsultationNeeded,
   ValidatingIDs,
+}
+
+public enum ApplicationTypes
+{
+  New,
+  Renewal,
+  LaborMobility
+}
+
+public enum EducationOrigin
+{
+  InsideBC,
+  OutsideBC,
+  OutsideofCanada
+}
+
+public enum EducationRecognition
+{
+  Recognized,
+  NotRecognized
 }
 
 public record CharacterReferenceSubmissionRequest(string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight);

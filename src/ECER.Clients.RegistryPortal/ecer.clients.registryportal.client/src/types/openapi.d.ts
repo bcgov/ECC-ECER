@@ -22,8 +22,11 @@ declare namespace Components {
       transcripts?: Transcript[] | null;
       workExperienceReferences?: WorkExperienceReference[] | null;
       status?: ApplicationStatus;
-      stage?: PortalStage;
+      stage?: string | null;
       characterReferences?: CharacterReference[] | null;
+      applicationType?: ApplicationTypes;
+      educationOrigin?: EducationOrigin;
+      educationRecognition?: EducationRecognition;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -70,6 +73,7 @@ declare namespace Components {
        */
       id?: string | null;
     }
+    export type ApplicationTypes = "New" | "Renewal" | "LaborMobility";
     /**
      * delete draft application response
      */
@@ -193,8 +197,11 @@ declare namespace Components {
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
       workExperienceReferences?: WorkExperienceReference[] | null;
-      stage?: PortalStage;
+      stage?: string | null;
       characterReferences?: CharacterReference[] | null;
+      applicationType?: ApplicationTypes;
+      educationOrigin?: EducationOrigin;
+      educationRecognition?: EducationRecognition;
     }
     /**
      * Save draft application response
@@ -205,6 +212,8 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
+    export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
+    export type EducationRecognition = "Recognized" | "NotRecognized";
     /**
      * file Response
      */
@@ -261,7 +270,6 @@ declare namespace Components {
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
     }
-    export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
     /**
      * Previous Name
      */

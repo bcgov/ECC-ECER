@@ -18,7 +18,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Phone Number</p>
+            <p class="small">Phone number</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ experience.phoneNumber }}</p>
@@ -26,7 +26,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Work Experience Hours</p>
+            <p class="small">Work experience hours</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ experience.hours }}</p>

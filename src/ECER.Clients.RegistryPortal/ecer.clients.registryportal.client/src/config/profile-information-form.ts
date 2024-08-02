@@ -11,7 +11,7 @@ const profileInformationForm: Form = {
       id: "legalLastName",
       component: EceTextField,
       props: {
-        label: "Legal Last Name",
+        label: "Legal last name",
         rules: [],
         maxLength: 50,
         disabled: true,
@@ -26,7 +26,7 @@ const profileInformationForm: Form = {
       id: "legalFirstName",
       component: EceTextField,
       props: {
-        label: "Legal First Name",
+        label: "Legal first name",
         rules: [],
         maxLength: 50,
         disabled: true,
@@ -41,7 +41,7 @@ const profileInformationForm: Form = {
       id: "legalMiddleName",
       component: EceTextField,
       props: {
-        label: "Legal Middle Name",
+        label: "Legal middle name",
         rules: [],
         maxLength: 50,
         disabled: true,
@@ -56,7 +56,7 @@ const profileInformationForm: Form = {
       id: "preferredName",
       component: EceTextField,
       props: {
-        label: "Preferred Name (optional)",
+        label: "Preferred first name (optional)",
         rules: [],
         maxLength: 50,
       },
@@ -70,7 +70,7 @@ const profileInformationForm: Form = {
       id: "dateOfBirth",
       component: EceTextField,
       props: {
-        label: "Date of Birth",
+        label: "Date of birth",
         type: "date",
         rules: [Rules.required()],
         disabled: true,
@@ -85,7 +85,7 @@ const profileInformationForm: Form = {
       id: "addresses",
       component: EceAddresses,
       props: {
-        residential: { addressLabel: "Residential" },
+        residential: { addressLabel: "Home" },
         mailing: { addressLabel: "Mailing" },
       },
       cols: {
@@ -98,7 +98,7 @@ const profileInformationForm: Form = {
       id: "primaryContactNumber",
       component: EceTextField,
       props: {
-        label: "Primary Contact Number",
+        label: "Primary contact number",
         isNumeric: true,
         rules: [Rules.phoneNumber("Enter your primary 10-digit phone number"), Rules.required()],
       },
@@ -112,7 +112,7 @@ const profileInformationForm: Form = {
       id: "alternateContactNumber",
       component: EceTextField,
       props: {
-        label: "Alternate Contact Number",
+        label: "Alternate phone (optional)",
         isNumeric: true,
         rules: [Rules.phoneNumber("Enter your alternate 10-digit phone number")],
       },

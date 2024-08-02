@@ -31,7 +31,7 @@
             <div v-if="certificationStore.hasCertifications">
               <p class="mt-4">
                 ECE registration number
-                <b>{{ certificationStore.latestCertification?.number }}</b>
+                {{ certificationStore.latestCertification?.number }}
               </p>
               <CerticationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" />
             </div>
@@ -67,31 +67,25 @@
         </v-row>
         <v-row>
           <v-col cols="12" sm="6" lg="4">
-            <ActionCard
-              title="Messages"
-              icon="mdi-bell"
-              :links="[
-                {
-                  text: 'Read messages',
-                  to: '/messages',
-                },
-              ]"
-            >
-              <UnreadMessages :linkable="false" />
+            <ActionCard title="Messages" icon="mdi-bell">
+              <template #content>
+                <UnreadMessages :linkable="false" />
+              </template>
+              <template #action>
+                <v-btn variant="text">
+                  <router-link :to="{ name: 'messages' }">Read messages</router-link>
+                </v-btn>
+              </template>
             </ActionCard>
           </v-col>
           <v-col cols="12" sm="6" lg="4">
-            <ActionCard
-              title="Your profile"
-              icon="mdi-account-circle"
-              :links="[
-                {
-                  text: 'My profile',
-                  to: '/profile',
-                },
-              ]"
-            >
-              Manage your names, address and contact information.
+            <ActionCard title="Your profile" icon="mdi-account-circle">
+              <template #content>Manage your names, address and contact information.</template>
+              <template #action>
+                <v-btn variant="text">
+                  <router-link :to="{ name: 'profile' }">My profile</router-link>
+                </v-btn>
+              </template>
             </ActionCard>
           </v-col>
         </v-row>

@@ -1,9 +1,9 @@
 <template>
-  <PreviewCard title="Certification Selection" portal-stage="CertificationType" :editable="false">
+  <PreviewCard title="Application type" portal-stage="CertificationType" :editable="false">
     <template #content>
       <v-row>
         <v-col cols="4">
-          <p class="small">Certification Type</p>
+          <p class="small">Certification type</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ certificationType }}</p>

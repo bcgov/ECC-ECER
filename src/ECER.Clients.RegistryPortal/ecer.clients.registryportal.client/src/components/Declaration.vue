@@ -1,41 +1,29 @@
 <template>
   <v-container>
     <Breadcrumb :items="items" />
-    <h3>Declaration and consent</h3>
+    <h1>Declaration and consent</h1>
     <p>You must read and agree to the following to apply for certification</p>
-    <v-row>
-      <v-col cols="12">
-        <ul>
-          <v-col cols="12">
-            <li>I understand that the ECE Registry require additional information (including supporting documents) in connection with this application</li>
-          </v-col>
-          <v-col cols="12">
-            <li>
-              I confirm that the information provided in this application is complete and accurate. I understand if inaccurate information is submitted it may
-              results in the denial of certification
-            </li>
-          </v-col>
-          <v-col cols="12">
-            <li>
-              I understand that information in this application or subsequently provided information may be reviewed, audited, and verified for the purpose of
-              determining or auditing my eligibility for ECE Certificate in British Columbia
-            </li>
-          </v-col>
-          <v-col cols="12">
-            <li>
-              I understand that the ECE Registry May take disciplinary actions against ,e. including action to cancel my certification, if I have, by omission
-              or commission, knowingly given false ot misleading information in the course of completing this application
-            </li>
-          </v-col>
-          <v-col cols="12">
-            <li>
-              I consent the work experience and character references indicated i this application to provide the ECE registry with this reference and other
-              information as part of my application for certification
-            </li>
-          </v-col>
-        </ul>
-      </v-col>
-    </v-row>
+    <br />
+    <ul class="ml-10">
+      <li>I understand that the ECE Registry may require additional information (including supporting documents) in connection with this application.</li>
+      <li>
+        I confirm that the information provided in this application is complete and accurate. I understand if inaccurate information is submitted it may result
+        in the denial of certification.
+      </li>
+      <li>
+        I understand that information in this application or subsequently provided information may be reviewed, audited, and verified for the purpose of
+        determining or auditing my eligibility for an ECE Certificate in British Columbia.
+      </li>
+      <li>
+        I understand that the ECE Registry may take disciplinary actions against me, including action to cancel my certification, if I have, by omission or
+        commission, knowingly given false or misleading information in the course of completing this application.
+      </li>
+      <li>
+        I consent the work experience and character references indicated in this application to provide the ECE Registry with this reference and other
+        information as part of my application for certification.
+      </li>
+    </ul>
+
     <v-form ref="declarationForm">
       <v-row>
         <v-col>
@@ -49,7 +37,7 @@
 
       <v-row>
         <v-col cols="4">
-          <EceTextField :model-value="name" :props="{ label: 'Applicant Legal Name', disabled: true, rules: [] }"></EceTextField>
+          <EceTextField :model-value="name" :props="{ label: 'Your full legal name', disabled: true, rules: [] }"></EceTextField>
         </v-col>
       </v-row>
       <v-row>
@@ -77,7 +65,7 @@ import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 
-import type { ItemsType } from "../Breadcrumb.vue";
+import type { ItemsType } from "./Breadcrumb.vue";
 
 export default defineComponent({
   name: "Declaration",
@@ -102,6 +90,11 @@ export default defineComponent({
         title: "Application types",
         disabled: false,
         href: "/application/certification",
+      },
+      {
+        title: "Requirements",
+        disabled: false,
+        href: "/application/certification/requirements",
       },
       {
         title: "Declaration",
