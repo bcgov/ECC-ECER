@@ -2,6 +2,7 @@
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
+using System.Linq;
 
 namespace ECER.Resources.Accounts.Communications;
 
@@ -22,6 +23,10 @@ internal class CommunicationRepository : ICommunicationRepository
     var communications = from c in context.ecer_CommunicationSet
                          join a in context.ecer_ApplicationSet on c.ecer_Applicationid.Id equals a.ecer_ApplicationId
                          select new { c, a };
+    var UnreadMessagesCount = 0;
+    IEnumerable<Communication> PortalComms = new List<Communication>();
+    // Filtering by registrant ID
+    if (query.ByRegistrantId != null) communications = communications.Where(r => r.c.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
 
     // Filtering by status
     if (query.ByStatus != null)
@@ -32,34 +37,60 @@ internal class CommunicationRepository : ICommunicationRepository
 
     // Filtering by ID
     if (query.ById != null) communications = communications.Where(r => r.c.ecer_CommunicationId == Guid.Parse(query.ById));
-
-    // Filtering by registrant ID
-    if (query.ByRegistrantId != null) communications = communications.Where(r => r.c.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
-
-    // returning just child communications based on parent id
-    if (query.ByParentId != null)
-    {
-      communications = communications.Where(r => r.c.ecer_ParentCommunicationid.Id == Guid.Parse(query.ByParentId));
-    }
-    // otherwise returning just parent communications
     else
     {
-      communications = communications.Where(r => r.c.ecer_IsRoot == true);
-    }
-    var TotalMessagesCount = communications.ToList().Count;
+      // returning just child communications based on parent id
+      if (query.ByParentId != null)
+      {
+        communications = communications.Where(r => r.c.ecer_ParentCommunicationid.Id == Guid.Parse(query.ByParentId));
+        UnreadMessagesCount = communications.Where(comms => comms.c.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && comms.c.ecer_Acknowledged != true).ToList().Count;
+      }
+      // otherwise returning parent communications
+      else
+      {
+        var communicationsList = communications.ToList();
+        UnreadMessagesCount = communications.Where(comms => comms.c.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && comms.c.ecer_Acknowledged != true).ToList().Count;
+        var latestMessageDateByParentId = communicationsList.GroupBy(ct => ct.c.ecer_ParentCommunicationid.Id) // Group by parent ID
+                                                     .Select(group => new
+                                                     {
+                                                       ParentId = group.Key,
+                                                       LatestMessageNotifiedDate = group.Max(ct => ct.c.ecer_DateNotified),
+                                                       AreAllRead = !group.Any(r => r.c.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && r.c.ecer_Acknowledged != true),
+                                                     });
 
+        communications = communications.Where(c => c.c.ecer_IsRoot == true);
+
+        PortalComms = mapper.Map<IEnumerable<Communication>>(communications.Select(comms => comms.c).ToList());
+
+        foreach (var comm in PortalComms)
+        {
+          var matchingComm = latestMessageDateByParentId.SingleOrDefault(ld => ld.ParentId == Guid.Parse(comm.Id!));
+          if (matchingComm != null)
+          {
+            comm.LatestMessageNotifiedOn = matchingComm.LatestMessageNotifiedDate;
+            comm.IsRead = matchingComm.AreAllRead;
+          }
+        }
+      }
+    }
+    if (PortalComms.ToList().Count == 0)
+    {
+      PortalComms = mapper.Map<IEnumerable<Communication>>(communications.Select(comms => comms.c).ToList());
+    }
     if (query.PageNumber > 0)
     {
-      communications = communications.OrderByDescending(r => r.c.ecer_DateNotified).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
+      PortalComms = PortalComms.OrderByDescending(c => c.LatestMessageNotifiedOn).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
     }
     else
     {
-      communications = communications.OrderByDescending(r => r.c.ecer_DateNotified);
+      PortalComms = PortalComms.OrderByDescending(c => c.LatestMessageNotifiedOn);
     }
+
     var result = new CommunicationResult
     {
-      Communications = mapper.Map<IEnumerable<Communication>>(communications.Select(r => r.c).ToList()),
-      TotalMessagesCount = TotalMessagesCount
+      Communications = PortalComms,
+      TotalMessagesCount = communications.ToList().Count,
+      UnreadMessagesCount = UnreadMessagesCount
     };
 
     return result;
