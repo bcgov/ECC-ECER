@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Applications;
@@ -9,13 +11,19 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
 {
   private readonly EcerContext context;
   private readonly IMapper mapper;
+  private readonly IObjecStorageProvider objectStorageProvider;
+  private readonly IConfiguration configuration;
 
   public ApplicationRepository(
        EcerContext context,
-       IMapper mapper)
+       IObjecStorageProvider objectStorageProvider,
+       IMapper mapper,
+       IConfiguration configuration)
   {
     this.context = context;
     this.mapper = mapper;
+    this.objectStorageProvider = objectStorageProvider;
+    this.configuration = configuration;
   }
 
   public async Task<IEnumerable<Application>> Query(ApplicationQuery query, CancellationToken cancellationToken)
@@ -72,7 +80,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);
     }
-    await UpdateProfessionalDevelopments(ecerApplication, ecerProfessionalDevelopments);
+    await UpdateProfessionalDevelopments(ecerApplication, ecerProfessionalDevelopments, application.ApplicationFiles.Where(d => d.UploadedFileType == FileType.ProfessionalDevelopment).ToList(), cancellationToken);
     await UpdateWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     await UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     await UpdateTranscripts(ecerApplication, ecerTranscripts);

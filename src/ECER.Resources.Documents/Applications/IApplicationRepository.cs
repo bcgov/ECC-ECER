@@ -44,6 +44,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
+  public IEnumerable<ApplicationFile> ApplicationFiles { get; set; } = Array.Empty<ApplicationFile>();
   public DateTime? ReadyForAssessmentDate { get; set; }
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
@@ -283,4 +284,23 @@ public enum ReferenceKnownTime
   From6monthsto1year,
   Lessthan6months,
   Morethan5years,
+}
+
+public record ApplicationFile()
+{
+  public string? RelatedEntityId { get; set; }
+  public string? UploadedFileId { get; set; }
+  public FileType UploadedFileType { get; set; }
+  public FileOperation FileOperation { get; set; }
+}
+
+public enum FileType
+{
+  ProfessionalDevelopment,
+}
+
+public enum FileOperation
+{
+  Add,
+  Delete
 }

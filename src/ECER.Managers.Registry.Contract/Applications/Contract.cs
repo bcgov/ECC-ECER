@@ -53,6 +53,7 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public DateTime? SignedDate { get; set; }
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public IEnumerable<Transcript> Transcripts { get; set; } = Array.Empty<Transcript>();
+  public IEnumerable<ApplicationFile> ApplicationFiles { get; set; } = Array.Empty<ApplicationFile>();
   public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public PortalStage Stage { get; set; }
@@ -333,4 +334,23 @@ public enum CharacterReferenceStage
   Submitted,
   UnderReview,
   WaitingResponse
+}
+
+public record ApplicationFile()
+{
+  public string? RelatedEntityId { get; set; }
+  public string? UploadedFileId { get; set; }
+  public FileType UploadedFileType { get; set; }
+  public FileOperation FileOperation { get; set; }
+}
+
+public enum FileType
+{
+  ProfessionalDevelopment,
+}
+
+public enum FileOperation
+{
+  Add,
+  Delete
 }

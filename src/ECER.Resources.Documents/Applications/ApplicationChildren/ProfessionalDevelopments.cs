@@ -1,17 +1,13 @@
-﻿using AutoMapper;
-using ECER.Utilities.DataverseSdk.Model;
+﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers.S3;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECER.Resources.Documents.Applications;
 
 internal sealed partial class ApplicationRepository
 {
-  private async Task UpdateProfessionalDevelopments(ecer_Application application, List<ecer_ProfessionalDevelopment> updatedEntities)
+  private async Task UpdateProfessionalDevelopments(ecer_Application application, List<ecer_ProfessionalDevelopment> updatedEntities, List<ApplicationFile> files, CancellationToken ct)
   {
     await Task.CompletedTask;
     var existingProfessionalDevelopments = context.ecer_ProfessionalDevelopmentSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
@@ -20,6 +16,8 @@ internal sealed partial class ApplicationRepository
     {
       if (!updatedEntities.Any(t => t.Id == professionalDevelopment.Id))
       {
+        // delete files before object deletion
+        await DeleteFilesForDeletedProfessionalDevelopments(professionalDevelopment, ct);
         context.DeleteObject(professionalDevelopment);
       }
     }
@@ -31,6 +29,7 @@ internal sealed partial class ApplicationRepository
       {
         context.Detach(oldProfessionalDevelopment);
       }
+
       context.Attach(professionalDevelopment);
       context.UpdateObject(professionalDevelopment);
     }
@@ -42,4 +41,22 @@ internal sealed partial class ApplicationRepository
       context.AddLink(application, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, professionalDevelopment);
     }
   }
+
+  private async Task DeleteFilesForDeletedProfessionalDevelopments(ecer_ProfessionalDevelopment professionalDevelopment, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+
+    var files = professionalDevelopment.ecer_bcgov_documenturl_ProfessionalDevelopmentId.ToList();
+    for (int i = 0; i < files.Count; i++)
+    {
+      var items = files[i].bcgov_Url.Split('/');
+      var fileId = items[1];
+      var folder = items[0];
+      await objectStorageProvider.DeleteAsync(new S3Descriptor(GetBucketName(configuration), fileId, folder), ct);
+      context.DeleteObject(files[i]);
+    }
+  }
+
+  private static string GetBucketName(IConfiguration configuration) =>
+  configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }

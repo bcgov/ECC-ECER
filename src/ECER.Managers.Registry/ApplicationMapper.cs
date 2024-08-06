@@ -25,6 +25,7 @@ internal class ApplicationMapper : Profile
         .ForCtorParam(nameof(Contract.Applications.Application.RegistrantId), opts => opts.MapFrom(s => s.ApplicantId))
         ;
 
+    CreateMap<Contract.Applications.ApplicationFile, ApplicationFile>().ReverseMap();
     CreateMap<Contract.Applications.Transcript, Transcript>().ReverseMap();
     CreateMap<Contract.Applications.ProfessionalDevelopment, ProfessionalDevelopment>().ReverseMap();
     CreateMap<Contract.Applications.WorkExperienceReference, WorkExperienceReference>().ReverseMap();

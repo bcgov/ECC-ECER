@@ -14,6 +14,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.CertificationTypes, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.Transcripts, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.ApplicationFiles, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.ProfessionalDevelopments, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.WorkExperienceReferences, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.CharacterReferences, opts => opts.DoNotValidate())
