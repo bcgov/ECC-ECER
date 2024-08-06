@@ -310,6 +310,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DateofBirth = "ecer_dateofbirth";
 			public const string ecer_DaysBetweenAssignmentConcludedDate = "ecer_daysbetweenassignmentconcludeddate";
 			public const string ecer_DaysBetweenIntakeCompleteConcludedDate = "ecer_daysbetweenintakecompleteconcludeddate";
+			public const string ecer_documenturl_InvestigationId = "ecer_documenturl_InvestigationId";
 			public const string ecer_ecer_application_ecer_investigation_OpenApplication = "ecer_ecer_application_ecer_investigation_OpenApplication";
 			public const string ecer_ecer_certificate_ecer_investigation_CurrentCertificate = "ecer_ecer_certificate_ecer_investigation_CurrentCertificate";
 			public const string ecer_ecer_complainant_ecer_investigation_complainant_lookup = "ecer_ecer_complainant_ecer_investigation_complainant_lookup";
@@ -5240,6 +5241,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_Investigation_ecer_investig", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_documenturl_InvestigationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_InvestigationId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_documenturl_InvestigationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_InvestigationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_InvestigationId", null, value);
 			}
 		}
 		
