@@ -45,6 +45,8 @@ public record Communication
   public bool Acknowledged { get; set; }
   public CommunicationStatus Status { get; set; }
   public bool DoNotReply { get; set; }
+  public DateTime? LatestMessageNotifiedOn { get; set; }
+  public bool? IsRead { get; set; }
 }
 
 public enum CommunicationStatus

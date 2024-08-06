@@ -19,7 +19,9 @@ internal class CommunicationRepositoryMapper : Profile
      .ForMember(d => d.Acknowledged, opts => opts.MapFrom(s => s.ecer_Acknowledged))
      .ForMember(d => d.NotifiedOn, opts => opts.MapFrom(s => s.ecer_DateNotified))
      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-     .ForMember(d => d.DoNotReply, opts => opts.MapFrom(s => s.ecer_DoNotReply));
+     .ForMember(d => d.DoNotReply, opts => opts.MapFrom(s => s.ecer_DoNotReply))
+     .ForMember(d => d.LatestMessageNotifiedOn, opts => opts.MapFrom(s => s.ecer_DateNotified))
+     .ForMember(d => d.IsRead, opts => opts.MapFrom(s => s.ecer_Acknowledged));
 
     CreateMap<Communication, ecer_Communication>(MemberList.Source)
      .ForSourceMember(s => s.Subject, opts => opts.DoNotValidate())
@@ -29,6 +31,8 @@ internal class CommunicationRepositoryMapper : Profile
      .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.Body, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.DoNotReply, opts => opts.DoNotValidate())
+     .ForSourceMember(s => s.LatestMessageNotifiedOn, opts => opts.DoNotValidate())
+     .ForSourceMember(s => s.IsRead, opts => opts.DoNotValidate())
      .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)));
 
     CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()

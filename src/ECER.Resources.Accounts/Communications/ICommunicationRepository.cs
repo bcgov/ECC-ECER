@@ -35,12 +35,15 @@ public record Communication(string? Id)
   public bool Acknowledged { get; set; }
   public CommunicationStatus Status { get; set; }
   public bool DoNotReply { get; set; }
+  public DateTime? LatestMessageNotifiedOn { get; set; }
+  public bool? IsRead { get; set; }
 }
 
 public record CommunicationResult
 {
   public IEnumerable<Communication>? Communications { get; set; }
   public int TotalMessagesCount { get; set; }
+  public int UnreadMessagesCount { get; set; }
 }
 
 public enum CommunicationStatus

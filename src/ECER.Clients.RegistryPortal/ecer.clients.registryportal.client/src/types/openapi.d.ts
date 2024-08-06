@@ -173,6 +173,8 @@ declare namespace Components {
       notifiedOn?: string; // date-time
       status?: CommunicationStatus;
       doNotReply?: boolean;
+      latestMessageNotifiedOn?: string | null; // date-time
+      isRead?: boolean | null;
     }
     /**
      * Save communication response
