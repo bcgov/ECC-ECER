@@ -21,12 +21,15 @@ declare namespace Components {
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
       workExperienceReferences?: WorkExperienceReference[] | null;
+      characterReferences?: CharacterReference[] | null;
+      professionalDevelopments?: ProfessionalDevelopment[] | null;
       status?: ApplicationStatus;
       stage?: string | null;
-      characterReferences?: CharacterReference[] | null;
       applicationType?: ApplicationTypes;
       educationOrigin?: EducationOrigin;
       educationRecognition?: EducationRecognition;
+      explanationLetter?: string | null;
+      oneYearRenewalexplanation?: OneYearRenewalexplanations;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -203,11 +206,14 @@ declare namespace Components {
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
       workExperienceReferences?: WorkExperienceReference[] | null;
-      stage?: string | null;
       characterReferences?: CharacterReference[] | null;
+      professionalDevelopments?: ProfessionalDevelopment[] | null;
+      stage?: string | null;
       applicationType?: ApplicationTypes;
       educationOrigin?: EducationOrigin;
       educationRecognition?: EducationRecognition;
+      explanationLetter?: string | null;
+      oneYearRenewalexplanation?: OneYearRenewalexplanations;
     }
     /**
      * Save draft application response
@@ -253,6 +259,13 @@ declare namespace Components {
       scope?: string | null;
       idp?: string | null;
     }
+    export type OneYearRenewalexplanations =
+      | "Icouldnotfindemploymenttocompletetherequiredhours"
+      | "Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa"
+      | "IliveandworkinacommunitywithoutothercertifiedECEs"
+      | "Iwasunabletoenterthecountryasexpected"
+      | "Iwasunabletoworkinthechildcarefieldforpersonalreasons"
+      | "Other";
     export interface OptOutReferenceRequest {
       token?: string | null;
       unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
@@ -296,6 +309,29 @@ declare namespace Components {
       detail?: string | null;
       instance?: string | null;
     }
+    export interface ProfessionalDevelopment {
+      certificationNumber?: string | null;
+      certificationExpiryDate?: string; // date-time
+      dateSigned?: string; // date-time
+      courseName?: string | null;
+      organizationName?: string | null;
+      startDate?: string; // date-time
+      endDate?: string; // date-time
+      id?: string | null;
+      organizationContactInformation?: string | null;
+      instructorName?: string | null;
+      numberOfHours: number; // int32
+      status?: ProfessionalDevelopmentStatusCode;
+    }
+    export type ProfessionalDevelopmentStatusCode =
+      | "ApplicationSubmitted"
+      | "Draft"
+      | "Inactive"
+      | "InProgress"
+      | "Rejected"
+      | "Submitted"
+      | "UnderReview"
+      | "WaitingResponse";
     export interface Province {
       provinceId?: string | null;
       provinceName?: string | null;
@@ -424,7 +460,7 @@ declare namespace Components {
       firstName?: string | null;
       lastName?: string | null;
       emailAddress?: string | null;
-      hours?: number | null; // int32
+      hours?: number; // int32
       id?: string | null;
       phoneNumber?: string | null;
     }
