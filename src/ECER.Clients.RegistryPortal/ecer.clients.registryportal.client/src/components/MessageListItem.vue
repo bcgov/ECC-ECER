@@ -36,6 +36,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["update:messageIsRead"],
   setup() {
     const messageStore = useMessageStore();
     const alertStore = useAlertStore();
@@ -52,7 +53,7 @@ export default defineComponent({
     formatDate,
     async handleClick() {
       this.messageStore.currentMessage = this.message;
-      this.$props.message.isRead = true;
+      this.$emit("update:messageIsRead", true);
       this.loadChildMessages(this.message.id!);
     },
     async loadChildMessages(messageId: string) {

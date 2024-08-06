@@ -1,6 +1,6 @@
 <template>
   <v-list lines="two" class="flex-grow-1 message-list">
-    <MessageListItem v-for="(message, index) in messages" :key="index" :message="message" />
+    <MessageListItem v-for="(message, index) in messages" :key="index" :message="message" @update:message-is-read="message.isRead = $event" />
     <v-pagination v-if="messageCount > 1" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages"></v-pagination>
   </v-list>
 </template>
