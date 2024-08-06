@@ -42,7 +42,7 @@
     </v-row>
 
     <!-- Options -->
-    <v-row v-if="certificationStore.hasCertifications && certificationStore.latestNotCancelled" justify="center" class="mt-6">
+    <v-row v-if="certificationStore.hasCertifications" justify="center" class="mt-6">
       <v-col>
         <v-row>
           <v-col cols="12">
