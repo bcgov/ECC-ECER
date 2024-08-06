@@ -28,10 +28,10 @@
             <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
             <div class="mt-3" v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></div>
             <div class="mt-6" v-html="message.text"></div>
-            <v-divider v-if="index < messageStore.currentThread!.length - 1" class="mt-6"></v-divider>
+            <v-divider v-if="index < messageStore.currentThread!.length - 1" color="ash-grey" class="mt-10 border-opacity-100"></v-divider>
           </div>
           <div v-if="messageStore.currentMessage?.doNotReply">
-            <v-divider class="mt-6"></v-divider>
+            <v-divider color="ash-grey" class="mt-12 border-opacity-100"></v-divider>
             <div class="mt-2">No reply option available for this message.</div>
           </div>
         </v-card-text>
@@ -54,10 +54,10 @@
       <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
       <div class="mt-3" v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></div>
       <div class="mt-6" v-html="message.text"></div>
-      <v-divider v-if="index < messageStore.currentThread!.length - 1" class="mt-6"></v-divider>
+      <v-divider v-if="index < messageStore.currentThread!.length - 1" color="ash-grey" class="mt-10 border-opacity-100"></v-divider>
     </div>
     <div v-if="messageStore.currentMessage?.doNotReply">
-      <v-divider class="mt-6"></v-divider>
+      <v-divider color="ash-grey" class="mt-12 border-opacity-100"></v-divider>
       <div class="mt-2">No reply option available for this message.</div>
     </div>
   </div>

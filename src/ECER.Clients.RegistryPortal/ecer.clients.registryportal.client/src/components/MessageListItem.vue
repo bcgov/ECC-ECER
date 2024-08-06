@@ -16,7 +16,7 @@
       </div>
     </template>
   </v-list-item>
-  <v-divider></v-divider>
+  <v-divider color="ash-grey" class="border-opacity-100"></v-divider>
 </template>
 
 <script lang="ts">
