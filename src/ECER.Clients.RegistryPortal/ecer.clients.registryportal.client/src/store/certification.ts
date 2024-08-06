@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { defineStore } from "pinia";
 
 import { getCertifications } from "@/api/certification";
@@ -17,6 +18,72 @@ export const useCertificationStore = defineStore("certification", {
   getters: {
     hasCertifications(state): boolean {
       return state.certifications !== null && state.certifications !== undefined && state.certifications.length > 0;
+    },
+    latestCertificateStatus(state): Components.Schemas.CertificateStatusCode | undefined {
+      return state.latestCertification?.statusCode;
+    },
+    latestExpiredMoreThan5Years(state): boolean {
+      if (!state.latestCertification?.expiryDate) return false;
+      const dt1 = DateTime.now();
+      const dt2 = DateTime.fromISO(state.latestCertification?.expiryDate);
+      const differenceInYears = Math.abs(dt1.diff(dt2, "years").years);
+      return differenceInYears > 5;
+    },
+    latestCertificationExpiryDate(state): string | null | undefined {
+      return state.latestCertification?.expiryDate;
+    },
+    latestNotCancelled(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.statusCode !== "Cancelled";
+    },
+    latestIsEceAssistant(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.levels?.some((level) => level.type === "Assistant") ?? false;
+    },
+    latestIsEceFiveYear(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.levels?.some((level) => level.type === "ECE 5 YR") ?? false;
+    },
+    latestIsEceOneYear(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.levels?.some((level) => level.type === "ECE 1 YR") ?? false;
+    },
+    latestHasSNE(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.levels?.some((level) => level.type === "SNE") ?? false;
+    },
+    latestHasITE(state): boolean {
+      if (!state.latestCertification) return false;
+      return state.latestCertification.levels?.some((level) => level.type === "ITE") ?? false;
+    },
+    latestCertificationTypes(): Components.Schemas.CertificationType[] {
+      const certificationTypes = [] as Components.Schemas.CertificationType[];
+      if (this.latestIsEceAssistant) {
+        certificationTypes.push("EceAssistant");
+      }
+      if (this.latestIsEceOneYear) {
+        certificationTypes.push("OneYear");
+      }
+      if (this.latestIsEceFiveYear) {
+        certificationTypes.push("FiveYears");
+      }
+      if (this.latestHasSNE) {
+        certificationTypes.push("Sne");
+      }
+      if (this.latestHasITE) {
+        certificationTypes.push("Ite");
+      }
+      return certificationTypes;
+    },
+    hasMultipleEceOneYearCertifications(state): boolean {
+      let count = 0;
+      if (!state.certifications || state.certifications?.length < 2) return false;
+      for (const cert of state.certifications) {
+        if (cert.levels?.some((level) => level.type === "ECE 1 YR")) {
+          count++;
+        }
+      }
+      return count >= 2;
     },
     latestHasTermsAndConditions(state): boolean {
       if (!state.latestCertification) return false;

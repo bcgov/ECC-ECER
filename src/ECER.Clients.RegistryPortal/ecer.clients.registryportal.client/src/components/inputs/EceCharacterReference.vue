@@ -1,15 +1,22 @@
 <template>
   <v-row>
     <v-col md="10" lg="8" xl="6">
-      <Alert type="info">
-        <p>The Registry will not assess an application until references have been submitted. Please make sure your reference:</p>
-        <ul class="pl-5">
-          <li>Can speak to your character and has known you for at least 6 months.</li>
-          <li>Can speak to your ability to educate and care for young children.</li>
-          <li>Is NOT a relative, partner, spouse or myself.</li>
-          <li>(Recommended) Is a certified ECE who has directly observed you working with young children.</li>
-        </ul>
-      </Alert>
+      <p>Make sure you choose a person that:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Can speak to your character</li>
+        <li>Can speak to your ability to educate and care for young children</li>
+        <li>Has known you for at least 6 months</li>
+        <li>Is not your relative, partner, spouse, or yourself</li>
+      </ul>
+      <br />
+      <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
+      <br />
+      <p v-if="applicationStore.isDraftCertificateTypeFiveYears">
+        The person
+        <strong>cannot</strong>
+        be any of your work experience references.
+      </p>
     </v-col>
   </v-row>
   <v-row>
@@ -22,23 +29,9 @@
   <v-row>
     <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
-        v-model="firstName"
-        :rules="[Rules.required('Enter your reference\'s first name'), Rules.noSpecialCharactersContactName()]"
-        label="Reference First Name"
-        variant="outlined"
-        color="primary"
-        maxlength="100"
-        @update:model-value="updateCharacterReference()"
-        @keypress="isNotSpecialCharacterName"
-      ></v-text-field>
-    </v-col>
-  </v-row>
-  <v-row>
-    <v-col cols="12" md="8" lg="6" xl="4">
-      <v-text-field
         v-model="lastName"
         :rules="[Rules.required('Enter your reference\'s last name'), Rules.noSpecialCharactersContactName()]"
-        label="Reference Last Name"
+        label="Last name"
         variant="outlined"
         color="primary"
         maxlength="100"
@@ -50,15 +43,14 @@
   <v-row>
     <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
-        v-model="phoneNumber"
-        :rules="[Rules.phoneNumber('Enter your reference\'s 10-digit phone number')]"
-        label="Reference Phone Number (Optional)"
-        length="10"
+        v-model="firstName"
+        :rules="[Rules.required('Enter your reference\'s first name'), Rules.noSpecialCharactersContactName()]"
+        label="First name"
         variant="outlined"
         color="primary"
-        maxlength="10"
+        maxlength="100"
         @update:model-value="updateCharacterReference()"
-        @keypress="isNumber($event)"
+        @keypress="isNotSpecialCharacterName"
       ></v-text-field>
     </v-col>
   </v-row>
@@ -70,7 +62,7 @@
           Rules.required('Enter your reference\'s email in the format \'name@email.com\''),
           Rules.email('Enter your reference\'s email in the format \'name@email.com\''),
         ]"
-        label="Reference Email"
+        label="Email"
         variant="outlined"
         color="primary"
         maxlength="100"
@@ -78,8 +70,24 @@
       ></v-text-field>
     </v-col>
   </v-row>
+  <v-row>
+    <v-col cols="12" md="8" lg="6" xl="4">
+      <v-text-field
+        v-model="phoneNumber"
+        :rules="[Rules.phoneNumber('Enter your reference\'s 10-digit phone number')]"
+        label="Phone number (optional)"
+        length="10"
+        variant="outlined"
+        color="primary"
+        maxlength="10"
+        @update:model-value="updateCharacterReference()"
+        @keypress="isNumber($event)"
+      ></v-text-field>
+    </v-col>
+  </v-row>
   <!-- this prevents form from proceeding if there are duplicates -->
   <v-input auto-hide="auto" :model-value="modelValue" :rules="[!hasDuplicateReferences]"></v-input>
+  <p>After you submit your application, we'll send an email to this person. The email will have a link to an online form to provide a reference for you.</p>
 </template>
 
 <script lang="ts">

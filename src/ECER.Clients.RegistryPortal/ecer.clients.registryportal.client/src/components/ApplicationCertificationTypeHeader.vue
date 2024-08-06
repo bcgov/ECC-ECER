@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h1>{{ `Application for ECE ${certificationType} certification` }}</h1>
-    <div v-if="certificationTypes.includes(CertificationType.FIVE_YEAR)" role="doc-subtitle">
+    <h1 v-if="!isRenewal">{{ `Application for ECE ${certificationType} certification` }}</h1>
+    <h1 v-else>{{ `Application to renew ECE ${certificationType} certification` }}</h1>
+    <div v-if="certificationTypes.includes(CertificationType.FIVE_YEAR) && !isRenewal" role="doc-subtitle">
       {{ certificationTypeSubtitleForFiveYear }}
     </div>
   </div>
@@ -22,6 +23,10 @@ export default defineComponent({
       type: Array as PropType<Components.Schemas.CertificationType[]>,
       required: true,
       default: () => [],
+    },
+    isRenewal: {
+      type: Boolean,
+      default: false,
     },
   },
   setup: async () => {

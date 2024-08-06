@@ -29,7 +29,7 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var communications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
 
     // Assert
-    communications.ShouldHaveSingleItem();
+    communications.Communications.ShouldHaveSingleItem();
   }
 
   [Fact]
@@ -39,17 +39,17 @@ public class CommunicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     // Ensure test message is not "seen"
     var communications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
-    communications.ShouldHaveSingleItem();
-    communications.First().Acknowledged.ShouldBeFalse();
-    communications.First().Status.ShouldBe(CommunicationStatus.NotifiedRecipient);
+    communications.Communications.ShouldHaveSingleItem();
+    communications.Communications.First().Acknowledged.ShouldBeFalse();
+    communications.Communications.First().Status.ShouldBe(CommunicationStatus.NotifiedRecipient);
 
     // Act
     await repository.MarkAsSeen(communicationId, default);
     var seenCommunications = await repository.Query(new UserCommunicationQuery { ById = communicationId });
 
     // Assert communication has been marked "seen"
-    seenCommunications.ShouldHaveSingleItem();
-    seenCommunications.First().Acknowledged.ShouldBeTrue();
-    seenCommunications.First().Status.ShouldBe(CommunicationStatus.Acknowledged);
+    seenCommunications.Communications.ShouldHaveSingleItem();
+    seenCommunications.Communications.First().Acknowledged.ShouldBeTrue();
+    seenCommunications.Communications.First().Status.ShouldBe(CommunicationStatus.Acknowledged);
   }
 }

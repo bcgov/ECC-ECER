@@ -1,7 +1,7 @@
 <template>
   <slot name="header"></slot>
   <v-stepper v-model="wizardStore.step" min-height="100dvh" :alt-labels="true" :elevation="0">
-    <slot v-if="!$vuetify.display.mobile" name="stepperHeader">
+    <slot name="stepperHeader">
       <v-stepper-header v-if="showSteps">
         <template v-for="(step, index) in Object.values(wizard.steps)" :key="step.stage">
           <v-stepper-item color="primary" :step="wizardStore.step" :value="index + 1" :title="step.title" :editable="true"></v-stepper-item>
@@ -20,7 +20,7 @@
         <v-container>
           <v-row class="justify-space-between mb-4">
             <v-col cols="auto">
-              <h2>{{ step.title }}</h2>
+              <h1>{{ step.title }}</h1>
             </v-col>
             <v-col v-if="wizardStore.currentStepStage === 'Review'" cols="auto">
               <slot name="PrintPreview"></slot>

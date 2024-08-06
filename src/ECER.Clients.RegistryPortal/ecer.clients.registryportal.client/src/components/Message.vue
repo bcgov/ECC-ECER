@@ -12,23 +12,54 @@
           <v-btn prepend-icon="mdi-close" text="Close" @click="messageStore.currentMessage = null"></v-btn>
         </v-toolbar>
         <v-card-text>
-          <v-btn prepend-icon="mdi-reply" variant="text" color="primary" text="Reply" @click="handleMessageReply">Reply</v-btn>
-          <h2>{{ messageStore.currentMessage?.subject }}</h2>
-          <p class="small mt-2">{{ messageDate }}</p>
-          <p class="small mt-6">
-            <span v-html="messageStore.currentMessage?.text"></span>
-          </p>
+          <v-btn
+            v-if="messageStore.currentMessage?.doNotReply == false"
+            prepend-icon="mdi-reply"
+            variant="text"
+            color="primary"
+            text="Reply"
+            @click="handleMessageReply"
+          >
+            Reply
+          </v-btn>
+          <h2 class="mt-6">{{ messageStore.currentMessage?.subject }}</h2>
+
+          <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
+            <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+            <div class="mt-3" v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></div>
+            <div class="mt-6" v-html="message.text"></div>
+            <v-divider v-if="index < messageStore.currentThread!.length - 1" class="mt-6"></v-divider>
+          </div>
+          <div v-if="messageStore.currentMessage?.doNotReply">
+            <v-divider class="mt-6"></v-divider>
+            <div class="mt-2">No reply option available for this message.</div>
+          </div>
         </v-card-text>
       </v-card>
     </v-dialog>
   </div>
   <div v-if="mdAndUp && messageStore.currentMessage != null">
-    <v-btn prepend-icon="mdi-reply" variant="text" color="primary" text="Reply" @click="handleMessageReply">Reply</v-btn>
-    <h2>{{ messageStore.currentMessage?.subject }}</h2>
-    <p class="small mt-2">{{ messageDate }}</p>
-    <p class="small mt-6">
-      <span v-html="messageStore.currentMessage?.text"></span>
-    </p>
+    <v-btn
+      v-if="messageStore.currentMessage?.doNotReply == false"
+      prepend-icon="mdi-reply"
+      variant="text"
+      color="primary"
+      text="Reply"
+      @click="handleMessageReply"
+    >
+      Reply
+    </v-btn>
+    <h2 class="mt-6">{{ messageStore.currentMessage?.subject }}</h2>
+    <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
+      <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+      <div class="mt-3" v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></div>
+      <div class="mt-6" v-html="message.text"></div>
+      <v-divider v-if="index < messageStore.currentThread!.length - 1" class="mt-6"></v-divider>
+    </div>
+    <div v-if="messageStore.currentMessage?.doNotReply">
+      <v-divider class="mt-6"></v-divider>
+      <div class="mt-2">No reply option available for this message.</div>
+    </div>
   </div>
 </template>
 

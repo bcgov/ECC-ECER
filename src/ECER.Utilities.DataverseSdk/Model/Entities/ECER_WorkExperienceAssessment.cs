@@ -86,8 +86,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_RecommendationReceived = "ecer_recommendationreceived";
 			public const string ecer_recommendationreceivedName = "ecer_recommendationreceivedname";
+			public const string ecer_ReferenceContactId = "ecer_referencecontactid";
+			public const string ecer_ReferenceContactIdName = "ecer_referencecontactidname";
+			public const string ecer_ReferenceContactIdYomiName = "ecer_referencecontactidyominame";
+			public const string ecer_TotalNumberofHoursApproved = "ecer_totalnumberofhoursapproved";
 			public const string ecer_workexperienceassessment_ApplicationId = "ecer_workexperienceassessment_ApplicationId";
 			public const string ecer_workexperienceassessment_AssessmentId = "ecer_workexperienceassessment_AssessmentId";
+			public const string ecer_workexperienceassessment_ReferenceContactId = "ecer_workexperienceassessment_ReferenceContactId";
 			public const string ecer_workexperienceassessment_WorkExpRefId = "ecer_workexperienceassessment_WorkExpRefId";
 			public const string ecer_WorkExperienceAssessmentId = "ecer_workexperienceassessmentid";
 			public const string Id = "ecer_workexperienceassessmentid";
@@ -636,6 +641,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecontactid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ReferenceContactId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_referencecontactid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referencecontactid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecontactidname")]
+		public string ecer_ReferenceContactIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_referencecontactid"))
+				{
+					return this.FormattedValues["ecer_referencecontactid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecontactidyominame")]
+		public string ecer_ReferenceContactIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_referencecontactid"))
+				{
+					return this.FormattedValues["ecer_referencecontactid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_totalnumberofhoursapproved")]
+		public System.Nullable<decimal> ecer_TotalNumberofHoursApproved
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_totalnumberofhoursapproved");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_totalnumberofhoursapproved", value);
+			}
+		}
+		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
@@ -1125,6 +1194,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_workexperienceassessment_AssessmentId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_workexperienceassessment_ReferenceContactId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecontactid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_workexperienceassessment_ReferenceContactId")]
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_workexperienceassessment_ReferenceContactId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_workexperienceassessment_ReferenceContactId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_workexperienceassessment_ReferenceContactId", null, value);
 			}
 		}
 		

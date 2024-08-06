@@ -22,8 +22,11 @@ declare namespace Components {
       transcripts?: Transcript[] | null;
       workExperienceReferences?: WorkExperienceReference[] | null;
       status?: ApplicationStatus;
-      stage?: PortalStage;
+      stage?: string | null;
       characterReferences?: CharacterReference[] | null;
+      applicationType?: ApplicationTypes;
+      educationOrigin?: EducationOrigin;
+      educationRecognition?: EducationRecognition;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -70,6 +73,7 @@ declare namespace Components {
        */
       id?: string | null;
     }
+    export type ApplicationTypes = "New" | "Renewal" | "LaborMobility";
     /**
      * delete draft application response
      */
@@ -161,9 +165,11 @@ declare namespace Components {
       id?: string | null;
       subject?: string | null;
       text?: string | null;
+      from?: InitiatedFrom;
       acknowledged?: boolean;
       notifiedOn?: string; // date-time
       status?: CommunicationStatus;
+      doNotReply?: boolean;
     }
     /**
      * Save communication response
@@ -197,8 +203,11 @@ declare namespace Components {
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
       workExperienceReferences?: WorkExperienceReference[] | null;
-      stage?: PortalStage;
+      stage?: string | null;
       characterReferences?: CharacterReference[] | null;
+      applicationType?: ApplicationTypes;
+      educationOrigin?: EducationOrigin;
+      educationRecognition?: EducationRecognition;
     }
     /**
      * Save draft application response
@@ -209,6 +218,8 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
+    export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
+    export type EducationRecognition = "Recognized" | "NotRecognized";
     /**
      * file Response
      */
@@ -217,6 +228,10 @@ declare namespace Components {
        *
        */
       fileId?: string | null;
+    }
+    export interface GetMessagesResponse {
+      communications?: Communication[] | null;
+      totalMessagesCount?: number; // int32
     }
     export interface HttpValidationProblemDetails {
       [name: string]: any;
@@ -229,6 +244,7 @@ declare namespace Components {
         [name: string]: string[];
       } | null;
     }
+    export type InitiatedFrom = "Investigation" | "PortalUser" | "Registry";
     export type InviteType = "CharacterReference" | "WorkExperienceReference";
     export type LikertScale = "Yes" | "No";
     export interface OidcAuthenticationSettings {
@@ -260,7 +276,6 @@ declare namespace Components {
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
     }
-    export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
     /**
      * Previous Name
      */
@@ -654,8 +669,16 @@ declare namespace Paths {
     }
   }
   namespace MessageGet {
+    namespace Parameters {
+      export type ParentId = string;
+    }
+    export interface PathParameters {
+      parentId?: Parameters.ParentId;
+    }
     namespace Responses {
-      export type $200 = Components.Schemas.Communication[];
+      export type $200 = Components.Schemas.GetMessagesResponse;
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
     }
   }
   namespace MessagePost {
@@ -871,7 +894,7 @@ export interface OperationMethods {
    * message_get - Handles messages queries
    */
   "message_get"(
-    parameters?: Parameters<UnknownParamsObject> | null,
+    parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.MessageGet.Responses.$200>;
@@ -1106,11 +1129,17 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UploadFile.Responses.$200>;
   };
-  ["/api/messages"]: {
+  ["/api/messages/{parentId}"]: {
     /**
      * message_get - Handles messages queries
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.MessageGet.Responses.$200>;
+    "get"(
+      parameters?: Parameters<Paths.MessageGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.MessageGet.Responses.$200>;
+  };
+  ["/api/messages"]: {
     /**
      * message_post - Handles message send request
      */

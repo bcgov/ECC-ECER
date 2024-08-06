@@ -31,11 +31,27 @@
             <div v-if="certifications && certificationStore.hasCertifications">
               <p class="mt-4">
                 ECE registration number
-                <b>{{ certificationStore.latestCertification?.number }}</b>
+                {{ certificationStore.latestCertification?.number }}
               </p>
               <CertificationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" />
             </div>
             <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
+    <!-- Options -->
+    <v-row v-if="certificationStore.hasCertifications && certificationStore.latestNotCancelled" justify="center" class="mt-6">
+      <v-col>
+        <v-row>
+          <v-col cols="12">
+            <ECEHeader title="Options" />
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" sm="6" lg="4">
+            <RenewCard />
           </v-col>
         </v-row>
       </v-col>
@@ -51,31 +67,25 @@
         </v-row>
         <v-row>
           <v-col cols="12" sm="6" lg="4">
-            <ActionCard
-              title="Messages"
-              icon="mdi-bell"
-              :links="[
-                {
-                  text: 'Read messages',
-                  to: '/messages',
-                },
-              ]"
-            >
-              <UnreadMessages :linkable="false" />
+            <ActionCard title="Messages" icon="mdi-bell">
+              <template #content>
+                <UnreadMessages :linkable="false" />
+              </template>
+              <template #action>
+                <v-btn variant="text">
+                  <router-link :to="{ name: 'messages' }">Read messages</router-link>
+                </v-btn>
+              </template>
             </ActionCard>
           </v-col>
           <v-col cols="12" sm="6" lg="4">
-            <ActionCard
-              title="Your profile"
-              icon="mdi-account-circle"
-              :links="[
-                {
-                  text: 'My profile',
-                  to: '/profile',
-                },
-              ]"
-            >
-              Manage your names, address and contact information.
+            <ActionCard title="Your profile" icon="mdi-account-circle">
+              <template #content>Manage your names, address and contact information.</template>
+              <template #action>
+                <v-btn variant="text">
+                  <router-link :to="{ name: 'profile' }">My profile</router-link>
+                </v-btn>
+              </template>
             </ActionCard>
           </v-col>
         </v-row>
@@ -111,6 +121,7 @@ import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
+import RenewCard from "@/components/RenewCard.vue";
 import UnreadMessages from "@/components/UnreadMessages.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -121,7 +132,7 @@ import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "Dashboard",
-  components: { ConfirmationDialog, PageContainer, ApplicationCard, CertificationCard, ECEHeader, ActionCard, Alert, UnreadMessages },
+  components: { ConfirmationDialog, PageContainer, ApplicationCard, CertificationCard, ECEHeader, ActionCard, Alert, UnreadMessages, RenewCard },
   async setup() {
     const userStore = useUserStore();
     const applicationStore = useApplicationStore();

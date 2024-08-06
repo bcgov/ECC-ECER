@@ -2,27 +2,17 @@
   <v-responsive :aspect-ratio="16 / 9">
     <v-card height="100%" :prepend-icon="icon" :title="title" class="custom-card-styling">
       <v-card-text>
-        <slot></slot>
+        <slot name="content"></slot>
       </v-card-text>
       <div class="d-flex flex-column align-start">
-        <v-btn v-for="(link, index) in links" :key="index" variant="text">
-          <router-link :to="link.to">
-            {{ link.text }}
-          </router-link>
-        </v-btn>
+        <slot name="action"></slot>
       </div>
     </v-card>
   </v-responsive>
 </template>
 
 <script lang="ts">
-import type { PropType } from "vue";
 import { defineComponent } from "vue";
-
-interface Link {
-  text: string;
-  to: string;
-}
 
 export default defineComponent({
   name: "ActionCard",
@@ -34,11 +24,6 @@ export default defineComponent({
     icon: {
       type: String,
       required: true,
-    },
-    links: {
-      type: Array as PropType<Link[]>,
-      required: false,
-      default: () => [],
     },
   },
 });
