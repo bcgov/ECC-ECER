@@ -73,6 +73,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_application_Certificateid = "ecer_application_Certificateid";
+			public const string ecer_CancelledDate = "ecer_cancelleddate";
 			public const string ecer_Certificate_ecer_CertificateTypes = "ecer_Certificate_ecer_CertificateTypes";
 			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
 			public const string ecer_CertificateId = "ecer_certificateid";
@@ -82,6 +83,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_certifiedlevel_CertificateId = "ecer_certifiedlevel_CertificateId";
 			public const string ecer_Conditions = "ecer_conditions";
 			public const string ecer_Date = "ecer_date";
+			public const string ecer_documenturl_CertificateId = "ecer_documenturl_CertificateId";
 			public const string ecer_ecer_certificate_ecer_investigation_CurrentCertificate = "ecer_ecer_certificate_ecer_investigation_CurrentCertificate";
 			public const string ecer_EffectiveDate = "ecer_effectivedate";
 			public const string ecer_ExpiryDate = "ecer_expirydate";
@@ -278,6 +280,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_cancelleddate")]
+		public System.Nullable<System.DateTime> ecer_CancelledDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_cancelleddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_cancelleddate", value);
 			}
 		}
 		
@@ -1102,6 +1119,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertifiedLevel>("ecer_certifiedlevel_CertificateId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_documenturl_CertificateId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_CertificateId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_documenturl_CertificateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_CertificateId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_documenturl_CertificateId", null, value);
 			}
 		}
 		

@@ -98,6 +98,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicationType = "ecer_applicationtype";
 			public const string ecer_applicationtypeName = "ecer_applicationtypename";
 			public const string ecer_articulationagreements = "ecer_articulationagreements";
+			public const string ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton";
 			public const string ecer_CampusId = "ecer_campusid";
 			public const string ecer_CampusIdName = "ecer_campusidname";
 			public const string ecer_clearadmission = "ecer_clearadmission";
@@ -116,6 +117,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_descriptionchart = "ecer_descriptionchart";
 			public const string ecer_Descriptionoffloorplan = "ecer_descriptionoffloorplan";
 			public const string ecer_detailsofevaluationtools = "ecer_detailsofevaluationtools";
+			public const string ecer_ecer_post_program_app_communication = "ecer_ecer_post_program_app_communication";
 			public const string ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId = "ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId";
 			public const string ecer_examplesofstudentrecords = "ecer_examplesofstudentrecords";
 			public const string ecer_facilitydescription = "ecer_facilitydescription";
@@ -219,6 +221,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_resources = "ecer_resources";
 			public const string ecer_RoutetoProgramCoordinatorTeam = "ecer_routetoprogramcoordinatorteam";
 			public const string ecer_routetoprogramcoordinatorteamName = "ecer_routetoprogramcoordinatorteamname";
+			public const string ecer_SiteVisitComplete = "ecer_sitevisitcomplete";
+			public const string ecer_sitevisitcompleteName = "ecer_sitevisitcompletename";
 			public const string ecer_standardsforplanning = "ecer_standardsforplanning";
 			public const string ecer_statementofpurposedescription = "ecer_statementofpurposedescription";
 			public const string ecer_statementofqualifications = "ecer_statementofqualifications";
@@ -2433,6 +2437,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitcomplete")]
+		public System.Nullable<bool> ecer_SiteVisitComplete
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_sitevisitcomplete");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_sitevisitcomplete", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitcompletename")]
+		public string ecer_sitevisitcompleteName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_sitevisitcomplete"))
+				{
+					return this.FormattedValues["ecer_sitevisitcomplete"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Standards for planning, preparing, and presenting learning activities that incorporate a wide range of educational strategies that address the diverse needs of adult learners and accommodate personalized, individual attention when needed. Include examples of how program content, instructional methods and materials emphasize a positive regard for diversity (for example, in culture, language, unique regional issues, student experience from multiple locations).
 		/// </summary>
@@ -3172,6 +3208,27 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
+			"licaiton")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
+						"licaiton", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
+						"licaiton", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_course_ProgramApplication_ecer_postsecond
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_course_ProgramApplication_ecer_postsecond")]
@@ -3186,6 +3243,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_course_ProgramApplication_ecer_postsecond", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_ecer_post_program_app_communication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_post_program_app_communication")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Communication> ecer_ecer_post_program_app_communication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_ecer_post_program_app_communication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_ecer_post_program_app_communication", null, value);
 			}
 		}
 		

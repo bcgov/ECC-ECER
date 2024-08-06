@@ -39,10 +39,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 		ApplicationSubmitted = 621870006,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Draft = 1,
+		Approved = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
+		Draft = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		InProgress = 621870002,
@@ -87,6 +87,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicantidYomiName = "ecer_applicantidyominame";
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
+			public const string ecer_bcgov_documenturl_ProfessionalDevelopmentId = "ecer_bcgov_documenturl_ProfessionalDevelopmentId";
 			public const string ecer_CertifcationExpiryDate = "ecer_certifcationexpirydate";
 			public const string ecer_CertificationNumber = "ecer_certificationnumber";
 			public const string ecer_CourseName = "ecer_coursename";
@@ -1015,6 +1016,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_bcgov_documenturl_ProfessionalDevelopmentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_ProfessionalDevelopmentId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_bcgov_documenturl_ProfessionalDevelopmentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_ProfessionalDevelopmentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_ProfessionalDevelopmentId", null, value);
 			}
 		}
 		
