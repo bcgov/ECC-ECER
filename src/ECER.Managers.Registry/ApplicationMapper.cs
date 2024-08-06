@@ -16,6 +16,7 @@ internal class ApplicationMapper : Profile
         .ForMember(d => d.Stage, opts => opts.MapFrom(s => s.Stage))
         .ForMember(d => d.OneYearRenewalexplanation, opts => opts.MapFrom(s => s.OneYearRenewalexplanation))
         .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.Transcripts))
+        .ForMember(d => d.ApplicationFiles, opts => opts.MapFrom(s => s.ApplicationFiles))
         .ForMember(d => d.ProfessionalDevelopments, opts => opts.MapFrom(s => s.ProfessionalDevelopments))
         .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.WorkExperienceReferences))
         .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.CharacterReferences))
