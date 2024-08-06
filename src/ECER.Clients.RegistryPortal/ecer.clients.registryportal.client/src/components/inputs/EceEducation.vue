@@ -1,12 +1,12 @@
 <template>
-  <v-row v-if="mode == 'add'">
+  <v-row v-if="mode === 'add'">
     <v-col>
       <h2>{{ clientId ? "Edit" : "Add" }} education</h2>
       <p>Must match your official transcript. It’s important to check your transcript to make sure the information you enter matches what’s on it.</p>
     </v-col>
   </v-row>
   <v-row>
-    <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
+    <v-col v-if="mode === 'add'" md="8" lg="6" xl="4">
       <v-form ref="addEducationForm" validate-on="input" class="mt-6">
         <v-text-field
           v-model="school"
@@ -87,7 +87,7 @@
         </v-row>
       </v-form>
     </v-col>
-    <div v-else-if="mode == 'list'" class="w-100">
+    <div v-else-if="mode === 'list'" class="w-100">
       <v-col sm="12" md="10" lg="8" xl="6">
         <EducationList :educations="modelValue" @edit="handleEdit" @delete="handleDelete" />
       </v-col>

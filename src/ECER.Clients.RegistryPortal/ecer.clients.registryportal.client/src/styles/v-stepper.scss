@@ -1,3 +1,6 @@
+@import "./colors.scss";
+
 .v-stepper-item--selected {
   font-weight: bold;
+  color: #{$links};
 }
