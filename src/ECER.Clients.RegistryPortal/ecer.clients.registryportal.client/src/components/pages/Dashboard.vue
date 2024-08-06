@@ -29,10 +29,12 @@
           <v-col cols="12">
             <ECEHeader title="Your ECE certifications" />
             <div v-if="certifications && certificationStore.hasCertifications">
-              <p class="mt-4">
-                ECE registration number
-                {{ certificationStore.latestCertification?.number }}
-              </p>
+              <div class="d-flex flex-row justify-start ga-3 flex-wrap mt-4">
+                <p>ECE registration number</p>
+                <p>
+                  {{ certificationStore.latestCertification?.number }}
+                </p>
+              </div>
               <CertificationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" />
             </div>
             <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
