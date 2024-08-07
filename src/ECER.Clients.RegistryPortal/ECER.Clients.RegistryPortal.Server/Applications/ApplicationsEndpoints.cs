@@ -530,5 +530,6 @@ public enum FileType
 public enum FileOperation
 {
   Add,
+  NotChanged,
   Delete
 }
