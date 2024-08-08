@@ -69,7 +69,6 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.AddMoreCharacterReference, opts => opts.Ignore())
       .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.Ignore())
       .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.Transcripts))
-      .ForMember(d => d.ApplicationFiles, opts => opts.MapFrom(s => s.ApplicationFiles))
       .ForMember(d => d.ExplanationLetter, opts => opts.MapFrom(s => s.ExplanationLetter))
       .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.WorkExperienceReferences))
       .ForMember(d => d.ProfessionalDevelopments, opts => opts.MapFrom(s => s.ProfessionalDevelopments))
@@ -83,7 +82,6 @@ public class ApplicationMapper : Profile
       ;
 
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>();
-    CreateMap<Managers.Registry.Contract.Applications.ApplicationFile, ApplicationFile>().ReverseMap();
 
     CreateMap<Managers.Registry.Contract.Applications.Application, SubmittedApplicationStatus>()
       .ForCtorParam(nameof(SubmittedApplicationStatus.Id),

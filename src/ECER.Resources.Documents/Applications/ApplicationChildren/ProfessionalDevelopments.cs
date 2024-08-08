@@ -7,77 +7,104 @@ namespace ECER.Resources.Documents.Applications;
 
 internal sealed partial class ApplicationRepository
 {
-  private async Task UpdateProfessionalDevelopments(ecer_Application application, List<ecer_ProfessionalDevelopment> updatedEntities, List<ApplicationFile> files, CancellationToken ct)
+  private async Task UpdateProfessionalDevelopments(ecer_Application application, List<ProfessionalDevelopment> updatedEntities, CancellationToken ct)
   {
     await Task.CompletedTask;
-    var existingProfessionalDevelopments = context.ecer_ProfessionalDevelopmentSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
 
-    await HandleDeleteFiles(files, ct); // handles delete files before we delete professional developments
+    var existingProfessionalDevelopments = context.ecer_ProfessionalDevelopmentSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
     foreach (var professionalDevelopment in existingProfessionalDevelopments)
     {
-      if (!updatedEntities.Any(t => t.Id == professionalDevelopment.Id))
+      if (!updatedEntities.Any(t => t.Id == professionalDevelopment.Id.ToString()))
       {
+        // This deletes all files and document urls before deleting the professional development object
+        await DeleteFilesForProfessionalDevelopment(professionalDevelopment.ecer_ProfessionalDevelopmentId, professionalDevelopment.ecer_ecer_professionaldevelopment_Applicantid_.ContactId, ct);
         context.DeleteObject(professionalDevelopment);
       }
     }
 
-    foreach (var professionalDevelopment in updatedEntities.Where(d => d.ecer_ProfessionalDevelopmentId != null))
+    foreach (var professionalDevelopment in updatedEntities.Where(d => !string.IsNullOrEmpty(d.Id)))
     {
-      var oldProfessionalDevelopment = existingProfessionalDevelopments.SingleOrDefault(t => t.Id == professionalDevelopment.Id);
+      var oldProfessionalDevelopment = existingProfessionalDevelopments.SingleOrDefault(t => t.Id.ToString() == professionalDevelopment.Id);
       if (oldProfessionalDevelopment != null)
       {
         context.Detach(oldProfessionalDevelopment);
       }
 
-      context.Attach(professionalDevelopment);
-      context.UpdateObject(professionalDevelopment);
+      var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
+      context.Attach(ecerProfessionalDevelopment);
+      context.UpdateObject(ecerProfessionalDevelopment);
+      await HandleProfessionalDevelopmentFiles(Guid.Parse(professionalDevelopment.Id!), professionalDevelopment.ToBeAddedFileIds, professionalDevelopment.ToBeDeletedFileIds, ct);
     }
 
-    foreach (var professionalDevelopment in updatedEntities.Where(d => d.ecer_ProfessionalDevelopmentId == null))
+    foreach (var professionalDevelopment in updatedEntities.Where(d => string.IsNullOrEmpty(d.Id)))
     {
-      professionalDevelopment.ecer_ProfessionalDevelopmentId = Guid.NewGuid();
-      context.AddObject(professionalDevelopment);
-      context.AddLink(application, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, professionalDevelopment);
-    }
-    await HandleAddFiles(files, ct); // handles add files after adding professional developments
-  }
-
-  private async Task HandleDeleteFiles(List<ApplicationFile> files, CancellationToken ct)
-  {
-    await Task.CompletedTask;
-
-    foreach (var file in files)
-    {
-      if (file.FileOperation == FileOperation.Delete)
-      {
-        var professionalDevelopment = context.ecer_ProfessionalDevelopmentSet.SingleOrDefault(p => p.ecer_ProfessionalDevelopmentId.ToString() == file.RelatedEntityId);
-        if (professionalDevelopment == null)
-        {
-          throw new InvalidOperationException($"professionalDevelopment '{file.RelatedEntityId}' not found");
-        }
-        // delete file and related document url
-        await DeleteFilesForProfessionalDevelopment(professionalDevelopment.ecer_ProfessionalDevelopmentId, professionalDevelopment.ecer_ecer_professionaldevelopment_Applicantid_.ContactId, ct);
-      }
+      var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
+      var newId = Guid.NewGuid();
+      ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId = newId;
+      context.AddObject(ecerProfessionalDevelopment);
+      context.AddLink(application, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, ecerProfessionalDevelopment);
+      await HandleProfessionalDevelopmentFiles(newId, professionalDevelopment.ToBeAddedFileIds, professionalDevelopment.ToBeDeletedFileIds, ct);
     }
   }
 
-  private async Task HandleAddFiles(List<ApplicationFile> files, CancellationToken ct)
+  private async Task HandleProfessionalDevelopmentFiles(Guid professionalDevelopmentId, IEnumerable<string> tobeAddedFileIds, IEnumerable<string> tobeDeletedFileIds, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    await HandleDeletedFiles(professionalDevelopmentId, tobeDeletedFileIds.ToList(), ct);
+    await HandleAddedFiles(professionalDevelopmentId, tobeAddedFileIds.ToList(), ct);
+  }
+
+  private async Task HandleDeletedFiles(Guid professionalDevelopmentId, List<string> tobeDeletedFileIds, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    foreach (var fileId in tobeDeletedFileIds)
+    {
+      var professionalDevelopment = context.ecer_ProfessionalDevelopmentSet.SingleOrDefault(p => p.ecer_ProfessionalDevelopmentId == professionalDevelopmentId);
+      if (professionalDevelopment == null)
+      {
+        throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopmentId}' not found");
+      }
+      // delete file and related document url
+      await DeleteFileById(fileId, ct);
+    }
+  }
+
+  private async Task DeleteFileById(string filePath, CancellationToken ct)
   {
     await Task.CompletedTask;
 
-    foreach (var file in files)
+    var file = context.bcgov_DocumentUrlSet.SingleOrDefault(d => d.bcgov_Url == filePath);
+    if (file == null)
     {
-      if (file.FileOperation == FileOperation.Add)
+      throw new InvalidOperationException($"File with ID '{filePath}' not found");
+    }
+
+    var items = file.bcgov_Url.Split('/');
+    if (items.Length != 2)
+    {
+      throw new FormatException($"Invalid file URL format: {file.bcgov_Url}");
+    }
+
+    var folder = items[0];
+    var fileId = items[1];
+    await objectStorageProvider.DeleteAsync(new S3Descriptor(GetBucketName(configuration), fileId, folder), ct);
+    context.DeleteObject(file);
+  }
+
+  private async Task HandleAddedFiles(Guid professionalDevelopmentId, List<string> tobeAddedFileIds, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+
+    foreach (var fileId in tobeAddedFileIds)
+    {
+      var professionalDevelopment = context.ecer_ProfessionalDevelopmentSet.SingleOrDefault(p => p.ecer_ProfessionalDevelopmentId == professionalDevelopmentId);
+      if (professionalDevelopment == null)
       {
-        var professionalDevelopment = context.ecer_ProfessionalDevelopmentSet.SingleOrDefault(p => p.ecer_ProfessionalDevelopmentId.ToString() == file.RelatedEntityId);
-        if (professionalDevelopment == null)
-        {
-          throw new InvalidOperationException($"professionalDevelopment '{file.RelatedEntityId}' not found");
-        }
-        // add file and create document url
-        // link it to professional development
-        await AddFilesForProfessionalDevelopment(professionalDevelopment.ecer_ProfessionalDevelopmentId, professionalDevelopment.ecer_ecer_professionaldevelopment_Applicantid_.ContactId, new List<string>() { file.UploadedFileId! }, ct);
+        throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopmentId}' not found");
       }
+      // add file and create document url
+      // link it to professional development
+      await AddFilesForProfessionalDevelopment(professionalDevelopment.ecer_ProfessionalDevelopmentId, professionalDevelopment.ecer_ecer_professionaldevelopment_Applicantid_.ContactId, new List<string>() { fileId }, ct);
     }
   }
 

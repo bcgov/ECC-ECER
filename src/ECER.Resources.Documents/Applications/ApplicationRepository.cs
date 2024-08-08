@@ -57,11 +57,9 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     if (applicant == null) throw new InvalidOperationException($"Applicant '{application.ApplicantId}' not found");
 
     var ecerApplication = mapper.Map<ecer_Application>(application)!;
-
     var ecerTranscripts = mapper.Map<IEnumerable<ecer_Transcript>>(application.Transcripts)!.ToList();
     var ecerWorkExperienceReferences = mapper.Map<IEnumerable<ecer_WorkExperienceRef>>(application.WorkExperienceReferences)!.ToList();
     var ecerCharacterReferences = mapper.Map<IEnumerable<ecer_CharacterReference>>(application.CharacterReferences)!.ToList();
-    var ecerProfessionalDevelopments = mapper.Map<IEnumerable<ecer_ProfessionalDevelopment>>(application.ProfessionalDevelopments)!.ToList();
 
     if (!ecerApplication.ecer_ApplicationId.HasValue)
     {
@@ -80,7 +78,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);
     }
-    await UpdateProfessionalDevelopments(ecerApplication, ecerProfessionalDevelopments, application.ApplicationFiles.Where(d => d.UploadedFileType == FileType.ProfessionalDevelopment).ToList(), cancellationToken);
+    await UpdateProfessionalDevelopments(ecerApplication, application.ProfessionalDevelopments.ToList(), cancellationToken);
     await UpdateWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     await UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     await UpdateTranscripts(ecerApplication, ecerTranscripts);
