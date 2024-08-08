@@ -1,8 +1,8 @@
 <template>
   <v-col cols="12">
     <EceForm ref="profileForm" :form="profileInformationForm" :form-data="formStore.formData" @updated-form-data="formStore.setFormData" />
-    <v-row justify="end">
-      <v-btn rounded="lg" color="primary" @click="saveProfile">Save</v-btn>
+    <v-row>
+      <v-btn rounded="lg" color="primary" :loading="loadingStore.isLoading('profile_put')" @click="saveProfile">Save profile</v-btn>
     </v-row>
   </v-col>
 </template>
@@ -15,6 +15,7 @@ import EceForm from "@/components/Form.vue";
 import profileInformationForm from "@/config/profile-information-form";
 import { useAlertStore } from "@/store/alert";
 import { useFormStore } from "@/store/form";
+import { useLoadingStore } from "@/store/loading";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { AddressType } from "@/utils/constant";
@@ -27,6 +28,7 @@ export default defineComponent({
     const userStore = useUserStore();
     const alertStore = useAlertStore();
     const oidcStore = useOidcStore();
+    const loadingStore = useLoadingStore();
 
     const oidcUserInfo = await oidcStore.oidcUserInfo();
     const oidcAddress = await oidcStore.oidcAddress();
@@ -58,7 +60,7 @@ export default defineComponent({
       });
     }
 
-    return { profileInformationForm, formStore, alertStore, userStore };
+    return { profileInformationForm, formStore, alertStore, userStore, loadingStore };
   },
   methods: {
     async saveProfile() {
