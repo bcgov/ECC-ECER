@@ -132,7 +132,7 @@
           <v-row>
             <v-col>
               <v-text-field
-                v-model="firstName"
+                v-model="studentFirstName"
                 :rules="[Rules.required('First name is required')]"
                 label="First name on transcript"
                 variant="outlined"
@@ -144,7 +144,7 @@
           <v-row>
             <v-col>
               <v-text-field
-                v-model="middleName"
+                v-model="studentMiddleName"
                 label="Middle name(s) on transcript (optional)"
                 variant="outlined"
                 color="primary"
@@ -155,7 +155,7 @@
           <v-row>
             <v-col>
               <v-text-field
-                v-model="lastName"
+                v-model="studentLastName"
                 :rules="[Rules.required('Last name is required')]"
                 label="Last name on transcript"
                 variant="outlined"
@@ -234,9 +234,10 @@ interface EceEducationData {
   transcriptStatus: "received" | "requested" | "";
   previousNameRadio: any;
   Rules: typeof Rules;
-  firstName: string;
-  middleName: string;
-  lastName: string;
+  studentFirstName: string;
+  studentMiddleName: string;
+  studentLastName: string;
+  isNameUnverified: Boolean;
 }
 
 interface RadioOptions {
@@ -288,9 +289,10 @@ export default defineComponent({
       transcriptStatus: "",
       Rules,
       previousNameRadio: undefined,
-      firstName: "",
-      middleName: "",
-      lastName: "",
+      studentFirstName: "",
+      studentMiddleName: "",
+      studentLastName: "",
+      isNameUnverified: false,
     };
   },
   computed: {
@@ -330,13 +332,15 @@ export default defineComponent({
       console.log("watching");
       console.log(newValue);
       if (newValue === "other") {
-        this.firstName = "";
-        this.middleName = "";
-        this.lastName = "";
+        this.studentFirstName = "";
+        this.studentMiddleName = "";
+        this.studentLastName = "";
+        this.isNameUnverified = true;
       } else {
-        this.firstName = newValue.firstName;
-        this.middleName = newValue.middleName;
-        this.lastName = newValue.lastName;
+        this.studentFirstName = newValue.firstName;
+        this.studentMiddleName = newValue.middleName;
+        this.studentLastName = newValue.lastName;
+        this.isNameUnverified = false;
       }
     },
   },
@@ -441,9 +445,10 @@ export default defineComponent({
       this.startYear = "";
       this.endYear = "";
       this.transcriptStatus = "";
-      this.firstName = "";
-      this.middleName = "";
-      this.lastName = "";
+      this.studentFirstName = "";
+      this.studentMiddleName = "";
+      this.studentLastName = "";
+      this.isNameUnverified = true;
     },
     formatDate,
   },

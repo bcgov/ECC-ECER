@@ -345,6 +345,10 @@ public record Transcript()
   [Required]
   public string? StudentName { get; set; }
   [Required]
+  public string StudentFirstName { get; set; } = string.Empty;
+  [Required]
+  public string StudentLastName { get; set; } = string.Empty;
+  public string? StudentMiddleName { get; set; }
   public string? StudentNumber { get; set; }
   public string? LanguageofInstruction { get; set; }
   [Required]
@@ -354,6 +358,8 @@ public record Transcript()
   public bool IsECEAssistant { get; set; }
   public bool DoesECERegistryHaveTranscript { get; set; }
   public bool IsOfficialTranscriptRequested { get; set; }
+  [Required]
+  public bool IsNameUnverified { get; set; }
 }
 public record WorkExperienceReference([Required] string FirstName, [Required] string LastName, [Required] string EmailAddress, [Required] int Hours)
 {

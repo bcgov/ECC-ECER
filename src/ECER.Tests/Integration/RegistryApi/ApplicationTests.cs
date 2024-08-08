@@ -363,12 +363,15 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     return new Faker<Transcript>("en_CA")
       .RuleFor(f => f.EducationalInstitutionName, f => f.Company.CompanyName())
       .RuleFor(f => f.StudentName, f => f.Name.FullName())
+      .RuleFor(f => f.StudentFirstName, f => f.Name.FirstName())
+      .RuleFor(f => f.StudentLastName, f => f.Name.LastName())
       .RuleFor(f => f.StudentNumber, f => f.Random.Number(10000000, 99999999).ToString())
       .RuleFor(f => f.StartDate, f => f.Date.Past())
       .RuleFor(f => f.EndDate, f => f.Date.Past())
       .RuleFor(f => f.ProgramName, (f, u) => $"{f.Hacker.Adjective()} Program")
       .RuleFor(f => f.LanguageofInstruction, f => f.PickRandom(languages))
       .RuleFor(f => f.CampusLocation, f => f.Address.City())
+      .RuleFor(f => f.IsNameUnverified, f => f.Random.Bool())
       .Generate();
   }
 
