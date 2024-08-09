@@ -125,7 +125,7 @@
         <br />
         <p>What name is shown on your transcript?</p>
         <br />
-        <v-radio-group v-model="previousNameRadio">
+        <v-radio-group v-model="previousNameRadio" :rules="[Rules.requiredRadio('Select an option')]">
           <v-radio v-for="(step, index) in previousNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
         </v-radio-group>
         <div v-if="previousNameRadio === 'other'">
@@ -133,7 +133,7 @@
             <v-col>
               <v-text-field
                 v-model="studentFirstName"
-                :rules="[Rules.required('First name is required')]"
+                :rules="[Rules.required('Enter your first name')]"
                 label="First name on transcript"
                 variant="outlined"
                 color="primary"
@@ -156,7 +156,7 @@
             <v-col>
               <v-text-field
                 v-model="studentLastName"
-                :rules="[Rules.required('Last name is required')]"
+                :rules="[Rules.required('Enter your last name')]"
                 label="Last name on transcript"
                 variant="outlined"
                 color="primary"
@@ -165,7 +165,7 @@
             </v-col>
           </v-row>
         </div>
-        <v-row justify="start" class="ml-1">
+        <v-row justify="start" class="ml-1 mt-3">
           <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Education</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
         </v-row>
@@ -452,6 +452,7 @@ export default defineComponent({
       this.studentMiddleName = "";
       this.studentLastName = "";
       this.isNameUnverified = true;
+      this.previousNameRadio = undefined;
     },
     formatDate,
   },
