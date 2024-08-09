@@ -7,7 +7,7 @@ namespace ECER.Resources.Documents.Applications;
 
 internal sealed partial class ApplicationRepository
 {
-  private async Task UpdateProfessionalDevelopments(ecer_Application application, List<ProfessionalDevelopment> updatedEntities, CancellationToken ct)
+  private async Task UpdateProfessionalDevelopments(ecer_Application application, string ApplicantId, List<ProfessionalDevelopment> updatedEntities, CancellationToken ct)
   {
     await Task.CompletedTask;
 
@@ -17,7 +17,7 @@ internal sealed partial class ApplicationRepository
       if (!updatedEntities.Any(t => t.Id == professionalDevelopment.Id.ToString()))
       {
         // This deletes all files and document urls before deleting the professional development object
-        await DeleteFilesForProfessionalDevelopment(professionalDevelopment.ecer_ProfessionalDevelopmentId, professionalDevelopment.ecer_ecer_professionaldevelopment_Applicantid_.ContactId, ct);
+        await DeleteFilesForProfessionalDevelopment(professionalDevelopment.ecer_ProfessionalDevelopmentId, Guid.Parse(ApplicantId), ct);
         context.DeleteObject(professionalDevelopment);
       }
     }
