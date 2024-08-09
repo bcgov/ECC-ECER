@@ -25,8 +25,6 @@ public class ApplicationMapper : Profile
                opt => opt.MapFrom(src => src.EducationalInstitutionName))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.ProgramName),
                opt => opt.MapFrom(src => src.ProgramName))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentName),
-               opt => opt.MapFrom(src => src.StudentName))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentFirstName),
                opt => opt.MapFrom(src => src.StudentFirstName))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentLastName),

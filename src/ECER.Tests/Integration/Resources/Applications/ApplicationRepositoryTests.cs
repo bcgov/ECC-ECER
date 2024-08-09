@@ -487,8 +487,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };
 
-    return new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program",
-      faker.Name.FullName(), faker.Random.Number(10000000, 99999999).ToString(), faker.Date.Past(), faker.Date.Recent(), faker.Random.Bool(), faker.Random.Bool(), faker.Random.Bool(), faker.Name.FirstName(), faker.Name.LastName(), faker.Random.Bool()
+    return new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program", faker.Random.Number(10000000, 99999999).ToString(), faker.Date.Past(), faker.Date.Recent(), faker.Random.Bool(), faker.Random.Bool(), faker.Random.Bool(), faker.Name.FirstName(), faker.Name.LastName(), faker.Random.Bool()
     )
     {
       LanguageofInstruction = faker.PickRandom(languages),

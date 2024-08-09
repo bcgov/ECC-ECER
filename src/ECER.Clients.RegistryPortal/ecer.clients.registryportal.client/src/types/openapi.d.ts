@@ -401,7 +401,6 @@ declare namespace Components {
       educationalInstitutionName: string;
       programName: string;
       campusLocation?: string | null;
-      studentName: string;
       studentFirstName: string;
       studentLastName: string;
       studentMiddleName?: string | null;

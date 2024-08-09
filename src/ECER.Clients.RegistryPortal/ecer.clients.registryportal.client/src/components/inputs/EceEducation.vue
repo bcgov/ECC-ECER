@@ -165,16 +165,6 @@
             </v-col>
           </v-row>
         </div>
-        <!-- TODO Deprecate student name -->
-        <v-text-field
-          v-model="studentName"
-          :rules="[Rules.required('Enter your student name shown on transcript')]"
-          label="Student name shown on transcript"
-          variant="outlined"
-          color="primary"
-          maxlength="100"
-        ></v-text-field>
-
         <v-row justify="start" class="ml-1">
           <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Education</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
@@ -226,7 +216,6 @@ interface EceEducationData {
   school: string;
   program: string;
   campusLocation: string;
-  studentName: string;
   studentNumber: string;
   language: string;
   startYear: string;
@@ -282,7 +271,6 @@ export default defineComponent({
       school: "",
       program: "",
       campusLocation: "",
-      studentName: "",
       studentNumber: "",
       language: "",
       startYear: "",
@@ -311,8 +299,7 @@ export default defineComponent({
     },
     previousNameRadioOptions(): RadioOptions[] {
       let radioOptions: RadioOptions[] = this.userStore.verifiedPreviousNames.map((previousName) => {
-        let displayLabel = "";
-        displayLabel += previousName.firstName;
+        let displayLabel = previousName.firstName ?? "";
         if (previousName.middleName) {
           displayLabel += ` ${previousName.middleName}`;
         }
@@ -355,7 +342,6 @@ export default defineComponent({
           educationalInstitutionName: this.school,
           programName: this.program,
           campusLocation: this.campusLocation,
-          studentName: this.studentName,
           studentFirstName: this.studentFirstName,
           studentMiddleName: this.studentMiddleName,
           studentLastName: this.studentLastName,
@@ -407,7 +393,6 @@ export default defineComponent({
       this.school = educationData.education.educationalInstitutionName ?? "";
       this.program = educationData.education.programName ?? "";
       this.campusLocation = educationData.education.campusLocation ?? "";
-      this.studentName = educationData.education.studentName ?? "";
       (this.studentFirstName = educationData.education.studentFirstName ?? ""),
         (this.studentMiddleName = educationData.education.studentMiddleName ?? ""),
         (this.studentLastName = educationData.education.studentLastName ?? ""),
@@ -422,6 +407,7 @@ export default defineComponent({
       } else {
         this.transcriptStatus = "";
       }
+      //set the radio button for previous names and field buttons correctly
       if (educationData.education.isNameUnverified) {
         let index = this.previousNameRadioOptions.findIndex((option) => option.value === "other");
         this.previousNameRadio = this.previousNameRadioOptions[index].value;
@@ -457,7 +443,6 @@ export default defineComponent({
       this.school = "";
       this.program = "";
       this.campusLocation = "";
-      this.studentName = "";
       this.studentNumber = "";
       this.language = "";
       this.startYear = "";

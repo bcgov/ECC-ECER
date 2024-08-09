@@ -362,7 +362,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     return new Faker<Transcript>("en_CA")
       .RuleFor(f => f.EducationalInstitutionName, f => f.Company.CompanyName())
-      .RuleFor(f => f.StudentName, f => f.Name.FullName())
       .RuleFor(f => f.StudentFirstName, f => f.Name.FirstName())
       .RuleFor(f => f.StudentLastName, f => f.Name.LastName())
       .RuleFor(f => f.StudentNumber, f => f.Random.Number(10000000, 99999999).ToString())
@@ -424,7 +423,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     {
       EducationalInstitutionName = null,
       ProgramName = null,
-      StudentName = null,
       StudentNumber = faker.Random.Number(1000, 9999).ToString(),
       StartDate = faker.Date.Recent(),
       EndDate = faker.Date.Soon(),
