@@ -402,13 +402,17 @@ declare namespace Components {
       programName: string;
       campusLocation?: string | null;
       studentName: string;
-      studentNumber: string;
+      studentFirstName: string;
+      studentLastName: string;
+      studentMiddleName?: string | null;
+      studentNumber?: string | null;
       languageofInstruction?: string | null;
       startDate: string; // date-time
       endDate: string; // date-time
       isECEAssistant?: boolean;
       doesECERegistryHaveTranscript?: boolean;
       isOfficialTranscriptRequested?: boolean;
+      isNameUnverified: boolean;
     }
     export type TranscriptStage = "Accepted" | "ApplicationSubmitted" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "WaitingforDetails";
     export interface TranscriptStatus {

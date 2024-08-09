@@ -126,7 +126,7 @@
         <p>What name is shown on your transcript?</p>
         <br />
         <v-radio-group v-model="previousNameRadio">
-          <v-radio v-for="step in previousNameRadioOptions" :label="step.label" :value="step.key"></v-radio>
+          <v-radio v-for="(step, index) in previousNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
         </v-radio-group>
         <div v-if="previousNameRadio === 'other'">
           <v-row>
@@ -237,11 +237,12 @@ interface EceEducationData {
   studentFirstName: string;
   studentMiddleName: string;
   studentLastName: string;
-  isNameUnverified: Boolean;
+  isNameUnverified: boolean;
 }
 
 interface RadioOptions {
-  [key: string]: any;
+  value: any;
+  label: string;
 }
 
 export default defineComponent({
@@ -316,21 +317,15 @@ export default defineComponent({
           displayLabel += ` ${previousName.middleName}`;
         }
         displayLabel += ` ${previousName.lastName}`;
-        return { label: displayLabel, key: { firstName: previousName.firstName, middleName: previousName.middleName, lastName: previousName.lastName } };
+        return { label: displayLabel, value: { firstName: previousName.firstName, middleName: previousName.middleName, lastName: previousName.lastName } };
       });
 
-      radioOptions.push({ label: "Other name", key: "other" });
+      radioOptions.push({ label: "Other name", value: "other" });
       return radioOptions;
     },
   },
-
-  mounted() {
-    this.mode = "list";
-  },
   watch: {
     previousNameRadio(newValue) {
-      console.log("watching");
-      console.log(newValue);
       if (newValue === "other") {
         this.studentFirstName = "";
         this.studentMiddleName = "";
@@ -343,6 +338,10 @@ export default defineComponent({
         this.isNameUnverified = false;
       }
     },
+  },
+
+  mounted() {
+    this.mode = "list";
   },
   methods: {
     async handleSubmit() {
@@ -357,12 +356,16 @@ export default defineComponent({
           programName: this.program,
           campusLocation: this.campusLocation,
           studentName: this.studentName,
+          studentFirstName: this.studentFirstName,
+          studentMiddleName: this.studentMiddleName,
+          studentLastName: this.studentLastName,
           studentNumber: this.studentNumber,
           languageofInstruction: this.language,
           startDate: this.startYear,
           endDate: this.endYear,
           doesECERegistryHaveTranscript: this.transcriptStatus === "received",
           isOfficialTranscriptRequested: this.transcriptStatus === "requested",
+          isNameUnverified: this.isNameUnverified,
         };
 
         // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
@@ -405,7 +408,10 @@ export default defineComponent({
       this.program = educationData.education.programName ?? "";
       this.campusLocation = educationData.education.campusLocation ?? "";
       this.studentName = educationData.education.studentName ?? "";
-      this.studentNumber = educationData.education.studentNumber ?? "";
+      (this.studentFirstName = educationData.education.studentFirstName ?? ""),
+        (this.studentMiddleName = educationData.education.studentMiddleName ?? ""),
+        (this.studentLastName = educationData.education.studentLastName ?? ""),
+        (this.studentNumber = educationData.education.studentNumber ?? "");
       this.language = educationData.education.languageofInstruction ?? "";
       this.startYear = formatDate(educationData.education.startDate) ?? "";
       this.endYear = formatDate(educationData.education.endDate) ?? "";
@@ -415,6 +421,18 @@ export default defineComponent({
         this.transcriptStatus = "received";
       } else {
         this.transcriptStatus = "";
+      }
+      if (educationData.education.isNameUnverified) {
+        let index = this.previousNameRadioOptions.findIndex((option) => option.value === "other");
+        this.previousNameRadio = this.previousNameRadioOptions[index].value;
+      } else {
+        let index = this.previousNameRadioOptions.findIndex(
+          (option) =>
+            option.value?.firstName === educationData.education.studentFirstName &&
+            option.value?.lastName === educationData.education.studentLastName &&
+            option.value?.middleName === educationData.education.studentMiddleName,
+        );
+        this.previousNameRadio = this.previousNameRadioOptions[index].value;
       }
       // Change mode to add
       this.mode = "add";
