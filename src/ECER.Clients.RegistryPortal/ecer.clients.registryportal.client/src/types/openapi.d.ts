@@ -21,12 +21,15 @@ declare namespace Components {
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
       workExperienceReferences?: WorkExperienceReference[] | null;
+      characterReferences?: CharacterReference[] | null;
+      professionalDevelopments?: ProfessionalDevelopment[] | null;
       status?: ApplicationStatus;
       stage?: string | null;
-      characterReferences?: CharacterReference[] | null;
       applicationType?: ApplicationTypes;
       educationOrigin?: EducationOrigin;
       educationRecognition?: EducationRecognition;
+      explanationLetter?: string | null;
+      oneYearRenewalexplanation?: OneYearRenewalexplanations;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -96,6 +99,14 @@ declare namespace Components {
       statusCode?: CertificateStatusCode;
       ineligibleReference?: YesNoNull;
       levels?: CertificationLevel[] | null;
+      files?: CertificationFile[] | null;
+    }
+    export interface CertificationFile {
+      id?: string | null;
+      url?: string | null;
+      extention?: string | null;
+      size?: string | null;
+      name?: string | null;
     }
     export interface CertificationLevel {
       id?: string | null;
@@ -162,6 +173,8 @@ declare namespace Components {
       notifiedOn?: string; // date-time
       status?: CommunicationStatus;
       doNotReply?: boolean;
+      latestMessageNotifiedOn?: string | null; // date-time
+      isRead?: boolean | null;
     }
     /**
      * Save communication response
@@ -195,11 +208,14 @@ declare namespace Components {
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
       workExperienceReferences?: WorkExperienceReference[] | null;
-      stage?: string | null;
       characterReferences?: CharacterReference[] | null;
+      professionalDevelopments?: ProfessionalDevelopment[] | null;
+      stage?: string | null;
       applicationType?: ApplicationTypes;
       educationOrigin?: EducationOrigin;
       educationRecognition?: EducationRecognition;
+      explanationLetter?: string | null;
+      oneYearRenewalexplanation?: OneYearRenewalexplanations;
       createdOn?: string; // date-time
     }
     /**
@@ -246,6 +262,13 @@ declare namespace Components {
       scope?: string | null;
       idp?: string | null;
     }
+    export type OneYearRenewalexplanations =
+      | "Icouldnotfindemploymenttocompletetherequiredhours"
+      | "Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa"
+      | "IliveandworkinacommunitywithoutothercertifiedECEs"
+      | "Iwasunabletoenterthecountryasexpected"
+      | "Iwasunabletoworkinthechildcarefieldforpersonalreasons"
+      | "Other";
     export interface OptOutReferenceRequest {
       token?: string | null;
       unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
@@ -289,6 +312,29 @@ declare namespace Components {
       detail?: string | null;
       instance?: string | null;
     }
+    export interface ProfessionalDevelopment {
+      certificationNumber?: string | null;
+      certificationExpiryDate?: string; // date-time
+      dateSigned?: string; // date-time
+      courseName?: string | null;
+      organizationName?: string | null;
+      startDate?: string; // date-time
+      endDate?: string; // date-time
+      id?: string | null;
+      organizationContactInformation?: string | null;
+      instructorName?: string | null;
+      numberOfHours: number; // int32
+      status?: ProfessionalDevelopmentStatusCode;
+    }
+    export type ProfessionalDevelopmentStatusCode =
+      | "ApplicationSubmitted"
+      | "Draft"
+      | "Inactive"
+      | "InProgress"
+      | "Rejected"
+      | "Submitted"
+      | "UnderReview"
+      | "WaitingResponse";
     export interface Province {
       provinceId?: string | null;
       provinceName?: string | null;
@@ -417,7 +463,7 @@ declare namespace Components {
       firstName?: string | null;
       lastName?: string | null;
       emailAddress?: string | null;
-      hours?: number | null; // int32
+      hours?: number; // int32
       id?: string | null;
       phoneNumber?: string | null;
     }
@@ -649,6 +695,18 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace FilesCertificateGet {
+    namespace Parameters {
+      export type CertificateId = string;
+    }
+    export interface PathParameters {
+      certificateId: Parameters.CertificateId;
+    }
+    namespace Responses {
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace MessageGet {
     namespace Parameters {
       export type ParentId = string;
@@ -847,6 +905,14 @@ export interface OperationMethods {
     data?: Paths.ReferenceOptout.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
+  /**
+   * files_certificate_get - Handles fetching certificate PDF's
+   */
+  "files_certificate_get"(
+    parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<any>;
   /**
    * upload_file - Handles upload file request
    */
@@ -1077,6 +1143,12 @@ export interface PathsDictionary {
       data?: Paths.ReferenceOptout.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
+  };
+  ["/api/files/certificate/{certificateId}"]: {
+    /**
+     * files_certificate_get - Handles fetching certificate PDF's
+     */
+    "get"(parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<any>;
   };
   ["/api/files/{fileId}"]: {
     /**

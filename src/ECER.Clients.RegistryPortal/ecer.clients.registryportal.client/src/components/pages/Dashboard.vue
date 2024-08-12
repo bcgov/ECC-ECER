@@ -28,12 +28,14 @@
         <v-row>
           <v-col cols="12">
             <ECEHeader title="Your ECE certifications" />
-            <div v-if="certificationStore.hasCertifications">
-              <p class="mt-4">
-                ECE registration number
-                {{ certificationStore.latestCertification?.number }}
-              </p>
-              <CerticationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" />
+            <div v-if="certifications && certificationStore.hasCertifications">
+              <div class="d-flex flex-row justify-start ga-3 flex-wrap mt-4">
+                <p>ECE registration number</p>
+                <p>
+                  {{ certificationStore.latestCertification?.number }}
+                </p>
+              </div>
+              <CertificationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" />
             </div>
             <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
           </v-col>
@@ -42,7 +44,7 @@
     </v-row>
 
     <!-- Options -->
-    <v-row v-if="certificationStore.hasCertifications && certificationStore.latestNotCancelled" justify="center" class="mt-6">
+    <v-row v-if="certificationStore.hasCertifications" justify="center" class="mt-6">
       <v-col>
         <v-row>
           <v-col cols="12">
@@ -117,7 +119,7 @@ import { getUserInfo } from "@/api/user";
 import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
-import CerticationCard from "@/components/CertificationCard.vue";
+import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
@@ -132,7 +134,7 @@ import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "Dashboard",
-  components: { ConfirmationDialog, PageContainer, ApplicationCard, CerticationCard, ECEHeader, ActionCard, Alert, UnreadMessages, RenewCard },
+  components: { ConfirmationDialog, PageContainer, ApplicationCard, CertificationCard, ECEHeader, ActionCard, Alert, UnreadMessages, RenewCard },
   async setup() {
     const userStore = useUserStore();
     const applicationStore = useApplicationStore();
@@ -150,7 +152,7 @@ export default defineComponent({
       userStore.setUserInfo(userInfo);
     }
 
-    return { userStore, applicationStore, alertStore, messageStore, certificationStore, applications, certifications, smAndDown, mdAndUp };
+    return { userStore, applicationStore, alertStore, messageStore, certificationStore, certifications, applications, smAndDown, mdAndUp };
   },
   data: () => ({
     showCancelDialog: false,

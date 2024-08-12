@@ -21,7 +21,6 @@ public class CertificationsEndpoints : IRegisterEndpoints
         ByApplicantId = userId,
       };
       var results = await messageBus.Send<CertificationsQueryResults>(query);
-
       return TypedResults.Ok(mapper.Map<IEnumerable<Certification>>(results.Items));
     })
      .WithOpenApi("Handles certification queries", string.Empty, "certification_get")
@@ -42,11 +41,19 @@ public record Certification(string Id)
   public CertificateStatusCode? StatusCode { get; set; }
   public YesNoNull? IneligibleReference { get; set; }
   public IEnumerable<CertificationLevel> Levels { get; set; } = Array.Empty<CertificationLevel>();
+  public IEnumerable<CertificationFile> Files { get; set; } = Array.Empty<CertificationFile>();
 }
 
 public record CertificationLevel(string Id)
 {
   public string? Type { get; set; }
+}
+public record CertificationFile(string Id)
+{
+  public string? Url { get; set; }
+  public string? Extention { get; set; }
+  public string? Size { get; set; }
+  public string? Name { get; set; }
 }
 
 public enum CertificateStatusCode

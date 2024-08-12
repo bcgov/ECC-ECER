@@ -598,6 +598,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string AnnualIncome_Base = "annualincome_base";
 			public const string AssistantName = "assistantname";
 			public const string AssistantPhone = "assistantphone";
+			public const string bcgov_contact_bcgov_documenturl = "bcgov_contact_bcgov_documenturl";
 			public const string BirthDate = "birthdate";
 			public const string Business2 = "business2";
 			public const string BusinessCard = "businesscard";
@@ -7097,6 +7098,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("yomimiddlename", value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N bcgov_contact_bcgov_documenturl
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_contact_bcgov_documenturl")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> bcgov_contact_bcgov_documenturl
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("bcgov_contact_bcgov_documenturl", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("bcgov_contact_bcgov_documenturl", null, value);
 			}
 		}
 		

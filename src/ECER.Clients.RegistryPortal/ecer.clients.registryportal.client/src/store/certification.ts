@@ -32,10 +32,6 @@ export const useCertificationStore = defineStore("certification", {
     latestCertificationExpiryDate(state): string | null | undefined {
       return state.latestCertification?.expiryDate;
     },
-    latestNotCancelled(state): boolean {
-      if (!state.latestCertification) return false;
-      return state.latestCertification.statusCode !== "Cancelled";
-    },
     latestIsEceAssistant(state): boolean {
       if (!state.latestCertification) return false;
       return state.latestCertification.levels?.some((level) => level.type === "Assistant") ?? false;

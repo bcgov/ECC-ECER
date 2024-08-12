@@ -2,12 +2,12 @@
   <v-container fluid class="bg-primary">
     <v-container>
       <v-row>
-        <v-col class="d-flex justify-space-between">
+        <v-col :class="[mobile ? 'flex-column-reverse' : 'justify-space-between', 'd-flex']">
           <div>
             <ApplicationCertificationTypeHeader :is-renewal="isRenewal" :certification-types="applicationStore.draftApplication.certificationTypes ?? []" />
             <a v-if="!isRenewal" href="#" class="text-white" @click.prevent="toggleChangeCertificationConfirmation">Change certification type</a>
           </div>
-          <div>
+          <div :class="[{ ['text-right mb-2']: mobile }]">
             <v-btn v-if="showSaveButton" variant="outlined" :loading="loadingStore.isLoading('draftapplication_put')" @click="saveAndExit">Save and exit</v-btn>
           </div>
         </v-col>
@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useDisplay } from "vuetify";
 
 import { useApplicationStore } from "@/store/application";
 import { useLoadingStore } from "@/store/loading";
@@ -60,10 +61,12 @@ export default defineComponent({
   setup() {
     const applicationStore = useApplicationStore();
     const loadingStore = useLoadingStore();
+    const { mobile } = useDisplay();
 
     return {
       applicationStore,
       loadingStore,
+      mobile,
     };
   },
   data: () => ({
