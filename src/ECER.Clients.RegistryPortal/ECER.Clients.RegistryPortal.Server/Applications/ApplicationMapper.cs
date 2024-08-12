@@ -12,11 +12,13 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.TotalNumberofHoursApproved, opts => opts.Ignore())
       .ForMember(d => d.TotalNumberofHoursObserved, opts => opts.Ignore())
       .ReverseMap();
+
     CreateMap<ProfessionalDevelopment, Managers.Registry.Contract.Applications.ProfessionalDevelopment>()
      .ForMember(d => d.Status, opts => opts.Ignore())
      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.ProfessionalDevelopment.Id),
               opt => opt.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
      .ReverseMap();
+
     CreateMap<Transcript, Managers.Registry.Contract.Applications.Transcript>()
       .ForMember(d => d.Status, opts => opts.Ignore())
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.Id),

@@ -33,7 +33,7 @@ internal sealed partial class ApplicationRepository
       var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
       context.Attach(ecerProfessionalDevelopment);
       context.UpdateObject(ecerProfessionalDevelopment);
-      await HandleProfessionalDevelopmentFiles(Guid.Parse(professionalDevelopment.Id!), professionalDevelopment.ToBeAddedFileIds, professionalDevelopment.ToBeDeletedFileIds, ct);
+      await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.ToBeAddedFileIds, professionalDevelopment.ToBeDeletedFileIds, ct);
     }
 
     foreach (var professionalDevelopment in updatedEntities.Where(d => string.IsNullOrEmpty(d.Id)))
@@ -43,26 +43,25 @@ internal sealed partial class ApplicationRepository
       ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId = newId;
       context.AddObject(ecerProfessionalDevelopment);
       context.AddLink(application, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, ecerProfessionalDevelopment);
-      await HandleProfessionalDevelopmentFiles(newId, professionalDevelopment.ToBeAddedFileIds, professionalDevelopment.ToBeDeletedFileIds, ct);
+      await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.ToBeAddedFileIds, professionalDevelopment.ToBeDeletedFileIds, ct);
     }
   }
 
-  private async Task HandleProfessionalDevelopmentFiles(Guid professionalDevelopmentId, IEnumerable<string> tobeAddedFileIds, IEnumerable<string> tobeDeletedFileIds, CancellationToken ct)
+  private async Task HandleProfessionalDevelopmentFiles(ecer_ProfessionalDevelopment professionalDevelopment, Guid applicantId, IEnumerable<string> tobeAddedFileIds, IEnumerable<string> tobeDeletedFileIds, CancellationToken ct)
   {
     await Task.CompletedTask;
-    await HandleDeletedFiles(professionalDevelopmentId, tobeDeletedFileIds.ToList(), ct);
-    await HandleAddedFiles(professionalDevelopmentId, tobeAddedFileIds.ToList(), ct);
+    await HandleDeletedFiles(professionalDevelopment, applicantId, tobeDeletedFileIds.ToList(), ct);
+    await HandleAddedFiles(professionalDevelopment, applicantId, tobeAddedFileIds.ToList(), ct);
   }
 
-  private async Task HandleDeletedFiles(Guid professionalDevelopmentId, List<string> tobeDeletedFileIds, CancellationToken ct)
+  private async Task HandleDeletedFiles(ecer_ProfessionalDevelopment professionalDevelopment, Guid applicantId, List<string> tobeDeletedFileIds, CancellationToken ct)
   {
     await Task.CompletedTask;
     foreach (var fileId in tobeDeletedFileIds)
     {
-      var professionalDevelopment = context.ecer_ProfessionalDevelopmentSet.SingleOrDefault(p => p.ecer_ProfessionalDevelopmentId == professionalDevelopmentId);
       if (professionalDevelopment == null)
       {
-        throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopmentId}' not found");
+        throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopment}' not found");
       }
       // delete file and related document url
       await DeleteFileById(fileId, ct);
@@ -91,20 +90,19 @@ internal sealed partial class ApplicationRepository
     context.DeleteObject(file);
   }
 
-  private async Task HandleAddedFiles(Guid professionalDevelopmentId, List<string> tobeAddedFileIds, CancellationToken ct)
+  private async Task HandleAddedFiles(ecer_ProfessionalDevelopment professionalDevelopment, Guid applicantId, List<string> tobeAddedFileIds, CancellationToken ct)
   {
     await Task.CompletedTask;
 
     foreach (var fileId in tobeAddedFileIds)
     {
-      var professionalDevelopment = context.ecer_ProfessionalDevelopmentSet.SingleOrDefault(p => p.ecer_ProfessionalDevelopmentId == professionalDevelopmentId);
       if (professionalDevelopment == null)
       {
-        throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopmentId}' not found");
+        throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopment}' not found");
       }
       // add file and create document url
       // link it to professional development
-      await AddFilesForProfessionalDevelopment(professionalDevelopment.ecer_ProfessionalDevelopmentId, professionalDevelopment.ecer_ecer_professionaldevelopment_Applicantid_.ContactId, new List<string>() { fileId }, ct);
+      await AddFilesForProfessionalDevelopment(professionalDevelopment, applicantId, new List<string>() { fileId }, ct);
     }
   }
 
@@ -127,7 +125,7 @@ internal sealed partial class ApplicationRepository
     }
   }
 
-  private async Task AddFilesForProfessionalDevelopment(Guid? professionalDevelopmentId, Guid? applicantId, List<string> fileUrls, CancellationToken ct)
+  private async Task AddFilesForProfessionalDevelopment(ecer_ProfessionalDevelopment professionalDevelopment, Guid? applicantId, List<string> fileUrls, CancellationToken ct)
   {
     await Task.CompletedTask;
 
@@ -142,8 +140,7 @@ internal sealed partial class ApplicationRepository
       var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == applicantId);
       if (applicant == null) throw new InvalidOperationException($"Applicant '{applicantId}' not found");
 
-      var professionalDevelopment = context.ecer_ProfessionalDevelopmentSet.SingleOrDefault(c => c.ecer_ProfessionalDevelopmentId == professionalDevelopmentId);
-      if (professionalDevelopment == null) throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopmentId}' not found");
+      if (professionalDevelopment == null) throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopment}' not found");
 
       var sourceFolder = items[0];
       var destinationFolder = "ecer_professionaldevelopment";

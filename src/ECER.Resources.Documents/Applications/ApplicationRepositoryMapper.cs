@@ -111,6 +111,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForSourceMember(s => s.EndDate, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.ToBeAddedFileIds, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.ToBeDeletedFileIds, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
        .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
        .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
        .ForMember(d => d.ecer_CertifcationExpiryDate, opts => opts.MapFrom(s => s.CertificationExpiryDate))
@@ -138,6 +139,7 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
           .ForMember(d => d.ToBeAddedFileIds, opts => opts.Ignore())
           .ForMember(d => d.ToBeDeletedFileIds, opts => opts.Ignore())
+          .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_ProfessionalDevelopmentId.Select(doc => doc.bcgov_Url).ToList()))
     .ValidateMemberList(MemberList.Destination);
 
     CreateMap<WorkExperienceReference, ecer_WorkExperienceRef>(MemberList.Source)
