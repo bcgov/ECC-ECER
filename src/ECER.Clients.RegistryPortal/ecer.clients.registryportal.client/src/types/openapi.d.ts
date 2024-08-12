@@ -216,6 +216,7 @@ declare namespace Components {
       educationRecognition?: EducationRecognition;
       explanationLetter?: string | null;
       oneYearRenewalexplanation?: OneYearRenewalexplanations;
+      createdOn?: string; // date-time
     }
     /**
      * Save draft application response
