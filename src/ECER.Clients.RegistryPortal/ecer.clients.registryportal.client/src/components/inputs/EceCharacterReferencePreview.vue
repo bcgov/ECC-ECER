@@ -3,7 +3,7 @@
     <template #content>
       <v-row>
         <v-col cols="4">
-          <p class="small">Reference Last Name</p>
+          <p class="small">Last name</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ characterReference.lastName }}</p>
@@ -11,7 +11,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Reference First Name</p>
+          <p class="small">First name</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ characterReference.firstName }}</p>
@@ -19,7 +19,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Reference Email</p>
+          <p class="small">Email</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ characterReference.emailAddress }}</p>
@@ -27,7 +27,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Referece Phone Number</p>
+          <p class="small">Phone number</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">{{ characterReference.phoneNumber }}</p>

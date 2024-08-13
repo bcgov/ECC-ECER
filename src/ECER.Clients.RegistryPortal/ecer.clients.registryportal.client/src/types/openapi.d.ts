@@ -21,9 +21,15 @@ declare namespace Components {
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
       workExperienceReferences?: WorkExperienceReference[] | null;
-      status?: ApplicationStatus;
-      stage?: PortalStage;
       characterReferences?: CharacterReference[] | null;
+      professionalDevelopments?: ProfessionalDevelopment[] | null;
+      status?: ApplicationStatus;
+      stage?: string | null;
+      applicationType?: ApplicationTypes;
+      educationOrigin?: EducationOrigin;
+      educationRecognition?: EducationRecognition;
+      explanationLetter?: string | null;
+      oneYearRenewalexplanation?: OneYearRenewalexplanations;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -70,6 +76,7 @@ declare namespace Components {
        */
       id?: string | null;
     }
+    export type ApplicationTypes = "New" | "Renewal" | "LaborMobility";
     /**
      * delete draft application response
      */
@@ -92,6 +99,14 @@ declare namespace Components {
       statusCode?: CertificateStatusCode;
       ineligibleReference?: YesNoNull;
       levels?: CertificationLevel[] | null;
+      files?: CertificationFile[] | null;
+    }
+    export interface CertificationFile {
+      id?: string | null;
+      url?: string | null;
+      extention?: string | null;
+      size?: string | null;
+      name?: string | null;
     }
     export interface CertificationLevel {
       id?: string | null;
@@ -158,6 +173,8 @@ declare namespace Components {
       notifiedOn?: string; // date-time
       status?: CommunicationStatus;
       doNotReply?: boolean;
+      latestMessageNotifiedOn?: string | null; // date-time
+      isRead?: boolean | null;
     }
     /**
      * Save communication response
@@ -191,8 +208,15 @@ declare namespace Components {
       certificationTypes?: CertificationType[] | null;
       transcripts?: Transcript[] | null;
       workExperienceReferences?: WorkExperienceReference[] | null;
-      stage?: PortalStage;
       characterReferences?: CharacterReference[] | null;
+      professionalDevelopments?: ProfessionalDevelopment[] | null;
+      stage?: string | null;
+      applicationType?: ApplicationTypes;
+      educationOrigin?: EducationOrigin;
+      educationRecognition?: EducationRecognition;
+      explanationLetter?: string | null;
+      oneYearRenewalexplanation?: OneYearRenewalexplanations;
+      createdOn?: string; // date-time
     }
     /**
      * Save draft application response
@@ -203,6 +227,8 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
+    export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
+    export type EducationRecognition = "Recognized" | "NotRecognized";
     /**
      * file Response
      */
@@ -236,6 +262,13 @@ declare namespace Components {
       scope?: string | null;
       idp?: string | null;
     }
+    export type OneYearRenewalexplanations =
+      | "Icouldnotfindemploymenttocompletetherequiredhours"
+      | "Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa"
+      | "IliveandworkinacommunitywithoutothercertifiedECEs"
+      | "Iwasunabletoenterthecountryasexpected"
+      | "Iwasunabletoworkinthechildcarefieldforpersonalreasons"
+      | "Other";
     export interface OptOutReferenceRequest {
       token?: string | null;
       unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
@@ -259,7 +292,6 @@ declare namespace Components {
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
     }
-    export type PortalStage = "CertificationType" | "Declaration" | "ContactInformation" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";
     /**
      * Previous Name
      */
@@ -280,6 +312,29 @@ declare namespace Components {
       detail?: string | null;
       instance?: string | null;
     }
+    export interface ProfessionalDevelopment {
+      certificationNumber?: string | null;
+      certificationExpiryDate?: string; // date-time
+      dateSigned?: string; // date-time
+      courseName?: string | null;
+      organizationName?: string | null;
+      startDate?: string; // date-time
+      endDate?: string; // date-time
+      id?: string | null;
+      organizationContactInformation?: string | null;
+      instructorName?: string | null;
+      numberOfHours: number; // int32
+      status?: ProfessionalDevelopmentStatusCode;
+    }
+    export type ProfessionalDevelopmentStatusCode =
+      | "ApplicationSubmitted"
+      | "Draft"
+      | "Inactive"
+      | "InProgress"
+      | "Rejected"
+      | "Submitted"
+      | "UnderReview"
+      | "WaitingResponse";
     export interface Province {
       provinceId?: string | null;
       provinceName?: string | null;
@@ -408,7 +463,7 @@ declare namespace Components {
       firstName?: string | null;
       lastName?: string | null;
       emailAddress?: string | null;
-      hours?: number | null; // int32
+      hours?: number; // int32
       id?: string | null;
       phoneNumber?: string | null;
     }
@@ -640,6 +695,18 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace FilesCertificateGet {
+    namespace Parameters {
+      export type CertificateId = string;
+    }
+    export interface PathParameters {
+      certificateId: Parameters.CertificateId;
+    }
+    namespace Responses {
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace MessageGet {
     namespace Parameters {
       export type ParentId = string;
@@ -839,10 +906,18 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
   /**
+   * files_certificate_get - Handles fetching certificate PDF's
+   */
+  "files_certificate_get"(
+    parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<any>;
+  /**
    * upload_file - Handles upload file request
    */
   "upload_file"(
-    parameters?: Parameters<Paths.UploadFile.PathParameters & Paths.UploadFile.HeaderParameters> | null,
+    parameters?: Parameters<Paths.UploadFile.HeaderParameters & Paths.UploadFile.PathParameters> | null,
     data?: Paths.UploadFile.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.UploadFile.Responses.$200>;
@@ -914,7 +989,7 @@ export interface OperationMethods {
    * application_get - Handles application queries
    */
   "application_get"(
-    parameters?: Parameters<Paths.ApplicationGet.PathParameters & Paths.ApplicationGet.QueryParameters> | null,
+    parameters?: Parameters<Paths.ApplicationGet.QueryParameters & Paths.ApplicationGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ApplicationGet.Responses.$200>;
@@ -1069,6 +1144,12 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
   };
+  ["/api/files/certificate/{certificateId}"]: {
+    /**
+     * files_certificate_get - Handles fetching certificate PDF's
+     */
+    "get"(parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<any>;
+  };
   ["/api/files/{fileId}"]: {
     /**
      * delete_file - Handles delete uploaded file request
@@ -1082,7 +1163,7 @@ export interface PathsDictionary {
      * upload_file - Handles upload file request
      */
     "post"(
-      parameters?: Parameters<Paths.UploadFile.PathParameters & Paths.UploadFile.HeaderParameters> | null,
+      parameters?: Parameters<Paths.UploadFile.HeaderParameters & Paths.UploadFile.PathParameters> | null,
       data?: Paths.UploadFile.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.UploadFile.Responses.$200>;
@@ -1162,7 +1243,7 @@ export interface PathsDictionary {
      * application_get - Handles application queries
      */
     "get"(
-      parameters?: Parameters<Paths.ApplicationGet.PathParameters & Paths.ApplicationGet.QueryParameters> | null,
+      parameters?: Parameters<Paths.ApplicationGet.QueryParameters & Paths.ApplicationGet.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationGet.Responses.$200>;

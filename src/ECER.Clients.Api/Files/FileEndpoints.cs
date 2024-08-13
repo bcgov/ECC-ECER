@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ServiceModel.Channels;
 using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.Hosting;
 using MediatR;
@@ -31,7 +32,7 @@ public class FileEndpoints : IRegisterEndpoints
       .RequireAuthorization()
       .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok, BadRequest<string>>> (
+    endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, BadRequest<ProblemDetails>, NotFound>> (
         [FromRoute] string fileId,
         [FromHeader(Name = "file-classification")][Required] string classification,
         [FromHeader(Name = "file-tag")] string? tags,
@@ -41,11 +42,16 @@ public class FileEndpoints : IRegisterEndpoints
         CancellationToken ct) =>
       {
         var fileProperties = new FileProperties() { Classification = classification, Tags = tags };
-
         var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, folder ?? string.Empty), fileProperties, file.FileName, file.ContentType, file.OpenReadStream())).ToList();
-        if (files.Count == 0) return TypedResults.BadRequest("No files were uploaded");
-        await messageBus.Send(new SaveFileCommand(files), ct);
-        return TypedResults.Ok();
+        if (files.Count == 0) return TypedResults.BadRequest(new ProblemDetails { Detail = "No files were uploaded" });
+        var response = await messageBus.Send(new SaveFileCommand(files), ct);
+        var saveResult = response.Items.FirstOrDefault();
+        if (saveResult == null || !saveResult.IsSuccessful)
+        {
+          var message = saveResult == null ? "Save Failed" : saveResult.Message;
+          return TypedResults.BadRequest(new ProblemDetails { Title = "Save Failed", Detail = message });
+        }
+        return TypedResults.Ok(new FileResponse(fileId));
       })
       .WithOpenApi("Uploads a new file", string.Empty, "files_post")
       .DisableAntiforgery()
@@ -53,3 +59,9 @@ public class FileEndpoints : IRegisterEndpoints
       .WithParameterValidation();
   }
 }
+
+/// <summary>
+/// file Response
+/// </summary>
+/// <param name="fileId"></param>
+public record FileResponse(string fileId);

@@ -37,6 +37,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   public async Task GetApplications_ById()
   {
     var application = CreateDraftApplication();
+    application.Stage = "CertificationType";
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
@@ -55,10 +56,69 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<DraftApplication[]>();
     var applicationById = applicationsById.ShouldHaveSingleItem();
+    applicationById.ApplicationType.ShouldBe(ApplicationTypes.New);
     applicationById.Transcripts.ShouldNotBeEmpty();
     applicationById.CharacterReferences.ShouldNotBeEmpty();
     applicationById.WorkExperienceReferences.ShouldNotBeEmpty();
-    applicationById.Stage.ShouldBe(PortalStage.CertificationType);
+    applicationById.Stage.ShouldBe("CertificationType");
+  }
+
+  [Fact]
+  public async Task GetRenewalApplications_ById()
+  {
+    var application = CreateDraftApplication();
+    application.ApplicationType = ApplicationTypes.Renewal;
+    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+
+    var applicationByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url($"/api/applications/{applicationId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<DraftApplication[]>();
+    var applicationById = applicationsById.ShouldHaveSingleItem();
+    applicationById.ApplicationType.ShouldBe(ApplicationTypes.Renewal);
+    applicationById.EducationOrigin.ShouldBeNull();
+    applicationById.EducationRecognition.ShouldBeNull();
+  }
+
+  [Fact]
+  public async Task GetRenewalApplications_ById_ReturnsCorrectEducationData()
+  {
+    var application = CreateDraftApplication();
+    application.ApplicationType = ApplicationTypes.Renewal;
+    application.EducationOrigin = EducationOrigin.InsideBC;
+    application.EducationRecognition = EducationRecognition.Recognized;
+    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+
+    var applicationByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url($"/api/applications/{applicationId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<DraftApplication[]>();
+    var applicationById = applicationsById.ShouldHaveSingleItem();
+    applicationById.ApplicationType.ShouldBe(ApplicationTypes.Renewal);
+    applicationById.EducationOrigin.ShouldBe(EducationOrigin.InsideBC);
+    applicationById.EducationRecognition.ShouldBe(EducationRecognition.Recognized);
   }
 
   [Fact]

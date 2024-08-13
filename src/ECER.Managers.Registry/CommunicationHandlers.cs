@@ -18,13 +18,14 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
 
     var statuses = new List<Resources.Accounts.Communications.CommunicationStatus>();
     statuses.Add(Resources.Accounts.Communications.CommunicationStatus.NotifiedRecipient);
+    statuses.Add(Resources.Accounts.Communications.CommunicationStatus.Acknowledged);
     var communications = await communicationRepository.Query(new Resources.Accounts.Communications.UserCommunicationQuery
     {
       ByRegistrantId = request.ByRegistrantId,
       ByStatus = statuses,
     });
 
-    var unreadCount = communications.Communications!.Where(c => !c.Acknowledged).ToList().Count; // it does not support Any
+    var unreadCount = communications.UnreadMessagesCount;
     var hasUnread = unreadCount > 0;
 
     var communicationsStatus = new Contract.Communications.CommunicationsStatus() { HasUnread = hasUnread, Count = unreadCount };

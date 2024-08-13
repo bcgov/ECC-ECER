@@ -12,5 +12,8 @@ internal class CertificationMapper : Profile
 
     CreateMap<CertificationLevel, Contract.Certifications.CertificationLevel>()
       .ReverseMap();
+
+    CreateMap<CertificationFile, Contract.Certifications.CertificationFile>()
+      .ReverseMap();
   }
 }
