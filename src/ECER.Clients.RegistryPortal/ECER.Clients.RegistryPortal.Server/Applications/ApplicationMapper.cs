@@ -27,8 +27,10 @@ public class ApplicationMapper : Profile
                opt => opt.MapFrom(src => src.EducationalInstitutionName))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.ProgramName),
                opt => opt.MapFrom(src => src.ProgramName))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentName),
-               opt => opt.MapFrom(src => src.StudentName))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentFirstName),
+               opt => opt.MapFrom(src => src.StudentFirstName))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentLastName),
+               opt => opt.MapFrom(src => src.StudentLastName))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StudentNumber),
                opt => opt.MapFrom(src => src.StudentNumber))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.StartDate),
@@ -41,10 +43,14 @@ public class ApplicationMapper : Profile
                opt => opt.MapFrom(src => src.DoesECERegistryHaveTranscript))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.IsOfficialTranscriptRequested),
                opt => opt.MapFrom(src => src.IsOfficialTranscriptRequested))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.IsNameUnverified),
+         opt => opt.MapFrom(src => src.IsNameUnverified))
       .ForMember(d => d.CampusLocation,
              opts => opts.MapFrom(src => src.CampusLocation))
       .ForMember(d => d.LanguageofInstruction,
              opts => opts.MapFrom(src => src.LanguageofInstruction))
+      .ForMember(d => d.StudentMiddleName,
+       opts => opts.MapFrom(src => src.StudentMiddleName))
       .ReverseMap();
 
     CreateMap<CharacterReference, Managers.Registry.Contract.Applications.CharacterReference>()
