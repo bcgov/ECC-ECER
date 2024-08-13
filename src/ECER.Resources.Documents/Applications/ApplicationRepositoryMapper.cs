@@ -124,8 +124,8 @@ internal class ApplicationRepositoryMapper : Profile
     CreateMap<ProfessionalDevelopment, ecer_ProfessionalDevelopment>(MemberList.Source)
        .ForSourceMember(s => s.StartDate, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.EndDate, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.ToBeAddedFileIds, opts => opts.DoNotValidate())
-       .ForSourceMember(s => s.ToBeDeletedFileIds, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.NewFiles, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.DeletedFiles, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
        .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
        .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
@@ -152,8 +152,8 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.InstructorName, opts => opts.MapFrom(s => s.ecer_InstructorName))
           .ForMember(d => d.NumberOfHours, opts => opts.MapFrom(s => s.ecer_NumberofHours))
           .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-          .ForMember(d => d.ToBeAddedFileIds, opts => opts.Ignore())
-          .ForMember(d => d.ToBeDeletedFileIds, opts => opts.Ignore())
+          .ForMember(d => d.NewFiles, opts => opts.Ignore())
+          .ForMember(d => d.DeletedFiles, opts => opts.Ignore())
           .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_ProfessionalDevelopmentId.Select(doc => doc.bcgov_Url).ToList()))
     .ValidateMemberList(MemberList.Destination);
 

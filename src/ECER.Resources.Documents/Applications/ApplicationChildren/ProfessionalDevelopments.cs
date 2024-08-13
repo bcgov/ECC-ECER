@@ -33,7 +33,7 @@ internal sealed partial class ApplicationRepository
       var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
       context.Attach(ecerProfessionalDevelopment);
       context.UpdateObject(ecerProfessionalDevelopment);
-      await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.ToBeAddedFileIds, professionalDevelopment.ToBeDeletedFileIds, ct);
+      await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.NewFiles, professionalDevelopment.DeletedFiles, ct);
     }
 
     foreach (var professionalDevelopment in updatedEntities.Where(d => string.IsNullOrEmpty(d.Id)))
@@ -43,7 +43,7 @@ internal sealed partial class ApplicationRepository
       ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId = newId;
       context.AddObject(ecerProfessionalDevelopment);
       context.AddLink(application, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, ecerProfessionalDevelopment);
-      await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.ToBeAddedFileIds, professionalDevelopment.ToBeDeletedFileIds, ct);
+      await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.NewFiles, professionalDevelopment.DeletedFiles, ct);
     }
   }
 

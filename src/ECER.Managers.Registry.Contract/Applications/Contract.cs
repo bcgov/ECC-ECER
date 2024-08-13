@@ -90,8 +90,8 @@ public record ProfessionalDevelopment(string? Id, string? CertificationNumber, D
   public string? InstructorName { get; set; }
   public int? NumberOfHours { get; set; }
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
-  public IEnumerable<string> ToBeDeletedFileIds { get; set; } = Array.Empty<string>();
-  public IEnumerable<string> ToBeAddedFileIds { get; set; } = Array.Empty<string>();
+  public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
+  public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> Files { get; set; } = Array.Empty<string>();
 }
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
