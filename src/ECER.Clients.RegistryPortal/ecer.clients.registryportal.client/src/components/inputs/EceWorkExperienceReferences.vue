@@ -59,61 +59,50 @@
       </v-form>
     </v-col>
     <div v-else-if="mode == 'list'" class="w-100">
-      <v-col sm="12" md="10" lg="8" xl="6" class="my-6">
-        <p class="small">
-          You must provide
-          <b>500 hours of work experience.</b>
-          These hours:
-        </p>
-        <ul class="small">
-          <v-col cols="12">
-            <li>
-              Are counted from the date you started your education and cannot include your practicum/placement hours (hours that were a part of your education)
-            </li>
-            <li>Must be completed within the 5 years before your application submission</li>
-            <li>Can be work or volunteer hours</li>
-          </v-col>
+      <div class="d-flex flex-column ga-3 my-6">
+        <h3 v-if="props.isRenewal">{{ hoursRequired }} hours of work experience related to the field of early childhood education is required.</h3>
+        <h3 v-else>{{ hoursRequired }} hours of work experience is required.</h3>
+        <p>Your hours:</p>
+        <ul v-if="props.isRenewal" class="ml-10">
+          <li>Be related to the field of early childhood education</li>
+          <li v-if="certificationStore.latestCertificateStatus != 'Expired'">
+            Have been completed within the term of your current certificate (between
+            {{ formatDate(certificationStore.latestCertification?.effectiveDate ?? "") }} and
+            {{ formatDate(certificationStore.latestCertification?.expiryDate ?? "") }})
+          </li>
+          <li v-else>Have been completed within the last 5 years</li>
         </ul>
-        <p class="small">
-          If your 500 hours were completed at more than one location and under the supervision of more than one ECE, you must provide a reference from each
-          person who supervised your hours. You may enter up to six references.
-        </p>
-      </v-col>
-      <v-col sm="12" md="10" lg="8" xl="6">
+        <ul v-if="!props.isRenewal" class="ml-10">
+          <li>Must have been completed after you started your education and within the last 5 years</li>
+          <li>Cannot include hours worked as part of your education on your practicum or work placement</li>
+          <li>Can be work or volunteer hours</li>
+        </ul>
+        <p v-if="props.isRenewal">If you worked at multiple locations, add a reference for each location.</p>
+        <p v-if="!props.isRenewal">If your hours were completed at multiple locations under the supervision of multiple ECEs:</p>
+        <ul v-if="!props.isRenewal" class="ml-10">
+          <li>Provide a reference from each person who supervised your hours</li>
+          <li>You may enter up to 6 references</li>
+        </ul>
+      </div>
+      <v-col v-if="totalHours >= hoursRequired" sm="12" md="10" lg="8" xl="6">
         <Alert type="info">
           <p class="small">
-            The Registry will not assess an application until references have been submitted. Please make sure your reference:
-            <br />
-            <br />
-            &#x2022; Directly supervised (observed) the hours they attest to
-            <br />
-            &#x2022; Can speak to your knowledge, skills, and ability (competencies) as an ECE
-            <br />
-            &#x2022; Has held valid Canadian ECE certification/registration during the hours they supervised (observed)
-            <br />
-            &#x2022; Is not the same person you provided as a character reference
+            You provided the required {{ hoursRequired }} hours of work experience. If needed, the Registry will contact you for additional work experience
+            information once your references submit their forms.
           </p>
         </Alert>
       </v-col>
-      <v-col v-if="totalHours >= 500" sm="12" md="10" lg="8" xl="6">
-        <Alert type="info">
-          <p class="small">
-            You provided the required 500 hours of work experience. If needed, the Registry will contact you for additional work experience information once
-            your references submit their forms.
-          </p>
-        </Alert>
-      </v-col>
-      <v-col v-if="count >= 6 && totalHours < 500" sm="12" md="10" lg="8" xl="6">
+      <v-col v-if="count >= 6 && totalHours < hoursRequired" sm="12" md="10" lg="8" xl="6">
         <Alert type="warning">
           <p class="small">
-            You reached the limit of six work experience references but do not meet the 500-hour requirement. You can still proceed to submit your application.
-            The Registry will contact you to provide additional references for the remaining hours.
+            You reached the limit of six work experience references but do not meet the {{ hoursRequired }}-hour requirement. You can still proceed to submit
+            your application. The Registry will contact you to provide additional references for the remaining hours.
           </p>
         </Alert>
       </v-col>
-      <v-col v-if="count < 6 && totalHours < 500" sm="12" md="10" lg="8" xl="6">
+      <v-col v-if="count < 6 && totalHours < hoursRequired" sm="12" md="10" lg="8" xl="6">
         <Alert type="error">
-          <p class="small">You must enter 500 hours of work experience to submit your application.</p>
+          <p class="small">You must enter {{ hoursRequired }} hours of work experience to submit your application.</p>
         </Alert>
       </v-col>
       <v-col v-if="hasDuplicateReferences" sm="12" md="10" lg="8" xl="6">
@@ -134,7 +123,7 @@
       </v-col>
     </div>
   </v-row>
-  <v-input auto-hide="auto" :model-value="modelValue" :rules="[!hasDuplicateReferences, totalHours >= 500 || count >= 6]"></v-input>
+  <v-input auto-hide="auto" :model-value="modelValue" :rules="[!hasDuplicateReferences, totalHours >= hoursRequired || count >= 6]"></v-input>
 </template>
 
 <script lang="ts">
@@ -146,9 +135,11 @@ import WorkExperienceReferenceList, { type WorkExperienceReferenceData } from "@
 import WorkExperienceReferenceProgressBar from "@/components/WorkExperienceReferenceProgressBar.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
+import { useCertificationStore } from "@/store/certification";
 import { useWizardStore } from "@/store/wizard";
 import type { EceWorkExperienceReferencesProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
+import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
@@ -172,11 +163,13 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const wizardStore = useWizardStore();
     const applicationStore = useApplicationStore();
+    const certificationStore = useCertificationStore();
 
     return {
       alertStore,
       wizardStore,
       applicationStore,
+      certificationStore,
     };
   },
   data: function () {
@@ -195,7 +188,10 @@ export default defineComponent({
   computed: {
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     isDisabled() {
-      return this.count >= 6 || this.totalHours >= 500;
+      return this.count >= 6 || this.totalHours >= this.hoursRequired;
+    },
+    hoursRequired() {
+      return this.props.isRenewal ? 400 : 500;
     },
     totalHours() {
       return Object.values(this.modelValue).reduce((acc, reference) => {
@@ -232,6 +228,7 @@ export default defineComponent({
     this.mode = "list";
   },
   methods: {
+    formatDate,
     isNumber,
     async handleSubmit() {
       // Validate the form
