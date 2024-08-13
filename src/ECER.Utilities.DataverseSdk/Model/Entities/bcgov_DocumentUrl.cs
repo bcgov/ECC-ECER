@@ -1186,7 +1186,7 @@ namespace ECER.Utilities.DataverseSdk.Model
       }
     }
 
-<<<<<<< HEAD
+
     [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentid")]
     public Microsoft.Xrm.Sdk.EntityReference ecer_ProfessionalDevelopmentId
     {
@@ -1219,8 +1219,7 @@ namespace ECER.Utilities.DataverseSdk.Model
       }
     }
 
-=======
->>>>>>> origin/master
+
     [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationid")]
     public Microsoft.Xrm.Sdk.EntityReference ecer_programapplicationid
     {
@@ -1799,7 +1798,6 @@ namespace ECER.Utilities.DataverseSdk.Model
     }
 
     /// <summary>
-<<<<<<< HEAD
     /// N:1 ecer_bcgov_documenturl_ProfessionalDevelopmentId
     /// </summary>
     [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentid")]
@@ -1819,8 +1817,6 @@ namespace ECER.Utilities.DataverseSdk.Model
     }
 
     /// <summary>
-=======
->>>>>>> origin/master
     /// N:1 ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton
     /// </summary>
     [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationid")]
