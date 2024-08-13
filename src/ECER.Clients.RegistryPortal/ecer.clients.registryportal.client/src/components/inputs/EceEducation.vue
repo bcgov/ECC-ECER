@@ -227,6 +227,7 @@ interface EceEducationData {
   studentMiddleName: string;
   studentLastName: string;
   isNameUnverified: boolean;
+  initialLoadEdit: boolean;
 }
 
 interface RadioOptions {
@@ -282,6 +283,7 @@ export default defineComponent({
       studentMiddleName: "",
       studentLastName: "",
       isNameUnverified: false,
+      initialLoadEdit: false,
     };
   },
   computed: {
@@ -313,15 +315,19 @@ export default defineComponent({
   },
   watch: {
     previousNameRadio(newValue) {
-      if (newValue === "other") {
+      if (this.initialLoadEdit && newValue === "other") {
+        //Edge case for first load and name is unverified. Do not wipe out name fields.
+        this.isNameUnverified = true;
+        this.initialLoadEdit = false;
+      } else if (newValue === "other") {
         this.studentFirstName = "";
         this.studentMiddleName = "";
         this.studentLastName = "";
         this.isNameUnverified = true;
       } else {
-        this.studentFirstName = newValue.firstName;
-        this.studentMiddleName = newValue.middleName;
-        this.studentLastName = newValue.lastName;
+        this.studentFirstName = newValue?.firstName;
+        this.studentMiddleName = newValue?.middleName;
+        this.studentLastName = newValue?.lastName;
         this.isNameUnverified = false;
       }
     },
@@ -378,6 +384,7 @@ export default defineComponent({
     handleCancel() {
       // Change mode to education list
       this.mode = "list";
+      this.resetFormData();
     },
     handleAddEducation() {
       // Reset the form fields
@@ -386,6 +393,7 @@ export default defineComponent({
       this.mode = "add";
     },
     handleEdit(educationData: EducationData) {
+      this.initialLoadEdit = true;
       // Set the form fields to the education data
       this.id = educationData.education.id ?? "";
       this.clientId = educationData.educationId.toString();
