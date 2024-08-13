@@ -4,7 +4,7 @@ import characterReferencesForm from "./character-references-form";
 import explanationLetterForm from "./explanation-letter-form";
 import professionalDevelopmentForm from "./professional-development-form";
 import profileInformationForm from "./profile-information-form";
-import referencesForm from "./references-form";
+import referencesForm from "./references-renewal-form";
 import reviewAndSubmitForm from "./review-submit-form";
 
 const applicationWizard: Wizard = {
@@ -28,7 +28,6 @@ const applicationWizard: Wizard = {
       form: professionalDevelopmentForm,
       key: "item.3",
     },
-
     characterReferences: {
       stage: "CharacterReferences",
       title: "Character references",

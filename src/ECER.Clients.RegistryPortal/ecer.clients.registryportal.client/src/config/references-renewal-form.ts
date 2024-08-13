@@ -8,7 +8,9 @@ const referencesForm: Form = {
     referenceList: {
       id: "referenceList",
       component: EceWorkExperienceReferences,
-      props: {},
+      props: {
+        isRenewal: true,
+      },
       cols: {
         md: 12,
         lg: 12,

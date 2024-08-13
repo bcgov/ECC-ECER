@@ -35,7 +35,9 @@ interface EceRadioOption {
 }
 
 interface EceEducationProps {}
-interface EceWorkExperienceReferencesProps {}
+interface EceWorkExperienceReferencesProps {
+  isRenewal?: boolean;
+}
 
 interface EceAddressProps {
   addressLabel: string;
@@ -102,7 +104,8 @@ interface Input {
     | EceCheckboxProps
     | EcePreviewProps
     | EceCharacterReferenceProps
-    | EceRecaptchaProps;
+    | EceRecaptchaProps
+    | EceWorkExperienceReferencesProps;
   cols: {
     md: number;
     lg: number;
