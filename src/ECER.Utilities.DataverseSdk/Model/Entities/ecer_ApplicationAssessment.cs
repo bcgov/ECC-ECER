@@ -65,15 +65,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicantIdYomiName = "ecer_applicantidyominame";
 			public const string ecer_applicationassessment_ApplicantId = "ecer_applicationassessment_ApplicantId";
 			public const string ecer_applicationassessment_ApplicationId = "ecer_applicationassessment_ApplicationId";
+			public const string ecer_applicationassessment_CharacterReferenceReviewedId = "ecer_applicationassessment_CharacterReferenceReviewedId";
+			public const string ecer_applicationassessment_EducationTranscriptReviewedId = "ecer_applicationassessment_EducationTranscriptReviewedId";
 			public const string ecer_applicationassessment_TrainingReceivedId = "ecer_applicationassessment_TrainingReceivedId";
 			public const string ecer_ApplicationAssessmentId = "ecer_applicationassessmentid";
 			public const string Id = "ecer_applicationassessmentid";
 			public const string ecer_applicationassessmentresult_AppAssessId = "ecer_applicationassessmentresult_AppAssessId";
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
+			public const string ecer_CharacterReferenceReviewedId = "ecer_characterreferencereviewedid";
+			public const string ecer_CharacterReferenceReviewedIdName = "ecer_characterreferencereviewedidname";
 			public const string ecer_ConditionNotes = "ecer_conditionnotes";
 			public const string ecer_Date = "ecer_date";
 			public const string ecer_educationassessment_AppAssessmentId = "ecer_educationassessment_AppAssessmentId";
+			public const string ecer_EducationTranscriptReviewedId = "ecer_educationtranscriptreviewedid";
+			public const string ecer_EducationTranscriptReviewedIdName = "ecer_educationtranscriptreviewedidname";
 			public const string ecer_GoodCharacterAccepted = "ecer_goodcharacteraccepted";
 			public const string ecer_goodcharacteracceptedName = "ecer_goodcharacteracceptedname";
 			public const string ecer_legacyapplicationassessmentid = "ecer_legacyapplicationassessmentid";
@@ -384,6 +390,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferencereviewedid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CharacterReferenceReviewedId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_characterreferencereviewedid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_characterreferencereviewedid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferencereviewedidname")]
+		public string ecer_CharacterReferenceReviewedIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_characterreferencereviewedid"))
+				{
+					return this.FormattedValues["ecer_characterreferencereviewedid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_conditionnotes")]
 		public string ecer_ConditionNotes
 		{
@@ -411,6 +449,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_date", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationtranscriptreviewedid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_EducationTranscriptReviewedId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_educationtranscriptreviewedid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_educationtranscriptreviewedid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationtranscriptreviewedidname")]
+		public string ecer_EducationTranscriptReviewedIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_educationtranscriptreviewedid"))
+				{
+					return this.FormattedValues["ecer_educationtranscriptreviewedid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1025,6 +1095,44 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_applicationassessment_ApplicationId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_applicationassessment_CharacterReferenceReviewedId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferencereviewedid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_applicationassessment_CharacterReferenceReviewedId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference ecer_applicationassessment_CharacterReferenceReviewedId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_applicationassessment_CharacterReferenceReviewedId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_applicationassessment_CharacterReferenceReviewedId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_applicationassessment_EducationTranscriptReviewedId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationtranscriptreviewedid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_applicationassessment_EducationTranscriptReviewedId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Transcript ecer_applicationassessment_EducationTranscriptReviewedId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_applicationassessment_EducationTranscriptReviewedId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_applicationassessment_EducationTranscriptReviewedId", null, value);
 			}
 		}
 		

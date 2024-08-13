@@ -465,7 +465,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
 
     return new ProfessionalDevelopment(
-        faker.Random.Guid().ToString(),
+        null,
         faker.Random.String2(10),
         faker.Date.Future(),
         faker.Date.Past(),

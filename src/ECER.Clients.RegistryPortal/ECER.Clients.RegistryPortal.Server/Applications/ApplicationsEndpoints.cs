@@ -334,6 +334,9 @@ public record ProfessionalDevelopment([Required] string CertificationNumber, [Re
   [Required]
   public int? NumberOfHours { get; set; }
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
+  public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
+  public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
+  public IEnumerable<string> Files { get; set; } = Array.Empty<string>();
 }
 public record Transcript()
 {
@@ -359,7 +362,6 @@ public record Transcript()
 public record WorkExperienceReference([Required] string FirstName, [Required] string LastName, [Required] string EmailAddress, [Required] int Hours)
 {
   public string? Id { get; set; }
-
   public string? PhoneNumber { get; set; }
 }
 

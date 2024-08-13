@@ -78,6 +78,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Applicantid = "ecer_applicantid";
 			public const string ecer_ApplicantidName = "ecer_applicantidname";
 			public const string ecer_ApplicantidYomiName = "ecer_applicantidyominame";
+			public const string ecer_applicationassessment_EducationTranscriptReviewedId = "ecer_applicationassessment_EducationTranscriptReviewedId";
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
 			public const string ecer_CampusLocation = "ecer_campuslocation";
@@ -1260,6 +1261,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_applicationassessment_EducationTranscriptReviewedId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_applicationassessment_EducationTranscriptReviewedId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment> ecer_applicationassessment_EducationTranscriptReviewedId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_applicationassessment_EducationTranscriptReviewedId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_applicationassessment_EducationTranscriptReviewedId", null, value);
 			}
 		}
 		

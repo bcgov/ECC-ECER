@@ -4,6 +4,10 @@ using ECER.Clients.RegistryPortal.Server.Applications;
 using Shouldly;
 using System.Net;
 using Xunit.Abstractions;
+using System.Net.Http.Headers;
+using Xunit.Categories;
+using ECER.Clients.RegistryPortal.Server.Files;
+using System;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
@@ -12,6 +16,8 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   public ApplicationTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
   }
+
+  private readonly Faker faker = new Faker("en_CA");
 
   [Fact]
   public async Task GetApplications_ReturnsApplications()
@@ -116,10 +122,38 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task SaveDraftApplication_WithProfessionalDevelopment_Saved()
+  public async Task SaveDraftApplication_WithProfessionalDevelopmentAndFiles_Saved()
   {
-    var application = CreateDraftApplication();
+    var fileLength = 1041;
+    var testFile = await faker.GenerateTestFile(fileLength);
+    var testFileId = Guid.NewGuid().ToString();
+    var testFolder = "tempfolder";
+    var testTags = "tag1=1,tag2=2";
+    var testClassification = "test-classification";
+    using var content = new StreamContent(testFile.Content);
+    content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
 
+    using var formData = new MultipartFormDataContent
+        {
+          { content, "file", testFile.FileName }
+        };
+
+    var fileResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithRequestHeader("file-classification", testClassification);
+      _.WithRequestHeader("file-tag", testTags);
+      _.WithRequestHeader("file-folder", testFolder);
+      _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var uploadedFileResponse = (await fileResponse.ReadAsJsonAsync<FileResponse>()).ShouldNotBeNull();
+
+    var professionalDevelopment = CreateProfessionalDevelopment();
+    professionalDevelopment.NewFiles = [testFolder + "/" + uploadedFileResponse.fileId];
+    var application = CreateDraftApplication();
+    application.ProfessionalDevelopments = [professionalDevelopment];
     var response = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
@@ -129,6 +163,21 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var savedApplication = (await response.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull();
     savedApplication.ApplicationId.ShouldBe(application.Id);
+
+    var applicationByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url($"/api/applications/{application.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<Application[]>();
+    var applicationById = applicationsById.ShouldHaveSingleItem();
+    var applicationFromServer = applicationsById[0];
+    applicationFromServer.ProfessionalDevelopments.ShouldHaveSingleItem();
+    var professionalDev = applicationFromServer.ProfessionalDevelopments.First();
+    professionalDev.Files.ShouldHaveSingleItem();
+    professionalDev.Files.First().ShouldContain(uploadedFileResponse.fileId);
   }
 
   [Fact]
@@ -394,7 +443,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         StartDate: faker.Date.Past(),
         EndDate: faker.Date.Recent())
     {
-      Id = faker.Random.Guid().ToString(),
+      Id = null,
       OrganizationContactInformation = faker.Phone.PhoneNumber(),
       InstructorName = faker.Name.FullName(),
       NumberOfHours = faker.Random.Int(1, 100),

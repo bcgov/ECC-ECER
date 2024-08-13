@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Applications;
@@ -9,13 +11,19 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
 {
   private readonly EcerContext context;
   private readonly IMapper mapper;
+  private readonly IObjecStorageProvider objectStorageProvider;
+  private readonly IConfiguration configuration;
 
   public ApplicationRepository(
        EcerContext context,
-       IMapper mapper)
+       IObjecStorageProvider objectStorageProvider,
+       IMapper mapper,
+       IConfiguration configuration)
   {
     this.context = context;
     this.mapper = mapper;
+    this.objectStorageProvider = objectStorageProvider;
+    this.configuration = configuration;
   }
 
   public async Task<IEnumerable<Application>> Query(ApplicationQuery query, CancellationToken cancellationToken)
@@ -37,7 +45,10 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     context.LoadProperties(applications, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer);
     context.LoadProperties(applications, ecer_Application.Fields.ecer_characterreference_Applicationid);
     context.LoadProperties(applications, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi);
-
+    foreach (var application in applications)
+    {
+      context.LoadProperties(application.ecer_ecer_professionaldevelopment_Applicationi, ecer_ProfessionalDevelopment.Fields.ecer_bcgov_documenturl_ProfessionalDevelopmentId);
+    }
     return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
   }
 
@@ -49,11 +60,9 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     if (applicant == null) throw new InvalidOperationException($"Applicant '{application.ApplicantId}' not found");
 
     var ecerApplication = mapper.Map<ecer_Application>(application)!;
-
     var ecerTranscripts = mapper.Map<IEnumerable<ecer_Transcript>>(application.Transcripts)!.ToList();
     var ecerWorkExperienceReferences = mapper.Map<IEnumerable<ecer_WorkExperienceRef>>(application.WorkExperienceReferences)!.ToList();
     var ecerCharacterReferences = mapper.Map<IEnumerable<ecer_CharacterReference>>(application.CharacterReferences)!.ToList();
-    var ecerProfessionalDevelopments = mapper.Map<IEnumerable<ecer_ProfessionalDevelopment>>(application.ProfessionalDevelopments)!.ToList();
 
     if (!ecerApplication.ecer_ApplicationId.HasValue)
     {
@@ -72,7 +81,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);
     }
-    await UpdateProfessionalDevelopments(ecerApplication, ecerProfessionalDevelopments);
+    await UpdateProfessionalDevelopments(ecerApplication, application.ApplicantId, application.ProfessionalDevelopments.ToList(), cancellationToken);
     await UpdateWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     await UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     await UpdateTranscripts(ecerApplication, ecerTranscripts);
