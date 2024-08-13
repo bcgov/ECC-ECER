@@ -125,7 +125,7 @@
         <br />
         <p>What name is shown on your transcript?</p>
         <br />
-        <v-radio-group v-model="previousNameRadio" :rules="[Rules.requiredRadio('Select an option')]">
+        <v-radio-group v-model="previousNameRadio" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="previousNameRadioChanged">
           <v-radio v-for="(step, index) in previousNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
         </v-radio-group>
         <div v-if="previousNameRadio === 'other'">
@@ -227,7 +227,6 @@ interface EceEducationData {
   studentMiddleName: string;
   studentLastName: string;
   isNameUnverified: boolean;
-  initialLoadEdit: boolean;
 }
 
 interface RadioOptions {
@@ -283,7 +282,6 @@ export default defineComponent({
       studentMiddleName: "",
       studentLastName: "",
       isNameUnverified: false,
-      initialLoadEdit: false,
     };
   },
   computed: {
@@ -313,26 +311,6 @@ export default defineComponent({
       return radioOptions;
     },
   },
-  watch: {
-    previousNameRadio(newValue) {
-      if (this.initialLoadEdit && newValue === "other") {
-        //Edge case for first load and name is unverified. Do not wipe out name fields.
-        this.isNameUnverified = true;
-        this.initialLoadEdit = false;
-      } else if (newValue === "other") {
-        this.studentFirstName = "";
-        this.studentMiddleName = "";
-        this.studentLastName = "";
-        this.isNameUnverified = true;
-      } else {
-        this.studentFirstName = newValue?.firstName;
-        this.studentMiddleName = newValue?.middleName;
-        this.studentLastName = newValue?.lastName;
-        this.isNameUnverified = false;
-      }
-    },
-  },
-
   mounted() {
     this.mode = "list";
   },
@@ -393,7 +371,6 @@ export default defineComponent({
       this.mode = "add";
     },
     handleEdit(educationData: EducationData) {
-      this.initialLoadEdit = true;
       // Set the form fields to the education data
       this.id = educationData.education.id ?? "";
       this.clientId = educationData.educationId.toString();
@@ -405,6 +382,7 @@ export default defineComponent({
         (this.studentMiddleName = educationData.education.studentMiddleName ?? ""),
         (this.studentLastName = educationData.education.studentLastName ?? ""),
         (this.studentNumber = educationData.education.studentNumber ?? "");
+      this.isNameUnverified = educationData.education.isNameUnverified;
       this.language = educationData.education.languageofInstruction ?? "";
       this.startYear = formatDate(educationData.education.startDate) ?? "";
       this.endYear = formatDate(educationData.education.endDate) ?? "";
@@ -444,6 +422,19 @@ export default defineComponent({
       }
 
       this.alertStore.setSuccessAlert("You have deleted your education.");
+    },
+    previousNameRadioChanged(option: any) {
+      if (option === "other") {
+        this.studentFirstName = "";
+        this.studentMiddleName = "";
+        this.studentLastName = "";
+        this.isNameUnverified = true;
+      } else {
+        this.studentFirstName = option.firstName;
+        this.studentMiddleName = option.middleName;
+        this.studentLastName = option.lastName;
+        this.isNameUnverified = false;
+      }
     },
     resetFormData() {
       this.id = "";
