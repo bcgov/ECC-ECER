@@ -702,6 +702,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
 			public const string ecer_renewalassessment_ApplicantId = "ecer_renewalassessment_ApplicantId";
 			public const string ecer_Role = "ecer_role";
+			public const string ecer_TempClientID = "ecer_tempclientid";
 			public const string ecer_TermsandConditionsText = "ecer_termsandconditionstext";
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
 			public const string ecer_UnderInvestigation = "ecer_underinvestigation";
@@ -4432,6 +4433,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_role", value);
+			}
+		}
+		
+		/// <summary>
+		/// Portal User may try to claim a Client ID that is only partial match when compare against last name and DOB.  This Temp ID will be set until the person is verified.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_tempclientid")]
+		public string ecer_TempClientID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_tempclientid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_tempclientid", value);
 			}
 		}
 		
