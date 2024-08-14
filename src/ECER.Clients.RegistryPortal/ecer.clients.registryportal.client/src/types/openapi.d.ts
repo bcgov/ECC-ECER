@@ -216,7 +216,7 @@ declare namespace Components {
       educationRecognition?: EducationRecognition;
       explanationLetter?: string | null;
       oneYearRenewalexplanation?: OneYearRenewalexplanations;
-      createdOn?: string; // date-time
+      createdOn?: string | null; // date-time
     }
     /**
      * Save draft application response
@@ -325,6 +325,9 @@ declare namespace Components {
       instructorName?: string | null;
       numberOfHours: number; // int32
       status?: ProfessionalDevelopmentStatusCode;
+      deletedFiles?: string[] | null;
+      newFiles?: string[] | null;
+      files?: string[] | null;
     }
     export type ProfessionalDevelopmentStatusCode =
       | "ApplicationSubmitted"
