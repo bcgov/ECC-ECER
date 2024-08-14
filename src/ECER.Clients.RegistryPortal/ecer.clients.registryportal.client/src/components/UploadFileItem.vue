@@ -35,7 +35,7 @@
       </ul>
     </div>
   </v-list-item>
-  <v-divider></v-divider>
+  <v-divider class="border-opacity-100" color="ash-grey"></v-divider>
 </template>
 
 <script lang="ts">
