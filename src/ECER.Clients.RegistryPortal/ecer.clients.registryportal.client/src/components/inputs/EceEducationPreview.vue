@@ -29,7 +29,7 @@
             <p class="small">Your full name as shown on transcript</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ education.studentName }}</p>
+            <p class="small font-weight-bold">{{ studentFullName(education) }}</p>
           </v-col>
         </v-row>
         <v-row>
@@ -105,6 +105,15 @@ export default defineComponent({
   },
   methods: {
     formatDate,
+    studentFullName(education: Components.Schemas.Transcript) {
+      let fullName = education.studentFirstName;
+      if (education.studentMiddleName) {
+        fullName += ` ${education.studentMiddleName}`;
+      }
+      fullName += ` ${education.studentLastName}`;
+
+      return fullName;
+    },
   },
 });
 </script>

@@ -1,45 +1,166 @@
-﻿using AutoMapper;
-using ECER.Utilities.DataverseSdk.Model;
+﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers.S3;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECER.Resources.Documents.Applications;
 
 internal sealed partial class ApplicationRepository
 {
-  private async Task UpdateProfessionalDevelopments(ecer_Application application, List<ecer_ProfessionalDevelopment> updatedEntities)
+  private async Task UpdateProfessionalDevelopments(ecer_Application application, string ApplicantId, List<ProfessionalDevelopment> updatedEntities, CancellationToken ct)
   {
     await Task.CompletedTask;
-    var existingProfessionalDevelopments = context.ecer_ProfessionalDevelopmentSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
 
+    var existingProfessionalDevelopments = context.ecer_ProfessionalDevelopmentSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
     foreach (var professionalDevelopment in existingProfessionalDevelopments)
     {
-      if (!updatedEntities.Any(t => t.Id == professionalDevelopment.Id))
+      if (!updatedEntities.Any(t => t.Id == professionalDevelopment.Id.ToString()))
       {
+        // This deletes all files and document urls before deleting the professional development object
+        await DeleteFilesForProfessionalDevelopment(professionalDevelopment.ecer_ProfessionalDevelopmentId, Guid.Parse(ApplicantId), ct);
         context.DeleteObject(professionalDevelopment);
       }
     }
 
-    foreach (var professionalDevelopment in updatedEntities.Where(d => d.ecer_ProfessionalDevelopmentId != null))
+    foreach (var professionalDevelopment in updatedEntities.Where(d => !string.IsNullOrEmpty(d.Id)))
     {
-      var oldProfessionalDevelopment = existingProfessionalDevelopments.SingleOrDefault(t => t.Id == professionalDevelopment.Id);
+      var oldProfessionalDevelopment = existingProfessionalDevelopments.SingleOrDefault(t => t.Id.ToString() == professionalDevelopment.Id);
       if (oldProfessionalDevelopment != null)
       {
         context.Detach(oldProfessionalDevelopment);
       }
-      context.Attach(professionalDevelopment);
-      context.UpdateObject(professionalDevelopment);
+
+      var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
+      context.Attach(ecerProfessionalDevelopment);
+      context.UpdateObject(ecerProfessionalDevelopment);
+      await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.NewFiles, professionalDevelopment.DeletedFiles, ct);
     }
 
-    foreach (var professionalDevelopment in updatedEntities.Where(d => d.ecer_ProfessionalDevelopmentId == null))
+    foreach (var professionalDevelopment in updatedEntities.Where(d => string.IsNullOrEmpty(d.Id)))
     {
-      professionalDevelopment.ecer_ProfessionalDevelopmentId = Guid.NewGuid();
-      context.AddObject(professionalDevelopment);
-      context.AddLink(application, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, professionalDevelopment);
+      var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
+      var newId = Guid.NewGuid();
+      ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId = newId;
+      context.AddObject(ecerProfessionalDevelopment);
+      context.AddLink(application, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, ecerProfessionalDevelopment);
+      await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.NewFiles, professionalDevelopment.DeletedFiles, ct);
     }
   }
+
+  private async Task HandleProfessionalDevelopmentFiles(ecer_ProfessionalDevelopment professionalDevelopment, Guid applicantId, IEnumerable<string> tobeAddedFileIds, IEnumerable<string> tobeDeletedFileIds, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    await HandleDeletedFiles(professionalDevelopment, applicantId, tobeDeletedFileIds.ToList(), ct);
+    await HandleAddedFiles(professionalDevelopment, applicantId, tobeAddedFileIds.ToList(), ct);
+  }
+
+  private async Task HandleDeletedFiles(ecer_ProfessionalDevelopment professionalDevelopment, Guid applicantId, List<string> tobeDeletedFileIds, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    foreach (var fileId in tobeDeletedFileIds)
+    {
+      if (professionalDevelopment == null)
+      {
+        throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopment}' not found");
+      }
+      // delete file and related document url
+      await DeleteFileById(fileId, ct);
+    }
+  }
+
+  private async Task DeleteFileById(string filePath, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+
+    var file = context.bcgov_DocumentUrlSet.SingleOrDefault(d => d.bcgov_Url == filePath);
+    if (file == null)
+    {
+      throw new InvalidOperationException($"File with ID '{filePath}' not found");
+    }
+
+    var items = file.bcgov_Url.Split('/');
+    if (items.Length != 2)
+    {
+      throw new FormatException($"Invalid file URL format: {file.bcgov_Url}");
+    }
+
+    var folder = items[0];
+    var fileId = items[1];
+    await objectStorageProvider.DeleteAsync(new S3Descriptor(GetBucketName(configuration), fileId, folder), ct);
+    context.DeleteObject(file);
+  }
+
+  private async Task HandleAddedFiles(ecer_ProfessionalDevelopment professionalDevelopment, Guid applicantId, List<string> tobeAddedFileIds, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+
+    foreach (var fileId in tobeAddedFileIds)
+    {
+      if (professionalDevelopment == null)
+      {
+        throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopment}' not found");
+      }
+      // add file and create document url
+      // link it to professional development
+      await AddFilesForProfessionalDevelopment(professionalDevelopment, applicantId, new List<string>() { fileId }, ct);
+    }
+  }
+
+  private async Task DeleteFilesForProfessionalDevelopment(Guid? professionalDevelopmentId, Guid? applicantId, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+
+    var files = context.bcgov_DocumentUrlSet.Where(d => d.ecer_bcgov_documenturl_ProfessionalDevelopmentId.ecer_ProfessionalDevelopmentId == professionalDevelopmentId && d.bcgov_contact_bcgov_documenturl.ContactId == applicantId).ToList();
+    for (int i = 0; i < files.Count; i++)
+    {
+      var items = files[i].bcgov_Url.Split('/');
+      if (items.Length != 2)
+      {
+        throw new FormatException($"Invalid file URL format: {files[i].bcgov_Url}");
+      }
+      var fileId = items[1];
+      var folder = items[0];
+      await objectStorageProvider.DeleteAsync(new S3Descriptor(GetBucketName(configuration), fileId, folder), ct);
+      context.DeleteObject(files[i]);
+    }
+  }
+
+  private async Task AddFilesForProfessionalDevelopment(ecer_ProfessionalDevelopment professionalDevelopment, Guid? applicantId, List<string> fileUrls, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+
+    foreach (var fileUrl in fileUrls)
+    {
+      var items = fileUrl.Split('/');
+      if (items.Length != 2)
+      {
+        throw new ArgumentException($"Invalid file URL format: {fileUrl}");
+      }
+
+      var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == applicantId);
+      if (applicant == null) throw new InvalidOperationException($"Applicant '{applicantId}' not found");
+
+      if (professionalDevelopment == null) throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopment}' not found");
+
+      var sourceFolder = items[0];
+      var destinationFolder = "ecer_professionaldevelopment";
+      var fileId = items[1];
+      var file = await objectStorageProvider.GetAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), ct);
+      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+
+      var documenturl = new bcgov_DocumentUrl()
+      {
+        bcgov_Url = string.Format("{0}/{1}", destinationFolder, fileId),
+        StatusCode = bcgov_DocumentUrl_StatusCode.Active,
+        StateCode = bcgov_documenturl_statecode.Active
+      };
+
+      context.AddObject(documenturl);
+      context.AddLink(documenturl, bcgov_DocumentUrl.Fields.bcgov_contact_bcgov_documenturl, applicant);
+      context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_ProfessionalDevelopmentId, professionalDevelopment);
+    }
+  }
+
+  private static string GetBucketName(IConfiguration configuration) =>
+  configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }

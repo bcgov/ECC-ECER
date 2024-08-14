@@ -68,11 +68,12 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
 
-public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested)
+public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested, string StudentFirstName, string StudentLastName, bool IsNameUnverified)
 {
   public string? CampusLocation { get; set; }
   public string? LanguageofInstruction { get; set; }
   public TranscriptStage? Status { get; set; }
+  public string? StudentMiddleName { get; set; }
 }
 
 public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
@@ -90,6 +91,9 @@ public record ProfessionalDevelopment(string? Id, string? CertificationNumber, D
   public string? InstructorName { get; set; }
   public int? NumberOfHours { get; set; }
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
+  public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
+  public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
+  public IEnumerable<string> Files { get; set; } = Array.Empty<string>();
 }
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {

@@ -216,7 +216,7 @@ declare namespace Components {
       educationRecognition?: EducationRecognition;
       explanationLetter?: string | null;
       oneYearRenewalexplanation?: OneYearRenewalexplanations;
-      createdOn?: string; // date-time
+      createdOn?: string | null; // date-time
     }
     /**
      * Save draft application response
@@ -325,6 +325,9 @@ declare namespace Components {
       instructorName?: string | null;
       numberOfHours: number; // int32
       status?: ProfessionalDevelopmentStatusCode;
+      deletedFiles?: string[] | null;
+      newFiles?: string[] | null;
+      files?: string[] | null;
     }
     export type ProfessionalDevelopmentStatusCode =
       | "ApplicationSubmitted"
@@ -402,14 +405,17 @@ declare namespace Components {
       educationalInstitutionName: string;
       programName: string;
       campusLocation?: string | null;
-      studentName: string;
-      studentNumber: string;
+      studentFirstName: string;
+      studentLastName: string;
+      studentMiddleName?: string | null;
+      studentNumber?: string | null;
       languageofInstruction?: string | null;
       startDate: string; // date-time
       endDate: string; // date-time
       isECEAssistant?: boolean;
       doesECERegistryHaveTranscript?: boolean;
       isOfficialTranscriptRequested?: boolean;
+      isNameUnverified: boolean;
     }
     export type TranscriptStage = "Accepted" | "ApplicationSubmitted" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "WaitingforDetails";
     export interface TranscriptStatus {
