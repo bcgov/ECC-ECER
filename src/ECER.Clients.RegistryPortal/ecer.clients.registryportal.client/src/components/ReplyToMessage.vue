@@ -21,27 +21,7 @@
             ></v-textarea>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col>
-            <p>
-              <v-icon size="large" icon="mdi-attachment" />
-              Attachments
-            </p>
-            <p>You can only upload PDF files up to 10MB.</p>
-            <v-btn prepend-icon="mdi-plus" variant="text" color="primary" class="mt-3" @click="triggerFileInput">Add file</v-btn>
-            <v-file-input ref="fileInput" style="display: none" multiple accept="application/pdf" @change="handleFileUpload"></v-file-input>
-
-            <v-list lines="two" class="flex-grow-1 message-list">
-              <UploadFileItem
-                v-for="(file, index) in selectedFiles"
-                :key="index"
-                :file-item="file"
-                :upload-progress="file.progress"
-                @delete-file="removeFile"
-              />
-            </v-list>
-          </v-col>
-        </v-row>
+        <FileUploader @update:files="handleFileUpdate" />
         <v-row class="mt-10">
           <v-col>
             <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')" @click="handleReplyToMessage">Send</v-btn>
@@ -65,32 +45,29 @@
 </template>
 
 <script lang="ts">
-import type { AxiosProgressEvent } from "axios";
-import { v4 as uuidv4 } from "uuid";
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import { deleteFile, uploadFile } from "@/api/file";
 import { getChildMessages, sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
+import FileUploader from "@/components/FileUploader.vue";
 import PageContainer from "@/components/PageContainer.vue";
-import UploadFileItem, { type FileItem } from "@/components/UploadFileItem.vue";
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useMessageStore } from "@/store/message";
 import * as Rules from "@/utils/formRules";
-import * as Functions from "@/utils/functions";
 
 interface ReplyToMessageData {
-  selectedFiles: FileItem[];
   text: string;
   Rules: any;
   showCloseDialog: boolean;
+  areAttachedFilesValid: boolean;
+  isFileUploadInProgress: boolean;
 }
 
 export default defineComponent({
   name: "ReplyToMessage",
-  components: { PageContainer, ConfirmationDialog, UploadFileItem },
+  components: { PageContainer, ConfirmationDialog, FileUploader },
   async setup() {
     const messageStore = useMessageStore();
     const loadingStore = useLoadingStore();
@@ -116,100 +93,55 @@ export default defineComponent({
   },
   data(): ReplyToMessageData {
     return {
-      selectedFiles: [],
       text: " ",
       Rules,
       showCloseDialog: false,
+      areAttachedFilesValid: true,
+      isFileUploadInProgress: false,
     };
   },
   methods: {
     async handleReplyToMessage() {
-      if (this.text.trim().length > 0) {
-        const { error } = await sendMessage({ communication: { id: this.messageId, text: this.text } });
-        if (error) {
-          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+      if (!this.isFileUploadInProgress) {
+        if (this.areAttachedFilesValid) {
+          if (this.text.trim().length > 0) {
+            const { error } = await sendMessage({ communication: { id: this.messageId, text: this.text } });
+            if (error) {
+              this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+            } else {
+              this.alertStore.setSuccessAlert("Message sent successfully.");
+              this.router.push("/messages");
+            }
+          } else {
+            this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+          }
         } else {
-          this.alertStore.setSuccessAlert("Message sent successfully.");
-          this.router.push("/messages");
+          this.alertStore.setFailureAlert("You must upload vaid files.");
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        this.alertStore.setFailureAlert("Uploading files. You need to wait until files are uploaded to send this message.");
       }
     },
-    handleFileUpload(event: Event) {
-      const target = event.target as HTMLInputElement;
-      const files = target.files;
-      if (files) {
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          if (file.size > 10 * 1024 * 1024) {
-            this.alertStore.setFailureAlert("File size exceeds the 10MB limit.");
-            continue; // Skip this file and continue with the next one
-          }
-          if (file.type !== "application/pdf") {
-            this.alertStore.setFailureAlert("File type must be PDF.");
-            continue; // Skip this file and continue with the next one
-          }
-          if (this.selectedFiles.some((f: FileItem) => f.file.name === file.name)) {
-            this.alertStore.setFailureAlert("File with the same name already exists.");
-            continue; // Skip this file and continue with the next one
-          }
-          const fileId = uuidv4(); // Generate a unique file ID using uuid
-          const selectedFile = { file, progress: 0, fileId };
-          this.selectedFiles.push(selectedFile);
-          this.uploadFileWithProgress(selectedFile);
-        }
-      }
-    },
-    async uploadFileWithProgress(selectedFile: FileItem) {
-      const fileClassification = "document";
-      const fileTags = this.formatFileTags(selectedFile.file);
-      try {
-        const response = await uploadFile(selectedFile.fileId, selectedFile.file, fileClassification, fileTags, (progressEvent: AxiosProgressEvent) => {
-          const fileIndex = this.selectedFiles.findIndex((f: FileItem) => f.fileId === selectedFile.fileId);
-          const total = progressEvent.total ? progressEvent.total : 10485760;
-          const progress = Math.round((progressEvent.loaded * 100) / total);
-          if (fileIndex > -1) {
-            this.selectedFiles[fileIndex].progress = progress;
-          }
-        });
-        if (response.data) {
-          const fileIndex = this.selectedFiles.findIndex((f: FileItem) => f.fileId === selectedFile.fileId);
-          this.selectedFiles[fileIndex].progress = 101; // means API call was successful
-        } else {
-          this.removeFile(selectedFile);
-          this.alertStore.setFailureAlert("An error occurred during file upload");
-        }
-      } catch (error) {
-        this.removeFile(selectedFile);
-        this.alertStore.setFailureAlert("An error occurred during file upload");
-        console.log(error);
-      }
-    },
-    formatFileTags(file: File): string {
-      const fileName = file.name;
-      const fileSize = Functions.humanFileSize(file.size); // Convert size to KB
-      const fileFormat = file.name.split(".").pop(); // Get file extension
 
-      const tags = {
-        Name: fileName,
-        Size: fileSize,
-        Format: fileFormat,
-      };
-      return Object.entries(tags)
-        .map(([key, value]) => `${key}=${value}`)
-        .join(",");
-    },
-    async removeFile(selectedFile: FileItem) {
-      try {
-        this.selectedFiles = this.selectedFiles.filter((f: FileItem) => f.fileId !== selectedFile.fileId);
-        await deleteFile(selectedFile.fileId);
-      } catch (error) {
-        this.alertStore.setFailureAlert("An error occurred during file deletion.");
+    handleFileUpdate(filesArray: any[]) {
+      this.areAttachedFilesValid = true;
+      this.isFileUploadInProgress = false;
+      if (filesArray && filesArray.length > 0) {
+        for (let i = 0; i < filesArray.length; i++) {
+          const file = filesArray[i];
+          if (!(file.fileErrors.length > 0) && file.progress < 101) {
+            this.isFileUploadInProgress = true;
+            break;
+          }
+        }
+        for (let i = 0; i < filesArray.length; i++) {
+          const file = filesArray[i];
+          if (file.fileErrors && file.fileErrors.length > 0) {
+            this.areAttachedFilesValid = false;
+            break;
+          }
+        }
       }
-    },
-    triggerFileInput() {
-      (this.$refs.fileInput as any).click();
     },
   },
 });

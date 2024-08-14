@@ -8,22 +8,32 @@
           <p class="text-no-wrap">&nbsp;({{ Functions.humanFileSize(fileItem.file.size) }})</p>
         </div>
       </v-col>
+      <v-col cols="2">
+        <v-icon v-if="fileItem.fileErrors.length > 0" color="#CE3E39" icon="mdi-alert-circle"></v-icon>
+      </v-col>
 
       <!-- Progress Bar or Upload Completed -->
       <v-col cols="4">
-        <div v-if="isUploadComplete">Upload completed</div>
-        <v-progress-linear v-else :model-value="uploadProgress" height="20" color="primary"></v-progress-linear>
+        <div v-if="!(fileItem.fileErrors.length > 0)">
+          <div v-if="isUploadComplete">Upload complete</div>
+          <v-progress-linear v-else :model-value="uploadProgress" height="20" color="primary"></v-progress-linear>
+        </div>
       </v-col>
 
       <!-- Delete Button -->
-      <v-col cols="4" class="d-flex justify-end">
+      <v-col cols="2" class="d-flex justify-end">
         <v-tooltip text="Delete" location="top">
           <template #activator="{ props }">
-            <v-btn v-if="isUploadComplete" v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteFile" />
+            <v-btn v-if="fileItem.fileErrors.length > 0 || isUploadComplete" v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteFile" />
           </template>
         </v-tooltip>
       </v-col>
     </v-row>
+    <div v-if="errors.length > 0" style="color: #ea4335">
+      <ul>
+        <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
+      </ul>
+    </div>
   </v-list-item>
   <v-divider></v-divider>
 </template>
@@ -37,6 +47,7 @@ export interface FileItem {
   file: File;
   fileId: string;
   progress: number;
+  fileErrors: string[];
 }
 
 export default defineComponent({
@@ -50,6 +61,7 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    errors: { type: Array, required: true },
   },
   emits: ["delete-file"], // Declare the delete-file event here
   data() {
