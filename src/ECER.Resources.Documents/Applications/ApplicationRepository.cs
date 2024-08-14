@@ -47,7 +47,10 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     context.LoadProperties(applications, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi);
     foreach (var application in applications)
     {
-      context.LoadProperties(application.ecer_ecer_professionaldevelopment_Applicationi, ecer_ProfessionalDevelopment.Fields.ecer_bcgov_documenturl_ProfessionalDevelopmentId);
+      if (application.ecer_ecer_professionaldevelopment_Applicationi != null)
+      {
+        context.LoadProperties(application.ecer_ecer_professionaldevelopment_Applicationi, ecer_ProfessionalDevelopment.Fields.ecer_bcgov_documenturl_ProfessionalDevelopmentId);
+      }
     }
     return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
   }

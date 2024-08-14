@@ -23,7 +23,7 @@ export const useApplicationStore = defineStore("application", {
       characterReferences: [] as Components.Schemas.CharacterReference[],
       workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
       applicationType: "New",
-      createdOn: "",
+      createdOn: null,
     },
     application: null,
   }),
