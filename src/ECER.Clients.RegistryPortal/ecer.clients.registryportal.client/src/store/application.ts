@@ -97,10 +97,14 @@ export const useApplicationStore = defineStore("application", {
       this.draftApplication.stage = wizardStore.currentStepStage as ApplicationStage;
 
       // Education step data
-      this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
+      if (wizardStore.wizardConfig.steps?.education?.form.inputs.educationList.id) {
+        this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
+      }
 
       // Work References step data
-      this.draftApplication.workExperienceReferences = Object.values(wizardStore.wizardData.referenceList);
+      if (wizardStore.wizardData.referenceList) {
+        this.draftApplication.workExperienceReferences = Object.values(wizardStore.wizardData.referenceList);
+      }
 
       // Character References step data
       if (

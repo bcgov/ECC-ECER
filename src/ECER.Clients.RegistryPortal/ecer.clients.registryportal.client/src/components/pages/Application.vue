@@ -89,11 +89,11 @@ export default defineComponent({
     if (userProfile !== null) {
       userStore.setUserProfile(userProfile);
     }
-    const latestCeritificateIsExpired = (dt: string) => {
+    const latestCertificateIsExpired = (dt: string) => {
       return DateTime.fromISO(dt) > DateTime.fromISO(certificationStore?.latestCertification?.expiryDate!);
     };
 
-    const latestCeritificateExpiredMoreThan5Years = (dt1: string) => {
+    const latestCertificateExpiredMoreThan5Years = (dt1: string) => {
       const dt2 = DateTime.fromISO(certificationStore.latestCertification?.expiryDate!);
       const differenceInYears = Math.abs(DateTime.fromISO(dt1).diff(dt2, "years").years);
       return differenceInYears > 5;
@@ -107,22 +107,22 @@ export default defineComponent({
         wizardConfigSetup = applicationWizardRenewAssistant;
       } else if (applicationStore.isDraftCertificateTypeOneYear) {
         {
-          if (!latestCeritificateIsExpired(draftApplicationCreatedOn)) {
-            await wizardStore.initializeWizard(applicationWizardRenewOneYearActive, applicationStore.draftApplication);
+          if (!latestCertificateIsExpired(draftApplicationCreatedOn)) {
+            await wizardStore.initializeWizardRenewOneYearActive(applicationWizardRenewOneYearActive, applicationStore.draftApplication);
             wizardConfigSetup = applicationWizardRenewOneYearActive;
-          } else if (!latestCeritificateExpiredMoreThan5Years(applicationStore.draftApplication.createdOn!)) {
+          } else if (!latestCertificateExpiredMoreThan5Years(applicationStore.draftApplication.createdOn!)) {
             await wizardStore.initializeWizard(applicationWizardRenewOneYearExpired, applicationStore.draftApplication);
             wizardConfigSetup = applicationWizardRenewOneYearExpired;
           }
         }
       } else if (applicationStore.isDraftCertificateTypeFiveYears) {
-        if (!latestCeritificateIsExpired(draftApplicationCreatedOn)) {
+        if (!latestCertificateIsExpired(draftApplicationCreatedOn)) {
           await wizardStore.initializeWizard(applicationWizardRenewFiveYearActive, applicationStore.draftApplication);
           wizardConfigSetup = applicationWizardRenewFiveYearActive;
-        } else if (!latestCeritificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
+        } else if (!latestCertificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
           await wizardStore.initializeWizard(applicationWizardRenewFiveYearExpiredLessThan5Years, applicationStore.draftApplication);
           wizardConfigSetup = applicationWizardRenewFiveYearExpiredLessThan5Years;
-        } else if (latestCeritificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
+        } else if (latestCertificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
           await wizardStore.initializeWizard(applicationWizardRenewFiveYearExpiredMoreThan5Years, applicationStore.draftApplication);
           wizardConfigSetup = applicationWizardRenewFiveYearExpiredMoreThan5Years;
         }
@@ -181,6 +181,7 @@ export default defineComponent({
             this.saveProfile();
             this.incrementWizard();
             break;
+          case "ExplanationLetter":
           case "Education":
           case "WorkReferences":
           case "CharacterReferences":

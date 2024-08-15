@@ -27,3 +27,4 @@ type ApplicationStage =
   | "Review";
 type RenewalAssitantStage = "Declaration" | "ContactInformation" | "Review";
 type ReferenceStage = "Declaration" | "Decline" | "ContactInformation" | "Assessment" | "Review" | "ReferenceEvaluation";
+type RenewStage = "ExplanationLetter";
