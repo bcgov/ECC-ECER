@@ -49,6 +49,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import type { VForm } from "vuetify/components";
 
 import { getChildMessages, sendMessage } from "@/api/message";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
@@ -106,7 +107,7 @@ export default defineComponent({
   },
   methods: {
     async handleReplyToMessage() {
-      const { valid } = await (this.$refs.replyForm as any).validate();
+      const { valid } = await (this.$refs.replyForm as VForm).validate();
       if (this.isFileUploadInProgress) {
         this.alertStore.setFailureAlert("Uploading files. You need to wait until files are uploaded to send this message.");
       } else if (!this.areAttachedFilesValid) {
