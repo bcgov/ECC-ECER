@@ -1,0 +1,29 @@
+﻿using ECER.Managers.Registry.Contract.Applications;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace ECER.Engines.Validation.Applications;
+
+public interface IApplicationValidationEngineResolver
+{
+  IApplicationValidationEngine Resolve(ApplicationTypes appType);
+}
+
+public class ApplicationValidationEngineResolver : IApplicationValidationEngineResolver
+{
+  private readonly IServiceProvider _serviceProvider;
+
+  public ApplicationValidationEngineResolver(IServiceProvider serviceProvider)
+  {
+    _serviceProvider = serviceProvider;
+  }
+
+  public IApplicationValidationEngine Resolve(ApplicationTypes appType)
+  {
+    return appType switch
+    {
+      ApplicationTypes.New => _serviceProvider.GetRequiredService<ApplicationSubmissionValidationEngine>(),
+      ApplicationTypes.Renewal => _serviceProvider.GetRequiredService<ApplicationRenewalValidationEngine>(),
+      _ => throw new ArgumentOutOfRangeException(nameof(appType), appType, null)
+    };
+  }
+}

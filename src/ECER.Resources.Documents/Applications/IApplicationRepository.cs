@@ -52,6 +52,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public EducationRecognition? EducationRecognition { get; set; }
   public string? ExplanationLetter { get; set; }
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
+  public string? CertificateId { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested, string StudentFirstName, string StudentLastName, bool IsNameUnverified)

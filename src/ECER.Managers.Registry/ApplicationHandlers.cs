@@ -19,7 +19,7 @@ public class ApplicationHandlers(
     IPortalInvitationRepository portalInvitationRepository,
      IApplicationRepository applicationRepository,
      IMapper mapper,
-     IApplicationSubmissionValidationEngine validationEngine,
+     IApplicationValidationEngineResolver validationResolver,
      EcerContext ecerContext)
   : IRequestHandler<SaveDraftApplicationCommand, string>,
     IRequestHandler<CancelDraftApplicationCommand, string>,
@@ -109,6 +109,7 @@ public class ApplicationHandlers(
     }
     var draftApplication = draftApplicationResults.Items.First();
 
+    var validationEngine = validationResolver?.Resolve(draftApplication.ApplicationType);
     var validationErrors = await validationEngine?.Validate(draftApplication)!;
     if (validationErrors.ValidationErrors.Any())
     {
