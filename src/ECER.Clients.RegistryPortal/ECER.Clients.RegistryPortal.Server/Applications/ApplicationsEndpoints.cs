@@ -305,7 +305,6 @@ public record DraftApplication
   public string? ExplanationLetter { get; set; }
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
   public DateTime? CreatedOn { get; set; }
-  public bool IsRenewal { get; set; }
 }
 
 public record Application
