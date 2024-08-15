@@ -169,7 +169,7 @@ export default defineComponent({
         this.errorBannerMessage = `The maximum number of files allowed for upload is ${this.maxNumberOfFiles} files. Remove some files and try again.`;
       } else {
         this.showErrorBanner = false;
-        (this.$refs.fileInput as any).click();
+        (this.$refs.fileInput as HTMLInputElement).click();
       }
     },
     updateEmit() {

@@ -5,28 +5,30 @@
         <v-btn prepend-icon="mdi-close" variant="text" text="Close" @click="showCloseDialog = true"></v-btn>
         <hr class="w-full" />
         <h1 class="mt-5">Re: {{ messageThreadSubject }}</h1>
-        <v-row class="mt-5">
-          <v-col>
-            <div>Message</div>
-            <v-textarea
-              v-model="text"
-              class="mt-2"
-              auto-grow
-              counter="1000"
-              maxlength="1000"
-              color="primary"
-              variant="outlined"
-              hide-details="auto"
-              :rules="[Rules.required('Enter a message no longer than 1000 characters')]"
-            ></v-textarea>
-          </v-col>
-        </v-row>
-        <FileUploader @update:files="handleFileUpdate" />
-        <v-row class="mt-10">
-          <v-col>
-            <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')" @click="handleReplyToMessage">Send</v-btn>
-          </v-col>
-        </v-row>
+        <v-form ref="replyForm" v-model="formValid">
+          <v-row class="mt-5">
+            <v-col>
+              <div>Message</div>
+              <v-textarea
+                v-model="text"
+                class="mt-2"
+                auto-grow
+                counter="1000"
+                maxlength="1000"
+                color="primary"
+                variant="outlined"
+                hide-details="auto"
+                :rules="[Rules.required('Enter a message no longer than 1000 characters')]"
+              ></v-textarea>
+            </v-col>
+          </v-row>
+          <FileUploader @update:files="handleFileUpdate" />
+          <v-row class="mt-10">
+            <v-col>
+              <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')" @click="handleReplyToMessage">Send</v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
       </v-col>
     </v-row>
   </PageContainer>
@@ -63,6 +65,7 @@ interface ReplyToMessageData {
   showCloseDialog: boolean;
   areAttachedFilesValid: boolean;
   isFileUploadInProgress: boolean;
+  formValid: boolean;
 }
 
 export default defineComponent({
@@ -93,33 +96,31 @@ export default defineComponent({
   },
   data(): ReplyToMessageData {
     return {
-      text: " ",
+      text: "",
       Rules,
       showCloseDialog: false,
       areAttachedFilesValid: true,
       isFileUploadInProgress: false,
+      formValid: false,
     };
   },
   methods: {
     async handleReplyToMessage() {
-      if (!this.isFileUploadInProgress) {
-        if (this.areAttachedFilesValid) {
-          if (this.text.trim().length > 0) {
-            const { error } = await sendMessage({ communication: { id: this.messageId, text: this.text } });
-            if (error) {
-              this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
-            } else {
-              this.alertStore.setSuccessAlert("Message sent successfully.");
-              this.router.push("/messages");
-            }
-          } else {
-            this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
-          }
+      const { replyFormValid } = await (this.$refs.replyForm as any).validate();
+      if (this.isFileUploadInProgress) {
+        this.alertStore.setFailureAlert("Uploading files. You need to wait until files are uploaded to send this message.");
+      } else if (!this.areAttachedFilesValid) {
+        this.alertStore.setFailureAlert("You must upload valid files.");
+      } else if (replyFormValid) {
+        const { error } = await sendMessage({ communication: { id: this.messageId, text: this.text } });
+        if (error) {
+          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
         } else {
-          this.alertStore.setFailureAlert("You must upload vaid files.");
+          this.alertStore.setSuccessAlert("Message sent successfully.");
+          this.router.push("/messages");
         }
       } else {
-        this.alertStore.setFailureAlert("Uploading files. You need to wait until files are uploaded to send this message.");
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
       }
     },
 
