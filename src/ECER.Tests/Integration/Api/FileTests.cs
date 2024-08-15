@@ -1,8 +1,7 @@
-﻿using System.Net.Http.Headers;
-using Alba;
+﻿using Alba;
 using Bogus;
-using ECER.Tests.Integration;
 using Shouldly;
+using System.Net.Http.Headers;
 using Xunit.Abstractions;
 using Xunit.Categories;
 

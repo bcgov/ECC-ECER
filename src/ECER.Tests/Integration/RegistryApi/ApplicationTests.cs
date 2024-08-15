@@ -1,13 +1,11 @@
 ﻿using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Applications;
+using ECER.Clients.RegistryPortal.Server.Files;
 using Shouldly;
 using System.Net;
-using Xunit.Abstractions;
 using System.Net.Http.Headers;
-using Xunit.Categories;
-using ECER.Clients.RegistryPortal.Server.Files;
-using System;
+using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.RegistryApi;
 

@@ -6,15 +6,15 @@ namespace ECER.Tests.Unit;
 
 public class AutoMapperValidation
 {
-    [Fact]
-    public void Validate()
-    {
-        var mapperConfig = new MapperConfiguration(cfg =>
-         {
-             cfg.AddMaps(ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER"));
-             cfg.EnableEnumMappingValidation();
-         });
+  [Fact]
+  public void Validate()
+  {
+    var mapperConfig = new MapperConfiguration(cfg =>
+     {
+       cfg.AddMaps(ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER"));
+       cfg.EnableEnumMappingValidation();
+     });
 
-        mapperConfig.AssertConfigurationIsValid();
-    }
+    mapperConfig.AssertConfigurationIsValid();
+  }
 }

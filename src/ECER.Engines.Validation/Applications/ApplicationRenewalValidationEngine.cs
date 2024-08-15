@@ -1,5 +1,6 @@
 ﻿using ECER.Managers.Registry.Contract.Applications;
 using ECER.Resources.Documents.Certifications;
+using System.Runtime.CompilerServices;
 
 namespace ECER.Engines.Validation.Applications;
 
@@ -7,7 +8,7 @@ internal sealed partial class ApplicationRenewalValidationEngine : IApplicationV
 {
   private ICertificationRepository _certificateRepository;
 
-  private ApplicationRenewalValidationEngine(ICertificationRepository certificationRepository)
+  public ApplicationRenewalValidationEngine(ICertificationRepository certificationRepository)
   {
     _certificateRepository = certificationRepository;
   }

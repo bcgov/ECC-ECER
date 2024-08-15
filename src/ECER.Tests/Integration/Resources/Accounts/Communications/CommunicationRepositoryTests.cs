@@ -1,5 +1,4 @@
-﻿using ECER.Managers.Registry.Contract.Communications;
-using ECER.Resources.Accounts.Communications;
+﻿using ECER.Resources.Accounts.Communications;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
