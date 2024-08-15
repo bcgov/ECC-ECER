@@ -106,12 +106,12 @@ export default defineComponent({
   },
   methods: {
     async handleReplyToMessage() {
-      const { replyFormValid } = await (this.$refs.replyForm as any).validate();
+      const { valid } = await (this.$refs.replyForm as any).validate();
       if (this.isFileUploadInProgress) {
         this.alertStore.setFailureAlert("Uploading files. You need to wait until files are uploaded to send this message.");
       } else if (!this.areAttachedFilesValid) {
         this.alertStore.setFailureAlert("You must upload valid files.");
-      } else if (replyFormValid) {
+      } else if (valid) {
         const { error } = await sendMessage({ communication: { id: this.messageId, text: this.text } });
         if (error) {
           this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
