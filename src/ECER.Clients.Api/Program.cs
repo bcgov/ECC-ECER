@@ -78,7 +78,7 @@ public class Program
       builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
       builder.Services.AddHttpClient();
 
-      builder.ConfigureComponents();
+      builder.ConfigureComponents(logger);
 
       var app = builder.Build();
 

@@ -1,5 +1,7 @@
 ﻿using Alba;
 using ECER.Clients.RegistryPortal.Server;
+using ECER.Managers.Admin;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
 
@@ -37,5 +39,13 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
 
     var siteKey = await siteKeyResponse.ReadAsJsonAsync<string>();
     siteKey.ShouldNotBeNull();
+  }
+
+  [Fact]
+  public async Task GetProvinces_Returned()
+  {
+    var manager = Fixture.Services.GetRequiredService<MetadataHandlers>();
+    var provinces = await manager.Handle(new ECER.Managers.Admin.Contract.Metadatas.ProvincesQuery(), default);
+    provinces.Items.ShouldNotBeEmpty();
   }
 }

@@ -5,15 +5,17 @@ using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.Dataverse;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.Xrm.Sdk;
 using Shouldly;
+using Xunit.Abstractions;
 using Xunit.Categories;
 
 namespace ECER.Tests.Integration.Utilities.ObjectStorage;
 
 [IntegrationTest]
-public class DataverseObjectStorageTests : IAsyncLifetime
+public class DataverseObjectStorageTests(ITestOutputHelper testOutput) : IAsyncLifetime
 {
   private readonly Faker faker = new Faker();
 
@@ -59,8 +61,12 @@ public class DataverseObjectStorageTests : IAsyncLifetime
     }).Build();
     var services = new ServiceCollection().AddLogging();
     var dataverseConfigurer = new ECER.Utilities.DataverseSdk.Configurer();
-    var objectStorageConfigurer = new ECER.Utilities.ObjectStorage.Providers.Configurer();
-    var cfgContext = new ConfigurationContext(services, configurationWithoutObjectStorage);
+    var objectStorageConfigurer = new Configurer();
+#pragma warning disable CA2000 // Dispose objects before losing scope
+    var logger = new LoggerFactory().AddXUnit(testOutput).CreateLogger(typeof(Configurer));
+#pragma warning restore CA2000 // Dispose objects before losing scope
+
+    var cfgContext = new ConfigurationContext(services, configurationWithoutObjectStorage, logger);
 
     dataverseConfigurer.Configure(cfgContext);
     objectStorageConfigurer.Configure(cfgContext);
