@@ -1,7 +1,12 @@
 <template>
   <Wizard :ref="'wizard'" :wizard="wizardConfigSetup">
     <template #header>
-      <WizardHeader class="mb-6" :handle-save-draft="handleSaveAsDraft" :show-save-button="showSaveButtons" />
+      <WizardHeader
+        class="mb-6"
+        :is-renewal="applicationStore?.draftApplication.applicationType === 'Renewal'"
+        :handle-save-draft="handleSaveAsDraft"
+        :show-save-button="showSaveButtons"
+      />
       <v-container>
         <!-- prettier-ignore -->
         <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" href="#" @click.prevent="handleBack">
@@ -182,6 +187,7 @@ export default defineComponent({
             this.incrementWizard();
             break;
           case "ExplanationLetter":
+          case "SingleEducation":
           case "Education":
           case "WorkReferences":
           case "CharacterReferences":
@@ -224,6 +230,9 @@ export default defineComponent({
       switch (this.wizardStore.currentStepStage) {
         case "ContactInformation":
           await this.saveProfile();
+          break;
+        case "SingleEducation":
+          console.log("do not allow partial saves");
           break;
         default:
           await this.saveDraftAndAlertSuccess();

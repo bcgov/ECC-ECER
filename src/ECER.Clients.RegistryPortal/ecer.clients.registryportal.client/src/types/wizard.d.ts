@@ -1,7 +1,7 @@
 import type { Form } from "@/types/form";
 
 interface Step {
-  stage: ApplicationStage | ReferenceStage;
+  stage: ApplicationStage | ReferenceStage | RenewStage;
   title: string;
   subtitle?: string;
   form: Form;
@@ -25,6 +25,5 @@ type ApplicationStage =
   | "CharacterReferences"
   | "WorkReferences"
   | "Review";
-type RenewalAssitantStage = "Declaration" | "ContactInformation" | "Review";
 type ReferenceStage = "Declaration" | "Decline" | "ContactInformation" | "Assessment" | "Review" | "ReferenceEvaluation";
-type RenewStage = "ExplanationLetter";
+type RenewStage = "ContactInformation" | "ExplanationLetter" | "SingleEducation" | "CharacterReferences" | "WorkReferences" | "Review";

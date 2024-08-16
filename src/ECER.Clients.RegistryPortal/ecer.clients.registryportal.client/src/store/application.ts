@@ -79,12 +79,15 @@ export const useApplicationStore = defineStore("application", {
 
       const { data: applications } = await getApplications();
       // Load the first application as the current draft application
-      if (applications?.length && applications.length > 0) {
+      let filteredApplications = applications?.filter((application) => application.status !== "Decision");
+      if (filteredApplications?.length && filteredApplications.length > 0) {
         this.applications = applications;
-        this.application = applications[0];
+        this.application = filteredApplications[0];
 
-        if (this.application.status === "Draft") {
-          this.draftApplication = this.application;
+        let draftApplication = filteredApplications.find((app) => app.status === "Draft");
+
+        if (draftApplication) {
+          this.draftApplication = draftApplication;
         }
       }
 
