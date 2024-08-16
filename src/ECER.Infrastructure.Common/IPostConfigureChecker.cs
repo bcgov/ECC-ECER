@@ -4,7 +4,10 @@ namespace ECER.Infrastructure.Common;
 
 public interface IPostConfigureChecker
 {
-    Task<bool> Check(CheckContext context, CancellationToken ct);
+  /// <summary>
+  /// Runs startup health check; if throws exception it is considered unhealthy, if completed successfully it is considered healthy
+  /// </summary>
+  Task Check(CheckContext context, CancellationToken ct);
 }
 
 public record CheckContext(IServiceProvider Services, IConfiguration Configuration);

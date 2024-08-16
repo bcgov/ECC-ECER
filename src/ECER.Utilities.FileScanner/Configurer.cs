@@ -8,11 +8,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Utilities.FileScanner;
 
-public class Configurer : IConfigureComponents
+public class Configurer : IConfigureComponents, IPostConfigureChecker
 {
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
-    var clamAvSettings = configurationContext.Configuration.GetSection("fileScanner").Get<ClamAvProviderSettings>();
+    var clamAvSettings = GetSettings(configurationContext.Configuration);
     if (clamAvSettings != null && !string.IsNullOrWhiteSpace(clamAvSettings.Url))
     {
       configurationContext.logger.LogInformation("Configuring file scanning using {Url}:{Port}", clamAvSettings.Url, clamAvSettings.Port);
@@ -29,4 +29,17 @@ public class Configurer : IConfigureComponents
       configurationContext.Services.AddSingleton<IFileScannerProvider, NoopScanner>();
     }
   }
+
+  public async Task Check([NotNull] CheckContext context, CancellationToken ct)
+  {
+    var clamAvSettings = GetSettings(context.Configuration);
+    if (clamAvSettings != null && !string.IsNullOrWhiteSpace(clamAvSettings.Url))
+    {
+      var client = context.Services.GetRequiredService<IClamClient>();
+      await client.PingAsync(ct);
+    }
+  }
+
+  private static ClamAvProviderSettings? GetSettings(IConfiguration configuration)
+    => configuration.GetSection("fileScanner").Get<ClamAvProviderSettings>();
 }
