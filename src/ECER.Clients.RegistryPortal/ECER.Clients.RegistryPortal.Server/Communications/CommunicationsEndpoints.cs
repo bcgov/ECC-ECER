@@ -132,6 +132,13 @@ public record Communication
   public bool DoNotReply { get; set; }
   public DateTime? LatestMessageNotifiedOn { get; set; }
   public bool? IsRead { get; set; }
+  public IEnumerable<CommunicationDocument> Documents { get; set; } = Array.Empty<CommunicationDocument>();
+}
+
+public record CommunicationDocument(string Id)
+{
+  public string Name { get; set; } = null!;
+  public string Size { get; set; } = null!;
 }
 
 public record GetMessagesResponse
