@@ -305,7 +305,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_Communication GetOrAddCommunication(EcerContext context, ecer_Application application, string message, Guid? parentCommunicationId)
   {
-    var communication = context.bcgov_doc.FirstOrDefault(c => c.ecer_Applicationid.Id == application.Id && c.ecer_Registrantid.Id == authenticatedBcscUser.Id && c.ecer_Message == message && c.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient);
+    var communication = context.ecer_CommunicationSet.FirstOrDefault(c => c.ecer_Applicationid.Id == application.Id && c.ecer_Registrantid.Id == authenticatedBcscUser.Id && c.ecer_Message == message && c.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient);
 
     if (communication == null)
     {
@@ -324,7 +324,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
       if (parentCommunicationId != null)
       {
-        var parent = context.bcgov_doc.SingleOrDefault(d => d.ecer_CommunicationId == parentCommunicationId);
+        var parent = context.ecer_CommunicationSet.SingleOrDefault(d => d.ecer_CommunicationId == parentCommunicationId);
         var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
         {
           PrimaryEntityRole = EntityRole.Referencing
