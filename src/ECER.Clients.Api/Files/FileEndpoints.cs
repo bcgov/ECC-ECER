@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ServiceModel.Channels;
-using ECER.Managers.Admin.Contract.Files;
+﻿using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.Api.Files;
 

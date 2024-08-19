@@ -40,7 +40,14 @@ public static class ReflectionExtensions
   public static Type[] GetTypesImplementing(this Assembly assembly, Type type)
   {
     ArgumentNullException.ThrowIfNull(assembly);
-    return assembly.DefinedTypes.Where(t => t.IsClass && !t.IsAbstract && t.IsPublic && (type.IsAssignableFrom(t) || t.IsAssignableToGenericType(type))).ToArray();
+    try
+    {
+      return assembly.DefinedTypes.Where(t => t.IsClass && !t.IsAbstract && t.IsPublic && (type.IsAssignableFrom(t) || t.IsAssignableToGenericType(type))).ToArray();
+    }
+    catch (ReflectionTypeLoadException)
+    {
+      return [];
+    }
   }
 
   /// <summary>

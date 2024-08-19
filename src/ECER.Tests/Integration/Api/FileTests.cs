@@ -1,8 +1,8 @@
-﻿using System.Net.Http.Headers;
-using Alba;
+﻿using Alba;
 using Bogus;
-using ECER.Tests.Integration;
 using Shouldly;
+using System.Net;
+using System.Net.Http.Headers;
 using Xunit.Abstractions;
 using Xunit.Categories;
 
@@ -34,7 +34,7 @@ public class FileTests : ApiWebAppScenarioBase
        { content, "file", testFile.FileName }
     };
 
-    await Host.Scenario(_ =>
+    var uploadResponse = await Host.Scenario(_ =>
     {
       _.WithRequestHeader("file-classification", testClassification);
       _.WithRequestHeader("file-tag", testTags);
@@ -42,6 +42,8 @@ public class FileTests : ApiWebAppScenarioBase
       _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });
+
+    uploadResponse.Context.Response.StatusCode.ShouldBe((int)HttpStatusCode.OK);
 
     var response = await Host.Scenario(_ =>
     {

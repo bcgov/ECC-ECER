@@ -5,7 +5,7 @@ namespace ECER.Engines.Validation.Applications;
 /// <summary>
 /// Validates registry applications
 /// </summary>
-public interface IApplicationSubmissionValidationEngine
+public interface IApplicationValidationEngine
 {
   /// <summary>
   /// Validates if an application is completed

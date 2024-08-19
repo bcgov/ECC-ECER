@@ -1,21 +1,22 @@
-﻿using System.Configuration;
-using System.Diagnostics.CodeAnalysis;
-using ECER.Infrastructure.Common;
+﻿using ECER.Infrastructure.Common;
 using ECER.Utilities.FileScanner.Providers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using nClam;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Utilities.FileScanner;
 
-public class Configurer : IConfigureComponents
+public class Configurer : IConfigureComponents, IPostConfigureChecker
 {
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
-    var clamAvSettings = configurationContext.Configuration.GetSection("fileScanner").Get<ClamAvProviderSettings>();
-    if (clamAvSettings != null)
+    var clamAvSettings = GetSettings(configurationContext.Configuration);
+    if (clamAvSettings != null && !string.IsNullOrWhiteSpace(clamAvSettings.Url))
     {
-      configurationContext.Services.AddSingleton<ClamClient>(_ =>
+      configurationContext.logger.LogInformation("Configuring file scanning using {Url}:{Port}", clamAvSettings.Url, clamAvSettings.Port);
+      configurationContext.Services.AddSingleton(_ =>
         new ClamClient(
           clamAvSettings.Url,
           clamAvSettings.Port
@@ -24,7 +25,21 @@ public class Configurer : IConfigureComponents
     }
     else
     {
-      throw new ConfigurationErrorsException("fileScanner configuration not found");
+      configurationContext.logger.LogWarning("FileScanner:Url is empty - files will not be scanned");
+      configurationContext.Services.AddSingleton<IFileScannerProvider, NoopScanner>();
     }
   }
+
+  public async Task Check([NotNull] CheckContext context, CancellationToken ct)
+  {
+    var clamAvSettings = GetSettings(context.Configuration);
+    if (clamAvSettings != null && !string.IsNullOrWhiteSpace(clamAvSettings.Url))
+    {
+      var client = context.Services.GetRequiredService<IClamClient>();
+      await client.PingAsync(ct);
+    }
+  }
+
+  private static ClamAvProviderSettings? GetSettings(IConfiguration configuration)
+    => configuration.GetSection("fileScanner").Get<ClamAvProviderSettings>();
 }

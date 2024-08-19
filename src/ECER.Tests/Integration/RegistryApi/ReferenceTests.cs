@@ -24,7 +24,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     var referenceContactInfo = new ReferenceContactInformation(
         faker.Person.LastName,
         faker.Person.FirstName,
-        "Reference_Contact@example.com",
+        "Reference_Contact@test.gov.bc.ca",
         faker.Phone.PhoneNumber(),
         faker.Address.City()
     )
@@ -63,7 +63,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     var referenceContactInfo = new ReferenceContactInformation(
         faker.Person.LastName,
         faker.Person.FirstName,
-        "Reference_Contact@example.com",
+        "Reference_Contact@test.gov.bc.ca",
         faker.Phone.PhoneNumber(),
         faker.Address.City()
     )

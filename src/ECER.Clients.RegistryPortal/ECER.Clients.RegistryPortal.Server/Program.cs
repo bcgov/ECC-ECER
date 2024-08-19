@@ -99,7 +99,7 @@ public class Program
       builder.Services.ConfigureHealthChecks();
       builder.Services.AddHttpClient();
 
-      builder.ConfigureComponents();
+      builder.ConfigureComponents(logger);
 
       var app = builder.Build();
 

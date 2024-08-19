@@ -4,13 +4,15 @@ using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Shouldly;
+using Xunit.Abstractions;
 using Xunit.Categories;
 
 namespace ECER.Tests.Integration.Utilities.ObjectStorage;
 
 [IntegrationTest, Category("VPN")]
-public class S3ObjectStorageTests : IAsyncLifetime
+public class S3ObjectStorageTests(ITestOutputHelper testOutput) : IAsyncLifetime
 {
   private readonly Faker faker = new Faker();
 
@@ -100,8 +102,11 @@ public class S3ObjectStorageTests : IAsyncLifetime
     var configuration = configBuilder.Build();
     var services = new ServiceCollection();
     var configurer = new Configurer();
+#pragma warning disable CA2000 // Dispose objects before losing scope
+    var logger = new LoggerFactory().AddXUnit(testOutput).CreateLogger(typeof(Configurer));
+#pragma warning restore CA2000 // Dispose objects before losing scope
 
-    configurer.Configure(new ConfigurationContext(services, configuration));
+    configurer.Configure(new ConfigurationContext(services, configuration, logger));
     scope = services.BuildServiceProvider().CreateScope();
     bucket = configuration.GetValue<string>("objectStorage:bucketName")!;
   }
