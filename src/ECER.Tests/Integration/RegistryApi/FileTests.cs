@@ -1,9 +1,8 @@
-﻿using System.Net.Http.Headers;
-using Alba;
+﻿using Alba;
 using Bogus;
+using System.Net.Http.Headers;
 using Xunit.Abstractions;
 using Xunit.Categories;
-using Xunit.Sdk;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
