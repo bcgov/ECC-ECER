@@ -5,6 +5,7 @@ import educationForm from "./education-form";
 import profileInformationForm from "./profile-information-form";
 import referencesForm from "./references-form";
 import reviewAndSubmitForm from "./review-submit-form";
+import professionalDevelopmentForm from "./professional-development-form";
 
 const applicationWizard: Wizard = {
   id: "form-1",
@@ -14,6 +15,12 @@ const applicationWizard: Wizard = {
       title: "Contact information",
       form: profileInformationForm,
       key: "item.1",
+    },
+    professionalDevelopment: {
+      stage: "ProfessionalDevelopment",
+      title: "Professional development",
+      form: professionalDevelopmentForm,
+      key: "item.2",
     },
     education: {
       stage: "Education",

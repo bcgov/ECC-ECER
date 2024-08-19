@@ -1,4 +1,5 @@
 import EceTextField from "@/components/inputs/EceTextField.vue";
+import EceProfessionalDevelopment from "@/components/inputs/EceProfessionalDevelopment.vue";
 import type { Form } from "@/types/form";
 
 const professionalDevelopment: Form = {
@@ -7,7 +8,7 @@ const professionalDevelopment: Form = {
   inputs: {
     professionalDevelopment: {
       id: "professionalDevelopment",
-      component: EceTextField,
+      component: EceProfessionalDevelopment,
       props: {},
       cols: {
         md: 12,
