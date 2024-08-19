@@ -41,7 +41,7 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
       faker.Name.FirstName(), faker.Name.LastName()
     );
   }
-  
+
   private UserProfile CreateNewUser()
   {
     var address = new Faker<Address>("en_CA")
@@ -53,7 +53,6 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
             f.Address.State(), f.Address.Country()
             ));
 
-    
     return new Faker<UserProfile>("en_CA")
       .RuleFor(f => f.FirstName, f => f.Name.FirstName())
       .RuleFor(f => f.LastName, f => f.Name.LastName())

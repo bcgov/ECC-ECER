@@ -50,7 +50,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedBcscUserIdentity => authenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
-
+  private ecer_PreviousName previousName = null!;
   public string communicationOneId => testCommunication1.Id.ToString();
   public string communicationTwoId => testCommunication2.Id.ToString();
   public string communicationThreeId => testCommunication3.Id.ToString();
@@ -135,7 +135,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3", null);
     testCommunication4 = GetOrAddCommunication(context, inProgressTestApplication, "comm4", null);
     testCertification = GetOrAddCertification(context);
-    GetOrAddPreviousName(context, authenticatedBcscUser).ShouldNotBeNull();
+
+    previousName = GetOrAddPreviousName(context, authenticatedBcscUser);
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
     testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
     testPortalInvitationWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");
@@ -423,7 +424,6 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
                                                                                 p.ecer_Name == name &&
                                                                                 p.ecer_WorkExperienceReferenceId != null &&
                                                                                 p.StatusCode == ecer_PortalInvitation_StatusCode.Sent);
-
     if (portalInvitation == null)
     {
       var wpGuid = Guid.NewGuid();
@@ -456,7 +456,6 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_WorkExperienceRefId, workexperienceReference);
     }
-
     return portalInvitation;
   }
 }

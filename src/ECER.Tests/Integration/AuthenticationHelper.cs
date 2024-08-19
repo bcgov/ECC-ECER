@@ -1,6 +1,6 @@
-﻿using System.Security.Claims;
-using Alba;
+﻿using Alba;
 using ECER.Utilities.Security;
+using System.Security.Claims;
 
 namespace ECER.Tests.Integration;
 

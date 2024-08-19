@@ -2,7 +2,7 @@
 
 namespace ECER.Engines.Validation.Applications;
 
-internal sealed class ApplicationSubmissionValidationEngine : IApplicationSubmissionValidationEngine
+internal sealed class ApplicationSubmissionValidationEngine : IApplicationValidationEngine
 {
   private static readonly IEnumerable<CertificationType> fiveYearNestedCertificationTypes = new[] { CertificationType.Ite, CertificationType.Sne };
 

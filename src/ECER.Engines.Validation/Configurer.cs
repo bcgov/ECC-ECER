@@ -7,8 +7,15 @@ namespace ECER.Engines.Validation;
 
 public class Configurer : IConfigureComponents
 {
-    public void Configure([NotNull] ConfigurationContext configurationContext)
+  public void Configure([NotNull] ConfigurationContext configurationContext)
+  {
+    configurationContext.Services.AddTransient<ApplicationSubmissionValidationEngine>();
+    configurationContext.Services.AddTransient<ApplicationRenewalValidationEngine>();
+    configurationContext.Services.AddTransient<IApplicationValidationEngineResolver, ApplicationValidationEngineResolver>();
+
+    configurationContext.Services.AddTransient<IApplicationValidationEngine>(provider =>
     {
-        configurationContext.Services.AddTransient<IApplicationSubmissionValidationEngine, ApplicationSubmissionValidationEngine>();
-    }
+      return provider.GetRequiredService<ApplicationSubmissionValidationEngine>();
+    });
+  }
 }
