@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
 import type { Components } from "@/types/openapi";
-import type { ApplicationStage, ReferenceStage, RenewStage, Step, Wizard } from "@/types/wizard";
+import type { ApplicationStage, ReferenceStage, Step, Wizard } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
 
 import { useOidcStore } from "./oidc";
@@ -36,7 +36,7 @@ export const useWizardStore = defineStore("wizard", {
     currentStepId(state): string {
       return this.steps[state.step - 1].id;
     },
-    currentStepStage(state): ApplicationStage | ReferenceStage | RenewStage {
+    currentStepStage(state): ApplicationStage | ReferenceStage {
       return this.steps[state.step - 1].stage;
     },
   },
