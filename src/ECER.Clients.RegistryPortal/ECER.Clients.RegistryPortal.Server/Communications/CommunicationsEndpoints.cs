@@ -137,6 +137,8 @@ public record Communication
 
 public record CommunicationDocument(string Id)
 {
+  public string Url { get; set; } = null!;
+  public string Extention { get; set; } = null!;
   public string Name { get; set; } = null!;
   public string Size { get; set; } = null!;
 }

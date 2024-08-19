@@ -59,7 +59,7 @@ internal class CommunicationRepository : ICommunicationRepository
                                                      });
 
         communications = communications.Where(c => c.c.ecer_IsRoot == true);
-
+        context.LoadProperties(communications.Select(comms => comms.c), ecer_Communication.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication);
         PortalComms = mapper.Map<IEnumerable<Communication>>(communications.Select(comms => comms.c).ToList());
 
         foreach (var comm in PortalComms)
@@ -75,6 +75,7 @@ internal class CommunicationRepository : ICommunicationRepository
     }
     if (PortalComms.ToList().Count == 0)
     {
+      context.LoadProperties(communications.Select(comms => comms.c), ecer_Communication.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication);
       PortalComms = mapper.Map<IEnumerable<Communication>>(communications.Select(comms => comms.c).ToList());
     }
     if (query.PageNumber > 0)
