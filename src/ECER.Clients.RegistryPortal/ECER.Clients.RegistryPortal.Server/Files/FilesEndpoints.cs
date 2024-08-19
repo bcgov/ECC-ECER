@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECER.Managers.Admin.Contract.Files;
 using ECER.Managers.Registry.Contract.Certifications;
+using ECER.Managers.Registry.Contract.Communications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
@@ -45,6 +46,40 @@ public class FilesEndpoints : IRegisterEndpoints
       return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
     })
       .WithOpenApi("Handles fetching certificate PDF's", string.Empty, "files_certificate_get")
+      .RequireAuthorization()
+      .WithParameterValidation();
+
+    endpointRouteBuilder.MapGet("/api/files/communication/{communicationId}/file/{fileId}", async Task<Results<FileStreamHttpResult, BadRequest<ProblemDetails>, NotFound>> (
+        string communicationId,
+        string fileId,
+        IMediator messageBus,
+        HttpContext httpContext,
+        CancellationToken ct) =>
+    {
+      var userId = httpContext.User.GetUserContext()?.UserId;
+      bool communicationIdIsNotGuid = !Guid.TryParse(communicationId, out _); if (communicationIdIsNotGuid) { return TypedResults.BadRequest(new ProblemDetails { Title = "Invalid GUID" }); }
+      bool fileIdIsNotGuid = !Guid.TryParse(fileId, out _); if (fileIdIsNotGuid) { return TypedResults.BadRequest(new ProblemDetails { Title = "Invalid GUID" }); }
+
+      var query = new UserCommunicationQuery
+      {
+        ById = communicationId,
+        ByRegistrantId = userId,
+      };
+
+      var communicationQueryResult = await messageBus.Send<CommunicationsQueryResults>(query, ct);
+      if (communicationQueryResult.Items == null || !communicationQueryResult.Items.Any()) return TypedResults.NotFound();
+
+      var communication = communicationQueryResult.Items.FirstOrDefault();
+      var communicationFile = communication?.Documents.FirstOrDefault(d => d.Id == fileId);
+      if (communicationFile == null) return TypedResults.NotFound();
+
+      var results = await messageBus.Send(new FileQuery([new FileLocation(communicationFile.Id, communicationFile.Url ?? string.Empty)]), ct);
+      var file = results.Items.SingleOrDefault();
+      if (file == null) return TypedResults.NotFound();
+
+      return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
+    })
+      .WithOpenApi("Handles fetching files", string.Empty, "files_communication_get")
       .RequireAuthorization()
       .WithParameterValidation();
 
