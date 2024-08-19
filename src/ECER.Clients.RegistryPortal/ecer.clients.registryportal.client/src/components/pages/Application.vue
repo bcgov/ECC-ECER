@@ -1,7 +1,12 @@
 <template>
   <Wizard :ref="'wizard'" :wizard="wizardConfigSetup">
     <template #header>
-      <WizardHeader class="mb-6" :handle-save-draft="handleSaveAsDraft" :show-save-button="showSaveButtons" />
+      <WizardHeader
+        class="mb-6"
+        :handle-save-draft="handleSaveAsDraft"
+        :show-save-button="showSaveButtons"
+        :is-renewal="applicationStore?.draftApplication.applicationType === 'Renewal'"
+      />
       <v-container>
         <!-- prettier-ignore -->
         <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" href="#" @click.prevent="handleBack">
