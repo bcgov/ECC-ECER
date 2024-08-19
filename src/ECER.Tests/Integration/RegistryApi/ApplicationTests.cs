@@ -170,7 +170,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     });
 
     var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<Application[]>();
-    var applicationById = applicationsById.ShouldHaveSingleItem();
+    applicationsById.ShouldHaveSingleItem();
     var applicationFromServer = applicationsById[0];
     applicationFromServer.ProfessionalDevelopments.ShouldHaveSingleItem();
     var professionalDev = applicationFromServer.ProfessionalDevelopments.First();
@@ -423,17 +423,13 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
   private CharacterReference CreateCharacterReference()
   {
-    var faker = new Faker("en_CA");
-
     return new CharacterReference(
-      faker.Name.FirstName(), faker.Name.LastName(), faker.Phone.PhoneNumber(), "Character_Reference@example.com"
+      faker.Name.FirstName(), $"{Fixture.TestRunId}{faker.Name.LastName()}", faker.Phone.PhoneNumber(), "Character_Reference@test.gov.bc.ca"
     );
   }
 
   private ProfessionalDevelopment CreateProfessionalDevelopment()
   {
-    var faker = new Faker("en_CA");
-
     return new ProfessionalDevelopment(
         CertificationNumber: faker.Random.AlphaNumeric(10),
         CertificationExpiryDate: faker.Date.Future(),
@@ -453,10 +449,8 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
   private WorkExperienceReference CreateWorkExperienceReference()
   {
-    var faker = new Faker("en_CA");
-
     return new WorkExperienceReference(
-       faker.Name.FirstName(), faker.Name.LastName(), "Work_Experience_Reference@example.com", faker.Random.Number(10, 150)
+       faker.Name.FirstName(), faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(10, 150)
     )
     {
       PhoneNumber = faker.Phone.PhoneNumber()
@@ -465,7 +459,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
   private Transcript CreateInvalidTranscript()
   {
-    var faker = new Faker("en_CA");
     var invalidTranscript = new Transcript
     {
       EducationalInstitutionName = null,

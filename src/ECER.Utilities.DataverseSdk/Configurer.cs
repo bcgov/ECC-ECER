@@ -1,11 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using ECER.Infrastructure.Common;
+﻿using ECER.Infrastructure.Common;
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.PowerPlatform.Dataverse.Client;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Utilities.DataverseSdk;
 
@@ -27,11 +27,9 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker
     });
   }
 
-  public async Task<bool> Check([NotNull] CheckContext context, CancellationToken ct)
+  public async Task Check([NotNull] CheckContext context, CancellationToken ct)
   {
     var ctx = context.Services.GetRequiredService<IOrganizationServiceAsync>();
     await ctx.ExecuteAsync(new WhoAmIRequest());
-
-    return true;
   }
 }

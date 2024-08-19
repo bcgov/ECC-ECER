@@ -20,7 +20,7 @@ public class ClamAvScanner : IFileScannerProvider
       return scanResult.Result switch
       {
         ClamScanResults.Clean => new ScanResult(true, "File is clean."),
-        ClamScanResults.VirusDetected => new ScanResult(false, $"Virus detected: {scanResult.InfectedFiles?.First().VirusName}"),
+        ClamScanResults.VirusDetected => new ScanResult(false, $"Virus detected: {scanResult.InfectedFiles?[0].VirusName}"),
         ClamScanResults.Error => new ScanResult(false, $"Error during scan: {scanResult.RawResult}"),
         _ => new ScanResult(false, "Unknown result from ClamAV.")
       };

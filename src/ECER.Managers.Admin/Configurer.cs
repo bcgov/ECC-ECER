@@ -14,6 +14,7 @@ public class Configurer : IConfigureComponents
     configurationContext.Configuration.GetSection("PortalApp").Bind(portalAppSettings));
     configurationContext.Services.AddTransient<FileHandlers>();
     configurationContext.Services.AddTransient<InviteLinkHandlers>();
+    configurationContext.Services.AddTransient<MetadataHandlers>();
   }
 }
 

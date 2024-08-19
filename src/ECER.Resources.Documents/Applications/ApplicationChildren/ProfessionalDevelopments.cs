@@ -50,11 +50,11 @@ internal sealed partial class ApplicationRepository
   private async Task HandleProfessionalDevelopmentFiles(ecer_ProfessionalDevelopment professionalDevelopment, Guid applicantId, IEnumerable<string> tobeAddedFileIds, IEnumerable<string> tobeDeletedFileIds, CancellationToken ct)
   {
     await Task.CompletedTask;
-    await HandleDeletedFiles(professionalDevelopment, applicantId, tobeDeletedFileIds.ToList(), ct);
+    await HandleDeletedFiles(professionalDevelopment, tobeDeletedFileIds.ToList(), ct);
     await HandleAddedFiles(professionalDevelopment, applicantId, tobeAddedFileIds.ToList(), ct);
   }
 
-  private async Task HandleDeletedFiles(ecer_ProfessionalDevelopment professionalDevelopment, Guid applicantId, List<string> tobeDeletedFileIds, CancellationToken ct)
+  private async Task HandleDeletedFiles(ecer_ProfessionalDevelopment professionalDevelopment, List<string> tobeDeletedFileIds, CancellationToken ct)
   {
     await Task.CompletedTask;
     foreach (var fileId in tobeDeletedFileIds)
@@ -145,7 +145,6 @@ internal sealed partial class ApplicationRepository
       var sourceFolder = items[0];
       var destinationFolder = "ecer_professionaldevelopment";
       var fileId = items[1];
-      var file = await objectStorageProvider.GetAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), ct);
       await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
 
       var documenturl = new bcgov_DocumentUrl()
