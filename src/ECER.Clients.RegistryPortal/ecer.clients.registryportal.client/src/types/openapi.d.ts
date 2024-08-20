@@ -175,6 +175,14 @@ declare namespace Components {
       doNotReply?: boolean;
       latestMessageNotifiedOn?: string | null; // date-time
       isRead?: boolean | null;
+      documents?: CommunicationDocument[] | null;
+    }
+    export interface CommunicationDocument {
+      id?: string | null;
+      url?: string | null;
+      extention?: string | null;
+      name?: string | null;
+      size?: string | null;
     }
     /**
      * Save communication response
@@ -713,6 +721,20 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
+  namespace FilesCommunicationGet {
+    namespace Parameters {
+      export type CommunicationId = string;
+      export type FileId = string;
+    }
+    export interface PathParameters {
+      communicationId: Parameters.CommunicationId;
+      fileId: Parameters.FileId;
+    }
+    namespace Responses {
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace MessageGet {
     namespace Parameters {
       export type ParentId = string;
@@ -916,6 +938,14 @@ export interface OperationMethods {
    */
   "files_certificate_get"(
     parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<any>;
+  /**
+   * files_communication_get - Handles fetching files
+   */
+  "files_communication_get"(
+    parameters?: Parameters<Paths.FilesCommunicationGet.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<any>;
@@ -1155,6 +1185,12 @@ export interface PathsDictionary {
      * files_certificate_get - Handles fetching certificate PDF's
      */
     "get"(parameters?: Parameters<Paths.FilesCertificateGet.PathParameters> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<any>;
+  };
+  ["/api/files/communication/{communicationId}/file/{fileId}"]: {
+    /**
+     * files_communication_get - Handles fetching files
+     */
+    "get"(parameters?: Parameters<Paths.FilesCommunicationGet.PathParameters> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<any>;
   };
   ["/api/files/{fileId}"]: {
     /**
