@@ -272,7 +272,6 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       ecer_FirstName = "autotest_firstname",
       ecer_LastName = "autotest_lastname",
       ecer_EmailAddress = "Work_Experience_Reference@test.gov.bc.ca",
-
       ecer_PhoneNumber = "9999999999",
       ecer_StartDate = DateTime.Now,
       ecer_EndDate = DateTime.Now,
@@ -296,7 +295,6 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       ecer_FirstName = "autotest_firstname",
       ecer_LastName = "autotest_lastname",
       ecer_EmailAddress = "Character_Reference@test.gov.bc.ca",
-
       ecer_PhoneNumber = "9999999999"
     };
 
@@ -406,7 +404,6 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_FirstName = "autotest_charref_first",
         ecer_LastName = "autotest_charref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
-
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
       };
 
