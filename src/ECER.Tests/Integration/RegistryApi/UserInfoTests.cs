@@ -1,9 +1,9 @@
-﻿using System.Net;
-using Alba;
+﻿using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Users;
 using ECER.Utilities.Security;
 using Shouldly;
+using System.Net;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.RegistryApi;

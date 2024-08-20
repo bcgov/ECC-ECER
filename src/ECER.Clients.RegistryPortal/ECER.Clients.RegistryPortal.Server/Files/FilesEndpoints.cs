@@ -5,7 +5,6 @@ using ECER.Managers.Registry.Contract.Communications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

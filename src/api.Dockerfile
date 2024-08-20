@@ -5,9 +5,10 @@ RUN mkdir /tools
 RUN dotnet tool install --tool-path /tools dotnet-trace
 RUN dotnet tool install --tool-path /tools dotnet-counters
 RUN dotnet tool install --tool-path /tools dotnet-dump
+RUN dotnet tool install --tool-path /tools dotnet-monitor
 
 # install node.js
-ARG NODE_MAJOR=20
+ARG NODE_MAJOR=22
 RUN curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh \
     && chmod 500 nsolid_setup_deb.sh \
     && ./nsolid_setup_deb.sh ${NODE_MAJOR} \
@@ -28,16 +29,16 @@ RUN cat ECER.sln \
 | xargs -I % sh -c 'mkdir -p $(dirname %) && mv $(basename %) $(dirname %)/'
 
 # restore nuget packages
-RUN dotnet restore "ECER.Clients.Api/ECER.Clients.Api.csproj"
-RUN dotnet restore "ECER.Tests/ECER.Tests.csproj"
+RUN dotnet restore "ECER.Clients.Api/ECER.Clients.Api.csproj" -r linux-x64 -p:PublishReadyToRun=true
+RUN dotnet restore "ECER.Tests/ECER.Tests.csproj" -r linux-x64 -p:PublishReadyToRun=true
 
 COPY . .
 
 # run unit tests
-RUN dotnet test "ECER.Tests/ECER.Tests.csproj" --filter "Category!=IntegrationTest"
+RUN dotnet test "ECER.Tests/ECER.Tests.csproj" --filter "Category!=IntegrationTest" -r linux-x64 -p:PublishReadyToRun=true
 
 # build publish
-RUN dotnet publish "ECER.Clients.Api/ECER.Clients.Api.csproj" -c Release -o /app/publish --no-restore
+RUN dotnet publish "ECER.Clients.Api/ECER.Clients.Api.csproj" -c Release -o /app/publish --no-restore --self-contained -r linux-x64 -p:PublishReadyToRun=true
 
 # FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 FROM registry.access.redhat.com/ubi8/dotnet-80-runtime:8.0 AS final

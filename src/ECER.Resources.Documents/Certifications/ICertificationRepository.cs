@@ -9,6 +9,7 @@ public record UserCertificationQuery
 {
   public string? ById { get; set; }
   public string? ByApplicantId { get; set; }
+  public string? ByApplicationId { get; set; }
 }
 
 public record Certification(string Id)
