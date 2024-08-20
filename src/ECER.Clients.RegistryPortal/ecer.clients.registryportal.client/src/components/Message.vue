@@ -54,6 +54,15 @@
       <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
       <div class="mt-3" v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></div>
       <div class="mt-6" v-html="message.text"></div>
+      <div v-if="message.documents!.length > 0" class="mt-6">
+      <p><v-icon>mdi-paperclip</v-icon> Attachments</p>
+      <div class="mt-3" v-for="file in message.documents">
+      <router-link class="small" to="" @click.native="OpenFile(file)">
+        {{ file.name }} ({{ file.size!.replace(/\s+/g, '') }})
+      </router-link>
+      </div>
+      </div>
+
       <v-divider v-if="index < messageStore.currentThread!.length - 1" color="ash-grey" class="mt-10 border-opacity-100"></v-divider>
     </div>
     <div v-if="messageStore.currentMessage?.doNotReply">
@@ -89,6 +98,10 @@ export default defineComponent({
     handleMessageReply() {
       this.$router.push({ name: "replyToMessage", params: { messageId: this.messageStore.currentMessage?.id } });
     },
+    OpenFile(file) {
+      console.log(file);
+      // Your function logic here
+    }
   },
 });
 </script>
