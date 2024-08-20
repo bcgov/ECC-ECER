@@ -78,3 +78,11 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.message-reply {
+  background-color: #e4e4e4;
+  height: 48px;
+  display: flex;
+  align-items: center;
+}
+</style>
