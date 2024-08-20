@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
-using Shouldly;
 using System.Globalization;
 using Xunit.Abstractions;
 
@@ -31,6 +30,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_Application inProgressTestApplication = null!;
   private ecer_Application draftTestApplication = null!;
+  private bcgov_DocumentUrl testDocument1 = null!;
 
   private ecer_Communication testCommunication1 = null!;
   private ecer_Communication testCommunication2 = null!;
@@ -47,10 +47,12 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceCompleted = null!;
   private Contact authenticatedBcscUser2 = null!;
 
+  private ecer_PreviousName previousName = null!;
+
   public IServiceProvider Services => serviceScope.ServiceProvider;
   public UserIdentity AuthenticatedBcscUserIdentity => authenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
-  private ecer_PreviousName previousName = null!;
+  public string documentOneId => testDocument1.Id.ToString();
   public string communicationOneId => testCommunication1.Id.ToString();
   public string communicationTwoId => testCommunication2.Id.ToString();
   public string communicationThreeId => testCommunication3.Id.ToString();
@@ -130,6 +132,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     submittedTestApplicationWorkExperienceRef = AddWorkExperienceReferenceToApplication(context, submittedTestApplication);
     submittedTestApplicationWorkExperienceRef2 = AddWorkExperienceReferenceToApplication(context, submittedTestApplication2);
     submittedTestApplicationCharacterRef = AddCharacterReferenceToApplication(context, submittedTestApplication3);
+
+    testDocument1 = GetOrAddDocument(context, authenticatedBcscUser, "https://example.com/document1.pdf");
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2", null);
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3", null);
@@ -162,6 +166,22 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     //load dependent properties
     context.Attach(authenticatedBcscUser2);
     context.LoadProperty(authenticatedBcscUser2, Contact.Fields.ecer_contact_ecer_authentication_455);
+  }
+
+  private bcgov_DocumentUrl GetOrAddDocument(EcerContext context, Contact registrant, string url)
+  {
+    var document = new bcgov_DocumentUrl
+    {
+      Id = Guid.NewGuid(),
+      bcgov_FileName = "Test Document",
+      bcgov_Url = url,
+      StateCode = bcgov_documenturl_statecode.Active,
+      StatusCode = bcgov_DocumentUrl_StatusCode.Active,
+    };
+    context.AddObject(document);
+    context.AddLink(authenticatedBcscUser, Contact.Fields.bcgov_contact_bcgov_documenturl, document);
+
+    return document;
   }
 
   private Contact GetOrAddApplicant(EcerContext context, string identityProvider, string userId)
@@ -403,6 +423,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       .Where(p => p.ecer_ApplicantId != null &&
                   p.ecer_ApplicationId != null &&
                   p.ecer_Name == name &&
+
                   p.ecer_WorkExperienceReferenceId != null &&
                   p.StateCode != ecer_portalinvitation_statecode.Inactive)
       .ToList();

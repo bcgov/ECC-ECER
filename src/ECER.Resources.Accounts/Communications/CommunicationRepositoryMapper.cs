@@ -20,6 +20,7 @@ internal class CommunicationRepositoryMapper : Profile
      .ForMember(d => d.NotifiedOn, opts => opts.MapFrom(s => s.ecer_DateNotified))
      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
      .ForMember(d => d.DoNotReply, opts => opts.MapFrom(s => s.ecer_DoNotReply))
+     .ForMember(d => d.Documents, opts => opts.MapFrom(s => s.ecer_bcgov_documenturl_CommunicationId_ecer_communication))
      .ForMember(d => d.LatestMessageNotifiedOn, opts => opts.MapFrom(s => s.ecer_DateNotified))
      .ForMember(d => d.IsRead, opts => opts.MapFrom(s => s.ecer_Acknowledged));
 
@@ -33,6 +34,7 @@ internal class CommunicationRepositoryMapper : Profile
      .ForSourceMember(s => s.DoNotReply, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.LatestMessageNotifiedOn, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.IsRead, opts => opts.DoNotValidate())
+     .ForSourceMember(s => s.Documents, opts => opts.DoNotValidate())
      .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)));
 
     CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()
@@ -40,5 +42,12 @@ internal class CommunicationRepositoryMapper : Profile
 
     CreateMap<ecer_InitiatedFrom, InitiatedFrom>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true));
+
+    CreateMap<bcgov_DocumentUrl, CommunicationDocument>(MemberList.Destination)
+      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.bcgov_DocumentUrlId))
+      .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName))
+      .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
+      .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
+      .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension));
   }
 }
