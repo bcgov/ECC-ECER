@@ -29,7 +29,6 @@ export default defineComponent({
 
       try {
         const response = await this.getFileFunction();
-        console.log(response);
         this.documentUrl = window.URL.createObjectURL(response.data);
         window.open(this.documentUrl, "_blank");
       } catch (e) {
