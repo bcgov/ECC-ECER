@@ -29,7 +29,8 @@ public record RegistrantQueryResults(IEnumerable<Registrant> Items);
 
 public record Registrant(string UserId, UserProfile Profile);
 
-public record UserProfile {
+public record UserProfile
+{
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? MiddleName { get; set; }
@@ -43,12 +44,13 @@ public record UserProfile {
   public IEnumerable<PreviousName> PreviousNames { get; set; } = Array.Empty<PreviousName>();
 };
 
-public record PreviousName (string FirstName, string LastName)
+public record PreviousName(string FirstName, string LastName)
 {
   public string? Id { get; set; }
   public string? MiddleName { get; set; }
   public string? PreferredName { get; set; }
   public PreviousNameStage? Status { get; set; }
+  public PreviousNameSources? Source { get; set; }
 }
 
 public enum PreviousNameStage
@@ -57,6 +59,13 @@ public enum PreviousNameStage
   ReadyforVerification,
   Verified,
   Archived,
+}
+
+public enum PreviousNameSources
+{
+  NameLog,
+  Profile,
+  Transcript,
 }
 
 public record Address(
