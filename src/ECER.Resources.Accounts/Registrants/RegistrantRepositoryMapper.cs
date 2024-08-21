@@ -21,7 +21,8 @@ internal sealed class RegistrantRepositoryMapper : Profile
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_PreferredName, opts => opts.MapFrom(s => s.PreferredName))
       .ForMember(d => d.ecer_MiddleName, opts => opts.MapFrom(s => s.MiddleName))
-      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
+      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
+      .ForMember(d => d.ecer_Source, opts => opts.MapFrom(s => s.Source));
 
     CreateMap<ecer_PreviousName, PreviousName>(MemberList.Source)
       .ForCtorParam(nameof(PreviousName.FirstName), opts => opts.MapFrom(s => s.ecer_FirstName))
@@ -30,6 +31,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
       .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.ecer_MiddleName))
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_PreviousNameId))
+      .ForMember(d => d.Source, opts => opts.MapFrom(s => s.ecer_Source))
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ecer_Authentication, UserIdentity>()
@@ -74,6 +76,10 @@ internal sealed class RegistrantRepositoryMapper : Profile
         ;
 
     CreateMap<ecer_PreviousName_StatusCode, PreviousNameStage>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+
+    CreateMap<ecer_PreviousNameSources, PreviousNameSources>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
   }

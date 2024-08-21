@@ -310,7 +310,9 @@ declare namespace Components {
       middleName?: string | null;
       preferredName?: string | null;
       status?: PreviousNameStage;
+      source?: PreviousNameSources;
     }
+    export type PreviousNameSources = "NameLog" | "Profile" | "Transcript";
     export type PreviousNameStage = "Unverified" | "ReadyforVerification" | "Verified" | "Archived";
     export interface ProblemDetails {
       [name: string]: any;
