@@ -60,10 +60,12 @@
     </v-col>
     <div v-else-if="mode == 'list'" class="w-100">
       <div class="d-flex flex-column ga-3 my-6">
-        <h3 v-if="props.isRenewal">{{ hoursRequired }} hours of work experience related to the field of early childhood education is required.</h3>
+        <h3 v-if="applicationStore.isDraftApplicationRenewal">
+          {{ hoursRequired }} hours of work experience related to the field of early childhood education is required.
+        </h3>
         <h3 v-else>{{ hoursRequired }} hours of work experience is required.</h3>
         <p>Your hours:</p>
-        <ul v-if="props.isRenewal" class="ml-10">
+        <ul v-if="applicationStore.isDraftApplicationRenewal" class="ml-10">
           <li>Be related to the field of early childhood education</li>
           <li v-if="certificationStore.latestCertificateStatus != 'Expired'">
             Have been completed within the term of your current certificate (between
@@ -72,14 +74,14 @@
           </li>
           <li v-else>Have been completed within the last 5 years</li>
         </ul>
-        <ul v-if="!props.isRenewal" class="ml-10">
+        <ul v-if="!applicationStore.isDraftApplicationRenewal" class="ml-10">
           <li>Must have been completed after you started your education and within the last 5 years</li>
           <li>Cannot include hours worked as part of your education on your practicum or work placement</li>
           <li>Can be work or volunteer hours</li>
         </ul>
-        <p v-if="props.isRenewal">If you worked at multiple locations, add a reference for each location.</p>
-        <p v-if="!props.isRenewal">If your hours were completed at multiple locations under the supervision of multiple ECEs:</p>
-        <ul v-if="!props.isRenewal" class="ml-10">
+        <p v-if="applicationStore.isDraftApplicationRenewal">If you worked at multiple locations, add a reference for each location.</p>
+        <p v-if="!applicationStore.isDraftApplicationRenewal">If your hours were completed at multiple locations under the supervision of multiple ECEs:</p>
+        <ul v-if="!applicationStore.isDraftApplicationRenewal" class="ml-10">
           <li>Provide a reference from each person who supervised your hours</li>
           <li>You may enter up to 6 references</li>
         </ul>
@@ -111,7 +113,7 @@
         </Alert>
       </v-col>
       <v-col sm="12" md="10" lg="8" xl="6" class="my-6">
-        <WorkExperienceReferenceProgressBar :references="modelValue" :hoursRequired="hoursRequired" />
+        <WorkExperienceReferenceProgressBar :references="modelValue" :hours-required="hoursRequired" />
       </v-col>
       <v-col sm="12" md="10" lg="8" xl="6">
         <WorkExperienceReferenceList :references="modelValue" @edit="handleEdit" @delete="handleDelete" />
@@ -192,10 +194,14 @@ export default defineComponent({
     },
     hoursRequired() {
       //edge case for renewals > 5 year expired should be 500 hours otherwise all renewals are 400 hours
-      if (this.props.isRenewal && this.certificationStore.latestIsEceFiveYear && this.certificationStore.latestExpiredMoreThan5Years) {
+      if (
+        this.applicationStore.isDraftApplicationRenewal &&
+        this.certificationStore.latestIsEceFiveYear &&
+        this.certificationStore.latestExpiredMoreThan5Years
+      ) {
         return 500;
       }
-      return this.props.isRenewal ? 400 : 500;
+      return this.applicationStore.isDraftApplicationRenewal ? 400 : 500;
     },
     totalHours() {
       return Object.values(this.modelValue).reduce((acc, reference) => {

@@ -35,9 +35,7 @@ interface EceRadioOption {
 }
 
 interface EceEducationProps {}
-interface EceWorkExperienceReferencesProps {
-  isRenewal?: boolean;
-}
+interface EceWorkExperienceReferencesProps {}
 
 interface EceAddressProps {
   addressLabel: string;

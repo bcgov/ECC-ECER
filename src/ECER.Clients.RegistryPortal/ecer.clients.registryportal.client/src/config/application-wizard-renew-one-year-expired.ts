@@ -4,7 +4,7 @@ import characterReferencesForm from "./character-references-form";
 import explanationLetterForm from "./explanation-letter-form";
 import professionalDevelopmentForm from "./professional-development-form";
 import profileInformationForm from "./profile-information-form";
-import referencesForm from "./references-renewal-form";
+import referencesForm from "./references-form";
 import reviewAndSubmitForm from "./review-submit-form";
 
 const applicationWizard: Wizard = {
