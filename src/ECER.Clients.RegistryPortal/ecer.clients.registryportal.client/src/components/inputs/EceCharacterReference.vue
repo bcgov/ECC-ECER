@@ -141,6 +141,10 @@ export default defineComponent({
   },
   computed: {
     hasDuplicateReferences() {
+      if (!this.wizardStore.wizardData.referenceList || !this.wizardStore.wizardData.characterReferences) {
+        //flow doesn't have reference list of character references return false
+        return false;
+      }
       if (Object.values(this.wizardStore.wizardData.referenceList).length === 0 || this.wizardStore.wizardData.characterReferences.length === 0) {
         return false;
       }

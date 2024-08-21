@@ -78,13 +78,17 @@ export const useApplicationStore = defineStore("application", {
       this.$reset();
 
       const { data: applications } = await getApplications();
-      // Load the first application as the current draft application
-      if (applications?.length && applications.length > 0) {
-        this.applications = applications;
-        this.application = applications[0];
 
-        if (this.application.status === "Draft") {
-          this.draftApplication = this.application;
+      const filteredApplications = applications?.filter((application) => application.status !== "Decision");
+      // Load the first application as the current draft application
+      if (filteredApplications?.length && filteredApplications.length > 0) {
+        this.applications = applications;
+        this.application = filteredApplications[0];
+
+        const draftApplication = filteredApplications.find((app) => app.status === "Draft");
+
+        if (draftApplication) {
+          this.draftApplication = draftApplication;
         }
       }
 
@@ -97,10 +101,14 @@ export const useApplicationStore = defineStore("application", {
       this.draftApplication.stage = wizardStore.currentStepStage as ApplicationStage;
 
       // Education step data
-      this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
+      if (wizardStore.wizardConfig.steps?.education?.form.inputs.educationList.id) {
+        this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
+      }
 
       // Work References step data
-      this.draftApplication.workExperienceReferences = Object.values(wizardStore.wizardData.referenceList);
+      if (wizardStore.wizardData.referenceList) {
+        this.draftApplication.workExperienceReferences = Object.values(wizardStore.wizardData.referenceList);
+      }
 
       // Character References step data
       if (
