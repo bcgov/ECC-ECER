@@ -817,9 +817,7 @@ declare namespace Paths {
     export interface PathParameters {
       fileId: Parameters.FileId;
     }
-    export interface RequestBody {
-      file: string; // binary
-    }
+    export type RequestBody = string; // binary
     namespace Responses {
       export type $200 = /* file Response */ Components.Schemas.FileResponse;
       export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
