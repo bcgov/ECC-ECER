@@ -2,7 +2,9 @@
 using ECER.Utilities.DataverseSdk.Model;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
-using System.Linq;
+using ECER.Utilities.ObjectStorage.Providers.S3;
+using Microsoft.Extensions.Configuration;
+using ECER.Utilities.ObjectStorage.Providers;
 
 namespace ECER.Resources.Accounts.Communications;
 
@@ -10,11 +12,15 @@ internal class CommunicationRepository : ICommunicationRepository
 {
   private readonly EcerContext context;
   private readonly IMapper mapper;
+  private readonly IObjecStorageProvider objectStorageProvider;
+  private readonly IConfiguration configuration;
 
-  public CommunicationRepository(EcerContext context, IMapper mapper)
+  public CommunicationRepository(EcerContext context, IMapper mapper, IObjecStorageProvider objecStorageProvider, IConfiguration configuration)
   {
     this.context = context;
     this.mapper = mapper;
+    this.objectStorageProvider = objecStorageProvider;
+    this.configuration = configuration;
   }
 
   public async Task<CommunicationResult> Query(UserCommunicationQuery query)
@@ -149,9 +155,37 @@ internal class CommunicationRepository : ICommunicationRepository
       };
       context.AddLink(ecerCommunication, Referencingecer_communication_ParentCommunicationid, existingCommunication);
       context.AddLink(application, ecer_Communication.Fields.ecer_communication_Applicationid, ecerCommunication);
-      context.SaveChanges();
+      context.LoadProperty(application, ecer_Application.Fields.ecer_application_Applicantid_contact);
 
+      foreach (var document in communication.Documents)
+      {
+        if (string.IsNullOrEmpty(document.Id) || string.IsNullOrEmpty(document.Url))
+        {
+          throw new InvalidOperationException($"Document '{document.Id}' is not valid");
+        }
+
+        var sourceFolder = document.Url.Split('/')[0];
+        var destinationFolder = "ecer_communication";
+        var fileId = document.Id;
+        await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), cancellationToken);
+
+        var documenturl = new bcgov_DocumentUrl()
+        {
+          bcgov_Url = string.Format("{0}/{1}", destinationFolder, fileId),
+          StatusCode = bcgov_DocumentUrl_StatusCode.Active,
+          StateCode = bcgov_documenturl_statecode.Active
+        };
+
+        context.AddObject(documenturl);
+        context.AddLink(documenturl, bcgov_DocumentUrl.Fields.bcgov_contact_bcgov_documenturl, application.ecer_application_Applicantid_contact);
+        context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication, ecerCommunication);
+      }
+
+      context.SaveChanges();
       return ecerCommunication.ecer_CommunicationId.ToString()!;
     }
   }
+
+  private static string GetBucketName(IConfiguration configuration) =>
+  configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }
