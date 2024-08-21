@@ -111,7 +111,7 @@
         </Alert>
       </v-col>
       <v-col sm="12" md="10" lg="8" xl="6" class="my-6">
-        <WorkExperienceReferenceProgressBar :references="modelValue" />
+        <WorkExperienceReferenceProgressBar :references="modelValue" :hoursRequired="hoursRequired" />
       </v-col>
       <v-col sm="12" md="10" lg="8" xl="6">
         <WorkExperienceReferenceList :references="modelValue" @edit="handleEdit" @delete="handleDelete" />
@@ -191,6 +191,10 @@ export default defineComponent({
       return this.count >= 6 || this.totalHours >= this.hoursRequired;
     },
     hoursRequired() {
+      //edge case for renewals > 5 year expired should be 500 hours otherwise all renewals are 400 hours
+      if (this.props.isRenewal && this.certificationStore.latestIsEceFiveYear && this.certificationStore.latestExpiredMoreThan5Years) {
+        return 500;
+      }
       return this.props.isRenewal ? 400 : 500;
     },
     totalHours() {

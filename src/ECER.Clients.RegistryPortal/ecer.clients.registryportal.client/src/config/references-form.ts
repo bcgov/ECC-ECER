@@ -1,6 +1,9 @@
 import EceWorkExperienceReferences from "@/components/inputs/EceWorkExperienceReferences.vue";
 import type { Form } from "@/types/form";
 
+import { useApplicationStore } from "@/store/application";
+const applicationStore = useApplicationStore();
+
 const referencesForm: Form = {
   id: "referencesForm",
   title: "Work experience references",
@@ -8,7 +11,9 @@ const referencesForm: Form = {
     referenceList: {
       id: "referenceList",
       component: EceWorkExperienceReferences,
-      props: {},
+      props: {
+        isRenewal: applicationStore.isDraftApplicationRenewal,
+      },
       cols: {
         md: 12,
         lg: 12,
