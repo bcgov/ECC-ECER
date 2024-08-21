@@ -8,10 +8,10 @@
     </template>
     <template #action>
       <v-btn v-if="showRenewLink" variant="text" @click="handleRenewClicked">
-        <a>Renew</a>
+        <a href="#" @click.prevent>Renew</a>
       </v-btn>
-      <v-btn v-else-if="showRenewalRequirementsLink" variant="text" @click="handleLearnAboutRewalRequirementsClicked">
-        <a><u>Learn about renewal requirements</u></a>
+      <v-btn v-else-if="showRenewalRequirementsLink" variant="text" @click="handleLearnAboutRenewalRequirementsClicked">
+        <a href="#" @click.prevent>Learn about renewal requirements</a>
       </v-btn>
     </template>
   </ActionCard>
@@ -113,7 +113,7 @@ export default defineComponent({
     },
   },
   methods: {
-    handleLearnAboutRewalRequirementsClicked() {
+    handleLearnAboutRenewalRequirementsClicked() {
       this.$router.push({
         name: "certification-requirements",
         query: { certificationTypes: this.certificationStore.latestCertificationTypes, isRenewal: "true" },
