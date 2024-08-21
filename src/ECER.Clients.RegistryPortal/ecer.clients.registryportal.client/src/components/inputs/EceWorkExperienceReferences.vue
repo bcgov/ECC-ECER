@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
       <h2 v-if="!clientId">Reference {{ newClientId }} [Up to 6]</h2>
       <h2 v-if="clientId">Edit {{ previousFullName }}</h2>
