@@ -12,22 +12,26 @@
           <v-btn prepend-icon="mdi-close" text="Close" @click="messageStore.currentMessage = null"></v-btn>
         </v-toolbar>
         <v-card-text>
-          <v-btn
-            v-if="messageStore.currentMessage?.doNotReply == false"
-            prepend-icon="mdi-reply"
-            variant="text"
-            color="primary"
-            text="Reply"
-            @click="handleMessageReply"
-          >
-            Reply
-          </v-btn>
-          <h2 class="mt-6">{{ messageStore.currentMessage?.subject }}</h2>
+          <v-sheet v-if="messageStore.currentMessage?.doNotReply == false" class="message-reply mb-6">
+            <v-btn prepend-icon="mdi-reply" variant="text" color="primary" text="Reply" @click="handleMessageReply"></v-btn>
+          </v-sheet>
+          <h2>{{ messageStore.currentMessage?.subject }}</h2>
 
           <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
             <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
-            <div class="mt-3" v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></div>
+            <div class="mt-3" v-html="`${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`"></div>
             <div class="mt-6" v-html="message.text"></div>
+            <div v-if="message.documents!.length > 0" class="mt-6">
+              <p>
+                <v-icon>mdi-paperclip</v-icon>
+                Attachments
+              </p>
+              <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
+                <DownloadFileLink :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
+                  <div>{{ `${file.name} (${file.size!.replace(/\s+/g, "")})` }}</div>
+                </DownloadFileLink>
+              </div>
+            </div>
             <v-divider v-if="index < messageStore.currentThread!.length - 1" color="ash-grey" class="mt-10 border-opacity-100"></v-divider>
           </div>
           <div v-if="messageStore.currentMessage?.doNotReply">
@@ -39,21 +43,26 @@
     </v-dialog>
   </div>
   <div v-if="mdAndUp && messageStore.currentMessage != null">
-    <v-btn
-      v-if="messageStore.currentMessage?.doNotReply == false"
-      prepend-icon="mdi-reply"
-      variant="text"
-      color="primary"
-      text="Reply"
-      @click="handleMessageReply"
-    >
-      Reply
-    </v-btn>
-    <h2 class="mt-6">{{ messageStore.currentMessage?.subject }}</h2>
+    <v-sheet v-if="messageStore.currentMessage?.doNotReply == false" class="message-reply mb-6">
+      <v-btn prepend-icon="mdi-reply" variant="text" color="primary" text="Reply" @click="handleMessageReply"></v-btn>
+    </v-sheet>
+    <h2>{{ messageStore.currentMessage?.subject }}</h2>
     <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
       <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
-      <div class="mt-3" v-html="formatDate(String(message.notifiedOn), 'LLL d, yyyy t')"></div>
+      <div class="mt-3" v-html="`${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`"></div>
       <div class="mt-6" v-html="message.text"></div>
+      <div v-if="message.documents!.length > 0" class="mt-6">
+        <p>
+          <v-icon>mdi-paperclip</v-icon>
+          Attachments
+        </p>
+        <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
+          <DownloadFileLink :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
+            <div>{{ `${file.name} (${file.size!.replace(/\s+/g, "")})` }}</div>
+          </DownloadFileLink>
+        </div>
+      </div>
+
       <v-divider v-if="index < messageStore.currentThread!.length - 1" color="ash-grey" class="mt-10 border-opacity-100"></v-divider>
     </div>
     <div v-if="messageStore.currentMessage?.doNotReply">
@@ -67,16 +76,20 @@
 import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
 
+import { getCommunicationFile } from "@/api/message";
 import { useMessageStore } from "@/store/message";
 import { formatDate } from "@/utils/format";
 
+import DownloadFileLink from "./DownloadFileLink.vue";
+
 export default defineComponent({
   name: "Message",
+  components: { DownloadFileLink },
   setup() {
     const messageStore = useMessageStore();
     const { smAndDown, mdAndUp } = useDisplay();
 
-    return { messageStore, smAndDown, mdAndUp };
+    return { messageStore, smAndDown, mdAndUp, getCommunicationFile };
   },
   computed: {
     messageDate(): string {
@@ -92,3 +105,11 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+.message-reply {
+  background-color: #e4e4e4;
+  height: 48px;
+  display: flex;
+  align-items: center;
+}
+</style>

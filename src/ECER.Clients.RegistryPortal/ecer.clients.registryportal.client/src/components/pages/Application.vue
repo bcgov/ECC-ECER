@@ -1,7 +1,12 @@
 <template>
-  <Wizard :ref="'wizard'" :wizard="applicationStore.isDraftCertificateTypeFiveYears ? applicationWizardFiveYear : applicationWizardAssistantAndOneYear">
+  <Wizard :ref="'wizard'" :wizard="wizardConfigSetup">
     <template #header>
-      <WizardHeader class="mb-6" :handle-save-draft="handleSaveAsDraft" :show-save-button="showSaveButtons" />
+      <WizardHeader
+        class="mb-6"
+        :handle-save-draft="handleSaveAsDraft"
+        :show-save-button="showSaveButtons"
+        :is-renewal="applicationStore?.draftApplication.applicationType === 'Renewal'"
+      />
       <v-container>
         <!-- prettier-ignore -->
         <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" href="#" @click.prevent="handleBack">
@@ -69,7 +74,7 @@ import { useCertificationStore } from "@/store/certification";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
-import type { ApplicationStage } from "@/types/wizard";
+import type { ApplicationStage, Wizard as WizardType } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
 
 export default defineComponent({
@@ -82,17 +87,18 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const loadingStore = useLoadingStore();
     const certificationStore = useCertificationStore();
+    let wizardConfigSetup: WizardType | undefined = undefined;
 
     // Refresh userProfile from the server
     const userProfile = await getProfile();
     if (userProfile !== null) {
       userStore.setUserProfile(userProfile);
     }
-    const latestCeritificateIsExpired = (dt: string) => {
+    const latestCertificateIsExpired = (dt: string) => {
       return DateTime.fromISO(dt) > DateTime.fromISO(certificationStore?.latestCertification?.expiryDate!);
     };
 
-    const latestCeritificateExpiredMoreThan5Years = (dt1: string) => {
+    const latestCertificateExpiredMoreThan5Years = (dt1: string) => {
       const dt2 = DateTime.fromISO(certificationStore.latestCertification?.expiryDate!);
       const differenceInYears = Math.abs(DateTime.fromISO(dt1).diff(dt2, "years").years);
       return differenceInYears > 5;
@@ -103,28 +109,36 @@ export default defineComponent({
     if (applicationStore.isDraftApplicationRenewal) {
       if (applicationStore.isDraftCertificateTypeEceAssistant) {
         await wizardStore.initializeWizard(applicationWizardRenewAssistant, applicationStore.draftApplication);
+        wizardConfigSetup = applicationWizardRenewAssistant;
       } else if (applicationStore.isDraftCertificateTypeOneYear) {
         {
-          if (!latestCeritificateIsExpired(draftApplicationCreatedOn)) {
-            await wizardStore.initializeWizard(applicationWizardRenewOneYearActive, applicationStore.draftApplication);
-          } else if (!latestCeritificateExpiredMoreThan5Years(applicationStore.draftApplication.createdOn!)) {
+          if (!latestCertificateIsExpired(draftApplicationCreatedOn)) {
+            await wizardStore.initializeWizardRenewOneYearActive(applicationWizardRenewOneYearActive, applicationStore.draftApplication);
+            wizardConfigSetup = applicationWizardRenewOneYearActive;
+          } else if (!latestCertificateExpiredMoreThan5Years(applicationStore.draftApplication.createdOn!)) {
             await wizardStore.initializeWizard(applicationWizardRenewOneYearExpired, applicationStore.draftApplication);
+            wizardConfigSetup = applicationWizardRenewOneYearExpired;
           }
         }
       } else if (applicationStore.isDraftCertificateTypeFiveYears) {
-        if (!latestCeritificateIsExpired(draftApplicationCreatedOn)) {
+        if (!latestCertificateIsExpired(draftApplicationCreatedOn)) {
           await wizardStore.initializeWizard(applicationWizardRenewFiveYearActive, applicationStore.draftApplication);
-        } else if (!latestCeritificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
+          wizardConfigSetup = applicationWizardRenewFiveYearActive;
+        } else if (!latestCertificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
           await wizardStore.initializeWizard(applicationWizardRenewFiveYearExpiredLessThan5Years, applicationStore.draftApplication);
-        } else if (latestCeritificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
+          wizardConfigSetup = applicationWizardRenewFiveYearExpiredLessThan5Years;
+        } else if (latestCertificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
           await wizardStore.initializeWizard(applicationWizardRenewFiveYearExpiredMoreThan5Years, applicationStore.draftApplication);
+          wizardConfigSetup = applicationWizardRenewFiveYearExpiredMoreThan5Years;
         }
       }
     } else {
       if (applicationStore.isDraftCertificateTypeFiveYears) {
         await wizardStore.initializeWizard(applicationWizardFiveYear, applicationStore.draftApplication);
+        wizardConfigSetup = applicationWizardFiveYear;
       } else {
         await wizardStore.initializeWizard(applicationWizardAssistantAndOneYear, applicationStore.draftApplication);
+        wizardConfigSetup = applicationWizardAssistantAndOneYear;
       }
     }
 
@@ -137,6 +151,7 @@ export default defineComponent({
       applicationWizardFiveYear,
       applicationWizardAssistantAndOneYear,
       certificationStore,
+      wizardConfigSetup,
     };
   },
   computed: {
@@ -171,6 +186,7 @@ export default defineComponent({
             this.saveProfile();
             this.incrementWizard();
             break;
+          case "ExplanationLetter":
           case "Education":
           case "WorkReferences":
           case "CharacterReferences":

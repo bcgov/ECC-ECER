@@ -161,14 +161,15 @@ export default defineComponent({
   computed: {
     showApplicationCard(): boolean {
       return (
-        this.applicationStore.applicationStatus === undefined ||
-        this.applicationStore.applicationStatus === "Draft" ||
-        this.applicationStore.applicationStatus === "Submitted" ||
-        this.applicationStore.applicationStatus === "Ready" ||
-        this.applicationStore.applicationStatus === "InProgress" ||
-        this.applicationStore.applicationStatus === "PendingQueue" ||
-        this.applicationStore.applicationStatus === "Pending" ||
-        this.applicationStore.applicationStatus === "Escalated"
+        (this.applicationStore.applicationStatus === undefined ||
+          this.applicationStore.applicationStatus === "Draft" ||
+          this.applicationStore.applicationStatus === "Submitted" ||
+          this.applicationStore.applicationStatus === "Ready" ||
+          this.applicationStore.applicationStatus === "InProgress" ||
+          this.applicationStore.applicationStatus === "PendingQueue" ||
+          this.applicationStore.applicationStatus === "Pending" ||
+          this.applicationStore.applicationStatus === "Escalated") &&
+        !this.certificationStore.hasCertifications //if user has certifications we should not show applications card until designs are confirmed
       );
     },
   },

@@ -45,4 +45,10 @@ const sendMessage = async (sendMessageRequest: Components.Schemas.SendMessageReq
   return apiResultHandler.execute<Components.Schemas.SendMessageResponse>({ request: client.message_post(null, sendMessageRequest), key: "message_post" });
 };
 
-export { getChildMessages, getMessages, getMessagesStatus, markMessageAsRead, sendMessage };
+const getCommunicationFile = async (communicationId: string, fileId: string): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  const config: AxiosRequestConfig = { responseType: "blob" };
+  return apiResultHandler.execute({ request: client.files_communication_get({ communicationId: communicationId, fileId: fileId }, null, config) });
+};
+
+export { getChildMessages, getCommunicationFile, getMessages, getMessagesStatus, markMessageAsRead, sendMessage };
