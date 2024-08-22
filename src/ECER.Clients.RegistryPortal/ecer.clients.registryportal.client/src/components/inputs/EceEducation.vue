@@ -54,7 +54,13 @@
           <v-col>
             <v-text-field
               v-model="startYear"
-              :rules="[Rules.required('Enter the start date of your program or course')]"
+              :rules="[
+                Rules.required('Enter the start date of your program or course'),
+                Rules.conditionalWrapper(
+                  isDraftApplicationAssistantRenewal,
+                  Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'The start date of your course should be within the last 5 years'),
+                ),
+              ]"
               label="Start date of program or course"
               type="date"
               variant="outlined"
@@ -67,7 +73,12 @@
           <v-col>
             <v-text-field
               v-model="endYear"
-              :rules="[Rules.required('Enter the end date of your program or course')]"
+              :rules="[
+                Rules.required('Enter the end date of your program or course'),
+                isDraftApplicationAssistantRenewal
+                  ? Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'The end date of your course should be within the last 5 years')
+                  : true,
+              ]"
               label="End date of program or course"
               type="date"
               variant="outlined"
@@ -85,7 +96,7 @@
           <v-col>
             <v-text-field
               v-model="school"
-              :rules="[Rules.required('Enter the full name of your educational institution')]"
+              :rules="[Rules.required('Enter the name of the educational institution where you took your program or course')]"
               label="Full name of educational institution"
               variant="outlined"
               color="primary"
@@ -95,7 +106,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-text-field v-model="campusLocation" label="Campus Location (Optional)" variant="outlined" color="primary" maxlength="50"></v-text-field>
+            <v-text-field v-model="campusLocation" label="Campus Location (Optional)" variant="outlined" color="primary" maxlength="200"></v-text-field>
           </v-col>
         </v-row>
         <v-row>
@@ -125,7 +136,11 @@
         <br />
         <p>What name is shown on your transcript?</p>
         <br />
-        <v-radio-group v-model="previousNameRadio" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="previousNameRadioChanged">
+        <v-radio-group
+          v-model="previousNameRadio"
+          :rules="[Rules.requiredRadio('Select an option to specify what name has been shown on your transcript')]"
+          @update:model-value="previousNameRadioChanged"
+        >
           <v-radio v-for="(step, index) in previousNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
         </v-radio-group>
         <div v-if="previousNameRadio === 'other'">
@@ -177,7 +192,7 @@
       </v-col>
       <v-col cols="12" class="mt-6">
         <v-row justify="start" class="ml-1">
-          <v-btn prepend-icon="mdi-plus" rounded="lg" color="alternate" @click="handleAddEducation">Add Education</v-btn>
+          <v-btn v-if="showAddEducationButton" prepend-icon="mdi-plus" rounded="lg" color="alternate" @click="handleAddEducation">Add Education</v-btn>
         </v-row>
       </v-col>
       <v-col>
@@ -309,6 +324,13 @@ export default defineComponent({
 
       radioOptions.push({ label: "Other name", value: "other" });
       return radioOptions;
+    },
+    isDraftApplicationAssistantRenewal(): boolean {
+      return this.applicationStore.isDraftApplicationRenewal && this.applicationStore.isDraftCertificateTypeEceAssistant;
+    },
+    showAddEducationButton(): boolean {
+      //covers case where user has assistant renewal and can only add 1 education. Otherwise allow user to upload as many as needed.
+      return this.isDraftApplicationAssistantRenewal ? Object.keys(this.modelValue).length < 1 : true;
     },
   },
   mounted() {

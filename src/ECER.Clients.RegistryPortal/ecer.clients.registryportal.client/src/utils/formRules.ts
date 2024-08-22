@@ -115,6 +115,26 @@ const atLeastOneOptionRequired = (message = "Please select at least one option")
   return (v: any[]) => v.length > 0 || message;
 };
 /**
+ * Checks whether input is x years from a specific date
+ * Date format should be 2022-12-10 YYYY-MM-DD.
+ * @param {String} targetDate
+ * @param {Number} years
+ * @returns {String|Boolean}
+ */
+const dateRuleRange = (targetDate: string, years: number, message = `Date should be within ${years} years`) => {
+  return (v: string) => {
+    if (v && targetDate) {
+      const input = DateTime.fromISO(v);
+      const target = DateTime.fromISO(targetDate);
+      const differenceInYears = Math.abs(input.diff(target, "years").years);
+
+      return differenceInYears < years || message;
+    }
+
+    return true;
+  };
+};
+/**
  * Custom endDate Rule! Checks that we have start date and that end date
  * happens after start date. Date format should be 2022-12-10 YYYY-MM-DD.
  * @param {String} effectiveDate
@@ -133,6 +153,22 @@ const endDateRule = (effectiveDate: string, expiryDate: string, message = "End d
 };
 
 /**
+ * conditional wrapper for form rules. If condition is met then return rule function
+ * otherwise ignore by returning true
+ * @param {boolean} condition
+ * @param {Function} rule
+ * @returns {Boolean|ValidationRule$1}
+ */
+const conditionalWrapper = (condition: boolean, rule: any) => {
+  return condition ? rule : true;
+  if (condition) {
+    return rule;
+  } else {
+    return true;
+  }
+};
+
+/**
  * Rule for website url
  * @param {String} message
  * @returns Function
@@ -143,6 +179,8 @@ const website = (message = "Website must be valid and secure (i.e., https)") => 
 
 export {
   atLeastOneOptionRequired,
+  conditionalWrapper,
+  dateRuleRange,
   email,
   endDateRule,
   hasCheckbox,
