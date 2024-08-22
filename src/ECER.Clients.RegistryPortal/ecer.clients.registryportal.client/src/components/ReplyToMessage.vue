@@ -59,6 +59,7 @@ import { useLoadingStore } from "@/store/loading";
 import { useMessageStore } from "@/store/message";
 import * as Rules from "@/utils/formRules";
 import type { Components } from "@/types/openapi";
+import * as Functions from "@/utils/functions";
 interface ReplyToMessageData {
   text: string;
   Rules: any;
@@ -129,7 +130,6 @@ export default defineComponent({
   this.areAttachedFilesValid = true;
   this.isFileUploadInProgress = false;
   this.attachments = []; // Reset attachments
-
   if (filesArray && filesArray.length > 0) {
     for (let i = 0; i < filesArray.length; i++) {
       const file = filesArray[i];
@@ -147,7 +147,10 @@ export default defineComponent({
       // If file is valid and fully uploaded, add to attachments
       if (this.areAttachedFilesValid && !this.isFileUploadInProgress) {
         this.attachments.push({
-          id:file.fileId
+          id: file.fileId,
+          name: file.file.name,
+          size: Functions.humanFileSize(file.file.size),
+          extention: file.file.name.split('.').pop()
         });
       }
     }
