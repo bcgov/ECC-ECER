@@ -14,6 +14,13 @@ internal class CommunicationMapper : Profile
         .ReverseMap();
 
     CreateMap<CommunicationsStatus, Contract.Communications.CommunicationsStatus>();
-    CreateMap<CommunicationDocument, Contract.Communications.CommunicationDocument>();
+
+    CreateMap<CommunicationDocument, Contract.Communications.CommunicationDocument>()
+    .ForCtorParam(nameof(CommunicationDocument.Id), opts => opts.MapFrom(s => s.Id))
+    .ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.Url ?? string.Empty))
+    .ForMember(dest => dest.Extention, opt => opt.MapFrom(src => src.Extention ?? string.Empty))
+    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name ?? string.Empty))
+    .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.Size ?? string.Empty))
+    .ReverseMap();
   }
 }

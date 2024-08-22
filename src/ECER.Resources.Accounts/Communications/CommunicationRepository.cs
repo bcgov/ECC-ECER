@@ -159,19 +159,23 @@ internal class CommunicationRepository : ICommunicationRepository
 
       foreach (var document in communication.Documents)
       {
-        if (string.IsNullOrEmpty(document.Id) || string.IsNullOrEmpty(document.Url))
+        if (string.IsNullOrEmpty(document.Id))
         {
           throw new InvalidOperationException($"Document '{document.Id}' is not valid");
         }
 
-        var sourceFolder = document.Url.Split('/')[0];
-        var destinationFolder = "ecer_communication";
+        var sourceFolder = "tempfolder";
+        var destinationFolder = "ecer_communication/" + ecerCommunication.ecer_CommunicationId;
         var fileId = document.Id;
         await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), cancellationToken);
 
         var documenturl = new bcgov_DocumentUrl()
         {
-          bcgov_Url = string.Format("{0}/{1}", destinationFolder, fileId),
+          bcgov_DocumentUrlId = Guid.Parse(fileId),
+          bcgov_Url = destinationFolder,
+          bcgov_FileName = document.Name,
+          bcgov_FileSize = document.Size,
+          bcgov_FileExtension = document.Extention,
           StatusCode = bcgov_DocumentUrl_StatusCode.Active,
           StateCode = bcgov_documenturl_statecode.Active
         };

@@ -75,11 +75,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
-
 import { getCommunicationFile } from "@/api/message";
 import { useMessageStore } from "@/store/message";
 import { formatDate } from "@/utils/format";
-
 import DownloadFileLink from "./DownloadFileLink.vue";
 
 export default defineComponent({
