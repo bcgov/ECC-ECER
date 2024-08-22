@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <p v-if="referenceList.length == 0" class="small">No Work Experience References have been added yet.</p>
+    <p v-if="referenceList.length == 0" class="small">No work experience reference added yet.</p>
     <WorkExperienceReferenceCard
       v-for="(reference, id) in references"
       :key="id"

@@ -28,7 +28,6 @@ const applicationWizard: Wizard = {
       form: professionalDevelopmentForm,
       key: "item.3",
     },
-
     characterReferences: {
       stage: "CharacterReferences",
       title: "Character references",

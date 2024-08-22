@@ -3,7 +3,7 @@ import type { Form } from "@/types/form";
 
 const referencesForm: Form = {
   id: "referencesForm",
-  title: "References",
+  title: "Work experience references",
   inputs: {
     referenceList: {
       id: "referenceList",
