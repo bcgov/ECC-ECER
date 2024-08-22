@@ -102,7 +102,8 @@ interface Input {
     | EceCheckboxProps
     | EcePreviewProps
     | EceCharacterReferenceProps
-    | EceRecaptchaProps;
+    | EceRecaptchaProps
+    | EceWorkExperienceReferencesProps;
   cols: {
     md: number;
     lg: number;
