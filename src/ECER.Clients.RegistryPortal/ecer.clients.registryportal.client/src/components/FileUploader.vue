@@ -171,6 +171,8 @@ export default defineComponent({
         this.showErrorBanner = false;
         (this.$refs.fileInput as HTMLInputElement).click();
       }
+      //fix to allow uploading the same file twice
+      (this.$refs.fileInput as HTMLInputElement).value = "";
     },
     updateEmit() {
       this.$emit("update:files", this.selectedFiles);

@@ -99,6 +99,7 @@ export default {
         firstName: this.formStore.formData[previousNameForm.inputs.firstName.id],
         middleName: this.formStore.formData[previousNameForm.inputs.middleName.id] ?? null,
         lastName: this.formStore.formData[previousNameForm.inputs.lastName.id],
+        source: "Profile",
       };
     },
     duplicatePreviousName() {

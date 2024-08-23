@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
 import type { Components } from "@/types/openapi";
-import type { ApplicationStage, ReferenceStage, Step, Wizard } from "@/types/wizard";
+import type { ApplicationStage, ReferenceStage, RenewStage, Step, Wizard } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
 
 import { useOidcStore } from "./oidc";
@@ -36,7 +36,7 @@ export const useWizardStore = defineStore("wizard", {
     currentStepId(state): string {
       return this.steps[state.step - 1].id;
     },
-    currentStepStage(state): ApplicationStage | ReferenceStage {
+    currentStepStage(state): ApplicationStage | ReferenceStage | RenewStage {
       return this.steps[state.step - 1].stage;
     },
   },
@@ -128,6 +128,40 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.assessment.form.inputs.workExperienceAssessment.id]: {} as Components.Schemas.WorkExperienceReferenceCompetenciesAssessment,
         [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
       });
+    },
+    async initializeWizardRenewOneYearActive(wizard: Wizard, draftApplication: Components.Schemas.DraftApplication): Promise<void> {
+      const userStore = useUserStore();
+      const oidcStore = useOidcStore();
+
+      const oidcUserInfo = await oidcStore.oidcUserInfo();
+      const oidcAddress = await oidcStore.oidcAddress();
+
+      this.wizardConfig = wizard;
+
+      // set step to the index of steps where the stage matches the draft application stage
+      this.step = Object.values(wizard.steps).findIndex((step) => step.stage === draftApplication.stage) + 1;
+
+      this.wizardData = {
+        // Contact Information step data
+        [wizard.steps.profile.form.inputs.legalLastName.id]: userStore.userProfile?.lastName || oidcUserInfo?.lastName,
+        [wizard.steps.profile.form.inputs.legalFirstName.id]: userStore.userProfile?.firstName || oidcUserInfo?.firstName,
+        [wizard.steps.profile.form.inputs.legalMiddleName.id]: userStore.userProfile?.middleName,
+        [wizard.steps.profile.form.inputs.preferredName.id]: userStore.userProfile?.preferredName,
+        [wizard.steps.profile.form.inputs.dateOfBirth.id]: userStore.userProfile?.dateOfBirth || oidcUserInfo?.dateOfBirth,
+        [wizard.steps.profile.form.inputs.addresses.id]: {
+          [AddressType.RESIDENTIAL]: userStore.userProfile?.residentialAddress || oidcAddress,
+          [AddressType.MAILING]: userStore.userProfile?.mailingAddress || oidcAddress,
+        },
+        [wizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.userProfile?.phone || oidcUserInfo?.phone,
+        [wizard.steps.profile.form.inputs.alternateContactNumber.id]: userStore.userProfile?.alternateContactPhone,
+        [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || oidcUserInfo?.email,
+        // Explanation Letter
+        [wizard.steps.explanationLetter.form.inputs.explanationLetter.id]: draftApplication?.explanationLetter || "",
+        // Character References step data
+        [wizard.steps.characterReferences.form.inputs.characterReferences.id]: draftApplication?.characterReferences?.[0]
+          ? draftApplication?.characterReferences
+          : [],
+      };
     },
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };

@@ -143,13 +143,14 @@ internal sealed partial class ApplicationRepository
       if (professionalDevelopment == null) throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopment}' not found");
 
       var sourceFolder = items[0];
-      var destinationFolder = "ecer_professionaldevelopment";
+      var destinationFolder = "ecer_professionaldevelopment/" + professionalDevelopment.Id;
       var fileId = items[1];
       await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
 
       var documenturl = new bcgov_DocumentUrl()
       {
-        bcgov_Url = string.Format("{0}/{1}", destinationFolder, fileId),
+        bcgov_DocumentUrlId = Guid.Parse(fileId),
+        bcgov_Url = destinationFolder,
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
         StateCode = bcgov_documenturl_statecode.Active
       };

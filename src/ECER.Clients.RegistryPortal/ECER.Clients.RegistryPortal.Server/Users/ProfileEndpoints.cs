@@ -35,7 +35,8 @@ public class ProfileEndpoints : IRegisterEndpoints
 /// <summary>
 /// User profile information
 /// </summary>
-public record UserProfile {
+public record UserProfile
+{
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? MiddleName { get; set; }
@@ -52,12 +53,13 @@ public record UserProfile {
 /// <summary>
 /// Previous Name
 /// </summary>
-public record PreviousName ([Required] string FirstName, [Required] string LastName)
+public record PreviousName([Required] string FirstName, [Required] string LastName)
 {
   public string? Id { get; set; }
   public string? MiddleName { get; set; }
   public string? PreferredName { get; set; }
   public PreviousNameStage? Status { get; set; }
+  public PreviousNameSources? Source { get; set; }
 }
 
 public enum PreviousNameStage
@@ -66,6 +68,13 @@ public enum PreviousNameStage
   ReadyforVerification,
   Verified,
   Archived,
+}
+
+public enum PreviousNameSources
+{
+  NameLog,
+  Profile,
+  Transcript,
 }
 
 /// <summary>

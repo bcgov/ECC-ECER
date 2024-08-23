@@ -58,8 +58,9 @@ import PageContainer from "@/components/PageContainer.vue";
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useMessageStore } from "@/store/message";
+import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
-
+import * as Functions from "@/utils/functions";
 interface ReplyToMessageData {
   text: string;
   Rules: any;
@@ -67,6 +68,7 @@ interface ReplyToMessageData {
   areAttachedFilesValid: boolean;
   isFileUploadInProgress: boolean;
   formValid: boolean;
+  attachments: Components.Schemas.CommunicationDocument[];
 }
 
 export default defineComponent({
@@ -79,7 +81,6 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const messageId = route.params.messageId.toString();
-
     const messageThread = (await getChildMessages({ parentId: messageId })).data?.communications;
     let messageThreadSubject = "";
     if (messageThread.length > 0) {
@@ -103,6 +104,7 @@ export default defineComponent({
       areAttachedFilesValid: true,
       isFileUploadInProgress: false,
       formValid: false,
+      attachments: [],
     };
   },
   methods: {
@@ -113,7 +115,7 @@ export default defineComponent({
       } else if (!this.areAttachedFilesValid) {
         this.alertStore.setFailureAlert("You must upload valid files.");
       } else if (valid) {
-        const { error } = await sendMessage({ communication: { id: this.messageId, text: this.text } });
+        const { error } = await sendMessage({ communication: { id: this.messageId, text: this.text, documents: this.attachments } });
         if (error) {
           this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
         } else {
@@ -128,19 +130,29 @@ export default defineComponent({
     handleFileUpdate(filesArray: any[]) {
       this.areAttachedFilesValid = true;
       this.isFileUploadInProgress = false;
+      this.attachments = []; // Reset attachments
       if (filesArray && filesArray.length > 0) {
         for (let i = 0; i < filesArray.length; i++) {
           const file = filesArray[i];
-          if (!(file.fileErrors.length > 0) && file.progress < 101) {
-            this.isFileUploadInProgress = true;
-            break;
-          }
-        }
-        for (let i = 0; i < filesArray.length; i++) {
-          const file = filesArray[i];
+
+          // Check for file errors
           if (file.fileErrors && file.fileErrors.length > 0) {
             this.areAttachedFilesValid = false;
-            break;
+          }
+
+          // Check if file is still uploading
+          else if (file.progress < 101) {
+            this.isFileUploadInProgress = true;
+          }
+
+          // If file is valid and fully uploaded, add to attachments
+          if (this.areAttachedFilesValid && !this.isFileUploadInProgress) {
+            this.attachments.push({
+              id: file.fileId,
+              name: file.file.name,
+              size: Functions.humanFileSize(file.file.size),
+              extention: file.file.name.split(".").pop(),
+            });
           }
         }
       }

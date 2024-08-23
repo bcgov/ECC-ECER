@@ -3,7 +3,7 @@
     <v-tooltip :text="`${hoursRemaining} Hours Remaining`" location="top">
       <template #activator="{ props }">
         <v-progress-linear v-bind="props" v-model="percentHours" rounded="lg" height="25" color="#67cb7b" bg-color="#f0f2f4" bg-opacity="1">
-          <strong>{{ Math.ceil(totalHours) }}/500 hours</strong>
+          <strong>{{ `${Math.ceil(totalHours)}/${hoursRequired} hours` }}</strong>
         </v-progress-linear>
       </template>
     </v-tooltip>
@@ -27,13 +27,17 @@ export default defineComponent({
       type: Object as () => { [id: string]: Components.Schemas.WorkExperienceReference },
       required: true,
     },
+    hoursRequired: {
+      type: Number,
+      required: true,
+    },
   },
   computed: {
     percentHours(): number {
-      return (this.totalHours / 500) * 100;
+      return (this.totalHours / this.hoursRequired) * 100;
     },
     hoursRemaining(): number {
-      return 500 - this.totalHours;
+      return this.hoursRequired - this.totalHours;
     },
     totalHours(): number {
       return this.referenceList.reduce((acc, reference) => {
