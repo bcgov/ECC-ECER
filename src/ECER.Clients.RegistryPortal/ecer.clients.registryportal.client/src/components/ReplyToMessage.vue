@@ -135,14 +135,14 @@ export default defineComponent({
         for (let i = 0; i < filesArray.length; i++) {
           const file = filesArray[i];
 
-          // Check if file is still uploading
-          if (file.progress < 101) {
-            this.isFileUploadInProgress = true;
-          }
-
           // Check for file errors
           if (file.fileErrors && file.fileErrors.length > 0) {
             this.areAttachedFilesValid = false;
+          }
+
+          // Check if file is still uploading
+          else if (file.progress < 101) {
+            this.isFileUploadInProgress = true;
           }
 
           // If file is valid and fully uploaded, add to attachments
