@@ -42,10 +42,10 @@ public record Communication(string? Id)
 
 public record CommunicationDocument(string Id)
 {
-  public string Url { get; set; } = null!;
-  public string Extention { get; set; } = null!;
-  public string Name { get; set; } = null!;
-  public string Size { get; set; } = null!;
+  public string? Url { get; set; } = string.Empty;
+  public string? Extention { get; set; } = string.Empty;
+  public string? Name { get; set; } = string.Empty;
+  public string? Size { get; set; } = string.Empty;
 }
 
 public record CommunicationResult

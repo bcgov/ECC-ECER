@@ -126,7 +126,7 @@ public class FilesEndpoints : IRegisterEndpoints
         var message = saveResult == null ? "Save Failed" : saveResult.Message;
         return TypedResults.BadRequest(new ProblemDetails { Title = "Save Failed", Detail = message });
       }
-      return TypedResults.Ok(new FileResponse(fileId));
+      return TypedResults.Ok(new FileResponse(fileId) { Url = saveResult.FileData.FileLocation.Folder + "/" + fileId });
     })
       .WithOpenApi("Handles upload file request", string.Empty, "upload_file")
       .RequireAuthorization()
@@ -138,4 +138,7 @@ public class FilesEndpoints : IRegisterEndpoints
 /// file Response
 /// </summary>
 /// <param name="fileId"></param>
-public record FileResponse(string fileId);
+public record FileResponse(string fileId)
+{
+  public string Url { get; set; } = null!;
+}
