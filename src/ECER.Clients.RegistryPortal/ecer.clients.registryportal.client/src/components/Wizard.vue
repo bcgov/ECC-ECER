@@ -18,9 +18,10 @@
         :reverse-transition="false"
       >
         <v-container>
+          <slot name="stepperWindowItemAlert" class="mb-5"></slot>
           <v-row class="justify-space-between mb-4">
             <v-col cols="auto">
-              <h1>{{ step.title }}</h1>
+              <h2>{{ step.title }}</h2>
             </v-col>
             <v-col v-if="wizardStore.currentStepStage === 'Review'" cols="auto">
               <slot name="PrintPreview"></slot>
@@ -44,6 +45,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 
+import Alert from "@/components/Alert.vue";
 import EceForm from "@/components/Form.vue";
 import applicationWizard from "@/config/application-wizard-assistant-and-one-year";
 import { useAlertStore } from "@/store/alert";
@@ -53,7 +55,7 @@ import type { Step, Wizard } from "@/types/wizard";
 
 export default defineComponent({
   name: "Wizard",
-  components: { EceForm },
+  components: { EceForm, Alert },
   props: {
     wizard: {
       type: Object as PropType<Wizard>,

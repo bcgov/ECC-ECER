@@ -45,6 +45,11 @@
         </v-btn>
       </v-container>
     </template>
+    <template #stepperWindowItemAlert>
+      <Alert type="error">
+        <p class="small">You must enter 500 hours of work experience to submit your application.</p>
+      </Alert>
+    </template>
   </Wizard>
 </template>
 
