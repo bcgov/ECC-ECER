@@ -42,10 +42,6 @@ export default defineComponent({
         this.page = newValue;
         this.messageStore.$reset();
         this.fetchMessages(newValue);
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
       },
     },
   },
@@ -62,6 +58,10 @@ export default defineComponent({
       const response = await getMessages(params);
       this.messages = response.data?.communications || [];
       this.messageCount = response.data?.totalMessagesCount || 0;
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     },
   },
 });

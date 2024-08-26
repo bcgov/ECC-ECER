@@ -52,12 +52,16 @@ export default defineComponent({
   methods: {
     formatDate,
     async handleClick() {
-      this.messageStore.currentMessage = this.message;
       this.$emit("update:messageIsRead", true);
       this.loadChildMessages(this.message.id!);
     },
     async loadChildMessages(messageId: string) {
       this.messageStore.currentThread = (await getChildMessages({ parentId: messageId })).data?.communications;
+      this.messageStore.currentMessage = this.message;
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       // mark unread messages from Registry as read
       if (this.messageStore.currentThread != null) {
         const unreadMessage = this.messageStore.currentThread?.filter((message) => !message.isRead && message.from == "Registry");

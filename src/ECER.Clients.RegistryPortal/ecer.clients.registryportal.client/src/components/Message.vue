@@ -101,6 +101,7 @@ export default defineComponent({
     formatDate,
     handleMessageReply() {
       this.$router.push({ name: "replyToMessage", params: { messageId: this.messageStore.currentMessage?.id } });
+      this.messageStore.currentMessage = null; // Putting this in to make router redirect correctly for mobile devices
     },
   },
 });
