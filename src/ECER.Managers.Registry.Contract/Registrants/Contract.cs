@@ -51,6 +51,7 @@ public record PreviousName(string FirstName, string LastName)
   public string? PreferredName { get; set; }
   public PreviousNameStage? Status { get; set; }
   public PreviousNameSources? Source { get; set; }
+  public IEnumerable<IdentityDocument> Documents { get; set; } = Array.Empty<IdentityDocument>();
 }
 
 public enum PreviousNameStage
@@ -66,6 +67,14 @@ public enum PreviousNameSources
   NameLog,
   Profile,
   Transcript,
+}
+
+public record IdentityDocument(string Id)
+{
+  public string Url { get; set; } = null!;
+  public string Extention { get; set; } = null!;
+  public string Name { get; set; } = null!;
+  public string Size { get; set; } = null!;
 }
 
 public record Address(
