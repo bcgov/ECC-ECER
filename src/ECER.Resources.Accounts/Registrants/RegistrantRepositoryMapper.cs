@@ -22,7 +22,8 @@ internal sealed class RegistrantRepositoryMapper : Profile
       .ForMember(d => d.ecer_PreferredName, opts => opts.MapFrom(s => s.PreferredName))
       .ForMember(d => d.ecer_MiddleName, opts => opts.MapFrom(s => s.MiddleName))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
-      .ForMember(d => d.ecer_Source, opts => opts.MapFrom(s => s.Source));
+      .ForMember(d => d.ecer_Source, opts => opts.MapFrom(s => s.Source))
+      .ForMember(d => d.ecer_documenturl_PreviousNameId, opts => { opts.Condition(s => s.Documents.Any()); opts.MapFrom(s => s.Documents); });
 
     CreateMap<ecer_PreviousName, PreviousName>(MemberList.Source)
       .ForCtorParam(nameof(PreviousName.FirstName), opts => opts.MapFrom(s => s.ecer_FirstName))
@@ -32,7 +33,15 @@ internal sealed class RegistrantRepositoryMapper : Profile
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_PreviousNameId))
       .ForMember(d => d.Source, opts => opts.MapFrom(s => s.ecer_Source))
+      .ForMember(d => d.Documents, opts => opts.Ignore())
       .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<IdentityDocument, bcgov_DocumentUrl>(MemberList.Source)
+      .ForMember(d => d.bcgov_DocumentUrlId, opts => opts.MapFrom(s => s.Id))
+      .ForMember(d => d.bcgov_FileName, opts => opts.MapFrom(s => s.Name))
+      .ForMember(d => d.bcgov_FileSize, opts => opts.MapFrom(s => s.Size))
+      .ForMember(d => d.bcgov_Url, opts => opts.MapFrom(s => s.Url))
+      .ForMember(d => d.bcgov_FileExtension, opts => opts.MapFrom(s => s.Extention));
 
     CreateMap<ecer_Authentication, UserIdentity>()
         .ForCtorParam(nameof(UserIdentity.UserId), opts => opts.MapFrom(s => s.ecer_ExternalID))

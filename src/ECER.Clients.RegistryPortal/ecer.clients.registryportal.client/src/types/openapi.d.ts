@@ -245,6 +245,7 @@ declare namespace Components {
        *
        */
       fileId?: string | null;
+      url?: string | null;
     }
     export interface GetMessagesResponse {
       communications?: Communication[] | null;
@@ -260,6 +261,13 @@ declare namespace Components {
       errors?: {
         [name: string]: string[];
       } | null;
+    }
+    export interface IdentityDocument {
+      id?: string | null;
+      url?: string | null;
+      extention?: string | null;
+      name?: string | null;
+      size?: string | null;
     }
     export type InitiatedFrom = "Investigation" | "PortalUser" | "Registry";
     export type InviteType = "CharacterReference" | "WorkExperienceReference";
@@ -311,6 +319,7 @@ declare namespace Components {
       preferredName?: string | null;
       status?: PreviousNameStage;
       source?: PreviousNameSources;
+      documents?: IdentityDocument[] | null;
     }
     export type PreviousNameSources = "NameLog" | "Profile" | "Transcript";
     export type PreviousNameStage = "Unverified" | "ReadyforVerification" | "Verified" | "Archived";

@@ -25,8 +25,8 @@
         <p class="mt-3">The ID must:</p>
         <ul class="ml-10 mt-2">
           <li>Show both names above</li>
-          <li>Be valid(not expired)</li>
-          <li>Be Government-issued</li>
+          <li>Be valid (not expired)</li>
+          <li>Be government-issued</li>
           <li>Be in English</li>
         </ul>
       </v-col>
@@ -39,7 +39,7 @@
     </v-row>
     <v-row class="mt-6">
       <v-col class="d-flex flex-row ga-3 flex-wrap">
-        <v-btn size="large" color="primary" @click="handleSendProofPreviousName">Send</v-btn>
+        <v-btn size="large" color="primary" :loading="loadingStore.isLoading('profile_put')" @click="handleVerifyPreviousName">Send</v-btn>
         <v-btn size="large" variant="outlined" color="primary" @click="router.push('/profile')">Cancel</v-btn>
       </v-col>
     </v-row>
@@ -49,7 +49,8 @@
 <script lang="ts">
 import { useRoute, useRouter } from "vue-router";
 
-import Breadcrumb from "@/components/Breadcrumb.vue";
+import { putProfile } from "@/api/profile";
+import Breadcrumb, { type ItemsType } from "@/components/Breadcrumb.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import FileUploader from "@/components/FileUploader.vue";
 import PageContainer from "@/components/PageContainer.vue";
@@ -57,6 +58,16 @@ import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import type { Components } from "@/types/openapi";
+import * as Functions from "@/utils/functions";
+
+interface VerifyPreviousName {
+  items: ItemsType[];
+  areAttachedFilesValid: boolean;
+  isFileUploadInProgress: boolean;
+  isAtleastOneFileAdded: boolean;
+  unverifiedPreviousName: Components.Schemas.PreviousName;
+  attachments: Components.Schemas.IdentityDocument[];
+}
 
 export default {
   name: "VerifyPreviousName",
@@ -74,54 +85,82 @@ export default {
     const foundName = userStore.unverifiedPreviousNames.find((item) => item.id === previousNameId);
     const previousName = fullName(foundName!);
 
-    return { loadingStore, alertStore, userStore, router, previousName };
+    return { loadingStore, alertStore, userStore, router, previousName, previousNameId };
   },
-  data: () => ({
-    items: [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Verify",
-        disabled: true,
-        href: "/profile/verify-previous-name",
-      },
-    ],
-    areAttachedFilesValid: true,
-    isFileUploadInProgress: false,
-    isAtleastOneFileAdded: false,
-  }),
+  data(): VerifyPreviousName {
+    return {
+      items: [
+        {
+          title: "Home",
+          disabled: false,
+          href: "/",
+        },
+        {
+          title: "Verify",
+          disabled: true,
+          href: "/profile/verify-previous-name",
+        },
+      ],
+      areAttachedFilesValid: true,
+      isFileUploadInProgress: false,
+      isAtleastOneFileAdded: false,
+      attachments: [],
+      unverifiedPreviousName: {},
+    };
+  },
   computed: {},
   methods: {
-    async handleSendProofPreviousName() {
+    async handleVerifyPreviousName() {
       if (!this.isAtleastOneFileAdded) {
         this.alertStore.setFailureAlert("You must add atleast one file.");
       } else if (this.isFileUploadInProgress) {
         this.alertStore.setFailureAlert("Uploading files. You need to wait until files are uploaded to send this message.");
       } else if (!this.areAttachedFilesValid) {
         this.alertStore.setFailureAlert("You must upload valid files.");
+      } else {
+        this.unverifiedPreviousName.documents = this.attachments;
+        this.unverifiedPreviousName.id = this.previousNameId;
+        const { error } = await putProfile({
+          ...this.userStore.userProfile,
+          previousNames: [this.unverifiedPreviousName],
+        });
+
+        if (error) {
+          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+        } else {
+          this.alertStore.setSuccessAlert("Proof of previous name submitted sucessfully.");
+          this.router.push("/profile");
+        }
       }
     },
     handleFileUpdate(filesArray: any[]) {
       this.areAttachedFilesValid = true;
       this.isFileUploadInProgress = false;
       this.isAtleastOneFileAdded = false;
+      this.attachments = []; // Reset attachments
       if (filesArray && filesArray.length > 0) {
         this.isAtleastOneFileAdded = true;
         for (let i = 0; i < filesArray.length; i++) {
           const file = filesArray[i];
-          if (!(file.fileErrors.length > 0) && file.progress < 101) {
-            this.isFileUploadInProgress = true;
-            break;
-          }
-        }
-        for (let i = 0; i < filesArray.length; i++) {
-          const file = filesArray[i];
+
+          // Check for file errors
           if (file.fileErrors && file.fileErrors.length > 0) {
             this.areAttachedFilesValid = false;
-            break;
+          }
+
+          // Check if file is still uploading
+          else if (file.progress < 101) {
+            this.isFileUploadInProgress = true;
+          }
+
+          // If file is valid and fully uploaded, add to attachments
+          if (this.areAttachedFilesValid && !this.isFileUploadInProgress) {
+            this.attachments.push({
+              id: file.fileId,
+              name: file.file.name,
+              size: Functions.humanFileSize(file.file.size),
+              extention: file.file.name.split(".").pop(),
+            });
           }
         }
       }

@@ -40,7 +40,10 @@ internal sealed class UserMapper : AutoMapper.Profile
         opts => opts.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
       .ReverseMap();
 
-    
+
+    CreateMap<Managers.Registry.Contract.Registrants.IdentityDocument, IdentityDocument>().ReverseMap();
+
+
     CreateMap<UserProfile, Managers.Registry.Contract.Registrants.UserProfile>()
       .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => s.PreviousNames))
       .ReverseMap()
