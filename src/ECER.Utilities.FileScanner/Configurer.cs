@@ -16,29 +16,27 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker
     if (clamAvSettings != null && !string.IsNullOrWhiteSpace(clamAvSettings.Url))
     {
       configurationContext.logger.LogInformation("Configuring file scanning using {Url}:{Port}", clamAvSettings.Url, clamAvSettings.Port);
-      configurationContext.Services.AddSingleton(_ =>
+      configurationContext.Services.AddSingleton<IClamClient>(_ =>
         new ClamClient(
           clamAvSettings.Url,
           clamAvSettings.Port
           ));
-      configurationContext.Services.AddSingleton<IFileScannerProvider, ClamAvScanner>();
+      configurationContext.Services.AddTransient<IFileScannerProvider, ClamAvScanner>();
     }
     else
     {
       configurationContext.logger.LogWarning("FileScanner:Url is empty - files will not be scanned");
-      configurationContext.Services.AddSingleton<IFileScannerProvider, NoopScanner>();
+      configurationContext.Services.AddTransient<IFileScannerProvider, NoopScanner>();
     }
   }
 
   public async Task Check([NotNull] CheckContext context, CancellationToken ct)
   {
-    await Task.CompletedTask;
     var clamAvSettings = GetSettings(context.Configuration);
     if (clamAvSettings != null && !string.IsNullOrWhiteSpace(clamAvSettings.Url))
     {
-      /*TODO: currently crashing with health check need to assess later
       var client = context.Services.GetRequiredService<IClamClient>();
-      await client.PingAsync(ct);*/
+      await client.PingAsync(ct);
     }
   }
 
