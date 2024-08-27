@@ -16,7 +16,7 @@ const applicationWizard: Wizard = {
     },
     oneYearRenewalExplanationLetter: {
       stage: "ExplanationLetter",
-      title: "Explanation Letter",
+      title: "Renewal information",
       form: oneYearRenewalExplanationForm,
       key: "item.2",
     },
