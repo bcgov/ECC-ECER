@@ -5,6 +5,16 @@
   <v-col cols="12">
     <p>You need the following information to renew your certificate.</p>
   </v-col>
+  <v-col cols="12">
+    <div class="d-flex flex-column ga-3 my-6">
+      <p>It's important to know that:</p>
+      <ul class="ml-10">
+        <li>You can only renew this certificate once</li>
+        <li>You cannot renew an ECE One Year Certificate if it has been expired for more than 5 years</li>
+        <li>After you renew you'll only be able to apply for a ECE Five Year certificate or an ECE Assistant certificate</li>
+      </ul>
+    </div>
+  </v-col>
   <v-col v-if="expired" cols="12">
     <ECEHeader title="Reason why you’re renewing your ECE One Year certification" />
     <div class="d-flex flex-column ga-3 my-6">
