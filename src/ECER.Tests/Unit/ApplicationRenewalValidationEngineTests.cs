@@ -219,7 +219,7 @@ public class ApplicationRenewalValidationEngineTests
     var result = await _validator.Validate(application);
 
     // Assert
-    Assert.Contains("the application does not have any education", result.ValidationErrors);
+    Assert.Contains("the application does not have one education", result.ValidationErrors);
   }
 
   [Fact]
