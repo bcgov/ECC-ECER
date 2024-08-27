@@ -1,6 +1,4 @@
 <template>
-  <h2>Why do you need to renew your ECE One Year certification?</h2>
-  <br />
   <p>You need to provide the reason why you were unable to either:</p>
   <br />
   <ul class="ml-10">
