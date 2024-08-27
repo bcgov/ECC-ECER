@@ -15,16 +15,16 @@ internal sealed partial class ApplicationRenewalValidationEngine
 
       case CertificateStatus.ExpiredLessThanFiveYearsAgo:
         // each application should contain at least one education
-        if (!application.Transcripts.Any())
+        if (application.Transcripts.Count() != 1)
         {
-          validationErrors.Add("the application does not have any education");
+          validationErrors.Add("the application does not have one education");
         }
         // each application should contain at least one character reference
         if (!application.CharacterReferences.Any())
         {
           validationErrors.Add("the application does not have any character references");
         }
-        // todal 400 hours work experience references needed
+        // total 400 hours work experience references needed
         if (application.WorkExperienceReferences
        .Sum(we => we.Hours) < 400)
         {
