@@ -197,6 +197,225 @@ public class ApplicationRenewalValidationEngineTests
     };
   }
 
+  [Fact]
+  public async Task Validate_EceAssistantWithExpiredLessThanFiveYearsNoEducation_ReturnsEducationError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
+    {
+      CertificationTypes = new List<CertificationType> { CertificationType.EceAssistant },
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) },
+      Transcripts = new List<Transcript>() // No education transcripts
+    };
+
+    _certificationRepositoryMock
+        .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
+        .ReturnsAsync(new List<Certification> {
+            CreateMockCertification(DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Expired less than 5 years ago
+        });
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Contains("the application does not have any education", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_EceAssistantWithExpiredMoreThanFiveYears_ReturnsNoValidationError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
+    {
+      CertificationTypes = new List<CertificationType> { CertificationType.EceAssistant },
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) }
+    };
+
+    _certificationRepositoryMock
+        .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
+        .ReturnsAsync(new List<Certification> {
+            CreateMockCertification(DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Expired more than 5 years ago
+        });
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Empty(result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_OneYearRenewalWithExpiredLessThanFiveYearsNoProfessionalDevelopment_ReturnsProfessionalDevelopmentError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
+    {
+      CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
+      ProfessionalDevelopments = new List<ProfessionalDevelopment>(), // No professional development
+      ExplanationLetter = "This is an explanation letter",
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
+    };
+
+    _certificationRepositoryMock
+        .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
+        .ReturnsAsync(new List<Certification> {
+            CreateMockCertification(DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Expired less than 5 years ago
+        });
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Contains("the application does not have any professional development", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_FiveYearsWithExpiredLessThanFiveYearsWithoutExplanationLetter_ReturnsExplanationLetterError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
+    {
+      CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
+      ProfessionalDevelopments = new List<ProfessionalDevelopment> { CreateMockProfessionalDevelopment() },
+      ExplanationLetter = null, // No explanation letter
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) }
+    };
+
+    _certificationRepositoryMock
+        .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
+        .ReturnsAsync(new List<Certification> {
+            CreateMockCertification(DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Expired less than 5 years ago
+        });
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Contains("the application does not have explanation letter", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_ExpiredMoreThanFiveYearsNoProfessionalDevelopment_ReturnsProfessionalDevelopmentError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
+    {
+      CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
+      ProfessionalDevelopments = new List<ProfessionalDevelopment>(), // No professional development
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) }
+    };
+
+    _certificationRepositoryMock
+        .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
+        .ReturnsAsync(new List<Certification> {
+            CreateMockCertification(DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Expired more than 5 years ago
+        });
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Contains("the application does not have any professional development", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_OneYearRenewalWithExpiredMoreThanFiveYears_ReturnsNoValidationError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
+    {
+      CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
+      ExplanationLetter = "This is an explanation letter",
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
+    };
+
+    _certificationRepositoryMock
+        .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
+        .ReturnsAsync(new List<Certification> {
+            CreateMockCertification(DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Expired more than 5 years ago
+        });
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Empty(result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_FiveYearsRenewalWithNoCertificateFound_ReturnsNoValidationError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
+    {
+      CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
+      ProfessionalDevelopments = new List<ProfessionalDevelopment> { CreateMockProfessionalDevelopment() },
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) }
+    };
+
+    _certificationRepositoryMock
+        .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
+        .ReturnsAsync(new List<Certification>()); // No certificate found
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Empty(result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_EceAssistantWithNoCertificateFound_ReturnsNoValidationError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
+    {
+      CertificationTypes = new List<CertificationType> { CertificationType.EceAssistant },
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) },
+      Transcripts = new List<Transcript> { CreateMockTranscript() } // With transcripts
+    };
+
+    _certificationRepositoryMock
+        .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
+        .ReturnsAsync(new List<Certification>()); // No certificate found
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Empty(result.ValidationErrors);
+  }
+
+  private Transcript CreateMockTranscript()
+  {
+    return new Transcript(
+        _faker.Random.Guid().ToString(), // Id
+        _faker.Company.CompanyName(), // EducationalInstitutionName
+        _faker.Name.FullName(), // ProgramName
+        _faker.Random.String2(8, "0123456789"), // StudentNumber
+        _faker.Date.Past(5), // StartDate (random date within the last 5 years)
+        _faker.Date.Recent(365), // EndDate (random date within the last year)
+        _faker.Random.Bool(), // IsECEAssistant
+        _faker.Random.Bool(), // DoesECERegistryHaveTranscript
+        _faker.Random.Bool(), // IsOfficialTranscriptRequested
+        _faker.Name.FirstName(), // StudentFirstName
+        _faker.Name.LastName(), // StudentLastName
+        _faker.Random.Bool() // IsNameUnverified
+    )
+    {
+      CampusLocation = _faker.Address.City(), // Random city for CampusLocation
+      LanguageofInstruction = "English",
+      Status = _faker.Random.Enum<TranscriptStage>(), // Random enum value for Status
+      StudentMiddleName = _faker.Name.FirstName() // Random middle name
+    };
+  }
+
   private CharacterReference CreateMockCharacterReference()
   {
     return new CharacterReference(
