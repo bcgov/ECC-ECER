@@ -91,6 +91,82 @@ public class ApplicationRenewalValidationEngineTests
     Assert.Contains("the application does not have any character references", result.ValidationErrors);
   }
 
+  [Fact]
+  public async Task Validate_FiveYearRenewalWithActiveCertificate_ReturnsNoValidationError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
+    {
+      CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
+      ProfessionalDevelopments = new List<ProfessionalDevelopment> { CreateMockProfessionalDevelopment() },
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) }
+    };
+
+    _certificationRepositoryMock
+        .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
+        .ReturnsAsync(new List<Certification> {
+            CreateMockCertification(DateTime.Now.AddYears(1), CertificateStatusCode.Active) // Certification is active
+        });
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Empty(result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_ExpiredLessThanFiveYearsWithMissingProfessionalDevelopment_ReturnsProfessionalDevelopmentError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
+    {
+      CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
+      ProfessionalDevelopments = new List<ProfessionalDevelopment>(), // No professional development
+      ExplanationLetter = "This is an explanation letter",
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) }
+    };
+
+    _certificationRepositoryMock
+        .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
+        .ReturnsAsync(new List<Certification> {
+            CreateMockCertification(DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Certification expired less than 5 years ago
+        });
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Contains("the application does not have any professional development", result.ValidationErrors);
+  }
+
+  [Fact]
+  public async Task Validate_CertificateExpiredMoreThanFiveYearsAgo_ReturnsWorkExperienceError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
+    {
+      CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
+      ProfessionalDevelopments = new List<ProfessionalDevelopment> { CreateMockProfessionalDevelopment() },
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(300) } // Less than 500 hours
+    };
+
+    _certificationRepositoryMock
+        .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
+        .ReturnsAsync(new List<Certification> {
+            CreateMockCertification(DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Certification expired more than 5 years ago
+        });
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Contains("Work experience does not meet 500 hours", result.ValidationErrors);
+  }
+
   private Certification CreateMockCertification(DateTime expiryDate, CertificateStatusCode statusCode)
   {
     return new Certification(_faker.Random.Guid().ToString())
@@ -129,5 +205,46 @@ public class ApplicationRenewalValidationEngineTests
         _faker.Internet.Email(),
         _faker.Phone.PhoneNumber()
     );
+  }
+
+  private ProfessionalDevelopment CreateMockProfessionalDevelopment()
+  {
+    return new ProfessionalDevelopment(
+        Guid.NewGuid().ToString(), // Id
+        "1234", // CertificationNumber
+        DateTime.Now.AddYears(1), // CertificationExpiryDate
+        DateTime.Now.AddMonths(-1), // DateSigned
+        _faker.Company.CatchPhrase(), // CourseName
+        _faker.Company.CompanyName(), // OrganizationName
+        DateTime.Now.AddMonths(-3), // StartDate
+        DateTime.Now.AddMonths(-1) // EndDate
+    )
+    {
+      OrganizationContactInformation = _faker.Phone.PhoneNumber(),
+      InstructorName = _faker.Name.FullName(),
+      NumberOfHours = _faker.Random.Int(1, 40),
+      Status = _faker.Random.Enum<ProfessionalDevelopmentStatusCode>(),
+      DeletedFiles = new List<string> { _faker.System.FileName() },
+      NewFiles = new List<string> { _faker.System.FileName() },
+      Files = new List<string> { _faker.System.FileName() }
+    };
+  }
+
+  private WorkExperienceReference CreateMockWorkExperienceReference(int hours)
+  {
+    return new WorkExperienceReference(
+        _faker.Name.FirstName(), // FirstName
+        _faker.Name.LastName(),  // LastName
+        _faker.Internet.Email(), // EmailAddress
+        hours                    // Hours
+    )
+    {
+      Id = Guid.NewGuid().ToString(), // Random GUID as Id
+      PhoneNumber = _faker.Phone.PhoneNumber(), // Random phone number
+      Status = _faker.Random.Enum<WorkExperienceRefStage>(), // Random enum value for Status
+      WillProvideReference = _faker.Random.Bool(), // Random boolean
+      TotalNumberofHoursApproved = _faker.Random.Int(0, hours), // Random approved hours up to the total hours
+      TotalNumberofHoursObserved = _faker.Random.Int(0, hours)  // Random observed hours up to the total hours
+    };
   }
 }
