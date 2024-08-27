@@ -65,7 +65,7 @@ internal sealed partial class ApplicationRenewalValidationEngine
         {
           validationErrors.Add("the application does not have any character references");
         }
-        // todal 500 hours work experience references needed
+        // total 500 hours work experience references needed
         if (application.WorkExperienceReferences
        .Sum(we => we.Hours) < 500)
         {
