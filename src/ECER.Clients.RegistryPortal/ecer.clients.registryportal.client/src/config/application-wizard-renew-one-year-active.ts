@@ -1,7 +1,7 @@
 import type { Wizard } from "@/types/wizard";
 
 import characterReferencesForm from "./character-references-form";
-import explanationLetterForm from "./explanation-letter-form";
+import oneYearRenewalExplanationForm from "./one-year-renewal-explanation-letter-form";
 import profileInformationForm from "./profile-information-form";
 import reviewAndSubmitForm from "./review-submit-form";
 
@@ -14,10 +14,10 @@ const applicationWizard: Wizard = {
       form: profileInformationForm,
       key: "item.1",
     },
-    explanationLetter: {
+    oneYearRenewalExplanationLetter: {
       stage: "ExplanationLetter",
       title: "Explanation Letter",
-      form: explanationLetterForm,
+      form: oneYearRenewalExplanationForm,
       key: "item.2",
     },
     characterReferences: {

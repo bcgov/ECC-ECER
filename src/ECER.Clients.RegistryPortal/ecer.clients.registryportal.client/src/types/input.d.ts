@@ -77,6 +77,8 @@ interface EcePreviewProps {}
 
 interface EceCharacterReferenceProps {}
 
+interface EceRenewalInformationProps {}
+
 interface Input {
   id: string;
   component:

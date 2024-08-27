@@ -93,3 +93,12 @@ export const lengthOfAcquaintanceDropdown: DropdownWrapper<Components.Schemas.Re
   { title: "2 to 5 years", value: "From2to5years" },
   { title: "5 or more years", value: "Morethan5years" },
 ];
+
+export const renewalInformationRadio: RadioButtonWrapper<Components.Schemas.OneYearRenewalexplanations>[] = [
+  { label: "I live and work in a community without other certified ECEs", value: "IliveandworkinacommunitywithoutothercertifiedECEs" },
+  { label: "I could not find employment to complete the required hours", value: "Icouldnotfindemploymenttocompletetherequiredhours" },
+  { label: "I was unable to work in the child care field for personal reasons", value: "Iwasunabletoworkinthechildcarefieldforpersonalreasons" },
+  { label: "I was unable to enter the country as expected", value: "Iwasunabletoenterthecountryasexpected" },
+  { label: "I could not work due to my visa status (student visa, expired visa)", value: "Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa" },
+  { label: "Other", value: "Other" },
+];
