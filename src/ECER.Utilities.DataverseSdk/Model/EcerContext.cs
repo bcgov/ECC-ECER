@@ -294,6 +294,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_CompetencyCompetencies"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_CompetencyCompetencies> ecer_CompetencyCompetenciesSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_CompetencyCompetencies>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_complainant"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_complainant> ecer_complainantSet
@@ -404,6 +415,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_health_authorities"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_health_authorities> ecer_health_authoritiesSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_health_authorities>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Investigation"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Investigation> ecer_InvestigationSet
@@ -411,6 +433,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Investigation_ecer_CompetencyCompe"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Investigation_ecer_CompetencyCompe> ecer_Investigation_ecer_CompetencyCompeSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Investigation_ecer_CompetencyCompe>();
 			}
 		}
 		
@@ -444,6 +477,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningAllegation>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningAllegation_ec"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningAllegation_ec> ecer_InvestigationPlanningAllegation_ecSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningAllegation_ec>();
 			}
 		}
 		
@@ -532,6 +576,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_InvolvedPerson>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_licensing_officers"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_licensing_officers> ecer_licensing_officersSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_licensing_officers>();
 			}
 		}
 		
@@ -796,6 +851,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_RenewalAssessment>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Signature"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Signature> ecer_SignatureSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Signature>();
 			}
 		}
 		

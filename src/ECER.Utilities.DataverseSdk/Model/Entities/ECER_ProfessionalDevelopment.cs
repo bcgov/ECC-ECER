@@ -12,6 +12,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 {
 	
 	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum ecer_professionaldevelopment_ecer_providedproof
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		CertificateofCourse = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		EmailAddressforInstructor = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PhoneNumberforInstructor = 621870000,
+	}
+	
 	/// <summary>
 	/// Status of the Professional Development
 	/// </summary>
@@ -87,10 +102,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicantidYomiName = "ecer_applicantidyominame";
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
+			public const string ecer_Approve = "ecer_approve";
+			public const string ecer_approveName = "ecer_approvename";
 			public const string ecer_bcgov_documenturl_ProfessionalDevelopmentId = "ecer_bcgov_documenturl_ProfessionalDevelopmentId";
 			public const string ecer_CertifcationExpiryDate = "ecer_certifcationexpirydate";
 			public const string ecer_CertificationNumber = "ecer_certificationnumber";
 			public const string ecer_CourseName = "ecer_coursename";
+			public const string ecer_CourseorWorkshopLink = "ecer_courseorworkshoplink";
+			public const string ecer_DateDecided = "ecer_datedecided";
 			public const string ecer_DateSigned = "ecer_datesigned";
 			public const string ecer_ecer_professionaldevelopment_Applicantid_ = "ecer_ecer_professionaldevelopment_Applicantid_";
 			public const string ecer_ecer_professionaldevelopment_Applicationi = "ecer_ecer_professionaldevelopment_Applicationi";
@@ -102,11 +121,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_legacyprofessionaldevelopmentid = "ecer_legacyprofessionaldevelopmentid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NumberofHours = "ecer_numberofhours";
+			public const string ecer_OrganizationEmailAddress = "ecer_organizationemailaddress";
 			public const string ecer_OrganizationName = "ecer_organizationname";
 			public const string ecer_portalinvitation_ProfessionalDevelopment = "ecer_portalinvitation_ProfessionalDevelopment";
 			public const string ecer_ProfessionalDevelopmentId = "ecer_professionaldevelopmentid";
 			public const string Id = "ecer_professionaldevelopmentid";
+			public const string ecer_ProvidedProof = "ecer_providedproof";
+			public const string ecer_providedproofName = "ecer_providedproofname";
 			public const string ecer_StartDate = "ecer_startdate";
+			public const string ecer_TotalAnticipatedHours = "ecer_totalanticipatedhours";
+			public const string ecer_TotalApprovedHours = "ecer_totalapprovedhours";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -384,6 +408,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_approve")]
+		public virtual ecer_YesNoNull? ecer_Approve
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_approve")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_approve", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_approvename")]
+		public string ecer_approveName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_approve"))
+				{
+					return this.FormattedValues["ecer_approve"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certifcationexpirydate")]
 		public System.Nullable<System.DateTime> ecer_CertifcationExpiryDate
 		{
@@ -429,6 +485,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseorworkshoplink")]
+		public string ecer_CourseorWorkshopLink
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_courseorworkshoplink");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_courseorworkshoplink", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_datedecided")]
+		public System.Nullable<System.DateTime> ecer_DateDecided
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_datedecided");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_datedecided", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_datesigned")]
 		public System.Nullable<System.DateTime> ecer_DateSigned
 		{
@@ -460,7 +546,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Email Address or Phone Number
+		/// Phone Number
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hostorganizationcontactinformation")]
 		public string ecer_HostOrganizationContactInformation
@@ -567,6 +653,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_organizationemailaddress")]
+		public string ecer_OrganizationEmailAddress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_organizationemailaddress");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_organizationemailaddress", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_organizationname")]
 		public string ecer_OrganizationName
 		{
@@ -623,6 +724,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_providedproof")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_professionaldevelopment_ecer_providedproof> ecer_ProvidedProof
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_professionaldevelopment_ecer_providedproof>(this, "ecer_providedproof");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_providedproof", EntityOptionSetEnum.GetMultiEnum(this, "ecer_providedproof", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_providedproofname")]
+		public string ecer_providedproofName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_providedproof"))
+				{
+					return this.FormattedValues["ecer_providedproof"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_startdate")]
 		public System.Nullable<System.DateTime> ecer_StartDate
 		{
@@ -635,6 +768,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_startdate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_totalanticipatedhours")]
+		public System.Nullable<decimal> ecer_TotalAnticipatedHours
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_totalanticipatedhours");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_totalanticipatedhours", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_totalapprovedhours")]
+		public System.Nullable<decimal> ecer_TotalApprovedHours
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_totalapprovedhours");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_totalapprovedhours", value);
 			}
 		}
 		

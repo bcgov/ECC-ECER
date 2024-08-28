@@ -65,6 +65,7 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
 public record ProfessionalDevelopment(string? Id, string? CertificationNumber, DateTime CertificationExpiryDate, DateTime DateSigned, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
 {
   public string? OrganizationContactInformation { get; set; }
+  public string? OrganizationEmailAddress { get; set; }
   public string? InstructorName { get; set; }
   public int? NumberOfHours { get; set; }
   public ProfessionalDevelopmentStatusCode? Status { get; set; }

@@ -141,6 +141,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.ecer_CourseName, opts => opts.MapFrom(s => s.CourseName))
        .ForMember(d => d.ecer_OrganizationName, opts => opts.MapFrom(s => s.OrganizationName))
        .ForMember(d => d.ecer_HostOrganizationContactInformation, opts => opts.MapFrom(s => s.OrganizationContactInformation))
+       .ForMember(d => d.ecer_OrganizationEmailAddress, opts => opts.MapFrom(s => s.OrganizationEmailAddress))
        .ForMember(d => d.ecer_InstructorName, opts => opts.MapFrom(s => s.InstructorName))
        .ForMember(d => d.ecer_NumberofHours, opts => opts.MapFrom(s => s.NumberOfHours))
        .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
@@ -155,12 +156,13 @@ internal class ApplicationRepositoryMapper : Profile
           .ForCtorParam(nameof(ProfessionalDevelopment.EndDate), opt => opt.MapFrom(src => src.ecer_EndDate))
           .ForCtorParam(nameof(ProfessionalDevelopment.OrganizationName), opt => opt.MapFrom(src => src.ecer_OrganizationName))
           .ForMember(d => d.OrganizationContactInformation, opts => opts.MapFrom(s => s.ecer_HostOrganizationContactInformation))
+          .ForMember(d => d.OrganizationEmailAddress, opts => opts.MapFrom(s => s.ecer_OrganizationEmailAddress))
           .ForMember(d => d.InstructorName, opts => opts.MapFrom(s => s.ecer_InstructorName))
           .ForMember(d => d.NumberOfHours, opts => opts.MapFrom(s => s.ecer_NumberofHours))
           .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
           .ForMember(d => d.NewFiles, opts => opts.Ignore())
           .ForMember(d => d.DeletedFiles, opts => opts.Ignore())
-          .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_ProfessionalDevelopmentId.Select(doc => doc.bcgov_Url).ToList()))
+          .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_ProfessionalDevelopmentId.Select(doc => doc.bcgov_DocumentUrlId).ToList()))
     .ValidateMemberList(MemberList.Destination);
 
     CreateMap<WorkExperienceReference, ecer_WorkExperienceRef>(MemberList.Source)

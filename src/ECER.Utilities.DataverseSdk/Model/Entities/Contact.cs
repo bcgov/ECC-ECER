@@ -668,6 +668,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_contact_ecer_portaluser_474 = "ecer_contact_ecer_portaluser_474";
 			public const string ecer_contact_ecer_previousaddress_251 = "ecer_contact_ecer_previousaddress_251";
 			public const string ecer_contact_ecer_previousaddress_legacycontactid = "ecer_contact_ecer_previousaddress_legacycontactid";
+			public const string ecer_contact_representedpsiid_ecer_postsecondaryinstitute = "ecer_contact_representedpsiid_ecer_postsecondaryinstitute";
 			public const string ecer_DateCertificateCancelled = "ecer_datecertificatecancelled";
 			public const string ecer_DateCertificateSuspended = "ecer_datecertificatesuspended";
 			public const string ecer_eceprogramrepresentative_ContactId_contac = "ecer_eceprogramrepresentative_ContactId_contac";
@@ -696,11 +697,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_portalinvitation_ApplicantId = "ecer_portalinvitation_ApplicantId";
 			public const string ecer_portaluser_Contactid = "ecer_portaluser_Contactid";
 			public const string ecer_postsecondaryinstitute_PrimaryProgramRepr = "ecer_postsecondaryinstitute_PrimaryProgramRepr";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_ProgramRepresentative_contact = "ecer_postsecondaryinstituteprogramapplicaiton_ProgramRepresentative_contact";
 			public const string ecer_postsecondaryinstitutesitevisit_ProgramRe = "ecer_postsecondaryinstitutesitevisit_ProgramRe";
 			public const string ecer_PreferredName = "ecer_preferredname";
 			public const string ecer_PreviousName = "ecer_previousname";
 			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
 			public const string ecer_renewalassessment_ApplicantId = "ecer_renewalassessment_ApplicantId";
+			public const string ecer_representedpsiid = "ecer_representedpsiid";
+			public const string ecer_representedpsiidName = "ecer_representedpsiidname";
 			public const string ecer_Role = "ecer_role";
 			public const string ecer_TempClientID = "ecer_tempclientid";
 			public const string ecer_TermsandConditionsText = "ecer_termsandconditionstext";
@@ -4418,6 +4422,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_representedpsiid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_representedpsiid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_representedpsiid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_representedpsiid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_representedpsiidname")]
+		public string ecer_representedpsiidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_representedpsiid"))
+				{
+					return this.FormattedValues["ecer_representedpsiid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// PSI ECE Program Representative Role
 		/// </summary>
@@ -7607,6 +7643,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_postsecondaryinstituteprogramapplicaiton_ProgramRepresentative_contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_ProgramRepresentative_contact")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton> ecer_postsecondaryinstituteprogramapplicaiton_ProgramRepresentative_contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramRepresentative_contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_ProgramRepresentative_contact", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_postsecondaryinstitutesitevisit_ProgramRe
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstitutesitevisit_ProgramRe")]
@@ -7744,6 +7798,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("contact_master_contact", Microsoft.Xrm.Sdk.EntityRole.Referencing);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_contact_representedpsiid_ecer_postsecondaryinstitute
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_representedpsiid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_representedpsiid_ecer_postsecondaryinstitute")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute ecer_contact_representedpsiid_ecer_postsecondaryinstitute
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_contact_representedpsiid_ecer_postsecondaryinstitute", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_contact_representedpsiid_ecer_postsecondaryinstitute", null, value);
 			}
 		}
 		

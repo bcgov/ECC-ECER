@@ -108,7 +108,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_StudentFirstName = "ecer_studentfirstname";
 			public const string ecer_StudentLastName = "ecer_studentlastname";
 			public const string ecer_StudentMiddleName = "ecer_studentmiddlename";
-			public const string ecer_StudentName = "ecer_studentname";
 			public const string ecer_StudentNumber = "ecer_studentnumber";
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
 			public const string ecer_transcript_Applicationid = "ecer_transcript_Applicationid";
@@ -777,21 +776,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_studentmiddlename", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_studentname")]
-		public string ecer_StudentName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_studentname");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_studentname", value);
 			}
 		}
 		

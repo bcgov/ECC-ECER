@@ -330,6 +330,7 @@ public record ProfessionalDevelopment([Required] string CertificationNumber, [Re
 {
   public string? Id { get; set; }
   public string? OrganizationContactInformation { get; set; }
+  public string? OrganizationEmailAddress { get; set; }
   public string? InstructorName { get; set; }
   [Required]
   public int? NumberOfHours { get; set; }
