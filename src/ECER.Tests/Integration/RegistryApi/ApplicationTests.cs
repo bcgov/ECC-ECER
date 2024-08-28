@@ -149,7 +149,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var uploadedFileResponse = (await fileResponse.ReadAsJsonAsync<FileResponse>()).ShouldNotBeNull();
 
     var professionalDevelopment = CreateProfessionalDevelopment();
-    professionalDevelopment.NewFiles = [testFolder + "/" + uploadedFileResponse.fileId];
+    professionalDevelopment.NewFiles = [uploadedFileResponse.fileId];
     var application = CreateDraftApplication();
     application.ProfessionalDevelopments = [professionalDevelopment];
     var response = await Host.Scenario(_ =>
