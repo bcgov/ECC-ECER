@@ -131,8 +131,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_LastFollowUpDate = "ecer_lastfollowupdate";
 			public const string ecer_LastInvitationEmailSent = "ecer_lastinvitationemailsent";
 			public const string ecer_LastName = "ecer_lastname";
+			public const string ecer_legacyapplicationstatusid = "ecer_legacyapplicationstatusid";
 			public const string ecer_legacyentryby = "ecer_legacyentryby";
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
+			public const string ecer_legacyworkexperienceassessmentyn = "ecer_legacyworkexperienceassessmentyn";
 			public const string ecer_legacyworkexperiencereferenceid = "ecer_legacyworkexperiencereferenceid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_OtherChildProgramType = "ecer_otherchildprogramtype";
@@ -380,6 +382,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// For 400 Hrs
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ageofchildrencaredfor")]
 		public string ecer_AgeofChildrenCaredFor
 		{
@@ -1145,6 +1150,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyapplicationstatusid")]
+		public string ecer_legacyapplicationstatusid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyapplicationstatusid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyapplicationstatusid", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentryby")]
 		public string ecer_legacyentryby
 		{
@@ -1172,6 +1192,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyentrydate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyworkexperienceassessmentyn")]
+		public string ecer_legacyworkexperienceassessmentyn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyworkexperienceassessmentyn");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyworkexperienceassessmentyn", value);
 			}
 		}
 		

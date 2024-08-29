@@ -104,6 +104,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_1yrexplanationchoiceName = "ecer_1yrexplanationchoicename";
 			public const string ecer_AddMoreCharacterReference = "ecer_addmorecharacterreference";
 			public const string ecer_addmorecharacterreferenceName = "ecer_addmorecharacterreferencename";
+			public const string ecer_AddMoreProfessionalDevelopment = "ecer_addmoreprofessionaldevelopment";
+			public const string ecer_addmoreprofessionaldevelopmentName = "ecer_addmoreprofessionaldevelopmentname";
 			public const string ecer_AddMoreWorkExperienceReference = "ecer_addmoreworkexperiencereference";
 			public const string ecer_addmoreworkexperiencereferenceName = "ecer_addmoreworkexperiencereferencename";
 			public const string ecer_AlternatePhoneNumber = "ecer_alternatephonenumber";
@@ -239,6 +241,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_priorityName = "ecer_priorityname";
 			public const string ecer_ProfessionalDevelopmentApproved = "ecer_professionaldevelopmentapproved";
 			public const string ecer_professionaldevelopmentapprovedName = "ecer_professionaldevelopmentapprovedname";
+			public const string ecer_ProfessionalDevelopmentReceived = "ecer_professionaldevelopmentreceived";
+			public const string ecer_professionaldevelopmentreceivedName = "ecer_professionaldevelopmentreceivedname";
 			public const string ecer_ProgramClerk = "ecer_programclerk";
 			public const string ecer_ProgramClerkName = "ecer_programclerkname";
 			public const string ecer_ProgramClerkYomiName = "ecer_programclerkyominame";
@@ -250,6 +254,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ReferenceLetterSent = "ecer_referencelettersent";
 			public const string ecer_referencelettersentName = "ecer_referencelettersentname";
 			public const string ecer_renewalassessment_ApplicationId = "ecer_renewalassessment_ApplicationId";
+			public const string ecer_RenewalExplanationOther = "ecer_renewalexplanationother";
 			public const string ecer_RequestCharacterReference = "ecer_requestcharacterreference";
 			public const string ecer_requestcharacterreferenceName = "ecer_requestcharacterreferencename";
 			public const string ecer_RequestWkExpReference = "ecer_requestwkexpreference";
@@ -265,6 +270,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Street2 = "ecer_street2";
 			public const string ecer_Street3 = "ecer_street3";
 			public const string ecer_TotalAnticipatedWorkExperienceHours = "ecer_totalanticipatedworkexperiencehours";
+			public const string ecer_TotalApprovedProfessionalDevelopmentHours = "ecer_totalapprovedprofessionaldevelopmenthours";
 			public const string ecer_TotalApprovedWorkExperienceHours = "ecer_totalapprovedworkexperiencehours";
 			public const string ecer_TotalObservedWorkExperienceHours = "ecer_totalobservedworkexperiencehours";
 			public const string ecer_transcript_Applicationid = "ecer_transcript_Applicationid";
@@ -285,6 +291,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_WorkExperienceReferenceApproved = "ecer_workexperiencereferenceapproved";
 			public const string ecer_workexperiencereferenceapprovedName = "ecer_workexperiencereferenceapprovedname";
 			public const string ecer_WorkStartDate = "ecer_workstartdate";
+			public const string ecer_YRExplanationChoice = "ecer_yrexplanationchoice";
+			public const string ecer_yrexplanationchoiceName = "ecer_yrexplanationchoicename";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -522,6 +530,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_addmorecharacterreference"))
 				{
 					return this.FormattedValues["ecer_addmorecharacterreference"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addmoreprofessionaldevelopment")]
+		public System.Nullable<bool> ecer_AddMoreProfessionalDevelopment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_addmoreprofessionaldevelopment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_addmoreprofessionaldevelopment", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addmoreprofessionaldevelopmentname")]
+		public string ecer_addmoreprofessionaldevelopmentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_addmoreprofessionaldevelopment"))
+				{
+					return this.FormattedValues["ecer_addmoreprofessionaldevelopment"];
 				}
 				else
 				{
@@ -2440,6 +2480,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentreceived")]
+		public System.Nullable<bool> ecer_ProfessionalDevelopmentReceived
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_professionaldevelopmentreceived");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_professionaldevelopmentreceived", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentreceivedname")]
+		public string ecer_professionaldevelopmentreceivedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_professionaldevelopmentreceived"))
+				{
+					return this.FormattedValues["ecer_professionaldevelopmentreceived"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programclerk")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramClerk
 		{
@@ -2598,6 +2670,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_renewalexplanationother")]
+		public string ecer_RenewalExplanationOther
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_renewalexplanationother");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_renewalexplanationother", value);
 			}
 		}
 		
@@ -2827,6 +2914,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_totalanticipatedworkexperiencehours", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_totalapprovedprofessionaldevelopmenthours")]
+		public System.Nullable<decimal> ecer_TotalApprovedProfessionalDevelopmentHours
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_totalapprovedprofessionaldevelopmenthours");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_totalapprovedprofessionaldevelopmenthours", value);
 			}
 		}
 		
@@ -3087,6 +3189,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_workstartdate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_yrexplanationchoice")]
+		public virtual ecer_fiveyrrenewalexplanations? ecer_YRExplanationChoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_fiveyrrenewalexplanations?)(EntityOptionSetEnum.GetEnum(this, "ecer_yrexplanationchoice")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_yrexplanationchoice", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_yrexplanationchoicename")]
+		public string ecer_yrexplanationchoiceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_yrexplanationchoice"))
+				{
+					return this.FormattedValues["ecer_yrexplanationchoice"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
