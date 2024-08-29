@@ -21,22 +21,45 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <v-text-field variant="outlined" label="Name of course or workshop" :rules="[Rules.required()]"></v-text-field>
+          <v-text-field
+            v-model="courseName"
+            variant="outlined"
+            label="Name of course or workshop"
+            maxlength="100"
+            :rules="[Rules.required('Enter your course or workshop name')]"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="4">
-          <v-text-field variant="outlined" label="How many hours was it?" :rules="[Rules.required()]" @keypress="isNumber($event)"></v-text-field>
+          <v-text-field
+            v-model="numberOfHours"
+            variant="outlined"
+            label="How many hours was it?"
+            :rules="[Rules.required('Enter your course of workshop hours')]"
+            @keypress="isNumber($event)"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="4">
-          <v-text-field variant="outlined" label="Name of place that hosted the course or workshop" :rules="[Rules.required()]"></v-text-field>
+          <v-text-field
+            v-model="organizationName"
+            variant="outlined"
+            label="Name of place that hosted the course or workshop"
+            maxlength="300"
+            :rules="[Rules.required('Enter the name of the place that hosted the course or workshop')]"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="4">
-          <v-text-field variant="outlined" label="Website with description of course or workshop (optional)" :rules="[Rules.required()]"></v-text-field>
+          <v-text-field
+            variant="outlined"
+            label="Website with description of course or workshop (optional)"
+            maxlength="500"
+            :rules="[Rules.website()]"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
@@ -46,16 +69,108 @@
       </v-row>
       <v-row>
         <v-col cols="2">
-          <v-text-field :rules="[Rules.required()]" label="Start date" type="date" variant="outlined" color="primary"></v-text-field>
+          <v-text-field
+            v-model="startDate"
+            :rules="[Rules.required('Enter the start date of your course or workshop')]"
+            label="Start date"
+            type="date"
+            variant="outlined"
+            color="primary"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="2">
-          <v-text-field :rules="[Rules.required()]" label="End date" type="date" variant="outlined" color="primary"></v-text-field>
+          <v-text-field
+            v-model="endDate"
+            :rules="[Rules.required('Enter the start date of your course or workshop')]"
+            label="End date"
+            type="date"
+            variant="outlined"
+            color="primary"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <h3>Proof of course or workshop</h3>
+          <br />
+          <p>We may need to verify you took this course. You'll need to provide at least one option below</p>
+          <br />
+          <p>What can you provide? Choose all that apply</p>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          {{ selection }}
+          <v-checkbox
+            v-model="selection"
+            label="Phone number for instructor of course or workshop"
+            :hide-details="true"
+            density="compact"
+            value="phone"
+          ></v-checkbox>
+          <v-checkbox
+            v-model="selection"
+            label="Email address for instructor of course or workshop"
+            :hide-details="true"
+            value="email"
+            density="compact"
+          ></v-checkbox>
+          <v-checkbox
+            v-model="selection"
+            label="A certificate or document that shows I completed the course"
+            hide-details="auto"
+            value="file"
+            density="compact"
+            :rules="[Rules.atLeastOneOptionRequired()]"
+          ></v-checkbox>
+        </v-col>
+      </v-row>
+      <v-row v-if="showInstructorNameInput">
+        <v-col cols="4">
+          <v-text-field
+            v-model="instructorName"
+            variant="outlined"
+            label="Instructor name"
+            maxlength="100"
+            :rules="[Rules.required('Enter the instructor name of your course or workshop')]"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row v-if="showPhoneNumberInput">
+        <v-col cols="4">
+          <v-text-field
+            v-model="organizationContactInformation"
+            label="Phone number"
+            :rules="[
+              Rules.required('Enter the phone number for your course or workshop contact'),
+              Rules.phoneNumber('Enter your reference\'s 10-digit phone number'),
+            ]"
+            variant="outlined"
+            color="primary"
+            maxlength="10"
+            @keypress="isNumber($event)"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row v-if="showEmailInput">
+        <v-col cols="4">
+          <v-text-field
+            v-model="organizationEmailAddress"
+            variant="outlined"
+            label="Email address"
+            :rules="[Rules.required('Enter the email address of your course or workshop contact'), Rules.email()]"
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row v-if="showFileInput">
+        <v-col>
+          <FileUploader @update:files="handleFileUpdate" @delete:file="handleFileDelete" />
         </v-col>
       </v-row>
     </v-form>
-    <v-row>
+    <v-row class="mt-10">
       <v-col>
         <v-row justify="start" class="ml-1">
           <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Reference</v-btn>
@@ -63,29 +178,10 @@
         </v-row>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col>
-        <h3>Proof of course or workshop</h3>
-        <br />
-        <p>We may need to verify you took this course. You'll need to provide at least one option below</p>
-        <br />
-        <p>What can you provide? Choose all that apply</p>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <v-checkbox label="Phone number for instructor of course or workshop" :hide-details="true" density="compact"></v-checkbox>
-        <v-checkbox label="Email address for instructor of course or workshop" :hide-details="true" density="compact"></v-checkbox>
-        <v-checkbox label="A certificate or document that shows I completed the course" :hide-details="true" density="compact"></v-checkbox>
-        <!-- TODO figure out how to ensure at least one of the above is selected -->
-      </v-col>
-    </v-row>
   </div>
   <!-- List view -->
   <div v-else>
-    <v-row>
-      <v-col>list</v-col>
-    </v-row>
+    {{ modelValue }}
     <v-row>
       <v-col>
         <v-btn prepend-icon="mdi-plus" rounded="lg" color="alternate" :disabled="isDisabled" @click="handleAddProfessionalDevelopment">
@@ -101,9 +197,10 @@
 <script lang="ts">
 import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
+import type { VForm } from "vuetify/components";
 
 import Alert from "@/components/Alert.vue";
-import WorkExperienceReferenceList, { type WorkExperienceReferenceData } from "@/components/WorkExperienceReferenceList.vue";
+import type { FileItem } from "@/components/UploadFileItem.vue";
 import WorkExperienceReferenceProgressBar from "@/components/WorkExperienceReferenceProgressBar.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -113,9 +210,17 @@ import type { Components } from "@/types/openapi";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
+import FileUploader from "../FileUploader.vue";
+
+interface ProfessionalDevelopmentData {
+  selection: ("phone" | "email" | "file")[];
+  areAttachedFilesValid: boolean;
+  isFileUploadInProgress: boolean;
+}
+
 export default defineComponent({
   name: "EceProfessionalDevelopment",
-  components: { WorkExperienceReferenceList, WorkExperienceReferenceProgressBar, Alert },
+  components: { WorkExperienceReferenceProgressBar, Alert, FileUploader },
   props: {
     props: {
       type: Object as () => EceWorkExperienceReferencesProps,
@@ -126,8 +231,18 @@ export default defineComponent({
       required: true,
     },
   },
+  props: {
+    props: {
+      type: Object as () => {},
+      required: true,
+    },
+    modelValue: {
+      type: Object as () => Components.Schemas.ProfessionalDevelopment[],
+      required: true,
+    },
+  },
   emits: {
-    "update:model-value": (_referenceData: { [id: string]: Components.Schemas.WorkExperienceReference }) => true,
+    "update:model-value": (_professionalDevelopmentData: Components.Schemas.ProfessionalDevelopment[]) => true,
   },
   setup: () => {
     const alertStore = useAlertStore();
@@ -138,20 +253,34 @@ export default defineComponent({
       alertStore,
       wizardStore,
       applicationStore,
-    };
-  },
-  data: function () {
-    return {
-      clientId: "",
-      id: null as string | null,
-      previousFullName: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      hours: null as number | null | undefined,
       Rules,
     };
+  },
+  data(): Components.Schemas.ProfessionalDevelopment & ProfessionalDevelopmentData {
+    return {
+      //Professional Development
+      id: "",
+      courseName: "",
+      numberOfHours: undefined,
+      organizationName: "",
+      startDate: undefined,
+      courseorWorkshopLink: "",
+      endDate: undefined,
+      instructorName: "",
+      organizationContactInformation: "",
+      organizationEmailAddress: "",
+      files: [],
+      newFiles: [],
+      deletedFiles: [],
+      //other data
+      selection: [],
+      isFileUploadInProgress: false,
+      areAttachedFilesValid: true,
+    };
+  },
+  unmounted() {
+    console.log("unmounted"); //TODO
+    this.mode = "list";
   },
   computed: {
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
@@ -163,6 +292,18 @@ export default defineComponent({
       //   return acc + (reference.hours as number);
       // }, 0);
       return 100;
+    },
+    showInstructorNameInput() {
+      return this.selection.includes("email") || this.selection.includes("phone");
+    },
+    showPhoneNumberInput() {
+      return this.selection.includes("phone");
+    },
+    showEmailInput() {
+      return this.selection.includes("email");
+    },
+    showFileInput() {
+      return this.selection.includes("file");
     },
   },
   mounted() {
@@ -177,47 +318,94 @@ export default defineComponent({
     handleAddProfessionalDevelopment() {
       // Reset the form fields
       this.resetFormData();
-      this.clientId = "";
       this.mode = "add";
     },
-    handleEdit(referenceData: WorkExperienceReferenceData) {
+    handleEdit(professionalDevelopmentData: Components.Schemas.ProfessionalDevelopment) {
       // Set the form fields to component data
-      this.id = referenceData.reference.id ?? null;
-      this.clientId = referenceData.referenceId.toString();
-      this.previousFullName = `${referenceData.reference.firstName} ${referenceData.reference.lastName}`;
-      this.firstName = referenceData.reference.firstName ?? "";
-      this.lastName = referenceData.reference.lastName ?? "";
-      this.email = referenceData.reference.emailAddress ?? "";
-      this.phoneNumber = referenceData.reference.phoneNumber ?? "";
-      this.hours = referenceData.reference.hours ?? null;
+
       // Change mode to add
       this.mode = "add";
     },
-    handleDelete(referenceId: string | number) {
+    handleDelete(index: Number) {
       //Remove the entry from the modelValue
 
-      if (referenceId in this.modelValue) {
-        // Create a copy of modelValue
-        const updatedModelValue = { ...this.modelValue };
-        // Delete the entry from the copied object
-        delete updatedModelValue[referenceId];
-        // Emit the updated modelValue
-        this.$emit("update:model-value", updatedModelValue);
-      }
-
+      console.log("delete " + index);
       this.alertStore.setSuccessAlert("You have deleted your reference.");
     },
-    handleSubmit() {
-      console.log("nope");
+    async handleSubmit() {
+      const { valid } = await (this.$refs.professionalDevelopmentForm as VForm).validate();
+
+      if (valid) {
+        console.log("submit");
+        const newProfessionalDevelopment: Components.Schemas.ProfessionalDevelopment = {
+          id: this.id,
+          courseName: this.courseName,
+          numberOfHours: this.numberOfHours,
+          organizationName: this.organizationName,
+          startDate: this.startDate,
+          courseorWorkshopLink: this.courseorWorkshopLink,
+          endDate: this.endDate,
+          instructorName: this.instructorName,
+          organizationContactInformation: this.organizationContactInformation,
+          organizationEmailAddress: this.organizationEmailAddress,
+          files: this.files,
+          newFiles: this.newFiles,
+          deletedFiles: this.deletedFiles,
+        };
+        const updatedModelValue = this.modelValue.slice(); //create a copy of the array
+        updatedModelValue.push(newProfessionalDevelopment);
+
+        this.$emit("update:model-value", updatedModelValue);
+      } else {
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+      }
+    },
+    handleFileUpdate(filesArray: FileItem[]) {
+      this.areAttachedFilesValid = true;
+      this.isFileUploadInProgress = false;
+      this.newFiles = []; // Reset attachments
+      if (filesArray && filesArray.length > 0) {
+        for (let i = 0; i < filesArray.length; i++) {
+          const file = filesArray[i];
+
+          // Check for file errors
+          if (file.fileErrors && file.fileErrors.length > 0) {
+            this.areAttachedFilesValid = false;
+          }
+
+          // Check if file is still uploading
+          else if (file.progress < 101) {
+            this.isFileUploadInProgress = true;
+          }
+
+          // If file is valid and fully uploaded, add to attachments
+          if (this.areAttachedFilesValid && !this.isFileUploadInProgress) {
+            this.newFiles.push(file.fileId);
+          }
+        }
+      }
+    },
+    handleFileDelete(fileItem: FileItem) {
+      console.log("deleted");
+      console.log(fileItem);
     },
     resetFormData() {
-      this.id = null;
-      this.previousFullName = "";
-      this.firstName = "";
-      this.lastName = "";
-      this.email = "";
-      this.phoneNumber = "";
-      this.hours = null;
+      //professional development
+      this.id = "";
+      this.courseName = "";
+      this.numberOfHours = undefined;
+      this.organizationName = "";
+      this.startDate = undefined;
+      this.courseorWorkshopLink = "";
+      this.endDate = undefined;
+      this.instructorName = "";
+      this.organizationContactInformation = "";
+      this.organizationEmailAddress = "";
+      this.files = [];
+      this.newFiles = [];
+      this.deletedFiles = [];
+      //selection
+      this.selection = [];
     },
   },
 });

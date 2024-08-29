@@ -326,14 +326,13 @@ public record Application
   public string? ExplanationLetter { get; set; }
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
-public record ProfessionalDevelopment([Required] string CertificationNumber, [Required] DateTime CertificationExpiryDate, [Required] DateTime DateSigned, [Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate)
+public record ProfessionalDevelopment([Required] string CertificationNumber, [Required] DateTime CertificationExpiryDate, [Required] DateTime DateSigned, [Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] int NumberOfHours)
 {
   public string? Id { get; set; }
   public string? OrganizationContactInformation { get; set; }
   public string? OrganizationEmailAddress { get; set; }
   public string? InstructorName { get; set; }
-  [Required]
-  public int? NumberOfHours { get; set; }
+  public string? CourseorWorkshopLink { get; set; }
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();

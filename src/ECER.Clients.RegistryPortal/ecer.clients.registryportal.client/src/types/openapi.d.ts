@@ -339,10 +339,12 @@ declare namespace Components {
       organizationName?: string | null;
       startDate?: string; // date-time
       endDate?: string; // date-time
+      numberOfHours?: number; // int32
       id?: string | null;
       organizationContactInformation?: string | null;
+      organizationEmailAddress?: string | null;
       instructorName?: string | null;
-      numberOfHours: number; // int32
+      courseorWorkshopLink?: string | null;
       status?: ProfessionalDevelopmentStatusCode;
       deletedFiles?: string[] | null;
       newFiles?: string[] | null;
@@ -826,7 +828,9 @@ declare namespace Paths {
     export interface PathParameters {
       fileId: Parameters.FileId;
     }
-    export type RequestBody = string; // binary
+    export interface RequestBody {
+      file: string; // binary
+    }
     namespace Responses {
       export type $200 = /* file Response */ Components.Schemas.FileResponse;
       export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;

@@ -125,6 +125,10 @@ export const useApplicationStore = defineStore("application", {
       ) {
         this.draftApplication.characterReferences = [];
       }
+
+      if (wizardStore.wizardData.professionalDevelopments) {
+        this.draftApplication.professionalDevelopments = wizardStore.wizardData.professionalDevelopments;
+      }
     },
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       const { data: draftApplicationResponse } = await createOrUpdateDraftApplication(this.draftApplication);

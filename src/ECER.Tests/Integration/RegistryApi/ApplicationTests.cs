@@ -437,12 +437,12 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         CourseName: faker.Company.CatchPhrase(),
         OrganizationName: faker.Company.CompanyName(),
         StartDate: faker.Date.Past(),
-        EndDate: faker.Date.Recent())
+        EndDate: faker.Date.Recent(),
+        NumberOfHours: faker.Random.Int(1, 100))
     {
       Id = null,
       OrganizationContactInformation = faker.Phone.PhoneNumber(),
       InstructorName = faker.Name.FullName(),
-      NumberOfHours = faker.Random.Int(1, 100),
       Status = faker.PickRandom<ProfessionalDevelopmentStatusCode>()
     };
   }

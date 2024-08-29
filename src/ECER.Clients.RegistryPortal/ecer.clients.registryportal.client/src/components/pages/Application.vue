@@ -159,7 +159,8 @@ export default defineComponent({
       return (
         this.wizardStore.currentStepStage !== "Review" &&
         !(this.wizardStore.currentStepStage === "Education" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "WorkReferences" && this.wizardStore.listComponentMode === "add")
+        !(this.wizardStore.currentStepStage === "WorkReferences" && this.wizardStore.listComponentMode === "add") &&
+        !(this.wizardStore.currentStepStage === "ProfessionalDevelopment" && this.wizardStore.listComponentMode === "add")
       );
     },
     showSubmitApplication() {

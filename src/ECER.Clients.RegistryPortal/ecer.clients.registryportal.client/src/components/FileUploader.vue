@@ -21,6 +21,18 @@
           @delete-file="removeFile"
         ></UploadFileItem>
       </v-list>
+      <!-- change hide-details to false to debug error messages -->
+      <v-input
+        :hide-details="true"
+        max-errors="20"
+        :rules="[
+          !fileErrors || 'fileErrors',
+          !filesInProgress || 'fileInProgress',
+          !fileTooLarge || 'fileTooLarge',
+          !allFilesTooLarge || 'allFilesTooLarge',
+          !duplicateFileName || 'duplicates found',
+        ]"
+      />
     </v-col>
   </v-row>
 </template>
@@ -45,7 +57,7 @@ interface FileUploaderData {
 export default defineComponent({
   name: "FileUploader",
   components: { UploadFileItem, Alert },
-  emits: ["update:files"],
+  emits: ["update:files", "delete:file"],
   async setup() {
     const alertStore = useAlertStore();
     const maxNumberOfFiles = 5;
@@ -65,6 +77,35 @@ export default defineComponent({
       showErrorBanner: false,
       errorBannerMessage: "",
     };
+  },
+  computed: {
+    fileErrors() {
+      return this.selectedFiles.some((file) => file.fileErrors.length !== 0);
+    },
+    filesInProgress() {
+      return this.selectedFiles.some((file) => file.progress < 101);
+    },
+    fileTooLarge() {
+      return this.selectedFiles.some((file) => file.file.size > this.maxFileSizeInBytes);
+    },
+    allFilesTooLarge() {
+      const totalSize = this.selectedFiles?.reduce((acc, sf) => acc + sf.file.size, 0);
+      if (totalSize > this.maxFileSizeInBytes) {
+        return true;
+      }
+      return totalSize > this.maxFileSizeInBytes;
+    },
+    duplicateFileName() {
+      const fileNameMap = new Set();
+      for (const file of this.selectedFiles) {
+        if (fileNameMap.has(file.file.name)) {
+          return true; //there is a duplicate stop checking and return true
+        }
+        fileNameMap.add(file.file.name);
+      }
+
+      return false;
+    },
   },
   watch: {
     selectedFiles: {
@@ -153,6 +194,7 @@ export default defineComponent({
         this.selectedFiles = this.selectedFiles.filter((f: FileItem) => f.fileId !== selectedFile.fileId);
         if (!(selectedFile.fileErrors.length > 0)) {
           await deleteFile(selectedFile.fileId);
+          this.$emit("delete:file", selectedFile);
         }
         this.showErrorBanner = false;
       } catch (error) {
@@ -177,6 +219,12 @@ export default defineComponent({
     updateEmit() {
       this.$emit("update:files", this.selectedFiles);
     },
+    // fileErrors() {
+    //   return this.selectedFiles.some((file) => file.fileErrors.length !== 0);
+    // },
+    // filesInProgress() {
+    //   return this.selectedFiles.some((file) => file.progress < 101);
+    // },
   },
 });
 </script>

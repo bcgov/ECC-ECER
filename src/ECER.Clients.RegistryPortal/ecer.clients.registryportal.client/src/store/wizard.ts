@@ -86,12 +86,17 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || oidcUserInfo?.email,
 
         // Education step data
-        [wizard.steps.education.form.inputs.educationList.id]: transcriptsDict,
+        ...(wizard.steps?.education?.form?.inputs?.educationList?.id && { [wizard.steps?.education?.form?.inputs?.educationList?.id]: transcriptsDict }),
 
         // Character References step data
         [wizard.steps.characterReferences.form.inputs.characterReferences.id]: draftApplication?.characterReferences?.[0]
           ? draftApplication?.characterReferences
           : [],
+
+        // Professional Development
+        ...(wizard.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id && {
+          [wizard.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id]: draftApplication?.professionalDevelopments || [],
+        }),
 
         // wizard data may not have referenceList depending on the certification type. So we need to hardcode the value.
         referenceList: workReferencesDict,

@@ -139,6 +139,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.ecer_CertificationNumber, opts => opts.MapFrom(s => s.CertificationNumber))
        .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned))
        .ForMember(d => d.ecer_CourseName, opts => opts.MapFrom(s => s.CourseName))
+       .ForMember(d => d.ecer_CourseorWorkshopLink, opts => opts.MapFrom(s => s.CourseorWorkshopLink))
        .ForMember(d => d.ecer_OrganizationName, opts => opts.MapFrom(s => s.OrganizationName))
        .ForMember(d => d.ecer_HostOrganizationContactInformation, opts => opts.MapFrom(s => s.OrganizationContactInformation))
        .ForMember(d => d.ecer_OrganizationEmailAddress, opts => opts.MapFrom(s => s.OrganizationEmailAddress))
