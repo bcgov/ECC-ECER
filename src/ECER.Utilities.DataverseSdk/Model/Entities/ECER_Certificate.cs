@@ -89,6 +89,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ExpiryDate = "ecer_expirydate";
 			public const string ecer_GenerateCertificate = "ecer_generatecertificate";
 			public const string ecer_generatecertificateName = "ecer_generatecertificatename";
+			public const string ecer_GenerateCoverLetter = "ecer_generatecoverletter";
+			public const string ecer_generatecoverletterName = "ecer_generatecoverlettername";
 			public const string ecer_HasConditions = "ecer_hasconditions";
 			public const string ecer_hasconditionsName = "ecer_hasconditionsname";
 			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
@@ -459,6 +461,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_generatecertificate"))
 				{
 					return this.FormattedValues["ecer_generatecertificate"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecoverletter")]
+		public System.Nullable<bool> ecer_GenerateCoverLetter
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_generatecoverletter");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_generatecoverletter", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecoverlettername")]
+		public string ecer_generatecoverletterName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_generatecoverletter"))
+				{
+					return this.FormattedValues["ecer_generatecoverletter"];
 				}
 				else
 				{

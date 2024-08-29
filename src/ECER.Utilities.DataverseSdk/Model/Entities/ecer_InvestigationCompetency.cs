@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Competency/Competencies
+	/// Status of the Investigation Competency
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_competencycompetencies_statecode
+	public enum ecer_investigationcompetency_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,28 +28,31 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Competency/Competencies
+	/// Reason for the status of the Investigation Competency
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_CompetencyCompetencies_StatusCode
+	public enum ecer_InvestigationCompetency_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		Addressed = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		NotAddressed = 621870001,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_competencycompetencies")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_investigationcompetency")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_CompetencyCompetencies : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_InvestigationCompetency : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_competencycompetencies entity
+		/// Available fields, a the time of codegen, for the ecer_investigationcompetency entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -61,17 +64,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_Competency = "ecer_competency";
-			public const string ecer_CompetencyCompetenciesId = "ecer_competencycompetenciesid";
-			public const string Id = "ecer_competencycompetenciesid";
-			public const string ecer_CompetencyNumber = "ecer_competencynumber";
-			public const string ecer_FunctionNumber = "ecer_functionnumber";
-			public const string ecer_FunctionTitle = "ecer_functiontitle";
-			public const string ecer_Investigation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies = "ecer_Investigation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies";
+			public const string ecer_CompetencyName = "ecer_competencyname";
+			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_investigationcompetency_Competency_ecer_competencycompetencies = "ecer_investigationcompetency_Competency_ecer_competencycompetencies";
-			public const string ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies = "ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies";
+			public const string ecer_investigationcompetency_Investigation_ecer_investigation = "ecer_investigationcompetency_Investigation_ecer_investigation";
+			public const string ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegation = "ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegation";
+			public const string ecer_InvestigationCompetencyId = "ecer_investigationcompetencyid";
+			public const string Id = "ecer_investigationcompetencyid";
+			public const string ecer_InvestigationName = "ecer_investigationname";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_SubFunctionNumber = "ecer_subfunctionnumber";
-			public const string ecer_SubFunctionTitle = "ecer_subfunctiontitle";
+			public const string ecer_Notes = "ecer_notes";
+			public const string ecer_PlanningAllegation = "ecer_planningallegation";
+			public const string ecer_PlanningAllegationName = "ecer_planningallegationname";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -98,19 +102,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CompetencyCompetencies(System.Guid id) : 
+		public ecer_InvestigationCompetency(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CompetencyCompetencies(string keyName, object keyValue) : 
+		public ecer_InvestigationCompetency(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CompetencyCompetencies(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_InvestigationCompetency(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -119,22 +123,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CompetencyCompetencies() : 
+		public ecer_InvestigationCompetency() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_competencycompetenciesid";
+		public const string PrimaryIdAttribute = "ecer_investigationcompetencyid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_CompetencyCompetencies";
+		public const string EntitySchemaName = "ecer_InvestigationCompetency";
 		
-		public const string EntityLogicalName = "ecer_competencycompetencies";
+		public const string EntityLogicalName = "ecer_investigationcompetency";
 		
-		public const string EntityLogicalCollectionName = "ecer_competencycompetencieses";
+		public const string EntityLogicalCollectionName = "ecer_investigationcompetencies";
 		
-		public const string EntitySetName = "ecer_competencycompetencieses";
+		public const string EntitySetName = "ecer_investigationcompetencies";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -249,12 +253,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competency")]
-		public string ecer_Competency
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Competency
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_competency");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_competency");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -263,21 +267,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencycompetenciesid")]
-		public System.Nullable<System.Guid> ecer_CompetencyCompetenciesId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencyname")]
+		public string ecer_CompetencyName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_competencycompetenciesid");
+				if (this.FormattedValues.Contains("ecer_competency"))
+				{
+					return this.FormattedValues["ecer_competency"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Investigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigation");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_competencycompetenciesid", value);
+				this.SetAttributeValue("ecer_investigation", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationcompetencyid")]
+		public System.Nullable<System.Guid> ecer_InvestigationCompetencyId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_investigationcompetencyid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_investigationcompetencyid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -289,7 +325,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencycompetenciesid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationcompetencyid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -300,52 +336,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_CompetencyCompetenciesId = value;
+				this.ecer_InvestigationCompetencyId = value;
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competencynumber")]
-		public string ecer_CompetencyNumber
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationname")]
+		public string ecer_InvestigationName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_competencynumber");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_competencynumber", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_functionnumber")]
-		public string ecer_FunctionNumber
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_functionnumber");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_functionnumber", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_functiontitle")]
-		public string ecer_FunctionTitle
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_functiontitle");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_functiontitle", value);
+				if (this.FormattedValues.Contains("ecer_investigation"))
+				{
+					return this.FormattedValues["ecer_investigation"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -364,33 +372,50 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_subfunctionnumber")]
-		public string ecer_SubFunctionNumber
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_notes")]
+		public string ecer_Notes
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_subfunctionnumber");
+				return this.GetAttributeValue<string>("ecer_notes");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_subfunctionnumber", value);
+				this.SetAttributeValue("ecer_notes", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_subfunctiontitle")]
-		public string ecer_SubFunctionTitle
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_planningallegation")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_PlanningAllegation
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_subfunctiontitle");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_planningallegation");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_subfunctiontitle", value);
+				this.SetAttributeValue("ecer_planningallegation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_planningallegationname")]
+		public string ecer_PlanningAllegationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_planningallegation"))
+				{
+					return this.FormattedValues["ecer_planningallegation"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -657,15 +682,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Competency/Competencies
+		/// Status of the Investigation Competency
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_competencycompetencies_statecode? StateCode
+		public virtual ecer_investigationcompetency_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_competencycompetencies_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_investigationcompetency_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -692,15 +717,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Competency/Competencies
+		/// Reason for the status of the Investigation Competency
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_CompetencyCompetencies_StatusCode? StatusCode
+		public virtual ecer_InvestigationCompetency_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_CompetencyCompetencies_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_InvestigationCompetency_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -776,59 +801,62 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_investigationcompetency_Competency_ecer_competencycompetencies
+		/// N:1 ecer_investigationcompetency_Competency_ecer_competencycompetencies
 		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competency")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationcompetency_Competency_ecer_competencycompetencies")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationCompetency> ecer_investigationcompetency_Competency_ecer_competencycompetencies
+		public ECER.Utilities.DataverseSdk.Model.ecer_CompetencyCompetencies ecer_investigationcompetency_Competency_ecer_competencycompetencies
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationCompetency>("ecer_investigationcompetency_Competency_ecer_competencycompetencies", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CompetencyCompetencies>("ecer_investigationcompetency_Competency_ecer_competencycompetencies", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationCompetency>("ecer_investigationcompetency_Competency_ecer_competencycompetencies", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CompetencyCompetencies>("ecer_investigationcompetency_Competency_ecer_competencycompetencies", null, value);
 			}
 		}
 		
 		/// <summary>
-		/// N:N ecer_Investigation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies
+		/// N:1 ecer_investigationcompetency_Investigation_ecer_investigation
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_Investigation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Investigation> ecer_Investigation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationcompetency_Investigation_ecer_investigation")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_investigationcompetency_Investigation_ecer_investigation
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_Investigation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigationcompetency_Investigation_ecer_investigation", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_Investigation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigationcompetency_Investigation_ecer_investigation", null, value);
 			}
 		}
 		
 		/// <summary>
-		/// N:N ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies
+		/// N:1 ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegation
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyC" +
-			"ompetencies")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningAllegation> ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_planningallegation")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegat" +
+			"ion")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningAllegation ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegation
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningAllegation>("ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyC" +
-						"ompetencies", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningAllegation>("ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegat" +
+						"ion", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningAllegation>("ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyC" +
-						"ompetencies", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningAllegation>("ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegat" +
+						"ion", null, value);
 			}
 		}
 		
@@ -837,7 +865,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CompetencyCompetencies(object anonymousType) : 
+		public ecer_InvestigationCompetency(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -855,9 +883,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_competencycompetenciesid"] = base.Id;
+                        Attributes["ecer_investigationcompetencyid"] = base.Id;
                         break;
-                    case "ecer_competencycompetenciesid":
+                    case "ecer_investigationcompetencyid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

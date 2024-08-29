@@ -439,6 +439,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_investigation_ecer_finding = "ecer_investigation_ecer_finding";
 			public const string Referencingecer_investigation_primaryid = "ecer_investigation_primaryid";
 			public const string ecer_investigation_WorkExperienceReferenceId_e = "ecer_investigation_WorkExperienceReferenceId_e";
+			public const string ecer_investigationcompetency_Investigation_ecer_investigation = "ecer_investigationcompetency_Investigation_ecer_investigation";
 			public const string ecer_InvestigationComplexity = "ecer_investigationcomplexity";
 			public const string ecer_investigationcomplexityName = "ecer_investigationcomplexityname";
 			public const string ecer_InvestigationConcludedDate = "ecer_investigationconcludeddate";
@@ -5717,6 +5718,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigation_primaryid", Microsoft.Xrm.Sdk.EntityRole.Referenced, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_investigationcompetency_Investigation_ecer_investigation
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationcompetency_Investigation_ecer_investigation")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationCompetency> ecer_investigationcompetency_Investigation_ecer_investigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationCompetency>("ecer_investigationcompetency_Investigation_ecer_investigation", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationCompetency>("ecer_investigationcompetency_Investigation_ecer_investigation", null, value);
 			}
 		}
 		

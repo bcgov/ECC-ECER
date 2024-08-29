@@ -73,6 +73,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_acknowledgedName = "ecer_acknowledgedname";
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
+			public const string ecer_AreAllRead = "ecer_areallread";
+			public const string ecer_areallreadName = "ecer_areallreadname";
 			public const string ecer_bcgov_documenturl_CommunicationId_ecer_communication = "ecer_bcgov_documenturl_CommunicationId_ecer_communication";
 			public const string ecer_communication_Applicationid = "ecer_communication_Applicationid";
 			public const string ecer_communication_Investigation_ecer_investig = "ecer_communication_Investigation_ecer_investig";
@@ -97,6 +99,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_InvestigationName = "ecer_investigationname";
 			public const string ecer_IsRoot = "ecer_isroot";
 			public const string ecer_isrootName = "ecer_isrootname";
+			public const string ecer_LatestMessageNotifiedDate = "ecer_latestmessagenotifieddate";
 			public const string ecer_legacyclientid = "ecer_legacyclientid";
 			public const string ecer_legacycorrespondenceid = "ecer_legacycorrespondenceid";
 			public const string ecer_legacyenteredby = "ecer_legacyenteredby";
@@ -367,6 +370,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_applicationid"))
 				{
 					return this.FormattedValues["ecer_applicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_areallread")]
+		public System.Nullable<bool> ecer_AreAllRead
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_areallread");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_areallread", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_areallreadname")]
+		public string ecer_areallreadName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_areallread"))
+				{
+					return this.FormattedValues["ecer_areallread"];
 				}
 				else
 				{
@@ -653,6 +688,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_latestmessagenotifieddate")]
+		public System.Nullable<System.DateTime> ecer_LatestMessageNotifiedDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_latestmessagenotifieddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_latestmessagenotifieddate", value);
 			}
 		}
 		

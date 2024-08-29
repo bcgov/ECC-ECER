@@ -254,6 +254,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ReferenceLetterSent = "ecer_referencelettersent";
 			public const string ecer_referencelettersentName = "ecer_referencelettersentname";
 			public const string ecer_renewalassessment_ApplicationId = "ecer_renewalassessment_ApplicationId";
+			public const string ecer_RenewalExplanationOther = "ecer_renewalexplanationother";
 			public const string ecer_RequestCharacterReference = "ecer_requestcharacterreference";
 			public const string ecer_requestcharacterreferenceName = "ecer_requestcharacterreferencename";
 			public const string ecer_RequestWkExpReference = "ecer_requestwkexpreference";
@@ -290,6 +291,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_WorkExperienceReferenceApproved = "ecer_workexperiencereferenceapproved";
 			public const string ecer_workexperiencereferenceapprovedName = "ecer_workexperiencereferenceapprovedname";
 			public const string ecer_WorkStartDate = "ecer_workstartdate";
+			public const string ecer_YRExplanationChoice = "ecer_yrexplanationchoice";
+			public const string ecer_yrexplanationchoiceName = "ecer_yrexplanationchoicename";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -2670,6 +2673,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_renewalexplanationother")]
+		public string ecer_RenewalExplanationOther
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_renewalexplanationother");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_renewalexplanationother", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requestcharacterreference")]
 		public System.Nullable<bool> ecer_RequestCharacterReference
 		{
@@ -3171,6 +3189,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_workstartdate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_yrexplanationchoice")]
+		public virtual ecer_fiveyrrenewalexplanations? ecer_YRExplanationChoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_fiveyrrenewalexplanations?)(EntityOptionSetEnum.GetEnum(this, "ecer_yrexplanationchoice")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_yrexplanationchoice", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_yrexplanationchoicename")]
+		public string ecer_yrexplanationchoiceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_yrexplanationchoice"))
+				{
+					return this.FormattedValues["ecer_yrexplanationchoice"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

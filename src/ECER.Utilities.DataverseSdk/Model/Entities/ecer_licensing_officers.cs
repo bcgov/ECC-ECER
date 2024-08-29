@@ -12,6 +12,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 {
 	
 	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum ecer_licensing_officers_ecer_PreferredMethodofContact
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Email = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Phone = 1,
+	}
+	
 	/// <summary>
 	/// Status of the Licensing Officers
 	/// </summary>
@@ -67,6 +79,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_licensing_officersId = "ecer_licensing_officersid";
 			public const string Id = "ecer_licensing_officersid";
 			public const string ecer_name = "ecer_name";
+			public const string ecer_PhoneNumber = "ecer_phonenumber";
+			public const string ecer_PreferredMethodofContact = "ecer_preferredmethodofcontact";
+			public const string ecer_preferredmethodofcontactName = "ecer_preferredmethodofcontactname";
 			public const string EmailAddress = "emailaddress";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -335,6 +350,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_phonenumber")]
+		public string ecer_PhoneNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_phonenumber");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_phonenumber", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_preferredmethodofcontact")]
+		public virtual ecer_licensing_officers_ecer_PreferredMethodofContact? ecer_PreferredMethodofContact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_licensing_officers_ecer_PreferredMethodofContact?)(EntityOptionSetEnum.GetEnum(this, "ecer_preferredmethodofcontact")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_preferredmethodofcontact", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_preferredmethodofcontactname")]
+		public string ecer_preferredmethodofcontactName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_preferredmethodofcontact"))
+				{
+					return this.FormattedValues["ecer_preferredmethodofcontact"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

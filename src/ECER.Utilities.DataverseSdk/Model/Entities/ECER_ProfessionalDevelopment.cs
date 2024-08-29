@@ -96,7 +96,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_ApplicantFullName = "ecer_applicantfullname";
 			public const string ecer_Applicantid = "ecer_applicantid";
 			public const string ecer_ApplicantidName = "ecer_applicantidname";
 			public const string ecer_ApplicantidYomiName = "ecer_applicantidyominame";
@@ -110,7 +109,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CourseName = "ecer_coursename";
 			public const string ecer_CourseorWorkshopLink = "ecer_courseorworkshoplink";
 			public const string ecer_DateDecided = "ecer_datedecided";
-			public const string ecer_DateSigned = "ecer_datesigned";
 			public const string ecer_ecer_professionaldevelopment_Applicantid_ = "ecer_ecer_professionaldevelopment_Applicantid_";
 			public const string ecer_ecer_professionaldevelopment_Applicationi = "ecer_ecer_professionaldevelopment_Applicationi";
 			public const string ecer_EndDate = "ecer_enddate";
@@ -309,24 +307,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Use for Signature
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantfullname")]
-		public string ecer_ApplicantFullName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_applicantfullname");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_applicantfullname", value);
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_Applicantid
 		{
@@ -512,21 +492,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_datedecided", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_datesigned")]
-		public System.Nullable<System.DateTime> ecer_DateSigned
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_datesigned");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_datesigned", value);
 			}
 		}
 		
