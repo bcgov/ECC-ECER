@@ -181,17 +181,42 @@
   </div>
   <!-- List view -->
   <div v-else>
-    {{ modelValue }}
     <v-row>
       <v-col>
-        <v-btn prepend-icon="mdi-plus" rounded="lg" color="alternate" :disabled="isDisabled" @click="handleAddProfessionalDevelopment">
+        <p>
+          You must have completed at least 40 hours of professional development relevant to early childhood education. Add the courses or workshops you’ve
+          taken.
+        </p>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <ProgressBar :hours-required="hoursRequired" :total-hours="totalHours"></ProgressBar>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        {{ modelValue }}
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-btn
+          v-if="totalHours < hoursRequired"
+          prepend-icon="mdi-plus"
+          rounded="lg"
+          color="alternate"
+          :disabled="isDisabled"
+          @click="handleAddProfessionalDevelopment"
+        >
           Add course or workshop
         </v-btn>
       </v-col>
     </v-row>
   </div>
 
-  <v-input auto-hide="auto" :model-value="modelValue" :rules="[totalHours >= 500]"></v-input>
+  <!-- TODO -->
+  <!-- <v-input auto-hide="auto" :model-value="modelValue" :rules="[totalHours >= 500]"></v-input> -->
 </template>
 
 <script lang="ts">
@@ -201,7 +226,7 @@ import type { VForm } from "vuetify/components";
 
 import Alert from "@/components/Alert.vue";
 import type { FileItem } from "@/components/UploadFileItem.vue";
-import WorkExperienceReferenceProgressBar from "@/components/WorkExperienceReferenceProgressBar.vue";
+import ProgressBar from "../ProgressBar.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
@@ -211,16 +236,18 @@ import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 import FileUploader from "../FileUploader.vue";
+import { useCertificationStore } from "@/store/certification";
 
 interface ProfessionalDevelopmentData {
   selection: ("phone" | "email" | "file")[];
   areAttachedFilesValid: boolean;
   isFileUploadInProgress: boolean;
+  hoursRequired: number;
 }
 
 export default defineComponent({
   name: "EceProfessionalDevelopment",
-  components: { WorkExperienceReferenceProgressBar, Alert, FileUploader },
+  components: { ProgressBar, Alert, FileUploader },
   props: {
     props: {
       type: Object as () => EceWorkExperienceReferencesProps,
@@ -248,11 +275,13 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const wizardStore = useWizardStore();
     const applicationStore = useApplicationStore();
+    const certificationStore = useCertificationStore();
 
     return {
       alertStore,
       wizardStore,
       applicationStore,
+      certificationStore,
       Rules,
     };
   },
@@ -260,6 +289,7 @@ export default defineComponent({
     return {
       //Professional Development
       id: "",
+      certificationNumber: "",
       courseName: "",
       numberOfHours: undefined,
       organizationName: "",
@@ -276,6 +306,7 @@ export default defineComponent({
       selection: [],
       isFileUploadInProgress: false,
       areAttachedFilesValid: true,
+      hoursRequired: 40,
     };
   },
   unmounted() {
@@ -288,10 +319,9 @@ export default defineComponent({
       return false;
     },
     totalHours() {
-      // return Object.values(this.modelValue).reduce((acc, reference) => {
-      //   return acc + (reference.hours as number);
-      // }, 0);
-      return 100;
+      return this.modelValue.reduce((acc, professionalDevelopment) => {
+        return acc + Number(professionalDevelopment.numberOfHours!);
+      }, 0);
     },
     showInstructorNameInput() {
       return this.selection.includes("email") || this.selection.includes("phone");
@@ -307,11 +337,13 @@ export default defineComponent({
     },
   },
   mounted() {
+    this.certificationNumber = this.certificationStore.latestCertification?.number;
     this.mode = "list";
   },
   methods: {
     isNumber,
     handleCancel() {
+      this.resetFormData();
       // Change mode to list
       this.mode = "list";
     },
@@ -339,6 +371,7 @@ export default defineComponent({
         console.log("submit");
         const newProfessionalDevelopment: Components.Schemas.ProfessionalDevelopment = {
           id: this.id,
+          certificationNumber: this.certificationNumber,
           courseName: this.courseName,
           numberOfHours: this.numberOfHours,
           organizationName: this.organizationName,
@@ -354,6 +387,8 @@ export default defineComponent({
         };
         const updatedModelValue = this.modelValue.slice(); //create a copy of the array
         updatedModelValue.push(newProfessionalDevelopment);
+        this.resetFormData();
+        this.mode = "list";
 
         this.$emit("update:model-value", updatedModelValue);
       } else {
