@@ -110,6 +110,17 @@ export const useApplicationStore = defineStore("application", {
         this.draftApplication.workExperienceReferences = Object.values(wizardStore.wizardData.referenceList);
       }
 
+      // One year renewal explanation letter
+      if (
+        wizardStore.wizardConfig.steps?.oneYearRenewalExplanationLetter?.form?.inputs?.oneYearRenewalExplanation?.id &&
+        wizardStore.wizardConfig.steps?.oneYearRenewalExplanationLetter?.form?.inputs?.explanationLetter?.id
+      ) {
+        this.draftApplication.oneYearRenewalexplanation =
+          wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanationLetter.form.inputs.oneYearRenewalExplanation.id];
+        this.draftApplication.explanationLetter =
+          wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanationLetter.form.inputs.explanationLetter.id];
+      }
+
       // Character References step data
       if (
         wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName &&
