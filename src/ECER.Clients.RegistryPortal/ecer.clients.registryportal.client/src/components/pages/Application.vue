@@ -113,7 +113,7 @@ export default defineComponent({
       } else if (applicationStore.isDraftCertificateTypeOneYear) {
         {
           if (!latestCertificateIsExpired(draftApplicationCreatedOn)) {
-            await wizardStore.initializeWizardRenewOneYearActive(applicationWizardRenewOneYearActive, applicationStore.draftApplication);
+            await wizardStore.initializeWizard(applicationWizardRenewOneYearActive, applicationStore.draftApplication);
             wizardConfigSetup = applicationWizardRenewOneYearActive;
           } else if (!latestCertificateExpiredMoreThan5Years(applicationStore.draftApplication.createdOn!)) {
             await wizardStore.initializeWizard(applicationWizardRenewOneYearExpired, applicationStore.draftApplication);

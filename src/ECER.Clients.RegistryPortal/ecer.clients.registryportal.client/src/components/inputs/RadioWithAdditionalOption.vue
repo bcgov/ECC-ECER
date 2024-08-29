@@ -1,6 +1,6 @@
 <template>
   <slot name="radioLabel" :for="`${valueKey}Label`"></slot>
-  <v-radio-group :id="`${valueKey}Label`" :rules="radioRules" hide-details="auto" @update:model-value="modalValueUpdated">
+  <v-radio-group :id="`${valueKey}Label`" :rules="radioRules" hide-details="auto" :model-value="modelValue" @update:model-value="modalValueUpdated">
     <v-radio v-for="(item, index) in items" :key="index" :label="item[itemLabel]" :value="item[itemValue]"></v-radio>
   </v-radio-group>
   <slot v-if="triggerForAdditionalInformation" name="textAreaLabel" :for="`${additionalInfoKey}Label`"></slot>
@@ -8,6 +8,7 @@
     v-if="triggerForAdditionalInformation"
     v-bind="additionalInfoProps"
     :id="`${additionalInfoKey}Label`"
+    :model-value="textInputValue"
     class="mt-2"
     color="primary"
     persistent-counter
@@ -62,6 +63,12 @@ export default defineComponent({
       type: Object as PropType<RadioWithAdditionalOptionProps>,
       required: false,
       default: () => {},
+    },
+    //refers to textArea input box. Used to inject values when continuing from a draft application
+    textInputValue: {
+      type: String,
+      required: false,
+      default: "",
     },
   },
   emits: {
