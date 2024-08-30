@@ -108,7 +108,7 @@ export default defineComponent({
         href: `/manage-application/${this.applicationId}`,
       },
       {
-        title: "Work experience references",
+        title: "Work experience reference",
         disabled: false,
         href: `/manage-application/${this.applicationId}/work-experience-references`,
       },

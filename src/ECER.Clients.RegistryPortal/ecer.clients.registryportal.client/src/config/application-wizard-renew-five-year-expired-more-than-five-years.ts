@@ -24,13 +24,13 @@ const applicationWizard: Wizard = {
 
     characterReferences: {
       stage: "CharacterReferences",
-      title: "Character references",
+      title: "Character reference",
       form: characterReferencesForm,
       key: "item.3",
     },
     workReference: {
       stage: "WorkReferences",
-      title: "Work experience references",
+      title: "Work experience reference",
       form: referencesForm,
       key: "item.4",
     },
