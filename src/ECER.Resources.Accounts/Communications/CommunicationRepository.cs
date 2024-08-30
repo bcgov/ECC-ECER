@@ -26,81 +26,53 @@ internal class CommunicationRepository : ICommunicationRepository
   public async Task<CommunicationResult> Query(UserCommunicationQuery query)
   {
     await Task.CompletedTask;
-    var communications = from c in context.ecer_CommunicationSet
-                         join a in context.ecer_ApplicationSet on c.ecer_Applicationid.Id equals a.ecer_ApplicationId
-                         select new { c, a };
+    var communications = context.ecer_CommunicationSet;
     var UnreadMessagesCount = 0;
-    IEnumerable<Communication> PortalComms = new List<Communication>();
+
     // Filtering by registrant ID
-    if (query.ByRegistrantId != null) communications = communications.Where(r => r.c.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
+    if (query.ByRegistrantId != null) communications = communications.Where(item => item.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
 
     // Filtering by status
     if (query.ByStatus != null)
     {
       var statuses = mapper.Map<IEnumerable<ecer_Communication_StatusCode>>(query.ByStatus)!.ToList();
-      communications = communications.WhereIn(communication => communication.c.StatusCode!.Value, statuses);
+      communications = communications.WhereIn(item => item.StatusCode!.Value, statuses);
     }
 
     // Filtering by ID
-    if (query.ById != null) communications = communications.Where(r => r.c.ecer_CommunicationId == Guid.Parse(query.ById));
+    if (query.ById != null) communications = communications.Where(item => item.ecer_CommunicationId == Guid.Parse(query.ById));
+
+    // otherwise if parent id provided returning just child communications based on parent id
+    else if (query.ByParentId != null)
+    {
+      communications = communications.Where(item => item.ecer_ParentCommunicationid.Id == Guid.Parse(query.ByParentId) && item.ecer_IsRoot != true);
+      UnreadMessagesCount = communications.Where(item => item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && item.ecer_Acknowledged != true).Select(item => item.Id).ToList().Count;
+    }
+    // otherwise if its not a single query and parent id not provided returning all parent communications
     else
     {
-      // returning just child communications based on parent id
-      if (query.ByParentId != null)
-      {
-        communications = communications.Where(r => r.c.ecer_ParentCommunicationid.Id == Guid.Parse(query.ByParentId));
-        UnreadMessagesCount = communications.Where(comms => comms.c.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && comms.c.ecer_Acknowledged != true).ToList().Count;
-      }
-      // otherwise returning parent communications
-      else
-      {
-        var communicationsList = communications.ToList();
-        UnreadMessagesCount = communications.Where(comms => comms.c.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && comms.c.ecer_Acknowledged != true).ToList().Count;
-        var latestMessageDateByParentId = communicationsList.GroupBy(ct => ct.c.ecer_ParentCommunicationid.Id) // Group by parent ID
-                                                     .Select(group => new
-                                                     {
-                                                       ParentId = group.Key,
-                                                       LatestMessageNotifiedDate = group.Max(ct => ct.c.ecer_DateNotified),
-                                                       AreAllRead = !group.Any(r => r.c.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && r.c.ecer_Acknowledged != true),
-                                                     });
-
-        communications = communications.Where(c => c.c.ecer_IsRoot == true);
-        context.LoadProperties(communications.Select(comms => comms.c), ecer_Communication.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication);
-        PortalComms = mapper.Map<IEnumerable<Communication>>(communications.Select(comms => comms.c).ToList());
-
-        foreach (var comm in PortalComms)
-        {
-          var matchingComm = latestMessageDateByParentId.SingleOrDefault(ld => ld.ParentId == Guid.Parse(comm.Id!));
-          if (matchingComm != null)
-          {
-            comm.LatestMessageNotifiedOn = matchingComm.LatestMessageNotifiedDate;
-            comm.IsRead = matchingComm.AreAllRead;
-          }
-        }
-      }
+      communications = communications.Where(item => item.ecer_IsRoot == true);
+      UnreadMessagesCount = communications.Where(item => item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && item.ecer_Acknowledged != true).Select(item => item.Id).ToList().Count;
     }
-    if (PortalComms.ToList().Count == 0)
-    {
-      context.LoadProperties(communications.Select(comms => comms.c), ecer_Communication.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication);
-      PortalComms = mapper.Map<IEnumerable<Communication>>(communications.Select(comms => comms.c).ToList());
-    }
+    int paginatedTotalCommunicationCount = 0;
     if (query.PageNumber > 0)
     {
-      PortalComms = PortalComms.OrderByDescending(c => c.LatestMessageNotifiedOn).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
+      paginatedTotalCommunicationCount = communications.Select(item => item.Id).ToList().Count;
+      communications = communications.OrderByDescending(item => item.ecer_LatestMessageNotifiedDate).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
     }
     else
     {
-      PortalComms = PortalComms.OrderByDescending(c => c.LatestMessageNotifiedOn);
+      communications = communications.OrderByDescending(item => item.ecer_DateNotified);
     }
 
-    var result = new CommunicationResult
-    {
-      Communications = PortalComms,
-      TotalMessagesCount = communications.ToList().Count,
-      UnreadMessagesCount = UnreadMessagesCount
-    };
+    context.LoadProperties(communications, ecer_Communication.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication);
 
-    return result;
+    var finalCommunications = communications.ToList();
+    return new CommunicationResult
+    {
+      Communications = mapper.Map<IEnumerable<Communication>>(finalCommunications),
+      TotalMessagesCount = query.PageNumber > 0 ? paginatedTotalCommunicationCount : finalCommunications.Count,
+    };
   }
 
   public async Task<string> MarkAsSeen(string communicationId, CancellationToken cancellationToken)
@@ -113,10 +85,21 @@ internal class CommunicationRepository : ICommunicationRepository
     if (communication == null) throw new InvalidOperationException($"Communication '{communicationId}' not found");
 
     communication.ecer_DateAcknowledged = DateTime.Now;
+    communication.ecer_LatestMessageNotifiedDate = DateTime.Now;
     communication.ecer_Acknowledged = true;
+    communication.ecer_AreAllRead = true;
     communication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
-    context.UpdateObject(communication);
 
+    if (communication.ecer_ParentCommunicationid != null)
+    {
+      var parent = context.ecer_CommunicationSet.Single(c => c.ecer_CommunicationId == communication.ecer_ParentCommunicationid.Id);
+      parent.ecer_AreAllRead = true;
+      parent.ecer_Acknowledged = true;
+      parent.StatusCode = ecer_Communication_StatusCode.Acknowledged;
+      context.UpdateObject(parent);
+    }
+
+    context.UpdateObject(communication);
     context.SaveChanges();
     return communication.Id.ToString();
   }
@@ -131,22 +114,22 @@ internal class CommunicationRepository : ICommunicationRepository
     }
     else
     {
-      var application = context.ecer_ApplicationSet.SingleOrDefault(a => a.ecer_ApplicationId == existingCommunication.ecer_Applicationid.Id && a.ecer_Applicantid.Id == Guid.Parse(userId));
-
-      if (application == null)
-      {
-        throw new InvalidOperationException($"Application '{existingCommunication.ecer_Applicationid.Id}' not found");
-      }
       var registrant = context.ContactSet.SingleOrDefault(r => r.ContactId == Guid.Parse(userId));
       if (registrant == null)
       {
         throw new InvalidOperationException($"Registrant '{userId}' not found");
       }
+
+      existingCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow; // this should be utc for parent to be consistant with dynamics
+      context.UpdateObject(existingCommunication);
+
       var ecerCommunication = mapper.Map<ecer_Communication>(communication);
 
       ecerCommunication.ecer_CommunicationId = Guid.NewGuid();
       ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.PortalUser;
+      ecerCommunication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
       ecerCommunication.ecer_NotifyRecipient = true;
+      ecerCommunication.ecer_DateNotified = DateTime.Now;
       context.AddObject(ecerCommunication);
       context.AddLink(registrant, ecer_Communication.Fields.ecer_contact_ecer_communication_122, ecerCommunication);
       var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
@@ -154,8 +137,6 @@ internal class CommunicationRepository : ICommunicationRepository
         PrimaryEntityRole = EntityRole.Referencing
       };
       context.AddLink(ecerCommunication, Referencingecer_communication_ParentCommunicationid, existingCommunication);
-      context.AddLink(application, ecer_Communication.Fields.ecer_communication_Applicationid, ecerCommunication);
-      context.LoadProperty(application, ecer_Application.Fields.ecer_application_Applicantid_contact);
 
       foreach (var document in communication.Documents)
       {
@@ -181,7 +162,6 @@ internal class CommunicationRepository : ICommunicationRepository
         };
 
         context.AddObject(documenturl);
-        context.AddLink(documenturl, bcgov_DocumentUrl.Fields.bcgov_contact_bcgov_documenturl, application.ecer_application_Applicantid_contact);
         context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication, ecerCommunication);
       }
 
