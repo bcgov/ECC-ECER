@@ -27,7 +27,6 @@ internal class CommunicationRepository : ICommunicationRepository
   {
     await Task.CompletedTask;
     var communications = context.ecer_CommunicationSet;
-    var UnreadMessagesCount = 0;
 
     // Filtering by registrant ID
     if (query.ByRegistrantId != null) communications = communications.Where(item => item.ecer_Registrantid.Id == Guid.Parse(query.ByRegistrantId));
@@ -38,6 +37,7 @@ internal class CommunicationRepository : ICommunicationRepository
       var statuses = mapper.Map<IEnumerable<ecer_Communication_StatusCode>>(query.ByStatus)!.ToList();
       communications = communications.WhereIn(item => item.StatusCode!.Value, statuses);
     }
+    var UnreadMessagesCount = communications.Where(item => item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && item.ecer_Acknowledged != true).Select(item => item.Id).ToList().Count;
 
     // Filtering by ID
     if (query.ById != null) communications = communications.Where(item => item.ecer_CommunicationId == Guid.Parse(query.ById));
@@ -46,13 +46,11 @@ internal class CommunicationRepository : ICommunicationRepository
     else if (query.ByParentId != null)
     {
       communications = communications.Where(item => item.ecer_ParentCommunicationid.Id == Guid.Parse(query.ByParentId));
-      UnreadMessagesCount = communications.Where(item => item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && item.ecer_Acknowledged != true).Select(item => item.Id).ToList().Count;
     }
     // otherwise if its not a single query and parent id not provided returning all parent communications
     else
     {
       communications = communications.Where(item => item.ecer_IsRoot == true);
-      UnreadMessagesCount = communications.Where(item => item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && item.ecer_Acknowledged != true).Select(item => item.Id).ToList().Count;
     }
     int paginatedTotalCommunicationCount = 0;
     if (query.PageNumber > 0)
@@ -62,7 +60,7 @@ internal class CommunicationRepository : ICommunicationRepository
     }
     else
     {
-      communications = communications.OrderByDescending(item => item.ecer_LatestMessageNotifiedDate);
+      communications = communications.OrderByDescending(item => item.ecer_DateNotified);
     }
 
     context.LoadProperties(communications, ecer_Communication.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication);
@@ -120,7 +118,7 @@ internal class CommunicationRepository : ICommunicationRepository
         throw new InvalidOperationException($"Registrant '{userId}' not found");
       }
 
-      existingCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow; // this should be utc for parent to be consistant with dynamics
+      existingCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
       context.UpdateObject(existingCommunication);
 
       var ecerCommunication = mapper.Map<ecer_Communication>(communication);
