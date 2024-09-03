@@ -52,6 +52,7 @@ interface FileUploaderData {
   selectedFiles: FileItem[];
   showErrorBanner: boolean;
   errorBannerMessage: string;
+  firstLoad: boolean;
 }
 
 export default defineComponent({
@@ -71,12 +72,22 @@ export default defineComponent({
       maxNumberOfFiles,
     };
   },
+  props: {
+    userFiles: {
+      type: Object as () => FileItem[],
+      required: true,
+    },
+  },
   data(): FileUploaderData {
     return {
       selectedFiles: [],
       showErrorBanner: false,
       errorBannerMessage: "",
+      firstLoad: true,
     };
+  },
+  mounted() {
+    this.selectedFiles = [...this.userFiles];
   },
   computed: {
     fileErrors() {
@@ -110,7 +121,11 @@ export default defineComponent({
   watch: {
     selectedFiles: {
       handler() {
-        this.updateEmit(); // Emit updates whenever selectedFiles changes
+        if (!this.firstLoad) {
+          this.updateEmit(); // Emit updates whenever selectedFiles changes
+        } else {
+          this.firstLoad = false;
+        }
       },
       deep: true,
     },
@@ -219,12 +234,6 @@ export default defineComponent({
     updateEmit() {
       this.$emit("update:files", this.selectedFiles);
     },
-    // fileErrors() {
-    //   return this.selectedFiles.some((file) => file.fileErrors.length !== 0);
-    // },
-    // filesInProgress() {
-    //   return this.selectedFiles.some((file) => file.progress < 101);
-    // },
   },
 });
 </script>

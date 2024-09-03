@@ -430,9 +430,6 @@ public class ApplicationRenewalValidationEngineTests
   {
     return new ProfessionalDevelopment(
         Guid.NewGuid().ToString(), // Id
-        "1234", // CertificationNumber
-        DateTime.Now.AddYears(1), // CertificationExpiryDate
-        DateTime.Now.AddMonths(-1), // DateSigned
         _faker.Company.CatchPhrase(), // CourseName
         _faker.Company.CompanyName(), // OrganizationName
         DateTime.Now.AddMonths(-3), // StartDate

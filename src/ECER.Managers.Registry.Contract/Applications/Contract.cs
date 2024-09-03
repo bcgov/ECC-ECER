@@ -85,7 +85,7 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
   public int? TotalNumberofHoursApproved { get; set; }
   public int? TotalNumberofHoursObserved { get; set; }
 }
-public record ProfessionalDevelopment(string? Id, string? CertificationNumber, DateTime CertificationExpiryDate, DateTime DateSigned, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
+public record ProfessionalDevelopment(string? Id, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
 {
   public string? CourseorWorkshopLink { get; set; }
   public string? OrganizationContactInformation { get; set; }
@@ -127,11 +127,10 @@ public enum CertificationType
 
 public enum OneYearRenewalexplanations
 {
-  Icouldnotfindemploymenttocompletetherequiredhours,
-  Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa,
-  IliveandworkinacommunitywithoutothercertifiedECEs,
-  Iwasunabletoenterthecountryasexpected,
-  Iwasunabletoworkinthechildcarefieldforpersonalreasons,
+  Ileftthechildcarefieldforpersonalreasons,
+  Iwasunabletocompletetherequiredhoursofprofessionaldevelopment,
+  Iwasunabletofindemploymentinthechildcarefieldinmycommunity,
+  MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc,
   Other,
 }
 

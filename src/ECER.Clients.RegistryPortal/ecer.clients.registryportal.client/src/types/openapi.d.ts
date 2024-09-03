@@ -279,11 +279,10 @@ declare namespace Components {
       idp?: string | null;
     }
     export type OneYearRenewalexplanations =
-      | "Icouldnotfindemploymenttocompletetherequiredhours"
-      | "Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa"
-      | "IliveandworkinacommunitywithoutothercertifiedECEs"
-      | "Iwasunabletoenterthecountryasexpected"
-      | "Iwasunabletoworkinthechildcarefieldforpersonalreasons"
+      | "IIleftthechildcarefieldforpersonalreasons"
+      | "Iwasunabletocompletetherequiredhoursofprofessionaldevelopment"
+      | "Iwasunabletofindemploymentinthechildcarefieldinmycommunity"
+      | "MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc"
       | "Other";
     export interface OptOutReferenceRequest {
       token?: string | null;
@@ -332,9 +331,6 @@ declare namespace Components {
       instance?: string | null;
     }
     export interface ProfessionalDevelopment {
-      certificationNumber?: string | null;
-      certificationExpiryDate?: string; // date-time
-      dateSigned?: string; // date-time
       courseName?: string | null;
       organizationName?: string | null;
       startDate?: string; // date-time

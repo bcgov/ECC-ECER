@@ -465,9 +465,6 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 
     return new ProfessionalDevelopment(
         null,
-        faker.Random.String2(10),
-        faker.Date.Future(),
-        faker.Date.Past(),
         faker.Random.String2(20),
         faker.Company.CompanyName(),
         faker.Date.Past(),

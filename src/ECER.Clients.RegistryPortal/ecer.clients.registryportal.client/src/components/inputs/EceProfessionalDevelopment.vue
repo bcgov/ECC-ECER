@@ -3,7 +3,7 @@
   <div v-if="mode === 'add'">
     <v-row v-if="mode === 'add'">
       <v-col>
-        <h3>{{ `${mode} course or workshop` }}</h3>
+        <h3>{{ `${id ? "Edit" : "Add"} course or workshop` }}</h3>
         <br />
         <p>The course or workshop must:</p>
         <br />
@@ -109,6 +109,7 @@
             :hide-details="true"
             density="compact"
             value="phone"
+            @input="selectionChanged"
           ></v-checkbox>
           <v-checkbox
             v-model="selection"
@@ -116,6 +117,7 @@
             :hide-details="true"
             value="email"
             density="compact"
+            @input="selectionChanged"
           ></v-checkbox>
           <v-checkbox
             v-model="selection"
@@ -124,6 +126,7 @@
             value="file"
             density="compact"
             :rules="[Rules.atLeastOneOptionRequired()]"
+            @input="selectionChanged"
           ></v-checkbox>
         </v-col>
       </v-row>
@@ -166,7 +169,7 @@
       </v-row>
       <v-row v-if="showFileInput">
         <v-col>
-          <FileUploader @update:files="handleFileUpdate" @delete:file="handleFileDelete" />
+          <FileUploader :userFiles="newFilesWithData" @update:files="handleFileUpdate" @delete:file="handleFileDelete" />
         </v-col>
       </v-row>
     </v-form>
@@ -200,6 +203,18 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col v-if="modelValue.length > 0">
+        <ProfessionalDevelopmentCard
+          v-for="(professionalDevelopment, index) in modelValue"
+          :key="index"
+          :professionalDevelopment="professionalDevelopment"
+          @edit="handleEdit"
+          @delete="(professionalDevelopment) => handleDelete(professionalDevelopment, index)"
+        />
+      </v-col>
+      <v-col v-else><p></p></v-col>
+    </v-row>
+    <v-row>
       <v-col>
         <v-btn
           v-if="totalHours < hoursRequired"
@@ -226,17 +241,18 @@ import type { VForm } from "vuetify/components";
 
 import Alert from "@/components/Alert.vue";
 import type { FileItem } from "@/components/UploadFileItem.vue";
-import ProgressBar from "../ProgressBar.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
-import type { EceWorkExperienceReferencesProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 import FileUploader from "../FileUploader.vue";
-import { useCertificationStore } from "@/store/certification";
+import ProgressBar from "../ProgressBar.vue";
+import ProfessionalDevelopmentCard from "../ProfessionalDevelopmentCard.vue";
+import { formatDate } from "@/utils/format";
+import { removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
 
 interface ProfessionalDevelopmentData {
   selection: ("phone" | "email" | "file")[];
@@ -245,19 +261,13 @@ interface ProfessionalDevelopmentData {
   hoursRequired: number;
 }
 
+export interface ProfessionalDevelopmentExtended extends Components.Schemas.ProfessionalDevelopment {
+  newFilesWithData: FileItem[];
+}
+
 export default defineComponent({
   name: "EceProfessionalDevelopment",
-  components: { ProgressBar, Alert, FileUploader },
-  props: {
-    props: {
-      type: Object as () => EceWorkExperienceReferencesProps,
-      required: true,
-    },
-    modelValue: {
-      type: Object as () => { [id: string]: Components.Schemas.WorkExperienceReference },
-      required: true,
-    },
-  },
+  components: { ProgressBar, Alert, FileUploader, ProfessionalDevelopmentCard },
   props: {
     props: {
       type: Object as () => {},
@@ -275,21 +285,18 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const wizardStore = useWizardStore();
     const applicationStore = useApplicationStore();
-    const certificationStore = useCertificationStore();
 
     return {
       alertStore,
       wizardStore,
       applicationStore,
-      certificationStore,
       Rules,
     };
   },
-  data(): Components.Schemas.ProfessionalDevelopment & ProfessionalDevelopmentData {
+  data(): ProfessionalDevelopmentData & ProfessionalDevelopmentExtended {
     return {
       //Professional Development
       id: "",
-      certificationNumber: "",
       courseName: "",
       numberOfHours: undefined,
       organizationName: "",
@@ -302,6 +309,8 @@ export default defineComponent({
       files: [],
       newFiles: [],
       deletedFiles: [],
+      //professional development extended to handle files
+      newFilesWithData: [],
       //other data
       selection: [],
       isFileUploadInProgress: false,
@@ -310,7 +319,6 @@ export default defineComponent({
     };
   },
   unmounted() {
-    console.log("unmounted"); //TODO
     this.mode = "list";
   },
   computed: {
@@ -337,7 +345,6 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.certificationNumber = this.certificationStore.latestCertification?.number;
     this.mode = "list";
   },
   methods: {
@@ -346,32 +353,57 @@ export default defineComponent({
       this.resetFormData();
       // Change mode to list
       this.mode = "list";
+      window.scroll(0, 0);
     },
     handleAddProfessionalDevelopment() {
       // Reset the form fields
       this.resetFormData();
       this.mode = "add";
     },
-    handleEdit(professionalDevelopmentData: Components.Schemas.ProfessionalDevelopment) {
+    handleEdit(professionalDevelopment: ProfessionalDevelopmentExtended) {
       // Set the form fields to component data
+      this.id = professionalDevelopment.id;
+      this.courseName = professionalDevelopment.courseName;
+      this.numberOfHours = professionalDevelopment.numberOfHours;
+      this.organizationName = professionalDevelopment.organizationName;
+      this.startDate = professionalDevelopment.startDate ? formatDate(professionalDevelopment.startDate) : undefined;
+      this.courseorWorkshopLink = professionalDevelopment.courseorWorkshopLink;
+      this.endDate = professionalDevelopment.endDate ? formatDate(professionalDevelopment.endDate) : undefined;
+      this.instructorName = professionalDevelopment.instructorName;
+      this.organizationContactInformation = professionalDevelopment.organizationContactInformation;
+      this.organizationEmailAddress = professionalDevelopment.organizationEmailAddress;
+      this.files = professionalDevelopment.files;
+      this.newFiles = professionalDevelopment.newFiles;
+      this.deletedFiles = professionalDevelopment.deletedFiles;
+      this.newFilesWithData = professionalDevelopment.newFilesWithData;
+      this.selection = [];
+      //selection
+      if (professionalDevelopment.organizationContactInformation) {
+        this.selection.push("phone");
+      }
+      if (professionalDevelopment.organizationEmailAddress) {
+        this.selection.push("email");
+      }
+      if (
+        (professionalDevelopment?.files?.length && professionalDevelopment?.files?.length > 0) ||
+        (professionalDevelopment?.newFilesWithData?.length && professionalDevelopment.newFilesWithData.length > 0)
+      ) {
+        this.selection.push("file");
+      }
 
       // Change mode to add
       this.mode = "add";
     },
-    handleDelete(index: Number) {
-      //Remove the entry from the modelValue
-
-      console.log("delete " + index);
-      this.alertStore.setSuccessAlert("You have deleted your reference.");
+    handleDelete(_professionalDevelopment: ProfessionalDevelopmentExtended, index: number) {
+      this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
+      this.alertStore.setSuccessAlert("You have deleted your professional development.");
     },
     async handleSubmit() {
       const { valid } = await (this.$refs.professionalDevelopmentForm as VForm).validate();
 
       if (valid) {
-        console.log("submit");
-        const newProfessionalDevelopment: Components.Schemas.ProfessionalDevelopment = {
-          id: this.id,
-          certificationNumber: this.certificationNumber,
+        const newProfessionalDevelopment: ProfessionalDevelopmentExtended = {
+          id: this.id, //empty if we are adding
           courseName: this.courseName,
           numberOfHours: this.numberOfHours,
           organizationName: this.organizationName,
@@ -384,13 +416,31 @@ export default defineComponent({
           files: this.files,
           newFiles: this.newFiles,
           deletedFiles: this.deletedFiles,
+          newFilesWithData: this.newFilesWithData,
         };
-        const updatedModelValue = this.modelValue.slice(); //create a copy of the array
-        updatedModelValue.push(newProfessionalDevelopment);
+        let updatedModelValue = this.modelValue.slice(); //create a copy of the array
+
+        if (newProfessionalDevelopment.id) {
+          //we are editing if id exists
+          const indexOfEditedProfessionalDevelopment = updatedModelValue.findIndex(
+            (professionalDevelopment) => professionalDevelopment.id === newProfessionalDevelopment.id,
+          );
+          updatedModelValue = replaceElementByIndex(updatedModelValue, indexOfEditedProfessionalDevelopment, newProfessionalDevelopment);
+        } else {
+          //otherwise we are adding
+          updatedModelValue.push(newProfessionalDevelopment);
+        }
+
         this.resetFormData();
         this.mode = "list";
+        this.alertStore.setSuccessAlert(
+          newProfessionalDevelopment.id
+            ? "You have successfully edited your professional development."
+            : "You have successfully added your professional development.",
+        );
 
         this.$emit("update:model-value", updatedModelValue);
+        window.scroll(0, 0);
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }
@@ -398,7 +448,7 @@ export default defineComponent({
     handleFileUpdate(filesArray: FileItem[]) {
       this.areAttachedFilesValid = true;
       this.isFileUploadInProgress = false;
-      this.newFiles = []; // Reset attachments
+      this.newFilesWithData = []; // Reset attachments
       if (filesArray && filesArray.length > 0) {
         for (let i = 0; i < filesArray.length; i++) {
           const file = filesArray[i];
@@ -415,7 +465,7 @@ export default defineComponent({
 
           // If file is valid and fully uploaded, add to attachments
           if (this.areAttachedFilesValid && !this.isFileUploadInProgress) {
-            this.newFiles.push(file.fileId);
+            this.newFilesWithData.push(file);
           }
         }
       }
@@ -439,8 +489,27 @@ export default defineComponent({
       this.files = [];
       this.newFiles = [];
       this.deletedFiles = [];
+      this.newFilesWithData = [];
       //selection
       this.selection = [];
+    },
+    selectionChanged() {
+      if (!this.selection.includes("phone") && !this.selection.includes("email")) {
+        //no email or phone clear out instructor name
+        this.instructorName = "";
+      }
+
+      if (!this.selection.includes("phone")) {
+        this.organizationContactInformation = "";
+      }
+
+      if (!this.selection.includes("email")) {
+        this.organizationEmailAddress = "";
+      }
+
+      if (!this.selection.includes("file")) {
+        console.log("TODO how to handle a mix of new files and old files");
+      }
     },
   },
 });

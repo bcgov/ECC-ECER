@@ -62,7 +62,7 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public string? StudentMiddleName { get; set; }
 }
 
-public record ProfessionalDevelopment(string? Id, string? CertificationNumber, DateTime CertificationExpiryDate, DateTime DateSigned, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
+public record ProfessionalDevelopment(string? Id, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
 {
   public string? CourseorWorkshopLink { get; set; }
   public string? OrganizationContactInformation { get; set; }
@@ -153,11 +153,10 @@ public enum EducationRecognition
 
 public enum OneYearRenewalexplanations
 {
-  Icouldnotfindemploymenttocompletetherequiredhours,
-  Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa,
-  IliveandworkinacommunitywithoutothercertifiedECEs,
-  Iwasunabletoenterthecountryasexpected,
-  Iwasunabletoworkinthechildcarefieldforpersonalreasons,
+  Ileftthechildcarefieldforpersonalreasons,
+  Iwasunabletocompletetherequiredhoursofprofessionaldevelopment,
+  Iwasunabletofindemploymentinthechildcarefieldinmycommunity,
+  MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc,
   Other,
 }
 

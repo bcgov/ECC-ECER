@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 import { createOrUpdateDraftApplication, getApplications, submitDraftApplication } from "@/api/application";
 import type { Components } from "@/types/openapi";
 import type { ApplicationStage } from "@/types/wizard";
+import type { FileItem } from "@/components/UploadFileItem.vue";
+import type { ProfessionalDevelopmentExtended } from "@/components/inputs/EceProfessionalDevelopment.vue";
 
 import { useWizardStore } from "./wizard";
 export interface ApplicationState {
@@ -22,6 +24,7 @@ export const useApplicationStore = defineStore("application", {
       transcripts: [] as Components.Schemas.Transcript[],
       characterReferences: [] as Components.Schemas.CharacterReference[],
       workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
+      professionalDevelopments: [] as Components.Schemas.ProfessionalDevelopment[],
       applicationType: "New",
       createdOn: null,
     },
@@ -138,7 +141,17 @@ export const useApplicationStore = defineStore("application", {
       }
 
       if (wizardStore.wizardData.professionalDevelopments) {
-        this.draftApplication.professionalDevelopments = wizardStore.wizardData.professionalDevelopments;
+        //remove all newClone elements and add them to newFiles as ID's
+        let test = wizardStore.wizardData.professionalDevelopments.map((item: ProfessionalDevelopmentExtended) => {
+          for (let each of item.newFilesWithData as FileItem[]) {
+            item.newFiles?.push(each.fileId);
+          }
+          delete item["newFilesWithData"];
+
+          return item;
+        });
+
+        this.draftApplication.professionalDevelopments = test;
       }
     },
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {

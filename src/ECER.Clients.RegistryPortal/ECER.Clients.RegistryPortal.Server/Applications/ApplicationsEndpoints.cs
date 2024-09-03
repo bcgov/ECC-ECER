@@ -326,7 +326,7 @@ public record Application
   public string? ExplanationLetter { get; set; }
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
-public record ProfessionalDevelopment([Required] string CertificationNumber, [Required] DateTime CertificationExpiryDate, [Required] DateTime DateSigned, [Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] int NumberOfHours)
+public record ProfessionalDevelopment([Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] int NumberOfHours)
 {
   public string? Id { get; set; }
   public string? OrganizationContactInformation { get; set; }
@@ -389,11 +389,10 @@ public enum CertificationType
 
 public enum OneYearRenewalexplanations
 {
-  Icouldnotfindemploymenttocompletetherequiredhours,
-  Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa,
-  IliveandworkinacommunitywithoutothercertifiedECEs,
-  Iwasunabletoenterthecountryasexpected,
-  Iwasunabletoworkinthechildcarefieldforpersonalreasons,
+  IIleftthechildcarefieldforpersonalreasons,
+  Iwasunabletocompletetherequiredhoursofprofessionaldevelopment,
+  Iwasunabletofindemploymentinthechildcarefieldinmycommunity,
+  MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc,
   Other,
 }
 

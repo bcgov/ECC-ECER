@@ -431,9 +431,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   private ProfessionalDevelopment CreateProfessionalDevelopment()
   {
     return new ProfessionalDevelopment(
-        CertificationNumber: faker.Random.AlphaNumeric(10),
-        CertificationExpiryDate: faker.Date.Future(),
-        DateSigned: faker.Date.Recent(),
         CourseName: faker.Company.CatchPhrase(),
         OrganizationName: faker.Company.CompanyName(),
         StartDate: faker.Date.Past(),

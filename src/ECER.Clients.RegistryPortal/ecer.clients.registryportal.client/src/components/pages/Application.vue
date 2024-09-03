@@ -44,7 +44,9 @@
     </template>
     <template #actions>
       <v-container>
-        <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and continue</v-btn>
+        <v-btn v-if="showSaveButtons" :loading="loadingStore.isLoading('application_get')" rounded="lg" color="primary" @click="handleSaveAndContinue">
+          Save and continue
+        </v-btn>
         <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
           Submit Application
         </v-btn>
@@ -188,11 +190,21 @@ export default defineComponent({
             this.saveProfile();
             this.incrementWizard();
             break;
+          case "ProfessionalDevelopment":
+            //we need to grab an update wizardData with the appropriate professional development list
+            this.saveDraftAndAlertSuccess();
+            await this.applicationStore.fetchApplications();
+            this.wizardStore.setWizardData({
+              [this.wizardStore.wizardConfig.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id]:
+                this.applicationStore.draftApplication?.professionalDevelopments || [],
+            });
+
+            this.incrementWizard();
+            break;
           case "ExplanationLetter":
           case "Education":
           case "WorkReferences":
           case "CharacterReferences":
-          case "ProfessionalDevelopment":
           case "Review":
             this.saveDraftAndAlertSuccess();
             this.incrementWizard();

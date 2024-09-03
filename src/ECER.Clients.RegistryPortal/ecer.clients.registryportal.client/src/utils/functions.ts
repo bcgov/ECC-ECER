@@ -61,3 +61,44 @@ export function sortArray(a: any, b: any, key: string, exceptions: string[] = []
 
   return 0;
 }
+
+/**
+ * Removes an element from an array by its index.
+ *
+ * @param {any[]} array - The array to modify.
+ * @param {number} index - The index of the element to remove.
+ * @returns {any[]} - A new array with the element removed.
+ *
+ * @returns {any[]} Original array if the index is invalid.
+ */
+export function removeElementByIndex(array: any[], index: number) {
+  if (index >= 0 && index < array.length) {
+    let arrayCopy = array.slice();
+    arrayCopy.splice(index, 1);
+    return arrayCopy;
+  } else {
+    console.error("removeElementByIndex() :: invalid index element not removed");
+    return array;
+  }
+}
+
+/**
+ * Replaces an element in an array by its index.
+ *
+ * @param {any[]} array - The array to modify.
+ * @param {number} index - The index of the element to replace.
+ * @param {any} element - The new element to insert.
+ * @returns {any[]} - A new array with the element replaced.
+ *
+ * @returns {any[]} Original array if the index is invalid.
+ */
+export function replaceElementByIndex(array: any[], index: number, element: any) {
+  if (index >= 0 && index < array.length) {
+    let arrayCopy = array.slice();
+    arrayCopy.splice(index, 1, element);
+    return arrayCopy;
+  } else {
+    console.error("replaceElementByIndex() :: invalid index element not replaced");
+    return array;
+  }
+}
