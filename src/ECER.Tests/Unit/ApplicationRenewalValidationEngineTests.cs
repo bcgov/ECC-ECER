@@ -442,7 +442,6 @@ public class ApplicationRenewalValidationEngineTests
       Status = _faker.Random.Enum<ProfessionalDevelopmentStatusCode>(),
       DeletedFiles = new List<string> { _faker.System.FileName() },
       NewFiles = new List<string> { _faker.System.FileName() },
-      Files = new List<string> { _faker.System.FileName() }
     };
   }
 

@@ -157,7 +157,7 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
           .ForMember(d => d.NewFiles, opts => opts.Ignore())
           .ForMember(d => d.DeletedFiles, opts => opts.Ignore())
-          .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_ProfessionalDevelopmentId.Select(doc => doc.bcgov_DocumentUrlId).ToList()))
+          .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_ProfessionalDevelopmentId.ToList()))
     .ValidateMemberList(MemberList.Destination);
 
     CreateMap<WorkExperienceReference, ecer_WorkExperienceRef>(MemberList.Source)
@@ -185,6 +185,12 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
       .ValidateMemberList(MemberList.Destination);
 
+    CreateMap<bcgov_DocumentUrl, FileInfo>(MemberList.Destination)
+      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.bcgov_DocumentUrlId))
+      .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName))
+      .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
+      .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
+      .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension));
     CreateMap<CharacterReference, ecer_CharacterReference>(MemberList.Source)
       .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))

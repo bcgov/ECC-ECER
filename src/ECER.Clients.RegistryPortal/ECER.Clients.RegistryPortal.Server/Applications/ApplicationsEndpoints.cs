@@ -336,7 +336,7 @@ public record ProfessionalDevelopment([Required] string CourseName, [Required] s
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
-  public IEnumerable<string> Files { get; set; } = Array.Empty<string>();
+  public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
 }
 public record Transcript()
 {
@@ -468,7 +468,13 @@ public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, Applic
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
 }
-
+public record FileInfo(string Id)
+{
+  public string? Url { get; set; } = string.Empty;
+  public string? Extention { get; set; } = string.Empty;
+  public string? Name { get; set; } = string.Empty;
+  public string? Size { get; set; } = string.Empty;
+}
 public record TranscriptStatus(string Id, TranscriptStage Status, string EducationalInstitutionName);
 
 public record WorkExperienceReferenceStatus(string Id, WorkExperienceRefStage Status, string FirstName, string LastName, string EmailAddress)

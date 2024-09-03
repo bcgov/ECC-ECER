@@ -175,7 +175,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     applicationFromServer.ProfessionalDevelopments.ShouldHaveSingleItem();
     var professionalDev = applicationFromServer.ProfessionalDevelopments.First();
     professionalDev.Files.ShouldHaveSingleItem();
-    professionalDev.Files.First().ShouldContain(uploadedFileResponse.fileId);
+    professionalDev.Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
   }
 
   [Fact]

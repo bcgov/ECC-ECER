@@ -95,7 +95,15 @@ public record ProfessionalDevelopment(string? Id, string? CourseName, string? Or
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
-  public IEnumerable<string> Files { get; set; } = Array.Empty<string>();
+  public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
+}
+
+public record FileInfo(string Id)
+{
+  public string? Url { get; set; } = string.Empty;
+  public string? Extention { get; set; } = string.Empty;
+  public string? Name { get; set; } = string.Empty;
+  public string? Size { get; set; } = string.Empty;
 }
 public record CharacterReference(string? FirstName, string? LastName, string? PhoneNumber, string? EmailAddress)
 {
