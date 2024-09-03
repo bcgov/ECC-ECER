@@ -45,7 +45,7 @@ internal class CommunicationRepository : ICommunicationRepository
     // otherwise if parent id provided returning just child communications based on parent id
     else if (query.ByParentId != null)
     {
-      communications = communications.Where(item => item.ecer_ParentCommunicationid.Id == Guid.Parse(query.ByParentId) && item.ecer_IsRoot != true);
+      communications = communications.Where(item => item.ecer_ParentCommunicationid.Id == Guid.Parse(query.ByParentId));
       UnreadMessagesCount = communications.Where(item => item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && item.ecer_Acknowledged != true).Select(item => item.Id).ToList().Count;
     }
     // otherwise if its not a single query and parent id not provided returning all parent communications
@@ -62,7 +62,7 @@ internal class CommunicationRepository : ICommunicationRepository
     }
     else
     {
-      communications = communications.OrderByDescending(item => item.ecer_DateNotified);
+      communications = communications.OrderByDescending(item => item.ecer_LatestMessageNotifiedDate);
     }
 
     context.LoadProperties(communications, ecer_Communication.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication);
@@ -72,6 +72,7 @@ internal class CommunicationRepository : ICommunicationRepository
     {
       Communications = mapper.Map<IEnumerable<Communication>>(finalCommunications),
       TotalMessagesCount = query.PageNumber > 0 ? paginatedTotalCommunicationCount : finalCommunications.Count,
+      UnreadMessagesCount = UnreadMessagesCount
     };
   }
 
@@ -84,8 +85,7 @@ internal class CommunicationRepository : ICommunicationRepository
 
     if (communication == null) throw new InvalidOperationException($"Communication '{communicationId}' not found");
 
-    communication.ecer_DateAcknowledged = DateTime.Now;
-    communication.ecer_LatestMessageNotifiedDate = DateTime.Now;
+    communication.ecer_DateAcknowledged = DateTime.UtcNow;
     communication.ecer_Acknowledged = true;
     communication.ecer_AreAllRead = true;
     communication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
@@ -129,7 +129,9 @@ internal class CommunicationRepository : ICommunicationRepository
       ecerCommunication.ecer_InitiatedFrom = ecer_InitiatedFrom.PortalUser;
       ecerCommunication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
       ecerCommunication.ecer_NotifyRecipient = true;
-      ecerCommunication.ecer_DateNotified = DateTime.Now;
+      ecerCommunication.ecer_DateNotified = DateTime.UtcNow;
+      ecerCommunication.ecer_LatestMessageNotifiedDate = DateTime.UtcNow;
+
       context.AddObject(ecerCommunication);
       context.AddLink(registrant, ecer_Communication.Fields.ecer_contact_ecer_communication_122, ecerCommunication);
       var Referencingecer_communication_ParentCommunicationid = new Relationship(ecer_Communication.Fields.Referencingecer_communication_ParentCommunicationid)
