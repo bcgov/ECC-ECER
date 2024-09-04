@@ -1,8 +1,11 @@
+using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
@@ -11,11 +14,10 @@ namespace ECER.Clients.RegistryPortal.Server;
 
 #pragma warning disable RCS1102 // Make class static
 #pragma warning disable S1118 // Utility classes should not have public constructors
-#pragma warning disable S2139 // Exceptions should be either logged or rethrown but not both
 
-public class Program
+internal class Program
 {
-  private static async Task Main(string[] args)
+  private static async Task<int> Main(string[] args)
   {
     var builder = WebApplication.CreateBuilder(args);
 
@@ -28,9 +30,9 @@ public class Program
       var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
 
       builder.Services.AddMediatR(opts =>
-      {
-        opts.RegisterServicesFromAssemblies(assemblies);
-      });
+            {
+              opts.RegisterServicesFromAssemblies(assemblies);
+            });
       builder.Services.AddAutoMapper(cfg =>
       {
         cfg.ShouldUseConstructor = constructor => constructor.IsPublic;
@@ -40,6 +42,23 @@ public class Program
       builder.Services.AddSwaggerGen(opts =>
       {
         opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+        opts.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+        {
+          Type = SecuritySchemeType.Http,
+          Scheme = "bearer",
+          BearerFormat = "JWT",
+          Description = "JWT Authorization header using the Bearer scheme."
+        });
+        opts.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
+                },
+                []
+            }
+        });
         opts.UseOneOfForPolymorphism();
       });
 
@@ -63,7 +82,7 @@ public class Program
              {
                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[]
                {
-                  new Claim(RegistryPortalClaims.IdentityId, ctx.Principal!.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty)
+                new Claim(ClaimTypes.Name, ctx.Principal!.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty)
                 }));
                ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal!, ctx.HttpContext.RequestAborted);
              }
@@ -77,7 +96,7 @@ public class Program
           policy
             .AddAuthenticationSchemes("kc")
             .RequireClaim(RegistryPortalClaims.IdenityProvider)
-            .RequireClaim(RegistryPortalClaims.IdentityId)
+            .RequireClaim(ClaimTypes.Name)
             .RequireClaim(RegistryPortalClaims.UserId)
             .RequireAuthenticatedUser();
         })
@@ -85,7 +104,7 @@ public class Program
         {
           policy
             .AddAuthenticationSchemes("kc")
-            .RequireClaim(RegistryPortalClaims.IdentityId)
+            .RequireClaim(ClaimTypes.Name)
             .RequireClaim(ClaimTypes.NameIdentifier)
             .RequireAuthenticatedUser();
         });
@@ -109,7 +128,6 @@ public class Program
       app.UseResponseCompression();
       app.UseCsp();
       app.UseSecurityHeaders();
-      app.UseDefaultFiles();
       app.UseStaticFiles();
       app.MapFallbackToFile("index.html");
       app.UseCors();
@@ -119,37 +137,22 @@ public class Program
 
       app.UseSwagger();
       if (app.Environment.IsDevelopment())
-      {
         app.UseSwaggerUI();
-      }
 
       app.RegisterApiEndpoints();
 
       await app.RunAsync();
       logger.Information("Stopped");
+      return 0;
     }
     catch (Exception e)
     {
       logger.Fatal(e, "An unhandled exception occurred during bootstrapping");
-      throw;
+      return -1;
+    }
+    finally
+    {
+      await Log.CloseAndFlushAsync();
     }
   }
-}
-
-public class PaginationSettings
-{
-  public int DefaultPageSize { get; set; }
-  public int DefaultPageNumber { get; set; }
-  public string PageProperty { get; set; } = string.Empty;
-  public string PageSizeProperty { get; set; } = string.Empty;
-}
-
-public class UploaderSettings
-{
-  public string TempFolderName { get; set; } = string.Empty;
-}
-
-public class RecaptchaSettings
-{
-  public string SiteKey { get; set; } = string.Empty;
 }

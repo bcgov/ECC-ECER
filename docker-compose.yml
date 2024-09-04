@@ -1,0 +1,69 @@
+services:
+
+  # Registry Portal
+  registry-portal:
+    image: registry-portal
+    build:
+      context: ./src
+      dockerfile: registry-portal.Dockerfile
+    env_file:
+      - .env
+    environment:
+      OTEL_SERVICE_NAME: "ECER.Clients.RegistryPortal.Server"
+    expose:
+      - 8080
+    ports:
+      - "5121:8080"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.05'
+          memory: 128M
+    depends_on:
+      - redis
+      - otel-collector
+
+  # API
+  api:
+    image: api
+    build:
+      context: ./src
+      dockerfile: api.Dockerfile
+    env_file:
+      - .env
+    environment:
+      OTEL_SERVICE_NAME: "ECER.Clients.Api"
+    expose:
+      - 8080
+    ports:
+      - "5051:8080"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
+        reservations:
+          cpus: '0.05'
+          memory: 128M
+    depends_on:
+      - redis
+      - otel-collector
+
+  # Redis     
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  # OpenTelemetry Collector
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib
+    volumes:
+      - ./tools/compose/otel-config.yaml:/etc/otelcol-contrib/config.yaml
+    environment: []
+    ports:
+      - "4317:4317"
+      - "4318:4318"

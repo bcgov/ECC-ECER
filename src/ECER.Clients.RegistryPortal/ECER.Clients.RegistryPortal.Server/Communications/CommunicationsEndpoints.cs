@@ -1,11 +1,12 @@
-﻿using ECER.Managers.Registry.Contract.Communications;
+﻿using AutoMapper;
+using ECER.Clients.RegistryPortal.Server.Shared;
+using ECER.Managers.Registry.Contract.Communications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
-using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace ECER.Clients.RegistryPortal.Server.Communications;
 
