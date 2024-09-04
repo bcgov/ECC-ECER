@@ -1,4 +1,5 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
@@ -130,10 +131,13 @@ internal sealed partial class ApplicationRepository
 
       var sourceFolder = "tempfolder";
       var destinationFolder = "ecer_professionaldevelopment/" + professionalDevelopment.Id;
+      var file = await objectStorageProvider.GetAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), ct);
       await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
 
       var documenturl = new bcgov_DocumentUrl()
       {
+        bcgov_FileName = file!.FileName,
+        bcgov_FileSize = Infrastructure.Common.UtilityFunctions.HumanFileSize(file!.Content.Length),
         bcgov_DocumentUrlId = Guid.Parse(fileId),
         bcgov_Url = destinationFolder,
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
