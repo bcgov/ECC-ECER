@@ -180,7 +180,7 @@ export default defineComponent({
     async handleSaveAndContinue() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
       const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
-      const { valid, errors } = await formRef.validate();
+      const { valid } = await formRef.validate();
 
       if (!valid) {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");

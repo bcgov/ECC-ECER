@@ -21,17 +21,10 @@
           @delete-file="removeFile"
         ></UploadFileItem>
       </v-list>
-      <!-- change hide-details to false to debug error messages -->
       <v-input
-        :hide-details="true"
-        max-errors="20"
-        :rules="[
-          !fileErrors || 'fileErrors',
-          !filesInProgress || 'fileInProgress',
-          !fileTooLarge || 'fileTooLarge',
-          !allFilesTooLarge || 'allFilesTooLarge',
-          !duplicateFileName || 'duplicates found',
-        ]"
+        :model-value="userFiles"
+        :hide-details="'auto'"
+        :rules="[!fileErrors, !filesInProgress, !fileTooLarge, !allFilesTooLarge, !duplicateFileName, ...rules]"
       />
     </v-col>
   </v-row>
@@ -40,7 +33,7 @@
 <script lang="ts">
 import type { AxiosProgressEvent } from "axios";
 import { v4 as uuidv4 } from "uuid";
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 
 import { deleteFile, uploadFile } from "@/api/file";
 import Alert from "@/components/Alert.vue";
@@ -58,6 +51,18 @@ interface FileUploaderData {
 export default defineComponent({
   name: "FileUploader",
   components: { UploadFileItem, Alert },
+  props: {
+    userFiles: {
+      type: Array as PropType<FileItem[]>,
+      required: false,
+      default: () => [],
+    },
+    rules: {
+      type: Array as PropType<any[]>,
+      required: false,
+      default: () => [],
+    },
+  },
   emits: ["update:files", "delete:file"],
   async setup() {
     const alertStore = useAlertStore();
@@ -72,12 +77,6 @@ export default defineComponent({
       maxNumberOfFiles,
     };
   },
-  props: {
-    userFiles: {
-      type: Object as () => FileItem[],
-      required: true,
-    },
-  },
   data(): FileUploaderData {
     return {
       selectedFiles: [],
@@ -85,9 +84,6 @@ export default defineComponent({
       errorBannerMessage: "",
       firstLoad: true,
     };
-  },
-  mounted() {
-    this.selectedFiles = [...this.userFiles];
   },
   computed: {
     fileErrors() {
@@ -130,6 +126,9 @@ export default defineComponent({
       deep: true,
     },
   },
+  mounted() {
+    this.selectedFiles = [...this.userFiles];
+  },
   methods: {
     handleFileUpload(event: Event) {
       const target = event.target as HTMLInputElement;
@@ -149,7 +148,15 @@ export default defineComponent({
             fileErrors.push("A file with the same name already exists.");
           }
           const fileId = uuidv4(); // Generate a unique file ID using uuid
-          const selectedFile = { file, progress: 0, fileId, fileErrors };
+          const selectedFile: FileItem = {
+            file,
+            fileSize: file.size,
+            fileName: file.name,
+            progress: 0,
+            fileId,
+            fileErrors,
+            storageFolder: "temporary",
+          };
           this.selectedFiles.push(selectedFile);
           if (this.selectedFiles.length > 1) {
             const totalSize = this.selectedFiles.reduce((acc, sf) => acc + sf.file.size, 0);
@@ -207,10 +214,10 @@ export default defineComponent({
     async removeFile(selectedFile: FileItem) {
       try {
         this.selectedFiles = this.selectedFiles.filter((f: FileItem) => f.fileId !== selectedFile.fileId);
-        if (!(selectedFile.fileErrors.length > 0)) {
+        if (!(selectedFile.fileErrors.length > 0) && selectedFile.storageFolder === "temporary") {
           await deleteFile(selectedFile.fileId);
-          this.$emit("delete:file", selectedFile);
         }
+        this.$emit("delete:file", selectedFile);
         this.showErrorBanner = false;
       } catch (error) {
         this.alertStore.setFailureAlert("An error occurred during file deletion.");

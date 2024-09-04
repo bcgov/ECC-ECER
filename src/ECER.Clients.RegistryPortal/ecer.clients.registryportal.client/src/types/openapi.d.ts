@@ -237,6 +237,13 @@ declare namespace Components {
     }
     export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
     export type EducationRecognition = "Recognized" | "NotRecognized";
+    export interface FileInfo {
+      id?: string | null;
+      url?: string | null;
+      extention?: string | null;
+      name?: string | null;
+      size?: string | null;
+    }
     /**
      * file Response
      */
@@ -344,7 +351,7 @@ declare namespace Components {
       status?: ProfessionalDevelopmentStatusCode;
       deletedFiles?: string[] | null;
       newFiles?: string[] | null;
-      files?: string[] | null;
+      files?: FileInfo[] | null;
     }
     export type ProfessionalDevelopmentStatusCode =
       | "ApplicationSubmitted"

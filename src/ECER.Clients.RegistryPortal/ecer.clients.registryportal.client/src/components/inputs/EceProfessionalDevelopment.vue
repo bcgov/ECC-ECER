@@ -3,13 +3,18 @@
   <div v-if="mode === 'add'">
     <v-row v-if="mode === 'add'">
       <v-col>
-        <h3>{{ `${id ? "Edit" : "Add"} course or workshop` }}</h3>
+        <h3>{{ `${professionalDevelopmentFormMode === "add" ? "Add" : "Edit"} course or workshop` }}</h3>
         <br />
         <p>The course or workshop must:</p>
         <br />
         <ul class="ml-10">
           <li>Be relevant to the field of early childhood education</li>
-          <li>Have been completed within the term of your current certificate (Between TODO DATES TO BE CALCULATED HERE)</li>
+          <li v-if="certificationStore.latestCertificateStatus === 'Active'">
+            {{
+              `Have been completed within the term of your current certificate (Between ${formatDate(certificationStore?.latestCertification?.effectiveDate || "", "LLLL d, yyyy")} to ${formatDate(certificationStore?.latestCertification?.expiryDate || "", "LLLL d, yyyy")})`
+            }}
+          </li>
+          <li v-else-if="certificationStore.latestCertificateStatus === 'Expired'">Have been completed within the last 5 years</li>
         </ul>
       </v-col>
     </v-row>
@@ -169,7 +174,12 @@
       </v-row>
       <v-row v-if="showFileInput">
         <v-col>
-          <FileUploader :userFiles="newFilesWithData" @update:files="handleFileUpdate" @delete:file="handleFileDelete" />
+          <FileUploader
+            :user-files="generateUserFileArray"
+            :rules="[Rules.atLeastOneOptionRequired('Upload a certificate or document that shows you completed the course or workshop')]"
+            @update:files="handleFileUpdate"
+            @delete:file="handleFileDelete"
+          />
         </v-col>
       </v-row>
     </v-form>
@@ -193,13 +203,15 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
-        <ProgressBar :hours-required="hoursRequired" :total-hours="totalHours"></ProgressBar>
+      <v-col v-if="totalHours < hoursRequired">
+        <Alert type="error">
+          <p class="small">You must enter {{ hoursRequired }} hours of professional development to continue.</p>
+        </Alert>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        {{ modelValue }}
+        <ProgressBar :hours-required="hoursRequired" :total-hours="totalHours"></ProgressBar>
       </v-col>
     </v-row>
     <v-row>
@@ -207,12 +219,13 @@
         <ProfessionalDevelopmentCard
           v-for="(professionalDevelopment, index) in modelValue"
           :key="index"
-          :professionalDevelopment="professionalDevelopment"
+          :professional-development="professionalDevelopment"
           @edit="handleEdit"
           @delete="(professionalDevelopment) => handleDelete(professionalDevelopment, index)"
         />
       </v-col>
-      <v-col v-else><p></p></v-col>
+      <!-- empty list -->
+      <v-col v-else><p>No courses or workshops added yet.</p></v-col>
     </v-row>
     <v-row>
       <v-col>
@@ -226,12 +239,16 @@
         >
           Add course or workshop
         </v-btn>
+        <!-- hours required met -->
+        <p v-else>
+          No additional professional development may be added. You provided the required 40 hours. After you submit your application, the registry will review
+          and verify the submitted professional. If needed, the registry will contact you for additional information.
+        </p>
       </v-col>
     </v-row>
   </div>
 
-  <!-- TODO -->
-  <!-- <v-input auto-hide="auto" :model-value="modelValue" :rules="[totalHours >= 500]"></v-input> -->
+  <v-input auto-hide="true" :model-value="modelValue" :rules="[totalHours >= hoursRequired]"></v-input>
 </template>
 
 <script lang="ts">
@@ -243,26 +260,28 @@ import Alert from "@/components/Alert.vue";
 import type { FileItem } from "@/components/UploadFileItem.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
+import { useCertificationStore } from "@/store/certification";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
+import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
+import { parseHumanFileSize, removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
 
 import FileUploader from "../FileUploader.vue";
-import ProgressBar from "../ProgressBar.vue";
 import ProfessionalDevelopmentCard from "../ProfessionalDevelopmentCard.vue";
-import { formatDate } from "@/utils/format";
-import { removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
+import ProgressBar from "../ProgressBar.vue";
 
 interface ProfessionalDevelopmentData {
   selection: ("phone" | "email" | "file")[];
   areAttachedFilesValid: boolean;
   isFileUploadInProgress: boolean;
   hoursRequired: number;
+  professionalDevelopmentFormMode: "add" | "edit";
 }
 
 export interface ProfessionalDevelopmentExtended extends Components.Schemas.ProfessionalDevelopment {
-  newFilesWithData: FileItem[];
+  newFilesWithData?: FileItem[];
 }
 
 export default defineComponent({
@@ -274,7 +293,7 @@ export default defineComponent({
       required: true,
     },
     modelValue: {
-      type: Object as () => Components.Schemas.ProfessionalDevelopment[],
+      type: Object as () => ProfessionalDevelopmentExtended[],
       required: true,
     },
   },
@@ -285,11 +304,14 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const wizardStore = useWizardStore();
     const applicationStore = useApplicationStore();
+    const certificationStore = useCertificationStore();
 
     return {
       alertStore,
       wizardStore,
       applicationStore,
+      certificationStore,
+      formatDate,
       Rules,
     };
   },
@@ -316,10 +338,8 @@ export default defineComponent({
       isFileUploadInProgress: false,
       areAttachedFilesValid: true,
       hoursRequired: 40,
+      professionalDevelopmentFormMode: "add",
     };
-  },
-  unmounted() {
-    this.mode = "list";
   },
   computed: {
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
@@ -343,6 +363,36 @@ export default defineComponent({
     showFileInput() {
       return this.selection.includes("file");
     },
+    generateUserFileArray() {
+      const userFileList: FileItem[] = [];
+
+      if (this.files) {
+        for (let file of this.files) {
+          const newFileItem: FileItem = {
+            fileId: file.id!,
+            fileErrors: [],
+            fileSize: parseHumanFileSize(file.size!),
+            fileName: file.name!,
+            progress: 101,
+            file: new File([], file.name!),
+            storageFolder: "permanent",
+          };
+
+          userFileList.push(newFileItem);
+        }
+      }
+
+      if (this.newFilesWithData) {
+        for (let each of this.newFilesWithData) {
+          userFileList.push(each);
+        }
+      }
+
+      return userFileList;
+    },
+  },
+  unmounted() {
+    this.mode = "list";
   },
   mounted() {
     this.mode = "list";
@@ -359,6 +409,8 @@ export default defineComponent({
       // Reset the form fields
       this.resetFormData();
       this.mode = "add";
+      this.professionalDevelopmentFormMode = "add";
+      window.scroll(0, 0);
     },
     handleEdit(professionalDevelopment: ProfessionalDevelopmentExtended) {
       // Set the form fields to component data
@@ -375,7 +427,7 @@ export default defineComponent({
       this.files = professionalDevelopment.files;
       this.newFiles = professionalDevelopment.newFiles;
       this.deletedFiles = professionalDevelopment.deletedFiles;
-      this.newFilesWithData = professionalDevelopment.newFilesWithData;
+      this.newFilesWithData = professionalDevelopment.newFilesWithData || [];
       this.selection = [];
       //selection
       if (professionalDevelopment.organizationContactInformation) {
@@ -384,15 +436,16 @@ export default defineComponent({
       if (professionalDevelopment.organizationEmailAddress) {
         this.selection.push("email");
       }
-      if (
-        (professionalDevelopment?.files?.length && professionalDevelopment?.files?.length > 0) ||
-        (professionalDevelopment?.newFilesWithData?.length && professionalDevelopment.newFilesWithData.length > 0)
-      ) {
-        this.selection.push("file");
-      }
+      // if (
+      //   (professionalDevelopment?.files?.length && professionalDevelopment?.files?.length > 0) ||
+      //   (professionalDevelopment?.newFilesWithData?.length && professionalDevelopment.newFilesWithData.length > 0)
+      // ) {
+      //   this.selection.push("file");
+      // }
+      this.selection.push("file");
 
-      // Change mode to add
       this.mode = "add";
+      this.professionalDevelopmentFormMode = "edit";
     },
     handleDelete(_professionalDevelopment: ProfessionalDevelopmentExtended, index: number) {
       this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
@@ -420,14 +473,12 @@ export default defineComponent({
         };
         let updatedModelValue = this.modelValue.slice(); //create a copy of the array
 
-        if (newProfessionalDevelopment.id) {
-          //we are editing if id exists
+        if (this.professionalDevelopmentFormMode === "edit") {
           const indexOfEditedProfessionalDevelopment = updatedModelValue.findIndex(
             (professionalDevelopment) => professionalDevelopment.id === newProfessionalDevelopment.id,
           );
           updatedModelValue = replaceElementByIndex(updatedModelValue, indexOfEditedProfessionalDevelopment, newProfessionalDevelopment);
-        } else {
-          //otherwise we are adding
+        } else if (this.professionalDevelopmentFormMode === "add") {
           updatedModelValue.push(newProfessionalDevelopment);
         }
 
@@ -464,15 +515,21 @@ export default defineComponent({
           }
 
           // If file is valid and fully uploaded, add to attachments
-          if (this.areAttachedFilesValid && !this.isFileUploadInProgress) {
+          if (this.areAttachedFilesValid && !this.isFileUploadInProgress && file.storageFolder === "temporary") {
             this.newFilesWithData.push(file);
           }
         }
       }
     },
     handleFileDelete(fileItem: FileItem) {
-      console.log("deleted");
-      console.log(fileItem);
+      if (fileItem.storageFolder === "permanent") {
+        //we need to add it to the list of deleted files for the backend to remove.
+        this.deletedFiles?.push(fileItem.fileId);
+        let index = this.files?.findIndex((file) => file.id === fileItem.fileId);
+        if (index) {
+          this.files = removeElementByIndex(this.modelValue, index);
+        }
+      }
     },
     resetFormData() {
       //professional development
@@ -492,6 +549,7 @@ export default defineComponent({
       this.newFilesWithData = [];
       //selection
       this.selection = [];
+      this.professionalDevelopmentFormMode = "add";
     },
     selectionChanged() {
       if (!this.selection.includes("phone") && !this.selection.includes("email")) {
@@ -508,7 +566,10 @@ export default defineComponent({
       }
 
       if (!this.selection.includes("file")) {
-        console.log("TODO how to handle a mix of new files and old files");
+        //if user unchecks file we remove all files. All previously saved files need to be put onto the deleted files list
+        this.deletedFiles = this.files?.map((file) => file.id || "") || [];
+        this.files = [];
+        this.newFilesWithData = [];
       }
     },
   },

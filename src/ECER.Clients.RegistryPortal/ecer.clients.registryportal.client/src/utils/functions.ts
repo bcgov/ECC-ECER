@@ -39,6 +39,44 @@ export function humanFileSize(bytes: number, decimals = 2) {
 }
 
 /**
+ * Converts a human-readable file size string back to bytes.
+ * @param {string} humanSize - The human-readable file size (e.g., "1.45 MB").
+ * @returns {number} - The size in bytes.
+ */
+export function parseHumanFileSize(humanSize: string): number {
+  // Trim the input and split into size and unit
+  const sizePattern = /^(\d+(\.\d+)?)\s?([a-zA-Z]+)$/;
+  const match = humanSize.trim().match(sizePattern);
+
+  if (!match) {
+    throw new Error("Invalid file size format");
+  }
+
+  const size = parseFloat(match[1]); // Convert the number part to a float
+  const unit = match[3].toUpperCase(); // Get the unit part and convert to uppercase for consistency
+
+  // Define units and their corresponding multiplier in bytes
+  const units: { [key: string]: number } = {
+    B: 1,
+    KB: 1024,
+    MB: 1024 ** 2,
+    GB: 1024 ** 3,
+    TB: 1024 ** 4,
+    PB: 1024 ** 5,
+    EB: 1024 ** 6,
+    ZB: 1024 ** 7,
+    YB: 1024 ** 8,
+  };
+
+  const multiplier = units[unit];
+  if (multiplier === undefined) {
+    throw new Error("Invalid file size unit");
+  }
+
+  return size * multiplier;
+}
+
+/**
  * Sorts an array of objects by a specified key, while keeping exceptions at the end.
  * @param {Array<Object>} a - The first object to compare.
  * @param {Array<Object>} b - The second object to compare.
@@ -73,7 +111,7 @@ export function sortArray(a: any, b: any, key: string, exceptions: string[] = []
  */
 export function removeElementByIndex(array: any[], index: number) {
   if (index >= 0 && index < array.length) {
-    let arrayCopy = array.slice();
+    const arrayCopy = array.slice();
     arrayCopy.splice(index, 1);
     return arrayCopy;
   } else {
@@ -94,7 +132,7 @@ export function removeElementByIndex(array: any[], index: number) {
  */
 export function replaceElementByIndex(array: any[], index: number, element: any) {
   if (index >= 0 && index < array.length) {
-    let arrayCopy = array.slice();
+    const arrayCopy = array.slice();
     arrayCopy.splice(index, 1, element);
     return arrayCopy;
   } else {

@@ -24,7 +24,7 @@ const applicationWizard: Wizard = {
     },
     education: {
       stage: "ProfessionalDevelopment",
-      title: "Professional Development",
+      title: "Professional development",
       form: professionalDevelopmentForm,
       key: "item.3",
     },

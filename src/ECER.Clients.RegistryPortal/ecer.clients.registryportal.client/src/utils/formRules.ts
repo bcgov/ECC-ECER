@@ -161,11 +161,6 @@ const endDateRule = (effectiveDate: string, expiryDate: string, message = "End d
  */
 const conditionalWrapper = (condition: boolean, rule: any) => {
   return condition ? rule : true;
-  if (condition) {
-    return rule;
-  } else {
-    return true;
-  }
 };
 
 /**
