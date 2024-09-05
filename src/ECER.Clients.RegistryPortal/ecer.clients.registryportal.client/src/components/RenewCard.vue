@@ -56,7 +56,7 @@ export default defineComponent({
       return this.todaysDate >= this.latestRenewalDate;
     },
     canRenew() {
-      return !this.certificationStore.hasMultipleEceOneYearCertifications && !this.expiredOverFiveYears;
+      return !this.certificationStore.hasMultipleEceOneYearCertifications && !(this.certificationStore.latestIsEceOneYear && this.expiredOverFiveYears);
     },
     title() {
       return this.canRenew ? "Renew" : "Renew unavailable";
