@@ -108,8 +108,8 @@
           <v-text-field
             v-model="endDate"
             :rules="[
-              Rules.required('Enter the start date of your course or workshop'),
-              Rules.dateBeforeRule(startDate || ''),
+              Rules.required('Enter the end date of your course or workshop'),
+              Rules.dateBeforeRule(endDate || '', startDate || ''),
               Rules.dateBetweenRule(
                 certificationStore?.latestCertification?.effectiveDate || '',
                 certificationStore?.latestCertification?.expiryDate || '',
@@ -151,7 +151,6 @@
       </v-row>
       <v-row>
         <v-col>
-          {{ selection }}
           <v-checkbox
             v-model="selection"
             label="Phone number for instructor of course or workshop"
