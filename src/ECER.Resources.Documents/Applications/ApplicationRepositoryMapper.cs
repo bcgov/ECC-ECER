@@ -155,6 +155,7 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.InstructorName, opts => opts.MapFrom(s => s.ecer_InstructorName))
           .ForMember(d => d.NumberOfHours, opts => opts.MapFrom(s => s.ecer_NumberofHours))
           .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+          .ForMember(d => d.CourseorWorkshopLink, opts => opts.MapFrom(s => s.ecer_CourseorWorkshopLink))
           .ForMember(d => d.NewFiles, opts => opts.Ignore())
           .ForMember(d => d.DeletedFiles, opts => opts.Ignore())
           .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_ProfessionalDevelopmentId.ToList()))
