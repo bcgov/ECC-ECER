@@ -1,23 +1,57 @@
 <template>
   <PageContainer>
-    <FormContainer>
+
       <div class="d-flex flex-column ga-8">
         <div>
-          <h1>Profile information</h1>
-          <p class="small">The ECE Registry will notify you of important updates regarding your certification</p>
+          <h1>Create your My ECE Registry account</h1>
+          <p class="small mt-2">Welcome {{ oidcUserInfo.firstName!.replace(/^(.*?)(\s.*)?$/, "$1") }}.</p>
+        </div>
+        <div>
+          <ECEHeader title="Information from your BC Services Card account" />
+          <p class="small mt-2">We automatically use the following information from your BC Services Card account for your MY ECE Registry account.</p>
+          <p class="small mt-5">Legal name</p>
+          <p class="small mt-2">{{ oidcUserInfo.firstName }} {{ oidcUserInfo.lastName }}</p>
+
+          <p class="small mt-5">Address</p>
+          <p class="small mt-2">{{ oidcUserInfo.address.street_address }}</p>
+          <p class="small">{{ oidcUserInfo.address.locality }}, {{ oidcUserInfo.address.region }} {{ oidcUserInfo.address.postal_code }}</p>
+          <p class="small">{{ oidcUserInfo.address.country }}</p>
         </div>
         <v-form ref="form" validate-on="input">
           <div class="d-flex flex-column ga-2">
-            <v-text-field v-model="email" label="Email" variant="outlined" color="primary" type="email" :rules="emailRules"></v-text-field>
+            <ECEHeader title="Contact Information" />
+            <p class="small mt-2">We'll use this to contact you about your account and updates about your application or certificate.</p>
+            <v-text-field v-model="email" class="mt-5 max-width-500" label="Email" variant="outlined" color="primary" type="email" :rules="emailRules"></v-text-field>
             <v-text-field
               v-model="phoneNumber"
               label="Phone number"
               variant="outlined"
               color="primary"
+              class="max-width-300"
               :rules="phoneRules"
               @keypress="isNumber($event)"
             ></v-text-field>
-            <v-checkbox v-model="hasAgreed" label="" color="primary" :rules="hasAgreedRules">
+            <ECEHeader title="Your ECE registration" />
+            <p class="small mt-2">
+              To add an existing ECE certificate to your account to manage it online, you must enter the number now to link it to your account.
+            </p>
+            <p class="small mt-5">Do you have, or ever had, an ECE certificate in British Columbia?</p>
+            <v-radio-group v-model="eceCertificateStatus"   :rules="radioRules">
+              <v-radio label="Yes" :value="true"></v-radio>
+              <v-radio label="No" :value="false"></v-radio>
+            </v-radio-group>
+
+            <v-text-field
+              v-if="eceCertificateStatus === true"
+              v-model="eceRegistrationNumber"
+              label="Your ECE Registration Number"
+              variant="outlined"
+              color="primary"
+              class="max-width-300"
+              :rules="eceRegistrationRules"
+              @keypress="isNumber($event)"
+            />
+            <v-checkbox v-model="hasAgreed" class="mt-2" label="" color="primary" :rules="hasAgreedRules">
               <template #label>
                 <div>
                   I have read and accept the
@@ -32,14 +66,13 @@
           <v-btn rounded="lg" variant="outlined" @click="logout">Cancel</v-btn>
         </v-row>
       </div>
-    </FormContainer>
   </PageContainer>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import type { VForm } from "vuetify/components";
-
+import ECEHeader from "@/components/ECEHeader.vue";
 import { postUserInfo } from "@/api/user";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
@@ -51,11 +84,10 @@ import PageContainer from "../PageContainer.vue";
 
 export default defineComponent({
   name: "NewUser",
-  components: { FormContainer, PageContainer },
+  components: { FormContainer, PageContainer, ECEHeader },
   setup: async () => {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
-
     const oidcUserInfo = await oidcStore.oidcUserInfo();
 
     const phoneNumber = ref(oidcUserInfo.phone);
@@ -66,31 +98,57 @@ export default defineComponent({
 
   data: () => ({
     hasAgreed: false,
+    eceRegistrationNumber: "",
+    eceCertificateStatus: null as boolean | null,
     hasAgreedRules: [(v: boolean) => !!v || "You must read and accept the Terms of Use"],
     Rules,
   }),
+
   computed: {
     emailRules() {
       return [this.customEmailRule(), this.Rules.required()];
     },
     phoneRules() {
-      return [this.customPhoneRule(), this.Rules.required()];
+      return [...this.customPhoneRule(), this.Rules.required()];
     },
+    eceRegistrationRules() {
+    return [
+      (v: string) => {
+        if (this.eceCertificateStatus === true) {
+          return !!v || "Enter your ECE registration number"; // Required if "Yes" selected
+        }
+        return true; // No validation if "No" selected
+      },
+      (v: string) => {
+        if (this.eceCertificateStatus === true) {
+          return /^\d+$/.test(v) || "Your ECE registration number must be a number"; // Must be a number if "Yes" is selected
+        }
+        return true; // No validation if "No" selected
+      }
+    ];
+  },
+  radioRules() {
+    return [
+      (v: boolean | null) => v !== null || "Choose an option",  // Radio button required
+    ];
+  }
   },
   methods: {
     customEmailRule() {
       return this.Rules.email("Enter your email in the format 'name@email.com'");
     },
     customPhoneRule() {
-      return this.Rules.phoneNumber("Enter your primary 10-digit phone number");
+      return [
+        (v: string) => !!v || "Enter your 10-digit phone number", // Required validation
+        (v: string) => /^\d{10}$/.test(v) || "Enter your 10-digit phone number", // Pattern validation
+      ];
     },
-
     isNumber,
     async submit() {
-      const { valid } = await (this.$refs.form as VForm).validate();
+      let { valid } = await (this.$refs.form as VForm).validate();
+
       if (valid) {
         const userCreated: boolean = await postUserInfo({ ...this.oidcUserInfo, phone: this.phoneNumber });
-
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {
           this.userStore.setUserInfo({
@@ -110,3 +168,11 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped> 
+.max-width-500{
+  max-width: 500px;
+}
+.max-width-300{
+  max-width: 300px;
+}
+</style>
