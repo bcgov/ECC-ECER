@@ -76,11 +76,30 @@
         <v-col cols="2">
           <v-text-field
             v-model="startDate"
-            :rules="[Rules.required('Enter the start date of your course or workshop')]"
+            :rules="[
+              Rules.required('Enter the start date of your course or workshop'),
+              Rules.conditionalWrapper(
+                certificationStore.latestCertificateStatus === 'Active',
+                Rules.dateBetweenRule(
+                  certificationStore?.latestCertification?.effectiveDate || '',
+                  certificationStore?.latestCertification?.expiryDate || '',
+                  'The start date of your course or workshop must be within the term of your current certificate',
+                ),
+              ),
+              Rules.conditionalWrapper(
+                certificationStore.latestCertificateStatus === 'Expired',
+                Rules.dateRuleRange(
+                  applicationStore.draftApplication.createdOn || '',
+                  5,
+                  'The start date of your course or workshop must be within the last five years',
+                ),
+              ),
+            ]"
             label="Start date"
             type="date"
             variant="outlined"
             color="primary"
+            :max="today"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -88,11 +107,36 @@
         <v-col cols="2">
           <v-text-field
             v-model="endDate"
-            :rules="[Rules.required('Enter the start date of your course or workshop')]"
+            :rules="[
+              Rules.required('Enter the start date of your course or workshop'),
+              Rules.dateBeforeRule(startDate || ''),
+              Rules.dateBetweenRule(
+                certificationStore?.latestCertification?.effectiveDate || '',
+                certificationStore?.latestCertification?.expiryDate || '',
+                'The end date of your course or workshop must be within the term of your current certificate',
+              ),
+              Rules.conditionalWrapper(
+                certificationStore.latestCertificateStatus === 'Active',
+                Rules.dateBetweenRule(
+                  certificationStore?.latestCertification?.effectiveDate || '',
+                  certificationStore?.latestCertification?.expiryDate || '',
+                  'The end date of your course or workshop must be within the term of your current certificate',
+                ),
+              ),
+              Rules.conditionalWrapper(
+                certificationStore.latestCertificateStatus === 'Expired',
+                Rules.dateRuleRange(
+                  applicationStore.draftApplication.createdOn || '',
+                  5,
+                  'The end date of your course or workshop must be within the last five years',
+                ),
+              ),
+            ]"
             label="End date"
             type="date"
             variant="outlined"
             color="primary"
+            :max="today"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -253,6 +297,7 @@
 </template>
 
 <script lang="ts">
+import { DateTime } from "luxon";
 import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 import type { VForm } from "vuetify/components";
@@ -363,6 +408,9 @@ export default defineComponent({
     },
     showFileInput() {
       return this.selection.includes("file");
+    },
+    today() {
+      return formatDate(DateTime.now().toString());
     },
     generateUserFileArray() {
       const userFileList: FileItem[] = [];

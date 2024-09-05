@@ -5,6 +5,7 @@ import type { ProfessionalDevelopmentExtended } from "@/components/inputs/EcePro
 import type { FileItem } from "@/components/UploadFileItem.vue";
 import type { Components } from "@/types/openapi";
 import type { ApplicationStage } from "@/types/wizard";
+import { humanFileSize } from "@/utils/functions";
 
 import { useWizardStore } from "./wizard";
 export interface ApplicationState {
@@ -143,10 +144,21 @@ export const useApplicationStore = defineStore("application", {
       if (wizardStore.wizardData.professionalDevelopments) {
         //remove all newFilesWithData elements and add them to newFiles as ID's
         const professionalDevelopmentCleaned = wizardStore.wizardData.professionalDevelopments.map((item: ProfessionalDevelopmentExtended) => {
-          for (let each of item.newFilesWithData as FileItem[]) {
-            item.newFiles?.push(each.fileId);
+          if (item?.newFilesWithData) {
+            for (const each of item?.newFilesWithData as FileItem[]) {
+              item.newFiles?.push(each.fileId);
+
+              //we need to change wizardData to match what's been done on the server (added files)
+              const addedFile: Components.Schemas.FileInfo = {
+                id: each.fileId,
+                size: humanFileSize(each.fileSize),
+                name: each.fileName,
+              };
+
+              item.files?.push(addedFile);
+            }
+            delete item["newFilesWithData"];
           }
-          delete item["newFilesWithData"];
 
           return item;
         });

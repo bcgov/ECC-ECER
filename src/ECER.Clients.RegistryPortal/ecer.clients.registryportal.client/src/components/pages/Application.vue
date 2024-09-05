@@ -57,6 +57,7 @@
 
 <script lang="ts">
 import { DateTime } from "luxon";
+import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 
 import { getProfile, putProfile } from "@/api/profile";
@@ -78,6 +79,8 @@ import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import type { ApplicationStage, Wizard as WizardType } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
+
+import type { ProfessionalDevelopmentExtended } from "../inputs/EceProfessionalDevelopment.vue";
 
 export default defineComponent({
   name: "Application",
@@ -157,6 +160,7 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     showSaveButtons() {
       return (
         this.wizardStore.currentStepStage !== "Review" &&
@@ -168,6 +172,9 @@ export default defineComponent({
     showSubmitApplication() {
       return this.wizardStore.currentStepStage === "Review";
     },
+  },
+  mounted() {
+    this.mode = "list";
   },
   methods: {
     async handleSubmit() {
@@ -191,15 +198,16 @@ export default defineComponent({
             this.incrementWizard();
             break;
           case "ProfessionalDevelopment":
-            //we need to grab an update wizardData with the appropriate professional development list
-            this.saveDraftAndAlertSuccess();
-            await this.applicationStore.fetchApplications();
-            this.wizardStore.setWizardData({
-              [this.wizardStore.wizardConfig.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id]:
-                this.applicationStore.draftApplication?.professionalDevelopments || [],
-            });
-
+            await this.saveDraftAndAlertSuccess();
+            //we need to mimic professional development saved to the server for future calls after this step. This prevents us having to fetch and rehydrate the draft application
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id].forEach(
+              (professionalDevelopment: ProfessionalDevelopmentExtended) => {
+                professionalDevelopment.newFiles = [];
+                professionalDevelopment.deletedFiles = [];
+              },
+            );
             this.incrementWizard();
+
             break;
           case "ExplanationLetter":
           case "Education":
