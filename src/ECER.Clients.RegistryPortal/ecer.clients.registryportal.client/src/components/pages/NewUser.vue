@@ -27,7 +27,7 @@
             variant="outlined"
             color="primary"
             type="email"
-            :rules="emailRules"
+            :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
           ></v-text-field>
           <v-text-field
             v-model="phoneNumber"
@@ -112,9 +112,6 @@ export default defineComponent({
   }),
 
   computed: {
-    emailRules() {
-      return [this.customEmailRule(), this.Rules.required()];
-    },
     phoneRules() {
       return [...this.customPhoneRule(), this.Rules.required()];
     },
@@ -123,12 +120,6 @@ export default defineComponent({
         (v: string) => {
           if (this.eceCertificateStatus === true) {
             return !!v || "Enter your ECE registration number"; // Required if "Yes" selected
-          }
-          return true; // No validation if "No" selected
-        },
-        (v: string) => {
-          if (this.eceCertificateStatus === true) {
-            return /^\d+$/.test(v) || "Your ECE registration number must be a number"; // Must be a number if "Yes" is selected
           }
           return true; // No validation if "No" selected
         },
@@ -141,9 +132,6 @@ export default defineComponent({
     },
   },
   methods: {
-    customEmailRule() {
-      return this.Rules.email("Enter your email in the format 'name@email.com'");
-    },
     customPhoneRule() {
       return [
         (v: string) => !!v || "Enter your 10-digit phone number", // Required validation
