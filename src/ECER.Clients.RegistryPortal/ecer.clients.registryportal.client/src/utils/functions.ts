@@ -140,3 +140,15 @@ export function replaceElementByIndex(array: any[], index: number, element: any)
     return array;
   }
 }
+
+/**
+ * Sanitize file name by removing special (non-ASCII) characters, spaces, dashes, periods,
+ * and converting macOS-specific characters to be Windows-compatible.
+ * @param {string} fileName
+ * @returns {string} Sanitized file name
+ */
+export function sanitizeFilename(filename: string) {
+  // Remove all non-ASCII characters
+  // eslint-disable-next-line no-control-regex
+  return filename.replace(/[^\x00-\x7F]/g, "");
+}

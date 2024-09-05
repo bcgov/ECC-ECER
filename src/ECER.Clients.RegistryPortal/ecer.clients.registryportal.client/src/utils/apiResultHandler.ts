@@ -60,7 +60,6 @@ class ApiResultHandler {
   // Method to show error messages
   private showErrorMessage(message: any, suppressErrorToast: boolean) {
     const alertStore = useAlertStore();
-    console.log(suppressErrorToast);
     if (!suppressErrorToast) alertStore.setFailureAlert(message);
   }
 
