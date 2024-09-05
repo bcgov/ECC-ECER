@@ -86,11 +86,12 @@ import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
+
 import PageContainer from "../PageContainer.vue";
 
 export default defineComponent({
   name: "NewUser",
-  components: {PageContainer, ECEHeader },
+  components: { PageContainer, ECEHeader },
   setup: async () => {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
