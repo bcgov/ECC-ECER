@@ -87,9 +87,6 @@ export default defineComponent({
 
       // Five Year
       if (this.certificationStore.latestIsEceFiveYear) {
-        if (this.expiredOverFiveYears) {
-          return "You cannot renew your ECE Five Year certification because it's been expired for over 5 years.";
-        }
         if (this.certificationStore.latestHasITE && this.certificationStore.latestHasSNE) {
           return "You can renew your ECE Five Year, SNE and ITE certification.";
         } else if (this.certificationStore.latestHasITE) {
