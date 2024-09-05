@@ -27,7 +27,8 @@ export const getClient = async (appendToken: boolean = true) => {
     axiosClient.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response.status === 401) {
+        // Safely check if the error object has a response object and a status code
+        if (error.response && error.response.status === 401) {
           oidcStore.logout();
         } else {
           return Promise.reject(error);

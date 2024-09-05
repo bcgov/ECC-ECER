@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace ECER.Clients.RegistryPortal.Server.Files;
 
@@ -116,8 +117,9 @@ public class FilesEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails { Title = "No file uploaded or file is empty" });
       }
       var fileProperties = new FileProperties() { Classification = classification, Tags = tags };
+      var sanitizedFilename = Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(file.FileName));
 
-      var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty), fileProperties, file.FileName, file.ContentType, file.OpenReadStream())).ToList();
+      var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty), fileProperties, sanitizedFilename, file.ContentType, file.OpenReadStream())).ToList();
       if (files.Count == 0) return TypedResults.BadRequest(new ProblemDetails { Title = "No files were uploaded" });
       var response = await messageBus.Send(new SaveFileCommand(files), ct);
       var saveResult = response.Items.FirstOrDefault();
