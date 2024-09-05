@@ -135,7 +135,7 @@ export default defineComponent({
       }
     },
     formatFileTags(file: File): string {
-      const fileName = file.name;
+      const fileName = Functions.sanitizeFilename(file.name);
       const fileSize = Functions.humanFileSize(file.size); // Convert size to KB
       const fileFormat = file.name.split(".").pop(); // Get file extension
 
