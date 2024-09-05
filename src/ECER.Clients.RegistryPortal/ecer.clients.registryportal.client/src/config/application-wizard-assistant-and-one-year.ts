@@ -22,7 +22,7 @@ const applicationWizard: Wizard = {
     },
     characterReferences: {
       stage: "CharacterReferences",
-      title: "Character references",
+      title: "Character reference",
       form: characterReferencesForm,
       key: "item.3",
     },

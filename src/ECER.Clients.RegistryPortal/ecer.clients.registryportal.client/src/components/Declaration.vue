@@ -46,7 +46,7 @@
         </v-col>
       </v-row>
     </v-form>
-    <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Continue</v-btn>
+    <v-btn class="mt-6" rounded="lg" color="primary" :loading="loadingStore.isLoading('draftapplication_put')" @click="continueClick">Continue</v-btn>
   </v-container>
 </template>
 
@@ -61,6 +61,7 @@ import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
+import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
@@ -74,6 +75,7 @@ export default defineComponent({
     const userStore = useUserStore();
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
+    const loadingStore = useLoadingStore();
     // Refresh userProfile from the server
     const userProfile = await getProfile();
     if (userProfile !== null) {
@@ -102,7 +104,7 @@ export default defineComponent({
         href: "/application/declaration",
       },
     ];
-    return { items, Rules, userStore, applicationStore, alertStore };
+    return { items, Rules, userStore, applicationStore, alertStore, loadingStore };
   },
   data() {
     return {
