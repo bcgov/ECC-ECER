@@ -75,6 +75,7 @@
       <v-row>
         <v-col cols="2">
           <v-text-field
+            ref="startDateInput"
             v-model="startDate"
             :rules="[
               Rules.required('Enter the start date of your course or workshop'),
@@ -100,16 +101,18 @@
             variant="outlined"
             color="primary"
             :max="today"
+            @input="validateDates"
           ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="2">
           <v-text-field
+            ref="endDateInput"
             v-model="endDate"
             :rules="[
               Rules.required('Enter the end date of your course or workshop'),
-              Rules.dateBeforeRule(endDate || '', startDate || ''),
+              Rules.dateBeforeRule(startDate || ''),
               Rules.dateBetweenRule(
                 certificationStore?.latestCertification?.effectiveDate || '',
                 certificationStore?.latestCertification?.expiryDate || '',
@@ -137,6 +140,7 @@
             variant="outlined"
             color="primary"
             :max="today"
+            @input="validateDates"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -299,7 +303,7 @@
 import { DateTime } from "luxon";
 import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
-import type { VForm } from "vuetify/components";
+import type { VForm, VInput } from "vuetify/components";
 
 import Alert from "@/components/Alert.vue";
 import type { FileItem } from "@/components/UploadFileItem.vue";
@@ -618,6 +622,10 @@ export default defineComponent({
         this.files = [];
         this.newFilesWithData = [];
       }
+    },
+    validateDates() {
+      (this.$refs.startDateInput as VInput).validate();
+      (this.$refs.endDateInput as VInput).validate();
     },
   },
 });
