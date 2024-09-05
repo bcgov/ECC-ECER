@@ -32,7 +32,9 @@ const uploadFile = async (
     },
     onUploadProgress,
   };
-  return apiResultHandler.execute<Components.Schemas.FileResponse>({ request: client.upload_file(parameters, formData as unknown as string, config) });
+  return apiResultHandler.execute<Components.Schemas.FileResponse>({
+    request: client.upload_file(parameters, formData as unknown as Paths.UploadFile.RequestBody, config),
+  });
 };
 
 const deleteFile = async (fileId: string): Promise<ApiResponse<Paths.DeleteFile.Responses.$200>> => {

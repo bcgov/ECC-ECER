@@ -177,6 +177,7 @@
           <FileUploader
             :user-files="generateUserFileArray"
             :rules="[Rules.atLeastOneOptionRequired('Upload a certificate or document that shows you completed the course or workshop')]"
+            :delete-file-from-temp-when-removed="false"
             @update:files="handleFileUpdate"
             @delete:file="handleFileDelete"
           />
@@ -436,13 +437,12 @@ export default defineComponent({
       if (professionalDevelopment.organizationEmailAddress) {
         this.selection.push("email");
       }
-      // if (
-      //   (professionalDevelopment?.files?.length && professionalDevelopment?.files?.length > 0) ||
-      //   (professionalDevelopment?.newFilesWithData?.length && professionalDevelopment.newFilesWithData.length > 0)
-      // ) {
-      //   this.selection.push("file");
-      // }
-      this.selection.push("file");
+      if (
+        (professionalDevelopment?.files?.length && professionalDevelopment?.files?.length > 0) ||
+        (professionalDevelopment?.newFilesWithData?.length && professionalDevelopment.newFilesWithData.length > 0)
+      ) {
+        this.selection.push("file");
+      }
 
       this.mode = "add";
       this.professionalDevelopmentFormMode = "edit";

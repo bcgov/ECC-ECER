@@ -57,6 +57,11 @@ export default defineComponent({
       required: false,
       default: () => [],
     },
+    deleteFileFromTempWhenRemoved: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
     rules: {
       type: Array as PropType<any[]>,
       required: false,
@@ -214,7 +219,7 @@ export default defineComponent({
     async removeFile(selectedFile: FileItem) {
       try {
         this.selectedFiles = this.selectedFiles.filter((f: FileItem) => f.fileId !== selectedFile.fileId);
-        if (!(selectedFile.fileErrors.length > 0) && selectedFile.storageFolder === "temporary") {
+        if (!(selectedFile.fileErrors.length > 0) && selectedFile.storageFolder === "temporary" && this.deleteFileFromTempWhenRemoved) {
           await deleteFile(selectedFile.fileId);
         }
         this.$emit("delete:file", selectedFile);
