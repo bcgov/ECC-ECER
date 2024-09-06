@@ -84,6 +84,7 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
   public bool? WillProvideReference { get; set; }
   public int? TotalNumberofHoursApproved { get; set; }
   public int? TotalNumberofHoursObserved { get; set; }
+  public WorkExperienceTypes? Type { get; set; }
 }
 public record ProfessionalDevelopment(string? Id, string? CertificationNumber, DateTime CertificationExpiryDate, DateTime DateSigned, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
 {
@@ -229,8 +230,8 @@ public class ReferenceSubmissionResult
 }
 
 public record WorkExperienceReferenceSubmissionRequest(string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ConfirmProvidedInformationIsRight);
-public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
-public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
+public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType? ChildrenProgramType, string ChildrenProgramTypeOther, IEnumerable<ChildcareAgeRanges>? ChildcareAgeRanges, string Role, string AgeofChildrenCaredFor, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, string AdditionalComments);
+public record WorkExperienceReferenceCompetenciesAssessment(LikertScale? ChildDevelopment, string ChildDevelopmentReason, LikertScale? ChildGuidance, string ChildGuidanceReason, LikertScale? HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale? DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale? ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale? FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale? FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale? FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
 
 public enum WorkHoursType
 {
@@ -337,6 +338,12 @@ public enum WorkExperienceRefStage
   Submitted,
   UnderReview,
   WaitingforResponse
+}
+
+public enum WorkExperienceTypes
+{
+  Is400Hours,
+  Is500Hours,
 }
 
 public enum CharacterReferenceStage

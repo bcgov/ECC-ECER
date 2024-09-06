@@ -1,7 +1,13 @@
 <template>
   <Wizard
     :ref="'wizard'"
-    :wizard="wizardStore.wizardData?.inviteType === PortalInviteType.WORK_EXPERIENCE ? workExperienceReferenceWizardConfig : characterReferenceWizardConfig"
+    :wizard="
+      wizardStore.wizardData?.inviteType === PortalInviteType.WORK_EXPERIENCE
+        ? wizardStore.wizardData.workExperienceType == WorkExperienceType.IS_400_Hours
+          ? workExperienceReference400HoursWizardConfig
+          : workExperienceReferenceWizardConfig
+        : characterReferenceWizardConfig
+    "
     :show-steps="false"
   >
     <template #header>
@@ -63,12 +69,13 @@ import { useRoute, useRouter } from "vue-router";
 
 import { getReference, optOutReference, postCharacterReference, postWorkExperienceReference } from "@/api/reference";
 import characterReferenceWizardConfig from "@/config/character-reference-wizard";
+import workExperienceReference400HoursWizardConfig from "@/config/work-experience-reference-400-hours-wizard";
 import workExperienceReferenceWizardConfig from "@/config/work-experience-reference-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
-import { PortalInviteType } from "@/utils/constant";
+import { PortalInviteType, WorkExperienceType } from "@/utils/constant";
 
 import Wizard from "../Wizard.vue";
 
@@ -88,11 +95,24 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
     if (data?.portalInvitation?.inviteType === PortalInviteType.WORK_EXPERIENCE) {
-      wizardStore.initializeWizardForWorkExReference(workExperienceReferenceWizardConfig, data.portalInvitation);
+      if (data?.portalInvitation?.workExperienceType === WorkExperienceType.IS_400_Hours) {
+        wizardStore.initializeWizardFor400HoursWorkExReference(workExperienceReference400HoursWizardConfig, data.portalInvitation);
+      } else {
+        wizardStore.initializeWizardForWorkExReference(workExperienceReferenceWizardConfig, data.portalInvitation);
+      }
     } else if (data?.portalInvitation?.inviteType === PortalInviteType.CHARACTER) {
       wizardStore.initializeWizardForCharacterReference(characterReferenceWizardConfig, data.portalInvitation);
     }
-    return { alertStore, workExperienceReferenceWizardConfig, characterReferenceWizardConfig, wizardStore, PortalInviteType, loadingStore };
+    return {
+      alertStore,
+      workExperienceReferenceWizardConfig,
+      characterReferenceWizardConfig,
+      wizardStore,
+      PortalInviteType,
+      loadingStore,
+      workExperienceReference400HoursWizardConfig,
+      WorkExperienceType,
+    };
   },
   computed: {
     userDeclinedStep(): number {
@@ -167,9 +187,13 @@ export default defineComponent({
         if (!response?.error) {
           this.$router.push({ path: "/reference-submitted" });
         }
-      } else if (this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE) {
+      } else if (
+        this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE &&
+        this.wizardStore.wizardData.workExperienceType == WorkExperienceType.IS_500_Hours
+      ) {
         const response = await postWorkExperienceReference({
           token: this.$route.params.token as string,
+          workExperienceType: this.wizardStore.wizardData.workExperienceType,
           willProvideReference: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id],
           referenceContactInformation:
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id],
@@ -177,6 +201,25 @@ export default defineComponent({
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id],
           workExperienceReferenceCompetenciesAssessment:
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id],
+          confirmProvidedInformationIsRight:
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
+          recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],
+        });
+        if (!response?.error) {
+          this.$router.push({ path: "/reference-submitted" });
+        }
+      } else if (
+        this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE &&
+        this.wizardStore.wizardData.workExperienceType == WorkExperienceType.IS_400_Hours
+      ) {
+        const response = await postWorkExperienceReference({
+          token: this.$route.params.token as string,
+          workExperienceType: this.wizardStore.wizardData.workExperienceType,
+          willProvideReference: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id],
+          referenceContactInformation:
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id],
+          workExperienceReferenceDetails:
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id],
           confirmProvidedInformationIsRight:
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
           recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],

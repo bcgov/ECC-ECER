@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Utilities.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -113,9 +114,15 @@ public enum UnabletoProvideReferenceReasons
   Other
 }
 
-public record WorkExperienceReferenceDetails([Required] int Hours, [Required] WorkHoursType WorkHoursType, [Required] string ChildrenProgramName, [Required] ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, [Required] IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
-public record WorkExperienceReferenceCompetenciesAssessment([Required] LikertScale ChildDevelopment, string ChildDevelopmentReason, [Required] LikertScale ChildGuidance, string ChildGuidanceReason, [Required] LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, [Required] LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, [Required] LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, [Required] LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, [Required] LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, [Required] LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
-public record WorkExperienceReferenceSubmissionRequest([Required] string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ConfirmProvidedInformationIsRight, [Required] string RecaptchaToken);
+public record WorkExperienceReferenceDetails([Required] int? Hours, [Required] WorkHoursType? WorkHoursType, [Required] string ChildrenProgramName, [RequiredIf(WorkExperienceTypes.Is500Hours)] ChildrenProgramType? ChildrenProgramType, string? ChildrenProgramTypeOther, [RequiredIf(WorkExperienceTypes.Is500Hours)] IEnumerable<ChildcareAgeRanges>? ChildcareAgeRanges, [RequiredIf(WorkExperienceTypes.Is400Hours)] string? Role, string? AgeofChildrenCaredFor, [Required] DateTime? StartDate, [Required] DateTime? EndDate, [Required] ReferenceRelationship? ReferenceRelationship, string? ReferenceRelationshipOther, string? AdditionalComments)
+{
+  public WorkExperienceTypes? WorkExperienceType { get; set; }
+}
+public record WorkExperienceReferenceCompetenciesAssessment([Required] LikertScale? ChildDevelopment, string ChildDevelopmentReason, [Required] LikertScale? ChildGuidance, string ChildGuidanceReason, [Required] LikertScale? HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, [Required] LikertScale? DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, [Required] LikertScale? ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, [Required] LikertScale? FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, [Required] LikertScale? FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, [Required] LikertScale? FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
+public record WorkExperienceReferenceSubmissionRequest([Required] string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, [RequiredIf(WorkExperienceTypes.Is500Hours)] WorkExperienceReferenceCompetenciesAssessment? WorkExperienceReferenceCompetenciesAssessment, bool ConfirmProvidedInformationIsRight, [Required] string RecaptchaToken)
+{
+  public WorkExperienceTypes? WorkExperienceType { get; set; }
+}
 
 public enum WorkHoursType
 {
@@ -167,4 +174,33 @@ public enum ReferenceKnownTime
   From6monthsto1year,
   Lessthan6months,
   Morethan5years,
+}
+
+// custom required annotations based on WorkExperienceTypes
+public sealed class RequiredIfAttribute : ValidationAttribute
+{
+  private readonly WorkExperienceTypes _workExperienceType;
+  public WorkExperienceTypes WorkExperienceType { get; }
+
+  public RequiredIfAttribute(WorkExperienceTypes workExperienceType)
+  {
+    _workExperienceType = workExperienceType;
+  }
+
+  protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
+  {
+    ArgumentNullException.ThrowIfNull(validationContext);
+    var propertyName = validationContext.MemberName;
+
+    var workExperienceReferenceType = validationContext.ObjectInstance.GetType()
+    .GetProperty("WorkExperienceType")?
+    .GetValue(validationContext.ObjectInstance);
+
+    if (workExperienceReferenceType?.Equals(_workExperienceType) == true && value == null)
+    {
+      return new ValidationResult($"The {propertyName} field is required.");
+    }
+
+    return ValidationResult.Success!;
+  }
 }

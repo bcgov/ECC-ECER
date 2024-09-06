@@ -5,6 +5,16 @@
       <div role="doc-subtitle">Please provide as much detail as possible.</div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
+          <h2 class="mb-5">Hours</h2>
+          <p class="mb-3">The hours must:</p>
+          <ul class="ml-10">
+            <li>Be related to the field of early childhood education</li>
+            <li>Have been completed between the {{ formatDate(fiveYearsAgo, "LLL d, yyyy") }} and the {{ formatDate(today, "LLL d, yyyy") }}</li>
+          </ul>
+        </v-col>
+      </v-row>
+      <v-row class="mt-5">
+        <v-col cols="12" md="8" lg="6" xl="4">
           Applicant indicated you observed them work:
           <b>{{ `${wizardStore.wizardData.workExperienceReferenceHours}` }} hours</b>
         </v-col>
@@ -12,8 +22,8 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
+            label="Total number of hours the applicant worked"
             :rules="[Rules.required('Enter a whole number greater than zero (0)')]"
-            label="Total number of hours you observed the applicant working"
             variant="outlined"
             color="primary"
             maxlength="10"
@@ -33,15 +43,15 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <h2>Program and age of children</h2>
+          <h2>Work experience information</h2>
         </v-col>
       </v-row>
 
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
-            :rules="[Rules.required('Enter the name of child care program')]"
-            label="Name of child care program"
+            :rules="[Rules.required()]"
+            label="Where did the applicant complete their work experience hours?"
             variant="outlined"
             color="primary"
             maxlength="100"
@@ -50,49 +60,36 @@
           />
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="12" md="8" lg="6" xl="4">
-          <v-autocomplete
-            label="Type of child care program"
-            variant="outlined"
-            color="primary"
-            :rules="[Rules.required('Select an option')]"
-            :items="childrenProgramTypeDropdown"
-            hide-details="auto"
-            @update:model-value="childrenProgramTypeChanged"
-          ></v-autocomplete>
-        </v-col>
-      </v-row>
 
-      <v-row v-if="modelValue.childrenProgramType === 'Other'" class="mt-5">
+      <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
-            label="Specify Child Care Program"
+            :rules="[Rules.required('Enter role of the applicant')]"
+            label="What was their role while completing the work experience hours?"
             variant="outlined"
             color="primary"
-            :rules="[Rules.required('Please specify child care program')]"
+            maxlength="100"
             hide-details="auto"
-            @update:model-value="updateField('childrenProgramTypeOther', $event)"
-          ></v-text-field>
+            @update:model-value="updateField('role', $event)"
+          />
         </v-col>
       </v-row>
-
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <p>What ages of children were present?</p>
-          <p>Choose all that apply.</p>
-          <CheckboxMultiple
-            :items="childcareAgeRangesCheckBox"
-            :select-all="true"
-            :rules="[Rules.atLeastOneOptionRequired()]"
-            @update:model-value="updateField('childcareAgeRanges', $event)"
+          <v-text-field
+            label="If they cared for children, what was the age range? (Optional)"
+            variant="outlined"
+            color="primary"
+            maxlength="100"
+            hide-details="auto"
+            @update:model-value="updateField('ageofChildrenCaredFor', $event)"
           />
         </v-col>
       </v-row>
 
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <h2>When did the applicant complete the hours</h2>
+          <h2>When did the applicant complete the hours?</h2>
         </v-col>
       </v-row>
       <v-row>
@@ -124,15 +121,18 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <h2>Relationship to applicant</h2>
-          <div role="doc-subtitle">You must have directly supervised (observed) the applicant working with children</div>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <p>What is your relationship to the applicant?</p>
-          <v-radio-group hide-details="auto" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="referenceRelationshipChanged">
+          <v-radio-group
+            hide-details="auto"
+            :rules="[Rules.requiredRadio('Select an option')]"
+            @update:model-value="updateField('referenceRelationship', $event)"
+          >
             <v-radio
-              v-for="(workReferenceRelationship, index) in workReferenceRelationshipRadio"
+              v-for="(workReferenceRelationship, index) in workReference400HoursRelationshipRadio"
               :key="index"
               :label="workReferenceRelationship.label"
               :value="workReferenceRelationship.value"
@@ -140,17 +140,23 @@
           </v-radio-group>
         </v-col>
       </v-row>
-      <v-row v-if="modelValue.referenceRelationship === 'Other'" class="mt-5">
+      <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
-            label="Specify Your relationship"
-            variant="outlined"
+          <h2>Additional comments</h2>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <v-textarea
+            label="Comments (Optional)"
+            class="mt-2"
+            counter="1000"
+            maxlength="1000"
             color="primary"
-            :rules="[Rules.required('Specify your relationship to the applicant. Your response should not exceed 100 characters')]"
+            variant="outlined"
             hide-details="auto"
-            maxlength="100"
-            @update:model-value="updateField('referenceRelationshipOther', $event)"
-          ></v-text-field>
+            @update:model-value="updateField('additionalComments', $event)"
+          ></v-textarea>
         </v-col>
       </v-row>
     </v-col>
@@ -161,20 +167,17 @@
 import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 
-import CheckboxMultiple from "@/components/inputs/CheckboxMultiple.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
-import { childcareAgeRangesCheckBox, childrenProgramTypeDropdown, workHoursTypeRadio, workReferenceRelationshipRadio } from "@/utils/constant";
+import { workHoursTypeRadio, workReference400HoursRelationshipRadio } from "@/utils/constant";
 import { WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
-  name: "EceWorkExperienceReferenceEvaluation",
-  components: {
-    CheckboxMultiple,
-  },
+  name: "EceWorkExperienceReference400HoursEvaluation",
+  components: {},
   props: {
     modelValue: {
       type: Object as () => Components.Schemas.WorkExperienceReferenceDetails,
@@ -182,12 +185,11 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_workExReferenceData: Components.Schemas.WorkExperienceReferenceDetails) => true,
+    "update:model-value": (_workExReference400HoursData: Components.Schemas.WorkExperienceReferenceDetails) => true,
   },
   setup: () => {
     const wizardStore = useWizardStore();
-
-    return { wizardStore, childrenProgramTypeDropdown, workHoursTypeRadio, childcareAgeRangesCheckBox, workReferenceRelationshipRadio };
+    return { wizardStore, workHoursTypeRadio, workReference400HoursRelationshipRadio };
   },
   data() {
     return {
@@ -199,10 +201,14 @@ export default defineComponent({
     today() {
       return formatDate(DateTime.now().toString());
     },
+    fiveYearsAgo() {
+      const fiveYearsBack = DateTime.now().minus({ years: 5 });
+      return formatDate(fiveYearsBack.toString());
+    },
   },
   mounted() {
-    // Set Work Exp Ref Type as 500 Hours
-    this.updateField("workExperienceType", WorkExperienceType.IS_500_Hours);
+    // Set Work Exp Ref Type as 400 Hours
+    this.updateField("workExperienceType", WorkExperienceType.IS_400_Hours);
   },
   methods: {
     isNumber,
@@ -213,25 +219,7 @@ export default defineComponent({
       });
     },
 
-    childrenProgramTypeChanged(value: Components.Schemas.ChildrenProgramType) {
-      if (value !== "Other") {
-        this.$emit("update:model-value", {
-          ...this.modelValue,
-          childrenProgramType: value,
-          childrenProgramTypeOther: "",
-        });
-      } else {
-        this.$emit("update:model-value", { ...this.modelValue, childrenProgramType: value });
-      }
-    },
-
-    referenceRelationshipChanged(value: any) {
-      if (value === "Other") {
-        this.$emit("update:model-value", { ...this.modelValue, referenceRelationship: value });
-      } else {
-        this.$emit("update:model-value", { ...this.modelValue, referenceRelationship: value, referenceRelationshipOther: "" });
-      }
-    },
+    formatDate,
   },
 });
 </script>

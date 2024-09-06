@@ -74,6 +74,10 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
       if (workExRef != null)
       {
         result.WorkExperienceReferenceHours = workExRef.Hours;
+        if (workExRef.Type != null)
+        {
+          result.WorkExperienceType = mapper.Map<Contract.Applications.WorkExperienceTypes>(workExRef.Type);
+        }
       }
     }
     result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;

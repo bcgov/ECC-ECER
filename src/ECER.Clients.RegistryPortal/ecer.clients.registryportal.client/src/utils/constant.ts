@@ -29,6 +29,11 @@ export enum PortalInviteType {
   CHARACTER = "CharacterReference",
 }
 
+export enum WorkExperienceType {
+  IS_400_Hours = "Is400Hours",
+  IS_500_Hours = "Is500Hours",
+}
+
 export enum ProvinceTerritoryType {
   BC = "British Columbia",
   OTHER = "Other",
@@ -70,6 +75,12 @@ export const workReferenceRelationshipRadio: RadioButtonWrapper<Components.Schem
   { label: "Supervisor", value: "Supervisor" },
   { label: "Co-worker", value: "CoWorker" },
   { label: "Other", value: "Other" },
+];
+
+export const workReference400HoursRelationshipRadio: RadioButtonWrapper<Components.Schemas.ReferenceRelationship>[] = [
+  { label: "Supervisor", value: "Supervisor" },
+  { label: "Co-worker", value: "CoWorker" },
+  { label: "Parent or guardian of child they cared for", value: "ParentGuardianofChildinCare" },
 ];
 
 export const likertScaleRadio: RadioButtonWrapper<Components.Schemas.LikertScale>[] = [

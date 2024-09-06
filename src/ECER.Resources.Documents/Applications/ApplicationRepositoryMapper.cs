@@ -173,7 +173,8 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
           .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
           .ForMember(d => d.ecer_TotalNumberofHoursAnticipated, opts => opts.MapFrom(s => s.Hours))
-          .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
+          .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
+          .ForMember(d => d.ecer_Type, opts => opts.MapFrom(s => s.Type));
 
     CreateMap<ecer_WorkExperienceRef, WorkExperienceReference>(MemberList.Source)
       .ForCtorParam(nameof(WorkExperienceReference.FirstName), opt => opt.MapFrom(src => src.ecer_FirstName))
@@ -186,7 +187,14 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_WorkExperienceRefId))
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+      .ForMember(d => d.Type, opts => opts.MapFrom(s => s.ecer_Type))
       .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<WorkExperienceTypes, ecer_WorkExperienceTypes>()
+      .ConvertUsing(src => (src == WorkExperienceTypes.Is400Hours ? ecer_WorkExperienceTypes._400Hours : ecer_WorkExperienceTypes._500Hours));
+
+    CreateMap<ecer_WorkExperienceTypes, WorkExperienceTypes>()
+      .ConvertUsing(src => (src == ecer_WorkExperienceTypes._400Hours ? WorkExperienceTypes.Is400Hours : WorkExperienceTypes.Is500Hours));
 
     CreateMap<CharacterReference, ecer_CharacterReference>(MemberList.Source)
       .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
@@ -247,10 +255,13 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_ChildCareProgramName, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramName))
       .ForMember(d => d.ecer_TypeofChildrenProgram, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramType))
       .ForMember(d => d.ecer_OtherChildProgramType, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildrenProgramTypeOther))
+      .ForMember(d => d.ecer_Role, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.Role))
+      .ForMember(d => d.ecer_AgeofChildrenCaredFor, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.AgeofChildrenCaredFor))
       .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.StartDate))
       .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.EndDate))
       .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ReferenceRelationship))
       .ForMember(d => d.ecer_RelationshiptoApplicantOther, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ReferenceRelationshipOther))
+      .ForMember(d => d.ecer_AdditionalComments, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.AdditionalComments))
       .ForMember(d => d.ecer_CompetenceChildDevelopment, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopment))
       .ForMember(d => d.ecer_CompetenceChildDevelopmentReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildDevelopmentReason))
       .ForMember(d => d.ecer_CompetenceChildGuidance, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.ChildGuidance))
