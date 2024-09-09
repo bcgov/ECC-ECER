@@ -113,7 +113,7 @@
         </Alert>
       </v-col>
       <v-col sm="12" md="10" lg="8" xl="6" class="my-6">
-        <WorkExperienceReferenceProgressBar :references="modelValue" :hours-required="hoursRequired" />
+        <ProgressBar :total-hours="totalHours" :hours-required="hoursRequired" />
       </v-col>
       <v-col sm="12" md="10" lg="8" xl="6">
         <WorkExperienceReferenceList :references="modelValue" @edit="handleEdit" @delete="handleDelete" />
@@ -134,7 +134,6 @@ import { defineComponent } from "vue";
 
 import Alert from "@/components/Alert.vue";
 import WorkExperienceReferenceList, { type WorkExperienceReferenceData } from "@/components/WorkExperienceReferenceList.vue";
-import WorkExperienceReferenceProgressBar from "@/components/WorkExperienceReferenceProgressBar.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
@@ -145,9 +144,11 @@ import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
+import ProgressBar from "../ProgressBar.vue";
+
 export default defineComponent({
   name: "EceEdducation",
-  components: { WorkExperienceReferenceList, WorkExperienceReferenceProgressBar, Alert },
+  components: { WorkExperienceReferenceList, ProgressBar, Alert },
   props: {
     props: {
       type: Object as () => EceWorkExperienceReferencesProps,
