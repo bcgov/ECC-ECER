@@ -64,7 +64,8 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
 
     var statuses = new List<Resources.Accounts.Communications.CommunicationStatus>
     {
-      Resources.Accounts.Communications.CommunicationStatus.NotifiedRecipient
+      Resources.Accounts.Communications.CommunicationStatus.NotifiedRecipient,
+      Resources.Accounts.Communications.CommunicationStatus.Acknowledged
     };
 
     var communications = await communicationRepository.Query(new Resources.Accounts.Communications.UserCommunicationQuery

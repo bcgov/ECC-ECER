@@ -389,11 +389,10 @@ public enum CertificationType
 
 public enum OneYearRenewalexplanations
 {
-  Icouldnotfindemploymenttocompletetherequiredhours,
-  Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa,
-  IliveandworkinacommunitywithoutothercertifiedECEs,
-  Iwasunabletoenterthecountryasexpected,
-  Iwasunabletoworkinthechildcarefieldforpersonalreasons,
+  Ileftthechildcarefieldforpersonalreasons,
+  Iwasunabletocompletetherequiredhoursofprofessionaldevelopment,
+  Iwasunabletofindemploymentinthechildcarefieldinmycommunity,
+  MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc,
   Other,
 }
 

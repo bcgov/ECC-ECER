@@ -67,7 +67,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_details = "ecer_details";
 			public const string ecer_InScope = "ecer_inscope";
 			public const string ecer_Investigation = "ecer_investigation";
+			public const string ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegation = "ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
+			public const string ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies = "ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies";
 			public const string ecer_investigationplanningallegation_Investiga = "ecer_investigationplanningallegation_Investiga";
 			public const string ecer_InvestigationPlanningAllegationId = "ecer_investigationplanningallegationid";
 			public const string Id = "ecer_investigationplanningallegationid";
@@ -778,6 +780,48 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegation
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegat" +
+			"ion")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationCompetency> ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationCompetency>("ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegat" +
+						"ion", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationCompetency>("ecer_investigationcompetency_PlanningAllegation_ecer_investigationplanningallegat" +
+						"ion", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:N ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyC" +
+			"ompetencies")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CompetencyCompetencies> ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyCompetencies
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CompetencyCompetencies>("ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyC" +
+						"ompetencies", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CompetencyCompetencies>("ecer_InvestigationPlanningAllegation_ecer_CompetencyCompetencies_ecer_CompetencyC" +
+						"ompetencies", null, value);
 			}
 		}
 		

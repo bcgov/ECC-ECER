@@ -18,7 +18,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
       var userContext = httpContext.User.GetUserContext();
       bool IdIsNotGuid = !Guid.TryParse(parentId, out _); if (IdIsNotGuid && parentId != null) { parentId = null; }
       // Get pagination parameters from the query string with default values
-      var pageNumber = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageProperty], out var page) ? page : paginationOptions.Value.DefaultPageNumber;
+      var pageNumber = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageProperty], out var page) && page > 0 ? page : paginationOptions.Value.DefaultPageNumber;
       var pageSize = int.TryParse(httpContext.Request.Query[paginationOptions.Value.PageSizeProperty], out var size) ? size : paginationOptions.Value.DefaultPageSize;
 
       var query = new UserCommunicationQuery
