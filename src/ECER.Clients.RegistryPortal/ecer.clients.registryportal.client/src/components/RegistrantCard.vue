@@ -1,16 +1,18 @@
 <template>
-  <ActionCard v-for="(flow, index) in registrantFlows" :key="index" :title="flow.title">
-    <template #content>
-      <div class="d-flex flex-column ga-3">
-        {{ flow.text }}
-      </div>
-    </template>
-    <template #action>
-      <v-btn variant="text" @click="handleLearnMore">
-        <a href="#" @click.prevent>Learn more</a>
-      </v-btn>
-    </template>
-  </ActionCard>
+  <v-col v-for="(flow, index) in registrantFlows" :key="index" cols="12" sm="6" lg="4">
+    <ActionCard :title="flow.title">
+      <template #content>
+        <div class="d-flex flex-column ga-3">
+          {{ flow.text }}
+        </div>
+      </template>
+      <template #action>
+        <v-btn variant="text" @click="handleLearnMore">
+          <a href="#" @click.prevent>Learn more</a>
+        </v-btn>
+      </template>
+    </ActionCard>
+  </v-col>
 </template>
 
 <script lang="ts">
