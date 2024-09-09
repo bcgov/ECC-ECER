@@ -55,9 +55,7 @@
           <v-col cols="12" sm="6" lg="4">
             <RenewCard />
           </v-col>
-          <v-col cols="12" sm="6" lg="4">
-            <RegistrantCard />
-          </v-col>
+          <RegistrantCard />
         </v-row>
       </v-col>
     </v-row>
