@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Certificate Conditions
+	/// Status of the Signature
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_certificateconditions_statecode
+	public enum ecer_signature_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Certificate Conditions
+	/// Reason for the status of the Signature
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_CertificateConditions_StatusCode
+	public enum ecer_Signature_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -43,13 +43,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_certificateconditions")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_signature")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_CertificateConditions : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_Signature : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_certificateconditions entity
+		/// Available fields, a the time of codegen, for the ecer_signature entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,21 +60,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_certificateconditions_PresetConditionId = "ecer_certificateconditions_PresetConditionId";
-			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
-			public const string ecer_CertificateConditionsId = "ecer_certificateconditionsid";
-			public const string Id = "ecer_certificateconditionsid";
-			public const string ecer_Details = "ecer_details";
-			public const string ecer_DisplayOrder = "ecer_displayorder";
-			public const string ecer_EndDate = "ecer_enddate";
-			public const string ecer_legacycertificateid = "ecer_legacycertificateid";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_PresetConditionId = "ecer_presetconditionid";
-			public const string ecer_PresetConditionIdName = "ecer_presetconditionidname";
-			public const string ecer_Registrantid = "ecer_registrantid";
-			public const string ecer_RegistrantidName = "ecer_registrantidname";
-			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
-			public const string ecer_StartDate = "ecer_startdate";
+			public const string ecer_nameid = "ecer_nameid";
+			public const string ecer_nameidName = "ecer_nameidname";
+			public const string ecer_nameidYomiName = "ecer_nameidyominame";
+			public const string ecer_postsecondaryinstituteprogramapplicaiton_pspsignature_ecer_signature = "ecer_postsecondaryinstituteprogramapplicaiton_pspsignature_ecer_signature";
+			public const string ecer_SignatureId = "ecer_signatureid";
+			public const string Id = "ecer_signatureid";
+			public const string ecer_signatureimage = "ecer_signatureimage";
+			public const string ecer_signatureimage_Timestamp = "ecer_signatureimage_timestamp";
+			public const string ecer_signatureimage_URL = "ecer_signatureimage_url";
+			public const string ecer_signatureimageId = "ecer_signatureimageid";
+			public const string ecer_Title = "ecer_title";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -101,45 +98,43 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CertificateConditions(System.Guid id) : 
+		public ecer_Signature(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CertificateConditions(string keyName, object keyValue) : 
+		public ecer_Signature(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CertificateConditions(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_Signature(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
-		
-		public const string AlternateKeys = "ecer_legacycertificateid";
 		
 		/// <summary>
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CertificateConditions() : 
+		public ecer_Signature() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_certificateconditionsid";
+		public const string PrimaryIdAttribute = "ecer_signatureid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_CertificateConditions";
+		public const string EntitySchemaName = "ecer_Signature";
 		
-		public const string EntityLogicalName = "ecer_certificateconditions";
+		public const string EntityLogicalName = "ecer_signature";
 		
-		public const string EntityLogicalCollectionName = "ecer_certificateconditionses";
+		public const string EntityLogicalCollectionName = "ecer_signatures";
 		
-		public const string EntitySetName = "ecer_certificateconditionses";
+		public const string EntitySetName = "ecer_signatures";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -253,107 +248,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateconditionsid")]
-		public System.Nullable<System.Guid> ecer_CertificateConditionsId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_certificateconditionsid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_certificateconditionsid", value);
-				if (value.HasValue)
-				{
-					base.Id = value.Value;
-				}
-				else
-				{
-					base.Id = System.Guid.Empty;
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateconditionsid")]
-		public override System.Guid Id
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return base.Id;
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.ecer_CertificateConditionsId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_details")]
-		public string ecer_Details
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_details");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_details", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_displayorder")]
-		public System.Nullable<int> ecer_DisplayOrder
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<int>>("ecer_displayorder");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_displayorder", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_enddate")]
-		public System.Nullable<System.DateTime> ecer_EndDate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_enddate");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_enddate", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacycertificateid")]
-		public string ecer_legacycertificateid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_legacycertificateid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_legacycertificateid", value);
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -369,30 +263,30 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_presetconditionid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_PresetConditionId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_nameid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_nameid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_presetconditionid");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_nameid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_presetconditionid", value);
+				this.SetAttributeValue("ecer_nameid", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_presetconditionidname")]
-		public string ecer_PresetConditionIdName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_nameidname")]
+		public string ecer_nameidName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_presetconditionid"))
+				if (this.FormattedValues.Contains("ecer_nameid"))
 				{
-					return this.FormattedValues["ecer_presetconditionid"];
+					return this.FormattedValues["ecer_nameid"];
 				}
 				else
 				{
@@ -401,30 +295,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_Registrantid
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_nameidyominame")]
+		public string ecer_nameidYomiName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_registrantid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_registrantid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantidname")]
-		public string ecer_RegistrantidName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_registrantid"))
+				if (this.FormattedValues.Contains("ecer_nameid"))
 				{
-					return this.FormattedValues["ecer_registrantid"];
+					return this.FormattedValues["ecer_nameid"];
 				}
 				else
 				{
@@ -433,35 +312,104 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantidyominame")]
-		public string ecer_RegistrantidYomiName
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_signatureid")]
+		public System.Nullable<System.Guid> ecer_SignatureId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_registrantid"))
-				{
-					return this.FormattedValues["ecer_registrantid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_startdate")]
-		public System.Nullable<System.DateTime> ecer_StartDate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_startdate");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_signatureid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_startdate", value);
+				this.SetAttributeValue("ecer_signatureid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_signatureid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.ecer_SignatureId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_signatureimage")]
+		public byte[] ecer_signatureimage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<byte[]>("ecer_signatureimage");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_signatureimage", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_signatureimage_timestamp")]
+		public System.Nullable<long> ecer_signatureimage_Timestamp
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<long>>("ecer_signatureimage_timestamp");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_signatureimage_url")]
+		public string ecer_signatureimage_URL
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_signatureimage_url");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_signatureimageid")]
+		public System.Nullable<System.Guid> ecer_signatureimageId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_signatureimageid");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_title")]
+		public string ecer_Title
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_title");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_title", value);
 			}
 		}
 		
@@ -728,15 +676,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Certificate Conditions
+		/// Status of the Signature
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_certificateconditions_statecode? StateCode
+		public virtual ecer_signature_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_certificateconditions_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_signature_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -763,15 +711,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Certificate Conditions
+		/// Reason for the status of the Signature
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_CertificateConditions_StatusCode? StatusCode
+		public virtual ecer_Signature_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_CertificateConditions_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_Signature_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -847,40 +795,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// N:1 ecer_certificateconditions_PresetConditionId
+		/// 1:N ecer_postsecondaryinstituteprogramapplicaiton_pspsignature_ecer_signature
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_presetconditionid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificateconditions_PresetConditionId")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditionsPreset ecer_certificateconditions_PresetConditionId
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstituteprogramapplicaiton_pspsignature_ecer_signature")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton> ecer_postsecondaryinstituteprogramapplicaiton_pspsignature_ecer_signature
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditionsPreset>("ecer_certificateconditions_PresetConditionId", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_pspsignature_ecer_signature", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditionsPreset>("ecer_certificateconditions_PresetConditionId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_certificateconditions_Registrantid
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificateconditions_Registrantid")]
-		public ECER.Utilities.DataverseSdk.Model.Contact ecer_certificateconditions_Registrantid
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_certificateconditions_Registrantid", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_certificateconditions_Registrantid", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_postsecondaryinstituteprogramapplicaiton_pspsignature_ecer_signature", null, value);
 			}
 		}
 		
@@ -889,7 +817,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_CertificateConditions(object anonymousType) : 
+		public ecer_Signature(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -907,9 +835,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_certificateconditionsid"] = base.Id;
+                        Attributes["ecer_signatureid"] = base.Id;
                         break;
-                    case "ecer_certificateconditionsid":
+                    case "ecer_signatureid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

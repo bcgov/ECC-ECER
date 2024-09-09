@@ -74,8 +74,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_involvedpersonnumber = "ecer_involvedpersonnumber";
 			public const string ecer_lastname = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_PhoneNumber = "ecer_phonenumber";
 			public const string ecer_Role = "ecer_role";
 			public const string ecer_roleName = "ecer_rolename";
+			public const string EmailAddress = "emailaddress";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -415,6 +417,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_phonenumber")]
+		public string ecer_PhoneNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_phonenumber");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_phonenumber", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_role")]
 		public virtual ecer_InvestigationPersonRoles? ecer_Role
 		{
@@ -444,6 +461,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		/// <summary>
+		/// The primary email address for the entity.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("emailaddress")]
+		public string EmailAddress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("emailaddress");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("emailaddress", value);
 			}
 		}
 		

@@ -82,6 +82,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_confirmedlicencetypeName = "ecer_confirmedlicencetypename";
 			public const string ecer_ConfirmedSupervisorName = "ecer_confirmedsupervisorname";
 			public const string ecer_confirmedsupervisornameName = "ecer_confirmedsupervisornamename";
+			public const string ecer_legacyworkexperienceassessmententrydate = "ecer_legacyworkexperienceassessmententrydate";
 			public const string ecer_legacyworkexperienceassessmentid = "ecer_legacyworkexperienceassessmentid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_RecommendationReceived = "ecer_recommendationreceived";
@@ -576,6 +577,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyworkexperienceassessmententrydate")]
+		public System.Nullable<System.DateTime> ecer_legacyworkexperienceassessmententrydate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyworkexperienceassessmententrydate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyworkexperienceassessmententrydate", value);
 			}
 		}
 		
