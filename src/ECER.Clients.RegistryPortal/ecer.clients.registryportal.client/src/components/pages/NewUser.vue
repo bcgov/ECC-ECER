@@ -27,30 +27,36 @@
               <ECEHeader title="Contact Information" />
               <p class="small mt-2">We'll use this to contact you about your account and updates about your application or certificate.</p>
             </v-col>
-
-            <!-- Email Field -->
-            <v-col cols="12" md="6">
-              <v-text-field
-                v-model="email"
-                label="Email"
-                variant="outlined"
-                color="primary"
-                type="email"
-                :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]"
-                class="mt-5"
-              ></v-text-field>
+            <v-col cols="12">
+              <v-row>
+                <!-- Email Field -->
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="email"
+                    label="Email"
+                    variant="outlined"
+                    color="primary"
+                    type="email"
+                    :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]"
+                    class="mt-5"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
             </v-col>
-
-            <!-- Phone Field -->
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="phoneNumber"
-                label="Phone number"
-                variant="outlined"
-                color="primary"
-                :rules="[Rules.required(), Rules.phoneNumber()]"
-                @keypress="isNumber($event)"
-              ></v-text-field>
+            <v-col cols="12">
+              <v-row>
+                <!-- Phone Field -->
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    v-model="phoneNumber"
+                    label="Phone number"
+                    variant="outlined"
+                    color="primary"
+                    :rules="[Rules.required(), Rules.phoneNumber()]"
+                    @keypress="isNumber($event)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
             </v-col>
 
             <!-- ECE Registration Section -->
@@ -97,10 +103,10 @@
 
       <!-- Buttons -->
       <v-col cols="12">
-        <v-row>
+        <div>
           <v-btn rounded="lg" color="primary" class="mr-2" @click="submit">Save and continue</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="logout">Cancel</v-btn>
-        </v-row>
+        </div>
       </v-col>
     </v-row>
   </PageContainer>
@@ -139,8 +145,6 @@ export default defineComponent({
     eceCertificateStatus: undefined as boolean | undefined,
     Rules,
   }),
-
-  computed: {},
   methods: {
     isNumber,
     async submit() {
