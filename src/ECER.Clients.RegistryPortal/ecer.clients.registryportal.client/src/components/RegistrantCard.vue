@@ -82,17 +82,23 @@ export default defineComponent({
     registrantFlows(): RegistrantFlow[] {
       let types = [];
       if (this.certificationStore.latestIsEceAssistant) {
-        types.push(oneYearRegistrantFlow, assistantRegistrantFlow);
+        types.push(oneYearRegistrantFlow, fiveYearRegistrantFlow);
       }
       if (this.certificationStore.latestIsEceOneYear) {
+        if (this.certificationStore.latestCertificateStatus === "Expired") types.push(assistantRegistrantFlow);
         types.push(fiveYearRegistrantFlow);
       }
       if (this.certificationStore.latestIsEceFiveYear) {
         if (this.certificationStore.latestHasSNE && !this.certificationStore.latestHasITE) {
-          types.push(iteRegistrantFlow);
+          if (this.certificationStore.latestCertificateStatus === "Expired") types.push(assistantRegistrantFlow);
+          else types.push(iteRegistrantFlow);
         } else if (this.certificationStore.latestHasITE && !this.certificationStore.latestHasSNE) {
-          types.push(sneRegistrantFlow);
-        } else if (!this.certificationStore.latestHasITE && !this.certificationStore.latestHasSNE) types.push(specializationRegistrantFlow);
+          if (this.certificationStore.latestCertificateStatus === "Expired") types.push(assistantRegistrantFlow);
+          else types.push(sneRegistrantFlow);
+        } else if (!this.certificationStore.latestHasITE && !this.certificationStore.latestHasSNE) {
+          if (this.certificationStore.latestCertificateStatus === "Expired") types.push(assistantRegistrantFlow);
+          else types.push(specializationRegistrantFlow);
+        }
       }
       return types;
     },
