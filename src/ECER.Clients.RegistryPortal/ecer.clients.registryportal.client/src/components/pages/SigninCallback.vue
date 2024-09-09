@@ -21,9 +21,9 @@ export default {
     async handleCallback(): Promise<void> {
       // Complete signin and retrieve oidc user
       const user = await this.oidcStore.signinCallback();
-
       // Attempt to get user info
       const userInfo: Components.Schemas.UserInfo | null = await getUserInfo();
+
       if (userInfo) {
         // Maybe user has a profile already
         const profileInfo: Components.Schemas.UserProfile | null = await getProfile();

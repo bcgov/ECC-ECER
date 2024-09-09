@@ -1,38 +1,114 @@
 <template>
   <PageContainer>
-    <FormContainer>
-      <div class="d-flex flex-column ga-8">
-        <div>
-          <h1>Profile information</h1>
-          <p class="small">The ECE Registry will notify you of important updates regarding your certification</p>
-        </div>
+    <v-row class="ga-8">
+      <!-- Header Section -->
+      <v-col cols="12">
+        <h1>Create your My ECE Registry account</h1>
+        <p class="small mt-2">Welcome {{ oidcUserInfo.firstName!.replace(/^(.*?)(\s.*)?$/, "$1") }}.</p>
+      </v-col>
+
+      <!-- Information from BC Services Card -->
+      <v-col cols="12">
+        <ECEHeader title="Information from your BC Services Card account" />
+        <p class="small mt-2">We automatically use the following information from your BC Services Card account for your MY ECE Registry account.</p>
+        <p class="small mt-5">Legal name</p>
+        <p class="small mt-2">{{ oidcUserInfo.firstName }} {{ oidcUserInfo.lastName }}</p>
+        <p class="small mt-5">Address</p>
+        <p class="small mt-2">{{ oidcUserInfo.address.street_address }}</p>
+        <p class="small">{{ oidcUserInfo.address.locality }}, {{ oidcUserInfo.address.region }} {{ oidcUserInfo.address.postal_code }}</p>
+        <p class="small">{{ oidcUserInfo.address.country }}</p>
+      </v-col>
+
+      <!-- Form Section -->
+      <v-col cols="12">
         <v-form ref="form" validate-on="input">
-          <div class="d-flex flex-column ga-2">
-            <v-text-field v-model="email" label="Email" variant="outlined" color="primary" type="email" :rules="emailRules"></v-text-field>
-            <v-text-field
-              v-model="phoneNumber"
-              label="Phone number"
-              variant="outlined"
-              color="primary"
-              :rules="phoneRules"
-              @keypress="isNumber($event)"
-            ></v-text-field>
-            <v-checkbox v-model="hasAgreed" label="" color="primary" :rules="hasAgreedRules">
-              <template #label>
-                <div>
-                  I have read and accept the
-                  <router-link to="/new-user/terms-of-use">Terms of Use</router-link>
-                </div>
-              </template>
-            </v-checkbox>
-          </div>
+          <v-row class="ga-2">
+            <v-col cols="12">
+              <ECEHeader title="Contact Information" />
+              <p class="small mt-2">We'll use this to contact you about your account and updates about your application or certificate.</p>
+            </v-col>
+            <v-col cols="12">
+              <v-row>
+                <!-- Email Field -->
+                <v-col cols="12" md="6">
+                  <v-text-field
+                    v-model="email"
+                    label="Email"
+                    variant="outlined"
+                    color="primary"
+                    type="email"
+                    :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]"
+                    class="mt-5"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-col cols="12">
+              <v-row>
+                <!-- Phone Field -->
+                <v-col cols="12" sm="6">
+                  <v-text-field
+                    v-model="phoneNumber"
+                    label="Phone number"
+                    variant="outlined"
+                    color="primary"
+                    :rules="[Rules.required(), Rules.phoneNumber()]"
+                    @keypress="isNumber($event)"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-col>
+
+            <!-- ECE Registration Section -->
+            <v-col cols="12">
+              <ECEHeader title="Your ECE registration" />
+              <p class="small mt-2">
+                To add an existing ECE certificate to your account to manage it online, you must enter the number now to link it to your account.
+              </p>
+              <p class="small mt-5">Do you have, or ever had, an ECE certificate in British Columbia?</p>
+
+              <!-- Radio Group for ECE Certificate -->
+              <v-radio-group v-model="eceCertificateStatus" :rules="[Rules.requiredRadio('Choose an option')]">
+                <v-radio label="Yes" :value="true"></v-radio>
+                <v-radio label="No" :value="false"></v-radio>
+              </v-radio-group>
+            </v-col>
+
+            <!-- ECE Registration Number -->
+            <v-col v-if="eceCertificateStatus === true" cols="12" sm="6">
+              <v-text-field
+                v-model="eceRegistrationNumber"
+                label="Your ECE Registration Number"
+                variant="outlined"
+                color="primary"
+                :rules="[Rules.required('Enter your ECE registration number')]"
+                @keypress="isNumber($event)"
+              />
+            </v-col>
+
+            <!-- Checkbox for Terms of Use -->
+            <v-col cols="12">
+              <v-checkbox v-model="hasAgreed" label="" color="primary" :rules="[Rules.hasCheckbox('You must read and accept the Terms of Use')]">
+                <template #label>
+                  <div>
+                    I have read and accept the
+                    <router-link to="/new-user/terms-of-use">Terms of Use</router-link>
+                  </div>
+                </template>
+              </v-checkbox>
+            </v-col>
+          </v-row>
         </v-form>
-        <v-row>
+      </v-col>
+
+      <!-- Buttons -->
+      <v-col cols="12">
+        <div>
           <v-btn rounded="lg" color="primary" class="mr-2" @click="submit">Save and continue</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="logout">Cancel</v-btn>
-        </v-row>
-      </div>
-    </FormContainer>
+        </div>
+      </v-col>
+    </v-row>
   </PageContainer>
 </template>
 
@@ -41,21 +117,20 @@ import { defineComponent, ref } from "vue";
 import type { VForm } from "vuetify/components";
 
 import { postUserInfo } from "@/api/user";
+import ECEHeader from "@/components/ECEHeader.vue";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
-import FormContainer from "../FormContainer.vue";
 import PageContainer from "../PageContainer.vue";
 
 export default defineComponent({
   name: "NewUser",
-  components: { FormContainer, PageContainer },
+  components: { PageContainer, ECEHeader },
   setup: async () => {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
-
     const oidcUserInfo = await oidcStore.oidcUserInfo();
 
     const phoneNumber = ref(oidcUserInfo.phone);
@@ -66,31 +141,17 @@ export default defineComponent({
 
   data: () => ({
     hasAgreed: false,
-    hasAgreedRules: [(v: boolean) => !!v || "You must read and accept the Terms of Use"],
+    eceRegistrationNumber: "",
+    eceCertificateStatus: undefined as boolean | undefined,
     Rules,
   }),
-  computed: {
-    emailRules() {
-      return [this.customEmailRule(), this.Rules.required()];
-    },
-    phoneRules() {
-      return [this.customPhoneRule(), this.Rules.required()];
-    },
-  },
   methods: {
-    customEmailRule() {
-      return this.Rules.email("Enter your email in the format 'name@email.com'");
-    },
-    customPhoneRule() {
-      return this.Rules.phoneNumber("Enter your primary 10-digit phone number");
-    },
-
     isNumber,
     async submit() {
-      const { valid } = await (this.$refs.form as VForm).validate();
+      let { valid } = await (this.$refs.form as VForm).validate();
+
       if (valid) {
         const userCreated: boolean = await postUserInfo({ ...this.oidcUserInfo, phone: this.phoneNumber });
-
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {
           this.userStore.setUserInfo({
