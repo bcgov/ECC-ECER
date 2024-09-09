@@ -286,7 +286,7 @@ declare namespace Components {
       idp?: string | null;
     }
     export type OneYearRenewalexplanations =
-      | "IIleftthechildcarefieldforpersonalreasons"
+      | "Ileftthechildcarefieldforpersonalreasons"
       | "Iwasunabletocompletetherequiredhoursofprofessionaldevelopment"
       | "Iwasunabletofindemploymentinthechildcarefieldinmycommunity"
       | "MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc"

@@ -389,7 +389,7 @@ public enum CertificationType
 
 public enum OneYearRenewalexplanations
 {
-  IIleftthechildcarefieldforpersonalreasons,
+  Ileftthechildcarefieldforpersonalreasons,
   Iwasunabletocompletetherequiredhoursofprofessionaldevelopment,
   Iwasunabletofindemploymentinthechildcarefieldinmycommunity,
   MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc,

@@ -95,7 +95,7 @@ export const lengthOfAcquaintanceDropdown: DropdownWrapper<Components.Schemas.Re
 ];
 
 export const renewalInformationRadio: RadioButtonWrapper<Components.Schemas.OneYearRenewalexplanations>[] = [
-  { label: "I left the childcare field for personal reasons", value: "IIleftthechildcarefieldforpersonalreasons" },
+  { label: "I left the childcare field for personal reasons", value: "Ileftthechildcarefieldforpersonalreasons" },
   { label: "I was unable to complete the required hours of professional development", value: "Iwasunabletocompletetherequiredhoursofprofessionaldevelopment" },
   { label: "I was unable to find employment in the childcare field in my community", value: "Iwasunabletofindemploymentinthechildcarefieldinmycommunity" },
   {
