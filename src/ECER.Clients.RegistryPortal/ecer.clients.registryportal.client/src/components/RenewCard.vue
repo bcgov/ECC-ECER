@@ -56,7 +56,7 @@ export default defineComponent({
       return this.todaysDate >= this.latestRenewalDate;
     },
     canRenew() {
-      return !this.certificationStore.hasMultipleEceOneYearCertifications && !this.expiredOverFiveYears;
+      return !this.certificationStore.hasMultipleEceOneYearCertifications && !(this.certificationStore.latestIsEceOneYear && this.expiredOverFiveYears);
     },
     title() {
       return this.canRenew ? "Renew" : "Renew unavailable";
@@ -87,9 +87,6 @@ export default defineComponent({
 
       // Five Year
       if (this.certificationStore.latestIsEceFiveYear) {
-        if (this.expiredOverFiveYears) {
-          return "You cannot renew your ECE Five Year certification because it's been expired for over 5 years.";
-        }
         if (this.certificationStore.latestHasITE && this.certificationStore.latestHasSNE) {
           return "You can renew your ECE Five Year, SNE and ITE certification.";
         } else if (this.certificationStore.latestHasITE) {
