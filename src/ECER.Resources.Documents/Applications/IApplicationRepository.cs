@@ -62,13 +62,15 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public string? StudentMiddleName { get; set; }
 }
 
-public record ProfessionalDevelopment(string? Id, string? CertificationNumber, DateTime CertificationExpiryDate, DateTime DateSigned, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
+public record ProfessionalDevelopment(string? Id, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
 {
+  public string? CourseorWorkshopLink { get; set; }
   public string? OrganizationContactInformation { get; set; }
+  public string? OrganizationEmailAddress { get; set; }
   public string? InstructorName { get; set; }
   public int? NumberOfHours { get; set; }
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
-  public IEnumerable<string> Files { get; set; } = Array.Empty<string>();
+  public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
 }
@@ -81,6 +83,14 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
   public bool? WillProvideReference { get; set; }
   public int? TotalNumberofHoursApproved { get; set; }
   public int? TotalNumberofHoursObserved { get; set; }
+}
+
+public record FileInfo(string Id)
+{
+  public string? Url { get; set; } = string.Empty;
+  public string? Extention { get; set; } = string.Empty;
+  public string? Name { get; set; } = string.Empty;
+  public string? Size { get; set; } = string.Empty;
 }
 
 public enum CertificationType

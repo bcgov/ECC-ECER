@@ -4,8 +4,8 @@
       <!-- File Name and Size -->
       <v-col cols="4">
         <div class="d-flex justify-start">
-          <p class="text-truncate">{{ fileItem.file.name }}</p>
-          <p class="text-no-wrap">&nbsp;({{ Functions.humanFileSize(fileItem.file.size) }})</p>
+          <p class="text-truncate">{{ fileItem.fileName }}</p>
+          <p class="text-no-wrap">&nbsp;({{ Functions.humanFileSize(fileItem.fileSize) }})</p>
         </div>
       </v-col>
       <v-col cols="2">
@@ -48,6 +48,9 @@ export interface FileItem {
   fileId: string;
   progress: number;
   fileErrors: string[];
+  fileSize: number;
+  fileName: string;
+  storageFolder: "temporary" | "permanent";
 }
 
 export default defineComponent({

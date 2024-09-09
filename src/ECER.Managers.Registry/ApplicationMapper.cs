@@ -42,6 +42,8 @@ internal class ApplicationMapper : Profile
       .ForMember(d => d.PortalInvitation, opts => opts.Ignore())
       .ForMember(d => d.DateSigned, opts => opts.Ignore());
 
+    CreateMap<ECER.Resources.Documents.Applications.FileInfo, ECER.Managers.Registry.Contract.Applications.FileInfo>().ReverseMap();
+
     CreateMap<Contract.Applications.OptOutReferenceRequest, OptOutReferenceRequest>()
       .ForMember(d => d.PortalInvitation, opts => opts.Ignore());
   }

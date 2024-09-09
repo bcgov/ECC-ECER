@@ -101,6 +101,11 @@ export const useWizardStore = defineStore("wizard", {
           ? draftApplication?.characterReferences
           : [],
 
+        // Professional Development
+        ...(wizard.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id && {
+          [wizard.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id]: draftApplication?.professionalDevelopments || [],
+        }),
+
         // wizard data may not have referenceList depending on the certification type. So we need to hardcode the value.
         referenceList: workReferencesDict,
       };

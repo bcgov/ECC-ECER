@@ -64,28 +64,20 @@ internal sealed partial class ApplicationRepository
         throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopment}' not found");
       }
       // delete file and related document url
-      await DeleteFileById(fileId, ct);
+      await DeleteFileById(professionalDevelopment.Id, fileId, ct);
     }
   }
 
-  private async Task DeleteFileById(string filePath, CancellationToken ct)
+  private async Task DeleteFileById(Guid professionalDevelopmentId, string fileId, CancellationToken ct)
   {
     await Task.CompletedTask;
 
-    var file = context.bcgov_DocumentUrlSet.SingleOrDefault(d => d.bcgov_Url == filePath);
-    if (file == null)
+    var file = context.bcgov_DocumentUrlSet.SingleOrDefault(d => d.bcgov_DocumentUrlId == Guid.Parse(fileId));
+    if (fileId == null)
     {
-      throw new InvalidOperationException($"File with ID '{filePath}' not found");
+      throw new InvalidOperationException($"File with ID '{fileId}' not found");
     }
-
-    var items = file.bcgov_Url.Split('/');
-    if (items.Length != 2)
-    {
-      throw new FormatException($"Invalid file URL format: {file.bcgov_Url}");
-    }
-
-    var folder = items[0];
-    var fileId = items[1];
+    var folder = "ecer_professionaldevelopment/" + professionalDevelopmentId;
     await objectStorageProvider.DeleteAsync(new S3Descriptor(GetBucketName(configuration), fileId, folder), ct);
     context.DeleteObject(file);
   }
@@ -125,30 +117,26 @@ internal sealed partial class ApplicationRepository
     }
   }
 
-  private async Task AddFilesForProfessionalDevelopment(ecer_ProfessionalDevelopment professionalDevelopment, Guid? applicantId, List<string> fileUrls, CancellationToken ct)
+  private async Task AddFilesForProfessionalDevelopment(ecer_ProfessionalDevelopment professionalDevelopment, Guid? applicantId, List<string> fileIds, CancellationToken ct)
   {
     await Task.CompletedTask;
 
-    foreach (var fileUrl in fileUrls)
+    foreach (var fileId in fileIds)
     {
-      var items = fileUrl.Split('/');
-      if (items.Length != 2)
-      {
-        throw new ArgumentException($"Invalid file URL format: {fileUrl}");
-      }
-
       var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == applicantId);
       if (applicant == null) throw new InvalidOperationException($"Applicant '{applicantId}' not found");
 
       if (professionalDevelopment == null) throw new InvalidOperationException($"professionalDevelopment '{professionalDevelopment}' not found");
 
-      var sourceFolder = items[0];
+      var sourceFolder = "tempfolder";
       var destinationFolder = "ecer_professionaldevelopment/" + professionalDevelopment.Id;
-      var fileId = items[1];
+      var file = await objectStorageProvider.GetAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), ct);
       await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
 
       var documenturl = new bcgov_DocumentUrl()
       {
+        bcgov_FileName = file!.FileName,
+        bcgov_FileSize = Infrastructure.Common.UtilityFunctions.HumanFileSize(file!.Content.Length),
         bcgov_DocumentUrlId = Guid.Parse(fileId),
         bcgov_Url = destinationFolder,
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
