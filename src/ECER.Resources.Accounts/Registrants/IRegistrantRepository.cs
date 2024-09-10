@@ -27,6 +27,9 @@ public interface IRegistrantRepository
 public record RegistrantQuery
 {
   public string? ByUserId { get; set; }
+  public string? ByRegistrationNumber { get; set; }
+  public string? ByLastName { get; set; }
+  public DateOnly? ByDateOfBirth { get; set; }
   public UserIdentity? ByIdentity { get; set; }
 }
 
@@ -49,6 +52,8 @@ public record UserProfile
   public string Phone { get; set; } = null!;
   public Address? ResidentialAddress { get; set; }
   public Address? MailingAddress { get; set; }
+  public bool IsVerified { get; set; }
+  public string? RegistrationNumber { get; set; }
   public IEnumerable<PreviousName> PreviousNames { get; set; } = Array.Empty<PreviousName>();
 };
 

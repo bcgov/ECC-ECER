@@ -10,9 +10,11 @@ internal sealed class UserMapper : AutoMapper.Profile
     CreateMap<UserInfo, Managers.Registry.Contract.Registrants.UserProfile>()
       .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.LastName))
+      .ForMember(d => d.GivenName, opts => opts.MapFrom(s => s.GivenName))
       .ForMember(d => d.DateOfBirth, opts => opts.MapFrom(s => s.DateOfBirth))
       .ForMember(d => d.Email, opts => opts.MapFrom(s => s.Email))
       .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.Phone))
+      .ForMember(d => d.RegistrationNumber, opts => opts.MapFrom(s => s.RegistrationNumber))
       .ForMember(d => d.ResidentialAddress, opts => opts.MapFrom(s => (Address?)null))
       .ForMember(d => d.MailingAddress, opts => opts.MapFrom(s => (Address?)null))
       .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => (string?)null))
@@ -40,9 +42,7 @@ internal sealed class UserMapper : AutoMapper.Profile
         opts => opts.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
       .ReverseMap();
 
-
     CreateMap<Managers.Registry.Contract.Registrants.IdentityDocument, IdentityDocument>().ReverseMap();
-
 
     CreateMap<UserProfile, Managers.Registry.Contract.Registrants.UserProfile>()
       .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => s.PreviousNames))
@@ -54,6 +54,5 @@ internal sealed class UserMapper : AutoMapper.Profile
       .ReverseMap()
       .ValidateMemberList(MemberList.Source)
       ;
-
   }
 }

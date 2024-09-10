@@ -80,6 +80,7 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     .CustomInstantiator(f => new UserInfo(
         f.Person.FirstName,
         f.Person.LastName,
+        f.Person.FirstName,
         DateOnly.FromDateTime(f.Person.DateOfBirth),
         f.Person.Email,
         f.Person.Phone
