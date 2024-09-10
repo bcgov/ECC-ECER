@@ -279,11 +279,10 @@ declare namespace Components {
       idp?: string | null;
     }
     export type OneYearRenewalexplanations =
-      | "Icouldnotfindemploymenttocompletetherequiredhours"
-      | "Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa"
-      | "IliveandworkinacommunitywithoutothercertifiedECEs"
-      | "Iwasunabletoenterthecountryasexpected"
-      | "Iwasunabletoworkinthechildcarefieldforpersonalreasons"
+      | "Ileftthechildcarefieldforpersonalreasons"
+      | "Iwasunabletocompletetherequiredhoursofprofessionaldevelopment"
+      | "Iwasunabletofindemploymentinthechildcarefieldinmycommunity"
+      | "MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc"
       | "Other";
     export interface OptOutReferenceRequest {
       token?: string | null;
@@ -457,6 +456,7 @@ declare namespace Components {
       dateOfBirth?: string; // date
       email?: string | null;
       phone?: string | null;
+      registrationNumber?: string | null;
       unreadMessagesCount?: number; // int32
     }
     /**
@@ -826,7 +826,9 @@ declare namespace Paths {
     export interface PathParameters {
       fileId: Parameters.FileId;
     }
-    export type RequestBody = string; // binary
+    export interface RequestBody {
+      file: string; // binary
+    }
     namespace Responses {
       export type $200 = /* file Response */ Components.Schemas.FileResponse;
       export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
