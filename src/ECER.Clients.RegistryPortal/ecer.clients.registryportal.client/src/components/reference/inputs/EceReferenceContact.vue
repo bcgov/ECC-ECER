@@ -64,7 +64,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <div v-if="wizardStore.wizardData.workExperienceType == WorkExperienceType.IS_400_Hours">
+      <div v-if="wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_400_Hours">
         <h2 class="mt-5">ECE certification</h2>
         <div>If you're registered as an ECE in Canada, please provide your certification number.</div>
 
@@ -220,7 +220,7 @@ export default defineComponent({
   mounted() {
     if (
       this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE &&
-      this.wizardStore.wizardData.workExperienceType == WorkExperienceType.IS_500_Hours
+      this.wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_500_Hours
     ) {
       const bcProvinceId = this.configStore?.provinceList.find((province) => province.title === ProvinceTerritoryType.BC)?.value;
       this.certificateProvinceIdChanged(bcProvinceId as string);

@@ -19,7 +19,7 @@
           <br />
 
           <p class="mb-3">You'll be asked to provide:</p>
-          <ul v-if="wizardStore.wizardData.workExperienceType == WorkExperienceType.IS_500_Hours" class="ml-10">
+          <ul v-if="wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_500_Hours" class="ml-10">
             <li>Your contact information</li>
             <li>Your ECE certification information</li>
             <li>An assessment if you think the applicant is competent in a variety of areas - if not, we'll ask you to provide more details</li>
@@ -28,7 +28,7 @@
             <li>Age of children the applicant cared for</li>
             <li>Dates the applicant worked the hours</li>
           </ul>
-          <ul v-if="wizardStore.wizardData.workExperienceType == WorkExperienceType.IS_400_Hours" class="ml-10">
+          <ul v-if="wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_400_Hours" class="ml-10">
             <li>Your contact information</li>
             <li>Your ECE certification information(if applicable)</li>
             <li>Total number of hours the applicant worked</li>
@@ -46,7 +46,7 @@
           </div>
           <br />
           <h1 class="mb-5">Requirements to be a reference</h1>
-          <div v-if="wizardStore.wizardData.workExperienceType == WorkExperienceType.IS_500_Hours">
+          <div v-if="wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_500_Hours">
             <p class="mb-3">You need to:</p>
             <ul class="ml-10">
               <li>Have directly supervised (observed) all hours during which the applicant worked or volunteered</li>
@@ -54,7 +54,7 @@
               <li>Be able to speak to the applicant's knowledge, skills, and ability (competencies) as an ECE</li>
             </ul>
           </div>
-          <div v-if="wizardStore.wizardData.workExperienceType == WorkExperienceType.IS_400_Hours">
+          <div v-if="wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_400_Hours">
             <p class="mb-3">You need to be:</p>
             <ul class="ml-10">
               <li>Able to confirm the applicant completed work experience hours</li>

@@ -114,13 +114,79 @@ public enum UnabletoProvideReferenceReasons
   Other
 }
 
-public record WorkExperienceReferenceDetails([Required] int? Hours, [Required] WorkHoursType? WorkHoursType, [Required] string ChildrenProgramName, [RequiredIf(WorkExperienceTypes.Is500Hours)] ChildrenProgramType? ChildrenProgramType, string? ChildrenProgramTypeOther, [RequiredIf(WorkExperienceTypes.Is500Hours)] IEnumerable<ChildcareAgeRanges>? ChildcareAgeRanges, [RequiredIf(WorkExperienceTypes.Is400Hours)] string? Role, string? AgeofChildrenCaredFor, [Required] DateTime? StartDate, [Required] DateTime? EndDate, [Required] ReferenceRelationship? ReferenceRelationship, string? ReferenceRelationshipOther, string? AdditionalComments)
+public record WorkExperienceReferenceDetails()
 {
+  [Required]
+  public int? Hours { get; set; }
+
+  [Required]
+  public WorkHoursType? WorkHoursType { get; set; }
+
+  [Required]
+  public string? ChildrenProgramName { get; set; }
+
+  [RequiredWhenWorkExperienceType(WorkExperienceTypes.Is500Hours)]
+  public ChildrenProgramType? ChildrenProgramType { get; set; }
+  public string? ChildrenProgramTypeOther { get; set; }
+
+  [RequiredWhenWorkExperienceType(WorkExperienceTypes.Is500Hours)]
+  public IEnumerable<ChildcareAgeRanges>? ChildcareAgeRanges { get; set; }
+
+  [RequiredWhenWorkExperienceType(WorkExperienceTypes.Is400Hours)]
+  public string? Role { get; set; }
+  public string? AgeofChildrenCaredFor { get; set; }
+
+  [Required]
+  public DateTime? StartDate { get; set; }
+
+  [Required]
+  public DateTime? EndDate { get; set; }
+
+  [Required]
+  public ReferenceRelationship? ReferenceRelationship { get; set; }
+  public string? ReferenceRelationshipOther { get; set; }
+  public string? AdditionalComments { get; set; }
+
+  [Required]
   public WorkExperienceTypes? WorkExperienceType { get; set; }
 }
-public record WorkExperienceReferenceCompetenciesAssessment([Required] LikertScale? ChildDevelopment, string ChildDevelopmentReason, [Required] LikertScale? ChildGuidance, string ChildGuidanceReason, [Required] LikertScale? HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, [Required] LikertScale? DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, [Required] LikertScale? ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, [Required] LikertScale? FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, [Required] LikertScale? FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, [Required] LikertScale? FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
-public record WorkExperienceReferenceSubmissionRequest([Required] string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, [RequiredIf(WorkExperienceTypes.Is500Hours)] WorkExperienceReferenceCompetenciesAssessment? WorkExperienceReferenceCompetenciesAssessment, bool ConfirmProvidedInformationIsRight, [Required] string RecaptchaToken)
+public record WorkExperienceReferenceCompetenciesAssessment()
 {
+  [Required]
+  public LikertScale? ChildDevelopment { get; set; }
+  public string? ChildDevelopmentReason { get; set; }
+
+  [Required]
+  public LikertScale? ChildGuidance { get; set; }
+  public string? ChildGuidanceReason { get; set; }
+
+  [Required]
+  public LikertScale? HealthSafetyAndNutrition { get; set; }
+  public string? HealthSafetyAndNutritionReason { get; set; }
+
+  [Required]
+  public LikertScale? DevelopAnEceCurriculum { get; set; }
+  public string? DevelopAnEceCurriculumReason { get; set; }
+
+  [Required]
+  public LikertScale? ImplementAnEceCurriculum { get; set; }
+  public string? ImplementAnEceCurriculumReason { get; set; }
+
+  [Required]
+  public LikertScale? FosteringPositiveRelationChild { get; set; }
+  public string? FosteringPositiveRelationChildReason { get; set; }
+
+  [Required]
+  public LikertScale? FosteringPositiveRelationFamily { get; set; }
+  public string? FosteringPositiveRelationFamilyReason { get; set; }
+
+  [Required]
+  public LikertScale? FosteringPositiveRelationCoworker { get; set; }
+  public string? FosteringPositiveRelationCoworkerReason { get; set; }
+}
+public record WorkExperienceReferenceSubmissionRequest([Required] string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, [RequiredWhenWorkExperienceType(WorkExperienceTypes.Is500Hours)] WorkExperienceReferenceCompetenciesAssessment? WorkExperienceReferenceCompetenciesAssessment, bool ConfirmProvidedInformationIsRight, [Required] string RecaptchaToken)
+{
+  [Required]
   public WorkExperienceTypes? WorkExperienceType { get; set; }
 }
 
@@ -177,12 +243,12 @@ public enum ReferenceKnownTime
 }
 
 // custom required annotations based on WorkExperienceTypes
-public sealed class RequiredIfAttribute : ValidationAttribute
+public sealed class RequiredWhenWorkExperienceTypeAttribute : ValidationAttribute
 {
   private readonly WorkExperienceTypes _workExperienceType;
   public WorkExperienceTypes WorkExperienceType { get; }
 
-  public RequiredIfAttribute(WorkExperienceTypes workExperienceType)
+  public RequiredWhenWorkExperienceTypeAttribute(WorkExperienceTypes workExperienceType)
   {
     _workExperienceType = workExperienceType;
   }
