@@ -453,6 +453,7 @@ declare namespace Components {
     export interface UserInfo {
       firstName?: string | null;
       lastName?: string | null;
+      givenName?: string | null;
       dateOfBirth?: string; // date
       email?: string | null;
       phone?: string | null;

@@ -24,7 +24,7 @@ export default {
       // Attempt to get user info
       const userInfo: Components.Schemas.UserInfo | null = await getUserInfo();
 
-      if (userInfo) {
+      if (!userInfo) {
         // Maybe user has a profile already
         const profileInfo: Components.Schemas.UserProfile | null = await getProfile();
 
