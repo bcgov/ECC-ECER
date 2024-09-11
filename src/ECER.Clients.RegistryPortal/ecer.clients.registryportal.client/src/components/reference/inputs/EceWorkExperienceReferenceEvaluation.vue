@@ -104,6 +104,7 @@
             hide-details="auto"
             type="date"
             :max="today"
+            :rules="[Rules.required('Enter the start date of hours'), Rules.futureDateNotAllowedRule('Start date of hours cannot be in the future')]"
             @update:model-value="updateField('startDate', $event)"
           ></v-text-field>
         </v-col>
@@ -117,6 +118,7 @@
             hide-details="auto"
             type="date"
             :max="today"
+            :rules="[Rules.required('Enter the end date of hours'), Rules.dateBeforeRule(modelValue.startDate || ''), Rules.futureDateNotAllowedRule('End date of hours cannot be in the future')]"
             @update:model-value="updateField('endDate', $event)"
           ></v-text-field>
         </v-col>

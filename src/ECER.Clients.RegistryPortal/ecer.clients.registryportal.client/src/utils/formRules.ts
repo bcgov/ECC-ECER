@@ -179,6 +179,25 @@ const dateBeforeRule = (targetDate: string, message = "End date cannot be before
 };
 
 /**
+ * Validates that a date string is not greater than today's date.
+ *
+ * @param {string} [message="Date cannot be in the future"] - The error message to return if the date is greater than today.
+ * @returns {boolean|string} - Returns `true` if the date is not greater than today, otherwise returns the error message.
+ */
+const futureDateNotAllowedRule = (message = "Date cannot be in the future") => {
+  return (v: string) => {
+    if (v) {
+      const input = DateTime.fromISO(v);
+      const today = DateTime.now().startOf("day");
+
+      return input <= today || message;
+    }
+
+    return true;
+  };
+};
+
+/**
  * conditional wrapper for form rules. If condition is met then return rule function
  * otherwise ignore by returning true
  * @param {boolean} condition
@@ -205,6 +224,7 @@ export {
   dateBetweenRule,
   dateRuleRange,
   email,
+  futureDateNotAllowedRule,
   hasCheckbox,
   noSpecialCharactersAddress,
   noSpecialCharactersContactName,

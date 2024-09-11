@@ -104,6 +104,21 @@
             hide-details="auto"
             type="date"
             :max="today"
+            :rules="[
+              Rules.required('Enter the start date of hours'),
+              Rules.conditionalWrapper(
+                latestCertificateStatus === 'Active',
+                Rules.dateBetweenRule(
+                  latestCertificateEffectiveDate || '',
+                  today || '',
+                  'The start date of hours must be within the term of current certificate',
+                ),
+              ),
+              Rules.conditionalWrapper(
+                latestCertificateStatus === 'Expired',
+                Rules.dateBetweenRule(fiveYearsAgo || '', today || '', 'The start date of hours must be within the last 5 years'),
+              ),
+            ]"
             @update:model-value="updateField('startDate', $event)"
           ></v-text-field>
         </v-col>
@@ -117,6 +132,22 @@
             hide-details="auto"
             type="date"
             :max="today"
+            :rules="[
+              Rules.required('Enter the end date of hours'),
+              Rules.dateBeforeRule(modelValue.startDate || ''),
+              Rules.conditionalWrapper(
+                latestCertificateStatus === 'Active',
+                Rules.dateBetweenRule(
+                  latestCertificateEffectiveDate || '',
+                  today || '',
+                  'The end date of hours must be within the term of current certificate',
+                ),
+              ),
+              Rules.conditionalWrapper(
+                latestCertificateStatus === 'Expired',
+                Rules.dateBetweenRule(fiveYearsAgo || '', today || '', 'The end date of hours must be within the last 5 years'),
+              ),
+            ]"
             @update:model-value="updateField('endDate', $event)"
           ></v-text-field>
         </v-col>
