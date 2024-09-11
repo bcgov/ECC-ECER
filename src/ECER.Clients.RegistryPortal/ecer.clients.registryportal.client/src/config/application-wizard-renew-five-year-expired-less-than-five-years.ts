@@ -22,7 +22,7 @@ const applicationWizard: Wizard = {
       form: explanationLetterForm,
       key: "item.2",
     },
-    education: {
+    professionalDevelopments: {
       stage: "ProfessionalDevelopment",
       title: "Professional development",
       form: professionalDevelopmentForm,

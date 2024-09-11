@@ -1,5 +1,5 @@
 <template>
-  <PreviewCard title="Application type" portal-stage="CertificationType" :editable="false">
+  <PreviewCard :title="generateTitle" portal-stage="CertificationType" :editable="false">
     <template #content>
       <v-row>
         <v-col cols="4">
@@ -42,9 +42,9 @@ export default defineComponent({
       if (this.applicationStore.isDraftCertificateTypeEceAssistant) {
         certificationType = "ECE Assistant";
       } else if (this.applicationStore.isDraftCertificateTypeOneYear) {
-        certificationType = "One Year";
+        certificationType = "ECE One Year";
       } else if (this.applicationStore.isDraftCertificateTypeFiveYears) {
-        certificationType = "Five Year";
+        certificationType = "ECE Five Year";
 
         if (this.applicationStore.isDraftCertificateTypeSne) {
           certificationType += " and Special Needs Educator (SNE)";
@@ -54,6 +54,13 @@ export default defineComponent({
         }
       }
       return certificationType;
+    },
+    generateTitle() {
+      if (this.applicationStore.isDraftApplicationRenewal) {
+        return "Certification renewal";
+      } else {
+        return "Application type";
+      }
     },
   },
 });
