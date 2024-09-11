@@ -134,20 +134,46 @@ const dateRuleRange = (targetDate: string, years: number, message = `Date should
     return true;
   };
 };
-/**
- * Custom endDate Rule! Checks that we have start date and that end date
- * happens after start date. Date format should be 2022-12-10 YYYY-MM-DD.
- * @param {String} effectiveDate
- * @param {String} expiryDate
- * @returns {String|Boolean}
- */
-const endDateRule = (effectiveDate: string, expiryDate: string, message = "End date cannot be before start date") => {
-  if (effectiveDate && expiryDate) {
-    const effDate = DateTime.fromISO(effectiveDate);
-    const expDate = DateTime.fromISO(expiryDate);
 
-    return expDate < effDate || expDate === effDate || message;
-  }
+/**
+ * Validates that a date string falls within a specified range.
+ *
+ * @param {string} startDate - The start date of the valid range (ISO 8601 format).
+ * @param {string} endDate - The end date of the valid range (ISO 8601 format).
+ * @param {string} [message="Date should be between ${startDate} and ${endDate}"] - The error message to return if the date is outside the valid range.
+ * @returns {boolean|string} - Returns `true` if the date is within the valid range, otherwise returns the error message.
+ */
+const dateBetweenRule = (startDate: string, endDate: string, message = `Date should be between ${startDate} and ${endDate}`) => {
+  return (v: string) => {
+    if (v && startDate && endDate) {
+      const end = DateTime.fromISO(endDate);
+      const start = DateTime.fromISO(startDate);
+      const input = DateTime.fromISO(v);
+
+      return (input <= end && input >= start) || message;
+    }
+
+    return true;
+  };
+};
+/**
+ * Validates that a date string is not before a specified target date.
+ *
+ * @param {string} targetDate - The target date (ISO 8601 format).
+ * @param {string} [message="End date cannot be before start date"] - The error message to return if the date is before the target date.
+ * @returns {boolean|string} - Returns `true` if the date is not before the target date, otherwise returns the error message.
+ */
+const dateBeforeRule = (targetDate: string, message = "End date cannot be before start date") => {
+  return (v: string) => {
+    if (v && targetDate) {
+      const input = DateTime.fromISO(v);
+      const target = DateTime.fromISO(targetDate);
+
+      return input >= target || message;
+    }
+
+    return true;
+  };
 
   return true;
 };
@@ -161,11 +187,6 @@ const endDateRule = (effectiveDate: string, expiryDate: string, message = "End d
  */
 const conditionalWrapper = (condition: boolean, rule: any) => {
   return condition ? rule : true;
-  if (condition) {
-    return rule;
-  } else {
-    return true;
-  }
 };
 
 /**
@@ -180,9 +201,10 @@ const website = (message = "Website must be valid and secure (i.e., https)") => 
 export {
   atLeastOneOptionRequired,
   conditionalWrapper,
+  dateBeforeRule,
+  dateBetweenRule,
   dateRuleRange,
   email,
-  endDateRule,
   hasCheckbox,
   noSpecialCharactersAddress,
   noSpecialCharactersContactName,

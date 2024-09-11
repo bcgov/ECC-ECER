@@ -393,7 +393,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         Id = charGuid,
         ecer_CharacterReferenceId = charGuid,
-        //ecer_Name = "Reference Test name",
+        ecer_Name = name,
         ecer_FirstName = "autotest_charref_first",
         ecer_LastName = "autotest_charref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca"
@@ -404,7 +404,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         Id = guid,
         ecer_PortalInvitationId = guid,
-        //ecer_Name = name,
+        ecer_Name = name,
         ecer_FirstName = "autotest_charref_first",
         ecer_LastName = "autotest_charref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
@@ -427,9 +427,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       .Where(p => p.ecer_ApplicantId != null &&
                   p.ecer_ApplicationId != null &&
                   p.ecer_Name == name &&
-
                   p.ecer_WorkExperienceReferenceId != null &&
-                  p.StateCode != ecer_portalinvitation_statecode.Inactive)
+                  p.StateCode == ecer_portalinvitation_statecode.Active)
       .ToList();
 
     foreach (var portalInvitation in portalInvitations)
@@ -457,7 +456,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         Id = wpGuid,
         ecer_WorkExperienceRefId = wpGuid,
-        //ecer_Name = "autotest_Reference Test name",
+        ecer_Name = name,
         ecer_FirstName = "autotest_workref_first",
         ecer_LastName = "autotest_workref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
@@ -468,7 +467,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         Id = guid,
         ecer_PortalInvitationId = guid,
-        //ecer_Name = name,
+        ecer_Name = name,
         ecer_FirstName = "autotest_workref_first",
         ecer_LastName = "autotest_workref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",

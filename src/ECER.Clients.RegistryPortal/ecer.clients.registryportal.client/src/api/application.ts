@@ -7,7 +7,7 @@ const apiResultHandler = new ApiResultHandler();
 const getApplications = async (): Promise<ApiResponse<Components.Schemas.Application[] | null | undefined>> => {
   const client = await getClient();
 
-  return apiResultHandler.execute<Components.Schemas.Application[] | null | undefined>({ request: client.application_get({ id: "" }) });
+  return apiResultHandler.execute<Components.Schemas.Application[] | null | undefined>({ request: client.application_get({ id: "" }), key: "application_get" });
 };
 
 const createOrUpdateDraftApplication = async (

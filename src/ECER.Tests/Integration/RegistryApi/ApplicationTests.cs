@@ -150,7 +150,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var uploadedFileResponse = (await fileResponse.ReadAsJsonAsync<FileResponse>()).ShouldNotBeNull();
 
     var professionalDevelopment = CreateProfessionalDevelopment();
-    professionalDevelopment.NewFiles = [testFolder + "/" + uploadedFileResponse.fileId];
+    professionalDevelopment.NewFiles = [uploadedFileResponse.fileId];
     var application = CreateDraftApplication();
     application.ProfessionalDevelopments = [professionalDevelopment];
     var response = await Host.Scenario(_ =>
@@ -176,7 +176,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     applicationFromServer.ProfessionalDevelopments.ShouldHaveSingleItem();
     var professionalDev = applicationFromServer.ProfessionalDevelopments.First();
     professionalDev.Files.ShouldHaveSingleItem();
-    professionalDev.Files.First().ShouldContain(uploadedFileResponse.fileId);
+    professionalDev.Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
   }
 
   [Fact]
@@ -448,18 +448,15 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   private ProfessionalDevelopment CreateProfessionalDevelopment()
   {
     return new ProfessionalDevelopment(
-        CertificationNumber: faker.Random.AlphaNumeric(10),
-        CertificationExpiryDate: faker.Date.Future(),
-        DateSigned: faker.Date.Recent(),
         CourseName: faker.Company.CatchPhrase(),
         OrganizationName: faker.Company.CompanyName(),
         StartDate: faker.Date.Past(),
-        EndDate: faker.Date.Recent())
+        EndDate: faker.Date.Recent(),
+        NumberOfHours: faker.Random.Int(1, 100))
     {
       Id = null,
       OrganizationContactInformation = faker.Phone.PhoneNumber(),
       InstructorName = faker.Name.FullName(),
-      NumberOfHours = faker.Random.Int(1, 100),
       Status = faker.PickRandom<ProfessionalDevelopmentStatusCode>()
     };
   }

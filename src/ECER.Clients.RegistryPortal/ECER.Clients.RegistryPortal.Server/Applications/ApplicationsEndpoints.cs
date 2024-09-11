@@ -326,17 +326,17 @@ public record Application
   public string? ExplanationLetter { get; set; }
   public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
 }
-public record ProfessionalDevelopment([Required] string CertificationNumber, [Required] DateTime CertificationExpiryDate, [Required] DateTime DateSigned, [Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate)
+public record ProfessionalDevelopment([Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] int NumberOfHours)
 {
   public string? Id { get; set; }
   public string? OrganizationContactInformation { get; set; }
+  public string? OrganizationEmailAddress { get; set; }
   public string? InstructorName { get; set; }
-  [Required]
-  public int? NumberOfHours { get; set; }
+  public string? CourseorWorkshopLink { get; set; }
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
-  public IEnumerable<string> Files { get; set; } = Array.Empty<string>();
+  public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
 }
 public record Transcript()
 {
@@ -390,11 +390,10 @@ public enum CertificationType
 
 public enum OneYearRenewalexplanations
 {
-  Icouldnotfindemploymenttocompletetherequiredhours,
-  Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa,
-  IliveandworkinacommunitywithoutothercertifiedECEs,
-  Iwasunabletoenterthecountryasexpected,
-  Iwasunabletoworkinthechildcarefieldforpersonalreasons,
+  Ileftthechildcarefieldforpersonalreasons,
+  Iwasunabletocompletetherequiredhoursofprofessionaldevelopment,
+  Iwasunabletofindemploymentinthechildcarefieldinmycommunity,
+  MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc,
   Other,
 }
 
@@ -470,7 +469,13 @@ public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, Applic
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
 }
-
+public record FileInfo(string Id)
+{
+  public string? Url { get; set; } = string.Empty;
+  public string? Extention { get; set; } = string.Empty;
+  public string? Name { get; set; } = string.Empty;
+  public string? Size { get; set; } = string.Empty;
+}
 public record TranscriptStatus(string Id, TranscriptStage Status, string EducationalInstitutionName);
 
 public record WorkExperienceReferenceStatus(string Id, WorkExperienceRefStage Status, string FirstName, string LastName, string EmailAddress)

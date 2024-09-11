@@ -1,8 +1,11 @@
 import { defineStore } from "pinia";
 
 import { createOrUpdateDraftApplication, getApplications, submitDraftApplication } from "@/api/application";
+import type { ProfessionalDevelopmentExtended } from "@/components/inputs/EceProfessionalDevelopment.vue";
+import type { FileItem } from "@/components/UploadFileItem.vue";
 import type { Components } from "@/types/openapi";
 import type { ApplicationStage } from "@/types/wizard";
+import { humanFileSize } from "@/utils/functions";
 
 import { useWizardStore } from "./wizard";
 export interface ApplicationState {
@@ -22,6 +25,7 @@ export const useApplicationStore = defineStore("application", {
       transcripts: [] as Components.Schemas.Transcript[],
       characterReferences: [] as Components.Schemas.CharacterReference[],
       workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
+      professionalDevelopments: [] as Components.Schemas.ProfessionalDevelopment[],
       applicationType: "New",
       createdOn: null,
     },
@@ -135,6 +139,31 @@ export const useApplicationStore = defineStore("application", {
         wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress === ""
       ) {
         this.draftApplication.characterReferences = [];
+      }
+
+      if (wizardStore.wizardData.professionalDevelopments) {
+        //remove all newFilesWithData elements and add them to newFiles as ID's
+        const professionalDevelopmentCleaned = wizardStore.wizardData.professionalDevelopments.map((item: ProfessionalDevelopmentExtended) => {
+          if (item?.newFilesWithData) {
+            for (const each of item?.newFilesWithData as FileItem[]) {
+              item.newFiles?.push(each.fileId);
+
+              //we need to change wizardData to match what's been done on the server (added files)
+              const addedFile: Components.Schemas.FileInfo = {
+                id: each.fileId,
+                size: humanFileSize(each.fileSize),
+                name: each.fileName,
+              };
+
+              item.files?.push(addedFile);
+            }
+            delete item["newFilesWithData"];
+          }
+
+          return item;
+        });
+
+        this.draftApplication.professionalDevelopments = professionalDevelopmentCleaned;
       }
     },
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {

@@ -73,6 +73,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_applicationassessmentresult_AppAssessId = "ecer_applicationassessmentresult_AppAssessId";
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
+			public const string ecer_ApproveAllProfessionalDevelopments = "ecer_approveallprofessionaldevelopments";
+			public const string ecer_approveallprofessionaldevelopmentsName = "ecer_approveallprofessionaldevelopmentsname";
 			public const string ecer_CharacterReferenceReviewedId = "ecer_characterreferencereviewedid";
 			public const string ecer_CharacterReferenceReviewedIdName = "ecer_characterreferencereviewedidname";
 			public const string ecer_ConditionNotes = "ecer_conditionnotes";
@@ -382,6 +384,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_applicationid"))
 				{
 					return this.FormattedValues["ecer_applicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_approveallprofessionaldevelopments")]
+		public System.Nullable<bool> ecer_ApproveAllProfessionalDevelopments
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_approveallprofessionaldevelopments");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_approveallprofessionaldevelopments", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_approveallprofessionaldevelopmentsname")]
+		public string ecer_approveallprofessionaldevelopmentsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_approveallprofessionaldevelopments"))
+				{
+					return this.FormattedValues["ecer_approveallprofessionaldevelopments"];
 				}
 				else
 				{

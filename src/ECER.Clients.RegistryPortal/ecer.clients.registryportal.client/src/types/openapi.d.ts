@@ -237,6 +237,13 @@ declare namespace Components {
     }
     export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
     export type EducationRecognition = "Recognized" | "NotRecognized";
+    export interface FileInfo {
+      id?: string | null;
+      url?: string | null;
+      extention?: string | null;
+      name?: string | null;
+      size?: string | null;
+    }
     /**
      * file Response
      */
@@ -279,11 +286,10 @@ declare namespace Components {
       idp?: string | null;
     }
     export type OneYearRenewalexplanations =
-      | "Icouldnotfindemploymenttocompletetherequiredhours"
-      | "Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa"
-      | "IliveandworkinacommunitywithoutothercertifiedECEs"
-      | "Iwasunabletoenterthecountryasexpected"
-      | "Iwasunabletoworkinthechildcarefieldforpersonalreasons"
+      | "Ileftthechildcarefieldforpersonalreasons"
+      | "Iwasunabletocompletetherequiredhoursofprofessionaldevelopment"
+      | "Iwasunabletofindemploymentinthechildcarefieldinmycommunity"
+      | "MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc"
       | "Other";
     export interface OptOutReferenceRequest {
       token?: string | null;
@@ -334,21 +340,20 @@ declare namespace Components {
       instance?: string | null;
     }
     export interface ProfessionalDevelopment {
-      certificationNumber?: string | null;
-      certificationExpiryDate?: string; // date-time
-      dateSigned?: string; // date-time
       courseName?: string | null;
       organizationName?: string | null;
       startDate?: string; // date-time
       endDate?: string; // date-time
+      numberOfHours?: number; // int32
       id?: string | null;
       organizationContactInformation?: string | null;
+      organizationEmailAddress?: string | null;
       instructorName?: string | null;
-      numberOfHours: number; // int32
+      courseorWorkshopLink?: string | null;
       status?: ProfessionalDevelopmentStatusCode;
       deletedFiles?: string[] | null;
       newFiles?: string[] | null;
-      files?: string[] | null;
+      files?: FileInfo[] | null;
     }
     export type ProfessionalDevelopmentStatusCode =
       | "ApplicationSubmitted"
@@ -835,7 +840,9 @@ declare namespace Paths {
     export interface PathParameters {
       fileId: Parameters.FileId;
     }
-    export type RequestBody = string; // binary
+    export interface RequestBody {
+      file: string; // binary
+    }
     namespace Responses {
       export type $200 = /* file Response */ Components.Schemas.FileResponse;
       export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;

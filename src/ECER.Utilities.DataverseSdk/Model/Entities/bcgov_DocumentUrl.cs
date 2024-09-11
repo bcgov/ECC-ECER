@@ -10,1970 +10,1968 @@
 
 namespace ECER.Utilities.DataverseSdk.Model
 {
-
-
-  [System.Runtime.Serialization.DataContractAttribute()]
-  [System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-  public enum bcgov_DocumentUrl_bcgov_FileClassification
-  {
-
-    /// <summary>
-    /// applies to the lowest level of classified government data. Confidential data requires less protection than top-secret or secret data. Disclosed confidential information can cause some harm to national security.
-    /// </summary>
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    Confidential = 931490002,
-
-    /// <summary>
-    /// information that requires a high level of protection. The disclosure of this information can cause serious damage to national security.
-    /// </summary>
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    Secret = 931490003,
-
-    /// <summary>
-    /// includes all information that is not otherwise classified. However, it is still categorized as sensitive, which means it requires some protection. Disclosed SBU data may violate the privacy rights of citizens.
-    /// </summary>
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    Sensitive = 931490001,
-
-    /// <summary>
-    /// information that requires the highest level of access control and protection. It is restricted to people with a “need to know” clearance. Disclosed top-secret data can threaten national security.
-    /// </summary>
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    TopSecret = 931490004,
-
-    /// <summary>
-    /// applies to data labeled as not sensitive. This data does not require any protection.
-    /// </summary>
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    Unclassified = 931490000,
-  }
-
-  /// <summary>
-  /// Status of the Document Url
-  /// </summary>
-  [System.Runtime.Serialization.DataContractAttribute()]
-  [System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-  public enum bcgov_documenturl_statecode
-  {
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    Active = 0,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    Inactive = 1,
-  }
-
-  /// <summary>
-  /// Reason for the status of the Document Url
-  /// </summary>
-  [System.Runtime.Serialization.DataContractAttribute()]
-  [System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-  public enum bcgov_DocumentUrl_StatusCode
-  {
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    Active = 1,
-
-    [System.Runtime.Serialization.EnumMemberAttribute()]
-    Inactive = 2,
-  }
-
-  /// <summary>
-  /// Stores document metadata information.
-  /// </summary>
-  [System.Runtime.Serialization.DataContractAttribute()]
-  [Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("bcgov_documenturl")]
-  [System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-  public partial class bcgov_DocumentUrl : Microsoft.Xrm.Sdk.Entity
-  {
-
-    /// <summary>
-    /// Available fields, a the time of codegen, for the bcgov_documenturl entity
-    /// </summary>
-    public partial class Fields
-    {
-      public const string bcgov_AppointmentId = "bcgov_appointmentid";
-      public const string bcgov_AppointmentIdName = "bcgov_appointmentidname";
-      public const string bcgov_CaseId = "bcgov_caseid";
-      public const string bcgov_CaseIdName = "bcgov_caseidname";
-      public const string bcgov_contact_bcgov_documenturl = "bcgov_contact_bcgov_documenturl";
-      public const string bcgov_Customer = "bcgov_customer";
-      public const string bcgov_CustomerName = "bcgov_customername";
-      public const string bcgov_CustomerYomiName = "bcgov_customeryominame";
-      public const string bcgov_DocumentUrlId = "bcgov_documenturlid";
-      public const string Id = "bcgov_documenturlid";
-      public const string bcgov_EmailId = "bcgov_emailid";
-      public const string bcgov_EmailIdName = "bcgov_emailidname";
-      public const string bcgov_FaxId = "bcgov_faxid";
-      public const string bcgov_FaxIdName = "bcgov_faxidname";
-      public const string bcgov_FileClassification = "bcgov_fileclassification";
-      public const string bcgov_fileclassificationName = "bcgov_fileclassificationname";
-      public const string bcgov_FileExtension = "bcgov_fileextension";
-      public const string bcgov_FileName = "bcgov_filename";
-      public const string bcgov_FileSize = "bcgov_filesize";
-      public const string bcgov_LetterId = "bcgov_letterid";
-      public const string bcgov_LetterIdName = "bcgov_letteridname";
-      public const string bcgov_OriginCode = "bcgov_origincode";
-      public const string bcgov_origincodeName = "bcgov_origincodename";
-      public const string bcgov_PhoneCallId = "bcgov_phonecallid";
-      public const string bcgov_PhoneCallIdName = "bcgov_phonecallidname";
-      public const string bcgov_ReceivedDate = "bcgov_receiveddate";
-      public const string bcgov_tag1_bcgov_documenturl = "bcgov_tag1_bcgov_documenturl";
-      public const string bcgov_Tag1Id = "bcgov_tag1id";
-      public const string bcgov_Tag1IdName = "bcgov_tag1idname";
-      public const string bcgov_tag2_bcgov_documenturl = "bcgov_tag2_bcgov_documenturl";
-      public const string bcgov_Tag2Id = "bcgov_tag2id";
-      public const string bcgov_Tag2IdName = "bcgov_tag2idname";
-      public const string bcgov_tag3_bcgov_documenturl = "bcgov_tag3_bcgov_documenturl";
-      public const string bcgov_Tag3Id = "bcgov_tag3id";
-      public const string bcgov_Tag3IdName = "bcgov_tag3idname";
-      public const string bcgov_TaskId = "bcgov_taskid";
-      public const string bcgov_TaskIdName = "bcgov_taskidname";
-      public const string bcgov_Url = "bcgov_url";
-      public const string CreatedBy = "createdby";
-      public const string CreatedByName = "createdbyname";
-      public const string CreatedByYomiName = "createdbyyominame";
-      public const string CreatedOn = "createdon";
-      public const string CreatedOnBehalfBy = "createdonbehalfby";
-      public const string CreatedOnBehalfByName = "createdonbehalfbyname";
-      public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-      public const string ecer_ApplicationId = "ecer_applicationid";
-      public const string ecer_ApplicationIdName = "ecer_applicationidname";
-      public const string ecer_bcgov_documenturl_CommunicationId_ecer_communication = "ecer_bcgov_documenturl_CommunicationId_ecer_communication";
-      public const string ecer_bcgov_documenturl_InvestigationInterviewI = "ecer_bcgov_documenturl_InvestigationInterviewI";
-      public const string ecer_bcgov_documenturl_ProfessionalDevelopmentId = "ecer_bcgov_documenturl_ProfessionalDevelopmentId";
-      public const string ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton";
-      public const string ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos = "ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos";
-      public const string ecer_CertificateId = "ecer_certificateid";
-      public const string ecer_CertificateIdName = "ecer_certificateidname";
-      public const string ecer_CommunicationId = "ecer_communicationid";
-      public const string ecer_CommunicationIdName = "ecer_communicationidname";
-      public const string ecer_DisableExternalViewing = "ecer_disableexternalviewing";
-      public const string ecer_disableexternalviewingName = "ecer_disableexternalviewingname";
-      public const string ecer_DocumentExternallyViewed = "ecer_documentexternallyviewed";
-      public const string ecer_documenturl_ApplicationId = "ecer_documenturl_ApplicationId";
-      public const string ecer_documenturl_CertificateId = "ecer_documenturl_CertificateId";
-      public const string ecer_documenturl_InvestigationId = "ecer_documenturl_InvestigationId";
-      public const string ecer_documenturl_PreviousNameId = "ecer_documenturl_PreviousNameId";
-      public const string ecer_investigationid = "ecer_investigationid";
-      public const string ecer_investigationidName = "ecer_investigationidname";
-      public const string ecer_InvestigationInterviewId = "ecer_investigationinterviewid";
-      public const string ecer_InvestigationInterviewIdName = "ecer_investigationinterviewidname";
-      public const string ecer_PreviousNameId = "ecer_previousnameid";
-      public const string ecer_PreviousNameIdName = "ecer_previousnameidname";
-      public const string ecer_ProfessionalDevelopmentId = "ecer_professionaldevelopmentid";
-      public const string ecer_ProfessionalDevelopmentIdName = "ecer_professionaldevelopmentidname";
-      public const string ecer_programapplicationid = "ecer_programapplicationid";
-      public const string ecer_programapplicationidName = "ecer_programapplicationidname";
-      public const string ecer_PSPSiteVisitId = "ecer_pspsitevisitid";
-      public const string ecer_PSPSiteVisitIdName = "ecer_pspsitevisitidname";
-      public const string ecer_transcript_TranscriptDocumentId = "ecer_transcript_TranscriptDocumentId";
-      public const string ImportSequenceNumber = "importsequencenumber";
-      public const string ModifiedBy = "modifiedby";
-      public const string ModifiedByName = "modifiedbyname";
-      public const string ModifiedByYomiName = "modifiedbyyominame";
-      public const string ModifiedOn = "modifiedon";
-      public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
-      public const string ModifiedOnBehalfByName = "modifiedonbehalfbyname";
-      public const string ModifiedOnBehalfByYomiName = "modifiedonbehalfbyyominame";
-      public const string OverriddenCreatedOn = "overriddencreatedon";
-      public const string OwnerId = "ownerid";
-      public const string OwnerIdName = "owneridname";
-      public const string OwnerIdYomiName = "owneridyominame";
-      public const string OwningBusinessUnit = "owningbusinessunit";
-      public const string OwningBusinessUnitName = "owningbusinessunitname";
-      public const string OwningTeam = "owningteam";
-      public const string OwningUser = "owninguser";
-      public const string StateCode = "statecode";
-      public const string statecodeName = "statecodename";
-      public const string StatusCode = "statuscode";
-      public const string statuscodeName = "statuscodename";
-      public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
-      public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
-      public const string VersionNumber = "versionnumber";
-    }
-
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public bcgov_DocumentUrl(System.Guid id) :
-        base(EntityLogicalName, id)
-    {
-    }
-
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public bcgov_DocumentUrl(string keyName, object keyValue) :
-        base(EntityLogicalName, keyName, keyValue)
-    {
-    }
-
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public bcgov_DocumentUrl(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) :
-        base(EntityLogicalName, keyAttributes)
-    {
-    }
-
-    /// <summary>
-    /// Default Constructor.
-    /// </summary>
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public bcgov_DocumentUrl() :
-        base(EntityLogicalName)
-    {
-    }
-
-    public const string PrimaryIdAttribute = "bcgov_documenturlid";
-
-    public const string PrimaryNameAttribute = "bcgov_filename";
-
-    public const string EntitySchemaName = "bcgov_DocumentUrl";
-
-    public const string EntityLogicalName = "bcgov_documenturl";
-
-    public const string EntityLogicalCollectionName = "bcgov_documenturls";
-
-    public const string EntitySetName = "bcgov_documenturls";
-
-    /// <summary>
-    /// Unique identifier for Appointment associated with Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_appointmentid")]
-    public Microsoft.Xrm.Sdk.EntityReference bcgov_AppointmentId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_appointmentid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_appointmentid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_appointmentidname")]
-    public string bcgov_AppointmentIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_appointmentid"))
-        {
-          return this.FormattedValues["bcgov_appointmentid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for Case associated with Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_caseid")]
-    public Microsoft.Xrm.Sdk.EntityReference bcgov_CaseId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_caseid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_caseid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_caseidname")]
-    public string bcgov_CaseIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_caseid"))
-        {
-          return this.FormattedValues["bcgov_caseid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for Customer associated with Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_customer")]
-    public Microsoft.Xrm.Sdk.EntityReference bcgov_Customer
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_customer");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_customer", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_customername")]
-    public string bcgov_CustomerName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_customer"))
-        {
-          return this.FormattedValues["bcgov_customer"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_customeryominame")]
-    public string bcgov_CustomerYomiName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_customer"))
-        {
-          return this.FormattedValues["bcgov_customer"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for entity instances
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_documenturlid")]
-    public System.Nullable<System.Guid> bcgov_DocumentUrlId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.Guid>>("bcgov_documenturlid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_documenturlid", value);
-        if (value.HasValue)
-        {
-          base.Id = value.Value;
-        }
-        else
-        {
-          base.Id = System.Guid.Empty;
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_documenturlid")]
-    public override System.Guid Id
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return base.Id;
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.bcgov_DocumentUrlId = value;
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for Email associated with Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_emailid")]
-    public Microsoft.Xrm.Sdk.EntityReference bcgov_EmailId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_emailid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_emailid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_emailidname")]
-    public string bcgov_EmailIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_emailid"))
-        {
-          return this.FormattedValues["bcgov_emailid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for Fax associated with Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_faxid")]
-    public Microsoft.Xrm.Sdk.EntityReference bcgov_FaxId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_faxid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_faxid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_faxidname")]
-    public string bcgov_FaxIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_faxid"))
-        {
-          return this.FormattedValues["bcgov_faxid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_fileclassification")]
-    public virtual bcgov_DocumentUrl_bcgov_FileClassification? bcgov_FileClassification
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return ((bcgov_DocumentUrl_bcgov_FileClassification?)(EntityOptionSetEnum.GetEnum(this, "bcgov_fileclassification")));
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_fileclassification", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_fileclassificationname")]
-    public string bcgov_fileclassificationName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_fileclassification"))
-        {
-          return this.FormattedValues["bcgov_fileclassification"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// The file extension of the document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_fileextension")]
-    public string bcgov_FileExtension
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("bcgov_fileextension");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_fileextension", value);
-      }
-    }
-
-    /// <summary>
-    /// The name of the document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_filename")]
-    public string bcgov_FileName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("bcgov_filename");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_filename", value);
-      }
-    }
-
-    /// <summary>
-    /// File Size of the Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_filesize")]
-    public string bcgov_FileSize
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("bcgov_filesize");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_filesize", value);
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for Letter associated with Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_letterid")]
-    public Microsoft.Xrm.Sdk.EntityReference bcgov_LetterId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_letterid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_letterid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_letteridname")]
-    public string bcgov_LetterIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_letterid"))
-        {
-          return this.FormattedValues["bcgov_letterid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Information that specifies the source of the Document, such as Web or email.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_origincode")]
-    public virtual bcgov_OriginCode? bcgov_OriginCode
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return ((bcgov_OriginCode?)(EntityOptionSetEnum.GetEnum(this, "bcgov_origincode")));
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_origincode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_origincodename")]
-    public string bcgov_origincodeName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_origincode"))
-        {
-          return this.FormattedValues["bcgov_origincode"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for Phone Call associated with Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_phonecallid")]
-    public Microsoft.Xrm.Sdk.EntityReference bcgov_PhoneCallId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_phonecallid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_phonecallid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_phonecallidname")]
-    public string bcgov_PhoneCallIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_phonecallid"))
-        {
-          return this.FormattedValues["bcgov_phonecallid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// The Date the document was uploaded or received.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_receiveddate")]
-    public System.Nullable<System.DateTime> bcgov_ReceivedDate
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("bcgov_receiveddate");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_receiveddate", value);
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for Tag associated with Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag1id")]
-    public Microsoft.Xrm.Sdk.EntityReference bcgov_Tag1Id
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_tag1id");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_tag1id", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag1idname")]
-    public string bcgov_Tag1IdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_tag1id"))
-        {
-          return this.FormattedValues["bcgov_tag1id"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for Tag associated with Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag2id")]
-    public Microsoft.Xrm.Sdk.EntityReference bcgov_Tag2Id
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_tag2id");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_tag2id", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag2idname")]
-    public string bcgov_Tag2IdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_tag2id"))
-        {
-          return this.FormattedValues["bcgov_tag2id"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for Tag associated with Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag3id")]
-    public Microsoft.Xrm.Sdk.EntityReference bcgov_Tag3Id
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_tag3id");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_tag3id", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag3idname")]
-    public string bcgov_Tag3IdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_tag3id"))
-        {
-          return this.FormattedValues["bcgov_tag3id"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for Task associated with Document.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_taskid")]
-    public Microsoft.Xrm.Sdk.EntityReference bcgov_TaskId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_taskid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_taskid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_taskidname")]
-    public string bcgov_TaskIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("bcgov_taskid"))
-        {
-          return this.FormattedValues["bcgov_taskid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// The Url of the document on where it is stored.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_url")]
-    public string bcgov_Url
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<string>("bcgov_url");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("bcgov_url", value);
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the user who created the record.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
-    public Microsoft.Xrm.Sdk.EntityReference CreatedBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyname")]
-    public string CreatedByName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("createdby"))
-        {
-          return this.FormattedValues["createdby"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyyominame")]
-    public string CreatedByYomiName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("createdby"))
-        {
-          return this.FormattedValues["createdby"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Date and time when the record was created.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
-    public System.Nullable<System.DateTime> CreatedOn
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the delegate user who created the record.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
-    public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("createdonbehalfby", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfbyname")]
-    public string CreatedOnBehalfByName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("createdonbehalfby"))
-        {
-          return this.FormattedValues["createdonbehalfby"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfbyyominame")]
-    public string CreatedOnBehalfByYomiName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("createdonbehalfby"))
-        {
-          return this.FormattedValues["createdonbehalfby"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
-    public Microsoft.Xrm.Sdk.EntityReference ecer_ApplicationId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_applicationid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ecer_applicationid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationidname")]
-    public string ecer_ApplicationIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ecer_applicationid"))
-        {
-          return this.FormattedValues["ecer_applicationid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateid")]
-    public Microsoft.Xrm.Sdk.EntityReference ecer_CertificateId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_certificateid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ecer_certificateid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateidname")]
-    public string ecer_CertificateIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ecer_certificateid"))
-        {
-          return this.FormattedValues["ecer_certificateid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
-    public Microsoft.Xrm.Sdk.EntityReference ecer_CommunicationId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_communicationid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ecer_communicationid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationidname")]
-    public string ecer_CommunicationIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ecer_communicationid"))
-        {
-          return this.FormattedValues["ecer_communicationid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_disableexternalviewing")]
-    public System.Nullable<bool> ecer_DisableExternalViewing
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<bool>>("ecer_disableexternalviewing");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ecer_disableexternalviewing", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_disableexternalviewingname")]
-    public string ecer_disableexternalviewingName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ecer_disableexternalviewing"))
-        {
-          return this.FormattedValues["ecer_disableexternalviewing"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentexternallyviewed")]
-    public System.Nullable<System.DateTime> ecer_DocumentExternallyViewed
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_documentexternallyviewed");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ecer_documentexternallyviewed", value);
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for Investigation associated with Document Url.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationid")]
-    public Microsoft.Xrm.Sdk.EntityReference ecer_investigationid
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigationid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ecer_investigationid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationidname")]
-    public string ecer_investigationidName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ecer_investigationid"))
-        {
-          return this.FormattedValues["ecer_investigationid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationinterviewid")]
-    public Microsoft.Xrm.Sdk.EntityReference ecer_InvestigationInterviewId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigationinterviewid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ecer_investigationinterviewid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationinterviewidname")]
-    public string ecer_InvestigationInterviewIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ecer_investigationinterviewid"))
-        {
-          return this.FormattedValues["ecer_investigationinterviewid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_previousnameid")]
-    public Microsoft.Xrm.Sdk.EntityReference ecer_PreviousNameId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_previousnameid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ecer_previousnameid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_previousnameidname")]
-    public string ecer_PreviousNameIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ecer_previousnameid"))
-        {
-          return this.FormattedValues["ecer_previousnameid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentid")]
-    public Microsoft.Xrm.Sdk.EntityReference ecer_ProfessionalDevelopmentId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_professionaldevelopmentid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ecer_professionaldevelopmentid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentidname")]
-    public string ecer_ProfessionalDevelopmentIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ecer_professionaldevelopmentid"))
-        {
-          return this.FormattedValues["ecer_professionaldevelopmentid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationid")]
-    public Microsoft.Xrm.Sdk.EntityReference ecer_programapplicationid
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programapplicationid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ecer_programapplicationid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationidname")]
-    public string ecer_programapplicationidName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ecer_programapplicationid"))
-        {
-          return this.FormattedValues["ecer_programapplicationid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitid")]
-    public Microsoft.Xrm.Sdk.EntityReference ecer_PSPSiteVisitId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_pspsitevisitid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ecer_pspsitevisitid", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitidname")]
-    public string ecer_PSPSiteVisitIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ecer_pspsitevisitid"))
-        {
-          return this.FormattedValues["ecer_pspsitevisitid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Sequence number of the import that created this record.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("importsequencenumber")]
-    public System.Nullable<int> ImportSequenceNumber
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<int>>("importsequencenumber");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("importsequencenumber", value);
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the user who modified the record.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
-    public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyname")]
-    public string ModifiedByName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("modifiedby"))
-        {
-          return this.FormattedValues["modifiedby"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyyominame")]
-    public string ModifiedByYomiName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("modifiedby"))
-        {
-          return this.FormattedValues["modifiedby"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Date and time when the record was modified.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
-    public System.Nullable<System.DateTime> ModifiedOn
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier of the delegate user who modified the record.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
-    public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("modifiedonbehalfby", value);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfbyname")]
-    public string ModifiedOnBehalfByName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("modifiedonbehalfby"))
-        {
-          return this.FormattedValues["modifiedonbehalfby"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfbyyominame")]
-    public string ModifiedOnBehalfByYomiName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("modifiedonbehalfby"))
-        {
-          return this.FormattedValues["modifiedonbehalfby"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Date and time that the record was migrated.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overriddencreatedon")]
-    public System.Nullable<System.DateTime> OverriddenCreatedOn
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<System.DateTime>>("overriddencreatedon");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("overriddencreatedon", value);
-      }
-    }
-
-    /// <summary>
-    /// Owner Id
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ownerid")]
-    public Microsoft.Xrm.Sdk.EntityReference OwnerId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ownerid");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("ownerid", value);
-      }
-    }
-
-    /// <summary>
-    /// Name of the owner
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridname")]
-    public string OwnerIdName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ownerid"))
-        {
-          return this.FormattedValues["ownerid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Yomi name of the owner
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridyominame")]
-    public string OwnerIdYomiName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("ownerid"))
-        {
-          return this.FormattedValues["ownerid"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for the business unit that owns the record
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunit")]
-    public Microsoft.Xrm.Sdk.EntityReference OwningBusinessUnit
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owningbusinessunit");
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunitname")]
-    public string OwningBusinessUnitName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("owningbusinessunit"))
-        {
-          return this.FormattedValues["owningbusinessunit"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for the team that owns the record.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
-    public Microsoft.Xrm.Sdk.EntityReference OwningTeam
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owningteam");
-      }
-    }
-
-    /// <summary>
-    /// Unique identifier for the user that owns the record.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owninguser")]
-    public Microsoft.Xrm.Sdk.EntityReference OwningUser
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owninguser");
-      }
-    }
-
-    /// <summary>
-    /// Status of the Document Url
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-    public virtual bcgov_documenturl_statecode? StateCode
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return ((bcgov_documenturl_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("statecode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
-    public string statecodeName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("statecode"))
-        {
-          return this.FormattedValues["statecode"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// Reason for the status of the Document Url
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-    public virtual bcgov_DocumentUrl_StatusCode? StatusCode
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return ((bcgov_DocumentUrl_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("statuscode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-      }
-    }
-
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
-    public string statuscodeName
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        if (this.FormattedValues.Contains("statuscode"))
-        {
-          return this.FormattedValues["statuscode"];
-        }
-        else
-        {
-          return default(string);
-        }
-      }
-    }
-
-    /// <summary>
-    /// For internal use only.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("timezoneruleversionnumber")]
-    public System.Nullable<int> TimeZoneRuleVersionNumber
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<int>>("timezoneruleversionnumber");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("timezoneruleversionnumber", value);
-      }
-    }
-
-    /// <summary>
-    /// Time zone code that was in use when the record was created.
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
-    public System.Nullable<int> UTCConversionTimeZoneCode
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<int>>("utcconversiontimezonecode");
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetAttributeValue("utcconversiontimezonecode", value);
-      }
-    }
-
-    /// <summary>
-    /// Version Number
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
-    public System.Nullable<long> VersionNumber
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
-      }
-    }
-
-    /// <summary>
-    /// 1:N ecer_transcript_TranscriptDocumentId
-    /// </summary>
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_transcript_TranscriptDocumentId")]
-    public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Transcript> ecer_transcript_TranscriptDocumentId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_transcript_TranscriptDocumentId", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_transcript_TranscriptDocumentId", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 bcgov_contact_bcgov_documenturl
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_customer")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_contact_bcgov_documenturl")]
-    public ECER.Utilities.DataverseSdk.Model.Contact bcgov_contact_bcgov_documenturl
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("bcgov_contact_bcgov_documenturl", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("bcgov_contact_bcgov_documenturl", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 bcgov_tag1_bcgov_documenturl
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag1id")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_tag1_bcgov_documenturl")]
-    public ECER.Utilities.DataverseSdk.Model.bcgov_tag bcgov_tag1_bcgov_documenturl
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag1_bcgov_documenturl", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag1_bcgov_documenturl", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 bcgov_tag2_bcgov_documenturl
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag2id")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_tag2_bcgov_documenturl")]
-    public ECER.Utilities.DataverseSdk.Model.bcgov_tag bcgov_tag2_bcgov_documenturl
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag2_bcgov_documenturl", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag2_bcgov_documenturl", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 bcgov_tag3_bcgov_documenturl
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag3id")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_tag3_bcgov_documenturl")]
-    public ECER.Utilities.DataverseSdk.Model.bcgov_tag bcgov_tag3_bcgov_documenturl
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag3_bcgov_documenturl", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag3_bcgov_documenturl", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 ecer_bcgov_documenturl_CommunicationId_ecer_communication
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_CommunicationId_ecer_communication")]
-    public ECER.Utilities.DataverseSdk.Model.ecer_Communication ecer_bcgov_documenturl_CommunicationId_ecer_communication
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_bcgov_documenturl_CommunicationId_ecer_communication", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_bcgov_documenturl_CommunicationId_ecer_communication", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 ecer_bcgov_documenturl_InvestigationInterviewI
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationinterviewid")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_InvestigationInterviewI")]
-    public ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInterview ecer_bcgov_documenturl_InvestigationInterviewI
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInterview>("ecer_bcgov_documenturl_InvestigationInterviewI", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInterview>("ecer_bcgov_documenturl_InvestigationInterviewI", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 ecer_bcgov_documenturl_ProfessionalDevelopmentId
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentid")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_ProfessionalDevelopmentId")]
-    public ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment ecer_bcgov_documenturl_ProfessionalDevelopmentId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment>("ecer_bcgov_documenturl_ProfessionalDevelopmentId", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment>("ecer_bcgov_documenturl_ProfessionalDevelopmentId", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationid")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
-      "licaiton")]
-    public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
-            "licaiton", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
-            "licaiton", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitid")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos")]
-    public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 ecer_documenturl_ApplicationId
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_ApplicationId")]
-    public ECER.Utilities.DataverseSdk.Model.ecer_Application ecer_documenturl_ApplicationId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_documenturl_ApplicationId", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_documenturl_ApplicationId", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 ecer_documenturl_CertificateId
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateid")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_CertificateId")]
-    public ECER.Utilities.DataverseSdk.Model.ecer_Certificate ecer_documenturl_CertificateId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_documenturl_CertificateId", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_documenturl_CertificateId", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 ecer_documenturl_InvestigationId
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationid")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_InvestigationId")]
-    public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_documenturl_InvestigationId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_documenturl_InvestigationId", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_documenturl_InvestigationId", null, value);
-      }
-    }
-
-    /// <summary>
-    /// N:1 ecer_documenturl_PreviousNameId
-    /// </summary>
-    [Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_previousnameid")]
-    [Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_PreviousNameId")]
-    public ECER.Utilities.DataverseSdk.Model.ecer_PreviousName ecer_documenturl_PreviousNameId
-    {
-      [System.Diagnostics.DebuggerNonUserCode()]
-      get
-      {
-        return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName>("ecer_documenturl_PreviousNameId", null);
-      }
-      [System.Diagnostics.DebuggerNonUserCode()]
-      set
-      {
-        this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName>("ecer_documenturl_PreviousNameId", null, value);
-      }
-    }
-
-    /// <summary>
-    /// Constructor for populating via LINQ queries given a LINQ anonymous type
-    /// <param name="anonymousType">LINQ anonymous type.</param>
-    /// </summary>
-    [System.Diagnostics.DebuggerNonUserCode()]
-    public bcgov_DocumentUrl(object anonymousType) :
-        this()
-    {
-      foreach (var p in anonymousType.GetType().GetProperties())
-      {
-        var value = p.GetValue(anonymousType, null);
-        var name = p.Name.ToLower();
-
-        if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
-        {
-          value = new Microsoft.Xrm.Sdk.OptionSetValue((int)value);
-          name = name.Remove(name.Length - "enum".Length);
-        }
-
-        switch (name)
-        {
-          case "id":
-            base.Id = (System.Guid)value;
-            Attributes["bcgov_documenturlid"] = base.Id;
-            break;
-          case "bcgov_documenturlid":
-            var id = (System.Nullable<System.Guid>)value;
-            if (id == null) { continue; }
-            base.Id = id.Value;
-            Attributes[name] = base.Id;
-            break;
-          case "formattedvalues":
-            // Add Support for FormattedValues
-            FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
-            break;
-          default:
-            Attributes[name] = value;
-            break;
-        }
-      }
-    }
-  }
+	
+	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum bcgov_DocumentUrl_bcgov_FileClassification
+	{
+		
+		/// <summary>
+		/// applies to the lowest level of classified government data. Confidential data requires less protection than top-secret or secret data. Disclosed confidential information can cause some harm to national security.
+		/// </summary>
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Confidential = 931490002,
+		
+		/// <summary>
+		/// information that requires a high level of protection. The disclosure of this information can cause serious damage to national security.
+		/// </summary>
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Secret = 931490003,
+		
+		/// <summary>
+		/// includes all information that is not otherwise classified. However, it is still categorized as sensitive, which means it requires some protection. Disclosed SBU data may violate the privacy rights of citizens.
+		/// </summary>
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Sensitive = 931490001,
+		
+		/// <summary>
+		/// information that requires the highest level of access control and protection. It is restricted to people with a “need to know” clearance. Disclosed top-secret data can threaten national security.
+		/// </summary>
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		TopSecret = 931490004,
+		
+		/// <summary>
+		/// applies to data labeled as not sensitive. This data does not require any protection.
+		/// </summary>
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Unclassified = 931490000,
+	}
+	
+	/// <summary>
+	/// Status of the Document Url
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum bcgov_documenturl_statecode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Active = 0,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Inactive = 1,
+	}
+	
+	/// <summary>
+	/// Reason for the status of the Document Url
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum bcgov_DocumentUrl_StatusCode
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Active = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Inactive = 2,
+	}
+	
+	/// <summary>
+	/// Stores document metadata information.
+	/// </summary>
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("bcgov_documenturl")]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public partial class bcgov_DocumentUrl : Microsoft.Xrm.Sdk.Entity
+	{
+		
+		/// <summary>
+		/// Available fields, a the time of codegen, for the bcgov_documenturl entity
+		/// </summary>
+		public partial class Fields
+		{
+			public const string bcgov_AppointmentId = "bcgov_appointmentid";
+			public const string bcgov_AppointmentIdName = "bcgov_appointmentidname";
+			public const string bcgov_CaseId = "bcgov_caseid";
+			public const string bcgov_CaseIdName = "bcgov_caseidname";
+			public const string bcgov_contact_bcgov_documenturl = "bcgov_contact_bcgov_documenturl";
+			public const string bcgov_Customer = "bcgov_customer";
+			public const string bcgov_CustomerName = "bcgov_customername";
+			public const string bcgov_CustomerYomiName = "bcgov_customeryominame";
+			public const string bcgov_DocumentUrlId = "bcgov_documenturlid";
+			public const string Id = "bcgov_documenturlid";
+			public const string bcgov_EmailId = "bcgov_emailid";
+			public const string bcgov_EmailIdName = "bcgov_emailidname";
+			public const string bcgov_FaxId = "bcgov_faxid";
+			public const string bcgov_FaxIdName = "bcgov_faxidname";
+			public const string bcgov_FileClassification = "bcgov_fileclassification";
+			public const string bcgov_fileclassificationName = "bcgov_fileclassificationname";
+			public const string bcgov_FileExtension = "bcgov_fileextension";
+			public const string bcgov_FileName = "bcgov_filename";
+			public const string bcgov_FileSize = "bcgov_filesize";
+			public const string bcgov_LetterId = "bcgov_letterid";
+			public const string bcgov_LetterIdName = "bcgov_letteridname";
+			public const string bcgov_OriginCode = "bcgov_origincode";
+			public const string bcgov_origincodeName = "bcgov_origincodename";
+			public const string bcgov_PhoneCallId = "bcgov_phonecallid";
+			public const string bcgov_PhoneCallIdName = "bcgov_phonecallidname";
+			public const string bcgov_ReceivedDate = "bcgov_receiveddate";
+			public const string bcgov_tag1_bcgov_documenturl = "bcgov_tag1_bcgov_documenturl";
+			public const string bcgov_Tag1Id = "bcgov_tag1id";
+			public const string bcgov_Tag1IdName = "bcgov_tag1idname";
+			public const string bcgov_tag2_bcgov_documenturl = "bcgov_tag2_bcgov_documenturl";
+			public const string bcgov_Tag2Id = "bcgov_tag2id";
+			public const string bcgov_Tag2IdName = "bcgov_tag2idname";
+			public const string bcgov_tag3_bcgov_documenturl = "bcgov_tag3_bcgov_documenturl";
+			public const string bcgov_Tag3Id = "bcgov_tag3id";
+			public const string bcgov_Tag3IdName = "bcgov_tag3idname";
+			public const string bcgov_TaskId = "bcgov_taskid";
+			public const string bcgov_TaskIdName = "bcgov_taskidname";
+			public const string bcgov_Url = "bcgov_url";
+			public const string CreatedBy = "createdby";
+			public const string CreatedByName = "createdbyname";
+			public const string CreatedByYomiName = "createdbyyominame";
+			public const string CreatedOn = "createdon";
+			public const string CreatedOnBehalfBy = "createdonbehalfby";
+			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
+			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_ApplicationId = "ecer_applicationid";
+			public const string ecer_ApplicationIdName = "ecer_applicationidname";
+			public const string ecer_bcgov_documenturl_CommunicationId_ecer_communication = "ecer_bcgov_documenturl_CommunicationId_ecer_communication";
+			public const string ecer_bcgov_documenturl_InvestigationInterviewI = "ecer_bcgov_documenturl_InvestigationInterviewI";
+			public const string ecer_bcgov_documenturl_ProfessionalDevelopmentId = "ecer_bcgov_documenturl_ProfessionalDevelopmentId";
+			public const string ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton";
+			public const string ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos = "ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos";
+			public const string ecer_CertificateId = "ecer_certificateid";
+			public const string ecer_CertificateIdName = "ecer_certificateidname";
+			public const string ecer_CommunicationId = "ecer_communicationid";
+			public const string ecer_CommunicationIdName = "ecer_communicationidname";
+			public const string ecer_DisableExternalViewing = "ecer_disableexternalviewing";
+			public const string ecer_disableexternalviewingName = "ecer_disableexternalviewingname";
+			public const string ecer_DocumentExternallyViewed = "ecer_documentexternallyviewed";
+			public const string ecer_documenturl_ApplicationId = "ecer_documenturl_ApplicationId";
+			public const string ecer_documenturl_CertificateId = "ecer_documenturl_CertificateId";
+			public const string ecer_documenturl_InvestigationId = "ecer_documenturl_InvestigationId";
+			public const string ecer_documenturl_PreviousNameId = "ecer_documenturl_PreviousNameId";
+			public const string ecer_investigationid = "ecer_investigationid";
+			public const string ecer_investigationidName = "ecer_investigationidname";
+			public const string ecer_InvestigationInterviewId = "ecer_investigationinterviewid";
+			public const string ecer_InvestigationInterviewIdName = "ecer_investigationinterviewidname";
+			public const string ecer_PreviousNameId = "ecer_previousnameid";
+			public const string ecer_PreviousNameIdName = "ecer_previousnameidname";
+			public const string ecer_ProfessionalDevelopmentId = "ecer_professionaldevelopmentid";
+			public const string ecer_ProfessionalDevelopmentIdName = "ecer_professionaldevelopmentidname";
+			public const string ecer_programapplicationid = "ecer_programapplicationid";
+			public const string ecer_programapplicationidName = "ecer_programapplicationidname";
+			public const string ecer_PSPSiteVisitId = "ecer_pspsitevisitid";
+			public const string ecer_PSPSiteVisitIdName = "ecer_pspsitevisitidname";
+			public const string ecer_transcript_TranscriptDocumentId = "ecer_transcript_TranscriptDocumentId";
+			public const string ImportSequenceNumber = "importsequencenumber";
+			public const string ModifiedBy = "modifiedby";
+			public const string ModifiedByName = "modifiedbyname";
+			public const string ModifiedByYomiName = "modifiedbyyominame";
+			public const string ModifiedOn = "modifiedon";
+			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
+			public const string ModifiedOnBehalfByName = "modifiedonbehalfbyname";
+			public const string ModifiedOnBehalfByYomiName = "modifiedonbehalfbyyominame";
+			public const string OverriddenCreatedOn = "overriddencreatedon";
+			public const string OwnerId = "ownerid";
+			public const string OwnerIdName = "owneridname";
+			public const string OwnerIdYomiName = "owneridyominame";
+			public const string OwningBusinessUnit = "owningbusinessunit";
+			public const string OwningBusinessUnitName = "owningbusinessunitname";
+			public const string OwningTeam = "owningteam";
+			public const string OwningUser = "owninguser";
+			public const string StateCode = "statecode";
+			public const string statecodeName = "statecodename";
+			public const string StatusCode = "statuscode";
+			public const string statuscodeName = "statuscodename";
+			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
+			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
+			public const string VersionNumber = "versionnumber";
+		}
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public bcgov_DocumentUrl(System.Guid id) : 
+				base(EntityLogicalName, id)
+		{
+		}
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public bcgov_DocumentUrl(string keyName, object keyValue) : 
+				base(EntityLogicalName, keyName, keyValue)
+		{
+		}
+		
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public bcgov_DocumentUrl(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+				base(EntityLogicalName, keyAttributes)
+		{
+		}
+		
+		/// <summary>
+		/// Default Constructor.
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public bcgov_DocumentUrl() : 
+				base(EntityLogicalName)
+		{
+		}
+		
+		public const string PrimaryIdAttribute = "bcgov_documenturlid";
+		
+		public const string PrimaryNameAttribute = "bcgov_filename";
+		
+		public const string EntitySchemaName = "bcgov_DocumentUrl";
+		
+		public const string EntityLogicalName = "bcgov_documenturl";
+		
+		public const string EntityLogicalCollectionName = "bcgov_documenturls";
+		
+		public const string EntitySetName = "bcgov_documenturls";
+		
+		/// <summary>
+		/// Unique identifier for Appointment associated with Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_appointmentid")]
+		public Microsoft.Xrm.Sdk.EntityReference bcgov_AppointmentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_appointmentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_appointmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_appointmentidname")]
+		public string bcgov_AppointmentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_appointmentid"))
+				{
+					return this.FormattedValues["bcgov_appointmentid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Case associated with Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_caseid")]
+		public Microsoft.Xrm.Sdk.EntityReference bcgov_CaseId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_caseid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_caseid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_caseidname")]
+		public string bcgov_CaseIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_caseid"))
+				{
+					return this.FormattedValues["bcgov_caseid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Customer associated with Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_customer")]
+		public Microsoft.Xrm.Sdk.EntityReference bcgov_Customer
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_customer");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_customer", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_customername")]
+		public string bcgov_CustomerName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_customer"))
+				{
+					return this.FormattedValues["bcgov_customer"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_customeryominame")]
+		public string bcgov_CustomerYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_customer"))
+				{
+					return this.FormattedValues["bcgov_customer"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_documenturlid")]
+		public System.Nullable<System.Guid> bcgov_DocumentUrlId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("bcgov_documenturlid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_documenturlid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_documenturlid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.bcgov_DocumentUrlId = value;
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Email associated with Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_emailid")]
+		public Microsoft.Xrm.Sdk.EntityReference bcgov_EmailId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_emailid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_emailid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_emailidname")]
+		public string bcgov_EmailIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_emailid"))
+				{
+					return this.FormattedValues["bcgov_emailid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Fax associated with Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_faxid")]
+		public Microsoft.Xrm.Sdk.EntityReference bcgov_FaxId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_faxid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_faxid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_faxidname")]
+		public string bcgov_FaxIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_faxid"))
+				{
+					return this.FormattedValues["bcgov_faxid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_fileclassification")]
+		public virtual bcgov_DocumentUrl_bcgov_FileClassification? bcgov_FileClassification
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((bcgov_DocumentUrl_bcgov_FileClassification?)(EntityOptionSetEnum.GetEnum(this, "bcgov_fileclassification")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_fileclassification", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_fileclassificationname")]
+		public string bcgov_fileclassificationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_fileclassification"))
+				{
+					return this.FormattedValues["bcgov_fileclassification"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// The file extension of the document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_fileextension")]
+		public string bcgov_FileExtension
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("bcgov_fileextension");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_fileextension", value);
+			}
+		}
+		
+		/// <summary>
+		/// The name of the document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_filename")]
+		public string bcgov_FileName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("bcgov_filename");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_filename", value);
+			}
+		}
+		
+		/// <summary>
+		/// File Size of the Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_filesize")]
+		public string bcgov_FileSize
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("bcgov_filesize");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_filesize", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Letter associated with Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_letterid")]
+		public Microsoft.Xrm.Sdk.EntityReference bcgov_LetterId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_letterid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_letterid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_letteridname")]
+		public string bcgov_LetterIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_letterid"))
+				{
+					return this.FormattedValues["bcgov_letterid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Information that specifies the source of the Document, such as Web or email.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_origincode")]
+		public virtual bcgov_OriginCode? bcgov_OriginCode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((bcgov_OriginCode?)(EntityOptionSetEnum.GetEnum(this, "bcgov_origincode")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_origincode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_origincodename")]
+		public string bcgov_origincodeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_origincode"))
+				{
+					return this.FormattedValues["bcgov_origincode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Phone Call associated with Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_phonecallid")]
+		public Microsoft.Xrm.Sdk.EntityReference bcgov_PhoneCallId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_phonecallid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_phonecallid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_phonecallidname")]
+		public string bcgov_PhoneCallIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_phonecallid"))
+				{
+					return this.FormattedValues["bcgov_phonecallid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// The Date the document was uploaded or received.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_receiveddate")]
+		public System.Nullable<System.DateTime> bcgov_ReceivedDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("bcgov_receiveddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_receiveddate", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Tag associated with Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag1id")]
+		public Microsoft.Xrm.Sdk.EntityReference bcgov_Tag1Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_tag1id");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_tag1id", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag1idname")]
+		public string bcgov_Tag1IdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_tag1id"))
+				{
+					return this.FormattedValues["bcgov_tag1id"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Tag associated with Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag2id")]
+		public Microsoft.Xrm.Sdk.EntityReference bcgov_Tag2Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_tag2id");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_tag2id", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag2idname")]
+		public string bcgov_Tag2IdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_tag2id"))
+				{
+					return this.FormattedValues["bcgov_tag2id"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Tag associated with Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag3id")]
+		public Microsoft.Xrm.Sdk.EntityReference bcgov_Tag3Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_tag3id");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_tag3id", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag3idname")]
+		public string bcgov_Tag3IdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_tag3id"))
+				{
+					return this.FormattedValues["bcgov_tag3id"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Task associated with Document.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_taskid")]
+		public Microsoft.Xrm.Sdk.EntityReference bcgov_TaskId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bcgov_taskid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_taskid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_taskidname")]
+		public string bcgov_TaskIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bcgov_taskid"))
+				{
+					return this.FormattedValues["bcgov_taskid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// The Url of the document on where it is stored.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_url")]
+		public string bcgov_Url
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("bcgov_url");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bcgov_url", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who created the record.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyname")]
+		public string CreatedByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdby"))
+				{
+					return this.FormattedValues["createdby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyyominame")]
+		public string CreatedByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdby"))
+				{
+					return this.FormattedValues["createdby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the record was created.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdon")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who created the record.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference CreatedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("createdonbehalfby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfbyname")]
+		public string CreatedOnBehalfByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdonbehalfby"))
+				{
+					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfbyyominame")]
+		public string CreatedOnBehalfByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("createdonbehalfby"))
+				{
+					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ApplicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_applicationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_applicationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationidname")]
+		public string ecer_ApplicationIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_applicationid"))
+				{
+					return this.FormattedValues["ecer_applicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CertificateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_certificateid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificateid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateidname")]
+		public string ecer_CertificateIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_certificateid"))
+				{
+					return this.FormattedValues["ecer_certificateid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CommunicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_communicationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_communicationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationidname")]
+		public string ecer_CommunicationIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_communicationid"))
+				{
+					return this.FormattedValues["ecer_communicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_disableexternalviewing")]
+		public System.Nullable<bool> ecer_DisableExternalViewing
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_disableexternalviewing");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_disableexternalviewing", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_disableexternalviewingname")]
+		public string ecer_disableexternalviewingName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_disableexternalviewing"))
+				{
+					return this.FormattedValues["ecer_disableexternalviewing"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentexternallyviewed")]
+		public System.Nullable<System.DateTime> ecer_DocumentExternallyViewed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_documentexternallyviewed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_documentexternallyviewed", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for Investigation associated with Document Url.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_investigationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_investigationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationidname")]
+		public string ecer_investigationidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_investigationid"))
+				{
+					return this.FormattedValues["ecer_investigationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationinterviewid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_InvestigationInterviewId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigationinterviewid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_investigationinterviewid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationinterviewidname")]
+		public string ecer_InvestigationInterviewIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_investigationinterviewid"))
+				{
+					return this.FormattedValues["ecer_investigationinterviewid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_previousnameid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_PreviousNameId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_previousnameid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_previousnameid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_previousnameidname")]
+		public string ecer_PreviousNameIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_previousnameid"))
+				{
+					return this.FormattedValues["ecer_previousnameid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProfessionalDevelopmentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_professionaldevelopmentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_professionaldevelopmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentidname")]
+		public string ecer_ProfessionalDevelopmentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_professionaldevelopmentid"))
+				{
+					return this.FormattedValues["ecer_professionaldevelopmentid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_programapplicationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programapplicationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programapplicationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationidname")]
+		public string ecer_programapplicationidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programapplicationid"))
+				{
+					return this.FormattedValues["ecer_programapplicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_PSPSiteVisitId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_pspsitevisitid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_pspsitevisitid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitidname")]
+		public string ecer_PSPSiteVisitIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_pspsitevisitid"))
+				{
+					return this.FormattedValues["ecer_pspsitevisitid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Sequence number of the import that created this record.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("importsequencenumber")]
+		public System.Nullable<int> ImportSequenceNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("importsequencenumber");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("importsequencenumber", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the user who modified the record.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyname")]
+		public string ModifiedByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedby"))
+				{
+					return this.FormattedValues["modifiedby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyyominame")]
+		public string ModifiedByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedby"))
+				{
+					return this.FormattedValues["modifiedby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when the record was modified.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedon")]
+		public System.Nullable<System.DateTime> ModifiedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier of the delegate user who modified the record.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfby")]
+		public Microsoft.Xrm.Sdk.EntityReference ModifiedOnBehalfBy
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedonbehalfby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("modifiedonbehalfby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfbyname")]
+		public string ModifiedOnBehalfByName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedonbehalfby"))
+				{
+					return this.FormattedValues["modifiedonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfbyyominame")]
+		public string ModifiedOnBehalfByYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("modifiedonbehalfby"))
+				{
+					return this.FormattedValues["modifiedonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Date and time that the record was migrated.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overriddencreatedon")]
+		public System.Nullable<System.DateTime> OverriddenCreatedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("overriddencreatedon");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("overriddencreatedon", value);
+			}
+		}
+		
+		/// <summary>
+		/// Owner Id
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ownerid")]
+		public Microsoft.Xrm.Sdk.EntityReference OwnerId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ownerid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ownerid", value);
+			}
+		}
+		
+		/// <summary>
+		/// Name of the owner
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridname")]
+		public string OwnerIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ownerid"))
+				{
+					return this.FormattedValues["ownerid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Yomi name of the owner
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridyominame")]
+		public string OwnerIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ownerid"))
+				{
+					return this.FormattedValues["ownerid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for the business unit that owns the record
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunit")]
+		public Microsoft.Xrm.Sdk.EntityReference OwningBusinessUnit
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owningbusinessunit");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunitname")]
+		public string OwningBusinessUnitName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("owningbusinessunit"))
+				{
+					return this.FormattedValues["owningbusinessunit"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for the team that owns the record.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
+		public Microsoft.Xrm.Sdk.EntityReference OwningTeam
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owningteam");
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for the user that owns the record.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owninguser")]
+		public Microsoft.Xrm.Sdk.EntityReference OwningUser
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owninguser");
+			}
+		}
+		
+		/// <summary>
+		/// Status of the Document Url
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
+		public virtual bcgov_documenturl_statecode? StateCode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((bcgov_documenturl_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("statecode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
+		public string statecodeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("statecode"))
+				{
+					return this.FormattedValues["statecode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Reason for the status of the Document Url
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
+		public virtual bcgov_DocumentUrl_StatusCode? StatusCode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((bcgov_DocumentUrl_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("statuscode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
+		public string statuscodeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("statuscode"))
+				{
+					return this.FormattedValues["statuscode"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("timezoneruleversionnumber")]
+		public System.Nullable<int> TimeZoneRuleVersionNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("timezoneruleversionnumber");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("timezoneruleversionnumber", value);
+			}
+		}
+		
+		/// <summary>
+		/// Time zone code that was in use when the record was created.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
+		public System.Nullable<int> UTCConversionTimeZoneCode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("utcconversiontimezonecode");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("utcconversiontimezonecode", value);
+			}
+		}
+		
+		/// <summary>
+		/// Version Number
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("versionnumber")]
+		public System.Nullable<long> VersionNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_transcript_TranscriptDocumentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_transcript_TranscriptDocumentId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Transcript> ecer_transcript_TranscriptDocumentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_transcript_TranscriptDocumentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_transcript_TranscriptDocumentId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 bcgov_contact_bcgov_documenturl
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_customer")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_contact_bcgov_documenturl")]
+		public ECER.Utilities.DataverseSdk.Model.Contact bcgov_contact_bcgov_documenturl
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("bcgov_contact_bcgov_documenturl", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("bcgov_contact_bcgov_documenturl", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 bcgov_tag1_bcgov_documenturl
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag1id")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_tag1_bcgov_documenturl")]
+		public ECER.Utilities.DataverseSdk.Model.bcgov_tag bcgov_tag1_bcgov_documenturl
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag1_bcgov_documenturl", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag1_bcgov_documenturl", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 bcgov_tag2_bcgov_documenturl
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag2id")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_tag2_bcgov_documenturl")]
+		public ECER.Utilities.DataverseSdk.Model.bcgov_tag bcgov_tag2_bcgov_documenturl
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag2_bcgov_documenturl", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag2_bcgov_documenturl", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 bcgov_tag3_bcgov_documenturl
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bcgov_tag3id")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bcgov_tag3_bcgov_documenturl")]
+		public ECER.Utilities.DataverseSdk.Model.bcgov_tag bcgov_tag3_bcgov_documenturl
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag3_bcgov_documenturl", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag3_bcgov_documenturl", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_bcgov_documenturl_CommunicationId_ecer_communication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_CommunicationId_ecer_communication")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Communication ecer_bcgov_documenturl_CommunicationId_ecer_communication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_bcgov_documenturl_CommunicationId_ecer_communication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_bcgov_documenturl_CommunicationId_ecer_communication", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_bcgov_documenturl_InvestigationInterviewI
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationinterviewid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_InvestigationInterviewI")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInterview ecer_bcgov_documenturl_InvestigationInterviewI
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInterview>("ecer_bcgov_documenturl_InvestigationInterviewI", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInterview>("ecer_bcgov_documenturl_InvestigationInterviewI", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_bcgov_documenturl_ProfessionalDevelopmentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_professionaldevelopmentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_ProfessionalDevelopmentId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment ecer_bcgov_documenturl_ProfessionalDevelopmentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment>("ecer_bcgov_documenturl_ProfessionalDevelopmentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment>("ecer_bcgov_documenturl_ProfessionalDevelopmentId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
+			"licaiton")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
+						"licaiton", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapp" +
+						"licaiton", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_documenturl_ApplicationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_ApplicationId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Application ecer_documenturl_ApplicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_documenturl_ApplicationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_documenturl_ApplicationId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_documenturl_CertificateId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_CertificateId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Certificate ecer_documenturl_CertificateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_documenturl_CertificateId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_documenturl_CertificateId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_documenturl_InvestigationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_InvestigationId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_documenturl_InvestigationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_documenturl_InvestigationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_documenturl_InvestigationId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_documenturl_PreviousNameId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_previousnameid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_documenturl_PreviousNameId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PreviousName ecer_documenturl_PreviousNameId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName>("ecer_documenturl_PreviousNameId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName>("ecer_documenturl_PreviousNameId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// Constructor for populating via LINQ queries given a LINQ anonymous type
+		/// <param name="anonymousType">LINQ anonymous type.</param>
+		/// </summary>
+		[System.Diagnostics.DebuggerNonUserCode()]
+		public bcgov_DocumentUrl(object anonymousType) : 
+				this()
+		{
+            foreach (var p in anonymousType.GetType().GetProperties())
+            {
+                var value = p.GetValue(anonymousType, null);
+                var name = p.Name.ToLower();
+            
+                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                {
+                    value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
+                    name = name.Remove(name.Length - "enum".Length);
+                }
+            
+                switch (name)
+                {
+                    case "id":
+                        base.Id = (System.Guid)value;
+                        Attributes["bcgov_documenturlid"] = base.Id;
+                        break;
+                    case "bcgov_documenturlid":
+                        var id = (System.Nullable<System.Guid>) value;
+                        if(id == null){ continue; }
+                        base.Id = id.Value;
+                        Attributes[name] = base.Id;
+                        break;
+                    case "formattedvalues":
+                        // Add Support for FormattedValues
+                        FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
+                        break;
+                    default:
+                        Attributes[name] = value;
+                        break;
+                }
+            }
+		}
+	}
 }
 #pragma warning restore CS1591
