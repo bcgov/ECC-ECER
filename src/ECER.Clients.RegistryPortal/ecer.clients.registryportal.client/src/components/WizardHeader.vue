@@ -5,7 +5,9 @@
         <v-col :class="[mobile ? 'flex-column-reverse' : 'justify-space-between', 'd-flex']">
           <div>
             <ApplicationCertificationTypeHeader :is-renewal="isRenewal" :certification-types="applicationStore.draftApplication.certificationTypes ?? []" />
-            <a v-if="!isRenewal" href="#" class="text-white" @click.prevent="toggleChangeCertificationConfirmation">Change certification type</a>
+            <a v-if="!isRenewal && !isRegistrant" href="#" class="text-white" @click.prevent="toggleChangeCertificationConfirmation">
+              Change certification type
+            </a>
           </div>
           <div :class="[{ ['text-right mb-2']: mobile }]">
             <v-btn v-if="showSaveButton" variant="outlined" :loading="loadingStore.isLoading('draftapplication_put')" @click="saveAndExit">Save and exit</v-btn>
@@ -54,6 +56,10 @@ export default defineComponent({
       required: true,
     },
     isRenewal: {
+      type: Boolean,
+      default: false,
+    },
+    isRegistrant: {
       type: Boolean,
       default: false,
     },
