@@ -305,6 +305,7 @@ declare namespace Components {
       inviteType?: InviteType;
       workExperienceReferenceHours?: number | null; // int32
       workExperienceType?: WorkExperienceTypes;
+      latestCertification?: Certification;
     }
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
@@ -495,38 +496,38 @@ declare namespace Components {
       type?: WorkExperienceTypes;
     }
     export interface WorkExperienceReferenceCompetenciesAssessment {
-      childDevelopment?: LikertScale;
+      childDevelopment: LikertScale;
       childDevelopmentReason?: string | null;
-      childGuidance?: LikertScale;
+      childGuidance: LikertScale;
       childGuidanceReason?: string | null;
-      healthSafetyAndNutrition?: LikertScale;
+      healthSafetyAndNutrition: LikertScale;
       healthSafetyAndNutritionReason?: string | null;
-      developAnEceCurriculum?: LikertScale;
+      developAnEceCurriculum: LikertScale;
       developAnEceCurriculumReason?: string | null;
-      implementAnEceCurriculum?: LikertScale;
+      implementAnEceCurriculum: LikertScale;
       implementAnEceCurriculumReason?: string | null;
-      fosteringPositiveRelationChild?: LikertScale;
+      fosteringPositiveRelationChild: LikertScale;
       fosteringPositiveRelationChildReason?: string | null;
-      fosteringPositiveRelationFamily?: LikertScale;
+      fosteringPositiveRelationFamily: LikertScale;
       fosteringPositiveRelationFamilyReason?: string | null;
-      fosteringPositiveRelationCoworker?: LikertScale;
+      fosteringPositiveRelationCoworker: LikertScale;
       fosteringPositiveRelationCoworkerReason?: string | null;
     }
     export interface WorkExperienceReferenceDetails {
-      hours?: number; // int32
-      workHoursType?: WorkHoursType;
-      childrenProgramName?: string | null;
+      hours: number; // int32
+      workHoursType: WorkHoursType;
+      childrenProgramName: string;
       childrenProgramType?: ChildrenProgramType;
       childrenProgramTypeOther?: string | null;
       childcareAgeRanges?: ChildcareAgeRanges[] | null;
       role?: string | null;
       ageofChildrenCaredFor?: string | null;
-      startDate?: string; // date-time
-      endDate?: string; // date-time
-      referenceRelationship?: ReferenceRelationship;
+      startDate: string; // date-time
+      endDate: string; // date-time
+      referenceRelationship: ReferenceRelationship;
       referenceRelationshipOther?: string | null;
       additionalComments?: string | null;
-      workExperienceType?: WorkExperienceTypes;
+      workExperienceType: WorkExperienceTypes;
     }
     export interface WorkExperienceReferenceStatus {
       id?: string | null;
@@ -548,7 +549,7 @@ declare namespace Components {
       workExperienceReferenceCompetenciesAssessment?: WorkExperienceReferenceCompetenciesAssessment;
       confirmProvidedInformationIsRight?: boolean;
       recaptchaToken?: string | null;
-      workExperienceType?: WorkExperienceTypes;
+      workExperienceType: WorkExperienceTypes;
     }
     export type WorkExperienceTypes = "Is400Hours" | "Is500Hours";
     export type WorkHoursType = "FullTime" | "PartTime";

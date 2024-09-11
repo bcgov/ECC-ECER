@@ -84,7 +84,7 @@ import ReferencePreviewCard from "@/components/reference/inputs/ReferencePreview
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
-import { workHoursTypeRadio, workReference400HoursRelationshipRadio } from "@/utils/constant";
+import { WorkExperienceType, workHoursTypeRadio, workReference400HoursRelationshipRadio } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 
 export default defineComponent({
@@ -143,6 +143,7 @@ export default defineComponent({
         additionalComments:
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]
             ?.additionalComments,
+        workExperienceType: WorkExperienceType.IS_400_Hours,
       };
     },
   },

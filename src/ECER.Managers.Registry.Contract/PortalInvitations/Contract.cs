@@ -1,4 +1,5 @@
 ﻿using ECER.Managers.Registry.Contract.Applications;
+using ECER.Managers.Registry.Contract.Certifications;
 using MediatR;
 
 namespace ECER.Managers.Registry.Contract.PortalInvitations;
@@ -29,6 +30,7 @@ public record PortalInvitation(string? Id, string Name, string ReferenceFirstNam
   public PortalInvitationStatusCode? StatusCode { get; set; }
   public int? WorkExperienceReferenceHours { get; set; }
   public WorkExperienceTypes? WorkExperienceType { get; set; }
+  public Certification? LatestCertification { get; set; }
 }
 
 public enum InviteType

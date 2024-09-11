@@ -70,7 +70,13 @@ import ReferencePreviewCard from "@/components/reference/inputs/ReferencePreview
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
-import { childcareAgeRangesCheckBox, childrenProgramTypeDropdown, workHoursTypeRadio, workReferenceRelationshipRadio } from "@/utils/constant";
+import {
+  childcareAgeRangesCheckBox,
+  childrenProgramTypeDropdown,
+  WorkExperienceType,
+  workHoursTypeRadio,
+  workReferenceRelationshipRadio,
+} from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 
 export default defineComponent({
@@ -136,6 +142,7 @@ export default defineComponent({
         referenceRelationshipOther:
           this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]
             ?.referenceRelationshipOther,
+        workExperienceType: WorkExperienceType.IS_500_Hours,
       };
     },
   },

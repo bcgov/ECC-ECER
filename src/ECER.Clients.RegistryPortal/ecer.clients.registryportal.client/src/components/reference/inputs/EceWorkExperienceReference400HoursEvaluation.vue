@@ -9,7 +9,10 @@
           <p class="mb-3">The hours must:</p>
           <ul class="ml-10">
             <li>Be related to the field of early childhood education</li>
-            <li>Have been completed between the {{ formatDate(fiveYearsAgo, "LLL d, yyyy") }} and the {{ formatDate(today, "LLL d, yyyy") }}</li>
+            <li v-if="latestCertificateStatus === 'Expired'">Have been completed within the last 5 years</li>
+            <li v-else-if="latestCertificateExpiryDate > today">
+              Have been completed between the {{ formatDate(latestCertificateEffectiveDate, "LLL d, yyyy") }} and the {{ formatDate(today, "LLL d, yyyy") }}
+            </li>
           </ul>
         </v-col>
       </v-row>
@@ -204,6 +207,15 @@ export default defineComponent({
     fiveYearsAgo() {
       const fiveYearsBack = DateTime.now().minus({ years: 5 });
       return formatDate(fiveYearsBack.toString());
+    },
+    latestCertificateStatus(): Components.Schemas.CertificateStatusCode {
+      return this.wizardStore.wizardData.latestCertification.statusCode;
+    },
+    latestCertificateExpiryDate() {
+      return formatDate(this.wizardStore.wizardData.latestCertification.expiryDate);
+    },
+    latestCertificateEffectiveDate() {
+      return formatDate(this.wizardStore.wizardData.latestCertification.effectiveDate);
     },
   },
   mounted() {
