@@ -17,7 +17,7 @@
         </v-col>
         <v-col>
           <p class="small font-weight-bold">
-            {{ wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.explanationLetter.id] ?? "—" }}
+            {{ wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.explanationLetter.id] || "—" }}
           </p>
         </v-col>
       </v-row>

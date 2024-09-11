@@ -29,7 +29,7 @@
             <p class="small">Website with description of course or workshop (optional)</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ professionalDevelopment.courseorWorkshopLink || "-" }}</p>
+            <p class="small font-weight-bold">{{ professionalDevelopment.courseorWorkshopLink || "—" }}</p>
           </v-col>
         </v-row>
         <v-row>
@@ -50,7 +50,7 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              {{ professionalDevelopment.instructorName || "-" }}
+              {{ professionalDevelopment.instructorName || "—" }}
             </p>
           </v-col>
         </v-row>
@@ -60,7 +60,7 @@
           </v-col>
           <v-col>
             <p class="small font-weight-bold">
-              {{ professionalDevelopment.organizationContactInformation || "-" }}
+              {{ professionalDevelopment.organizationContactInformation || "—" }}
             </p>
           </v-col>
         </v-row>
