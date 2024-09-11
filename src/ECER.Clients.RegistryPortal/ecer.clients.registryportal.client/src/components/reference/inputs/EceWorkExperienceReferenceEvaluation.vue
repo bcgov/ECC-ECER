@@ -118,7 +118,11 @@
             hide-details="auto"
             type="date"
             :max="today"
-            :rules="[Rules.required('Enter the end date of hours'), Rules.dateBeforeRule(modelValue.startDate || ''), Rules.futureDateNotAllowedRule('End date of hours cannot be in the future')]"
+            :rules="[
+              Rules.required('Enter the end date of hours'),
+              Rules.dateBeforeRule(modelValue.startDate || ''),
+              Rules.futureDateNotAllowedRule('End date of hours cannot be in the future'),
+            ]"
             @update:model-value="updateField('endDate', $event)"
           ></v-text-field>
         </v-col>
