@@ -37,6 +37,7 @@ export const useUserStore = defineStore("user", {
     fullName: (state): string => (state.userInfo?.lastName ? `${state.userInfo?.firstName} ${state.userInfo?.lastName}` : `${state.userInfo?.firstName}`),
     email: (state): string => state.userInfo?.email ?? "",
     phoneNumber: (state): string => state.userProfile?.phone ?? "",
+    isRegistrant: (state): boolean => state.userInfo?.isRegistrant ?? false,
   },
   actions: {
     setUserInfo(userInfo: Components.Schemas.UserInfo | null): void {

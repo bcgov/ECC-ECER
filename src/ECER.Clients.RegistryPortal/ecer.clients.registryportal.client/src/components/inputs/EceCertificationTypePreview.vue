@@ -52,6 +52,16 @@ export default defineComponent({
         if (this.applicationStore.isDraftCertificateTypeIte) {
           certificationType += " and Infant and Toddler Educator (ITE)";
         }
+      } else if (
+        !this.applicationStore.isDraftCertificateTypeFiveYears &&
+        this.applicationStore.isDraftCertificateTypeSne &&
+        this.applicationStore.isDraftCertificateTypeIte
+      ) {
+        certificationType = "Special Needs Educator and Infant and Toddler Educator";
+      } else if (!this.applicationStore.isDraftCertificateTypeFiveYears && this.applicationStore.isDraftCertificateTypeSne) {
+        certificationType = "Special Needs Educator";
+      } else if (!this.applicationStore.isDraftCertificateTypeFiveYears && this.applicationStore.isDraftCertificateTypeIte) {
+        certificationType = "Infant and Toddler Educator";
       }
       return certificationType;
     },

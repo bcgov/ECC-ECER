@@ -66,8 +66,6 @@ import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 
-import type { ItemsType } from "./Breadcrumb.vue";
-
 export default defineComponent({
   name: "Declaration",
   components: { Breadcrumb, EceCheckbox, EceTextField },
@@ -82,28 +80,48 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    const items: ItemsType[] = [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Application types",
-        disabled: false,
-        href: "/application/certification",
-      },
-      {
-        title: "Requirements",
-        disabled: false,
-        href: "/application/certification/requirements",
-      },
-      {
-        title: "Declaration",
-        disabled: true,
-        href: "/application/declaration",
-      },
-    ];
+    const items =
+      applicationStore.isDraftApplicationRenewal || userStore.isRegistrant
+        ? [
+            {
+              title: "Home",
+              disabled: false,
+              href: "/",
+            },
+            {
+              title: "Requirements",
+              disabled: false,
+              href: "/application/certification/requirements",
+            },
+            {
+              title: "Declaration",
+              disabled: true,
+              href: "/application/declaration",
+            },
+          ]
+        : [
+            {
+              title: "Home",
+              disabled: false,
+              href: "/",
+            },
+            {
+              title: "Application types",
+              disabled: false,
+              href: "/application/certification",
+            },
+            {
+              title: "Requirements",
+              disabled: false,
+              href: "/application/certification/requirements",
+            },
+            {
+              title: "Declaration",
+              disabled: true,
+              href: "/application/declaration",
+            },
+          ];
+
     return { items, Rules, userStore, applicationStore, alertStore, loadingStore };
   },
   data() {

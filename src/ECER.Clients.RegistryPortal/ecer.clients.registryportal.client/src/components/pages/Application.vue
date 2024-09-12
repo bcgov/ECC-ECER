@@ -6,6 +6,7 @@
         :handle-save-draft="handleSaveAsDraft"
         :show-save-button="showSaveButtons"
         :is-renewal="applicationStore?.draftApplication.applicationType === 'Renewal'"
+        :is-registrant="userStore.isRegistrant"
       />
       <v-container>
         <!-- prettier-ignore -->

@@ -2,22 +2,32 @@
   <v-container>
     <Breadcrumb :items="items" />
     <template v-if="applicationStore.isDraftCertificateTypeEceAssistant">
-      <ECEAssistantRequirements v-if="!applicationStore.isDraftApplicationRenewal" />
-      <ECEAssistantRenewalRequirements v-else />
+      <ECEAssistantRenewalRequirements v-if="applicationStore.isDraftApplicationRenewal" />
+      <ECEAssistantRegistrantRequirements v-else-if="userStore.isRegistrant" />
+      <ECEAssistantRequirements v-else />
     </template>
     <template v-if="applicationStore.isDraftCertificateTypeOneYear">
-      <ECEOneYearRequirements v-if="!applicationStore.isDraftApplicationRenewal" />
-      <ECEOneYearRenewalRequirements v-else :expired="certificationStore.latestCertificateStatus === 'Expired'" />
+      <ECEOneYearRenewalRequirements v-if="applicationStore.isDraftApplicationRenewal" :expired="certificationStore.latestCertificateStatus === 'Expired'" />
+      <ECEOneYearRegistrantRequirements v-else-if="userStore.isRegistrant" />
+      <ECEOneYearRequirements v-else />
     </template>
     <template v-if="applicationStore.isDraftCertificateTypeFiveYears">
-      <ECEFiveYearRequirements v-if="!applicationStore.isDraftApplicationRenewal" />
       <ECEFiveYearRenewalRequirements
-        v-else
+        v-if="applicationStore.isDraftApplicationRenewal"
         :expired="certificationStore.latestCertificateStatus === 'Expired'"
         :expired-more-than5-years="certificationStore.latestExpiredMoreThan5Years"
       />
+      <ECEFiveYearRegistrantRequirements v-else-if="userStore.isRegistrant" />
+      <ECEFiveYearRequirements v-else />
     </template>
-    <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Continue</v-btn>
+    <template v-if="applicationStore.isDraftCertificateTypeSne && !applicationStore.isDraftApplicationRenewal && userStore.isRegistrant">
+      <ECESneRegistrantRequirements />
+    </template>
+    <template v-if="applicationStore.isDraftCertificateTypeIte && !applicationStore.isDraftApplicationRenewal && userStore.isRegistrant">
+      <ECEIteRegistrantRequirements />
+    </template>
+
+    <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Apply Now</v-btn>
   </v-container>
 </template>
 
@@ -33,6 +43,13 @@ import ECEOneYearRenewalRequirements from "@/components/ECEOneYearRenewalRequire
 import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
+import { useUserStore } from "@/store/user";
+
+import ECEAssistantRegistrantRequirements from "./ECEAssistantRegistrantRequirements.vue";
+import ECEFiveYearRegistrantRequirements from "./ECEFiveYearRegistrantRequirements.vue";
+import ECEIteRegistrantRequirements from "./ECEIteRegistrantRequirements.vue";
+import ECEOneYearRegistrantRequirements from "./ECEOneYearRegistrantRequirements.vue";
+import ECESneRegistrantRequirements from "./ECESneRegistrantRequirements.vue";
 
 export default defineComponent({
   name: "CertificationTypeRequirements",
@@ -43,48 +60,56 @@ export default defineComponent({
     ECEAssistantRenewalRequirements,
     ECEOneYearRenewalRequirements,
     ECEFiveYearRenewalRequirements,
+    ECEAssistantRegistrantRequirements,
+    ECEOneYearRegistrantRequirements,
+    ECEFiveYearRegistrantRequirements,
+    ECEIteRegistrantRequirements,
+    ECESneRegistrantRequirements,
     Breadcrumb,
   },
 
   setup: () => {
     const applicationStore = useApplicationStore();
     const certificationStore = useCertificationStore();
+    const userStore = useUserStore();
 
-    return { applicationStore, certificationStore };
+    return { applicationStore, certificationStore, userStore };
   },
   data() {
     const applicationStore = useApplicationStore();
+    const userStore = useUserStore();
 
-    const items = applicationStore.isDraftApplicationRenewal
-      ? [
-          {
-            title: "Home",
-            disabled: false,
-            href: "/",
-          },
-          {
-            title: "Renew",
-            disabled: true,
-            href: "/application/certification/requirements",
-          },
-        ]
-      : [
-          {
-            title: "Home",
-            disabled: false,
-            href: "/",
-          },
-          {
-            title: "Application types",
-            disabled: false,
-            href: "/application/certification",
-          },
-          {
-            title: "Requirements",
-            disabled: true,
-            href: "/application/certification/requirements",
-          },
-        ];
+    const items =
+      applicationStore.isDraftApplicationRenewal || userStore.isRegistrant
+        ? [
+            {
+              title: "Home",
+              disabled: false,
+              href: "/",
+            },
+            {
+              title: "Requirements",
+              disabled: true,
+              href: "/application/certification/requirements",
+            },
+          ]
+        : [
+            {
+              title: "Home",
+              disabled: false,
+              href: "/",
+            },
+            {
+              title: "Application types",
+              disabled: false,
+              href: "/application/certification",
+            },
+            {
+              title: "Requirements",
+              disabled: true,
+              href: "/application/certification/requirements",
+            },
+          ];
 
     return { items };
   },

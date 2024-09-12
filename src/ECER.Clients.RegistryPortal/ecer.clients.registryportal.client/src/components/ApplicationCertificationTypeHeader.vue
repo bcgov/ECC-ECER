@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 v-if="!isRenewal">{{ `Application for ECE ${certificationType} certification` }}</h1>
-    <h1 v-else>{{ `Application to renew ECE ${certificationType} certification` }}</h1>
+    <h1 v-if="!isRenewal">{{ `Application for ${certificationType} certification` }}</h1>
+    <h1 v-else>{{ `Application to renew ${certificationType} certification` }}</h1>
     <div v-if="certificationTypes.includes(CertificationType.FIVE_YEAR) && !isRenewal" role="doc-subtitle">
       {{ certificationTypeSubtitleForFiveYear }}
     </div>
@@ -36,11 +36,17 @@ export default defineComponent({
     certificationType() {
       let certificationType = "";
       if (this.certificationTypes?.includes(CertificationType.ECE_ASSISTANT)) {
-        certificationType = "Assistant";
+        certificationType = "ECE Assistant";
       } else if (this.certificationTypes?.includes(CertificationType.ONE_YEAR)) {
-        certificationType = "One Year";
+        certificationType = "ECE One Year";
       } else if (this.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
-        certificationType = "Five Year";
+        certificationType = "ECE Five Year";
+      } else if (this.certificationTypes?.includes(CertificationType.SNE) && this.certificationTypes?.includes(CertificationType.ITE)) {
+        certificationType = "ITE and SNE";
+      } else if (this.certificationTypes?.includes(CertificationType.SNE)) {
+        certificationType = "Special Needs Educator";
+      } else if (this.certificationTypes?.includes(CertificationType.ITE)) {
+        certificationType = "Infant and Toddler Educator";
       }
       return certificationType;
     },

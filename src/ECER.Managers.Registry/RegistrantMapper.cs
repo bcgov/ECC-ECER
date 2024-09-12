@@ -33,6 +33,7 @@ internal sealed class RegistrantMapper : AutoMapper.Profile
       .ForMember(d => d.ResidentialAddress, opts => opts.MapFrom(s => s.ResidentialAddress))
       .ForMember(d => d.MailingAddress, opts => opts.MapFrom(s => s.MailingAddress))
       .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => s.PreviousNames))
+      .ForMember(d => d.IsRegistrant, opts => opts.MapFrom(s => s.IsRegistrant))
       .ReverseMap()
         .ValidateMemberList(MemberList.Destination)
         ;
