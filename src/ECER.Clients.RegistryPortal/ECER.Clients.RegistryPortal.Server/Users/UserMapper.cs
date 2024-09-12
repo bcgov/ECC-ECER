@@ -47,6 +47,7 @@ internal sealed class UserMapper : AutoMapper.Profile
 
     CreateMap<UserProfile, Managers.Registry.Contract.Registrants.UserProfile>()
       .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => s.PreviousNames))
+      .ForMember(d => d.IsRegistrant, opts => opts.Ignore())
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination)
       ;
