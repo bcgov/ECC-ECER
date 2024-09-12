@@ -19,7 +19,6 @@ internal sealed class UserMapper : AutoMapper.Profile
       .ForMember(d => d.ResidentialAddress, opts => opts.MapFrom(s => (Address?)null))
       .ForMember(d => d.MailingAddress, opts => opts.MapFrom(s => (Address?)null))
       .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => (string?)null))
-      .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => (string?)null))
       .ForMember(d => d.AlternateContactPhone, opts => opts.MapFrom(s => (string?)null))
       .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => (PreviousName[]?)null))
       .ReverseMap()
@@ -27,7 +26,6 @@ internal sealed class UserMapper : AutoMapper.Profile
       .ForSourceMember(s => s.ResidentialAddress, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.MailingAddress, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.PreferredName, opts => opts.DoNotValidate())
-      .ForSourceMember(s => s.MiddleName, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.AlternateContactPhone, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.PreviousNames, opts => opts.DoNotValidate());
 

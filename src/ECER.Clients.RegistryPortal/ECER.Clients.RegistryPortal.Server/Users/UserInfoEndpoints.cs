@@ -37,7 +37,6 @@ public class UserInfoEndpoints : IRegisterEndpoints
         {
           var user = ctx.User.GetUserContext()!;
           await bus.Send(new RegisterNewUserCommand(mapper.Map<Managers.Registry.Contract.Registrants.UserProfile>(userInfo)!, user.Identity), ct);
-
           return TypedResults.Ok();
         })
         .WithOpenApi("Creates or updates the currently logged on user's profile", string.Empty, "userinfo_post")

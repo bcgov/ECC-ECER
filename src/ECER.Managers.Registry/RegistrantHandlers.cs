@@ -70,7 +70,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, IMap
     {
       var matchedRegistrant = registrants.FirstOrDefault();
 
-      if (matchedRegistrant != null && !matchedRegistrant.Identities.Any(d => d.IdentityProvider == "bcsc"))
+      if (matchedRegistrant != null)
       {
         // Update the existing contact record
         matchedRegistrant.Profile.IsVerified = true;

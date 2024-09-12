@@ -9,6 +9,7 @@ internal sealed class RegistrantMapper : AutoMapper.Profile
   {
     CreateMap<Contract.Registrants.RegisterNewUserCommand, Resources.Accounts.Registrants.Registrant>()
       .ForMember(d => d.Identities, opts => opts.MapFrom(s => (new[] { s.Identity })))
+      .ForMember(d => d.Profile, opts => opts.MapFrom(s => s.Profile))
       .ForMember(d => d.Id, opts => opts.Ignore())
       ;
 
@@ -24,8 +25,7 @@ internal sealed class RegistrantMapper : AutoMapper.Profile
     CreateMap<Contract.Registrants.UserProfile, Resources.Accounts.Registrants.UserProfile>()
       .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.LastName))
-      .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => ECER.Infrastructure.Common.Utility.GetMiddleName(s.FirstName!, s.GivenName!)))
-      .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.MiddleName))
+      .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.RegistrationNumber) ? ECER.Infrastructure.Common.Utility.GetMiddleName(s.FirstName!, s.GivenName!) : s.GivenName))
       .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => s.PreferredName))
       .ForMember(d => d.AlternateContactPhone, opts => opts.MapFrom(s => s.AlternateContactPhone))
       .ForMember(d => d.Email, opts => opts.MapFrom(s => s.Email))
