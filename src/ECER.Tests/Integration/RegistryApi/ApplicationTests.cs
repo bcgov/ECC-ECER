@@ -62,10 +62,10 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task GetRenewalApplications_ById()
+  public async Task GetRenewalApplications_ById_With400HoursTypeWorkExpRef()
   {
-    var application = CreateDraftApplication();
-    application.ApplicationType = ApplicationTypes.Renewal;
+    var application = Create400HoursTypeRenewalDraftApplication();
+
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
@@ -84,6 +84,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<DraftApplication[]>();
     var applicationById = applicationsById.ShouldHaveSingleItem();
+    applicationById.WorkExperienceReferences.All(workExp => workExp.Type == WorkExperienceTypes.Is400Hours).ShouldBeTrue();
     applicationById.ApplicationType.ShouldBe(ApplicationTypes.Renewal);
     applicationById.EducationOrigin.ShouldBeNull();
     applicationById.EducationRecognition.ShouldBeNull();
@@ -246,6 +247,22 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         .Generate();
 
     application.Id = this.Fixture.draftTestApplicationId;
+    return application;
+  }
+
+  private DraftApplication Create400HoursTypeRenewalDraftApplication()
+  {
+    var application = new Faker<DraftApplication>("en_CA")
+        .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
+        .RuleFor(f => f.SignedDate, f => f.Date.Recent())
+        .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript()))
+        .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference()))
+        .RuleFor(f => f.WorkExperienceReferences, f => f.Make(f.Random.Number(2, 5), () => Create400HoursTypeWorkExperienceReference()))
+        .RuleFor(f => f.ProfessionalDevelopments, f => f.Make(f.Random.Number(1, 3), () => CreateProfessionalDevelopment()))
+        .Generate();
+
+    application.Id = this.Fixture.draftTestApplicationId;
+    application.ApplicationType = ApplicationTypes.Renewal;
     return application;
   }
 
@@ -451,6 +468,17 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     )
     {
       PhoneNumber = faker.Phone.PhoneNumber()
+    };
+  }
+
+  private WorkExperienceReference Create400HoursTypeWorkExperienceReference()
+  {
+    return new WorkExperienceReference(
+       faker.Name.FirstName(), faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(10, 150)
+    )
+    {
+      PhoneNumber = faker.Phone.PhoneNumber(),
+      Type = WorkExperienceTypes.Is400Hours
     };
   }
 

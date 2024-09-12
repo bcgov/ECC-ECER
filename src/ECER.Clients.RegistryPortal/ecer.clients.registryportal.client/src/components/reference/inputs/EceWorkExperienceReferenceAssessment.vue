@@ -14,6 +14,7 @@
             :radio-rules="[Rules.requiredRadio('Select an option')]"
             :model-value="modelValue.childDevelopment"
             :additional-info-props="{ autoGrow: true, counter: 1000, maxlength: 1000, rules: [Rules.required('Enter your response')] }"
+            :text-input-value="modelValue.childDevelopmentReason"
             @update:model-value="updateFields"
           >
             <template #radioLabel>
@@ -38,6 +39,7 @@
             :radio-rules="[Rules.requiredRadio('Select an option')]"
             :model-value="modelValue.childGuidance"
             :additional-info-props="{ autoGrow: true, counter: 1000, maxlength: 1000, rules: [Rules.required('Enter your response')] }"
+            :text-input-value="modelValue.childGuidanceReason"
             @update:model-value="updateFields"
           >
             <template #radioLabel>
@@ -62,6 +64,7 @@
             :radio-rules="[Rules.requiredRadio('Select an option')]"
             :model-value="modelValue.healthSafetyAndNutrition"
             :additional-info-props="{ autoGrow: true, counter: 1000, maxlength: 1000, rules: [Rules.required('Enter your response')] }"
+            :text-input-value="modelValue.healthSafetyAndNutritionReason"
             @update:model-value="updateFields"
           >
             <template #radioLabel>
@@ -86,6 +89,7 @@
             :radio-rules="[Rules.requiredRadio('Select an option')]"
             :model-value="modelValue.developAnEceCurriculum"
             :additional-info-props="{ autoGrow: true, counter: 1000, maxlength: 1000, rules: [Rules.required('Enter your response')] }"
+            :text-input-value="modelValue.developAnEceCurriculumReason"
             @update:model-value="updateFields"
           >
             <template #radioLabel>
@@ -110,6 +114,7 @@
             :radio-rules="[Rules.requiredRadio('Select an option')]"
             :model-value="modelValue.implementAnEceCurriculum"
             :additional-info-props="{ autoGrow: true, counter: 1000, maxlength: 1000, rules: [Rules.required('Enter your response')] }"
+            :text-input-value="modelValue.implementAnEceCurriculumReason"
             @update:model-value="updateFields"
           >
             <template #radioLabel>
@@ -134,6 +139,7 @@
             :radio-rules="[Rules.requiredRadio('Select an option')]"
             :model-value="modelValue.fosteringPositiveRelationChild"
             :additional-info-props="{ autoGrow: true, counter: 1000, maxlength: 1000, rules: [Rules.required('Enter your response')] }"
+            :text-input-value="modelValue.fosteringPositiveRelationChildReason"
             @update:model-value="updateFields"
           >
             <template #radioLabel>
@@ -158,6 +164,7 @@
             :radio-rules="[Rules.requiredRadio('Select an option')]"
             :model-value="modelValue.fosteringPositiveRelationFamily"
             :additional-info-props="{ autoGrow: true, counter: 1000, maxlength: 1000, rules: [Rules.required('Enter your response')] }"
+            :text-input-value="modelValue.fosteringPositiveRelationFamilyReason"
             @update:model-value="updateFields"
           >
             <template #radioLabel>
@@ -182,6 +189,7 @@
             :radio-rules="[Rules.requiredRadio('Select an option')]"
             :model-value="modelValue.fosteringPositiveRelationCoworker"
             :additional-info-props="{ autoGrow: true, counter: 1000, maxlength: 1000, rules: [Rules.required('Enter your response')] }"
+            :text-input-value="modelValue.fosteringPositiveRelationCoworkerReason"
             @update:model-value="updateFields"
           >
             <template #radioLabel>

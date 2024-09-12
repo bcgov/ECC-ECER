@@ -367,6 +367,7 @@ public record WorkExperienceReference([Required] string FirstName, [Required] st
 {
   public string? Id { get; set; }
   public string? PhoneNumber { get; set; }
+  public WorkExperienceTypes? Type { get; set; }
 }
 
 public enum CertificationType
@@ -513,6 +514,12 @@ public enum WorkExperienceRefStage
   Submitted,
   UnderReview,
   WaitingforResponse
+}
+
+public enum WorkExperienceTypes
+{
+  Is400Hours,
+  Is500Hours,
 }
 
 public enum CharacterReferenceStage
