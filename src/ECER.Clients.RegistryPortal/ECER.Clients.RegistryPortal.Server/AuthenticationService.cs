@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
-using ECER.Managers.Registry.Contract.Registrants;
+﻿using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.Extensions.Caching.Distributed;
+using System.Security.Claims;
 
 namespace ECER.Clients.RegistryPortal.Server;
 
@@ -12,8 +12,8 @@ public class AuthenticationService(IMediator messageBus, IDistributedCache cache
   {
     ArgumentNullException.ThrowIfNull(principal);
 
-    var identityProvider = principal.FindFirst("identity_provider")?.Value;
-    var identityId = principal.FindFirst("identity_id")?.Value;
+    var identityProvider = principal.FindFirst(RegistryPortalClaims.IdenityProvider)?.Value;
+    var identityId = principal.FindFirst(ClaimTypes.Name)?.Value;
 
     if (string.IsNullOrEmpty(identityProvider) || string.IsNullOrEmpty(identityId)) return principal;
 

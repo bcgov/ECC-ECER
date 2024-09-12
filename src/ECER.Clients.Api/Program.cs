@@ -2,6 +2,7 @@ using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -9,11 +10,10 @@ namespace ECER.Clients.Api;
 
 #pragma warning disable RCS1102 // Make class static
 #pragma warning disable S1118 // Utility classes should not have public constructors
-#pragma warning disable S2139 // Exceptions should be either logged or rethrown but not both
 
-public class Program
+internal class Program
 {
-  private static async Task Main(string[] args)
+  private static async Task<int> Main(string[] args)
   {
     var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +38,23 @@ public class Program
       builder.Services.AddSwaggerGen(opts =>
       {
         opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
-        opts.UseOneOfForPolymorphism();
+        opts.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+        {
+          Type = SecuritySchemeType.Http,
+          Scheme = "bearer",
+          BearerFormat = "JWT",
+          Description = "JWT Authorization header using the Bearer scheme."
+        });
+        opts.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
+                },
+                []
+            }
+        }); opts.UseOneOfForPolymorphism();
       });
 
       builder.Services.Configure<JsonOptions>(opts => opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
@@ -95,19 +111,18 @@ public class Program
 
       app.UseSwagger();
       if (app.Environment.IsDevelopment())
-      {
         app.UseSwaggerUI();
-      }
 
       app.RegisterApiEndpoints();
 
       await app.RunAsync();
       logger.Information("Stopped");
+      return 0;
     }
     catch (Exception e)
     {
       logger.Fatal(e, "An unhandled exception occurred during bootstrapping");
-      throw;
+      return -1;
     }
   }
 }
