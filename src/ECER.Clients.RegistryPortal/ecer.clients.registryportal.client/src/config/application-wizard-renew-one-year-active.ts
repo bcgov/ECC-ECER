@@ -1,9 +1,9 @@
 import type { Wizard } from "@/types/wizard";
 
+import renewOneYearActiveReviewForm from "./application-wizard-renew-one-year-active-review-form";
 import characterReferencesForm from "./character-references-form";
 import oneYearRenewalExplanationForm from "./one-year-renewal-explanation-letter-form";
 import profileInformationForm from "./profile-information-form";
-import reviewAndSubmitForm from "./review-submit-form";
 
 const applicationWizard: Wizard = {
   id: "form-1",
@@ -14,7 +14,7 @@ const applicationWizard: Wizard = {
       form: profileInformationForm,
       key: "item.1",
     },
-    oneYearRenewalExplanationLetter: {
+    oneYearRenewalExplanation: {
       stage: "ExplanationLetter",
       title: "Renewal information",
       form: oneYearRenewalExplanationForm,
@@ -29,7 +29,7 @@ const applicationWizard: Wizard = {
     review: {
       stage: "Review",
       title: "Review and submit",
-      form: reviewAndSubmitForm,
+      form: renewOneYearActiveReviewForm,
       key: "item.4",
     },
   },

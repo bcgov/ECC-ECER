@@ -80,6 +80,7 @@ import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import type { ApplicationStage, Wizard as WizardType } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
+import { formatDate } from "@/utils/format";
 
 import type { ProfessionalDevelopmentExtended } from "../inputs/EceProfessionalDevelopment.vue";
 
@@ -110,7 +111,7 @@ export default defineComponent({
       return differenceInYears > 5;
     };
 
-    const draftApplicationCreatedOn = applicationStore.draftApplication.createdOn!;
+    const draftApplicationCreatedOn = applicationStore.draftApplication.createdOn || formatDate(DateTime.now().toString());
 
     if (applicationStore.isDraftApplicationRenewal) {
       if (applicationStore.isDraftCertificateTypeEceAssistant) {
@@ -121,7 +122,7 @@ export default defineComponent({
           if (!latestCertificateIsExpired(draftApplicationCreatedOn)) {
             await wizardStore.initializeWizard(applicationWizardRenewOneYearActive, applicationStore.draftApplication);
             wizardConfigSetup = applicationWizardRenewOneYearActive;
-          } else if (!latestCertificateExpiredMoreThan5Years(applicationStore.draftApplication.createdOn!)) {
+          } else if (!latestCertificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
             await wizardStore.initializeWizard(applicationWizardRenewOneYearExpired, applicationStore.draftApplication);
             wizardConfigSetup = applicationWizardRenewOneYearExpired;
           }
