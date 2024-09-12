@@ -10,7 +10,7 @@
           <ul class="ml-10">
             <li>Be related to the field of early childhood education</li>
             <li v-if="latestCertificateStatus === 'Expired'">Have been completed within the last 5 years</li>
-            <li v-else-if="latestCertificateExpiryDate > today">
+            <li v-else-if="latestCertificateStatus === 'Active' && latestCertificateExpiryDate > today">
               Have been completed between the {{ formatDate(latestCertificateEffectiveDate, "LLL d, yyyy") }} and the {{ formatDate(today, "LLL d, yyyy") }}
             </li>
           </ul>
