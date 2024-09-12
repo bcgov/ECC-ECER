@@ -32,6 +32,7 @@ public record UserProfile
 {
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
+  public string? MiddleName { get; set; }
   public string? GivenName { get; set; }
   public string? PreferredName { get; set; }
   public string? AlternateContactPhone { get; set; }

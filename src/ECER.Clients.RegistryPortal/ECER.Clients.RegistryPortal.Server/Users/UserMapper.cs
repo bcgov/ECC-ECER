@@ -21,6 +21,7 @@ internal sealed class UserMapper : AutoMapper.Profile
       .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => (string?)null))
       .ForMember(d => d.AlternateContactPhone, opts => opts.MapFrom(s => (string?)null))
       .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => (PreviousName[]?)null))
+      .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.MiddleName))
       .ReverseMap()
       .ValidateMemberList(MemberList.Source)
       .ForSourceMember(s => s.ResidentialAddress, opts => opts.DoNotValidate())
@@ -45,7 +46,11 @@ internal sealed class UserMapper : AutoMapper.Profile
 
     CreateMap<UserProfile, Managers.Registry.Contract.Registrants.UserProfile>()
       .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => s.PreviousNames))
+      .ForMember(d => d.IsVerified, opts => opts.Ignore())
+      .ForMember(d => d.GivenName, opts => opts.Ignore())
+      .ForMember(d => d.RegistrationNumber, opts => opts.Ignore())
       .ReverseMap()
+
       .ValidateMemberList(MemberList.Destination)
       ;
 
