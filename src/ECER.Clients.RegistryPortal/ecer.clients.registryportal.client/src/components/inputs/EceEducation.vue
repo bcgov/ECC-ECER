@@ -56,6 +56,7 @@
               v-model="startYear"
               :rules="[
                 Rules.required('Enter the start date'),
+                Rules.futureDateNotAllowedRule(),
                 Rules.conditionalWrapper(
                   isDraftApplicationAssistantRenewal,
                   Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'Start date must be within the last 5 years'),
@@ -66,6 +67,7 @@
               variant="outlined"
               color="primary"
               maxlength="50"
+              :max="today"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -75,6 +77,7 @@
               v-model="endYear"
               :rules="[
                 Rules.required('Enter the end date'),
+                Rules.futureDateNotAllowedRule(),
                 Rules.conditionalWrapper(
                   isDraftApplicationAssistantRenewal,
                   Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'End date must be within the last 5 years'),
@@ -85,6 +88,7 @@
               variant="outlined"
               color="primary"
               maxlength="50"
+              :max="today"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -208,6 +212,7 @@
 </template>
 
 <script lang="ts">
+import { DateTime } from "luxon";
 import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 
@@ -328,6 +333,9 @@ export default defineComponent({
     showAddEducationButton(): boolean {
       //covers case where user has assistant renewal and can only add 1 education. Otherwise allow user to upload as many as needed.
       return this.isDraftApplicationAssistantRenewal ? Object.keys(this.modelValue).length < 1 : true;
+    },
+    today() {
+      return formatDate(DateTime.now().toString());
     },
   },
   mounted() {
