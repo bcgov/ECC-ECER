@@ -79,9 +79,9 @@ import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import type { ApplicationStage, Wizard as WizardType } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
+import { formatDate } from "@/utils/format";
 
 import type { ProfessionalDevelopmentExtended } from "../inputs/EceProfessionalDevelopment.vue";
-import { formatDate } from "@/utils/format";
 
 export default defineComponent({
   name: "Application",
