@@ -44,12 +44,13 @@ public class ApplicationRenewalValidationEngineTests
   }
 
   [Fact]
-  public async Task Validate_OneYearRenewalWithActiveCertificateWithoutExplanationLetter_ReturnsExplanationLetterError()
+  public async Task Validate_OneYearRenewalWithActiveCertificateOneYearRenewalOtherWithoutExplanationLetter_ReturnsExplanationLetterError()
   {
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
+      OneYearRenewalexplanation = OneYearRenewalexplanations.Other,
       ExplanationLetter = null, // No explanation letter
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
     };
@@ -430,9 +431,6 @@ public class ApplicationRenewalValidationEngineTests
   {
     return new ProfessionalDevelopment(
         Guid.NewGuid().ToString(), // Id
-        "1234", // CertificationNumber
-        DateTime.Now.AddYears(1), // CertificationExpiryDate
-        DateTime.Now.AddMonths(-1), // DateSigned
         _faker.Company.CatchPhrase(), // CourseName
         _faker.Company.CompanyName(), // OrganizationName
         DateTime.Now.AddMonths(-3), // StartDate
@@ -445,7 +443,6 @@ public class ApplicationRenewalValidationEngineTests
       Status = _faker.Random.Enum<ProfessionalDevelopmentStatusCode>(),
       DeletedFiles = new List<string> { _faker.System.FileName() },
       NewFiles = new List<string> { _faker.System.FileName() },
-      Files = new List<string> { _faker.System.FileName() }
     };
   }
 

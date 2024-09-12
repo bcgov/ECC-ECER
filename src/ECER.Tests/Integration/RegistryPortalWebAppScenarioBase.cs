@@ -45,6 +45,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_PortalInvitation testPortalInvitationCharacterReferenceOptout = null!;
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceOptout = null!;
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceCompleted = null!;
+  private ecer_PortalInvitation testPortalInvitation400HoursTypeWorkExperienceReferenceSubmit = null!;
   private Contact authenticatedBcscUser2 = null!;
 
   private ecer_PreviousName previousName = null!;
@@ -68,6 +69,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public Guid portalInvitationCharacterReferenceIdOptout => testPortalInvitationCharacterReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationWorkExperienceReferenceIdOptout => testPortalInvitationWorkExperienceReferenceOptout.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationWorkExperienceReferenceIdCompleted => testPortalInvitationWorkExperienceReferenceCompleted.ecer_PortalInvitationId ?? Guid.Empty;
+
+  public Guid portalInvitation400HoursTypeWorkExperienceReferenceIdSubmit => testPortalInvitation400HoursTypeWorkExperienceReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
   public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
   public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
   private ecer_Application inProgressTestApplication2 = null!;
@@ -91,6 +94,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string submittedTestApplicationWorkExperienceRefId2 => submittedTestApplicationWorkExperienceRef2.Id.ToString();
 
   public string submittedTestApplicationCharacterRefId => submittedTestApplicationCharacterRef.Id.ToString();
+  public string PreviousNameId => previousName.ecer_PreviousNameId!.Value.ToString();
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -147,6 +151,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testPortalInvitationCharacterReferenceOptout = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name4");
     testPortalInvitationWorkExperienceReferenceOptout = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name5");
     testPortalInvitationWorkExperienceReferenceCompleted = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name6");
+    testPortalInvitation400HoursTypeWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_400HoursTypeWorkExperienceReference(context, authenticatedBcscUser, "name7");
 
     context.SaveChanges();
 
@@ -179,7 +184,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       StatusCode = bcgov_DocumentUrl_StatusCode.Active,
     };
     context.AddObject(document);
-    context.AddLink(authenticatedBcscUser, Contact.Fields.bcgov_contact_bcgov_documenturl, document);
+    context.AddLink(registrant, Contact.Fields.bcgov_contact_bcgov_documenturl, document);
 
     return document;
   }
@@ -216,13 +221,13 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_PreviousName GetOrAddPreviousName(EcerContext context, Contact applicant)
   {
-    var previousName = (from p in context.ecer_PreviousNameSet
-                        where p.ecer_Contactid.Id == applicant.Id
-                        select p).FirstOrDefault();
+    var existing = (from p in context.ecer_PreviousNameSet
+                    where p.ecer_Contactid.Id == applicant.Id
+                    select p).FirstOrDefault();
 
-    if (previousName == null)
+    if (existing == null)
     {
-      previousName = new ecer_PreviousName
+      existing = new ecer_PreviousName
       {
         Id = Guid.NewGuid(),
         ecer_Source = ecer_PreviousNameSources.Transcript,
@@ -231,11 +236,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_LastName = "Was",
         ecer_PreferredName = "Longtimeago",
       };
-      context.AddObject(previousName);
-      context.AddLink(previousName, ecer_PreviousName.Fields.ecer_previousname_Contactid, applicant);
+      context.AddObject(existing);
+      context.AddLink(existing, ecer_PreviousName.Fields.ecer_previousname_Contactid, applicant);
     }
 
-    return previousName;
+    return existing;
   }
 
   private ecer_Application GetOrAddApplication(EcerContext context, Contact applicant, ecer_Application_StatusCode status)
@@ -389,7 +394,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         Id = charGuid,
         ecer_CharacterReferenceId = charGuid,
-        //ecer_Name = "Reference Test name",
+        ecer_Name = name,
         ecer_FirstName = "autotest_charref_first",
         ecer_LastName = "autotest_charref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca"
@@ -400,7 +405,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         Id = guid,
         ecer_PortalInvitationId = guid,
-        //ecer_Name = name,
+        ecer_Name = name,
         ecer_FirstName = "autotest_charref_first",
         ecer_LastName = "autotest_charref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
@@ -423,9 +428,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       .Where(p => p.ecer_ApplicantId != null &&
                   p.ecer_ApplicationId != null &&
                   p.ecer_Name == name &&
-
                   p.ecer_WorkExperienceReferenceId != null &&
-                  p.StateCode != ecer_portalinvitation_statecode.Inactive)
+                  p.StateCode == ecer_portalinvitation_statecode.Active)
       .ToList();
 
     foreach (var portalInvitation in portalInvitations)
@@ -453,10 +457,59 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         Id = wpGuid,
         ecer_WorkExperienceRefId = wpGuid,
+        ecer_Name = name,
+        ecer_FirstName = "autotest_workref_first",
+        ecer_LastName = "autotest_workref_last",
+        ecer_EmailAddress = "reference_test@test.gov.bc.ca",
+      };
+
+      var guid = Guid.NewGuid();
+      portalInvitation = new ecer_PortalInvitation
+      {
+        Id = guid,
+        ecer_PortalInvitationId = guid,
+        ecer_Name = name,
+        ecer_FirstName = "autotest_workref_first",
+        ecer_LastName = "autotest_workref_last",
+        ecer_EmailAddress = "reference_test@test.gov.bc.ca",
+        StatusCode = ecer_PortalInvitation_StatusCode.Sent,
+      };
+
+      context.AddObject(workexperienceReference);
+      context.AddObject(portalInvitation);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_WorkExperienceRefId, workexperienceReference);
+    }
+    return portalInvitation;
+  }
+
+  private ecer_PortalInvitation GetOrAddPortalInvitation_400HoursTypeWorkExperienceReference(EcerContext context, Contact registrant, string name)
+  {
+    var portalInvitation = (from p in context.ecer_PortalInvitationSet
+                            join w in context.ecer_WorkExperienceRefSet
+                            on p.ecer_WorkExperienceReferenceId.Id equals w.ecer_WorkExperienceRefId
+                            where p.ecer_ApplicantId != null &&
+                                  p.ecer_ApplicationId != null &&
+                                  p.ecer_Name == name &&
+                                  p.ecer_WorkExperienceReferenceId != null &&
+                                  p.StatusCode == ecer_PortalInvitation_StatusCode.Sent &&
+                                  w.ecer_Type == ecer_WorkExperienceTypes._400Hours
+                            select p).FirstOrDefault();
+
+    if (portalInvitation == null)
+    {
+      var wpGuid = Guid.NewGuid();
+
+      var workexperienceReference = new ecer_WorkExperienceRef
+      {
+        Id = wpGuid,
+        ecer_WorkExperienceRefId = wpGuid,
         //ecer_Name = "autotest_Reference Test name",
         ecer_FirstName = "autotest_workref_first",
         ecer_LastName = "autotest_workref_last",
         ecer_EmailAddress = "reference_test@test.gov.bc.ca",
+        ecer_Type = ecer_WorkExperienceTypes._400Hours, // 400 Hours Type work experience reference
       };
 
       var guid = Guid.NewGuid();
@@ -474,7 +527,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       context.AddObject(workexperienceReference);
       context.AddObject(portalInvitation);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
-      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication);
+      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication2);
       context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_WorkExperienceRefId, workexperienceReference);
     }
     return portalInvitation;

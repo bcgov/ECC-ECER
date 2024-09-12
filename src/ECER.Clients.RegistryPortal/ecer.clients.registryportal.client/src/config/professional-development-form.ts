@@ -1,13 +1,13 @@
-import EceTextField from "@/components/inputs/EceTextField.vue";
+import EceProfessionalDevelopment from "@/components/inputs/EceProfessionalDevelopment.vue";
 import type { Form } from "@/types/form";
 
 const professionalDevelopment: Form = {
   id: "professionalDevelopmentForm",
-  title: "Professional Development",
+  title: "Professional development",
   inputs: {
-    professionalDevelopment: {
-      id: "professionalDevelopment",
-      component: EceTextField,
+    professionalDevelopments: {
+      id: "professionalDevelopments",
+      component: EceProfessionalDevelopment,
       props: {},
       cols: {
         md: 12,

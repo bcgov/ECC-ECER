@@ -1,0 +1,68 @@
+<template>
+  <v-card min-width="100%" variant="elevated" rounded="lg" class="custom-card-styling" elevation="4">
+    <template #title>
+      <v-card-title>
+        <v-row>
+          <v-col>
+            <p class="font-weight-bold">{{ professionalDevelopment.courseName }}</p>
+          </v-col>
+          <v-col>
+            <p>{{ `${professionalDevelopment.numberOfHours} hours` }}</p>
+          </v-col>
+
+          <div></div>
+        </v-row>
+      </v-card-title>
+    </template>
+    <template #append>
+      <v-tooltip text="Edit professional development" location="top">
+        <template #activator="{ props }">
+          <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editProfessionalDevelopment" />
+        </template>
+      </v-tooltip>
+      <v-tooltip text="Delete professional development" location="top">
+        <template #activator="{ props }">
+          <v-btn v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteProfessionalDevelopment" />
+        </template>
+      </v-tooltip>
+    </template>
+  </v-card>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+import type { ProfessionalDevelopmentExtended } from "./inputs/EceProfessionalDevelopment.vue";
+
+export default defineComponent({
+  name: "ProfessionalDevelopmentCard",
+  props: {
+    professionalDevelopment: {
+      type: Object as () => ProfessionalDevelopmentExtended,
+      required: true,
+    },
+  },
+
+  emits: {
+    edit: (_reference: ProfessionalDevelopmentExtended) => true,
+    delete: (_reference: ProfessionalDevelopmentExtended) => true,
+  },
+  methods: {
+    editProfessionalDevelopment() {
+      // Emit an event or implement edit logic here
+      this.$emit("edit", this.professionalDevelopment);
+    },
+    deleteProfessionalDevelopment() {
+      // Emit an event or implement delete logic here
+      this.$emit("delete", this.professionalDevelopment);
+    },
+  },
+});
+</script>
+
+<style scoped lang="scss">
+.custom-card-styling {
+  border: 1px solid #adb5bd;
+  padding: 0.5rem;
+}
+</style>

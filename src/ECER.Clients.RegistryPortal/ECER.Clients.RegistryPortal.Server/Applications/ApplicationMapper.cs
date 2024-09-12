@@ -90,6 +90,7 @@ public class ApplicationMapper : Profile
       ;
 
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>();
+    CreateMap<Managers.Registry.Contract.Applications.FileInfo, FileInfo>().ReverseMap();
 
     CreateMap<Managers.Registry.Contract.Applications.Application, SubmittedApplicationStatus>()
       .ForCtorParam(nameof(SubmittedApplicationStatus.Id),

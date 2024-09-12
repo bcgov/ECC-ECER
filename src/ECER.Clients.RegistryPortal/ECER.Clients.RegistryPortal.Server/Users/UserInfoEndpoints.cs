@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.RegistryPortal.Server.Users;
 
@@ -51,4 +51,6 @@ public record UserInfo([Required] string FirstName, [Required] string LastName, 
   public string? RegistrationNumber { get; set; }
   public bool IsVerified { get; set; }
   public int UnreadMessagesCount { get; set; }
+
+  public bool IsRegistrant { get; set; }
 }

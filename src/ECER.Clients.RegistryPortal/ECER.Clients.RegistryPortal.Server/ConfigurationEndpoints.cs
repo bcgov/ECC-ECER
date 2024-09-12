@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
 using MediatR;

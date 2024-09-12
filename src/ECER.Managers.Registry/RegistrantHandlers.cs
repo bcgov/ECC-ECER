@@ -2,6 +2,7 @@
 using AutoMapper;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Resources.Accounts.Registrants;
+using ECER.Resources.Documents.Certifications;
 using MediatR;
 using Microsoft.Xrm.Sdk.Query;
 using System.ServiceModel.Channels;
@@ -11,7 +12,7 @@ namespace ECER.Managers.Registry;
 /// <summary>
 /// User Manager
 /// </summary>
-public class RegistrantHandlers(IRegistrantRepository registrantRepository, IMapper mapper)
+public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICertificationRepository certificationRepository, IMapper mapper)
   : IRequestHandler<SearchRegistrantQuery, RegistrantQueryResults>,
     IRequestHandler<RegisterNewUserCommand, string>,
     IRequestHandler<UpdateRegistrantProfileCommand, string>
@@ -29,6 +30,15 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, IMap
     {
       ByIdentity = request.ByUserIdentity
     }, cancellationToken);
+
+    foreach (var registrant in registrants)
+    {
+      var certifications = await certificationRepository.Query(new UserCertificationQuery
+      {
+        ByApplicantId = registrant.Id
+      });
+      registrant.Profile.IsRegistrant = certifications.Any();
+    }
 
     return new RegistrantQueryResults(mapper.Map<IEnumerable<Contract.Registrants.Registrant>>(registrants)!);
   }

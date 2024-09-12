@@ -14,10 +14,10 @@ public static class AuthenticationHelper
   {
     ArgumentNullException.ThrowIfNull(identity);
 
-    scenario.WithClaim("identity_provider", identity.IdentityProvider);
-    scenario.WithClaim("identity_id", identity.UserId);
+    scenario.WithClaim(RegistryPortalClaims.IdenityProvider, identity.IdentityProvider);
+    scenario.WithClaim(ClaimTypes.Name, identity.UserId);
     scenario.WithClaim(ClaimTypes.NameIdentifier, identity.UserId);
-    if (!string.IsNullOrEmpty(userId)) scenario.WithClaim("user_id", userId);
+    if (!string.IsNullOrEmpty(userId)) scenario.WithClaim(RegistryPortalClaims.UserId, userId);
 
     return scenario;
   }

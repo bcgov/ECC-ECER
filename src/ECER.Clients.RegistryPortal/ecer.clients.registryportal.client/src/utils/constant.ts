@@ -29,6 +29,11 @@ export enum PortalInviteType {
   CHARACTER = "CharacterReference",
 }
 
+export enum WorkExperienceType {
+  IS_400_Hours = "Is400Hours",
+  IS_500_Hours = "Is500Hours",
+}
+
 export enum ProvinceTerritoryType {
   BC = "British Columbia",
   OTHER = "Other",
@@ -72,6 +77,12 @@ export const workReferenceRelationshipRadio: RadioButtonWrapper<Components.Schem
   { label: "Other", value: "Other" },
 ];
 
+export const workReference400HoursRelationshipRadio: RadioButtonWrapper<Components.Schemas.ReferenceRelationship>[] = [
+  { label: "Supervisor", value: "Supervisor" },
+  { label: "Co-worker", value: "CoWorker" },
+  { label: "Parent or guardian of child they cared for", value: "ParentGuardianofChildinCare" },
+];
+
 export const likertScaleRadio: RadioButtonWrapper<Components.Schemas.LikertScale>[] = [
   { label: "Yes", value: "Yes" },
   { label: "No", value: "No" },
@@ -95,10 +106,12 @@ export const lengthOfAcquaintanceDropdown: DropdownWrapper<Components.Schemas.Re
 ];
 
 export const renewalInformationRadio: RadioButtonWrapper<Components.Schemas.OneYearRenewalexplanations>[] = [
-  { label: "I live and work in a community without other certified ECEs", value: "IliveandworkinacommunitywithoutothercertifiedECEs" },
-  { label: "I could not find employment to complete the required hours", value: "Icouldnotfindemploymenttocompletetherequiredhours" },
-  { label: "I was unable to work in the child care field for personal reasons", value: "Iwasunabletoworkinthechildcarefieldforpersonalreasons" },
-  { label: "I was unable to enter the country as expected", value: "Iwasunabletoenterthecountryasexpected" },
-  { label: "I could not work due to my visa status (student visa, expired visa)", value: "Icouldnotworkduetomyvisastatusstudentvisaexpiredvisa" },
+  { label: "I left the childcare field for personal reasons", value: "Ileftthechildcarefieldforpersonalreasons" },
+  { label: "I was unable to complete the required hours of professional development", value: "Iwasunabletocompletetherequiredhoursofprofessionaldevelopment" },
+  { label: "I was unable to find employment in the childcare field in my community", value: "Iwasunabletofindemploymentinthechildcarefieldinmycommunity" },
+  {
+    label: "My employment does not require certification as an ECE. For example nanny, teacher, college instructor, administrator, etc.",
+    value: "MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc",
+  },
   { label: "Other", value: "Other" },
 ];

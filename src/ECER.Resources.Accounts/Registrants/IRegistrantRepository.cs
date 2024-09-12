@@ -55,6 +55,7 @@ public record UserProfile
   public bool IsVerified { get; set; }
   public string? RegistrationNumber { get; set; }
   public IEnumerable<PreviousName> PreviousNames { get; set; } = Array.Empty<PreviousName>();
+  public bool IsRegistrant { get; set; }
 };
 
 public record PreviousName(string FirstName, string LastName)

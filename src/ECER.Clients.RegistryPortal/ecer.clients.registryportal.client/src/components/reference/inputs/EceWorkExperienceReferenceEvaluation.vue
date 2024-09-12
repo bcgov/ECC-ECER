@@ -104,6 +104,7 @@
             hide-details="auto"
             type="date"
             :max="today"
+            :rules="[Rules.required('Enter the start date of hours'), Rules.futureDateNotAllowedRule('Start date of hours cannot be in the future')]"
             @update:model-value="updateField('startDate', $event)"
           ></v-text-field>
         </v-col>
@@ -117,6 +118,11 @@
             hide-details="auto"
             type="date"
             :max="today"
+            :rules="[
+              Rules.required('Enter the end date of hours'),
+              Rules.dateBeforeRule(modelValue.startDate || ''),
+              Rules.futureDateNotAllowedRule('End date of hours cannot be in the future'),
+            ]"
             @update:model-value="updateField('endDate', $event)"
           ></v-text-field>
         </v-col>
@@ -165,6 +171,7 @@ import CheckboxMultiple from "@/components/inputs/CheckboxMultiple.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import { childcareAgeRangesCheckBox, childrenProgramTypeDropdown, workHoursTypeRadio, workReferenceRelationshipRadio } from "@/utils/constant";
+import { WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
@@ -198,6 +205,10 @@ export default defineComponent({
     today() {
       return formatDate(DateTime.now().toString());
     },
+  },
+  mounted() {
+    // Set Work Exp Ref Type as 500 Hours
+    this.updateField("workExperienceType", WorkExperienceType.IS_500_Hours);
   },
   methods: {
     isNumber,

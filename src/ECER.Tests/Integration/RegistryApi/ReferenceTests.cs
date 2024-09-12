@@ -1,5 +1,6 @@
 ﻿using Alba;
 using Bogus;
+using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Clients.RegistryPortal.Server.References;
 using ECER.Managers.Admin.Contract.PortalInvitations;
 using MediatR;
@@ -55,7 +56,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     return referenceSubmissionRequest;
   }
 
-  private WorkExperienceReferenceSubmissionRequest CreateWorkExperienceReferenceSubmissionRequest(string token)
+  private WorkExperienceReferenceSubmissionRequest Create500HoursTypeWorkExperienceReferenceSubmissionRequest(string token)
   {
     var faker = new Faker("en_CA");
 
@@ -72,38 +73,44 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     };
 
     // Generating random data for WorkExperienceReferenceDetails
-    var workExperienceReferenceDetails = new WorkExperienceReferenceDetails(
-        faker.Random.Number(1, 100), // Hours
-        faker.PickRandom<WorkHoursType>(), // WorkHoursType
-        faker.Random.Word(), // ChildrenProgramName
-        faker.PickRandom<ChildrenProgramType>(), // ChildrenProgramType
-        faker.Random.Word(), // ChildrenProgramTypeOther
-        new List<ChildcareAgeRanges>() { ChildcareAgeRanges.Grade1 }, // AgeOfChildrenCaredFor
-        faker.Date.Between(DateTime.Now.AddYears(-10), DateTime.Now), // StartDate
-        faker.Date.Between(DateTime.Now, DateTime.Now.AddYears(10)), // EndDate
-        faker.PickRandom<ReferenceRelationship>(), // ReferenceRelationship
-        faker.Random.Word() // ReferenceRelationshipOther
-    );
+    var workExperienceReferenceDetails = new WorkExperienceReferenceDetails()
+    {
+      Hours = faker.Random.Number(1, 100), // Hours
+      WorkHoursType = faker.PickRandom<WorkHoursType>(), // WorkHoursType
+      ChildrenProgramName = faker.Random.Word(), // ChildrenProgramName
+      ChildrenProgramType = faker.PickRandom<ChildrenProgramType>(), // ChildrenProgramType
+      ChildrenProgramTypeOther = faker.Random.Word(), // ChildrenProgramTypeOther
+      ChildcareAgeRanges = new List<ChildcareAgeRanges>() { ChildcareAgeRanges.Grade1 }, // Child care Age Ranges
+      Role = null, //Role - skipped for 500 hours type work experience reference
+      AgeofChildrenCaredFor = null, // age of children cared for - skipped for 500 hours type work experience reference
+      StartDate = faker.Date.Between(DateTime.Now.AddYears(-10), DateTime.Now), // StartDate
+      EndDate = faker.Date.Between(DateTime.Now, DateTime.Now.AddYears(10)), // EndDate
+      ReferenceRelationship = faker.PickRandom<ReferenceRelationship>(), // ReferenceRelationship
+      ReferenceRelationshipOther = faker.Random.Word(), // ReferenceRelationshipOther
+      AdditionalComments = null, // additional comments - skipped for 500 hours type work experience reference
+      WorkExperienceType = WorkExperienceTypes.Is500Hours // Set 500 hours Type Work Experience for Validations
+    };
 
     // Generating random data for WorkExperienceReferenceCompetenciesAssessment
-    var workExperienceReferenceCompetenciesAssessment = new WorkExperienceReferenceCompetenciesAssessment(
-        faker.PickRandom<LikertScale>(), // ChildDevelopment
-        faker.Lorem.Paragraph(), // ChildDevelopmentReason
-        faker.PickRandom<LikertScale>(), // ChildGuidance
-        faker.Lorem.Paragraph(), // ChildGuidanceReason
-        faker.PickRandom<LikertScale>(), // HealthSafetyAndNutrition
-        faker.Lorem.Paragraph(), // HealthSafetyAndNutritionReason
-        faker.PickRandom<LikertScale>(), // DevelopAnEceCurriculum
-        faker.Lorem.Paragraph(), // DevelopAnEceCurriculumReason
-        faker.PickRandom<LikertScale>(), // ImplementAnEceCurriculum
-        faker.Lorem.Paragraph(), // ImplementAnEceCurriculumReason
-        faker.PickRandom<LikertScale>(), // FosteringPositiveRelationChild
-        faker.Lorem.Paragraph(), // FosteringPositiveRelationChildReason
-        faker.PickRandom<LikertScale>(), // FosteringPositiveRelationFamily
-        faker.Lorem.Paragraph(), // FosteringPositiveRelationFamilyReason
-        faker.PickRandom<LikertScale>(), // FosteringPositiveRelationCoworker
-        faker.Lorem.Paragraph() // FosteringPositiveRelationCoworkerReason
-    );
+    var workExperienceReferenceCompetenciesAssessment = new WorkExperienceReferenceCompetenciesAssessment()
+    {
+      ChildDevelopment = faker.PickRandom<LikertScale>(), // ChildDevelopment
+      ChildDevelopmentReason = faker.Lorem.Paragraph(), // ChildDevelopmentReason
+      ChildGuidance = faker.PickRandom<LikertScale>(), // ChildGuidance
+      ChildGuidanceReason = faker.Lorem.Paragraph(), // ChildGuidanceReason
+      HealthSafetyAndNutrition = faker.PickRandom<LikertScale>(), // HealthSafetyAndNutrition
+      HealthSafetyAndNutritionReason = faker.Lorem.Paragraph(), // HealthSafetyAndNutritionReason
+      DevelopAnEceCurriculum = faker.PickRandom<LikertScale>(), // DevelopAnEceCurriculum
+      DevelopAnEceCurriculumReason = faker.Lorem.Paragraph(), // DevelopAnEceCurriculumReason
+      ImplementAnEceCurriculum = faker.PickRandom<LikertScale>(), // ImplementAnEceCurriculum
+      ImplementAnEceCurriculumReason = faker.Lorem.Paragraph(), // ImplementAnEceCurriculumReason
+      FosteringPositiveRelationChild = faker.PickRandom<LikertScale>(), // FosteringPositiveRelationChild
+      FosteringPositiveRelationChildReason = faker.Lorem.Paragraph(), // FosteringPositiveRelationChildReason
+      FosteringPositiveRelationFamily = faker.PickRandom<LikertScale>(), // FosteringPositiveRelationFamily
+      FosteringPositiveRelationFamilyReason = faker.Lorem.Paragraph(), // FosteringPositiveRelationFamilyReason
+      FosteringPositiveRelationCoworker = faker.PickRandom<LikertScale>(), // FosteringPositiveRelationCoworker
+      FosteringPositiveRelationCoworkerReason = faker.Lorem.Paragraph() // FosteringPositiveRelationCoworkerReason
+    };
 
     // Creating the WorkExperienceReferenceSubmissionRequest record
     var workExperienceReferenceSubmissionRequest = new WorkExperienceReferenceSubmissionRequest(
@@ -114,7 +121,58 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
         workExperienceReferenceCompetenciesAssessment,
         faker.Random.Bool(), // ConfirmProvidedInformationIsRight
         faker.Random.Word() //recaptcha token
-    );
+    )
+    { WorkExperienceType = WorkExperienceTypes.Is500Hours }; // Set 500 hours Type Work Experience for Validations
+
+    return workExperienceReferenceSubmissionRequest;
+  }
+
+  private WorkExperienceReferenceSubmissionRequest Create400HoursTypeWorkExperienceReferenceSubmissionRequest(string token)
+  {
+    var faker = new Faker("en_CA");
+
+    // Generating random data for ReferenceContactInformation
+    var referenceContactInfo = new ReferenceContactInformation(
+        faker.Person.LastName,
+        faker.Person.FirstName,
+        "Reference_Contact@test.gov.bc.ca",
+        faker.Phone.PhoneNumber(),
+        faker.Address.City()
+    )
+    {
+      CertificateProvinceId = "98fbb5c5-68da-ee11-904c-000d3af4645f" // Random Canadian province abbreviation
+    };
+
+    // Generating random data for WorkExperienceReferenceDetails
+    var workExperienceReferenceDetails = new WorkExperienceReferenceDetails()
+    {
+      Hours = faker.Random.Number(1, 100), // Hours
+      WorkHoursType = faker.PickRandom<WorkHoursType>(), // WorkHoursType
+      ChildrenProgramName = faker.Random.Word(), // ChildrenProgramName
+      ChildrenProgramType = null, // ChildrenProgramType - skipped for 400 hours type work experience reference
+      ChildrenProgramTypeOther = null, // ChildrenProgramTypeOther - skipped for 400 hours type work experience reference
+      ChildcareAgeRanges = null, // Child care Age Ranges - skipped for 400 hours type work experience reference
+      Role = "Child Care Provider", //Role - needed for 400 hours type work experience reference
+      AgeofChildrenCaredFor = faker.PickRandom<ChildcareAgeRanges>().ToString(), // age of children cared for - for 400 hours type work experience reference
+      StartDate = faker.Date.Between(DateTime.Now.AddYears(-10), DateTime.Now), // StartDate
+      EndDate = faker.Date.Between(DateTime.Now, DateTime.Now.AddYears(10)), // EndDate
+      ReferenceRelationship = faker.PickRandom<ReferenceRelationship>(), // ReferenceRelationship
+      ReferenceRelationshipOther = null, // ReferenceRelationshipOther - skipped for 400 hours type work experience reference
+      AdditionalComments = faker.Lorem.Paragraph(), // additional comments - for 400 hours type work experience reference
+      WorkExperienceType = WorkExperienceTypes.Is400Hours // Set 400 hours Type Work Experience for Validations
+    };
+
+    // Creating the WorkExperienceReferenceSubmissionRequest record
+    var workExperienceReferenceSubmissionRequest = new WorkExperienceReferenceSubmissionRequest(
+        token,
+        true, // will provide reference
+        referenceContactInfo,
+        workExperienceReferenceDetails,
+        null, // Competencies Assessment - skipped for 400 hours type work experience reference
+        faker.Random.Bool(), // ConfirmProvidedInformationIsRight
+        faker.Random.Word() //recaptcha token
+    )
+    { WorkExperienceType = WorkExperienceTypes.Is400Hours };// Set 400 hours Type Work Experience for Validations
 
     return workExperienceReferenceSubmissionRequest;
   }
@@ -137,7 +195,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task SubmitWorkExperienceReference_ShouldReturnOk()
+  public async Task Submit500HoursTypeWorkExperienceReference_ShouldReturnOk()
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
     var portalInvitation = Fixture.portalInvitationWorkExperienceReferenceIdSubmit;
@@ -145,7 +203,24 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.VerificationLink.Split('/')[2];
-    var referenceSubmissionRequest = CreateWorkExperienceReferenceSubmissionRequest(token);
+    var referenceSubmissionRequest = Create500HoursTypeWorkExperienceReferenceSubmissionRequest(token);
+    await Host.Scenario(_ =>
+    {
+      _.Post.Json(referenceSubmissionRequest).ToUrl($"/api/References/WorkExperience");
+      _.StatusCodeShouldBeOk();
+    });
+  }
+
+  [Fact]
+  public async Task Submit400HoursTypeWorkExperienceReference_ShouldReturnOk()
+  {
+    var bus = Fixture.Services.GetRequiredService<IMediator>();
+    var portalInvitation = Fixture.portalInvitation400HoursTypeWorkExperienceReferenceIdSubmit;
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
+    packingResponse.ShouldNotBeNull();
+
+    var token = packingResponse.VerificationLink.Split('/')[2];
+    var referenceSubmissionRequest = Create400HoursTypeWorkExperienceReferenceSubmissionRequest(token);
     await Host.Scenario(_ =>
     {
       _.Post.Json(referenceSubmissionRequest).ToUrl($"/api/References/WorkExperience");

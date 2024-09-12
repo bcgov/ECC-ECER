@@ -89,17 +89,22 @@ export const useWizardStore = defineStore("wizard", {
         ...(wizard.steps?.education?.form?.inputs?.educationList?.id && { [wizard.steps?.education?.form?.inputs?.educationList?.id]: transcriptsDict }),
 
         // one year explanation letter
-        ...(wizard.steps?.oneYearRenewalExplanationLetter?.form?.inputs?.oneYearRenewalExplanation?.id && {
-          [wizard.steps?.oneYearRenewalExplanationLetter?.form?.inputs?.oneYearRenewalExplanation?.id]: draftApplication?.oneYearRenewalexplanation || "",
+        ...(wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id && {
+          [wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id]: draftApplication?.oneYearRenewalexplanation || "",
         }),
-        ...(wizard.steps?.oneYearRenewalExplanationLetter?.form?.inputs?.explanationLetter?.id && {
-          [wizard.steps?.oneYearRenewalExplanationLetter?.form?.inputs?.explanationLetter?.id]: draftApplication?.explanationLetter || "",
+        ...(wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.explanationLetter?.id && {
+          [wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.explanationLetter?.id]: draftApplication?.explanationLetter || "",
         }),
 
         // Character References step data
         [wizard.steps.characterReferences.form.inputs.characterReferences.id]: draftApplication?.characterReferences?.[0]
           ? draftApplication?.characterReferences
           : [],
+
+        // Professional Development
+        ...(wizard.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id && {
+          [wizard.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id]: draftApplication?.professionalDevelopments || [],
+        }),
 
         // wizard data may not have referenceList depending on the certification type. So we need to hardcode the value.
         referenceList: workReferencesDict,
@@ -130,10 +135,30 @@ export const useWizardStore = defineStore("wizard", {
         inviteType: portalInvitation.inviteType,
         certificationTypes: portalInvitation.certificationTypes,
         workExperienceReferenceHours: portalInvitation.workExperienceReferenceHours,
+        workExperienceType: portalInvitation.workExperienceType,
         [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
         [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
         [wizard.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]: {} as Components.Schemas.WorkExperienceReferenceDetails,
         [wizard.steps.assessment.form.inputs.workExperienceAssessment.id]: {} as Components.Schemas.WorkExperienceReferenceCompetenciesAssessment,
+        [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+      });
+    },
+    initializeWizardFor400HoursWorkExReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
+      this.$reset();
+      this.wizardConfig = wizard;
+
+      this.setWizardData({
+        applicantFirstName: portalInvitation.applicantFirstName,
+        applicantLastName: portalInvitation.applicantLastName,
+        inviteType: portalInvitation.inviteType,
+        certificationTypes: portalInvitation.certificationTypes,
+        workExperienceReferenceHours: portalInvitation.workExperienceReferenceHours,
+        workExperienceType: portalInvitation.workExperienceType,
+        latestCertification: portalInvitation.latestCertification,
+        [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
+        [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
+        [wizard.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]:
+          {} as Components.Schemas.WorkExperienceReferenceDetails,
         [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
       });
     },

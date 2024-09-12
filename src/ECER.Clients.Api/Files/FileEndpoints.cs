@@ -1,6 +1,7 @@
 ﻿using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.Hosting;
 using MediatR;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -10,6 +11,8 @@ namespace ECER.Clients.Api.Files;
 
 public class FileEndpoints : IRegisterEndpoints
 {
+  private const int FILE_MAX_SIZE = 100_000_000;
+
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
     endpointRouteBuilder.MapGet("/api/files/{fileId}", async Task<Results<FileStreamHttpResult, NotFound>> (
@@ -40,6 +43,9 @@ public class FileEndpoints : IRegisterEndpoints
         IMediator messageBus,
         CancellationToken ct) =>
       {
+        //modify the max request body size for this requeset
+        httpContext.Features.Get<IHttpMaxRequestBodySizeFeature>()!.MaxRequestBodySize = FILE_MAX_SIZE;
+
         var fileProperties = new FileProperties() { Classification = classification, Tags = tags };
         var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, folder ?? string.Empty), fileProperties, file.FileName, file.ContentType, file.OpenReadStream())).ToList();
         if (files.Count == 0) return TypedResults.BadRequest(new ProblemDetails { Detail = "No files were uploaded" });

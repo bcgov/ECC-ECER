@@ -54,9 +54,9 @@ const previewForm: Form = {
       component: EceWorkExperienceReferencePreview,
       props: {},
       cols: {
-        md: 8,
-        lg: 8,
-        xl: 6,
+        md: 12,
+        lg: 12,
+        xl: 12,
       },
     },
   },
