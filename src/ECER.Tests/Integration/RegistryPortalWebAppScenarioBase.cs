@@ -94,6 +94,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string submittedTestApplicationWorkExperienceRefId2 => submittedTestApplicationWorkExperienceRef2.Id.ToString();
 
   public string submittedTestApplicationCharacterRefId => submittedTestApplicationCharacterRef.Id.ToString();
+  public string PreviousNameId => previousName.ecer_PreviousNameId!.Value.ToString();
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
@@ -183,7 +184,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       StatusCode = bcgov_DocumentUrl_StatusCode.Active,
     };
     context.AddObject(document);
-    context.AddLink(authenticatedBcscUser, Contact.Fields.bcgov_contact_bcgov_documenturl, document);
+    context.AddLink(registrant, Contact.Fields.bcgov_contact_bcgov_documenturl, document);
 
     return document;
   }
@@ -220,13 +221,13 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_PreviousName GetOrAddPreviousName(EcerContext context, Contact applicant)
   {
-    var previousName = (from p in context.ecer_PreviousNameSet
-                        where p.ecer_Contactid.Id == applicant.Id
-                        select p).FirstOrDefault();
+    var existing = (from p in context.ecer_PreviousNameSet
+                    where p.ecer_Contactid.Id == applicant.Id
+                    select p).FirstOrDefault();
 
-    if (previousName == null)
+    if (existing == null)
     {
-      previousName = new ecer_PreviousName
+      existing = new ecer_PreviousName
       {
         Id = Guid.NewGuid(),
         ecer_Source = ecer_PreviousNameSources.Transcript,
@@ -235,11 +236,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_LastName = "Was",
         ecer_PreferredName = "Longtimeago",
       };
-      context.AddObject(previousName);
-      context.AddLink(previousName, ecer_PreviousName.Fields.ecer_previousname_Contactid, applicant);
+      context.AddObject(existing);
+      context.AddLink(existing, ecer_PreviousName.Fields.ecer_previousname_Contactid, applicant);
     }
 
-    return previousName;
+    return existing;
   }
 
   private ecer_Application GetOrAddApplication(EcerContext context, Contact applicant, ecer_Application_StatusCode status)

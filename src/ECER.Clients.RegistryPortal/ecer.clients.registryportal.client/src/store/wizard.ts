@@ -89,11 +89,11 @@ export const useWizardStore = defineStore("wizard", {
         ...(wizard.steps?.education?.form?.inputs?.educationList?.id && { [wizard.steps?.education?.form?.inputs?.educationList?.id]: transcriptsDict }),
 
         // one year explanation letter
-        ...(wizard.steps?.oneYearRenewalExplanationLetter?.form?.inputs?.oneYearRenewalExplanation?.id && {
-          [wizard.steps?.oneYearRenewalExplanationLetter?.form?.inputs?.oneYearRenewalExplanation?.id]: draftApplication?.oneYearRenewalexplanation || "",
+        ...(wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id && {
+          [wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id]: draftApplication?.oneYearRenewalexplanation || "",
         }),
-        ...(wizard.steps?.oneYearRenewalExplanationLetter?.form?.inputs?.explanationLetter?.id && {
-          [wizard.steps?.oneYearRenewalExplanationLetter?.form?.inputs?.explanationLetter?.id]: draftApplication?.explanationLetter || "",
+        ...(wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.explanationLetter?.id && {
+          [wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.explanationLetter?.id]: draftApplication?.explanationLetter || "",
         }),
 
         // Character References step data

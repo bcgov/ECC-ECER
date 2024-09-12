@@ -465,6 +465,7 @@ declare namespace Components {
       email?: string | null;
       phone?: string | null;
       unreadMessagesCount?: number; // int32
+      isRegistrant?: boolean;
     }
     /**
      * User profile information

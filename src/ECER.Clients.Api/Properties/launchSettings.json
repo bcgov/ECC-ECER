@@ -9,7 +9,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DataProtection__DirectoryPath": "../",
-        "DataProtection__ApplicationName": "ECER"
+        "DataProtection__ApplicationName": "ECER",
+        "OTEL_SDK_DISABLED": "true"
       }
     }
   }

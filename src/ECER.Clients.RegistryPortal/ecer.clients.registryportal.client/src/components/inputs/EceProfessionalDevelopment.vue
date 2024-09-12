@@ -113,11 +113,6 @@
             :rules="[
               Rules.required('Enter the end date of your course or workshop'),
               Rules.dateBeforeRule(startDate || ''),
-              Rules.dateBetweenRule(
-                certificationStore?.latestCertification?.effectiveDate || '',
-                certificationStore?.latestCertification?.expiryDate || '',
-                'The end date of your course or workshop must be within the term of your current certificate',
-              ),
               Rules.conditionalWrapper(
                 certificationStore.latestCertificateStatus === 'Active',
                 Rules.dateBetweenRule(

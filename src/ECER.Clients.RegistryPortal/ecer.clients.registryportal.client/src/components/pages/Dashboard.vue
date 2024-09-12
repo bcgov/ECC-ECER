@@ -55,6 +55,7 @@
           <v-col cols="12" sm="6" lg="4">
             <RenewCard />
           </v-col>
+          <RegistrantCard />
         </v-row>
       </v-col>
     </v-row>
@@ -123,6 +124,7 @@ import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
+import RegistrantCard from "@/components/RegistrantCard.vue";
 import RenewCard from "@/components/RenewCard.vue";
 import UnreadMessages from "@/components/UnreadMessages.vue";
 import { useAlertStore } from "@/store/alert";
@@ -134,7 +136,18 @@ import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "Dashboard",
-  components: { ConfirmationDialog, PageContainer, ApplicationCard, CertificationCard, ECEHeader, ActionCard, Alert, UnreadMessages, RenewCard },
+  components: {
+    ConfirmationDialog,
+    PageContainer,
+    ApplicationCard,
+    CertificationCard,
+    ECEHeader,
+    ActionCard,
+    Alert,
+    UnreadMessages,
+    RenewCard,
+    RegistrantCard,
+  },
   async setup() {
     const userStore = useUserStore();
     const applicationStore = useApplicationStore();
