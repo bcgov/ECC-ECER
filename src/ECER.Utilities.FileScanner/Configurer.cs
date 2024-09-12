@@ -10,6 +10,8 @@ namespace ECER.Utilities.FileScanner;
 
 public class Configurer : IConfigureComponents, IPostConfigureChecker
 {
+  private const int maxFileSize = 100_000_000;
+
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
     var clamAvSettings = GetSettings(configurationContext.Configuration);
@@ -20,7 +22,8 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker
         new ClamClient(
           clamAvSettings.Url,
           clamAvSettings.Port
-          ));
+          )
+        { MaxStreamSize = maxFileSize });
       configurationContext.Services.AddTransient<IFileScannerProvider, ClamAvScanner>();
     }
     else
