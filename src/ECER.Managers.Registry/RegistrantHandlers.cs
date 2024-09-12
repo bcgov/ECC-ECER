@@ -63,7 +63,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, IMap
     if (string.IsNullOrEmpty(request.Profile.RegistrationNumber))
     {
       registrant.Profile.IsVerified = !registrants.Any();
-      await registrantRepository.Create(registrant, cancellationToken);
+      return await registrantRepository.Create(registrant, cancellationToken);
     }
     // Logic for the 'Yes' ECE case
     else
@@ -83,15 +83,15 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, IMap
 
         // Update existing registrant
         await registrantRepository.Save(new Resources.Accounts.Registrants.Registrant { Id = matchedRegistrant.Id, Profile = matchedRegistrant.Profile }, cancellationToken);
+        return matchedRegistrant.Id;
       }
       else
       {
         // No matching contact, create a new record
         registrant.Profile.IsVerified = false;
-        await registrantRepository.Create(registrant, cancellationToken);
+        return await registrantRepository.Create(registrant, cancellationToken);
       }
     }
-    return string.Empty;
   }
 
   /// <summary>

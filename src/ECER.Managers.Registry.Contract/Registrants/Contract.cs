@@ -7,7 +7,6 @@ namespace ECER.Managers.Registry.Contract.Registrants;
 /// Invokes a new registrant registration use case
 /// </summary>
 public record RegisterNewUserCommand(UserProfile Profile, UserIdentity Identity) : IRequest<string>;
-
 /// <summary>
 /// Invokes updating a registrant's profile use case
 /// </summary>
@@ -43,6 +42,7 @@ public record UserProfile
   public string Phone { get; set; } = null!;
   public Address? ResidentialAddress { get; set; }
   public Address? MailingAddress { get; set; }
+  public bool IsVerified { get; set; }
   public IEnumerable<PreviousName> PreviousNames { get; set; } = Array.Empty<PreviousName>();
 };
 

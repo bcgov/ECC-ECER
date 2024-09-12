@@ -49,5 +49,6 @@ public class UserInfoEndpoints : IRegisterEndpoints
 public record UserInfo([Required] string FirstName, [Required] string LastName, [Required] string GivenName, [Required] DateOnly DateOfBirth, [Required] string Email, [Required] string Phone)
 {
   public string? RegistrationNumber { get; set; }
+  public bool IsVerified { get; set; }
   public int UnreadMessagesCount { get; set; }
 }

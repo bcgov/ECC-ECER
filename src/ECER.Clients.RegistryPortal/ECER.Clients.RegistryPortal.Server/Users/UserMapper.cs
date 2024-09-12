@@ -14,6 +14,7 @@ internal sealed class UserMapper : AutoMapper.Profile
       .ForMember(d => d.DateOfBirth, opts => opts.MapFrom(s => s.DateOfBirth))
       .ForMember(d => d.Email, opts => opts.MapFrom(s => s.Email))
       .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.Phone))
+      .ForMember(d => d.IsVerified, opts => opts.MapFrom(s => s.IsVerified))
       .ForMember(d => d.RegistrationNumber, opts => opts.MapFrom(s => s.RegistrationNumber))
       .ForMember(d => d.ResidentialAddress, opts => opts.MapFrom(s => (Address?)null))
       .ForMember(d => d.MailingAddress, opts => opts.MapFrom(s => (Address?)null))

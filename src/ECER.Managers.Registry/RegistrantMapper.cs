@@ -31,6 +31,7 @@ internal sealed class RegistrantMapper : AutoMapper.Profile
       .ForMember(d => d.Email, opts => opts.MapFrom(s => s.Email))
       .ForMember(d => d.DateOfBirth, opts => opts.MapFrom(s => s.DateOfBirth))
       .ForMember(d => d.Phone, opts => opts.MapFrom(s => s.Phone))
+      .ForMember(d => d.IsVerified, opts => opts.MapFrom(s => s.IsVerified))
       .ForMember(d => d.RegistrationNumber, opts => opts.MapFrom(s => s.RegistrationNumber))
       .ForMember(d => d.ResidentialAddress, opts => opts.MapFrom(s => s.ResidentialAddress))
       .ForMember(d => d.MailingAddress, opts => opts.MapFrom(s => s.MailingAddress))
