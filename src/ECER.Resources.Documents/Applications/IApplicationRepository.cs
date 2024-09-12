@@ -62,13 +62,15 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public string? StudentMiddleName { get; set; }
 }
 
-public record ProfessionalDevelopment(string? Id, string? CertificationNumber, DateTime CertificationExpiryDate, DateTime DateSigned, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
+public record ProfessionalDevelopment(string? Id, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
 {
+  public string? CourseorWorkshopLink { get; set; }
   public string? OrganizationContactInformation { get; set; }
+  public string? OrganizationEmailAddress { get; set; }
   public string? InstructorName { get; set; }
   public int? NumberOfHours { get; set; }
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
-  public IEnumerable<string> Files { get; set; } = Array.Empty<string>();
+  public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
 }
@@ -81,6 +83,15 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
   public bool? WillProvideReference { get; set; }
   public int? TotalNumberofHoursApproved { get; set; }
   public int? TotalNumberofHoursObserved { get; set; }
+  public WorkExperienceTypes? Type { get; set; }
+}
+
+public record FileInfo(string Id)
+{
+  public string? Url { get; set; } = string.Empty;
+  public string? Extention { get; set; } = string.Empty;
+  public string? Name { get; set; } = string.Empty;
+  public string? Size { get; set; } = string.Empty;
 }
 
 public enum CertificationType
@@ -198,8 +209,44 @@ public record ReferenceContactInformation(string LastName, string FirstName, str
 public record CharacterReferenceEvaluation(ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther, ReferenceKnownTime LengthOfAcquaintance, bool WorkedWithChildren, string ChildInteractionObservations, string ApplicantTemperamentAssessment);
 
 public record WorkExperienceReferenceSubmissionRequest(bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, WorkExperienceReferenceDetails WorkExperienceReferenceDetails, WorkExperienceReferenceCompetenciesAssessment WorkExperienceReferenceCompetenciesAssessment, bool ConfirmProvidedInformationIsRight) : SubmitReferenceRequest;
-public record WorkExperienceReferenceDetails(int Hours, WorkHoursType WorkHoursType, string ChildrenProgramName, ChildrenProgramType ChildrenProgramType, string ChildrenProgramTypeOther, IEnumerable<ChildcareAgeRanges> ChildcareAgeRanges, DateTime StartDate, DateTime EndDate, ReferenceRelationship ReferenceRelationship, string ReferenceRelationshipOther);
-public record WorkExperienceReferenceCompetenciesAssessment(LikertScale ChildDevelopment, string ChildDevelopmentReason, LikertScale ChildGuidance, string ChildGuidanceReason, LikertScale HealthSafetyAndNutrition, string HealthSafetyAndNutritionReason, LikertScale DevelopAnEceCurriculum, string DevelopAnEceCurriculumReason, LikertScale ImplementAnEceCurriculum, string ImplementAnEceCurriculumReason, LikertScale FosteringPositiveRelationChild, string FosteringPositiveRelationChildReason, LikertScale FosteringPositiveRelationFamily, string FosteringPositiveRelationFamilyReason, LikertScale FosteringPositiveRelationCoworker, string FosteringPositiveRelationCoworkerReason);
+
+public record WorkExperienceReferenceDetails()
+{
+  public int? Hours { get; set; }
+  public WorkHoursType? WorkHoursType { get; set; }
+  public string? ChildrenProgramName { get; set; }
+  public ChildrenProgramType? ChildrenProgramType { get; set; }
+  public string? ChildrenProgramTypeOther { get; set; }
+  public IEnumerable<ChildcareAgeRanges>? ChildcareAgeRanges { get; set; }
+  public string? Role { get; set; }
+  public string? AgeofChildrenCaredFor { get; set; }
+  public DateTime? StartDate { get; set; }
+  public DateTime? EndDate { get; set; }
+  public ReferenceRelationship? ReferenceRelationship { get; set; }
+  public string? ReferenceRelationshipOther { get; set; }
+  public string? AdditionalComments { get; set; }
+  public WorkExperienceTypes? WorkExperienceType { get; set; }
+}
+
+public record WorkExperienceReferenceCompetenciesAssessment()
+{
+  public LikertScale? ChildDevelopment { get; set; }
+  public string? ChildDevelopmentReason { get; set; }
+  public LikertScale? ChildGuidance { get; set; }
+  public string? ChildGuidanceReason { get; set; }
+  public LikertScale? HealthSafetyAndNutrition { get; set; }
+  public string? HealthSafetyAndNutritionReason { get; set; }
+  public LikertScale? DevelopAnEceCurriculum { get; set; }
+  public string? DevelopAnEceCurriculumReason { get; set; }
+  public LikertScale? ImplementAnEceCurriculum { get; set; }
+  public string? ImplementAnEceCurriculumReason { get; set; }
+  public LikertScale? FosteringPositiveRelationChild { get; set; }
+  public string? FosteringPositiveRelationChildReason { get; set; }
+  public LikertScale? FosteringPositiveRelationFamily { get; set; }
+  public string? FosteringPositiveRelationFamilyReason { get; set; }
+  public LikertScale? FosteringPositiveRelationCoworker { get; set; }
+  public string? FosteringPositiveRelationCoworkerReason { get; set; }
+}
 
 public enum TranscriptStage
 {
@@ -222,6 +269,12 @@ public enum WorkExperienceRefStage
   Submitted,
   UnderReview,
   WaitingforResponse
+}
+
+public enum WorkExperienceTypes
+{
+  Is400Hours,
+  Is500Hours,
 }
 
 public enum ProfessionalDevelopmentStatusCode

@@ -430,9 +430,6 @@ public class ApplicationRenewalValidationEngineTests
   {
     return new ProfessionalDevelopment(
         Guid.NewGuid().ToString(), // Id
-        "1234", // CertificationNumber
-        DateTime.Now.AddYears(1), // CertificationExpiryDate
-        DateTime.Now.AddMonths(-1), // DateSigned
         _faker.Company.CatchPhrase(), // CourseName
         _faker.Company.CompanyName(), // OrganizationName
         DateTime.Now.AddMonths(-3), // StartDate
@@ -445,7 +442,6 @@ public class ApplicationRenewalValidationEngineTests
       Status = _faker.Random.Enum<ProfessionalDevelopmentStatusCode>(),
       DeletedFiles = new List<string> { _faker.System.FileName() },
       NewFiles = new List<string> { _faker.System.FileName() },
-      Files = new List<string> { _faker.System.FileName() }
     };
   }
 

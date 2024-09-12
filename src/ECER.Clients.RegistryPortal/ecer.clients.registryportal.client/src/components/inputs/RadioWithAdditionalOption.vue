@@ -66,9 +66,8 @@ export default defineComponent({
     },
     //refers to textArea input box. Used to inject values when continuing from a draft application
     textInputValue: {
-      type: String,
-      required: false,
-      default: "",
+      type: String as PropType<String | undefined | null>,
+      required: true,
     },
   },
   emits: {

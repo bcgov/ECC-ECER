@@ -5,13 +5,14 @@ using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
+using ECER.Resources.Documents.Certifications;
 using MediatR;
 using InviteType = ECER.Managers.Registry.Contract.PortalInvitations.InviteType;
 using PortalInvitationStatusCode = ECER.Managers.Registry.Contract.PortalInvitations.PortalInvitationStatusCode;
 
 namespace ECER.Managers.Registry;
 
-public class PortalInvitationHandlers(IPortalInvitationTransformationEngine transformationEngine, IPortalInvitationRepository portalInvitationRepository, IApplicationRepository applicationRepository, IRegistrantRepository registrantRepository, IMapper mapper)
+public class PortalInvitationHandlers(IPortalInvitationTransformationEngine transformationEngine, IPortalInvitationRepository portalInvitationRepository, IApplicationRepository applicationRepository, IRegistrantRepository registrantRepository, ICertificationRepository certificationRepository, IMapper mapper)
   : IRequestHandler<PortalInvitationVerificationQuery, PortalInvitationVerificationQueryResult>
 {
   public async Task<PortalInvitationVerificationQueryResult> Handle(PortalInvitationVerificationQuery request, CancellationToken cancellationToken)
@@ -41,6 +42,10 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
     {
       return PortalInvitationVerificationQueryResult.Failure("Applicant not found");
     }
+
+    var Certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id });
+
+    var latestCertification = Certifications.FirstOrDefault(); // Get the first certification with the latest expiry date
 
     var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
     var application = applications.SingleOrDefault();
@@ -74,7 +79,17 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
       if (workExRef != null)
       {
         result.WorkExperienceReferenceHours = workExRef.Hours;
+        if (workExRef.Type != null)
+        {
+          result.WorkExperienceType = mapper.Map<Contract.Applications.WorkExperienceTypes>(workExRef.Type);
+        }
       }
+    }
+
+    // Check if a valid certification was found
+    if (latestCertification != null)
+    {
+      result.LatestCertification = mapper.Map<Contract.Certifications.Certification>(latestCertification);
     }
     result.CertificationTypes = mapper.Map<Contract.Applications.Application>(application)!.CertificationTypes!;
     result.ApplicantFirstName = applicant.Profile.FirstName;

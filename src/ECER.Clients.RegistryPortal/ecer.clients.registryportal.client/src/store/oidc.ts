@@ -15,7 +15,7 @@ export const useOidcStore = defineStore("oidc", {
     userManager: new UserManager(useConfigStore().kcOidcConfiguration),
   }),
   actions: {
-    async oidcUserInfo(): Promise<Components.Schemas.UserInfo> {
+    async oidcUserInfo(): Promise<any> {
       const user = await this.getUser();
 
       return {
@@ -24,6 +24,7 @@ export const useOidcStore = defineStore("oidc", {
         lastName: user ? user.profile.family_name ?? "" : "",
         phone: user ? user.profile.phone_number ?? "" : "",
         email: user ? user.profile.email ?? "" : "",
+        address: user ? user.profile.address ?? "" : "",
       };
     },
     async oidcAddress(): Promise<Components.Schemas.Address> {

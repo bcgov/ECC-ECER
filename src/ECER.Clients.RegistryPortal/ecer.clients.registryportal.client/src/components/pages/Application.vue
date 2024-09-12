@@ -45,7 +45,9 @@
     </template>
     <template #actions>
       <v-container>
-        <v-btn v-if="showSaveButtons" rounded="lg" color="primary" @click="handleSaveAndContinue">Save and continue</v-btn>
+        <v-btn v-if="showSaveButtons" :loading="loadingStore.isLoading('application_get')" rounded="lg" color="primary" @click="handleSaveAndContinue">
+          Save and continue
+        </v-btn>
         <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
           Submit Application
         </v-btn>
@@ -56,6 +58,7 @@
 
 <script lang="ts">
 import { DateTime } from "luxon";
+import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 
 import { getProfile, putProfile } from "@/api/profile";
@@ -77,6 +80,8 @@ import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import type { ApplicationStage, Wizard as WizardType } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
+
+import type { ProfessionalDevelopmentExtended } from "../inputs/EceProfessionalDevelopment.vue";
 
 export default defineComponent({
   name: "Application",
@@ -156,16 +161,21 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     showSaveButtons() {
       return (
         this.wizardStore.currentStepStage !== "Review" &&
         !(this.wizardStore.currentStepStage === "Education" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "WorkReferences" && this.wizardStore.listComponentMode === "add")
+        !(this.wizardStore.currentStepStage === "WorkReferences" && this.wizardStore.listComponentMode === "add") &&
+        !(this.wizardStore.currentStepStage === "ProfessionalDevelopment" && this.wizardStore.listComponentMode === "add")
       );
     },
     showSubmitApplication() {
       return this.wizardStore.currentStepStage === "Review";
     },
+  },
+  mounted() {
+    this.mode = "list";
   },
   methods: {
     async handleSubmit() {
@@ -179,6 +189,7 @@ export default defineComponent({
       const currentStepFormId = this.wizardStore.currentStep.form.id;
       const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
       const { valid } = await formRef.validate();
+
       if (!valid) {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       } else {
@@ -186,6 +197,18 @@ export default defineComponent({
           case "ContactInformation":
             this.saveProfile();
             this.incrementWizard();
+            break;
+          case "ProfessionalDevelopment":
+            await this.saveDraftAndAlertSuccess();
+            //we need to mimic professional development saved to the server for future calls after this step. This prevents us having to fetch and rehydrate the draft application
+            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id].forEach(
+              (professionalDevelopment: ProfessionalDevelopmentExtended) => {
+                professionalDevelopment.newFiles = [];
+                professionalDevelopment.deletedFiles = [];
+              },
+            );
+            this.incrementWizard();
+
             break;
           case "ExplanationLetter":
           case "Education":

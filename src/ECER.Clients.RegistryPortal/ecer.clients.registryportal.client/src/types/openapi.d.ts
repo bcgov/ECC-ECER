@@ -237,6 +237,13 @@ declare namespace Components {
     }
     export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
     export type EducationRecognition = "Recognized" | "NotRecognized";
+    export interface FileInfo {
+      id?: string | null;
+      url?: string | null;
+      extention?: string | null;
+      name?: string | null;
+      size?: string | null;
+    }
     /**
      * file Response
      */
@@ -303,6 +310,8 @@ declare namespace Components {
       characterReferenceId?: string | null;
       inviteType?: InviteType;
       workExperienceReferenceHours?: number | null; // int32
+      workExperienceType?: WorkExperienceTypes;
+      latestCertification?: Certification;
     }
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
@@ -331,21 +340,20 @@ declare namespace Components {
       instance?: string | null;
     }
     export interface ProfessionalDevelopment {
-      certificationNumber?: string | null;
-      certificationExpiryDate?: string; // date-time
-      dateSigned?: string; // date-time
       courseName?: string | null;
       organizationName?: string | null;
       startDate?: string; // date-time
       endDate?: string; // date-time
+      numberOfHours?: number; // int32
       id?: string | null;
       organizationContactInformation?: string | null;
+      organizationEmailAddress?: string | null;
       instructorName?: string | null;
-      numberOfHours: number; // int32
+      courseorWorkshopLink?: string | null;
       status?: ProfessionalDevelopmentStatusCode;
       deletedFiles?: string[] | null;
       newFiles?: string[] | null;
-      files?: string[] | null;
+      files?: FileInfo[] | null;
     }
     export type ProfessionalDevelopmentStatusCode =
       | "ApplicationSubmitted"
@@ -491,36 +499,41 @@ declare namespace Components {
       hours?: number; // int32
       id?: string | null;
       phoneNumber?: string | null;
+      type?: WorkExperienceTypes;
     }
     export interface WorkExperienceReferenceCompetenciesAssessment {
-      childDevelopment?: LikertScale;
+      childDevelopment: LikertScale;
       childDevelopmentReason?: string | null;
-      childGuidance?: LikertScale;
+      childGuidance: LikertScale;
       childGuidanceReason?: string | null;
-      healthSafetyAndNutrition?: LikertScale;
+      healthSafetyAndNutrition: LikertScale;
       healthSafetyAndNutritionReason?: string | null;
-      developAnEceCurriculum?: LikertScale;
+      developAnEceCurriculum: LikertScale;
       developAnEceCurriculumReason?: string | null;
-      implementAnEceCurriculum?: LikertScale;
+      implementAnEceCurriculum: LikertScale;
       implementAnEceCurriculumReason?: string | null;
-      fosteringPositiveRelationChild?: LikertScale;
+      fosteringPositiveRelationChild: LikertScale;
       fosteringPositiveRelationChildReason?: string | null;
-      fosteringPositiveRelationFamily?: LikertScale;
+      fosteringPositiveRelationFamily: LikertScale;
       fosteringPositiveRelationFamilyReason?: string | null;
-      fosteringPositiveRelationCoworker?: LikertScale;
+      fosteringPositiveRelationCoworker: LikertScale;
       fosteringPositiveRelationCoworkerReason?: string | null;
     }
     export interface WorkExperienceReferenceDetails {
-      hours?: number; // int32
-      workHoursType?: WorkHoursType;
-      childrenProgramName?: string | null;
+      hours: number; // int32
+      workHoursType: WorkHoursType;
+      childrenProgramName: string;
       childrenProgramType?: ChildrenProgramType;
       childrenProgramTypeOther?: string | null;
       childcareAgeRanges?: ChildcareAgeRanges[] | null;
-      startDate?: string; // date-time
-      endDate?: string; // date-time
-      referenceRelationship?: ReferenceRelationship;
+      role?: string | null;
+      ageofChildrenCaredFor?: string | null;
+      startDate: string; // date-time
+      endDate: string; // date-time
+      referenceRelationship: ReferenceRelationship;
       referenceRelationshipOther?: string | null;
+      additionalComments?: string | null;
+      workExperienceType: WorkExperienceTypes;
     }
     export interface WorkExperienceReferenceStatus {
       id?: string | null;
@@ -542,7 +555,9 @@ declare namespace Components {
       workExperienceReferenceCompetenciesAssessment?: WorkExperienceReferenceCompetenciesAssessment;
       confirmProvidedInformationIsRight?: boolean;
       recaptchaToken?: string | null;
+      workExperienceType: WorkExperienceTypes;
     }
+    export type WorkExperienceTypes = "Is400Hours" | "Is500Hours";
     export type WorkHoursType = "FullTime" | "PartTime";
     export type YesNoNull = "No" | "Yes";
   }
