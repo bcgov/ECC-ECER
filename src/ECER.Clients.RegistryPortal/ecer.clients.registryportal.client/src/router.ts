@@ -21,7 +21,7 @@ const router = createRouter({
       path: "/profile",
       component: () => import("./components/Profile.vue"),
       name: "profile",
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
     },
     {
       path: "/messages",
@@ -215,6 +215,7 @@ const router = createRouter({
 // Gaurd for authenticated routes
 router.beforeEach(async (to, _) => {
   const oidcStore = useOidcStore();
+  const userStore = useUserStore();
   const user = await oidcStore.getUser();
 
   // instead of having to check every route record with
@@ -225,6 +226,12 @@ router.beforeEach(async (to, _) => {
     return {
       path: "/login",
       query: { redirect_to: to.fullPath },
+    };
+  }
+
+  if (to.meta.requiresVerification && !userStore.isVerified) {
+    return {
+      path: "/",
     };
   }
 });
