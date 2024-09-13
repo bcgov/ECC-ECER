@@ -6,7 +6,10 @@
         <v-card :rounded="0" flat color="background-light" class="pa-4">
           <v-card-item class="ma-4">
             <h3>Your account is being reviewed</h3>
-            <p class="mt-2">We're finishing setting up your account for you. Once we're done you'll be able to do things like view your certification, renew it or apply for new certification.</p>
+            <p class="mt-2">
+              We're finishing setting up your account for you. Once we're done you'll be able to do things like view your certification, renew it or apply for
+              new certification.
+            </p>
             <p class="mt-2">We'll send you a message as soon as your account is ready. It may take 1-3 business days.</p>
           </v-card-item>
         </v-card>
