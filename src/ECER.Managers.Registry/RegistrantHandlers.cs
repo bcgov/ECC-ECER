@@ -1,8 +1,11 @@
-﻿using AutoMapper;
+﻿using Amazon;
+using AutoMapper;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Certifications;
 using MediatR;
+using Microsoft.Xrm.Sdk.Query;
+using System.ServiceModel.Channels;
 
 namespace ECER.Managers.Registry;
 
@@ -56,7 +59,49 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
 
     if (registrants.Any()) throw new InvalidOperationException($"Registrant with identity {request.Identity} already exists");
 
-    return await registrantRepository.Create(mapper.Map<Resources.Accounts.Registrants.Registrant>(request)!, cancellationToken);
+    // If no ECE number, query based on last name and date of birth otherwise add registrationNumber.
+    registrants = await registrantRepository.Query(new RegistrantQuery
+    {
+      ByLastName = request.Profile.LastName,
+      ByDateOfBirth = request.Profile.DateOfBirth,
+      ByRegistrationNumber = string.IsNullOrEmpty(request.Profile.RegistrationNumber) ? null : request.Profile.RegistrationNumber,
+    }, cancellationToken);
+
+    var registrant = mapper.Map<Resources.Accounts.Registrants.Registrant>(request);
+
+    // Logic for the 'No' ECE case
+    if (string.IsNullOrEmpty(request.Profile.RegistrationNumber))
+    {
+      registrant.Profile.IsVerified = !registrants.Any();
+      return await registrantRepository.Create(registrant, cancellationToken);
+    }
+    // Logic for the 'Yes' ECE case
+    else
+    {
+      var matchedRegistrant = registrants.FirstOrDefault();
+
+      if (matchedRegistrant != null)
+      {
+        // Update the existing contact record
+        matchedRegistrant.Profile.IsVerified = true;
+        matchedRegistrant.Profile.ResidentialAddress = mapper.Map<Resources.Accounts.Registrants.Address>(request.Profile.ResidentialAddress);
+        matchedRegistrant.Profile.Email = request.Profile.Email;
+        matchedRegistrant.Profile.FirstName = request.Profile.FirstName;
+        matchedRegistrant.Profile.LastName = request.Profile.LastName;
+        matchedRegistrant.Profile.MiddleName = ECER.Infrastructure.Common.Utility.GetMiddleName(request.Profile.FirstName!, request.Profile.GivenName!);
+        matchedRegistrant.Profile.Phone = request.Profile.Phone;
+
+        // Update existing registrant
+        await registrantRepository.Save(new Resources.Accounts.Registrants.Registrant { Id = matchedRegistrant.Id, Profile = matchedRegistrant.Profile }, cancellationToken);
+        return matchedRegistrant.Id;
+      }
+      else
+      {
+        // No matching contact, create a new record
+        registrant.Profile.IsVerified = false;
+        return await registrantRepository.Create(registrant, cancellationToken);
+      }
+    }
   }
 
   /// <summary>

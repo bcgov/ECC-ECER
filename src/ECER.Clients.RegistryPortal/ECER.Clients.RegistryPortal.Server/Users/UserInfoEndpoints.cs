@@ -37,7 +37,6 @@ public class UserInfoEndpoints : IRegisterEndpoints
         {
           var user = ctx.User.GetUserContext()!;
           await bus.Send(new RegisterNewUserCommand(mapper.Map<Managers.Registry.Contract.Registrants.UserProfile>(userInfo)!, user.Identity), ct);
-
           return TypedResults.Ok();
         })
         .WithOpenApi("Creates or updates the currently logged on user's profile", string.Empty, "userinfo_post")
@@ -46,8 +45,11 @@ public class UserInfoEndpoints : IRegisterEndpoints
   }
 }
 
-public record UserInfo([Required] string FirstName, [Required] string LastName, [Required] DateOnly DateOfBirth, [Required] string Email, [Required] string Phone)
+public record UserInfo([Required] string FirstName, [Required] string LastName, [Required] string GivenName, [Required] DateOnly DateOfBirth, [Required] string Email, [Required] string Phone)
 {
+  public string? MiddleName { get; set; }
+  public string? RegistrationNumber { get; set; }
+  public bool IsVerified { get; set; }
   public int UnreadMessagesCount { get; set; }
 
   public bool IsRegistrant { get; set; }
