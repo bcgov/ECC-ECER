@@ -26,7 +26,7 @@ public class ApplicationRenewalValidationEngineTests
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
-      ExplanationLetter = "This is an explanation letter",
+      OneYearRenewalexplanation = OneYearRenewalexplanations.Iwasunabletofindemploymentinthechildcarefieldinmycommunity,
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
     };
 
@@ -273,14 +273,13 @@ public class ApplicationRenewalValidationEngineTests
   }
 
   [Fact]
-  public async Task Validate_FiveYearsWithExpiredLessThanFiveYearsWithoutExplanationLetter_ReturnsExplanationLetterError()
+  public async Task Validate_FiveYearsWithExpiredLessThanFiveYearsWithoutFiveYearExplanationChoice_ReturnsError()
   {
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
       ProfessionalDevelopments = new List<ProfessionalDevelopment> { CreateMockProfessionalDevelopment() },
-      ExplanationLetter = null, // No explanation letter
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
       WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) }
     };
@@ -295,7 +294,7 @@ public class ApplicationRenewalValidationEngineTests
     var result = await _validator.Validate(application);
 
     // Assert
-    Assert.Contains("the application does not have explanation letter", result.ValidationErrors);
+    Assert.Contains("five year explanation choice cannot be null", result.ValidationErrors);
   }
 
   [Fact]

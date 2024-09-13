@@ -36,10 +36,15 @@ internal sealed partial class ApplicationRenewalValidationEngine
         {
           validationErrors.Add("the application does not have any professional development");
         }
-        // each application should contain explanation letter
-        if (string.IsNullOrEmpty(application.ExplanationLetter))
+
+        if (application.FiveYearRenewalExplanationChoice == null)
         {
-          validationErrors.Add("the application does not have explanation letter");
+          validationErrors.Add("five year explanation choice cannot be null");
+        }
+        // each application should contain explanation letter
+        if (string.IsNullOrEmpty(application.RenewalExplanationOther) && application.FiveYearRenewalExplanationChoice == FiveYearRenewalExplanations.Other)
+        {
+          validationErrors.Add("renewal explanation other required if explanation choice is other");
         }
         // each application should contain at least one character reference
         if (!application.CharacterReferences.Any())

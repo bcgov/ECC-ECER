@@ -81,6 +81,8 @@ public enum PreviousNameSources
   NameLog,
   Profile,
   Transcript,
+  OutofProvinceCertificate
+  
 }
 
 public record IdentityDocument(string Id)
