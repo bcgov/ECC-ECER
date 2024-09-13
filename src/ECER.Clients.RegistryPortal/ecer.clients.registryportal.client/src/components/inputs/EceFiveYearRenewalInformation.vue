@@ -8,7 +8,7 @@
         :trigger-values="['Other']"
         additional-info-key="renewalExplanationOther"
         value-key="fiveYearRenewalExplanationChoice"
-        :radio-rules="[Rules.requiredRadio('Select one reason for renewing your ECE One Year certification')]"
+        :radio-rules="[Rules.requiredRadio('Select an option')]"
         :model-value="wizardStore.wizardData.fiveYearRenewalExplanationChoice"
         :additional-info-props="{ autoGrow: true, counter: 200, maxlength: 200, rules: [Rules.required('Enter your response')] }"
         :text-input-value="wizardStore.wizardData.renewalExplanationOther"

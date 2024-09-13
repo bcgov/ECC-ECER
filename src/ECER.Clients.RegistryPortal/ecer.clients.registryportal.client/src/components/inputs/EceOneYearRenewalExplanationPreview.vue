@@ -1,5 +1,5 @@
 <template>
-  <PreviewCard title="Renewal Information" portal-stage="ExplanationLetter">
+  <PreviewCard title="Renewal information" portal-stage="ExplanationLetter">
     <template #content>
       <v-row>
         <v-col cols="4">
