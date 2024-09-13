@@ -15,7 +15,6 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     var contact = mapper.Map<Contact>(registrant.Profile)!;
     contact.Id = Guid.NewGuid();
-
     context.AddObject(contact);
 
     foreach (var identity in registrant.Identities)
@@ -44,6 +43,10 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     if (query.ByIdentity != null) qry = qry.Where(r => r.authentication.ecer_IdentityProvider == query.ByIdentity.IdentityProvider && r.authentication.ecer_ExternalID == query.ByIdentity.UserId);
     if (query.ByUserId != null) qry = qry.Where(r => r.contact.ContactId.Equals(Guid.Parse(query.ByUserId)));
+
+    if (query.ByLastName != null) qry = qry.Where(r => r.contact.LastName.Equals(query.ByLastName));
+    if (query.ByRegistrationNumber != null) qry = qry.Where(r => r.contact.ecer_TempClientID.Equals(query.ByRegistrationNumber));
+    if (query.ByDateOfBirth != null) qry = qry.Where(r => r.contact.BirthDate == query.ByDateOfBirth.Value.ToDateTime(TimeOnly.MinValue).Date);
 
     var contacts = qry.Select(r => r.contact).ToList();
     foreach (var contact in contacts)
