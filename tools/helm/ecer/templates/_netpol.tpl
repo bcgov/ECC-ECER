@@ -18,6 +18,14 @@ spec:
       ports:
         - protocol: {{ .Values.protocol | upper }}
           port: {{ .Values.port }}
+  {{- else if and .Values.port (eq "svc" .Values.role)}}
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:            
+      ports:
+        - protocol: {{ .Values.protocol | upper }}
+          port: {{ .Values.port }}
   {{- end }}
   {{- if .Values.egress }}
   egress: {{ tpl (.Values.egress | toYaml) $ | nindent 4 }}
