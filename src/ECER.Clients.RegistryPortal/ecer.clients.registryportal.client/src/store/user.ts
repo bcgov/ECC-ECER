@@ -38,6 +38,7 @@ export const useUserStore = defineStore("user", {
     email: (state): string => state.userInfo?.email ?? "",
     phoneNumber: (state): string => state.userProfile?.phone ?? "",
     isRegistrant: (state): boolean => state.userInfo?.isRegistrant ?? false,
+    isVerified: (state): boolean => state.userInfo?.isVerified ?? false,
   },
   actions: {
     setUserInfo(userInfo: Components.Schemas.UserInfo | null): void {

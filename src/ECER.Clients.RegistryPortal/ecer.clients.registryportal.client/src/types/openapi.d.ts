@@ -465,7 +465,9 @@ declare namespace Components {
       dateOfBirth?: string; // date
       email?: string | null;
       phone?: string | null;
+      middleName?: string | null;
       registrationNumber?: string | null;
+      isVerified?: boolean;
       unreadMessagesCount?: number; // int32
       isRegistrant?: boolean;
     }
