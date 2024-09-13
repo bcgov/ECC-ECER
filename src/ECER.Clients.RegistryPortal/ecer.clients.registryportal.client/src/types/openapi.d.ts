@@ -30,6 +30,8 @@ declare namespace Components {
       educationRecognition?: EducationRecognition;
       explanationLetter?: string | null;
       oneYearRenewalexplanation?: OneYearRenewalexplanations;
+      fiveYearRenewalExplanationChoice?: FiveYearRenewalExplanations;
+      renewalExplanationOther?: string | null;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -224,6 +226,8 @@ declare namespace Components {
       educationRecognition?: EducationRecognition;
       explanationLetter?: string | null;
       oneYearRenewalexplanation?: OneYearRenewalexplanations;
+      fiveYearRenewalExplanationChoice?: FiveYearRenewalExplanations;
+      renewalExplanationOther?: string | null;
       createdOn?: string | null; // date-time
     }
     /**
@@ -254,6 +258,12 @@ declare namespace Components {
       fileId?: string | null;
       url?: string | null;
     }
+    export type FiveYearRenewalExplanations =
+      | "IliveandworkinacommunitywithoutothercertifiedECEs"
+      | "Iwasunabletofindemploymentinthechildcarefieldtocompletetherequirednumberofhours"
+      | "Iwasunabletoworkduetothestatusofmyvisaorwasunabletoenterthecountryasexpected"
+      | "Iwasunabletoworkinthechildcarefieldforpersonalreasons"
+      | "Other";
     export interface GetMessagesResponse {
       communications?: Communication[] | null;
       totalMessagesCount?: number; // int32
@@ -465,7 +475,9 @@ declare namespace Components {
       dateOfBirth?: string; // date
       email?: string | null;
       phone?: string | null;
+      middleName?: string | null;
       registrationNumber?: string | null;
+      isVerified?: boolean;
       unreadMessagesCount?: number; // int32
       isRegistrant?: boolean;
     }

@@ -24,6 +24,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		PendingforInformation = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PreviousOutcome = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		UnderReview = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

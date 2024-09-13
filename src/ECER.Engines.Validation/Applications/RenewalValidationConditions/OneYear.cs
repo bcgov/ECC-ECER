@@ -12,7 +12,11 @@ internal sealed partial class ApplicationRenewalValidationEngine
     {
       case CertificateStatus.Active:
 
-        
+        if (application.OneYearRenewalexplanation == null)
+        {
+          validationErrors.Add("one year explanation choice cannot be null");
+        }
+
         if (application.OneYearRenewalexplanation == OneYearRenewalexplanations.Other && string.IsNullOrEmpty(application.ExplanationLetter))
         {
           validationErrors.Add("the application does not have explanation letter");
@@ -30,7 +34,12 @@ internal sealed partial class ApplicationRenewalValidationEngine
         {
           validationErrors.Add("the application does not have any professional development");
         }
-        
+
+        if (application.OneYearRenewalexplanation == null)
+        {
+          validationErrors.Add("one year explanation choice cannot be null");
+        }
+
         // each application should contain explanation letter
         if (application.OneYearRenewalexplanation == OneYearRenewalexplanations.Other && string.IsNullOrEmpty(application.ExplanationLetter))
         {

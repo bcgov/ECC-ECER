@@ -96,6 +96,14 @@ export const useWizardStore = defineStore("wizard", {
           [wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.explanationLetter?.id]: draftApplication?.explanationLetter || "",
         }),
 
+        // five year explanation letter
+        ...(wizard.steps?.fiveYearRenewalExplanation?.form?.inputs?.fiveYearRenewalExplanation?.id && {
+          [wizard.steps?.fiveYearRenewalExplanation?.form?.inputs?.fiveYearRenewalExplanation?.id]: draftApplication?.fiveYearRenewalExplanationChoice || "",
+        }),
+        ...(wizard.steps?.fiveYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id && {
+          [wizard.steps?.fiveYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id]: draftApplication?.renewalExplanationOther || "",
+        }),
+
         // Character References step data
         [wizard.steps.characterReferences.form.inputs.characterReferences.id]: draftApplication?.characterReferences?.[0]
           ? draftApplication?.characterReferences

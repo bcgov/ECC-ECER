@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Province
+	/// Status of the Certification Comparison
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_province_statecode
+	public enum ecer_certificationcomparison_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Province
+	/// Reason for the status of the Certification Comparison
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_Province_StatusCode
+	public enum ecer_certificationcomparison_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -43,13 +43,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_province")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_certificationcomparison")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_Province : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_certificationcomparison : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_province entity
+		/// Available fields, a the time of codegen, for the ecer_certificationcomparison entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,19 +60,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_Abbreviation = "ecer_abbreviation";
+			public const string ecer_bccertificate = "ecer_bccertificate";
+			public const string ecer_certificationcomparisonId = "ecer_certificationcomparisonid";
+			public const string Id = "ecer_certificationcomparisonid";
 			public const string ecer_certificationcomparisonprovince = "ecer_certificationcomparisonprovince";
-			public const string ecer_characterreference_RefCertifiedProvinceId = "ecer_characterreference_RefCertifiedProvinceId";
-			public const string ecer_city_ProvinceId = "ecer_city_ProvinceId";
-			public const string ecer_CountryId = "ecer_countryid";
-			public const string ecer_CountryIdName = "ecer_countryidname";
-			public const string ecer_DisplayOrder = "ecer_displayorder";
-			public const string ecer_ID = "ecer_id";
-			public const string ecer_Name = "ecer_name";
-			public const string ecer_province_CountryId = "ecer_province_CountryId";
-			public const string ecer_ProvinceId = "ecer_provinceid";
-			public const string Id = "ecer_provinceid";
-			public const string ecer_workexperienceref_RefCertifiedProvinceId = "ecer_workexperienceref_RefCertifiedProvinceId";
+			public const string ecer_certificationcomparisontransferringcertificate = "ecer_certificationcomparisontransferringcertificate";
+			public const string ecer_name = "ecer_name";
+			public const string ecer_province = "ecer_province";
+			public const string ecer_provinceName = "ecer_provincename";
+			public const string ecer_transferringcertificate = "ecer_transferringcertificate";
+			public const string ecer_transferringcertificateName = "ecer_transferringcertificatename";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -99,19 +96,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Province(System.Guid id) : 
+		public ecer_certificationcomparison(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Province(string keyName, object keyValue) : 
+		public ecer_certificationcomparison(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Province(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_certificationcomparison(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -120,22 +117,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Province() : 
+		public ecer_certificationcomparison() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_provinceid";
+		public const string PrimaryIdAttribute = "ecer_certificationcomparisonid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_Province";
+		public const string EntitySchemaName = "ecer_certificationcomparison";
 		
-		public const string EntityLogicalName = "ecer_province";
+		public const string EntityLogicalName = "ecer_certificationcomparison";
 		
-		public const string EntityLogicalCollectionName = "ecer_provinces";
+		public const string EntityLogicalCollectionName = "ecer_certificationcomparisons";
 		
-		public const string EntitySetName = "ecer_provinces";
+		public const string EntitySetName = "ecer_certificationcomparisons";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -249,88 +246,67 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_abbreviation")]
-		public string ecer_Abbreviation
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bccertificate")]
+		public string ecer_bccertificate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_abbreviation");
+				return this.GetAttributeValue<string>("ecer_bccertificate");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_abbreviation", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_countryid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_CountryId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_countryid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_countryid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_countryidname")]
-		public string ecer_CountryIdName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_countryid"))
-				{
-					return this.FormattedValues["ecer_countryid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_displayorder")]
-		public string ecer_DisplayOrder
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_displayorder");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_displayorder", value);
+				this.SetAttributeValue("ecer_bccertificate", value);
 			}
 		}
 		
 		/// <summary>
-		/// Legacy ID from Oracle Database
+		/// Unique identifier for entity instances
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_id")]
-		public string ecer_ID
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationcomparisonid")]
+		public System.Nullable<System.Guid> ecer_certificationcomparisonId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_id");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_certificationcomparisonid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_id", value);
+				this.SetAttributeValue("ecer_certificationcomparisonid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationcomparisonid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.ecer_certificationcomparisonId = value;
+			}
+		}
+		
+		/// <summary>
+		/// The name of the custom entity.
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
-		public string ecer_Name
+		public string ecer_name
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
@@ -344,44 +320,67 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_provinceid")]
-		public System.Nullable<System.Guid> ecer_ProvinceId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_province")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_province
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_provinceid");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_province");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_provinceid", value);
-				if (value.HasValue)
+				this.SetAttributeValue("ecer_province", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_provincename")]
+		public string ecer_provinceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_province"))
 				{
-					base.Id = value.Value;
+					return this.FormattedValues["ecer_province"];
 				}
 				else
 				{
-					base.Id = System.Guid.Empty;
+					return default(string);
 				}
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_provinceid")]
-		public override System.Guid Id
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_transferringcertificate")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_transferringcertificate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return base.Id;
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_transferringcertificate");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_ProvinceId = value;
+				this.SetAttributeValue("ecer_transferringcertificate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_transferringcertificatename")]
+		public string ecer_transferringcertificateName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_transferringcertificate"))
+				{
+					return this.FormattedValues["ecer_transferringcertificate"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -648,15 +647,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Province
+		/// Status of the Certification Comparison
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_province_statecode? StateCode
+		public virtual ecer_certificationcomparison_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_province_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_certificationcomparison_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -683,15 +682,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Province
+		/// Reason for the status of the Certification Comparison
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_Province_StatusCode? StatusCode
+		public virtual ecer_certificationcomparison_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_Province_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_certificationcomparison_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -767,93 +766,40 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_certificationcomparisonprovince
+		/// N:1 ecer_certificationcomparisonprovince
 		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_province")]
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificationcomparisonprovince")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison> ecer_certificationcomparisonprovince
+		public ECER.Utilities.DataverseSdk.Model.ecer_Province ecer_certificationcomparisonprovince
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison>("ecer_certificationcomparisonprovince", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Province>("ecer_certificationcomparisonprovince", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison>("ecer_certificationcomparisonprovince", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Province>("ecer_certificationcomparisonprovince", null, value);
 			}
 		}
 		
 		/// <summary>
-		/// 1:N ecer_characterreference_RefCertifiedProvinceId
+		/// N:1 ecer_certificationcomparisontransferringcertificate
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_characterreference_RefCertifiedProvinceId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference> ecer_characterreference_RefCertifiedProvinceId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_transferringcertificate")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificationcomparisontransferringcertificate")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_outofprovincecertificationtype ecer_certificationcomparisontransferringcertificate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_characterreference_RefCertifiedProvinceId", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_outofprovincecertificationtype>("ecer_certificationcomparisontransferringcertificate", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_characterreference_RefCertifiedProvinceId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_city_ProvinceId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_city_ProvinceId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_City> ecer_city_ProvinceId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_City>("ecer_city_ProvinceId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_City>("ecer_city_ProvinceId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_workexperienceref_RefCertifiedProvinceId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_workexperienceref_RefCertifiedProvinceId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef> ecer_workexperienceref_RefCertifiedProvinceId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_workexperienceref_RefCertifiedProvinceId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_workexperienceref_RefCertifiedProvinceId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_province_CountryId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_countryid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_province_CountryId")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_Country ecer_province_CountryId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Country>("ecer_province_CountryId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Country>("ecer_province_CountryId", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_outofprovincecertificationtype>("ecer_certificationcomparisontransferringcertificate", null, value);
 			}
 		}
 		
@@ -862,7 +808,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Province(object anonymousType) : 
+		public ecer_certificationcomparison(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -880,9 +826,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_provinceid"] = base.Id;
+                        Attributes["ecer_certificationcomparisonid"] = base.Id;
                         break;
-                    case "ecer_provinceid":
+                    case "ecer_certificationcomparisonid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

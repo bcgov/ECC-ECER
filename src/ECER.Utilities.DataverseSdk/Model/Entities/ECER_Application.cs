@@ -102,6 +102,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_1YRExplanationChoice = "ecer_1yrexplanationchoice";
 			public const string ecer_1yrexplanationchoiceName = "ecer_1yrexplanationchoicename";
+			public const string ecer_5YRExplanationChoice = "ecer_5yrexplanationchoice";
+			public const string ecer_5yrexplanationchoiceName = "ecer_5yrexplanationchoicename";
 			public const string ecer_AddMoreCharacterReference = "ecer_addmorecharacterreference";
 			public const string ecer_addmorecharacterreferenceName = "ecer_addmorecharacterreferencename";
 			public const string ecer_AddMoreProfessionalDevelopment = "ecer_addmoreprofessionaldevelopment";
@@ -119,6 +121,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_application_Applicantid_contact = "ecer_application_Applicantid_contact";
 			public const string ecer_application_Certificateid = "ecer_application_Certificateid";
 			public const string ecer_application_DenialReasonType_ecer_denialr = "ecer_application_DenialReasonType_ecer_denialr";
+			public const string ecer_application_FromCertificateId = "ecer_application_FromCertificateId";
 			public const string ecer_applicationassessment_ApplicationId = "ecer_applicationassessment_ApplicationId";
 			public const string ecer_applicationhistory_ApplicationId = "ecer_applicationhistory_ApplicationId";
 			public const string ecer_ApplicationId = "ecer_applicationid";
@@ -173,6 +176,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EscalatetoTeamLead = "ecer_escalatetoteamlead";
 			public const string ecer_escalatetoteamleadName = "ecer_escalatetoteamleadname";
 			public const string ecer_ExplanationLetter = "ecer_explanationletter";
+			public const string ecer_FromCertificateId = "ecer_fromcertificateid";
+			public const string ecer_FromCertificateIdName = "ecer_fromcertificateidname";
 			public const string ecer_GenerateAssessment = "ecer_generateassessment";
 			public const string ecer_generateassessmentName = "ecer_generateassessmentname";
 			public const string ecer_GenerateCertificateRecord = "ecer_generatecertificaterecord";
@@ -291,8 +296,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_WorkExperienceReferenceApproved = "ecer_workexperiencereferenceapproved";
 			public const string ecer_workexperiencereferenceapprovedName = "ecer_workexperiencereferenceapprovedname";
 			public const string ecer_WorkStartDate = "ecer_workstartdate";
-			public const string ecer_YRExplanationChoice = "ecer_yrexplanationchoice";
-			public const string ecer_yrexplanationchoiceName = "ecer_yrexplanationchoicename";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -498,6 +501,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_1yrexplanationchoice"))
 				{
 					return this.FormattedValues["ecer_1yrexplanationchoice"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_5yrexplanationchoice")]
+		public virtual ecer_fiveyrrenewalexplanations? ecer_5YRExplanationChoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_fiveyrrenewalexplanations?)(EntityOptionSetEnum.GetEnum(this, "ecer_5yrexplanationchoice")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_5yrexplanationchoice", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_5yrexplanationchoicename")]
+		public string ecer_5yrexplanationchoiceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_5yrexplanationchoice"))
+				{
+					return this.FormattedValues["ecer_5yrexplanationchoice"];
 				}
 				else
 				{
@@ -1460,6 +1495,41 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_explanationletter", value);
+			}
+		}
+		
+		/// <summary>
+		/// Active Certificate at the time of Application creation which applicant either Renew from or Adding extra post qualification to.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromcertificateid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_FromCertificateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_fromcertificateid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_fromcertificateid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromcertificateidname")]
+		public string ecer_FromCertificateIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_fromcertificateid"))
+				{
+					return this.FormattedValues["ecer_fromcertificateid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -3192,38 +3262,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_yrexplanationchoice")]
-		public virtual ecer_fiveyrrenewalexplanations? ecer_YRExplanationChoice
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_fiveyrrenewalexplanations?)(EntityOptionSetEnum.GetEnum(this, "ecer_yrexplanationchoice")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_yrexplanationchoice", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_yrexplanationchoicename")]
-		public string ecer_yrexplanationchoiceName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_yrexplanationchoice"))
-				{
-					return this.FormattedValues["ecer_yrexplanationchoice"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
 		/// <summary>
 		/// Sequence number of the import that created this record.
 		/// </summary>
@@ -4019,6 +4057,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_DenialReason>("ecer_application_DenialReasonType_ecer_denialr", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_application_FromCertificateId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromcertificateid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_FromCertificateId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Certificate ecer_application_FromCertificateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_application_FromCertificateId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_application_FromCertificateId", null, value);
 			}
 		}
 		

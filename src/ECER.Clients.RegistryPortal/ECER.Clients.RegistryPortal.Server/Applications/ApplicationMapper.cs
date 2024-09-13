@@ -85,6 +85,8 @@ public class ApplicationMapper : Profile
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Application.Status), opts => opts.MapFrom(_ => Managers.Registry.Contract.Applications.ApplicationStatus.Draft))
       .ForMember(d => d.Stage, opts => opts.MapFrom(s => s.Stage))
       .ForMember(d => d.OneYearRenewalexplanation, opts => opts.MapFrom(s => s.OneYearRenewalexplanation))
+      .ForMember(d => d.FiveYearRenewalExplanationChoice, opts => opts.MapFrom(s => s.FiveYearRenewalExplanationChoice))
+      .ForMember(d => d.RenewalExplanationOther, opts => opts.MapFrom(s => s.RenewalExplanationOther))
       .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.SignedDate))
       .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.CharacterReferences))
       ;

@@ -303,7 +303,9 @@ public record DraftApplication
   public EducationOrigin? EducationOrigin { get; set; }
   public EducationRecognition? EducationRecognition { get; set; }
   public string? ExplanationLetter { get; set; }
-  public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
+  public OneYearRenewalexplanations? OneYearRenewalexplanation { get; set; }
+  public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
+  public string? RenewalExplanationOther { get; set; }
   public DateTime? CreatedOn { get; set; }
 }
 
@@ -324,7 +326,9 @@ public record Application
   public EducationOrigin? EducationOrigin { get; set; }
   public EducationRecognition? EducationRecognition { get; set; }
   public string? ExplanationLetter { get; set; }
-  public OneYearRenewalexplanations OneYearRenewalexplanation { get; set; }
+  public OneYearRenewalexplanations? OneYearRenewalexplanation { get; set; }
+  public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
+  public string? RenewalExplanationOther { get; set; }
 }
 public record ProfessionalDevelopment([Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] int NumberOfHours)
 {
@@ -394,6 +398,15 @@ public enum OneYearRenewalexplanations
   Iwasunabletocompletetherequiredhoursofprofessionaldevelopment,
   Iwasunabletofindemploymentinthechildcarefieldinmycommunity,
   MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc,
+  Other,
+}
+
+public enum FiveYearRenewalExplanations
+{
+  IliveandworkinacommunitywithoutothercertifiedECEs,
+  Iwasunabletofindemploymentinthechildcarefieldtocompletetherequirednumberofhours,
+  Iwasunabletoworkduetothestatusofmyvisaorwasunabletoenterthecountryasexpected,
+  Iwasunabletoworkinthechildcarefieldforpersonalreasons,
   Other,
 }
 

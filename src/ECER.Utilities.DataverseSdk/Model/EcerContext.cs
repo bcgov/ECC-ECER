@@ -206,6 +206,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison> ecer_certificationcomparisonSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_certifications"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_certifications> ecer_certificationsSet
@@ -598,6 +609,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_licensing_officers>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_outofprovincecertificationtype"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_outofprovincecertificationtype> ecer_outofprovincecertificationtypeSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_outofprovincecertificationtype>();
 			}
 		}
 		
