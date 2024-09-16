@@ -28,8 +28,7 @@ declare namespace Components {
       applicationType?: ApplicationTypes;
       educationOrigin?: EducationOrigin;
       educationRecognition?: EducationRecognition;
-      explanationLetter?: string | null;
-      oneYearRenewalexplanation?: OneYearRenewalexplanations;
+      oneYearRenewalExplanationChoice?: OneYearRenewalexplanations;
       fiveYearRenewalExplanationChoice?: FiveYearRenewalExplanations;
       renewalExplanationOther?: string | null;
     }
@@ -88,7 +87,7 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
-    export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Reprinted" | "Suspended";
+    export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
     export interface Certification {
       id?: string | null;
       number?: string | null;
@@ -224,8 +223,7 @@ declare namespace Components {
       applicationType?: ApplicationTypes;
       educationOrigin?: EducationOrigin;
       educationRecognition?: EducationRecognition;
-      explanationLetter?: string | null;
-      oneYearRenewalexplanation?: OneYearRenewalexplanations;
+      oneYearRenewalExplanationChoice?: OneYearRenewalexplanations;
       fiveYearRenewalExplanationChoice?: FiveYearRenewalExplanations;
       renewalExplanationOther?: string | null;
       createdOn?: string | null; // date-time
@@ -339,7 +337,7 @@ declare namespace Components {
       source?: PreviousNameSources;
       documents?: IdentityDocument[] | null;
     }
-    export type PreviousNameSources = "NameLog" | "Profile" | "Transcript";
+    export type PreviousNameSources = "NameLog" | "Profile" | "Transcript" | "OutofProvinceCertificate";
     export type PreviousNameStage = "Unverified" | "ReadyforVerification" | "Verified" | "Archived";
     export interface ProblemDetails {
       [name: string]: any;

@@ -48,6 +48,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Inactive = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Renewed = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Reprinted = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

@@ -45,6 +45,7 @@ public enum CertificateStatusCode
   Cancelled,
   Expired,
   Inactive,
+  Renewed,
   Reprinted,
   Suspended
 }

@@ -117,12 +117,12 @@ export const useApplicationStore = defineStore("application", {
       // One year renewal explanation letter
       if (
         wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id &&
-        wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs?.explanationLetter?.id
+        wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id
       ) {
-        this.draftApplication.oneYearRenewalexplanation =
+        this.draftApplication.oneYearRenewalExplanationChoice =
           wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.oneYearRenewalExplanation.id];
-        this.draftApplication.explanationLetter =
-          wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.explanationLetter.id];
+        this.draftApplication.renewalExplanationOther =
+          wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.renewalExplanationOther.id];
       }
 
       // Five year renewal explanation letter

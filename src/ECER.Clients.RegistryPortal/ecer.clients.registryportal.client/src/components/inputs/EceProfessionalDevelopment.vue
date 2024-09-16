@@ -79,6 +79,7 @@
             v-model="startDate"
             :rules="[
               Rules.required('Enter the start date of your course or workshop'),
+              Rules.futureDateNotAllowedRule(),
               Rules.conditionalWrapper(
                 certificationStore.latestCertificateStatus === 'Active',
                 Rules.dateBetweenRule(
@@ -112,6 +113,7 @@
             v-model="endDate"
             :rules="[
               Rules.required('Enter the end date of your course or workshop'),
+              Rules.futureDateNotAllowedRule(),
               Rules.dateBeforeRule(startDate || ''),
               Rules.conditionalWrapper(
                 certificationStore.latestCertificateStatus === 'Active',

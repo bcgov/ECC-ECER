@@ -64,8 +64,7 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public ApplicationTypes ApplicationType { get; set; }
   public EducationOrigin? EducationOrigin { get; set; }
   public EducationRecognition? EducationRecognition { get; set; }
-  public string? ExplanationLetter { get; set; }
-  public OneYearRenewalexplanations? OneYearRenewalexplanation { get; set; }
+  public OneYearRenewalexplanations? OneYearRenewalExplanationChoice { get; set; }
   public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
   public string? RenewalExplanationOther { get; set; }
 }

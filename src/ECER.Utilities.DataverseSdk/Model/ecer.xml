@@ -120,7 +120,7 @@ VoiceMail</TokenCapitalizationOverrides>
   <Namespace>ECER.Utilities.DataverseSdk.Model</Namespace>
   <ServiceContextName>EcerContext</ServiceContextName>
   <SuppressGeneratedCodeAttribute>false</SuppressGeneratedCodeAttribute>
-  <SettingsVersion>2.2024.5.16</SettingsVersion>
+  <SettingsVersion>2.2024.9.11</SettingsVersion>
   <UpdateBuilderSettingsJson>true</UpdateBuilderSettingsJson>
   <Version>2.2024.9.11</Version>
 </Config>

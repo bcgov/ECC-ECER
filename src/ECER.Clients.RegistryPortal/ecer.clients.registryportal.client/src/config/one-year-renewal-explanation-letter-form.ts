@@ -6,7 +6,7 @@ const oneYearRenewalExplanation: Form = {
   title: "Explanation Letter",
   inputs: {
     oneYearRenewalExplanation: {
-      id: "oneYearRenewalExplanation",
+      id: "oneYearRenewalExplanationChoice",
       component: EceOneYearRenewalInformation,
       props: {},
       cols: {
@@ -15,8 +15,8 @@ const oneYearRenewalExplanation: Form = {
         xl: 12,
       },
     },
-    explanationLetter: {
-      id: "explanationLetter",
+    renewalExplanationOther: {
+      id: "renewalExplanationOther",
       component: null,
       props: {},
       cols: {

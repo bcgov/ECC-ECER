@@ -146,7 +146,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_City = "ecer_city";
 			public const string ecer_comment_Application_ecer_application = "ecer_comment_Application_ecer_application";
 			public const string ecer_communication_Applicationid = "ecer_communication_Applicationid";
+			public const string ecer_ComprehensiveEvaluationReportApproved = "ecer_comprehensiveevaluationreportapproved";
+			public const string ecer_comprehensiveevaluationreportapprovedName = "ecer_comprehensiveevaluationreportapprovedname";
+			public const string ecer_ComprehensiveEvaluationReportReceived = "ecer_comprehensiveevaluationreportreceived";
+			public const string ecer_comprehensiveevaluationreportreceivedName = "ecer_comprehensiveevaluationreportreceivedname";
 			public const string ecer_Country = "ecer_country";
+			public const string ecer_CourseOutlineApproved = "ecer_courseoutlineapproved";
+			public const string ecer_courseoutlineapprovedName = "ecer_courseoutlineapprovedname";
+			public const string ecer_CourseOutlineReceived = "ecer_courseoutlinereceived";
+			public const string ecer_courseoutlinereceivedName = "ecer_courseoutlinereceivedname";
 			public const string ecer_CurrentCertificationExpiryDate = "ecer_currentcertificationexpirydate";
 			public const string ecer_CurrentCertificationNumber = "ecer_currentcertificationnumber";
 			public const string ecer_DateEscalated = "ecer_dateescalated";
@@ -251,6 +259,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramClerk = "ecer_programclerk";
 			public const string ecer_ProgramClerkName = "ecer_programclerkname";
 			public const string ecer_ProgramClerkYomiName = "ecer_programclerkyominame";
+			public const string ecer_ProgramConfirmationFormApproved = "ecer_programconfirmationformapproved";
+			public const string ecer_programconfirmationformapprovedName = "ecer_programconfirmationformapprovedname";
+			public const string ecer_ProgramConfirmationFormReceived = "ecer_programconfirmationformreceived";
+			public const string ecer_programconfirmationformreceivedName = "ecer_programconfirmationformreceivedname";
 			public const string ecer_Province = "ecer_province";
 			public const string ecer_ReadyforAssessment = "ecer_readyforassessment";
 			public const string ecer_ReadyforAssessmentDate = "ecer_readyforassessmentdate";
@@ -1081,6 +1093,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_comprehensiveevaluationreportapproved")]
+		public virtual ecer_YesNoNull? ecer_ComprehensiveEvaluationReportApproved
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_comprehensiveevaluationreportapproved")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_comprehensiveevaluationreportapproved", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_comprehensiveevaluationreportapprovedname")]
+		public string ecer_comprehensiveevaluationreportapprovedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_comprehensiveevaluationreportapproved"))
+				{
+					return this.FormattedValues["ecer_comprehensiveevaluationreportapproved"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_comprehensiveevaluationreportreceived")]
+		public System.Nullable<bool> ecer_ComprehensiveEvaluationReportReceived
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_comprehensiveevaluationreportreceived");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_comprehensiveevaluationreportreceived", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_comprehensiveevaluationreportreceivedname")]
+		public string ecer_comprehensiveevaluationreportreceivedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_comprehensiveevaluationreportreceived"))
+				{
+					return this.FormattedValues["ecer_comprehensiveevaluationreportreceived"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_country")]
 		public string ecer_Country
 		{
@@ -1093,6 +1169,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_country", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseoutlineapproved")]
+		public virtual ecer_YesNoNull? ecer_CourseOutlineApproved
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_courseoutlineapproved")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_courseoutlineapproved", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseoutlineapprovedname")]
+		public string ecer_courseoutlineapprovedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_courseoutlineapproved"))
+				{
+					return this.FormattedValues["ecer_courseoutlineapproved"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseoutlinereceived")]
+		public System.Nullable<bool> ecer_CourseOutlineReceived
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_courseoutlinereceived");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_courseoutlinereceived", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseoutlinereceivedname")]
+		public string ecer_courseoutlinereceivedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_courseoutlinereceived"))
+				{
+					return this.FormattedValues["ecer_courseoutlinereceived"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -2623,6 +2763,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_programclerk"))
 				{
 					return this.FormattedValues["ecer_programclerk"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programconfirmationformapproved")]
+		public virtual ecer_YesNoNull? ecer_ProgramConfirmationFormApproved
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_programconfirmationformapproved")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programconfirmationformapproved", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programconfirmationformapprovedname")]
+		public string ecer_programconfirmationformapprovedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programconfirmationformapproved"))
+				{
+					return this.FormattedValues["ecer_programconfirmationformapproved"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programconfirmationformreceived")]
+		public System.Nullable<bool> ecer_ProgramConfirmationFormReceived
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_programconfirmationformreceived");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programconfirmationformreceived", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programconfirmationformreceivedname")]
+		public string ecer_programconfirmationformreceivedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programconfirmationformreceived"))
+				{
+					return this.FormattedValues["ecer_programconfirmationformreceived"];
 				}
 				else
 				{

@@ -26,7 +26,7 @@ public class ApplicationRenewalValidationEngineTests
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
-      OneYearRenewalexplanation = OneYearRenewalexplanations.Iwasunabletofindemploymentinthechildcarefieldinmycommunity,
+      OneYearRenewalExplanationChoice = OneYearRenewalexplanations.Iwasunabletofindemploymentinthechildcarefieldinmycommunity,
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
     };
 
@@ -50,8 +50,8 @@ public class ApplicationRenewalValidationEngineTests
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
-      OneYearRenewalexplanation = OneYearRenewalexplanations.Other,
-      ExplanationLetter = null, // No explanation letter
+      OneYearRenewalExplanationChoice = OneYearRenewalexplanations.Other,
+      RenewalExplanationOther = null, // No explanation letter
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
     };
 
@@ -75,7 +75,7 @@ public class ApplicationRenewalValidationEngineTests
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
-      ExplanationLetter = "This is an explanation letter",
+      RenewalExplanationOther = "This is an explanation letter",
       CharacterReferences = new List<CharacterReference>() // No character references
     };
 
@@ -125,7 +125,7 @@ public class ApplicationRenewalValidationEngineTests
     {
       CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
       ProfessionalDevelopments = new List<ProfessionalDevelopment>(), // No professional development
-      ExplanationLetter = "This is an explanation letter",
+      RenewalExplanationOther = "This is an explanation letter",
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
       WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) }
     };
@@ -255,7 +255,7 @@ public class ApplicationRenewalValidationEngineTests
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
       ProfessionalDevelopments = new List<ProfessionalDevelopment>(), // No professional development
-      ExplanationLetter = "This is an explanation letter",
+      RenewalExplanationOther = "This is an explanation letter",
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
     };
 
@@ -329,7 +329,7 @@ public class ApplicationRenewalValidationEngineTests
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
-      ExplanationLetter = "This is an explanation letter",
+      RenewalExplanationOther = "This is an explanation letter",
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
     };
 
