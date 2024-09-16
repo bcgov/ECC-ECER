@@ -91,9 +91,9 @@ import { useRoute } from "vue-router";
 import { useDisplay } from "vuetify";
 
 import { getApplicationStatus } from "@/api/application";
-import { getCertifications } from "@/api/certification";
 import Callout from "@/components/Callout.vue";
 import ManageWorkExperienceReferenceListItem from "@/components/ManageWorkExperienceReferenceListItem.vue";
+import { useCertificationStore } from "@/store/certification";
 import { WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 
@@ -112,13 +112,9 @@ export default defineComponent({
   setup: async () => {
     const { smAndUp } = useDisplay();
     const route = useRoute();
-
+    const certificationStore = useCertificationStore();
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
-    const certifications = (await getCertifications()).data!;
-    let latestCertification;
-    if (certifications.length > 0) {
-      latestCertification = certifications[0];
-    }
+    const latestCertification = certificationStore.latestCertification;
 
     return {
       applicationStatus,

@@ -140,6 +140,7 @@ import { useCertificationStore } from "@/store/certification";
 import { useWizardStore } from "@/store/wizard";
 import type { EceWorkExperienceReferencesProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
+import { WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
@@ -254,6 +255,7 @@ export default defineComponent({
           emailAddress: this.email,
           phoneNumber: this.phoneNumber,
           hours: parseInt(this.hours!.toString()),
+          type: this.hoursRequired === 500 ? WorkExperienceType.IS_500_Hours : WorkExperienceType.IS_400_Hours,
         };
 
         // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
