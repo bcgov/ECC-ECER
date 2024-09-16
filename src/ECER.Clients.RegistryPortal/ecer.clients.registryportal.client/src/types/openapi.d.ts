@@ -425,6 +425,7 @@ declare namespace Components {
       characterReferencesStatus?: CharacterReferenceStatus[] | null;
       addMoreCharacterReference?: boolean | null;
       addMoreWorkExperienceReference?: boolean | null;
+      applicationType?: ApplicationTypes;
     }
     export interface Transcript {
       id?: string | null;
@@ -465,7 +466,9 @@ declare namespace Components {
       dateOfBirth?: string; // date
       email?: string | null;
       phone?: string | null;
+      middleName?: string | null;
       registrationNumber?: string | null;
+      isVerified?: boolean;
       unreadMessagesCount?: number; // int32
       isRegistrant?: boolean;
     }
@@ -548,6 +551,7 @@ declare namespace Components {
       totalNumberofHoursApproved?: number | null; // int32
       totalNumberofHoursObserved?: number | null; // int32
       willProvideReference?: boolean | null;
+      type?: WorkExperienceTypes;
     }
     export interface WorkExperienceReferenceSubmissionRequest {
       token?: string | null;

@@ -468,6 +468,7 @@ public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, Applic
   public IEnumerable<CharacterReferenceStatus> CharacterReferencesStatus { get; set; } = Array.Empty<CharacterReferenceStatus>();
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
+  public ApplicationTypes? ApplicationType { get; set; }
 }
 public record FileInfo(string Id)
 {
@@ -485,6 +486,7 @@ public record WorkExperienceReferenceStatus(string Id, WorkExperienceRefStage St
   public int? TotalNumberofHoursApproved { get; set; }
   public int? TotalNumberofHoursObserved { get; set; }
   public bool? WillProvideReference { get; set; }
+  public WorkExperienceTypes? Type { get; set; }
 }
 
 public record CharacterReferenceStatus(string Id, CharacterReferenceStage Status, string FirstName, string LastName, string EmailAddress)
