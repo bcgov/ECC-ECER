@@ -26,7 +26,7 @@
     </v-row>
 
     <!-- Your ECE applications -->
-    <v-row v-if="applications && showApplicationCard" justify="center">
+    <v-row v-if="applications && userStore.isVerified && showApplicationCard" justify="center">
       <v-col>
         <v-row>
           <v-col cols="12">
@@ -37,7 +37,7 @@
     </v-row>
 
     <!-- Your ECE certifications -->
-    <v-row justify="center" class="mt-6">
+    <v-row v-if="userStore.isVerified" justify="center" class="mt-6">
       <v-col>
         <v-row>
           <v-col cols="12">
