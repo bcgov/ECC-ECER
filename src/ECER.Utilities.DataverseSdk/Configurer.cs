@@ -9,7 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Utilities.DataverseSdk;
 
-public class Configurer : IConfigureComponents, IPostConfigureChecker
+public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideInstrumentationSources
 {
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
@@ -29,7 +29,10 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker
 
   public async Task Check([NotNull] CheckContext context, CancellationToken ct)
   {
-    var ctx = context.Services.GetRequiredService<IOrganizationServiceAsync>();
-    await ctx.ExecuteAsync(new WhoAmIRequest());
+    await Task.CompletedTask;
+    var ctx = context.Services.GetRequiredService<EcerContext>();
+    ctx.Execute(new WhoAmIRequest());
   }
+
+  public InstrumentationSources GetInstrumentationSources() => new InstrumentationSources { TraceSources = [EcerContext.TraceSourceName] };
 }

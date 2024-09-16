@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Utilities.FileScanner;
 
-public class Configurer : IConfigureComponents, IPostConfigureChecker
+public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideInstrumentationSources
 {
   private const int maxFileSize = 100_000_000;
 
@@ -45,4 +45,6 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker
 
   private static ClamAvProviderSettings? GetSettings(IConfiguration configuration)
     => configuration.GetSection("fileScanner").Get<ClamAvProviderSettings>();
+
+  public InstrumentationSources GetInstrumentationSources() => new InstrumentationSources { TraceSources = [ClamAvScanner.TraceSourceName] };
 }

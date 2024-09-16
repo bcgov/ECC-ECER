@@ -17,14 +17,14 @@ internal class Program
   {
     var builder = WebApplication.CreateBuilder(args);
 
-    var logger = builder.ConfigureWebApplicationObservability();
+    var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
+
+    var logger = builder.ConfigureWebApplicationObservability(discoveryAssemblies: assemblies);
 
     logger.Information("Starting up");
 
     try
     {
-      var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
-
       builder.Services.AddMediatR(opts =>
       {
         opts.RegisterServicesFromAssemblies(assemblies);
