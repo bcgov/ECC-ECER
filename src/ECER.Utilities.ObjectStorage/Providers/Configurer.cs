@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Utilities.ObjectStorage.Providers;
 
-public class Configurer : IConfigureComponents, IPostConfigureChecker
+public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideInstrumentationSources
 {
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
@@ -46,4 +46,6 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker
 
   private static S3StorageProviderSettings? GetSettings(IConfiguration configuration)
     => configuration.GetSection("objectStorage").Get<S3StorageProviderSettings>();
+
+  public InstrumentationSources GetInstrumentationSources() => new InstrumentationSources { TraceSources = [S3Provider.TraceSourceName] };
 }
