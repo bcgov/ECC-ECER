@@ -1,6 +1,20 @@
 <template>
   <!-- Messages -->
   <PageContainer :margin-top="false">
+    <v-row v-if="!userStore.isVerified" justify="center">
+      <v-col cols="12">
+        <v-card :rounded="0" flat color="background-light" class="pa-4">
+          <v-card-item class="ma-4">
+            <h3>Your account is being reviewed</h3>
+            <p class="mt-2">
+              We're finishing setting up your account for you. Once we're done you'll be able to do things like view your certification, renew it or apply for
+              new certification.
+            </p>
+            <p class="mt-2">We'll send you a message as soon as your account is ready. It may take 1-3 business days.</p>
+          </v-card-item>
+        </v-card>
+      </v-col>
+    </v-row>
     <v-row v-if="messageStore.unreadMessageCount > 0" justify="center">
       <v-col>
         <v-row>
@@ -12,7 +26,7 @@
     </v-row>
 
     <!-- Your ECE applications -->
-    <v-row v-if="applications && showApplicationCard" justify="center">
+    <v-row v-if="applications && userStore.isVerified && showApplicationCard" justify="center">
       <v-col>
         <v-row>
           <v-col cols="12">
@@ -23,7 +37,7 @@
     </v-row>
 
     <!-- Your ECE certifications -->
-    <v-row justify="center" class="mt-6">
+    <v-row v-if="userStore.isVerified" justify="center" class="mt-6">
       <v-col>
         <v-row>
           <v-col cols="12">
@@ -81,7 +95,8 @@
               </template>
             </ActionCard>
           </v-col>
-          <v-col cols="12" sm="6" lg="4">
+
+          <v-col v-if="userStore.isVerified" cols="12" sm="6" lg="4">
             <ActionCard title="Your profile" icon="mdi-account-circle">
               <template #content>Manage your names, address and contact information.</template>
               <template #action>

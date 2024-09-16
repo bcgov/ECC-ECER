@@ -21,7 +21,7 @@ const router = createRouter({
       path: "/profile",
       component: () => import("./components/Profile.vue"),
       name: "profile",
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
     },
     {
       path: "/messages",
@@ -60,61 +60,61 @@ const router = createRouter({
       path: "/manage-application/:applicationId",
       name: "manageApplication",
       component: () => import("./components/ApplicationSummary.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
     },
     {
       path: "/manage-application/:applicationId/work-experience-reference/:referenceId",
       name: "viewWorkExperienceReference",
       component: () => import("./components/ViewWorkExperienceReference.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
       props: true,
     },
     {
       path: "/manage-application/:applicationId/character-reference/:referenceId",
       name: "viewCharacterReference",
       component: () => import("./components/ViewCharacterReference.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
       props: true,
     },
     {
       path: "/manage-application/:applicationId/work-experience-reference/:referenceId/edit",
       name: "updateWorkExperienceReference",
       component: () => import("./components/UpsertWorkExperienceReference.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
       props: true,
     },
     {
       path: "/manage-application/:applicationId/character-reference/:referenceId/edit",
       name: "updateCharacterReference",
       component: () => import("./components/UpsertCharacterReference.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
       props: true,
     },
     {
       path: "/manage-application/:applicationId/character-reference/add",
       name: "addCharacterReference",
       component: () => import("./components/UpsertCharacterReference.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
       props: true,
     },
     {
       path: "/manage-application/:applicationId/work-experience-reference/add",
       name: "addWorkExperienceReference",
       component: () => import("./components/UpsertWorkExperienceReference.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
       props: true,
     },
     {
       path: "/manage-application/:applicationId/work-experience-references",
       name: "manageWorkExperienceReferences",
       component: () => import("./components/ManageWorkExperienceReferenceList.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
       props: true,
     },
     {
       path: "/application/certification",
       component: () => import("./components/CertificationType.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
       name: "application-certification",
     },
     {
@@ -146,7 +146,7 @@ const router = createRouter({
     {
       path: "/application",
       component: () => import("./components/pages/Application.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
     },
     {
       path: "/new-user",
@@ -168,27 +168,27 @@ const router = createRouter({
       path: "/profile/edit",
       component: () => import("./components/pages/EditProfile.vue"),
       name: "edit-profile",
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
     },
     {
       path: "/profile/add-previous-name",
       component: () => import("./components/pages/AddPreviousName.vue"),
       name: "add-previous-name",
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
     },
     {
       path: "/profile/verify-previous-name/:previousNameId",
       component: () => import("./components/pages/VerifyPreviousName.vue"),
       name: "verify-previous-name",
       props: true,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
     },
     {
       path: "/submitted/:applicationId",
       name: "submitted",
       component: () => import("./components/pages/Submitted.vue"),
       props: true,
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresVerification: true },
     },
     {
       path: "/verify/:token",
@@ -215,6 +215,7 @@ const router = createRouter({
 // Gaurd for authenticated routes
 router.beforeEach(async (to, _) => {
   const oidcStore = useOidcStore();
+  const userStore = useUserStore();
   const user = await oidcStore.getUser();
 
   // instead of having to check every route record with
@@ -225,6 +226,12 @@ router.beforeEach(async (to, _) => {
     return {
       path: "/login",
       query: { redirect_to: to.fullPath },
+    };
+  }
+
+  if (to.meta.requiresVerification && !userStore.isVerified) {
+    return {
+      path: "/",
     };
   }
 });
