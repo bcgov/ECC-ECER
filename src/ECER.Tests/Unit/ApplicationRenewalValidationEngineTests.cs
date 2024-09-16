@@ -65,7 +65,7 @@ public class ApplicationRenewalValidationEngineTests
     var result = await _validator.Validate(application);
 
     // Assert
-    Assert.Contains("the application does not have explanation letter", result.ValidationErrors);
+    Assert.Contains("renewal explanation other required if one year renewal explanation choice is other", result.ValidationErrors);
   }
 
   [Fact]
