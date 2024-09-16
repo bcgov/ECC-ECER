@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
+using Microsoft.Xrm.Sdk.Query;
 using System.Diagnostics;
 
 namespace ECER.Utilities.DataverseSdk.Model;
@@ -25,7 +26,13 @@ public partial class EcerContext
     executionActivity = source.StartActivity("Execute");
     executionActivity?.SetTag(nameof(request.RequestName), request?.RequestName);
     executionActivity?.SetTag(nameof(request.RequestId), request?.RequestId);
-    executionActivity?.SetTag(nameof(request.Parameters), string.Join(',', request?.Parameters.Select(p => $"{p.Key}={p.Value}") ?? []));
+    foreach (var parameter in request?.Parameters ?? [])
+    {
+      if (parameter.Value is QueryExpression query)
+      {
+        executionActivity?.SetTag(nameof(QueryExpression.EntityName), query.EntityName);
+      }
+    }
 
     base.OnExecuting(request);
   }
@@ -34,6 +41,13 @@ public partial class EcerContext
   {
     base.OnExecute(request, response);
     executionActivity?.SetStatus(ActivityStatusCode.Ok);
+    foreach (var result in response?.Results ?? [])
+    {
+      if (result.Value is EntityCollection entities)
+      {
+        executionActivity?.SetTag(nameof(EntityCollection.TotalRecordCount), entities.Entities.Count);
+      }
+    }
     executionActivity?.Stop();
   }
 
