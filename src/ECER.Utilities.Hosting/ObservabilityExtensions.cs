@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using ECER.Infrastructure.Common;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry.Exporter;
@@ -21,7 +22,7 @@ public static class ObservabilityExtensions
   /// Configures observability instruments like logging to the web application and return an initial logger
   /// </summary>
   /// <returns>A logger that can be used during starting up the web application</returns>
-  public static ILogger ConfigureWebApplicationObservability(this WebApplicationBuilder builder, string? serviceName = null)
+  public static ILogger ConfigureWebApplicationObservability(this WebApplicationBuilder builder, string? serviceName = null, IEnumerable<Assembly>? discoveryAssemblies = null)
   {
     Serilog.Debugging.SelfLog.Enable(Console.Error);
     var logger = CreateBootstrapLogger(builder.Configuration);
@@ -69,12 +70,15 @@ public static class ObservabilityExtensions
 
       if (enableTracing)
       {
+        var traceSources = discoveryAssemblies?.SelectMany(a => a.CreateInstancesOf<IProvideInstrumentationSources>()).Select(p => p.GetInstrumentationSources()).SelectMany(s => s.TraceSources).ToArray() ?? [];
+
         builder.Services.AddOpenTelemetry()
           .ConfigureResource(resource => resource.AddService(serviceName).AddEnvironmentVariableDetector())
           .WithTracing(tracing => tracing
             .AddAspNetCoreInstrumentation()
             .AddRedisInstrumentation()
             .AddHttpClientInstrumentation()
+            .AddSource(traceSources)
             .AddOtlpExporter(opts =>
             {
               opts.Endpoint = new Uri(otelEndpoint, "/v1/traces");
