@@ -112,7 +112,7 @@ export default {
   methods: {
     async handleVerifyPreviousName() {
       if (!this.isAtleastOneFileAdded) {
-        this.alertStore.setFailureAlert("You must add atleast one file.");
+        this.alertStore.setFailureAlert("You must add at least one file.");
       } else if (this.isFileUploadInProgress) {
         this.alertStore.setFailureAlert("Uploading files. You need to wait until files are uploaded to send this message.");
       } else if (!this.areAttachedFilesValid) {
