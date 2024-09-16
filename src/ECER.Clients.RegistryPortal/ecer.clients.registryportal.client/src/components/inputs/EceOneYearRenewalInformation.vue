@@ -11,12 +11,12 @@
       <RadioWithAdditionalOption
         :items="renewalInformationRadio"
         :trigger-values="['Other']"
-        additional-info-key="renewalExplanationOther"
-        value-key="oneYearRenewalExplanationChoice"
-        :radio-rules="[Rules.requiredRadio('Select one reason for renewing your ECE One Year certification')]"
-        :model-value="wizardStore.wizardData.oneYearRenewalExplanationChoice"
-        :additional-info-props="{ autoGrow: true, counter: 200, maxlength: 200, rules: [Rules.required('Enter your response')] }"
-        :text-input-value="wizardStore.wizardData.renewalExplanationOther"
+        additional-info-key="explanationLetter"
+        value-key="oneYearRenewalExplanation"
+        :radio-rules="[Rules.requiredRadio('Select an option')]"
+        :model-value="wizardStore.wizardData.oneYearRenewalExplanation"
+        :additional-info-props="{ autoGrow: true, counter: 500, maxlength: 500, rules: [Rules.required('Enter a reason')] }"
+        :text-input-value="wizardStore.wizardData.explanationLetter"
         @update:model-value="updateFields"
       ></RadioWithAdditionalOption>
     </v-col>
