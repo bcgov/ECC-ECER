@@ -5,50 +5,50 @@ import EceWorkExperienceReferencePreview from "@/components/inputs/EceWorkExperi
 import type { Form } from "@/types/form";
 
 const renewAssistantReviewForm: Form = {
-    id: "previewForm",
-    title: "Review and submit",
-    inputs: {
-        certificationSelectionPreview: {
-            id: "certificationSelectionPreview",
-            component: EceCertificationTypePreview,
-            props: {},
-            cols: {
-                md: 12,
-                lg: 12,
-                xl: 12,
-            },
-        },
-        contactInformationPreview: {
-            id: "contactInformationPreview",
-            component: EceContactInformationPreview,
-            props: {},
-            cols: {
-                md: 12,
-                lg: 12,
-                xl: 12,
-            },
-        },
-        characterReferencePreview: {
-            id: "characterReferencePreview",
-            component: EceCharacterReferencePreview,
-            props: {},
-            cols: {
-                md: 12,
-                lg: 12,
-                xl: 12,
-            },
-        },
-        workExperienceReferencePreview: {
-            id: "workExperienceReferencePreview",
-            component: EceWorkExperienceReferencePreview,
-            props: {},
-            cols: {
-                md: 12,
-                lg: 12,
-                xl: 12,
-            },
-        },
+  id: "previewForm",
+  title: "Review and submit",
+  inputs: {
+    certificationSelectionPreview: {
+      id: "certificationSelectionPreview",
+      component: EceCertificationTypePreview,
+      props: {},
+      cols: {
+        md: 12,
+        lg: 12,
+        xl: 12,
+      },
     },
+    contactInformationPreview: {
+      id: "contactInformationPreview",
+      component: EceContactInformationPreview,
+      props: {},
+      cols: {
+        md: 12,
+        lg: 12,
+        xl: 12,
+      },
+    },
+    characterReferencePreview: {
+      id: "characterReferencePreview",
+      component: EceCharacterReferencePreview,
+      props: {},
+      cols: {
+        md: 12,
+        lg: 12,
+        xl: 12,
+      },
+    },
+    workExperienceReferencePreview: {
+      id: "workExperienceReferencePreview",
+      component: EceWorkExperienceReferencePreview,
+      props: {},
+      cols: {
+        md: 12,
+        lg: 12,
+        xl: 12,
+      },
+    },
+  },
 };
 
 export default renewAssistantReviewForm;
