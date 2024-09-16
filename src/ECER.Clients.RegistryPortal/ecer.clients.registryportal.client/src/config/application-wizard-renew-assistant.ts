@@ -1,11 +1,11 @@
 import type { Wizard } from "@/types/wizard";
-
 import characterReferencesForm from "./character-references-form";
 import educationForm from "./education-form";
-import professionalDevelopmentForm from "./professional-development-form";
 import profileInformationForm from "./profile-information-form";
 import referencesForm from "./references-form";
 import reviewAndSubmitForm from "./review-submit-form";
+import workExperience400HoursEvaluationForm from "./work-experience-reference-400-hours-evaluation-form";
+import renewAssistantReviewForm from "./application-wizard-renew-assistant-review-form";
 
 const applicationWizard: Wizard = {
   id: "form-1",
@@ -15,12 +15,6 @@ const applicationWizard: Wizard = {
       title: "Contact information",
       form: profileInformationForm,
       key: "item.1",
-    },
-    professionalDevelopment: {
-      stage: "ProfessionalDevelopment",
-      title: "Professional development",
-      form: professionalDevelopmentForm,
-      key: "item.2",
     },
     education: {
       stage: "Education",
@@ -43,7 +37,7 @@ const applicationWizard: Wizard = {
     review: {
       stage: "Review",
       title: "Review and submit",
-      form: reviewAndSubmitForm,
+      form: renewAssistantReviewForm,
       key: "item.5",
     },
   },
