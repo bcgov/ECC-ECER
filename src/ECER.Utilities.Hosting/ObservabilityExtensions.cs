@@ -70,7 +70,7 @@ public static class ObservabilityExtensions
       if (enableTracing)
       {
         builder.Services.AddOpenTelemetry()
-          .ConfigureResource(resource => resource.AddService(serviceName))
+          .ConfigureResource(resource => resource.AddService(serviceName).AddEnvironmentVariableDetector())
           .WithTracing(tracing => tracing
             .AddAspNetCoreInstrumentation()
             .AddRedisInstrumentation()
@@ -91,6 +91,7 @@ public static class ObservabilityExtensions
       if (enableMetrics)
       {
         builder.Services.AddOpenTelemetry()
+          .ConfigureResource(resource => resource.AddService(serviceName).AddEnvironmentVariableDetector())
           .WithMetrics(metrics => metrics
           .AddAspNetCoreInstrumentation()
           .AddRuntimeInstrumentation()
