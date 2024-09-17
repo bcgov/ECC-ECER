@@ -231,7 +231,10 @@
     <v-row class="mt-10">
       <v-col>
         <v-row justify="start" class="ml-1">
-          <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Reference</v-btn>
+          <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">
+            <v-icon icon="mdi-plus" />
+            Add course or workshop
+          </v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
         </v-row>
       </v-col>
@@ -287,7 +290,7 @@
         <!-- hours required met -->
         <p v-else>
           No additional professional development may be added. You provided the required 40 hours. After you submit your application, the registry will review
-          and verify the submitted professional. If needed, the registry will contact you for additional information.
+          and verify the professional development added. If needed, the registry will contact you for additional information.
         </p>
       </v-col>
     </v-row>
