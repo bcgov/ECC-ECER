@@ -103,7 +103,7 @@ const required = (message = "This field is required") => {
  * @returns Function
  */
 const requiredRadio = (message = "This field is required") => {
-  return (v: boolean | string) => v !== undefined || message;
+  return (v: boolean | string | null | undefined) => (v !== undefined && v !== null) || message;
 };
 
 /**

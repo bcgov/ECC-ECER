@@ -12,12 +12,14 @@
     <br />
     <p>It's important to keep your contact information up-to-date in your My ECE Registry profile.</p>
     <br />
-    <h3>Transcripts</h3>
-    <br />
-    <ul class="ml-10">
-      <li>Make sure you've requested the transcripts be sent to the ECE Registry directly from the educational institution</li>
-      <li>We'll email you once we receive them</li>
-    </ul>
+    <div v-if="draftApplicationHasTranscripts">
+      <h3>Transcripts</h3>
+      <br />
+      <ul class="ml-10">
+        <li>Make sure you've requested the transcripts be sent to the ECE Registry directly from the educational institution</li>
+        <li>We'll email you once we receive them</li>
+      </ul>
+    </div>
     <br />
     <h3>References</h3>
     <br />
@@ -53,6 +55,7 @@
 import { defineComponent } from "vue";
 
 import PageContainer from "@/components/PageContainer.vue";
+import { useApplicationStore } from "@/store/application";
 
 export default defineComponent({
   name: "Submitted",
@@ -61,6 +64,15 @@ export default defineComponent({
     applicationId: {
       type: String,
       required: true,
+    },
+  },
+  setup: () => {
+    const applicationStore = useApplicationStore();
+    return { applicationStore };
+  },
+  computed: {
+    draftApplicationHasTranscripts() {
+      return (this.applicationStore.draftApplication.transcripts?.length || 0) > 0;
     },
   },
 });
