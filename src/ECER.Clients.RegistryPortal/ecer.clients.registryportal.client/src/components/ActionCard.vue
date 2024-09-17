@@ -1,6 +1,10 @@
 <template>
   <v-responsive :aspect-ratio="16 / 9">
-    <v-card height="100%" :prepend-icon="icon" :title="title" class="custom-card-styling">
+    <v-card height="100%" class="custom-card-styling">
+      <v-card-title class="text-wrap">
+        <v-icon v-if="icon" :icon="icon"></v-icon>
+        {{ title }}
+      </v-card-title>
       <v-card-text>
         <slot name="content"></slot>
       </v-card-text>
