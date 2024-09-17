@@ -89,6 +89,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_doeseceregistryhavetranscriptName = "ecer_doeseceregistryhavetranscriptname";
 			public const string ecer_EducationInstitutionFullName = "ecer_educationinstitutionfullname";
 			public const string ecer_EndDate = "ecer_enddate";
+			public const string ecer_InstituteCountryId = "ecer_institutecountryid";
+			public const string ecer_InstituteCountryIdName = "ecer_institutecountryidname";
+			public const string ecer_InstituteCountryOther = "ecer_institutecountryother";
 			public const string ecer_IsECEAssistant = "ecer_iseceassistant";
 			public const string ecer_iseceassistantName = "ecer_iseceassistantname";
 			public const string ecer_IsNameUnverified = "ecer_isnameunverified";
@@ -111,6 +114,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_StudentNumber = "ecer_studentnumber";
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
 			public const string ecer_transcript_Applicationid = "ecer_transcript_Applicationid";
+			public const string ecer_transcript_InstituteCountryId = "ecer_transcript_InstituteCountryId";
 			public const string ecer_transcript_TranscriptDocumentId = "ecer_transcript_TranscriptDocumentId";
 			public const string ecer_TranscriptDocumentId = "ecer_transcriptdocumentid";
 			public const string ecer_TranscriptDocumentIdName = "ecer_transcriptdocumentidname";
@@ -481,6 +485,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_enddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_institutecountryid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_InstituteCountryId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_institutecountryid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_institutecountryid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_institutecountryidname")]
+		public string ecer_InstituteCountryIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_institutecountryid"))
+				{
+					return this.FormattedValues["ecer_institutecountryid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_institutecountryother")]
+		public string ecer_InstituteCountryOther
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_institutecountryother");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_institutecountryother", value);
 			}
 		}
 		
@@ -1319,6 +1370,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_transcript_Applicationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_transcript_InstituteCountryId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_institutecountryid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_transcript_InstituteCountryId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Country ecer_transcript_InstituteCountryId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Country>("ecer_transcript_InstituteCountryId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Country>("ecer_transcript_InstituteCountryId", null, value);
 			}
 		}
 		

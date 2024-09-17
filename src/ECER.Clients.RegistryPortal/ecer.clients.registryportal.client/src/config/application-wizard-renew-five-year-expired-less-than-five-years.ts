@@ -1,11 +1,11 @@
 import type { Wizard } from "@/types/wizard";
 
+import renewFiveYearExpiredLessThenFiveReviewForm from "./application-wizard-renew-five-year-expired-less-than-five-years-review-form";
 import characterReferencesForm from "./character-references-form";
-import explanationLetterForm from "./explanation-letter-form";
+import fiveYearRenewalExplanationForm from "./five-year-renewal-explanation-letter-form";
 import professionalDevelopmentForm from "./professional-development-form";
 import profileInformationForm from "./profile-information-form";
 import referencesForm from "./references-form";
-import reviewAndSubmitForm from "./review-submit-form";
 
 const applicationWizard: Wizard = {
   id: "form-1",
@@ -16,10 +16,10 @@ const applicationWizard: Wizard = {
       form: profileInformationForm,
       key: "item.1",
     },
-    explanationLetter: {
+    fiveYearRenewalExplanation: {
       stage: "ExplanationLetter",
-      title: "Explanation Letter",
-      form: explanationLetterForm,
+      title: "Renewal information",
+      form: fiveYearRenewalExplanationForm,
       key: "item.2",
     },
     professionalDevelopments: {
@@ -44,7 +44,7 @@ const applicationWizard: Wizard = {
     review: {
       stage: "Review",
       title: "Review and submit",
-      form: reviewAndSubmitForm,
+      form: renewFiveYearExpiredLessThenFiveReviewForm,
       key: "item.6",
     },
   },

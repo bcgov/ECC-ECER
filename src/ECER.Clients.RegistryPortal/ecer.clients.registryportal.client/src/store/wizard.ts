@@ -90,10 +90,18 @@ export const useWizardStore = defineStore("wizard", {
 
         // one year explanation letter
         ...(wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id && {
-          [wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id]: draftApplication?.oneYearRenewalexplanation || "",
+          [wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id]: draftApplication?.oneYearRenewalExplanationChoice || "",
         }),
-        ...(wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.explanationLetter?.id && {
-          [wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.explanationLetter?.id]: draftApplication?.explanationLetter || "",
+        ...(wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id && {
+          [wizard.steps?.oneYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id]: draftApplication?.renewalExplanationOther || "",
+        }),
+
+        // five year explanation letter
+        ...(wizard.steps?.fiveYearRenewalExplanation?.form?.inputs?.fiveYearRenewalExplanation?.id && {
+          [wizard.steps?.fiveYearRenewalExplanation?.form?.inputs?.fiveYearRenewalExplanation?.id]: draftApplication?.fiveYearRenewalExplanationChoice || "",
+        }),
+        ...(wizard.steps?.fiveYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id && {
+          [wizard.steps?.fiveYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id]: draftApplication?.renewalExplanationOther || "",
         }),
 
         // Character References step data

@@ -1,22 +1,17 @@
 <template>
-  <p>You need to provide the reason why you were unable to either:</p>
-  <br />
-  <ul class="ml-10">
-    <li>Complete the required 500 hours of supervised work experience during the term of your certificate</li>
-    <li>Get a reference contact from the certified ECE who supervised the hours</li>
-  </ul>
+  <p>Why are you late renewing your certification?</p>
   <br />
   <v-row>
     <v-col>
       <RadioWithAdditionalOption
-        :items="renewalInformationRadio"
+        :items="fiveYearRenewalInformationRadio"
         :trigger-values="['Other']"
-        additional-info-key="explanationLetter"
-        value-key="oneYearRenewalExplanation"
+        additional-info-key="renewalExplanationOther"
+        value-key="fiveYearRenewalExplanationChoice"
         :radio-rules="[Rules.requiredRadio('Select an option')]"
-        :model-value="wizardStore.wizardData.oneYearRenewalExplanation"
+        :model-value="wizardStore.wizardData.fiveYearRenewalExplanationChoice"
         :additional-info-props="{ autoGrow: true, counter: 500, maxlength: 500, rules: [Rules.required('Enter a reason')] }"
-        :text-input-value="wizardStore.wizardData.explanationLetter"
+        :text-input-value="wizardStore.wizardData.renewalExplanationOther"
         @update:model-value="updateFields"
       ></RadioWithAdditionalOption>
     </v-col>
@@ -27,18 +22,18 @@ import { defineComponent } from "vue";
 
 import { useWizardStore } from "@/store/wizard";
 import type { EceRenewalInformationProps } from "@/types/input";
-import { renewalInformationRadio } from "@/utils/constant";
+import { fiveYearRenewalInformationRadio } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
 
 import RadioWithAdditionalOption from "./RadioWithAdditionalOption.vue";
 
-interface OneYearRenewalExplanationType {
-  oneYearRenewalExplanation: string;
-  explanationLetter: string;
+interface FiveYearRenewalExplanationType {
+  fiveYearRenewalExplanationChoice: string;
+  renewalExplanationOther: string;
 }
 
 export default defineComponent({
-  name: "EceRenewalInformation",
+  name: "EceFiveYearRenewalInformation",
   components: { RadioWithAdditionalOption },
   props: {
     props: {
@@ -49,10 +44,10 @@ export default defineComponent({
   },
   setup() {
     const wizardStore = useWizardStore();
-    return { renewalInformationRadio, Rules, wizardStore };
+    return { fiveYearRenewalInformationRadio, Rules, wizardStore };
   },
   methods: {
-    updateFields(data: OneYearRenewalExplanationType) {
+    updateFields(data: FiveYearRenewalExplanationType) {
       this.wizardStore.setWizardData(data);
     },
   },

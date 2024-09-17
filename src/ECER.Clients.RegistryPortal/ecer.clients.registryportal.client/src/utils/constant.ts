@@ -115,3 +115,20 @@ export const renewalInformationRadio: RadioButtonWrapper<Components.Schemas.OneY
   },
   { label: "Other", value: "Other" },
 ];
+
+export const fiveYearRenewalInformationRadio: RadioButtonWrapper<Components.Schemas.FiveYearRenewalExplanations>[] = [
+  { label: "I live and work in a community without other certified ECEs", value: "IliveandworkinacommunitywithoutothercertifiedECEs" },
+  {
+    label: "I was unable to find employment in the childcare field to complete the required number of hours",
+    value: "Iwasunabletofindemploymentinthechildcarefieldtocompletetherequirednumberofhours",
+  },
+  {
+    label: "I was unable to work due to the status of my visa or was unable to enter the country as expected",
+    value: "Iwasunabletoworkduetothestatusofmyvisaorwasunabletoenterthecountryasexpected",
+  },
+  {
+    label: "I was unable to work in the childcare field for personal reasons",
+    value: "Iwasunabletoworkinthechildcarefieldforpersonalreasons",
+  },
+  { label: "Other", value: "Other" },
+];

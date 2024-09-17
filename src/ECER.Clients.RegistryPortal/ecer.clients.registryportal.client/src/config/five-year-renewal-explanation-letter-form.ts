@@ -1,13 +1,13 @@
-import EceOneYearRenewalInformation from "@/components/inputs/EceOneYearRenewalInformation.vue";
+import EceFiveYearRenewalInformation from "@/components/inputs/EceFiveYearRenewalInformation.vue";
 import type { Form } from "@/types/form";
 
-const oneYearRenewalExplanation: Form = {
+const FiveYearRenewalExplanationForm: Form = {
   id: "explanationLetterForm",
   title: "Explanation Letter",
   inputs: {
-    oneYearRenewalExplanation: {
-      id: "oneYearRenewalExplanationChoice",
-      component: EceOneYearRenewalInformation,
+    fiveYearRenewalExplanation: {
+      id: "fiveYearRenewalExplanationChoice",
+      component: EceFiveYearRenewalInformation,
       props: {},
       cols: {
         md: 12,
@@ -28,4 +28,4 @@ const oneYearRenewalExplanation: Form = {
   },
 };
 
-export default oneYearRenewalExplanation;
+export default FiveYearRenewalExplanationForm;

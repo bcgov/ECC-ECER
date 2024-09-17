@@ -28,8 +28,9 @@ declare namespace Components {
       applicationType?: ApplicationTypes;
       educationOrigin?: EducationOrigin;
       educationRecognition?: EducationRecognition;
-      explanationLetter?: string | null;
-      oneYearRenewalexplanation?: OneYearRenewalexplanations;
+      oneYearRenewalExplanationChoice?: OneYearRenewalexplanations;
+      fiveYearRenewalExplanationChoice?: FiveYearRenewalExplanations;
+      renewalExplanationOther?: string | null;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -86,7 +87,7 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
-    export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Reprinted" | "Suspended";
+    export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
     export interface Certification {
       id?: string | null;
       number?: string | null;
@@ -222,8 +223,9 @@ declare namespace Components {
       applicationType?: ApplicationTypes;
       educationOrigin?: EducationOrigin;
       educationRecognition?: EducationRecognition;
-      explanationLetter?: string | null;
-      oneYearRenewalexplanation?: OneYearRenewalexplanations;
+      oneYearRenewalExplanationChoice?: OneYearRenewalexplanations;
+      fiveYearRenewalExplanationChoice?: FiveYearRenewalExplanations;
+      renewalExplanationOther?: string | null;
       createdOn?: string | null; // date-time
     }
     /**
@@ -254,6 +256,12 @@ declare namespace Components {
       fileId?: string | null;
       url?: string | null;
     }
+    export type FiveYearRenewalExplanations =
+      | "IliveandworkinacommunitywithoutothercertifiedECEs"
+      | "Iwasunabletofindemploymentinthechildcarefieldtocompletetherequirednumberofhours"
+      | "Iwasunabletoworkduetothestatusofmyvisaorwasunabletoenterthecountryasexpected"
+      | "Iwasunabletoworkinthechildcarefieldforpersonalreasons"
+      | "Other";
     export interface GetMessagesResponse {
       communications?: Communication[] | null;
       totalMessagesCount?: number; // int32
@@ -329,7 +337,7 @@ declare namespace Components {
       source?: PreviousNameSources;
       documents?: IdentityDocument[] | null;
     }
-    export type PreviousNameSources = "NameLog" | "Profile" | "Transcript";
+    export type PreviousNameSources = "NameLog" | "Profile" | "Transcript" | "OutofProvinceCertificate";
     export type PreviousNameStage = "Unverified" | "ReadyforVerification" | "Verified" | "Archived";
     export interface ProblemDetails {
       [name: string]: any;

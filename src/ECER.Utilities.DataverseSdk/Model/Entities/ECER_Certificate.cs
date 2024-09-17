@@ -48,6 +48,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Inactive = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Renewed = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Reprinted = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -73,6 +76,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_application_Certificateid = "ecer_application_Certificateid";
+			public const string ecer_application_FromCertificateId = "ecer_application_FromCertificateId";
 			public const string ecer_CancelledDate = "ecer_cancelleddate";
 			public const string ecer_Certificate_ecer_CertificateTypes = "ecer_Certificate_ecer_CertificateTypes";
 			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
@@ -1135,6 +1139,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_Certificateid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_application_FromCertificateId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_FromCertificateId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Application> ecer_application_FromCertificateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_FromCertificateId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_FromCertificateId", null, value);
 			}
 		}
 		

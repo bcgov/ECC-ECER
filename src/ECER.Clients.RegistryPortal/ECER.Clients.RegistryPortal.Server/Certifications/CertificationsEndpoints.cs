@@ -1,8 +1,8 @@
-﻿using ECER.Managers.Registry.Contract.Certifications;
+﻿using AutoMapper;
+using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
-using AutoMapper;
 
 namespace ECER.Clients.RegistryPortal.Server.Certifications;
 
@@ -62,6 +62,7 @@ public enum CertificateStatusCode
   Cancelled,
   Expired,
   Inactive,
+  Renewed,
   Reprinted,
   Suspended
 }

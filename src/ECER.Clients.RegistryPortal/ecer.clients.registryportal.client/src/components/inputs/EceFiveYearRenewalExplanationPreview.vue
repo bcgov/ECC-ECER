@@ -3,7 +3,7 @@
     <template #content>
       <v-row>
         <v-col cols="4">
-          <p class="small">Why do you need to renew your ECE One Year certification</p>
+          <p class="small">Why are you late renewing your certification?</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">
@@ -13,11 +13,11 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Other reason</p>
+          <p class="small">Other reasons</p>
         </v-col>
         <v-col>
           <p class="small font-weight-bold">
-            {{ wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.renewalExplanationOther.id] || "—" }}
+            {{ wizardStore.wizardData[wizardStore.wizardConfig.steps.fiveYearRenewalExplanation.form.inputs.renewalExplanationOther.id] || "—" }}
           </p>
         </v-col>
       </v-row>
@@ -31,7 +31,7 @@ import { defineComponent } from "vue";
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
-import { renewalInformationRadio } from "@/utils/constant";
+import { fiveYearRenewalInformationRadio } from "@/utils/constant";
 export default defineComponent({
   name: "EceOneYearRenewalExplanationPreview",
   components: {
@@ -51,9 +51,10 @@ export default defineComponent({
   },
   computed: {
     generateReasonToRenew() {
-      const renewalReason = renewalInformationRadio.find(
+      const renewalReason = fiveYearRenewalInformationRadio.find(
         (reason) =>
-          reason.value === this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.oneYearRenewalExplanation.id],
+          reason.value ===
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.fiveYearRenewalExplanation.form.inputs.fiveYearRenewalExplanation.id],
       )?.label;
 
       return renewalReason ?? "-";

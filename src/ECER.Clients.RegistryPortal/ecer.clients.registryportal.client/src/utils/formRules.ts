@@ -184,7 +184,7 @@ const dateBeforeRule = (targetDate: string, message = "End date cannot be before
  * @param {string} [message="Date cannot be in the future"] - The error message to return if the date is greater than today.
  * @returns {boolean|string} - Returns `true` if the date is not greater than today, otherwise returns the error message.
  */
-const futureDateNotAllowedRule = (message = "Date cannot be in the future") => {
+const futureDateNotAllowedRule = (message = "Date must be before today") => {
   return (v: string) => {
     if (v) {
       const input = DateTime.fromISO(v);

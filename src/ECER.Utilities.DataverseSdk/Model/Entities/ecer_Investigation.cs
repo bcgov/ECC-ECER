@@ -310,6 +310,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CompletedByName = "ecer_completedbyname";
 			public const string ecer_CompletedByYomiName = "ecer_completedbyyominame";
 			public const string ecer_ConclusionDate = "ecer_conclusiondate";
+			public const string ecer_conclusionsenttops = "ecer_conclusionsenttops";
+			public const string ecer_conclusionsenttopsName = "ecer_conclusionsenttopsname";
 			public const string ecer_contact_ecer_investigation_Applicant = "ecer_contact_ecer_investigation_Applicant";
 			public const string ecer_ContactMethod = "ecer_contactmethod";
 			public const string ecer_contactmethodName = "ecer_contactmethodname";
@@ -524,6 +526,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_registrantisminorName = "ecer_registrantisminorname";
 			public const string ecer_RegistrantLastName = "ecer_registrantlastname";
 			public const string ecer_reportcompletiondate = "ecer_reportcompletiondate";
+			public const string ecer_reportsenttops = "ecer_reportsenttops";
+			public const string ecer_reportsenttopsName = "ecer_reportsenttopsname";
 			public const string ecer_SectionAFour = "ecer_sectionafour";
 			public const string ecer_sectionafourName = "ecer_sectionafourname";
 			public const string ecer_SectionAOne = "ecer_sectionaone";
@@ -555,6 +559,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_SiteNameIncident = "ecer_sitenameincident";
 			public const string ecer_Source = "ecer_source";
 			public const string ecer_sourceName = "ecer_sourcename";
+			public const string ecer_summarysenttops = "ecer_summarysenttops";
+			public const string ecer_summarysenttopsName = "ecer_summarysenttopsname";
 			public const string ecer_Supervision = "ecer_supervision";
 			public const string ecer_supervisionName = "ecer_supervisionname";
 			public const string ecer_SuspendedIntake = "ecer_suspendedintake";
@@ -1381,6 +1387,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_conclusiondate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_conclusionsenttops")]
+		public System.Nullable<bool> ecer_conclusionsenttops
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_conclusionsenttops");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_conclusionsenttops", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_conclusionsenttopsname")]
+		public string ecer_conclusionsenttopsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_conclusionsenttops"))
+				{
+					return this.FormattedValues["ecer_conclusionsenttops"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4453,6 +4491,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reportsenttops")]
+		public System.Nullable<bool> ecer_reportsenttops
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_reportsenttops");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reportsenttops", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reportsenttopsname")]
+		public string ecer_reportsenttopsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_reportsenttops"))
+				{
+					return this.FormattedValues["ecer_reportsenttops"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sectionafour")]
 		public virtual ecer_YesNoNull? ecer_SectionAFour
 		{
@@ -4940,6 +5010,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_source"))
 				{
 					return this.FormattedValues["ecer_source"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_summarysenttops")]
+		public System.Nullable<bool> ecer_summarysenttops
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_summarysenttops");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_summarysenttops", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_summarysenttopsname")]
+		public string ecer_summarysenttopsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_summarysenttops"))
+				{
+					return this.FormattedValues["ecer_summarysenttops"];
 				}
 				else
 				{
