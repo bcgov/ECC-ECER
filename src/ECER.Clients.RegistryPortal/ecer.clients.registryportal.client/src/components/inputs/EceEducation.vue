@@ -146,13 +146,7 @@
         <div v-if="previousNameRadio === 'other'">
           <v-row>
             <v-col>
-              <v-text-field
-                v-model="studentFirstName"
-                label="First name on transcript"
-                variant="outlined"
-                color="primary"
-                maxlength="100"
-              ></v-text-field>
+              <v-text-field v-model="studentFirstName" label="First name on transcript" variant="outlined" color="primary" maxlength="100"></v-text-field>
             </v-col>
           </v-row>
           <v-row>
