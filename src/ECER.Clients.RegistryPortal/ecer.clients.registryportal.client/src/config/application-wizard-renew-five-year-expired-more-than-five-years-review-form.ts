@@ -3,7 +3,6 @@ import EceCharacterReferencePreview from "@/components/inputs/EceCharacterRefere
 import EceContactInformationPreview from "@/components/inputs/EceContactInformationPreview.vue";
 import EceProfessionalDevelopmentPreview from "@/components/inputs/EceProfessionalDevelopmentPreview.vue";
 import EceWorkExperienceReferencePreview from "@/components/inputs/EceWorkExperienceReferencePreview.vue";
-
 import type { Form } from "@/types/form";
 
 const renewFiveYearsExpiredMoreThanFiveYearsReviewForm: Form = {
