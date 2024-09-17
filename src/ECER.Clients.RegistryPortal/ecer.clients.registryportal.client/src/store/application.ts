@@ -13,6 +13,18 @@ export interface ApplicationState {
   draftApplication: Components.Schemas.DraftApplication;
   application: Components.Schemas.Application | null;
 }
+export type ApplicationFlow =
+  | "AssistantRenewal"
+  | "FiveYear"
+  | "FiveYearWithIte"
+  | "FiveYearWithSne"
+  | "FiveYearWithIteAndSne"
+  | "OneYear"
+  | "Assistant"
+  | "Ite"
+  | "Sne"
+  | "IteAndSne"
+  | "default";
 
 export const useApplicationStore = defineStore("application", {
   state: (): ApplicationState => ({
@@ -74,6 +86,39 @@ export const useApplicationStore = defineStore("application", {
     },
     isDraftApplicationRenewal(state): boolean {
       return state.draftApplication.applicationType === "Renewal";
+    },
+    draftApplicationFlow(state): ApplicationFlow {
+      //renewal flows
+      if (state.draftApplication.applicationType === "Renewal" && state.draftApplication.certificationTypes?.includes("EceAssistant")) {
+        return "AssistantRenewal";
+      }
+
+      //new application flows
+      if (
+        state.draftApplication.certificationTypes?.includes("FiveYears") &&
+        state.draftApplication.certificationTypes?.includes("Ite") &&
+        state.draftApplication.certificationTypes?.includes("Sne")
+      ) {
+        return "FiveYearWithIteAndSne";
+      } else if (state.draftApplication.certificationTypes?.includes("FiveYears") && state.draftApplication.certificationTypes?.includes("Ite")) {
+        return "FiveYearWithIte";
+      } else if (state.draftApplication.certificationTypes?.includes("FiveYears") && state.draftApplication.certificationTypes?.includes("Sne")) {
+        return "FiveYearWithSne";
+      } else if (state.draftApplication.certificationTypes?.includes("FiveYears")) {
+        return "FiveYear";
+      } else if (state.draftApplication.certificationTypes?.includes("Ite") && state.draftApplication.certificationTypes?.includes("Sne")) {
+        return "IteAndSne";
+      } else if (state.draftApplication.certificationTypes?.includes("Ite")) {
+        return "Ite";
+      } else if (state.draftApplication.certificationTypes?.includes("Sne")) {
+        return "Sne";
+      } else if (state.draftApplication.certificationTypes?.includes("EceAssistant")) {
+        return "Assistant";
+      } else if (state.draftApplication.certificationTypes?.includes("OneYear")) {
+        return "OneYear";
+      }
+
+      return "default";
     },
   },
   actions: {
