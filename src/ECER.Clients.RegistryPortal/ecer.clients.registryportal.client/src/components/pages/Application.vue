@@ -238,12 +238,6 @@ export default defineComponent({
           break;
       }
     },
-    async submitApplication() {
-      const draftApplicationResponse = await this.applicationStore.saveDraft();
-      if (draftApplicationResponse?.applicationId) {
-        this.alertStore.setSuccessAlert("Draft application saved successfully");
-      }
-    },
     async saveDraftAndAlertSuccess() {
       const draftApplicationResponse = await this.applicationStore.saveDraft();
       if (draftApplicationResponse?.applicationId) {
