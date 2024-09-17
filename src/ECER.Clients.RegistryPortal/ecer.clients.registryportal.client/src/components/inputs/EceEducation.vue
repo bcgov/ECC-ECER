@@ -148,7 +148,6 @@
             <v-col>
               <v-text-field
                 v-model="studentFirstName"
-                :rules="[Rules.required('Enter your first name')]"
                 label="First name on transcript"
                 variant="outlined"
                 color="primary"
