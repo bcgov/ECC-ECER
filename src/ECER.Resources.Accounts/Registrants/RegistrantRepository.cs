@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
-using Microsoft.Xrm.Sdk.Client;
 using ECER.Utilities.ObjectStorage.Providers;
-using Microsoft.Extensions.Configuration;
 using ECER.Utilities.ObjectStorage.Providers.S3;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Accounts.Registrants;
 
@@ -64,10 +64,13 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     if (contact == null) throw new InvalidOperationException($"Registrant {registrant.Id} not found");
 
+    var verified = contact.ecer_IsVerified;
+
     context.Detach(contact);
 
     contact = mapper.Map<Contact>(registrant.Profile)!;
     contact.ContactId = contactId;
+    contact.ecer_IsVerified = verified;
 
     context.Attach(contact);
     context.UpdateObject(contact);
