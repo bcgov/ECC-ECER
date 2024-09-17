@@ -77,8 +77,8 @@
       />
       <ApplicationSummaryActionListItem
         v-if="showWorkExperience"
-        :active="totalObservedWorkExperienceHours < 500"
-        text="500 approved hours of work experience with reference"
+        :active="totalObservedWorkExperienceHours < totalRequiredWorkExperienceHours"
+        :text="`${totalRequiredWorkExperienceHours} hours of work experience with reference`"
         :go-to="() => $router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: $route.params.applicationId } })"
       />
     </div>
@@ -151,7 +151,7 @@
       />
       <ApplicationSummaryActionListItem
         v-if="addMoreWorkExperienceReferencesFlag"
-        text="500 approved hours of work experience with reference"
+        :text="`${totalRequiredWorkExperienceHours} approved hours of work experience with reference`"
         :go-to="() => $router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: $route.params.applicationId } })"
       />
     </div>
@@ -169,7 +169,7 @@ import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useUserStore } from "@/store/user";
 import type { Components } from "@/types/openapi";
-import { CertificationType } from "@/utils/constant";
+import { CertificationType, WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 
 import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHeader.vue";
@@ -316,7 +316,10 @@ export default defineComponent({
       return this.applicationStatus?.workExperienceReferencesStatus?.reduce((acc, reference) => acc + (reference.totalNumberofHoursObserved ?? 0), 0) || 0;
     },
     showWorkExperience(): boolean {
-      return !!this.applicationStatus?.certificationTypes?.includes(CertificationType.FIVE_YEAR);
+      return !!this.applicationStatus?.workExperienceReferencesStatus?.length;
+    },
+    totalRequiredWorkExperienceHours(): number {
+      return this.applicationStatus?.workExperienceReferencesStatus?.every((reference) => reference.type === WorkExperienceType.IS_400_Hours) ? 400 : 500;
     },
   },
   methods: {

@@ -107,7 +107,8 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.WorkExperienceReferencesStatus, opts => opts.MapFrom(s => s.WorkExperienceReferences))
       .ForMember(d => d.CharacterReferencesStatus, opts => opts.MapFrom(s => s.CharacterReferences))
       .ForMember(d => d.AddMoreCharacterReference, opts => opts.MapFrom(s => s.AddMoreCharacterReference))
-      .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.MapFrom(s => s.AddMoreWorkExperienceReference));
+      .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.MapFrom(s => s.AddMoreWorkExperienceReference))
+      .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => s.ApplicationType));
 
     CreateMap<Managers.Registry.Contract.Applications.CharacterReference, CharacterReferenceStatus>()
       .ForCtorParam(nameof(CharacterReferenceStatus.FirstName),
@@ -138,7 +139,8 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.TotalNumberofHoursAnticipated, opts => opts.MapFrom(s => s.Hours))
       .ForMember(d => d.TotalNumberofHoursApproved, opts => opts.MapFrom(s => s.TotalNumberofHoursApproved))
       .ForMember(d => d.TotalNumberofHoursObserved, opts => opts.MapFrom(s => s.TotalNumberofHoursObserved))
-      .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference));
+      .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference))
+      .ForMember(d => d.Type, opts => opts.MapFrom(s => s.Type));
 
     CreateMap<Managers.Registry.Contract.Applications.Transcript, TranscriptStatus>()
       .ForCtorParam(nameof(TranscriptStatus.Id),

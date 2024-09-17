@@ -130,6 +130,14 @@ internal sealed partial class ApplicationRepository
     ecerWorkExperienceReference.ecer_WorkExperienceRefId = Guid.NewGuid();
     ecerWorkExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.ApplicationSubmitted;
     ecerWorkExperienceReference.ecer_IsAdditional = true;
+    if (existingWorkExperiences.Count > 0)
+    {
+      var firstExistingWorkExp = existingWorkExperiences.FirstOrDefault();
+      if (firstExistingWorkExp != null)
+      {
+        ecerWorkExperienceReference.ecer_Type = firstExistingWorkExp.ecer_Type; // setting ecer_type of new work experience reference to be same as existing ones
+      }
+    }
     context.AddObject(ecerWorkExperienceReference);
     context.AddLink(application, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer, ecerWorkExperienceReference);
     context.SaveChanges();

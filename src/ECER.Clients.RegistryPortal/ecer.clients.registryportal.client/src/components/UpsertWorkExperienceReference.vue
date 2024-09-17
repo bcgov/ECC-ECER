@@ -15,9 +15,15 @@
 
       <p>Make sure you choose a person that:</p>
       <ul class="ml-10">
-        <li>Can speak to your knowledge, skill, ability and competencies as an ECE</li>
-        <li>Has directly supervised (observed) the hours they attest to</li>
-        <li>Has held a valid Canadian ECE certification/registration during the hours they supervised or observed you</li>
+        <div v-if="applicationType === 'Renewal'">
+          <li>Able to confirm you completed work experience hours</li>
+          <li>A co-worker, supervisor, or parent/guardian of a child you cared for</li>
+        </div>
+        <div v-if="applicationType === 'New'">
+          <li>Can speak to your knowledge, skill, ability and competencies as an ECE</li>
+          <li>Has directly supervised (observed) the hours they attest to</li>
+          <li>Has held a valid Canadian ECE certification/registration during the hours they supervised or observed you</li>
+        </div>
       </ul>
       <p class="mb-6">
         The person
@@ -135,6 +141,11 @@ export default defineComponent({
     }
 
     return { items, isDuplicateReference: false };
+  },
+  computed: {
+    applicationType() {
+      return this.applicationStatus?.applicationType!;
+    },
   },
 
   methods: {

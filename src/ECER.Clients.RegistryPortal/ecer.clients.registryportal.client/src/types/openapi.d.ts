@@ -425,6 +425,7 @@ declare namespace Components {
       characterReferencesStatus?: CharacterReferenceStatus[] | null;
       addMoreCharacterReference?: boolean | null;
       addMoreWorkExperienceReference?: boolean | null;
+      applicationType?: ApplicationTypes;
     }
     export interface Transcript {
       id?: string | null;
@@ -550,6 +551,7 @@ declare namespace Components {
       totalNumberofHoursApproved?: number | null; // int32
       totalNumberofHoursObserved?: number | null; // int32
       willProvideReference?: boolean | null;
+      type?: WorkExperienceTypes;
     }
     export interface WorkExperienceReferenceSubmissionRequest {
       token?: string | null;
