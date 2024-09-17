@@ -346,7 +346,6 @@ public record Transcript()
   [Required]
   public string? ProgramName { get; set; }
   public string? CampusLocation { get; set; }
-  [Required]
   public string StudentFirstName { get; set; } = string.Empty;
   [Required]
   public string StudentLastName { get; set; } = string.Empty;
