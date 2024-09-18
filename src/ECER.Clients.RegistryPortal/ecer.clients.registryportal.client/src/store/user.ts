@@ -42,10 +42,10 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     setUserInfo(userInfo: Components.Schemas.UserInfo | null): void {
-      this.userInfo = userInfo;
+      this.$patch({ userInfo: userInfo });
     },
     setUserProfile(userProfile: Components.Schemas.UserProfile | null): void {
-      this.userProfile = userProfile;
+      this.$patch({ userProfile: userProfile });
     },
   },
 });
