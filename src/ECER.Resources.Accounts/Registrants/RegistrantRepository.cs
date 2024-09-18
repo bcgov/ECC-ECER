@@ -37,18 +37,23 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
   {
     await Task.CompletedTask;
 
-    var qry = from contact in context.ContactSet
-              join authentication in context.ecer_AuthenticationSet on contact.ContactId equals authentication.ecer_Customerid.Id
-              select new { contact, authentication };
+    var qry = context.ContactSet;
 
-    if (query.ByIdentity != null) qry = qry.Where(r => r.authentication.ecer_IdentityProvider == query.ByIdentity.IdentityProvider && r.authentication.ecer_ExternalID == query.ByIdentity.UserId);
-    if (query.ByUserId != null) qry = qry.Where(r => r.contact.ContactId.Equals(Guid.Parse(query.ByUserId)));
+    if (query.ByIdentity != null)
+    {
+      qry = from contact in context.ContactSet
+            join authentication in context.ecer_AuthenticationSet on contact.ContactId equals authentication.ecer_Customerid.Id
+            where authentication.ecer_IdentityProvider == query.ByIdentity.IdentityProvider && authentication.ecer_ExternalID == query.ByIdentity.UserId
+            select contact;
+    }
 
-    if (query.ByLastName != null) qry = qry.Where(r => r.contact.LastName.Equals(query.ByLastName));
-    if (query.ByRegistrationNumber != null) qry = qry.Where(r => r.contact.ecer_TempClientID.Equals(query.ByRegistrationNumber));
-    if (query.ByDateOfBirth != null) qry = qry.Where(r => r.contact.BirthDate == query.ByDateOfBirth.Value.ToDateTime(TimeOnly.MinValue).Date);
+    if (query.ByUserId != null) qry = qry.Where(r => r.ContactId.Equals(Guid.Parse(query.ByUserId)));
 
-    var contacts = qry.Select(r => r.contact).ToList();
+    if (query.ByLastName != null) qry = qry.Where(r => r.LastName.Equals(query.ByLastName));
+    if (query.ByRegistrationNumber != null) qry = qry.Where(r => r.ecer_ClientID.Equals(query.ByRegistrationNumber));
+    if (query.ByDateOfBirth != null) qry = qry.Where(r => r.BirthDate == query.ByDateOfBirth.Value.ToDateTime(TimeOnly.MinValue).Date);
+
+    var contacts = qry.ToList();
     foreach (var contact in contacts)
     {
       context.LoadProperty(contact, nameof(Contact.ecer_contact_ecer_authentication_455));
