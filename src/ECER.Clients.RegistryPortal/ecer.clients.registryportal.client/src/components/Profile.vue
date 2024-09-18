@@ -62,8 +62,8 @@
         <v-col class="mt-6">
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Previous names</p>
-            <div v-if="userStore.verifiedPreviousNames.length > 0">
-              <p v-for="(prev, index) in userStore.verifiedPreviousNames" :key="index">
+            <div v-if="verifiedPreviousNamesFiltered.length > 0">
+              <p v-for="(prev, index) in verifiedPreviousNamesFiltered" :key="index">
                 {{ prev.middleName ? `${prev.firstName} ${prev.middleName} ${prev.lastName}` : `${prev.firstName} ${prev.lastName}` }}
               </p>
             </div>
@@ -169,10 +169,10 @@ export default defineComponent({
   setup: async () => {
     const userProfile = await getProfile();
     const userStore = useUserStore();
-
+    const verifiedPreviousNamesFiltered = userStore.verifiedPreviousNames.filter((name) => name.source !== "NameLog");
     userStore.setUserProfile(userProfile);
 
-    return { userProfile, userStore };
+    return { userProfile, userStore, verifiedPreviousNamesFiltered };
   },
   data: () => ({
     items: [
