@@ -70,6 +70,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
         .ForMember(d => d.ecer_previousname_Contactid, opts => opts.Ignore())
         .ForMember(d => d.BirthDate, opts => opts.MapFrom(s => s.DateOfBirth == null ? (DateTime?)null : s.DateOfBirth.Value.ToDateTime(TimeOnly.MinValue)))
         .ForMember(d => d.Telephone1, opts => opts.MapFrom(s => s.Phone))
+        .ForMember(d => d.ecer_IsVerified, opts => opts.MapFrom(s => s.IsVerified))
         .ForMember(d => d.ecer_TempClientID, opts => opts.MapFrom(s => s.RegistrationNumber))
         .ForMember(d => d.ecer_IsBCECE, opts => opts.MapFrom(s => !string.IsNullOrEmpty(s.RegistrationNumber)))
         .ForMember(d => d.ecer_PreferredName, opts => opts.MapFrom(s => s.PreferredName))

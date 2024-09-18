@@ -152,7 +152,7 @@ export default defineComponent({
 
       if (valid) {
         const registrationNumber = this.eceCertificateStatus ? this.eceRegistrationNumber : "";
-        const userCreated: boolean = await postUserInfo({ ...this.oidcUserInfo, phone: this.phoneNumber, registrationNumber: registrationNumber });
+        const userCreated: boolean = await postUserInfo({ ...this.oidcUserInfo, email:this.email, phone: this.phoneNumber, registrationNumber: registrationNumber });
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {
           this.userStore.setUserInfo({
