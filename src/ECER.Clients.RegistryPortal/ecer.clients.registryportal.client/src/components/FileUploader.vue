@@ -6,8 +6,8 @@
         Attachments
       </p>
       <p>You can only upload PDF files up to 10MB.</p>
-      <v-btn prepend-icon="mdi-plus" variant="text" color="primary" class="mt-3" @click="triggerFileInput">Add file</v-btn>
-      <v-file-input ref="fileInput" style="display: none" multiple accept="application/pdf" @change="handleFileUpload"></v-file-input>
+      <v-btn v-if="showAddFileButton" prepend-icon="mdi-plus" variant="text" color="primary" class="mt-3" @click="triggerFileInput">Add file</v-btn>
+      <v-file-input ref="fileInput" style="display: none" :multiple="allowMultipleFiles" accept="application/pdf" @change="handleFileUpload"></v-file-input>
       <Alert v-model="showErrorBanner" class="mt-10" type="error">
         <p class="small">{{ errorBannerMessage }}</p>
       </Alert>
@@ -66,6 +66,16 @@ export default defineComponent({
       type: Array as PropType<any[]>,
       required: false,
       default: () => [],
+    },
+    allowMultipleFiles: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    showAddFileButton: {
+      type: Boolean,
+      required: false,
+      default: true,
     },
   },
   emits: ["update:files", "delete:file"],
