@@ -58,7 +58,7 @@
     </v-row>
 
     <!-- Options -->
-    <v-row v-if="certificationStore.hasCertifications && !applicationStore.hasDraftApplication" justify="center" class="mt-6">
+    <v-row v-if="showOptions" justify="center" class="mt-6">
       <v-col>
         <v-row>
           <v-col cols="12">
@@ -188,7 +188,7 @@ export default defineComponent({
   }),
   computed: {
     showApplicationCard(): boolean {
-      if (this.certificationStore.hasCertifications && !this.applicationStore.hasDraftApplication) {
+      if (this.certificationStore.hasCertifications && this.applicationStore.applicationStatus === undefined) {
         return false;
       }
 
@@ -202,6 +202,10 @@ export default defineComponent({
         this.applicationStore.applicationStatus === "Pending" ||
         this.applicationStore.applicationStatus === "Escalated"
       );
+    },
+
+    showOptions(): boolean {
+      return this.certificationStore.hasCertifications && !this.showApplicationCard;
     },
   },
 
