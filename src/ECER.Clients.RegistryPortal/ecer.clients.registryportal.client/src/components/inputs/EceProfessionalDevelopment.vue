@@ -219,6 +219,8 @@
       <v-row v-if="showFileInput">
         <v-col>
           <FileUploader
+            :allow-multiple-files="false"
+            :show-add-file-button="generateUserFileArray.length === 0 && !isFileUploadInProgress"
             :user-files="generateUserFileArray"
             :rules="[Rules.atLeastOneOptionRequired('Upload a certificate or document that shows you completed the course or workshop')]"
             :delete-file-from-temp-when-removed="false"
