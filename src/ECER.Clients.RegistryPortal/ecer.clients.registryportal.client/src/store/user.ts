@@ -42,7 +42,7 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     setUserInfo(userInfo: Components.Schemas.UserInfo | null): void {
-      this.userInfo = userInfo;
+      this.userInfo = { ...userInfo, ...this.userInfo };
     },
     setUserProfile(userProfile: Components.Schemas.UserProfile | null): void {
       this.userProfile = userProfile;
