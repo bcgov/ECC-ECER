@@ -4,19 +4,19 @@
       <!-- Header Section -->
       <v-col cols="12">
         <h1>Create your My ECE Registry account</h1>
-        <p class="small mt-2">Welcome {{ oidcUserInfo.firstName!.replace(/^(.*?)(\s.*)?$/, "$1") }}.</p>
+        <p class="mt-2">Welcome {{ oidcUserInfo.firstName!.replace(/^(.*?)(\s.*)?$/, "$1") }}.</p>
       </v-col>
 
       <!-- Information from BC Services Card -->
       <v-col cols="12">
         <ECEHeader title="Information from your BC Services Card account" />
-        <p class="small mt-2">We automatically use the following information from your BC Services Card account for your MY ECE Registry account.</p>
-        <p class="small mt-5">Legal name</p>
-        <p class="small mt-2">{{ oidcUserInfo.firstName }} {{ oidcUserInfo.lastName }}</p>
-        <p class="small mt-5">Address</p>
-        <p class="small mt-2">{{ oidcUserInfo.address.street_address }}</p>
-        <p class="small">{{ oidcUserInfo.address.locality }}, {{ oidcUserInfo.address.region }} {{ oidcUserInfo.address.postal_code }}</p>
-        <p class="small">{{ oidcUserInfo.address.country }}</p>
+        <p class="mt-2">We automatically use the following information from your BC Services Card account for your My ECE Registry account.</p>
+        <p class="mt-5">Legal name</p>
+        <p class="mt-2">{{ oidcUserInfo.firstName }} {{ oidcUserInfo.lastName }}</p>
+        <p class="mt-5">Address</p>
+        <p class="mt-2">{{ oidcUserInfo.address.street_address }}</p>
+        <p>{{ oidcUserInfo.address.locality }}, {{ oidcUserInfo.address.region }} {{ oidcUserInfo.address.postal_code }}</p>
+        <p>{{ oidcUserInfo.address.country }}</p>
       </v-col>
 
       <!-- Form Section -->
@@ -24,8 +24,8 @@
         <v-form ref="form" validate-on="input">
           <v-row class="ga-2">
             <v-col cols="12">
-              <ECEHeader title="Contact Information" />
-              <p class="small mt-2">We'll use this to contact you about your account and updates about your application or certificate.</p>
+              <ECEHeader title="Contact information" />
+              <p class="mt-2">We'll use this to contact you about your account and updates about your application or certificate.</p>
             </v-col>
             <v-col cols="12">
               <v-row>
@@ -62,10 +62,10 @@
             <!-- ECE Registration Section -->
             <v-col cols="12">
               <ECEHeader title="Your ECE registration" />
-              <p class="small mt-2">
+              <p class="mt-2">
                 To add an existing ECE certificate to your account to manage it online, you must enter the number now to link it to your account.
               </p>
-              <p class="small mt-5">Do you have, or ever had, an ECE certificate in British Columbia?</p>
+              <p class="mt-5">Do you have, or ever had, an ECE certificate in British Columbia?</p>
 
               <!-- Radio Group for ECE Certificate -->
               <v-radio-group v-model="eceCertificateStatus" :rules="[Rules.requiredRadio('Choose an option')]">
@@ -152,7 +152,12 @@ export default defineComponent({
 
       if (valid) {
         const registrationNumber = this.eceCertificateStatus ? this.eceRegistrationNumber : "";
-        const userCreated: boolean = await postUserInfo({ ...this.oidcUserInfo, phone: this.phoneNumber, registrationNumber: registrationNumber });
+        const userCreated: boolean = await postUserInfo({
+          ...this.oidcUserInfo,
+          email: this.email,
+          phone: this.phoneNumber,
+          registrationNumber: registrationNumber,
+        });
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {
           this.userStore.setUserInfo({
