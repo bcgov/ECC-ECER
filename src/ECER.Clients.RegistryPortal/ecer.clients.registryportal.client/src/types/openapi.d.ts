@@ -440,7 +440,7 @@ declare namespace Components {
       educationalInstitutionName: string;
       programName: string;
       campusLocation?: string | null;
-      studentFirstName: string;
+      studentFirstName?: string | null;
       studentLastName: string;
       studentMiddleName?: string | null;
       studentNumber?: string | null;
