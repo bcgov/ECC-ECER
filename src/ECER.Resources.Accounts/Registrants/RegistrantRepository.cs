@@ -13,9 +13,22 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
   {
     await Task.CompletedTask;
 
-    var contact = mapper.Map<Contact>(registrant.Profile)!;
-    contact.Id = Guid.NewGuid();
-    context.AddObject(contact);
+    var contact = context.ContactSet.SingleOrDefault(c => c.ContactId.Equals(Guid.Parse(registrant.Id)));
+
+    if (contact == null)
+    {
+      contact = mapper.Map<Contact>(registrant.Profile)!;
+      contact.Id = Guid.NewGuid();
+      context.AddObject(contact);
+    }
+    else
+    {
+      context.Detach(contact);
+      contact = mapper.Map<Contact>(registrant.Profile)!;
+      contact.Id = Guid.Parse(registrant.Id);
+      context.Attach(contact);
+      context.UpdateObject(contact);
+    }
 
     foreach (var identity in registrant.Identities)
     {

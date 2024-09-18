@@ -90,9 +90,8 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
         matchedRegistrant.Profile.LastName = request.Profile.LastName;
         matchedRegistrant.Profile.MiddleName = ECER.Infrastructure.Common.Utility.GetMiddleName(request.Profile.FirstName!, request.Profile.GivenName!);
         matchedRegistrant.Profile.Phone = request.Profile.Phone;
-
-        // Update existing registrant
-        await registrantRepository.Save(new Resources.Accounts.Registrants.Registrant { Id = matchedRegistrant.Id, Profile = matchedRegistrant.Profile }, cancellationToken);
+        matchedRegistrant.Identities = registrant.Identities;
+        await registrantRepository.Create(matchedRegistrant, cancellationToken);
         return matchedRegistrant.Id;
       }
       else
