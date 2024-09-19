@@ -25,7 +25,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="courseName"
             variant="outlined"
@@ -36,7 +36,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="numberOfHours"
             variant="outlined"
@@ -47,7 +47,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="organizationName"
             variant="outlined"
@@ -58,7 +58,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             variant="outlined"
             label="Website with description of course or workshop (optional)"
@@ -73,7 +73,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="2">
+        <v-col sm="6" md="4" lg="2">
           <v-text-field
             ref="startDateInput"
             v-model="startDate"
@@ -107,7 +107,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="2">
+        <v-col sm="6" md="4" lg="2">
           <v-text-field
             ref="endDateInput"
             v-model="endDate"
@@ -180,7 +180,7 @@
         </v-col>
       </v-row>
       <v-row v-if="showInstructorNameInput">
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="instructorName"
             variant="outlined"
@@ -191,7 +191,7 @@
         </v-col>
       </v-row>
       <v-row v-if="showPhoneNumberInput">
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="organizationContactInformation"
             label="Phone number"
@@ -207,7 +207,7 @@
         </v-col>
       </v-row>
       <v-row v-if="showEmailInput">
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="organizationEmailAddress"
             variant="outlined"
