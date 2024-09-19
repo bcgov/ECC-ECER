@@ -261,7 +261,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         .RuleFor(f => f.ProfessionalDevelopments, f => f.Make(f.Random.Number(1, 3), () => CreateProfessionalDevelopment()))
         .Generate();
 
-    application.Id = this.Fixture.draftTestApplicationId;
+    application.Id = this.Fixture.draftTestApplicationId4;
     application.ApplicationType = ApplicationTypes.Renewal;
     return application;
   }
@@ -418,6 +418,91 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.Post.Url($"/api/applications/{applicationId}/workExperienceReference/{referenceId}/resendInvite");
       _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
     });
+  }
+
+  [Fact]
+  public async Task AddProfessionalDevelopmentAndFiles_ToSubmittedApplication()
+  {
+    // Create Renewal Draft Application
+    var application = Create400HoursTypeRenewalDraftApplication();
+
+    // Save Renewal Draft Application
+    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var draftApplicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+
+    // Submit Renewal Application
+    var applicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Post.Json(new ApplicationSubmissionRequest(draftApplicationId)).ToUrl($"/api/applications");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationId = (await applicationResponse.ReadAsJsonAsync<SubmitApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+
+    // Add test File
+    var fileLength = 1041;
+    var testFile = await faker.GenerateTestFile(fileLength);
+    var testFileId = Guid.NewGuid().ToString();
+    var testFolder = "tempfolder";
+    var testTags = "tag1=1,tag2=2";
+    var testClassification = "test-classification";
+    using var content = new StreamContent(testFile.Content);
+    content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
+
+    using var formData = new MultipartFormDataContent
+        {
+          { content, "file", testFile.FileName }
+        };
+
+    var fileResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithRequestHeader("file-classification", testClassification);
+      _.WithRequestHeader("file-tag", testTags);
+      _.WithRequestHeader("file-folder", testFolder);
+      _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var uploadedFileResponse = (await fileResponse.ReadAsJsonAsync<FileResponse>()).ShouldNotBeNull();
+
+    // Create Professional development
+    var professionalDevelopment = CreateProfessionalDevelopment();
+    professionalDevelopment.NewFiles = [uploadedFileResponse.fileId];
+
+    // Add professional development to submitted Renewal Application
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Post.Json(professionalDevelopment).ToUrl($"/api/applications/{applicationId}/professionaldevelopment/add");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var addedProfessionalDevelopment = (await response.ReadAsJsonAsync<AddProfessionalDevelopmentResponse>()).ShouldNotBeNull();
+    addedProfessionalDevelopment.ProfessionalDevelopmentId.ShouldNotBeEmpty();
+
+    var applicationByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url($"/api/applications/{applicationId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<Application[]>();
+    applicationsById.ShouldHaveSingleItem();
+    var applicationFromServer = applicationsById[0];
+    applicationFromServer.ProfessionalDevelopments.ShouldNotBeEmpty();
+    var professionalDev = applicationFromServer.ProfessionalDevelopments.FirstOrDefault(pd => pd.Id == addedProfessionalDevelopment.ProfessionalDevelopmentId);
+    professionalDev.ShouldNotBeNull();
+    professionalDev.Files.ShouldHaveSingleItem();
+    professionalDev.Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
   }
 
   private Transcript CreateTranscript()

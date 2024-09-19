@@ -362,6 +362,15 @@ public class UpdateCharacterReferenceResult
   public static UpdateCharacterReferenceResult Failure(string message) => new UpdateCharacterReferenceResult { IsSuccess = false, ErrorMessage = message };
 }
 
+public record AddProfessionalDevelopmentCommand(ProfessionalDevelopment professionalDevelopment, string applicationId, string userId) : IRequest<AddProfessionalDevelopmentResult>;
+
+public class AddProfessionalDevelopmentResult
+{
+  public string? ProfessionalDevelopmentId { get; set; }
+  public bool IsSuccess { get; set; }
+  public string? ErrorMessage { get; set; }
+}
+
 public enum ReferenceKnownTime
 {
   From1to2years,
