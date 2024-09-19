@@ -112,7 +112,7 @@ internal class Program
       builder.Services.ConfigureDistributedCache(builder.Configuration.GetSection("DistributedCache").Get<DistributedCacheSettings>());
       builder.Services.ConfigureDataProtection(builder.Configuration.GetSection("DataProtection").Get<DataProtectionSettings>());
       builder.Services.AddHealthChecks();
-      builder.Services.AddResponseCompression(opts => opts.EnableForHttps = true);
+      builder.Services.AddResponseCompression(opts => opts.EnableForHttps = true).AddRequestDecompression();
       builder.Services.AddResponseCaching();
       builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
       builder.Services.ConfigureHealthChecks();
@@ -125,6 +125,7 @@ internal class Program
       app.UseHealthChecks();
       app.UseObservabilityMiddleware();
       app.UseDisableHttpVerbsMiddleware(app.Configuration.GetValue("DisabledHttpVerbs", string.Empty));
+      app.UseRequestDecompression();
       app.UseResponseCompression();
       app.UseCsp();
       app.UseSecurityHeaders();
