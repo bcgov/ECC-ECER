@@ -142,7 +142,7 @@
         <p>What name is shown on your transcript?</p>
         <br />
         <v-radio-group v-model="previousNameRadio" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="previousNameRadioChanged">
-          <v-radio v-for="(step, index) in previousNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
+          <v-radio v-for="(step, index) in ApplicantNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
         </v-radio-group>
         <div v-if="previousNameRadio === 'other'">
           <v-row>
@@ -306,6 +306,15 @@ export default defineComponent({
       this.applicationStore.isDraftCertificateTypeIte && numOfEducationRequired++;
 
       return numOfEducationRequired;
+    },
+    ApplicantNameRadioOptions(): RadioOptions[] {
+      let legalNameRadioOptions: RadioOptions[] = [
+        {
+          label: this.userStore.legalName,
+          value: { firstName: this.userStore.firstName, middleName: this.userStore.middleName, lastName: this.userStore.lastName },
+        },
+      ];
+      return [...legalNameRadioOptions, ...this.previousNameRadioOptions];
     },
     previousNameRadioOptions(): RadioOptions[] {
       let radioOptions: RadioOptions[] = this.userStore.verifiedPreviousNames.map((previousName) => {
