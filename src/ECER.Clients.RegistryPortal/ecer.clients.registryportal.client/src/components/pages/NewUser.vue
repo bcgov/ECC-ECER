@@ -115,9 +115,10 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import type { VForm } from "vuetify/components";
-import { useLoadingStore } from "@/store/loading";
+
 import { postUserInfo } from "@/api/user";
 import ECEHeader from "@/components/ECEHeader.vue";
+import { useLoadingStore } from "@/store/loading";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { isNumber } from "@/utils/formInput";

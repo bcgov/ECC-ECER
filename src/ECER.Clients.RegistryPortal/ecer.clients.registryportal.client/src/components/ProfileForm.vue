@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+
 import { getProfile, putProfile } from "@/api/profile";
 import EceForm from "@/components/Form.vue";
 import profileInformationForm from "@/config/profile-information-form";

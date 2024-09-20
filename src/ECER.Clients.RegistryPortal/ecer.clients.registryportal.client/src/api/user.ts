@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { getClient } from "@/api/client";
 import type { Components } from "@/types/openapi";
-import ApiResultHandler, { type ApiResponse } from "@/utils/apiResultHandler";
+import ApiResultHandler from "@/utils/apiResultHandler";
 const apiResultHandler = new ApiResultHandler();
 
 const getUserInfo = async (): Promise<Components.Schemas.UserInfo | null> => {
