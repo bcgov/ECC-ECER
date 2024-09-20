@@ -104,7 +104,7 @@
       <!-- Buttons -->
       <v-col cols="12">
         <div>
-          <v-btn rounded="lg" color="primary" class="mr-2" @click="submit">Save and continue</v-btn>
+          <v-btn rounded="lg" :loading="loadingStore.isLoading('userinfo_post')" color="primary" class="mr-2" @click="submit">Save and continue</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="logout">Cancel</v-btn>
         </div>
       </v-col>
@@ -115,7 +115,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import type { VForm } from "vuetify/components";
-
+import { useLoadingStore } from "@/store/loading";
 import { postUserInfo } from "@/api/user";
 import ECEHeader from "@/components/ECEHeader.vue";
 import { useOidcStore } from "@/store/oidc";
@@ -132,11 +132,11 @@ export default defineComponent({
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
     const oidcUserInfo = await oidcStore.oidcUserInfo();
-
+    const loadingStore = useLoadingStore();
     const phoneNumber = ref(oidcUserInfo.phone);
     const email = ref(oidcUserInfo.email);
 
-    return { userStore, oidcStore, phoneNumber, email, oidcUserInfo };
+    return { userStore, oidcStore, phoneNumber, email, loadingStore, oidcUserInfo };
   },
 
   data: () => ({
