@@ -67,9 +67,6 @@ internal class Program
       builder.Services.Configure<PaginationSettings>(builder.Configuration.GetSection("Pagination"));
       builder.Services.Configure<UploaderSettings>(builder.Configuration.GetSection("Uploader"));
       builder.Services.Configure<RecaptchaSettings>(builder.Configuration.GetSection("Recaptcha"));
-      builder.Services.AddProblemDetails();
-
-      builder.Services.AddCorsPolicy(builder.Configuration.GetSection("cors").Get<CorsSettings>());
 
       builder.Services
         .AddTransient<AuthenticationService>()
@@ -109,14 +106,17 @@ internal class Program
             .RequireAuthenticatedUser();
         });
 
-      builder.Services.ConfigureDistributedCache(builder.Configuration.GetSection("DistributedCache").Get<DistributedCacheSettings>());
-      builder.Services.ConfigureDataProtection(builder.Configuration.GetSection("DataProtection").Get<DataProtectionSettings>());
-      builder.Services.AddHealthChecks();
-      builder.Services.AddResponseCompression(opts => opts.EnableForHttps = true).AddRequestDecompression();
-      builder.Services.AddResponseCaching();
-      builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
-      builder.Services.ConfigureHealthChecks();
-      builder.Services.AddHttpClient();
+      builder.Services
+        .ConfigureDistributedCache(builder.Configuration.GetSection("DistributedCache").Get<DistributedCacheSettings>())
+        .ConfigureDataProtection(builder.Configuration.GetSection("DataProtection").Get<DataProtectionSettings>())
+        .AddResponseCompression(opts => opts.EnableForHttps = true)
+        .AddRequestDecompression()
+        .AddResponseCaching()
+        .Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"))
+        .ConfigureHealthChecks()
+        .AddHttpClient()
+        .AddProblemDetails()
+        .AddCorsPolicy(builder.Configuration.GetSection("cors").Get<CorsSettings>());
 
       builder.ConfigureComponents(logger);
 
@@ -132,6 +132,7 @@ internal class Program
       app.UseStaticFiles();
       app.MapFallbackToFile("index.html");
       app.UseCors();
+      app.UseOutputCache();
       app.UseResponseCaching();
       app.UseAuthentication();
       app.UseAuthorization();

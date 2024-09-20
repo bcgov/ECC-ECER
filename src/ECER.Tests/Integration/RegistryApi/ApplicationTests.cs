@@ -420,7 +420,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     });
   }
 
-  private Transcript CreateTranscript()
+  private static Transcript CreateTranscript()
   {
     var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };
 

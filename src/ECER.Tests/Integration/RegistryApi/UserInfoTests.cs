@@ -1,11 +1,9 @@
 ﻿using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Users;
-using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Security;
 using Shouldly;
 using System.Net;
-using System.Reflection.Metadata;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.RegistryApi;
@@ -86,7 +84,7 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     var userIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
     var newUser = CreateNewUser();
 
-    var result = await Host.Scenario(_ =>
+    await Host.Scenario(_ =>
     {
       _.WithNewUser(userIdentity);
       _.Post.Json(newUser).ToUrl("/api/userinfo");
@@ -150,13 +148,20 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
   [Fact]
   public async Task Handle_ShouldCreateNewRegistrant_WhenNoMatchingContact()
   {
-    var userIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
-    var newUser = CreateNewUser();
+    var userIdentity = Fixture.AuthenticatedBcscUserIdentity;
 
+    var existingUserProfile = await (await Host.Scenario(_ =>
+    {
+      _.WithNewUser(userIdentity);
+      _.Get.Url("/api/userinfo");
+      _.StatusCodeShouldBeOk();
+    })).ReadAsJsonAsync<UserInfo>().ShouldNotBeNull();
+
+    var userProfile = existingUserProfile with { LastName = Fixture.TestRunId };
     await Host.Scenario(_ =>
     {
       _.WithNewUser(userIdentity);
-      _.Post.Json(newUser).ToUrl("/api/userinfo");
+      _.Post.Json(userProfile).ToUrl("/api/userinfo");
       _.StatusCodeShouldBeOk();
     });
 
@@ -168,10 +173,10 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     });
 
     var registeredUser = (await response.ReadAsJsonAsync<UserInfo>()).ShouldNotBeNull();
-    registeredUser.Email.ShouldBe(newUser.Email);
+    registeredUser.LastName.ShouldBe(userProfile.LastName);
   }
 
-  private UserInfo CreateNewUser()
+  private static UserInfo CreateNewUser()
   {
     var userProfile = new Faker<UserInfo>("en_CA")
     .CustomInstantiator(f => new UserInfo(

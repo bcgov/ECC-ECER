@@ -23,13 +23,17 @@ public class ConfigurationEndpoints : IRegisterEndpoints
     {
       var results = await messageBus.Send(new ProvincesQuery(), ct);
       return TypedResults.Ok(mapper.Map<IEnumerable<Province>>(results.Items));
-    }).WithOpenApi("Handles province queries", string.Empty, "province_get");
+    })
+      .WithOpenApi("Handles province queries", string.Empty, "province_get")
+      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
     endpointRouteBuilder.MapGet("/api/recaptchaSiteKey", async (IOptions<RecaptchaSettings> recaptchaSettings, CancellationToken ct) =>
     {
       await Task.CompletedTask;
       return TypedResults.Ok(recaptchaSettings.Value.SiteKey);
-    }).WithOpenApi("Obtains site key for recaptcha", string.Empty, "recaptcha_site_key_get");
+    })
+      .WithOpenApi("Obtains site key for recaptcha", string.Empty, "recaptcha_site_key_get")
+      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
   }
 }
 

@@ -6,7 +6,7 @@ namespace ECER.Utilities.Hosting;
 
 public static class DataProtectionConfigurationExtensions
 {
-  public static void ConfigureDataProtection(this IServiceCollection services, DataProtectionSettings? dataProtectionSettings)
+  public static IServiceCollection ConfigureDataProtection(this IServiceCollection services, DataProtectionSettings? dataProtectionSettings)
   {
     var dpbuilder = services.AddDataProtection();
 
@@ -29,6 +29,8 @@ public static class DataProtectionConfigurationExtensions
     {
       throw new InvalidOperationException("Data protection is not configured correctly");
     }
+
+    return services;
   }
 }
 

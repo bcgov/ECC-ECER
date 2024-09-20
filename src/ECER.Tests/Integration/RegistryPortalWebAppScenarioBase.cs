@@ -422,7 +422,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return portalInvitation;
   }
 
-  private void CompletePortalInvitation_WorkExperienceReference(EcerContext context, string name)
+  private static void CompletePortalInvitation_WorkExperienceReference(EcerContext context, string name)
   {
     var portalInvitations = context.ecer_PortalInvitationSet
       .Where(p => p.ecer_ApplicantId != null &&
