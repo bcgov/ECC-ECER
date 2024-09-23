@@ -44,14 +44,28 @@
       </v-btn>
     </template>
     <template #actions>
-      <v-container>
-        <v-btn v-if="showSaveButtons" :loading="loadingStore.isLoading('application_get')" rounded="lg" color="primary" @click="handleSaveAndContinue">
-          Save and continue
-        </v-btn>
-        <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
-          Submit Application
-        </v-btn>
-      </v-container>
+      <v-window class="my-n10">
+        <v-stepper-window>
+          <v-container>
+            <v-row>
+              <v-col>
+                <v-btn
+                  v-if="showSaveButtons"
+                  :loading="loadingStore.isLoading('draftapplication_put')"
+                  rounded="lg"
+                  color="primary"
+                  @click="handleSaveAndContinue"
+                >
+                  Save and continue
+                </v-btn>
+                <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
+                  Submit Application
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-stepper-window>
+      </v-window>
     </template>
   </Wizard>
 </template>
