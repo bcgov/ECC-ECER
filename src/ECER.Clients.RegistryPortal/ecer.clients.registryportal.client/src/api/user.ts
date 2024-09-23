@@ -2,6 +2,8 @@ import axios from "axios";
 
 import { getClient } from "@/api/client";
 import type { Components } from "@/types/openapi";
+import ApiResultHandler from "@/utils/apiResultHandler";
+const apiResultHandler = new ApiResultHandler();
 
 const getUserInfo = async (): Promise<Components.Schemas.UserInfo | null> => {
   try {
@@ -22,14 +24,9 @@ const getUserInfo = async (): Promise<Components.Schemas.UserInfo | null> => {
 };
 
 const postUserInfo = async (user: Components.Schemas.UserInfo): Promise<boolean> => {
-  try {
-    const client = await getClient();
-    const response = await client.userinfo_post({}, user);
-    return response.status === 200;
-  } catch (error) {
-    console.log("Error creating user info:", error);
-    return false;
-  }
+  const client = await getClient();
+  const response = apiResultHandler.execute({ request: client.userinfo_post({}, user), key: "userinfo_post" });
+  return response != null;
 };
 
 export { getUserInfo, postUserInfo };

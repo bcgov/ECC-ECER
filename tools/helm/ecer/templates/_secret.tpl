@@ -20,7 +20,7 @@ metadata:
   labels: {{ .labels | nindent 4 }}
 data:
   {{- range $src, $dst := .Values.secretFiles }}
-  {{ base $dst }}: |- {{ ($.Files.Get $src) | b64enc | quote }}
+  {{ base $dst }}: {{ ($.Files.Get $src) | b64enc | quote }}
   {{- end -}}
 {{- end -}}
 {{- end -}}

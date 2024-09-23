@@ -243,6 +243,7 @@ public enum ReferenceKnownTime
 }
 
 // custom required annotations based on WorkExperienceTypes
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
 public sealed class RequiredWhenWorkExperienceTypeAttribute : ValidationAttribute
 {
   private readonly WorkExperienceTypes _workExperienceType;

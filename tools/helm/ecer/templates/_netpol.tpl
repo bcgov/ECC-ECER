@@ -22,7 +22,7 @@ spec:
   ingress:
     - from:
       - podSelector:
-          matchLabels:            
+          matchLabels:
       ports:
         - protocol: {{ .Values.protocol | upper }}
           port: {{ .Values.port }}

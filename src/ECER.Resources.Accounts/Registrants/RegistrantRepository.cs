@@ -13,7 +13,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
   {
     await Task.CompletedTask;
 
-    var contact = context.ContactSet.SingleOrDefault(c => c.ContactId.Equals(Guid.Parse(registrant.Id)));
+    var contact = string.IsNullOrEmpty(registrant.Id)? null : context.ContactSet.SingleOrDefault(c => c.ContactId.Equals(Guid.Parse(registrant.Id)));
 
     if (contact == null)
     {
