@@ -101,8 +101,8 @@
       <v-row class="my-6">
         <v-col sm="12" md="10" lg="8" xl="6">
           <Callout v-if="count >= 6 && totalHours < hoursRequired" title="Max limit reached" type="warning" class="mt-10">
-            You reached the limit of 6 work experience references but do not meet the 500 hour requirement. You can still proceed to submit your application.
-            The Registry will contact you to provide additional references for the remaining hours.
+            You reached the limit of 6 work experience references but do not meet the {{ hoursRequired }} hour requirement. You can still proceed to submit your
+            application. The Registry will contact you to provide additional references for the remaining hours.
           </Callout>
           <p v-else-if="totalHours >= hoursRequired">
             No additional work references may be added. You provided the required hours. After you submit your application, we’ll email the work references to
