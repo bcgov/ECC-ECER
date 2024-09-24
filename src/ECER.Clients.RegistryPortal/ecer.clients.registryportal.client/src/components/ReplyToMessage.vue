@@ -22,10 +22,18 @@
               ></v-textarea>
             </v-col>
           </v-row>
-          <FileUploader @update:files="handleFileUpdate" />
+          <FileUploader :max-number-of-files="maxNumberOfFiles" @update:files="handleFileUpdate" />
           <v-row class="mt-10">
             <v-col>
-              <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')" @click="handleReplyToMessage">Send</v-btn>
+              <v-btn
+                :disabled="attachments.length > maxNumberOfFiles"
+                size="large"
+                color="primary"
+                :loading="loadingStore.isLoading('message_post')"
+                @click="handleReplyToMessage"
+              >
+                Send
+              </v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -83,6 +91,7 @@ export default defineComponent({
     const messageId = route.params.messageId.toString();
     const messageThread = (await getChildMessages({ parentId: messageId })).data?.communications;
     let messageThreadSubject = "";
+    const maxNumberOfFiles = 5;
     if (messageThread.length > 0) {
       messageThreadSubject = messageThread[0].subject;
     }
@@ -91,6 +100,7 @@ export default defineComponent({
       messageStore,
       loadingStore,
       alertStore,
+      maxNumberOfFiles,
       router,
       messageId,
       messageThreadSubject,
@@ -111,7 +121,7 @@ export default defineComponent({
     async handleReplyToMessage() {
       const { valid } = await (this.$refs.replyForm as VForm).validate();
       if (this.isFileUploadInProgress) {
-        this.alertStore.setFailureAlert("Uploading files. You need to wait until files are uploaded to send this message.");
+        this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
       } else if (!this.areAttachedFilesValid) {
         this.alertStore.setFailureAlert("You must upload valid files.");
       } else if (valid) {
