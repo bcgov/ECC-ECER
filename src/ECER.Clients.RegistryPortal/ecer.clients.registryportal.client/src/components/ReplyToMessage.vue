@@ -136,6 +136,7 @@ export default defineComponent({
           this.router.push("/messages");
         }
       } else {
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
         this.scrollToUploader();
       }
     },
