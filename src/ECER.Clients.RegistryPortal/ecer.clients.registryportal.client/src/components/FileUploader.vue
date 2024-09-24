@@ -231,7 +231,7 @@ export default defineComponent({
         }
       } catch (error) {
         this.removeFile(selectedFile);
-        this.alertStore.setFailureAlert("Problem with your internet connection. Check your connection and try again.");
+        this.alertStore.setFailureAlert("Problem saving files. Check your connection and try again.");
         console.log(error);
       }
     },

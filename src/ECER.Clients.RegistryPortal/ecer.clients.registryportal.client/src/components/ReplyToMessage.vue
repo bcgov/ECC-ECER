@@ -22,18 +22,15 @@
               ></v-textarea>
             </v-col>
           </v-row>
-          <FileUploader :max-number-of-files="maxNumberOfFiles" @update:files="handleFileUpdate" />
+          <FileUploader
+            ref="FileUploader"
+            :rules="[Rules.conditionalWrapper(attachments.length > maxNumberOfFiles, '')]"
+            :max-number-of-files="maxNumberOfFiles"
+            @update:files="handleFileUpdate"
+          />
           <v-row class="mt-10">
             <v-col>
-              <v-btn
-                :disabled="attachments.length > maxNumberOfFiles"
-                size="large"
-                color="primary"
-                :loading="loadingStore.isLoading('message_post')"
-                @click="handleReplyToMessage"
-              >
-                Send
-              </v-btn>
+              <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')" @click="handleReplyToMessage">Send</v-btn>
             </v-col>
           </v-row>
         </v-form>
@@ -55,6 +52,7 @@
 </template>
 
 <script lang="ts">
+import type { ComponentPublicInstance } from "vue";
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { VForm } from "vuetify/components";
@@ -118,12 +116,16 @@ export default defineComponent({
     };
   },
   methods: {
+    scrollToUploader() {
+      const fileUploader = this.$refs.FileUploader as ComponentPublicInstance<{ $el: HTMLElement }>;
+      if (fileUploader?.$el) {
+        fileUploader.$el.scrollIntoView({ behavior: "smooth" });
+      }
+    },
     async handleReplyToMessage() {
       const { valid } = await (this.$refs.replyForm as VForm).validate();
       if (this.isFileUploadInProgress) {
         this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
-      } else if (!this.areAttachedFilesValid) {
-        this.alertStore.setFailureAlert("You must upload valid files.");
       } else if (valid) {
         const { error } = await sendMessage({ communication: { id: this.messageId, text: this.text, documents: this.attachments } });
         if (error) {
@@ -133,7 +135,11 @@ export default defineComponent({
           this.router.push("/messages");
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        if (!this.areAttachedFilesValid || this.attachments.length > this.maxNumberOfFiles) {
+          this.scrollToUploader();
+        } else {
+          this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        }
       }
     },
 
