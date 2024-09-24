@@ -139,7 +139,6 @@ export default defineComponent({
         this.scrollToUploader();
       }
     },
-
     handleFileUpdate(filesArray: any[]) {
       this.areAttachedFilesValid = true;
       this.isFileUploadInProgress = false;
