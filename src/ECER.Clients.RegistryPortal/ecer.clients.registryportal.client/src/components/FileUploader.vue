@@ -6,11 +6,11 @@
         Attachments
       </p>
       <p>You can only upload PDF files up to 10MB.</p>
-      <ECENoticeText
-        v-if="selectedFiles.length >= maxNumberOfFiles"
-        class="mt-5"
-        :text="'No more files can be added. You can only add ' + maxNumberOfFiles + ' files.'"
-      />
+      <Callout v-if="selectedFiles.length >= maxNumberOfFiles" class="mt-3" type="warning">
+        <div class="d-flex flex-column ga-3">
+          <p>No more files can be added. You can only add {{ maxNumberOfFiles }} files.</p>
+        </div>
+      </Callout>
       <v-btn
         v-if="showAddFileButton && selectedFiles.length < maxNumberOfFiles"
         prepend-icon="mdi-plus"
@@ -51,7 +51,7 @@ import { defineComponent, type PropType } from "vue";
 
 import { deleteFile, uploadFile } from "@/api/file";
 import Alert from "@/components/Alert.vue";
-import ECENoticeText from "@/components/ECENoticeText.vue";
+import Callout from "@/components/Callout.vue";
 import UploadFileItem, { type FileItem } from "@/components/UploadFileItem.vue";
 import { useAlertStore } from "@/store/alert";
 import * as Functions from "@/utils/functions";
@@ -65,7 +65,7 @@ interface FileUploaderData {
 
 export default defineComponent({
   name: "FileUploader",
-  components: { UploadFileItem, Alert, ECENoticeText },
+  components: { UploadFileItem, Alert, Callout },
   props: {
     userFiles: {
       type: Array as PropType<FileItem[]>,
