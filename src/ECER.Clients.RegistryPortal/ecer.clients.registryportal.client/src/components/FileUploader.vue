@@ -38,7 +38,7 @@
       <v-input
         :model-value="userFiles"
         :hide-details="'auto'"
-        :rules="[!fileErrors, !filesInProgress, !fileTooLarge, !allFilesTooLarge, !duplicateFileName, ...rules]"
+        :rules="[!fileErrors, !tooManyFiles, !filesInProgress, !fileTooLarge, !allFilesTooLarge, !duplicateFileName, ...rules]"
       />
     </v-col>
   </v-row>
@@ -121,6 +121,9 @@ export default defineComponent({
   computed: {
     fileErrors() {
       return this.selectedFiles.some((file) => file.fileErrors.length !== 0);
+    },
+    tooManyFiles() {
+      return this.selectedFiles.length > this.maxNumberOfFiles;
     },
     filesInProgress() {
       return this.selectedFiles.some((file) => file.progress < 101);

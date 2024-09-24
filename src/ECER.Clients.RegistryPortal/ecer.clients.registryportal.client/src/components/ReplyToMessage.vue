@@ -10,6 +10,7 @@
             <v-col>
               <div>Message</div>
               <v-textarea
+                ref="textarea"
                 v-model="text"
                 class="mt-2"
                 auto-grow
@@ -135,11 +136,7 @@ export default defineComponent({
           this.router.push("/messages");
         }
       } else {
-        if (!this.areAttachedFilesValid || this.attachments.length > this.maxNumberOfFiles) {
-          this.scrollToUploader();
-        } else {
-          this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
-        }
+        this.scrollToUploader();
       }
     },
 
