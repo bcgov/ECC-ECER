@@ -104,6 +104,13 @@ internal class Program
             .RequireClaim(ClaimTypes.Name)
             .RequireClaim(ClaimTypes.NameIdentifier)
             .RequireAuthenticatedUser();
+        })
+        .AddPolicy("RequireVerifiedUser", policy =>
+        {
+          policy
+            .AddAuthenticationSchemes("kc")
+            .RequireClaim("verified", "True")
+            .RequireAuthenticatedUser();
         });
 
       builder.Services

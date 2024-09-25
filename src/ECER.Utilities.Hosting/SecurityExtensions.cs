@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using ECER.Utilities.Security;
-using System.Net.Http;
 
 namespace ECER.Utilities.Hosting;
 
@@ -52,39 +49,6 @@ public static class SecurityExtensions
       context.Response.Headers.Append("X-Frame-Protection", "DENY");
       await next();
     });
-  }
-
-  public static RouteHandlerBuilder RequiresUserVerification(this RouteHandlerBuilder builder)
-  {
-    builder.Add(endpointBuilder =>
-    {
-      var originalDelegate = endpointBuilder.RequestDelegate;
-
-      endpointBuilder.RequestDelegate = async context =>
-      {
-        var userId = context.User.GetUserContext()?.UserId;
-        var isVerified = context.User.GetUserContext()?.IsVerified ?? false;
-
-        if (userId == null || !isVerified)
-        {
-          context.Response.StatusCode = StatusCodes.Status403Forbidden;
-          var problemDetails = new ProblemDetails
-          {
-            Title = "User is not verified",
-            Status = StatusCodes.Status403Forbidden,
-            Detail = "User must be verified to perform this action."
-          };
-          await context.Response.WriteAsJsonAsync(problemDetails);
-          return;
-        }
-        if (originalDelegate != null)
-        {
-          await originalDelegate(context);
-        }
-      };
-    });
-
-    return builder;
   }
 
   public static void UseDisableHttpVerbsMiddleware(this WebApplication webApplication, string? verbString)
