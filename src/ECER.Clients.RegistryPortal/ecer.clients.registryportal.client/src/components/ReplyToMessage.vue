@@ -23,12 +23,7 @@
               ></v-textarea>
             </v-col>
           </v-row>
-          <FileUploader
-            ref="FileUploader"
-            :rules="[Rules.conditionalWrapper(attachments.length > maxNumberOfFiles, '')]"
-            :max-number-of-files="maxNumberOfFiles"
-            @update:files="handleFileUpdate"
-          />
+          <FileUploader ref="FileUploader" :max-number-of-files="maxNumberOfFiles" @update:files="handleFileUpdate" />
           <v-row class="mt-10">
             <v-col>
               <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')" @click="handleReplyToMessage">Send</v-btn>
