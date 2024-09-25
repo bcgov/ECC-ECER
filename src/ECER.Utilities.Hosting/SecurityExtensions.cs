@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using ECER.Utilities.Security;
+using System.Net.Http;
 
 namespace ECER.Utilities.Hosting;
 
@@ -60,9 +62,8 @@ public static class SecurityExtensions
 
       endpointBuilder.RequestDelegate = async context =>
       {
-        var userId = context.User?.FindFirst("user_id")?.Value;
-        var verificationStatus = context.User?.FindFirst("verified")?.Value;
-        var isVerified = bool.TryParse(verificationStatus, out var result) && result;
+        var userId = context.User.GetUserContext()?.UserId;
+        var isVerified = context.User.GetUserContext()?.IsVerified ?? false;
 
         if (userId == null || !isVerified)
         {
