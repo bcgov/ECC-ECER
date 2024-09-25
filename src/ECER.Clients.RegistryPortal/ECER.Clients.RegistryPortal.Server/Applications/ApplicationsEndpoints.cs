@@ -507,8 +507,10 @@ public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, Applic
   public IEnumerable<TranscriptStatus> TranscriptsStatus { get; set; } = Array.Empty<TranscriptStatus>();
   public IEnumerable<WorkExperienceReferenceStatus> WorkExperienceReferencesStatus { get; set; } = Array.Empty<WorkExperienceReferenceStatus>();
   public IEnumerable<CharacterReferenceStatus> CharacterReferencesStatus { get; set; } = Array.Empty<CharacterReferenceStatus>();
+  public IEnumerable<ProfessionalDevelopmentStatus> ProfessionalDevelopmentsStatus { get; set; } = Array.Empty<ProfessionalDevelopmentStatus>();
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
+  public bool? AddMoreProfessionalDevelopment { get; set; }
   public ApplicationTypes? ApplicationType { get; set; }
 }
 public record FileInfo(string Id)
@@ -534,6 +536,11 @@ public record CharacterReferenceStatus(string Id, CharacterReferenceStage Status
 {
   public string? PhoneNumber { get; set; }
   public bool? WillProvideReference { get; set; }
+}
+
+public record ProfessionalDevelopmentStatus(string Id, string CourseName, int NumberOfHours)
+{
+  public ProfessionalDevelopmentStatusCode? Status { get; set; }
 }
 
 public enum TranscriptStage
@@ -580,8 +587,8 @@ public enum CharacterReferenceStage
 public enum ProfessionalDevelopmentStatusCode
 {
   ApplicationSubmitted,
+  Approved,
   Draft,
-  Inactive,
   InProgress,
   Rejected,
   Submitted,

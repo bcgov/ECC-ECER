@@ -154,6 +154,11 @@
         :text="`${totalRequiredWorkExperienceHours} approved hours of work experience with reference`"
         :go-to="() => $router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: $route.params.applicationId } })"
       />
+      <ApplicationSummaryActionListItem
+        v-if="addMoreProfessionalDevelopmentFlag"
+        :text="`${totalRequiredProfessionalDevelopmentHours} hours of professional development`"
+        :go-to="() => $router.push({ name: 'manageProfessionalDevelopment', params: { applicationId: $route.params.applicationId } })"
+      />
     </div>
     <!-- Step 3 End-->
   </v-container>
@@ -292,6 +297,9 @@ export default defineComponent({
     addMoreWorkExperienceReferencesFlag(): boolean {
       return this.applicationStatus?.addMoreWorkExperienceReference ?? false;
     },
+    addMoreProfessionalDevelopmentFlag(): boolean {
+      return this.applicationStatus?.addMoreProfessionalDevelopment ?? false;
+    },
     hasWaitingForDetailsTranscript(): boolean {
       return this.applicationStatus?.transcriptsStatus?.some((transcript) => transcript.status === "WaitingforDetails") || false;
     },
@@ -309,6 +317,7 @@ export default defineComponent({
         !this.hasCharacterReference ||
         this.waitingForResponseCharacterReferences.length > 0 ||
         this.addMoreWorkExperienceReferencesFlag ||
+        this.addMoreProfessionalDevelopmentFlag ||
         this.hasWaitingForDetailsTranscript
       );
     },
@@ -320,6 +329,9 @@ export default defineComponent({
     },
     totalRequiredWorkExperienceHours(): number {
       return this.applicationStatus?.workExperienceReferencesStatus?.every((reference) => reference.type === WorkExperienceType.IS_400_Hours) ? 400 : 500;
+    },
+    totalRequiredProfessionalDevelopmentHours(): number {
+      return 40;
     },
   },
   methods: {

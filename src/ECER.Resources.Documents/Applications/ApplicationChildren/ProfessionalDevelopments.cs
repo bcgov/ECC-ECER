@@ -153,13 +153,12 @@ internal sealed partial class ApplicationRepository
   {
     await Task.CompletedTask;
 
-    var ecerApplication = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.StatusCode == ecer_Application_StatusCode.Submitted && d.ecer_Applicantid.Id == Guid.Parse(userId));
+    var ecerApplication = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.ecer_Applicantid.Id == Guid.Parse(userId));
 
     if (ecerApplication == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
 
     var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(newProfessionalDevelopment)!;
-    var newId = Guid.NewGuid();
-    ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId = newId;
+    ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId = Guid.NewGuid();
     ecerProfessionalDevelopment.StatusCode = ecer_ProfessionalDevelopment_StatusCode.Submitted;
     context.AddObject(ecerProfessionalDevelopment);
     context.AddLink(ecerApplication, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, ecerProfessionalDevelopment);
@@ -167,7 +166,7 @@ internal sealed partial class ApplicationRepository
     await AddFilesForProfessionalDevelopment(ecerProfessionalDevelopment, ecerApplication.ecer_Applicantid.Id, (List<string>)newProfessionalDevelopment.NewFiles, cancellationToken);
 
     context.SaveChanges();
-    return newId.ToString();
+    return ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId.ToString()!;
   }
 
   private static string GetBucketName(IConfiguration configuration) =>
