@@ -28,7 +28,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(new DraftApplicationResponse(applicationId));
         })
         .WithOpenApi("Save a draft application for the current user", string.Empty, "draftapplication_put")
-        .RequireAuthorization("RequireVerifiedUser")
+        .RequireAuthorization()
         .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>, NotFound>> (ApplicationSubmissionRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
@@ -58,7 +58,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(new SubmitApplicationResponse(result.ApplicationId!));
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")
-        .RequireAuthorization("RequireVerifiedUser")
+        .RequireAuthorization()
         .WithParameterValidation();
 
     endpointRouteBuilder.MapGet("/api/applications/{id?}", async (string? id, ApplicationStatus[]? byStatus, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
@@ -118,7 +118,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(new CancelDraftApplicationResponse(cancelledApplicationId));
         })
         .WithOpenApi("Cancel a draft application for the current user", "Changes status to cancelled", "draftapplication_delete")
-        .RequireAuthorization("RequireVerifiedUser")
+        .RequireAuthorization()
         .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/applications/{application_id}/workexperiencereference/{reference_id?}", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, WorkExperienceReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
@@ -159,7 +159,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(new UpdateReferenceResponse(result.ReferenceId!));
         })
         .WithOpenApi("Update work experience reference", string.Empty, "application_workexperiencereference_update_post")
-        .RequireAuthorization("RequireVerifiedUser")
+        .RequireAuthorization()
         .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/applications/{application_id}/characterreference/{reference_id?}", async Task<Results<Ok<UpdateReferenceResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, string? reference_id, CharacterReference request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
@@ -200,7 +200,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(new UpdateReferenceResponse(result.ReferenceId!));
         })
         .WithOpenApi("Update character reference", string.Empty, "application_characterreference_update_post")
-        .RequireAuthorization("RequireVerifiedUser")
+        .RequireAuthorization()
         .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/applications/{applicationId}/characterReference/{referenceId}/resendInvite", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
@@ -222,7 +222,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(new ResendReferenceInviteResponse(await messageBus.Send(new ResendCharacterReferenceInviteRequest(applicationId, referenceId, userId!), ct)));
         })
         .WithOpenApi("Resend a character reference invite", "Changes character reference invite again status to true", "application_character_reference_resend_invite_post")
-        .RequireAuthorization("RequireVerifiedUser")
+        .RequireAuthorization()
         .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/applications/{applicationId}/workExperienceReference/{referenceId}/resendInvite", async Task<Results<Ok<ResendReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string applicationId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
@@ -244,7 +244,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(new ResendReferenceInviteResponse(await messageBus.Send(new ResendWorkExperienceReferenceInviteRequest(applicationId, referenceId, userId!), ct)));
         })
         .WithOpenApi("Resend a work experience reference invite", "Changes work experience reference invite again status to true", "application_work_experience_reference_resend_invite_post")
-        .RequireAuthorization("RequireVerifiedUser")
+        .RequireAuthorization()
         .WithParameterValidation();
   }
 }

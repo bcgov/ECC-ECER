@@ -24,7 +24,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
       return TypedResults.Ok(mapper.Map<IEnumerable<Certification>>(results.Items));
     })
      .WithOpenApi("Handles certification queries", string.Empty, "certification_get")
-     .RequireAuthorization("RequireVerifiedUser")
+     .RequireAuthorization()
      .WithParameterValidation();
   }
 }

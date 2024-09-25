@@ -95,6 +95,7 @@ internal class Program
             .RequireClaim(RegistryPortalClaims.IdenityProvider)
             .RequireClaim(ClaimTypes.Name)
             .RequireClaim(RegistryPortalClaims.UserId)
+            .RequireClaim("verified", "True")
             .RequireAuthenticatedUser();
         })
         .AddPolicy("registry_new_user", policy =>
@@ -105,11 +106,13 @@ internal class Program
             .RequireClaim(ClaimTypes.NameIdentifier)
             .RequireAuthenticatedUser();
         })
-        .AddPolicy("RequireVerifiedUser", policy =>
+        .AddPolicy("registry_unverified_user", policy =>
         {
           policy
             .AddAuthenticationSchemes("kc")
-            .RequireClaim("verified", "True")
+            .RequireClaim(RegistryPortalClaims.IdenityProvider)
+            .RequireClaim(ClaimTypes.Name)
+            .RequireClaim(RegistryPortalClaims.UserId)
             .RequireAuthenticatedUser();
         });
 
