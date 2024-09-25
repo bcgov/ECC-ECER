@@ -171,9 +171,9 @@ export default defineComponent({
       const files = target.files;
       if (files) {
         if (this.selectedFiles.length + files.length > this.maxNumberOfFiles) {
-            this.showErrorBanner = true;
-            this.errorBannerMessage = `You can only upload ${this.maxNumberOfFiles} files. You need to remove files before you can continue.`;
-          }
+          this.showErrorBanner = true;
+          this.errorBannerMessage = `You can only upload ${this.maxNumberOfFiles} files. You need to remove files before you can continue.`;
+        }
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
           let fileErrors: string[] = [];

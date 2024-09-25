@@ -117,10 +117,9 @@ export default defineComponent({
     };
   },
   methods: {
-    scrollToUploader() {
-      const fileUploader = this.$refs.FileUploader as ComponentPublicInstance<{ $el: HTMLElement }>;
-      if (fileUploader?.$el) {
-        fileUploader.$el.scrollIntoView({ behavior: "smooth" });
+    scrollToComponent(component: ComponentPublicInstance) {
+      if (component?.$el) {
+        component.$el.scrollIntoView({ behavior: "smooth" });
       }
     },
     async handleReplyToMessage() {
@@ -136,8 +135,14 @@ export default defineComponent({
           this.router.push("/messages");
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
-        this.scrollToUploader();
+        let component;
+        if (!this.text.trim()) {
+          this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+          component = this.$refs.textarea as ComponentPublicInstance<{ $el: HTMLElement }>;
+        } else {
+          component = this.$refs.FileUploader as ComponentPublicInstance<{ $el: HTMLElement }>;
+        }
+        this.scrollToComponent(component);
       }
     },
     handleFileUpdate(filesArray: any[]) {
