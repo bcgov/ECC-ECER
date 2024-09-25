@@ -30,7 +30,8 @@ public class ApplicationHandlers(
     IRequestHandler<Contract.Applications.UpdateWorkExperienceReferenceCommand, UpdateWorkExperienceReferenceResult>,
     IRequestHandler<Contract.Applications.UpdateCharacterReferenceCommand, UpdateCharacterReferenceResult>,
     IRequestHandler<ResendCharacterReferenceInviteRequest, string>,
-    IRequestHandler<ResendWorkExperienceReferenceInviteRequest, string>
+    IRequestHandler<ResendWorkExperienceReferenceInviteRequest, string>,
+    IRequestHandler<Contract.Applications.AddProfessionalDevelopmentCommand, AddProfessionalDevelopmentResult>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -283,5 +284,13 @@ public class ApplicationHandlers(
 
     var workExperienceReferenceId = await applicationRepository.ResendWorkExperienceReferenceInvite(new ResendReferenceInviteRequest(request.ReferenceId), cancellationToken);
     return workExperienceReferenceId;
+  }
+
+  public async Task<AddProfessionalDevelopmentResult> Handle(AddProfessionalDevelopmentCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+    var ProfessionalDevelopment = mapper.Map<Resources.Documents.Applications.ProfessionalDevelopment>(request.professionalDevelopment);
+    var AddedProfessionalDevelopmentId = await applicationRepository.AddProfessionalDevelopmentForSubmittedApplication(ProfessionalDevelopment, request.applicationId, request.userId, cancellationToken);
+    return new AddProfessionalDevelopmentResult() { ProfessionalDevelopmentId = AddedProfessionalDevelopmentId, IsSuccess = true };
   }
 }

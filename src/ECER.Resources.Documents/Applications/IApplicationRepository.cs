@@ -23,6 +23,8 @@ public interface IApplicationRepository
   Task<string> ResendCharacterReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
 
   Task<string> ResendWorkExperienceReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
+
+  Task<string> AddProfessionalDevelopmentForSubmittedApplication(ProfessionalDevelopment newProfessionalDevelopment, string applicationId, string userId, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery

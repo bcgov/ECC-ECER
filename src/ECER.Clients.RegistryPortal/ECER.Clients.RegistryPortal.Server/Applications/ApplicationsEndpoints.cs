@@ -246,6 +246,35 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .WithOpenApi("Resend a work experience reference invite", "Changes work experience reference invite again status to true", "application_work_experience_reference_resend_invite_post")
         .RequireAuthorization()
         .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/professionaldevelopment/add", async Task<Results<Ok<AddProfessionalDevelopmentResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, ProfessionalDevelopment request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+          bool AppIdIsNotGuid = !Guid.TryParse(application_id, out _);
+          if (AppIdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
+          }
+
+          var mappedProfessionalDevelopment = mapper.Map<Managers.Registry.Contract.Applications.ProfessionalDevelopment>(request);
+          var cmd = new AddProfessionalDevelopmentCommand(mappedProfessionalDevelopment, application_id, userId!);
+          var result = await messageBus.Send(cmd, ct);
+
+          if (!result.IsSuccess)
+          {
+            var problemDetails = new ProblemDetails
+            {
+              Status = StatusCodes.Status400BadRequest,
+              Title = "Adding Professional Development failed",
+              Extensions = { ["errors"] = result.ErrorMessage }
+            };
+            return TypedResults.BadRequest(problemDetails);
+          }
+          return TypedResults.Ok(new AddProfessionalDevelopmentResponse(result.ProfessionalDevelopmentId!));
+        })
+       .WithOpenApi("Add Professional Development", string.Empty, "application_professionaldevelopment_add_post")
+       .RequireAuthorization()
+       .WithParameterValidation();
   }
 }
 
@@ -276,6 +305,8 @@ public record CancelDraftApplicationResponse(string ApplicationId);
 public record SubmitApplicationResponse(string ApplicationId);
 
 public record UpdateReferenceResponse(string ReferenceId);
+
+public record AddProfessionalDevelopmentResponse(string ProfessionalDevelopmentId);
 
 /// <summary>
 /// Application query response
