@@ -6,7 +6,7 @@
     <p>You need the following information to renew your certificate.</p>
   </v-col>
   <v-col cols="12">
-    <div class="d-flex flex-column ga-3 my-6">
+    <div class="d-flex flex-column ga-3 mt-3` mb-6">
       <p>It's important to know that:</p>
       <ul class="ml-10">
         <li>You can only renew this certificate once</li>
@@ -32,7 +32,7 @@
         You will need to provide a reason for why you were unable to complete the required 500 hours of supervised work experience during the term of your ECE
         One Year Certificate and/or why you were unable to provide a reference from the certified ECE who supervised the hours.
       </p>
-      <p>If you’ve completed 500 hours, you should apply for ECE Five Year certification instead.</p>
+      <p>If you've completed 500 hours, you should apply for ECE Five Year certification instead.</p>
     </div>
   </v-col>
   <v-col cols="12">
