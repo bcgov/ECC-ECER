@@ -26,7 +26,7 @@ public static class SecurityExtensions
     });
   }
 
-  public static void AddCorsPolicy(this IServiceCollection services, CorsSettings? settings)
+  public static IServiceCollection AddCorsPolicy(this IServiceCollection services, CorsSettings? settings)
   {
     services.AddCors(options =>
     {
@@ -36,6 +36,8 @@ public static class SecurityExtensions
         if (settings != null && settings.AllowedOrigins != null) policy.WithOrigins(settings.ToOriginsArray()!);
       });
     });
+
+    return services;
   }
 
   public static void UseSecurityHeaders(this WebApplication webApplication)

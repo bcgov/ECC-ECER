@@ -53,7 +53,7 @@
         ></v-text-field>
 
         <v-row justify="start" class="ml-1">
-          <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Reference</v-btn>
+          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">Save Reference</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
         </v-row>
       </v-form>
@@ -86,27 +86,7 @@
           <li>You may enter up to 6 references</li>
         </ul>
       </div>
-      <v-col v-if="totalHours >= hoursRequired" sm="12" md="10" lg="8" xl="6">
-        <Alert type="info">
-          <p class="small">
-            You provided the required {{ hoursRequired }} hours of work experience. If needed, the Registry will contact you for additional work experience
-            information once your references submit their forms.
-          </p>
-        </Alert>
-      </v-col>
-      <v-col v-if="count >= 6 && totalHours < hoursRequired" sm="12" md="10" lg="8" xl="6">
-        <Alert type="warning">
-          <p class="small">
-            You reached the limit of six work experience references but do not meet the {{ hoursRequired }}-hour requirement. You can still proceed to submit
-            your application. The Registry will contact you to provide additional references for the remaining hours.
-          </p>
-        </Alert>
-      </v-col>
-      <v-col v-if="count < 6 && totalHours < hoursRequired" sm="12" md="10" lg="8" xl="6">
-        <Alert type="error">
-          <p class="small">You must enter {{ hoursRequired }} hours of work experience to submit your application.</p>
-        </Alert>
-      </v-col>
+
       <v-col v-if="hasDuplicateReferences" sm="12" md="10" lg="8" xl="6">
         <Alert type="error">
           <p class="small">Your work experience reference(s) cannot be the same as your character reference</p>
@@ -118,14 +98,33 @@
       <v-col sm="12" md="10" lg="8" xl="6">
         <WorkExperienceReferenceList :references="modelValue" @edit="handleEdit" @delete="handleDelete" />
       </v-col>
-      <v-col cols="12" class="mt-6">
-        <v-row justify="start" class="ml-1">
-          <v-btn prepend-icon="mdi-plus" rounded="lg" color="alternate" :disabled="isDisabled" @click="handleAddReference">Add References</v-btn>
-        </v-row>
-      </v-col>
+      <v-row class="my-6">
+        <v-col sm="12" md="10" lg="8" xl="6">
+          <Callout v-if="count >= 6 && totalHours < hoursRequired" title="Max limit reached" type="warning" class="mt-10">
+            You reached the limit of 6 work experience references but do not meet the {{ hoursRequired }} hour requirement. You can still proceed to submit your
+            application. The Registry will contact you to provide additional references for the remaining hours.
+          </Callout>
+          <p v-else-if="totalHours >= hoursRequired">
+            No additional work references may be added. You provided the required hours. After you submit your application, we’ll email the work references to
+            complete their reference. If needed, we'll contact you for additional information.
+          </p>
+          <v-btn v-else prepend-icon="mdi-plus" rounded="lg" color="alternate" :disabled="isDisabled" @click="handleAddReference">Add References</v-btn>
+        </v-col>
+      </v-row>
+      <!-- this prevents form from proceeding if rules are not met -->
+      <v-input
+        class="mt-6"
+        auto-hide="auto"
+        :model-value="modelValue"
+        :rules="[
+          !hasDuplicateReferences,
+          totalHours >= hoursRequired ||
+            count >= 6 ||
+            `You need ${hoursRequired} hours of work experience. You need to add ${hoursRequired - totalHours} more hours.`,
+        ]"
+      ></v-input>
     </div>
   </v-row>
-  <v-input auto-hide="auto" :model-value="modelValue" :rules="[!hasDuplicateReferences, totalHours >= hoursRequired || count >= 6]"></v-input>
 </template>
 
 <script lang="ts">
@@ -133,6 +132,7 @@ import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 
 import Alert from "@/components/Alert.vue";
+import Callout from "@/components/Callout.vue";
 import WorkExperienceReferenceList, { type WorkExperienceReferenceData } from "@/components/WorkExperienceReferenceList.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -149,7 +149,7 @@ import ProgressBar from "../ProgressBar.vue";
 
 export default defineComponent({
   name: "EceEdducation",
-  components: { WorkExperienceReferenceList, ProgressBar, Alert },
+  components: { WorkExperienceReferenceList, ProgressBar, Alert, Callout },
   props: {
     props: {
       type: Object as () => EceWorkExperienceReferencesProps,

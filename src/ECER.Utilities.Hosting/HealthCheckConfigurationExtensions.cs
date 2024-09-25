@@ -6,9 +6,11 @@ namespace ECER.Utilities.Hosting;
 
 public static class HealthCheckConfigurationExtensions
 {
-  public static void ConfigureHealthChecks(this IServiceCollection services)
+  public static IServiceCollection ConfigureHealthChecks(this IServiceCollection services)
   {
     services.AddHealthChecks().AddCheck<StartupHealthCheck>("Startup", tags: ["startup"]);
+
+    return services;
   }
 
   public static void UseHealthChecks(this WebApplication webApplication)

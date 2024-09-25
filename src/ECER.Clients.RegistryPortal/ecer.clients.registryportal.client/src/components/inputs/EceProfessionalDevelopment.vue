@@ -25,7 +25,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="courseName"
             variant="outlined"
@@ -36,7 +36,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="numberOfHours"
             variant="outlined"
@@ -47,7 +47,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="organizationName"
             variant="outlined"
@@ -58,7 +58,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             variant="outlined"
             label="Website with description of course or workshop (optional)"
@@ -73,7 +73,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="2">
+        <v-col sm="6" md="4" lg="2">
           <v-text-field
             ref="startDateInput"
             v-model="startDate"
@@ -107,7 +107,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="2">
+        <v-col sm="6" md="4" lg="2">
           <v-text-field
             ref="endDateInput"
             v-model="endDate"
@@ -180,7 +180,7 @@
         </v-col>
       </v-row>
       <v-row v-if="showInstructorNameInput">
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="instructorName"
             variant="outlined"
@@ -191,7 +191,7 @@
         </v-col>
       </v-row>
       <v-row v-if="showPhoneNumberInput">
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="organizationContactInformation"
             label="Phone number"
@@ -207,7 +207,7 @@
         </v-col>
       </v-row>
       <v-row v-if="showEmailInput">
-        <v-col cols="4">
+        <v-col md="8" lg="6" xl="4">
           <v-text-field
             v-model="organizationEmailAddress"
             variant="outlined"
@@ -233,9 +233,9 @@
     <v-row class="mt-10">
       <v-col>
         <v-row justify="start" class="ml-1">
-          <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">
+          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">
             <v-icon icon="mdi-plus" />
-            Add course or workshop
+            Save course or workshop
           </v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
         </v-row>
@@ -250,13 +250,6 @@
           You must have completed at least 40 hours of professional development relevant to early childhood education. Add the courses or workshops you’ve
           taken.
         </p>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col v-if="totalHours < hoursRequired">
-        <Alert type="error">
-          <p class="small">You must enter {{ hoursRequired }} hours of professional development to continue.</p>
-        </Alert>
       </v-col>
     </v-row>
     <v-row>
@@ -277,28 +270,30 @@
       <!-- empty list -->
       <v-col v-else><p>No courses or workshops added yet.</p></v-col>
     </v-row>
+
     <v-row>
       <v-col>
-        <v-btn
-          v-if="totalHours < hoursRequired"
-          prepend-icon="mdi-plus"
-          rounded="lg"
-          color="alternate"
-          :disabled="isDisabled"
-          @click="handleAddProfessionalDevelopment"
-        >
-          Add course or workshop
-        </v-btn>
-        <!-- hours required met -->
-        <p v-else>
+        <p v-if="totalHours >= hoursRequired">
           No additional professional development may be added. You provided the required 40 hours. After you submit your application, the registry will review
           and verify the professional development added. If needed, the registry will contact you for additional information.
         </p>
+        <v-btn v-else prepend-icon="mdi-plus" rounded="lg" color="alternate" :disabled="isDisabled" @click="handleAddProfessionalDevelopment">
+          Add course or workshop
+        </v-btn>
       </v-col>
     </v-row>
+    <!-- this prevents form from proceeding if rules are not met -->
+    <v-input
+      class="mt-6"
+      :model-value="modelValue"
+      :rules="[
+        () =>
+          totalHours >= hoursRequired ||
+          `You need ${hoursRequired} hours of professional development. You need to add ${hoursRequired - totalHours} more hours.`,
+      ]"
+      auto-hide="auto"
+    ></v-input>
   </div>
-
-  <v-input auto-hide="true" :model-value="modelValue" :rules="[totalHours >= hoursRequired]"></v-input>
 </template>
 
 <script lang="ts">
@@ -307,7 +302,6 @@ import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
 import type { VForm, VInput } from "vuetify/components";
 
-import Alert from "@/components/Alert.vue";
 import type { FileItem } from "@/components/UploadFileItem.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -337,7 +331,7 @@ export interface ProfessionalDevelopmentExtended extends Components.Schemas.Prof
 
 export default defineComponent({
   name: "EceProfessionalDevelopment",
-  components: { ProgressBar, Alert, FileUploader, ProfessionalDevelopmentCard },
+  components: { ProgressBar, FileUploader, ProfessionalDevelopmentCard },
   props: {
     props: {
       type: Object as () => {},

@@ -31,9 +31,11 @@ export const useUserStore = defineStore("user", {
       return state.userProfile?.previousNames?.filter((name) => name.status === "ReadyforVerification") ?? [];
     },
     verifiedPreviousNames: (state): Components.Schemas.PreviousName[] => {
-      return state.userProfile?.previousNames?.filter((name) => name.status === "Verified") ?? [];
+      return state.userProfile?.previousNames?.filter((name) => name.status === "Verified" && name.source !== "NameLog") ?? [];
     },
     firstName: (state): string => state.userInfo?.firstName ?? "",
+    middleName: (state): string => state.userInfo?.middleName ?? "",
+    lastName: (state): string => state.userInfo?.lastName ?? "",
     fullName: (state): string => (state.userInfo?.lastName ? `${state.userInfo?.firstName} ${state.userInfo?.lastName}` : `${state.userInfo?.firstName}`),
     email: (state): string => state.userInfo?.email ?? "",
     phoneNumber: (state): string => state.userProfile?.phone ?? "",

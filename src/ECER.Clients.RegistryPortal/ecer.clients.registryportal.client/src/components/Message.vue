@@ -23,7 +23,7 @@
             <div class="mt-6" v-html="message.text"></div>
             <div v-if="message.documents!.length > 0" class="mt-6">
               <p>
-                <v-icon>mdi-paperclip</v-icon>
+                <v-icon class="ml-n2">mdi-paperclip</v-icon>
                 Attachments
               </p>
               <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
@@ -53,7 +53,7 @@
       <div class="mt-6" v-html="message.text"></div>
       <div v-if="message.documents!.length > 0" class="mt-6">
         <p>
-          <v-icon>mdi-paperclip</v-icon>
+          <v-icon class="ml-n2">mdi-paperclip</v-icon>
           Attachments
         </p>
         <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">

@@ -136,7 +136,7 @@ public class ApplicationSubmissionValidationEngineTests
     Assert.Empty(result.ValidationErrors);
   }
 
-  private Transcript CreateMockTranscript(bool invalid)
+  private static Transcript CreateMockTranscript(bool invalid)
   {
     DateTime startDate = DateTime.Now.AddYears(-2);
     DateTime endDate = DateTime.Now.AddYears(-1);
@@ -152,7 +152,7 @@ public class ApplicationSubmissionValidationEngineTests
     return transcript;
   }
 
-  private CharacterReference CreateMockCharacterReference()
+  private static CharacterReference CreateMockCharacterReference()
   {
     var faker = new Faker("en_CA");
 

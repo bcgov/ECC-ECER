@@ -33,7 +33,7 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
     });
   }
 
-  private PreviousName CreatePreviousName()
+  private static PreviousName CreatePreviousName()
   {
     var faker = new Faker("en_CA");
 
@@ -42,7 +42,7 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
     );
   }
 
-  private UserProfile CreateNewUser()
+  private static UserProfile CreateNewUser()
   {
     var address = new Faker<Address>("en_CA")
         .CustomInstantiator(f => new Address(
