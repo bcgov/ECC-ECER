@@ -25,6 +25,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
     })
      .WithOpenApi("Handles certification queries", string.Empty, "certification_get")
      .RequireAuthorization()
+     .RequiresUserVerification()
      .WithParameterValidation();
   }
 }

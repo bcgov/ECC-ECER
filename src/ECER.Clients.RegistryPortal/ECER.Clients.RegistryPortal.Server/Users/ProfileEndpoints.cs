@@ -19,7 +19,8 @@ public class ProfileEndpoints : IRegisterEndpoints
       return TypedResults.Ok(mapper.Map<UserProfile>(profile.Profile));
     })
       .WithOpenApi("Gets the current user profile", string.Empty, "profile_get")
-      .RequireAuthorization();
+      .RequireAuthorization()
+      .RequiresUserVerification();
 
     endpointRouteBuilder.MapPut("/api/profile", async Task<Ok> (UserProfile profile, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
     {
@@ -28,7 +29,8 @@ public class ProfileEndpoints : IRegisterEndpoints
       return TypedResults.Ok();
     })
   .WithOpenApi("Gets the current user profile", string.Empty, "profile_put")
-  .RequireAuthorization();
+  .RequireAuthorization()
+  .RequiresUserVerification();
   }
 }
 
