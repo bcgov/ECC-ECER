@@ -170,6 +170,10 @@ export default defineComponent({
       const target = event.target as HTMLInputElement;
       const files = target.files;
       if (files) {
+        if (this.selectedFiles.length + files.length > this.maxNumberOfFiles) {
+            this.showErrorBanner = true;
+            this.errorBannerMessage = `You can only upload ${this.maxNumberOfFiles} files. You need to remove files before you can continue.`;
+          }
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
           let fileErrors: string[] = [];
@@ -183,11 +187,6 @@ export default defineComponent({
           if (this.selectedFiles.some((f: FileItem) => f.file.name === file.name)) {
             fileErrors.push("This file with this name has already been uploaded. ");
           }
-          if (this.selectedFiles.length + files.length > this.maxNumberOfFiles) {
-            this.showErrorBanner = true;
-            this.errorBannerMessage = `You can only upload ${this.maxNumberOfFiles} files. You need to remove files before you can continue.`;
-          }
-
           const fileId = uuidv4(); // Generate a unique file ID using uuid
           const selectedFile: FileItem = {
             file,
