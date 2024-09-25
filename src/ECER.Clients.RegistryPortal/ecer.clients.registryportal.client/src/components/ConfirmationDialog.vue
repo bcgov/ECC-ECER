@@ -4,7 +4,7 @@
       <v-container>
         <v-card class="no-scroll">
           <v-card-title>
-            <div class="d-flex justify-center align-center">
+            <div class="d-flex justify-center align-center text-wrap">
               <h2>
                 {{ title }}
               </h2>
