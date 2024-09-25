@@ -193,10 +193,7 @@
         <!-- this prevents form from proceeding if rules are not met -->
         <v-input
           :model-value="modelValue"
-          :rules="[
-            (v) => Object.keys(v).length > 0 || 'education required',
-            (v) => Object.keys(v).length >= numOfEducationRequired || `at least ${numOfEducationRequired} transcripts required`,
-          ]"
+          :rules="[(v) => Object.keys(v).length > 0 || 'You must enter at least 1 education entry']"
           auto-hide="auto"
         ></v-input>
       </v-col>
@@ -298,14 +295,6 @@ export default defineComponent({
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
-    },
-    numOfEducationRequired() {
-      let numOfEducationRequired = 1;
-
-      this.applicationStore.isDraftCertificateTypeSne && numOfEducationRequired++;
-      this.applicationStore.isDraftCertificateTypeIte && numOfEducationRequired++;
-
-      return numOfEducationRequired;
     },
     ApplicantNameRadioOptions(): RadioOptions[] {
       let legalNameRadioOptions: RadioOptions[] = [
