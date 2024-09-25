@@ -2,13 +2,13 @@
   <main>
     <Suspense>
       <v-app>
-        <NavigationBar />
+        <NavigationBar v-if="showNavigationBarAndFooter" />
         <v-main class="fill-height">
           <InactiveSessionTimeout />
           <Snackbar />
           <router-view></router-view>
         </v-main>
-        <EceFooter />
+        <EceFooter v-if="showNavigationBarAndFooter" />
       </v-app>
     </Suspense>
   </main>
@@ -29,6 +29,11 @@ export default defineComponent({
     EceFooter,
     Snackbar,
     InactiveSessionTimeout,
+  },
+  computed: {
+    showNavigationBarAndFooter() {
+      return !this.$route.path.includes("reply");
+    },
   },
 });
 </script>
