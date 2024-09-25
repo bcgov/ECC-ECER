@@ -9,7 +9,7 @@ import type { PropType } from "vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "Alert",
+  name: "Callout",
   props: {
     type: {
       type: String as PropType<"info" | "warning" | "error" | "success">,
@@ -17,7 +17,8 @@ export default defineComponent({
     },
     title: {
       type: String,
-      required: true,
+      required: false,
+      default: "",
     },
   },
 });

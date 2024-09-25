@@ -60,10 +60,6 @@ internal class Program
       builder.Services.Configure<JsonOptions>(opts => opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
       builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
-      builder.Services.AddProblemDetails();
-
-      builder.Services.AddCorsPolicy(builder.Configuration.GetSection("cors").Get<CorsSettings>());
-
       builder.Services
         .AddAuthentication()
         .AddJwtBearer("api", opts =>
@@ -86,13 +82,17 @@ internal class Program
             .RequireAuthenticatedUser();
         });
 
-      builder.Services.ConfigureDistributedCache(builder.Configuration.GetSection("DistributedCache").Get<DistributedCacheSettings>());
-      builder.Services.ConfigureDataProtection(builder.Configuration.GetSection("DataProtection").Get<DataProtectionSettings>());
-      builder.Services.ConfigureHealthChecks();
-      builder.Services.AddResponseCompression(opts => opts.EnableForHttps = true);
-      builder.Services.AddResponseCaching();
-      builder.Services.Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"));
-      builder.Services.AddHttpClient();
+      builder.Services
+        .AddProblemDetails()
+        .AddCorsPolicy(builder.Configuration.GetSection("cors").Get<CorsSettings>())
+        .ConfigureDistributedCache(builder.Configuration.GetSection("DistributedCache").Get<DistributedCacheSettings>())
+        .ConfigureDataProtection(builder.Configuration.GetSection("DataProtection").Get<DataProtectionSettings>())
+        .ConfigureHealthChecks()
+        .AddResponseCompression(opts => opts.EnableForHttps = true)
+        .AddRequestDecompression()
+        .AddResponseCaching()
+        .Configure<CspSettings>(builder.Configuration.GetSection("ContentSecurityPolicy"))
+        .AddHttpClient();
 
       builder.ConfigureComponents(logger);
 
@@ -101,10 +101,12 @@ internal class Program
       app.UseHealthChecks();
       app.UseObservabilityMiddleware();
       app.UseDisableHttpVerbsMiddleware(app.Configuration.GetValue("DisabledHttpVerbs", string.Empty));
+      app.UseRequestDecompression();
       app.UseResponseCompression();
       app.UseCsp();
       app.UseSecurityHeaders();
       app.UseCors();
+      app.UseOutputCache();
       app.UseResponseCaching();
       app.UseAuthentication();
       app.UseAuthorization();

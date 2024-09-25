@@ -79,7 +79,7 @@ spec:
               mountPath: {{ $dst }}
               subPath: {{ base $dst }}
             {{- end -}}
-            {{- end }}
+          {{- end }}
 
           {{- if .Values.port }}
           ports:
@@ -103,7 +103,7 @@ spec:
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
 
-      {{- if (or $.Values.volumes (or ($.Values.files).files ($.Values.secretFiles).files)) }}
+      {{- if (or $.Values.volumes (or $.Values.files $.Values.secretFiles)) }}
       volumes:
         {{- if .Values.volumes -}}
         {{ tpl (.Values.volumes | toYaml) $ | nindent 8 }}

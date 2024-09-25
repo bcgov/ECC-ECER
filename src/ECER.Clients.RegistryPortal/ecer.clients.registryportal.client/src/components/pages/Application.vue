@@ -44,14 +44,28 @@
       </v-btn>
     </template>
     <template #actions>
-      <v-container>
-        <v-btn v-if="showSaveButtons" :loading="loadingStore.isLoading('application_get')" rounded="lg" color="primary" @click="handleSaveAndContinue">
-          Save and continue
-        </v-btn>
-        <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
-          Submit Application
-        </v-btn>
-      </v-container>
+      <v-window class="my-n10">
+        <v-stepper-window>
+          <v-container>
+            <v-row>
+              <v-col>
+                <v-btn
+                  v-if="showSaveButtons"
+                  :loading="loadingStore.isLoading('draftapplication_put')"
+                  rounded="lg"
+                  color="primary"
+                  @click="handleSaveAndContinue"
+                >
+                  Save and continue
+                </v-btn>
+                <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
+                  Submit Application
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-stepper-window>
+      </v-window>
     </template>
   </Wizard>
 </template>
@@ -112,7 +126,6 @@ export default defineComponent({
     };
 
     const draftApplicationCreatedOn = applicationStore.draftApplication.createdOn || formatDate(DateTime.now().toString());
-
     if (applicationStore.isDraftApplicationRenewal) {
       if (applicationStore.isDraftCertificateTypeEceAssistant) {
         await wizardStore.initializeWizard(applicationWizardRenewAssistant, applicationStore.draftApplication);
@@ -148,7 +161,6 @@ export default defineComponent({
         wizardConfigSetup = applicationWizardAssistantAndOneYear;
       }
     }
-
     return {
       applicationStore,
       wizardStore,
@@ -190,7 +202,6 @@ export default defineComponent({
       const currentStepFormId = this.wizardStore.currentStep.form.id;
       const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
       const { valid } = await formRef.validate();
-
       if (!valid) {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       } else {
@@ -209,7 +220,6 @@ export default defineComponent({
               },
             );
             this.incrementWizard();
-
             break;
           case "ExplanationLetter":
           case "Education":

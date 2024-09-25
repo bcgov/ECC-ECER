@@ -535,7 +535,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     professionalDev.Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
   }
 
-  private Transcript CreateTranscript()
+  private static Transcript CreateTranscript()
   {
     var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };
 
