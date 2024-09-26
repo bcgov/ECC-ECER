@@ -31,8 +31,9 @@ internal class CommunicationRepository : ICommunicationRepository
                                                                      item.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient &&
                                                                      item.StateCode == ecer_communication_statecode.Active &&
                                                                      item.ecer_Acknowledged != true
-                                                                     ).Select(item => new { item.Id, item.ecer_IsRoot, item.ecer_ParentCommunicationid }).ToList().
-                                                                     Where(item => item.ecer_IsRoot ?? false || item.ecer_ParentCommunicationid != null).ToList(); // SDK does not support including this condition inside query
+                                                                     ).Select(item => new { item.Id, parent = item.ecer_IsRoot ?? false, child = item.ecer_ParentCommunicationid != null }).ToList();
+
+    unseenCommunications = unseenCommunications.Where(item => item.parent || item.child).ToList(); // SDK does not support including this condition inside query
     return unseenCommunications.Count;
   }
 
