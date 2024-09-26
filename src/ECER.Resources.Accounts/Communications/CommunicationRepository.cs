@@ -23,6 +23,19 @@ internal class CommunicationRepository : ICommunicationRepository
     this.configuration = configuration;
   }
 
+  public async Task<int> QueryStatus(string RegistrantId)
+  {
+    await Task.CompletedTask;
+    var unseenCommunications = context.ecer_CommunicationSet.Where(item => item.ecer_Registrantid.Id == Guid.Parse(RegistrantId) &&
+                                                                     item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry &&
+                                                                     item.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient &&
+                                                                     item.StateCode == ecer_communication_statecode.Active &&
+                                                                     item.ecer_Acknowledged != true
+                                                                     ).Select(item => new { item.Id, item.ecer_IsRoot, item.ecer_ParentCommunicationid }).ToList().
+                                                                     Where(item => item.ecer_IsRoot ?? false || item.ecer_ParentCommunicationid != null).ToList(); // SDK does not support including this condition inside query
+    return unseenCommunications.Count;
+  }
+
   public async Task<CommunicationResult> Query(UserCommunicationQuery query)
   {
     await Task.CompletedTask;
@@ -37,7 +50,6 @@ internal class CommunicationRepository : ICommunicationRepository
       var statuses = mapper.Map<IEnumerable<ecer_Communication_StatusCode>>(query.ByStatus)!.ToList();
       communications = communications.WhereIn(item => item.StatusCode!.Value, statuses);
     }
-    var UnreadMessagesCount = communications.Where(item => item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && item.ecer_Acknowledged != true).Select(item => item.Id).ToList().Count;
 
     // Filtering by ID
     if (query.ById != null) communications = communications.Where(item => item.ecer_CommunicationId == Guid.Parse(query.ById));
@@ -70,7 +82,6 @@ internal class CommunicationRepository : ICommunicationRepository
     {
       Communications = mapper.Map<IEnumerable<Communication>>(finalCommunications),
       TotalMessagesCount = query.PageNumber > 0 ? paginatedTotalCommunicationCount : finalCommunications.Count,
-      UnreadMessagesCount = UnreadMessagesCount
     };
   }
 
