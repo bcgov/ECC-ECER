@@ -153,7 +153,7 @@ internal sealed partial class ApplicationRepository
   {
     await Task.CompletedTask;
 
-    var ecerApplication = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.ecer_Applicantid.Id == Guid.Parse(userId));
+    var ecerApplication = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.ecer_Applicantid.Id == Guid.Parse(userId) && d.StatusCode != ecer_Application_StatusCode.Draft);
 
     if (ecerApplication == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
 

@@ -10,7 +10,7 @@
         <b>
           {{ totalRequiredProfessionalDevelopmentHours }} hours of professional development relevant to early childhood education is required.
           <span v-if="totalHours < totalRequiredProfessionalDevelopmentHours">
-            You need to add {{ totalRequiredProfessionalDevelopmentHours - totalHours }} more hours
+            You need to add {{ totalRequiredProfessionalDevelopmentHours - totalHours }} more hours.
           </span>
         </b>
       </div>

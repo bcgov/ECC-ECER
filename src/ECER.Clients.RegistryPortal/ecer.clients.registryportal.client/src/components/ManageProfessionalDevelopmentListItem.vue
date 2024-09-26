@@ -4,7 +4,7 @@
       <v-row class="d-flex" :class="[smAndUp ? 'justify-space-between align-center' : 'flex-column']">
         <v-col cols="12" sm="4">
           <div>
-            <p>{{ CourseName }}</p>
+            <p>{{ courseName }}</p>
           </div>
         </v-col>
         <v-col cols="12" sm="4" :align="smAndUp ? 'center' : ''">
@@ -69,7 +69,7 @@ export default defineComponent({
     sheetColor() {
       return this.link ? "hawkes-blue" : "white-smoke";
     },
-    CourseName(): string {
+    courseName(): string {
       return `${this.professionalDevelopment.courseName}`;
     },
   },

@@ -358,8 +358,9 @@ export default defineComponent({
     async handleAddProfessionalDevelopment() {
       // Validate the form
       const { valid } = await (this.$refs.professionalDevelopmentForm as VForm).validate();
-
-      if (valid) {
+      if (this.professionalDevelopment.isFileUploadInProgress) {
+        this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
+      } else if (valid) {
         const { error } = await addProfessionalDevelopment({ application_id: this.applicationId }, this.professionalDevelopment);
         if (error) {
           this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
