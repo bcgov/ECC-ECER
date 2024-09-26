@@ -115,7 +115,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public override async Task DisposeAsync()
   {
     await Task.CompletedTask;
-    serviceScope.Dispose();
+    serviceScope?.Dispose();
   }
 
   private async Task InitializeDataverseTestData(EcerContext context)
