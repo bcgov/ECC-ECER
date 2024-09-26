@@ -15,20 +15,8 @@ public class CommunicationHandlers(ICommunicationRepository communicationReposit
   public async Task<CommunicationsStatusResults> Handle(UserCommunicationsStatusQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-
-    var statuses = new List<Resources.Accounts.Communications.CommunicationStatus>();
-    statuses.Add(Resources.Accounts.Communications.CommunicationStatus.NotifiedRecipient);
-    statuses.Add(Resources.Accounts.Communications.CommunicationStatus.Acknowledged);
-    var communications = await communicationRepository.Query(new Resources.Accounts.Communications.UserCommunicationQuery
-    {
-      ByRegistrantId = request.ByRegistrantId,
-      ByStatus = statuses,
-    });
-
-    var unreadCount = communications.UnreadMessagesCount;
-    var hasUnread = unreadCount > 0;
-
-    var communicationsStatus = new Contract.Communications.CommunicationsStatus() { HasUnread = hasUnread, Count = unreadCount };
+    var UnreadMessagesCount = await communicationRepository.QueryStatus(request.ByRegistrantId);
+    var communicationsStatus = new Contract.Communications.CommunicationsStatus() { HasUnread = UnreadMessagesCount > 0, Count = UnreadMessagesCount };
     return new CommunicationsStatusResults(communicationsStatus!);
   }
 
