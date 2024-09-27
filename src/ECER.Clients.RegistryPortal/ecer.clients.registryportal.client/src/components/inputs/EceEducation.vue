@@ -142,7 +142,7 @@
         <p>What name is shown on your transcript?</p>
         <br />
         <v-radio-group v-model="previousNameRadio" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="previousNameRadioChanged">
-          <v-radio v-for="(step, index) in ApplicantNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
+          <v-radio v-for="(step, index) in applicantNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
         </v-radio-group>
         <div v-if="previousNameRadio === 'other'">
           <v-row>
@@ -296,11 +296,11 @@ export default defineComponent({
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
     },
-    ApplicantNameRadioOptions(): RadioOptions[] {
+    applicantNameRadioOptions(): RadioOptions[] {
       let legalNameRadioOptions: RadioOptions[] = [
         {
           label: this.userStore.legalName,
-          value: { firstName: this.userStore.firstName, middleName: this.userStore.middleName, lastName: this.userStore.lastName },
+          value: { firstName: this.userStore.firstName || null, middleName: this.userStore.middleName || null, lastName: this.userStore.lastName || null },
         },
       ];
       return [...legalNameRadioOptions, ...this.previousNameRadioOptions];
@@ -413,16 +413,16 @@ export default defineComponent({
       }
       //set the radio button for previous names and field buttons correctly
       if (educationData.education.isNameUnverified) {
-        let index = this.previousNameRadioOptions.findIndex((option) => option.value === "other");
-        this.previousNameRadio = this.previousNameRadioOptions[index].value;
+        let index = this.applicantNameRadioOptions.findIndex((option) => option.value === "other");
+        this.previousNameRadio = this.applicantNameRadioOptions[index].value;
       } else {
-        let index = this.previousNameRadioOptions.findIndex(
+        let index = this.applicantNameRadioOptions.findIndex(
           (option) =>
             option.value?.firstName === educationData.education.studentFirstName &&
             option.value?.lastName === educationData.education.studentLastName &&
             option.value?.middleName === educationData.education.studentMiddleName,
         );
-        this.previousNameRadio = this.previousNameRadioOptions[index].value;
+        this.previousNameRadio = this.applicantNameRadioOptions[index].value;
       }
       // Change mode to add
       this.mode = "add";
