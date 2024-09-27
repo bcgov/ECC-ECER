@@ -26,7 +26,7 @@
               :title="step.title"
               :editable="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'"
               :complete="index + 1 < wizardStore.step"
-              style="white-space: nowrap; font-size: 0.9em"
+              :class="`small ${mdAndDown ? 'text-wrap' : 'text-no-wrap'}`"
             >
               <template #title>
                 <a v-if="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'" href="#" @click.prevent>{{ step.title }}</a>
@@ -75,6 +75,7 @@
 import { DateTime } from "luxon";
 import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
+import { useDisplay } from "vuetify";
 
 import { getProfile, putProfile } from "@/api/profile";
 import Wizard from "@/components/Wizard.vue";
@@ -109,6 +110,7 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const loadingStore = useLoadingStore();
     const certificationStore = useCertificationStore();
+    const { mdAndDown } = useDisplay();
     let wizardConfigSetup: WizardType | undefined = undefined;
 
     // Refresh userProfile from the server
@@ -172,6 +174,7 @@ export default defineComponent({
       applicationWizardAssistantAndOneYear,
       certificationStore,
       wizardConfigSetup,
+      mdAndDown,
     };
   },
   computed: {
