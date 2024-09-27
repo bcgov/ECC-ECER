@@ -26,6 +26,7 @@
               :title="step.title"
               :editable="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'"
               :complete="index + 1 < wizardStore.step"
+              style="white-space: nowrap; font-size: 0.9em"
             >
               <template #title>
                 <a v-if="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'" href="#" @click.prevent>{{ step.title }}</a>
