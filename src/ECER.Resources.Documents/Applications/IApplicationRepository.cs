@@ -49,6 +49,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public DateTime? ReadyForAssessmentDate { get; set; }
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
+  public bool? AddMoreProfessionalDevelopment { get; set; }
   public ApplicationTypes ApplicationType { get; set; }
   public EducationOrigin? EducationOrigin { get; set; }
   public EducationRecognition? EducationRecognition { get; set; }
@@ -292,8 +293,8 @@ public enum WorkExperienceTypes
 public enum ProfessionalDevelopmentStatusCode
 {
   ApplicationSubmitted,
+  Approved,
   Draft,
-  Inactive,
   InProgress,
   Rejected,
   Submitted,

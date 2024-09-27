@@ -207,6 +207,36 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetApplicationStatus_ById_ForRenewalApplications()
+  {
+    var application = Create400HoursTypeRenewalDraftApplication();
+    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+
+    var applicationStatusByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url($"/api/applications/{applicationId}/status");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationStatusById = await applicationStatusByIdResponse.ReadAsJsonAsync<SubmittedApplicationStatus>();
+    applicationStatusById!.Id.ShouldBe(application.Id);
+    applicationStatusById.ApplicationType.ShouldBe(application.ApplicationType);
+    applicationStatusById.TranscriptsStatus.ShouldNotBeEmpty();
+    applicationStatusById.CharacterReferencesStatus.ShouldNotBeEmpty();
+    applicationStatusById.WorkExperienceReferencesStatus.ShouldNotBeEmpty();
+    applicationStatusById.ProfessionalDevelopmentsStatus.ShouldNotBeEmpty();
+    applicationStatusById.WorkExperienceReferencesStatus.All(we => we.Type == WorkExperienceTypes.Is400Hours).ShouldBeTrue();
+  }
+
+  [Fact]
   public async Task SaveDraftApplication_ExistingDraft_Saved()
   {
     var application = CreateDraftApplication();
