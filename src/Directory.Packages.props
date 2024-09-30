@@ -50,7 +50,7 @@
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageVersion Include="Serilog.Sinks.OpenTelemetry" Version="4.1.0" />
     <PackageVersion Include="Shouldly" Version="4.2.1" />
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.8.0" />
     <PackageVersion Include="WolverineFx" Version="2.1.2" />
     <PackageVersion Include="xunit" Version="2.9.1" />
     <PackageVersion Include="xunit.categories" Version="2.0.8" />
