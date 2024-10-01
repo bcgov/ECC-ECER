@@ -112,7 +112,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-text-field v-model="campusLocation" label="Campus Location (Optional)" variant="outlined" color="primary" maxlength="200"></v-text-field>
+            <v-text-field v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="200"></v-text-field>
           </v-col>
         </v-row>
         <v-row>
