@@ -194,7 +194,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     var contact = (from a in context.ecer_AuthenticationSet
                    join c in context.ContactSet on a.ecer_contact_ecer_authentication_455.ContactId equals c.ContactId into contacts
                    from c in contacts.DefaultIfEmpty()
-                   where a.ecer_IdentityProvider == identityProvider && a.ecer_ExternalID == userId
+                   where a.ecer_IdentityProvider == identityProvider && a.ecer_ExternalID == userId && c.ecer_IsVerified == true
                    select c).SingleOrDefault();
 
     if (contact == null)
@@ -203,6 +203,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         FirstName = "test1",
         LastName = "test1",
+        ecer_IsVerified = true,
         BirthDate = DateTime.Parse("2000-03-15", CultureInfo.InvariantCulture),
       };
 

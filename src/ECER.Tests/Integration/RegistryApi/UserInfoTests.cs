@@ -157,7 +157,7 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     })).ReadAsJsonAsync<UserInfo>().ShouldNotBeNull();
 
-    var userProfile = existingUserProfile with { LastName = Fixture.TestRunId };
+    var userProfile = existingUserProfile with { LastName = Fixture.TestRunId, GivenName = Fixture.TestRunId };
     await Host.Scenario(_ =>
     {
       _.WithNewUser(userIdentity);
