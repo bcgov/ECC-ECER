@@ -8,6 +8,7 @@
       </p>
       <br />
       <p>When we receive your transcript, we will:</p>
+      <br />
       <ul class="ml-10">
         <li>Attach it to your application</li>
         <li>Email you to let you know we've received it</li>
@@ -181,7 +182,7 @@
       </v-form>
     </v-col>
     <div v-else-if="mode === 'list'" class="w-100">
-      <v-col sm="12" md="10" lg="8" xl="6">
+      <v-col>
         <EducationList :educations="modelValue" @edit="handleEdit" @delete="handleDelete" />
       </v-col>
       <v-col cols="12" class="mt-6">
