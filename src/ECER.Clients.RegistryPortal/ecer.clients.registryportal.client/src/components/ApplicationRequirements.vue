@@ -20,10 +20,10 @@
       <ECEFiveYearRegistrantRequirements v-else-if="userStore.isRegistrant" />
       <ECEFiveYearRequirements v-else />
     </template>
-    <template v-if="applicationStore.isDraftCertificateTypeSne && !applicationStore.isDraftApplicationRenewal && userStore.isRegistrant">
+    <template v-else-if="applicationStore.isDraftCertificateTypeSne && !applicationStore.isDraftApplicationRenewal && userStore.isRegistrant">
       <ECESneRegistrantRequirements />
     </template>
-    <template v-if="applicationStore.isDraftCertificateTypeIte && !applicationStore.isDraftApplicationRenewal && userStore.isRegistrant">
+    <template v-else-if="applicationStore.isDraftCertificateTypeIte && !applicationStore.isDraftApplicationRenewal && userStore.isRegistrant">
       <ECEIteRegistrantRequirements />
     </template>
 
