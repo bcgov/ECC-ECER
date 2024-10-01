@@ -374,6 +374,8 @@ export default defineComponent({
 
         // Change mode to education list
         this.mode = "list";
+
+        window.scroll(0, 0);
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }
@@ -382,6 +384,7 @@ export default defineComponent({
       // Change mode to education list
       this.mode = "list";
       this.resetFormData();
+      window.scroll(0, 0);
     },
     handleAddEducation() {
       // Reset the form fields
