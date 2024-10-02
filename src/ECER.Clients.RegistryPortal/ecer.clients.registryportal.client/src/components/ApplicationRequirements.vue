@@ -3,12 +3,10 @@
     <Breadcrumb :items="items" />
     <template v-if="applicationStore.isDraftCertificateTypeEceAssistant">
       <ECEAssistantRenewalRequirements v-if="applicationStore.isDraftApplicationRenewal" />
-      <ECEAssistantRegistrantRequirements v-else-if="userStore.isRegistrant" />
       <ECEAssistantRequirements v-else />
     </template>
     <template v-if="applicationStore.isDraftCertificateTypeOneYear">
       <ECEOneYearRenewalRequirements v-if="applicationStore.isDraftApplicationRenewal" :expired="certificationStore.latestCertificateStatus === 'Expired'" />
-      <ECEOneYearRegistrantRequirements v-else-if="userStore.isRegistrant" />
       <ECEOneYearRequirements v-else />
     </template>
     <template v-if="applicationStore.isDraftCertificateTypeFiveYears">
@@ -45,10 +43,8 @@ import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import { useUserStore } from "@/store/user";
 
-import ECEAssistantRegistrantRequirements from "./ECEAssistantRegistrantRequirements.vue";
 import ECEFiveYearRegistrantRequirements from "./ECEFiveYearRegistrantRequirements.vue";
 import ECEIteRegistrantRequirements from "./ECEIteRegistrantRequirements.vue";
-import ECEOneYearRegistrantRequirements from "./ECEOneYearRegistrantRequirements.vue";
 import ECESneRegistrantRequirements from "./ECESneRegistrantRequirements.vue";
 
 export default defineComponent({
@@ -60,8 +56,6 @@ export default defineComponent({
     ECEAssistantRenewalRequirements,
     ECEOneYearRenewalRequirements,
     ECEFiveYearRenewalRequirements,
-    ECEAssistantRegistrantRequirements,
-    ECEOneYearRegistrantRequirements,
     ECEFiveYearRegistrantRequirements,
     ECEIteRegistrantRequirements,
     ECESneRegistrantRequirements,
