@@ -7,7 +7,7 @@
         </div>
       </template>
       <template #action>
-        <v-btn variant="text" @click="handleLearnMore">
+        <v-btn variant="text" @click="handleLearnMore(flow)">
           <a href="#" @click.prevent>Learn more</a>
         </v-btn>
       </template>
@@ -103,13 +103,10 @@ export default defineComponent({
       }
       return types;
     },
-    certificateTypes(): Components.Schemas.CertificationType[] {
-      return this.registrantFlows.map((flow) => flow.type);
-    },
   },
   methods: {
-    handleLearnMore() {
-      this.applicationStore.$patch({ draftApplication: { applicationType: "New", certificationTypes: this.certificateTypes } });
+    handleLearnMore(flow: RegistrantFlow) {
+      this.applicationStore.$patch({ draftApplication: { applicationType: "New", certificationTypes: [flow.type] } });
 
       this.$router.push({ name: "application-requirements" });
     },
