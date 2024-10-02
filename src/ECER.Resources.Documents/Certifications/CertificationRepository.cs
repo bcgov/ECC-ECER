@@ -27,8 +27,12 @@ internal class CertificationRepository : ICertificationRepository
     if (query.ByApplicantId != null) Certifications = Certifications.Where(r => r.ecer_Registrantid.Id == Guid.Parse(query.ByApplicantId));
 
     Certifications = Certifications.OrderByDescending(r => r.ecer_ExpiryDate);
-    context.LoadProperties(Certifications, ecer_Certificate.Fields.ecer_certifiedlevel_CertificateId);
-    context.LoadProperties(Certifications, ecer_Certificate.Fields.ecer_documenturl_CertificateId);
-    return mapper.Map<IEnumerable<Certification>>(Certifications.ToList());
+
+    var results = context.From(Certifications)
+      .Include(a => a.ecer_certifiedlevel_CertificateId)
+      .Include(a => a.ecer_documenturl_CertificateId)
+      .Execute();
+
+    return mapper.Map<IEnumerable<Certification>>(results)!.ToList();
   }
 }

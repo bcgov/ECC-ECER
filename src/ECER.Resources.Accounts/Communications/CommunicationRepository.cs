@@ -76,12 +76,19 @@ internal class CommunicationRepository : ICommunicationRepository
       communications = communications.OrderByDescending(item => item.ecer_DateNotified);
     }
 
-    context.LoadProperties(communications, ecer_Communication.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication);
+    var results = communications.ToList();
+    var files = context.bcgov_DocumentUrlSet.WhereIn(f => f.ecer_CommunicationId.Id, results.Select(c => c.ecer_CommunicationId!.Value)).ToList();
+    var filesPerCommunication = files.ToLookup(f => f.ecer_CommunicationId.Id);
+    var finalCommunications = mapper.Map<IEnumerable<Communication>>(results)!.ToList();
 
-    var finalCommunications = communications.ToList();
+    foreach (var communication in finalCommunications)
+    {
+      var docs = filesPerCommunication.SingleOrDefault(f => f.Key == Guid.Parse(communication.Id!));
+      communication.Documents = mapper.Map<IEnumerable<CommunicationDocument>>(docs)!.ToList();
+    }
     return new CommunicationResult
     {
-      Communications = mapper.Map<IEnumerable<Communication>>(finalCommunications),
+      Communications = finalCommunications,
       TotalMessagesCount = query.PageNumber > 0 ? paginatedTotalCommunicationCount : finalCommunications.Count,
     };
   }
