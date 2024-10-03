@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
@@ -42,6 +43,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     if (query.ByApplicantId != null) applications = applications.Where(r => r.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
 
     var results = context.From(applications)
+      .Join()
       .Include(a => a.ecer_transcript_Applicationid)
       .Include(a => a.ecer_workexperienceref_Applicationid_ecer)
       .Include(a => a.ecer_characterreference_Applicationid)
