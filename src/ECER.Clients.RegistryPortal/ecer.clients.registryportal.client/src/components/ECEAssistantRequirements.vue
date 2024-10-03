@@ -11,7 +11,7 @@
   </v-row>
   <v-row>
     <v-col>
-      <ECEHeader title="Education Information"></ECEHeader>
+      <ECEHeader title="Education information"></ECEHeader>
       <p>You must have completed an early childhood education course in at least one of the following:</p>
       <br />
       <ul class="ml-10">
