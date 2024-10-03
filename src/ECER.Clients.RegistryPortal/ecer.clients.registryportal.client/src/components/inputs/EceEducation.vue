@@ -336,7 +336,7 @@ export default defineComponent({
   watch: {
     mode(newValue) {
       if (newValue === "list") {
-        scrollToElement(this.$refs.addEducationComponent as HTMLElement, "smooth");
+        scrollToElement(this.$refs.addEducationComponent as HTMLElement);
       }
     },
   },
