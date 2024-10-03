@@ -1,6 +1,17 @@
 @import "./colors.scss";
+// disabled step styling
+.v-stepper-item {
+  color: #{$grey-stepper};
+  .v-avatar {
+    background-color: #{$grey-stepper};
+  }
+}
 
 .v-stepper-item--selected {
   font-weight: bold;
+  color: #{$primary};
+}
+
+.v-stepper-item--completed {
   color: #{$links};
 }

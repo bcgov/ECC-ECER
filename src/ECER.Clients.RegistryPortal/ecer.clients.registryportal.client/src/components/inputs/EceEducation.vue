@@ -8,6 +8,7 @@
       </p>
       <br />
       <p>When we receive your transcript, we will:</p>
+      <br />
       <ul class="ml-10">
         <li>Attach it to your application</li>
         <li>Email you to let you know we've received it</li>
@@ -111,7 +112,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-text-field v-model="campusLocation" label="Campus Location (Optional)" variant="outlined" color="primary" maxlength="200"></v-text-field>
+            <v-text-field v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="200"></v-text-field>
           </v-col>
         </v-row>
         <v-row>
@@ -181,7 +182,7 @@
       </v-form>
     </v-col>
     <div v-else-if="mode === 'list'" class="w-100">
-      <v-col sm="12" md="10" lg="8" xl="6">
+      <v-col>
         <EducationList :educations="modelValue" @edit="handleEdit" @delete="handleDelete" />
       </v-col>
       <v-col cols="12" class="mt-6">
@@ -373,6 +374,8 @@ export default defineComponent({
 
         // Change mode to education list
         this.mode = "list";
+
+        window.scroll(0, 0);
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }
@@ -381,6 +384,7 @@ export default defineComponent({
       // Change mode to education list
       this.mode = "list";
       this.resetFormData();
+      window.scroll(0, 0);
     },
     handleAddEducation() {
       // Reset the form fields
