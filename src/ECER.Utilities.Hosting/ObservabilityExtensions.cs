@@ -60,7 +60,7 @@ public static class ObservabilityExtensions
       {
         logger.Warning("OpenTelemetry is disabled; logs will not be sent");
       }
-    });
+    }, preserveStaticLogger: true);
 
     if (otelEnabled && otelEndpoint != null)
     {

@@ -10,7 +10,7 @@
       />
       <v-container>
         <!-- prettier-ignore -->
-        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" href="#" @click.prevent="handleBack">
+        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1 && showSaveButtons" href="#" @click.prevent="handleBack">
           <v-icon large>mdi-chevron-left</v-icon>Back to previous step
         </a>
       </v-container>

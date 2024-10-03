@@ -1,206 +1,205 @@
 <template>
-  <div ref="addEducationComponent">
-    <v-row v-if="mode === 'add'">
-      <v-col>
-        <h2>{{ clientId ? "Edit" : "Add" }} education</h2>
-        <br />
-        <p>
-          You'll need to request an official transcript from your educational institution for this course or program. It must be sent to us directly from them.
-        </p>
-        <br />
-        <p>When we receive your transcript, we will:</p>
-        <ul class="ml-10">
-          <li>Attach it to your application</li>
-          <li>Email you to let you know we've received it</li>
-        </ul>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col v-if="mode === 'add'" md="8" lg="6" xl="4">
-        <v-form ref="addEducationForm" validate-on="input">
-          <v-row>
-            <v-col>
-              <h3>How will you provide your transcript?</h3>
-            </v-col>
-          </v-row>
+  <v-row v-if="mode === 'add'">
+    <v-col>
+      <h2>{{ clientId ? "Edit" : "Add" }} education</h2>
+      <br />
+      <p>
+        You'll need to request an official transcript from your educational institution for this course or program. It must be sent to us directly from them.
+      </p>
+      <br />
+      <p>When we receive your transcript, we will:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Attach it to your application</li>
+        <li>Email you to let you know we've received it</li>
+      </ul>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col v-if="mode === 'add'" md="8" lg="6" xl="4">
+      <v-form ref="addEducationForm" validate-on="input">
+        <v-row>
+          <v-col>
+            <h3>How will you provide your transcript?</h3>
+          </v-col>
+        </v-row>
 
-          <v-row>
-            <v-radio-group v-model="transcriptStatus" :rules="[Rules.required('Indicate the status of your transcript(s)')]" color="primary">
-              <v-radio label="I have requested the official transcript from my education institution" value="requested"></v-radio>
-              <v-radio
-                label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
-                value="received"
-              ></v-radio>
-            </v-radio-group>
-          </v-row>
-          <v-row>
-            <v-col>
-              <h3>What program did you take?</h3>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col>
-              <v-text-field
-                v-model="program"
-                :rules="[Rules.required('Enter the name of your program or course')]"
-                label="Name of program or course"
-                variant="outlined"
-                color="primary"
-                maxlength="100"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field
-                v-model="startYear"
-                :rules="[
-                  Rules.required('Enter the start date'),
-                  Rules.futureDateNotAllowedRule(),
-                  Rules.conditionalWrapper(
-                    isDraftApplicationAssistantRenewal,
-                    Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'Start date must be within the last 5 years'),
-                  ),
-                ]"
-                label="Start date of program or course"
-                type="date"
-                variant="outlined"
-                color="primary"
-                maxlength="50"
-                :max="today"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field
-                v-model="endYear"
-                :rules="[
-                  Rules.required('Enter the end date'),
-                  Rules.futureDateNotAllowedRule(),
-                  Rules.conditionalWrapper(
-                    isDraftApplicationAssistantRenewal,
-                    Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'End date must be within the last 5 years'),
-                  ),
-                ]"
-                label="End date of program or course"
-                type="date"
-                variant="outlined"
-                color="primary"
-                maxlength="50"
-                :max="today"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <h3>Where did you take it?</h3>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field
-                v-model="school"
-                :rules="[Rules.required('Enter the name of the educational institution')]"
-                label="Full name of educational institution"
-                variant="outlined"
-                color="primary"
-                maxlength="100"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="campusLocation" label="Campus Location (Optional)" variant="outlined" color="primary" maxlength="200"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="language" label="Language of institution (optional)" variant="outlined" color="primary" maxlength="100"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <h3>Name and student number on transcript</h3>
-              <br />
-              <p>Make sure this exactly matches your transcript. It may cause delays if we cannot match a transcript we receive to your application.</p>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field
-                v-model="studentNumber"
-                :rules="[Rules.required('Enter your student number or ID')]"
-                label="Student number or ID"
-                variant="outlined"
-                color="primary"
-                maxlength="100"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <br />
-          <p>What name is shown on your transcript?</p>
-          <br />
-          <v-radio-group v-model="previousNameRadio" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="previousNameRadioChanged">
-            <v-radio v-for="(step, index) in ApplicantNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
+        <v-row>
+          <v-radio-group v-model="transcriptStatus" :rules="[Rules.required('Indicate the status of your transcript(s)')]" color="primary">
+            <v-radio label="I have requested the official transcript from my education institution" value="requested"></v-radio>
+            <v-radio
+              label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
+              value="received"
+            ></v-radio>
           </v-radio-group>
-          <div v-if="previousNameRadio === 'other'">
-            <v-row>
-              <v-col>
-                <v-text-field v-model="studentFirstName" label="First name on transcript" variant="outlined" color="primary" maxlength="100"></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-text-field
-                  v-model="studentMiddleName"
-                  label="Middle name(s) on transcript (optional)"
-                  variant="outlined"
-                  color="primary"
-                  maxlength="100"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-text-field
-                  v-model="studentLastName"
-                  :rules="[Rules.required('Enter your last name')]"
-                  label="Last name on transcript"
-                  variant="outlined"
-                  color="primary"
-                  maxlength="100"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </div>
-          <v-row justify="start" class="ml-1 mt-3">
-            <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Education</v-btn>
-            <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
+        </v-row>
+        <v-row>
+          <v-col>
+            <h3>What program did you take?</h3>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="program"
+              :rules="[Rules.required('Enter the name of your program or course')]"
+              label="Name of program or course"
+              variant="outlined"
+              color="primary"
+              maxlength="100"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="startYear"
+              :rules="[
+                Rules.required('Enter the start date'),
+                Rules.futureDateNotAllowedRule(),
+                Rules.conditionalWrapper(
+                  isDraftApplicationAssistantRenewal,
+                  Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'Start date must be within the last 5 years'),
+                ),
+              ]"
+              label="Start date of program or course"
+              type="date"
+              variant="outlined"
+              color="primary"
+              maxlength="50"
+              :max="today"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="endYear"
+              :rules="[
+                Rules.required('Enter the end date'),
+                Rules.futureDateNotAllowedRule(),
+                Rules.conditionalWrapper(
+                  isDraftApplicationAssistantRenewal,
+                  Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'End date must be within the last 5 years'),
+                ),
+              ]"
+              label="End date of program or course"
+              type="date"
+              variant="outlined"
+              color="primary"
+              maxlength="50"
+              :max="today"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <h3>Where did you take it?</h3>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="school"
+              :rules="[Rules.required('Enter the name of the educational institution')]"
+              label="Full name of educational institution"
+              variant="outlined"
+              color="primary"
+              maxlength="100"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-text-field v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="200"></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-text-field v-model="language" label="Language of institution (optional)" variant="outlined" color="primary" maxlength="100"></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <h3>Name and student number on transcript</h3>
+            <br />
+            <p>Make sure this exactly matches your transcript. It may cause delays if we cannot match a transcript we receive to your application.</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="studentNumber"
+              :rules="[Rules.required('Enter your student number or ID')]"
+              label="Student number or ID"
+              variant="outlined"
+              color="primary"
+              maxlength="100"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <br />
+        <p>What name is shown on your transcript?</p>
+        <br />
+        <v-radio-group v-model="previousNameRadio" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="previousNameRadioChanged">
+          <v-radio v-for="(step, index) in applicantNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
+        </v-radio-group>
+        <div v-if="previousNameRadio === 'other'">
+          <v-row>
+            <v-col>
+              <v-text-field v-model="studentFirstName" label="First name on transcript" variant="outlined" color="primary" maxlength="100"></v-text-field>
+            </v-col>
           </v-row>
-        </v-form>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="studentMiddleName"
+                label="Middle name(s) on transcript (optional)"
+                variant="outlined"
+                color="primary"
+                maxlength="100"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="studentLastName"
+                :rules="[Rules.required('Enter your last name')]"
+                label="Last name on transcript"
+                variant="outlined"
+                color="primary"
+                maxlength="100"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </div>
+        <v-row justify="start" class="ml-1 mt-3">
+          <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Education</v-btn>
+          <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
+        </v-row>
+      </v-form>
+    </v-col>
+    <div v-else-if="mode === 'list'" class="w-100">
+      <v-col>
+        <EducationList :educations="modelValue" @edit="handleEdit" @delete="handleDelete" />
       </v-col>
-      <div v-else-if="mode === 'list'" class="w-100">
-        <v-col sm="12" md="10" lg="8" xl="6">
-          <EducationList :educations="modelValue" @edit="handleEdit" @delete="handleDelete" />
-        </v-col>
-        <v-col cols="12" class="mt-6">
-          <v-row justify="start" class="ml-1">
-            <v-btn v-if="showAddEducationButton" prepend-icon="mdi-plus" rounded="lg" color="alternate" @click="handleAddEducation">Add education</v-btn>
-          </v-row>
-        </v-col>
-        <v-col>
-          <!-- this prevents form from proceeding if rules are not met -->
-          <v-input
-            :model-value="modelValue"
-            :rules="[(v) => Object.keys(v).length > 0 || 'You must enter at least 1 education entry']"
-            auto-hide="auto"
-          ></v-input>
-        </v-col>
-      </div>
-    </v-row>
-  </div>
+      <v-col cols="12" class="mt-6">
+        <v-row justify="start" class="ml-1">
+          <v-btn v-if="showAddEducationButton" prepend-icon="mdi-plus" rounded="lg" color="alternate" @click="handleAddEducation">Add education</v-btn>
+        </v-row>
+      </v-col>
+      <v-col>
+        <!-- this prevents form from proceeding if rules are not met -->
+        <v-input
+          :model-value="modelValue"
+          :rules="[(v) => Object.keys(v).length > 0 || 'You must enter at least 1 education entry']"
+          auto-hide="auto"
+        ></v-input>
+      </v-col>
+    </div>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -298,11 +297,11 @@ export default defineComponent({
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
     },
-    ApplicantNameRadioOptions(): RadioOptions[] {
+    applicantNameRadioOptions(): RadioOptions[] {
       let legalNameRadioOptions: RadioOptions[] = [
         {
           label: this.userStore.legalName,
-          value: { firstName: this.userStore.firstName, middleName: this.userStore.middleName, lastName: this.userStore.lastName },
+          value: { firstName: this.userStore.firstName || null, middleName: this.userStore.middleName || null, lastName: this.userStore.lastName || null },
         },
       ];
       return [...legalNameRadioOptions, ...this.previousNameRadioOptions];
@@ -329,13 +328,6 @@ export default defineComponent({
     },
     today() {
       return formatDate(DateTime.now().toString());
-    },
-  },
-  watch: {
-    mode(newValue) {
-      if (newValue === "list") {
-        this.scrollToElement(this.$refs.addEducationComponent);
-      }
     },
   },
   mounted() {
@@ -382,6 +374,8 @@ export default defineComponent({
 
         // Change mode to education list
         this.mode = "list";
+
+        window.scroll(0, 0);
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }
@@ -390,6 +384,7 @@ export default defineComponent({
       // Change mode to education list
       this.mode = "list";
       this.resetFormData();
+      window.scroll(0, 0);
     },
     handleAddEducation() {
       // Reset the form fields
@@ -422,16 +417,16 @@ export default defineComponent({
       }
       //set the radio button for previous names and field buttons correctly
       if (educationData.education.isNameUnverified) {
-        let index = this.previousNameRadioOptions.findIndex((option) => option.value === "other");
-        this.previousNameRadio = this.previousNameRadioOptions[index].value;
+        let index = this.applicantNameRadioOptions.findIndex((option) => option.value === "other");
+        this.previousNameRadio = this.applicantNameRadioOptions[index].value;
       } else {
-        let index = this.previousNameRadioOptions.findIndex(
+        let index = this.applicantNameRadioOptions.findIndex(
           (option) =>
             option.value?.firstName === educationData.education.studentFirstName &&
             option.value?.lastName === educationData.education.studentLastName &&
             option.value?.middleName === educationData.education.studentMiddleName,
         );
-        this.previousNameRadio = this.previousNameRadioOptions[index].value;
+        this.previousNameRadio = this.applicantNameRadioOptions[index].value;
       }
       // Change mode to add
       this.mode = "add";
@@ -479,11 +474,6 @@ export default defineComponent({
       this.studentLastName = "";
       this.isNameUnverified = true;
       this.previousNameRadio = undefined;
-    },
-    scrollToElement(element: any) {
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
     },
     formatDate,
   },

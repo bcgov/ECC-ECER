@@ -44,7 +44,8 @@ public class FileEndpoints : IRegisterEndpoints
         CancellationToken ct) =>
       {
         //modify the max request body size for this requeset
-        httpContext.Features.Get<IHttpMaxRequestBodySizeFeature>()!.MaxRequestBodySize = FILE_MAX_SIZE;
+        var feature = httpContext.Features.Get<IHttpMaxRequestBodySizeFeature>();
+        if (feature != null) feature.MaxRequestBodySize = FILE_MAX_SIZE;
 
         var fileProperties = new FileProperties() { Classification = classification, Tags = tags };
         var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, folder ?? string.Empty), fileProperties, file.FileName, file.ContentType, file.OpenReadStream())).ToList();

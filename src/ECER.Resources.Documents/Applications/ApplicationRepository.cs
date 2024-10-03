@@ -41,19 +41,14 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     if (query.ById != null) applications = applications.Where(r => r.ecer_ApplicationId == Guid.Parse(query.ById));
     if (query.ByApplicantId != null) applications = applications.Where(r => r.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
 
-    context.LoadProperties(applications, ecer_Application.Fields.ecer_transcript_Applicationid);
-    context.LoadProperties(applications, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer);
-    context.LoadProperties(applications, ecer_Application.Fields.ecer_characterreference_Applicationid);
-    context.LoadProperties(applications, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi);
-    foreach (var application in applications)
-    {
-      if (application.ecer_ecer_professionaldevelopment_Applicationi != null)
-      {
-        context.LoadProperties(application.ecer_ecer_professionaldevelopment_Applicationi, ecer_ProfessionalDevelopment.Fields.ecer_bcgov_documenturl_ProfessionalDevelopmentId);
-      }
-    }
+    var results = context.From(applications)
+      .Include(a => a.ecer_transcript_Applicationid)
+      .Include(a => a.ecer_workexperienceref_Applicationid_ecer)
+      .Include(a => a.ecer_characterreference_Applicationid)
+      .Include(a => a.ecer_ecer_professionaldevelopment_Applicationi)
+      .Execute();
 
-    return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
+    return mapper.Map<IEnumerable<Application>>(results)!.ToList();
   }
 
   public async Task<string> SaveDraft(Application application, CancellationToken cancellationToken)

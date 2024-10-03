@@ -13,7 +13,7 @@ internal partial class ApplicationRepository
 
     foreach (var reference in existingCharacterReferences)
     {
-      if (!updatedEntities.Any(t => t.Id == reference.Id))
+      if (!updatedEntities.Any(t => t.ecer_CharacterReferenceId == reference.ecer_CharacterReferenceId))
       {
         context.DeleteObject(reference);
       }
@@ -21,7 +21,7 @@ internal partial class ApplicationRepository
 
     foreach (var reference in updatedEntities.Where(d => d.ecer_CharacterReferenceId != null))
     {
-      var oldReference = existingCharacterReferences.SingleOrDefault(t => t.Id == reference.Id);
+      var oldReference = existingCharacterReferences.SingleOrDefault(t => t.ecer_CharacterReferenceId == reference.ecer_CharacterReferenceId);
       if (oldReference != null)
       {
         context.Detach(oldReference);

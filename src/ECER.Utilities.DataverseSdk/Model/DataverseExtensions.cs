@@ -1,12 +1,14 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using System.ServiceModel;
-using System.Text;
-using Microsoft.Crm.Sdk.Messages;
+﻿using Microsoft.Crm.Sdk.Messages;
 using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
+using Microsoft.Xrm.Sdk.Query;
+using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.ServiceModel;
+using System.Text;
 
 namespace Microsoft.Xrm.Sdk.Client;
 
@@ -38,13 +40,9 @@ public static class DataverseExtensions
 
   public static void LoadProperties([NotNull] this OrganizationServiceContext context, IEnumerable<Entity> entities, params string[] propertyNames)
   {
-    Parallel.ForEach(entities, entity =>
-    {
-      foreach (var property in propertyNames)
-      {
-        context.LoadProperty(entity, property);
-      }
-    });
+    ArgumentNullException.ThrowIfNull(entities);
+    ArgumentNullException.ThrowIfNull(propertyNames);
+    entities.AsParallel().ForAll(e => propertyNames.AsParallel().ForAll(p => context.LoadProperty(e, p)));
   }
 
   private const int FileBlockSize = 4 * 1024 * 1024; // 4 MB
@@ -245,6 +243,30 @@ public static class DataverseExtensions
     var lambda = Expression.Lambda<Func<TSource, bool>>(body, element);
 
     return source.Where(lambda);
+  }
+
+#pragma warning disable S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
+
+  private static readonly MethodInfo translateMethod =
+    Assembly.GetAssembly(typeof(Entity))!
+    .GetType("Microsoft.Xrm.Sdk.Linq.QueryProvider")!
+    .GetMethod("GetQueryExpression", BindingFlags.NonPublic | BindingFlags.Instance)!;
+
+  private static readonly Type linkLookupListType =
+    Assembly.GetAssembly(typeof(Entity))!
+    .GetType("Microsoft.Xrm.Sdk.Linq.QueryProvider")!
+    .GetNestedType("LinkLookup", BindingFlags.NonPublic)!;
+
+#pragma warning restore S3011 // Reflection should not be used to increase accessibility of classes, methods, or fields
+
+  /// <summary>
+  /// Converts a LINQ CRM query to QueryExpression by invoking the CRM LINQ QueryProvider's internal capability
+  /// </summary>
+  public static QueryExpression ToQueryExpression<T>(this IQueryable<T> query)
+  {
+    // `QueryProvider.Translate` method has a bug (link lookup list is initialized to null) so it fails - this is cloning the correct implementation
+    object?[] args = [query.Expression, null, null, null, null, (Activator.CreateInstance(typeof(List<>).MakeGenericType(linkLookupListType)))];
+    return (QueryExpression)translateMethod.Invoke(query.Provider, args)!;
   }
 }
 
