@@ -137,7 +137,7 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col>
+    <v-col sm="12" md="10" lg="8" xl="6">
       <EducationCard
         v-for="(education, id) in educations"
         :key="id"
