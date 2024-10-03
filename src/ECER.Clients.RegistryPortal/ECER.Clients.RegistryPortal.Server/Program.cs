@@ -132,25 +132,27 @@ internal class Program
 
       var app = builder.Build();
 
+      if (app.Environment.IsDevelopment())
+      {
+        app.UseSwaggerUI();
+      }
+
       app.UseHealthChecks();
       app.UseObservabilityMiddleware();
-      app.UseDisableHttpVerbsMiddleware(app.Configuration.GetValue("DisabledHttpVerbs", string.Empty));
       app.UseRequestDecompression();
+      app.UseExceptionHandler();
       app.UseResponseCompression();
-      app.UseCsp();
       app.UseSecurityHeaders();
+      app.UseDisableHttpVerbsMiddleware(app.Configuration.GetValue("DisabledHttpVerbs", string.Empty));
+      app.UseCsp();
+      app.UseCors();
       app.UseStaticFiles();
       app.MapFallbackToFile("index.html");
-      app.UseCors();
       app.UseOutputCache();
       app.UseResponseCaching();
       app.UseAuthentication();
       app.UseAuthorization();
-
       app.UseSwagger();
-      if (app.Environment.IsDevelopment())
-        app.UseSwaggerUI();
-
       app.RegisterApiEndpoints();
 
       await app.RunAsync();

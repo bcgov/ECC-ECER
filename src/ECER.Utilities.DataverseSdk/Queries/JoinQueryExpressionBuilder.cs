@@ -1,34 +1,26 @@
-﻿using Microsoft.Xrm.Sdk.Messages;
+﻿using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk.Query;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Microsoft.Xrm.Sdk.Client;
+namespace ECER.Utilities.DataverseSdk.Queries;
 
-public class QueryExpressionBuilder<TEntity> where TEntity : Entity
+public class JoinQueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEntity>
+  where TEntity : Entity
 {
-  private readonly Dictionary<string, IncludeMetadata> map = new();
-  private readonly OrganizationServiceContext context;
-  private readonly QueryExpression query;
+  private readonly Dictionary<string, IncludeMetadata> map;
 
-  public QueryExpressionBuilder(OrganizationServiceContext context, QueryExpression query)
-  {
-    this.context = context;
-    this.query = query;
-  }
+  protected internal JoinQueryExpressionBuilder(QueryExpressionBuilder<TEntity> parentBuilder) : base(parentBuilder)
 
-  protected QueryExpressionBuilder(QueryExpressionBuilder<TEntity> parentBuilder)
   {
-    ArgumentNullException.ThrowIfNull(parentBuilder);
-    this.context = parentBuilder.context;
-    this.query = parentBuilder.query;
-    this.map = parentBuilder.map;
+    map = parentBuilder is JoinQueryExpressionBuilder<TEntity> join ? join.map : [];
   }
 
   /// <summary>
   /// Includes a relation of an entity using a 1:N relation selector in a query.
   /// </summary>
-  public LinkEntityQueryExpressionBuilder<TEntity, TRelatedEntity> Include<TRelatedEntity>(
+  public NestedJoinQueryExpressionBuilder<TEntity, TRelatedEntity> Include<TRelatedEntity>(
     Expression<Func<TEntity, IEnumerable<TRelatedEntity>>> relationSelector)
     where TRelatedEntity : Entity
   {
@@ -36,13 +28,13 @@ public class QueryExpressionBuilder<TEntity> where TEntity : Entity
 
     var relationPropertyName = ((MemberExpression)relationSelector.Body).Member.Name;
     var link = AddOneToManyLink<TEntity, TRelatedEntity>(relationPropertyName);
-    return new LinkEntityQueryExpressionBuilder<TEntity, TRelatedEntity>(this, link);
+    return new NestedJoinQueryExpressionBuilder<TEntity, TRelatedEntity>(this, link);
   }
 
   /// <summary>
   /// Includes a relation of an entity using a N:1 relation selector in a query.
   /// </summary>
-  public LinkEntityQueryExpressionBuilder<TEntity, TRelatedEntity> Include<TRelatedEntity>(
+  public NestedJoinQueryExpressionBuilder<TEntity, TRelatedEntity> Include<TRelatedEntity>(
     Expression<Func<TEntity, TRelatedEntity>> relationSelector)
     where TRelatedEntity : Entity
   {
@@ -50,7 +42,7 @@ public class QueryExpressionBuilder<TEntity> where TEntity : Entity
 
     var relationPropertyName = ((MemberExpression)relationSelector.Body).Member.Name;
     var link = AddManyToOneLink<TEntity, TRelatedEntity>(relationPropertyName);
-    return new LinkEntityQueryExpressionBuilder<TEntity, TRelatedEntity>(this, link);
+    return new NestedJoinQueryExpressionBuilder<TEntity, TRelatedEntity>(this, link);
   }
 
   protected LinkEntity AddOneToManyLink<TEntity1, TRelatedEntity1>(string relationPropertyName)
@@ -91,32 +83,24 @@ public class QueryExpressionBuilder<TEntity> where TEntity : Entity
   private LinkEntity AddLink(string linkToEntityName, string linkFromAttributedName, string linkToAttributedName, Type relatedEntityType, string entityRelationName, string relatedEntityIdAttributeName)
   {
     map.Add(relatedEntityType.Name, new IncludeMetadata(relatedEntityType, relatedEntityIdAttributeName, linkToEntityName, entityRelationName));
-    var link = query.AddLink(linkToEntityName, linkFromAttributedName, linkToAttributedName, JoinOperator.LeftOuter);
+    var link = Query.AddLink(linkToEntityName, linkFromAttributedName, linkToAttributedName, JoinOperator.LeftOuter);
     link.Columns.AllColumns = true;
     link.EntityAlias = relatedEntityType.Name;
     return link;
   }
 
   /// <summary>
-  /// Executes the query and returns the results.
+  /// Run the join on the server and return the results
   /// </summary>
-  public IEnumerable<TEntity> Execute()
+  public override IEnumerable<TEntity> Execute()
   {
-    var results = (RetrieveMultipleResponse)context.Execute(new RetrieveMultipleRequest { Query = query });
-
-    var entities = Materialize(results.EntityCollection).ToList();
+    var entities = Materialize(RetreiveEntities()).ToList();
 
 #pragma warning disable S125 // Sections of code should not be commented out
-
-    // temporarily removed tracking - in n:1 relationships the 1 object may be duplicate and Attach fails
-    //if (context.MergeOption != MergeOption.NoTracking)
-    //{
-    //  //add entities to the context if tracking is enabled
-    //  foreach (var entity in entities) context.Attach(entity);
-    //}
+    //AttachEntities(entities);
+#pragma warning restore S125 // Sections of code should not be commented out
 
     return entities;
-#pragma warning restore S125 // Sections of code should not be commented out
   }
 
   private IEnumerable<TEntity> Materialize(EntityCollection entityCollection)
@@ -156,62 +140,4 @@ public class QueryExpressionBuilder<TEntity> where TEntity : Entity
   }
 
   private sealed record IncludeMetadata(Type EntityType, string EntityIdAttributeName, string EntityLogicalName, string RelationshipAttributeName);
-}
-
-public class LinkEntityQueryExpressionBuilder<TEntity, TChildEntity> : QueryExpressionBuilder<TEntity>
-  where TEntity : Entity
-  where TChildEntity : Entity
-
-{
-  private readonly LinkEntity linkEntity;
-
-  public LinkEntityQueryExpressionBuilder(QueryExpressionBuilder<TEntity> parentBuilder, LinkEntity linkEntity) : base(parentBuilder)
-  {
-    this.linkEntity = linkEntity;
-  }
-
-  /// <summary>
-  /// Includes a nested relation of a child entity using the specified relation and attributes.
-  /// </summary>
-  public LinkEntityQueryExpressionBuilder<TEntity, TChildEntity> IncludeNested<TRelatedEntity>(
-    string entityLogicalName,
-    string primaryKeyAttributeName,
-    string relationAttributeName,
-    string linkFromAttributeName,
-    string linkToAttributeName)
-    where TRelatedEntity : Entity
-  {
-    var relatedEntityType = typeof(TRelatedEntity)!;
-    var parentEntityType = typeof(TChildEntity);
-    var link = linkEntity.AddLink(entityLogicalName, linkFromAttributeName, linkToAttributeName, JoinOperator.LeftOuter);
-    link.Columns.AllColumns = true;
-    link.EntityAlias = $"{parentEntityType.Name}.{relatedEntityType.Name}";
-
-    return new LinkEntityQueryExpressionBuilder<TEntity, TChildEntity>(this, link);
-  }
-
-  /// <summary>
-  /// Includes a child of a related entity using a relation selector in a query.
-  /// </summary>
-  public LinkEntityQueryExpressionBuilder<TEntity, TChildEntity> IncludeChild<TRelatedEntity>(
-    Expression<Func<TChildEntity, IEnumerable<TRelatedEntity>>> relationSelector
-    )
-    where TRelatedEntity : Entity
-  {
-    ArgumentNullException.ThrowIfNull(relationSelector);
-
-    var relationPropertyName = ((MemberExpression)relationSelector.Body).Member.Name;
-    var link = AddOneToManyLink<TChildEntity, TRelatedEntity>(relationPropertyName);
-    return new LinkEntityQueryExpressionBuilder<TEntity, TChildEntity>(this, link);
-  }
-}
-
-public static class QueryExpressionBuilderExtensions
-{
-  /// <summary>
-  /// Creates a query expression builder from a LINQ query
-  /// </summary>
-  public static QueryExpressionBuilder<TEntity> From<TEntity>(this OrganizationServiceContext context, IQueryable<TEntity> query)
-    where TEntity : Entity
-    => new QueryExpressionBuilder<TEntity>(context, query.ToQueryExpression());
 }

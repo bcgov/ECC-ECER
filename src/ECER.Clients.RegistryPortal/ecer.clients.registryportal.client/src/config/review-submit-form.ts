@@ -3,7 +3,7 @@ import type { Form } from "@/types/form";
 
 const reviewAndSubmit: Form = {
   id: "reviewAndSubmitForm",
-  title: "Review and Submit",
+  title: "Review and submit",
   inputs: {
     reviewAndSubmit: {
       id: "reviewAndSubmit",
