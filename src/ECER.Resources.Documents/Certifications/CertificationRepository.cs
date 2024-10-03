@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
-using Microsoft.Xrm.Sdk.Client;
+using ECER.Utilities.DataverseSdk.Queries;
 
 namespace ECER.Resources.Documents.Certifications;
 
@@ -29,6 +29,7 @@ internal class CertificationRepository : ICertificationRepository
     Certifications = Certifications.OrderByDescending(r => r.ecer_ExpiryDate);
 
     var results = context.From(Certifications)
+      .Join()
       .Include(a => a.ecer_certifiedlevel_CertificateId)
       .Include(a => a.ecer_documenturl_CertificateId)
       .Execute();

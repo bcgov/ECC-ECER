@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
@@ -66,6 +67,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     if (query.ByDateOfBirth != null) contacts = contacts.Where(r => r.BirthDate == query.ByDateOfBirth.Value.ToDateTime(TimeOnly.MinValue).Date);
 
     var results = context.From(contacts)
+      .Join()
       .Include(a => a.ecer_contact_ecer_authentication_455)
       .Include(a => a.ecer_previousname_Contactid)
       .Execute();
