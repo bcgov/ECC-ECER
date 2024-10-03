@@ -152,3 +152,25 @@ export function sanitizeFilename(filename: string) {
   // eslint-disable-next-line no-control-regex
   return filename.replace(/[^\x00-\x7F]/g, "");
 }
+
+/**
+ * Scrolls to a given element using specified options for behavior, block, and inline alignment.
+ *
+ * @param {HTMLElement} element - The element to scroll to.
+ * @param {ScrollBehavior} [behavior='smooth'] - The scroll behavior ('auto', 'smooth').
+ * @param {ScrollLogicalPosition} [block='start'] - The vertical alignment ('start', 'center', 'end', 'nearest').
+ * @param {ScrollLogicalPosition} [inline='nearest'] - The horizontal alignment ('start', 'center', 'end', 'nearest').
+ */
+export function scrollToElement(
+  element: HTMLElement | null,
+  behavior: ScrollBehavior = "smooth",
+  block: ScrollLogicalPosition = "start",
+  inline: ScrollLogicalPosition = "nearest",
+) {
+  if (!element) {
+    console.error("scrollToElement() :: element not found");
+    return;
+  }
+
+  element.scrollIntoView({ behavior, block, inline });
+}

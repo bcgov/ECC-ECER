@@ -32,7 +32,7 @@
       <ECEFiveYearRequirements v-if="applicationStore.isDraftCertificateTypeFiveYears" />
     </template>
 
-    <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Apply Now</v-btn>
+    <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Apply now</v-btn>
   </v-container>
 </template>
 

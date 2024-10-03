@@ -40,6 +40,6 @@ public class ApiWebAppFixture : WebAppFixtureBase
   public override async Task DisposeAsync()
   {
     await Task.CompletedTask;
-    serviceScope.Dispose();
+    serviceScope?.Dispose();
   }
 }
