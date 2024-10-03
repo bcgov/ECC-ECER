@@ -1,47 +1,59 @@
 <template>
   <ECEHeader title="Specialized certification options" />
   <div class="d-flex flex-column ga-3 my-6">
+    <p>There are 2 types of specialized certifications in B.C. that you can add to your ECE Five Year certificate.</p>
+    <ol class="ml-10">
+      <li>Infant and Toddler Educator (ITE)</li>
+      <ul class="ml-10" style="list-style-type: disc">
+        <li>You must have completed an infant and toddler educator training program</li>
+      </ul>
+
+      <li>Special Needs Educator (SNE)</li>
+      <ul class="ml-10" style="list-style-type: disc">
+        <li>You must have completed a special needs early childhood educator training program</li>
+      </ul>
+    </ol>
     <p>
-      If you've completed a
-      <a
-        href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-      >
-        specialized program recognized by the ECE Registry
-      </a>
-      you can add these to your application.
-    </p>
-    <p>
-      You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
+      You’ll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
       Registry.
     </p>
-    <p>Do you want to apply for Infant and Toddler Educator (ITE) certification?</p>
-    <v-radio-group
-      :model-value="applicationStore.isDraftCertificateTypeIte"
-      hide-details="auto"
-      :rules="[Rules.requiredRadio('Select an option')]"
-      @update:model-value="handleIteSelection"
-    >
-      <v-radio label="Yes - and I've completed an infant and toddler educator training program" :value="true"></v-radio>
-      <v-radio label="No" :value="false"></v-radio>
-    </v-radio-group>
-    <p>Do you want to apply for Special Needs Educator (SNE) certification?</p>
-    <v-radio-group
-      :model-value="applicationStore.isDraftCertificateTypeSne"
-      hide-details="auto"
-      :rules="[Rules.requiredRadio('Select an option')]"
-      @update:model-value="handleSneSelection"
-    >
-      <v-radio label="Yes - and I've completed a special needs early childhood educator training program" :value="true"></v-radio>
-      <v-radio label="No" :value="false"></v-radio>
-    </v-radio-group>
+    <p class="mt-6">What do you want to add to your certificate?</p>
+    <v-form ref="specializationForm" validate-on="lazy">
+      <v-checkbox
+        v-model="selected"
+        class="ml-n2"
+        value="Ite"
+        color="primary"
+        label="Add Infant and Toddler Educator (ITE)"
+        hide-details="auto"
+        @update:model-value="handleSelection"
+      ></v-checkbox>
+
+      <v-checkbox
+        v-model="selected"
+        class="ml-n2"
+        value="Sne"
+        color="primary"
+        label="Add Special Needs Educator (SNE)"
+        hide-details="auto"
+        @update:model-value="handleSelection"
+      ></v-checkbox>
+      <v-input
+        v-if="applicationStore.draftApplication.certificationTypes?.length == 0"
+        auto-hide="auto"
+        :model-value="selected"
+        :rules="[hasSelection]"
+      ></v-input>
+    </v-form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject } from "vue";
 
 import ECEHeader from "@/components/ECEHeader.vue";
 import { useApplicationStore } from "@/store/application";
+import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
@@ -51,32 +63,32 @@ export default defineComponent({
   setup() {
     const applicationStore = useApplicationStore();
 
-    return { applicationStore };
+    const handleSpecializationSelection = inject<(newValue: Components.Schemas.CertificationType[]) => void>("handleSpecializationSelection");
+
+    return { applicationStore, handleSpecializationSelection };
   },
   data() {
     return {
       Rules,
+      selected: [] as Components.Schemas.CertificationType[],
     };
   },
 
-  methods: {
-    handleIteSelection(selection: boolean | null) {
-      if (selection) {
-        this.applicationStore.draftApplication.certificationTypes?.push("Ite");
-      } else {
-        this.applicationStore.draftApplication.certificationTypes = this.applicationStore.draftApplication.certificationTypes?.filter(
-          (certificationType) => certificationType !== "Ite",
-        );
-      }
+  computed: {
+    handleSelection() {
+      return () => {
+        if (this.handleSpecializationSelection) {
+          this.handleSpecializationSelection(this.selected);
+        }
+      };
     },
-    handleSneSelection(selection: boolean | null) {
-      if (selection) {
-        this.applicationStore.draftApplication.certificationTypes?.push("Sne");
-      } else {
-        this.applicationStore.draftApplication.certificationTypes = this.applicationStore.draftApplication.certificationTypes?.filter(
-          (certificationType) => certificationType !== "Sne",
-        );
-      }
+    hasSelection() {
+      return () => {
+        if (this.selected.length > 0) {
+          return true;
+        }
+        return "You must select at least one specialized certification to apply for.";
+      };
     },
   },
 });

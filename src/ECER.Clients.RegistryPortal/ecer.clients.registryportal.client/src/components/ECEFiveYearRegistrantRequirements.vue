@@ -67,7 +67,7 @@
   </v-row>
   <v-row>
     <v-col cols="12">
-      <SpecializedCertificationOptions />
+      <SpecializedCertificationOptions ref="SpecializedCertificationOptions" />
     </v-col>
   </v-row>
 </template>
