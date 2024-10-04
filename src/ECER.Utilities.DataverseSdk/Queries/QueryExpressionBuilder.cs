@@ -47,10 +47,11 @@ public class QueryExpressionBuilder<TEntity>
 
   public Join2QueryExpressionBuilder<TEntity> Join() => new(this);
 
-
   protected virtual EntityCollection RetreiveEntities() =>
    ((RetrieveMultipleResponse)Context.Execute(new RetrieveMultipleRequest { Query = Query })).EntityCollection;
 
+  protected static EntityCollection RetreiveEntities([NotNull] OrganizationServiceContext context, [NotNull] QueryExpression query) =>
+  ((RetrieveMultipleResponse)context.Execute(new RetrieveMultipleRequest { Query = query })).EntityCollection;
 
   protected virtual void AttachEntities([NotNull] IEnumerable<Entity> entities)
   {
