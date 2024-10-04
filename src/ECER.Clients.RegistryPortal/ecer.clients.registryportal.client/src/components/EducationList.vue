@@ -49,7 +49,7 @@
     </v-col>
 
     <!-- Ite + Sne Only -->
-    <v-col v-if="applicationStore.draftApplicationFlow === 'IteAndSne'">
+    <v-col v-if="applicationStore.draftApplicationFlow === 'IteAndSneRegistrant'">
       <p class="mb-3">
         You must have completed
         <a
@@ -64,7 +64,7 @@
         <li>Special needs early childhood educator training</li>
       </ul>
     </v-col>
-    <v-col v-if="applicationStore.draftApplicationFlow === 'Ite'">
+    <v-col v-if="applicationStore.draftApplicationFlow === 'IteRegistrant'">
       <p class="mb-3">
         You must have completed an infant and toddler educator training program. It must be a
         <a
@@ -74,7 +74,7 @@
         </a>
       </p>
     </v-col>
-    <v-col v-if="applicationStore.draftApplicationFlow === 'Sne'">
+    <v-col v-if="applicationStore.draftApplicationFlow === 'SneRegistrant'">
       <p class="mb-3">
         You must have completed a special needs early childhood educator training program. It must be a
         <a

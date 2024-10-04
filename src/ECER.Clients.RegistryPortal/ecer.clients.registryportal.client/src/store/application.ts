@@ -3,8 +3,9 @@ import { defineStore } from "pinia";
 import { createOrUpdateDraftApplication, getApplications, submitDraftApplication } from "@/api/application";
 import type { ProfessionalDevelopmentExtended } from "@/components/inputs/EceProfessionalDevelopment.vue";
 import type { FileItem } from "@/components/UploadFileItem.vue";
+import applicationWizardRenewAssistant from "@/config/application-wizard-renew-assistant";
 import type { Components } from "@/types/openapi";
-import type { ApplicationStage } from "@/types/wizard";
+import type { ApplicationStage, Wizard } from "@/types/wizard";
 import { humanFileSize } from "@/utils/functions";
 
 import { useWizardStore } from "./wizard";
@@ -14,16 +15,27 @@ export interface ApplicationState {
   application: Components.Schemas.Application | null;
 }
 export type ApplicationFlow =
-  | "AssistantRenewal"
+  | "Assistant"
+  | "OneYear"
   | "FiveYear"
   | "FiveYearWithIte"
   | "FiveYearWithSne"
   | "FiveYearWithIteAndSne"
-  | "OneYear"
-  | "Assistant"
-  | "Ite"
-  | "Sne"
-  | "IteAndSne"
+  | "AssistantRenewal"
+  | "OneYearRenewal"
+  | "FiveYearRenewal"
+  | "FiveYearWithIteRenewal"
+  | "FiveYearWithSneRenewal"
+  | "FiveYearWithIteAndSneRenewal"
+  | "AssistantRegistrant"
+  | "OneYearRegistrant"
+  | "FiveYearRegistrant"
+  | "FiveYearWithIteRegistrant"
+  | "FiveYearWithSneRegistrant"
+  | "FiveYearWithIteAndSneRegistrant"
+  | "IteRegistrant"
+  | "SneRegistrant"
+  | "IteAndSneRegistrant"
   | "default";
 
 export const useApplicationStore = defineStore("application", {
@@ -53,6 +65,7 @@ export const useApplicationStore = defineStore("application", {
     hasApplication(state): boolean {
       return state.application !== null;
     },
+
     applicationStatus(state): Components.Schemas.ApplicationStatus | undefined {
       return state.application?.status;
     },
@@ -87,7 +100,42 @@ export const useApplicationStore = defineStore("application", {
     isDraftApplicationRenewal(state): boolean {
       return state.draftApplication.applicationType === "Renewal";
     },
+    draftApplicationConfiguration(state): Wizard {
+      // TODO: Implement the logic to return the correct wizard configuration based on the draft application flow
+
+      // const certificationStore = useCertificationStore();
+      // const userStore = useUserStore();
+
+      switch (this.draftApplicationFlow) {
+        case "Assistant":
+        case "OneYear":
+        case "FiveYear":
+        case "FiveYearWithIte":
+        case "FiveYearWithSne":
+        case "FiveYearWithIteAndSne":
+        case "AssistantRenewal":
+        case "OneYearRenewal":
+        case "FiveYearRenewal":
+        case "FiveYearWithIteRenewal":
+        case "FiveYearWithSneRenewal":
+        case "FiveYearWithIteAndSneRenewal":
+        case "AssistantRegistrant":
+        case "OneYearRegistrant":
+        case "FiveYearRegistrant":
+        case "FiveYearWithIteRegistrant":
+        case "FiveYearWithSneRegistrant":
+        case "FiveYearWithIteAndSneRegistrant":
+        case "IteRegistrant":
+        case "SneRegistrant":
+        case "IteAndSneRegistrant":
+          return applicationWizardRenewAssistant;
+        default:
+          return applicationWizardRenewAssistant;
+      }
+    },
     draftApplicationFlow(state): ApplicationFlow {
+      // TODO: Implement the logic to return all possible application flows
+
       //renewal flows
       if (state.draftApplication.applicationType === "Renewal" && state.draftApplication.certificationTypes?.includes("EceAssistant")) {
         return "AssistantRenewal";
@@ -107,11 +155,11 @@ export const useApplicationStore = defineStore("application", {
       } else if (state.draftApplication.certificationTypes?.includes("FiveYears")) {
         return "FiveYear";
       } else if (state.draftApplication.certificationTypes?.includes("Ite") && state.draftApplication.certificationTypes?.includes("Sne")) {
-        return "IteAndSne";
+        return "IteAndSneRegistrant";
       } else if (state.draftApplication.certificationTypes?.includes("Ite")) {
-        return "Ite";
+        return "IteRegistrant";
       } else if (state.draftApplication.certificationTypes?.includes("Sne")) {
-        return "Sne";
+        return "SneRegistrant";
       } else if (state.draftApplication.certificationTypes?.includes("EceAssistant")) {
         return "Assistant";
       } else if (state.draftApplication.certificationTypes?.includes("OneYear")) {

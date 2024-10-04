@@ -111,7 +111,7 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const certificationStore = useCertificationStore();
     const { mdAndDown } = useDisplay();
-    let wizardConfigSetup: WizardType | undefined = undefined;
+    let wizardConfigSetup: WizardType = applicationWizardRenewAssistant;
 
     // Refresh userProfile from the server
     const userProfile = await getProfile();
@@ -129,41 +129,38 @@ export default defineComponent({
     };
 
     const draftApplicationCreatedOn = applicationStore.draftApplication.createdOn || formatDate(DateTime.now().toString());
+
     if (applicationStore.isDraftApplicationRenewal) {
       if (applicationStore.isDraftCertificateTypeEceAssistant) {
-        await wizardStore.initializeWizard(applicationWizardRenewAssistant, applicationStore.draftApplication);
         wizardConfigSetup = applicationWizardRenewAssistant;
       } else if (applicationStore.isDraftCertificateTypeOneYear) {
         {
           if (!latestCertificateIsExpired(draftApplicationCreatedOn)) {
-            await wizardStore.initializeWizard(applicationWizardRenewOneYearActive, applicationStore.draftApplication);
             wizardConfigSetup = applicationWizardRenewOneYearActive;
           } else if (!latestCertificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
-            await wizardStore.initializeWizard(applicationWizardRenewOneYearExpired, applicationStore.draftApplication);
             wizardConfigSetup = applicationWizardRenewOneYearExpired;
           }
         }
       } else if (applicationStore.isDraftCertificateTypeFiveYears) {
         if (!latestCertificateIsExpired(draftApplicationCreatedOn)) {
-          await wizardStore.initializeWizard(applicationWizardRenewFiveYearActive, applicationStore.draftApplication);
           wizardConfigSetup = applicationWizardRenewFiveYearActive;
         } else if (!latestCertificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
-          await wizardStore.initializeWizard(applicationWizardRenewFiveYearExpiredLessThan5Years, applicationStore.draftApplication);
           wizardConfigSetup = applicationWizardRenewFiveYearExpiredLessThan5Years;
         } else if (latestCertificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
-          await wizardStore.initializeWizard(applicationWizardRenewFiveYearExpiredMoreThan5Years, applicationStore.draftApplication);
           wizardConfigSetup = applicationWizardRenewFiveYearExpiredMoreThan5Years;
         }
       }
     } else {
       if (applicationStore.isDraftCertificateTypeFiveYears) {
-        await wizardStore.initializeWizard(applicationWizardFiveYear, applicationStore.draftApplication);
         wizardConfigSetup = applicationWizardFiveYear;
       } else {
-        await wizardStore.initializeWizard(applicationWizardAssistantAndOneYear, applicationStore.draftApplication);
         wizardConfigSetup = applicationWizardAssistantAndOneYear;
       }
     }
+
+    //Initialize wizard
+    await wizardStore.initializeWizard(wizardConfigSetup, applicationStore.draftApplication);
+
     return {
       applicationStore,
       wizardStore,
