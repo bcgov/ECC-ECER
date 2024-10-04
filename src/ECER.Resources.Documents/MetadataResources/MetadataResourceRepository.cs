@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 
-
 namespace ECER.Resources.Documents.MetadataResources;
 
 internal sealed class MetadataResourceRepository : IMetadataResourceRepository
 {
-
   private readonly EcerContext context;
   private readonly IMapper mapper;
 
@@ -15,6 +13,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     this.context = context;
     this.mapper = mapper;
   }
+
   public async Task<IEnumerable<Province>> QueryProvinces(ProvincesQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;

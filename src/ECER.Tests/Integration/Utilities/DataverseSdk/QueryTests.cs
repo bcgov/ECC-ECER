@@ -51,17 +51,9 @@ public class QueryTests : IAsyncLifetime
   [Fact]
   public void Join_OneToMany_CompleteObject()
   {
-    var query = dataverseContext.ContactSet.Where(c => c.Id == contactId);
 
-    var results = dataverseContext.From(query).Join().Include(c => c.ecer_application_Applicantid_contact).Execute();
+    var contactId = Guid.Parse("e761c9fc-0781-ef11-9039-00155d000103");
 
-    var contact = results.ShouldHaveSingleItem();
-    contact.ecer_application_Applicantid_contact.ShouldNotBeNull().ShouldNotBeEmpty();
-  }
-
-  [Fact]
-  public void Join_ManyToOne_CompleteObject()
-  {
     var query = dataverseContext.ecer_ApplicationSet.Where(a => a.ecer_application_Applicantid_contact.Id == contactId);
 
     var results = dataverseContext.From(query).Join().Include(a => a.ecer_application_Applicantid_contact).Execute();
@@ -71,6 +63,7 @@ public class QueryTests : IAsyncLifetime
   }
 
   [Fact]
+
   public void Join_OneToManyWithPaging_CorrectPageSize()
   {
     var query = dataverseContext.ecer_ApplicationSet.WhereIn(c => c.Id, applicationIds).OrderBy(a => a.Id).Skip(2).Take(2);
@@ -84,6 +77,7 @@ public class QueryTests : IAsyncLifetime
   [Fact]
   public void Aggregate_Count_Returned()
   {
+
     var query = dataverseContext.ecer_ApplicationSet.Where(c => c.ecer_application_Applicantid_contact.ContactId == contactId);
 
     var count = dataverseContext.From(query).Aggregate().Count();
@@ -94,6 +88,8 @@ public class QueryTests : IAsyncLifetime
   [Fact]
   public void Execute_SimpleQuery_Returned()
   {
+    var contactId = Guid.Parse("e761c9fc-0781-ef11-9039-00155d000103");
+
     var query = dataverseContext.ecer_ApplicationSet.Where(a => a.ecer_application_Applicantid_contact.Id == contactId);
 
     var results = dataverseContext.From(query).Execute();

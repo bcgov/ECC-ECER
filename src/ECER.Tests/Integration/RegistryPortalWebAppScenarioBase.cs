@@ -25,9 +25,10 @@ public abstract class RegistryPortalWebAppScenarioBase : WebAppScenarioBase
 
 public class RegistryPortalWebAppFixture : WebAppFixtureBase
 {
-  private IServiceScope serviceScope = null!;
-  private Contact authenticatedBcscUser = null!;
+  public Contact AuthenticatedBcscUser = null!;
+  public Contact AuthenticatedBcscUser2 = null!;
 
+  private IServiceScope serviceScope = null!;
   private ecer_Application inProgressTestApplication = null!;
   private ecer_Application draftTestApplication = null!;
   private bcgov_DocumentUrl testDocument1 = null!;
@@ -46,13 +47,12 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceOptout = null!;
   private ecer_PortalInvitation testPortalInvitationWorkExperienceReferenceCompleted = null!;
   private ecer_PortalInvitation testPortalInvitation400HoursTypeWorkExperienceReferenceSubmit = null!;
-  private Contact authenticatedBcscUser2 = null!;
 
   private ecer_PreviousName previousName = null!;
 
   public IServiceProvider Services => serviceScope.ServiceProvider;
-  public UserIdentity AuthenticatedBcscUserIdentity => authenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
-  public string AuthenticatedBcscUserId => authenticatedBcscUser.Id.ToString();
+  public UserIdentity AuthenticatedBcscUserIdentity => AuthenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
+  public string AuthenticatedBcscUserId => AuthenticatedBcscUser.Id.ToString();
   public string documentOneId => testDocument1.Id.ToString();
   public string communicationOneId => testCommunication1.Id.ToString();
   public string communicationTwoId => testCommunication2.Id.ToString();
@@ -71,8 +71,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public Guid portalInvitationWorkExperienceReferenceIdCompleted => testPortalInvitationWorkExperienceReferenceCompleted.ecer_PortalInvitationId ?? Guid.Empty;
 
   public Guid portalInvitation400HoursTypeWorkExperienceReferenceIdSubmit => testPortalInvitation400HoursTypeWorkExperienceReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
-  public UserIdentity AuthenticatedBcscUserIdentity2 => authenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
-  public string AuthenticatedBcscUserId2 => authenticatedBcscUser2.Id.ToString();
+  public UserIdentity AuthenticatedBcscUserIdentity2 => AuthenticatedBcscUser2.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
+  public string AuthenticatedBcscUserId2 => AuthenticatedBcscUser2.Id.ToString();
   private ecer_Application inProgressTestApplication2 = null!;
   private ecer_Application draftTestApplication2 = null!;
   private ecer_Application draftTestApplication3 = null!;
@@ -101,6 +101,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     ArgumentNullException.ThrowIfNull(opts);
     opts.AddPolicy("registry_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
     opts.AddPolicy("registry_new_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_new_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+    opts.AddPolicy("registry_unverified_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_unverified_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
     opts.DefaultPolicy = opts.GetPolicy("registry_user")!;
   }
 
@@ -122,55 +123,55 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   {
     await Task.CompletedTask;
 
-    authenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user1");
+    AuthenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user1");
 
-    inProgressTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.InProgress);
-    inProgressTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.InProgress);
-    draftTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
-    draftTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
-    draftTestApplication3 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Draft);
-    submittedTestApplication = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
-    submittedTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
-    submittedTestApplication3 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
-    submittedTestApplication4 = GetOrAddApplication(context, authenticatedBcscUser, ecer_Application_StatusCode.Submitted);
+    inProgressTestApplication = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.InProgress);
+    inProgressTestApplication2 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.InProgress);
+    draftTestApplication = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Draft);
+    draftTestApplication2 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Draft);
+    draftTestApplication3 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Draft);
+    submittedTestApplication = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Submitted);
+    submittedTestApplication2 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Submitted);
+    submittedTestApplication3 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Submitted);
+    submittedTestApplication4 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Submitted);
     submittedTestApplicationWorkExperienceRef = AddWorkExperienceReferenceToApplication(context, submittedTestApplication);
     submittedTestApplicationWorkExperienceRef2 = AddWorkExperienceReferenceToApplication(context, submittedTestApplication2);
     submittedTestApplicationCharacterRef = AddCharacterReferenceToApplication(context, submittedTestApplication3);
 
-    testDocument1 = GetOrAddDocument(context, authenticatedBcscUser, "https://example.com/document1.pdf");
+    testDocument1 = GetOrAddDocument(context, AuthenticatedBcscUser, "https://example.com/document1.pdf");
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2", null);
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3", null);
     testCommunication4 = GetOrAddCommunication(context, inProgressTestApplication, "comm4", null);
     testCertification = GetOrAddCertification(context);
 
-    previousName = GetOrAddPreviousName(context, authenticatedBcscUser);
-    testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name1");
-    testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name2");
-    testPortalInvitationWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name3");
-    testPortalInvitationCharacterReferenceOptout = GetOrAddPortalInvitation_CharacterReference(context, authenticatedBcscUser, "name4");
-    testPortalInvitationWorkExperienceReferenceOptout = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name5");
-    testPortalInvitationWorkExperienceReferenceCompleted = GetOrAddPortalInvitation_WorkExperienceReference(context, authenticatedBcscUser, "name6");
-    testPortalInvitation400HoursTypeWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_400HoursTypeWorkExperienceReference(context, authenticatedBcscUser, "name7");
+    previousName = GetOrAddPreviousName(context, AuthenticatedBcscUser);
+    testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, AuthenticatedBcscUser, "name1");
+    testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, AuthenticatedBcscUser, "name2");
+    testPortalInvitationWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_WorkExperienceReference(context, AuthenticatedBcscUser, "name3");
+    testPortalInvitationCharacterReferenceOptout = GetOrAddPortalInvitation_CharacterReference(context, AuthenticatedBcscUser, "name4");
+    testPortalInvitationWorkExperienceReferenceOptout = GetOrAddPortalInvitation_WorkExperienceReference(context, AuthenticatedBcscUser, "name5");
+    testPortalInvitationWorkExperienceReferenceCompleted = GetOrAddPortalInvitation_WorkExperienceReference(context, AuthenticatedBcscUser, "name6");
+    testPortalInvitation400HoursTypeWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_400HoursTypeWorkExperienceReference(context, AuthenticatedBcscUser, "name7");
 
     context.SaveChanges();
 
     CompletePortalInvitation_WorkExperienceReference(context, "name6");
 
     //load dependent properties
-    context.Attach(authenticatedBcscUser);
-    context.LoadProperty(authenticatedBcscUser, Contact.Fields.ecer_contact_ecer_authentication_455);
+    context.Attach(AuthenticatedBcscUser);
+    context.LoadProperty(AuthenticatedBcscUser, Contact.Fields.ecer_contact_ecer_authentication_455);
 
     //load user 2
-    authenticatedBcscUser2 = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user2");
-    inProgressTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser2, ecer_Application_StatusCode.InProgress);
-    draftTestApplication2 = GetOrAddApplication(context, authenticatedBcscUser2, ecer_Application_StatusCode.Draft);
+    AuthenticatedBcscUser2 = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user2");
+    inProgressTestApplication2 = GetOrAddApplication(context, AuthenticatedBcscUser2, ecer_Application_StatusCode.InProgress);
+    draftTestApplication2 = GetOrAddApplication(context, AuthenticatedBcscUser2, ecer_Application_StatusCode.Draft);
 
     context.SaveChanges();
 
     //load dependent properties
-    context.Attach(authenticatedBcscUser2);
-    context.LoadProperty(authenticatedBcscUser2, Contact.Fields.ecer_contact_ecer_authentication_455);
+    context.Attach(AuthenticatedBcscUser2);
+    context.LoadProperty(AuthenticatedBcscUser2, Contact.Fields.ecer_contact_ecer_authentication_455);
   }
 
   private bcgov_DocumentUrl GetOrAddDocument(EcerContext context, Contact registrant, string url)
@@ -203,6 +204,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         FirstName = "test1",
         LastName = "test1",
+        MiddleName = "test1",
+        Address1_Telephone1 = "1234567890",
+        EMailAddress1 = "test@test.com",
         ecer_IsVerified = true,
         BirthDate = DateTime.Parse("2000-03-15", CultureInfo.InvariantCulture),
       };
@@ -312,7 +316,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_Communication GetOrAddCommunication(EcerContext context, ecer_Application application, string message, Guid? parentCommunicationId)
   {
-    var communication = context.ecer_CommunicationSet.FirstOrDefault(c => c.ecer_Applicationid.Id == application.Id && c.ecer_Registrantid.Id == authenticatedBcscUser.Id && c.ecer_Message == message && c.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient);
+    var communication = context.ecer_CommunicationSet.FirstOrDefault(c => c.ecer_Applicationid.Id == application.Id && c.ecer_Registrantid.Id == AuthenticatedBcscUser.Id && c.ecer_Message == message && c.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient);
 
     if (communication == null)
     {
