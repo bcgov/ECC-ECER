@@ -70,11 +70,7 @@ internal class CommunicationRepository : ICommunicationRepository
     if (query.PageNumber > 0)
     {
       paginatedTotalCommunicationCount = context.From(communications).Aggregate().Count();
-      communications = communications.OrderByDescending(item => item.ecer_LatestMessageNotifiedDate);
-
-      var skipValue = (query.PageNumber - 1) * query.PageSize;
-      if (skipValue > 0) communications = communications.Skip(skipValue);
-      communications = communications.Take(query.PageSize);
+      communications = communications.OrderByDescending(item => item.ecer_LatestMessageNotifiedDate).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
     }
     else
     {
