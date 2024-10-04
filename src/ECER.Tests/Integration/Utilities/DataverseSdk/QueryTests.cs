@@ -64,12 +64,10 @@ public class QueryTests : IAsyncLifetime
   [InlineData(2, 2)] // Page number 2, page size 2
   public void Join_OneToManyWithPaging_CorrectPageSize(int pageNumber, int pageSize)
   {
-    var skipValue = Math.Abs(pageNumber - 1) * pageSize;
-
     var query = dataverseContext.ecer_ApplicationSet
                 .WhereIn(c => c.Id, applicationIds)
                 .OrderBy(a => a.Id)
-                .Skip(skipValue)
+                .Skip(pageNumber)
                 .Take(pageSize);
 
     var results = dataverseContext

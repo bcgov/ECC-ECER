@@ -31,6 +31,7 @@ public class QueryExpressionBuilder<TEntity>
   /// <returns></returns>
   public virtual IEnumerable<TEntity> Execute()
   {
+    if (Query.PageInfo.PageNumber < 1) Query.PageInfo.PageNumber = 1;
     var entities = RetreiveEntities();
     return entities.Entities.Select(e => e.ToEntity<TEntity>()).ToList();
   }
