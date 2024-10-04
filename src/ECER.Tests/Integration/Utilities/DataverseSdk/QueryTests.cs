@@ -51,7 +51,6 @@ public class QueryTests : IAsyncLifetime
   [Fact]
   public void Join_OneToMany_CompleteObject()
   {
-
     var contactId = Guid.Parse("e761c9fc-0781-ef11-9039-00155d000103");
 
     var query = dataverseContext.ecer_ApplicationSet.Where(a => a.ecer_application_Applicantid_contact.Id == contactId);
@@ -62,14 +61,26 @@ public class QueryTests : IAsyncLifetime
     results.ShouldAllBe(a => a.ecer_application_Applicantid_contact.Id == contactId);
   }
 
-  [Fact]
-
-  public void Join_OneToManyWithPaging_CorrectPageSize()
+  [Theory]
+  [InlineData(0, 2)] // Page number 0, page size 2
+  [InlineData(2, 2)] // Page number 2, page size 2
+  public void Join_OneToManyWithPaging_CorrectPageSize(int pageNumber, int pageSize)
   {
-    var query = dataverseContext.ecer_ApplicationSet.WhereIn(c => c.Id, applicationIds).OrderBy(a => a.Id).Skip(2).Take(2);
-    var results = dataverseContext.From(query).Join().Include(c => c.ecer_transcript_Applicationid).Execute();
+    var skipValue = (pageNumber - 1) * pageSize;
 
-    results.Count().ShouldBe(2);
+    var query = dataverseContext.ecer_ApplicationSet
+                .WhereIn(c => c.Id, applicationIds)
+                .OrderBy(a => a.Id)
+                .Skip(skipValue)
+                .Take(pageSize);
+
+    var results = dataverseContext
+                  .From(query)
+                  .Join()
+                  .Include(c => c.ecer_transcript_Applicationid)
+                  .Execute();
+
+    results.Count().ShouldBe(pageSize);
     results.ShouldAllBe(r => applicationIds.Any(id => r.Id == id));
     results.ShouldAllBe(r => r.ecer_transcript_Applicationid.Any());
   }
@@ -77,7 +88,6 @@ public class QueryTests : IAsyncLifetime
   [Fact]
   public void Aggregate_Count_Returned()
   {
-
     var query = dataverseContext.ecer_ApplicationSet.Where(c => c.ecer_application_Applicantid_contact.ContactId == contactId);
 
     var count = dataverseContext.From(query).Aggregate().Count();

@@ -70,26 +70,19 @@ internal class CommunicationRepository : ICommunicationRepository
     if (query.PageNumber > 0)
     {
       paginatedTotalCommunicationCount = context.From(communications).Aggregate().Count();
-      communications = communications.OrderByDescending(item => item.ecer_LatestMessageNotifiedDate).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
+      communications = communications.OrderByDescending(item => item.ecer_LatestMessageNotifiedDate);
+
+      var skipValue = (query.PageNumber - 1) * query.PageSize;
+      if (skipValue > 0) communications = communications.Skip(skipValue);
+      communications = communications.Take(query.PageSize);
     }
     else
     {
       communications = communications.OrderByDescending(item => item.ecer_DateNotified);
     }
+    var results = context.From(communications).Join().Include(c => c.ecer_bcgov_documenturl_CommunicationId_ecer_communication).Execute();
 
-    var results = communications.ToList();
     var finalCommunications = mapper.Map<IEnumerable<Communication>>(results)!.ToList();
-    if (results.Count > 0)
-    {
-      var files = context.bcgov_DocumentUrlSet.WhereIn(f => f.ecer_CommunicationId.Id, results.Select(c => c.ecer_CommunicationId!.Value)).ToList();
-      var filesPerCommunication = files.ToLookup(f => f.ecer_CommunicationId.Id);
-
-      foreach (var communication in finalCommunications)
-      {
-        var docs = filesPerCommunication.SingleOrDefault(f => f.Key == Guid.Parse(communication.Id!));
-        communication.Documents = mapper.Map<IEnumerable<CommunicationDocument>>(docs)!.ToList();
-      }
-    }
 
     return new CommunicationResult
     {
