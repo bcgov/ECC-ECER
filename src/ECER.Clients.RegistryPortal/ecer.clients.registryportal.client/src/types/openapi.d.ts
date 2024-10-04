@@ -3,7 +3,7 @@ import type { AxiosRequestConfig, OpenAPIClient, OperationResponse, Parameters, 
 declare namespace Components {
   namespace Schemas {
     export interface AddProfessionalDevelopmentResponse {
-      professionalDevelopmentId?: string | null;
+      applicationId?: string | null;
     }
     /**
      * Address
