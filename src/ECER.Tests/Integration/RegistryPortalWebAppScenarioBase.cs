@@ -25,8 +25,9 @@ public abstract class RegistryPortalWebAppScenarioBase : WebAppScenarioBase
 
 public class RegistryPortalWebAppFixture : WebAppFixtureBase
 {
-  public Contact AuthenticatedBcscUser = null!;
-  public Contact AuthenticatedBcscUser2 = null!;
+  public Contact AuthenticatedBcscUser { get; set; } = null!;
+
+  public Contact AuthenticatedBcscUser2 { get; set; } = null!;
 
   private IServiceScope serviceScope = null!;
   private ecer_Application inProgressTestApplication = null!;
