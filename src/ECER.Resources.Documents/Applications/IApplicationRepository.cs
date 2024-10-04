@@ -6,7 +6,7 @@ public interface IApplicationRepository
 {
   Task<IEnumerable<Application>> Query(ApplicationQuery query, CancellationToken cancellationToken);
 
-  Task<string> SaveDraft(Application application, CancellationToken cancellationToken);
+  Task<string> SaveApplication(Application application, CancellationToken cancellationToken);
 
   Task<string> Submit(string applicationId, CancellationToken cancellationToken);
 
@@ -23,8 +23,6 @@ public interface IApplicationRepository
   Task<string> ResendCharacterReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
 
   Task<string> ResendWorkExperienceReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
-
-  Task<string> AddProfessionalDevelopmentForSubmittedApplication(ProfessionalDevelopment newProfessionalDevelopment, string applicationId, string userId, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery

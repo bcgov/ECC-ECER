@@ -61,7 +61,7 @@ public class ApplicationHandlers(
         throw new InvalidOperationException($"User already has a draft application with id '{existingDraftApplication.Id}'");
       }
     }
-    var applicationId = await applicationRepository.SaveDraft(mapper.Map<Resources.Documents.Applications.Application>(request.Application)!, cancellationToken);
+    var applicationId = await applicationRepository.SaveApplication(mapper.Map<Resources.Documents.Applications.Application>(request.Application)!, cancellationToken);
     return applicationId;
   }
 
@@ -289,8 +289,28 @@ public class ApplicationHandlers(
   public async Task<AddProfessionalDevelopmentResult> Handle(AddProfessionalDevelopmentCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-    var ProfessionalDevelopment = mapper.Map<Resources.Documents.Applications.ProfessionalDevelopment>(request.professionalDevelopment);
-    var AddedProfessionalDevelopmentId = await applicationRepository.AddProfessionalDevelopmentForSubmittedApplication(ProfessionalDevelopment, request.applicationId, request.userId, cancellationToken);
-    return new AddProfessionalDevelopmentResult() { ProfessionalDevelopmentId = AddedProfessionalDevelopmentId, IsSuccess = true };
+
+    var applications = await applicationRepository.Query(new ApplicationQuery
+    {
+      ById = request.applicationId,
+      ByApplicantId = request.userId,
+    }, cancellationToken);
+
+    var application = applications.SingleOrDefault();
+
+    if (application == null)
+    {
+      throw new InvalidOperationException($"Application not found id '{request.applicationId}'");
+    }
+
+    // Set the status for the new professional development request
+    request.professionalDevelopment.Status = Managers.Registry.Contract.Applications.ProfessionalDevelopmentStatusCode.Submitted;
+
+    // Map and add the professional development to the collection
+    application.ProfessionalDevelopments = application.ProfessionalDevelopments.Append(mapper.Map<Resources.Documents.Applications.ProfessionalDevelopment>(request.professionalDevelopment));
+
+    var applicationId = await applicationRepository.SaveApplication(mapper.Map<Resources.Documents.Applications.Application>(application)!, cancellationToken);
+
+    return new AddProfessionalDevelopmentResult() { ApplicationId = applicationId, IsSuccess = true };
   }
 }

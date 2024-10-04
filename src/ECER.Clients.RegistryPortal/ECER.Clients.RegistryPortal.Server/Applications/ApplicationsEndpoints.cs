@@ -270,7 +270,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             };
             return TypedResults.BadRequest(problemDetails);
           }
-          return TypedResults.Ok(new AddProfessionalDevelopmentResponse(result.ProfessionalDevelopmentId!));
+          return TypedResults.Ok(new AddProfessionalDevelopmentResponse(result.ApplicationId!));
         })
        .WithOpenApi("Add Professional Development", string.Empty, "application_professionaldevelopment_add_post")
        .RequireAuthorization()
@@ -306,7 +306,7 @@ public record SubmitApplicationResponse(string ApplicationId);
 
 public record UpdateReferenceResponse(string ReferenceId);
 
-public record AddProfessionalDevelopmentResponse(string ProfessionalDevelopmentId);
+public record AddProfessionalDevelopmentResponse(string ApplicationId);
 
 /// <summary>
 /// Application query response

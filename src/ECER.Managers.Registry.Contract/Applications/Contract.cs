@@ -367,7 +367,7 @@ public record AddProfessionalDevelopmentCommand(ProfessionalDevelopment professi
 
 public class AddProfessionalDevelopmentResult
 {
-  public string? ProfessionalDevelopmentId { get; set; }
+  public string? ApplicationId { get; set; }
   public bool IsSuccess { get; set; }
   public string? ErrorMessage { get; set; }
 }

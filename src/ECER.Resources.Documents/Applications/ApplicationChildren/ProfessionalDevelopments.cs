@@ -149,25 +149,7 @@ internal sealed partial class ApplicationRepository
     }
   }
 
-  public async Task<string> AddProfessionalDevelopmentForSubmittedApplication(ProfessionalDevelopment newProfessionalDevelopment, string applicationId, string userId, CancellationToken cancellationToken)
-  {
-    await Task.CompletedTask;
 
-    var ecerApplication = context.ecer_ApplicationSet.FirstOrDefault(d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.ecer_Applicantid.Id == Guid.Parse(userId) && d.StatusCode != ecer_Application_StatusCode.Draft);
-
-    if (ecerApplication == null) throw new InvalidOperationException($"Application '{applicationId}' not found");
-
-    var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(newProfessionalDevelopment)!;
-    ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId = Guid.NewGuid();
-    ecerProfessionalDevelopment.StatusCode = ecer_ProfessionalDevelopment_StatusCode.Submitted;
-    context.AddObject(ecerProfessionalDevelopment);
-    context.AddLink(ecerApplication, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, ecerProfessionalDevelopment);
-
-    await AddFilesForProfessionalDevelopment(ecerProfessionalDevelopment, ecerApplication.ecer_Applicantid.Id, (List<string>)newProfessionalDevelopment.NewFiles, cancellationToken);
-
-    context.SaveChanges();
-    return ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId.ToString()!;
-  }
 
   private static string GetBucketName(IConfiguration configuration) =>
   configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");

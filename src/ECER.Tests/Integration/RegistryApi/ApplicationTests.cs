@@ -476,6 +476,22 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationId = (await applicationResponse.ReadAsJsonAsync<SubmitApplicationResponse>()).ShouldNotBeNull().ApplicationId;
 
+    var submittedApplicationByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.Get.Url($"/api/applications/{applicationId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var submittedApplicationsById = await submittedApplicationByIdResponse.ReadAsJsonAsync<Application[]>();
+
+    submittedApplicationsById.ShouldHaveSingleItem();
+    var submittedApplicationFromServer = submittedApplicationsById[0];
+    submittedApplicationFromServer.ProfessionalDevelopments.ShouldNotBeEmpty();
+    var existingProfessionalDevIds = submittedApplicationFromServer.ProfessionalDevelopments
+                     .Select(pd => pd.Id)
+                     .ToList();
+
     // Add test File
     var fileLength = 1041;
     var testFile = await faker.GenerateTestFile(fileLength);
@@ -516,7 +532,8 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     });
 
     var addedProfessionalDevelopment = (await response.ReadAsJsonAsync<AddProfessionalDevelopmentResponse>()).ShouldNotBeNull();
-    addedProfessionalDevelopment.ProfessionalDevelopmentId.ShouldNotBeEmpty();
+    addedProfessionalDevelopment.ApplicationId.ShouldNotBeEmpty();
+    addedProfessionalDevelopment.ApplicationId.ShouldBe(applicationId);
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
@@ -529,10 +546,10 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     applicationsById.ShouldHaveSingleItem();
     var applicationFromServer = applicationsById[0];
     applicationFromServer.ProfessionalDevelopments.ShouldNotBeEmpty();
-    var professionalDev = applicationFromServer.ProfessionalDevelopments.FirstOrDefault(pd => pd.Id == addedProfessionalDevelopment.ProfessionalDevelopmentId);
-    professionalDev.ShouldNotBeNull();
-    professionalDev.Files.ShouldHaveSingleItem();
-    professionalDev.Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
+    var newProfessionalDev = applicationFromServer.ProfessionalDevelopments.FirstOrDefault(pd => !existingProfessionalDevIds.Contains(pd.Id));
+    newProfessionalDev.ShouldNotBeNull();
+    newProfessionalDev.Files.ShouldHaveSingleItem();
+    newProfessionalDev.Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
   }
 
   private static Transcript CreateTranscript()

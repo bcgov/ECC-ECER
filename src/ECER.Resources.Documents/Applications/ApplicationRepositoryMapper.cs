@@ -294,6 +294,10 @@ internal class ApplicationRepositoryMapper : Profile
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
 
+    CreateMap<ecer_ProfessionalDevelopment_StatusCode, ProfessionalDevelopmentStatusCode>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+
     CreateMap<ecer_CharacterReference_StatusCode, CharacterReferenceStage>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();

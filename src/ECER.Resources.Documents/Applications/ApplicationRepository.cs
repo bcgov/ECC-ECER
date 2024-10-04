@@ -56,7 +56,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
   }
 
-  public async Task<string> SaveDraft(Application application, CancellationToken cancellationToken)
+  public async Task<string> SaveApplication(Application application, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
@@ -76,7 +76,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     }
     else
     {
-      var existingApplication = context.ecer_ApplicationSet.SingleOrDefault(c => c.ecer_ApplicationId == ecerApplication.ecer_ApplicationId && c.StatusCode == ecer_Application_StatusCode.Draft);
+      var existingApplication = context.ecer_ApplicationSet.SingleOrDefault(c => c.ecer_ApplicationId == ecerApplication.ecer_ApplicationId);
       if (existingApplication == null) throw new InvalidOperationException($"ecer_Application '{ecerApplication.ecer_ApplicationId}' not found");
 
       if (ecerApplication.ecer_DateSigned.HasValue && existingApplication.ecer_DateSigned.HasValue) ecerApplication.ecer_DateSigned = existingApplication.ecer_DateSigned;
