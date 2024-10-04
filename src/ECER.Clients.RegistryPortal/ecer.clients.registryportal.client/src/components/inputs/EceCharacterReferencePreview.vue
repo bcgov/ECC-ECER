@@ -1,5 +1,5 @@
 <template>
-  <PreviewCard title="Character Reference" portal-stage="CharacterReferences">
+  <PreviewCard title="Character reference" portal-stage="CharacterReferences">
     <template #content>
       <v-row>
         <v-col cols="4">

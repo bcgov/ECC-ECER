@@ -5,6 +5,7 @@ using Microsoft.Xrm.Sdk.Query;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Utilities.DataverseSdk.Queries;
+
 public class QueryExpressionBuilder<TEntity>
   where TEntity : Entity
 {
@@ -43,10 +44,13 @@ public class QueryExpressionBuilder<TEntity>
   /// Starts a new join query expression builder.
   /// </summary>
   /// <returns></returns>
-  public JoinQueryExpressionBuilder<TEntity> Join() => new(this);
+
+  public Join2QueryExpressionBuilder<TEntity> Join() => new(this);
+
 
   protected virtual EntityCollection RetreiveEntities() =>
    ((RetrieveMultipleResponse)Context.Execute(new RetrieveMultipleRequest { Query = Query })).EntityCollection;
+
 
   protected virtual void AttachEntities([NotNull] IEnumerable<Entity> entities)
   {

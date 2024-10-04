@@ -14,6 +14,15 @@ public class QueryTests : IAsyncLifetime
   private readonly IConfigurationRoot configuration;
   private ServiceClient serviceClient = null!;
   private EcerContext dataverseContext = null!;
+  private static readonly Guid contactId = Guid.Parse("73127545-c481-ef11-899c-00090faa0001");
+
+  private static readonly Guid[] applicationIds =
+  [
+    Guid.Parse( "bd1d0027-8193-49e8-bfe8-03ce36f4d00b"),
+    Guid.Parse("8d15dd02-21f9-48a3-92f0-3496b092632f"),
+    Guid.Parse("ff8ade9b-446b-4b6f-9613-e91cbf75ebdf"),
+    Guid.Parse("40188b8a-9fa7-4a2f-b065-c4f9dd3b0fdf")
+  ];
 
   public QueryTests()
   {
@@ -40,21 +49,11 @@ public class QueryTests : IAsyncLifetime
   }
 
   [Fact]
-  public void Execute_WithIncludeOneToMany_CompleteObject()
+  public void Join_OneToMany_CompleteObject()
   {
+
     var contactId = Guid.Parse("e761c9fc-0781-ef11-9039-00155d000103");
-    var query = dataverseContext.ContactSet.Where(c => c.Id == contactId);
 
-    var results = dataverseContext.From(query).Join().Include(c => c.ecer_application_Applicantid_contact).Execute();
-
-    var contact = results.ShouldHaveSingleItem();
-    contact.ecer_application_Applicantid_contact.ShouldNotBeNull().ShouldNotBeEmpty();
-  }
-
-  [Fact]
-  public void Execute_WithIncludeOneToOne_CompleteObject()
-  {
-    var contactId = Guid.Parse("e761c9fc-0781-ef11-9039-00155d000103");
     var query = dataverseContext.ecer_ApplicationSet.Where(a => a.ecer_application_Applicantid_contact.Id == contactId);
 
     var results = dataverseContext.From(query).Join().Include(a => a.ecer_application_Applicantid_contact).Execute();
@@ -64,9 +63,21 @@ public class QueryTests : IAsyncLifetime
   }
 
   [Fact]
-  public void Execute_Count_Returned()
+
+  public void Join_OneToManyWithPaging_CorrectPageSize()
   {
-    var contactId = Guid.Parse("e761c9fc-0781-ef11-9039-00155d000103");
+    var query = dataverseContext.ecer_ApplicationSet.WhereIn(c => c.Id, applicationIds).OrderBy(a => a.Id).Skip(2).Take(2);
+    var results = dataverseContext.From(query).Join().Include(c => c.ecer_transcript_Applicationid).Execute();
+
+    results.Count().ShouldBe(2);
+    results.ShouldAllBe(r => applicationIds.Any(id => r.Id == id));
+    results.ShouldAllBe(r => r.ecer_transcript_Applicationid.Any());
+  }
+
+  [Fact]
+  public void Aggregate_Count_Returned()
+  {
+
     var query = dataverseContext.ecer_ApplicationSet.Where(c => c.ecer_application_Applicantid_contact.ContactId == contactId);
 
     var count = dataverseContext.From(query).Aggregate().Count();
@@ -75,9 +86,10 @@ public class QueryTests : IAsyncLifetime
   }
 
   [Fact]
-  public void Execute_SingleEntity_Returned()
+  public void Execute_SimpleQuery_Returned()
   {
     var contactId = Guid.Parse("e761c9fc-0781-ef11-9039-00155d000103");
+
     var query = dataverseContext.ecer_ApplicationSet.Where(a => a.ecer_application_Applicantid_contact.Id == contactId);
 
     var results = dataverseContext.From(query).Execute();
