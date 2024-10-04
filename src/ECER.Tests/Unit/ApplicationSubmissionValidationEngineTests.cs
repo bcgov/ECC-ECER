@@ -88,39 +88,6 @@ public class ApplicationSubmissionValidationEngineTests
     Assert.Contains("Sub five year certification type selected but without five year certification", result.ValidationErrors);
   }
 
-  [Theory]
-  [InlineData(CertificationType.Ite)]
-  [InlineData(CertificationType.Sne)]
-  public async Task Validate_WithInsufficientEducationForIteOrSne_ReturnsEducationError(CertificationType certificationType)
-  {
-    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
-    {
-      Transcripts = new List<Transcript> { CreateMockTranscript(false) }, // Only one transcript
-      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      CertificationTypes = new List<CertificationType> { certificationType },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) }
-    };
-
-    var result = await _validator.Validate(application);
-    var expectedError = certificationType == CertificationType.Ite ? "applicant does not have enough education for ITE" : "applicant does not have enough education for SNE";
-    Assert.Contains(expectedError, result.ValidationErrors);
-  }
-
-  [Fact]
-  public async Task Validate_WithBothIteAndSneAndLessThanThreeEducations_ReturnsEducationError()
-  {
-    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
-    {
-      Transcripts = new List<Transcript> { CreateMockTranscript(false), CreateMockTranscript(false) }, // Only two transcripts
-      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      CertificationTypes = new List<CertificationType> { CertificationType.Ite, CertificationType.Sne },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) }
-    };
-
-    var result = await _validator.Validate(application);
-    Assert.Contains("applicant does not have enough education for both ITE and SNE", result.ValidationErrors);
-  }
-
   [Fact]
   public async Task Validate_ValidApplication_ReturnsNoValidationError()
   {

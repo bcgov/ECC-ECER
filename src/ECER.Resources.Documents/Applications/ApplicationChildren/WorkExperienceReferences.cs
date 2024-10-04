@@ -13,7 +13,7 @@ internal sealed partial class ApplicationRepository
     // Remove WorkExperienceReferences that they exist in the dataverse but not in the application
     foreach (var reference in existingWorkExperiences)
     {
-      if (!updatedEntities.Any(t => t.Id == reference.Id))
+      if (!updatedEntities.Any(t => t.ecer_WorkExperienceRefId == reference.ecer_WorkExperienceRefId))
       {
         context.DeleteObject(reference);
       }
@@ -21,7 +21,7 @@ internal sealed partial class ApplicationRepository
     // Update Existing WorkExperienceReferences
     foreach (var reference in updatedEntities.Where(d => d.ecer_WorkExperienceRefId != null))
     {
-      var oldReference = existingWorkExperiences.SingleOrDefault(t => t.Id == reference.Id);
+      var oldReference = existingWorkExperiences.SingleOrDefault(t => t.ecer_WorkExperienceRefId == reference.ecer_WorkExperienceRefId);
       if (oldReference != null)
       {
         context.Detach(oldReference);

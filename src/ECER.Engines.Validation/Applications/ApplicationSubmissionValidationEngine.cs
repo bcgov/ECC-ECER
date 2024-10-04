@@ -49,24 +49,6 @@ internal sealed class ApplicationSubmissionValidationEngine : IApplicationValida
       }
     }
 
-    // if the application contains the SNE certification type, the application should contain at least 2 education
-    if (application.CertificationTypes.Any(ct => ct == CertificationType.Sne) && application.Transcripts.Count() < 2)
-    {
-      validationErrors.Add("applicant does not have enough education for SNE");
-    }
-
-    // if the application contains the ITE certification type, the application should contain at least 2 education
-    if (application.CertificationTypes.Any(ct => ct == CertificationType.Ite) && application.Transcripts.Count() < 2)
-    {
-      validationErrors.Add("applicant does not have enough education for ITE");
-    }
-
-    // if the application contains both SNE and ITE certification types, the application should contain at least 3 education
-    if (application.CertificationTypes.Any(ct => ct == CertificationType.Ite) && application.CertificationTypes.Any(ct => ct == CertificationType.Sne) && application.Transcripts.Count() < 3)
-    {
-      validationErrors.Add("applicant does not have enough education for both ITE and SNE");
-    }
-
     return new ValidationResults(validationErrors);
   }
 }
