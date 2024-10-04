@@ -51,8 +51,6 @@ public class QueryTests : IAsyncLifetime
   [Fact]
   public void Join_OneToMany_CompleteObject()
   {
-    var contactId = Guid.Parse("e761c9fc-0781-ef11-9039-00155d000103");
-
     var query = dataverseContext.ecer_ApplicationSet.Where(a => a.ecer_application_Applicantid_contact.Id == contactId);
 
     var results = dataverseContext.From(query).Join().Include(a => a.ecer_application_Applicantid_contact).Execute();
