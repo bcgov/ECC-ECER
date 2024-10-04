@@ -38,7 +38,7 @@
       <div v-if="applicationStore.applicationStatus === undefined" class="d-flex flex-row justify-start ga-3 flex-wrap">
         <v-btn variant="flat" size="large" color="warning" @click="handleStartNewApplication">
           <v-icon size="large" icon="mdi-arrow-right" />
-          Apply Now
+          Apply now
         </v-btn>
       </div>
     </v-card-actions>

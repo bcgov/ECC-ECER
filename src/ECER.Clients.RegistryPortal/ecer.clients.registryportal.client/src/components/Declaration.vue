@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <Breadcrumb :items="items" />
-    <h1>Declaration and consent</h1>
-    <p>You must read and agree to the following to apply for certification</p>
+    <h1 class="mb-5">Declaration and consent</h1>
+    <p>You must read and agree to the following to apply for certification.</p>
     <br />
     <ul class="ml-10">
       <li>I understand that the ECE Registry may require additional information (including supporting documents) in connection with this application.</li>
