@@ -95,7 +95,7 @@ internal class Program
             .RequireClaim(RegistryPortalClaims.IdenityProvider)
             .RequireClaim(ClaimTypes.Name)
             .RequireClaim(RegistryPortalClaims.UserId)
-            .RequireClaim("verified", "True")
+            .RequireClaim(RegistryPortalClaims.Verified, "True")
             .RequireAuthenticatedUser();
         })
         .AddPolicy("registry_new_user", policy =>

@@ -18,8 +18,8 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
   {
     var communicationsResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Get.Url("/api/messages?page=2&&pageSize=20");
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/messages?page=1&&pageSize=10");
       _.StatusCodeShouldBeOk();
     });
 
@@ -32,8 +32,8 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
   {
     var communicationsResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Get.Url($"/api/messages/{this.Fixture.communicationOneId}?page=2&&pageSize=20");
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/messages/{this.Fixture.communicationOneId}?page=1&&pageSize=10");
       _.StatusCodeShouldBeOk();
     });
 
@@ -46,7 +46,7 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
   {
     var communicationsStatusResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url("/api/messages/status");
       _.StatusCodeShouldBeOk();
     });
@@ -60,7 +60,7 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
   {
     var communicationSeenResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(new CommunicationSeenRequest(Fixture.communicationTwoId)).ToUrl($"/api/messages/{Fixture.communicationTwoId}/seen");
       _.StatusCodeShouldBeOk();
     });
@@ -75,7 +75,7 @@ public class CommunicationsTests : RegistryPortalWebAppScenarioBase
 
     var sendMessageResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Post.Json(new SendMessageRequest(communication)).ToUrl($"/api/messages");
       _.StatusCodeShouldBeOk();
     });
