@@ -5,6 +5,7 @@ using Microsoft.Xrm.Sdk.Client;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
 using ECER.Utilities.ObjectStorage.Providers;
+using ECER.Utilities.DataverseSdk.Queries;
 
 namespace ECER.Resources.Accounts.Communications;
 
@@ -68,20 +69,20 @@ internal class CommunicationRepository : ICommunicationRepository
     int paginatedTotalCommunicationCount = 0;
     if (query.PageNumber > 0)
     {
-      paginatedTotalCommunicationCount = communications.Select(item => item.Id).ToList().Count;
-      communications = communications.OrderByDescending(item => item.ecer_LatestMessageNotifiedDate).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
+      paginatedTotalCommunicationCount = context.From(communications).Aggregate().Count();
+      communications = communications.OrderByDescending(item => item.ecer_LatestMessageNotifiedDate).Skip(query.PageNumber).Take(query.PageSize);
     }
     else
     {
       communications = communications.OrderByDescending(item => item.ecer_DateNotified);
     }
+    var results = context.From(communications).Join().Include(c => c.ecer_bcgov_documenturl_CommunicationId_ecer_communication).Execute();
 
-    context.LoadProperties(communications, ecer_Communication.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication);
+    var finalCommunications = mapper.Map<IEnumerable<Communication>>(results)!.ToList();
 
-    var finalCommunications = communications.ToList();
     return new CommunicationResult
     {
-      Communications = mapper.Map<IEnumerable<Communication>>(finalCommunications),
+      Communications = finalCommunications,
       TotalMessagesCount = query.PageNumber > 0 ? paginatedTotalCommunicationCount : finalCommunications.Count,
     };
   }
