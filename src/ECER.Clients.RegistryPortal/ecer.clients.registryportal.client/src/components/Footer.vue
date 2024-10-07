@@ -71,7 +71,7 @@ export default defineComponent({
     },
     acceptedPaths(): boolean {
       const routeName = this.$route.name?.toString() || "";
-      return ["login", "dashboard", "invalid-reference", "reference-submitted", "verify"].includes(routeName);
+      return ["login", "dashboard", "invalid-reference", "reference-submitted", "verify", "lookup-certification"].includes(routeName);
     },
   },
 });
