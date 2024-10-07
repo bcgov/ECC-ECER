@@ -72,6 +72,17 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
       .Include(a => a.ecer_previousname_Contactid)
       .Execute();
 
+    // Filter out previous names where the Source is "Name Log"
+    foreach (var contact in results)
+    {
+      if (contact.ecer_previousname_Contactid != null)
+      {
+        contact.ecer_previousname_Contactid = contact.ecer_previousname_Contactid
+            .Where(pn => pn.ecer_Source != ecer_PreviousNameSources.NameLog)
+            .ToList();
+      }
+    }
+
     return mapper.Map<IEnumerable<Registrant>>(results)!.ToList();
   }
 
