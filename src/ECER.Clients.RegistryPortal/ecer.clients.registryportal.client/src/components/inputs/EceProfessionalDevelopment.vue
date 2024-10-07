@@ -233,10 +233,7 @@
     <v-row class="mt-10">
       <v-col>
         <v-row justify="start" class="ml-1">
-          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">
-            <v-icon icon="mdi-plus" />
-            Save course or workshop
-          </v-btn>
+          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">Save course or workshop</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
         </v-row>
       </v-col>
