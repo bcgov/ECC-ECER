@@ -246,6 +246,35 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .WithOpenApi("Resend a work experience reference invite", "Changes work experience reference invite again status to true", "application_work_experience_reference_resend_invite_post")
         .RequireAuthorization()
         .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/professionaldevelopment/add", async Task<Results<Ok<AddProfessionalDevelopmentResponse>, BadRequest<ProblemDetails>, NotFound>> (string application_id, ProfessionalDevelopment request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+          bool AppIdIsNotGuid = !Guid.TryParse(application_id, out _);
+          if (AppIdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
+          }
+
+          var mappedProfessionalDevelopment = mapper.Map<Managers.Registry.Contract.Applications.ProfessionalDevelopment>(request);
+          var cmd = new AddProfessionalDevelopmentCommand(mappedProfessionalDevelopment, application_id, userId!);
+          var result = await messageBus.Send(cmd, ct);
+
+          if (!result.IsSuccess)
+          {
+            var problemDetails = new ProblemDetails
+            {
+              Status = StatusCodes.Status400BadRequest,
+              Title = "Adding Professional Development failed",
+              Extensions = { ["errors"] = result.ErrorMessage }
+            };
+            return TypedResults.BadRequest(problemDetails);
+          }
+          return TypedResults.Ok(new AddProfessionalDevelopmentResponse(result.ApplicationId!));
+        })
+       .WithOpenApi("Add Professional Development", string.Empty, "application_professionaldevelopment_add_post")
+       .RequireAuthorization()
+       .WithParameterValidation();
   }
 }
 
@@ -276,6 +305,8 @@ public record CancelDraftApplicationResponse(string ApplicationId);
 public record SubmitApplicationResponse(string ApplicationId);
 
 public record UpdateReferenceResponse(string ReferenceId);
+
+public record AddProfessionalDevelopmentResponse(string ApplicationId);
 
 /// <summary>
 /// Application query response
@@ -476,8 +507,10 @@ public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, Applic
   public IEnumerable<TranscriptStatus> TranscriptsStatus { get; set; } = Array.Empty<TranscriptStatus>();
   public IEnumerable<WorkExperienceReferenceStatus> WorkExperienceReferencesStatus { get; set; } = Array.Empty<WorkExperienceReferenceStatus>();
   public IEnumerable<CharacterReferenceStatus> CharacterReferencesStatus { get; set; } = Array.Empty<CharacterReferenceStatus>();
+  public IEnumerable<ProfessionalDevelopmentStatus> ProfessionalDevelopmentsStatus { get; set; } = Array.Empty<ProfessionalDevelopmentStatus>();
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
+  public bool? AddMoreProfessionalDevelopment { get; set; }
   public ApplicationTypes? ApplicationType { get; set; }
 }
 public record FileInfo(string Id)
@@ -503,6 +536,11 @@ public record CharacterReferenceStatus(string Id, CharacterReferenceStage Status
 {
   public string? PhoneNumber { get; set; }
   public bool? WillProvideReference { get; set; }
+}
+
+public record ProfessionalDevelopmentStatus(string Id, string CourseName, int NumberOfHours)
+{
+  public ProfessionalDevelopmentStatusCode? Status { get; set; }
 }
 
 public enum TranscriptStage
@@ -549,8 +587,8 @@ public enum CharacterReferenceStage
 public enum ProfessionalDevelopmentStatusCode
 {
   ApplicationSubmitted,
+  Approved,
   Draft,
-  Inactive,
   InProgress,
   Rejected,
   Submitted,
