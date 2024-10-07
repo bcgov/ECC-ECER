@@ -108,7 +108,6 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     var userIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
     var newUser = CreateNewUser();
     newUser.RegistrationNumber = "1234";
-
     await Host.Scenario(_ =>
     {
       _.WithNewUser(userIdentity);
@@ -128,11 +127,11 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
 
     var newUserIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
     await Host.Scenario(_ =>
-        {
-          _.WithNewUser(newUserIdentity);
-          _.Post.Json(newUser).ToUrl("/api/userinfo");
-          _.StatusCodeShouldBeOk();
-        });
+    {
+      _.WithNewUser(newUserIdentity);
+      _.Post.Json(newUser).ToUrl("/api/userinfo");
+      _.StatusCodeShouldBeOk();
+    });
 
     var response = await Host.Scenario(_ =>
     {

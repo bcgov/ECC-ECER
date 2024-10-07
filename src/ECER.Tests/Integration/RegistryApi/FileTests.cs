@@ -33,7 +33,7 @@ public class FileTests : RegistryPortalWebAppScenarioBase
 
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.WithRequestHeader("file-classification", testClassification);
       _.WithRequestHeader("file-tag", testTags);
       _.WithRequestHeader("file-folder", testFolder);
@@ -64,7 +64,7 @@ public class FileTests : RegistryPortalWebAppScenarioBase
 
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.WithRequestHeader("file-classification", testClassification);
       _.WithRequestHeader("file-tag", testTags);
       _.WithRequestHeader("file-folder", testFolder);
@@ -75,7 +75,7 @@ public class FileTests : RegistryPortalWebAppScenarioBase
     // Now, delete the file
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Delete.Url($"/api/files/{testFileId}");
       _.StatusCodeShouldBeOk();
     });
@@ -87,8 +87,8 @@ public class FileTests : RegistryPortalWebAppScenarioBase
   {
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
-      _.Get.Url($"/api/files/certificate/854c5086-c542-ef11-a316-000d3af45c14"); // Static certificate with generated pdf file in dynamics
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/files/certificate/6657563c-5080-ef11-ac21-7c1e5240b0bf"); // Static certificate with generated pdf file in dynamics
       _.StatusCodeShouldBeOk();
     });
   }

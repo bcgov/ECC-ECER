@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
@@ -13,7 +14,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
   {
     await Task.CompletedTask;
 
-    var contact = string.IsNullOrEmpty(registrant.Id)? null : context.ContactSet.SingleOrDefault(c => c.ContactId.Equals(Guid.Parse(registrant.Id)));
+    var contact = string.IsNullOrEmpty(registrant.Id) ? null : context.ContactSet.SingleOrDefault(c => c.ContactId.Equals(Guid.Parse(registrant.Id)));
 
     if (contact == null)
     {
@@ -49,30 +50,29 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
   public async Task<IEnumerable<Registrant>> Query(RegistrantQuery query, CancellationToken ct)
   {
     await Task.CompletedTask;
-
-    var qry = context.ContactSet;
+    var contacts = context.ContactSet;
 
     if (query.ByIdentity != null)
     {
-      qry = from contact in context.ContactSet
-            join authentication in context.ecer_AuthenticationSet on contact.ContactId equals authentication.ecer_Customerid.Id
-            where authentication.ecer_IdentityProvider == query.ByIdentity.IdentityProvider && authentication.ecer_ExternalID == query.ByIdentity.UserId
-            select contact;
+      contacts = from contact in context.ContactSet
+                 join authentication in context.ecer_AuthenticationSet on contact.ContactId equals authentication.ecer_Customerid.Id
+                 where authentication.ecer_IdentityProvider == query.ByIdentity.IdentityProvider && authentication.ecer_ExternalID == query.ByIdentity.UserId
+                 select contact;
     }
 
-    if (query.ByUserId != null) qry = qry.Where(r => r.ContactId.Equals(Guid.Parse(query.ByUserId)));
+    if (query.ByUserId != null) contacts = contacts.Where(r => r.ContactId.Equals(Guid.Parse(query.ByUserId)));
 
-    if (query.ByLastName != null) qry = qry.Where(r => r.LastName.Equals(query.ByLastName));
-    if (query.ByRegistrationNumber != null) qry = qry.Where(r => r.ecer_ClientID.Equals(query.ByRegistrationNumber));
-    if (query.ByDateOfBirth != null) qry = qry.Where(r => r.BirthDate == query.ByDateOfBirth.Value.ToDateTime(TimeOnly.MinValue).Date);
+    if (query.ByLastName != null) contacts = contacts.Where(r => r.LastName.Equals(query.ByLastName));
+    if (query.ByRegistrationNumber != null) contacts = contacts.Where(r => r.ecer_ClientID.Equals(query.ByRegistrationNumber));
+    if (query.ByDateOfBirth != null) contacts = contacts.Where(r => r.BirthDate == query.ByDateOfBirth.Value.ToDateTime(TimeOnly.MinValue).Date);
 
-    var contacts = qry.ToList();
-    foreach (var contact in contacts)
-    {
-      context.LoadProperty(contact, nameof(Contact.ecer_contact_ecer_authentication_455));
-      context.LoadProperty(contact, nameof(Contact.ecer_previousname_Contactid));
-    }
-    return mapper.Map<IEnumerable<Registrant>>(contacts)!;
+    var results = context.From(contacts)
+      .Join()
+      .Include(a => a.ecer_contact_ecer_authentication_455)
+      .Include(a => a.ecer_previousname_Contactid)
+      .Execute();
+
+    return mapper.Map<IEnumerable<Registrant>>(results)!.ToList();
   }
 
   public async Task Save(Registrant registrant, CancellationToken ct)

@@ -16,7 +16,7 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
   {
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url("/api/profile");
       _.StatusCodeShouldBeOk();
     });
@@ -27,7 +27,7 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
   {
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(CreateNewUser()).ToUrl("/api/profile");
       _.StatusCodeShouldBeOk();
     });
