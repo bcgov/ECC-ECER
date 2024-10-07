@@ -211,7 +211,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var application = Create400HoursTypeRenewalDraftApplication();
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
@@ -220,7 +220,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationStatusByIdResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url($"/api/applications/{applicationId}/status");
       _.StatusCodeShouldBeOk();
     });
@@ -458,7 +458,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     // Save Renewal Draft Application
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
@@ -468,7 +468,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     // Submit Renewal Application
     var applicationResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Post.Json(new ApplicationSubmissionRequest(draftApplicationId)).ToUrl($"/api/applications");
       _.StatusCodeShouldBeOk();
     });
@@ -477,7 +477,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var submittedApplicationByIdResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url($"/api/applications/{applicationId}");
       _.StatusCodeShouldBeOk();
     });
@@ -508,7 +508,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var fileResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.WithRequestHeader("file-classification", testClassification);
       _.WithRequestHeader("file-tag", testTags);
       _.WithRequestHeader("file-folder", testFolder);
@@ -525,7 +525,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     // Add professional development to submitted Renewal Application
     var response = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Post.Json(professionalDevelopment).ToUrl($"/api/applications/{applicationId}/professionaldevelopment/add");
       _.StatusCodeShouldBeOk();
     });
@@ -536,7 +536,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url($"/api/applications/{applicationId}");
       _.StatusCodeShouldBeOk();
     });

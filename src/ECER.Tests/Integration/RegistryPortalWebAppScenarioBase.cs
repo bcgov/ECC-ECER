@@ -134,6 +134,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     draftTestApplication = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Draft);
     draftTestApplication2 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Draft);
     draftTestApplication3 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Draft);
+    draftTestApplication4 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Draft);
     submittedTestApplication = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Submitted);
     submittedTestApplication2 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Submitted);
     submittedTestApplication3 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Submitted);
