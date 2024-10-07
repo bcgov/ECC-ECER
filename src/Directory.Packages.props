@@ -9,7 +9,7 @@
     <PackageVersion Include="Bogus" Version="35.6.1" />
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />
     <PackageVersion Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.301" />
-    <PackageVersion Include="AWSSDK.S3" Version="3.7.403.6" />
+    <PackageVersion Include="AWSSDK.S3" Version="3.7.404.2" />
     <PackageVersion Include="HtmlSanitizer" Version="8.1.870" />
     <PackageVersion Include="IdentityModel" Version="7.0.0" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.4.0" />
