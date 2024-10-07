@@ -76,6 +76,7 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.ReadyForAssessmentDate, opts => opts.Ignore())
       .ForMember(d => d.AddMoreCharacterReference, opts => opts.Ignore())
       .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.Ignore())
+      .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.Ignore())
       .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.Transcripts))
       .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.WorkExperienceReferences))
       .ForMember(d => d.ProfessionalDevelopments, opts => opts.MapFrom(s => s.ProfessionalDevelopments))
@@ -107,8 +108,10 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.TranscriptsStatus, opts => opts.MapFrom(s => s.Transcripts))
       .ForMember(d => d.WorkExperienceReferencesStatus, opts => opts.MapFrom(s => s.WorkExperienceReferences))
       .ForMember(d => d.CharacterReferencesStatus, opts => opts.MapFrom(s => s.CharacterReferences))
+      .ForMember(d => d.ProfessionalDevelopmentsStatus, opts => opts.MapFrom(s => s.ProfessionalDevelopments))
       .ForMember(d => d.AddMoreCharacterReference, opts => opts.MapFrom(s => s.AddMoreCharacterReference))
       .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.MapFrom(s => s.AddMoreWorkExperienceReference))
+      .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.MapFrom(s => s.AddMoreProfessionalDevelopment))
       .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => s.ApplicationType));
 
     CreateMap<Managers.Registry.Contract.Applications.CharacterReference, CharacterReferenceStatus>()
@@ -150,5 +153,14 @@ public class ApplicationMapper : Profile
         opt => opt.MapFrom(src => src.EducationalInstitutionName))
       .ForCtorParam(nameof(TranscriptStatus.Status),
         opt => opt.MapFrom(src => src.Status));
+
+    CreateMap<Managers.Registry.Contract.Applications.ProfessionalDevelopment, ProfessionalDevelopmentStatus>()
+      .ForCtorParam(nameof(ProfessionalDevelopmentStatus.Id),
+        opt => opt.MapFrom(src => src.Id))
+      .ForCtorParam(nameof(ProfessionalDevelopmentStatus.CourseName),
+        opt => opt.MapFrom(src => src.CourseName))
+      .ForCtorParam(nameof(ProfessionalDevelopmentStatus.NumberOfHours),
+        opt => opt.MapFrom(src => src.NumberOfHours))
+      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.Status));
   }
 }

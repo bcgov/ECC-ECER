@@ -105,9 +105,23 @@ const router = createRouter({
       props: true,
     },
     {
+      path: "/manage-application/:applicationId/professional-development/add",
+      name: "addProfessionalDevelopment",
+      component: () => import("./components/AddProfessionalDevelopment.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+    },
+    {
       path: "/manage-application/:applicationId/work-experience-references",
       name: "manageWorkExperienceReferences",
       component: () => import("./components/ManageWorkExperienceReferenceList.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      props: true,
+    },
+    {
+      path: "/manage-application/:applicationId/professional-development",
+      name: "manageProfessionalDevelopment",
+      component: () => import("./components/ManageProfessionalDevelopmentList.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
       props: true,
     },

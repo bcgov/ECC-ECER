@@ -2,6 +2,9 @@ import type { AxiosRequestConfig, OpenAPIClient, OperationResponse, Parameters, 
 
 declare namespace Components {
   namespace Schemas {
+    export interface AddProfessionalDevelopmentResponse {
+      applicationId?: string | null;
+    }
     /**
      * Address
      */
@@ -363,10 +366,16 @@ declare namespace Components {
       newFiles?: string[] | null;
       files?: FileInfo[] | null;
     }
+    export interface ProfessionalDevelopmentStatus {
+      id?: string | null;
+      courseName?: string | null;
+      numberOfHours?: number; // int32
+      status?: ProfessionalDevelopmentStatusCode;
+    }
     export type ProfessionalDevelopmentStatusCode =
       | "ApplicationSubmitted"
+      | "Approved"
       | "Draft"
-      | "Inactive"
       | "InProgress"
       | "Rejected"
       | "Submitted"
@@ -431,8 +440,10 @@ declare namespace Components {
       transcriptsStatus?: TranscriptStatus[] | null;
       workExperienceReferencesStatus?: WorkExperienceReferenceStatus[] | null;
       characterReferencesStatus?: CharacterReferenceStatus[] | null;
+      professionalDevelopmentsStatus?: ProfessionalDevelopmentStatus[] | null;
       addMoreCharacterReference?: boolean | null;
       addMoreWorkExperienceReference?: boolean | null;
+      addMoreProfessionalDevelopment?: boolean | null;
       applicationType?: ApplicationTypes;
     }
     export interface Transcript {
@@ -628,6 +639,20 @@ declare namespace Paths {
     namespace Responses {
       export type $200 = Components.Schemas.SubmitApplicationResponse;
       export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
+  namespace ApplicationProfessionaldevelopmentAddPost {
+    namespace Parameters {
+      export type ApplicationId = string;
+    }
+    export interface PathParameters {
+      application_id: Parameters.ApplicationId;
+    }
+    export type RequestBody = Components.Schemas.ProfessionalDevelopment;
+    namespace Responses {
+      export type $200 = Components.Schemas.AddProfessionalDevelopmentResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
@@ -1125,6 +1150,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ApplicationWorkExperienceReferenceResendInvitePost.Responses.$200>;
+  /**
+   * application_professionaldevelopment_add_post - Add Professional Development
+   */
+  "application_professionaldevelopment_add_post"(
+    parameters?: Parameters<Paths.ApplicationProfessionaldevelopmentAddPost.PathParameters> | null,
+    data?: Paths.ApplicationProfessionaldevelopmentAddPost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.ApplicationProfessionaldevelopmentAddPost.Responses.$200>;
 }
 
 export interface PathsDictionary {
@@ -1397,6 +1430,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ApplicationWorkExperienceReferenceResendInvitePost.Responses.$200>;
+  };
+  ["/api/applications/{application_id}/professionaldevelopment/add"]: {
+    /**
+     * application_professionaldevelopment_add_post - Add Professional Development
+     */
+    "post"(
+      parameters?: Parameters<Paths.ApplicationProfessionaldevelopmentAddPost.PathParameters> | null,
+      data?: Paths.ApplicationProfessionaldevelopmentAddPost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ApplicationProfessionaldevelopmentAddPost.Responses.$200>;
   };
 }
 

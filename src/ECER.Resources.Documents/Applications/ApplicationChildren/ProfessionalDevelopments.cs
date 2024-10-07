@@ -149,6 +149,8 @@ internal sealed partial class ApplicationRepository
     }
   }
 
+
+
   private static string GetBucketName(IConfiguration configuration) =>
   configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }

@@ -61,4 +61,15 @@ const getApplicationStatus = async (applicationId: string): Promise<ApiResponse<
   });
 };
 
-export { cancelDraftApplication, createOrUpdateDraftApplication, getApplications, getApplicationStatus, submitDraftApplication };
+const addProfessionalDevelopment = async (
+  params: Paths.ApplicationProfessionaldevelopmentAddPost.PathParameters,
+  body: Paths.ApplicationProfessionaldevelopmentAddPost.RequestBody,
+): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute({
+    request: client.application_professionaldevelopment_add_post(params, body),
+    key: "application_professionaldevelopment_add_post",
+  });
+};
+
+export { addProfessionalDevelopment, cancelDraftApplication, createOrUpdateDraftApplication, getApplications, getApplicationStatus, submitDraftApplication };
