@@ -228,6 +228,12 @@ const router = createRouter({
       meta: { requiresAuth: false },
       name: "lookup-certification",
     },
+    {
+      path: "/lookup/certification/record",
+      component: () => import("./components/LookupCertificationRecord.vue"),
+      meta: { requiresAuth: false },
+      name: "lookup-certification-record",
+    },
     { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("./components/pages/PageNotFound.vue") },
   ],
 });
