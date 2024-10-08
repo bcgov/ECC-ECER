@@ -75,11 +75,12 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     // Filter out previous names where the Source is "Name Log"
     foreach (var contact in results)
     {
-      if (contact.ecer_previousname_Contactid != null)
+      if (contact.ecer_previousname_Contactid != null && contact.ecer_previousname_Contactid.Any())
       {
-        contact.ecer_previousname_Contactid = contact.ecer_previousname_Contactid
+        var previousNames = contact.ecer_previousname_Contactid
             .Where(pn => pn.ecer_Source != ecer_PreviousNameSources.NameLog)
             .ToList();
+        contact.ecer_previousname_Contactid = previousNames.Count != 0 ? previousNames : null;
       }
     }
 

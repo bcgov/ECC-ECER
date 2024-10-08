@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ECER.Utilities.DataverseSdk.Model
+namespace DataverseModel
 {
 	
 	

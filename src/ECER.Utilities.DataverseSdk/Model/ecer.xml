@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Config xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <AudibleCompletionNotification>false</AudibleCompletionNotification>
+  <AudibleCompletionNotification>true</AudibleCompletionNotification>
   <CodeCustomizationService>DLaB.ModelBuilderExtensions.CustomizeCodeDomService,DLaB.ModelBuilderExtensions</CodeCustomizationService>
   <CodeGenerationService>DLaB.ModelBuilderExtensions.CodeGenerationService,DLaB.ModelBuilderExtensions</CodeGenerationService>
   <CodeWriterFilterService>DLaB.ModelBuilderExtensions.CodeWriterFilterService,DLaB.ModelBuilderExtensions</CodeWriterFilterService>
@@ -9,33 +9,37 @@
   <EmitVirtualAttributes>true</EmitVirtualAttributes>
   <EntityTypesFolder>Entities</EntityTypesFolder>
   <ExtensionConfig>
-    <ActionPrefixesWhitelist>bcgov_*|
-ecer_*</ActionPrefixesWhitelist>
-    <ActionsWhitelist />
-    <ActionsToSkip>upsertmultiple</ActionsToSkip>
+    <ActionPrefixesWhitelist />
+    <ActionsWhitelist>analyze</ActionsWhitelist>
+    <ActionsToSkip />
     <AddDebuggerNonUserCode>true</AddDebuggerNonUserCode>
-    <AddNewFilesToProject>false</AddNewFilesToProject>
-    <AddOptionSetMetadataAttribute>false</AddOptionSetMetadataAttribute>
-    <AdjustCasingForEnumOptions>false</AdjustCasingForEnumOptions>
+    <AddNewFilesToProject>true</AddNewFilesToProject>
+    <AddOptionSetMetadataAttribute>true</AddOptionSetMetadataAttribute>
+    <AdjustCasingForEnumOptions>true</AdjustCasingForEnumOptions>
     <AttributeBlacklist />
     <BuilderSettingsJsonRelativePath>builderSettings.json</BuilderSettingsJsonRelativePath>
-    <CamelCaseClassNames>false</CamelCaseClassNames>
+    <CamelCaseClassNames>true</CamelCaseClassNames>
     <CamelCaseCustomWords />
-    <CamelCaseMemberNames>false</CamelCaseMemberNames>
+    <CamelCaseMemberNames>true</CamelCaseMemberNames>
     <CamelCaseNamesDictionaryRelativePath>DLaB.EarlyBoundGeneratorV2\DLaB.Dictionary.txt</CamelCaseNamesDictionaryRelativePath>
     <CleanupCrmSvcUtilLocalOptionSets>false</CleanupCrmSvcUtilLocalOptionSets>
     <CreateOneFilePerAction>true</CreateOneFilePerAction>
     <CreateOneFilePerEntity>true</CreateOneFilePerEntity>
     <CreateOneFilePerOptionSet>true</CreateOneFilePerOptionSet>
-    <DeleteFilesFromOutputFolders>true</DeleteFilesFromOutputFolders>
+    <DeleteFilesFromOutputFolders>false</DeleteFilesFromOutputFolders>
     <EntitiesToSkip />
-    <EntitiesWhitelist>contact</EntitiesWhitelist>
+    <EntitiesWhitelist>activityparty|
+activitypointer|
+businessunit|
+contact|
+email|
+systemuser|
+transactioncurrency</EntitiesWhitelist>
     <EntityAttributeSpecifiedNames />
     <EntityClassNameOverrides />
     <EntityPrefixesToSkip />
-    <EntityPrefixesWhitelist>bcgov_*|
-ecer_*</EntityPrefixesWhitelist>
-    <GenerateActionAttributeNameConsts>false</GenerateActionAttributeNameConsts>
+    <EntityPrefixesWhitelist />
+    <GenerateActionAttributeNameConsts>true</GenerateActionAttributeNameConsts>
     <GenerateAllOptionSetLabelMetadata>false</GenerateAllOptionSetLabelMetadata>
     <GenerateAttributeNameConsts>true</GenerateAttributeNameConsts>
     <GenerateAnonymousTypeConstructor>true</GenerateAnonymousTypeConstructor>
@@ -44,14 +48,14 @@ ecer_*</EntityPrefixesWhitelist>
     <GenerateEnumProperties>true</GenerateEnumProperties>
     <GenerateGlobalOptionSets>false</GenerateGlobalOptionSets>
     <GenerateINotifyPattern>false</GenerateINotifyPattern>
-    <GenerateOptionSetMetadataAttribute>false</GenerateOptionSetMetadataAttribute>
+    <GenerateOptionSetMetadataAttribute>true</GenerateOptionSetMetadataAttribute>
     <GenerateTypesAsInternal>false</GenerateTypesAsInternal>
-    <GroupLocalOptionSetsByEntity>true</GroupLocalOptionSetsByEntity>
+    <GroupLocalOptionSetsByEntity>false</GroupLocalOptionSetsByEntity>
     <GroupMessageRequestWithResponse>true</GroupMessageRequestWithResponse>
     <InvalidCSharpNamePrefix>_</InvalidCSharpNamePrefix>
     <MakeAllFieldsEditable>false</MakeAllFieldsEditable>
     <MakeReadonlyFieldsEditable>false</MakeReadonlyFieldsEditable>
-    <MakeResponseActionsEditable>false</MakeResponseActionsEditable>
+    <MakeResponseActionsEditable>true</MakeResponseActionsEditable>
     <LocalOptionSetFormat>{0}_{1}</LocalOptionSetFormat>
     <MakeReferenceTypesNullable>false</MakeReferenceTypesNullable>
     <ModelBuilderLogLevel>2</ModelBuilderLogLevel>
@@ -117,10 +121,10 @@ VoiceMail</TokenCapitalizationOverrides>
   <MetadataQueryProviderService>DLaB.ModelBuilderExtensions.MetadataQueryProviderService,DLaB.ModelBuilderExtensions</MetadataQueryProviderService>
   <NamingService>DLaB.ModelBuilderExtensions.NamingService,DLaB.ModelBuilderExtensions</NamingService>
   <OptionSetsTypesFolder>OptionSets</OptionSetsTypesFolder>
-  <Namespace>ECER.Utilities.DataverseSdk.Model</Namespace>
-  <ServiceContextName>EcerContext</ServiceContextName>
-  <SuppressGeneratedCodeAttribute>false</SuppressGeneratedCodeAttribute>
-  <SettingsVersion>2.2024.9.11</SettingsVersion>
+  <Namespace>DataverseModel</Namespace>
+  <ServiceContextName>DataverseContext</ServiceContextName>
+  <SuppressGeneratedCodeAttribute>true</SuppressGeneratedCodeAttribute>
+  <SettingsVersion>2.2024.5.16</SettingsVersion>
   <UpdateBuilderSettingsJson>true</UpdateBuilderSettingsJson>
-  <Version>2.2024.9.11</Version>
+  <Version>2.2024.5.16</Version>
 </Config>
