@@ -10,6 +10,7 @@ internal class CertificationRepositoryMapper : Profile
   {
     CreateMap<ecer_Certificate, Certification>(MemberList.Destination)
      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CertificateId))
+     .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_RegistrantidName))
      .ForMember(d => d.Number, opts => opts.MapFrom(s => s.ecer_CertificateNumber))
      .ForMember(d => d.ExpiryDate, opts => opts.MapFrom(s => s.ecer_ExpiryDate))
      .ForMember(d => d.EffectiveDate, opts => opts.MapFrom(s => s.ecer_EffectiveDate))

@@ -40,6 +40,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Communication testCommunication4 = null!;
 
   private ecer_Certificate testCertification = null!;
+  private ecer_Certificate testCertification2 = null!;
 
   private ecer_PortalInvitation testPortalInvitationOne = null!;
   private ecer_PortalInvitation testPortalInvitationCharacterReferenceSubmit = null!;
@@ -63,6 +64,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string draftTestApplicationId => draftTestApplication.Id.ToString();
 
   public string certificationOneId => testCertification.Id.ToString();
+  public string certificationTwoId => testCertification2.Id.ToString();
 
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationCharacterReferenceIdSubmit => testPortalInvitationCharacterReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
@@ -144,7 +146,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2", null);
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3", null);
     testCommunication4 = GetOrAddCommunication(context, inProgressTestApplication, "comm4", null);
-    testCertification = GetOrAddCertification(context);
+    testCertification = GetOrAddCertification(context, AuthenticatedBcscUser);
+    testCertification2 = GetOrAddCertification(context, AuthenticatedBcscUser);
 
     previousName = GetOrAddPreviousName(context, AuthenticatedBcscUser);
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, AuthenticatedBcscUser, "name1");
@@ -354,7 +357,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return communication;
   }
 
-  private ecer_Certificate GetOrAddCertification(EcerContext context)
+  private ecer_Certificate GetOrAddCertification(EcerContext context, Contact registrant)
   {
     var certification = context.ecer_CertificateSet.FirstOrDefault(c => c.ecer_CertificateNumber == "autotest_1234");
 
@@ -379,6 +382,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
       context.AddLink(certification, ecer_Certificate.Fields.ecer_certifiedlevel_CertificateId, level);
       context.AddLink(level, ecer_CertifiedLevel.Fields.ecer_certifiedlevel_CertificateTypeId, type);
+      context.AddLink(certification, ecer_Certificate.Fields.ecer_certificate_Registrantid, registrant);
     }
 
     return certification;

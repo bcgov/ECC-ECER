@@ -19,6 +19,9 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
     {
       ById = request.ById,
       ByApplicantId = request.ByApplicantId,
+      ByCertificateNumber = request.ByCertificateNumber,
+      ByFirstName = request.ByFirstName,
+      ByLastName = request.ByLastName
     });
 
     return new CertificationsQueryResults(mapper.Map<IEnumerable<Contract.Certifications.Certification>>(Certifications)!);

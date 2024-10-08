@@ -10,10 +10,14 @@ public record UserCertificationQuery
   public string? ById { get; set; }
   public string? ByApplicantId { get; set; }
   public string? ByApplicationId { get; set; }
+  public string? ByCertificateNumber { get; set; }
+  public string? ByFirstName { get; set; }
+  public string? ByLastName { get; set; }
 }
 
 public record Certification(string Id)
 {
+  public string? Name { get; set; }
   public string? Number { get; set; }
   public DateTime? ExpiryDate { get; set; }
   public DateTime? EffectiveDate { get; set; }

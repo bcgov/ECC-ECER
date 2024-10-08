@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ECER.Clients.RegistryPortal.Server.Certifications;
 
@@ -26,11 +29,39 @@ public class CertificationsEndpoints : IRegisterEndpoints
      .WithOpenApi("Handles certification queries", string.Empty, "certification_get")
      .RequireAuthorization()
      .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/certifications/lookup", async Task<Results<Ok<IEnumerable<Certification>>, BadRequest<ProblemDetails>, NotFound>> (CertificationLookupRequest request, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    {
+      var recaptchaResult = await messageBus.Send(new Managers.Registry.Contract.Recaptcha.VerifyRecaptchaCommand(request.RecaptchaToken), ct);
+
+      if (!recaptchaResult.Success)
+      {
+        var problemDetails = new ProblemDetails
+        {
+          Status = StatusCodes.Status400BadRequest,
+          Detail = "Invalid recaptcha token",
+          Extensions = { ["errors"] = recaptchaResult.ErrorCodes }
+        };
+        return TypedResults.BadRequest(problemDetails);
+      }
+
+      var query = new UserCertificationQuery
+      {
+        ByCertificateNumber = request.RegistrationNumber,
+        ByFirstName = request.FirstName,
+        ByLastName = request.LastName,
+      };
+      var results = await messageBus.Send<CertificationsQueryResults>(query);
+      return TypedResults.Ok(mapper.Map<IEnumerable<Certification>>(results.Items));
+    })
+     .WithOpenApi("Handles certifications lookup queries", string.Empty, "certifications_lookup_post")
+     .WithParameterValidation();
   }
 }
 
 public record Certification(string Id)
 {
+  public string? Name { get; set; }
   public string? Number { get; set; }
   public DateTime? ExpiryDate { get; set; }
   public DateTime? EffectiveDate { get; set; }
@@ -42,6 +73,17 @@ public record Certification(string Id)
   public YesNoNull? IneligibleReference { get; set; }
   public IEnumerable<CertificationLevel> Levels { get; set; } = Array.Empty<CertificationLevel>();
   public IEnumerable<CertificationFile> Files { get; set; } = Array.Empty<CertificationFile>();
+}
+
+public record CertificationLookupRequest(string RecaptchaToken)
+{
+  public string? FirstName { get; set; }
+  public string? LastName { get; set; }
+  public string? RegistrationNumber { get; set; }
+  public int? PageSize { get; set; }
+  public int? PageNumber { get; set; }
+  public string? SortField { get; set; }
+  public string? SortDirection { get; set; }
 }
 
 public record CertificationLevel(string Id)
