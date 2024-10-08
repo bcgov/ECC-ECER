@@ -69,8 +69,8 @@
           <li>Be related to the field of early childhood education</li>
           <li v-if="certificationStore.latestCertificateStatus != 'Expired'">
             Have been completed within the term of your current certificate (between
-            {{ formatDate(certificationStore.latestCertification?.effectiveDate ?? "") }} and
-            {{ formatDate(certificationStore.latestCertification?.expiryDate ?? "") }})
+            {{ formatDate(certificationStore.latestCertification?.effectiveDate ?? "", "LLLL d, yyyy") }} and
+            {{ formatDate(certificationStore.latestCertification?.expiryDate ?? "", "LLLL d, yyyy") }})
           </li>
           <li v-else>Have been completed within the last 5 years</li>
         </ul>
