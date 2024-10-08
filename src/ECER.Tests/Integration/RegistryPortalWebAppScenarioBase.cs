@@ -79,6 +79,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Application inProgressTestApplication2 = null!;
   private ecer_Application draftTestApplication2 = null!;
   private ecer_Application draftTestApplication3 = null!;
+  private ecer_Application draftTestApplication4 = null!;
   private ecer_Application submittedTestApplication = null!;
   private ecer_Application submittedTestApplication2 = null!;
   private ecer_Application submittedTestApplication3 = null!;
@@ -89,6 +90,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string inprogressTestApplicationId2 => inProgressTestApplication2.Id.ToString();
   public string draftTestApplicationId2 => draftTestApplication2.Id.ToString();
   public string draftTestApplicationId3 => draftTestApplication3.Id.ToString();
+
+  public string draftTestApplicationId4 => draftTestApplication4.Id.ToString();
   public string submittedTestApplicationId => submittedTestApplication.Id.ToString();
   public string submittedTestApplicationId2 => submittedTestApplication2.Id.ToString();
   public string submittedTestApplicationId3 => submittedTestApplication3.Id.ToString();
@@ -133,6 +136,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     draftTestApplication = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Draft);
     draftTestApplication2 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Draft);
     draftTestApplication3 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Draft);
+    draftTestApplication4 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Draft);
     submittedTestApplication = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Submitted);
     submittedTestApplication2 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Submitted);
     submittedTestApplication3 = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.Submitted);

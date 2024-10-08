@@ -80,6 +80,7 @@
                 :rules="[
                   Rules.required('Enter the end date'),
                   Rules.futureDateNotAllowedRule(),
+                  Rules.dateBeforeRule(startYear || ''),
                   Rules.conditionalWrapper(
                     isDraftApplicationAssistantRenewal,
                     Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'End date must be within the last 5 years'),
@@ -234,8 +235,8 @@ interface EceEducationData {
   transcriptStatus: "received" | "requested" | "";
   previousNameRadio: any;
   Rules: typeof Rules;
-  studentFirstName: string;
-  studentMiddleName: string;
+  studentFirstName: string | null;
+  studentMiddleName: string | null;
   studentLastName: string;
   isNameUnverified: boolean;
 }
@@ -407,8 +408,8 @@ export default defineComponent({
       this.school = educationData.education.educationalInstitutionName ?? "";
       this.program = educationData.education.programName ?? "";
       this.campusLocation = educationData.education.campusLocation ?? "";
-      (this.studentFirstName = educationData.education.studentFirstName ?? ""),
-        (this.studentMiddleName = educationData.education.studentMiddleName ?? ""),
+      (this.studentFirstName = educationData.education.studentFirstName ?? null),
+        (this.studentMiddleName = educationData.education.studentMiddleName ?? null),
         (this.studentLastName = educationData.education.studentLastName ?? ""),
         (this.studentNumber = educationData.education.studentNumber ?? "");
       this.isNameUnverified = educationData.education.isNameUnverified;
