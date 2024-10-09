@@ -341,7 +341,7 @@ declare namespace Components {
       documents?: IdentityDocument[] | null;
     }
     export type PreviousNameSources = "NameLog" | "Profile" | "Transcript" | "OutofProvinceCertificate";
-    export type PreviousNameStage = "Unverified" | "ReadyforVerification" | "Verified" | "Archived";
+    export type PreviousNameStage = "Archived" | "PendingforDocuments" | "ReadyforVerification" | "Unverified" | "Verified";
     export interface ProblemDetails {
       [name: string]: any;
       type?: string | null;

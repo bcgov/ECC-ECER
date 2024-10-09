@@ -432,10 +432,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		Inactive = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
+		PendingforDocuments = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ReadyforVerification = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Unverified = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Verified = 621870002,
 	}
 	
 	/// <summary>
@@ -662,6 +671,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ClientID = "ecer_clientid";
 			public const string ecer_comment_Contact_contact = "ecer_comment_Contact_contact";
 			public const string ecer_completedcourse_Applicantid = "ecer_completedcourse_Applicantid";
+			public const string ecer_Contact_Contact_ecer_health_authorities = "ecer_Contact_Contact_ecer_health_authorities";
+			public const string ecer_Contact_Contact_ecer_licensing_officers = "ecer_Contact_Contact_ecer_licensing_officers";
 			public const string ecer_contact_ecer_authentication_455 = "ecer_contact_ecer_authentication_455";
 			public const string ecer_contact_ecer_communication_122 = "ecer_contact_ecer_communication_122";
 			public const string ecer_contact_ecer_investigation_Applicant = "ecer_contact_ecer_investigation_Applicant";
@@ -683,6 +694,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_hascertificatesuspendedName = "ecer_hascertificatesuspendedname";
 			public const string ecer_HasCurrentCertificateConditions = "ecer_hascurrentcertificateconditions";
 			public const string ecer_hascurrentcertificateconditionsName = "ecer_hascurrentcertificateconditionsname";
+			public const string ecer_HasProvidedID = "ecer_hasprovidedid";
+			public const string ecer_hasprovidedidName = "ecer_hasprovidedidname";
 			public const string ecer_IsBCECE = "ecer_isbcece";
 			public const string ecer_isbceceName = "ecer_isbcecename";
 			public const string ecer_IsUnder19 = "ecer_isunder19";
@@ -4216,6 +4229,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasprovidedid")]
+		public System.Nullable<bool> ecer_HasProvidedID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_hasprovidedid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hasprovidedid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasprovidedidname")]
+		public string ecer_hasprovidedidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hasprovidedid"))
+				{
+					return this.FormattedValues["ecer_hasprovidedid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// is BC ECE Registrant. Use to show hide other tabs
 		/// </summary>
@@ -7369,6 +7414,42 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse>("ecer_completedcourse_Applicantid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_Contact_Contact_ecer_health_authorities
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_Contact_Contact_ecer_health_authorities")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_health_authorities> ecer_Contact_Contact_ecer_health_authorities
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_health_authorities>("ecer_Contact_Contact_ecer_health_authorities", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_health_authorities>("ecer_Contact_Contact_ecer_health_authorities", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_Contact_Contact_ecer_licensing_officers
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_Contact_Contact_ecer_licensing_officers")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_licensing_officers> ecer_Contact_Contact_ecer_licensing_officers
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_licensing_officers>("ecer_Contact_Contact_ecer_licensing_officers", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_licensing_officers>("ecer_Contact_Contact_ecer_licensing_officers", null, value);
 			}
 		}
 		

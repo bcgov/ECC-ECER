@@ -70,10 +70,11 @@ public record PreviousName(string FirstName, string LastName)
 
 public enum PreviousNameStage
 {
-  Unverified,
-  ReadyforVerification,
-  Verified,
   Archived,
+  PendingforDocuments,
+  ReadyforVerification,
+  Unverified,
+  Verified,
 }
 
 public enum PreviousNameSources
@@ -82,7 +83,6 @@ public enum PreviousNameSources
   Profile,
   Transcript,
   OutofProvinceCertificate
-  
 }
 
 public record IdentityDocument(string Id)

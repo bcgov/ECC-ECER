@@ -88,6 +88,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DoesECERegistryHaveTranscript = "ecer_doeseceregistryhavetranscript";
 			public const string ecer_doeseceregistryhavetranscriptName = "ecer_doeseceregistryhavetranscriptname";
 			public const string ecer_EducationInstitutionFullName = "ecer_educationinstitutionfullname";
+			public const string ecer_EducationRecognition = "ecer_educationrecognition";
+			public const string ecer_educationrecognitionName = "ecer_educationrecognitionname";
 			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_InstituteCountryId = "ecer_institutecountryid";
 			public const string ecer_InstituteCountryIdName = "ecer_institutecountryidname";
@@ -470,6 +472,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_educationinstitutionfullname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationrecognition")]
+		public virtual ecer_EducationRecognition? ecer_EducationRecognition
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_EducationRecognition?)(EntityOptionSetEnum.GetEnum(this, "ecer_educationrecognition")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_educationrecognition", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationrecognitionname")]
+		public string ecer_educationrecognitionName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_educationrecognition"))
+				{
+					return this.FormattedValues["ecer_educationrecognition"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
