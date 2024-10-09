@@ -14,13 +14,13 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import EceRecaptcha from "./inputs/EceRecaptcha.vue";
-import { useLookupCertificationStore } from "@/store/lookupCertification";
 import { useRouter } from "vue-router";
+
+import { useLookupCertificationStore } from "@/store/lookupCertification";
 
 export default defineComponent({
   name: "LookupCertification",
-  components: { EceRecaptcha },
+
   props: {
     test: {
       // TODO create type for prop

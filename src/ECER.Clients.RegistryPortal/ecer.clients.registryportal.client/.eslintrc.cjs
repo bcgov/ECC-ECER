@@ -13,5 +13,6 @@ module.exports = {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "vue/multi-word-component-names": "off",
+    "vue/valid-v-slot": ["error", { allowModifiers: true }],
   },
 };

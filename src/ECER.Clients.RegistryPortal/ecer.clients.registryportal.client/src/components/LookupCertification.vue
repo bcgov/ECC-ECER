@@ -35,8 +35,8 @@
             hide-details="auto"
             variant="outlined"
             label="ECE registration number"
-            @keypress="isNumber($event)"
             maxlength="6"
+            @keypress="isNumber($event)"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -91,16 +91,17 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import ECEHeader from "./ECEHeader.vue";
-import type { VForm, VDataTable } from "vuetify/components";
-import { useAlertStore } from "@/store/alert";
-import EceRecaptcha from "./inputs/EceRecaptcha.vue";
-import * as Rules from "../utils/formRules";
-import { useDisplay } from "vuetify";
-import { useLookupCertificationStore } from "@/store/lookupCertification";
 import { useRouter } from "vue-router";
-import { isNumber } from "@/utils/formInput";
+import { useDisplay } from "vuetify";
+import type { VDataTable, VForm } from "vuetify/components";
+
+import { useAlertStore } from "@/store/alert";
+import { useLookupCertificationStore } from "@/store/lookupCertification";
 import { formatDate } from "@/utils/format";
+import { isNumber } from "@/utils/formInput";
+
+import * as Rules from "../utils/formRules";
+import EceRecaptcha from "./inputs/EceRecaptcha.vue";
 
 interface LookupCertificationData {
   recaptchaToken: string;
@@ -111,7 +112,7 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 export default defineComponent({
   name: "LookupCertification",
-  components: { ECEHeader, EceRecaptcha },
+  components: { EceRecaptcha },
   setup() {
     const alertStore = useAlertStore();
     const lookupCertificationStore = useLookupCertificationStore();
@@ -132,10 +133,10 @@ export default defineComponent({
       ],
     };
   },
+  computed: {},
   mounted() {
     // TODO REmove
   },
-  computed: {},
   methods: {
     customAtLeastOneRule() {
       return () =>
