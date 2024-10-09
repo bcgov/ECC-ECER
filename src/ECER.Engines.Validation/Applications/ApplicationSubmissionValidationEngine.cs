@@ -4,8 +4,6 @@ namespace ECER.Engines.Validation.Applications;
 
 internal sealed class ApplicationSubmissionValidationEngine : IApplicationValidationEngine
 {
-  private static readonly IEnumerable<CertificationType> fiveYearNestedCertificationTypes = new[] { CertificationType.Ite, CertificationType.Sne };
-
   public async Task<ValidationResults> Validate(Application application)
   {
     await Task.CompletedTask;
@@ -29,12 +27,6 @@ internal sealed class ApplicationSubmissionValidationEngine : IApplicationValida
     {
       // The end date is more than 5 years from today
       validationErrors.Add("Education was completed more than 5 years ago");
-    }
-
-    // if the application contains SNE and ITE certification types, the application should contain the Five Years certification type
-    if (fiveYearNestedCertificationTypes.Intersect(application.CertificationTypes).Any() && !application.CertificationTypes.Any(ct => ct == CertificationType.FiveYears))
-    {
-      validationErrors.Add("Sub five year certification type selected but without five year certification");
     }
 
     // if the application contains the Five Years certification type, the total work experience should be at least 500 hours

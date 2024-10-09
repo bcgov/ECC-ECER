@@ -74,21 +74,6 @@ public class ApplicationSubmissionValidationEngineTests
   }
 
   [Fact]
-  public async Task Validate_WithSneAndIteWithoutFiveYears_ReturnsCertificationError()
-  {
-    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
-    {
-      Transcripts = new List<Transcript> { CreateMockTranscript(false) },
-      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      CertificationTypes = new List<CertificationType> { CertificationType.Sne, CertificationType.Ite },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) }
-    };
-
-    var result = await _validator.Validate(application);
-    Assert.Contains("Sub five year certification type selected but without five year certification", result.ValidationErrors);
-  }
-
-  [Fact]
   public async Task Validate_ValidApplication_ReturnsNoValidationError()
   {
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
