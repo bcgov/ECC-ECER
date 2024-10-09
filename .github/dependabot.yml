@@ -6,11 +6,12 @@
 version: 2
 updates:
   - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/src" # Location of package manifests
+    directory: "/src"
     schedule:
       interval: "weekly"
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/src" # Location of package manifests
+    directories:
+     - "/src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client"
     schedule:
       interval: "weekly"
   - package-ecosystem: "github-actions"
