@@ -1,30 +1,35 @@
 <template>
   <v-container>
     <Breadcrumb :items="items" />
-    <template v-if="applicationStore.isDraftCertificateTypeEceAssistant">
-      <ECEAssistantRenewalRequirements v-if="applicationStore.isDraftApplicationRenewal" />
-      <ECEAssistantRegistrantRequirements v-else-if="userStore.isRegistrant" />
-      <ECEAssistantRequirements v-else />
-    </template>
-    <template v-if="applicationStore.isDraftCertificateTypeOneYear">
-      <ECEOneYearRenewalRequirements v-if="applicationStore.isDraftApplicationRenewal" :expired="certificationStore.latestCertificateStatus === 'Expired'" />
-      <ECEOneYearRegistrantRequirements v-else-if="userStore.isRegistrant" />
-      <ECEOneYearRequirements v-else />
-    </template>
-    <template v-if="applicationStore.isDraftCertificateTypeFiveYears">
+
+    <!-- Renewal -->
+    <template v-if="applicationStore.isDraftApplicationRenewal">
+      <ECEAssistantRenewalRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
+      <ECEOneYearRenewalRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
       <ECEFiveYearRenewalRequirements
-        v-if="applicationStore.isDraftApplicationRenewal"
+        v-if="applicationStore.isDraftCertificateTypeFiveYears"
         :expired="certificationStore.latestCertificateStatus === 'Expired'"
         :expired-more-than5-years="certificationStore.latestExpiredMoreThan5Years"
       />
-      <ECEFiveYearRegistrantRequirements v-else-if="userStore.isRegistrant" />
-      <ECEFiveYearRequirements v-else />
     </template>
-    <template v-if="applicationStore.isDraftCertificateTypeSne && !applicationStore.isDraftApplicationRenewal && userStore.isRegistrant">
-      <ECESneRegistrantRequirements />
+
+    <!-- Registrant -->
+    <template v-if="userStore.isRegistrant">
+      <ECEAssistantRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
+      <ECEOneYearRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
+      <ECEFiveYearRegistrantRequirements
+        v-if="applicationStore.isDraftCertificateTypeFiveYears || applicationStore.draftApplication.certificationTypes?.length === 0"
+        ref="ECEFiveYearRegistrantRequirements"
+      />
+      <ECESneRegistrantRequirements v-else-if="applicationStore.isDraftCertificateTypeSne" />
+      <ECEIteRegistrantRequirements v-else-if="applicationStore.isDraftCertificateTypeIte" />
     </template>
-    <template v-if="applicationStore.isDraftCertificateTypeIte && !applicationStore.isDraftApplicationRenewal && userStore.isRegistrant">
-      <ECEIteRegistrantRequirements />
+
+    <!-- New -->
+    <template v-else>
+      <ECEAssistantRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
+      <ECEOneYearRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
+      <ECEFiveYearRequirements v-if="applicationStore.isDraftCertificateTypeFiveYears" />
     </template>
 
     <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Apply now</v-btn>
@@ -33,6 +38,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import type { VForm } from "vuetify/components";
 
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import ECEAssistantRenewalRequirements from "@/components/ECEAssistantRenewalRequirements.vue";
@@ -44,15 +50,14 @@ import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import { useUserStore } from "@/store/user";
+import type { Components } from "@/types/openapi";
 
-import ECEAssistantRegistrantRequirements from "./ECEAssistantRegistrantRequirements.vue";
 import ECEFiveYearRegistrantRequirements from "./ECEFiveYearRegistrantRequirements.vue";
 import ECEIteRegistrantRequirements from "./ECEIteRegistrantRequirements.vue";
-import ECEOneYearRegistrantRequirements from "./ECEOneYearRegistrantRequirements.vue";
 import ECESneRegistrantRequirements from "./ECESneRegistrantRequirements.vue";
 
 export default defineComponent({
-  name: "CertificationTypeRequirements",
+  name: "ApplicationRequirements",
   components: {
     ECEAssistantRequirements,
     ECEOneYearRequirements,
@@ -60,12 +65,16 @@ export default defineComponent({
     ECEAssistantRenewalRequirements,
     ECEOneYearRenewalRequirements,
     ECEFiveYearRenewalRequirements,
-    ECEAssistantRegistrantRequirements,
-    ECEOneYearRegistrantRequirements,
     ECEFiveYearRegistrantRequirements,
     ECEIteRegistrantRequirements,
     ECESneRegistrantRequirements,
     Breadcrumb,
+  },
+
+  provide() {
+    return {
+      handleSpecializationSelection: this.handleSpecializationSelection,
+    };
   },
 
   setup: () => {
@@ -111,11 +120,38 @@ export default defineComponent({
             },
           ];
 
-    return { items };
+    return {
+      items,
+      specializationSelection: [] as Components.Schemas.CertificationType[],
+    };
   },
   methods: {
+    handleSpecializationSelection(payload?: Components.Schemas.CertificationType[]) {
+      this.specializationSelection = payload ?? [];
+    },
     async continueClick() {
-      this.$router.push({ name: "declaration" });
+      if (this.applicationStore.draftApplication.certificationTypes?.length === 0) {
+        // Validate specialization form as we are in the add specialization(s) registrant flow
+
+        const formRef = (this.$refs.ECEFiveYearRegistrantRequirements as typeof ECEFiveYearRegistrantRequirements).$refs.SpecializedCertificationOptions.$refs
+          .specializationForm as VForm;
+
+        const { valid } = await formRef.validate();
+        if (valid) {
+          this.applicationStore.$patch({ draftApplication: { certificationTypes: this.specializationSelection } });
+          this.$router.push({ name: "declaration" });
+        }
+      } else {
+        const currentTypes = this.applicationStore.draftApplication.certificationTypes || [];
+        const updatedTypes = [...currentTypes, ...this.specializationSelection];
+
+        // Remove duplicates if necessary
+        const uniqueUpdatedTypes = Array.from(new Set(updatedTypes));
+
+        // Patch the store with the updated types
+        this.applicationStore.$patch({ draftApplication: { certificationTypes: uniqueUpdatedTypes } });
+        this.$router.push({ name: "declaration" });
+      }
     },
   },
 });
