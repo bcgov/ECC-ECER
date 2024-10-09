@@ -20,17 +20,24 @@
     <v-form ref="lookupForm" class="mt-10">
       <v-row>
         <v-col cols="12" sm="8" lg="4">
-          <v-text-field v-model="firstName" hide-details="auto" variant="outlined" label="First name"></v-text-field>
+          <v-text-field v-model="lookupCertificationStore.firstName" hide-details="auto" variant="outlined" label="First name"></v-text-field>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="8" lg="4">
-          <v-text-field v-model="lastName" hide-details="auto" variant="outlined" label="Last name"></v-text-field>
+          <v-text-field v-model="lookupCertificationStore.lastName" hide-details="auto" variant="outlined" label="Last name"></v-text-field>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="8" lg="4">
-          <v-text-field v-model="registrationNumber" hide-details="auto" variant="outlined" label="ECE registration number"></v-text-field>
+          <v-text-field
+            v-model="lookupCertificationStore.registrationNumber"
+            hide-details="auto"
+            variant="outlined"
+            label="ECE registration number"
+            @keypress="isNumber($event)"
+            maxlength="6"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row>
@@ -50,7 +57,7 @@
         <v-btn rounded="lg" color="primary" @click="handleSubmit">Search</v-btn>
       </v-col>
     </v-row>
-    <v-row v-if="certificationSearchResults?.length === 0">
+    <v-row v-if="lookupCertificationStore.certificationSearchResults?.length === 0">
       <v-col>
         <h2>No records found</h2>
         <p>If you cannot find an ECE, it may be because the:</p>
@@ -62,36 +69,21 @@
         </ul>
       </v-col>
     </v-row>
-    <v-row v-else-if="certificationSearchResults && certificationSearchResults?.length > 0">
-      <!-- desktop/tablet list view -->
-      <v-col v-if="!mobile">
-        <h2>{{ `${certificationSearchResults.length} record${certificationSearchResults.length === 1 ? "" : "s"} found` }}</h2>
-        <v-data-table-virtual :headers="headers" :items="certificationSearchResults" :items-per-page="-1">
-          <template #item="{ item }">
-            <tr>
-              <td>
-                <a href="#" @click.prevent="() => applicantClick(item)">{{ `${item.firstName} ${item.lastName}` }}</a>
-              </td>
-              <td>{{ item.registrationNumber }}</td>
-              <td>{{ item.certification }}</td>
-              <td>{{ item.status }}</td>
-            </tr>
+    <v-row v-else-if="lookupCertificationStore.certificationSearchResults && lookupCertificationStore.certificationSearchResults?.length > 0">
+      <v-col>
+        <h2>
+          {{
+            `${lookupCertificationStore.certificationSearchResults.length} record${lookupCertificationStore.certificationSearchResults.length === 1 ? "" : "s"} found`
+          }}
+        </h2>
+        <v-data-table-virtual :headers="headers" :items="lookupCertificationStore.certificationSearchResults" :items-per-page="-1" :mobile="mobile" must-sort>
+          <template #item.name="{ item }">
+            <a href="#" @click.prevent="() => applicantClick(item)">{{ item.name }}</a>
+          </template>
+          <template #item.expiryDate="{ item }">
+            <span href="#" @click.prevent="() => applicantClick(item)">{{ formatDate(item.expiryDate, "LLLL d, yyyy") }}</span>
           </template>
         </v-data-table-virtual>
-      </v-col>
-      <!-- mobile list view -->
-      <v-col v-if="mobile">
-        <h2>{{ `${certificationSearchResults.length} record${certificationSearchResults.length === 1 ? "" : "s"} found` }}</h2>
-        <v-card v-for="(result, index) in certificationSearchResults" :key="index" elevation="0">
-          <v-card-text>
-            <div v-for="(header, index) in headers" :key="`${header.key}${index}}`">
-              <p class="font-weight-bold">{{ header.key }}</p>
-              <a v-if="header.key === 'name'" href="#" @click.prevent="() => applicantClick(result)">{{ header.key }}</a>
-              <!-- render link only for name header -->
-              <p v-else>{{ result[header.key] }}</p>
-            </div>
-          </v-card-text>
-        </v-card>
       </v-col>
     </v-row>
   </v-container>
@@ -106,13 +98,12 @@ import EceRecaptcha from "./inputs/EceRecaptcha.vue";
 import * as Rules from "../utils/formRules";
 import { useDisplay } from "vuetify";
 import { useLookupCertificationStore } from "@/store/lookupCertification";
+import { useRouter } from "vue-router";
+import { isNumber } from "@/utils/formInput";
+import { formatDate } from "@/utils/format";
 
 interface LookupCertificationData {
-  firstName: string;
-  lastName: string;
-  registrationNumber: string;
   recaptchaToken: string;
-  certificationSearchResults: undefined | [];
   headers: ReadonlyHeaders;
 }
 
@@ -125,40 +116,32 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const lookupCertificationStore = useLookupCertificationStore();
     const { mobile } = useDisplay();
+    const router = useRouter();
 
-    return { alertStore, Rules, mobile, lookupCertificationStore };
+    return { alertStore, Rules, mobile, lookupCertificationStore, router, isNumber, formatDate };
   },
   data(): LookupCertificationData {
     return {
-      firstName: "",
-      lastName: "",
-      registrationNumber: "",
       recaptchaToken: "",
-      certificationSearchResults: [
-        { name: "first last", registrationNumber: "1234", certification: "nothing", status: "fake" },
-        { name: "first2 last2", registrationNumber: "1234", certification: "1nothing", status: "2fake" },
-      ],
       headers: [
-        { title: "Name", key: "name", sortable: false },
-        { title: "Registration number", key: "registrationNumber", sortable: false },
-        { title: "Certification", key: "certification", sortable: false },
-        { title: "Registration status", key: "status", sortable: false },
+        { title: "Name", key: "name" },
+        { title: "Registration number", key: "registrationNumber" },
+        { title: "Certification", key: "certification" },
+        { title: "Registration status", key: "status" },
+        { title: "Certificate expiry date", key: "expiryDate" },
       ],
     };
   },
   mounted() {
-    this.lookupCertificationStore.setCertificationSearchResults([
-      { name: "first last", registrationNumber: "1234", certification: "nothing", status: "fake" },
-      { name: "first2 last2", registrationNumber: "1234", certification: "1nothing", status: "2fake" },
-    ]);
+    // TODO REmove
   },
   computed: {},
   methods: {
     customAtLeastOneRule() {
       return () =>
-        !!(this.firstName && this.firstName?.trim()) ||
-        !!(this.lastName && this.lastName?.trim()) ||
-        !!(this.registrationNumber && this.registrationNumber?.trim());
+        !!(this.lookupCertificationStore.firstName && this.lookupCertificationStore.firstName?.trim()) ||
+        !!(this.lookupCertificationStore.lastName && this.lookupCertificationStore.lastName?.trim()) ||
+        !!(this.lookupCertificationStore.registrationNumber && this.lookupCertificationStore.registrationNumber?.trim());
     },
     async handleSubmit() {
       try {
@@ -169,22 +152,23 @@ export default defineComponent({
             this.alertStore.setFailureAlert("You must enter at least one option");
           }
         } else {
+          if (this.lookupCertificationStore.registrationNumber) {
+            this.lookupCertificationStore.registrationNumber = this.lookupCertificationStore.registrationNumber.padStart(6, "0");
+          }
+
           //make api call
-          this.certificationSearchResults = [
-            { firstName: "first", lastName: "last", registrationNumber: "1234", certification: "nothing", status: "fake" },
-            { firstName: "first2", lastName: "last2", registrationNumber: "1234", certification: "1nothing", status: "2fake" },
+          this.lookupCertificationStore.certificationSearchResults = [
+            { name: "first last", registrationNumber: "1234", certification: "nothing", status: "fake", expiryDate: "2024-11-24" },
+            { name: "first2 last2", registrationNumber: "1234", certification: "1nothing", status: "2fake", expiryDate: "2025-11-24" },
           ];
         }
       } catch (e) {
         console.error(e);
-        this.alertStore.setFailureAlert("You must enter at least one option");
       }
     },
     applicantClick(item) {
-      this.alertStore.setSuccessAlert(item);
       this.lookupCertificationStore.setCertificationRecord(item);
-      
-
+      this.router.push({ name: "lookup-certification-record" });
     },
   },
 });
