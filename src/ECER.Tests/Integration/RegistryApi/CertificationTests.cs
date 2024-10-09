@@ -1,10 +1,7 @@
 ﻿using Alba;
 using Bogus;
-using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Clients.RegistryPortal.Server.Certifications;
-using Newtonsoft.Json.Linq;
 using Shouldly;
-using System;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.RegistryApi;
@@ -30,7 +27,7 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task CertificationsLookup_ByName_ReturnsCertifications()
+  public async Task CertificationsLookup_ByLastName_ReturnsCertifications()
   {
     var faker = new Faker("en_CA");
 
@@ -47,10 +44,21 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
 
     CertificationsId.ShouldNotBeEmpty();
     CertificationsId.ShouldHaveSingleItem();
-    // Find the last space and split
-    int lastSpaceIndex = CertificationsId[0].Name!.LastIndexOf(' ');
 
-    var lastName = CertificationsId[0].Name!.Substring(lastSpaceIndex + 1);
+    // Check if the Name is not null or empty and contains at least one space
+    var fullName = CertificationsId[0].Name;
+    var lastName = string.Empty;
+
+    if (!string.IsNullOrWhiteSpace(fullName) && fullName.Contains(' '))
+    {
+      int lastSpaceIndex = fullName.LastIndexOf(' ');
+      lastName = fullName.Substring(lastSpaceIndex + 1);
+    }
+    else
+    {
+      // Handle the case where there is no space in the name
+      lastName = fullName;
+    }
 
     var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { LastName = lastName };
     var CertificationsResponse = await Host.Scenario(_ =>
@@ -61,21 +69,40 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
 
     var Certifications = await CertificationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Certifications.Certification[]>().ShouldNotBeNull();
     Certifications.ShouldNotBeEmpty();
-    Certifications.ShouldAllBe(c => c.Name != null && c.Name.EndsWith(lastName));
+    Certifications.ShouldAllBe(c => c.Name != null && c.Name.EndsWith(lastName!));
   }
 
   [Fact]
   public async Task CertificationsLookup_ByRegistrationNumber_ReturnsCertifications()
   {
     var faker = new Faker("en_CA");
-    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { RegistrationNumber = "016444" };
+
+    var CertificationId = this.Fixture.certificationTwoId;
+
+    var CertificationsIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/certifications/{CertificationId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var CertificationsId = await CertificationsIdResponse.ReadAsJsonAsync<Certification[]>().ShouldNotBeNull();
+
+    CertificationsId.ShouldNotBeEmpty();
+    CertificationsId.ShouldHaveSingleItem();
+
+    var certificateNumber = CertificationsId[0].Number;
+
+    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { RegistrationNumber = certificateNumber };
     var CertificationsResponse = await Host.Scenario(_ =>
     {
       _.Post.Json(certificationLookupRequest).ToUrl($"/api/certifications/lookup");
       _.StatusCodeShouldBeOk();
     });
 
-    var Certifications = await CertificationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Certifications.Certification[]>();
-    Certifications.ShouldNotBeNull();
+    var Certifications = await CertificationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Certifications.Certification[]>().ShouldNotBeNull();
+    Certifications.ShouldNotBeEmpty();
+    Certifications.ShouldHaveSingleItem();
+    Certifications[0].Number.ShouldBe(certificateNumber);
   }
 }

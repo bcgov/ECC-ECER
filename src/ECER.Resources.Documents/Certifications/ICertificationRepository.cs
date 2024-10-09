@@ -29,6 +29,17 @@ public record Certification(string Id)
   public YesNoNull? IneligibleReference { get; set; }
   public IEnumerable<CertificationLevel> Levels { get; set; } = Array.Empty<CertificationLevel>();
   public IEnumerable<CertificationFile> Files { get; set; } = Array.Empty<CertificationFile>();
+  public IEnumerable<CertificateCondition> CertificateConditions { get; set; } = Array.Empty<CertificateCondition>();
+}
+
+public record CertificateCondition
+{
+  public string? Id { get; set; }
+  public string? Name { get; set; }
+  public string? Details { get; set; }
+  public DateTime StartDate { get; set; }
+  public DateTime EndDate { get; set; }
+  public int DisplayOrder { get; set; }
 }
 
 public record CertificationLevel(string Id)

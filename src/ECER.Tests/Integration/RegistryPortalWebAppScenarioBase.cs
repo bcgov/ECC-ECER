@@ -363,14 +363,14 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_Certificate GetOrAddCertification(EcerContext context, Contact registrant)
   {
-    var certification = context.ecer_CertificateSet.FirstOrDefault(c => c.ecer_CertificateNumber == "autotest_1234");
+    var certification = context.ecer_CertificateSet.FirstOrDefault(c => c.ecer_CertificateNumber == TestRunId + "cert");
 
     if (certification == null)
     {
       certification = new ecer_Certificate
       {
         Id = Guid.NewGuid(),
-        ecer_CertificateNumber = "autotest_1234",
+        ecer_CertificateNumber = TestRunId + "cert",
         StatusCode = ecer_Certificate_StatusCode.Active,
         ecer_GenerateCertificate = true
       };
