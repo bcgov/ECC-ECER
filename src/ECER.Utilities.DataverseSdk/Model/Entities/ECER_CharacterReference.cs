@@ -938,7 +938,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Printed Name of Reference
+		/// Reference Name as recipient.  Last Name unless there is first name
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencefullname")]
 		public string ecer_ReferenceFullName
