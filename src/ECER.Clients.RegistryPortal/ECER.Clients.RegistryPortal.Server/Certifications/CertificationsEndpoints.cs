@@ -78,7 +78,7 @@ public record Certification(string Id)
 public record CertificationLookupResponse(string Id)
 {
   public string? Name { get; set; }
-  public string? Number { get; set; }
+  public string? RegistrationNumber { get; set; }
   public CertificateStatusCode? StatusCode { get; set; }
   public string? LevelName { get; set; }
   public DateTime? ExpiryDate { get; set; }

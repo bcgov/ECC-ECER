@@ -15,7 +15,7 @@ namespace ECER.Clients.RegistryPortal.Server.Certifications
         .ForCtorParam(nameof(CertificationLookupResponse.Id),
         opt => opt.MapFrom(s => s.Id))
       .ForMember(d => d.Name, opts => opts.MapFrom(s => s.Name))
-      .ForMember(d => d.Number, opts => opts.MapFrom(s => s.Number))
+      .ForMember(d => d.RegistrationNumber, opts => opts.MapFrom(s => s.Number))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode))
       .ForMember(d => d.LevelName, opts => opts.MapFrom(s => s.LevelName))
       .ForMember(d => d.ExpiryDate, opts => opts.MapFrom(s => s.ExpiryDate))
