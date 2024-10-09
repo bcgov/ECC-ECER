@@ -1396,6 +1396,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// Reference Name for Email recipient.  Last Name unless First Name exist
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencefullname")]
 		public string ecer_ReferenceFullName
 		{

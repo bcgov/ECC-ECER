@@ -65,10 +65,11 @@ public record PreviousName([Required] string FirstName, [Required] string LastNa
 
 public enum PreviousNameStage
 {
-  Unverified,
-  ReadyforVerification,
-  Verified,
   Archived,
+  PendingforDocuments,
+  ReadyforVerification,
+  Unverified,
+  Verified,
 }
 
 public enum PreviousNameSources
