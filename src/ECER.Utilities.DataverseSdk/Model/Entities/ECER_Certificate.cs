@@ -111,6 +111,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_RegistrantidName = "ecer_registrantidname";
 			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
 			public const string ecer_renewalassessment_CurrentCertificateId = "ecer_renewalassessment_CurrentCertificateId";
+			public const string ecer_SuspendedDate = "ecer_suspendeddate";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -740,6 +741,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_suspendeddate")]
+		public System.Nullable<System.DateTime> ecer_SuspendedDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_suspendeddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_suspendeddate", value);
 			}
 		}
 		

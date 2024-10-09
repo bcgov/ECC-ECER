@@ -60,11 +60,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_City = "ecer_city";
+			public const string ecer_Contact = "ecer_contact";
+			public const string ecer_Contact_Contact_ecer_health_authorities = "ecer_Contact_Contact_ecer_health_authorities";
+			public const string ecer_ContactName = "ecer_contactname";
+			public const string ecer_ContactYomiName = "ecer_contactyominame";
+			public const string ecer_Country = "ecer_country";
 			public const string ecer_ecer_investigation_health_authorities = "ecer_ecer_investigation_health_authorities";
 			public const string ecer_health_authoritiesId = "ecer_health_authoritiesid";
 			public const string Id = "ecer_health_authoritiesid";
 			public const string ecer_health_authority_licensing_officers = "ecer_health_authority_licensing_officers";
 			public const string ecer_name = "ecer_name";
+			public const string ecer_PhoneNumber = "ecer_phonenumber";
+			public const string ecer_StateProvince = "ecer_stateprovince";
+			public const string ecer_Street1 = "ecer_street1";
+			public const string ecer_Street2 = "ecer_street2";
+			public const string ecer_Street3 = "ecer_street3";
 			public const string EmailAddress = "emailaddress";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -242,6 +253,85 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_city")]
+		public string ecer_City
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_city");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_city", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contact")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_contact");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_contact", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactname")]
+		public string ecer_ContactName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_contact"))
+				{
+					return this.FormattedValues["ecer_contact"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactyominame")]
+		public string ecer_ContactYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_contact"))
+				{
+					return this.FormattedValues["ecer_contact"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_country")]
+		public string ecer_Country
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_country");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_country", value);
+			}
+		}
+		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
@@ -298,6 +388,81 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_phonenumber")]
+		public string ecer_PhoneNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_phonenumber");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_phonenumber", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_stateprovince")]
+		public string ecer_StateProvince
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_stateprovince");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_stateprovince", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_street1")]
+		public string ecer_Street1
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_street1");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_street1", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_street2")]
+		public string ecer_Street2
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_street2");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_street2", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_street3")]
+		public string ecer_Street3
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_street3");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_street3", value);
 			}
 		}
 		
@@ -733,6 +898,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_licensing_officers>("ecer_health_authority_licensing_officers", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_Contact_Contact_ecer_health_authorities
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contact")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_Contact_Contact_ecer_health_authorities")]
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_Contact_Contact_ecer_health_authorities
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_Contact_Contact_ecer_health_authorities", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_Contact_Contact_ecer_health_authorities", null, value);
 			}
 		}
 		

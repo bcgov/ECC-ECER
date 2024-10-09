@@ -437,6 +437,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision> ecer_HistoricalDecisionSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Investigation"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Investigation> ecer_InvestigationSet

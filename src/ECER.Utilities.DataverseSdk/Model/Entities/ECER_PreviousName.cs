@@ -39,6 +39,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Archived = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PendingforDocuments = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ReadyforVerification = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

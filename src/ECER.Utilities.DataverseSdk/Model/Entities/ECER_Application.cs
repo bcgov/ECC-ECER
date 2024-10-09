@@ -199,6 +199,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_hasprovided400hoursworkexperienceName = "ecer_hasprovided400hoursworkexperiencename";
 			public const string ecer_HasProvided500HoursWorkExperience = "ecer_hasprovided500hoursworkexperience";
 			public const string ecer_hasprovided500hoursworkexperienceName = "ecer_hasprovided500hoursworkexperiencename";
+			public const string ecer_historicaldecision_ApplicationId = "ecer_historicaldecision_ApplicationId";
 			public const string ecer_investigationparallelprocesscommunication = "ecer_investigationparallelprocesscommunication";
 			public const string ecer_IsCharacterReferenceProvided = "ecer_ischaracterreferenceprovided";
 			public const string ecer_ischaracterreferenceprovidedName = "ecer_ischaracterreferenceprovidedname";
@@ -4096,6 +4097,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference>("ecer_guardianreference_Applicationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_historicaldecision_ApplicationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_historicaldecision_ApplicationId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision> ecer_historicaldecision_ApplicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision>("ecer_historicaldecision_ApplicationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision>("ecer_historicaldecision_ApplicationId", null, value);
 			}
 		}
 		
