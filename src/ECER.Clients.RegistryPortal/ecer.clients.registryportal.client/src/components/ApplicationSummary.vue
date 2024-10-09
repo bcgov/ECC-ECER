@@ -83,6 +83,13 @@
         :active="false"
       />
       <ApplicationSummaryActionListItem
+        v-for="(previousName, index) in userStore.pendingforDocumentsPreviousNames"
+        :key="index"
+        :text="`Proof of previous name ${previousName.firstName} ${previousName.lastName}`"
+        :go-to="() => $router.push({ name: 'profile' })"
+        :active="false"
+      />
+      <ApplicationSummaryActionListItem
         v-if="showWorkExperience"
         :active="totalObservedWorkExperienceHours < totalRequiredWorkExperienceHours"
         :text="`${totalRequiredWorkExperienceHours} hours of work experience with reference`"

@@ -14,26 +14,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_InvestigationOutcome
+	public enum ecer_ReportinProgress
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ApplicationDenied = 621870003,
+		Conclusion = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Cancellation = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		NoAction = 621870000,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Other = 621870004,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Suspended = 621870005,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		TermsandConditions = 621870001,
+		Summary = 621870000,
 	}
 }
 #pragma warning restore CS1591
