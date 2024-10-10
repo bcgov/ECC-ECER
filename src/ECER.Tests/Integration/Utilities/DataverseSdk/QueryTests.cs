@@ -59,6 +59,25 @@ public class QueryTests : IAsyncLifetime
     results.ShouldAllBe(a => a.ecer_application_Applicantid_contact.Id == contactId);
   }
 
+  [Fact]
+  public void Join_OneToMany_NestedObject()
+  {
+    var query = dataverseContext.ecer_CertificateSet.Where(a => a.ecer_Registrantid.Id == Guid.Parse("1ad4236b-6973-ee11-8179-000d3af4febe"));
+
+    var results = dataverseContext.From(query).Join()
+      .Include(a => a.ecer_certifiedlevel_CertificateId)
+      .Include(a => a.ecer_documenturl_CertificateId)
+      .Include(a => a.ecer_certificate_Registrantid)
+      .IncludeNested(a => a.ecer_certificateconditions_Registrantid)
+      .Execute();
+
+    var result = results.FirstOrDefault();
+    result.ShouldNotBeNull();
+    result!.ecer_certificate_Registrantid.ShouldNotBeNull();
+    var output = result.ecer_certificate_Registrantid.ecer_certificateconditions_Registrantid;
+    output.ShouldNotBeNull();
+  }
+
   [Theory]
   [InlineData(0, 2)] // Page number 0, page size 2
   [InlineData(2, 2)] // Page number 2, page size 2
