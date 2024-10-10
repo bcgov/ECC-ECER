@@ -17,7 +17,7 @@
     "@mdi/font": "^7.3.67",
     "@vueuse/core": "^11.1.0",
     "axios": "^1.7.7",
-    "luxon": "^3.4.4",
+    "luxon": "^3.5.0",
     "oidc-client-ts": "3.1.0",
     "openapi-client-axios": "^7.4.0",
     "pinia": "^2.2.4",
