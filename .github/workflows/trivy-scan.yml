@@ -1,0 +1,13 @@
+name: Trivy Scan
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * Mon'
+    
+jobs:
+  registry-portal-trivy-scan:
+    name: Trivy Scan
+    uses: bcgov/pipeline-templates/.github/workflows/trivy-container.yaml@main
+    with:
+      IMAGE: ghcr.io/bcgov/ecc-ecer/registry-portal
+      TAG: latest
