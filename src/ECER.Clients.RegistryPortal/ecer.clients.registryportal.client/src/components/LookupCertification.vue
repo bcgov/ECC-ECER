@@ -80,8 +80,11 @@
           <template #item.name="{ item }">
             <a href="#" @click.prevent="() => applicantClick(item)">{{ item.name }}</a>
           </template>
+          <template #item.statusCode="{ item }">
+            <span>{{ `${item.statusCode}${item.hasConditions ? " with Terms and Conditions" : ""}` }}</span>
+          </template>
           <template #item.expiryDate="{ item }">
-            <span href="#" @click.prevent="() => applicantClick(item)">{{ formatDate(item.expiryDate, "LLLL d, yyyy") }}</span>
+            <span>{{ formatDate(item.expiryDate, "LLLL d, yyyy") }}</span>
           </template>
         </v-data-table-virtual>
       </v-col>
@@ -127,8 +130,8 @@ export default defineComponent({
       headers: [
         { title: "Name", key: "name" },
         { title: "Registration number", key: "registrationNumber" },
-        { title: "Certification", key: "certification" },
-        { title: "Registration status", key: "status" },
+        { title: "Registration status", key: "statusCode" },
+        { title: "Certification", key: "levelName" },
         { title: "Certificate expiry date", key: "expiryDate" },
       ],
     };
@@ -159,8 +162,22 @@ export default defineComponent({
 
           //make api call
           this.lookupCertificationStore.certificationSearchResults = [
-            { name: "first last", registrationNumber: "1234", certification: "nothing", status: "fake", expiryDate: "2024-11-24" },
-            { name: "first2 last2", registrationNumber: "1234", certification: "1nothing", status: "2fake", expiryDate: "2025-11-24" },
+            {
+              name: "first withConditions",
+              registrationNumber: "1234",
+              statusCode: "Active",
+              levelName: "ECE Assistant",
+              expiryDate: "2024-11-24",
+              hasConditions: true,
+            },
+            {
+              name: "first noConditions",
+              registrationNumber: "1234",
+              statusCode: "Expired",
+              levelName: "ECE Five Year",
+              expiryDate: "2025-11-24",
+              hasConditions: false,
+            },
           ];
         }
       } catch (e) {
