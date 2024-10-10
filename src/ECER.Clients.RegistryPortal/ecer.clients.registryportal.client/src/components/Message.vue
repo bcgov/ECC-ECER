@@ -18,7 +18,7 @@
           <h2>{{ messageStore.currentMessage?.subject }}</h2>
 
           <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
-            <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+            <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'You Replied'"></span>
             <div class="mt-3" v-html="`${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`"></div>
             <div class="mt-6" v-html="message.text"></div>
             <div v-if="message.documents!.length > 0" class="mt-6">
@@ -48,7 +48,7 @@
     </v-sheet>
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
     <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
-      <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+      <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'You Replied'"></span>
       <div class="mt-3" v-html="`${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`"></div>
       <div class="mt-6" v-html="message.text"></div>
       <div v-if="message.documents!.length > 0" class="mt-6">
