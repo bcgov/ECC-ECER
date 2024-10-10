@@ -83,6 +83,7 @@ public record CertificationLookupResponse(string Id)
   public string? LevelName { get; set; }
   public DateTime? ExpiryDate { get; set; }
   public bool? HasConditions { get; set; }
+  public IEnumerable<CertificationLevel> Levels { get; set; } = Array.Empty<CertificationLevel>();
   public IEnumerable<CertificateCondition> CertificateConditions { get; set; } = Array.Empty<CertificateCondition>();
 }
 

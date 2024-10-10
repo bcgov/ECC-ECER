@@ -20,7 +20,8 @@ namespace ECER.Clients.RegistryPortal.Server.Certifications
       .ForMember(d => d.LevelName, opts => opts.MapFrom(s => s.LevelName))
       .ForMember(d => d.ExpiryDate, opts => opts.MapFrom(s => s.ExpiryDate))
       .ForMember(d => d.HasConditions, opts => opts.MapFrom(s => s.HasConditions))
-      .ForMember(d => d.CertificateConditions, opts => opts.MapFrom(s => s.CertificateConditions));
+      .ForMember(d => d.CertificateConditions, opts => opts.MapFrom(s => s.CertificateConditions))
+      .ForMember(d => d.Levels, opts => opts.MapFrom(s => s.Levels));
 
       CreateMap<Managers.Registry.Contract.Certifications.CertificateCondition, CertificateCondition>();
     }
