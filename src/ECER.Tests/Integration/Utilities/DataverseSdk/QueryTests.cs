@@ -62,11 +62,9 @@ public class QueryTests : IAsyncLifetime
   [Fact]
   public void Join_OneToMany_NestedObject()
   {
-    var query = dataverseContext.ecer_CertificateSet.Where(a => a.ecer_Registrantid.Id == Guid.Parse("1ad4236b-6973-ee11-8179-000d3af4febe"));
+    var query = dataverseContext.ecer_CertificateSet.Where(a => a.ecer_HasConditions == true).Take(1);
 
     var results = dataverseContext.From(query).Join()
-      .Include(a => a.ecer_certifiedlevel_CertificateId)
-      .Include(a => a.ecer_documenturl_CertificateId)
       .Include(a => a.ecer_certificate_Registrantid)
       .IncludeNested(a => a.ecer_certificateconditions_Registrantid)
       .Execute();

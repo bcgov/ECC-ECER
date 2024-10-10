@@ -60,14 +60,14 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
       lastName = fullName;
     }
 
-    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { FirstName = "Andrew SPOJ" }; //LastName = lastName };
+    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { LastName = lastName };
     var CertificationsResponse = await Host.Scenario(_ =>
     {
       _.Post.Json(certificationLookupRequest).ToUrl($"/api/certifications/lookup");
       _.StatusCodeShouldBeOk();
     });
 
-    var Certifications = await CertificationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Certifications.Certification[]>().ShouldNotBeNull();
+    var Certifications = await CertificationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Certifications.CertificationLookupResponse[]>().ShouldNotBeNull();
     Certifications.ShouldNotBeEmpty();
     Certifications.ShouldAllBe(c => c.Name != null && c.Name.EndsWith(lastName!));
   }
@@ -100,9 +100,9 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var Certifications = await CertificationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Certifications.Certification[]>().ShouldNotBeNull();
+    var Certifications = await CertificationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Certifications.CertificationLookupResponse[]>().ShouldNotBeNull();
     Certifications.ShouldNotBeEmpty();
     Certifications.ShouldHaveSingleItem();
-    Certifications[0].Number.ShouldBe(certificateNumber);
+    Certifications[0].RegistrationNumber.ShouldBe(certificateNumber);
   }
 }

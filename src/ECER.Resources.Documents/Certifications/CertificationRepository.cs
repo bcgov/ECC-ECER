@@ -58,8 +58,6 @@ internal class CertificationRepository : ICertificationRepository
       .Execute().GroupBy(r => r.ecer_Registrantid.Id) // Group by unique identifier (assuming RegistrantId)
              .Select(g => g.OrderByDescending(r => r.ecer_ExpiryDate).FirstOrDefault()); // Select latest by expiry date
 
-    var temp1 = results.FirstOrDefault()!.ecer_certificate_Registrantid;
-    var temp2 = temp1.ecer_certificateconditions_Registrantid;
     return mapper.Map<IEnumerable<Certification>>(results)!.ToList();
   }
 }

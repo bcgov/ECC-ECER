@@ -2,7 +2,6 @@
 using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk.Query;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -58,7 +57,6 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
 
       foreach (var join in Joins)
       {
-        var key = keys;
         var entities = join switch
         {
           OneToManyJoinData j =>
@@ -150,12 +148,7 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
       }
     };
     query.ColumnSet.AllColumns = true;
-
-    Debug.WriteLine($"Querying {entityName} with attributeName {keyAttributeName} with keys: {string.Join(", ", keys)}");
-
     var entities = RetreiveEntities(Context, query);
-
-    Debug.WriteLine($"Retrieved {entities.Entities.Count} entities for {entityName}.");
 
     return entities;
   }
@@ -206,9 +199,6 @@ public class NestedJoin2QueryExpressionBuilder<TEntity, TRelatedEntity> : Join2Q
   {
     var propertyName = ((MemberExpression)selector.Body).Member.Name;
     Joins.Add(CreateOneToMany(typeof(TRelatedEntity), typeof(TNestedEntity), propertyName));
-
-    Debug.WriteLine($"Added OneToMany join for {propertyName} between {typeof(TRelatedEntity).Name} and {typeof(TNestedEntity).Name}.");
-
     return this;
   }
 
