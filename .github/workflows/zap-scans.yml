@@ -11,14 +11,14 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - name: UI
-        uses: zaproxy/action-full-scan@v0.10.0
+        uses: zaproxy/action-full-scan@v0.11.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: 'https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca'
           artifact_name: 'registry_portal_ui_zap_scan'
           issue_title: 'registry_portal_ui_zap_scan'
       - name: API
-        uses: zaproxy/action-api-scan@v0.7.0
+        uses: zaproxy/action-api-scan@v0.8.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: 'https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca/swagger/v1/swagger.json'
@@ -29,7 +29,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - name: API
-        uses: zaproxy/action-api-scan@v0.7.0
+        uses: zaproxy/action-api-scan@v0.8.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: 'https://dev-ecer-api.apps.silver.devops.gov.bc.ca/swagger/v1/swagger.json'
