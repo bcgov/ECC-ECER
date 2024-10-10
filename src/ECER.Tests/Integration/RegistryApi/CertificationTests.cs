@@ -60,7 +60,7 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
       lastName = fullName;
     }
 
-    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { LastName = lastName };
+    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { FirstName = "Andrew SPOJ" }; //LastName = lastName };
     var CertificationsResponse = await Host.Scenario(_ =>
     {
       _.Post.Json(certificationLookupRequest).ToUrl($"/api/certifications/lookup");
