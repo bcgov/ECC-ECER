@@ -7,7 +7,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  registry-portal-zap-scan:
+  registry-portal-ui-zap-scan:
       runs-on: ubuntu-latest
       steps:
       - name: UI
@@ -17,6 +17,10 @@ jobs:
           target: 'https://dev-ecer-registry-portal.apps.silver.devops.gov.bc.ca'
           artifact_name: 'registry_portal_ui_zap_scan'
           issue_title: 'registry_portal_ui_zap_scan'
+
+  registry-portal-api-zap-scan:
+      runs-on: ubuntu-latest
+      steps:
       - name: API
         uses: zaproxy/action-api-scan@v0.8.0
         with:
