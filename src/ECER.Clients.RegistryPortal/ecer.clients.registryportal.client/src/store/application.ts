@@ -64,7 +64,7 @@ export const useApplicationStore = defineStore("application", {
     application: null,
   }),
   persist: {
-    paths: ["draftApplication", "application"],
+    pick: ["draftApplication", "application"],
   },
   getters: {
     hasDraftApplication(state): boolean {
