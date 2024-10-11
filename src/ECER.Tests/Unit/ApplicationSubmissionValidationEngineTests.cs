@@ -109,7 +109,7 @@ public class ApplicationSubmissionValidationEngineTests
     var faker = new Faker("en_CA");
 
     return new CharacterReference(
-      faker.Name.FirstName(), faker.Name.LastName(), faker.Internet.Email(), faker.Phone.PhoneNumber()
+      faker.Name.FirstName(), faker.Name.LastName(), "fake@test.com", faker.Phone.PhoneNumber()
     );
   }
 
@@ -118,7 +118,7 @@ public class ApplicationSubmissionValidationEngineTests
     var faker = new Faker("en_CA");
 
     return new WorkExperienceReference(
-       faker.Name.FirstName(), faker.Name.FirstName(), faker.Internet.Email(), hours
+       faker.Name.FirstName(), faker.Name.FirstName(), "fake@test.com", hours
     )
     {
       PhoneNumber = faker.Phone.PhoneNumber()
