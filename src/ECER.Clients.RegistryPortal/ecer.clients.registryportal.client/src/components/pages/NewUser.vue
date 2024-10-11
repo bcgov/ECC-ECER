@@ -133,11 +133,12 @@ export default defineComponent({
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
     const oidcUserInfo = await oidcStore.oidcUserInfo();
+    const oidcAddress = await oidcStore.oidcAddress();
     const loadingStore = useLoadingStore();
     const phoneNumber = ref(oidcUserInfo.phone);
     const email = ref(oidcUserInfo.email);
 
-    return { userStore, oidcStore, phoneNumber, email, loadingStore, oidcUserInfo };
+    return { userStore, oidcStore, phoneNumber, email, loadingStore, oidcUserInfo, oidcAddress };
   },
 
   data: () => ({
@@ -155,6 +156,8 @@ export default defineComponent({
         const registrationNumber = this.eceCertificateStatus ? this.eceRegistrationNumber : "";
         const userCreated: boolean = await postUserInfo({
           ...this.oidcUserInfo,
+          residentialAddress: this.oidcAddress,
+          mailingAddress: this.oidcAddress,
           email: this.email,
           phone: this.phoneNumber,
           registrationNumber: registrationNumber,
