@@ -41,7 +41,7 @@ internal class CertificationRepository : ICertificationRepository
     {
       Certifications = from cert in Certifications
                        join reg in Registrants on cert.ecer_Registrantid.Id equals reg.Id
-                       where reg.FirstName == (query.ByLastName)
+                       where reg.LastName == (query.ByLastName)
                        select cert;
     }
 
