@@ -18,7 +18,7 @@
           <h2>{{ messageStore.currentMessage?.subject }}</h2>
 
           <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
-            <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+            <span>{{ messageFromString(message) }}</span>
             <div class="mt-3" v-html="`${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`"></div>
             <div class="mt-6" v-html="message.text"></div>
             <div v-if="message.documents!.length > 0" class="mt-6">
@@ -48,7 +48,7 @@
     </v-sheet>
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
     <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
-      <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+      <span>{{ messageFromString(message) }}</span>
       <div class="mt-3" v-html="`${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`"></div>
       <div class="mt-6" v-html="message.text"></div>
       <div v-if="message.documents!.length > 0" class="mt-6">
@@ -81,6 +81,7 @@ import { useMessageStore } from "@/store/message";
 import { formatDate } from "@/utils/format";
 
 import DownloadFileLink from "./DownloadFileLink.vue";
+import type { Communication } from "@/types/openapi";
 
 export default defineComponent({
   name: "Message",
@@ -102,6 +103,18 @@ export default defineComponent({
     handleMessageReply() {
       this.$router.push({ name: "replyToMessage", params: { messageId: this.messageStore.currentMessage?.id } });
       this.messageStore.currentMessage = null; // Putting this in to make router redirect correctly for mobile devices
+    },
+    messageFromString(message: Communication): string {
+      switch (message.from) {
+        case "Registry":
+          return "From ECE Registry";
+        case "PortalUser":
+          return "You Replied";
+        case "Investigation":
+          return "From ECE Investigations";
+        default:
+          return "";
+      }
     },
   },
 });
