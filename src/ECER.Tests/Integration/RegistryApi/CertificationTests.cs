@@ -27,9 +27,10 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task CertificationsLookup_ByLastName_ReturnsCertifications()
+  public async Task CertificationsLookup_ByLastName_ReturnsCertifications_ByPage()
   {
     var faker = new Faker("en_CA");
+    int lookUpPageSize = 20;
 
     var CertificationId = this.Fixture.certificationOneId;
 
@@ -60,16 +61,22 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
       lastName = fullName;
     }
 
-    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { LastName = lastName };
+    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { LastName = lastName, PageSize = lookUpPageSize };
     var CertificationsResponse = await Host.Scenario(_ =>
     {
       _.Post.Json(certificationLookupRequest).ToUrl($"/api/certifications/lookup");
       _.StatusCodeShouldBeOk();
     });
 
-    var Certifications = await CertificationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Certifications.CertificationLookupResponse[]>().ShouldNotBeNull();
+    var Certifications = await CertificationsResponse.ReadAsJsonAsync<IEnumerable<CertificationLookupResponse>>().ShouldNotBeNull();
     Certifications.ShouldNotBeEmpty();
     Certifications.ShouldAllBe(c => c.Name != null && c.Name.EndsWith(lastName!));
+    Certifications.Count().ShouldBeLessThanOrEqualTo(lookUpPageSize);
+    var CertificateWithCondition = Certifications.FirstOrDefault(c => c.HasConditions == true);
+    if (CertificateWithCondition != null)
+    {
+      CertificateWithCondition.CertificateConditions.Count().ShouldBeGreaterThan(0);
+    }
   }
 
   [Fact]

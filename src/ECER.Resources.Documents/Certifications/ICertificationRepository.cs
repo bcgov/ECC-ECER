@@ -13,6 +13,8 @@ public record UserCertificationQuery
   public string? ByCertificateNumber { get; set; }
   public string? ByFirstName { get; set; }
   public string? ByLastName { get; set; }
+  public int PageNumber { get; set; }
+  public int PageSize { get; set; }
 }
 
 public record Certification(string Id)

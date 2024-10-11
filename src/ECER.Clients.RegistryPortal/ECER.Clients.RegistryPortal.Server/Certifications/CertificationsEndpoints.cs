@@ -26,8 +26,8 @@ public class CertificationsEndpoints : IRegisterEndpoints
       return TypedResults.Ok(mapper.Map<IEnumerable<Certification>>(results.Items));
     })
      .WithOpenApi("Handles certification queries", string.Empty, "certification_get")
-     .RequireAuthorization()
-     .WithParameterValidation();
+    .RequireAuthorization()
+    .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/certifications/lookup", async Task<Results<Ok<IEnumerable<CertificationLookupResponse>>, BadRequest<ProblemDetails>, NotFound>> (CertificationLookupRequest request, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
     {
@@ -49,6 +49,8 @@ public class CertificationsEndpoints : IRegisterEndpoints
         ByCertificateNumber = request.RegistrationNumber,
         ByFirstName = request.FirstName,
         ByLastName = request.LastName,
+        PageNumber = request.PageNumber,
+        PageSize = request.PageSize
       };
       var results = await messageBus.Send(query, ct);
       return TypedResults.Ok(mapper.Map<IEnumerable<CertificationLookupResponse>>(results.Items));
@@ -92,8 +94,8 @@ public record CertificationLookupRequest(string RecaptchaToken)
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? RegistrationNumber { get; set; }
-  public int? PageSize { get; set; }
-  public int? PageNumber { get; set; }
+  public int PageSize { get; set; }
+  public int PageNumber { get; set; }
   public string? SortField { get; set; }
   public string? SortDirection { get; set; }
 }

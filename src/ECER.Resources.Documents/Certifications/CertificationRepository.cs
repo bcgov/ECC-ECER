@@ -58,6 +58,15 @@ internal class CertificationRepository : ICertificationRepository
       .Execute().GroupBy(r => r.ecer_Registrantid.Id) // Group by unique identifier (assuming RegistrantId)
              .Select(g => g.OrderByDescending(r => r.ecer_ExpiryDate).FirstOrDefault()); // Select latest by expiry date
 
-    return mapper.Map<IEnumerable<Certification>>(results)!.ToList();
+    // Calculate the correct number of items to skip
+    int skipAmount = 0;
+    if (query.PageNumber > 1)
+    {
+      skipAmount = (query.PageNumber - 1) * query.PageSize;
+    }
+
+    var paginatedResults = results.Skip(skipAmount).Take(query.PageSize); // Apply Pagination
+
+    return mapper.Map<IEnumerable<Certification>>(paginatedResults)!.ToList();
   }
 }
