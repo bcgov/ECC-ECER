@@ -3,15 +3,19 @@ on:
   push:
     branches:
       - master
+      - 'release/**'
     paths:
       - src/**
+      - "!src/ECER.Clients.RegistryPortal/**"
+      - "!src/registry-portal.Dockerfile"
       - .github/workflows/api-build.yml
       - .github/workflows/build-template.yml
 
   pull_request:
-    branches: ["master", "stories/**"]
     paths:
       - src/**
+      - "!src/ECER.Clients.RegistryPortal/**"
+      - "!src/registry-portal.Dockerfile"
       - .github/workflows/api-build.yml
       - .github/workflows/build-template.yml
 
