@@ -26,6 +26,7 @@
         <p class="small">{{ errorBannerMessage }}</p>
       </Alert>
       <v-list lines="two" class="flex-grow-1 message-list">
+        <v-divider v-if="selectedFiles.length > 0" class="border-opacity-100" color="ash-grey"></v-divider>
         <UploadFileItem
           v-for="(file, index) in selectedFiles"
           :key="index"
