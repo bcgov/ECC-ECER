@@ -102,6 +102,7 @@ import { useAlertStore } from "@/store/alert";
 import { useLookupCertificationStore } from "@/store/lookupCertification";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
+import { postLookupCertificate } from "@/api/certification";
 
 import * as Rules from "../utils/formRules";
 import EceRecaptcha from "./inputs/EceRecaptcha.vue";
@@ -161,6 +162,14 @@ export default defineComponent({
           }
 
           //make api call
+          const test = await postLookupCertificate({
+            firstName: this.lookupCertificationStore.firstName,
+            lastName: this.lookupCertificationStore.lastName,
+            registrationNumber: this.lookupCertificationStore.registrationNumber,
+            recaptchaToken: this.recaptchaToken,
+          });
+
+          console.log(test);
           this.lookupCertificationStore.certificationSearchResults = [
             {
               name: "first withConditions",
