@@ -1,9 +1,11 @@
 name: Registry Portal Build
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - master
-      - 'release/**'
+      - "release/**"
     paths:
       - src/**
       - "!src/ECER.Clients.Api/**"
