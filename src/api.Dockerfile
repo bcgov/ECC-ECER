@@ -1,11 +1,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS net-builder
 
 # install diagnostics tools
-RUN mkdir /tools
-RUN dotnet tool install --tool-path /tools dotnet-trace
-RUN dotnet tool install --tool-path /tools dotnet-counters
-RUN dotnet tool install --tool-path /tools dotnet-dump
-RUN dotnet tool install --tool-path /tools dotnet-monitor
+RUN mkdir /tools && \
+    dotnet tool install --tool-path /tools dotnet-trace && \
+    dotnet tool install --tool-path /tools dotnet-counters && \
+    dotnet tool install --tool-path /tools dotnet-dump && \
+    dotnet tool install --tool-path /tools dotnet-monitor
 
 # install node.js
 ARG NODE_MAJOR=22
@@ -40,8 +40,10 @@ RUN dotnet test "ECER.Tests/ECER.Tests.csproj" --filter "Category!=IntegrationTe
 # build publish
 RUN dotnet publish "ECER.Clients.Api/ECER.Clients.Api.csproj" -c Release -o /app/publish --no-restore --self-contained -r linux-x64 -p:PublishReadyToRun=true
 
-# FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 FROM registry.access.redhat.com/ubi8/dotnet-80-runtime:8.0 AS final
+ARG VERSION
+ENV VERSION=$VERSION
+
 WORKDIR /app
 # copy diagnostics tools
 WORKDIR /tools
