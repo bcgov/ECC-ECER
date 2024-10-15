@@ -9,7 +9,7 @@
     <v-card-actions class="ma-4">
       <!-- Application status Draft -->
       <div v-if="applicationStore.applicationStatus === 'Draft'" class="d-flex flex-row justify-start ga-3 flex-wrap">
-        <v-btn size="large" variant="flat" color="warning" @click="$router.push('/application')">
+        <v-btn size="large" variant="flat" color="warning" @click="router.push('/application')">
           <v-icon size="large" icon="mdi-arrow-right" />
           Open application
         </v-btn>
@@ -50,6 +50,7 @@ import { defineComponent } from "vue";
 
 import { useApplicationStore } from "@/store/application";
 import { formatDate } from "@/utils/format";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "ApplicationCard",
@@ -62,9 +63,11 @@ export default defineComponent({
   emits: ["cancel-application"],
   setup() {
     const applicationStore = useApplicationStore();
+    const router = useRouter();
 
     return {
       applicationStore,
+      router,
     };
   },
   computed: {
@@ -100,10 +103,10 @@ export default defineComponent({
   },
   methods: {
     handleStartNewApplication() {
-      this.$router.push({ name: "application-certification" });
+      this.router.push({ name: "application-certification" });
     },
     handleManageApplication() {
-      this.$router.push({ name: "manageApplication", params: { applicationId: this.applicationStore?.application?.id } });
+      this.router.push({ name: "manageApplication", params: { applicationId: this.applicationStore?.application?.id } });
     },
   },
 });

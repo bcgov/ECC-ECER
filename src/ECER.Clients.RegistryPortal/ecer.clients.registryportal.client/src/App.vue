@@ -21,6 +21,7 @@ import EceFooter from "./components/Footer.vue";
 import InactiveSessionTimeout from "./components/InactiveSessionTimeout.vue";
 import NavigationBar from "./components/NavigationBar.vue";
 import Snackbar from "./components/Snackbar.vue";
+import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: "App",
@@ -30,9 +31,14 @@ export default defineComponent({
     Snackbar,
     InactiveSessionTimeout,
   },
+  setup() {
+    const route = useRoute();
+
+    return { route };
+  },
   computed: {
     showNavigationBarAndFooter() {
-      return !this.$route.path.includes("reply");
+      return !this.route.path.includes("reply");
     },
   },
 });

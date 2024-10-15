@@ -16,14 +16,19 @@
         </ul>
       </div>
     </div>
-    <v-btn class="mt-16" color="primary" @click="$router.push('/')">Go to home page</v-btn>
+    <v-btn class="mt-16" color="primary" @click="router.push('/')">Go to home page</v-btn>
   </v-container>
 </template>
 
 <script lang="ts">
 import Banner from "@/components/Banner.vue";
+import { useRouter } from "vue-router";
 export default {
   name: "PageNotFound",
   components: { Banner },
+  setup() {
+    const router = useRouter();
+    return { router };
+  },
 };
 </script>
