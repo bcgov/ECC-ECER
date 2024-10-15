@@ -52,7 +52,7 @@
         prepend-icon="mdi-plus"
         class="mt-10"
         color="primary"
-        @click.prevent="$router.push({ name: 'addProfessionalDevelopment', params: { applicationId: applicationId } })"
+        @click.prevent="router.push({ name: 'addProfessionalDevelopment', params: { applicationId: applicationId } })"
       >
         Add course or workshop
       </v-btn>
@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 
 import { getApplicationStatus } from "@/api/application";
@@ -93,11 +93,13 @@ export default defineComponent({
     const certificationStore = useCertificationStore();
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
     const latestCertification = certificationStore.latestCertification;
+    const router = useRouter();
 
     return {
       applicationStatus,
       smAndUp,
       latestCertification,
+      router,
     };
   },
   data() {

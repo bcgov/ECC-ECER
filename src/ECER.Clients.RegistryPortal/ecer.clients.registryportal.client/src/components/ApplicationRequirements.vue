@@ -55,6 +55,7 @@ import type { Components } from "@/types/openapi";
 import ECEFiveYearRegistrantRequirements from "./ECEFiveYearRegistrantRequirements.vue";
 import ECEIteRegistrantRequirements from "./ECEIteRegistrantRequirements.vue";
 import ECESneRegistrantRequirements from "./ECESneRegistrantRequirements.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "ApplicationRequirements",
@@ -81,8 +82,9 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const certificationStore = useCertificationStore();
     const userStore = useUserStore();
+    const router = useRouter();
 
-    return { applicationStore, certificationStore, userStore };
+    return { applicationStore, certificationStore, userStore, router };
   },
   data() {
     const applicationStore = useApplicationStore();
@@ -139,7 +141,7 @@ export default defineComponent({
         const { valid } = await formRef.validate();
         if (valid) {
           this.applicationStore.$patch({ draftApplication: { certificationTypes: this.specializationSelection } });
-          this.$router.push({ name: "declaration" });
+          this.router.push({ name: "declaration" });
         }
       } else {
         const currentTypes = this.applicationStore.draftApplication.certificationTypes || [];
@@ -150,7 +152,7 @@ export default defineComponent({
 
         // Patch the store with the updated types
         this.applicationStore.$patch({ draftApplication: { certificationTypes: uniqueUpdatedTypes } });
-        this.$router.push({ name: "declaration" });
+        this.router.push({ name: "declaration" });
       }
     },
   },

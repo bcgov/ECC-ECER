@@ -22,6 +22,7 @@ import ActionCard from "@/components/ActionCard.vue";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import type { Components } from "@/types/openapi";
+import { useRouter } from "vue-router";
 
 interface RegistrantFlow {
   types: Components.Schemas.CertificationType[];
@@ -73,10 +74,12 @@ export default defineComponent({
   setup() {
     const certificationStore = useCertificationStore();
     const applicationStore = useApplicationStore();
+    const router = useRouter();
 
     return {
       certificationStore,
       applicationStore,
+      router,
     };
   },
   computed: {
@@ -108,7 +111,7 @@ export default defineComponent({
     handleLearnMore(flow: RegistrantFlow) {
       this.applicationStore.$patch({ draftApplication: { applicationType: "New", certificationTypes: flow.types } });
 
-      this.$router.push({ name: "application-requirements" });
+      this.router.push({ name: "application-requirements" });
     },
   },
 });
