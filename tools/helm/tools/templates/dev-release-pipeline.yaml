@@ -1,38 +1,39 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: dev-release-pipeline
+  name: release-dev
+  description: "Release to DEV"
 spec:
-  tasks:
 
-    ## Promote dev ##
-    - name: dev-registry-portal
+  params:
+    - name: srcImageTag
+      description: "Source Image Tag"
+      default: "master"
+    {{- range $key, $value := .Values.images }}
+    - name: promote-{{ $key }}
+      description: "Promote {{ $key }}"
+      default: "true"
+    {{- end }}
+
+  tasks:    
+    {{- range $key, $value := .Values.images }}
+    - name: promote-{{ $key }}
+      when:
+        - input: "$(params.promote-{{ $key }})"
+          operator: in
+          values: ["true"]
       params:
         - name: sourceImage
-          value: image-registry.apps.silver.devops.gov.bc.ca/b4566a-tools/registry-portal
+          value: {{ base $value.image }}
         - name: sourceTag
-          value: latest
+          value: $(params.srcImageTag)
         - name: destinationImage
-          value: registry-portal
+          value: {{ base $value.image }}
         - name: destinationTag
           value: dev
-        - name: scheduled
+        - name: alias
           value: true
       taskRef:
         kind: Task
         name: tag-image-task
-    - name: dev-api
-      params:
-        - name: sourceImage
-          value: image-registry.apps.silver.devops.gov.bc.ca/b4566a-tools/ecc-ecer/api
-        - name: sourceTag
-          value: latest
-        - name: destinationImage
-          value: api
-        - name: destinationTag
-          value: dev
-        - name: scheduled
-          value: true
-      taskRef:
-        kind: Task
-        name: tag-image-task
+    {{- end }}

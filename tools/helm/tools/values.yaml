@@ -1,9 +1,9 @@
 images:
   registry-portal:
-    image: image-registry.apps.silver.devops.gov.bc.ca/b4566a-tools/registry-portal
+    image: image-registry.openshift-image-registry.svc:5000/b4566a-tools/registry-portal
     tags:
       dev: master
   api:
-    image: image-registry.apps.silver.devops.gov.bc.ca/b4566a-tools/api
+    image: image-registry.openshift-image-registry.svc:5000/b4566a-tools/api
     tags:
       dev: master

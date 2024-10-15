@@ -10,9 +10,15 @@ spec:
       type: string
     - name: toTag
       type: string
+    - name: scheduled
+      type: string
+      default: false
     - name: referencePolicy
       type: string
       default: source
+    - name: alias
+      type: string
+      default: false
   steps:
     - name: backup
       image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
@@ -27,12 +33,5 @@ spec:
         fi
     - name: promote
       image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
-      resources:
-        limits:
-          cpu: 25m
-          memory: 64Mi
-        requests:
-          cpu: 5m
-          memory: 32Mi
-      script: |
-        oc tag $(params.imageName):$(params.fromTag) $(params.imageName):$(params.toTag) --reference-policy=$(params.referencePolicy)
+      script: |        
+        oc tag $(params.imageName):$(params.fromTag) $(params.imageName):$(params.toTag) --scheduled=$(params.scheduled) --reference-policy=$(params.referencePolicy) --alias=$(params.alias)
