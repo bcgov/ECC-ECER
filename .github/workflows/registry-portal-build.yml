@@ -30,7 +30,7 @@ jobs:
       IMAGE_CONTEXT: src
       IMAGE_FILE: src/registry-portal.Dockerfile
       IMAGE_NAME: registry-portal
-      REGISTRY: ${{ vars.DOCKER_REPOSITORY }}
+      REGISTRY: ${{ vars.DOCKER_REGISTRY }}
     secrets:
       REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
       REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
