@@ -37,6 +37,7 @@ import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
 
 import AcknowledgementBanner from "@/components/AcknowledgementBanner.vue";
+import { useRoute } from "vue-router";
 
 type FooterLink = {
   name: string;
@@ -51,6 +52,7 @@ export default defineComponent({
   components: { AcknowledgementBanner },
   setup: () => {
     const { smAndUp } = useDisplay();
+    const route = useRoute();
 
     const links: FooterLink[] = [
       { name: "Home", path: "/" },
@@ -60,7 +62,7 @@ export default defineComponent({
       { name: "Accessibility", path: "https://www2.gov.bc.ca/gov/content?id=E08E79740F9C41B9B0C484685CC5E412", target: "_blank" },
       { name: "Copyright", path: "https://www2.gov.bc.ca/gov/content?id=1AAACC9C65754E4D89A118B875E0FBDA", target: "_blank" },
     ];
-    return { links, smAndUp };
+    return { links, smAndUp, route };
   },
   computed: {
     firstColumnLinks() {
@@ -70,7 +72,7 @@ export default defineComponent({
       return this.links.slice(2);
     },
     acceptedPaths(): boolean {
-      const routeName = this.$route.name?.toString() || "";
+      const routeName = this.route.name?.toString() || "";
       return ["login", "dashboard", "invalid-reference", "reference-submitted", "verify", "lookup-certification", "lookup-certification-record"].includes(
         routeName,
       );

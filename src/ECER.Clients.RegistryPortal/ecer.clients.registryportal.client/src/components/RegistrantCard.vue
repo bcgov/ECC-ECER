@@ -7,7 +7,7 @@
         </div>
       </template>
       <template #action>
-        <v-btn variant="text" @click="handleLearnMore">
+        <v-btn variant="text" @click="handleLearnMore(flow)">
           <a href="#" @click.prevent>Learn more</a>
         </v-btn>
       </template>
@@ -22,45 +22,46 @@ import ActionCard from "@/components/ActionCard.vue";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import type { Components } from "@/types/openapi";
+import { useRouter } from "vue-router";
 
 interface RegistrantFlow {
-  type: Components.Schemas.CertificationType;
+  types: Components.Schemas.CertificationType[];
   title: string;
   text: string;
 }
 
 const assistantRegistrantFlow: RegistrantFlow = {
-  type: "EceAssistant",
+  types: ["EceAssistant"],
   title: "Apply for ECE Assistant certification",
   text: "You'll be able to work alongside other ECE's in a licensed child care program for children birth to 5 years of age.",
 };
 
 const oneYearRegistrantFlow: RegistrantFlow = {
-  type: "OneYear",
+  types: ["OneYear"],
   title: "Apply for ECE One Year certification",
   text: "Work alone or be the primary educator. You'll need a basic early childhood education program.",
 };
 
 const fiveYearRegistrantFlow: RegistrantFlow = {
-  type: "FiveYears",
+  types: ["FiveYears"],
   title: "Apply for ECE Five Year certification",
   text: "Work alone or be the primary educator. You'll need a basic early childhood education program. And have 500 hours of supervised work experience.",
 };
 
 const sneRegistrantFlow: RegistrantFlow = {
-  type: "Sne",
+  types: ["Sne"],
   title: "Apply for Special Needs Educator (SNE) certification",
   text: "If you've completed an SNE program you can add this to your certificate. It will also renew your ECE Five Year certificate.",
 };
 
 const iteRegistrantFlow: RegistrantFlow = {
-  type: "Ite",
+  types: ["Ite"],
   title: "Apply for Infant and Toddler Educator (ITE) certification",
   text: "If you've completed an ITE program you can add this certification to your certificate. This will also renew your ECE Five Year certificate.",
 };
 
 const specializationRegistrantFlow: RegistrantFlow = {
-  type: "FiveYears",
+  types: [],
   title: "Add your specialized certification",
   text: "If you've completed additional training, you can apply to add an Infant and Toddler Educator (ITE) or Special Needs Educator (SNE) to your certificate. This will also renew your ECE Five Year certificate.",
 };
@@ -73,10 +74,12 @@ export default defineComponent({
   setup() {
     const certificationStore = useCertificationStore();
     const applicationStore = useApplicationStore();
+    const router = useRouter();
 
     return {
       certificationStore,
       applicationStore,
+      router,
     };
   },
   computed: {
@@ -103,15 +106,12 @@ export default defineComponent({
       }
       return types;
     },
-    certificateTypes(): Components.Schemas.CertificationType[] {
-      return this.registrantFlows.map((flow) => flow.type);
-    },
   },
   methods: {
-    handleLearnMore() {
-      this.applicationStore.$patch({ draftApplication: { applicationType: "New", certificationTypes: this.certificateTypes } });
+    handleLearnMore(flow: RegistrantFlow) {
+      this.applicationStore.$patch({ draftApplication: { applicationType: "New", certificationTypes: flow.types } });
 
-      this.$router.push({ name: "application-requirements" });
+      this.router.push({ name: "application-requirements" });
     },
   },
 });
