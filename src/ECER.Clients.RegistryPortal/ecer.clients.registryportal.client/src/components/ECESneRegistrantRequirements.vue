@@ -25,7 +25,7 @@
   </v-row>
   <v-row>
     <v-col>
-      <ECEHeader title="Work Experience" />
+      <ECEHeader title="Work experience" />
       <p>You need to have completed 500 hours of work experience. And be able to provide references to attest to all the hours.</p>
       <br />
       <p>Important information about calculating hours:</p>
