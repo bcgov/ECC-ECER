@@ -10,6 +10,7 @@ internal class CertificationRepositoryMapper : Profile
   {
     CreateMap<ecer_Certificate, Certification>(MemberList.Destination)
      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CertificateId))
+     .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_RegistrantidName))
      .ForMember(d => d.Number, opts => opts.MapFrom(s => s.ecer_CertificateNumber))
      .ForMember(d => d.ExpiryDate, opts => opts.MapFrom(s => s.ecer_ExpiryDate))
      .ForMember(d => d.EffectiveDate, opts => opts.MapFrom(s => s.ecer_EffectiveDate))
@@ -20,7 +21,16 @@ internal class CertificationRepositoryMapper : Profile
      .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode))
      .ForMember(d => d.IneligibleReference, opts => opts.MapFrom(s => s.ecer_IneligibleReference))
      .ForMember(d => d.Levels, opts => opts.MapFrom(s => s.ecer_certifiedlevel_CertificateId))
-     .ForMember(d => d.Files, opts => opts.MapFrom(s => s.ecer_documenturl_CertificateId));
+     .ForMember(d => d.Files, opts => opts.MapFrom(s => s.ecer_documenturl_CertificateId))
+     .ForMember(d => d.CertificateConditions, opts => opts.MapFrom(s => s.ecer_certificate_Registrantid.ecer_certificateconditions_Registrantid));
+
+    CreateMap<ecer_CertificateConditions, CertificateCondition>(MemberList.Destination)
+    .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
+    .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_Name))
+    .ForMember(d => d.Details, opts => opts.MapFrom(s => s.ecer_Details))
+    .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_StartDate))
+    .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_EndDate))
+    .ForMember(d => d.DisplayOrder, opts => opts.MapFrom(s => s.ecer_DisplayOrder));
 
     CreateMap<ecer_CertifiedLevel, CertificationLevel>(MemberList.Destination)
     .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_CertifiedLevelId))

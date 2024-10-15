@@ -15,10 +15,17 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
     ArgumentNullException.ThrowIfNull(mapper);
     ArgumentNullException.ThrowIfNull(request);
 
+    request.PageSize = (request.PageSize == 0) ? 100 : request.PageSize; // By Default get Max. 100 records.
+
     var Certifications = await CertificationRepository.Query(new Resources.Documents.Certifications.UserCertificationQuery
     {
       ById = request.ById,
       ByApplicantId = request.ByApplicantId,
+      ByCertificateNumber = request.ByCertificateNumber,
+      ByFirstName = request.ByFirstName,
+      ByLastName = request.ByLastName,
+      PageNumber = request.PageNumber,
+      PageSize = request.PageSize,
     });
 
     return new CertificationsQueryResults(mapper.Map<IEnumerable<Contract.Certifications.Certification>>(Certifications)!);
