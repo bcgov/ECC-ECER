@@ -15,7 +15,7 @@ export interface UserState {
 
 export const useConfigStore = defineStore("config", {
   persist: {
-    paths: ["applicationConfiguration"],
+    pick: ["applicationConfiguration"],
   },
   state: (): UserState => ({
     applicationConfiguration: {} as Components.Schemas.ApplicationConfiguration,

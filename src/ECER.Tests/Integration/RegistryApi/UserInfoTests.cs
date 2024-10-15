@@ -100,6 +100,8 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
 
     var registeredUser = (await response.ReadAsJsonAsync<UserInfo>()).ShouldNotBeNull();
     registeredUser.Email.ShouldBe(newUser.Email);
+    registeredUser.MailingAddress!.City.ShouldBe(registeredUser.MailingAddress.City);
+    registeredUser.ResidentialAddress!.City.ShouldBe(registeredUser.ResidentialAddress.City);
   }
 
   [Fact]
@@ -177,15 +179,25 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
 
   private static UserInfo CreateNewUser()
   {
+    var address = new Faker<Address>("en_CA")
+    .CustomInstantiator(f => new Address(
+        f.Address.StreetAddress(),
+        null,
+        f.Address.City(),
+        f.Address.ZipCode(),
+        f.Address.State(), f.Address.Country()
+        ));
+
     var userProfile = new Faker<UserInfo>("en_CA")
     .CustomInstantiator(f => new UserInfo(
         f.Person.FirstName,
         f.Person.LastName,
         f.Person.FirstName,
         DateOnly.FromDateTime(f.Person.DateOfBirth),
-        f.Person.Email,
+        "fake@email.com",
         f.Person.Phone
-        ));
+        )
+    { MailingAddress = address, ResidentialAddress = address });
 
     return userProfile.Generate();
   }

@@ -1,4 +1,13 @@
 <template>
+  <v-col v-if="certificationStore.latestCertificateStatus == 'Active'" cols="12">
+    <Alert title="Got 500 hours of supervised work experience?">
+      You should
+      <a class="cursor-pointer text-decoration-underline" @click="applicationStore.draftApplication.certificationTypes = ['FiveYears']">
+        apply for an ECE Five Year certification
+      </a>
+      if you've completed 500 hours of work experience.
+    </Alert>
+  </v-col>
   <v-col cols="12">
     <h1>Renew your ECE One Year certification</h1>
   </v-col>
@@ -32,7 +41,13 @@
         You will need to provide a reason for why you were unable to complete the required 500 hours of supervised work experience during the term of your ECE
         One Year Certificate and/or why you were unable to provide a reference from the certified ECE who supervised the hours.
       </p>
-      <p>If you’ve completed 500 hours, you should apply for ECE Five Year certification instead.</p>
+      <p>
+        If you've completed 500 hours, you should apply for
+        <a class="cursor-pointer text-decoration-underline" @click="applicationStore.draftApplication.certificationTypes = ['FiveYears']">
+          ECE Five Year certification
+        </a>
+        instead.
+      </p>
     </div>
   </v-col>
   <v-col cols="12">
@@ -93,16 +108,28 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import Alert from "@/components/Alert.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
+import { useApplicationStore } from "@/store/application";
+import { useCertificationStore } from "@/store/certification";
 
 export default defineComponent({
   name: "ECEOneYearRenewalRequirements",
-  components: { ECEHeader },
+  components: { ECEHeader, Alert },
   props: {
     expired: {
       type: Boolean,
       default: false,
     },
+  },
+  setup() {
+    const certificationStore = useCertificationStore();
+    const applicationStore = useApplicationStore();
+
+    return {
+      certificationStore,
+      applicationStore,
+    };
   },
 });
 </script>

@@ -6,13 +6,15 @@ import { getUserInfo } from "@/api/user";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import type { Components } from "@/types/openapi";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const oidcStore = useOidcStore();
     const userStore = useUserStore();
+    const router = useRouter();
 
-    return { oidcStore, userStore };
+    return { oidcStore, userStore, router };
   },
   mounted() {
     this.handleCallback();
@@ -33,15 +35,15 @@ export default {
         this.userStore.setUserProfile(profileInfo);
       } else {
         // Push user to the new user page if they don't have user info
-        this.$router.push("/new-user");
+        this.router.push("/new-user");
       }
 
       // Redirect user to the page they were trying to access
       const redirectTo = (user as any)?.state?.redirect_to;
       if (!redirectTo) {
-        this.$router.push("/");
+        this.router.push("/");
       } else {
-        this.$router.push(redirectTo);
+        this.router.push(redirectTo);
       }
     },
   },

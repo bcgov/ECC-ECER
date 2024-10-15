@@ -67,10 +67,17 @@
 import { defineComponent } from "vue";
 
 import PageContainer from "@/components/PageContainer.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "TermsOfUse",
   components: { PageContainer },
+  setup() {
+    const router = useRouter();
+    return {
+      router,
+    };
+  },
   props: {
     hasBackButton: {
       type: Boolean,
@@ -79,7 +86,7 @@ export default defineComponent({
   },
   methods: {
     goBack() {
-      this.$router.go(-1);
+      this.router.go(-1);
     },
   },
 });

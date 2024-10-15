@@ -111,8 +111,6 @@ public class QueryTests : IAsyncLifetime
   [Fact]
   public void Execute_SimpleQuery_Returned()
   {
-    var contactId = Guid.Parse("e761c9fc-0781-ef11-9039-00155d000103");
-
     var query = dataverseContext.ecer_ApplicationSet.Where(a => a.ecer_application_Applicantid_contact.Id == contactId);
 
     var results = dataverseContext.From(query).Execute();
