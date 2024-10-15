@@ -47,7 +47,7 @@ internal class CertificationRepository : ICertificationRepository
 
     // Filtering by certificate number
     if (!string.IsNullOrEmpty(query.ByCertificateNumber))
-      Certifications = Certifications.Where(r => r.ecer_CertificateNumber.Contains(query.ByCertificateNumber));
+      Certifications = Certifications.Where(r => r.ecer_CertificateNumber.Equals(query.ByCertificateNumber));
 
     var results = context.From(Certifications)
       .Join()
