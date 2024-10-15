@@ -44,7 +44,6 @@ const app = createApp(App);
 app.use(pinia);
 
 const configStore = useConfigStore();
-// const oidcStore = useOidcStore();
 
 // Fetch OIDC configuration from the API and initialize the store before mounting the app
 configStore.initialize().then(() => {
