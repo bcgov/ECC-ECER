@@ -9,7 +9,7 @@ spec:
     - name: dev-registry-portal
       params:
         - name: sourceImage
-          value: ghcr.io/bcgov/ecc-ecer/registry-portal
+          value: image-registry.apps.silver.devops.gov.bc.ca/b4566a-tools/registry-portal
         - name: sourceTag
           value: latest
         - name: destinationImage
@@ -24,7 +24,7 @@ spec:
     - name: dev-api
       params:
         - name: sourceImage
-          value: ghcr.io/bcgov/ecc-ecer/api
+          value: image-registry.apps.silver.devops.gov.bc.ca/b4566a-tools/ecc-ecer/api
         - name: sourceTag
           value: latest
         - name: destinationImage
