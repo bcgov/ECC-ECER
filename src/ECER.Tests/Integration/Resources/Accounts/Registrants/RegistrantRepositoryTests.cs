@@ -105,7 +105,7 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
       PreferredName = Faker.Person.FirstName,
       LastName = $"{Fixture.TestRunId}_{Faker.Person.LastName}",
       DateOfBirth = DateOnly.FromDateTime(Faker.Person.DateOfBirth),
-      Email = Faker.Person.Email,
+      Email = "fake@test.com",
       Phone = Faker.Phone.PhoneNumber(),
       AlternateContactPhone = Faker.Phone.PhoneNumber(),
       ResidentialAddress = new Address(Faker.Address.StreetAddress(), null, Faker.Address.City(), Faker.Address.ZipCode(), Faker.Address.State(), Faker.Address.Country())
@@ -118,7 +118,7 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
     {
       FirstName = Faker.Person.FirstName,
       LastName = $"{Fixture.TestRunId}_{Faker.Person.LastName}",
-      Email = Faker.Person.Email,
+      Email = "fake@test.com",
       Phone = Faker.Phone.PhoneNumber(),
     };
   }

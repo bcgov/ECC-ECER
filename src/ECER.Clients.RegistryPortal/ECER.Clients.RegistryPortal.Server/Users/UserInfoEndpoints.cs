@@ -52,6 +52,8 @@ public record UserInfo([Required] string FirstName, [Required] string LastName, 
   public string? RegistrationNumber { get; set; }
   public bool IsVerified { get; set; }
   public int UnreadMessagesCount { get; set; }
+  public Address? ResidentialAddress { get; set; }
+  public Address? MailingAddress { get; set; }
 
   public bool IsRegistrant { get; set; }
 }

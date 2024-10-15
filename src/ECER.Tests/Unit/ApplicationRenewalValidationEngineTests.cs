@@ -421,7 +421,7 @@ public class ApplicationRenewalValidationEngineTests
     return new CharacterReference(
         _faker.Name.FirstName(),
         _faker.Name.LastName(),
-        _faker.Internet.Email(),
+        "fake@test.com",
         _faker.Phone.PhoneNumber()
     );
   }
@@ -450,7 +450,7 @@ public class ApplicationRenewalValidationEngineTests
     return new WorkExperienceReference(
         _faker.Name.FirstName(), // FirstName
         _faker.Name.LastName(),  // LastName
-        _faker.Internet.Email(), // EmailAddress
+        "fake@test.com", // EmailAddress
         hours                    // Hours
     )
     {
