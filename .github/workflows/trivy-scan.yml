@@ -5,16 +5,20 @@ on:
     branches:
       - master
       - 'release/**'
-  pull_request:
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+      
       - name: Scan Registry Portal
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: '${{ vars.DOCKER_REGISTRY }}/registry-portal'
+          image-ref: '${{ vars.DOCKER_REGISTRY }}/registry-portal:${{ steps.extract_branch.outputs.branch }}'
           format: 'sarif'
           output: 'registry-portal-trivy-results.sarif'
         env:
@@ -24,7 +28,7 @@ jobs:
       - name: Scan API
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: '${{ vars.DOCKER_REGISTRY }}/api'
+          image-ref: '${{ vars.DOCKER_REGISTRY }}/api:${{ steps.extract_branch.outputs.branch }}'
           format: 'sarif'
           output: 'api-trivy-results.sarif'
         env:
