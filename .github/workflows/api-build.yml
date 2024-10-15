@@ -3,15 +3,19 @@ on:
   push:
     branches:
       - master
+      - 'release/**'
     paths:
       - src/**
+      - "!src/ECER.Clients.RegistryPortal/**"
+      - "!src/registry-portal.Dockerfile"
       - .github/workflows/api-build.yml
       - .github/workflows/build-template.yml
 
   pull_request:
-    branches: ["master", "stories/**"]
     paths:
       - src/**
+      - "!src/ECER.Clients.RegistryPortal/**"
+      - "!src/registry-portal.Dockerfile"
       - .github/workflows/api-build.yml
       - .github/workflows/build-template.yml
 
@@ -25,8 +29,8 @@ jobs:
     with:
       IMAGE_CONTEXT: src
       IMAGE_FILE: src/api.Dockerfile
-      IMAGE_NAME: ${{ github.repository }}/api
-      REGISTRY: ghcr.io      
+      IMAGE_NAME: api
+      REGISTRY: ${{ vars.DOCKER_REGISTRY }}
     secrets:
-      REGISTRY_USER: ${{ github.actor }}
-      REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
