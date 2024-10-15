@@ -25,8 +25,8 @@ jobs:
     with:
       IMAGE_CONTEXT: src
       IMAGE_FILE: src/api.Dockerfile
-      IMAGE_NAME: ${{ github.repository }}/api
-      REGISTRY: ghcr.io      
+      IMAGE_NAME: api
+      REGISTRY: ${{ vars.DOCKER_REGISTRY }}
     secrets:
-      REGISTRY_USER: ${{ github.actor }}
-      REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
