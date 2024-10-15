@@ -42,6 +42,7 @@ import { useLoadingStore } from "@/store/loading";
 
 import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHeader.vue";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "WizardHeader",
@@ -68,11 +69,13 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const loadingStore = useLoadingStore();
     const { mobile } = useDisplay();
+    const router = useRouter();
 
     return {
       applicationStore,
       loadingStore,
       mobile,
+      router,
     };
   },
   data: () => ({
@@ -97,11 +100,11 @@ export default defineComponent({
     },
     async saveAndExit() {
       await this.handleSaveDraft();
-      this.$router.push({ name: "dashboard" });
+      this.router.push({ name: "dashboard" });
     },
     async changeCertification() {
       this.showConfirmation = false;
-      this.$router.push({ name: "application-certification" });
+      this.router.push({ name: "application-certification" });
     },
   },
 });

@@ -91,6 +91,7 @@ import type { ApplicationStage, Wizard as WizardType } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
 
 import type { ProfessionalDevelopmentExtended } from "../inputs/EceProfessionalDevelopment.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Application",
@@ -102,6 +103,7 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const loadingStore = useLoadingStore();
     const { mdAndDown } = useDisplay();
+    const router = useRouter();
     let wizardConfigSetup: WizardType = applicationWizardRenewAssistant;
 
     // Refresh userProfile from the server
@@ -123,6 +125,7 @@ export default defineComponent({
       applicationWizardAssistantAndOneYear,
       wizardConfigSetup,
       mdAndDown,
+      router,
     };
   },
   computed: {
@@ -147,7 +150,7 @@ export default defineComponent({
       const submitApplicationResponse = await this.applicationStore.submitApplication();
 
       if (submitApplicationResponse?.applicationId) {
-        this.$router.push({ name: "submitted", params: { applicationId: submitApplicationResponse.applicationId } });
+        this.router.push({ name: "submitted", params: { applicationId: submitApplicationResponse.applicationId } });
       }
     },
     async handleSaveAndContinue() {

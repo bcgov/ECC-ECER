@@ -125,6 +125,7 @@ import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 import PageContainer from "../PageContainer.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "NewUser",
@@ -137,8 +138,9 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const phoneNumber = ref(oidcUserInfo.phone);
     const email = ref(oidcUserInfo.email);
+    const router = useRouter();
 
-    return { userStore, oidcStore, phoneNumber, email, loadingStore, oidcUserInfo, oidcAddress };
+    return { userStore, oidcStore, phoneNumber, email, loadingStore, oidcUserInfo, oidcAddress, router };
   },
 
   data: () => ({
@@ -170,7 +172,7 @@ export default defineComponent({
             email: this.email,
           });
 
-          this.$router.push("/");
+          this.router.push("/");
         }
       }
     },

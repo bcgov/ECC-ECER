@@ -108,6 +108,8 @@ export default defineComponent({
       workExperienceReference400HoursWizard,
       WorkExperienceType,
       wizardConfigSetup,
+      router,
+      route,
     };
   },
   computed: {
@@ -170,7 +172,7 @@ export default defineComponent({
 
       if (this.wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER) {
         const response = await postCharacterReference({
-          token: this.$route.params.token as string,
+          token: this.route.params.token as string,
           willProvideReference: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id],
           referenceContactInformation:
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id],
@@ -181,14 +183,14 @@ export default defineComponent({
         });
 
         if (!response?.error) {
-          this.$router.push({ path: "/reference-submitted" });
+          this.router.push({ path: "/reference-submitted" });
         }
       } else if (
         this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE &&
         this.wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_500_Hours
       ) {
         const response = await postWorkExperienceReference({
-          token: this.$route.params.token as string,
+          token: this.route.params.token as string,
           workExperienceType: this.wizardStore.wizardData.workExperienceType,
           willProvideReference: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id],
           referenceContactInformation:
@@ -202,14 +204,14 @@ export default defineComponent({
           recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],
         });
         if (!response?.error) {
-          this.$router.push({ path: "/reference-submitted" });
+          this.router.push({ path: "/reference-submitted" });
         }
       } else if (
         this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE &&
         this.wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_400_Hours
       ) {
         const response = await postWorkExperienceReference({
-          token: this.$route.params.token as string,
+          token: this.route.params.token as string,
           workExperienceType: this.wizardStore.wizardData.workExperienceType,
           willProvideReference: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id],
           referenceContactInformation:
@@ -221,7 +223,7 @@ export default defineComponent({
           recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],
         });
         if (!response?.error) {
-          this.$router.push({ path: "/reference-submitted" });
+          this.router.push({ path: "/reference-submitted" });
         }
       }
     },
@@ -237,9 +239,9 @@ export default defineComponent({
 
       const reason = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.referenceDecline.id];
       const recaptchaToken = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.recaptchaToken.id];
-      const result = await optOutReference(this.$route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons, recaptchaToken);
+      const result = await optOutReference(this.route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons, recaptchaToken);
       if (!result.error) {
-        this.$router.push({ path: "/reference-submitted" });
+        this.router.push({ path: "/reference-submitted" });
       }
     },
     async printPage() {

@@ -55,6 +55,7 @@ import { useCertificationTypeStore } from "@/store/certificationType";
 import type { Components } from "@/types/openapi";
 import { CertificationType } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "CertificationType",
@@ -66,6 +67,7 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const certificationTypeStore = useCertificationTypeStore();
     const alertStore = useAlertStore();
+    const router = useRouter();
 
     // If props.modelValue contains "Ite" or "Sne", set the subSelection to those values
     if (applicationStore.isDraftCertificateTypeIte) {
@@ -84,7 +86,7 @@ export default defineComponent({
       certificationTypeStore.selection = CertificationType.ONE_YEAR;
     }
 
-    return { applicationStore, certificationTypeStore, CertificationType, certificationOptions, Rules, alertStore };
+    return { applicationStore, certificationTypeStore, CertificationType, certificationOptions, Rules, alertStore, router };
   },
   data() {
     return {
@@ -131,7 +133,7 @@ export default defineComponent({
       if (!this.certificationTypeStore.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
         this.applicationStore.$patch({ draftApplication: { workExperienceReferences: [] } });
       }
-      this.$router.push({ name: "application-requirements" });
+      this.router.push({ name: "application-requirements" });
     },
   },
 });

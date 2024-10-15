@@ -40,8 +40,8 @@
           </v-menu>
 
           <template v-if="$vuetify.display.mdAndUp">
-            <v-btn class="font-weight-regular" color="primary" prepend-icon="mdi-home" @click="$router.push('/')">Home</v-btn>
-            <v-btn class="font-weight-regular" color="primary" prepend-icon="mdi-bell" @click="$router.push('/messages')">Messages</v-btn>
+            <v-btn class="font-weight-regular" color="primary" prepend-icon="mdi-home" @click="router.push('/')">Home</v-btn>
+            <v-btn class="font-weight-regular" color="primary" prepend-icon="mdi-bell" @click="router.push('/messages')">Messages</v-btn>
             <v-menu offset-y bottom transition="slide-y-transition">
               <template #activator="{ props }">
                 <v-btn class="font-weight-regular" color="primary" v-bind="props" prepend-icon="mdi-account-circle" append-icon="mdi-chevron-down">
@@ -73,13 +73,15 @@ import { defineComponent } from "vue";
 
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "NavigationBar",
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
-    return { userStore, oidcStore };
+    const router = useRouter();
+    return { userStore, oidcStore, router };
   },
 });
 </script>

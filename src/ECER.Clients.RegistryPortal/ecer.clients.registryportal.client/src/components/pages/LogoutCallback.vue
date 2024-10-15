@@ -3,13 +3,15 @@
 <script lang="ts">
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
+    const router = useRouter();
 
-    return { userStore, oidcStore };
+    return { userStore, oidcStore, router };
   },
   mounted() {
     this.handleCallback();
@@ -18,7 +20,7 @@ export default {
     async handleCallback() {
       await this.oidcStore.completeLogout();
       this.userStore.$reset();
-      this.$router.push("/login");
+      this.router.push("/login");
     },
   },
 };

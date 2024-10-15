@@ -24,6 +24,7 @@ import { defineComponent } from "vue";
 import ActionCard from "@/components/ActionCard.vue";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "RenewCard",
@@ -33,10 +34,12 @@ export default defineComponent({
   setup() {
     const certificationStore = useCertificationStore();
     const applicationStore = useApplicationStore();
+    const router = useRouter();
 
     return {
       certificationStore,
       applicationStore,
+      router,
     };
   },
   computed: {
@@ -111,7 +114,7 @@ export default defineComponent({
   },
   methods: {
     handleLearnAboutRenewalRequirementsClicked() {
-      this.$router.push({
+      this.router.push({
         name: "certification-requirements",
         query: { certificationTypes: this.certificationStore.latestCertificationTypes, isRenewal: "true" },
       });
@@ -119,7 +122,7 @@ export default defineComponent({
     handleRenewClicked() {
       this.applicationStore.$patch({ draftApplication: { applicationType: "Renewal", certificationTypes: this.certificationStore.latestCertificationTypes } });
 
-      this.$router.push({ name: "application-requirements" });
+      this.router.push({ name: "application-requirements" });
     },
   },
 });
