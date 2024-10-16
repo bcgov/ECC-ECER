@@ -38,7 +38,7 @@ internal class CertificationRepository : ICertificationRepository
       queryWithJoin = queryWithJoin.Where(x => x.reg.FirstName == query.ByFirstName);
     }
 
-    // Filtering by Second Name
+    // Filtering by Last Name
     if (!string.IsNullOrEmpty(query.ByLastName))
     {
       queryWithJoin = queryWithJoin.Where(x => x.reg.LastName == query.ByLastName);
