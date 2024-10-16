@@ -74,17 +74,39 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Perform Trivy Scan
+      # Scan the repo with Trivy repo scanner
+      # https://github.com/aquasecurity/trivy-action
+      - name: Run Trivy vulnerability scanner in repo mode
+        if: github.event_name == 'pull_request'
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: "fs"
+          ignore-unfixed: true
+          format: "sarif"
+          output: "repo-trivy-results.sarif"
+          severity: "CRITICAL"
+
+      - name: Upload Trivy scan results
+        if: github.event_name == 'pull_request'
+        uses: github/codeql-action/upload-sarif@main
+        with:
+          sarif_file: "repo-trivy-results.sarif"
+
+      # Scan the image with Trivy repo scanner
+      # https://github.com/aquasecurity/trivy-action
+      - name: Run Trivy Scan on the created container
+        if: github.event_name != 'pull_request'
         uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
           format: "sarif"
-          output: "trivy-results.sarif"
+          output: "image-trivy-results.sarif"
         env:
           TRIVY_USERNAME: "${{ secrets.REGISTRY_USER }}"
           TRIVY_PASSWORD: "${{ secrets.REGISTRY_PASSWORD }}"
 
       - name: Upload Trivy scan results
+        if: github.event_name != 'pull_request'
         uses: github/codeql-action/upload-sarif@main
         with:
-          sarif_file: "trivy-results.sarif"
+          sarif_file: "image-trivy-results.sarif"
