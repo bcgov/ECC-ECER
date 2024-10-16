@@ -45,6 +45,7 @@ declare namespace Components {
             clientAuthenticationMethods?: {
                 [name: string]: OidcAuthenticationSettings;
             } | null;
+            version?: string | null;
         }
         export type ApplicationStatus = "Draft" | "Submitted" | "Complete" | "Reconsideration" | "Cancelled" | "Escalated" | "Decision" | "Withdrawn" | "Pending" | "Ready" | "InProgress" | "PendingQueue" | "ReconsiderationDecision" | "AppealDecision";
         export type ApplicationStatusReasonDetail = "Actioned" | "BeingAssessed" | "Certified" | "Denied" | "ForReview" | "InvestigationsConsultationNeeded" | "MoreInformationRequired" | "OperationSupervisorManagerofCertificationsConsultationNeeded" | "PendingDocuments" | "ProgramAnalystReview" | "ReadyforAssessment" | "ReceivedPending" | "ReceivePhysicalTranscripts" | "SupervisorConsultationNeeded" | "ValidatingIDs";
@@ -323,7 +324,7 @@ declare namespace Components {
             documents?: IdentityDocument[] | null;
         }
         export type PreviousNameSources = "NameLog" | "Profile" | "Transcript" | "OutofProvinceCertificate";
-        export type PreviousNameStage = "Unverified" | "ReadyforVerification" | "Verified" | "Archived";
+        export type PreviousNameStage = "Archived" | "PendingforDocuments" | "ReadyforVerification" | "Unverified" | "Verified";
         export interface ProblemDetails {
             [name: string]: any;
             type?: string | null;
@@ -458,6 +459,8 @@ declare namespace Components {
             registrationNumber?: string | null;
             isVerified?: boolean;
             unreadMessagesCount?: number; // int32
+            residentialAddress?: /* Address */ Address;
+            mailingAddress?: /* Address */ Address;
             isRegistrant?: boolean;
         }
         /**
