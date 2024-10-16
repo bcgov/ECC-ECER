@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-
 import type { Components } from "@/types/openapi";
 
 export interface UserState {

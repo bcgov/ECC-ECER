@@ -1,11 +1,8 @@
-﻿using Amazon;
-using AutoMapper;
+﻿using AutoMapper;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Certifications;
 using MediatR;
-using Microsoft.Xrm.Sdk.Query;
-using System.ServiceModel.Channels;
 
 namespace ECER.Managers.Registry;
 
