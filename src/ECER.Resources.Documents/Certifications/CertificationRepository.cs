@@ -21,52 +21,44 @@ internal class CertificationRepository : ICertificationRepository
     var Certifications = context.ecer_CertificateSet.AsQueryable();
     var Registrants = context.ContactSet.AsQueryable();
 
+    // Initial join without filtering
+    var queryWithJoin = from cert in Certifications
+                        join reg in Registrants on cert.ecer_Registrantid.Id equals reg.Id
+                        select new { cert, reg };
+
     // Filtering by ID
-    if (query.ById != null) Certifications = Certifications.Where(r => r.ecer_CertificateId == Guid.Parse(query.ById));
+    if (query.ById != null) queryWithJoin = queryWithJoin.Where(r => r.cert.ecer_CertificateId == Guid.Parse(query.ById));
 
     // Filtering by applicant ID
-    if (query.ByApplicantId != null) Certifications = Certifications.Where(r => r.ecer_Registrantid.Id == Guid.Parse(query.ByApplicantId));
+    if (query.ByApplicantId != null) queryWithJoin = queryWithJoin.Where(r => r.cert.ecer_Registrantid.Id == Guid.Parse(query.ByApplicantId));
 
     // Filtering by First Name
     if (!string.IsNullOrEmpty(query.ByFirstName))
     {
-      Certifications = from cert in Certifications
-                       join reg in Registrants on cert.ecer_Registrantid.Id equals reg.Id
-                       where reg.FirstName == (query.ByFirstName)
-                       select cert;
+      queryWithJoin = queryWithJoin.Where(x => x.reg.FirstName == query.ByFirstName);
     }
 
-    // Filtering by Last Name
+    // Filtering by Second Name
     if (!string.IsNullOrEmpty(query.ByLastName))
     {
-      Certifications = from cert in Certifications
-                       join reg in Registrants on cert.ecer_Registrantid.Id equals reg.Id
-                       where reg.LastName == (query.ByLastName)
-                       select cert;
+      queryWithJoin = queryWithJoin.Where(x => x.reg.LastName == query.ByLastName);
     }
 
     // Filtering by certificate number
     if (!string.IsNullOrEmpty(query.ByCertificateNumber))
-      Certifications = Certifications.Where(r => r.ecer_CertificateNumber.Equals(query.ByCertificateNumber));
+      queryWithJoin = queryWithJoin.Where(r => r.cert.ecer_CertificateNumber.Equals(query.ByCertificateNumber));
 
-    var results = context.From(Certifications)
+    //Order by latest first (based on expiry date), then apply pagination
+    queryWithJoin = queryWithJoin.OrderByDescending(r => r.cert.ecer_ExpiryDate).Skip(query.PageNumber).Take(query.PageSize);
+
+    var results = context.From(queryWithJoin.Select(c => c.cert))
       .Join()
       .Include(a => a.ecer_certifiedlevel_CertificateId)
       .Include(a => a.ecer_documenturl_CertificateId)
       .Include(a => a.ecer_certificate_Registrantid)
       .IncludeNested(a => a.ecer_certificateconditions_Registrantid)
-      .Execute().GroupBy(r => r.ecer_Registrantid.Id) // Group by unique identifier (assuming RegistrantId)
-             .Select(g => g.OrderByDescending(r => r.ecer_ExpiryDate).FirstOrDefault()); // Select latest by expiry date
+      .Execute().GroupBy(r => r.ecer_Registrantid.Id).Select(g => g.FirstOrDefault());
 
-    // Calculate the correct number of items to skip
-    int skipAmount = 0;
-    if (query.PageNumber > 1)
-    {
-      skipAmount = (query.PageNumber - 1) * query.PageSize;
-    }
-
-    var paginatedResults = results.Skip(skipAmount).Take(query.PageSize); // Apply Pagination
-
-    return mapper.Map<IEnumerable<Certification>>(paginatedResults)!.ToList();
+    return mapper.Map<IEnumerable<Certification>>(results)!.ToList();
   }
 }
