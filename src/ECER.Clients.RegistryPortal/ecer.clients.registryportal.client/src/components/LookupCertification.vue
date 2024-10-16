@@ -170,7 +170,6 @@ export default defineComponent({
             this.lookupCertificationStore.registrationNumber = this.lookupCertificationStore.registrationNumber.padStart(6, "0");
           }
 
-          //make api call
           const { data } = await postLookupCertificate({
             firstName: this.lookupCertificationStore.firstName,
             lastName: this.lookupCertificationStore.lastName,
@@ -178,7 +177,7 @@ export default defineComponent({
             recaptchaToken: this.recaptchaToken,
           });
 
-          this.lookupCertificationStore.certificationSearchResults = data;
+          this.lookupCertificationStore.setCertificationSearchResults(data);
         }
       } catch (e) {
         console.error(e);

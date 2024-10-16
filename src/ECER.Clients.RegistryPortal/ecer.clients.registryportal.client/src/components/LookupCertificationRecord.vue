@@ -20,14 +20,6 @@ import { useLookupCertificationStore } from "@/store/lookupCertification";
 
 export default defineComponent({
   name: "LookupCertification",
-
-  props: {
-    test: {
-      // TODO create type for prop
-      type: String as PropType<any>,
-      required: true,
-    },
-  },
   setup() {
     const lookupCertificationStore = useLookupCertificationStore();
     const router = useRouter();

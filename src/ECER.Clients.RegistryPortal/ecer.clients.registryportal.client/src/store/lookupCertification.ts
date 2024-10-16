@@ -19,7 +19,7 @@ export const useLookupCertificationStore = defineStore("lookupCertification", {
   }),
   getters: {},
   actions: {
-    setCertificationSearchResults(data: Components.Schemas.CertificationLookupResponse[]): void {
+    setCertificationSearchResults(data: Components.Schemas.CertificationLookupResponse[] | undefined): void {
       this.certificationSearchResults = data;
     },
     setCertificationRecord(record: Components.Schemas.CertificationLookupResponse): void {
