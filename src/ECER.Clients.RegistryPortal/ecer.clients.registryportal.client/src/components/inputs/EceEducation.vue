@@ -1,5 +1,4 @@
 <template>
-  <div ref="addEducationComponent">
     <v-row v-if="mode === 'add'">
       <v-col>
         <h2>{{ clientId ? "Edit" : "Add" }} education</h2>
@@ -202,7 +201,6 @@
         </v-col>
       </div>
     </v-row>
-  </div>
 </template>
 
 <script lang="ts">
@@ -337,7 +335,10 @@ export default defineComponent({
   watch: {
     mode(newValue) {
       if (newValue === "list") {
-        scrollToElement(this.$refs.addEducationComponent as HTMLElement);
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
       }
     },
   },
