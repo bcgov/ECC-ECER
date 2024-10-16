@@ -24,7 +24,7 @@ jobs:
         with:
           context: src
           file: src/integration-tests.Dockerfile
-          push: false
+          push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: integration-tests:latest
