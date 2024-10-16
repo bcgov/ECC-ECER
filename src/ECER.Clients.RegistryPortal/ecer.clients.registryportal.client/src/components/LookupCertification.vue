@@ -54,7 +54,7 @@
     </v-form>
     <v-row>
       <v-col>
-        <v-btn rounded="lg" color="primary" @click="handleSubmit">Search</v-btn>
+        <v-btn rounded="lg" color="primary" @click="handleSubmit" :loading="loadingStore.isLoading('certifications_lookup_post')">Search</v-btn>
       </v-col>
     </v-row>
     <v-row v-if="lookupCertificationStore.certificationSearchResults?.length === 0">
@@ -76,15 +76,25 @@
             `${lookupCertificationStore.certificationSearchResults.length} record${lookupCertificationStore.certificationSearchResults.length === 1 ? "" : "s"} found`
           }}
         </h2>
-        <v-data-table-virtual :headers="headers" :items="lookupCertificationStore.certificationSearchResults" :items-per-page="-1" :mobile="mobile" must-sort>
+        <v-data-table-virtual
+          :headers="headers"
+          :loading="loadingStore.isLoading('certifications_lookup_post')"
+          :items="lookupCertificationStore.certificationSearchResults"
+          :items-per-page="-1"
+          :mobile="mobile"
+          must-sort
+        >
           <template #item.name="{ item }">
             <a href="#" @click.prevent="() => applicantClick(item)">{{ item.name }}</a>
           </template>
           <template #item.statusCode="{ item }">
             <span>{{ `${item.statusCode}${item.hasConditions ? " with Terms and Conditions" : ""}` }}</span>
           </template>
+          <template #item.levels="{ item }">
+            <span>{{ generateCertificateLevelName(item.levels || []) }}</span>
+          </template>
           <template #item.expiryDate="{ item }">
-            <span>{{ formatDate(item.expiryDate, "LLLL d, yyyy") }}</span>
+            <span>{{ formatDate(item.expiryDate || "", "LLLL d, yyyy") }}</span>
           </template>
         </v-data-table-virtual>
       </v-col>
@@ -100,12 +110,14 @@ import type { VDataTable, VForm } from "vuetify/components";
 
 import { useAlertStore } from "@/store/alert";
 import { useLookupCertificationStore } from "@/store/lookupCertification";
+import { useLoadingStore } from "@/store/loading";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import { postLookupCertificate } from "@/api/certification";
 
 import * as Rules from "../utils/formRules";
 import EceRecaptcha from "./inputs/EceRecaptcha.vue";
+import type { Components } from "@/types/openapi";
 
 interface LookupCertificationData {
   recaptchaToken: string;
@@ -122,8 +134,9 @@ export default defineComponent({
     const lookupCertificationStore = useLookupCertificationStore();
     const { mobile } = useDisplay();
     const router = useRouter();
+    const loadingStore = useLoadingStore();
 
-    return { alertStore, Rules, mobile, lookupCertificationStore, router, isNumber, formatDate };
+    return { alertStore, Rules, mobile, lookupCertificationStore, loadingStore, router, isNumber, formatDate };
   },
   data(): LookupCertificationData {
     return {
@@ -132,14 +145,10 @@ export default defineComponent({
         { title: "Name", key: "name" },
         { title: "Registration number", key: "registrationNumber" },
         { title: "Registration status", key: "statusCode" },
-        { title: "Certification", key: "levelName" },
+        { title: "Certification", key: "levels" },
         { title: "Certificate expiry date", key: "expiryDate" },
       ],
     };
-  },
-  computed: {},
-  mounted() {
-    // TODO REmove
   },
   methods: {
     customAtLeastOneRule() {
@@ -162,40 +171,50 @@ export default defineComponent({
           }
 
           //make api call
-          const test = await postLookupCertificate({
+          const { data } = await postLookupCertificate({
             firstName: this.lookupCertificationStore.firstName,
             lastName: this.lookupCertificationStore.lastName,
             registrationNumber: this.lookupCertificationStore.registrationNumber,
             recaptchaToken: this.recaptchaToken,
           });
 
-          console.log(test);
-          this.lookupCertificationStore.certificationSearchResults = [
-            {
-              name: "first withConditions",
-              registrationNumber: "1234",
-              statusCode: "Active",
-              levelName: "ECE Assistant",
-              expiryDate: "2024-11-24",
-              hasConditions: true,
-            },
-            {
-              name: "first noConditions",
-              registrationNumber: "1234",
-              statusCode: "Expired",
-              levelName: "ECE Five Year",
-              expiryDate: "2025-11-24",
-              hasConditions: false,
-            },
-          ];
+          this.lookupCertificationStore.certificationSearchResults = data;
         }
       } catch (e) {
         console.error(e);
       }
     },
-    applicantClick(item) {
+    applicantClick(item: Components.Schemas.CertificationLookupResponse) {
       this.lookupCertificationStore.setCertificationRecord(item);
       this.router.push({ name: "lookup-certification-record" });
+    },
+    generateCertificateLevelName(levels: Components.Schemas.CertificationLevel[]) {
+      if (levels.some((level) => level.type === "ECE 1 YR")) {
+        return "ECE One Year";
+      }
+
+      if (levels.some((level) => level.type === "Assistant")) {
+        return "ECE Assistant";
+      }
+
+      if (levels.some((level) => level.type === "ECE 5 YR") && levels.some((level) => level.type === "ITE") && levels.some((level) => level.type === "SNE")) {
+        return "ECE Five Year with Infant and Toddler Educator (ITE) and Special Needs Educator (SNE)";
+      }
+
+      if (levels.some((level) => level.type === "ECE 5 YR") && levels.some((level) => level.type === "ITE")) {
+        return "ECE Five Year with Infant and Toddler Educator (ITE)";
+      }
+
+      if (levels.some((level) => level.type === "ECE 5 YR") && levels.some((level) => level.type === "ITE")) {
+        return "ECE Five Year with Special Needs Educator (SNE)";
+      }
+
+      if (levels.some((level) => level.type === "ECE 5 YR")) {
+        return "ECE Five Year";
+      }
+
+      console.warn(`generateCertificateLevelName:: unmapped level type:: ${levels}`);
+      return "";
     },
   },
 });

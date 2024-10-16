@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
+import type { Components } from "@/types/openapi";
 
 export interface CertificationLookupState {
-  certificationSearchResults: any[] | undefined;
-  certificationRecord: any | undefined;
+  certificationSearchResults: Components.Schemas.CertificationLookupResponse[] | undefined;
+  certificationRecord: Components.Schemas.CertificationLookupResponse | undefined;
   firstName: string;
   lastName: string;
   registrationNumber: string;
@@ -18,10 +19,10 @@ export const useLookupCertificationStore = defineStore("lookupCertification", {
   }),
   getters: {},
   actions: {
-    setCertificationSearchResults(data: any): void {
+    setCertificationSearchResults(data: Components.Schemas.CertificationLookupResponse[]): void {
       this.certificationSearchResults = data;
     },
-    setCertificationRecord(record: any): void {
+    setCertificationRecord(record: Components.Schemas.CertificationLookupResponse): void {
       this.certificationRecord = record;
     },
   },

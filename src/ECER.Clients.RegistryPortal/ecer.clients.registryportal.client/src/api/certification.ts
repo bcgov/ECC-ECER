@@ -17,9 +17,11 @@ const getCertificateFileById = async (id: string): Promise<ApiResponse<any>> => 
   return apiResultHandler.execute<any>({ request: client.files_certificate_get({ certificateId: id }, null, config) });
 };
 
-const postLookupCertificate = async (body: Components.Schemas.CertificationLookupRequest) => {
+const postLookupCertificate = async (
+  body: Components.Schemas.CertificationLookupRequest,
+): Promise<ApiResponse<Components.Schemas.CertificationLookupResponse[]>> => {
   const client = await getClient();
-  return apiResultHandler.execute({ request: client.certifications_lookup_post(null, body) });
+  return apiResultHandler.execute({ request: client.certifications_lookup_post(null, body), key: "certifications_lookup_post" });
 };
 
 export { getCertificateFileById, getCertifications, postLookupCertificate };
