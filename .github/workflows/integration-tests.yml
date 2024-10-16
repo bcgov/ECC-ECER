@@ -10,16 +10,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@master
 
-      # Set up BuildKit Docker container builder to be able to build
-      # multi-platform images and export cache
-      # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Build the integration tests Docker image with Buildx
-      # https://github.com/docker/build-push-action
-      - name: Build Docker image
-        id: build-and-push
+      - name: Stage secrets
+        env:
+          TEST_SECRETS: ${{ secrets.INTEGRATION_TESTS_SECRETS }}
+        run: |
+          # Copy the secrets file to the integration tests container
+          echo "$TEST_SECRETS" > secrets.json
+
+      - name: Build image
         uses: docker/build-push-action@v6
         with:
           context: src
@@ -29,12 +30,8 @@ jobs:
           cache-to: type=gha,mode=max
           tags: integration-tests:latest
 
-      - name: Execute tests
-        env:
-          TEST_SECRETS: ${{ secrets.INTEGRATION_TESTS_SECRETS }}
-        run: |
-          # Copy the secrets file to the integration tests container
-          echo "$TEST_SECRETS" > secrets.json
-          
-          # Run the integration tests Docker image
-          docker run -v "/var/run/docker.sock":"/var/run/docker.sock" -v secrets.json:/src/secrets.json -e SECRETS_FILE_PATH=/src/secrets.json integration-tests:latest
+      - name: Run tests
+        uses: addnab/docker-run-action@v3
+        with:
+          image: integration-tests:latest
+          options: -v secrets.json:/src/secrets.json -e SECRETS_FILE_PATH=/src/secrets.json
