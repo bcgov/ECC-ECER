@@ -27,7 +27,7 @@ jobs:
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: local/integration-tests
+          tags: integration-tests:latest
 
       - name: Execute tests
         env:
@@ -37,4 +37,4 @@ jobs:
           echo "$TEST_SECRETS" > secrets.json
           
           # Run the integration tests Docker image
-          docker run -v secrets.json:/src/secrets.json -e SECRETS_FILE_PATH=/src/secrets.json local/integration-tests
+          docker run -v secrets.json:/src/secrets.json -e SECRETS_FILE_PATH=/src/secrets.json integration-tests:latest
