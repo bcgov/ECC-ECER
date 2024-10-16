@@ -1,9 +1,11 @@
 name: API Build
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - master
-      - 'release/**'
+      - "release/**"
     paths:
       - src/**
       - "!src/ECER.Clients.RegistryPortal/**"
@@ -24,7 +26,8 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write
+      id-token: write      
+      security-events: write
     uses: ./.github/workflows/build-template.yml
     with:
       IMAGE_CONTEXT: src

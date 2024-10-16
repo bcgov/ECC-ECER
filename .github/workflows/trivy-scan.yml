@@ -1,10 +1,7 @@
 name: Trivy Scans
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-      - "release/**"
+
 jobs:
   build:
     name: Build
@@ -35,7 +32,12 @@ jobs:
           TRIVY_USERNAME: "${{ secrets.DOCKER_USERNAME }}"
           TRIVY_PASSWORD: "${{ secrets.DOCKER_PASSWORD }}"
 
-      - name: Upload Trivy scan results to GitHub Security tab
+      - name: Upload Trivy scan results for Registry Portal
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: "."
+          sarif_file: "registry-portal-trivy-results.sarif"
+      
+      - name: Upload Trivy scan results for API
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: "api-trivy-results.sarif"
