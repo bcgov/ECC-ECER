@@ -57,7 +57,7 @@ internal class CertificationRepository : ICertificationRepository
       .Include(a => a.ecer_documenturl_CertificateId)
       .Include(a => a.ecer_certificate_Registrantid)
       .IncludeNested(a => a.ecer_certificateconditions_Registrantid)
-      .Execute().GroupBy(r => r.ecer_Registrantid.Id).Select(g => g.FirstOrDefault());
+      .Execute().GroupBy(r => r.ecer_Registrantid.Id).Select(g => g.FirstOrDefault()); // Group by unique identifier (assuming RegistrantId)
 
     return mapper.Map<IEnumerable<Certification>>(results)!.ToList();
   }
