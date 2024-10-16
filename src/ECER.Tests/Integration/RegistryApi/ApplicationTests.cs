@@ -6,6 +6,7 @@ using Shouldly;
 using System.Net;
 using System.Net.Http.Headers;
 using Xunit.Abstractions;
+using Xunit.Categories;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
@@ -409,6 +410,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  [Category("Internal")]
   public async Task AddNewCharacterReference_ForSubmittedApplication()
   {
     var applicationId = this.Fixture.submittedTestApplicationId4;
@@ -450,6 +452,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  [Category("Internal")]
   public async Task AddProfessionalDevelopmentAndFiles_ToSubmittedApplication()
   {
     // Create Renewal Draft Application
