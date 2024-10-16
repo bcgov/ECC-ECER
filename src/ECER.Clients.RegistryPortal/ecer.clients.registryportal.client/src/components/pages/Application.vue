@@ -1,5 +1,5 @@
 <template>
-  <Wizard :ref="'wizard'" :wizard="wizardConfigSetup">
+  <Wizard :ref="'wizard'" :wizard="applicationStore.applicationConfiguration">
     <template #header>
       <WizardHeader
         class="mb-6"
@@ -104,7 +104,6 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const { mdAndDown } = useDisplay();
     const router = useRouter();
-    let wizardConfigSetup: WizardType = applicationWizardRenewAssistant;
 
     // Refresh userProfile from the server
     const userProfile = await getProfile();
@@ -123,7 +122,6 @@ export default defineComponent({
       loadingStore,
       applicationWizardFiveYear,
       applicationWizardAssistantAndOneYear,
-      wizardConfigSetup,
       mdAndDown,
       router,
     };

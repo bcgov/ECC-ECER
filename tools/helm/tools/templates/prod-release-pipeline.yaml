@@ -1,31 +1,21 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: prod-release-pipeline
+  name: release-prod
+  description: "Release UAT to PROD"
+
 spec:
   tasks:
-
-   ## Promote test to prod ##
-    - name: prod-registry-portal
+    {{- range $key, $value := .Values.images }}
+    - name: promote-{{ $key }}
       params:
         - name: imageName
-          value: registry-portal
+          value: {{ base $value.image }}
         - name: fromTag
-          value: test
+          value: uat
         - name: toTag
           value: prod
       taskRef:
         kind: Task
         name: promote-image-task
-    - name: prod-api
-      params:
-        - name: imageName
-          value: api
-        - name: fromTag
-          value: test
-        - name: toTag
-          value: prod
-      taskRef:
-        kind: Task
-        name: promote-image-task
-      
+    {{- end }}
