@@ -22,8 +22,8 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v6
         with:
-          context: /src
-          file: /src/integration-tests.Dockerfile
+          context: src
+          file: src/integration-tests.Dockerfile
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
