@@ -42,12 +42,13 @@ pinia.use(piniaPluginPersistedstate);
 const app = createApp(App);
 
 app.use(pinia);
-app.use(router);
-app.use(vuetify);
 
 const configStore = useConfigStore();
 
 // Fetch OIDC configuration from the API and initialize the store before mounting the app
 configStore.initialize().then(() => {
+  // Ensure the OIDC configuration is loaded before, instantiating the router (which will make a getUser() call) and mounting the app
+  app.use(router);
+  app.use(vuetify);
   app.mount("#app");
 });

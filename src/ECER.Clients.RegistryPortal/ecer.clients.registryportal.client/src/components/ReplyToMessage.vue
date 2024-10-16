@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12">
         <v-btn prepend-icon="mdi-close" variant="text" text="Close" @click="showCloseDialog = true"></v-btn>
-        <hr class="w-full" />
+        <v-divider :style="{ opacity: 1 }" />
         <h1 class="mt-5">Re: {{ messageThreadSubject }}</h1>
         <v-form ref="replyForm" v-model="formValid">
           <v-row class="mt-5">

@@ -65,6 +65,7 @@ import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Declaration",
@@ -74,8 +75,11 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
+    const router = useRouter();
+
     // Refresh userProfile from the server
     const userProfile = await getProfile();
+
     if (userProfile !== null) {
       userStore.setUserProfile(userProfile);
     }
@@ -122,7 +126,7 @@ export default defineComponent({
             },
           ];
 
-    return { items, Rules, userStore, applicationStore, alertStore, loadingStore };
+    return { items, Rules, userStore, applicationStore, alertStore, loadingStore, router };
   },
   data() {
     return {
@@ -152,7 +156,7 @@ export default defineComponent({
       let response = await this.applicationStore.upsertDraftApplication();
 
       if (response) {
-        this.$router.push("/application");
+        this.router.push("/application");
       }
     },
   },

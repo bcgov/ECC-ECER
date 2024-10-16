@@ -57,9 +57,9 @@
         :status="reference.status"
         :go-to="
           () =>
-            $router.push({
+            router.push({
               name: 'viewCharacterReference',
-              params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
+              params: { applicationId: route.params.applicationId, referenceId: reference.id?.toString() },
             })
         "
         :will-provide-reference="reference.willProvideReference ? true : false"
@@ -67,33 +67,33 @@
       <ApplicationSummaryActionListItem
         v-if="!hasCharacterReference"
         text="Add character reference"
-        :go-to="() => $router.push({ name: 'addCharacterReference', params: { applicationId: $route.params.applicationId } })"
+        :go-to="() => router.push({ name: 'addCharacterReference', params: { applicationId: route.params.applicationId } })"
       />
       <ApplicationSummaryActionListItem
         v-for="(previousName, index) in userStore.unverifiedPreviousNames"
         :key="index"
         :text="`Proof of previous name ${previousName.firstName} ${previousName.lastName}`"
-        :go-to="() => $router.push({ name: 'profile' })"
+        :go-to="() => router.push({ name: 'profile' })"
       />
       <ApplicationSummaryActionListItem
         v-for="(previousName, index) in userStore.readyForVerificationPreviousNames"
         :key="index"
         :text="`Proof of previous name ${previousName.firstName} ${previousName.lastName}`"
-        :go-to="() => $router.push({ name: 'profile' })"
+        :go-to="() => router.push({ name: 'profile' })"
         :active="false"
       />
       <ApplicationSummaryActionListItem
         v-for="(previousName, index) in userStore.pendingforDocumentsPreviousNames"
         :key="index"
         :text="`Proof of previous name ${previousName.firstName} ${previousName.lastName}`"
-        :go-to="() => $router.push({ name: 'profile' })"
+        :go-to="() => router.push({ name: 'profile' })"
         :active="false"
       />
       <ApplicationSummaryActionListItem
         v-if="showWorkExperience"
         :active="totalObservedWorkExperienceHours < totalRequiredWorkExperienceHours"
         :text="`${totalRequiredWorkExperienceHours} hours of work experience with reference`"
-        :go-to="() => $router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: $route.params.applicationId } })"
+        :go-to="() => router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: route.params.applicationId } })"
       />
     </div>
     <v-card v-if="currentStep === 3" elevation="0" rounded="0" class="border-t border-b">
@@ -154,7 +154,7 @@
         <ApplicationSummaryActionListItem
           v-if="!hasCharacterReference"
           text="Add character reference"
-          :go-to="() => $router.push({ name: 'addCharacterReference', params: { applicationId: $route.params.applicationId } })"
+          :go-to="() => router.push({ name: 'addCharacterReference', params: { applicationId: route.params.applicationId } })"
         />
         <ApplicationSummaryCharacterReferenceListItem
           v-for="reference in waitingForResponseCharacterReferences"
@@ -163,9 +163,9 @@
           :status="reference.status"
           :go-to="
             () =>
-              $router.push({
+              router.push({
                 name: 'viewCharacterReference',
-                params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
+                params: { applicationId: route.params.applicationId, referenceId: reference.id?.toString() },
               })
           "
           :will-provide-reference="reference.willProvideReference ? true : false"
@@ -173,12 +173,12 @@
         <ApplicationSummaryActionListItem
           v-if="addMoreWorkExperienceReferencesFlag"
           :text="`${totalRequiredWorkExperienceHours} approved hours of work experience with reference`"
-          :go-to="() => $router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: $route.params.applicationId } })"
+          :go-to="() => router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: route.params.applicationId } })"
         />
         <ApplicationSummaryActionListItem
           v-if="addMoreProfessionalDevelopmentFlag"
           :text="`${totalRequiredProfessionalDevelopmentHours} hours of professional development`"
-          :go-to="() => $router.push({ name: 'manageProfessionalDevelopment', params: { applicationId: $route.params.applicationId } })"
+          :go-to="() => router.push({ name: 'manageProfessionalDevelopment', params: { applicationId: route.params.applicationId } })"
         />
       </div>
     </div>
@@ -188,7 +188,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 
 import { getApplicationStatus } from "@/api/application";
@@ -214,10 +214,11 @@ export default defineComponent({
   },
   setup: async () => {
     const { smAndUp } = useDisplay();
-    const route = useRoute();
     const alertStore = useAlertStore();
     const applicationStore = useApplicationStore();
     const userStore = useUserStore();
+    const router = useRouter();
+    const route = useRoute();
 
     await applicationStore.fetchApplications();
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
@@ -230,6 +231,8 @@ export default defineComponent({
       applicationStatus,
       smAndUp,
       formatDate,
+      router,
+      route,
     };
   },
   data() {

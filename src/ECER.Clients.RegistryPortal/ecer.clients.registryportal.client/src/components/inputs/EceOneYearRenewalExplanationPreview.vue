@@ -11,7 +11,7 @@
           </p>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="hasOtherReasonToRenew">
         <v-col cols="4">
           <p class="small">Other reason</p>
         </v-col>
@@ -50,6 +50,9 @@ export default defineComponent({
     };
   },
   computed: {
+    hasOtherReasonToRenew() {
+      return !!this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.renewalExplanationOther.id];
+    },
     generateReasonToRenew() {
       const renewalReason = renewalInformationRadio.find(
         (reason) =>

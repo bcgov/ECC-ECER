@@ -60,7 +60,7 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
       .RuleFor(f => f.PreferredName, f => f.Name.FirstName())
       .RuleFor(f => f.AlternateContactPhone, f => f.Phone.PhoneNumber())
       .RuleFor(f => f.DateOfBirth, f => f.Date.PastDateOnly())
-      .RuleFor(f => f.Email, f => f.Internet.Email())
+      .RuleFor(f => f.Email, f => "fake@test.com")
       .RuleFor(f => f.Phone, f => f.Phone.PhoneNumber())
       .RuleFor(f => f.ResidentialAddress, address)
       .RuleFor(f => f.MailingAddress, address)
