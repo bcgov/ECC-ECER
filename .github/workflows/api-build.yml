@@ -27,6 +27,7 @@ jobs:
       contents: read
       packages: write
       id-token: write
+      actions: read
     uses: ./.github/workflows/build-template.yml
     with:
       IMAGE_CONTEXT: src
