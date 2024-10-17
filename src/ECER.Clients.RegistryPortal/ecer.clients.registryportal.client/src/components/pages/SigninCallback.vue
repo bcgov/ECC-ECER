@@ -24,13 +24,14 @@ export default {
       // Complete signin and retrieve oidc user
       const user = await this.oidcStore.signinCallback();
       // Attempt to get user info
-      const userInfo: Components.Schemas.UserInfo | null = await getUserInfo();
 
+      const [userInfo, profileInfo]: [
+        Components.Schemas.UserInfo | null,
+        Components.Schemas.UserProfile | null
+      ] = await Promise.all([getUserInfo(), getProfile()]);
       if (userInfo) {
         // Maybe user has a profile already
-        const profileInfo: Components.Schemas.UserProfile | null = await getProfile();
 
-        // Set user info and profile info in the store
         this.userStore.setUserInfo(userInfo);
         this.userStore.setUserProfile(profileInfo);
       } else {

@@ -171,11 +171,13 @@ export default defineComponent({
     const messageStore = useMessageStore();
     const { smAndDown, mdAndUp } = useDisplay();
 
-    const applications = await applicationStore.fetchApplications();
-    const certifications = await certificationStore.fetchCertifications();
 
-    // Refresh userInfo from the server
-    const userInfo = await getUserInfo();
+    const [applications, certifications, userInfo] = await Promise.all([
+  applicationStore.fetchApplications(),
+  certificationStore.fetchCertifications(),
+  getUserInfo()
+]);
+
     if (userInfo !== null) {
       userStore.setUserInfo(userInfo);
     }
