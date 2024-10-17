@@ -42,11 +42,6 @@ const router = createRouter({
       name: "login",
     },
     {
-      path: "/signin-callback",
-      component: () => import("./components/pages/SigninCallback.vue"),
-      meta: { requiresAuth: false },
-    },
-    {
       path: "/silent-callback",
       component: () => import("./components/pages/SilentCallback.vue"),
       meta: { requiresAuth: false },
