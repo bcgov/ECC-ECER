@@ -129,9 +129,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
-
+import { useRouter } from "vue-router";
 import { cancelDraftApplication } from "@/api/application";
 import { getUserInfo } from "@/api/user";
+import { getProfile } from "@/api/profile";
 import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
@@ -148,6 +149,7 @@ import { useCertificationStore } from "@/store/certification";
 import { useMessageStore } from "@/store/message";
 import { useUserStore } from "@/store/user";
 import { formatPhoneNumber } from "@/utils/format";
+import { useOidcStore } from "@/store/oidc";
 
 export default defineComponent({
   name: "Dashboard",
@@ -164,25 +166,44 @@ export default defineComponent({
     RegistrantCard,
   },
   async setup() {
+    const oidcStore = useOidcStore();
     const userStore = useUserStore();
+    const router = useRouter();
     const applicationStore = useApplicationStore();
     const certificationStore = useCertificationStore();
     const alertStore = useAlertStore();
     const messageStore = useMessageStore();
     const { smAndDown, mdAndUp } = useDisplay();
+    let user;
+    try {
+      user = await oidcStore.getUser();
+      if(!user){
+        user = await oidcStore.signinCallback();
+        router.replace('/');
+      }
+    } 
+    catch (error) {}
 
+    if(!user){
+      window.location.href = '/login';
+    }
 
-    const [applications, certifications, userInfo] = await Promise.all([
+    const [applications, certifications, userInfo, userProfile] = await Promise.all([
   applicationStore.fetchApplications(),
   certificationStore.fetchCertifications(),
-  getUserInfo()
-]);
+  getUserInfo(),
+  getProfile()
+  ]);
 
     if (userInfo !== null) {
       userStore.setUserInfo(userInfo);
+      userStore.setUserProfile(userProfile);
+    }
+    else{
+      router.push("/new-user");
     }
 
-    return { userStore, applicationStore, alertStore, messageStore, certificationStore, certifications, applications, smAndDown, mdAndUp };
+    return { userStore, applicationStore, alertStore, messageStore, certificationStore, certifications, applications, smAndDown, mdAndUp, router };
   },
   data: () => ({
     showCancelDialog: false,

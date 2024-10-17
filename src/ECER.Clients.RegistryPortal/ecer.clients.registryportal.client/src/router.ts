@@ -14,7 +14,7 @@ const router = createRouter({
     {
       path: "/",
       component: () => import("./components/pages/Dashboard.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: false }, // This is handled in dashboard component itself
       name: "dashboard",
     },
     {
