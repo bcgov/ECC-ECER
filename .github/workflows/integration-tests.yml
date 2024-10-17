@@ -1,0 +1,37 @@
+name: Integration tests
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Stage secrets
+        env:
+          TEST_SECRETS: ${{ secrets.INTEGRATION_TESTS_SECRETS }}
+        run: |
+          # Copy the secrets file to the integration tests container
+          echo "$TEST_SECRETS" > secrets.json
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: src
+          file: src/integration-tests.Dockerfile
+          push: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: integration-tests:latest
+
+      - name: Run tests
+        uses: addnab/docker-run-action@v3
+        with:
+          image: integration-tests:latest
+          options: -v secrets.json:/src/secrets.json -e SECRETS_FILE_PATH=/src/secrets.json
