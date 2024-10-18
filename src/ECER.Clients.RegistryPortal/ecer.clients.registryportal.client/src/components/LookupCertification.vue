@@ -13,8 +13,11 @@
         >
           www.gov.bc.ca/earlychildhoodeducators
         </a>
-        to learn more about the ECE Registry, certificate types, or status information. To find an ECE, you can search by name or registration number. The
-        registration number is on an ECE's certificate that's posted on the wall where they work.
+        to learn more about the ECE Registry, certificate types, or status information.
+        <p class="mt-3">
+          To find an ECE, you can search by name or registration number. The registration number is on an ECE's certificate that's posted on the wall where they
+          work.
+        </p>
       </v-col>
     </v-row>
     <v-form ref="lookupForm" class="mt-10">
