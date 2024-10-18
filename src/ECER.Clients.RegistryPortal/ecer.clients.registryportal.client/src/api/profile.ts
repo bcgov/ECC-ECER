@@ -6,21 +6,9 @@ import ApiResultHandler, { type ApiResponse } from "@/utils/apiResultHandler";
 const apiResultHandler = new ApiResultHandler();
 
 const getProfile = async (): Promise<Components.Schemas.UserProfile | null> => {
-  try {
-    const client = await getClient();
-    const response = await client.profile_get();
-
-    return response?.data ?? null;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response?.status === 404) {
-        console.log("Profile not found:", error);
-      } else {
-        console.log("Error fetching profile:", error);
-      }
-    }
-    return null;
-  }
+  const client = await getClient();
+  const response = await apiResultHandler.execute({ request: client.profile_get(), key: "profile_get" });
+  return response?.data ?? null;
 };
 
 const putProfile = async (user: Components.Schemas.UserProfile): Promise<ApiResponse<any>> => {
