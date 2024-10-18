@@ -1,17 +1,40 @@
 <template>
+  <v-row v-if="loadingStore.isLoading('message_get')" justify="center">
+    <v-col cols="12" class="text-center">
+      <v-progress-circular
+        indeterminate
+        class="mt-10 mb-3"
+        color="primary"
+        size="64"
+      ></v-progress-circular>
+      <p>Loading data, please wait...</p>
+    </v-col>
+  </v-row>
   <v-list lines="two" class="flex-grow-1 message-list" style="padding: 0px">
-    <MessageListItem v-for="(message, index) in messages" :key="index" :message="message" @update:message-is-read="message.isRead = $event" />
-    <v-pagination v-if="messageCount > 1" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages"></v-pagination>
+    <MessageListItem
+      v-for="(message, index) in messages"
+      :key="index"
+      :message="message"
+      @update:message-is-read="message.isRead = $event"
+    />
+    <v-pagination
+      v-if="messageCount > 1"
+      v-model="currentPage"
+      size="small"
+      class="mt-4"
+      elevation="2"
+      :length="totalPages"
+    ></v-pagination>
   </v-list>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
 import { getMessages } from "@/api/message";
 import MessageListItem from "@/components/MessageListItem.vue";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
+import { useLoadingStore } from "@/store/loading";
 
 const PAGE_SIZE = 10;
 
@@ -20,8 +43,8 @@ export default defineComponent({
   components: { MessageListItem },
   setup() {
     const messageStore = useMessageStore();
-
-    return { messageStore };
+    const loadingStore = useLoadingStore();
+    return { messageStore, loadingStore };
   },
   data() {
     return {

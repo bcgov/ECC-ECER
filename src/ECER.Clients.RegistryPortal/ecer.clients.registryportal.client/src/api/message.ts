@@ -18,7 +18,7 @@ const getMessages = async (params: { page: number; pageSize: number }): Promise<
     params: params,
   };
 
-  return apiResultHandler.execute<Components.Schemas.GetMessagesResponse | null>({ request: client.message_get(null, null, config) });
+  return apiResultHandler.execute<Components.Schemas.GetMessagesResponse | null>({ request: client.message_get(null, null, config), key: "message_get" });
 };
 
 const getChildMessages = async (params: Paths.MessageGet.PathParameters): Promise<ApiResponse<any>> => {

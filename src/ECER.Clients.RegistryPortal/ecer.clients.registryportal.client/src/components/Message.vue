@@ -75,11 +75,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
-
 import { getCommunicationFile } from "@/api/message";
 import { useMessageStore } from "@/store/message";
 import { formatDate } from "@/utils/format";
-
+import { useLoadingStore } from "@/store/loading";
 import DownloadFileLink from "./DownloadFileLink.vue";
 import type { Communication } from "@/types/openapi";
 import { useRouter } from "vue-router";
@@ -89,10 +88,11 @@ export default defineComponent({
   components: { DownloadFileLink },
   setup() {
     const messageStore = useMessageStore();
+    const loadingStore = useLoadingStore();
     const { smAndDown, mdAndUp } = useDisplay();
     const router = useRouter();
 
-    return { messageStore, smAndDown, mdAndUp, getCommunicationFile, router };
+    return { messageStore, loadingStore, smAndDown, mdAndUp, getCommunicationFile, router };
   },
   computed: {
     messageDate(): string {
