@@ -17,7 +17,37 @@ export const useLookupCertificationStore = defineStore("lookupCertification", {
     lastName: "",
     registrationNumber: "",
   }),
-  getters: {},
+  getters: {
+    certificateLevelName(state): string {
+      const levels = state.certificationRecord?.levels!;
+      if (levels.some((level) => level.type === "ECE 1 YR")) {
+        return "ECE One Year";
+      }
+
+      if (levels.some((level) => level.type === "Assistant")) {
+        return "ECE Assistant";
+      }
+
+      if (levels.some((level) => level.type === "ECE 5 YR") && levels.some((level) => level.type === "ITE") && levels.some((level) => level.type === "SNE")) {
+        return "ECE Five Year with Infant and Toddler Educator (ITE) and Special Needs Educator (SNE)";
+      }
+
+      if (levels.some((level) => level.type === "ECE 5 YR") && levels.some((level) => level.type === "ITE")) {
+        return "ECE Five Year with Infant and Toddler Educator (ITE)";
+      }
+
+      if (levels.some((level) => level.type === "ECE 5 YR") && levels.some((level) => level.type === "ITE")) {
+        return "ECE Five Year with Special Needs Educator (SNE)";
+      }
+
+      if (levels.some((level) => level.type === "ECE 5 YR")) {
+        return "ECE Five Year";
+      }
+
+      console.warn(`generateCertificateLevelName:: unmapped level type:: ${levels}`);
+      return "";
+    },
+  },
   actions: {
     setCertificationSearchResults(data: Components.Schemas.CertificationLookupResponse[] | undefined): void {
       this.certificationSearchResults = data;
