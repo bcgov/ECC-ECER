@@ -24,17 +24,28 @@
       <v-container>
         <Callout type="warning" :title="`Previous name: ${fullName(prev)}`">
           <div class="d-flex flex-column ga-3 mt-3">
-            <p>You need to provide proof of name change to add this name to your account.</p>
-            <router-link :to="{ name: 'verify-previous-name', params: { previousNameId: prev.id } }">Add ID for proof of previous name</router-link>
+            <p>
+              You need to provide proof of name change to add this name to your account.
+            </p>
+            <router-link
+              :to="{ name: 'verify-previous-name', params: { previousNameId: prev.id } }"
+              >Add ID for proof of previous name</router-link
+            >
           </div>
         </Callout>
       </v-container>
     </v-row>
-    <v-row v-for="(prev, index) in userStore.readyForVerificationPreviousNames" :key="index">
+    <v-row
+      v-for="(prev, index) in userStore.readyForVerificationPreviousNames"
+      :key="index"
+    >
       <v-container>
         <Callout type="warning" :title="`Previous name: ${fullName(prev)}`">
           <div class="d-flex flex-column ga-3 mt-3">
-            <p>We’ve received your ID. We’ll review it shortly and add this name to your account.</p>
+            <p>
+              We’ve received your ID. We’ll review it shortly and add this name to your
+              account.
+            </p>
           </div>
         </Callout>
       </v-container>
@@ -64,7 +75,11 @@
             <p class="font-weight-bold mb-3">Previous names</p>
             <div v-if="userStore.verifiedPreviousNames.length > 0">
               <p v-for="(prev, index) in userStore.verifiedPreviousNames" :key="index">
-                {{ prev.middleName ? `${prev.firstName} ${prev.middleName} ${prev.lastName}` : `${prev.firstName} ${prev.lastName}` }}
+                {{
+                  prev.middleName
+                    ? `${prev.firstName} ${prev.middleName} ${prev.lastName}`
+                    : `${prev.firstName} ${prev.lastName}`
+                }}
               </p>
             </div>
             <p v-else>—</p>
@@ -73,7 +88,9 @@
         <v-col class="mt-6">
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Date of birth</p>
-            <p>{{ formatDate(userStore.userProfile?.dateOfBirth || "", "LLLL d, yyyy") }}</p>
+            <p>
+              {{ formatDate(userStore.userProfile?.dateOfBirth || "", "LLLL d, yyyy") }}
+            </p>
           </div>
         </v-col>
       </v-col>
@@ -93,7 +110,8 @@
             >
               {{ userStore.userProfile?.residentialAddress.line1 }}
               <br />
-              {{ userStore.userProfile?.residentialAddress.city }}, {{ userStore.userProfile?.residentialAddress.province }}
+              {{ userStore.userProfile?.residentialAddress.city }},
+              {{ userStore.userProfile?.residentialAddress.province }}
               <br />
               {{ userStore.userProfile?.residentialAddress.postalCode }}
               <br />
@@ -105,7 +123,16 @@
         <v-col class="mt-6">
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Mailing address</p>
-            <p v-if="areObjectsEqual(userStore.userProfile?.residentialAddress, userStore.userProfile?.mailingAddress)">Same as home address</p>
+            <p
+              v-if="
+                areObjectsEqual(
+                  userStore.userProfile?.residentialAddress,
+                  userStore.userProfile?.mailingAddress
+                )
+              "
+            >
+              Same as home address
+            </p>
             <p
               v-else-if="
                 userStore.userProfile?.mailingAddress &&
@@ -118,7 +145,8 @@
             >
               {{ userStore.userProfile?.mailingAddress.line1 }}
               <br />
-              {{ userStore.userProfile?.mailingAddress.city }}, {{ userStore.userProfile?.mailingAddress.province }}
+              {{ userStore.userProfile?.mailingAddress.city }},
+              {{ userStore.userProfile?.mailingAddress.province }}
               <br />
               {{ userStore.userProfile?.mailingAddress.postalCode }}
               <br />
@@ -136,13 +164,25 @@
         <v-col class="mt-6">
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Primary phone number</p>
-            <p>{{ userStore.userProfile?.phone ? formatPhoneNumber(userStore.userProfile?.phone ?? "") : "—" }}</p>
+            <p>
+              {{
+                userStore.userProfile?.phone
+                  ? formatPhoneNumber(userStore.userProfile?.phone ?? "")
+                  : "—"
+              }}
+            </p>
           </div>
         </v-col>
         <v-col class="mt-6">
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Alternate phone number</p>
-            <p>{{ userStore.userProfile?.alternateContactPhone ? formatPhoneNumber(userStore.userProfile?.alternateContactPhone ?? "") : "—" }}</p>
+            <p>
+              {{
+                userStore.userProfile?.alternateContactPhone
+                  ? formatPhoneNumber(userStore.userProfile?.alternateContactPhone ?? "")
+                  : "—"
+              }}
+            </p>
           </div>
         </v-col>
       </v-col>
@@ -151,8 +191,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-
+import { defineComponent, onMounted } from "vue";
 import { getProfile } from "@/api/profile";
 import Callout from "@/components/Callout.vue";
 import LinkBar from "@/components/LinkBar.vue";
@@ -162,17 +201,21 @@ import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { formatPhoneNumber } from "@/utils/format";
 import { areObjectsEqual } from "@/utils/functions";
+import { useLoadingStore } from "@/store/loading";
+import Loading from "@/components/Loading.vue";
 
 export default defineComponent({
   name: "Profile",
-  components: { PageContainer, LinkBar, Callout },
+  components: { PageContainer, LinkBar, Callout, Loading },
   setup: async () => {
-    const userProfile = await getProfile();
     const userStore = useUserStore();
-
+    const loadingStore = useLoadingStore();
+    let userProfile = userStore.userProfile;
+    onMounted(async () => {
+    const userProfile = await getProfile();
     userStore.setUserProfile(userProfile);
-
-    return { userProfile, userStore };
+    });
+    return { userProfile, loadingStore, userStore };
   },
   data: () => ({
     items: [
@@ -192,7 +235,9 @@ export default defineComponent({
     formatPhoneNumber,
     areObjectsEqual,
     fullName(name: Components.Schemas.PreviousName) {
-      return name.middleName ? `${name.firstName} ${name.middleName} ${name.lastName}` : `${name.firstName} ${name.lastName}`;
+      return name.middleName
+        ? `${name.firstName} ${name.middleName} ${name.lastName}`
+        : `${name.firstName} ${name.lastName}`;
     },
   },
 });

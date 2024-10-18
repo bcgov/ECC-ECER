@@ -1,15 +1,6 @@
 <template>
-  <v-row v-if="loadingStore.isLoading('message_get')" justify="center">
-    <v-col cols="12" class="text-center">
-      <v-progress-circular
-        indeterminate
-        class="mt-10 mb-3"
-        color="primary"
-        size="64"
-      ></v-progress-circular>
-      <p>Loading data, please wait...</p>
-    </v-col>
-  </v-row>
+  <Loading v-if="loadingStore.isLoading('message_get')"> </Loading>
+
   <v-list lines="two" class="flex-grow-1 message-list" style="padding: 0px">
     <MessageListItem
       v-for="(message, index) in messages"
@@ -35,12 +26,12 @@ import MessageListItem from "@/components/MessageListItem.vue";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
-
+import Loading from "@/components/Loading.vue";
 const PAGE_SIZE = 10;
 
 export default defineComponent({
   name: "MessageList",
-  components: { MessageListItem },
+  components: { MessageListItem, Loading },
   setup() {
     const messageStore = useMessageStore();
     const loadingStore = useLoadingStore();

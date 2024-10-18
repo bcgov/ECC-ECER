@@ -1,17 +1,7 @@
 <template>
   <!-- Messages -->
   <PageContainer :margin-top="false">
-    <v-row v-if="showLoading" justify="center">
-      <v-col cols="12" class="text-center">
-        <v-progress-circular
-          indeterminate
-          class="mt-10 mb-3"
-          color="primary"
-          size="64"
-        ></v-progress-circular>
-        <p>Loading data, please wait...</p>
-      </v-col>
-    </v-row>
+    <Loading v-if="showLoading"> </Loading>
 
     <v-row v-if="!userStore.isVerified && !showLoading" justify="center">
       <v-col cols="12">
@@ -169,6 +159,7 @@ import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { cancelDraftApplication } from "@/api/application";
 import { getUserInfo } from "@/api/user";
+import Loading from "@/components/Loading.vue";
 import { getProfile } from "@/api/profile";
 import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
@@ -192,6 +183,7 @@ import { useOidcStore } from "@/store/oidc";
 export default defineComponent({
   name: "Dashboard",
   components: {
+    Loading,
     ConfirmationDialog,
     PageContainer,
     ApplicationCard,
