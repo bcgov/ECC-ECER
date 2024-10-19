@@ -212,7 +212,7 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     let userProfile = userStore.userProfile;
     onMounted(async () => {
-    const userProfile = await getProfile();
+    userProfile = await getProfile();
     userStore.setUserProfile(userProfile);
     });
     return { userProfile, loadingStore, userStore };
