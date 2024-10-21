@@ -70,6 +70,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_health_authoritiesId = "ecer_health_authoritiesid";
 			public const string Id = "ecer_health_authoritiesid";
 			public const string ecer_health_authority_licensing_officers = "ecer_health_authority_licensing_officers";
+			public const string ecer_ID = "ecer_id";
+			public const string ecer_MCFDRegion = "ecer_mcfdregion";
+			public const string ecer_mcfdregionName = "ecer_mcfdregionname";
 			public const string ecer_name = "ecer_name";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
 			public const string ecer_StateProvince = "ecer_stateprovince";
@@ -370,6 +373,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_health_authoritiesId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_id")]
+		public string ecer_ID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_id");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_id", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_mcfdregion")]
+		public virtual ecer_MCFDRegion? ecer_MCFDRegion
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_MCFDRegion?)(EntityOptionSetEnum.GetEnum(this, "ecer_mcfdregion")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_mcfdregion", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_mcfdregionname")]
+		public string ecer_mcfdregionName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_mcfdregion"))
+				{
+					return this.FormattedValues["ecer_mcfdregion"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -933,7 +983,7 @@ namespace ECER.Utilities.DataverseSdk.Model
                 var value = p.GetValue(anonymousType, null);
                 var name = p.Name.ToLower();
             
-                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                if (value != null && name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
                 {
                     value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
                     name = name.Remove(name.Length - "enum".Length);

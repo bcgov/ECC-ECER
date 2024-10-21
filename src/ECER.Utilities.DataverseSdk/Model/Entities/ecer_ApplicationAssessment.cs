@@ -85,6 +85,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_GoodCharacterAccepted = "ecer_goodcharacteraccepted";
 			public const string ecer_goodcharacteracceptedName = "ecer_goodcharacteracceptedname";
 			public const string ecer_legacyapplicationassessmentid = "ecer_legacyapplicationassessmentid";
+			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_RecommendationLetterAccepted = "ecer_recommendationletteraccepted";
 			public const string ecer_recommendationletteracceptedName = "ecer_recommendationletteracceptedname";
@@ -562,6 +563,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyapplicationassessmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentrydate")]
+		public System.Nullable<System.DateTime> ecer_legacyentrydate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyentrydate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyentrydate", value);
 			}
 		}
 		
@@ -1202,7 +1218,7 @@ namespace ECER.Utilities.DataverseSdk.Model
                 var value = p.GetValue(anonymousType, null);
                 var name = p.Name.ToLower();
             
-                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                if (value != null && name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
                 {
                     value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
                     name = name.Remove(name.Length - "enum".Length);

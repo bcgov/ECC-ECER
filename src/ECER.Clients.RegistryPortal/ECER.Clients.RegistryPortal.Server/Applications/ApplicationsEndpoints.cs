@@ -394,6 +394,8 @@ public record Transcript()
   public bool IsOfficialTranscriptRequested { get; set; }
   [Required]
   public bool IsNameUnverified { get; set; }
+  [Required]
+  public EducationRecognition EducationRecognition { get; set; }
 }
 public record WorkExperienceReference([Required] string FirstName, [Required] string LastName, [Required] string EmailAddress, [Required] int Hours)
 {

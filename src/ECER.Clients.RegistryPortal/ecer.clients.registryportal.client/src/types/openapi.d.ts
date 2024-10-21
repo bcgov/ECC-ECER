@@ -45,6 +45,7 @@ declare namespace Components {
             clientAuthenticationMethods?: {
                 [name: string]: OidcAuthenticationSettings;
             } | null;
+            version?: string | null;
         }
         export type ApplicationStatus = "Draft" | "Submitted" | "Complete" | "Reconsideration" | "Cancelled" | "Escalated" | "Decision" | "Withdrawn" | "Pending" | "Ready" | "InProgress" | "PendingQueue" | "ReconsiderationDecision" | "AppealDecision";
         export type ApplicationStatusReasonDetail = "Actioned" | "BeingAssessed" | "Certified" | "Denied" | "ForReview" | "InvestigationsConsultationNeeded" | "MoreInformationRequired" | "OperationSupervisorManagerofCertificationsConsultationNeeded" | "PendingDocuments" | "ProgramAnalystReview" | "ReadyforAssessment" | "ReceivedPending" | "ReceivePhysicalTranscripts" | "SupervisorConsultationNeeded" | "ValidatingIDs";
@@ -405,6 +406,7 @@ declare namespace Components {
             doesECERegistryHaveTranscript?: boolean;
             isOfficialTranscriptRequested?: boolean;
             isNameUnverified: boolean;
+            educationRecognition: EducationRecognition;
         }
         export type TranscriptStage = "Accepted" | "ApplicationSubmitted" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "WaitingforDetails";
         export interface TranscriptStatus {
