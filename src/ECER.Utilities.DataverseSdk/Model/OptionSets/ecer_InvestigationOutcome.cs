@@ -30,6 +30,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Other = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Suspended = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		TermsandConditions = 621870001,
 	}
 }

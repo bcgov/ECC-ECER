@@ -5,6 +5,7 @@ using Microsoft.Xrm.Sdk.Client;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
 using ECER.Utilities.ObjectStorage.Providers;
+using ECER.Utilities.DataverseSdk.Queries;
 
 namespace ECER.Resources.Accounts.Communications;
 
@@ -23,6 +24,20 @@ internal class CommunicationRepository : ICommunicationRepository
     this.configuration = configuration;
   }
 
+  public async Task<int> QueryStatus(string RegistrantId)
+  {
+    await Task.CompletedTask;
+    var unseenCommunications = context.ecer_CommunicationSet.Where(item => item.ecer_Registrantid.Id == Guid.Parse(RegistrantId) &&
+                                                                     item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry &&
+                                                                     item.StatusCode == ecer_Communication_StatusCode.NotifiedRecipient &&
+                                                                     item.StateCode == ecer_communication_statecode.Active &&
+                                                                     item.ecer_Acknowledged != true
+                                                                     ).Select(item => new { item.Id, parent = item.ecer_IsRoot ?? false, child = item.ecer_ParentCommunicationid != null }).ToList();
+
+    unseenCommunications = unseenCommunications.Where(item => item.parent || item.child).ToList(); // SDK does not support including this condition inside query
+    return unseenCommunications.Count;
+  }
+
   public async Task<CommunicationResult> Query(UserCommunicationQuery query)
   {
     await Task.CompletedTask;
@@ -37,7 +52,6 @@ internal class CommunicationRepository : ICommunicationRepository
       var statuses = mapper.Map<IEnumerable<ecer_Communication_StatusCode>>(query.ByStatus)!.ToList();
       communications = communications.WhereIn(item => item.StatusCode!.Value, statuses);
     }
-    var UnreadMessagesCount = communications.Where(item => item.ecer_InitiatedFrom == ecer_InitiatedFrom.Registry && item.ecer_Acknowledged != true).Select(item => item.Id).ToList().Count;
 
     // Filtering by ID
     if (query.ById != null) communications = communications.Where(item => item.ecer_CommunicationId == Guid.Parse(query.ById));
@@ -55,22 +69,21 @@ internal class CommunicationRepository : ICommunicationRepository
     int paginatedTotalCommunicationCount = 0;
     if (query.PageNumber > 0)
     {
-      paginatedTotalCommunicationCount = communications.Select(item => item.Id).ToList().Count;
-      communications = communications.OrderByDescending(item => item.ecer_LatestMessageNotifiedDate).Skip((query.PageNumber - 1) * query.PageSize).Take(query.PageSize);
+      paginatedTotalCommunicationCount = context.From(communications).Aggregate().Count();
+      communications = communications.OrderByDescending(item => item.ecer_LatestMessageNotifiedDate).Skip(query.PageNumber).Take(query.PageSize);
     }
     else
     {
       communications = communications.OrderByDescending(item => item.ecer_DateNotified);
     }
+    var results = context.From(communications).Join().Include(c => c.ecer_bcgov_documenturl_CommunicationId_ecer_communication).Execute();
 
-    context.LoadProperties(communications, ecer_Communication.Fields.ecer_bcgov_documenturl_CommunicationId_ecer_communication);
+    var finalCommunications = mapper.Map<IEnumerable<Communication>>(results)!.ToList();
 
-    var finalCommunications = communications.ToList();
     return new CommunicationResult
     {
-      Communications = mapper.Map<IEnumerable<Communication>>(finalCommunications),
+      Communications = finalCommunications,
       TotalMessagesCount = query.PageNumber > 0 ? paginatedTotalCommunicationCount : finalCommunications.Count,
-      UnreadMessagesCount = UnreadMessagesCount
     };
   }
 

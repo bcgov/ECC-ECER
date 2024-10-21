@@ -1,12 +1,12 @@
-﻿using System.Collections.Concurrent;
+﻿using Microsoft.Crm.Sdk.Messages;
+using Microsoft.PowerPlatform.Dataverse.Client;
+using Microsoft.Xrm.Sdk.Messages;
+using Microsoft.Xrm.Sdk.Metadata;
+using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.ServiceModel;
 using System.Text;
-using Microsoft.Crm.Sdk.Messages;
-using Microsoft.PowerPlatform.Dataverse.Client;
-using Microsoft.Xrm.Sdk.Messages;
-using Microsoft.Xrm.Sdk.Metadata;
 
 namespace Microsoft.Xrm.Sdk.Client;
 
@@ -38,13 +38,9 @@ public static class DataverseExtensions
 
   public static void LoadProperties([NotNull] this OrganizationServiceContext context, IEnumerable<Entity> entities, params string[] propertyNames)
   {
-    Parallel.ForEach(entities, entity =>
-    {
-      foreach (var property in propertyNames)
-      {
-        context.LoadProperty(entity, property);
-      }
-    });
+    ArgumentNullException.ThrowIfNull(entities);
+    ArgumentNullException.ThrowIfNull(propertyNames);
+    entities.AsParallel().ForAll(e => propertyNames.AsParallel().ForAll(p => context.LoadProperty(e, p)));
   }
 
   private const int FileBlockSize = 4 * 1024 * 1024; // 4 MB

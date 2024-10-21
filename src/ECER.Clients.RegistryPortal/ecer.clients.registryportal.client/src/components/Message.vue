@@ -18,12 +18,12 @@
           <h2>{{ messageStore.currentMessage?.subject }}</h2>
 
           <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
-            <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+            <span>{{ messageFromString(message) }}</span>
             <div class="mt-3" v-html="`${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`"></div>
             <div class="mt-6" v-html="message.text"></div>
             <div v-if="message.documents!.length > 0" class="mt-6">
               <p>
-                <v-icon>mdi-paperclip</v-icon>
+                <v-icon class="ml-n2">mdi-paperclip</v-icon>
                 Attachments
               </p>
               <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
@@ -48,12 +48,12 @@
     </v-sheet>
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
     <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
-      <span v-html="message.from == 'Registry' ? 'From ECE Registry' : 'PortalUser' ? 'You Replied' : ''"></span>
+      <span>{{ messageFromString(message) }}</span>
       <div class="mt-3" v-html="`${formatDate(String(message.notifiedOn), 'LLL d, yyyy')} &nbsp; ${formatDate(String(message.notifiedOn), 't')}`"></div>
       <div class="mt-6" v-html="message.text"></div>
       <div v-if="message.documents!.length > 0" class="mt-6">
         <p>
-          <v-icon>mdi-paperclip</v-icon>
+          <v-icon class="ml-n2">mdi-paperclip</v-icon>
           Attachments
         </p>
         <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
@@ -81,6 +81,8 @@ import { useMessageStore } from "@/store/message";
 import { formatDate } from "@/utils/format";
 
 import DownloadFileLink from "./DownloadFileLink.vue";
+import type { Communication } from "@/types/openapi";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Message",
@@ -88,8 +90,9 @@ export default defineComponent({
   setup() {
     const messageStore = useMessageStore();
     const { smAndDown, mdAndUp } = useDisplay();
+    const router = useRouter();
 
-    return { messageStore, smAndDown, mdAndUp, getCommunicationFile };
+    return { messageStore, smAndDown, mdAndUp, getCommunicationFile, router };
   },
   computed: {
     messageDate(): string {
@@ -100,8 +103,20 @@ export default defineComponent({
   methods: {
     formatDate,
     handleMessageReply() {
-      this.$router.push({ name: "replyToMessage", params: { messageId: this.messageStore.currentMessage?.id } });
+      this.router.push({ name: "replyToMessage", params: { messageId: this.messageStore.currentMessage?.id } });
       this.messageStore.currentMessage = null; // Putting this in to make router redirect correctly for mobile devices
+    },
+    messageFromString(message: Communication): string {
+      switch (message.from) {
+        case "Registry":
+          return "From ECE Registry";
+        case "PortalUser":
+          return "You Replied";
+        case "Investigation":
+          return "From ECE Investigations";
+        default:
+          return "";
+      }
     },
   },
 });

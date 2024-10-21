@@ -116,7 +116,7 @@
 import { defineComponent, ref } from "vue";
 import type { VForm } from "vuetify/components";
 
-import { postUserInfo } from "@/api/user";
+import { getUserInfo, postUserInfo } from "@/api/user";
 import ECEHeader from "@/components/ECEHeader.vue";
 import { useLoadingStore } from "@/store/loading";
 import { useOidcStore } from "@/store/oidc";
@@ -125,6 +125,7 @@ import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 import PageContainer from "../PageContainer.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "NewUser",
@@ -133,11 +134,13 @@ export default defineComponent({
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
     const oidcUserInfo = await oidcStore.oidcUserInfo();
+    const oidcAddress = await oidcStore.oidcAddress();
     const loadingStore = useLoadingStore();
     const phoneNumber = ref(oidcUserInfo.phone);
     const email = ref(oidcUserInfo.email);
+    const router = useRouter();
 
-    return { userStore, oidcStore, phoneNumber, email, loadingStore, oidcUserInfo };
+    return { userStore, oidcStore, phoneNumber, email, loadingStore, oidcUserInfo, oidcAddress, router };
   },
 
   data: () => ({
@@ -155,19 +158,21 @@ export default defineComponent({
         const registrationNumber = this.eceCertificateStatus ? this.eceRegistrationNumber : "";
         const userCreated: boolean = await postUserInfo({
           ...this.oidcUserInfo,
+          residentialAddress: this.oidcAddress,
+          mailingAddress: this.oidcAddress,
           email: this.email,
           phone: this.phoneNumber,
           registrationNumber: registrationNumber,
         });
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {
-          this.userStore.setUserInfo({
-            ...this.oidcUserInfo,
-            phone: this.phoneNumber,
-            email: this.email,
-          });
 
-          this.$router.push("/");
+          const userInfo = await getUserInfo();
+          if (userInfo !== null) {
+            this.userStore.setUserInfo(userInfo);
+          }
+
+          this.router.push("/");
         }
       }
     },

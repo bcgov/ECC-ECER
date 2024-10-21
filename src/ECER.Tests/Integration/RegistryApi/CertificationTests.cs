@@ -15,7 +15,7 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
   {
     var CertificationsResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url("/api/certifications");
       _.StatusCodeShouldBeOk();
     });

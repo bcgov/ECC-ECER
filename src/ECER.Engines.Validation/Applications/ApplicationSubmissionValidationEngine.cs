@@ -4,8 +4,6 @@ namespace ECER.Engines.Validation.Applications;
 
 internal sealed class ApplicationSubmissionValidationEngine : IApplicationValidationEngine
 {
-  private static readonly IEnumerable<CertificationType> fiveYearNestedCertificationTypes = new[] { CertificationType.Ite, CertificationType.Sne };
-
   public async Task<ValidationResults> Validate(Application application)
   {
     await Task.CompletedTask;
@@ -31,12 +29,6 @@ internal sealed class ApplicationSubmissionValidationEngine : IApplicationValida
       validationErrors.Add("Education was completed more than 5 years ago");
     }
 
-    // if the application contains SNE and ITE certification types, the application should contain the Five Years certification type
-    if (fiveYearNestedCertificationTypes.Intersect(application.CertificationTypes).Any() && !application.CertificationTypes.Any(ct => ct == CertificationType.FiveYears))
-    {
-      validationErrors.Add("Sub five year certification type selected but without five year certification");
-    }
-
     // if the application contains the Five Years certification type, the total work experience should be at least 500 hours
     if (application.CertificationTypes.Any(ct => ct == CertificationType.FiveYears))
     {
@@ -47,24 +39,6 @@ internal sealed class ApplicationSubmissionValidationEngine : IApplicationValida
       {
         validationErrors.Add("Work experience does not meet 500 hours");
       }
-    }
-
-    // if the application contains the SNE certification type, the application should contain at least 2 education
-    if (application.CertificationTypes.Any(ct => ct == CertificationType.Sne) && application.Transcripts.Count() < 2)
-    {
-      validationErrors.Add("applicant does not have enough education for SNE");
-    }
-
-    // if the application contains the ITE certification type, the application should contain at least 2 education
-    if (application.CertificationTypes.Any(ct => ct == CertificationType.Ite) && application.Transcripts.Count() < 2)
-    {
-      validationErrors.Add("applicant does not have enough education for ITE");
-    }
-
-    // if the application contains both SNE and ITE certification types, the application should contain at least 3 education
-    if (application.CertificationTypes.Any(ct => ct == CertificationType.Ite) && application.CertificationTypes.Any(ct => ct == CertificationType.Sne) && application.Transcripts.Count() < 3)
-    {
-      validationErrors.Add("applicant does not have enough education for both ITE and SNE");
     }
 
     return new ValidationResults(validationErrors);

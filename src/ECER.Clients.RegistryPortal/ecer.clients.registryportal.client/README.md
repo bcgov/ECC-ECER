@@ -44,3 +44,18 @@ npm run build
 ```sh
 npm run lint
 ```
+
+### set up ClamAV locally
+
+**Requirements:**
+
+- A local development environment with Git and Docker installed.
+
+**Steps:**
+
+1. Clone the ClamAV repository:
+   git clone [https://github.com/bcgov/clamav](https://github.com/bcgov/clamav)
+2. Build the docker image:
+   docker build -t clamav:latest .
+3. Run ClamAV container:
+   docker run --name clamav -p 3310:3310 -d clamav:latest

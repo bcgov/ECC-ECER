@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-
 import type { Components } from "@/types/openapi";
 
 export interface UserState {
@@ -31,7 +30,10 @@ export const useUserStore = defineStore("user", {
       return state.userProfile?.previousNames?.filter((name) => name.status === "ReadyforVerification") ?? [];
     },
     verifiedPreviousNames: (state): Components.Schemas.PreviousName[] => {
-      return state.userProfile?.previousNames?.filter((name) => name.status === "Verified" && name.source !== "NameLog") ?? [];
+      return state.userProfile?.previousNames?.filter((name) => name.status === "Verified") ?? [];
+    },
+    pendingforDocumentsPreviousNames: (state): Components.Schemas.PreviousName[] => {
+      return state.userProfile?.previousNames?.filter((name) => name.status === "PendingforDocuments") ?? [];
     },
     firstName: (state): string => state.userInfo?.firstName ?? "",
     middleName: (state): string => state.userInfo?.middleName ?? "",

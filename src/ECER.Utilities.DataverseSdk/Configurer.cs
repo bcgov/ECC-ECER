@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.PowerPlatform.Dataverse.Client;
+using Microsoft.Xrm.Sdk;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ECER.Utilities.DataverseSdk;
@@ -19,12 +20,8 @@ public class Configurer : IConfigureComponents, IPostConfigureChecker, IProvideI
       var client = new ServiceClient(configurationContext.Configuration.GetSection("Dataverse").GetValue("ConnectionString", string.Empty), logger);
       if (!client.IsReady) throw new InvalidOperationException($"Failed to connect to Dataverse: {client.LastError}", client.LastException);
       return client;
-    });
-    configurationContext.Services.AddScoped(sp =>
-    {
-      var client = sp.GetRequiredService<IOrganizationServiceAsync>();
-      return new EcerContext(client);
-    });
+    }).AddSingleton<IOrganizationService>(sp => sp.GetRequiredService<IOrganizationServiceAsync>());
+    configurationContext.Services.AddScoped<EcerContext>();
   }
 
   public async Task Check([NotNull] CheckContext context, CancellationToken ct)

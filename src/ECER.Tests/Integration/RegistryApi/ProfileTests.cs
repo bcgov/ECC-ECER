@@ -16,7 +16,7 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
   {
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url("/api/profile");
       _.StatusCodeShouldBeOk();
     });
@@ -27,7 +27,7 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
   {
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(CreateNewUser()).ToUrl("/api/profile");
       _.StatusCodeShouldBeOk();
     });
@@ -60,7 +60,7 @@ public class ProfileTests : RegistryPortalWebAppScenarioBase
       .RuleFor(f => f.PreferredName, f => f.Name.FirstName())
       .RuleFor(f => f.AlternateContactPhone, f => f.Phone.PhoneNumber())
       .RuleFor(f => f.DateOfBirth, f => f.Date.PastDateOnly())
-      .RuleFor(f => f.Email, f => f.Internet.Email())
+      .RuleFor(f => f.Email, f => "fake@test.com")
       .RuleFor(f => f.Phone, f => f.Phone.PhoneNumber())
       .RuleFor(f => f.ResidentialAddress, address)
       .RuleFor(f => f.MailingAddress, address)

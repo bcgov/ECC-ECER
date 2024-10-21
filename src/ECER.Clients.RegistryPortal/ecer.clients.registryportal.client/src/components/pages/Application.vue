@@ -1,5 +1,5 @@
 <template>
-  <Wizard :ref="'wizard'" :wizard="wizardConfigSetup">
+  <Wizard :ref="'wizard'" :wizard="applicationStore.applicationConfiguration">
     <template #header>
       <WizardHeader
         class="mb-6"
@@ -10,7 +10,7 @@
       />
       <v-container>
         <!-- prettier-ignore -->
-        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1" href="#" @click.prevent="handleBack">
+        <a v-if="$vuetify.display.mobile && wizardStore.step !== 1 && showSaveButtons" href="#" @click.prevent="handleBack">
           <v-icon large>mdi-chevron-left</v-icon>Back to previous step
         </a>
       </v-container>
@@ -26,6 +26,7 @@
               :title="step.title"
               :editable="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'"
               :complete="index + 1 < wizardStore.step"
+              :class="`small ${mdAndDown ? 'text-wrap' : 'text-no-wrap'}`"
             >
               <template #title>
                 <a v-if="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'" href="#" @click.prevent>{{ step.title }}</a>
@@ -71,9 +72,9 @@
 </template>
 
 <script lang="ts">
-import { DateTime } from "luxon";
 import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
+import { useDisplay } from "vuetify";
 
 import { getProfile, putProfile } from "@/api/profile";
 import Wizard from "@/components/Wizard.vue";
@@ -81,22 +82,16 @@ import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizardAssistantAndOneYear from "@/config/application-wizard-assistant-and-one-year";
 import applicationWizardFiveYear from "@/config/application-wizard-five-year";
 import applicationWizardRenewAssistant from "@/config/application-wizard-renew-assistant";
-import applicationWizardRenewFiveYearActive from "@/config/application-wizard-renew-five-year-active";
-import applicationWizardRenewFiveYearExpiredLessThan5Years from "@/config/application-wizard-renew-five-year-expired-less-than-five-years";
-import applicationWizardRenewFiveYearExpiredMoreThan5Years from "@/config/application-wizard-renew-five-year-expired-more-than-five-years";
-import applicationWizardRenewOneYearActive from "@/config/application-wizard-renew-one-year-active";
-import applicationWizardRenewOneYearExpired from "@/config/application-wizard-renew-one-year-expired";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
-import { useCertificationStore } from "@/store/certification";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import type { ApplicationStage, Wizard as WizardType } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
-import { formatDate } from "@/utils/format";
 
 import type { ProfessionalDevelopmentExtended } from "../inputs/EceProfessionalDevelopment.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Application",
@@ -107,60 +102,18 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const applicationStore = useApplicationStore();
     const loadingStore = useLoadingStore();
-    const certificationStore = useCertificationStore();
-    let wizardConfigSetup: WizardType | undefined = undefined;
+    const { mdAndDown } = useDisplay();
+    const router = useRouter();
 
     // Refresh userProfile from the server
     const userProfile = await getProfile();
     if (userProfile !== null) {
       userStore.setUserProfile(userProfile);
     }
-    const latestCertificateIsExpired = (dt: string) => {
-      return DateTime.fromISO(dt) > DateTime.fromISO(certificationStore?.latestCertification?.expiryDate!);
-    };
 
-    const latestCertificateExpiredMoreThan5Years = (dt1: string) => {
-      const dt2 = DateTime.fromISO(certificationStore.latestCertification?.expiryDate!);
-      const differenceInYears = Math.abs(DateTime.fromISO(dt1).diff(dt2, "years").years);
-      return differenceInYears > 5;
-    };
+    //Initialize wizard
+    await wizardStore.initializeWizard(applicationStore.applicationConfiguration, applicationStore.draftApplication);
 
-    const draftApplicationCreatedOn = applicationStore.draftApplication.createdOn || formatDate(DateTime.now().toString());
-    if (applicationStore.isDraftApplicationRenewal) {
-      if (applicationStore.isDraftCertificateTypeEceAssistant) {
-        await wizardStore.initializeWizard(applicationWizardRenewAssistant, applicationStore.draftApplication);
-        wizardConfigSetup = applicationWizardRenewAssistant;
-      } else if (applicationStore.isDraftCertificateTypeOneYear) {
-        {
-          if (!latestCertificateIsExpired(draftApplicationCreatedOn)) {
-            await wizardStore.initializeWizard(applicationWizardRenewOneYearActive, applicationStore.draftApplication);
-            wizardConfigSetup = applicationWizardRenewOneYearActive;
-          } else if (!latestCertificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
-            await wizardStore.initializeWizard(applicationWizardRenewOneYearExpired, applicationStore.draftApplication);
-            wizardConfigSetup = applicationWizardRenewOneYearExpired;
-          }
-        }
-      } else if (applicationStore.isDraftCertificateTypeFiveYears) {
-        if (!latestCertificateIsExpired(draftApplicationCreatedOn)) {
-          await wizardStore.initializeWizard(applicationWizardRenewFiveYearActive, applicationStore.draftApplication);
-          wizardConfigSetup = applicationWizardRenewFiveYearActive;
-        } else if (!latestCertificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
-          await wizardStore.initializeWizard(applicationWizardRenewFiveYearExpiredLessThan5Years, applicationStore.draftApplication);
-          wizardConfigSetup = applicationWizardRenewFiveYearExpiredLessThan5Years;
-        } else if (latestCertificateExpiredMoreThan5Years(draftApplicationCreatedOn)) {
-          await wizardStore.initializeWizard(applicationWizardRenewFiveYearExpiredMoreThan5Years, applicationStore.draftApplication);
-          wizardConfigSetup = applicationWizardRenewFiveYearExpiredMoreThan5Years;
-        }
-      }
-    } else {
-      if (applicationStore.isDraftCertificateTypeFiveYears) {
-        await wizardStore.initializeWizard(applicationWizardFiveYear, applicationStore.draftApplication);
-        wizardConfigSetup = applicationWizardFiveYear;
-      } else {
-        await wizardStore.initializeWizard(applicationWizardAssistantAndOneYear, applicationStore.draftApplication);
-        wizardConfigSetup = applicationWizardAssistantAndOneYear;
-      }
-    }
     return {
       applicationStore,
       wizardStore,
@@ -169,8 +122,8 @@ export default defineComponent({
       loadingStore,
       applicationWizardFiveYear,
       applicationWizardAssistantAndOneYear,
-      certificationStore,
-      wizardConfigSetup,
+      mdAndDown,
+      router,
     };
   },
   computed: {
@@ -195,7 +148,7 @@ export default defineComponent({
       const submitApplicationResponse = await this.applicationStore.submitApplication();
 
       if (submitApplicationResponse?.applicationId) {
-        this.$router.push({ name: "submitted", params: { applicationId: submitApplicationResponse.applicationId } });
+        this.router.push({ name: "submitted", params: { applicationId: submitApplicationResponse.applicationId } });
       }
     },
     async handleSaveAndContinue() {

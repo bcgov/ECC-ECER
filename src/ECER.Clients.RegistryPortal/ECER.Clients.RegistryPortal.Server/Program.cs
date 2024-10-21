@@ -95,6 +95,7 @@ internal class Program
             .RequireClaim(RegistryPortalClaims.IdenityProvider)
             .RequireClaim(ClaimTypes.Name)
             .RequireClaim(RegistryPortalClaims.UserId)
+            .RequireClaim(RegistryPortalClaims.Verified, "True")
             .RequireAuthenticatedUser();
         })
         .AddPolicy("registry_new_user", policy =>
@@ -103,6 +104,15 @@ internal class Program
             .AddAuthenticationSchemes("kc")
             .RequireClaim(ClaimTypes.Name)
             .RequireClaim(ClaimTypes.NameIdentifier)
+            .RequireAuthenticatedUser();
+        })
+        .AddPolicy("registry_unverified_user", policy =>
+        {
+          policy
+            .AddAuthenticationSchemes("kc")
+            .RequireClaim(RegistryPortalClaims.IdenityProvider)
+            .RequireClaim(ClaimTypes.Name)
+            .RequireClaim(RegistryPortalClaims.UserId)
             .RequireAuthenticatedUser();
         });
 
@@ -122,25 +132,27 @@ internal class Program
 
       var app = builder.Build();
 
+      if (app.Environment.IsDevelopment())
+      {
+        app.UseSwaggerUI();
+      }
+
       app.UseHealthChecks();
       app.UseObservabilityMiddleware();
-      app.UseDisableHttpVerbsMiddleware(app.Configuration.GetValue("DisabledHttpVerbs", string.Empty));
       app.UseRequestDecompression();
+      app.UseExceptionHandler();
       app.UseResponseCompression();
-      app.UseCsp();
       app.UseSecurityHeaders();
+      app.UseDisableHttpVerbsMiddleware(app.Configuration.GetValue("DisabledHttpVerbs", string.Empty));
+      app.UseCsp();
+      app.UseCors();
       app.UseStaticFiles();
       app.MapFallbackToFile("index.html");
-      app.UseCors();
       app.UseOutputCache();
       app.UseResponseCaching();
       app.UseAuthentication();
       app.UseAuthorization();
-
       app.UseSwagger();
-      if (app.Environment.IsDevelopment())
-        app.UseSwaggerUI();
-
       app.RegisterApiEndpoints();
 
       await app.RunAsync();

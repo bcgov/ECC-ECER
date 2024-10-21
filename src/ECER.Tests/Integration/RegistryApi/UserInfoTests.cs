@@ -100,6 +100,8 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
 
     var registeredUser = (await response.ReadAsJsonAsync<UserInfo>()).ShouldNotBeNull();
     registeredUser.Email.ShouldBe(newUser.Email);
+    registeredUser.MailingAddress!.City.ShouldBe(registeredUser.MailingAddress.City);
+    registeredUser.ResidentialAddress!.City.ShouldBe(registeredUser.ResidentialAddress.City);
   }
 
   [Fact]
@@ -108,7 +110,6 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     var userIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
     var newUser = CreateNewUser();
     newUser.RegistrationNumber = "1234";
-
     await Host.Scenario(_ =>
     {
       _.WithNewUser(userIdentity);
@@ -128,11 +129,11 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
 
     var newUserIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
     await Host.Scenario(_ =>
-        {
-          _.WithNewUser(newUserIdentity);
-          _.Post.Json(newUser).ToUrl("/api/userinfo");
-          _.StatusCodeShouldBeOk();
-        });
+    {
+      _.WithNewUser(newUserIdentity);
+      _.Post.Json(newUser).ToUrl("/api/userinfo");
+      _.StatusCodeShouldBeOk();
+    });
 
     var response = await Host.Scenario(_ =>
     {
@@ -157,7 +158,7 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     })).ReadAsJsonAsync<UserInfo>().ShouldNotBeNull();
 
-    var userProfile = existingUserProfile with { LastName = Fixture.TestRunId };
+    var userProfile = existingUserProfile with { LastName = Fixture.TestRunId, GivenName = Fixture.TestRunId };
     await Host.Scenario(_ =>
     {
       _.WithNewUser(userIdentity);
@@ -178,15 +179,25 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
 
   private static UserInfo CreateNewUser()
   {
+    var address = new Faker<Address>("en_CA")
+    .CustomInstantiator(f => new Address(
+        f.Address.StreetAddress(),
+        null,
+        f.Address.City(),
+        f.Address.ZipCode(),
+        f.Address.State(), f.Address.Country()
+        ));
+
     var userProfile = new Faker<UserInfo>("en_CA")
     .CustomInstantiator(f => new UserInfo(
         f.Person.FirstName,
         f.Person.LastName,
         f.Person.FirstName,
         DateOnly.FromDateTime(f.Person.DateOfBirth),
-        f.Person.Email,
+        "fake@email.com",
         f.Person.Phone
-        ));
+        )
+    { MailingAddress = address, ResidentialAddress = address });
 
     return userProfile.Generate();
   }

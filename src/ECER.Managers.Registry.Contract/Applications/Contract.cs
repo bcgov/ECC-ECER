@@ -61,6 +61,7 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public DateTime? ReadyForAssessmentDate { get; set; }
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
+  public bool? AddMoreProfessionalDevelopment { get; set; }
   public ApplicationTypes ApplicationType { get; set; }
   public EducationOrigin? EducationOrigin { get; set; }
   public EducationRecognition? EducationRecognition { get; set; }
@@ -117,8 +118,8 @@ public record CharacterReference(string? FirstName, string? LastName, string? Ph
 public enum ProfessionalDevelopmentStatusCode
 {
   ApplicationSubmitted,
+  Approved,
   Draft,
-  Inactive,
   InProgress,
   Rejected,
   Submitted,
@@ -360,6 +361,15 @@ public class UpdateCharacterReferenceResult
   public static UpdateCharacterReferenceResult Success() => new UpdateCharacterReferenceResult { IsSuccess = true };
 
   public static UpdateCharacterReferenceResult Failure(string message) => new UpdateCharacterReferenceResult { IsSuccess = false, ErrorMessage = message };
+}
+
+public record AddProfessionalDevelopmentCommand(ProfessionalDevelopment professionalDevelopment, string applicationId, string userId) : IRequest<AddProfessionalDevelopmentResult>;
+
+public class AddProfessionalDevelopmentResult
+{
+  public string? ApplicationId { get; set; }
+  public bool IsSuccess { get; set; }
+  public string? ErrorMessage { get; set; }
 }
 
 public enum ReferenceKnownTime

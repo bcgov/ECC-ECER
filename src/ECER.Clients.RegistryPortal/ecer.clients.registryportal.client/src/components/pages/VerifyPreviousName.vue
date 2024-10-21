@@ -114,7 +114,7 @@ export default {
       if (!this.isAtleastOneFileAdded) {
         this.alertStore.setFailureAlert("You must add at least one file.");
       } else if (this.isFileUploadInProgress) {
-        this.alertStore.setFailureAlert("Uploading files. You need to wait until files are uploaded to send this message.");
+        this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
       } else if (!this.areAttachedFilesValid) {
         this.alertStore.setFailureAlert("You must upload valid files.");
       } else {

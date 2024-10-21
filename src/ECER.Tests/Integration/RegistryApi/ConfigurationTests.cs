@@ -18,7 +18,7 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
   {
     var provincesResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url("/api/provincelist");
       _.StatusCodeShouldBeOk();
     });
@@ -32,7 +32,7 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
   {
     var siteKeyResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url("/api/recaptchaSiteKey");
       _.StatusCodeShouldBeOk();
     });

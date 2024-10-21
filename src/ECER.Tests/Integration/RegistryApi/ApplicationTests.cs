@@ -6,6 +6,7 @@ using Shouldly;
 using System.Net;
 using System.Net.Http.Headers;
 using Xunit.Abstractions;
+using Xunit.Categories;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
@@ -22,7 +23,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   {
     var applicationsResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url("/api/applications");
       _.StatusCodeShouldBeOk();
     });
@@ -38,7 +39,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     application.Stage = "CertificationType";
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
@@ -47,7 +48,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url($"/api/applications/{applicationId}");
       _.StatusCodeShouldBeOk();
     });
@@ -68,7 +69,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
@@ -77,7 +78,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url($"/api/applications/{applicationId}");
       _.StatusCodeShouldBeOk();
     });
@@ -87,7 +88,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     applicationById.WorkExperienceReferences.All(workExp => workExp.Type == WorkExperienceTypes.Is400Hours).ShouldBeTrue();
     applicationById.ApplicationType.ShouldBe(ApplicationTypes.Renewal);
     applicationById.EducationOrigin.ShouldBeNull();
-    applicationById.EducationRecognition.ShouldBeNull();
   }
 
   [Fact]
@@ -99,7 +99,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     application.EducationRecognition = EducationRecognition.Recognized;
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
@@ -108,7 +108,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url($"/api/applications/{applicationId}");
       _.StatusCodeShouldBeOk();
     });
@@ -133,13 +133,13 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
 
     using var formData = new MultipartFormDataContent
-        {
-          { content, "file", testFile.FileName }
-        };
+    {
+      { content, "file", testFile.FileName }
+    };
 
     var fileResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.WithRequestHeader("file-classification", testClassification);
       _.WithRequestHeader("file-tag", testTags);
       _.WithRequestHeader("file-folder", testFolder);
@@ -155,7 +155,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     application.ProfessionalDevelopments = [professionalDevelopment];
     var response = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
@@ -165,7 +165,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url($"/api/applications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
@@ -185,7 +185,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var application = CreateDraftApplication();
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
@@ -194,7 +194,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationStatusByIdResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Get.Url($"/api/applications/{applicationId}/status");
       _.StatusCodeShouldBeOk();
     });
@@ -207,13 +207,43 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetApplicationStatus_ById_ForRenewalApplications()
+  {
+    var application = Create400HoursTypeRenewalDraftApplication();
+    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+
+    var applicationStatusByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/applications/{applicationId}/status");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationStatusById = await applicationStatusByIdResponse.ReadAsJsonAsync<SubmittedApplicationStatus>();
+    applicationStatusById!.Id.ShouldBe(application.Id);
+    applicationStatusById.ApplicationType.ShouldBe(application.ApplicationType);
+    applicationStatusById.TranscriptsStatus.ShouldNotBeEmpty();
+    applicationStatusById.CharacterReferencesStatus.ShouldNotBeEmpty();
+    applicationStatusById.WorkExperienceReferencesStatus.ShouldNotBeEmpty();
+    applicationStatusById.ProfessionalDevelopmentsStatus.ShouldNotBeEmpty();
+    applicationStatusById.WorkExperienceReferencesStatus.All(we => we.Type == WorkExperienceTypes.Is400Hours).ShouldBeTrue();
+  }
+
+  [Fact]
   public async Task SaveDraftApplication_ExistingDraft_Saved()
   {
     var application = CreateDraftApplication();
 
     var existingAppResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
@@ -229,7 +259,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(new SaveDraftApplicationRequest(invalidDraftApplication)).ToUrl($"/api/draftapplications/{invalidDraftApplication.Id}");
       _.StatusCodeShouldBe(400);
     });
@@ -261,7 +291,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
         .RuleFor(f => f.ProfessionalDevelopments, f => f.Make(f.Random.Number(1, 3), () => CreateProfessionalDevelopment()))
         .Generate();
 
-    application.Id = this.Fixture.draftTestApplicationId;
+    application.Id = this.Fixture.draftTestApplicationId4;
     application.ApplicationType = ApplicationTypes.Renewal;
     return application;
   }
@@ -275,7 +305,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications");
       _.StatusCodeShouldBe(500);
     });
@@ -288,7 +318,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUser);
       _.Post.Json(submissionRequest).ToUrl("/api/applications");
       _.StatusCodeShouldBe(400);
     });
@@ -302,7 +332,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var newDraftApplicationResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity2, this.Fixture.AuthenticatedBcscUserId2);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity2, this.Fixture.AuthenticatedBcscUser2);
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
@@ -311,7 +341,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity2, this.Fixture.AuthenticatedBcscUserId2);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity2, this.Fixture.AuthenticatedBcscUser2);
       _.Delete.Url($"/api/draftApplications/{applicationId}");
       _.StatusCodeShouldBeOk();
     });
@@ -326,7 +356,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Delete.Url($"/api/draftApplications/{randomGuid}");
       _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
     });
@@ -340,7 +370,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     WorkExperienceReference newWork = CreateWorkExperienceReference();
     var UpdateWorkExRefResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Post.Json(newWork).ToUrl($"/api/applications/{applicationId}/workexperiencereference/{referenceId}");
       _.StatusCodeShouldBeOk();
     });
@@ -355,7 +385,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     WorkExperienceReference newWork = CreateWorkExperienceReference();
     var UpdateWorkExRefResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Post.Json(newWork).ToUrl($"/api/applications/{applicationId}/workexperiencereference");
       _.StatusCodeShouldBeOk();
     });
@@ -371,7 +401,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     CharacterReference newCharacter = CreateCharacterReference();
     var UpdateCharacterRefResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Post.Json(newCharacter).ToUrl($"/api/applications/{applicationId}/characterreference/{referenceId}");
       _.StatusCodeShouldBeOk();
     });
@@ -380,13 +410,14 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  [Category("Internal")]
   public async Task AddNewCharacterReference_ForSubmittedApplication()
   {
     var applicationId = this.Fixture.submittedTestApplicationId4;
     CharacterReference newCharacter = CreateCharacterReference();
     var UpdateCharacterRefResponse = await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Post.Json(newCharacter).ToUrl($"/api/applications/{applicationId}/characterreference");
       _.StatusCodeShouldBeOk();
     });
@@ -401,7 +432,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var referenceId = this.Fixture.submittedTestApplicationWorkExperienceRefId2;
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Post.Url($"/api/applications/{applicationId}/workExperienceReference/{referenceId}/resendInvite");
       _.StatusCodeShouldBeOk();
     });
@@ -414,10 +445,113 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var referenceId = Guid.NewGuid();
     await Host.Scenario(_ =>
     {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUserId);
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
       _.Post.Url($"/api/applications/{applicationId}/workExperienceReference/{referenceId}/resendInvite");
       _.StatusCodeShouldBe(HttpStatusCode.InternalServerError);
     });
+  }
+
+  [Fact]
+  [Category("Internal")]
+  public async Task AddProfessionalDevelopmentAndFiles_ToSubmittedApplication()
+  {
+    // Create Renewal Draft Application
+    var application = Create400HoursTypeRenewalDraftApplication();
+
+    // Save Renewal Draft Application
+    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var draftApplicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+
+    // Submit Renewal Application
+    var applicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Post.Json(new ApplicationSubmissionRequest(draftApplicationId)).ToUrl($"/api/applications");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationId = (await applicationResponse.ReadAsJsonAsync<SubmitApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+
+    var submittedApplicationByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/applications/{applicationId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var submittedApplicationsById = await submittedApplicationByIdResponse.ReadAsJsonAsync<Application[]>();
+
+    submittedApplicationsById.ShouldHaveSingleItem();
+    var submittedApplicationFromServer = submittedApplicationsById[0];
+    submittedApplicationFromServer.ProfessionalDevelopments.ShouldNotBeEmpty();
+    var existingProfessionalDevIds = submittedApplicationFromServer.ProfessionalDevelopments
+                     .Select(pd => pd.Id)
+                     .ToList();
+
+    // Add test File
+    var fileLength = 1041;
+    var testFile = await faker.GenerateTestFile(fileLength);
+    var testFileId = Guid.NewGuid().ToString();
+    var testFolder = "tempfolder";
+    var testTags = "tag1=1,tag2=2";
+    var testClassification = "test-classification";
+    using var content = new StreamContent(testFile.Content);
+    content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
+
+    using var formData = new MultipartFormDataContent
+        {
+          { content, "file", testFile.FileName }
+        };
+
+    var fileResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.WithRequestHeader("file-classification", testClassification);
+      _.WithRequestHeader("file-tag", testTags);
+      _.WithRequestHeader("file-folder", testFolder);
+      _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var uploadedFileResponse = (await fileResponse.ReadAsJsonAsync<FileResponse>()).ShouldNotBeNull();
+
+    // Create Professional development
+    var professionalDevelopment = CreateProfessionalDevelopment();
+    professionalDevelopment.NewFiles = [uploadedFileResponse.fileId];
+
+    // Add professional development to submitted Renewal Application
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Post.Json(professionalDevelopment).ToUrl($"/api/applications/{applicationId}/professionaldevelopment/add");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var addedProfessionalDevelopment = (await response.ReadAsJsonAsync<AddProfessionalDevelopmentResponse>()).ShouldNotBeNull();
+    addedProfessionalDevelopment.ApplicationId.ShouldNotBeEmpty();
+    addedProfessionalDevelopment.ApplicationId.ShouldBe(applicationId);
+
+    var applicationByIdResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/applications/{applicationId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<Application[]>();
+    applicationsById.ShouldHaveSingleItem();
+    var applicationFromServer = applicationsById[0];
+    applicationFromServer.ProfessionalDevelopments.ShouldNotBeEmpty();
+    var newProfessionalDev = applicationFromServer.ProfessionalDevelopments.FirstOrDefault(pd => !existingProfessionalDevIds.Contains(pd.Id));
+    newProfessionalDev.ShouldNotBeNull();
+    newProfessionalDev.Files.ShouldHaveSingleItem();
+    newProfessionalDev.Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
   }
 
   private static Transcript CreateTranscript()

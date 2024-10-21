@@ -6,12 +6,27 @@
         Attachments
       </p>
       <p>You can only upload PDF files up to 10MB.</p>
-      <v-btn v-if="showAddFileButton" prepend-icon="mdi-plus" variant="text" color="primary" class="mt-3" @click="triggerFileInput">Add file</v-btn>
+      <Callout v-if="selectedFiles.length >= maxNumberOfFiles" class="mt-3" type="warning">
+        <div class="d-flex flex-column ga-3">
+          <p>No more files can be added. You can only add {{ maxNumberOfFiles }} files.</p>
+        </div>
+      </Callout>
+      <v-btn
+        v-if="showAddFileButton && selectedFiles.length < maxNumberOfFiles"
+        prepend-icon="mdi-plus"
+        variant="text"
+        color="primary"
+        class="mt-3"
+        @click="triggerFileInput"
+      >
+        Add file
+      </v-btn>
       <v-file-input ref="fileInput" style="display: none" :multiple="allowMultipleFiles" accept="application/pdf" @change="handleFileUpload"></v-file-input>
       <Alert v-model="showErrorBanner" class="mt-10" type="error">
         <p class="small">{{ errorBannerMessage }}</p>
       </Alert>
       <v-list lines="two" class="flex-grow-1 message-list">
+        <v-divider v-if="selectedFiles.length > 0" class="border-opacity-100" color="ash-grey"></v-divider>
         <UploadFileItem
           v-for="(file, index) in selectedFiles"
           :key="index"
@@ -24,7 +39,7 @@
       <v-input
         :model-value="userFiles"
         :hide-details="'auto'"
-        :rules="[!fileErrors, !filesInProgress, !fileTooLarge, !allFilesTooLarge, !duplicateFileName, ...rules]"
+        :rules="[!fileErrors, !tooManyFiles, !filesInProgress, !fileTooLarge, !allFilesTooLarge, !duplicateFileName, ...rules]"
       />
     </v-col>
   </v-row>
@@ -37,6 +52,7 @@ import { defineComponent, type PropType } from "vue";
 
 import { deleteFile, uploadFile } from "@/api/file";
 import Alert from "@/components/Alert.vue";
+import Callout from "@/components/Callout.vue";
 import UploadFileItem, { type FileItem } from "@/components/UploadFileItem.vue";
 import { useAlertStore } from "@/store/alert";
 import * as Functions from "@/utils/functions";
@@ -50,7 +66,7 @@ interface FileUploaderData {
 
 export default defineComponent({
   name: "FileUploader",
-  components: { UploadFileItem, Alert },
+  components: { UploadFileItem, Alert, Callout },
   props: {
     userFiles: {
       type: Array as PropType<FileItem[]>,
@@ -77,11 +93,15 @@ export default defineComponent({
       required: false,
       default: true,
     },
+    maxNumberOfFiles: {
+      type: Number,
+      required: false,
+      default: 5,
+    },
   },
   emits: ["update:files", "delete:file"],
   async setup() {
     const alertStore = useAlertStore();
-    const maxNumberOfFiles = 5;
     const maxFileSizeInMB = 10;
     const maxFileSizeInBytes = maxFileSizeInMB * 1024 * 1024; // File Size Limit (10)MB to Bytes
 
@@ -89,7 +109,6 @@ export default defineComponent({
       alertStore,
       maxFileSizeInBytes,
       maxFileSizeInMB,
-      maxNumberOfFiles,
     };
   },
   data(): FileUploaderData {
@@ -103,6 +122,9 @@ export default defineComponent({
   computed: {
     fileErrors() {
       return this.selectedFiles.some((file) => file.fileErrors.length !== 0);
+    },
+    tooManyFiles() {
+      return this.selectedFiles.length > this.maxNumberOfFiles;
     },
     filesInProgress() {
       return this.selectedFiles.some((file) => file.progress < 101);
@@ -149,18 +171,22 @@ export default defineComponent({
       const target = event.target as HTMLInputElement;
       const files = target.files;
       if (files) {
+        if (this.selectedFiles.length + files.length > this.maxNumberOfFiles) {
+          this.showErrorBanner = true;
+          this.errorBannerMessage = `You can only upload ${this.maxNumberOfFiles} files. You need to remove files before you can continue.`;
+        }
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
           let fileErrors: string[] = [];
 
           if (file.size > this.maxFileSizeInBytes) {
-            fileErrors.push(`The selected file exceeds the maximum allowed size. Upload a file that is ${this.maxFileSizeInMB}MB or smaller.`);
+            fileErrors.push(`This file is too big. Only files ${this.maxFileSizeInMB}MB or smaller are accepted.`);
           }
           if (file.type !== "application/pdf") {
-            fileErrors.push("The selected file type is not supported. Upload a file with the format of PDF.");
+            fileErrors.push("This type of file is not accepted. File types accepted: PDF");
           }
           if (this.selectedFiles.some((f: FileItem) => f.file.name === file.name)) {
-            fileErrors.push("A file with the same name already exists.");
+            fileErrors.push("This file with this name has already been uploaded. ");
           }
           const fileId = uuidv4(); // Generate a unique file ID using uuid
           const selectedFile: FileItem = {
@@ -208,7 +234,7 @@ export default defineComponent({
         }
       } catch (error) {
         this.removeFile(selectedFile);
-        this.alertStore.setFailureAlert("An error occurred during file upload");
+        this.alertStore.setFailureAlert("Problem saving files. Check your connection and try again.");
         console.log(error);
       }
     },
@@ -245,7 +271,7 @@ export default defineComponent({
         this.errorBannerMessage = `The total size of uploaded files is ${this.maxFileSizeInMB}MB. You have exceeded the limit. Reduce the number or size of the files and try again.`;
       } else if (this.selectedFiles.length >= this.maxNumberOfFiles) {
         this.showErrorBanner = true;
-        this.errorBannerMessage = `The maximum number of files allowed for upload is ${this.maxNumberOfFiles} files. Remove some files and try again.`;
+        this.errorBannerMessage = `You can only upload ${this.maxNumberOfFiles} files. You need to remove files before you can continue.`;
       } else {
         this.showErrorBanner = false;
         (this.$refs.fileInput as HTMLInputElement).click();

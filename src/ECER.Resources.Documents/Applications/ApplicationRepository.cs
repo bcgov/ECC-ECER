@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.DataverseSdk.Queries;
 using ECER.Utilities.ObjectStorage.Providers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
@@ -41,22 +42,18 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     if (query.ById != null) applications = applications.Where(r => r.ecer_ApplicationId == Guid.Parse(query.ById));
     if (query.ByApplicantId != null) applications = applications.Where(r => r.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
 
-    context.LoadProperties(applications, ecer_Application.Fields.ecer_transcript_Applicationid);
-    context.LoadProperties(applications, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer);
-    context.LoadProperties(applications, ecer_Application.Fields.ecer_characterreference_Applicationid);
-    context.LoadProperties(applications, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi);
-    foreach (var application in applications)
-    {
-      if (application.ecer_ecer_professionaldevelopment_Applicationi != null)
-      {
-        context.LoadProperties(application.ecer_ecer_professionaldevelopment_Applicationi, ecer_ProfessionalDevelopment.Fields.ecer_bcgov_documenturl_ProfessionalDevelopmentId);
-      }
-    }
+    var results = context.From(applications)
+      .Join()
+      .Include(a => a.ecer_transcript_Applicationid)
+      .Include(a => a.ecer_workexperienceref_Applicationid_ecer)
+      .Include(a => a.ecer_characterreference_Applicationid)
+      .Include(a => a.ecer_ecer_professionaldevelopment_Applicationi)
+      .Execute();
 
-    return mapper.Map<IEnumerable<Application>>(applications)!.ToList();
+    return mapper.Map<IEnumerable<Application>>(results)!.ToList();
   }
 
-  public async Task<string> SaveDraft(Application application, CancellationToken cancellationToken)
+  public async Task<string> SaveApplication(Application application, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
@@ -76,7 +73,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     }
     else
     {
-      var existingApplication = context.ecer_ApplicationSet.SingleOrDefault(c => c.ecer_ApplicationId == ecerApplication.ecer_ApplicationId && c.StatusCode == ecer_Application_StatusCode.Draft);
+      var existingApplication = context.ecer_ApplicationSet.SingleOrDefault(c => c.ecer_ApplicationId == ecerApplication.ecer_ApplicationId);
       if (existingApplication == null) throw new InvalidOperationException($"ecer_Application '{ecerApplication.ecer_ApplicationId}' not found");
 
       if (ecerApplication.ecer_DateSigned.HasValue && existingApplication.ecer_DateSigned.HasValue) ecerApplication.ecer_DateSigned = existingApplication.ecer_DateSigned;

@@ -3,13 +3,14 @@
     <v-row>
       <v-col cols="12">
         <v-btn prepend-icon="mdi-close" variant="text" text="Close" @click="showCloseDialog = true"></v-btn>
-        <hr class="w-full" />
+        <v-divider :style="{ opacity: 1 }" />
         <h1 class="mt-5">Re: {{ messageThreadSubject }}</h1>
         <v-form ref="replyForm" v-model="formValid">
           <v-row class="mt-5">
             <v-col>
               <div>Message</div>
               <v-textarea
+                ref="textarea"
                 v-model="text"
                 class="mt-2"
                 auto-grow
@@ -22,7 +23,7 @@
               ></v-textarea>
             </v-col>
           </v-row>
-          <FileUploader @update:files="handleFileUpdate" />
+          <FileUploader ref="FileUploader" :max-number-of-files="maxNumberOfFiles" @update:files="handleFileUpdate" />
           <v-row class="mt-10">
             <v-col>
               <v-btn size="large" color="primary" :loading="loadingStore.isLoading('message_post')" @click="handleReplyToMessage">Send</v-btn>
@@ -47,6 +48,7 @@
 </template>
 
 <script lang="ts">
+import type { ComponentPublicInstance } from "vue";
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { VForm } from "vuetify/components";
@@ -83,6 +85,7 @@ export default defineComponent({
     const messageId = route.params.messageId.toString();
     const messageThread = (await getChildMessages({ parentId: messageId })).data?.communications;
     let messageThreadSubject = "";
+    const maxNumberOfFiles = 5;
     if (messageThread.length > 0) {
       messageThreadSubject = messageThread[0].subject;
     }
@@ -91,6 +94,7 @@ export default defineComponent({
       messageStore,
       loadingStore,
       alertStore,
+      maxNumberOfFiles,
       router,
       messageId,
       messageThreadSubject,
@@ -108,12 +112,15 @@ export default defineComponent({
     };
   },
   methods: {
+    scrollToComponent(component: ComponentPublicInstance) {
+      if (component?.$el) {
+        component.$el.scrollIntoView({ behavior: "smooth" });
+      }
+    },
     async handleReplyToMessage() {
       const { valid } = await (this.$refs.replyForm as VForm).validate();
       if (this.isFileUploadInProgress) {
-        this.alertStore.setFailureAlert("Uploading files. You need to wait until files are uploaded to send this message.");
-      } else if (!this.areAttachedFilesValid) {
-        this.alertStore.setFailureAlert("You must upload valid files.");
+        this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
       } else if (valid) {
         const { error } = await sendMessage({ communication: { id: this.messageId, text: this.text, documents: this.attachments } });
         if (error) {
@@ -123,10 +130,16 @@ export default defineComponent({
           this.router.push("/messages");
         }
       } else {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+        let component;
+        if (!this.text.trim()) {
+          this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+          component = this.$refs.textarea as ComponentPublicInstance<{ $el: HTMLElement }>;
+        } else {
+          component = this.$refs.FileUploader as ComponentPublicInstance<{ $el: HTMLElement }>;
+        }
+        this.scrollToComponent(component);
       }
     },
-
     handleFileUpdate(filesArray: any[]) {
       this.areAttachedFilesValid = true;
       this.isFileUploadInProgress = false;

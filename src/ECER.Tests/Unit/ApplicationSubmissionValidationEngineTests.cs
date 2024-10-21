@@ -74,54 +74,6 @@ public class ApplicationSubmissionValidationEngineTests
   }
 
   [Fact]
-  public async Task Validate_WithSneAndIteWithoutFiveYears_ReturnsCertificationError()
-  {
-    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
-    {
-      Transcripts = new List<Transcript> { CreateMockTranscript(false) },
-      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      CertificationTypes = new List<CertificationType> { CertificationType.Sne, CertificationType.Ite },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) }
-    };
-
-    var result = await _validator.Validate(application);
-    Assert.Contains("Sub five year certification type selected but without five year certification", result.ValidationErrors);
-  }
-
-  [Theory]
-  [InlineData(CertificationType.Ite)]
-  [InlineData(CertificationType.Sne)]
-  public async Task Validate_WithInsufficientEducationForIteOrSne_ReturnsEducationError(CertificationType certificationType)
-  {
-    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
-    {
-      Transcripts = new List<Transcript> { CreateMockTranscript(false) }, // Only one transcript
-      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      CertificationTypes = new List<CertificationType> { certificationType },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) }
-    };
-
-    var result = await _validator.Validate(application);
-    var expectedError = certificationType == CertificationType.Ite ? "applicant does not have enough education for ITE" : "applicant does not have enough education for SNE";
-    Assert.Contains(expectedError, result.ValidationErrors);
-  }
-
-  [Fact]
-  public async Task Validate_WithBothIteAndSneAndLessThanThreeEducations_ReturnsEducationError()
-  {
-    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
-    {
-      Transcripts = new List<Transcript> { CreateMockTranscript(false), CreateMockTranscript(false) }, // Only two transcripts
-      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      CertificationTypes = new List<CertificationType> { CertificationType.Ite, CertificationType.Sne },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) }
-    };
-
-    var result = await _validator.Validate(application);
-    Assert.Contains("applicant does not have enough education for both ITE and SNE", result.ValidationErrors);
-  }
-
-  [Fact]
   public async Task Validate_ValidApplication_ReturnsNoValidationError()
   {
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
@@ -157,7 +109,7 @@ public class ApplicationSubmissionValidationEngineTests
     var faker = new Faker("en_CA");
 
     return new CharacterReference(
-      faker.Name.FirstName(), faker.Name.LastName(), faker.Internet.Email(), faker.Phone.PhoneNumber()
+      faker.Name.FirstName(), faker.Name.LastName(), "fake@test.com", faker.Phone.PhoneNumber()
     );
   }
 
@@ -166,7 +118,7 @@ public class ApplicationSubmissionValidationEngineTests
     var faker = new Faker("en_CA");
 
     return new WorkExperienceReference(
-       faker.Name.FirstName(), faker.Name.FirstName(), faker.Internet.Email(), hours
+       faker.Name.FirstName(), faker.Name.FirstName(), "fake@test.com", hours
     )
     {
       PhoneNumber = faker.Phone.PhoneNumber()

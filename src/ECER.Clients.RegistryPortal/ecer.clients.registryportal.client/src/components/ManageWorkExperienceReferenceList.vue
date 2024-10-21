@@ -31,9 +31,9 @@
         :application-status="applicationStatus?.status ?? 'Submitted'"
         :go-to="
           () =>
-            $router.push({
+            router.push({
               name: 'viewWorkExperienceReference',
-              params: { applicationId: $route.params.applicationId, referenceId: reference.id?.toString() },
+              params: { applicationId: route.params.applicationId, referenceId: reference.id?.toString() },
             })
         "
       />
@@ -62,7 +62,7 @@
         prepend-icon="mdi-plus"
         class="mt-10"
         color="primary"
-        @click.prevent="$router.push({ name: 'addWorkExperienceReference', params: { applicationId: applicationId } })"
+        @click.prevent="router.push({ name: 'addWorkExperienceReference', params: { applicationId: applicationId } })"
       >
         Add reference
       </v-btn>
@@ -80,14 +80,14 @@
       No additional work references needed. You’ve provided the required hours. We’re waiting on a response from your one or more of your references.
     </Callout>
     <div class="mt-10">
-      <a href="#" @click.prevent="$router.push({ name: 'manageApplication', params: { applicationId: applicationId } })">Back to application summary</a>
+      <a href="#" @click.prevent="router.push({ name: 'manageApplication', params: { applicationId: applicationId } })">Back to application summary</a>
     </div>
   </v-container>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 
 import { getApplicationStatus } from "@/api/application";
@@ -111,6 +111,7 @@ export default defineComponent({
   },
   setup: async () => {
     const { smAndUp } = useDisplay();
+    const router = useRouter();
     const route = useRoute();
     const certificationStore = useCertificationStore();
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
@@ -120,6 +121,8 @@ export default defineComponent({
       applicationStatus,
       smAndUp,
       latestCertification,
+      router,
+      route,
     };
   },
   data() {
