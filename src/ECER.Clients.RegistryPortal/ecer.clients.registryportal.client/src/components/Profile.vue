@@ -179,11 +179,13 @@ export default defineComponent({
     const userStore = useUserStore();
     const loadingStore = useLoadingStore();
     let userProfile = userStore.userProfile;
-    onMounted(async () => {
-      userProfile = await getProfile();
-      userStore.setUserProfile(userProfile);
-    });
+
     return { userProfile, loadingStore, userStore };
+  },
+  async mounted() {
+    let userProfile = await getProfile();
+    this.userProfile = userProfile;
+    this.userStore.setUserProfile(userProfile);
   },
   data: () => ({
     items: [
