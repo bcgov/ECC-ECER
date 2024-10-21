@@ -28,10 +28,10 @@ jobs:
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: integration-tests:latest
+          tags: localhost:5000/integration-tests:latest
 
       - name: Run tests
         uses: addnab/docker-run-action@v3
         with:
-          image: integration-tests:latest
+          image: localhost:5000/integration-tests:latest
           options: -v secrets.json:/src/secrets.json -e SECRETS_FILE_PATH=/src/secrets.json
