@@ -5,7 +5,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    services:
+      registry:
+        image: registry:latest
+        ports:
+          - 5000:5000
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
