@@ -6,11 +6,17 @@ public record UserCertificationQuery : IRequest<CertificationsQueryResults>
 {
   public string? ById { get; set; }
   public string? ByApplicantId { get; set; }
+  public string? ByCertificateNumber { get; set; }
+  public string? ByFirstName { get; set; }
+  public string? ByLastName { get; set; }
+  public int PageNumber { get; set; }
+  public int PageSize { get; set; }
 }
 public record CertificationsQueryResults(IEnumerable<Certification> Items);
 
 public record Certification(string Id)
 {
+  public string? Name { get; set; }
   public string? Number { get; set; }
   public DateTime? ExpiryDate { get; set; }
   public DateTime? EffectiveDate { get; set; }
@@ -22,6 +28,17 @@ public record Certification(string Id)
   public YesNoNull? IneligibleReference { get; set; }
   public IEnumerable<CertificationLevel> Levels { get; set; } = Array.Empty<CertificationLevel>();
   public IEnumerable<CertificationFile> Files { get; set; } = Array.Empty<CertificationFile>();
+  public IEnumerable<CertificateCondition> CertificateConditions { get; set; } = Array.Empty<CertificateCondition>();
+}
+
+public record CertificateCondition
+{
+  public string? Id { get; set; }
+  public string? Name { get; set; }
+  public string? Details { get; set; }
+  public DateTime StartDate { get; set; }
+  public DateTime EndDate { get; set; }
+  public int DisplayOrder { get; set; }
 }
 
 public record CertificationLevel(string Id)
