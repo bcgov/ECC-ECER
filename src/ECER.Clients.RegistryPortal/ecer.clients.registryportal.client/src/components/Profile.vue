@@ -24,28 +24,17 @@
       <v-container>
         <Callout type="warning" :title="`Previous name: ${fullName(prev)}`">
           <div class="d-flex flex-column ga-3 mt-3">
-            <p>
-              You need to provide proof of name change to add this name to your account.
-            </p>
-            <router-link
-              :to="{ name: 'verify-previous-name', params: { previousNameId: prev.id } }"
-              >Add ID for proof of previous name</router-link
-            >
+            <p>You need to provide proof of name change to add this name to your account.</p>
+            <router-link :to="{ name: 'verify-previous-name', params: { previousNameId: prev.id } }">Add ID for proof of previous name</router-link>
           </div>
         </Callout>
       </v-container>
     </v-row>
-    <v-row
-      v-for="(prev, index) in userStore.readyForVerificationPreviousNames"
-      :key="index"
-    >
+    <v-row v-for="(prev, index) in userStore.readyForVerificationPreviousNames" :key="index">
       <v-container>
         <Callout type="warning" :title="`Previous name: ${fullName(prev)}`">
           <div class="d-flex flex-column ga-3 mt-3">
-            <p>
-              We’ve received your ID. We’ll review it shortly and add this name to your
-              account.
-            </p>
+            <p>We’ve received your ID. We’ll review it shortly and add this name to your account.</p>
           </div>
         </Callout>
       </v-container>
@@ -75,11 +64,7 @@
             <p class="font-weight-bold mb-3">Previous names</p>
             <div v-if="userStore.verifiedPreviousNames.length > 0">
               <p v-for="(prev, index) in userStore.verifiedPreviousNames" :key="index">
-                {{
-                  prev.middleName
-                    ? `${prev.firstName} ${prev.middleName} ${prev.lastName}`
-                    : `${prev.firstName} ${prev.lastName}`
-                }}
+                {{ prev.middleName ? `${prev.firstName} ${prev.middleName} ${prev.lastName}` : `${prev.firstName} ${prev.lastName}` }}
               </p>
             </div>
             <p v-else>—</p>
@@ -123,16 +108,7 @@
         <v-col class="mt-6">
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Mailing address</p>
-            <p
-              v-if="
-                areObjectsEqual(
-                  userStore.userProfile?.residentialAddress,
-                  userStore.userProfile?.mailingAddress
-                )
-              "
-            >
-              Same as home address
-            </p>
+            <p v-if="areObjectsEqual(userStore.userProfile?.residentialAddress, userStore.userProfile?.mailingAddress)">Same as home address</p>
             <p
               v-else-if="
                 userStore.userProfile?.mailingAddress &&
@@ -165,11 +141,7 @@
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Primary phone number</p>
             <p>
-              {{
-                userStore.userProfile?.phone
-                  ? formatPhoneNumber(userStore.userProfile?.phone ?? "")
-                  : "—"
-              }}
+              {{ userStore.userProfile?.phone ? formatPhoneNumber(userStore.userProfile?.phone ?? "") : "—" }}
             </p>
           </div>
         </v-col>
@@ -177,11 +149,7 @@
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Alternate phone number</p>
             <p>
-              {{
-                userStore.userProfile?.alternateContactPhone
-                  ? formatPhoneNumber(userStore.userProfile?.alternateContactPhone ?? "")
-                  : "—"
-              }}
+              {{ userStore.userProfile?.alternateContactPhone ? formatPhoneNumber(userStore.userProfile?.alternateContactPhone ?? "") : "—" }}
             </p>
           </div>
         </v-col>
@@ -212,8 +180,8 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     let userProfile = userStore.userProfile;
     onMounted(async () => {
-    userProfile = await getProfile();
-    userStore.setUserProfile(userProfile);
+      userProfile = await getProfile();
+      userStore.setUserProfile(userProfile);
     });
     return { userProfile, loadingStore, userStore };
   },
@@ -235,9 +203,7 @@ export default defineComponent({
     formatPhoneNumber,
     areObjectsEqual,
     fullName(name: Components.Schemas.PreviousName) {
-      return name.middleName
-        ? `${name.firstName} ${name.middleName} ${name.lastName}`
-        : `${name.firstName} ${name.lastName}`;
+      return name.middleName ? `${name.firstName} ${name.middleName} ${name.lastName}` : `${name.firstName} ${name.lastName}`;
     },
   },
 });
