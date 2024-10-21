@@ -14,7 +14,7 @@
     </template>
 
     <!-- Registrant -->
-    <template v-if="userStore.isRegistrant">
+    <template v-else-if="userStore.isRegistrant">
       <ECEAssistantRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
       <ECEOneYearRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
       <ECEFiveYearRegistrantRequirements
