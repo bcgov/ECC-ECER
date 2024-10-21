@@ -1,6 +1,4 @@
 <template>
-  <Loading v-if="loadingStore.isLoading('message_get')"></Loading>
-
   <v-list lines="two" class="flex-grow-1 message-list" style="padding: 0px">
     <MessageListItem v-for="(message, index) in messages" :key="index" :message="message" @update:message-is-read="message.isRead = $event" />
     <v-pagination v-if="messageCount > 1" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages"></v-pagination>
@@ -13,17 +11,14 @@ import { getMessages } from "@/api/message";
 import MessageListItem from "@/components/MessageListItem.vue";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
-import { useLoadingStore } from "@/store/loading";
-import Loading from "@/components/Loading.vue";
 const PAGE_SIZE = 10;
 
 export default defineComponent({
   name: "MessageList",
-  components: { MessageListItem, Loading },
+  components: { MessageListItem },
   setup() {
     const messageStore = useMessageStore();
-    const loadingStore = useLoadingStore();
-    return { messageStore, loadingStore };
+    return { messageStore };
   },
   data() {
     return {
