@@ -17,9 +17,15 @@ export const useLookupCertificationStore = defineStore("lookupCertification", {
     lastName: "",
     registrationNumber: "",
   }),
-  getters: {
-    certificateLevelName(state): string {
-      const levels = state.certificationRecord?.levels!;
+  getters: {},
+  actions: {
+    setCertificationSearchResults(data: Components.Schemas.CertificationLookupResponse[] | undefined): void {
+      this.certificationSearchResults = data;
+    },
+    setCertificationRecord(record: Components.Schemas.CertificationLookupResponse): void {
+      this.certificationRecord = record;
+    },
+    generateCertificateLevelName(levels: Components.Schemas.CertificationLevel[]) {
       if (levels.some((level) => level.type === "ECE 1 YR")) {
         return "ECE One Year";
       }
@@ -46,14 +52,6 @@ export const useLookupCertificationStore = defineStore("lookupCertification", {
 
       console.warn(`generateCertificateLevelName:: unmapped level type:: ${levels}`);
       return "";
-    },
-  },
-  actions: {
-    setCertificationSearchResults(data: Components.Schemas.CertificationLookupResponse[] | undefined): void {
-      this.certificationSearchResults = data;
-    },
-    setCertificationRecord(record: Components.Schemas.CertificationLookupResponse): void {
-      this.certificationRecord = record;
     },
   },
 });

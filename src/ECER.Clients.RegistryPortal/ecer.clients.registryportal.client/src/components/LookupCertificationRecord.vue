@@ -23,7 +23,7 @@
         </v-col>
       </v-row>
       <p class="font-weight-bold mt-4">Certification</p>
-      <span>{{ lookupCertificationStore.certificateLevelName }}</span>
+      <span>{{ lookupCertificationStore.generateCertificateLevelName(lookupCertificationStore.certificationRecord?.levels || []) }}</span>
       <p class="font-weight-bold mt-4">Certificate expiry date</p>
       <span>{{ formatDate(lookupCertificationStore.certificationRecord?.expiryDate || "", "LLLL d, yyyy") }}</span>
       <div v-if="lookupCertificationStore.certificationRecord?.hasConditions">
@@ -53,6 +53,12 @@ export default defineComponent({
     const router = useRouter();
     const { mobile } = useDisplay();
     return { lookupCertificationStore, router, formatDate, mobile };
+  },
+  mounted() {
+    //refresh safety
+    if (this.lookupCertificationStore.certificationRecord === undefined) {
+      this.router.push({ name: "lookup-certification" });
+    }
   },
   computed: {
     sortedCertificateConditions() {

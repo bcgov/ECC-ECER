@@ -54,12 +54,13 @@
       </v-row>
       <!-- this is to check if all fields are blank without making one input box red -->
       <v-input id="inputFieldsError" :rules="[customAtLeastOneRule()]"></v-input>
+      <v-row>
+        <v-col>
+          <v-btn rounded="lg" color="primary" @click="handleSubmit" :loading="loadingStore.isLoading('certifications_lookup_post')">Search</v-btn>
+        </v-col>
+      </v-row>
     </v-form>
-    <v-row>
-      <v-col>
-        <v-btn rounded="lg" color="primary" @click="handleSubmit" :loading="loadingStore.isLoading('certifications_lookup_post')">Search</v-btn>
-      </v-col>
-    </v-row>
+
     <v-row v-if="lookupCertificationStore.certificationSearchResults?.length === 0">
       <v-col>
         <h2>No records found</h2>
@@ -94,7 +95,7 @@
             <span>{{ `${item.statusCode}${item.hasConditions ? " with Terms and Conditions" : ""}` }}</span>
           </template>
           <template #item.levels="{ item }">
-            <span>{{ generateCertificateLevelName(item.levels || []) }}</span>
+            <span>{{ lookupCertificationStore.generateCertificateLevelName(item.levels || []) }}</span>
           </template>
           <template #item.expiryDate="{ item }">
             <span>{{ formatDate(item.expiryDate || "", "LLLL d, yyyy") }}</span>
@@ -189,34 +190,6 @@ export default defineComponent({
     applicantClick(item: Components.Schemas.CertificationLookupResponse) {
       this.lookupCertificationStore.setCertificationRecord(item);
       this.router.push({ name: "lookup-certification-record" });
-    },
-    generateCertificateLevelName(levels: Components.Schemas.CertificationLevel[]) {
-      if (levels.some((level) => level.type === "ECE 1 YR")) {
-        return "ECE One Year";
-      }
-
-      if (levels.some((level) => level.type === "Assistant")) {
-        return "ECE Assistant";
-      }
-
-      if (levels.some((level) => level.type === "ECE 5 YR") && levels.some((level) => level.type === "ITE") && levels.some((level) => level.type === "SNE")) {
-        return "ECE Five Year with Infant and Toddler Educator (ITE) and Special Needs Educator (SNE)";
-      }
-
-      if (levels.some((level) => level.type === "ECE 5 YR") && levels.some((level) => level.type === "ITE")) {
-        return "ECE Five Year with Infant and Toddler Educator (ITE)";
-      }
-
-      if (levels.some((level) => level.type === "ECE 5 YR") && levels.some((level) => level.type === "ITE")) {
-        return "ECE Five Year with Special Needs Educator (SNE)";
-      }
-
-      if (levels.some((level) => level.type === "ECE 5 YR")) {
-        return "ECE Five Year";
-      }
-
-      console.warn(`generateCertificateLevelName:: unmapped level type:: ${levels}`);
-      return "";
     },
   },
 });
