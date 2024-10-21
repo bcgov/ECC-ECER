@@ -43,12 +43,16 @@ export const useConfigStore = defineStore("config", {
 
   actions: {
     async initialize(): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> {
-      const configuration = await getConfiguration();
+      const [configuration, provinceList] = await Promise.all([
+        getConfiguration(),
+        getProvinceList()
+      ]);
+
       if (configuration !== null && configuration !== undefined) {
         this.applicationConfiguration = configuration;
       }
 
-      const provinceList = await getProvinceList();
+
       if (provinceList !== null && provinceList !== undefined) {
         this.provinceList = provinceList
           .map((province) => {
