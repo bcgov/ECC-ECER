@@ -12,6 +12,9 @@
         <h1>Messages</h1>
       </v-col>
     </v-row>
+
+    <Loading v-if="loadingStore.isLoading('message_get')"></Loading>
+
     <v-row class="ga-10">
       <v-col cols="12" md="6" lg="4">
         <MessageList />
@@ -29,15 +32,18 @@ import { defineComponent } from "vue";
 import Message from "@/components/Message.vue";
 import MessageList from "@/components/MessageList.vue";
 import PageContainer from "@/components/PageContainer.vue";
+import Loading from "@/components/Loading.vue";
 import { useMessageStore } from "@/store/message";
+import { useLoadingStore } from "@/store/loading";
 
 export default defineComponent({
   name: "Messages",
-  components: { MessageList, Message, PageContainer },
+  components: { MessageList, Message, PageContainer, Loading },
   setup() {
     const messageStore = useMessageStore();
+    const loadingStore = useLoadingStore();
 
-    return { messageStore };
+    return { messageStore, loadingStore };
   },
   data: () => ({
     items: [

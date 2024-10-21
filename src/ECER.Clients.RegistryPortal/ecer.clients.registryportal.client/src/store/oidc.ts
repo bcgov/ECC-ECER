@@ -18,24 +18,24 @@ export const useOidcStore = defineStore("oidc", {
     async oidcUserInfo(): Promise<any> {
       const user = await this.getUser();
       return {
-        dateOfBirth: user ? user.profile.birthdate ?? undefined : undefined,
-        firstName: user ? user.profile.given_name ?? "" : "",
-        givenName: user ? user.profile.given_names ?? "" : "",
-        lastName: user ? user.profile.family_name ?? "" : "",
-        phone: user ? user.profile.phone_number ?? "" : "",
-        email: user ? user.profile.email ?? "" : "",
-        address: user ? user.profile.address ?? "" : "",
+        dateOfBirth: user ? (user.profile.birthdate ?? undefined) : undefined,
+        firstName: user ? (user.profile.given_name ?? "") : "",
+        givenName: user ? (user.profile.given_names ?? "") : "",
+        lastName: user ? (user.profile.family_name ?? "") : "",
+        phone: user ? (user.profile.phone_number ?? "") : "",
+        email: user ? (user.profile.email ?? "") : "",
+        address: user ? (user.profile.address ?? "") : "",
       };
     },
     async oidcAddress(): Promise<Components.Schemas.Address> {
       const user = await this.getUser();
       return {
-        line1: user ? user.profile.address?.street_address ?? "" : "",
+        line1: user ? (user.profile.address?.street_address ?? "") : "",
         line2: "",
-        city: user ? user.profile.address?.locality ?? "" : "",
-        province: user ? user.profile.address?.region ?? "" : "",
-        country: user ? user.profile.address?.country ?? "" : "",
-        postalCode: user ? user.profile.address?.postal_code ?? "" : "",
+        city: user ? (user.profile.address?.locality ?? "") : "",
+        province: user ? (user.profile.address?.region ?? "") : "",
+        country: user ? (user.profile.address?.country ?? "") : "",
+        postalCode: user ? (user.profile.address?.postal_code ?? "") : "",
       };
     },
 
