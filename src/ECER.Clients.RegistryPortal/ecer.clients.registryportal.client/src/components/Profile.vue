@@ -73,7 +73,9 @@
         <v-col class="mt-6">
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Date of birth</p>
-            <p>{{ formatDate(userStore.userProfile?.dateOfBirth || "", "LLLL d, yyyy") }}</p>
+            <p>
+              {{ formatDate(userStore.userProfile?.dateOfBirth || "", "LLLL d, yyyy") }}
+            </p>
           </div>
         </v-col>
       </v-col>
@@ -93,7 +95,8 @@
             >
               {{ userStore.userProfile?.residentialAddress.line1 }}
               <br />
-              {{ userStore.userProfile?.residentialAddress.city }}, {{ userStore.userProfile?.residentialAddress.province }}
+              {{ userStore.userProfile?.residentialAddress.city }},
+              {{ userStore.userProfile?.residentialAddress.province }}
               <br />
               {{ userStore.userProfile?.residentialAddress.postalCode }}
               <br />
@@ -118,7 +121,8 @@
             >
               {{ userStore.userProfile?.mailingAddress.line1 }}
               <br />
-              {{ userStore.userProfile?.mailingAddress.city }}, {{ userStore.userProfile?.mailingAddress.province }}
+              {{ userStore.userProfile?.mailingAddress.city }},
+              {{ userStore.userProfile?.mailingAddress.province }}
               <br />
               {{ userStore.userProfile?.mailingAddress.postalCode }}
               <br />
@@ -136,13 +140,17 @@
         <v-col class="mt-6">
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Primary phone number</p>
-            <p>{{ userStore.userProfile?.phone ? formatPhoneNumber(userStore.userProfile?.phone ?? "") : "—" }}</p>
+            <p>
+              {{ userStore.userProfile?.phone ? formatPhoneNumber(userStore.userProfile?.phone ?? "") : "—" }}
+            </p>
           </div>
         </v-col>
         <v-col class="mt-6">
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Alternate phone number</p>
-            <p>{{ userStore.userProfile?.alternateContactPhone ? formatPhoneNumber(userStore.userProfile?.alternateContactPhone ?? "") : "—" }}</p>
+            <p>
+              {{ userStore.userProfile?.alternateContactPhone ? formatPhoneNumber(userStore.userProfile?.alternateContactPhone ?? "") : "—" }}
+            </p>
           </div>
         </v-col>
       </v-col>
@@ -152,7 +160,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
 import { getProfile } from "@/api/profile";
 import Callout from "@/components/Callout.vue";
 import LinkBar from "@/components/LinkBar.vue";
@@ -162,17 +169,23 @@ import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { formatPhoneNumber } from "@/utils/format";
 import { areObjectsEqual } from "@/utils/functions";
+import { useLoadingStore } from "@/store/loading";
+import Loading from "@/components/Loading.vue";
 
 export default defineComponent({
   name: "Profile",
-  components: { PageContainer, LinkBar, Callout },
+  components: { PageContainer, LinkBar, Callout, Loading },
   setup: async () => {
-    const userProfile = await getProfile();
     const userStore = useUserStore();
+    const loadingStore = useLoadingStore();
+    let userProfile = userStore.userProfile;
 
-    userStore.setUserProfile(userProfile);
-
-    return { userProfile, userStore };
+    return { userProfile, loadingStore, userStore };
+  },
+  async mounted() {
+    let userProfile = await getProfile();
+    this.userProfile = userProfile;
+    this.userStore.setUserProfile(userProfile);
   },
   data: () => ({
     items: [

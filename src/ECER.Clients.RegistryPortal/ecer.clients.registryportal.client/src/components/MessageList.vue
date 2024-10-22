@@ -7,12 +7,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
 import { getMessages } from "@/api/message";
 import MessageListItem from "@/components/MessageListItem.vue";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
-
 const PAGE_SIZE = 10;
 
 export default defineComponent({
@@ -20,7 +18,6 @@ export default defineComponent({
   components: { MessageListItem },
   setup() {
     const messageStore = useMessageStore();
-
     return { messageStore };
   },
   data() {
