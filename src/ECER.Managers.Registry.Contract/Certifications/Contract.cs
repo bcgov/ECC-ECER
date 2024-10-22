@@ -51,6 +51,8 @@ public record CertificationFile(string Id)
   public string? Extention { get; set; }
   public string? Size { get; set; }
   public string? Name { get; set; }
+  public DateTime? CreatedOn { get; set; }
+  public string? Tag1Name { get; set; }
 }
 
 public enum CertificateStatusCode

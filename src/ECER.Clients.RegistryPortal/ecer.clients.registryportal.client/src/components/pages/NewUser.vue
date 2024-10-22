@@ -166,7 +166,6 @@ export default defineComponent({
         });
         // TODO handle error creating user, need clarification from design team
         if (userCreated) {
-
           const userInfo = await getUserInfo();
           if (userInfo !== null) {
             this.userStore.setUserInfo(userInfo);
