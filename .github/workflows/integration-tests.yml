@@ -5,7 +5,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    services:
+      registry:
+        image: registry:latest
+        ports:
+          - 5000:5000
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
@@ -17,10 +21,10 @@ jobs:
         env:
           TEST_SECRETS: ${{ secrets.INTEGRATION_TESTS_SECRETS }}
         run: |
-          # Copy the secrets file to the integration tests container
-          echo "$TEST_SECRETS" > secrets.json
+          # Creates the secrets file
+          echo "$TEST_SECRETS" > src/secrets.json
 
-      - name: Build image
+      - name: Run tests
         uses: docker/build-push-action@v6
         with:
           context: src
@@ -28,10 +32,5 @@ jobs:
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: integration-tests:latest
-
-      - name: Run tests
-        uses: addnab/docker-run-action@v3
-        with:
-          image: integration-tests:latest
-          options: -v secrets.json:/src/secrets.json -e SECRETS_FILE_PATH=/src/secrets.json
+          build-args: |
+            "SECRETS_FILE_PATH=/src/secrets.json"

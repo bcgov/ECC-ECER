@@ -37,7 +37,8 @@ public class FilesEndpoints : IRegisterEndpoints
       if (certificateQueryResult.Items == null || !certificateQueryResult.Items.Any()) return TypedResults.NotFound();
 
       var certificate = certificateQueryResult.Items.FirstOrDefault();
-      var certificateFile = certificate?.Files.FirstOrDefault();
+      //Filter Certificate Files to get latest certificate where Tag1 is "Certificate"
+      var certificateFile = certificate?.Files.Where(f => f.Tag1Name == "Certificate").OrderByDescending(f => f.CreatedOn).FirstOrDefault();
       if (certificateFile == null) return TypedResults.NotFound();
 
       var results = await messageBus.Send(new FileQuery([new FileLocation(certificateFile.Id, certificateFile.Url ?? string.Empty)]), ct);

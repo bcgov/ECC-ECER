@@ -24,7 +24,7 @@ import { useCertificationStore } from "@/store/certification";
 import type { Components } from "@/types/openapi";
 import { useRouter } from "vue-router";
 
-interface RegistrantFlow {
+export interface RegistrantFlow {
   types: Components.Schemas.CertificationType[];
   title: string;
   text: string;
