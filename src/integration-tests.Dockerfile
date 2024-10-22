@@ -1,10 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS net-builder
 
 # path to secrets json file for tests
-ENV SECRETS_FILE_PATH=
+ARG SECRETS_FILE_PATH=
 
 # install node.js
-ARG NODE_MAJOR=22
+ARG NODE_MAJOR=20
 RUN curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh \
     && chmod 500 nsolid_setup_deb.sh \
     && ./nsolid_setup_deb.sh ${NODE_MAJOR} \
@@ -27,8 +27,9 @@ RUN cat ECER.sln \
 
 # restore nuget packages
 RUN dotnet restore "ECER.Tests/ECER.Tests.csproj"
-COPY . .
-# build the project
-RUN dotnet build "ECER.Tests/ECER.Tests.csproj"
 
-ENTRYPOINT ["dotnet", "test", "--filter", "Category!=Internal", "ECER.Tests/ECER.Tests.csproj"]
+COPY . .
+COPY secrets.json .
+
+# run the tests
+RUN dotnet test --filter Category!=Internal ECER.Tests/ECER.Tests.csproj

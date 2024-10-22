@@ -8,7 +8,7 @@ RUN mkdir /tools && \
     dotnet tool install --tool-path /tools dotnet-monitor
 
 # install node.js
-ARG NODE_MAJOR=22
+ARG NODE_MAJOR=20
 RUN curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh \
     && chmod 500 nsolid_setup_deb.sh \
     && ./nsolid_setup_deb.sh ${NODE_MAJOR} \
