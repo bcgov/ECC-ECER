@@ -11,6 +11,8 @@ import applicationWizardRenewFiveYearExpiredLessThanFiveYears from "@/config/app
 import applicationWizardRenewFiveYearExpiredMoreThanFiveYears from "@/config/application-wizard-renew-five-year-expired-more-than-five-years";
 import applicationWizardRenewOneYearActive from "@/config/application-wizard-renew-one-year-active";
 import applicationWizardRenewOneYearExpired from "@/config/application-wizard-renew-one-year-expired";
+import applicationWizardLaborMobilityAssistantAndOneYear from "@/config/application-wizard-labor-mobility-assistant-and-one-year";
+import applicationWizardLaborMobilityFiveYear from "@/config/application-wizard-labor-mobility-five-year";
 import type { Components } from "@/types/openapi";
 import type { ApplicationStage, Wizard } from "@/types/wizard";
 import { humanFileSize } from "@/utils/functions";
@@ -32,6 +34,9 @@ export type ApplicationFlow =
   | "FiveYearWithIte"
   | "FiveYearWithSne"
   | "FiveYearWithIteAndSne"
+  | "AssistantLaborMobility"
+  | "OneYearLaborMobility"
+  | "FiveYearLaborMobility"
   | "AssistantRenewal"
   | "OneYearActiveRenewal"
   | "OneYearExpiredRenewal"
@@ -147,6 +152,11 @@ export const useApplicationStore = defineStore("application", {
           return applicationWizardRenewFiveYearExpiredLessThanFiveYears;
         case "FiveYearExpiredMoreThanFiveYearsRenewal":
           return applicationWizardRenewFiveYearExpiredMoreThanFiveYears;
+        case "AssistantLaborMobility":
+        case "OneYearLaborMobility":
+          return applicationWizardLaborMobilityAssistantAndOneYear;
+        case "FiveYearLaborMobility":
+          return applicationWizardLaborMobilityFiveYear;
         default:
           return applicationWizardAssistantAndOneYear;
       }
@@ -185,12 +195,21 @@ export const useApplicationStore = defineStore("application", {
       }
 
       // NEW flows
-      if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte && this.isDraftCertificateTypeSne) return "FiveYearWithIteAndSne";
-      if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte) return "FiveYearWithIte";
-      if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeSne) return "FiveYearWithSne";
-      if (this.isDraftCertificateTypeFiveYears) return "FiveYearRegistrant";
-      if (this.isDraftCertificateTypeOneYear) return "OneYear";
-      if (this.isDraftCertificateTypeEceAssistant) return "Assistant";
+      if (state.draftApplication.applicationType === "New") {
+        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte && this.isDraftCertificateTypeSne) return "FiveYearWithIteAndSne";
+        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte) return "FiveYearWithIte";
+        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeSne) return "FiveYearWithSne";
+        if (this.isDraftCertificateTypeFiveYears) return "FiveYearRegistrant";
+        if (this.isDraftCertificateTypeOneYear) return "OneYear";
+        if (this.isDraftCertificateTypeEceAssistant) return "Assistant";
+      }
+
+      // LABOR MOBILITY flows
+      if (state.draftApplication.applicationType === "LaborMobility") {
+        if (this.isDraftCertificateTypeFiveYears) return "FiveYearLaborMobility";
+        if (this.isDraftCertificateTypeOneYear) return "OneYearLaborMobility";
+        if (this.isDraftCertificateTypeEceAssistant) return "AssistantLaborMobility";
+      }
 
       return "Assistant";
     },
