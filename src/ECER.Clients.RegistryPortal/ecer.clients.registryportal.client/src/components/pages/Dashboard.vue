@@ -3,7 +3,7 @@
   <PageContainer :margin-top="false">
     <Loading v-if="showLoading"></Loading>
     <div v-else>
-      <v-row v-if="!userStore.isVerified && !showLoading" justify="center">
+      <v-row v-if="!userStore.isVerified" justify="center">
         <v-col cols="12">
           <v-card :rounded="0" flat color="background-light" class="pa-4">
             <v-card-item class="ma-4">
@@ -130,7 +130,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { cancelDraftApplication } from "@/api/application";
@@ -155,6 +155,7 @@ import { useUserStore } from "@/store/user";
 import { useLoadingStore } from "@/store/loading";
 import { formatPhoneNumber } from "@/utils/format";
 import { useOidcStore } from "@/store/oidc";
+import type { Application, Certification, UserInfo, UserProfile } from "@/types/openapi";
 
 export default defineComponent({
   name: "Dashboard",
@@ -181,52 +182,55 @@ export default defineComponent({
     const loadingStore = useLoadingStore();
     const messageStore = useMessageStore();
     const { smAndDown, mdAndUp } = useDisplay();
-    let applications, certifications, userInfo, userProfile;
-    onMounted(async () => {
-      let user;
-      try {
-        user = await oidcStore.getUser();
-        if (!user) {
-          user = await oidcStore.signinCallback();
-          router.replace("/");
-        }
-      } catch (error) {}
 
-      if (!user) {
-        window.location.href = "/login";
-      }
-
-      [applications, certifications, userInfo, userProfile] = await Promise.all([
-        applicationStore.fetchApplications(),
-        certificationStore.fetchCertifications(),
-        getUserInfo(),
-        getProfile(),
-      ]);
-
-      if (userInfo !== null) {
-        userStore.setUserInfo(userInfo);
-        userStore.setUserProfile(userProfile);
-      } else {
-        router.push("/new-user");
-      }
-    });
     return {
+      oidcStore,
       userStore,
       applicationStore,
       alertStore,
       loadingStore,
       messageStore,
       certificationStore,
-      certifications,
-      applications,
       smAndDown,
       mdAndUp,
       router,
     };
   },
+  async mounted() {
+    let user;
+    try {
+      user = await this.oidcStore.getUser();
+      if (!user) {
+        user = await this.oidcStore.signinCallback();
+        this.router.replace("/");
+      }
+    } catch (error) {}
+
+    if (!user) {
+      window.location.href = "/login";
+    }
+
+    [this.applications, this.certifications, this.userInfo, this.userProfile] = await Promise.all([
+      this.applicationStore.fetchApplications(),
+      this.certificationStore.fetchCertifications(),
+      getUserInfo(),
+      getProfile(),
+    ]);
+
+    if (this.userInfo !== null) {
+      this.userStore.setUserInfo(this.userInfo);
+      this.userStore.setUserProfile(this.userProfile);
+    } else {
+      this.router.push("/new-user");
+    }
+  },
   data: () => ({
     showCancelDialog: false,
     drawer: null as boolean | null | undefined,
+    applications: null as Application[] | null | undefined,
+    certifications: null as Certification[] | null | undefined,
+    userInfo: null as UserInfo | null,
+    userProfile: null as UserProfile | null,
   }),
   computed: {
     showApplicationCard(): boolean {
@@ -254,7 +258,7 @@ export default defineComponent({
       );
     },
     showOptions(): boolean {
-      return this.certificationStore.hasCertifications && !this.showApplicationCard && !this.showLoading;
+      return this.certificationStore.hasCertifications && !this.showApplicationCard;
     },
   },
 

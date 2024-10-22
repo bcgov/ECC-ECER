@@ -159,7 +159,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
 import { getProfile } from "@/api/profile";
 import Callout from "@/components/Callout.vue";
 import LinkBar from "@/components/LinkBar.vue";
