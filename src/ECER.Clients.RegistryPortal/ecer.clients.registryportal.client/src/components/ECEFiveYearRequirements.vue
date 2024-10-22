@@ -27,7 +27,7 @@
       </p>
     </v-col>
   </v-row>
-  <v-row v-if="applicationStore.isDraftCertificateTypeIte">
+  <v-row v-if="applicationStore.isDraftCertificateTypeIte && showEducationSection">
     <v-col>
       <ECEHeader title="Education for Infant and Toddler Educator (ITE)"></ECEHeader>
       <p>
@@ -45,7 +45,7 @@
       </p>
     </v-col>
   </v-row>
-  <v-row v-if="applicationStore.isDraftCertificateTypeSne">
+  <v-row v-if="applicationStore.isDraftCertificateTypeSne && showEducationSection">
     <v-col>
       <ECEHeader title="Education for Special Needs Educator (SNE)"></ECEHeader>
       <p>
