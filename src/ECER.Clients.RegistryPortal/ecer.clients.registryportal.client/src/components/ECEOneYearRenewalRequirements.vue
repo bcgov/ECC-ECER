@@ -15,7 +15,7 @@
     <p>You need the following information to renew your certificate.</p>
   </v-col>
   <v-col cols="12">
-    <div class="d-flex flex-column ga-3 my-6">
+    <div class="d-flex flex-column ga-3 mt-3` mb-6">
       <p>It's important to know that:</p>
       <ul class="ml-10">
         <li>You can only renew this certificate once</li>
