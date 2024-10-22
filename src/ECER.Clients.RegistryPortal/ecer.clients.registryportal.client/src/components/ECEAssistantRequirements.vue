@@ -12,7 +12,7 @@
   <v-row v-if="isLaborMobility">
     <v-col>
       <ECEHeader title="Certificate information"></ECEHeader>
-      <div class="d-flex flex-column ga-3 my-6">
+      <div class="d-flex flex-column ga-3 mt-6">
         <p>After you submit your application, we'll contact you to get your certificate information, including:</p>
         <ul class="ml-10">
           <li>Your certification or registration number</li>
