@@ -110,7 +110,8 @@ internal class ApplicationRepositoryMapper : Profile
            .ForMember(d => d.ecer_IsOfficialTranscriptRequested, opts => opts.MapFrom(s => s.IsOfficialTranscriptRequested))
            .ForMember(d => d.ecer_IsNameUnverified, opts => opts.MapFrom(s => s.IsNameUnverified))
            .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
-           .ForMember(d => d.ecer_EducationRecognition, opts => opts.MapFrom(s => s.EducationRecognition));
+           .ForMember(d => d.ecer_EducationRecognition, opts => opts.MapFrom(s => s.EducationRecognition))
+           .ForMember(d => d.ecer_EducationOrigin, opts => opts.MapFrom(s => s.EducationOrigin));
 
     CreateMap<ecer_Transcript, Transcript>(MemberList.Source)
           .ForCtorParam(nameof(Transcript.Id), opt => opt.MapFrom(src => src.ecer_TranscriptId))
@@ -126,6 +127,7 @@ internal class ApplicationRepositoryMapper : Profile
           .ForCtorParam(nameof(Transcript.StudentLastName), opt => opt.MapFrom(src => src.ecer_StudentLastName))
           .ForCtorParam(nameof(Transcript.IsNameUnverified), opt => opt.MapFrom(src => src.ecer_IsNameUnverified))
           .ForCtorParam(nameof(Transcript.EducationRecognition), opt => opt.MapFrom(src => src.ecer_EducationRecognition))
+          .ForCtorParam(nameof(Transcript.EducationOrigin), opt => opt.MapFrom(src => src.ecer_EducationOrigin))
           .ForMember(d => d.CampusLocation, opts => opts.MapFrom(s => s.ecer_CampusLocation))
           .ForMember(d => d.LanguageofInstruction, opts => opts.MapFrom(s => s.ecer_LanguageofInstruction))
           .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))

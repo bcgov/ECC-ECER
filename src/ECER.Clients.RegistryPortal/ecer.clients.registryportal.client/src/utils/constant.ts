@@ -132,3 +132,8 @@ export const fiveYearRenewalInformationRadio: RadioButtonWrapper<Components.Sche
   },
   { label: "Other", value: "Other" },
 ];
+
+export const educationRecognitionRadio: RadioButtonWrapper<Components.Schemas.EducationRecognition>[] = [
+  { label: "Recognized", value: "Recognized" },
+  { label: "Not Recognized", value: "NotRecognized" },
+];

@@ -137,6 +137,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_legacyworkexperienceassessmentyn = "ecer_legacyworkexperienceassessmentyn";
 			public const string ecer_legacyworkexperiencereferenceid = "ecer_legacyworkexperiencereferenceid";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_Origin = "ecer_origin";
+			public const string ecer_originName = "ecer_originname";
 			public const string ecer_OtherChildProgramType = "ecer_otherchildprogramtype";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
 			public const string ecer_portalinvitation_WorkExperienceRefId = "ecer_portalinvitation_WorkExperienceRefId";
@@ -1237,6 +1239,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_origin")]
+		public virtual ecer_Origin? ecer_Origin
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_Origin?)(EntityOptionSetEnum.GetEnum(this, "ecer_origin")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_origin", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_originname")]
+		public string ecer_originName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_origin"))
+				{
+					return this.FormattedValues["ecer_origin"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
