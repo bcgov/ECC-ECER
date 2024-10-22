@@ -81,13 +81,12 @@ import Wizard from "@/components/Wizard.vue";
 import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizardAssistantAndOneYear from "@/config/application-wizard-assistant-and-one-year";
 import applicationWizardFiveYear from "@/config/application-wizard-five-year";
-import applicationWizardRenewAssistant from "@/config/application-wizard-renew-assistant";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
-import type { ApplicationStage, Wizard as WizardType } from "@/types/wizard";
+import type { ApplicationStage } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
 
 import type { ProfessionalDevelopmentExtended } from "../inputs/EceProfessionalDevelopment.vue";
