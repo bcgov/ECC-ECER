@@ -28,17 +28,11 @@
     <!-- New / LaborMobility -->
     <template v-else>
       <ECEAssistantRequirements
-        :show-education-section="!applicationStore.isDraftApplicationLaborMobility"
+        :is-labor-mobility="applicationStore.isDraftApplicationLaborMobility"
         v-if="applicationStore.isDraftCertificateTypeEceAssistant"
       />
-      <ECEOneYearRequirements
-        :show-education-section="!applicationStore.isDraftApplicationLaborMobility"
-        v-if="applicationStore.isDraftCertificateTypeOneYear"
-      />
-      <ECEFiveYearRequirements
-        :show-education-section="!applicationStore.isDraftApplicationLaborMobility"
-        v-if="applicationStore.isDraftCertificateTypeFiveYears"
-      />
+      <ECEOneYearRequirements :is-labor-mobility="applicationStore.isDraftApplicationLaborMobility" v-if="applicationStore.isDraftCertificateTypeOneYear" />
+      <ECEFiveYearRequirements :is-labor-mobility="applicationStore.isDraftApplicationLaborMobility" v-if="applicationStore.isDraftCertificateTypeFiveYears" />
     </template>
 
     <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Apply now</v-btn>
