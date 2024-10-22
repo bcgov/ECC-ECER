@@ -18,11 +18,13 @@ import { humanFileSize } from "@/utils/functions";
 import { useCertificationStore } from "./certification";
 import { useUserStore } from "./user";
 import { useWizardStore } from "./wizard";
+
 export interface ApplicationState {
   applications: Components.Schemas.Application[] | null | undefined;
   draftApplication: Components.Schemas.DraftApplication;
   application: Components.Schemas.Application | null;
 }
+
 export type ApplicationFlow =
   | "Assistant"
   | "OneYear"
@@ -107,6 +109,12 @@ export const useApplicationStore = defineStore("application", {
     },
     isDraftApplicationRenewal(state): boolean {
       return state.draftApplication.applicationType === "Renewal";
+    },
+    isDraftApplicationNew(state): boolean {
+      return state.draftApplication.applicationType === "New";
+    },
+    isDraftApplicationLaborMobility(state): boolean {
+      return state.draftApplication.applicationType === "LaborMobility";
     },
     applicationConfiguration(): Wizard {
       switch (this.draftApplicationFlow) {

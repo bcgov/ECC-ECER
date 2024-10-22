@@ -9,7 +9,7 @@
       <p>You need the following information to apply:</p>
     </v-col>
   </v-row>
-  <v-row>
+  <v-row v-if="showEducationSection">
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
       <p>
@@ -55,5 +55,11 @@ import ECEHeader from "./ECEHeader.vue";
 export default defineComponent({
   name: "ECEOneYearRequirements",
   components: { ECEHeader },
+  props: {
+    showEducationSection: {
+      type: Boolean,
+      default: true,
+    },
+  },
 });
 </script>

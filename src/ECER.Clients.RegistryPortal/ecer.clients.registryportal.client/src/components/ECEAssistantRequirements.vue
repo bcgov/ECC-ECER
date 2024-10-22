@@ -9,7 +9,7 @@
       <p>You need the following information to apply:</p>
     </v-col>
   </v-row>
-  <v-row>
+  <v-row v-if="showEducationSection">
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
       <p>You must have completed an early childhood education course in at least one of the following:</p>
@@ -67,5 +67,11 @@ import ECEHeader from "./ECEHeader.vue";
 export default defineComponent({
   name: "ECEAssistantRequirements",
   components: { ECEHeader },
+  props: {
+    showEducationSection: {
+      type: Boolean,
+      default: true,
+    },
+  },
 });
 </script>
