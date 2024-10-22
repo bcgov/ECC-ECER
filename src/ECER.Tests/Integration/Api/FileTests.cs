@@ -17,7 +17,7 @@ public class FileTests : ApiWebAppScenarioBase
   }
 
   [Fact]
-  [Category("VPN")]
+  [Category("Internal")]
   public async Task CanUploadFile()
   {
     var fileLength = 1041;

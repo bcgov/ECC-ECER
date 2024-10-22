@@ -75,9 +75,10 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
+    const router = useRouter();
+
     // Refresh userProfile from the server
     const userProfile = await getProfile();
-    const router = useRouter();
 
     if (userProfile !== null) {
       userStore.setUserProfile(userProfile);

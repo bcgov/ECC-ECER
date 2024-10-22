@@ -14,7 +14,7 @@ public class FileTests : RegistryPortalWebAppScenarioBase
   { }
 
   [Fact]
-  [Category("VPN")]
+  [Category("Internal")]
   public async Task CanUploadFile()
   {
     var fileLength = 1041;
@@ -43,7 +43,7 @@ public class FileTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  [Category("VPN")]
+  [Category("Internal")]
   public async Task CanDeleteFile()
   {
     var testFileId = Guid.NewGuid().ToString();
@@ -82,7 +82,7 @@ public class FileTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  [Category("VPN")]
+  [Category("Internal")]
   public async Task CanDownloadCertificateFile()
   {
     await Host.Scenario(_ =>

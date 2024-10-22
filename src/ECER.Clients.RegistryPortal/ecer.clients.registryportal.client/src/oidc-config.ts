@@ -5,7 +5,7 @@ type BaseUserManagerSettings = Pick<UserManagerSettings, "redirect_uri" | "post_
 
 // Create an instance of the partial type using oidcConfig
 const oidcConfig: BaseUserManagerSettings = {
-  redirect_uri: `${window.location.origin}/signin-callback`,
+  redirect_uri: `${window.location.origin}`,
   post_logout_redirect_uri: `${window.location.origin}/logout-callback`,
   silent_redirect_uri: `${window.location.origin}/silent-callback`,
   response_type: "code",

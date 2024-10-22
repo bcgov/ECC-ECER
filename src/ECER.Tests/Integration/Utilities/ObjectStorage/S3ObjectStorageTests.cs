@@ -11,7 +11,7 @@ using Xunit.Categories;
 
 namespace ECER.Tests.Integration.Utilities.ObjectStorage;
 
-[IntegrationTest, Category("VPN")]
+[IntegrationTest, Category("Internal")]
 public class S3ObjectStorageTests(ITestOutputHelper testOutput) : IAsyncLifetime
 {
   private readonly Faker faker = new Faker();

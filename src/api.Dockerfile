@@ -7,14 +7,6 @@ RUN mkdir /tools && \
     dotnet tool install --tool-path /tools dotnet-dump && \
     dotnet tool install --tool-path /tools dotnet-monitor
 
-# install node.js
-ARG NODE_MAJOR=22
-RUN curl -SLO https://deb.nodesource.com/nsolid_setup_deb.sh \
-    && chmod 500 nsolid_setup_deb.sh \
-    && ./nsolid_setup_deb.sh ${NODE_MAJOR} \
-    && apt-get install nodejs -y --no-install-recommends \
-    && apt-get clean
-
 WORKDIR /src
 # Copy the main source project files
 COPY ["ECER.sln", ".editorconfig", "Directory.Build.props", "Directory.Packages.props", "global.json", "./"]

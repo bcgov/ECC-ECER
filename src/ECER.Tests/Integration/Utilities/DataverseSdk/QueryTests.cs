@@ -27,6 +27,8 @@ public class QueryTests : IAsyncLifetime
   public QueryTests()
   {
     var configBuilder = new ConfigurationBuilder().AddUserSecrets(typeof(Clients.RegistryPortal.Server.Program).Assembly);
+    var secretsFile = Environment.GetEnvironmentVariable("SECRETS_FILE_PATH");
+    if (secretsFile != null && File.Exists(secretsFile)) configBuilder.AddJsonFile(secretsFile, true);
     configuration = configBuilder.Build();
   }
 

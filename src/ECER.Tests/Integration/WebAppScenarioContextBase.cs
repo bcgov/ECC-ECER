@@ -72,8 +72,13 @@ public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAcces
                   });
           var configOverrides = new Dictionary<string, string?>(configurationSettings ?? Enumerable.Empty<KeyValuePair<string, string?>>());
           builder.ConfigureAppConfiguration(
-                  (_, configBuilder) =>
+                  (ctx, configBuilder) =>
                   {
+                    var secretsFile = Environment.GetEnvironmentVariable("SECRETS_FILE_PATH");
+                    if (secretsFile != null && File.Exists(secretsFile))
+                    {
+                      configBuilder.AddJsonFile(secretsFile, false);
+                    }
                     configBuilder.AddInMemoryCollection(configOverrides);
                   });
         },
@@ -84,7 +89,7 @@ public abstract class WebAppFixtureBase : IAsyncLifetime, ITestOutputHelperAcces
   {
   }
 
-  public virtual async Task InitializeAsync() => await Task.CompletedTask;
+  public abstract Task InitializeAsync();
 
-  public virtual async Task DisposeAsync() => await Task.CompletedTask;
+  public abstract Task DisposeAsync();
 }
