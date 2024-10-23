@@ -21,7 +21,8 @@ public class ApplicationValidationEngineResolver : IApplicationValidationEngineR
   {
     return appType switch
     {
-      ApplicationTypes.New => _serviceProvider.GetRequiredService<ApplicationSubmissionValidationEngine>(),
+      ApplicationTypes.New => _serviceProvider.GetRequiredService<NewApplicationSubmissionValidationEngine>(),
+      ApplicationTypes.LaborMobility => _serviceProvider.GetRequiredService<LabourMobilityApplicationSubmissionValidationEngine>(),
       ApplicationTypes.Renewal => _serviceProvider.GetRequiredService<ApplicationRenewalValidationEngine>(),
       _ => throw new ArgumentOutOfRangeException(nameof(appType), appType, null)
     };

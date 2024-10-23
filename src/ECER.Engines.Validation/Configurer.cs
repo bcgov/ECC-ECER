@@ -9,13 +9,13 @@ public class Configurer : IConfigureComponents
 {
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
-    configurationContext.Services.AddTransient<ApplicationSubmissionValidationEngine>();
+    configurationContext.Services.AddTransient<NewApplicationSubmissionValidationEngine>();
+    configurationContext.Services.AddTransient<LabourMobilityApplicationSubmissionValidationEngine>();
     configurationContext.Services.AddTransient<ApplicationRenewalValidationEngine>();
     configurationContext.Services.AddTransient<IApplicationValidationEngineResolver, ApplicationValidationEngineResolver>();
-
     configurationContext.Services.AddTransient<IApplicationValidationEngine>(provider =>
     {
-      return provider.GetRequiredService<ApplicationSubmissionValidationEngine>();
+      return provider.GetRequiredService<NewApplicationSubmissionValidationEngine>();
     });
   }
 }

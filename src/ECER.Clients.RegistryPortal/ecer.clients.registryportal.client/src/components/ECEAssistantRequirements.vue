@@ -9,7 +9,20 @@
       <p>You need the following information to apply:</p>
     </v-col>
   </v-row>
-  <v-row>
+  <v-row v-if="isLaborMobility">
+    <v-col>
+      <ECEHeader title="Certificate information"></ECEHeader>
+      <div class="d-flex flex-column ga-3 mt-6">
+        <p>After you submit your application, we'll contact you to get your certificate information, including:</p>
+        <ul class="ml-10">
+          <li>Your certification or registration number</li>
+          <li>The type of registration</li>
+          <li>The province or territory that you're certified in</li>
+        </ul>
+      </div>
+    </v-col>
+  </v-row>
+  <v-row v-if="!isLaborMobility">
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
       <p>You must have completed an early childhood education course in at least one of the following:</p>
@@ -67,5 +80,11 @@ import ECEHeader from "./ECEHeader.vue";
 export default defineComponent({
   name: "ECEAssistantRequirements",
   components: { ECEHeader },
+  props: {
+    isLaborMobility: {
+      type: Boolean,
+      default: false,
+    },
+  },
 });
 </script>
