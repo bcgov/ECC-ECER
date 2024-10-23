@@ -63,6 +63,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CountryId = "ecer_countryid";
 			public const string Id = "ecer_countryid";
 			public const string ecer_DisplayOrder = "ecer_displayorder";
+			public const string ecer_historicaldecision_CountryofStudyId_ecer_country = "ecer_historicaldecision_CountryofStudyId_ecer_country";
 			public const string ecer_ID = "ecer_id";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_province_CountryId = "ecer_province_CountryId";
@@ -714,6 +715,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_historicaldecision_CountryofStudyId_ecer_country
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_historicaldecision_CountryofStudyId_ecer_country")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision> ecer_historicaldecision_CountryofStudyId_ecer_country
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision>("ecer_historicaldecision_CountryofStudyId_ecer_country", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision>("ecer_historicaldecision_CountryofStudyId_ecer_country", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_province_CountryId
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_province_CountryId")]
@@ -762,7 +781,7 @@ namespace ECER.Utilities.DataverseSdk.Model
                 var value = p.GetValue(anonymousType, null);
                 var name = p.Name.ToLower();
             
-                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                if (value != null && name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
                 {
                     value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
                     name = name.Remove(name.Length - "enum".Length);

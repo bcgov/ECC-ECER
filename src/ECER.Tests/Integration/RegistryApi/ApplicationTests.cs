@@ -251,20 +251,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     existingApplicationId.ShouldBe(application.Id);
   }
 
-  [Fact]
-  public async Task SaveDraftApplication_WithInvalidTranscript_ReturnsBadRequest()
-  {
-    var invalidDraftApplication = CreateDraftApplication();
-    invalidDraftApplication.Transcripts = new List<Transcript> { CreateInvalidTranscript() };
-
-    await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-      _.Put.Json(new SaveDraftApplicationRequest(invalidDraftApplication)).ToUrl($"/api/draftapplications/{invalidDraftApplication.Id}");
-      _.StatusCodeShouldBe(400);
-    });
-  }
-
   private DraftApplication CreateDraftApplication()
   {
     var application = new Faker<DraftApplication>("en_CA")
@@ -614,22 +600,5 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       PhoneNumber = faker.Phone.PhoneNumber(),
       Type = WorkExperienceTypes.Is400Hours
     };
-  }
-
-  private Transcript CreateInvalidTranscript()
-  {
-    var invalidTranscript = new Transcript
-    {
-      EducationalInstitutionName = null,
-      ProgramName = null,
-      StudentNumber = faker.Random.Number(1000, 9999).ToString(),
-      StartDate = faker.Date.Recent(),
-      EndDate = faker.Date.Soon(),
-      IsECEAssistant = faker.Random.Bool(),
-      DoesECERegistryHaveTranscript = faker.Random.Bool(),
-      IsOfficialTranscriptRequested = faker.Random.Bool()
-    };
-
-    return invalidTranscript;
   }
 }

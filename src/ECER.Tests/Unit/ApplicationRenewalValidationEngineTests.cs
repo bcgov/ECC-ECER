@@ -406,7 +406,9 @@ public class ApplicationRenewalValidationEngineTests
         _faker.Random.Bool(), // IsOfficialTranscriptRequested
         _faker.Name.FirstName(), // StudentFirstName
         _faker.Name.LastName(), // StudentLastName
-        _faker.Random.Bool() // IsNameUnverified
+        _faker.Random.Bool(), // IsNameUnverified
+        _faker.Random.Enum<EducationRecognition>(), //EducationRecognition
+        _faker.Random.Enum<EducationOrigin>() //EducationOrigin
     )
     {
       CampusLocation = _faker.Address.City(), // Random city for CampusLocation

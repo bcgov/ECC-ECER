@@ -96,6 +96,33 @@
         </v-row>
         <v-row>
           <v-col>
+            <h3>Is this program or course recognized by the ECE Registry?</h3>
+            <p class="mt-3">
+              To be certified in B.C. as an Early Childhood Educator (ECE) requires the successful completion of an early childhood education training program
+              that's recognized by the ECE Registry, or a program that's deemed equivalent. ECE Assistant certification requires successful completion of a
+              course that's a part of a recognized early childhood education training program or deemed equivalent.
+            </p>
+            <p class="mt-3">
+              Check the list of
+              <a
+                href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
+              >
+                recognized programs
+              </a>
+              if you're not sure if this program is recognized
+            </p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <p>Is this program on the recognized list?</p>
+            <v-radio-group v-model="educationRecognition" :rules="[Rules.requiredRadio('Select an option')]">
+              <v-radio v-for="(recognition, index) in educationRecognitionRadio" :key="index" :label="recognition.label" :value="recognition.value"></v-radio>
+            </v-radio-group>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
             <h3>Where did you take it?</h3>
           </v-col>
         </v-row>
@@ -109,6 +136,14 @@
               color="primary"
               maxlength="100"
             ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <p>Location of educational institution</p>
+            <v-radio-group v-model="educationOrigin" :rules="[Rules.requiredRadio('Select an option')]">
+              <v-radio v-for="(origin, index) in educationOriginRadio" :key="index" :label="origin.label" :value="origin.value"></v-radio>
+            </v-radio-group>
           </v-col>
         </v-row>
         <v-row>
@@ -217,7 +252,7 @@ import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
-import { scrollToElement } from "@/utils/functions";
+import { educationRecognitionRadio, educationOriginRadio } from "@/utils/constant";
 
 interface EceEducationData {
   clientId: string;
@@ -237,6 +272,8 @@ interface EceEducationData {
   studentMiddleName: string | null;
   studentLastName: string;
   isNameUnverified: boolean;
+  educationRecognition: Components.Schemas.EducationRecognition | undefined;
+  educationOrigin: Components.Schemas.EducationOrigin | undefined;
 }
 
 interface RadioOptions {
@@ -271,6 +308,8 @@ export default defineComponent({
       wizardStore,
       applicationStore,
       userStore,
+      educationRecognitionRadio,
+      educationOriginRadio,
     };
   },
   data: function (): EceEducationData {
@@ -292,6 +331,8 @@ export default defineComponent({
       studentMiddleName: "",
       studentLastName: "",
       isNameUnverified: false,
+      educationRecognition: undefined,
+      educationOrigin: undefined,
     };
   },
   computed: {
@@ -367,6 +408,8 @@ export default defineComponent({
           doesECERegistryHaveTranscript: this.transcriptStatus === "received",
           isOfficialTranscriptRequested: this.transcriptStatus === "requested",
           isNameUnverified: this.isNameUnverified,
+          educationRecognition: this.educationRecognition!,
+          educationOrigin: this.educationOrigin!,
         };
 
         // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
@@ -413,10 +456,12 @@ export default defineComponent({
         (this.studentMiddleName = educationData.education.studentMiddleName ?? null),
         (this.studentLastName = educationData.education.studentLastName ?? ""),
         (this.studentNumber = educationData.education.studentNumber ?? "");
-      this.isNameUnverified = educationData.education.isNameUnverified;
+      this.isNameUnverified = educationData.education.isNameUnverified ?? false;
       this.language = educationData.education.languageofInstruction ?? "";
-      this.startYear = formatDate(educationData.education.startDate) ?? "";
-      this.endYear = formatDate(educationData.education.endDate) ?? "";
+      this.startYear = formatDate(educationData.education.startDate || "") ?? "";
+      this.endYear = formatDate(educationData.education.endDate || "") ?? "";
+      this.educationRecognition = educationData.education.educationRecognition;
+      this.educationOrigin = educationData.education.educationOrigin;
       if (educationData.education.isOfficialTranscriptRequested) {
         this.transcriptStatus = "requested";
       } else if (educationData.education.doesECERegistryHaveTranscript) {
@@ -483,6 +528,8 @@ export default defineComponent({
       this.studentLastName = "";
       this.isNameUnverified = true;
       this.previousNameRadio = undefined;
+      this.educationRecognition = undefined;
+      this.educationOrigin = undefined;
     },
     formatDate,
   },
