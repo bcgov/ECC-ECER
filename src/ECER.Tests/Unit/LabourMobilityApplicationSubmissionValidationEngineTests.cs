@@ -4,17 +4,17 @@ using ECER.Managers.Registry.Contract.Applications;
 
 namespace ECER.Tests.Unit;
 
-public class ApplicationSubmissionValidationEngineTests
+public class LabourMobilityApplicationSubmissionValidationEngineTests
 {
-  private readonly NewApplicationSubmissionValidationEngine _validator;
+  private readonly LabourMobilityApplicationSubmissionValidationEngine _validator;
 
-  public ApplicationSubmissionValidationEngineTests()
+  public LabourMobilityApplicationSubmissionValidationEngineTests()
   {
-    _validator = new NewApplicationSubmissionValidationEngine();
+    _validator = new LabourMobilityApplicationSubmissionValidationEngine();
   }
 
   [Fact]
-  public async Task Validate_WithoutEducation_ReturnsEducationError()
+  public async Task Validate_WithoutEducation_ReturnsOk()
   {
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
@@ -25,7 +25,7 @@ public class ApplicationSubmissionValidationEngineTests
     };
 
     var result = await _validator.Validate(application);
-    Assert.Contains("the application does not have any education", result.ValidationErrors);
+    Assert.Empty(result.ValidationErrors);
   }
 
   [Fact]
@@ -41,21 +41,6 @@ public class ApplicationSubmissionValidationEngineTests
 
     var result = await _validator.Validate(application);
     Assert.Contains("the application does not have any character references", result.ValidationErrors);
-  }
-
-  [Fact]
-  public async Task Validate_WithOutdatedEceAssistantEducation_ReturnsOutdatedEducationError()
-  {
-    var application = new Application("id", "registrantId", ApplicationStatus.Draft)
-    {
-      Transcripts = new List<Transcript> { CreateMockTranscript(true) },
-      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      CertificationTypes = new List<CertificationType> { CertificationType.EceAssistant },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) }
-    };
-
-    var result = await _validator.Validate(application);
-    Assert.Contains("Education was completed more than 5 years ago", result.ValidationErrors);
   }
 
   [Fact]
@@ -99,7 +84,7 @@ public class ApplicationSubmissionValidationEngineTests
     }
 
     var faker = new Faker("en_CA");
-    var transcript = new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program", faker.Random.Number(10000000, 99999999).ToString(), startDate, endDate, faker.Random.Bool(), faker.Random.Bool(), faker.Random.Bool(), faker.Name.FirstName(), faker.Name.LastName(), faker.Random.Bool(), EducationRecognition.Recognized, EducationOrigin.InsideBC);
+    var transcript = new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program", faker.Random.Number(10000000, 99999999).ToString(), startDate, endDate, faker.Random.Bool(), faker.Random.Bool(), faker.Random.Bool(), faker.Name.FirstName(), faker.Name.LastName(), faker.Random.Bool());
 
     return transcript;
   }

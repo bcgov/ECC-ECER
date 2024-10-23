@@ -456,10 +456,10 @@ export default defineComponent({
         (this.studentMiddleName = educationData.education.studentMiddleName ?? null),
         (this.studentLastName = educationData.education.studentLastName ?? ""),
         (this.studentNumber = educationData.education.studentNumber ?? "");
-      this.isNameUnverified = educationData.education.isNameUnverified;
+      this.isNameUnverified = educationData.education.isNameUnverified ?? false;
       this.language = educationData.education.languageofInstruction ?? "";
-      this.startYear = formatDate(educationData.education.startDate) ?? "";
-      this.endYear = formatDate(educationData.education.endDate) ?? "";
+      this.startYear = formatDate(educationData.education.startDate || "") ?? "";
+      this.endYear = formatDate(educationData.education.endDate || "") ?? "";
       this.educationRecognition = educationData.education.educationRecognition;
       this.educationOrigin = educationData.education.educationOrigin;
       if (educationData.education.isOfficialTranscriptRequested) {

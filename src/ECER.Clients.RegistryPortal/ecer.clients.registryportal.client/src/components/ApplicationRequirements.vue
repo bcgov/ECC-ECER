@@ -25,11 +25,14 @@
       <ECEIteRegistrantRequirements v-else-if="applicationStore.isDraftCertificateTypeIte" />
     </template>
 
-    <!-- New -->
+    <!-- New / LaborMobility -->
     <template v-else>
-      <ECEAssistantRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
-      <ECEOneYearRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
-      <ECEFiveYearRequirements v-if="applicationStore.isDraftCertificateTypeFiveYears" />
+      <ECEAssistantRequirements
+        :is-labor-mobility="applicationStore.isDraftApplicationLaborMobility"
+        v-if="applicationStore.isDraftCertificateTypeEceAssistant"
+      />
+      <ECEOneYearRequirements :is-labor-mobility="applicationStore.isDraftApplicationLaborMobility" v-if="applicationStore.isDraftCertificateTypeOneYear" />
+      <ECEFiveYearRequirements :is-labor-mobility="applicationStore.isDraftApplicationLaborMobility" v-if="applicationStore.isDraftCertificateTypeFiveYears" />
     </template>
 
     <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Apply now</v-btn>

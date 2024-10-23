@@ -9,7 +9,20 @@
       <p>You need the following information to apply:</p>
     </v-col>
   </v-row>
-  <v-row>
+  <v-row v-if="isLaborMobility">
+    <v-col>
+      <ECEHeader title="Certificate information"></ECEHeader>
+      <div class="d-flex flex-column ga-3 mt-6">
+        <p>After you submit your application, we'll contact you to get your certificate information, including:</p>
+        <ul class="ml-10">
+          <li>Your certification or registration number</li>
+          <li>The type of registration</li>
+          <li>The province or territory that you're certified in</li>
+        </ul>
+      </div>
+    </v-col>
+  </v-row>
+  <v-row v-if="!isLaborMobility">
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
       <p>
@@ -27,7 +40,7 @@
       </p>
     </v-col>
   </v-row>
-  <v-row v-if="applicationStore.isDraftCertificateTypeIte">
+  <v-row v-if="applicationStore.isDraftCertificateTypeIte && !isLaborMobility">
     <v-col>
       <ECEHeader title="Education for Infant and Toddler Educator (ITE)"></ECEHeader>
       <p>
@@ -45,7 +58,7 @@
       </p>
     </v-col>
   </v-row>
-  <v-row v-if="applicationStore.isDraftCertificateTypeSne">
+  <v-row v-if="applicationStore.isDraftCertificateTypeSne && !isLaborMobility">
     <v-col>
       <ECEHeader title="Education for Special Needs Educator (SNE)"></ECEHeader>
       <p>
@@ -116,6 +129,12 @@ import ECEHeader from "./ECEHeader.vue";
 export default defineComponent({
   name: "ECEFiveYearRequirements",
   components: { ECEHeader },
+  props: {
+    isLaborMobility: {
+      type: Boolean,
+      default: false,
+    },
+  },
   setup() {
     const applicationStore = useApplicationStore();
     return { applicationStore };

@@ -13,7 +13,7 @@
             <p class="small">Start date of program</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ formatDate(education.startDate, "LLLL d, yyyy") }}</p>
+            <p class="small font-weight-bold">{{ formatDate(education.startDate || "", "LLLL d, yyyy") }}</p>
           </v-col>
         </v-row>
         <v-row>
@@ -21,7 +21,7 @@
             <p class="small">End date of program</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ formatDate(education.endDate, "LLLL d, yyyy") }}</p>
+            <p class="small font-weight-bold">{{ formatDate(education.endDate || "", "LLLL d, yyyy") }}</p>
           </v-col>
         </v-row>
         <v-row>

@@ -422,23 +422,23 @@ declare namespace Components {
             applicationType?: ApplicationTypes;
         }
         export interface Transcript {
+            educationalInstitutionName?: string | null;
+            programName?: string | null;
+            studentLastName?: string | null;
+            startDate?: string; // date-time
+            endDate?: string; // date-time
+            isNameUnverified?: boolean;
+            educationRecognition?: EducationRecognition;
+            educationOrigin?: EducationOrigin;
             id?: string | null;
-            educationalInstitutionName: string;
-            programName: string;
             campusLocation?: string | null;
             studentFirstName?: string | null;
-            studentLastName: string;
             studentMiddleName?: string | null;
             studentNumber?: string | null;
             languageofInstruction?: string | null;
-            startDate: string; // date-time
-            endDate: string; // date-time
             isECEAssistant?: boolean;
             doesECERegistryHaveTranscript?: boolean;
             isOfficialTranscriptRequested?: boolean;
-            isNameUnverified: boolean;
-            educationRecognition: EducationRecognition;
-            educationOrigin: EducationOrigin;
         }
         export type TranscriptStage = "Accepted" | "ApplicationSubmitted" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "WaitingforDetails";
         export interface TranscriptStatus {
