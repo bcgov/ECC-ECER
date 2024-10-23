@@ -3,7 +3,7 @@
     <template #header>
       <WizardHeader
         class="mb-6"
-        :handle-save-draft="handleSaveAsDraft"
+        :handle-save-draft="handleSaveAndExit"
         :show-save-button="showSaveButtons"
         :is-renewal="applicationStore?.draftApplication.applicationType === 'Renewal'"
         :is-registrant="userStore.isRegistrant"
@@ -81,7 +81,6 @@ import Wizard from "@/components/Wizard.vue";
 import WizardHeader from "@/components/WizardHeader.vue";
 import applicationWizardAssistantAndOneYear from "@/config/application-wizard-assistant-and-one-year";
 import applicationWizardFiveYear from "@/config/application-wizard-five-year";
-import applicationWizardRenewAssistant from "@/config/application-wizard-renew-assistant";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useLoadingStore } from "@/store/loading";
@@ -160,11 +159,11 @@ export default defineComponent({
       } else {
         switch (this.wizardStore.currentStepStage) {
           case "ContactInformation":
-            this.saveProfile();
+            this.saveProfile(false);
             this.incrementWizard();
             break;
           case "ProfessionalDevelopment":
-            await this.saveDraftAndAlertSuccess();
+            await this.saveDraftAndAlertSuccess(false);
             //we need to mimic professional development saved to the server for future calls after this step. This prevents us having to fetch and rehydrate the draft application
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id].forEach(
               (professionalDevelopment: ProfessionalDevelopmentExtended) => {
@@ -179,7 +178,7 @@ export default defineComponent({
           case "WorkReferences":
           case "CharacterReferences":
           case "Review":
-            this.saveDraftAndAlertSuccess();
+            this.saveDraftAndAlertSuccess(false);
             this.incrementWizard();
             break;
         }
@@ -201,23 +200,28 @@ export default defineComponent({
           break;
       }
     },
-    async saveDraftAndAlertSuccess() {
+    async saveDraftAndAlertSuccess(exit: boolean) {
       const draftApplicationResponse = await this.applicationStore.saveDraft();
       if (draftApplicationResponse?.applicationId) {
-        this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
+        let message = "Information saved. If you save and exit, you can resume your application later.";
+        if (exit) message = "Information saved. You can resume your application later.";
+        this.alertStore.setSuccessAlert(message);
       }
     },
-    async handleSaveAsDraft() {
+    async handleSaveAndExit() {
+      await this.handleSaveAsDraft(true);
+    },
+    async handleSaveAsDraft(exit: boolean) {
       switch (this.wizardStore.currentStepStage) {
         case "ContactInformation":
-          await this.saveProfile();
+          await this.saveProfile(exit);
           break;
         default:
-          await this.saveDraftAndAlertSuccess();
+          await this.saveDraftAndAlertSuccess(exit);
           break;
       }
     },
-    async saveProfile() {
+    async saveProfile(exit: boolean) {
       const { error } = await putProfile({
         firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
         middleName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalMiddleName.id],
@@ -232,7 +236,10 @@ export default defineComponent({
       });
 
       if (!error) {
-        this.alertStore.setSuccessAlert("Your responses have been saved. You may resume this application from your dashboard.");
+        let message = "Information saved. If you save and exit, you can resume your application later.";
+        if (exit) message = "Information saved. You can resume your application later.";
+        this.alertStore.setSuccessAlert(message);
+
         this.userStore.setUserInfo({
           firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
           lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalLastName.id],
