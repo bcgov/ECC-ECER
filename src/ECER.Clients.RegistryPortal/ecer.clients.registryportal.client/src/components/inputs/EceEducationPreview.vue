@@ -5,47 +5,7 @@
         <v-divider v-if="index !== 0" :thickness="2" color="grey-lightest" class="border-opacity-100 my-6" />
         <v-row>
           <v-col>
-            <h4 class="text-black">{{ education.educationalInstitutionName }}</h4>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="4">
-            <p class="small">{{ "Name of program or course" }}</p>
-          </v-col>
-          <v-col>
-            <p class="small font-weight-bold">{{ education.programName }}</p>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="4">
-            <p class="small">Campus Location</p>
-          </v-col>
-          <v-col>
-            <p class="small font-weight-bold">{{ education.campusLocation }}</p>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="4">
-            <p class="small">Your full name as shown on transcript</p>
-          </v-col>
-          <v-col>
-            <p class="small font-weight-bold">{{ studentFullName(education) }}</p>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="4">
-            <p class="small">Student ID or number</p>
-          </v-col>
-          <v-col>
-            <p class="small font-weight-bold">{{ education.studentNumber }}</p>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="4">
-            <p class="small">Language of institution</p>
-          </v-col>
-          <v-col>
-            <p class="small font-weight-bold">{{ education.languageofInstruction }}</p>
+            <h4 class="text-black">{{ education.programName }}</h4>
           </v-col>
         </v-row>
         <v-row>
@@ -64,6 +24,62 @@
             <p class="small font-weight-bold">{{ formatDate(education.endDate, "LLLL d, yyyy") }}</p>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="4">
+            <p class="small">{{ "Is this program on the recognized list?" }}</p>
+          </v-col>
+          <v-col>
+            <p class="small font-weight-bold">{{ isProgramRecognized(education) }}</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <p class="small">{{ "Name of educational institution" }}</p>
+          </v-col>
+          <v-col>
+            <p class="small font-weight-bold">{{ education.educationalInstitutionName }}</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <p class="small">{{ "Location of educational institution" }}</p>
+          </v-col>
+          <v-col>
+            <p class="small font-weight-bold">{{ programOrigin(education) }}</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <p class="small">Campus Location</p>
+          </v-col>
+          <v-col>
+            <p class="small font-weight-bold">{{ education.campusLocation }}</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <p class="small">Student ID or number</p>
+          </v-col>
+          <v-col>
+            <p class="small font-weight-bold">{{ education.studentNumber }}</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <p class="small">Your full name as shown on transcript</p>
+          </v-col>
+          <v-col>
+            <p class="small font-weight-bold">{{ studentFullName(education) }}</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <p class="small">Language of institution</p>
+          </v-col>
+          <v-col>
+            <p class="small font-weight-bold">{{ education.languageofInstruction }}</p>
+          </v-col>
+        </v-row>
       </div>
     </template>
   </PreviewCard>
@@ -78,6 +94,7 @@ import { useWizardStore } from "@/store/wizard";
 import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
+import { educationOriginRadio } from "@/utils/constant";
 
 export default defineComponent({
   name: "EceEducationPreview",
@@ -113,6 +130,12 @@ export default defineComponent({
       fullName += ` ${education.studentLastName}`;
 
       return fullName;
+    },
+    isProgramRecognized(education: Components.Schemas.Transcript) {
+      return education.educationRecognition === "Recognized" ? "Yes" : "No";
+    },
+    programOrigin(education: Components.Schemas.Transcript) {
+      return educationOriginRadio.find((origin) => origin.value === education.educationOrigin)?.label;
     },
   },
 });

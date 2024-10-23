@@ -140,6 +140,14 @@
         </v-row>
         <v-row>
           <v-col>
+            <p>Location of educational institution</p>
+            <v-radio-group v-model="educationOrigin" :rules="[Rules.requiredRadio('Select an option')]">
+              <v-radio v-for="(origin, index) in educationOriginRadio" :key="index" :label="origin.label" :value="origin.value"></v-radio>
+            </v-radio-group>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
             <v-text-field v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="200"></v-text-field>
           </v-col>
         </v-row>
@@ -244,8 +252,7 @@ import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
-import { scrollToElement } from "@/utils/functions";
-import { educationRecognitionRadio } from "@/utils/constant";
+import { educationRecognitionRadio, educationOriginRadio } from "@/utils/constant";
 
 interface EceEducationData {
   clientId: string;
@@ -266,6 +273,7 @@ interface EceEducationData {
   studentLastName: string;
   isNameUnverified: boolean;
   educationRecognition: Components.Schemas.EducationRecognition | undefined;
+  educationOrigin: Components.Schemas.EducationOrigin | undefined;
 }
 
 interface RadioOptions {
@@ -301,6 +309,7 @@ export default defineComponent({
       applicationStore,
       userStore,
       educationRecognitionRadio,
+      educationOriginRadio,
     };
   },
   data: function (): EceEducationData {
@@ -323,6 +332,7 @@ export default defineComponent({
       studentLastName: "",
       isNameUnverified: false,
       educationRecognition: undefined,
+      educationOrigin: undefined,
     };
   },
   computed: {
@@ -399,6 +409,7 @@ export default defineComponent({
           isOfficialTranscriptRequested: this.transcriptStatus === "requested",
           isNameUnverified: this.isNameUnverified,
           educationRecognition: this.educationRecognition!,
+          educationOrigin: this.educationOrigin!,
         };
 
         // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
@@ -450,6 +461,7 @@ export default defineComponent({
       this.startYear = formatDate(educationData.education.startDate) ?? "";
       this.endYear = formatDate(educationData.education.endDate) ?? "";
       this.educationRecognition = educationData.education.educationRecognition;
+      this.educationOrigin = educationData.education.educationOrigin;
       if (educationData.education.isOfficialTranscriptRequested) {
         this.transcriptStatus = "requested";
       } else if (educationData.education.doesECERegistryHaveTranscript) {
@@ -517,6 +529,7 @@ export default defineComponent({
       this.isNameUnverified = true;
       this.previousNameRadio = undefined;
       this.educationRecognition = undefined;
+      this.educationOrigin = undefined;
     },
     formatDate,
   },

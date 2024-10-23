@@ -180,7 +180,7 @@ export const useApplicationStore = defineStore("application", {
       if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte && this.isDraftCertificateTypeSne) return "FiveYearWithIteAndSne";
       if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte) return "FiveYearWithIte";
       if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeSne) return "FiveYearWithSne";
-      if (this.isDraftCertificateTypeFiveYears) return "FiveYearRegistrant";
+      if (this.isDraftCertificateTypeFiveYears) return "FiveYear";
       if (this.isDraftCertificateTypeOneYear) return "OneYear";
       if (this.isDraftCertificateTypeEceAssistant) return "Assistant";
 

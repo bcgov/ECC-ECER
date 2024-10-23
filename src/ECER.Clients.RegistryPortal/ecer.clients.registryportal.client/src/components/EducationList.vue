@@ -2,14 +2,9 @@
   <v-row>
     <!-- Five year variations Ite + Sne -->
     <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithIteAndSne'">
+      <!--prettier-ignore-->
       <p class="mb-3">
-        You must have completed
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          program(s) recognized by the ECE Registry
-        </a>
-        in:
+        You must have completed <a href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"> program(s) recognized by the ECE Registry</a> in:
       </p>
       <ul class="ml-10">
         <li>Basic early childhood education</li>
@@ -18,14 +13,9 @@
       </ul>
     </v-col>
     <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithIte'">
+      <!--prettier-ignore-->
       <p class="mb-3">
-        You must have completed
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          program(s) recognized by the ECE Registry
-        </a>
-        in:
+        You must have completed <a href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"> program(s) recognized by the ECE Registry</a> in:
       </p>
       <ul class="ml-10">
         <li>Basic early childhood education</li>
@@ -33,14 +23,9 @@
       </ul>
     </v-col>
     <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithSne'">
+      <!--prettier-ignore-->
       <p class="mb-3">
-        You must have completed
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          program(s) recognized by the ECE Registry
-        </a>
-        in:
+        You must have completed <a href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"> program(s) recognized by the ECE Registry</a> in:
       </p>
       <ul class="ml-10">
         <li>Basic early childhood education</li>
@@ -50,14 +35,9 @@
 
     <!-- Ite + Sne Only -->
     <v-col v-if="applicationStore.draftApplicationFlow === 'IteAndSneRegistrant'">
+      <!--prettier-ignore-->
       <p class="mb-3">
-        You must have completed
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          programs recognized by the ECE Registry
-        </a>
-        in:
+        You must have completed <a href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"> program(s) recognized by the ECE Registry</a> in:
       </p>
       <ul class="ml-10 mb-3">
         <li>Infant and toddler educator training</li>

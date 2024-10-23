@@ -137,3 +137,9 @@ export const educationRecognitionRadio: RadioButtonWrapper<Components.Schemas.Ed
   { label: "Recognized", value: "Recognized" },
   { label: "Not Recognized", value: "NotRecognized" },
 ];
+
+export const educationOriginRadio: RadioButtonWrapper<Components.Schemas.EducationOrigin>[] = [
+  { label: "In British Columbia", value: "InsideBC" },
+  { label: "In another province or territory in Canada", value: "OutsideBC" },
+  { label: "Outside of Canada", value: "OutsideofCanada" },
+];
