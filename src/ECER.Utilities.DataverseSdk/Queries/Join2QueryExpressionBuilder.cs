@@ -59,7 +59,12 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
       {
         var entities = join switch
         {
-          OneToManyJoinData j => QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, keys),
+          OneToManyJoinData j =>
+          rootEntities.Any(e => e.GetType() == j.EnityType) ?
+          QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, keys) :
+          QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName,
+            rootEntities.Select(e => e.GetAttributeValue<EntityReference>(j.RelatedEntityForeignKeyAttributeName)!.Id).Distinct().ToArray()),
+
           ManyToOneJoinData j => QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, rootEntities.Select(e => e.GetAttributeValue<EntityReference>(j.KeyAttributeName)!.Id).Distinct().ToArray()),
           _ => throw new NotImplementedException()
         };
@@ -72,8 +77,16 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
         {
           if (related.Key is OneToManyJoinData o2mj)
           {
-            var relatedEntities = related.Value.Entities.Where(e => e.GetAttributeValue<EntityReference>(o2mj.RelatedEntityForeignKeyAttributeName)!.Id == entity.Id).ToArray();
-            AddRelatedEntities(entity, o2mj.RelationshipSchemaName, relatedEntities);
+            var parentEntity = FindParentEntity(entity, o2mj);
+
+            if (parentEntity != null)
+            {
+              var relatedEntities = related.Value.Entities
+                  .Where(e => e.GetAttributeValue<EntityReference>(o2mj.RelatedEntityForeignKeyAttributeName)!.Id == parentEntity.Id)
+                  .ToArray();
+
+              AddRelatedEntities(parentEntity, o2mj.RelationshipSchemaName, relatedEntities);
+            }
           }
           else if (related.Key is ManyToOneJoinData m2oj)
           {
@@ -92,6 +105,36 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
     return rootEntities;
   }
 
+  private Entity? FindParentEntity(Entity baseEntity, OneToManyJoinData joinData)
+  {
+    if (baseEntity.GetType() == joinData.EnityType)
+    {
+      return baseEntity;
+    }
+
+    foreach (var relatedEntities in baseEntity.RelatedEntities.Values)
+    {
+      var parentEntity = relatedEntities.Entities
+          .FirstOrDefault(e => e.GetType() == joinData.EnityType);
+
+      if (parentEntity != null)
+      {
+        return parentEntity;
+      }
+
+      foreach (var entity in relatedEntities.Entities)
+      {
+        var nestedParent = FindParentEntity(entity, joinData);
+        if (nestedParent != null)
+        {
+          return nestedParent;
+        }
+      }
+    }
+
+    return null;
+  }
+
   protected virtual EntityCollection QuerySubEntities(string entityName, string keyAttributeName, params Guid[] keys)
   {
     var query = new QueryExpression(entityName)
@@ -105,13 +148,19 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
       }
     };
     query.ColumnSet.AllColumns = true;
+    var entities = RetreiveEntities(Context, query);
 
-    return RetreiveEntities(Context, query);
+    return entities;
   }
 
   protected virtual void AddRelatedEntities([NotNull] Entity rootEntity, string relationshipName, params Entity[] relatedEntities)
   {
-    rootEntity.RelatedEntities.Add(new Relationship(relationshipName), new EntityCollection(relatedEntities));
+    var relationship = new Relationship(relationshipName);
+
+    if (!rootEntity.RelatedEntities.Contains(relationship))
+    {
+      rootEntity.RelatedEntities.Add(relationship, new EntityCollection(relatedEntities));
+    }
   }
 
   protected static JoinData CreateOneToMany([NotNull] Type entityType, [NotNull] Type relatedEntityType, [NotNull] string propoertyName)
@@ -150,7 +199,6 @@ public class NestedJoin2QueryExpressionBuilder<TEntity, TRelatedEntity> : Join2Q
   {
     var propertyName = ((MemberExpression)selector.Body).Member.Name;
     Joins.Add(CreateOneToMany(typeof(TRelatedEntity), typeof(TNestedEntity), propertyName));
-
     return this;
   }
 

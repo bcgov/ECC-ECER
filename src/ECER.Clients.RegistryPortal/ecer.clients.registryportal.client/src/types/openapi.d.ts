@@ -39,6 +39,7 @@ declare namespace Components {
       clientAuthenticationMethods?: {
         [name: string]: OidcAuthenticationSettings;
       } | null;
+      version?: string | null;
     }
     export type ApplicationStatus =
       | "Draft"
@@ -90,9 +91,18 @@ declare namespace Components {
        */
       applicationId?: string | null;
     }
+    export interface CertificateCondition {
+      id?: string | null;
+      name?: string | null;
+      details?: string | null;
+      startDate?: string; // date-time
+      endDate?: string; // date-time
+      displayOrder?: number; // int32
+    }
     export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
     export interface Certification {
       id?: string | null;
+      name?: string | null;
       number?: string | null;
       expiryDate?: string | null; // date-time
       effectiveDate?: string | null; // date-time
@@ -104,6 +114,7 @@ declare namespace Components {
       ineligibleReference?: YesNoNull;
       levels?: CertificationLevel[] | null;
       files?: CertificationFile[] | null;
+      certificateConditions?: CertificateCondition[] | null;
     }
     export interface CertificationFile {
       id?: string | null;
@@ -115,6 +126,27 @@ declare namespace Components {
     export interface CertificationLevel {
       id?: string | null;
       type?: string | null;
+    }
+    export interface CertificationLookupRequest {
+      recaptchaToken?: string | null;
+      firstName?: string | null;
+      lastName?: string | null;
+      registrationNumber?: string | null;
+      pageSize?: number; // int32
+      pageNumber?: number; // int32
+      sortField?: string | null;
+      sortDirection?: string | null;
+    }
+    export interface CertificationLookupResponse {
+      id?: string | null;
+      name?: string | null;
+      registrationNumber?: string | null;
+      statusCode?: CertificateStatusCode;
+      levelName?: string | null;
+      expiryDate?: string | null; // date-time
+      hasConditions?: boolean | null;
+      levels?: CertificationLevel[] | null;
+      certificateConditions?: CertificateCondition[] | null;
     }
     export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
     export interface CharacterReference {
@@ -713,6 +745,14 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace CertificationsLookupPost {
+    export type RequestBody = Components.Schemas.CertificationLookupRequest;
+    namespace Responses {
+      export type $200 = Components.Schemas.CertificationLookupResponse[];
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace CharacterReferencePost {
     export type RequestBody = Components.Schemas.CharacterReferenceSubmissionRequest;
     namespace Responses {
@@ -1075,6 +1115,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CertificationGet.Responses.$200>;
   /**
+   * certifications_lookup_post - Handles certifications lookup queries
+   */
+  "certifications_lookup_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.CertificationsLookupPost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CertificationsLookupPost.Responses.$200>;
+  /**
    * draftapplication_put - Save a draft application for the current user
    */
   "draftapplication_put"(
@@ -1337,6 +1385,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CertificationGet.Responses.$200>;
   };
+  ["/api/certifications/lookup"]: {
+    /**
+     * certifications_lookup_post - Handles certifications lookup queries
+     */
+    "post"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.CertificationsLookupPost.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CertificationsLookupPost.Responses.$200>;
+  };
   ["/api/draftapplications/{id}"]: {
     /**
      * draftapplication_put - Save a draft application for the current user
@@ -1456,10 +1514,13 @@ export type ApplicationStatusReasonDetail = Components.Schemas.ApplicationStatus
 export type ApplicationSubmissionRequest = Components.Schemas.ApplicationSubmissionRequest;
 export type ApplicationTypes = Components.Schemas.ApplicationTypes;
 export type CancelDraftApplicationResponse = Components.Schemas.CancelDraftApplicationResponse;
+export type CertificateCondition = Components.Schemas.CertificateCondition;
 export type CertificateStatusCode = Components.Schemas.CertificateStatusCode;
 export type Certification = Components.Schemas.Certification;
 export type CertificationFile = Components.Schemas.CertificationFile;
 export type CertificationLevel = Components.Schemas.CertificationLevel;
+export type CertificationLookupRequest = Components.Schemas.CertificationLookupRequest;
+export type CertificationLookupResponse = Components.Schemas.CertificationLookupResponse;
 export type CertificationType = Components.Schemas.CertificationType;
 export type CharacterReference = Components.Schemas.CharacterReference;
 export type CharacterReferenceEvaluation = Components.Schemas.CharacterReferenceEvaluation;
