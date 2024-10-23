@@ -5,7 +5,7 @@
         <v-icon size="large" icon="mdi-attachment" />
         Attachments
       </p>
-      <p>You can only upload PDF files up to 10MB.</p>
+      <p>You can upload images, Microsoft Word documents, Microsoft Excel documents, and PDFs. Max file size accepted is 10MB.</p>
       <Callout v-if="selectedFiles.length >= maxNumberOfFiles" class="mt-3" type="warning">
         <div class="d-flex flex-column ga-3">
           <p>No more files can be added. You can only add {{ maxNumberOfFiles }} files.</p>
@@ -21,7 +21,13 @@
       >
         Add file
       </v-btn>
-      <v-file-input ref="fileInput" style="display: none" :multiple="allowMultipleFiles" accept="application/pdf" @change="handleFileUpload"></v-file-input>
+      <v-file-input
+        ref="fileInput"
+        style="display: none"
+        :multiple="allowMultipleFiles"
+        accept=".txt,.pdf,.doc,.docx,.rtf,.xls,.xlsx,.jpg,.jpeg,.gif,.png,.bmp,.tiff,.x-tiff"
+        @change="handleFileUpload"
+      ></v-file-input>
       <Alert v-model="showErrorBanner" class="mt-10" type="error">
         <p class="small">{{ errorBannerMessage }}</p>
       </Alert>
@@ -63,6 +69,22 @@ interface FileUploaderData {
   errorBannerMessage: string;
   firstLoad: boolean;
 }
+
+const allowedFileTypes = [
+  "application/pdf",
+  "text/plain",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/rtf",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "image/jpeg",
+  "image/gif",
+  "image/png",
+  "image/bmp",
+  "image/tiff",
+  "image/x-tiff",
+];
 
 export default defineComponent({
   name: "FileUploader",
@@ -182,8 +204,10 @@ export default defineComponent({
           if (file.size > this.maxFileSizeInBytes) {
             fileErrors.push(`This file is too big. Only files ${this.maxFileSizeInMB}MB or smaller are accepted.`);
           }
-          if (file.type !== "application/pdf") {
-            fileErrors.push("This type of file is not accepted. File types accepted: PDF");
+          if (!allowedFileTypes.includes(file.type)) {
+            fileErrors.push(
+              "This type of file is not accepted. The following file types are accepted: .txt, .pdf, .doc, .docx, .rtf, .xls, .xlsx, .jpg/jpeg, .gif, .png, .bmp, .tiff, .x-tiff",
+            );
           }
           if (this.selectedFiles.some((f: FileItem) => f.file.name === file.name)) {
             fileErrors.push("This file with this name has already been uploaded. ");
