@@ -133,12 +133,12 @@ export default defineComponent({
   setup: async () => {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
+    const router = useRouter();
     const oidcUserInfo = await oidcStore.oidcUserInfo();
     const oidcAddress = await oidcStore.oidcAddress();
     const loadingStore = useLoadingStore();
     const phoneNumber = ref(oidcUserInfo.phone);
     const email = ref(oidcUserInfo.email);
-    const router = useRouter();
 
     return { userStore, oidcStore, phoneNumber, email, loadingStore, oidcUserInfo, oidcAddress, router };
   },
