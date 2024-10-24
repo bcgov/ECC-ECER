@@ -205,7 +205,7 @@ export default defineComponent({
     formatPhoneNumber,
     areObjectsEqual,
     fullName(name: Components.Schemas.PreviousName) {
-      return `${name.firstName ?? ""} ${name.middleName ?? ""} ${name.lastName}`;
+      return `${name.firstName ?? ""} ${name.middleName ?? ""} ${name.lastName}`.trim();
     },
   },
 });
