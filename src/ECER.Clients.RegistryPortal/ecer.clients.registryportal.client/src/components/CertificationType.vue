@@ -79,7 +79,6 @@ import type { ApplicationTypes, Components } from "@/types/openapi";
 import { CertificationType } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
 import { useRouter } from "vue-router";
-import { useWizardStore } from "@/store/wizard";
 
 export default defineComponent({
   name: "CertificationType",
@@ -89,7 +88,6 @@ export default defineComponent({
 
   setup: () => {
     const applicationStore = useApplicationStore();
-    const wizardStore = useWizardStore();
     const certificationTypeStore = useCertificationTypeStore();
     const alertStore = useAlertStore();
     const router = useRouter();
@@ -111,7 +109,7 @@ export default defineComponent({
       certificationTypeStore.selection = CertificationType.ONE_YEAR;
     }
 
-    return { applicationStore, wizardStore, certificationTypeStore, CertificationType, certificationOptions, Rules, alertStore, router };
+    return { applicationStore, certificationTypeStore, CertificationType, certificationOptions, Rules, alertStore, router };
   },
   data() {
     return {
