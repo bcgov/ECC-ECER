@@ -88,6 +88,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DoesECERegistryHaveTranscript = "ecer_doeseceregistryhavetranscript";
 			public const string ecer_doeseceregistryhavetranscriptName = "ecer_doeseceregistryhavetranscriptname";
 			public const string ecer_EducationInstitutionFullName = "ecer_educationinstitutionfullname";
+			public const string ecer_EducationOrigin = "ecer_educationorigin";
+			public const string ecer_educationoriginName = "ecer_educationoriginname";
 			public const string ecer_EducationRecognition = "ecer_educationrecognition";
 			public const string ecer_educationrecognitionName = "ecer_educationrecognitionname";
 			public const string ecer_EndDate = "ecer_enddate";
@@ -472,6 +474,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_educationinstitutionfullname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationorigin")]
+		public virtual ecer_EducationOrigin? ecer_EducationOrigin
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_EducationOrigin?)(EntityOptionSetEnum.GetEnum(this, "ecer_educationorigin")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_educationorigin", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationoriginname")]
+		public string ecer_educationoriginName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_educationorigin"))
+				{
+					return this.FormattedValues["ecer_educationorigin"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1458,7 +1492,7 @@ namespace ECER.Utilities.DataverseSdk.Model
                 var value = p.GetValue(anonymousType, null);
                 var name = p.Name.ToLower();
             
-                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                if (value != null && name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
                 {
                     value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
                     name = name.Remove(name.Length - "enum".Length);

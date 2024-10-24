@@ -122,6 +122,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_application_Certificateid = "ecer_application_Certificateid";
 			public const string ecer_application_DenialReasonType_ecer_denialr = "ecer_application_DenialReasonType_ecer_denialr";
 			public const string ecer_application_FromCertificateId = "ecer_application_FromCertificateId";
+			public const string ecer_application_parallelprocessinvestigationid_ecer_investigation = "ecer_application_parallelprocessinvestigationid_ecer_investigation";
 			public const string ecer_applicationassessment_ApplicationId = "ecer_applicationassessment_ApplicationId";
 			public const string ecer_applicationhistory_ApplicationId = "ecer_applicationhistory_ApplicationId";
 			public const string ecer_ApplicationId = "ecer_applicationid";
@@ -238,6 +239,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_LegalMiddleName = "ecer_legalmiddlename";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NumberofHoursWorked = "ecer_numberofhoursworked";
+			public const string ecer_Origin = "ecer_origin";
+			public const string ecer_originName = "ecer_originname";
+			public const string ecer_parallelprocess = "ecer_parallelprocess";
+			public const string ecer_parallelprocessinvestigationid = "ecer_parallelprocessinvestigationid";
+			public const string ecer_parallelprocessinvestigationidName = "ecer_parallelprocessinvestigationidname";
+			public const string ecer_parallelprocessName = "ecer_parallelprocessname";
 			public const string ecer_ParentalReferenceApproved = "ecer_parentalreferenceapproved";
 			public const string ecer_parentalreferenceapprovedName = "ecer_parentalreferenceapprovedname";
 			public const string ecer_ParentalReferenceReceived = "ecer_parentalreferencereceived";
@@ -253,6 +260,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_printrequestName = "ecer_printrequestname";
 			public const string ecer_Priority = "ecer_priority";
 			public const string ecer_priorityName = "ecer_priorityname";
+			public const string ecer_proceedwithapplicationassessment = "ecer_proceedwithapplicationassessment";
+			public const string ecer_proceedwithapplicationassessmentName = "ecer_proceedwithapplicationassessmentname";
 			public const string ecer_ProfessionalDevelopmentApproved = "ecer_professionaldevelopmentapproved";
 			public const string ecer_professionaldevelopmentapprovedName = "ecer_professionaldevelopmentapprovedname";
 			public const string ecer_ProfessionalDevelopmentReceived = "ecer_professionaldevelopmentreceived";
@@ -2438,6 +2447,102 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_origin")]
+		public virtual ecer_Origin? ecer_Origin
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_Origin?)(EntityOptionSetEnum.GetEnum(this, "ecer_origin")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_origin", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_originname")]
+		public string ecer_originName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_origin"))
+				{
+					return this.FormattedValues["ecer_origin"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parallelprocess")]
+		public System.Nullable<bool> ecer_parallelprocess
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_parallelprocess");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_parallelprocess", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parallelprocessinvestigationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_parallelprocessinvestigationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_parallelprocessinvestigationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_parallelprocessinvestigationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parallelprocessinvestigationidname")]
+		public string ecer_parallelprocessinvestigationidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_parallelprocessinvestigationid"))
+				{
+					return this.FormattedValues["ecer_parallelprocessinvestigationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parallelprocessname")]
+		public string ecer_parallelprocessName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_parallelprocess"))
+				{
+					return this.FormattedValues["ecer_parallelprocess"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parentalreferenceapproved")]
 		public virtual ecer_YesNoNull? ecer_ParentalReferenceApproved
 		{
@@ -2651,6 +2756,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_priority"))
 				{
 					return this.FormattedValues["ecer_priority"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_proceedwithapplicationassessment")]
+		public System.Nullable<bool> ecer_proceedwithapplicationassessment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_proceedwithapplicationassessment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_proceedwithapplicationassessment", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_proceedwithapplicationassessmentname")]
+		public string ecer_proceedwithapplicationassessmentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_proceedwithapplicationassessment"))
+				{
+					return this.FormattedValues["ecer_proceedwithapplicationassessment"];
 				}
 				else
 				{
@@ -4303,6 +4440,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// N:1 ecer_application_parallelprocessinvestigationid_ecer_investigation
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parallelprocessinvestigationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_parallelprocessinvestigationid_ecer_investigation")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_application_parallelprocessinvestigationid_ecer_investigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_application_parallelprocessinvestigationid_ecer_investigation", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_application_parallelprocessinvestigationid_ecer_investigation", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// Constructor for populating via LINQ queries given a LINQ anonymous type
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
@@ -4315,7 +4471,7 @@ namespace ECER.Utilities.DataverseSdk.Model
                 var value = p.GetValue(anonymousType, null);
                 var name = p.Name.ToLower();
             
-                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                if (value != null && name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
                 {
                     value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
                     name = name.Remove(name.Length - "enum".Length);

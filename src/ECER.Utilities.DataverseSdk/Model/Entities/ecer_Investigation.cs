@@ -201,6 +201,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ActiveReview = 621870016,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Appeal = 621870008,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -250,6 +253,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		SummaryReportSenttoRegistrant = 621870006,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		SummaryReview = 621870017,
 	}
 	
 	/// <summary>
@@ -281,11 +287,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Applicant = "ecer_applicant";
 			public const string ecer_ApplicantName = "ecer_applicantname";
 			public const string ecer_ApplicantYomiName = "ecer_applicantyominame";
+			public const string ecer_application_parallelprocessinvestigationid_ecer_investigation = "ecer_application_parallelprocessinvestigationid_ecer_investigation";
 			public const string ecer_ApplicationInProgressIntake = "ecer_applicationinprogressintake";
 			public const string ecer_applicationinprogressintakeName = "ecer_applicationinprogressintakename";
 			public const string ecer_AssigntoInvestigator = "ecer_assigntoinvestigator";
 			public const string ecer_AssigntoInvestigatorName = "ecer_assigntoinvestigatorname";
 			public const string ecer_AssigntoInvestigatorYomiName = "ecer_assigntoinvestigatoryominame";
+			public const string ecer_AssigntoSITeamforIntakeReview = "ecer_assigntositeamforintakereview";
+			public const string ecer_assigntositeamforintakereviewName = "ecer_assigntositeamforintakereviewname";
 			public const string ecer_BehaviouralGuidance = "ecer_behaviouralguidance";
 			public const string ecer_behaviouralguidanceName = "ecer_behaviouralguidancename";
 			public const string ecer_CclrOneNineTwoA = "ecer_cclroneninetwoa";
@@ -489,6 +498,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_isregistrantstillemployedName = "ecer_isregistrantstillemployedname";
 			public const string ecer_LawyerInvolvedIntake = "ecer_lawyerinvolvedintake";
 			public const string ecer_lawyerinvolvedintakeName = "ecer_lawyerinvolvedintakename";
+			public const string ecer_legacyinvestigationid = "ecer_legacyinvestigationid";
+			public const string ecer_legacystatusid = "ecer_legacystatusid";
 			public const string ecer_licensing_officers = "ecer_licensing_officers";
 			public const string ecer_licensing_officersName = "ecer_licensing_officersname";
 			public const string ecer_LimitstoConsentAdditionalInformation = "ecer_limitstoconsentadditionalinformation";
@@ -589,6 +600,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_sireportreviewcompleteName = "ecer_sireportreviewcompletename";
 			public const string ecer_SIReviewComplete = "ecer_sireviewcomplete";
 			public const string ecer_sireviewcompleteName = "ecer_sireviewcompletename";
+			public const string ecer_SITeamActiveReview = "ecer_siteamactivereview";
+			public const string ecer_siteamactivereviewName = "ecer_siteamactivereviewname";
+			public const string ecer_SITeamSummaryReview = "ecer_siteamsummaryreview";
+			public const string ecer_siteamsummaryreviewName = "ecer_siteamsummaryreviewname";
 			public const string ecer_SiteContactNameIncident = "ecer_sitecontactnameincident";
 			public const string ecer_SiteNameIncident = "ecer_sitenameincident";
 			public const string ecer_Source = "ecer_source";
@@ -963,6 +978,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_assigntoinvestigator"))
 				{
 					return this.FormattedValues["ecer_assigntoinvestigator"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntositeamforintakereview")]
+		public virtual ecer_YesNoNull? ecer_AssigntoSITeamforIntakeReview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_assigntositeamforintakereview")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_assigntositeamforintakereview", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntositeamforintakereviewname")]
+		public string ecer_assigntositeamforintakereviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_assigntositeamforintakereview"))
+				{
+					return this.FormattedValues["ecer_assigntositeamforintakereview"];
 				}
 				else
 				{
@@ -3854,6 +3901,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyinvestigationid")]
+		public string ecer_legacyinvestigationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyinvestigationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyinvestigationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacystatusid")]
+		public System.Nullable<int> ecer_legacystatusid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_legacystatusid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacystatusid", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_licensing_officers")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_licensing_officers
 		{
@@ -5438,6 +5515,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_siteamactivereview")]
+		public virtual ecer_YesNoNull? ecer_SITeamActiveReview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_siteamactivereview")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_siteamactivereview", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_siteamactivereviewname")]
+		public string ecer_siteamactivereviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_siteamactivereview"))
+				{
+					return this.FormattedValues["ecer_siteamactivereview"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_siteamsummaryreview")]
+		public virtual ecer_YesNoNull? ecer_SITeamSummaryReview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_siteamsummaryreview")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_siteamsummaryreview", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_siteamsummaryreviewname")]
+		public string ecer_siteamsummaryreviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_siteamsummaryreview"))
+				{
+					return this.FormattedValues["ecer_siteamsummaryreview"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitecontactnameincident")]
 		public string ecer_SiteContactNameIncident
 		{
@@ -6280,6 +6421,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_application_parallelprocessinvestigationid_ecer_investigation
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_parallelprocessinvestigationid_ecer_investigation")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Application> ecer_application_parallelprocessinvestigationid_ecer_investigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_parallelprocessinvestigationid_ecer_investigation", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_parallelprocessinvestigationid_ecer_investigation", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_communication_Investigation_ecer_investig
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_Investigation_ecer_investig")]
@@ -6769,7 +6928,7 @@ namespace ECER.Utilities.DataverseSdk.Model
                 var value = p.GetValue(anonymousType, null);
                 var name = p.Name.ToLower();
             
-                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                if (value != null && name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
                 {
                     value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
                     name = name.Remove(name.Length - "enum".Length);

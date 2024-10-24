@@ -86,7 +86,7 @@ import { useApplicationStore } from "@/store/application";
 import { useLoadingStore } from "@/store/loading";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
-import type { ApplicationStage, Wizard as WizardType } from "@/types/wizard";
+import type { ApplicationStage } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
 
 import type { ProfessionalDevelopmentExtended } from "../inputs/EceProfessionalDevelopment.vue";

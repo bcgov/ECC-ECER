@@ -63,13 +63,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
 			public const string ecer_countryofstudy = "ecer_countryofstudy";
+			public const string ecer_CountryofStudyId = "ecer_countryofstudyid";
+			public const string ecer_CountryofStudyIdName = "ecer_countryofstudyidname";
 			public const string ecer_decisiondate = "ecer_decisiondate";
+			public const string ecer_decisionstatus = "ecer_decisionstatus";
+			public const string ecer_decisionstatusName = "ecer_decisionstatusname";
 			public const string ecer_historicaldecision_ApplicationId = "ecer_historicaldecision_ApplicationId";
+			public const string ecer_historicaldecision_CountryofStudyId_ecer_country = "ecer_historicaldecision_CountryofStudyId_ecer_country";
 			public const string ecer_HistoricalDecisionId = "ecer_historicaldecisionid";
 			public const string Id = "ecer_historicaldecisionid";
+			public const string ecer_Institution = "ecer_institution";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_nameofcredential = "ecer_nameofcredential";
 			public const string ecer_programname = "ecer_programname";
+			public const string ecer_YearofCompletion = "ecer_yearofcompletion";
 			public const string ecer_yearofstudy = "ecer_yearofstudy";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -294,6 +301,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_countryofstudyid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CountryofStudyId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_countryofstudyid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_countryofstudyid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_countryofstudyidname")]
+		public string ecer_CountryofStudyIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_countryofstudyid"))
+				{
+					return this.FormattedValues["ecer_countryofstudyid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisiondate")]
 		public System.Nullable<System.DateTime> ecer_decisiondate
 		{
@@ -306,6 +345,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_decisiondate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisionstatus")]
+		public virtual ecer_HistoricalDecisionStatus? ecer_decisionstatus
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_HistoricalDecisionStatus?)(EntityOptionSetEnum.GetEnum(this, "ecer_decisionstatus")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_decisionstatus", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisionstatusname")]
+		public string ecer_decisionstatusName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_decisionstatus"))
+				{
+					return this.FormattedValues["ecer_decisionstatus"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -347,6 +418,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_HistoricalDecisionId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_institution")]
+		public string ecer_Institution
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_institution");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_institution", value);
 			}
 		}
 		
@@ -392,6 +478,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_programname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_yearofcompletion")]
+		public string ecer_YearofCompletion
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_yearofcompletion");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_yearofcompletion", value);
 			}
 		}
 		
@@ -811,6 +912,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// N:1 ecer_historicaldecision_CountryofStudyId_ecer_country
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_countryofstudyid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_historicaldecision_CountryofStudyId_ecer_country")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Country ecer_historicaldecision_CountryofStudyId_ecer_country
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Country>("ecer_historicaldecision_CountryofStudyId_ecer_country", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Country>("ecer_historicaldecision_CountryofStudyId_ecer_country", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// Constructor for populating via LINQ queries given a LINQ anonymous type
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
@@ -823,7 +943,7 @@ namespace ECER.Utilities.DataverseSdk.Model
                 var value = p.GetValue(anonymousType, null);
                 var name = p.Name.ToLower();
             
-                if (name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+                if (value != null && name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
                 {
                     value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
                     name = name.Remove(name.Length - "enum".Length);

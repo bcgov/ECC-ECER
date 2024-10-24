@@ -45,6 +45,10 @@ public class ApplicationMapper : Profile
                opt => opt.MapFrom(src => src.IsOfficialTranscriptRequested))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.IsNameUnverified),
          opt => opt.MapFrom(src => src.IsNameUnverified))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.EducationRecognition),
+               opt => opt.MapFrom(src => src.EducationRecognition))
+      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.EducationOrigin),
+         opt => opt.MapFrom(src => src.EducationOrigin))
       .ForMember(d => d.CampusLocation,
              opts => opts.MapFrom(src => src.CampusLocation))
       .ForMember(d => d.LanguageofInstruction,
