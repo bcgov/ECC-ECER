@@ -25,7 +25,6 @@ const workExperienceReferencesUpsertForm: Form = {
       component: EceTextField,
       props: {
         label: "First Name",
-        rules: [Rules.required("Enter your reference's first name")],
         maxLength: 100,
       },
       cols: {
