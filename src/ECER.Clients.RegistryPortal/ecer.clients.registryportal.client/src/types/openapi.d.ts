@@ -9,32 +9,32 @@ import type {
 declare namespace Components {
     namespace Schemas {
         export interface AddProfessionalDevelopmentResponse {
-            applicationId?: string | null;
+            applicationId: string;
         }
         /**
          * Address
          */
         export interface Address {
-            line1?: string | null;
+            line1: string;
             line2?: string | null;
-            city?: string | null;
-            postalCode?: string | null;
+            city: string;
+            postalCode: string;
             province?: string | null;
-            country?: string | null;
+            country: string;
         }
         export interface Application {
-            id?: string | null;
-            createdOn?: string; // date-time
+            id: string;
+            createdOn: string; // date-time
             submittedOn?: string | null; // date-time
             signedDate?: string | null; // date-time
-            certificationTypes?: CertificationType[] | null;
-            transcripts?: Transcript[] | null;
-            workExperienceReferences?: WorkExperienceReference[] | null;
-            characterReferences?: CharacterReference[] | null;
-            professionalDevelopments?: ProfessionalDevelopment[] | null;
-            status?: ApplicationStatus;
+            certificationTypes: CertificationType[];
+            transcripts: Transcript[];
+            workExperienceReferences: WorkExperienceReference[];
+            characterReferences: CharacterReference[];
+            professionalDevelopments: ProfessionalDevelopment[];
+            status: ApplicationStatus;
             stage?: string | null;
-            applicationType?: ApplicationTypes;
+            applicationType: ApplicationTypes;
             educationOrigin?: EducationOrigin;
             educationRecognition?: EducationRecognition;
             oneYearRenewalExplanationChoice?: OneYearRenewalexplanations;
@@ -44,7 +44,7 @@ declare namespace Components {
         export interface ApplicationConfiguration {
             clientAuthenticationMethods?: {
                 [name: string]: OidcAuthenticationSettings;
-            } | null;
+            };
             version?: string | null;
         }
         export type ApplicationStatus = "Draft" | "Submitted" | "Complete" | "Reconsideration" | "Cancelled" | "Escalated" | "Decision" | "Withdrawn" | "Pending" | "Ready" | "InProgress" | "PendingQueue" | "ReconsiderationDecision" | "AppealDecision";
@@ -56,7 +56,7 @@ declare namespace Components {
             /**
              * The application id
              */
-            id?: string | null;
+            id: string;
         }
         export type ApplicationTypes = "New" | "Renewal" | "LaborMobility";
         /**
@@ -66,19 +66,19 @@ declare namespace Components {
             /**
              * The application id
              */
-            applicationId?: string | null;
+            applicationId: string;
         }
         export interface CertificateCondition {
-            id?: string | null;
-            name?: string | null;
-            details?: string | null;
-            startDate?: string; // date-time
-            endDate?: string; // date-time
-            displayOrder?: number; // int32
+            id: string | null;
+            name: string | null;
+            details: string | null;
+            startDate: string; // date-time
+            endDate: string; // date-time
+            displayOrder: number; // int32
         }
         export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
         export interface Certification {
-            id?: string | null;
+            id: string;
             name?: string | null;
             number?: string | null;
             expiryDate?: string | null; // date-time
@@ -89,97 +89,97 @@ declare namespace Components {
             levelName?: string | null;
             statusCode?: CertificateStatusCode;
             ineligibleReference?: YesNoNull;
-            levels?: CertificationLevel[] | null;
-            files?: CertificationFile[] | null;
-            certificateConditions?: CertificateCondition[] | null;
+            levels: CertificationLevel[];
+            files: CertificationFile[];
+            certificateConditions: CertificateCondition[];
         }
         export interface CertificationFile {
-            id?: string | null;
-            url?: string | null;
-            extention?: string | null;
-            size?: string | null;
-            name?: string | null;
+            id?: string;
+            url: string | null;
+            extention: string | null;
+            size: string | null;
+            name: string | null;
         }
         export interface CertificationLevel {
-            id?: string | null;
+            id: string;
             type?: string | null;
         }
         export interface CertificationLookupRequest {
-            recaptchaToken?: string | null;
-            firstName?: string | null;
-            lastName?: string | null;
-            registrationNumber?: string | null;
-            pageSize?: number; // int32
-            pageNumber?: number; // int32
-            sortField?: string | null;
-            sortDirection?: string | null;
+            recaptchaToken?: string;
+            firstName: string | null;
+            lastName: string | null;
+            registrationNumber: string | null;
+            pageSize: number; // int32
+            pageNumber: number; // int32
+            sortField: string | null;
+            sortDirection: string | null;
         }
         export interface CertificationLookupResponse {
-            id?: string | null;
+            id: string;
             name?: string | null;
             registrationNumber?: string | null;
             statusCode?: CertificateStatusCode;
             levelName?: string | null;
             expiryDate?: string | null; // date-time
             hasConditions?: boolean | null;
-            levels?: CertificationLevel[] | null;
-            certificateConditions?: CertificateCondition[] | null;
+            levels: CertificationLevel[];
+            certificateConditions: CertificateCondition[];
         }
         export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
         export interface CharacterReference {
-            firstName?: string | null;
-            lastName?: string | null;
+            firstName: string;
+            lastName: string;
             phoneNumber?: string | null;
-            emailAddress?: string | null;
+            emailAddress: string;
             id?: string | null;
         }
         export interface CharacterReferenceEvaluation {
-            referenceRelationship?: ReferenceRelationship;
-            referenceRelationshipOther?: string | null;
-            lengthOfAcquaintance?: ReferenceKnownTime;
-            workedWithChildren?: boolean;
-            childInteractionObservations?: string | null;
-            applicantTemperamentAssessment?: string | null;
+            referenceRelationship: ReferenceRelationship;
+            referenceRelationshipOther: string;
+            lengthOfAcquaintance: ReferenceKnownTime;
+            workedWithChildren: boolean;
+            childInteractionObservations: string;
+            applicantTemperamentAssessment: string;
         }
         export type CharacterReferenceStage = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingResponse";
         export interface CharacterReferenceStatus {
-            id?: string | null;
-            status?: CharacterReferenceStage;
-            firstName?: string | null;
-            lastName?: string | null;
-            emailAddress?: string | null;
+            id: string;
+            status: CharacterReferenceStage;
+            firstName: string;
+            lastName: string;
+            emailAddress: string;
             phoneNumber?: string | null;
             willProvideReference?: boolean | null;
         }
         export interface CharacterReferenceSubmissionRequest {
-            token?: string | null;
-            willProvideReference?: boolean;
+            token: string;
+            willProvideReference: boolean;
             referenceContactInformation?: ReferenceContactInformation;
             referenceEvaluation?: CharacterReferenceEvaluation;
-            confirmProvidedInformationIsRight?: boolean;
-            recaptchaToken?: string | null;
+            confirmProvidedInformationIsRight: boolean;
+            recaptchaToken: string;
         }
         export type ChildcareAgeRanges = "From0to12Months" | "From12to24Months" | "From25to30Months" | "From31to36Months" | "Grade1" | "Preschool";
         export type ChildrenProgramType = "Childminding" | "Familychildcare" | "Groupchildcare" | "InHomeMultiAgechildcare" | "MultiAgechildcare" | "Occasionalchildcare" | "Other" | "Preschool";
         export interface Communication {
-            id?: string | null;
-            subject?: string | null;
-            text?: string | null;
-            from?: InitiatedFrom;
-            acknowledged?: boolean;
-            notifiedOn?: string; // date-time
-            status?: CommunicationStatus;
-            doNotReply?: boolean;
+            id: string;
+            subject: string;
+            text: string;
+            from: InitiatedFrom;
+            acknowledged: boolean;
+            notifiedOn: string; // date-time
+            status: CommunicationStatus;
+            doNotReply: boolean;
             latestMessageNotifiedOn?: string | null; // date-time
             isRead?: boolean | null;
-            documents?: CommunicationDocument[] | null;
+            documents: CommunicationDocument[];
         }
         export interface CommunicationDocument {
-            id?: string | null;
-            url?: string | null;
-            extention?: string | null;
-            name?: string | null;
-            size?: string | null;
+            id: string;
+            url: string;
+            extention: string;
+            name: string;
+            size: string;
         }
         /**
          * Save communication response
@@ -188,7 +188,7 @@ declare namespace Components {
             /**
              * The communication id
              */
-            communicationId?: string | null;
+            communicationId: string;
         }
         /**
          * Communication seen request
@@ -197,12 +197,12 @@ declare namespace Components {
             /**
              * The communication ID
              */
-            communicationId?: string | null;
+            communicationId: string;
         }
         export type CommunicationStatus = "Draft" | "NotifiedRecipient" | "Acknowledged" | "Inactive";
         export interface CommunicationsStatus {
-            count?: number; // int32
-            hasUnread?: boolean;
+            count: number; // int32
+            hasUnread: boolean;
         }
         export interface CommunicationsStatusResults {
             status?: CommunicationsStatus;
@@ -210,13 +210,13 @@ declare namespace Components {
         export interface DraftApplication {
             id?: string | null;
             signedDate?: string | null; // date-time
-            certificationTypes?: CertificationType[] | null;
-            transcripts?: Transcript[] | null;
-            workExperienceReferences?: WorkExperienceReference[] | null;
-            characterReferences?: CharacterReference[] | null;
-            professionalDevelopments?: ProfessionalDevelopment[] | null;
+            certificationTypes: CertificationType[];
+            transcripts: Transcript[];
+            workExperienceReferences: WorkExperienceReference[];
+            characterReferences: CharacterReference[];
+            professionalDevelopments: ProfessionalDevelopment[];
             stage?: string | null;
-            applicationType?: ApplicationTypes;
+            applicationType: ApplicationTypes;
             educationOrigin?: EducationOrigin;
             educationRecognition?: EducationRecognition;
             oneYearRenewalExplanationChoice?: OneYearRenewalexplanations;
@@ -231,16 +231,16 @@ declare namespace Components {
             /**
              * The application id
              */
-            applicationId?: string | null;
+            applicationId: string;
         }
         export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
         export type EducationRecognition = "Recognized" | "NotRecognized";
         export interface FileInfo {
-            id?: string | null;
-            url?: string | null;
-            extention?: string | null;
-            name?: string | null;
-            size?: string | null;
+            id?: string;
+            url: string | null;
+            extention: string | null;
+            name: string | null;
+            size: string | null;
         }
         /**
          * file Response
@@ -249,59 +249,59 @@ declare namespace Components {
             /**
              *
              */
-            fileId?: string | null;
-            url?: string | null;
+            fileId: string;
+            url: string;
         }
         export type FiveYearRenewalExplanations = "IliveandworkinacommunitywithoutothercertifiedECEs" | "Iwasunabletofindemploymentinthechildcarefieldtocompletetherequirednumberofhours" | "Iwasunabletoworkduetothestatusofmyvisaorwasunabletoenterthecountryasexpected" | "Iwasunabletoworkinthechildcarefieldforpersonalreasons" | "Other";
         export interface GetMessagesResponse {
-            communications?: Communication[] | null;
-            totalMessagesCount?: number; // int32
+            communications: Communication[] | null;
+            totalMessagesCount: number; // int32
         }
         export interface HttpValidationProblemDetails {
             [name: string]: any;
-            type?: string | null;
-            title?: string | null;
+            type: string | null;
+            title: string | null;
             status?: number | null; // int32
-            detail?: string | null;
-            instance?: string | null;
-            errors?: {
+            detail: string | null;
+            instance: string | null;
+            errors: {
                 [name: string]: string[];
-            } | null;
+            };
         }
         export interface IdentityDocument {
-            id?: string | null;
-            url?: string | null;
-            extention?: string | null;
-            name?: string | null;
-            size?: string | null;
+            id: string;
+            url: string;
+            extention: string;
+            name: string;
+            size: string;
         }
         export type InitiatedFrom = "Investigation" | "PortalUser" | "Registry";
         export type InviteType = "CharacterReference" | "WorkExperienceReference";
         export type LikertScale = "Yes" | "No";
         export interface OidcAuthenticationSettings {
-            authority?: string | null;
-            clientId?: string | null;
-            scope?: string | null;
+            authority: string;
+            clientId: string;
+            scope: string;
             idp?: string | null;
         }
         export type OneYearRenewalexplanations = "Ileftthechildcarefieldforpersonalreasons" | "Iwasunabletocompletetherequiredhoursofprofessionaldevelopment" | "Iwasunabletofindemploymentinthechildcarefieldinmycommunity" | "MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc" | "Other";
         export interface OptOutReferenceRequest {
-            token?: string | null;
-            unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
-            recaptchaToken?: string | null;
+            token: string;
+            unabletoProvideReferenceReasons: UnabletoProvideReferenceReasons;
+            recaptchaToken: string;
         }
         export interface PortalInvitation {
-            id?: string | null;
-            name?: string | null;
-            referenceFirstName?: string | null;
-            referenceLastName?: string | null;
-            referenceEmailAddress?: string | null;
-            applicantFirstName?: string | null;
-            applicantLastName?: string | null;
-            applicationId?: string | null;
-            certificationTypes?: CertificationType[] | null;
-            workexperienceReferenceId?: string | null;
-            characterReferenceId?: string | null;
+            id: string | null;
+            name?: string;
+            referenceFirstName?: string;
+            referenceLastName?: string;
+            referenceEmailAddress?: string;
+            applicantFirstName: string | null;
+            applicantLastName: string | null;
+            applicationId: string | null;
+            certificationTypes: CertificationType[] | null;
+            workexperienceReferenceId: string | null;
+            characterReferenceId: string | null;
             inviteType?: InviteType;
             workExperienceReferenceHours?: number | null; // int32
             workExperienceType?: WorkExperienceTypes;
@@ -314,58 +314,58 @@ declare namespace Components {
          * Previous Name
          */
         export interface PreviousName {
-            firstName?: string | null;
-            lastName?: string | null;
+            firstName: string;
+            lastName: string;
             id?: string | null;
             middleName?: string | null;
             preferredName?: string | null;
             status?: PreviousNameStage;
             source?: PreviousNameSources;
-            documents?: IdentityDocument[] | null;
+            documents: IdentityDocument[];
         }
         export type PreviousNameSources = "NameLog" | "Profile" | "Transcript" | "OutofProvinceCertificate";
         export type PreviousNameStage = "Archived" | "PendingforDocuments" | "ReadyforVerification" | "Unverified" | "Verified";
         export interface ProblemDetails {
             [name: string]: any;
-            type?: string | null;
-            title?: string | null;
+            type: string | null;
+            title: string | null;
             status?: number | null; // int32
-            detail?: string | null;
-            instance?: string | null;
+            detail: string | null;
+            instance: string | null;
         }
         export interface ProfessionalDevelopment {
-            courseName?: string | null;
-            organizationName?: string | null;
-            startDate?: string; // date-time
-            endDate?: string; // date-time
-            numberOfHours?: number; // int32
+            courseName: string;
+            organizationName: string;
+            startDate: string; // date-time
+            endDate: string; // date-time
+            numberOfHours: number; // int32
             id?: string | null;
             organizationContactInformation?: string | null;
             organizationEmailAddress?: string | null;
             instructorName?: string | null;
             courseorWorkshopLink?: string | null;
             status?: ProfessionalDevelopmentStatusCode;
-            deletedFiles?: string[] | null;
-            newFiles?: string[] | null;
-            files?: FileInfo[] | null;
+            deletedFiles: string[];
+            newFiles: string[];
+            files: FileInfo[];
         }
         export interface ProfessionalDevelopmentStatus {
-            id?: string | null;
-            courseName?: string | null;
-            numberOfHours?: number; // int32
+            id: string;
+            courseName: string;
+            numberOfHours: number; // int32
             status?: ProfessionalDevelopmentStatusCode;
         }
         export type ProfessionalDevelopmentStatusCode = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingResponse";
         export interface Province {
-            provinceId?: string | null;
-            provinceName?: string | null;
+            provinceId: string;
+            provinceName: string;
         }
         export interface ReferenceContactInformation {
-            lastName?: string | null;
-            firstName?: string | null;
-            email?: string | null;
-            phoneNumber?: string | null;
-            certificateProvinceOther?: string | null;
+            lastName: string;
+            firstName: string;
+            email: string;
+            phoneNumber: string;
+            certificateProvinceOther: string;
             certificateProvinceId?: string | null;
             certificateNumber?: string | null;
             dateOfBirth?: string | null; // date-time
@@ -379,7 +379,7 @@ declare namespace Components {
             /**
              * The reference id
              */
-            referenceId?: string | null;
+            referenceId: string;
         }
         /**
          * Save draft application request
@@ -400,137 +400,137 @@ declare namespace Components {
             /**
              *
              */
-            communicationId?: string | null;
+            communicationId: string;
         }
         export interface SubmitApplicationResponse {
-            applicationId?: string | null;
+            applicationId: string;
         }
         export interface SubmittedApplicationStatus {
-            id?: string | null;
-            submittedOn?: string; // date-time
-            status?: ApplicationStatus;
-            subStatus?: ApplicationStatusReasonDetail;
-            certificationTypes?: CertificationType[] | null;
+            id: string;
+            submittedOn: string; // date-time
+            status: ApplicationStatus;
+            subStatus: ApplicationStatusReasonDetail;
+            certificationTypes: CertificationType[];
             readyForAssessmentDate?: string | null; // date-time
-            transcriptsStatus?: TranscriptStatus[] | null;
-            workExperienceReferencesStatus?: WorkExperienceReferenceStatus[] | null;
-            characterReferencesStatus?: CharacterReferenceStatus[] | null;
-            professionalDevelopmentsStatus?: ProfessionalDevelopmentStatus[] | null;
+            transcriptsStatus: TranscriptStatus[];
+            workExperienceReferencesStatus: WorkExperienceReferenceStatus[];
+            characterReferencesStatus: CharacterReferenceStatus[];
+            professionalDevelopmentsStatus: ProfessionalDevelopmentStatus[];
             addMoreCharacterReference?: boolean | null;
             addMoreWorkExperienceReference?: boolean | null;
             addMoreProfessionalDevelopment?: boolean | null;
             applicationType?: ApplicationTypes;
         }
         export interface Transcript {
-            educationalInstitutionName?: string | null;
-            programName?: string | null;
-            studentLastName?: string | null;
-            startDate?: string; // date-time
-            endDate?: string; // date-time
-            isNameUnverified?: boolean;
-            educationRecognition?: EducationRecognition;
-            educationOrigin?: EducationOrigin;
-            id?: string | null;
-            campusLocation?: string | null;
-            studentFirstName?: string | null;
-            studentMiddleName?: string | null;
-            studentNumber?: string | null;
-            languageofInstruction?: string | null;
-            isECEAssistant?: boolean;
-            doesECERegistryHaveTranscript?: boolean;
-            isOfficialTranscriptRequested?: boolean;
+            educationalInstitutionName?: string;
+            programName?: string;
+            studentLastName?: string;
+            startDate: string; // date-time
+            endDate: string; // date-time
+            isNameUnverified: boolean;
+            educationRecognition: EducationRecognition;
+            educationOrigin: EducationOrigin;
+            id: string | null;
+            campusLocation: string | null;
+            studentFirstName?: string;
+            studentMiddleName: string | null;
+            studentNumber: string | null;
+            languageofInstruction: string | null;
+            isECEAssistant: boolean;
+            doesECERegistryHaveTranscript: boolean;
+            isOfficialTranscriptRequested: boolean;
         }
         export type TranscriptStage = "Accepted" | "ApplicationSubmitted" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "WaitingforDetails";
         export interface TranscriptStatus {
-            id?: string | null;
-            status?: TranscriptStage;
-            educationalInstitutionName?: string | null;
+            id: string;
+            status: TranscriptStage;
+            educationalInstitutionName: string;
         }
         export type UnabletoProvideReferenceReasons = "Iamunabletoatthistime" | "Idonothavetheinformationrequired" | "Idonotknowthisperson" | "Idonotmeettherequirementstoprovideareference" | "Other";
         export interface UpdateReferenceResponse {
-            referenceId?: string | null;
+            referenceId: string;
         }
         export interface UserInfo {
-            firstName?: string | null;
-            lastName?: string | null;
-            givenName?: string | null;
-            dateOfBirth?: string; // date
-            email?: string | null;
-            phone?: string | null;
+            firstName: string;
+            lastName: string;
+            givenName: string;
+            dateOfBirth: string; // date
+            email: string;
+            phone: string;
             middleName?: string | null;
             registrationNumber?: string | null;
-            isVerified?: boolean;
-            unreadMessagesCount?: number; // int32
+            isVerified: boolean;
+            unreadMessagesCount: number; // int32
             residentialAddress?: /* Address */ Address;
             mailingAddress?: /* Address */ Address;
-            isRegistrant?: boolean;
+            isRegistrant: boolean;
         }
         /**
          * User profile information
          */
         export interface UserProfile {
-            firstName?: string | null;
-            lastName?: string | null;
-            middleName?: string | null;
-            preferredName?: string | null;
-            alternateContactPhone?: string | null;
+            firstName: string | null;
+            lastName: string | null;
+            middleName: string | null;
+            preferredName: string | null;
+            alternateContactPhone: string | null;
             dateOfBirth?: string | null; // date
-            email?: string | null;
-            phone?: string | null;
+            email?: string;
+            phone?: string;
             residentialAddress?: /* Address */ Address;
             mailingAddress?: /* Address */ Address;
-            previousNames?: /* Previous Name */ PreviousName[] | null;
+            previousNames: /* Previous Name */ PreviousName[];
         }
         export type WorkExperienceRefStage = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingforResponse";
         export interface WorkExperienceReference {
-            firstName?: string | null;
-            lastName?: string | null;
-            emailAddress?: string | null;
-            hours?: number; // int32
+            firstName: string;
+            lastName: string;
+            emailAddress: string;
+            hours: number; // int32
             id?: string | null;
             phoneNumber?: string | null;
             type?: WorkExperienceTypes;
         }
         export interface WorkExperienceReferenceCompetenciesAssessment {
             childDevelopment: LikertScale;
-            childDevelopmentReason?: string | null;
+            childDevelopmentReason: string | null;
             childGuidance: LikertScale;
-            childGuidanceReason?: string | null;
+            childGuidanceReason: string | null;
             healthSafetyAndNutrition: LikertScale;
-            healthSafetyAndNutritionReason?: string | null;
+            healthSafetyAndNutritionReason: string | null;
             developAnEceCurriculum: LikertScale;
-            developAnEceCurriculumReason?: string | null;
+            developAnEceCurriculumReason: string | null;
             implementAnEceCurriculum: LikertScale;
-            implementAnEceCurriculumReason?: string | null;
+            implementAnEceCurriculumReason: string | null;
             fosteringPositiveRelationChild: LikertScale;
-            fosteringPositiveRelationChildReason?: string | null;
+            fosteringPositiveRelationChildReason: string | null;
             fosteringPositiveRelationFamily: LikertScale;
-            fosteringPositiveRelationFamilyReason?: string | null;
+            fosteringPositiveRelationFamilyReason: string | null;
             fosteringPositiveRelationCoworker: LikertScale;
-            fosteringPositiveRelationCoworkerReason?: string | null;
+            fosteringPositiveRelationCoworkerReason: string | null;
         }
         export interface WorkExperienceReferenceDetails {
             hours: number; // int32
             workHoursType: WorkHoursType;
             childrenProgramName: string;
             childrenProgramType?: ChildrenProgramType;
-            childrenProgramTypeOther?: string | null;
-            childcareAgeRanges?: ChildcareAgeRanges[] | null;
-            role?: string | null;
-            ageofChildrenCaredFor?: string | null;
+            childrenProgramTypeOther: string | null;
+            childcareAgeRanges: ChildcareAgeRanges[] | null;
+            role: string | null;
+            ageofChildrenCaredFor: string | null;
             startDate: string; // date-time
             endDate: string; // date-time
             referenceRelationship: ReferenceRelationship;
-            referenceRelationshipOther?: string | null;
-            additionalComments?: string | null;
+            referenceRelationshipOther: string | null;
+            additionalComments: string | null;
             workExperienceType: WorkExperienceTypes;
         }
         export interface WorkExperienceReferenceStatus {
-            id?: string | null;
-            status?: WorkExperienceRefStage;
-            firstName?: string | null;
-            lastName?: string | null;
-            emailAddress?: string | null;
+            id: string;
+            status: WorkExperienceRefStage;
+            firstName: string;
+            lastName: string;
+            emailAddress: string;
             phoneNumber?: string | null;
             totalNumberofHoursAnticipated?: number | null; // int32
             totalNumberofHoursApproved?: number | null; // int32
@@ -539,13 +539,13 @@ declare namespace Components {
             type?: WorkExperienceTypes;
         }
         export interface WorkExperienceReferenceSubmissionRequest {
-            token?: string | null;
-            willProvideReference?: boolean;
+            token: string;
+            willProvideReference: boolean;
             referenceContactInformation?: ReferenceContactInformation;
             workExperienceReferenceDetails?: WorkExperienceReferenceDetails;
             workExperienceReferenceCompetenciesAssessment?: WorkExperienceReferenceCompetenciesAssessment;
-            confirmProvidedInformationIsRight?: boolean;
-            recaptchaToken?: string | null;
+            confirmProvidedInformationIsRight: boolean;
+            recaptchaToken: string;
             workExperienceType: WorkExperienceTypes;
         }
         export type WorkExperienceTypes = "Is400Hours" | "Is500Hours";

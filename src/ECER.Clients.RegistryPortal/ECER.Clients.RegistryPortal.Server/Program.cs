@@ -60,6 +60,8 @@ internal class Program
             }
         });
         opts.UseOneOfForPolymorphism();
+        opts.SupportNonNullableReferenceTypes();
+        opts.SchemaFilter<NullablePropertiesSchemaFilter>();
       });
 
       builder.Services.Configure<JsonOptions>(opts => opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
