@@ -96,7 +96,7 @@ export default {
   computed: {
     newPreviousName(): Components.Schemas.PreviousName {
       return {
-        firstName: this.formStore.formData[previousNameForm.inputs.firstName.id],
+        firstName: this.formStore.formData[previousNameForm.inputs.firstName.id] ?? null,
         middleName: this.formStore.formData[previousNameForm.inputs.middleName.id] ?? null,
         lastName: this.formStore.formData[previousNameForm.inputs.lastName.id],
         source: "Profile",

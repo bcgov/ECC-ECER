@@ -118,13 +118,12 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     });
 
     newUser = new UserInfo(
-    newUser.FirstName,
     newUser.LastName,
-    newUser.FirstName,
     newUser.DateOfBirth,
     "updatedemail@test.com",
     newUser.Phone
-    );
+    )
+    { FirstName = newUser.FirstName, GivenName = newUser.FirstName };
     newUser.RegistrationNumber = "1234";
 
     var newUserIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
@@ -190,14 +189,12 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
 
     var userProfile = new Faker<UserInfo>("en_CA")
     .CustomInstantiator(f => new UserInfo(
-        f.Person.FirstName,
         f.Person.LastName,
-        f.Person.FirstName,
         DateOnly.FromDateTime(f.Person.DateOfBirth),
         "fake@email.com",
         f.Person.Phone
         )
-    { MailingAddress = address, ResidentialAddress = address });
+    { FirstName = f.Person.FirstName, GivenName = f.Person.FirstName, MailingAddress = address, ResidentialAddress = address });
 
     return userProfile.Generate();
   }

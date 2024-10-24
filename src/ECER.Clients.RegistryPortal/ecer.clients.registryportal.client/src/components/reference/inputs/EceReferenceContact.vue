@@ -22,7 +22,6 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <v-text-field
             :model-value="modelValue.firstName"
-            :rules="[Rules.required('Enter your first name')]"
             label="First Name"
             autocomplete="given-name"
             variant="outlined"

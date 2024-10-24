@@ -278,14 +278,9 @@ export const useApplicationStore = defineStore("application", {
 
       // Character References step data
       if (characterReferencesId) {
-        if (
-          wizardStore.wizardData[characterReferencesId]?.[0]?.firstName &&
-          wizardStore.wizardData[characterReferencesId]?.[0]?.lastName &&
-          wizardStore.wizardData[characterReferencesId]?.[0]?.emailAddress
-        ) {
+        if (wizardStore.wizardData[characterReferencesId]?.[0]?.lastName && wizardStore.wizardData[characterReferencesId]?.[0]?.emailAddress) {
           this.draftApplication.characterReferences = wizardStore.wizardData[characterReferencesId];
         } else if (
-          wizardStore.wizardData[characterReferencesId]?.[0]?.firstName === "" &&
           wizardStore.wizardData[characterReferencesId]?.[0]?.lastName === "" &&
           wizardStore.wizardData[characterReferencesId]?.[0]?.emailAddress === ""
         ) {
