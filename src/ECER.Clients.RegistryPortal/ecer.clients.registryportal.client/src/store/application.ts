@@ -238,6 +238,8 @@ export const useApplicationStore = defineStore("application", {
     prepareDraftApplicationFromWizard() {
       const wizardStore = useWizardStore();
 
+      // Get the IDs of the form inputs up front, if they are defined in the wizard config. If the ID is not defined, subsequent checks will
+      // be skipped. Thus, the ID must be defined in the wizard config for the data to be set in the draft application object.
       const educationListId = wizardStore.wizardConfig?.steps?.education?.form?.inputs?.educationList?.id;
       const characterReferencesId = wizardStore.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id;
       const workExperienceReferenceListId = wizardStore.wizardConfig?.steps?.referenceList?.form?.inputs?.referenceList?.id;
