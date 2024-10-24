@@ -147,12 +147,7 @@ export default defineComponent({
   methods: {
     handleUpdateCertifiedInCanada(value: ApplicationTypes | null) {
       if (value) {
-        if (value == "LaborMobility") {
-          this.wizardStore.clearTranscriptData();
-          this.applicationStore.$patch({ draftApplication: { applicationType: value } });
-        } else {
-          this.applicationStore.$patch({ draftApplication: { applicationType: value } });
-        }
+        this.applicationStore.$patch({ draftApplication: { applicationType: value } });
       }
     },
     async continueClick() {

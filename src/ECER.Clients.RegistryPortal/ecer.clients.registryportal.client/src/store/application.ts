@@ -80,7 +80,6 @@ export const useApplicationStore = defineStore("application", {
     hasApplication(state): boolean {
       return state.application !== null;
     },
-
     applicationStatus(state): Components.Schemas.ApplicationStatus | undefined {
       return state.application?.status;
     },
@@ -243,9 +242,8 @@ export const useApplicationStore = defineStore("application", {
       this.draftApplication.stage = wizardStore.currentStepStage as ApplicationStage;
 
       // Education step data
-      if (wizardStore.wizardConfig.steps?.education?.form.inputs.educationList.id) {
-        this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
-      }
+      const educationListId = wizardStore.wizardConfig?.steps?.education?.form?.inputs?.educationList?.id;
+      this.draftApplication.transcripts = educationListId ? Object.values(wizardStore.wizardData[educationListId]) : [];
 
       // Work References step data
       if (wizardStore.wizardData.referenceList) {
