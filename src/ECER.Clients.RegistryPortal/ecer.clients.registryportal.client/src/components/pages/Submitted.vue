@@ -21,6 +21,18 @@
       </ul>
     </div>
     <br />
+    <div v-if="draftApplicationHasTranscripts && draftApplicationHasEducationNotRecognized">
+      <h3>Supporting documents</h3>
+      <br />
+      <ul class="ml-10">
+        <li>
+          We'll send you a message soon with a list of additional forms and supporting documentation we need from you because your educational institution is
+          not recognized by the ECE Registry
+        </li>
+        <li>We'll review these documents to help determine whether the course or program is deemed equivalent</li>
+      </ul>
+      <br />
+    </div>
     <h3>References</h3>
     <br />
     <ul class="ml-10">
@@ -73,6 +85,9 @@ export default defineComponent({
   computed: {
     draftApplicationHasTranscripts() {
       return (this.applicationStore.draftApplication.transcripts?.length || 0) > 0;
+    },
+    draftApplicationHasEducationNotRecognized() {
+      return this.applicationStore.draftApplication.transcripts?.some((transcript) => !transcript.educationRecognition);
     },
   },
 });
