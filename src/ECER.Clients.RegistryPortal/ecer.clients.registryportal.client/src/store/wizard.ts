@@ -170,6 +170,15 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
       });
     },
+    clearTranscriptData(): void {
+      const educationListId = this.wizardConfig?.steps?.education?.form?.inputs?.educationList?.id;
+
+      if (educationListId) {
+        const wizardData = { ...this.wizardData };
+        delete wizardData[educationListId];
+        this.wizardData = wizardData;
+      }
+    },
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };
     },
