@@ -182,6 +182,12 @@ export default defineComponent({
           });
 
           this.lookupCertificationStore.setCertificationSearchResults(data);
+
+          //reset grecaptcha after success, token cannot be reused
+          this.recaptchaToken = "";
+          window.grecaptcha.reset();
+          await this.$nextTick();
+          (this.$refs.lookupForm as VForm).resetValidation();
         }
       } catch (e) {
         console.error(e);
