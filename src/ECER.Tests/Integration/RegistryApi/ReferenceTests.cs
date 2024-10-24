@@ -24,12 +24,12 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     // Generating random data for ReferenceContactInformation
     var referenceContactInfo = new ReferenceContactInformation(
         faker.Person.LastName,
-        faker.Person.FirstName,
         "Reference_Contact@test.gov.bc.ca",
         faker.Phone.PhoneNumber(),
         faker.Address.City()
     )
     {
+      FirstName = faker.Person.FirstName,
       CertificateProvinceId = "98fbb5c5-68da-ee11-904c-000d3af4645f" // Random Canadian province abbreviation
     };
 
@@ -63,12 +63,12 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     // Generating random data for ReferenceContactInformation
     var referenceContactInfo = new ReferenceContactInformation(
         faker.Person.LastName,
-        faker.Person.FirstName,
         "Reference_Contact@test.gov.bc.ca",
         faker.Phone.PhoneNumber(),
         faker.Address.City()
     )
     {
+      FirstName = faker.Person.FirstName,
       CertificateProvinceId = "98fbb5c5-68da-ee11-904c-000d3af4645f" // Random Canadian province abbreviation
     };
 
@@ -134,12 +134,12 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
     // Generating random data for ReferenceContactInformation
     var referenceContactInfo = new ReferenceContactInformation(
         faker.Person.LastName,
-        faker.Person.FirstName,
         "Reference_Contact@test.gov.bc.ca",
         faker.Phone.PhoneNumber(),
         faker.Address.City()
     )
     {
+      FirstName = faker.Person.FirstName,
       CertificateProvinceId = "98fbb5c5-68da-ee11-904c-000d3af4645f" // Random Canadian province abbreviation
     };
 

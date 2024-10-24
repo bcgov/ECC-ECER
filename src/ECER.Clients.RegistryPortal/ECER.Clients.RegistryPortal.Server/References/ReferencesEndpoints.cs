@@ -96,8 +96,9 @@ public class ReferencesEndpoints : IRegisterEndpoints
 }
 
 public record CharacterReferenceSubmissionRequest(string Token, bool WillProvideReference, ReferenceContactInformation ReferenceContactInformation, CharacterReferenceEvaluation ReferenceEvaluation, bool ConfirmProvidedInformationIsRight, [Required] string RecaptchaToken);
-public record ReferenceContactInformation([Required] string LastName, [Required] string FirstName, [Required] string Email, [Required] string PhoneNumber, string CertificateProvinceOther)
+public record ReferenceContactInformation([Required] string LastName, [Required] string Email, [Required] string PhoneNumber, string CertificateProvinceOther)
 {
+  public string? FirstName { get; set; }
   public string? CertificateProvinceId { get; set; }
   public string? CertificateNumber { get; set; }
   public DateTime? DateOfBirth { get; set; }

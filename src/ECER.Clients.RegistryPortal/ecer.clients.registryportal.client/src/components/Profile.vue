@@ -20,7 +20,7 @@
         ]"
       ></LinkBar>
     </v-row>
-    <v-row v-for="(prev, index) in userStore.unverifiedPreviousNames" :key="index">
+    <v-row v-for="(prev, index) in [...(userStore.pendingforDocumentsPreviousNames || []), ...(userStore.unverifiedPreviousNames || [])]" :key="index">
       <v-container>
         <Callout type="warning" :title="`Previous name: ${fullName(prev)}`">
           <div class="d-flex flex-column ga-3 mt-3">
@@ -205,7 +205,7 @@ export default defineComponent({
     formatPhoneNumber,
     areObjectsEqual,
     fullName(name: Components.Schemas.PreviousName) {
-      return name.middleName ? `${name.firstName} ${name.middleName} ${name.lastName}` : `${name.firstName} ${name.lastName}`;
+      return `${name.firstName ?? ""} ${name.middleName ?? ""} ${name.lastName}`.trim();
     },
   },
 });

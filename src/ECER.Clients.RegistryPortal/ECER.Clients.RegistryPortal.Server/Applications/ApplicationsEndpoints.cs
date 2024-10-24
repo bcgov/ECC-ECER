@@ -384,8 +384,9 @@ public record Transcript([Required] string EducationalInstitutionName, [Required
   public bool DoesECERegistryHaveTranscript { get; set; }
   public bool IsOfficialTranscriptRequested { get; set; }
 }
-public record WorkExperienceReference([Required] string FirstName, [Required] string LastName, [Required] string EmailAddress, [Required] int Hours)
+public record WorkExperienceReference([Required] string LastName, [Required] string EmailAddress, [Required] int Hours)
 {
+  public string? FirstName { get; set; }
   public string? Id { get; set; }
   public string? PhoneNumber { get; set; }
   public WorkExperienceTypes? Type { get; set; }
@@ -484,8 +485,9 @@ public enum EducationRecognition
   NotRecognized
 }
 
-public record CharacterReference([Required] string FirstName, [Required] string LastName, string? PhoneNumber, [Required] string EmailAddress)
+public record CharacterReference([Required] string LastName, string? PhoneNumber, [Required] string EmailAddress)
 {
+  public string? FirstName { get; set; }
   public string? Id { get; set; }
 }
 
