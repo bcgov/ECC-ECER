@@ -176,6 +176,10 @@ export const useWizardStore = defineStore("wizard", {
     setCurrentStep(stage: ApplicationStage | ReferenceStage): void {
       const item = Object.values(this.wizardConfig.steps).findIndex((step) => step.stage === stage) + 1;
       this.step = item;
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     },
     incrementStep(): void {
       if (this.step < Object.keys(this.wizardConfig.steps).length) {
