@@ -170,7 +170,6 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
       });
     },
-
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };
     },
