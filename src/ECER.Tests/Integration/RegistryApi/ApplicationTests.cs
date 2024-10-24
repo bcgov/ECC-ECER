@@ -561,8 +561,9 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   private CharacterReference CreateCharacterReference()
   {
     return new CharacterReference(
-      faker.Name.FirstName(), $"{Fixture.TestRunId}{faker.Name.LastName()}", faker.Phone.PhoneNumber(), "Character_Reference@test.gov.bc.ca"
-    );
+      $"{Fixture.TestRunId}{faker.Name.LastName()}", faker.Phone.PhoneNumber(), "Character_Reference@test.gov.bc.ca"
+    )
+    { FirstName = faker.Name.FirstName() };
   }
 
   private ProfessionalDevelopment CreateProfessionalDevelopment()
@@ -584,9 +585,10 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   private WorkExperienceReference CreateWorkExperienceReference()
   {
     return new WorkExperienceReference(
-       faker.Name.FirstName(), faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(10, 150)
+       faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(10, 150)
     )
     {
+      FirstName = faker.Name.FirstName(),
       PhoneNumber = faker.Phone.PhoneNumber()
     };
   }
@@ -594,9 +596,10 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   private WorkExperienceReference Create400HoursTypeWorkExperienceReference()
   {
     return new WorkExperienceReference(
-       faker.Name.FirstName(), faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(10, 150)
+        faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(10, 150)
     )
     {
+      FirstName = faker.Name.FirstName(),
       PhoneNumber = faker.Phone.PhoneNumber(),
       Type = WorkExperienceTypes.Is400Hours
     };

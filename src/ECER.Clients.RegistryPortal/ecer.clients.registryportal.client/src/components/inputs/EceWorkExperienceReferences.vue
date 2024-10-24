@@ -12,15 +12,7 @@
           color="primary"
           maxlength="100"
         ></v-text-field>
-        <v-text-field
-          v-model="firstName"
-          :rules="[Rules.required('Enter your reference\'s first name')]"
-          label="Reference First Name"
-          variant="outlined"
-          color="primary"
-          maxlength="100"
-          class="my-8"
-        ></v-text-field>
+        <v-text-field v-model="firstName" label="Reference First Name" variant="outlined" color="primary" maxlength="100" class="my-8"></v-text-field>
         <v-text-field
           v-model="email"
           :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"

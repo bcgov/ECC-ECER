@@ -44,7 +44,7 @@
     <v-col cols="12" md="8" lg="6" xl="4">
       <v-text-field
         v-model="firstName"
-        :rules="[Rules.required('Enter your reference\'s first name'), Rules.noSpecialCharactersContactName()]"
+        :rules="[Rules.noSpecialCharactersContactName()]"
         label="First name"
         variant="outlined"
         color="primary"

@@ -17,11 +17,7 @@ export const useUserStore = defineStore("user", {
     hasUserProfile: (state): boolean => state.userProfile !== null,
     preferredName: (state): string => state.userProfile?.preferredName ?? state.userInfo?.firstName ?? "",
     legalName: (state): string => {
-      if (state.userProfile?.middleName) {
-        return `${state.userProfile?.firstName} ${state.userProfile?.middleName} ${state.userProfile?.lastName}`;
-      } else {
-        return `${state.userProfile?.firstName} ${state.userProfile?.lastName}`;
-      }
+      return `${state.userProfile?.firstName ?? ""} ${state.userProfile?.middleName ?? ""} ${state.userProfile?.lastName}`;
     },
     unverifiedPreviousNames: (state): Components.Schemas.PreviousName[] => {
       return state.userProfile?.previousNames?.filter((name) => name.status === "Unverified") ?? [];
@@ -38,7 +34,7 @@ export const useUserStore = defineStore("user", {
     firstName: (state): string => state.userInfo?.firstName ?? "",
     middleName: (state): string => state.userInfo?.middleName ?? "",
     lastName: (state): string => state.userInfo?.lastName ?? "",
-    fullName: (state): string => (state.userInfo?.lastName ? `${state.userInfo?.firstName} ${state.userInfo?.lastName}` : `${state.userInfo?.firstName}`),
+    fullName: (state): string => `${state.userInfo?.firstName ?? ""} ${state.userInfo?.middleName ?? ""} ${state.userInfo?.lastName}`,
     email: (state): string => state.userInfo?.email ?? "",
     phoneNumber: (state): string => state.userProfile?.phone ?? "",
     isRegistrant: (state): boolean => state.userInfo?.isRegistrant ?? false,

@@ -79,10 +79,12 @@ export default {
     const router = useRouter();
     const route = useRoute();
     function fullName(name: Components.Schemas.PreviousName) {
-      return name.middleName ? `${name.firstName} ${name.middleName} ${name.lastName}` : `${name.firstName} ${name.lastName}`;
+      return `${name.firstName ?? ""} ${name.middleName ?? ""} ${name.lastName}`;
     }
     const previousNameId = route.params.previousNameId.toString();
-    const foundName = userStore.unverifiedPreviousNames.find((item) => item.id === previousNameId);
+    const foundName = [...(userStore.pendingforDocumentsPreviousNames || []), ...(userStore.unverifiedPreviousNames || [])].find(
+      (item) => item.id === previousNameId,
+    );
     const previousName = fullName(foundName!);
 
     return { loadingStore, alertStore, userStore, router, previousName, previousNameId };

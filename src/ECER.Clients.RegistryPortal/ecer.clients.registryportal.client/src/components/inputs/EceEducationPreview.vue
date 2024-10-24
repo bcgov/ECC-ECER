@@ -123,13 +123,7 @@ export default defineComponent({
   methods: {
     formatDate,
     studentFullName(education: Components.Schemas.Transcript) {
-      let fullName = education.studentFirstName;
-      if (education.studentMiddleName) {
-        fullName += ` ${education.studentMiddleName}`;
-      }
-      fullName += ` ${education.studentLastName}`;
-
-      return fullName;
+      return `${education.studentFirstName ?? ""} ${education.studentMiddleName ?? ""} ${education.studentLastName}`;
     },
     isProgramRecognized(education: Components.Schemas.Transcript) {
       return education.educationRecognition === "Recognized" ? "Yes" : "No";
