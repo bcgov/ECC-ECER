@@ -6,7 +6,7 @@ const apiResultHandler = new ApiResultHandler();
 
 const getProfile = async (): Promise<Components.Schemas.UserProfile | null> => {
   const client = await getClient();
-  const response = await apiResultHandler.execute({ request: client.profile_get(), key: "profile_get" });
+  const response = await apiResultHandler.execute({ request: client.profile_get(), key: "profile_get", suppressErrorToast: true });
   return response?.data ?? null;
 };
 

@@ -13,7 +13,7 @@ const getUserInfo = async (): Promise<Components.Schemas.UserInfo | null> => {
 
 const postUserInfo = async (user: Components.Schemas.UserInfo): Promise<boolean> => {
   const client = await getClient();
-  const response = apiResultHandler.execute({ request: client.userinfo_post({}, user), key: "userinfo_post" });
+  const response = await apiResultHandler.execute({ request: client.userinfo_post({}, user), key: "userinfo_post" });
   return response != null;
 };
 
