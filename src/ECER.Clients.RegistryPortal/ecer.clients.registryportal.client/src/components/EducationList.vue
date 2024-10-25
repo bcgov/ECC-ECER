@@ -4,32 +4,32 @@
     <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithIteAndSne'">
       <!--prettier-ignore-->
       <p class="mb-3">
-        You must have completed <a href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"> program(s) recognized by the ECE Registry</a> in:
+        You must have completed:
       </p>
       <ul class="ml-10">
-        <li>Basic early childhood education</li>
-        <li>Infant and toddler educator training</li>
-        <li>Special needs early childhood educator training</li>
+        <li>Basic early childhood education training program</li>
+        <li>Infant and toddler educator training program</li>
+        <li>Special needs early childhood educator training program</li>
       </ul>
     </v-col>
     <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithIte'">
       <!--prettier-ignore-->
       <p class="mb-3">
-        You must have completed <a href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"> program(s) recognized by the ECE Registry</a> in:
+        You must have completed:
       </p>
       <ul class="ml-10">
-        <li>Basic early childhood education</li>
-        <li>Infant and toddler educator training</li>
+        <li>Basic early childhood education training program</li>
+        <li>Infant and toddler educator training program</li>
       </ul>
     </v-col>
     <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithSne'">
       <!--prettier-ignore-->
       <p class="mb-3">
-        You must have completed <a href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"> program(s) recognized by the ECE Registry</a> in:
+        You must have completed:
       </p>
       <ul class="ml-10">
-        <li>Basic early childhood education</li>
-        <li>Infant and toddler educator training</li>
+        <li>Basic early childhood education training program</li>
+        <li>Special needs early childhood educator training program</li>
       </ul>
     </v-col>
 
@@ -37,44 +37,23 @@
     <v-col v-if="applicationStore.draftApplicationFlow === 'IteAndSneRegistrant'">
       <!--prettier-ignore-->
       <p class="mb-3">
-        You must have completed <a href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"> program(s) recognized by the ECE Registry</a> in:
+        You must have completed:
       </p>
       <ul class="ml-10 mb-3">
-        <li>Infant and toddler educator training</li>
-        <li>Special needs early childhood educator training</li>
+        <li>Infant and toddler educator training program</li>
+        <li>Special needs early childhood educator training program</li>
       </ul>
     </v-col>
     <v-col v-if="applicationStore.draftApplicationFlow === 'IteRegistrant'">
-      <p class="mb-3">
-        You must have completed an infant and toddler educator training program. It must be a
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          programs recognized by the ECE Registry
-        </a>
-      </p>
+      <p class="mb-3">You must have completed an infant and toddler educator training program.</p>
     </v-col>
     <v-col v-if="applicationStore.draftApplicationFlow === 'SneRegistrant'">
-      <p class="mb-3">
-        You must have completed a special needs early childhood educator training program. It must be a
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          programs recognized by the ECE Registry
-        </a>
-      </p>
+      <p class="mb-3">You must have completed a special needs early childhood educator training program.</p>
     </v-col>
 
     <!-- Five year or One year variation -->
     <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYear' || applicationStore.draftApplicationFlow === 'OneYear'">
-      <p>
-        You must have completed a basic early childhood education program. It must be a
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          program recognized by the ECE Registry
-        </a>
-      </p>
+      <p>You must have completed a basic early childhood education program.</p>
     </v-col>
 
     <!-- EceAssistant -->
@@ -85,17 +64,7 @@
         <li>Child health, safety, and nutrition</li>
         <li>Child development</li>
       </ul>
-      <p class="mb-3">The course must:</p>
-      <ul class="ml-10">
-        <li>Have been completed within the last 5 years</li>
-        <li>
-          <a
-            href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-          >
-            Be a program recognized by the ECE Registry
-          </a>
-        </li>
-      </ul>
+      <p>It must have been completed in the last 5 years</p>
     </v-col>
 
     <!-- renewal flows -->

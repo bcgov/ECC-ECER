@@ -30,8 +30,8 @@ spec:
         checksum/configmap: {{ .Values.env | toYaml | sha256sum }}
         {{- end }}
         {{- if gt (len .Values.files) 0 }}
-        {{- range $src, $dst :=.Values.files }}
-        checksum/{{ base $dst | replace "." "-" }}: {{ $.Files.Get $src | toYaml | sha256sum }}
+        {{- range $file :=.Values.files }}
+        checksum/{{ base $file.dst | replace "." "-" }}: {{ $.Files.Get $file.src | toYaml | sha256sum }}
         {{- end -}}
         {{- end }}
         {{- if gt (len .Values.secrets) 0 }}
@@ -69,15 +69,15 @@ spec:
             {{- if .Values.volumeMounts }}
             {{ .Values.volumeMounts | toYaml | nindent 12 }}
             {{- end -}}
-            {{- range $src, $dst :=.Values.secretFiles }}
+            {{- range $file :=.Values.secretFiles }}
             - name: {{ $.name}}-secret-files
-              mountPath: {{ $dst }}
-              subPath: {{ base $dst }}
+              mountPath: {{ $file.dst }}
+              subPath: {{ base $file.dst }}
             {{- end }}
-            {{- range $src, $dst :=.Values.files }}
+            {{- range $file :=.Values.files }}
             - name: {{ $.name}}-files
-              mountPath: {{ $dst }}
-              subPath: {{ base $dst }}
+              mountPath: {{ $file.dst }}
+              subPath: {{ base $file.dst }}
             {{- end -}}
           {{- end }}
 
