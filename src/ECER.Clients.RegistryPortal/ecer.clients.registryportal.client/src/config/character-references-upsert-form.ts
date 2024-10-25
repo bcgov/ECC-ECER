@@ -25,7 +25,7 @@ const characterReferencesUpsertForm: Form = {
       component: EceTextField,
       props: {
         label: "First Name",
-        rules: [Rules.required("Enter your reference's first name"), Rules.noSpecialCharactersContactName()],
+        rules: [Rules.noSpecialCharactersContactName()],
         maxLength: 100,
       },
       cols: {

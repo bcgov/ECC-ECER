@@ -80,7 +80,6 @@ export const useApplicationStore = defineStore("application", {
     hasApplication(state): boolean {
       return state.application !== null;
     },
-
     applicationStatus(state): Components.Schemas.ApplicationStatus | undefined {
       return state.application?.status;
     },
@@ -239,24 +238,30 @@ export const useApplicationStore = defineStore("application", {
     prepareDraftApplicationFromWizard() {
       const wizardStore = useWizardStore();
 
+      // Get the IDs of the form inputs up front, if they are defined in the wizard config. If the ID is not defined, subsequent checks will
+      // be skipped. Thus, the ID must be defined in the wizard config for the data to be set in the draft application object.
+      const educationListId = wizardStore.wizardConfig?.steps?.education?.form?.inputs?.educationList?.id;
+      const characterReferencesId = wizardStore.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id;
+      const workExperienceReferenceListId = wizardStore.wizardConfig?.steps?.referenceList?.form?.inputs?.referenceList?.id;
+      const professionalDevelopmentsId = wizardStore.wizardConfig?.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id;
+      const oneYearRenewalExplanationId = wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id;
+      const oneYearRenewalExplanationOtherId = wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id;
+      const fiveYearRenewalExplanationId = wizardStore.wizardConfig.steps?.fiveYearRenewalExplanation?.form?.inputs?.fiveYearRenewalExplanation?.id;
+      const fiveYearRenewalExplanationOtherId = wizardStore.wizardConfig.steps?.fiveYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id;
+
       // Set wizard stage to the current step stage
       this.draftApplication.stage = wizardStore.currentStepStage as ApplicationStage;
 
       // Education step data
-      if (wizardStore.wizardConfig.steps?.education?.form.inputs.educationList.id) {
-        this.draftApplication.transcripts = Object.values(wizardStore.wizardData[wizardStore.wizardConfig.steps.education.form.inputs.educationList.id]);
-      }
+      this.draftApplication.transcripts = educationListId ? Object.values(wizardStore.wizardData[educationListId]) : [];
 
       // Work References step data
-      if (wizardStore.wizardData.referenceList) {
-        this.draftApplication.workExperienceReferences = Object.values(wizardStore.wizardData.referenceList);
-      }
+      this.draftApplication.workExperienceReferences = workExperienceReferenceListId
+        ? Object.values(wizardStore.wizardData[workExperienceReferenceListId])
+        : [];
 
       // One year renewal explanation letter
-      if (
-        wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id &&
-        wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id
-      ) {
+      if (oneYearRenewalExplanationId && oneYearRenewalExplanationOtherId) {
         this.draftApplication.oneYearRenewalExplanationChoice =
           wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.oneYearRenewalExplanation.id];
         this.draftApplication.renewalExplanationOther =
@@ -264,10 +269,7 @@ export const useApplicationStore = defineStore("application", {
       }
 
       // Five year renewal explanation letter
-      if (
-        wizardStore.wizardConfig.steps?.fiveYearRenewalExplanation?.form?.inputs?.fiveYearRenewalExplanation?.id &&
-        wizardStore.wizardConfig.steps?.fiveYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id
-      ) {
+      if (fiveYearRenewalExplanationId && fiveYearRenewalExplanationOtherId) {
         this.draftApplication.fiveYearRenewalExplanationChoice =
           wizardStore.wizardData[wizardStore.wizardConfig.steps.fiveYearRenewalExplanation.form.inputs.fiveYearRenewalExplanation.id];
         this.draftApplication.renewalExplanationOther =
@@ -275,22 +277,20 @@ export const useApplicationStore = defineStore("application", {
       }
 
       // Character References step data
-      if (
-        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName &&
-        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName &&
-        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress
-      ) {
-        this.draftApplication.characterReferences =
-          wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id];
-      } else if (
-        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName === "" &&
-        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName === "" &&
-        wizardStore.wizardData[wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress === ""
-      ) {
+      if (characterReferencesId) {
+        if (wizardStore.wizardData[characterReferencesId]?.[0]?.lastName && wizardStore.wizardData[characterReferencesId]?.[0]?.emailAddress) {
+          this.draftApplication.characterReferences = wizardStore.wizardData[characterReferencesId];
+        } else if (
+          wizardStore.wizardData[characterReferencesId]?.[0]?.lastName === "" &&
+          wizardStore.wizardData[characterReferencesId]?.[0]?.emailAddress === ""
+        ) {
+          this.draftApplication.characterReferences = [];
+        }
+      } else {
         this.draftApplication.characterReferences = [];
       }
 
-      if (wizardStore.wizardData.professionalDevelopments) {
+      if (professionalDevelopmentsId && wizardStore.wizardData.professionalDevelopments) {
         //remove all newFilesWithData elements and add them to newFiles as ID's
         const professionalDevelopmentCleaned = wizardStore.wizardData.professionalDevelopments.map((item: ProfessionalDevelopmentExtended) => {
           if (item?.newFilesWithData) {
@@ -313,6 +313,8 @@ export const useApplicationStore = defineStore("application", {
         });
 
         this.draftApplication.professionalDevelopments = professionalDevelopmentCleaned;
+      } else {
+        this.draftApplication.professionalDevelopments = [];
       }
     },
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
