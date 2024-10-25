@@ -7,18 +7,18 @@
   </v-row>
   <v-row>
     <v-col cols="12">
-      <ECEHeader title="Education for Infant and Toddler Educator (ITE)" />
-      <p>
-        You must have completed an infant and toddler educator training program. It must be a
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          program recognized by the ECE Registry.
-        </a>
-      </p>
+      <ECEHeader title="Education for Infant and Toddler Educator (ITE)"></ECEHeader>
+      <p>You must have completed an infant and toddler educator training program.</p>
+      <br />
+      <p>The program must be either:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Recognized by the ECE Registry</li>
+        <li>Deemed equivalent by the ECE Registry</li>
+      </ul>
       <br />
       <p>
-        You’ll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
         Registry.
       </p>
     </v-col>
