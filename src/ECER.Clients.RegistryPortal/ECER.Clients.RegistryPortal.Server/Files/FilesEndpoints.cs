@@ -118,6 +118,14 @@ public class FilesEndpoints : IRegisterEndpoints
       {
         return TypedResults.BadRequest(new ProblemDetails { Title = "No file uploaded or file is empty" });
       }
+
+      // Check if the file extension is allowed
+      var fileExtension = Path.GetExtension(file.FileName)?.ToLowerInvariant();
+      if (string.IsNullOrEmpty(fileExtension) || !uploaderOptions.Value.AllowedFileTypes.Contains(fileExtension))
+      {
+        return TypedResults.BadRequest(new ProblemDetails { Title = "Unsupported file type", Detail = $"Supported file types: {string.Join(", ", uploaderOptions.Value.AllowedFileTypes)}" });
+      }
+
       var fileProperties = new FileProperties() { Classification = classification, Tags = tags };
       var sanitizedFilename = Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(file.FileName));
 

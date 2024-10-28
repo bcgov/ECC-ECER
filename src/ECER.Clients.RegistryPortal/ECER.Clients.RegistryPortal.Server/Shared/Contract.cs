@@ -11,6 +11,7 @@ public record PaginationSettings
 public record UploaderSettings
 {
   public string TempFolderName { get; set; } = string.Empty;
+  public IEnumerable<string> AllowedFileTypes { get; set; } = Array.Empty<string>();
 }
 
 public record RecaptchaSettings
