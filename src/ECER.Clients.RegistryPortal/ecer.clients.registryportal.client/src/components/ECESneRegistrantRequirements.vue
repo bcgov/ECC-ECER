@@ -18,7 +18,7 @@
       </ul>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
         Registry.
       </p>
     </v-col>
