@@ -2,6 +2,7 @@
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Certifications;
 using Shouldly;
+using System.Drawing.Printing;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.RegistryApi;
@@ -61,7 +62,7 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
       lastName = fullName;
     }
 
-    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { LastName = lastName, PageSize = lookUpPageSize };
+    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word(), lookUpPageSize, 1) { LastName = lastName };
     var CertificationsResponse = await Host.Scenario(_ =>
     {
       _.Post.Json(certificationLookupRequest).ToUrl($"/api/certifications/lookup");
@@ -100,7 +101,7 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
 
     var certificateNumber = CertificationsId[0].Number;
 
-    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { RegistrationNumber = certificateNumber };
+    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word(), 10, 1) { RegistrationNumber = certificateNumber };
     var CertificationsResponse = await Host.Scenario(_ =>
     {
       _.Post.Json(certificationLookupRequest).ToUrl($"/api/certifications/lookup");

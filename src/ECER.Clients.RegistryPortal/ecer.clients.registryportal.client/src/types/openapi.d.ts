@@ -106,11 +106,11 @@ declare namespace Components {
         }
         export interface CertificationLookupRequest {
             recaptchaToken?: string;
+            pageSize: number; // int32
+            pageNumber: number; // int32
             firstName: string | null;
             lastName: string | null;
             registrationNumber: string | null;
-            pageSize: number; // int32
-            pageNumber: number; // int32
             sortField: string | null;
             sortDirection: string | null;
         }
@@ -685,7 +685,7 @@ declare namespace Paths {
         export type RequestBody = Components.Schemas.CertificationLookupRequest;
         namespace Responses {
             export type $200 = Components.Schemas.CertificationLookupResponse[];
-            export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
             export interface $404 {
             }
         }

@@ -5,6 +5,7 @@ using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.RegistryPortal.Server.Certifications;
 
@@ -31,7 +32,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
 
     endpointRouteBuilder.MapPost("/api/certifications/lookup", async Task<Results<Ok<IEnumerable<CertificationLookupResponse>>, BadRequest<ProblemDetails>, NotFound>> (CertificationLookupRequest request, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
     {
-      var recaptchaResult = await messageBus.Send(new Managers.Registry.Contract.Recaptcha.VerifyRecaptchaCommand(request.RecaptchaToken), ct);
+      var recaptchaResult = await messageBus.Send(new Managers.Registry.Contract.Recaptcha.VerifyRecaptchaCommand(request.RecaptchaToken!), ct);
 
       if (!recaptchaResult.Success)
       {
@@ -89,13 +90,11 @@ public record CertificationLookupResponse(string Id)
   public IEnumerable<CertificateCondition> CertificateConditions { get; set; } = Array.Empty<CertificateCondition>();
 }
 
-public record CertificationLookupRequest(string RecaptchaToken)
+public record CertificationLookupRequest([Required] string RecaptchaToken, [Required] int PageSize, [Required] int PageNumber)
 {
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? RegistrationNumber { get; set; }
-  public int PageSize { get; set; }
-  public int PageNumber { get; set; }
   public string? SortField { get; set; }
   public string? SortDirection { get; set; }
 }
