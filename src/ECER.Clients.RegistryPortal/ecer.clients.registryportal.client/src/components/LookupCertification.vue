@@ -7,12 +7,8 @@
       <v-col class="text-break">
         To work as an Early Childhood Educator (ECE) or ECE Assistant in a licensed child care facility in B.C. people must be certified by the ECE Registry.
         Visit our website
-        <a
-          target="_blank"
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator"
-        >
-          www.gov.bc.ca/earlychildhoodeducators
-        </a>
+        <!-- prettier-ignore -->
+        <a target="_blank" href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator">www.gov.bc.ca/earlychildhoodeducators</a>
         to learn more about the ECE Registry, certificate types, or status information.
         <p class="mt-3">
           To find an ECE, you can search by name or registration number. The registration number is on an ECE's certificate that's posted on the wall where they
@@ -86,6 +82,7 @@
           :items="lookupCertificationStore.certificationSearchResults"
           :items-per-page="-1"
           :mobile="mobile"
+          style="font-size: 16px"
           must-sort
         >
           <template #item.name="{ item }">

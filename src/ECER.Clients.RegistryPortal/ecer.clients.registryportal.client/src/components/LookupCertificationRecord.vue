@@ -9,9 +9,9 @@
     </a>
     <div>
       <h2 class="mt-7">{{ lookupCertificationStore.certificationRecord?.name }}</h2>
-      <p class="font-weight-bold mt-4">ECE Registration Number</p>
+      <p class="font-weight-bold mt-4">ECE registration number</p>
       <span>{{ lookupCertificationStore.certificationRecord?.registrationNumber }}</span>
-      <p class="font-weight-bold mt-4">Registration Status</p>
+      <p class="font-weight-bold mt-4">Registration status</p>
       <v-row class="mt-2" no-gutters>
         <v-col cols="12" md="auto" class="mr-2 mb-2">
           <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
