@@ -62,15 +62,23 @@ export default defineComponent({
         top: 0,
         behavior: "smooth",
       });
-      // mark unread messages from Registry as read
+      // mark unread messages as read
       if (this.messageStore.currentThread != null) {
-        const unreadMessage = this.messageStore.currentThread?.filter((message) => !message.isRead && message.from == "Registry");
-        if (unreadMessage) {
-          for (const message of unreadMessage) {
-            const { error } = await markMessageAsRead(message?.id ?? "");
-            if (error) {
-              this.alertStore.setFailureAlert("Failed to mark message as read");
-            }
+        const unreadMessages = this.messageStore.currentThread?.filter((message) => !message.isRead);
+
+        if (unreadMessages && unreadMessages.length > 0) {
+          try {
+            const markReadPromises = unreadMessages.map((message) => markMessageAsRead(message?.id ?? ""));
+
+            const results = await Promise.all(markReadPromises);
+
+            results.forEach((result) => {
+              if (result.error) {
+                this.alertStore.setFailureAlert("Failed to mark message as read");
+              }
+            });
+          } catch (error) {
+            this.alertStore.setFailureAlert("An error occurred while marking messages as read");
           }
         }
       }
