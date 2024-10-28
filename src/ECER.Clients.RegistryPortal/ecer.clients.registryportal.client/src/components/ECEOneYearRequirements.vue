@@ -35,7 +35,7 @@
       </ul>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
         Registry.
       </p>
     </v-col>
@@ -43,7 +43,7 @@
   <v-row>
     <v-col>
       <ECEHeader title="Character reference" />
-      <p>You will need to provide a character reference. You’ll enter their name and email. We’ll contact them later after you submit your application.</p>
+      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
       <br />
       <p>Make sure you choose a person that:</p>
       <br />
