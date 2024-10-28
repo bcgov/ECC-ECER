@@ -54,6 +54,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public OneYearRenewalexplanations? OneYearRenewalExplanationChoice { get; set; }
   public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
   public string? RenewalExplanationOther { get; set; }
+  public ApplicationOrigin? Origin { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested, string StudentFirstName, string StudentLastName, bool IsNameUnverified, EducationRecognition EducationRecognition, EducationOrigin EducationOrigin)
@@ -121,6 +122,13 @@ public enum ApplicationStatus
   PendingQueue,
   ReconsiderationDecision,
   AppealDecision
+}
+
+public enum ApplicationOrigin
+{
+  Manual,
+  Oracle,
+  Portal
 }
 
 public enum ApplicationStatusReasonDetail

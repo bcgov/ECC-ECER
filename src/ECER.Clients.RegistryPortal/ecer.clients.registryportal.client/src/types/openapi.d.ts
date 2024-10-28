@@ -40,6 +40,7 @@ declare namespace Components {
             oneYearRenewalExplanationChoice?: OneYearRenewalexplanations;
             fiveYearRenewalExplanationChoice?: FiveYearRenewalExplanations;
             renewalExplanationOther?: string | null;
+            origin?: ApplicationOrigin;
         }
         export interface ApplicationConfiguration {
             clientAuthenticationMethods?: {
@@ -47,6 +48,7 @@ declare namespace Components {
             } | null;
             version?: string | null;
         }
+        export type ApplicationOrigin = "Manual" | "Oracle" | "Portal";
         export type ApplicationStatus = "Draft" | "Submitted" | "Complete" | "Reconsideration" | "Cancelled" | "Escalated" | "Decision" | "Withdrawn" | "Pending" | "Ready" | "InProgress" | "PendingQueue" | "ReconsiderationDecision" | "AppealDecision";
         export type ApplicationStatusReasonDetail = "Actioned" | "BeingAssessed" | "Certified" | "Denied" | "ForReview" | "InvestigationsConsultationNeeded" | "MoreInformationRequired" | "OperationSupervisorManagerofCertificationsConsultationNeeded" | "PendingDocuments" | "ProgramAnalystReview" | "ReadyforAssessment" | "ReceivedPending" | "ReceivePhysicalTranscripts" | "SupervisorConsultationNeeded" | "ValidatingIDs";
         /**
@@ -127,10 +129,10 @@ declare namespace Components {
         }
         export type CertificationType = "EceAssistant" | "OneYear" | "FiveYears" | "Ite" | "Sne";
         export interface CharacterReference {
-            firstName?: string | null;
             lastName?: string | null;
             phoneNumber?: string | null;
             emailAddress?: string | null;
+            firstName?: string | null;
             id?: string | null;
         }
         export interface CharacterReferenceEvaluation {
@@ -362,10 +364,10 @@ declare namespace Components {
         }
         export interface ReferenceContactInformation {
             lastName?: string | null;
-            firstName?: string | null;
             email?: string | null;
             phoneNumber?: string | null;
             certificateProvinceOther?: string | null;
+            firstName?: string | null;
             certificateProvinceId?: string | null;
             certificateNumber?: string | null;
             dateOfBirth?: string | null; // date-time
@@ -451,12 +453,12 @@ declare namespace Components {
             referenceId?: string | null;
         }
         export interface UserInfo {
-            firstName?: string | null;
             lastName?: string | null;
-            givenName?: string | null;
             dateOfBirth?: string; // date
             email?: string | null;
             phone?: string | null;
+            firstName?: string | null;
+            givenName?: string | null;
             middleName?: string | null;
             registrationNumber?: string | null;
             isVerified?: boolean;
@@ -483,10 +485,10 @@ declare namespace Components {
         }
         export type WorkExperienceRefStage = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingforResponse";
         export interface WorkExperienceReference {
-            firstName?: string | null;
             lastName?: string | null;
             emailAddress?: string | null;
             hours?: number; // int32
+            firstName?: string | null;
             id?: string | null;
             phoneNumber?: string | null;
             type?: WorkExperienceTypes;
@@ -1479,6 +1481,7 @@ export type AddProfessionalDevelopmentResponse = Components.Schemas.AddProfessio
 export type Address = Components.Schemas.Address;
 export type Application = Components.Schemas.Application;
 export type ApplicationConfiguration = Components.Schemas.ApplicationConfiguration;
+export type ApplicationOrigin = Components.Schemas.ApplicationOrigin;
 export type ApplicationStatus = Components.Schemas.ApplicationStatus;
 export type ApplicationStatusReasonDetail = Components.Schemas.ApplicationStatusReasonDetail;
 export type ApplicationSubmissionRequest = Components.Schemas.ApplicationSubmissionRequest;

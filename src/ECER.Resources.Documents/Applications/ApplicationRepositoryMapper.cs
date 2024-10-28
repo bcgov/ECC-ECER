@@ -22,6 +22,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForSourceMember(s => s.AddMoreCharacterReference, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.AddMoreWorkExperienceReference, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.AddMoreProfessionalDevelopment, opts => opts.DoNotValidate())
+       .ForSourceMember(s => s.Origin, opts => opts.DoNotValidate())
        .ForMember(d => d.ecer_ApplicationId, opts => opts.MapFrom(s => s.Id))
        .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
        .ForMember(d => d.ecer_IsECEAssistant, opts => opts.MapFrom(s => s.CertificationTypes.Contains(CertificationType.EceAssistant)))
@@ -53,7 +54,8 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.ReadyForAssessmentDate, opts => opts.MapFrom(s => s.ecer_ReadyforAssessmentDate))
        .ForMember(d => d.AddMoreCharacterReference, opts => opts.MapFrom(s => s.ecer_AddMoreCharacterReference))
        .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.MapFrom(s => s.ecer_AddMoreWorkExperienceReference))
-       .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.MapFrom(s => s.ecer_AddMoreProfessionalDevelopment));
+       .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.MapFrom(s => s.ecer_AddMoreProfessionalDevelopment))
+       .ForMember(d => d.Origin, opts => opts.MapFrom(s => s.ecer_Origin));
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
         .ConstructUsing((s, _) =>
@@ -66,6 +68,10 @@ internal class ApplicationRepositoryMapper : Profile
           if (s.ecer_isSNE.GetValueOrDefault()) types.Add(CertificationType.Sne);
           return types;
         });
+
+    CreateMap<ApplicationOrigin, ecer_Origin>()
+        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+        .ReverseMap();
 
     CreateMap<ApplicationStatus, ecer_Application_StatusCode>()
         .ConvertUsingEnumMapping(opts => opts.MapByName(true))
