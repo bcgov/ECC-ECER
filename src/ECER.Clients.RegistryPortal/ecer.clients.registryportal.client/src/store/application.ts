@@ -242,7 +242,7 @@ export const useApplicationStore = defineStore("application", {
       // be skipped. Thus, the ID must be defined in the wizard config for the data to be set in the draft application object.
       const educationListId = wizardStore.wizardConfig?.steps?.education?.form?.inputs?.educationList?.id;
       const characterReferencesId = wizardStore.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id;
-      const workExperienceReferenceListId = wizardStore.wizardConfig?.steps?.referenceList?.form?.inputs?.referenceList?.id;
+      const workExperienceReferenceListId = wizardStore.wizardConfig?.steps?.workReference?.form?.inputs?.referenceList?.id;
       const professionalDevelopmentsId = wizardStore.wizardConfig?.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id;
       const oneYearRenewalExplanationId = wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs?.oneYearRenewalExplanation?.id;
       const oneYearRenewalExplanationOtherId = wizardStore.wizardConfig.steps?.oneYearRenewalExplanation?.form?.inputs?.renewalExplanationOther?.id;
