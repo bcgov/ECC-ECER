@@ -87,7 +87,7 @@ export default defineComponent({
       return (this.applicationStore.draftApplication.transcripts?.length || 0) > 0;
     },
     draftApplicationHasEducationNotRecognized() {
-      return this.applicationStore.draftApplication.transcripts?.some((transcript) => !transcript.educationRecognition);
+      return this.applicationStore.draftApplication.transcripts?.some((transcript) => transcript.educationRecognition === "NotRecognized");
     },
   },
 });
