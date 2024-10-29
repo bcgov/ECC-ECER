@@ -23,6 +23,13 @@ interface EceTextFieldProps {
   maxLength?: number;
 }
 
+interface EceDateInputProps {
+  rules: readonly ValidationRule$1[];
+  label: string;
+  disabled?: boolean;
+  readonly?: boolean;
+}
+
 interface EceRadioFieldProps {
   rules: readonly ValidationRule$1[];
   options: EceRadioOption[];
