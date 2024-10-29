@@ -18,8 +18,8 @@
         </li>
       </ul>
       <p>
-        You’ll need to request an official transcript from your educational institution. It'll need to be sent directly to the ECE Registry from the educational
-        institute.
+        You'll need to request an official transcript from your educational institution. It'll need to be sent directly to the ECE Registry from the educational
+        institution.
       </p>
     </div>
   </v-col>
@@ -51,7 +51,7 @@
       </ul>
       <p>The reference must:</p>
       <ul class="ml-10">
-        <li>Be able to confirm you’ve completed the hours</li>
+        <li>Be able to confirm you've completed the hours</li>
         <li>Be a co-worker, supervisor, or a parent/guardian of a child you worked with</li>
         <li>Not be the same person you provide as a character reference</li>
       </ul>

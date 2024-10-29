@@ -25,17 +25,17 @@
   <v-row v-if="!isLaborMobility">
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
-      <p>
-        You must have completed a basic early childhood education program. It must be
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          a program recognized by the ECE Registry
-        </a>
-      </p>
+      <p>You must have completed a basic early childhood education program.</p>
+      <br />
+      <p>The program must be either:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Recognized by the ECE Registry</li>
+        <li>Deemed equivalent by the ECE Registry</li>
+      </ul>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
         Registry.
       </p>
     </v-col>
@@ -43,7 +43,7 @@
   <v-row>
     <v-col>
       <ECEHeader title="Character reference" />
-      <p>You will need to provide a character reference. You’ll enter their name and email. We’ll contact them later after you submit your application.</p>
+      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
       <br />
       <p>Make sure you choose a person that:</p>
       <br />

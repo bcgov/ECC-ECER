@@ -25,7 +25,7 @@
   <v-row v-if="!isLaborMobility">
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
-      <p>You must have completed an early childhood education course in at least one of the following:</p>
+      <p>You must have completed an early childhood education course in either:</p>
       <br />
       <ul class="ml-10">
         <li>Child guidance</li>
@@ -33,21 +33,15 @@
         <li>Child development</li>
       </ul>
       <br />
-      <p>The course must:</p>
+      <p>It must have been completed within the last 5 years and be part of a program that's either:</p>
       <br />
       <ul class="ml-10">
-        <li>Have been completed within the last 5 years</li>
-        <li>
-          <a
-            href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-          >
-            Be part of a program recognized by the ECE Registry
-          </a>
-        </li>
+        <li>Recognized by the ECE Registry</li>
+        <li>Deemed equivalent by the ECE Registry</li>
       </ul>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
         Registry.
       </p>
     </v-col>

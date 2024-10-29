@@ -8,18 +8,18 @@
   </v-row>
   <v-row v-if="!certificationStore.latestIsEceFiveYear">
     <v-col>
-      <ECEHeader title="Education Information"></ECEHeader>
-      <p>
-        You must have completed a basic early childhood education program. It must be
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          a program recognized by the ECE Registry
-        </a>
-      </p>
+      <ECEHeader title="Education information"></ECEHeader>
+      <p>You must have completed a basic early childhood education program.</p>
+      <br />
+      <p>The program must be either:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Recognized by the ECE Registry</li>
+        <li>Deemed equivalent by the ECE Registry</li>
+      </ul>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
         Registry.
       </p>
     </v-col>

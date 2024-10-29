@@ -25,17 +25,17 @@
   <v-row v-if="!isLaborMobility">
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
-      <p>
-        You must have completed a basic early childhood education program. It must be
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          a program recognized by the ECE Registry
-        </a>
-      </p>
+      <p>You must have completed a basic early childhood education program.</p>
+      <br />
+      <p>The program must be either:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Recognized by the ECE Registry</li>
+        <li>Deemed equivalent by the ECE Registry</li>
+      </ul>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
         Registry.
       </p>
     </v-col>
@@ -43,17 +43,17 @@
   <v-row v-if="applicationStore.isDraftCertificateTypeIte && !isLaborMobility">
     <v-col>
       <ECEHeader title="Education for Infant and Toddler Educator (ITE)"></ECEHeader>
-      <p>
-        You must have completed an infant and toddler educator training program. It must be a
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          a program recognized by the ECE Registry
-        </a>
-      </p>
+      <p>You must have completed an infant and toddler educator training program.</p>
+      <br />
+      <p>The program must be either:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Recognized by the ECE Registry</li>
+        <li>Deemed equivalent by the ECE Registry</li>
+      </ul>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
         Registry.
       </p>
     </v-col>
@@ -61,17 +61,17 @@
   <v-row v-if="applicationStore.isDraftCertificateTypeSne && !isLaborMobility">
     <v-col>
       <ECEHeader title="Education for Special Needs Educator (SNE)"></ECEHeader>
-      <p>
-        You must have completed a special needs early childhood educator training. It must be a program recognized by the ECE Registry.
-        <a
-          href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-        >
-          a program recognized by the ECE Registry
-        </a>
-      </p>
+      <p>You must have completed a special needs early childhood educator training program.</p>
+      <br />
+      <p>The program must be either:</p>
+      <br />
+      <ul class="ml-10">
+        <li>Recognized by the ECE Registry</li>
+        <li>Deemed equivalent by the ECE Registry</li>
+      </ul>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institute to the ECE
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
         Registry.
       </p>
     </v-col>
