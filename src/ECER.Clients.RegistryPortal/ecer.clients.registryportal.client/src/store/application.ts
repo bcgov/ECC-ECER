@@ -83,6 +83,9 @@ export const useApplicationStore = defineStore("application", {
     applicationStatus(state): Components.Schemas.ApplicationStatus | undefined {
       return state.application?.status;
     },
+    applicationOrigin(state): Components.Schemas.ApplicationOrigin | undefined {
+      return state.application?.origin;
+    },
     workExperienceReferenceById: (state) => {
       return (referenceId: string) => state.application?.workExperienceReferences?.find((ref) => ref.id === referenceId);
     },

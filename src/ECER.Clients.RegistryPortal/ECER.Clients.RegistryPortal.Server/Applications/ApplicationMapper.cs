@@ -81,6 +81,7 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.AddMoreCharacterReference, opts => opts.Ignore())
       .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.Ignore())
       .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.Ignore())
+      .ForMember(d => d.Origin, opts => opts.Ignore())
       .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.Transcripts))
       .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.WorkExperienceReferences))
       .ForMember(d => d.ProfessionalDevelopments, opts => opts.MapFrom(s => s.ProfessionalDevelopments))

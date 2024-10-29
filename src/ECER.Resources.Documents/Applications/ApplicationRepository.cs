@@ -87,6 +87,8 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     await UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     await UpdateTranscripts(ecerApplication, ecerTranscripts);
 
+    ecerApplication.ecer_Origin = ecer_Origin.Portal; // Set application origin to "Portal"
+
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
   }

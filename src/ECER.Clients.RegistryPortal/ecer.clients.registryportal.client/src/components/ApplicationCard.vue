@@ -6,18 +6,19 @@
         {{ subTitle }}
       </p>
     </v-card-item>
-    <v-card-actions class="ma-4">
+
+    <div class="d-flex flex-row justify-start ga-3 flex-wrap ma-4">
       <!-- Application status Draft -->
-      <div v-if="applicationStore.applicationStatus === 'Draft'" class="d-flex flex-row justify-start ga-3 flex-wrap">
+      <v-card-actions v-if="applicationStore.applicationStatus === 'Draft' && applicationStore.applicationOrigin !== 'Manual'">
         <v-btn size="large" variant="flat" color="warning" @click="router.push('/application')">
           <v-icon size="large" icon="mdi-arrow-right" />
           Open application
         </v-btn>
         <v-btn class="ma-0" size="large" variant="outlined" color="white" @click="$emit('cancel-application')">Cancel application</v-btn>
-      </div>
+      </v-card-actions>
 
       <!-- Application status Submitted, Ready, In Progress, Pending Queue -->
-      <div
+      <v-card-actions
         v-if="
           applicationStore.applicationStatus === 'Submitted' ||
           applicationStore.applicationStatus === 'Ready' ||
@@ -26,22 +27,21 @@
           applicationStore.applicationStatus === 'Pending' ||
           applicationStore.applicationStatus === 'Escalated'
         "
-        class="d-flex flex-row justify-start ga-3 flex-wrap"
       >
         <v-btn variant="flat" size="large" color="warning" @click="handleManageApplication">
           <v-icon size="large" icon="mdi-arrow-right" />
           Manage Application
         </v-btn>
-      </div>
+      </v-card-actions>
 
       <!-- No application found -->
-      <div v-if="applicationStore.applicationStatus === undefined" class="d-flex flex-row justify-start ga-3 flex-wrap">
+      <v-card-actions v-if="applicationStore.applicationStatus === undefined">
         <v-btn variant="flat" size="large" color="warning" @click="handleStartNewApplication">
           <v-icon size="large" icon="mdi-arrow-right" />
           Apply now
         </v-btn>
-      </div>
-    </v-card-actions>
+      </v-card-actions>
+    </div>
   </v-card>
 </template>
 
