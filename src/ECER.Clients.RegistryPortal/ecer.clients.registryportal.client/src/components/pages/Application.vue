@@ -60,7 +60,7 @@
                   Save and continue
                 </v-btn>
                 <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
-                  Submit Application
+                  Submit application
                 </v-btn>
               </v-col>
             </v-row>
