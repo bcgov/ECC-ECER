@@ -27,7 +27,7 @@
       <p class="font-weight-bold mt-4">Certificate expiry date</p>
       <span>{{ formatDate(lookupCertificationStore.certificationRecord?.expiryDate || "", "LLLL d, yyyy") }}</span>
       <div v-if="lookupCertificationStore.certificationRecord?.hasConditions">
-        <p class="font-weight-bold mt-7 mb-2">Certificate Terms and Conditions</p>
+        <p class="font-weight-bold mt-7 mb-2">Certificate terms and conditions</p>
         <ul class="ml-10">
           <li v-for="(condition, index) in sortedCertificateConditions" :key="index">
             {{ condition.details }}
