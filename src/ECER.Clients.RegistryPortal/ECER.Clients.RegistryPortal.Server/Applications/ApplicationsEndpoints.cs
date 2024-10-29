@@ -337,6 +337,7 @@ public record DraftApplication
   public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
   public string? RenewalExplanationOther { get; set; }
   public DateTime? CreatedOn { get; set; }
+  public ApplicationOrigin? Origin { get; set; }
 }
 
 public record Application
@@ -358,6 +359,7 @@ public record Application
   public OneYearRenewalexplanations? OneYearRenewalExplanationChoice { get; set; }
   public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
   public string? RenewalExplanationOther { get; set; }
+  public ApplicationOrigin? Origin { get; set; }
 }
 public record ProfessionalDevelopment([Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] int NumberOfHours)
 {
@@ -444,6 +446,13 @@ public enum ApplicationStatus
   PendingQueue,
   ReconsiderationDecision,
   AppealDecision
+}
+
+public enum ApplicationOrigin
+{
+  Manual,
+  Oracle,
+  Portal
 }
 
 public enum ApplicationStatusReasonDetail
