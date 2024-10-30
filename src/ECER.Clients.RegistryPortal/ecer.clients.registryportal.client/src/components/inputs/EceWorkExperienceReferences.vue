@@ -45,7 +45,7 @@
         ></v-text-field>
 
         <v-row justify="start" class="ml-1">
-          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">Save Reference</v-btn>
+          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">Save reference</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
         </v-row>
       </v-form>
@@ -100,7 +100,7 @@
             No additional work references may be added. You provided the required hours. After you submit your application, we’ll email the work references to
             complete their reference. If needed, we'll contact you for additional information.
           </p>
-          <v-btn v-else prepend-icon="mdi-plus" rounded="lg" color="alternate" :disabled="isDisabled" @click="handleAddReference">Add References</v-btn>
+          <v-btn v-else prepend-icon="mdi-plus" rounded="lg" color="alternate" :disabled="isDisabled" @click="handleAddReference">Add reference</v-btn>
         </v-col>
       </v-row>
       <!-- this prevents form from proceeding if rules are not met -->
@@ -262,7 +262,7 @@ export default defineComponent({
         this.$emit("update:model-value", updatedModelValue);
 
         // Set success alert message
-        const message = this.modelValue[clientId] ? "You have successfully edited your Reference." : "You have successfully added your Reference.";
+        const message = this.modelValue[clientId] ? "You have successfully edited your reference." : "You have successfully added your reference.";
         this.alertStore.setSuccessAlert(message);
 
         // Change mode to list
