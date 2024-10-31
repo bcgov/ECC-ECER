@@ -64,7 +64,7 @@ import UploadFileItem, { type FileItem } from "@/components/UploadFileItem.vue";
 import { useAlertStore } from "@/store/alert";
 import * as Functions from "@/utils/functions";
 
-interface FileUploaderData {
+export interface FileUploaderData {
   selectedFiles: FileItem[];
   showErrorBanner: boolean;
   errorBannerMessage: string;

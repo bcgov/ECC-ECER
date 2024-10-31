@@ -10,10 +10,12 @@
       <a v-if="isLatestCertificateActive" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
 
       <p class="font-weight-bold mt-8">Expires on</p>
-      <div class="d-flex flex-row align-center mt-2 ga-4">
+      <div class="d-flex flex-column flex-md-row align-start align-md-center mt-2 ga-4">
         <p>{{ formattedExpiryDate }}</p>
-        <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
-        <v-chip v-if="certificationStore.latestHasTermsAndConditions" color="grey-darkest" variant="outlined" size="small">Has Terms and Conditions</v-chip>
+        <div class="d-flex ga-4">
+          <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
+          <v-chip v-if="certificationStore.latestHasTermsAndConditions" color="grey-darkest" variant="outlined" size="small">Has Terms and Conditions</v-chip>
+        </div>
       </div>
     </v-card-item>
   </v-card>

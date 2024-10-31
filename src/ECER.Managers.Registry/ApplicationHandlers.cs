@@ -61,6 +61,7 @@ public class ApplicationHandlers(
         throw new InvalidOperationException($"User already has a draft application with id '{existingDraftApplication.Id}'");
       }
     }
+    request.Application.Origin = Contract.Applications.ApplicationOrigin.Portal; // Set application origin to "Portal"
     var applicationId = await applicationRepository.SaveApplication(mapper.Map<Resources.Documents.Applications.Application>(request.Application)!, cancellationToken);
     return applicationId;
   }

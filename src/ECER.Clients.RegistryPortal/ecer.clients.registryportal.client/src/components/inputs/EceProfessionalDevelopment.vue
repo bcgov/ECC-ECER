@@ -617,8 +617,10 @@ export default defineComponent({
       }
     },
     validateDates() {
-      (this.$refs.startDateInput as VInput).validate();
-      (this.$refs.endDateInput as VInput).validate();
+      if (this.startDate && this.endDate) {
+        (this.$refs.startDateInput as VInput).validate();
+        (this.$refs.endDateInput as VInput).validate();
+      }
     },
   },
 });
