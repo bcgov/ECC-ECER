@@ -393,8 +393,10 @@ export default defineComponent({
       }
     },
     validateDates() {
-      (this.$refs.startDateInput as VInput).validate();
-      (this.$refs.endDateInput as VInput).validate();
+      if (this.professionalDevelopment.startDate && this.professionalDevelopment.endDate) {
+        (this.$refs.startDateInput as VInput).validate();
+        (this.$refs.endDateInput as VInput).validate();
+      }
     },
     handleFileUpdate(filesArray: FileItem[]) {
       this.professionalDevelopment.areAttachedFilesValid = true;
