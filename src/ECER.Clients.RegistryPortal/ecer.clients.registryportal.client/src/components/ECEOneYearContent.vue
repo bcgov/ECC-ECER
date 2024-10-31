@@ -7,7 +7,7 @@
           Year certification.
         </p>
         <br />
-        <p>You must have completed a basic early childhood education program. You will only be able to renew this certification once.</p>
+        <p>You must have completed a basic early childhood education training program. You will only be able to renew this certification once.</p>
       </v-col>
     </v-row>
   </v-container>

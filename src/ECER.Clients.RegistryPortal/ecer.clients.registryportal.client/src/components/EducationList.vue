@@ -1,7 +1,9 @@
 <template>
   <v-row>
     <!-- Five year variations Ite + Sne -->
-    <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithIteAndSne'">
+    <v-col
+      v-if="applicationStore.draftApplicationFlow === 'FiveYearWithIteAndSne' || applicationStore.draftApplicationFlow === 'FiveYearWithIteAndSneRegistrant'"
+    >
       <!--prettier-ignore-->
       <p class="mb-3">
         You must have completed:
@@ -12,7 +14,7 @@
         <li>Special needs early childhood educator training program</li>
       </ul>
     </v-col>
-    <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithIte'">
+    <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithIte' || applicationStore.draftApplicationFlow === 'FiveYearWithIteRegistrant'">
       <!--prettier-ignore-->
       <p class="mb-3">
         You must have completed:
@@ -22,7 +24,7 @@
         <li>Infant and toddler educator training program</li>
       </ul>
     </v-col>
-    <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithSne'">
+    <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYearWithSne' || applicationStore.draftApplicationFlow === 'FiveYearWithSneRegistrant'">
       <!--prettier-ignore-->
       <p class="mb-3">
         You must have completed:
@@ -52,8 +54,14 @@
     </v-col>
 
     <!-- Five year or One year variation -->
-    <v-col v-if="applicationStore.draftApplicationFlow === 'FiveYear' || applicationStore.draftApplicationFlow === 'OneYear'">
-      <p>You must have completed a basic early childhood education program.</p>
+    <v-col
+      v-if="
+        applicationStore.draftApplicationFlow === 'FiveYear' ||
+        applicationStore.draftApplicationFlow === 'OneYear' ||
+        applicationStore.draftApplicationFlow === 'FiveYearRegistrant'
+      "
+    >
+      <p>You must have completed a basic early childhood education training program.</p>
     </v-col>
 
     <!-- EceAssistant -->
