@@ -10,7 +10,7 @@
       <a v-if="isLatestCertificateActive" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
 
       <p class="font-weight-bold mt-8">Expires on</p>
-      <div class="d-flex flex-column flex-md-row align-start align-md-center mt-2 ga-4">
+      <div class="d-flex flex-column flex-sm-row align-start align-sm-center mt-2 ga-4">
         <p>{{ formattedExpiryDate }}</p>
         <div class="d-flex ga-4">
           <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
