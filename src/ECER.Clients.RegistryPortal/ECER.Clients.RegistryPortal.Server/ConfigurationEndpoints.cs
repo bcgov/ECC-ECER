@@ -16,7 +16,6 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       await Task.CompletedTask;
       var configuration = ctx.RequestServices.GetRequiredService<IConfiguration>();
       var appConfig = configuration.Get<ApplicationConfiguration>()!;
-      appConfig.Version = ctx.RequestServices.GetRequiredService<IConfiguration>().GetValue<string>("VERSION");
       return TypedResults.Ok(appConfig);
     }).WithOpenApi("Returns the UI initial configuration", string.Empty, "configuration_get");
 
@@ -40,10 +39,9 @@ public class ConfigurationEndpoints : IRegisterEndpoints
 
 #pragma warning disable CA2227 // Collection properties should be read only
 
-public class ApplicationConfiguration
+public record ApplicationConfiguration
 {
   public Dictionary<string, OidcAuthenticationSettings> ClientAuthenticationMethods { get; set; } = [];
-  public string? Version { get; set; }
 }
 
 #pragma warning restore CA2227 // Collection properties should be read only

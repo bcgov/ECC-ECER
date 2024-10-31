@@ -67,6 +67,8 @@ jobs:
           context: ${{ inputs.IMAGE_CONTEXT }}
           build-args: |
             "VERSION=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}"
+            "TIMESTAMP=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.created'] }}"
+            "COMMIT=${{ github.sha }}"
           file: ${{ inputs.IMAGE_FILE }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
