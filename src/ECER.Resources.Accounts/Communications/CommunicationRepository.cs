@@ -96,10 +96,13 @@ internal class CommunicationRepository : ICommunicationRepository
 
     if (communication == null) throw new InvalidOperationException($"Communication '{communicationId}' not found");
 
-    communication.ecer_DateAcknowledged = DateTime.UtcNow;
-    communication.ecer_Acknowledged = true;
-    communication.ecer_AreAllRead = true;
-    communication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
+    if (communication.ecer_InitiatedFrom != ecer_InitiatedFrom.PortalUser)
+    {
+      communication.ecer_DateAcknowledged = DateTime.UtcNow;
+      communication.ecer_Acknowledged = true;
+      communication.ecer_AreAllRead = true;
+      communication.StatusCode = ecer_Communication_StatusCode.Acknowledged;
+    }
 
     if (communication.ecer_ParentCommunicationid != null)
     {
