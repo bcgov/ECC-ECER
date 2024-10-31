@@ -15,12 +15,12 @@
       </v-card-title>
     </template>
     <template #append>
-      <v-tooltip text="Edit Reference" location="top">
+      <v-tooltip text="Edit reference" location="top">
         <template #activator="{ props }">
           <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editReference" />
         </template>
       </v-tooltip>
-      <v-tooltip text="Delete Reference" location="top">
+      <v-tooltip text="Delete reference" location="top">
         <template #activator="{ props }">
           <v-btn v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteReference" />
         </template>

@@ -216,6 +216,7 @@ export default defineComponent({
       getUserInfo(),
       getProfile(),
     ]);
+    this.dataNotFetched = false;
 
     if (this.userInfo !== null) {
       this.userStore.setUserInfo(this.userInfo);
@@ -225,6 +226,7 @@ export default defineComponent({
     }
   },
   data: () => ({
+    dataNotFetched: true,
     showCancelDialog: false,
     drawer: null as boolean | null | undefined,
     applications: null as Application[] | null | undefined,
@@ -251,6 +253,7 @@ export default defineComponent({
     },
     showLoading(): boolean {
       return (
+        this.dataNotFetched ||
         this.loadingStore.isLoading("profile_get") ||
         this.loadingStore.isLoading("userinfo_get") ||
         this.loadingStore.isLoading("certification_get") ||

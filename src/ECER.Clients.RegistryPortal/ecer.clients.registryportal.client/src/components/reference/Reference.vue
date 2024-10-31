@@ -49,7 +49,7 @@
               color="primary"
               @click="handleSubmit"
             >
-              Submit Reference
+              Submit reference
             </v-btn>
             <v-btn v-else rounded="lg" variant="flat" color="primary" @click="handleContinue">Continue</v-btn>
           </v-col>
