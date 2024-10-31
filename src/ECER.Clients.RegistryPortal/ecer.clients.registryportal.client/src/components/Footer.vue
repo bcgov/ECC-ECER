@@ -27,17 +27,49 @@
       </div>
 
       <v-divider class="border-opacity-100 w-100 my-6"></v-divider>
-      <p class="small text-black">© 2024 Government of British Columbia</p>
+      <div class="w-100 justify-space-between d-flex">
+        <p class="small text-black align-self-center">© 2024 Government of British Columbia</p>
+        <v-btn @click="handleShowVersionModal" class="align-self-center" flat icon="mdi-information-outline" size="x-small"></v-btn>
+      </div>
     </v-container>
   </v-footer>
+
+  <ConfirmationDialog
+    :title="'Version Information'"
+    :show="showVersionDialog"
+    @cancel="showVersionDialog = false"
+    @accept="showVersionDialog = false"
+    :has-cancel-button="false"
+    :accept-button-text="'Close'"
+  >
+    <template #confirmation-text>
+      <div class="d-flex flex-column ga-3 my-6">
+        <p>
+          Version:
+          <b>{{ version }}</b>
+        </p>
+        <p>
+          Timestamp:
+          <b>{{ formattedTimestamp }}</b>
+        </p>
+        <p>
+          Commit:
+          <b>{{ commit }}</b>
+        </p>
+      </div>
+    </template>
+  </ConfirmationDialog>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
+import { getVersionInfo } from "@/api/version";
 
 import AcknowledgementBanner from "@/components/AcknowledgementBanner.vue";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import { useRoute } from "vue-router";
+import { formatDate } from "@/utils/format";
 
 type FooterLink = {
   name: string;
@@ -49,7 +81,13 @@ type FooterTarget = "_blank";
 
 export default defineComponent({
   name: "EceFooter",
-  components: { AcknowledgementBanner },
+  components: { AcknowledgementBanner, ConfirmationDialog },
+  data: () => ({
+    showVersionDialog: false,
+    version: "",
+    timestamp: "",
+    commit: "",
+  }),
   setup: () => {
     const { smAndUp } = useDisplay();
     const route = useRoute();
@@ -76,6 +114,23 @@ export default defineComponent({
       return ["login", "dashboard", "invalid-reference", "reference-submitted", "verify", "lookup-certification", "lookup-certification-record"].includes(
         routeName,
       );
+    },
+    formattedTimestamp(): string {
+      return formatDate(this.timestamp || "", "FFFF");
+    },
+  },
+  methods: {
+    async handleShowVersionModal() {
+      // Get version information from server
+      const versionInfo = await getVersionInfo();
+
+      if (versionInfo) {
+        this.version = versionInfo.version ?? "";
+        this.timestamp = versionInfo.timestamp ?? "";
+        this.commit = versionInfo.commit ?? "";
+      }
+
+      this.showVersionDialog = true;
     },
   },
 });
