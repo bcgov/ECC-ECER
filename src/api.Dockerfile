@@ -43,6 +43,10 @@ RUN dotnet publish "ECER.Clients.Api/ECER.Clients.Api.csproj" -c Release -o /app
 FROM registry.access.redhat.com/ubi8/dotnet-80-runtime:8.0 AS final
 ARG VERSION
 ENV VERSION=$VERSION
+ARG TIMESTAMP
+ENV TIMESTAMP=$TIMESTAMP
+ARG COMMIT
+ENV COMMIT=$COMMIT
 
 WORKDIR /app
 # copy diagnostics tools
