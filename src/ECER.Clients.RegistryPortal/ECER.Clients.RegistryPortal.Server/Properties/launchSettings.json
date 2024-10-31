@@ -12,7 +12,10 @@
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
         "DataProtection__DirectoryPath": "../../",
         "DataProtection__ApplicationName": "ECER",
-        "OTEL_SDK_DISABLED": "true"
+        "OTEL_SDK_DISABLED": "true",
+        "VERSION": "local",
+        "TIMESTAMP": "timestamp",
+        "COMMIT": "commit"
       }
     }
   }

@@ -4,10 +4,9 @@
       <v-row no-gutters>
         <v-col>
           <p>
-            {{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}
+            <b>{{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</b>
             is requesting a work experience reference for
-            <b>{{ certificationType }}.</b>
-            We'll review your reference when assessing if the applicant is eligible for certification.
+            {{ certificationType }}. We'll review your reference when assessing if the applicant is eligible for certification.
           </p>
           <br />
 
@@ -66,7 +65,7 @@
       <v-row>
         <v-col>
           <p>Will you provide a reference?</p>
-          <v-radio-group :rules="[Rules.requiredRadio()]" @update:model-value="(value) => $emit('update:model-value', value as boolean)">
+          <v-radio-group :rules="[Rules.requiredRadio()]" hide-details="auto" @update:model-value="(value) => $emit('update:model-value', value as boolean)">
             <v-radio label="Yes" :value="true"></v-radio>
             <v-radio label="No" :value="false"></v-radio>
           </v-radio-group>
@@ -114,3 +113,8 @@ export default defineComponent({
   },
 });
 </script>
+<style scoped>
+ul > li {
+  margin-bottom: 10px;
+}
+</style>

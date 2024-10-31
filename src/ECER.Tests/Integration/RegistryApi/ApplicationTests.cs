@@ -56,6 +56,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var applicationsById = await applicationByIdResponse.ReadAsJsonAsync<DraftApplication[]>();
     var applicationById = applicationsById.ShouldHaveSingleItem();
     applicationById.ApplicationType.ShouldBe(ApplicationTypes.New);
+    applicationById.Origin.ShouldBe(ApplicationOrigin.Portal);
     applicationById.Transcripts.ShouldNotBeEmpty();
     applicationById.CharacterReferences.ShouldNotBeEmpty();
     applicationById.WorkExperienceReferences.ShouldNotBeEmpty();
@@ -544,18 +545,41 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   {
     var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };
 
-    return new Faker<Transcript>("en_CA")
-      .RuleFor(f => f.EducationalInstitutionName, f => f.Company.CompanyName())
-      .RuleFor(f => f.StudentFirstName, f => f.Name.FirstName())
-      .RuleFor(f => f.StudentLastName, f => f.Name.LastName())
-      .RuleFor(f => f.StudentNumber, f => f.Random.Number(10000000, 99999999).ToString())
-      .RuleFor(f => f.StartDate, f => f.Date.Past())
-      .RuleFor(f => f.EndDate, f => f.Date.Past())
-      .RuleFor(f => f.ProgramName, (f, u) => $"{f.Hacker.Adjective()} Program")
-      .RuleFor(f => f.LanguageofInstruction, f => f.PickRandom(languages))
-      .RuleFor(f => f.CampusLocation, f => f.Address.City())
-      .RuleFor(f => f.IsNameUnverified, f => f.Random.Bool())
-      .Generate();
+    // Use Faker to generate values for the required parameters
+    var faker = new Faker("en_CA");
+    var educationalInstitutionName = faker.Company.CompanyName();
+    var programName = $"{faker.Hacker.Adjective()} Program";
+    var studentLastName = faker.Name.LastName();
+    var startDate = faker.Date.Past();
+    var endDate = faker.Date.Past();
+    var isNameUnverified = faker.Random.Bool();
+    var educationRecognition = new EducationRecognition(); // Initialize as needed
+    var educationOrigin = new EducationOrigin(); // Initialize as needed
+
+    // Instantiate the Transcript record with the required arguments
+    var transcript = new Transcript(
+        educationalInstitutionName,
+        programName,
+        studentLastName,
+        startDate,
+        endDate,
+        isNameUnverified,
+        educationRecognition,
+        educationOrigin
+    )
+    {
+      // Populate optional properties
+      Id = faker.Random.Guid().ToString(),
+      CampusLocation = faker.Address.City(),
+      StudentFirstName = faker.Name.FirstName(),
+      StudentNumber = faker.Random.Number(10000000, 99999999).ToString(),
+      LanguageofInstruction = faker.PickRandom(languages),
+      IsECEAssistant = faker.Random.Bool(),
+      DoesECERegistryHaveTranscript = faker.Random.Bool(),
+      IsOfficialTranscriptRequested = faker.Random.Bool()
+    };
+
+    return transcript;
   }
 
   private CharacterReference CreateCharacterReference()

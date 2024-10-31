@@ -17,6 +17,8 @@ public class ApplicationMapper : Profile
      .ForMember(d => d.Status, opts => opts.Ignore())
      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.ProfessionalDevelopment.Id),
               opt => opt.MapFrom(src => string.IsNullOrEmpty(src.Id) ? null : src.Id))
+     .ForMember(d => d.NumberOfHours,
+              opt => opt.MapFrom(src => src.NumberOfHours))
      .ReverseMap();
 
     CreateMap<Transcript, Managers.Registry.Contract.Applications.Transcript>()
@@ -81,6 +83,7 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.AddMoreCharacterReference, opts => opts.Ignore())
       .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.Ignore())
       .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.Ignore())
+      .ForMember(d => d.Origin, opts => opts.Ignore())
       .ForMember(d => d.Transcripts, opts => opts.MapFrom(s => s.Transcripts))
       .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.WorkExperienceReferences))
       .ForMember(d => d.ProfessionalDevelopments, opts => opts.MapFrom(s => s.ProfessionalDevelopments))

@@ -1,14 +1,20 @@
 <template>
   <Wizard :ref="'wizard'" :wizard="wizardConfigSetup" :show-steps="false">
     <template #header>
-      <v-container class="bg-white">
-        <h1>{{ inviteTypeTitle }}</h1>
-        <div role="doc-subtitle">{{ `For applicant: ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</div>
+      <v-container fluid class="bg-primary">
+        <v-container>
+          <v-row>
+            <v-col>
+              <h1>{{ inviteTypeTitle }}</h1>
+              <div role="doc-subtitle">{{ `For applicant: ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</div>
 
-        <v-btn v-if="wizardStore.step !== 1" slim variant="text" rounded="lg" color="primary" @click="handleBack">
-          <v-icon size="x-large" icon="mdi-chevron-left" />
-          Back
-        </v-btn>
+              <v-btn v-if="wizardStore.step !== 1" slim variant="text" rounded="lg" color="primary" @click="handleBack">
+                <v-icon size="x-large" icon="mdi-chevron-left" />
+                Back
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-container>
     </template>
     <template #PrintPreview>
@@ -43,7 +49,7 @@
               color="primary"
               @click="handleSubmit"
             >
-              Submit Reference
+              Submit reference
             </v-btn>
             <v-btn v-else rounded="lg" variant="flat" color="primary" @click="handleContinue">Continue</v-btn>
           </v-col>
