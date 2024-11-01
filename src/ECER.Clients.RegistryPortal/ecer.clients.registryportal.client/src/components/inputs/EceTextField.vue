@@ -1,17 +1,11 @@
 <template>
+  <p class="mb-2">{{ $attrs.label }}</p>
   <v-text-field
-    :label="props.label"
-    variant="outlined"
-    color="primary"
-    :type="props.type || 'text'"
-    :rules="props.rules"
-    :disabled="props.disabled"
-    :readonly="props.readonly"
-    :maxlength="props.maxLength"
-    :prepend-inner-icon="props.prependInnerIcon"
+    v-bind="$attrs"
+    label=""
     @input="$emit('input', $event.target.value)"
     @keypress="
-      if (props.isNumeric) {
+      if (isNumeric) {
         isNumber($event);
       }
     "
@@ -20,16 +14,14 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
-import type { EceTextFieldProps } from "@/types/input";
 import { isNumber } from "@/utils/formInput";
 
 export default defineComponent({
   name: "EceTextField",
   props: {
-    props: {
-      type: Object as () => EceTextFieldProps,
-      required: true,
+    isNumeric: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ["input"],

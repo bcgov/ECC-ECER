@@ -1,10 +1,11 @@
 <template>
+  <p class="mb-2">{{ label }}</p>
   <v-date-input
     :model-value="modelValue"
     :value="formattedDate"
     prepend-icon=""
-    :label="label"
-    variant="outlined"
+    label=""
+    v-bind="$attrs"
     @update:model-value="(value) => $emit('update:model-value', value)"
   />
 </template>
