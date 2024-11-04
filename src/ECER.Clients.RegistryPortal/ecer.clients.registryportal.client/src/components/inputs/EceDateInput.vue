@@ -29,6 +29,10 @@ export default defineComponent({
   },
   emits: ["update:model-value"],
   methods: {
+    /**
+     * Update the model value with string formatted as "yyyy-MM-dd"
+     * @param value - JS date value as a string
+     */
     updateModelValue(value: string) {
       const luxonDate = DateTime.fromJSDate(new Date(value));
       const formattedDate = luxonDate.toFormat("yyyy-MM-dd");
@@ -36,6 +40,9 @@ export default defineComponent({
     },
   },
   computed: {
+    /**
+     * Format the date as "LLLL d, yyyy" to display in the input field
+     */
     formattedDate() {
       return formatDate(this.modelValue, "LLLL d, yyyy");
     },
