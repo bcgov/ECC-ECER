@@ -38,7 +38,6 @@ const vuetify = createVuetify({
     VBtn: {
       rounded: "lg",
       elevation: 0,
-      color: "primary",
       size: "large",
     },
   },
