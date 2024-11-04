@@ -3,6 +3,7 @@
   <v-date-input
     :model-value="new Date(modelValue)"
     :value="formattedDate"
+    :aria-label="label"
     prepend-icon=""
     label=""
     v-bind="$attrs"

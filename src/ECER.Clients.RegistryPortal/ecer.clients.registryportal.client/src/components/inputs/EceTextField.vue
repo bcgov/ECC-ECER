@@ -1,7 +1,8 @@
 <template>
-  <p class="mb-2">{{ $attrs.label }}</p>
+  <p class="mb-2">{{ label }}</p>
   <v-text-field
     v-bind="$attrs"
+    :aria-label="label"
     label=""
     @input="$emit('input', $event.target.value)"
     @keypress="
@@ -19,6 +20,10 @@ import { isNumber } from "@/utils/formInput";
 export default defineComponent({
   name: "EceTextField",
   props: {
+    label: {
+      type: String,
+      default: "",
+    },
     isNumeric: {
       type: Boolean,
       default: false,
