@@ -1,16 +1,19 @@
 <template>
-  <p class="mb-2">{{ label }}</p>
-  <v-text-field
-    v-bind="$attrs"
-    :aria-label="label"
-    label=""
-    @input="$emit('input', $event.target.value)"
-    @keypress="
-      if (isNumeric) {
-        isNumber($event);
-      }
-    "
-  ></v-text-field>
+  <label>
+    {{ label }}
+    <v-text-field
+      v-bind="$attrs"
+      :aria-label="label"
+      label=""
+      @input="$emit('input', $event.target.value)"
+      @keypress="
+        if (isNumeric) {
+          isNumber($event);
+        }
+      "
+      :class="['pt-2', $attrs.class]"
+    ></v-text-field>
+  </label>
 </template>
 
 <script lang="ts">

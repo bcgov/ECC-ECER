@@ -1,14 +1,17 @@
 <template>
-  <p class="mb-2">{{ label }}</p>
-  <v-date-input
-    :model-value="new Date(modelValue)"
-    :value="formattedDate"
-    :aria-label="label"
-    prepend-icon=""
-    label=""
-    v-bind="$attrs"
-    @update:model-value="(value: string) => updateModelValue(value)"
-  />
+  <label>
+    {{ label }}
+    <v-date-input
+      :model-value="new Date(modelValue)"
+      :value="formattedDate"
+      :aria-label="label"
+      prepend-icon=""
+      label=""
+      v-bind="$attrs"
+      @update:model-value="(value: string) => updateModelValue(value)"
+      :class="['pt-2', $attrs.class]"
+    />
+  </label>
 </template>
 
 <script lang="ts">
@@ -17,7 +20,7 @@ import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "FormattedDateInput",
+  name: "EceDateInput",
   props: {
     modelValue: {
       type: String,
