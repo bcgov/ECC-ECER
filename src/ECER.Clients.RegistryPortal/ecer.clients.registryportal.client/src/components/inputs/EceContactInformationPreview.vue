@@ -19,14 +19,6 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Previous name</p>
-        </v-col>
-        <v-col>
-          <p class="small font>weight-bold">{{ previousName }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
           <p class="small">Legal middle name</p>
         </v-col>
         <v-col>
