@@ -100,7 +100,7 @@
             No additional work references may be added. You provided the required hours. After you submit your application, we’ll email the work references to
             complete their reference. If needed, we'll contact you for additional information.
           </p>
-          <v-btn v-else prepend-icon="mdi-plus" rounded="lg" color="alternate" :disabled="isDisabled" @click="handleAddReference">Add reference</v-btn>
+          <v-btn v-else prepend-icon="mdi-plus" rounded="lg" color="primary" :disabled="isDisabled" @click="handleAddReference">Add reference</v-btn>
         </v-col>
       </v-row>
       <!-- this prevents form from proceeding if rules are not met -->

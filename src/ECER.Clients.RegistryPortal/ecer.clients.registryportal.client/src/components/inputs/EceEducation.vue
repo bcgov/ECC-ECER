@@ -212,7 +212,7 @@
           </v-row>
         </div>
         <v-row justify="start" class="ml-1 mt-3">
-          <v-btn rounded="lg" color="alternate" class="mr-2" @click="handleSubmit">Save Education</v-btn>
+          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">Save education</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
         </v-row>
       </v-form>
@@ -223,7 +223,7 @@
       </v-col>
       <v-col cols="12" class="mt-6">
         <v-row justify="start" class="ml-1">
-          <v-btn v-if="showAddEducationButton" prepend-icon="mdi-plus" rounded="lg" color="alternate" @click="handleAddEducation">Add education</v-btn>
+          <v-btn v-if="showAddEducationButton" prepend-icon="mdi-plus" rounded="lg" color="primary" @click="handleAddEducation">Add education</v-btn>
         </v-row>
       </v-col>
       <v-col>

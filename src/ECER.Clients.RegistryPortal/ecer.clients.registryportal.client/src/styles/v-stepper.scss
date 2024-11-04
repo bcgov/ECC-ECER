@@ -13,6 +13,9 @@
   color: #{$primary};
 }
 
-.v-stepper-item--completed {
+.v-stepper-item--complete {
   color: #{$links};
+  .v-stepper-item__avatar.v-avatar {
+    background: #{$links} !important;
+  }
 }
