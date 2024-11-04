@@ -13,7 +13,6 @@ const workExperienceReviewForm: Form = {
     eceReferenceContactPreview: {
       id: "eceReferenceContactPreview",
       component: EceReferenceContactPreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,
@@ -23,7 +22,6 @@ const workExperienceReviewForm: Form = {
     eceWorkExperienceReferenceEvaluationPreview: {
       id: "eceWorkExperienceReferenceEvaluationPreview",
       component: EceWorkExperienceReferenceEvaluationPreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,
@@ -33,7 +31,6 @@ const workExperienceReviewForm: Form = {
     eceWorkExperienceReferenceAssessmentPreview: {
       id: "eceWorkExperienceReferenceAssessmentPreview",
       component: EceWorkExperienceReferenceAssessmentPreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

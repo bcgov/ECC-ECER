@@ -8,7 +8,6 @@ const referencesForm: Form = {
     referenceList: {
       id: "referenceList",
       component: EceWorkExperienceReferences,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

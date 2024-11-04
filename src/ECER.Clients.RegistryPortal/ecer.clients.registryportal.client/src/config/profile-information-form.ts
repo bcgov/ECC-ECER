@@ -16,8 +16,6 @@ const profileInformationForm: Form = {
         rules: [],
         maxLength: 50,
         readonly: true,
-        variant: "outlined",
-        color: "primary",
       },
       cols: {
         md: 8,
@@ -33,8 +31,6 @@ const profileInformationForm: Form = {
         rules: [],
         maxLength: 50,
         readonly: true,
-        variant: "outlined",
-        color: "primary",
       },
       cols: {
         md: 8,
@@ -50,8 +46,6 @@ const profileInformationForm: Form = {
         rules: [],
         maxLength: 50,
         readonly: true,
-        variant: "outlined",
-        color: "primary",
       },
       cols: {
         md: 8,
@@ -66,8 +60,6 @@ const profileInformationForm: Form = {
         label: "Preferred first name (optional)",
         rules: [],
         maxLength: 50,
-        variant: "outlined",
-        color: "primary",
       },
       cols: {
         md: 8,
@@ -82,8 +74,6 @@ const profileInformationForm: Form = {
         label: "Date of birth",
         rules: [Rules.required()],
         readonly: true,
-        variant: "outlined",
-        color: "primary",
       },
       cols: {
         md: 8,
@@ -94,7 +84,6 @@ const profileInformationForm: Form = {
     addresses: {
       id: "addresses",
       component: EceAddresses,
-      props: {},
       cols: {
         md: 8,
         lg: 6,
@@ -108,8 +97,6 @@ const profileInformationForm: Form = {
         label: "Primary contact number",
         isNumeric: true,
         rules: [Rules.phoneNumber("Enter your primary 10-digit phone number"), Rules.required()],
-        variant: "outlined",
-        color: "primary",
       },
       cols: {
         md: 8,
@@ -124,8 +111,6 @@ const profileInformationForm: Form = {
         label: "Alternate phone (optional)",
         isNumeric: true,
         rules: [Rules.phoneNumber("Enter your alternate 10-digit phone number")],
-        variant: "outlined",
-        color: "primary",
       },
       cols: {
         md: 8,
@@ -139,8 +124,6 @@ const profileInformationForm: Form = {
       props: {
         label: "Email",
         rules: [Rules.email(), Rules.required()],
-        variant: "outlined",
-        color: "primary",
       },
       cols: {
         md: 8,

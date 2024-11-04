@@ -41,7 +41,6 @@ interface EceRadioOption {
   label: string;
 }
 
-interface EceEducationProps {}
 interface EceWorkExperienceReferencesProps {}
 
 interface EceAddressProps {
@@ -103,11 +102,10 @@ interface Input {
     | EceCharacterReferencePreview
     | EceCharacterReference
     | EceRecaptcha;
-  props:
+  props?:
     | EceTextFieldProps
     | EceAddressProps
     | EceAddressesProps
-    | EceEducationProps
     | EceCheckboxProps
     | EcePreviewProps
     | EceCharacterReferenceProps

@@ -8,7 +8,6 @@ const oneYearRenewalExplanation: Form = {
     oneYearRenewalExplanation: {
       id: "oneYearRenewalExplanationChoice",
       component: EceOneYearRenewalInformation,
-      props: {},
       cols: {
         md: 12,
         lg: 12,
@@ -18,7 +17,6 @@ const oneYearRenewalExplanation: Form = {
     renewalExplanationOther: {
       id: "renewalExplanationOther",
       component: null,
-      props: {},
       cols: {
         md: 12,
         lg: 12,
