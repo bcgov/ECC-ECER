@@ -34,6 +34,14 @@ const vuetify = createVuetify({
   },
   components,
   directives,
+  defaults: {
+    VBtn: {
+      rounded: "lg",
+      elevation: 0,
+      color: "primary",
+      size: "large",
+    },
+  },
 });
 
 const pinia = createPinia();
