@@ -274,7 +274,7 @@
           No additional professional development may be added. You provided the required 40 hours. After you submit your application, the registry will review
           and verify the professional development added. If needed, the registry will contact you for additional information.
         </p>
-        <v-btn v-else prepend-icon="mdi-plus" rounded="lg" color="alternate" :disabled="isDisabled" @click="handleAddProfessionalDevelopment">
+        <v-btn v-else prepend-icon="mdi-plus" rounded="lg" color="primary" :disabled="isDisabled" @click="handleAddProfessionalDevelopment">
           Add course or workshop
         </v-btn>
       </v-col>
@@ -617,8 +617,10 @@ export default defineComponent({
       }
     },
     validateDates() {
-      (this.$refs.startDateInput as VInput).validate();
-      (this.$refs.endDateInput as VInput).validate();
+      if (this.startDate && this.endDate) {
+        (this.$refs.startDateInput as VInput).validate();
+        (this.$refs.endDateInput as VInput).validate();
+      }
     },
   },
 });

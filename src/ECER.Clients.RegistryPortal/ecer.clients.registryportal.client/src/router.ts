@@ -301,4 +301,13 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
+// Guard to prevent portal user from modifying Manual application that is in-progress(draft)
+router.beforeEach((to, _, next) => {
+  const applicationStore = useApplicationStore();
+
+  if (to.path === "/application" && applicationStore.applicationStatus === "Draft" && applicationStore.applicationOrigin === "Manual") {
+    next({ path: "/" });
+  } else next();
+});
+
 export default router;

@@ -61,6 +61,10 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     if (applicant == null) throw new InvalidOperationException($"Applicant '{application.ApplicantId}' not found");
 
     var ecerApplication = mapper.Map<ecer_Application>(application)!;
+    if (application.Origin != null)
+    {
+      ecerApplication.ecer_Origin = mapper.Map<ecer_Origin>(application.Origin);
+    }
     var ecerTranscripts = mapper.Map<IEnumerable<ecer_Transcript>>(application.Transcripts)!.ToList();
     var ecerWorkExperienceReferences = mapper.Map<IEnumerable<ecer_WorkExperienceRef>>(application.WorkExperienceReferences)!.ToList();
     var ecerCharacterReferences = mapper.Map<IEnumerable<ecer_CharacterReference>>(application.CharacterReferences)!.ToList();
@@ -86,8 +90,6 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     await UpdateWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     await UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     await UpdateTranscripts(ecerApplication, ecerTranscripts);
-
-    ecerApplication.ecer_Origin = ecer_Origin.Portal; // Set application origin to "Portal"
 
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
