@@ -1,3 +1,4 @@
+addressLabel
 <template>
   <v-row>
     <v-col cols="12">
@@ -14,7 +15,7 @@
         variant="outlined"
         color="primary"
         maxlength="100"
-        @input="updateField('line1', $event)"
+        @update:model-value="(value: string) => updateField('line1', value)"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -27,7 +28,7 @@
         variant="outlined"
         color="primary"
         maxlength="50"
-        @input="updateField('city', $event)"
+        @update:model-value="(value: string) => updateField('line1', value)"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -40,7 +41,7 @@
         variant="outlined"
         color="primary"
         maxlength="50"
-        @input="updateField('province', $event)"
+        @update:model-value="(value: string) => updateField('line1', value)"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -53,7 +54,7 @@
         variant="outlined"
         color="primary"
         maxlength="7"
-        @input="updateField('postalCode', $event)"
+        @update:model-value="(value: string) => updateField('line1', value)"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -66,7 +67,7 @@
         variant="outlined"
         color="primary"
         maxlength="50"
-        @input="updateField('country', $event)"
+        @update:model-value="(value: string) => updateField('line1', value)"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -102,10 +103,10 @@ export default defineComponent({
     };
   },
   methods: {
-    updateField(fieldName: keyof Components.Schemas.Address, event: any) {
+    updateField(fieldName: keyof Components.Schemas.Address, value: string) {
       this.$emit("update:model-value", {
         ...this.modelValue,
-        [fieldName]: event.target.value,
+        [fieldName]: value,
       });
     },
   },
