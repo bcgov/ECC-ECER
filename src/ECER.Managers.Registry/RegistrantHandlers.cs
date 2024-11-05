@@ -2,6 +2,7 @@
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Certifications;
+using ECER.Resources.Documents.MetadataResources;
 using MediatR;
 
 namespace ECER.Managers.Registry;
@@ -9,7 +10,7 @@ namespace ECER.Managers.Registry;
 /// <summary>
 /// User Manager
 /// </summary>
-public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICertificationRepository certificationRepository, IMapper mapper)
+public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICertificationRepository certificationRepository, IMetadataResourceRepository metadataResourceRepository, IMapper mapper)
   : IRequestHandler<SearchRegistrantQuery, RegistrantQueryResults>,
     IRequestHandler<RegisterNewUserCommand, string>,
     IRequestHandler<UpdateRegistrantProfileCommand, string>
@@ -64,24 +65,27 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
       ByRegistrationNumber = string.IsNullOrEmpty(request.Profile.RegistrationNumber) ? null : request.Profile.RegistrationNumber,
     }, cancellationToken);
 
+    var countries = await metadataResourceRepository.QueryCountries(new CountriesQuery() { ByCode = request.Profile.ResidentialAddress!.Country }, cancellationToken);
+    var countryName = countries.First().CountryName;
+    request.Profile.ResidentialAddress = request.Profile.ResidentialAddress with { Country = countryName };
+    request.Profile.MailingAddress = request.Profile.ResidentialAddress;
     var registrant = mapper.Map<Resources.Accounts.Registrants.Registrant>(request);
 
-    // Logic for the 'No' ECE case
     if (string.IsNullOrEmpty(request.Profile.RegistrationNumber))
     {
       registrant.Profile.IsVerified = !registrants.Any();
+
       return await registrantRepository.Create(registrant, cancellationToken);
     }
-    // Logic for the 'Yes' ECE case
     else
     {
       var matchedRegistrant = registrants.FirstOrDefault();
 
       if (matchedRegistrant != null)
       {
-        // Update the existing contact record
         matchedRegistrant.Profile.IsVerified = true;
         matchedRegistrant.Profile.ResidentialAddress = mapper.Map<Resources.Accounts.Registrants.Address>(request.Profile.ResidentialAddress);
+        matchedRegistrant.Profile.MailingAddress = mapper.Map<Resources.Accounts.Registrants.Address>(request.Profile.MailingAddress);
         matchedRegistrant.Profile.Email = request.Profile.Email;
         matchedRegistrant.Profile.FirstName = request.Profile.FirstName;
         matchedRegistrant.Profile.LastName = request.Profile.LastName;
@@ -93,7 +97,6 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
       }
       else
       {
-        // No matching contact, create a new record
         registrant.Profile.IsVerified = false;
         return await registrantRepository.Create(registrant, cancellationToken);
       }

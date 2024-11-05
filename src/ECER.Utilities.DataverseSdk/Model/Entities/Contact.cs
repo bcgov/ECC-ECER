@@ -664,6 +664,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_applicationassessment_ApplicantId = "ecer_applicationassessment_ApplicantId";
 			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
 			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
+			public const string ecer_certificatesummary_RegistrantId = "ecer_certificatesummary_RegistrantId";
 			public const string ecer_CertificationLevel = "ecer_certificationlevel";
 			public const string ecer_certifiedlevel_RegistrantId = "ecer_certifiedlevel_RegistrantId";
 			public const string ecer_changeofinformation_Contactid = "ecer_changeofinformation_Contactid";
@@ -675,21 +676,26 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Contact_Contact_ecer_licensing_officers = "ecer_Contact_Contact_ecer_licensing_officers";
 			public const string ecer_contact_ecer_authentication_455 = "ecer_contact_ecer_authentication_455";
 			public const string ecer_contact_ecer_communication_122 = "ecer_contact_ecer_communication_122";
+			public const string ecer_contact_ecer_historicaldecision_contact = "ecer_contact_ecer_historicaldecision_contact";
 			public const string ecer_contact_ecer_investigation_Applicant = "ecer_contact_ecer_investigation_Applicant";
 			public const string ecer_contact_ecer_portaluser_474 = "ecer_contact_ecer_portaluser_474";
 			public const string ecer_contact_ecer_previousaddress_251 = "ecer_contact_ecer_previousaddress_251";
 			public const string ecer_contact_ecer_previousaddress_legacycontactid = "ecer_contact_ecer_previousaddress_legacycontactid";
+			public const string ecer_contact_ecer_recordmanagement_contact = "ecer_contact_ecer_recordmanagement_contact";
 			public const string ecer_contact_representedpsiid_ecer_postsecondaryinstitute = "ecer_contact_representedpsiid_ecer_postsecondaryinstitute";
 			public const string ecer_DateCertificateCancelled = "ecer_datecertificatecancelled";
 			public const string ecer_DateCertificateSuspended = "ecer_datecertificatesuspended";
+			public const string ecer_DateWEExtracted = "ecer_dateweextracted";
 			public const string ecer_eceprogramrepresentative_ContactId_contac = "ecer_eceprogramrepresentative_ContactId_contac";
 			public const string ecer_ecer_characterreference_Applicantid_conta = "ecer_ecer_characterreference_Applicantid_conta";
 			public const string ecer_ecer_professionaldevelopment_Applicantid_ = "ecer_ecer_professionaldevelopment_Applicantid_";
 			public const string ecer_ecer_workexperienceref_ReferenceContactid = "ecer_ecer_workexperienceref_ReferenceContactid";
 			public const string ecer_educationassessment_ApplicantId = "ecer_educationassessment_ApplicantId";
 			public const string ecer_guardianreference_Applicantid = "ecer_guardianreference_Applicantid";
+			public const string ecer_HasCertificate = "ecer_hascertificate";
 			public const string ecer_HasCertificateCancelled = "ecer_hascertificatecancelled";
 			public const string ecer_hascertificatecancelledName = "ecer_hascertificatecancelledname";
+			public const string ecer_hascertificateName = "ecer_hascertificatename";
 			public const string ecer_HasCertificateSuspended = "ecer_hascertificatesuspended";
 			public const string ecer_hascertificatesuspendedName = "ecer_hascertificatesuspendedname";
 			public const string ecer_HasCurrentCertificateConditions = "ecer_hascurrentcertificateconditions";
@@ -4133,6 +4139,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateweextracted")]
+		public System.Nullable<System.DateTime> ecer_DateWEExtracted
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_dateweextracted");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_dateweextracted", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertificate")]
+		public System.Nullable<bool> ecer_HasCertificate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_hascertificate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hascertificate", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertificatecancelled")]
 		public System.Nullable<bool> ecer_HasCertificateCancelled
 		{
@@ -4157,6 +4193,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_hascertificatecancelled"))
 				{
 					return this.FormattedValues["ecer_hascertificatecancelled"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertificatename")]
+		public string ecer_hascertificateName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hascertificate"))
+				{
+					return this.FormattedValues["ecer_hascertificate"];
 				}
 				else
 				{
@@ -7328,6 +7381,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_certificatesummary_RegistrantId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificatesummary_RegistrantId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CertificateSummary> ecer_certificatesummary_RegistrantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateSummary>("ecer_certificatesummary_RegistrantId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateSummary>("ecer_certificatesummary_RegistrantId", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_certifiedlevel_RegistrantId
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certifiedlevel_RegistrantId")]
@@ -7490,6 +7561,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_contact_ecer_historicaldecision_contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_historicaldecision_contact")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision> ecer_contact_ecer_historicaldecision_contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision>("ecer_contact_ecer_historicaldecision_contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision>("ecer_contact_ecer_historicaldecision_contact", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_contact_ecer_investigation_Applicant
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_investigation_Applicant")]
@@ -7558,6 +7647,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PreviousAddress>("ecer_contact_ecer_previousaddress_legacycontactid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_contact_ecer_recordmanagement_contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_recordmanagement_contact")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_recordmanagement> ecer_contact_ecer_recordmanagement_contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_recordmanagement>("ecer_contact_ecer_recordmanagement_contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_recordmanagement>("ecer_contact_ecer_recordmanagement_contact", null, value);
 			}
 		}
 		
