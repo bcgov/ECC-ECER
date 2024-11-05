@@ -1,8 +1,10 @@
 <template>
   <v-col cols="12">
     <EceForm ref="profileForm" :form="profileInformationForm" :form-data="formStore.formData" @updated-form-data="formStore.setFormData" />
-    <v-row>
-      <v-btn rounded="lg" color="primary" :loading="loadingStore.isLoading('profile_put')" @click="saveProfile">Save profile</v-btn>
+    <v-row class="mt-10">
+      <v-col>
+        <v-btn rounded="lg" color="primary" :loading="loadingStore.isLoading('profile_put')" @click="saveProfile">Save profile</v-btn>
+      </v-col>
     </v-row>
   </v-col>
 </template>
