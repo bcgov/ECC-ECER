@@ -37,12 +37,12 @@
 
       <v-row>
         <v-col cols="4">
-          <EceTextField :model-value="name" :props="{ label: 'Your full legal name', disabled: true, rules: [] }"></EceTextField>
+          <EceTextField :model-value="name" label="Your full legal name" :readonly="true" :rules="[]"></EceTextField>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="4">
-          <EceTextField :model-value="date" :props="{ label: 'Signed Date', type: 'date', disabled: true, rules: [] }"></EceTextField>
+          <EceDateInput :model-value="date" label="Signed Date" :readonly="true" :rules="[]"></EceDateInput>
         </v-col>
       </v-row>
     </v-form>
@@ -59,6 +59,7 @@ import { getProfile } from "@/api/profile";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
+import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useLoadingStore } from "@/store/loading";
@@ -69,7 +70,7 @@ import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Declaration",
-  components: { Breadcrumb, EceCheckbox, EceTextField },
+  components: { Breadcrumb, EceCheckbox, EceTextField, EceDateInput },
   async setup() {
     const userStore = useUserStore();
     const applicationStore = useApplicationStore();

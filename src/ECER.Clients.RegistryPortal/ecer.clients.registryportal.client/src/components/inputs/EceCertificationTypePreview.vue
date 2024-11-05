@@ -18,17 +18,10 @@ import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useApplicationStore } from "@/store/application";
-import type { EcePreviewProps } from "@/types/input";
 export default defineComponent({
   name: "EceCertificationTypePreview",
   components: {
     PreviewCard,
-  },
-  props: {
-    props: {
-      type: Object as () => EcePreviewProps,
-      required: true,
-    },
   },
   setup: () => {
     const applicationStore = useApplicationStore();

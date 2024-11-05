@@ -8,7 +8,6 @@ const workExperienceEvaluationForm: Form = {
     workExperienceEvaluation: {
       id: "workExperienceEvaluation",
       component: EceWorkExperienceReferenceEvaluation,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

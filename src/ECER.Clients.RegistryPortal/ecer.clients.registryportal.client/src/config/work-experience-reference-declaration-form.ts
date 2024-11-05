@@ -8,7 +8,6 @@ const workExpereinceDeclarationForm: Form = {
     willProvideReference: {
       id: "willProvideReference",
       component: EceWorkExperienceDeclaration,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

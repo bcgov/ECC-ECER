@@ -24,13 +24,10 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             label="Total number of hours the applicant worked"
             :rules="[Rules.required('Enter a whole number greater than zero (0)')]"
-            variant="outlined"
-            color="primary"
             maxlength="10"
-            hide-details="auto"
             @keypress="isNumber($event)"
             @update:model-value="updateField('hours', $event)"
           />
@@ -52,13 +49,10 @@
 
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             :rules="[Rules.required()]"
             label="Where did the applicant complete their work experience hours?"
-            variant="outlined"
-            color="primary"
             maxlength="100"
-            hide-details="auto"
             @update:model-value="updateField('childrenProgramName', $event)"
           />
         </v-col>
@@ -66,25 +60,19 @@
 
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             :rules="[Rules.required('Enter role of the applicant')]"
             label="What was their role while completing the work experience hours?"
-            variant="outlined"
-            color="primary"
             maxlength="100"
-            hide-details="auto"
             @update:model-value="updateField('role', $event)"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             label="If they cared for children, what was the age range? (Optional)"
-            variant="outlined"
-            color="primary"
             maxlength="100"
-            hide-details="auto"
             @update:model-value="updateField('ageofChildrenCaredFor', $event)"
           />
         </v-col>
@@ -97,26 +85,18 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceDateInput
             label="Start date of hours"
-            variant="outlined"
-            color="primary"
-            hide-details="auto"
-            type="date"
             :max="today"
             :rules="[Rules.required('Enter the start date of hours'), Rules.futureDateNotAllowedRule('Start date of hours cannot be in the future')]"
             @update:model-value="updateField('startDate', $event)"
-          ></v-text-field>
+          ></EceDateInput>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceDateInput
             label="End date of hours"
-            variant="outlined"
-            color="primary"
-            hide-details="auto"
-            type="date"
             :max="today"
             :rules="[
               Rules.required('Enter the end date of hours'),
@@ -124,7 +104,7 @@
               Rules.futureDateNotAllowedRule('End date of hours cannot be in the future'),
             ]"
             @update:model-value="updateField('endDate', $event)"
-          ></v-text-field>
+          ></EceDateInput>
         </v-col>
       </v-row>
       <v-row>
@@ -176,6 +156,8 @@
 import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 
+import EceTextField from "@/components/inputs/EceTextField.vue";
+import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import { workHoursTypeRadio, workReference400HoursRelationshipRadio } from "@/utils/constant";
@@ -186,7 +168,7 @@ import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
   name: "EceWorkExperienceReference400HoursEvaluation",
-  components: {},
+  components: { EceTextField, EceDateInput },
   props: {
     modelValue: {
       type: Object as () => Components.Schemas.WorkExperienceReferenceDetails,

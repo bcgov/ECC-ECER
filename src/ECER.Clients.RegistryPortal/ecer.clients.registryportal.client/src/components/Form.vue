@@ -5,7 +5,7 @@
         <v-col cols="12" :md="input.cols.md" :lg="input.cols.lg" :xl="input.cols.xl">
           <Component
             :is="input.component"
-            v-bind="{ props: input.props }"
+            v-bind="input.props"
             :model-value="formData[input.id as keyof {}]"
             @update:model-value="(value: any) => onInputChanged(input.id, value)"
           />

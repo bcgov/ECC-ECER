@@ -8,7 +8,6 @@ const referenceContactInformationForm: Form = {
     referenceContactInformation: {
       id: "referenceContactInformation",
       component: EceReferenceContact,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

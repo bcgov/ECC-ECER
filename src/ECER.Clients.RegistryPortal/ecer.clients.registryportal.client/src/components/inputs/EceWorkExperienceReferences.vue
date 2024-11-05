@@ -4,47 +4,56 @@
       <h2 v-if="!clientId">Reference {{ newClientId }} [Up to 6]</h2>
       <h2 v-if="clientId">Edit {{ previousFullName }}</h2>
       <v-form ref="addWorkExperienceReferenceForm" validate-on="input" class="mt-6">
-        <v-text-field
-          v-model="lastName"
-          :rules="[Rules.required('Enter your reference\'s last name')]"
-          label="Reference Last Name"
-          variant="outlined"
-          color="primary"
-          maxlength="100"
-        ></v-text-field>
-        <v-text-field v-model="firstName" label="Reference First Name" variant="outlined" color="primary" maxlength="100" class="my-8"></v-text-field>
-        <v-text-field
-          v-model="email"
-          :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
-          label="Reference Email"
-          variant="outlined"
-          color="primary"
-          maxlength="200"
-          class="my-8"
-        ></v-text-field>
-        <v-text-field
-          v-model="phoneNumber"
-          :rules="[Rules.phoneNumber('Enter your reference\'s 10-digit phone number')]"
-          label="Reference Phone Number (Optional)"
-          variant="outlined"
-          color="primary"
-          maxlength="20"
-          class="my-8"
-          @keypress="isNumber($event)"
-        ></v-text-field>
-        <v-text-field
-          v-model.number="hours"
-          :rules="[Rules.required('Enter your work experience hours')]"
-          type="number"
-          label="Work Experience Hours"
-          variant="outlined"
-          color="primary"
-          maxlength="8"
-          class="my-8"
-          @keypress="isNumber($event)"
-        ></v-text-field>
+        <v-row>
+          <v-col cols="12">
+            <EceTextField
+              v-model="lastName"
+              :rules="[Rules.required('Enter your reference\'s last name')]"
+              label="Reference Last Name"
+              maxlength="100"
+            ></EceTextField>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <EceTextField v-model="firstName" label="Reference First Name" maxlength="100"></EceTextField>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <EceTextField
+              v-model="email"
+              :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
+              label="Reference Email"
+              maxlength="200"
+            ></EceTextField>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <EceTextField
+              v-model="phoneNumber"
+              :rules="[Rules.phoneNumber('Enter your reference\'s 10-digit phone number')]"
+              label="Reference Phone Number (Optional)"
+              maxlength="20"
+              @keypress="isNumber($event)"
+            ></EceTextField>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <EceTextField
+              v-model.number="hours"
+              :rules="[Rules.required('Enter your work experience hours')]"
+              type="number"
+              label="Work Experience Hours"
+              maxlength="8"
+              @keypress="isNumber($event)"
+            ></EceTextField>
+          </v-col>
+        </v-row>
 
-        <v-row justify="start" class="ml-1">
+        <v-row justify="start" class="ml-1 my-10">
           <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">Save reference</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
         </v-row>
@@ -125,12 +134,12 @@ import { defineComponent } from "vue";
 
 import Alert from "@/components/Alert.vue";
 import Callout from "@/components/Callout.vue";
+import EceTextField from "@/components/inputs/EceTextField.vue";
 import WorkExperienceReferenceList, { type WorkExperienceReferenceData } from "@/components/WorkExperienceReferenceList.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import { useWizardStore } from "@/store/wizard";
-import type { EceWorkExperienceReferencesProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
@@ -141,12 +150,8 @@ import ProgressBar from "../ProgressBar.vue";
 
 export default defineComponent({
   name: "EceEdducation",
-  components: { WorkExperienceReferenceList, ProgressBar, Alert, Callout },
+  components: { WorkExperienceReferenceList, ProgressBar, Alert, Callout, EceTextField },
   props: {
-    props: {
-      type: Object as () => EceWorkExperienceReferencesProps,
-      required: true,
-    },
     modelValue: {
       type: Object as () => { [id: string]: Components.Schemas.WorkExperienceReference },
       required: true,

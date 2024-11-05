@@ -36,7 +36,7 @@
         :form-data="formStore.formData"
         @updated-form-data="formStore.setFormData"
       />
-      <p>After you save, we will send an email to this person requesting a reference.</p>
+      <p class="mt-6">After you save, we will send an email to this person requesting a reference.</p>
     </div>
     <v-row class="mt-6">
       <v-col class="d-flex flex-row ga-3 flex-wrap">

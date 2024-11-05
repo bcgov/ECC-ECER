@@ -30,18 +30,11 @@ import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
-import type { EcePreviewProps } from "@/types/input";
 import { fiveYearRenewalInformationRadio } from "@/utils/constant";
 export default defineComponent({
   name: "EceOneYearRenewalExplanationPreview",
   components: {
     PreviewCard,
-  },
-  props: {
-    props: {
-      type: Object as () => EcePreviewProps,
-      required: true,
-    },
   },
   setup: () => {
     const wizardStore = useWizardStore();

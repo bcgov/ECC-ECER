@@ -19,24 +19,22 @@
     <v-form ref="lookupForm" class="mt-10">
       <v-row>
         <v-col cols="12" sm="8" lg="4">
-          <v-text-field v-model="lookupCertificationStore.firstName" hide-details="auto" variant="outlined" label="First name"></v-text-field>
+          <EceTextField v-model="lookupCertificationStore.firstName" label="First name"></EceTextField>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="8" lg="4">
-          <v-text-field v-model="lookupCertificationStore.lastName" hide-details="auto" variant="outlined" label="Last name"></v-text-field>
+          <EceTextField v-model="lookupCertificationStore.lastName" label="Last name"></EceTextField>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="8" lg="4">
-          <v-text-field
+          <EceTextField
             v-model="lookupCertificationStore.registrationNumber"
-            hide-details="auto"
-            variant="outlined"
             label="ECE registration number"
             maxlength="6"
             @keypress="isNumber($event)"
-          ></v-text-field>
+          ></EceTextField>
         </v-col>
       </v-row>
       <v-row>
@@ -108,7 +106,7 @@ import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 import type { VDataTable, VForm } from "vuetify/components";
-
+import EceTextField from "@/components/inputs/EceTextField.vue";
 import { useAlertStore } from "@/store/alert";
 import { useLookupCertificationStore } from "@/store/lookupCertification";
 import { useLoadingStore } from "@/store/loading";
@@ -129,7 +127,7 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 export default defineComponent({
   name: "LookupCertification",
-  components: { EceRecaptcha },
+  components: { EceRecaptcha, EceTextField },
   setup() {
     const alertStore = useAlertStore();
     const lookupCertificationStore = useLookupCertificationStore();
