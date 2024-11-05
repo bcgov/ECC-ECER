@@ -28,7 +28,7 @@ addressLabel
         variant="outlined"
         color="primary"
         maxlength="50"
-        @update:model-value="(value: string) => updateField('line1', value)"
+        @update:model-value="(value: string) => updateField('city', value)"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -41,7 +41,7 @@ addressLabel
         variant="outlined"
         color="primary"
         maxlength="50"
-        @update:model-value="(value: string) => updateField('line1', value)"
+        @update:model-value="(value: string) => updateField('province', value)"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -54,7 +54,7 @@ addressLabel
         variant="outlined"
         color="primary"
         maxlength="7"
-        @update:model-value="(value: string) => updateField('line1', value)"
+        @update:model-value="(value: string) => updateField('postalCode', value)"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -67,7 +67,7 @@ addressLabel
         variant="outlined"
         color="primary"
         maxlength="50"
-        @update:model-value="(value: string) => updateField('line1', value)"
+        @update:model-value="(value: string) => updateField('country', value)"
       ></EceTextField>
     </v-col>
   </v-row>
