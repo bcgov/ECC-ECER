@@ -48,6 +48,9 @@ const vuetify = createVuetify({
       color: "primary",
       hideDetails: "auto",
     },
+    VCheckbox: {
+      color: "primary",
+    },
   },
   directives,
 });
