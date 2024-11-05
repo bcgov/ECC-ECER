@@ -99,10 +99,6 @@ export default defineComponent({
   name: "EceCharacterReference",
   components: { Alert, EceTextField },
   props: {
-    props: {
-      type: Object as () => EceCharacterReferenceProps,
-      required: true,
-    },
     modelValue: {
       type: Object as () => Components.Schemas.CharacterReference[],
       required: true,

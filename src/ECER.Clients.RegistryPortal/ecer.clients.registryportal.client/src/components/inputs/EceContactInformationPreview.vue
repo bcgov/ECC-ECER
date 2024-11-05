@@ -90,18 +90,11 @@ import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
-import type { EcePreviewProps } from "@/types/input";
 import { formatDate } from "@/utils/format";
 export default defineComponent({
   name: "EceContactInformationPreview",
   components: {
     PreviewCard,
-  },
-  props: {
-    props: {
-      type: Object as () => EcePreviewProps,
-      required: true,
-    },
   },
   setup: () => {
     const wizardStore = useWizardStore();

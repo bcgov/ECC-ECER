@@ -50,12 +50,6 @@ export default defineComponent({
   components: {
     PreviewCard,
   },
-  props: {
-    props: {
-      type: Object as () => EcePreviewProps,
-      required: true,
-    },
-  },
   setup: () => {
     const wizardStore = useWizardStore();
     return {

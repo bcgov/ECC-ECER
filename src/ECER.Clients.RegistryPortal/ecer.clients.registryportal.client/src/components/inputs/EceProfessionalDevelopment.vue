@@ -315,10 +315,6 @@ export default defineComponent({
   name: "EceProfessionalDevelopment",
   components: { ProgressBar, FileUploader, ProfessionalDevelopmentCard, EceDateInput, EceTextField },
   props: {
-    props: {
-      type: Object as () => {},
-      required: true,
-    },
     modelValue: {
       type: Object as () => ProfessionalDevelopmentExtended[],
       required: true,

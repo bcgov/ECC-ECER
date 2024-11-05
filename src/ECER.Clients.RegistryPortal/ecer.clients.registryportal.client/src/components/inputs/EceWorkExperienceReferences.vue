@@ -140,7 +140,6 @@ import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import { useWizardStore } from "@/store/wizard";
-import type { EceWorkExperienceReferencesProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
@@ -153,10 +152,6 @@ export default defineComponent({
   name: "EceEdducation",
   components: { WorkExperienceReferenceList, ProgressBar, Alert, Callout, EceTextField },
   props: {
-    props: {
-      type: Object as () => EceWorkExperienceReferencesProps,
-      required: true,
-    },
     modelValue: {
       type: Object as () => { [id: string]: Components.Schemas.WorkExperienceReference },
       required: true,
