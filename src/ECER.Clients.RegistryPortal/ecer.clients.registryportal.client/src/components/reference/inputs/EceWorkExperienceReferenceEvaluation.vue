@@ -46,15 +46,19 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-autocomplete
-            label="Type of child care program"
-            variant="outlined"
-            color="primary"
-            :rules="[Rules.required('Select an option')]"
-            :items="childrenProgramTypeDropdown"
-            hide-details="auto"
-            @update:model-value="childrenProgramTypeChanged"
-          ></v-autocomplete>
+          <label>
+            Type of child care program
+            <v-autocomplete
+              label=""
+              variant="outlined"
+              color="primary"
+              :rules="[Rules.required('Select an option')]"
+              :items="childrenProgramTypeDropdown"
+              hide-details="auto"
+              class="pt-2"
+              @update:model-value="childrenProgramTypeChanged"
+            ></v-autocomplete>
+          </label>
         </v-col>
       </v-row>
 

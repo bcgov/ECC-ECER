@@ -41,7 +41,8 @@
         <v-col>
           <EceRecaptcha
             :model-value="recaptchaToken"
-            :props="{ rules: [Rules.required('Check to confirm you are not a robot')], recaptchaElementId: 'recaptchaLookup' }"
+            :rules="[Rules.required('Check to confirm you are not a robot')]"
+            recaptchaElementId="recaptchaLookup"
             @update:model-value="(value: string) => (recaptchaToken = value)"
           ></EceRecaptcha>
         </v-col>
