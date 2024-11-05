@@ -189,9 +189,6 @@ const futureDateNotAllowedRule = (message = "Date must be before today") => {
     if (v) {
       const input = DateTime.fromJSDate(new Date(v));
       const today = DateTime.now().startOf("day");
-
-      console.log(today);
-      console.log(input);
       return input <= today || message;
     }
 
