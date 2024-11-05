@@ -37,6 +37,18 @@ const vuetify = createVuetify({
     VDateInput,
     ...components,
   },
+  defaults: {
+    VTextField: {
+      variant: "outlined",
+      color: "primary",
+      hideDetails: "auto",
+    },
+    VDateInput: {
+      variant: "outlined",
+      color: "primary",
+      hideDetails: "auto",
+    },
+  },
   directives,
 });
 
