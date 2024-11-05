@@ -193,7 +193,7 @@
             </v-col>
           </v-row>
         </div>
-        <v-row justify="start" class="ml-1 mt-3">
+        <v-row justify="start" class="ml-1 mt-10">
           <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">Save education</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
         </v-row>

@@ -53,7 +53,7 @@
           </v-col>
         </v-row>
 
-        <v-row justify="start" class="ml-1 my-8">
+        <v-row justify="start" class="ml-1 my-10">
           <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">Save reference</v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
         </v-row>
