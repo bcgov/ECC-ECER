@@ -2,7 +2,7 @@
   <label>
     {{ label }}
     <v-date-input
-      :model-value="new Date(modelValue)"
+      :model-value="new Date(modelValue ?? '')"
       :value="formattedDate"
       :aria-label="label"
       prepend-icon=""
@@ -17,14 +17,14 @@
 <script lang="ts">
 import { formatDate } from "@/utils/format";
 import { DateTime } from "luxon";
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 
 export default defineComponent({
   name: "EceDateInput",
   props: {
     modelValue: {
-      type: String,
-      required: true,
+      type: String as PropType<string | undefined | null>,
+      required: false,
     },
     label: {
       type: String,
@@ -48,7 +48,7 @@ export default defineComponent({
      * Format the date as "LLLL d, yyyy" to display in the input field
      */
     formattedDate() {
-      return formatDate(this.modelValue, "LLLL d, yyyy");
+      return formatDate(this.modelValue ?? "", "LLLL d, yyyy");
     },
   },
 });

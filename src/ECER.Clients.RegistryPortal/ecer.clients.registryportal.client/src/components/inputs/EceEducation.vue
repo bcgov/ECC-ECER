@@ -41,19 +41,17 @@
 
         <v-row>
           <v-col>
-            <v-text-field
+            <EceTextField
               v-model="program"
               :rules="[Rules.required('Enter the name of your program or course')]"
               label="Name of program or course"
-              variant="outlined"
-              color="primary"
               maxlength="100"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
-            <v-text-field
+            <EceDateInput
               v-model="startYear"
               :rules="[
                 Rules.required('Enter the start date'),
@@ -64,17 +62,15 @@
                 ),
               ]"
               label="Start date of program or course"
-              type="date"
-              variant="outlined"
-              color="primary"
               maxlength="50"
+              placeholder=""
               :max="today"
-            ></v-text-field>
+            ></EceDateInput>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
-            <v-text-field
+            <EceDateInput
               v-model="endYear"
               :rules="[
                 Rules.required('Enter the end date'),
@@ -86,12 +82,10 @@
                 ),
               ]"
               label="End date of program or course"
-              type="date"
-              variant="outlined"
-              color="primary"
               maxlength="50"
+              placeholder=""
               :max="today"
-            ></v-text-field>
+            ></EceDateInput>
           </v-col>
         </v-row>
         <v-row>
@@ -128,14 +122,12 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-text-field
+            <EceTextField
               v-model="school"
               :rules="[Rules.required('Enter the name of the educational institution')]"
               label="Full name of educational institution"
-              variant="outlined"
-              color="primary"
               maxlength="100"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
@@ -148,12 +140,12 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-text-field v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="200"></v-text-field>
+            <EceTextField v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="200"></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
-            <v-text-field v-model="language" label="Language of institution (optional)" variant="outlined" color="primary" maxlength="100"></v-text-field>
+            <EceTextField v-model="language" label="Language of institution (optional)" variant="outlined" color="primary" maxlength="100"></EceTextField>
           </v-col>
         </v-row>
         <v-row>
@@ -165,14 +157,12 @@
         </v-row>
         <v-row>
           <v-col>
-            <v-text-field
+            <EceTextField
               v-model="studentNumber"
               :rules="[Rules.required('Enter your student number or ID')]"
               label="Student number or ID"
-              variant="outlined"
-              color="primary"
               maxlength="100"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
         <br />
@@ -184,30 +174,22 @@
         <div v-if="previousNameRadio === 'other'">
           <v-row>
             <v-col>
-              <v-text-field v-model="studentFirstName" label="First name on transcript" variant="outlined" color="primary" maxlength="100"></v-text-field>
+              <EceTextField v-model="studentFirstName" label="First name on transcript" variant="outlined" color="primary" maxlength="100"></EceTextField>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
-                v-model="studentMiddleName"
-                label="Middle name(s) on transcript (optional)"
-                variant="outlined"
-                color="primary"
-                maxlength="100"
-              ></v-text-field>
+              <EceTextField v-model="studentMiddleName" label="Middle name(s) on transcript (optional)" maxlength="100"></EceTextField>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-text-field
+              <EceTextField
                 v-model="studentLastName"
                 :rules="[Rules.required('Enter your last name')]"
                 label="Last name on transcript"
-                variant="outlined"
-                color="primary"
                 maxlength="100"
-              ></v-text-field>
+              ></EceTextField>
             </v-col>
           </v-row>
         </div>
@@ -242,13 +224,13 @@
 import { DateTime } from "luxon";
 import { mapWritableState } from "pinia";
 import { defineComponent } from "vue";
-
+import EceTextField from "@/components/inputs/EceTextField.vue";
+import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import EducationList, { type EducationData } from "@/components/EducationList.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
-import type { EceEducationProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
@@ -283,12 +265,8 @@ interface RadioOptions {
 
 export default defineComponent({
   name: "EceEducation",
-  components: { EducationList },
+  components: { EducationList, EceTextField, EceDateInput },
   props: {
-    props: {
-      type: Object as () => EceEducationProps,
-      required: true,
-    },
     modelValue: {
       type: Object as () => { [id: string]: Components.Schemas.Transcript },
       required: true,

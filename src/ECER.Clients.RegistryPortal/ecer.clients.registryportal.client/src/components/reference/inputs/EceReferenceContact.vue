@@ -5,62 +5,50 @@
       <div role="doc-subtitle">We may contact you to verify or clarify information you provide.</div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             :model-value="modelValue.lastName"
             :rules="[Rules.required('Enter your last name')]"
             label="Last Name"
             autocomplete="family-name"
-            variant="outlined"
-            color="primary"
             maxlength="100"
-            hide-details="auto"
             @input="updateField('lastName', $event)"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             :model-value="modelValue.firstName"
             label="First Name"
             autocomplete="given-name"
-            variant="outlined"
-            color="primary"
             maxlength="100"
-            hide-details="auto"
             @input="updateField('firstName', $event)"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             :model-value="modelValue.email"
             :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]"
             label="Email"
             autocomplete="email"
-            variant="outlined"
-            color="primary"
             maxlength="200"
-            hide-details="auto"
             @input="updateField('email', $event)"
           />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             :model-value="modelValue.phoneNumber"
             :rules="[Rules.required(), Rules.phoneNumber('Enter your 10-digit phone number')]"
             label="Phone Number"
             autocomplete="tel"
-            variant="outlined"
-            color="primary"
             maxlength="10"
-            hide-details="auto"
             @input="updateField('phoneNumber', $event)"
             @keypress="isNumber($event)"
-          ></v-text-field>
+          ></EceTextField>
         </v-col>
       </v-row>
       <div v-if="wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_400_Hours">
@@ -84,18 +72,15 @@
         </v-row>
         <v-row>
           <v-col cols="12" md="8" lg="6" xl="4">
-            <v-text-field
+            <EceTextField
               v-if="modelValue.certificateProvinceId"
               ref="certificateNumberRef"
               :model-value="modelValue.certificateNumber"
               :label="`ECE Certification/Registration Number (Optional)`"
-              variant="outlined"
-              color="primary"
               maxlength="25"
-              hide-details="auto"
               @input="updateField('certificateNumber', $event)"
               @keypress="isNumber($event)"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
       </div>
@@ -113,11 +98,8 @@
               v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER"
               :model-value="modelValue.certificateProvinceId"
               label="Province/Territory Certified/Registered In (Optional)"
-              variant="outlined"
-              color="primary"
               :items="configStore?.provinceList"
               clearable
-              hide-details="auto"
               @update:model-value="certificateProvinceIdChanged"
               @click:clear="provinceClearClicked"
             ></v-autocomplete>
@@ -125,10 +107,7 @@
               v-if="wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE"
               :model-value="modelValue.certificateProvinceId"
               label="Province/Territory Certified/Registered In"
-              variant="outlined"
-              color="primary"
               :items="configStore?.provinceList.filter((province) => province.title !== ProvinceTerritoryType.OTHER)"
-              hide-details="auto"
               :rules="[Rules.required()]"
               @update:model-value="certificateProvinceIdChanged"
             ></v-autocomplete>
@@ -136,34 +115,28 @@
         </v-row>
         <v-row>
           <v-col cols="12" md="8" lg="6" xl="4">
-            <v-text-field
+            <EceTextField
               v-if="modelValue.certificateProvinceId"
               ref="certificateNumberRef"
               :model-value="modelValue.certificateNumber"
               :rules="[customOptionalIfNotBCRule()]"
               :label="`ECE Certification/Registration Number${userSelectProvinceIdBC ? '' : ' (Optional)'}`"
-              variant="outlined"
-              color="primary"
               maxlength="25"
-              hide-details="auto"
               @input="updateField('certificateNumber', $event)"
               @keypress="isNumber($event)"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12" md="8" lg="6" xl="4">
-            <v-text-field
+            <EceDateInput
               v-if="modelValue.certificateProvinceId && !userSelectProvinceIdBC"
               :model-value="modelValue.dateOfBirth"
               label="Your date of birth (Optional)"
-              variant="outlined"
-              color="primary"
-              hide-details="auto"
               type="date"
               :max="today"
               @input="updateField('dateOfBirth', $event)"
-            ></v-text-field>
+            ></EceDateInput>
           </v-col>
         </v-row>
       </div>
@@ -176,6 +149,8 @@ import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 import type { VTextField } from "vuetify/components";
 
+import EceTextField from "@/components/inputs/EceTextField.vue";
+import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import { useConfigStore } from "@/store/config";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
@@ -187,6 +162,7 @@ import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
   name: "EceReferenceContact",
+  components: { EceTextField, EceDateInput },
   props: {
     modelValue: {
       type: Object as () => Components.Schemas.ReferenceContactInformation,
