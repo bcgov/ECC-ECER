@@ -8,5 +8,6 @@ internal class MetadataMapper : Profile
   public MetadataMapper()
   {
     CreateMap<Province, Contract.Metadatas.Province>();
+    CreateMap<Country, Contract.Metadatas.Country>();
   }
 }
