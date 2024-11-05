@@ -200,7 +200,7 @@ const futureDateNotAllowedRule = (message = "Date must be before today") => {
 };
 
 /**
- * conditional wrapper for form r'ules. If condition is met then return rule function
+ * conditional wrapper for form rules. If condition is met then return rule function
  * otherwise ignore by returning true
  * @param {boolean} condition
  * @param {Function} rule
