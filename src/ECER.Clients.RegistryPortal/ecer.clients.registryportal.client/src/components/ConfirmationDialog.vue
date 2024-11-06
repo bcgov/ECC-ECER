@@ -9,9 +9,7 @@
                 {{ title }}
               </h2>
               <v-spacer></v-spacer>
-              <v-btn icon elevation="0" @click="cancel">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
+              <v-btn size="default" icon="mdi-close" elevation="0" @click="cancel" />
             </div>
           </v-card-title>
           <v-card-text class="pb-12">
