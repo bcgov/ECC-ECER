@@ -7,6 +7,7 @@
         :show-save-button="showSaveButtons"
         :is-renewal="applicationStore?.draftApplication.applicationType === 'Renewal'"
         :is-registrant="userStore.isRegistrant"
+        :validate-form="validateForm"
       />
       <v-container>
         <!-- prettier-ignore -->
@@ -151,9 +152,7 @@ export default defineComponent({
       }
     },
     async handleSaveAndContinue() {
-      const currentStepFormId = this.wizardStore.currentStep.form.id;
-      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
-      const { valid } = await formRef.validate();
+      const valid = await this.validateForm();
       if (!valid) {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       } else {
@@ -183,6 +182,13 @@ export default defineComponent({
             break;
         }
       }
+    },
+    async validateForm() {
+      const currentStepFormId = this.wizardStore.currentStep.form.id;
+      const formRef = (this.$refs.wizard as typeof Wizard).$refs[currentStepFormId][0].$refs[currentStepFormId];
+      const { valid } = await formRef.validate();
+
+      return valid;
     },
     incrementWizard() {
       this.wizardStore.incrementStep();

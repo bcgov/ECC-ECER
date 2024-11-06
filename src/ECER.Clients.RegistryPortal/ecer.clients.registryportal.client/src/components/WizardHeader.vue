@@ -43,6 +43,7 @@ import { useLoadingStore } from "@/store/loading";
 import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHeader.vue";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
 import { useRouter } from "vue-router";
+import { useAlertStore } from "@/store/alert";
 
 export default defineComponent({
   name: "WizardHeader",
@@ -64,16 +65,22 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    validateForm: {
+      type: Function,
+      required: true,
+    },
   },
   setup() {
     const applicationStore = useApplicationStore();
     const loadingStore = useLoadingStore();
+    const alertStore = useAlertStore();
     const { mobile } = useDisplay();
     const router = useRouter();
 
     return {
       applicationStore,
       loadingStore,
+      alertStore,
       mobile,
       router,
     };
@@ -99,8 +106,14 @@ export default defineComponent({
       this.showConfirmation = !this.showConfirmation;
     },
     async saveAndExit() {
-      await this.handleSaveDraft();
-      this.router.push({ name: "dashboard" });
+      const valid = await this.validateForm();
+
+      if (!valid) {
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+      } else {
+        await this.handleSaveDraft();
+        this.router.push({ name: "dashboard" });
+      }
     },
     async changeCertification() {
       this.showConfirmation = false;
