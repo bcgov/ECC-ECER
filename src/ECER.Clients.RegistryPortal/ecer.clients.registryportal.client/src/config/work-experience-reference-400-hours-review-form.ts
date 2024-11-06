@@ -12,7 +12,6 @@ const workExperience400HoursReviewForm: Form = {
     eceReferenceContactPreview: {
       id: "eceReferenceContactPreview",
       component: EceReferenceContactPreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,
@@ -22,7 +21,6 @@ const workExperience400HoursReviewForm: Form = {
     eceWorkExperienceReferenceEvaluationPreview: {
       id: "eceWorkExperienceReference400HoursEvaluationPreview",
       component: EceWorkExperienceReference400HoursEvaluationPreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

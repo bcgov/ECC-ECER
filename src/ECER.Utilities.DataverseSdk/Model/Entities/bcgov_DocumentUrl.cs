@@ -144,9 +144,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_bcgov_documenturl_ProfessionalDevelopmentId = "ecer_bcgov_documenturl_ProfessionalDevelopmentId";
 			public const string ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton";
 			public const string ecer_bcgov_documenturl_ProgramProfileId_ecer_program = "ecer_bcgov_documenturl_ProgramProfileId_ecer_program";
+			public const string ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute = "ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute";
 			public const string ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos = "ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos";
 			public const string ecer_CertificateId = "ecer_certificateid";
 			public const string ecer_CertificateIdName = "ecer_certificateidname";
+			public const string ecer_certificatesummary_DocumentURL_bcgov_documenturl = "ecer_certificatesummary_DocumentURL_bcgov_documenturl";
 			public const string ecer_CommunicationId = "ecer_communicationid";
 			public const string ecer_CommunicationIdName = "ecer_communicationidname";
 			public const string ecer_DisableExternalViewing = "ecer_disableexternalviewing";
@@ -168,6 +170,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_programapplicationidName = "ecer_programapplicationidname";
 			public const string ecer_ProgramProfileId = "ecer_programprofileid";
 			public const string ecer_ProgramProfileIdName = "ecer_programprofileidname";
+			public const string ecer_psiid = "ecer_psiid";
+			public const string ecer_psiidName = "ecer_psiidname";
 			public const string ecer_PSPSiteVisitId = "ecer_pspsitevisitid";
 			public const string ecer_PSPSiteVisitIdName = "ecer_pspsitevisitidname";
 			public const string ecer_transcript_TranscriptDocumentId = "ecer_transcript_TranscriptDocumentId";
@@ -1285,6 +1289,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_psiid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_psiid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_psiid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiidname")]
+		public string ecer_psiidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_psiid"))
+				{
+					return this.FormattedValues["ecer_psiid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_PSPSiteVisitId
 		{
@@ -1699,6 +1735,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_certificatesummary_DocumentURL_bcgov_documenturl
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificatesummary_DocumentURL_bcgov_documenturl")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CertificateSummary> ecer_certificatesummary_DocumentURL_bcgov_documenturl
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateSummary>("ecer_certificatesummary_DocumentURL_bcgov_documenturl", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateSummary>("ecer_certificatesummary_DocumentURL_bcgov_documenturl", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_transcript_TranscriptDocumentId
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_transcript_TranscriptDocumentId")]
@@ -1887,6 +1941,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_bcgov_documenturl_ProgramProfileId_ecer_program", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute", null, value);
 			}
 		}
 		

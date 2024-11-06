@@ -8,7 +8,6 @@ const professionalDevelopment: Form = {
     professionalDevelopments: {
       id: "professionalDevelopments",
       component: EceProfessionalDevelopment,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

@@ -1,4 +1,5 @@
 import EceAddresses from "@/components/inputs/EceAddresses.vue";
+import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import type { Form } from "@/types/form";
 import * as Rules from "@/utils/formRules";
@@ -14,7 +15,7 @@ const profileInformationForm: Form = {
         label: "Legal last name",
         rules: [],
         maxLength: 50,
-        disabled: true,
+        readonly: true,
       },
       cols: {
         md: 8,
@@ -29,7 +30,7 @@ const profileInformationForm: Form = {
         label: "Legal first name",
         rules: [],
         maxLength: 50,
-        disabled: true,
+        readonly: true,
       },
       cols: {
         md: 8,
@@ -44,7 +45,7 @@ const profileInformationForm: Form = {
         label: "Legal middle name",
         rules: [],
         maxLength: 50,
-        disabled: true,
+        readonly: true,
       },
       cols: {
         md: 8,
@@ -68,12 +69,11 @@ const profileInformationForm: Form = {
     },
     dateOfBirth: {
       id: "dateOfBirth",
-      component: EceTextField,
+      component: EceDateInput,
       props: {
         label: "Date of birth",
-        type: "date",
         rules: [Rules.required()],
-        disabled: true,
+        readonly: true,
       },
       cols: {
         md: 8,
@@ -84,10 +84,6 @@ const profileInformationForm: Form = {
     addresses: {
       id: "addresses",
       component: EceAddresses,
-      props: {
-        residential: { addressLabel: "Home" },
-        mailing: { addressLabel: "Mailing" },
-      },
       cols: {
         md: 8,
         lg: 6,

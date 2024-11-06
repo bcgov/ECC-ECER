@@ -28,61 +28,53 @@
   </v-row>
   <v-row>
     <v-col cols="12" md="8" lg="6" xl="4">
-      <v-text-field
+      <EceTextField
         v-model="lastName"
         :rules="[Rules.required('Enter your reference\'s last name'), Rules.noSpecialCharactersContactName()]"
         label="Last name"
-        variant="outlined"
-        color="primary"
         maxlength="100"
         @update:model-value="updateCharacterReference()"
         @keypress="isNotSpecialCharacterName"
-      ></v-text-field>
+      ></EceTextField>
     </v-col>
   </v-row>
   <v-row>
     <v-col cols="12" md="8" lg="6" xl="4">
-      <v-text-field
+      <EceTextField
         v-model="firstName"
         :rules="[Rules.noSpecialCharactersContactName()]"
         label="First name"
-        variant="outlined"
-        color="primary"
         maxlength="100"
         @update:model-value="updateCharacterReference()"
         @keypress="isNotSpecialCharacterName"
-      ></v-text-field>
+      ></EceTextField>
     </v-col>
   </v-row>
   <v-row>
     <v-col cols="12" md="8" lg="6" xl="4">
-      <v-text-field
+      <EceTextField
         v-model="emailAddress"
         :rules="[
           Rules.required('Enter your reference\'s email in the format \'name@email.com\''),
           Rules.email('Enter your reference\'s email in the format \'name@email.com\''),
         ]"
         label="Email"
-        variant="outlined"
-        color="primary"
         maxlength="100"
         @update:model-value="updateCharacterReference()"
-      ></v-text-field>
+      ></EceTextField>
     </v-col>
   </v-row>
   <v-row>
     <v-col cols="12" md="8" lg="6" xl="4">
-      <v-text-field
+      <EceTextField
         v-model="phoneNumber"
         :rules="[Rules.phoneNumber('Enter your reference\'s 10-digit phone number')]"
         label="Phone number (optional)"
         length="10"
-        variant="outlined"
-        color="primary"
         maxlength="10"
         @update:model-value="updateCharacterReference()"
         @keypress="isNumber($event)"
-      ></v-text-field>
+      ></EceTextField>
     </v-col>
   </v-row>
   <!-- this prevents form from proceeding if there are duplicates -->
@@ -92,7 +84,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import EceTextField from "@/components/inputs/EceTextField.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
@@ -105,12 +97,8 @@ import * as Rules from "@/utils/formRules";
 import Alert from "../Alert.vue";
 export default defineComponent({
   name: "EceCharacterReference",
-  components: { Alert },
+  components: { Alert, EceTextField },
   props: {
-    props: {
-      type: Object as () => EceCharacterReferenceProps,
-      required: true,
-    },
     modelValue: {
       type: Object as () => Components.Schemas.CharacterReference[],
       required: true,

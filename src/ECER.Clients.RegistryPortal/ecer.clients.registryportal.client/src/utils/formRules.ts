@@ -124,7 +124,7 @@ const atLeastOneOptionRequired = (message = "Please select at least one option")
 const dateRuleRange = (targetDate: string, years: number, message = `Date should be within ${years} years`) => {
   return (v: string) => {
     if (v && targetDate) {
-      const input = DateTime.fromISO(v);
+      const input = DateTime.fromJSDate(new Date(v));
       const target = DateTime.fromISO(targetDate);
       const differenceInYears = Math.abs(input.diff(target, "years").years);
 
@@ -148,7 +148,7 @@ const dateBetweenRule = (startDate: string, endDate: string, message = `Date sho
     if (v && startDate && endDate) {
       const end = DateTime.fromISO(endDate);
       const start = DateTime.fromISO(startDate);
-      const input = DateTime.fromISO(v);
+      const input = DateTime.fromJSDate(new Date(v));
 
       return (input <= end && input >= start) || message;
     }
@@ -166,7 +166,7 @@ const dateBetweenRule = (startDate: string, endDate: string, message = `Date sho
 const dateBeforeRule = (targetDate: string, message = "End date cannot be before start date") => {
   return (v: string) => {
     if (v && targetDate) {
-      const input = DateTime.fromISO(v);
+      const input = DateTime.fromJSDate(new Date(v));
       const target = DateTime.fromISO(targetDate);
 
       return input >= target || message;
@@ -187,9 +187,8 @@ const dateBeforeRule = (targetDate: string, message = "End date cannot be before
 const futureDateNotAllowedRule = (message = "Date must be before today") => {
   return (v: string) => {
     if (v) {
-      const input = DateTime.fromISO(v);
+      const input = DateTime.fromJSDate(new Date(v));
       const today = DateTime.now().startOf("day");
-
       return input <= today || message;
     }
 

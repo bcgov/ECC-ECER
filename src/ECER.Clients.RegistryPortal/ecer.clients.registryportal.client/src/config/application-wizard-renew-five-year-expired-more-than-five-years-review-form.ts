@@ -12,7 +12,6 @@ const renewFiveYearsExpiredMoreThanFiveYearsReviewForm: Form = {
     certificationSelectionPreview: {
       id: "certificationSelectionPreview",
       component: EceCertificationTypePreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,
@@ -22,7 +21,6 @@ const renewFiveYearsExpiredMoreThanFiveYearsReviewForm: Form = {
     contactInformationPreview: {
       id: "contactInformationPreview",
       component: EceContactInformationPreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,
@@ -32,7 +30,6 @@ const renewFiveYearsExpiredMoreThanFiveYearsReviewForm: Form = {
     professionalDevelopmentPreview: {
       id: "professionalDevelopmentPreview",
       component: EceProfessionalDevelopmentPreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,
@@ -42,7 +39,6 @@ const renewFiveYearsExpiredMoreThanFiveYearsReviewForm: Form = {
     characterReferencePreview: {
       id: "characterReferencePreview",
       component: EceCharacterReferencePreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,
@@ -52,7 +48,6 @@ const renewFiveYearsExpiredMoreThanFiveYearsReviewForm: Form = {
     workExperienceReferencePreview: {
       id: "workExperienceReferencePreview",
       component: EceWorkExperienceReferencePreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

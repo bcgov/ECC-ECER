@@ -36,10 +36,6 @@ export default defineComponent({
   name: "EceFiveYearRenewalInformation",
   components: { RadioWithAdditionalOption },
   props: {
-    props: {
-      type: Object as () => EceRenewalInformationProps,
-      required: true,
-    },
     modelValue: { type: String, required: true },
   },
   setup() {
