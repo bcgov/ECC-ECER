@@ -8,7 +8,6 @@ const characterReferenceForm: Form = {
     willProvideReference: {
       id: "willProvideReference",
       component: EceCharacterReferenceForm,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

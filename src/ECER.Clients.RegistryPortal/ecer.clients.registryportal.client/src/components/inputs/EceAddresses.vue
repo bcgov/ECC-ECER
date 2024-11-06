@@ -1,14 +1,15 @@
 <template>
   <EceAddress
     :model-value="modelValue.residential"
-    v-bind="{ props: props.residential }"
+    address-label="Home"
+    v-bind="$attrs"
     @update:model-value="(value: any) => updateAddress(AddressType.RESIDENTIAL, value)"
   />
   <v-checkbox v-model="checked" color="primary" label="Mailing address is the same as home address"></v-checkbox>
   <EceAddress
     v-if="!checked"
     :model-value="modelValue.mailing"
-    v-bind="{ props: props.mailing }"
+    :address-label="`Mailing`"
     @update:model-value="(value: any) => updateAddress(AddressType.MAILING, value)"
   />
 </template>
@@ -17,7 +18,6 @@
 import { defineComponent } from "vue";
 
 import EceAddress from "@/components/inputs/EceAddress.vue";
-import type { EceAddressesProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { AddressType } from "@/utils/constant";
 import * as Functions from "@/utils/functions";
@@ -26,10 +26,6 @@ export default defineComponent({
   name: "EceAddresses",
   components: { EceAddress },
   props: {
-    props: {
-      type: Object as () => EceAddressesProps,
-      required: true,
-    },
     modelValue: {
       type: Object as () => AddressesData,
       required: true,

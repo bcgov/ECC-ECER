@@ -30,16 +30,13 @@
             <v-col cols="12">
               <v-row>
                 <!-- Email Field -->
-                <v-col cols="12" md="6">
-                  <v-text-field
+                <v-col cols="12" md="6" class="mt-5">
+                  <EceTextField
                     v-model="email"
                     label="Email"
-                    variant="outlined"
-                    color="primary"
                     type="email"
                     :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]"
-                    class="mt-5"
-                  ></v-text-field>
+                  ></EceTextField>
                 </v-col>
               </v-row>
             </v-col>
@@ -47,14 +44,12 @@
               <v-row>
                 <!-- Phone Field -->
                 <v-col cols="12" sm="6">
-                  <v-text-field
+                  <EceTextField
                     v-model="phoneNumber"
                     label="Phone number"
-                    variant="outlined"
-                    color="primary"
                     :rules="[Rules.required(), Rules.phoneNumber()]"
                     @keypress="isNumber($event)"
-                  ></v-text-field>
+                  ></EceTextField>
                 </v-col>
               </v-row>
             </v-col>
@@ -76,7 +71,7 @@
 
             <!-- ECE Registration Number -->
             <v-col v-if="eceCertificateStatus === true" cols="12" sm="6">
-              <v-text-field
+              <EceTextField
                 v-model="eceRegistrationNumber"
                 label="Your ECE Registration Number"
                 variant="outlined"
@@ -116,6 +111,7 @@
 import { defineComponent, ref } from "vue";
 import type { VForm } from "vuetify/components";
 
+import EceTextField from "@/components/inputs/EceTextField.vue";
 import { getUserInfo, postUserInfo } from "@/api/user";
 import ECEHeader from "@/components/ECEHeader.vue";
 import { useLoadingStore } from "@/store/loading";
@@ -129,7 +125,7 @@ import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "NewUser",
-  components: { PageContainer, ECEHeader },
+  components: { PageContainer, ECEHeader, EceTextField },
   setup: async () => {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();

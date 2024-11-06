@@ -12,7 +12,6 @@ const characterReferenceReviewForm: Form = {
     eceReferenceContactPreview: {
       id: "eceReferenceContactPreview",
       component: EceReferenceContactPreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,
@@ -22,7 +21,6 @@ const characterReferenceReviewForm: Form = {
     eceCharacterReferenceEvaluationPreview: {
       id: "eceCharacterReferenceEvaluationPreview",
       component: EceCharacterReferenceEvaluationPreview,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

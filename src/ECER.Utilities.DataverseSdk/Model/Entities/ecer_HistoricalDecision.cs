@@ -36,7 +36,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Active = 1,
+		Approved = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Denied = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
@@ -62,12 +65,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
+			public const string ecer_contact = "ecer_contact";
+			public const string ecer_contact_ecer_historicaldecision_contact = "ecer_contact_ecer_historicaldecision_contact";
+			public const string ecer_contactName = "ecer_contactname";
+			public const string ecer_contactYomiName = "ecer_contactyominame";
 			public const string ecer_countryofstudy = "ecer_countryofstudy";
 			public const string ecer_CountryofStudyId = "ecer_countryofstudyid";
 			public const string ecer_CountryofStudyIdName = "ecer_countryofstudyidname";
 			public const string ecer_decisiondate = "ecer_decisiondate";
-			public const string ecer_decisionstatus = "ecer_decisionstatus";
-			public const string ecer_decisionstatusName = "ecer_decisionstatusname";
 			public const string ecer_historicaldecision_ApplicationId = "ecer_historicaldecision_ApplicationId";
 			public const string ecer_historicaldecision_CountryofStudyId_ecer_country = "ecer_historicaldecision_CountryofStudyId_ecer_country";
 			public const string ecer_HistoricalDecisionId = "ecer_historicaldecisionid";
@@ -76,8 +81,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_nameofcredential = "ecer_nameofcredential";
 			public const string ecer_programname = "ecer_programname";
+			public const string ecer_province = "ecer_province";
 			public const string ecer_YearofCompletion = "ecer_yearofcompletion";
 			public const string ecer_yearofstudy = "ecer_yearofstudy";
+			public const string ecer_years = "ecer_years";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -286,6 +293,55 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contact")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_contact");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_contact", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactname")]
+		public string ecer_contactName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_contact"))
+				{
+					return this.FormattedValues["ecer_contact"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactyominame")]
+		public string ecer_contactYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_contact"))
+				{
+					return this.FormattedValues["ecer_contact"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_countryofstudy")]
 		public string ecer_countryofstudy
 		{
@@ -345,38 +401,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_decisiondate", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisionstatus")]
-		public virtual ecer_HistoricalDecisionStatus? ecer_decisionstatus
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_HistoricalDecisionStatus?)(EntityOptionSetEnum.GetEnum(this, "ecer_decisionstatus")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_decisionstatus", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisionstatusname")]
-		public string ecer_decisionstatusName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_decisionstatus"))
-				{
-					return this.FormattedValues["ecer_decisionstatus"];
-				}
-				else
-				{
-					return default(string);
-				}
 			}
 		}
 		
@@ -481,6 +505,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_province")]
+		public string ecer_province
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_province");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_province", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_yearofcompletion")]
 		public string ecer_YearofCompletion
 		{
@@ -508,6 +547,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_yearofstudy", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_years")]
+		public string ecer_years
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_years");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_years", value);
 			}
 		}
 		
@@ -889,6 +943,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_contact_ecer_historicaldecision_contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contact")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_ecer_historicaldecision_contact")]
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_contact_ecer_historicaldecision_contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_contact_ecer_historicaldecision_contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_contact_ecer_historicaldecision_contact", null, value);
 			}
 		}
 		

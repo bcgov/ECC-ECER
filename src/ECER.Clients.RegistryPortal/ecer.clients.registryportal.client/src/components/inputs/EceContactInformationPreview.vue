@@ -19,14 +19,6 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Previous name</p>
-        </v-col>
-        <v-col>
-          <p class="small font>weight-bold">{{ previousName }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
           <p class="small">Legal middle name</p>
         </v-col>
         <v-col>
@@ -98,18 +90,11 @@ import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
-import type { EcePreviewProps } from "@/types/input";
 import { formatDate } from "@/utils/format";
 export default defineComponent({
   name: "EceContactInformationPreview",
   components: {
     PreviewCard,
-  },
-  props: {
-    props: {
-      type: Object as () => EcePreviewProps,
-      required: true,
-    },
   },
   setup: () => {
     const wizardStore = useWizardStore();

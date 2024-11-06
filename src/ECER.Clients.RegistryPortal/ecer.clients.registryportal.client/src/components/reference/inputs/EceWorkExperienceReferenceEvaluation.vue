@@ -11,13 +11,10 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             :rules="[Rules.required('Enter a whole number greater than zero (0)')]"
             label="Total number of hours you observed the applicant working"
-            variant="outlined"
-            color="primary"
             maxlength="10"
-            hide-details="auto"
             @keypress="isNumber($event)"
             @update:model-value="updateField('hours', $event)"
           />
@@ -39,13 +36,10 @@
 
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             :rules="[Rules.required('Enter the name of child care program')]"
             label="Name of child care program"
-            variant="outlined"
-            color="primary"
             maxlength="100"
-            hide-details="auto"
             @update:model-value="updateField('childrenProgramName', $event)"
           />
         </v-col>
@@ -66,14 +60,11 @@
 
       <v-row v-if="modelValue.childrenProgramType === 'Other'" class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             label="Specify Child Care Program"
-            variant="outlined"
-            color="primary"
             :rules="[Rules.required('Please specify child care program')]"
-            hide-details="auto"
             @update:model-value="updateField('childrenProgramTypeOther', $event)"
-          ></v-text-field>
+          ></EceTextField>
         </v-col>
       </v-row>
 
@@ -97,26 +88,18 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceDateInput
             label="Start date of hours"
-            variant="outlined"
-            color="primary"
-            hide-details="auto"
-            type="date"
             :max="today"
             :rules="[Rules.required('Enter the start date of hours'), Rules.futureDateNotAllowedRule('Start date of hours cannot be in the future')]"
             @update:model-value="updateField('startDate', $event)"
-          ></v-text-field>
+          ></EceDateInput>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceDateInput
             label="End date of hours"
-            variant="outlined"
-            color="primary"
-            hide-details="auto"
-            type="date"
             :max="today"
             :rules="[
               Rules.required('Enter the end date of hours'),
@@ -124,7 +107,7 @@
               Rules.futureDateNotAllowedRule('End date of hours cannot be in the future'),
             ]"
             @update:model-value="updateField('endDate', $event)"
-          ></v-text-field>
+          ></EceDateInput>
         </v-col>
       </v-row>
       <v-row>
@@ -148,15 +131,12 @@
       </v-row>
       <v-row v-if="modelValue.referenceRelationship === 'Other'" class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             label="Specify Your relationship"
-            variant="outlined"
-            color="primary"
             :rules="[Rules.required('Specify your relationship to the applicant. Your response should not exceed 100 characters')]"
-            hide-details="auto"
             maxlength="100"
             @update:model-value="updateField('referenceRelationshipOther', $event)"
-          ></v-text-field>
+          ></EceTextField>
         </v-col>
       </v-row>
     </v-col>
@@ -175,11 +155,15 @@ import { WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
+import EceDateInput from "@/components/inputs/EceDateInput.vue";
+import EceTextField from "@/components/inputs/EceTextField.vue";
 
 export default defineComponent({
   name: "EceWorkExperienceReferenceEvaluation",
   components: {
     CheckboxMultiple,
+    EceDateInput,
+    EceTextField,
   },
   props: {
     modelValue: {

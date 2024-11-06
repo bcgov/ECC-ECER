@@ -30,45 +30,42 @@
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <v-text-field
+            <EceTextField
               v-model="professionalDevelopment.courseName"
-              variant="outlined"
               label="Name of course or workshop"
               maxlength="100"
               :rules="[Rules.required('Enter your course or workshop name')]"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <v-text-field
+            <EceTextField
               v-model="professionalDevelopment.numberOfHours"
-              variant="outlined"
               label="How many hours was it?"
               :rules="[Rules.required('Enter your course of workshop hours')]"
               @keypress="isNumber($event)"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <v-text-field
+            <EceTextField
               v-model="professionalDevelopment.organizationName"
-              variant="outlined"
               label="Name of place that hosted the course or workshop"
               maxlength="300"
               :rules="[Rules.required('Enter the name of the place that hosted the course or workshop')]"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <v-text-field
+            <EceTextField
               variant="outlined"
               label="Website with description of course or workshop (optional)"
               maxlength="500"
               :rules="[Rules.website()]"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
@@ -78,7 +75,7 @@
         </v-row>
         <v-row>
           <v-col sm="6" md="4" lg="2">
-            <v-text-field
+            <EceDateInput
               ref="startDateInput"
               v-model="professionalDevelopment.startDate"
               :rules="[
@@ -102,17 +99,14 @@
                 ),
               ]"
               label="Start date"
-              type="date"
-              variant="outlined"
-              color="primary"
               :max="today"
               @input="validateDates"
-            ></v-text-field>
+            ></EceDateInput>
           </v-col>
         </v-row>
         <v-row>
           <v-col sm="6" md="4" lg="2">
-            <v-text-field
+            <EceDateInput
               ref="endDateInput"
               v-model="professionalDevelopment.endDate"
               :rules="[
@@ -137,12 +131,9 @@
                 ),
               ]"
               label="End date"
-              type="date"
-              variant="outlined"
-              color="primary"
               :max="today"
               @input="validateDates"
-            ></v-text-field>
+            ></EceDateInput>
           </v-col>
         </v-row>
         <v-row>
@@ -185,39 +176,35 @@
         </v-row>
         <v-row v-if="showInstructorNameInput">
           <v-col cmd="8" lg="6" xl="4">
-            <v-text-field
+            <EceTextField
               v-model="professionalDevelopment.instructorName"
-              variant="outlined"
               label="Instructor name"
               maxlength="100"
               :rules="[Rules.required('Enter the instructor name of your course or workshop')]"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row v-if="showPhoneNumberInput">
           <v-col md="8" lg="6" xl="4">
-            <v-text-field
+            <EceTextField
               v-model="professionalDevelopment.organizationContactInformation"
               label="Phone number"
               :rules="[
                 Rules.required('Enter the phone number for your course or workshop contact'),
                 Rules.phoneNumber('Enter your reference\'s 10-digit phone number'),
               ]"
-              variant="outlined"
-              color="primary"
               maxlength="10"
               @keypress="isNumber($event)"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row v-if="showEmailInput">
           <v-col md="8" lg="6" xl="4">
-            <v-text-field
+            <EceTextField
               v-model="professionalDevelopment.organizationEmailAddress"
-              variant="outlined"
               label="Email address"
               :rules="[Rules.required('Enter the email address of your course or workshop contact'), Rules.email()]"
-            ></v-text-field>
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row v-if="showFileInput">
@@ -251,7 +238,8 @@ import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import type { VForm, VInput } from "vuetify/components";
-
+import EceTextField from "@/components/inputs/EceTextField.vue";
+import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import { getApplicationStatus } from "@/api/application";
 import { addProfessionalDevelopment } from "@/api/application";
 import FileUploader from "@/components/FileUploader.vue";
@@ -274,7 +262,7 @@ interface ProfessionalDevelopmentData {
 
 export default defineComponent({
   name: "AddProfessionalDevelopment",
-  components: { FileUploader },
+  components: { FileUploader, EceTextField, EceDateInput },
   props: {
     applicationId: {
       type: String,

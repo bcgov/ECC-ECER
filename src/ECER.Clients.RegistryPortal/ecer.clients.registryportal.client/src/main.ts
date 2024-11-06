@@ -14,6 +14,7 @@ import App from "./App.vue";
 import router from "./router";
 import { useConfigStore } from "./store/config";
 import ecerTheme from "./styles/ecer-theme";
+import { VDateInput } from "vuetify/labs/VDateInput";
 
 const vuetify = createVuetify({
   theme: {
@@ -32,7 +33,25 @@ const vuetify = createVuetify({
   display: {
     mobileBreakpoint: "sm",
   },
-  components,
+  components: {
+    VDateInput,
+    ...components,
+  },
+  defaults: {
+    VTextField: {
+      variant: "outlined",
+      color: "primary",
+      hideDetails: "auto",
+    },
+    VDateInput: {
+      variant: "outlined",
+      color: "primary",
+      hideDetails: "auto",
+    },
+    VCheckbox: {
+      color: "primary",
+    },
+  },
   directives,
   defaults: {
     VBtn: {

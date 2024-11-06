@@ -71,6 +71,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Issue = "ecer_issue";
 			public const string ecer_issueName = "ecer_issuename";
 			public const string ecer_legacyapplicationassessmentresultid = "ecer_legacyapplicationassessmentresultid";
+			public const string ecer_legacyeducationlevelid = "ecer_legacyeducationlevelid";
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_Name = "ecer_name";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -400,6 +401,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyapplicationassessmentresultid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyeducationlevelid")]
+		public string ecer_legacyeducationlevelid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyeducationlevelid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyeducationlevelid", value);
 			}
 		}
 		

@@ -8,7 +8,6 @@ const explanationLetter: Form = {
     explanationLetter: {
       id: "explanationLetter",
       component: EceTextField,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

@@ -8,7 +8,6 @@ const reviewAndSubmit: Form = {
     reviewAndSubmit: {
       id: "reviewAndSubmit",
       component: EceTextField,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

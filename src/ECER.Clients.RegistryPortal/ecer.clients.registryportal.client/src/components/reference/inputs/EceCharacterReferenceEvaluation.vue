@@ -22,15 +22,12 @@
       </v-row>
       <v-row v-if="modelValue.referenceRelationship === 'Other'" class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-text-field
+          <EceTextField
             label="Specify your relationship with applicant"
-            variant="outlined"
-            color="primary"
             maxlength="100"
             :rules="[Rules.required('Enter your relationship with the applicant')]"
-            hide-details="auto"
             @update:model-value="updateField('referenceRelationshipOther', $event)"
-          ></v-text-field>
+          ></EceTextField>
         </v-col>
       </v-row>
       <v-row>
@@ -104,6 +101,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import EceTextField from "@/components/inputs/EceTextField.vue";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import { lengthOfAcquaintanceDropdown, referenceRelationshipDropdown } from "@/utils/constant";
@@ -111,6 +109,7 @@ import * as Rules from "@/utils/formRules";
 
 export default defineComponent({
   name: "EceCharacterReferenceEvaluation",
+  components: { EceTextField },
   props: {
     modelValue: {
       type: Object as () => Components.Schemas.CharacterReferenceEvaluation,

@@ -7,7 +7,7 @@ internal sealed class RegistrantMapper : AutoMapper.Profile
 {
   public RegistrantMapper()
   {
-    CreateMap<Contract.Registrants.RegisterNewUserCommand, Resources.Accounts.Registrants.Registrant>()
+    CreateMap<Contract.Registrants.RegisterNewUserCommand, Registrant>()
       .ForMember(d => d.Identities, opts => opts.MapFrom(s => (new[] { s.Identity })))
       .ForMember(d => d.Profile, opts => opts.MapFrom(s => s.Profile))
       .ForMember(d => d.Id, opts => opts.Ignore())

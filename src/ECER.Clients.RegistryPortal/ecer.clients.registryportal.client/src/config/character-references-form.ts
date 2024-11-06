@@ -8,7 +8,6 @@ const referencesForm: Form = {
     characterReferences: {
       id: "characterReferences",
       component: EceCharacterReference,
-      props: {},
       cols: {
         md: 12,
         lg: 12,

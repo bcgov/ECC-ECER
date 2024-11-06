@@ -8,7 +8,6 @@ const educationForm: Form = {
     educationList: {
       id: "educationList",
       component: EceEducation,
-      props: {},
       cols: {
         md: 12,
         lg: 12,
