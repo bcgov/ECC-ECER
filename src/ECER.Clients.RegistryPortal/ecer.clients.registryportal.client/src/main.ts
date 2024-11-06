@@ -51,15 +51,13 @@ const vuetify = createVuetify({
     VCheckbox: {
       color: "primary",
     },
-  },
-  directives,
-  defaults: {
     VBtn: {
       rounded: "lg",
       elevation: 0,
       size: "large",
     },
   },
+  directives,
 });
 
 const pinia = createPinia();
