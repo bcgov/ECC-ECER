@@ -51,6 +51,11 @@ const vuetify = createVuetify({
     VCheckbox: {
       color: "primary",
     },
+    VBtn: {
+      rounded: "lg",
+      elevation: 0,
+      size: "large",
+    },
   },
   directives,
 });
