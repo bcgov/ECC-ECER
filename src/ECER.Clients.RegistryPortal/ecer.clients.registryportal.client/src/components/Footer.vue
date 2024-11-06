@@ -116,7 +116,7 @@ export default defineComponent({
       );
     },
     formattedTimestamp(): string {
-      return formatDate(this.timestamp || "", "FFFF");
+      return formatDate(this.timestamp || "", "FFF");
     },
   },
   methods: {

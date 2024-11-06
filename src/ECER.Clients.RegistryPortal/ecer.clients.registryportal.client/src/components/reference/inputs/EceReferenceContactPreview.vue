@@ -76,12 +76,6 @@ export default defineComponent({
   components: {
     ReferencePreviewCard,
   },
-  props: {
-    props: {
-      type: Object as () => EcePreviewProps,
-      required: true,
-    },
-  },
   setup: () => {
     const wizardStore = useWizardStore();
     const configStore = useConfigStore();

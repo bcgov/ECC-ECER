@@ -1,7 +1,7 @@
 <template>
-  <v-input :model-value="modelValue" :rules="props.rules" hide-details="auto">
+  <v-input :model-value="modelValue" :rules="rules" hide-details="auto">
     <div
-      :id="props.recaptchaElementId"
+      :id="recaptchaElementId"
       class="g-recaptcha"
       :data-sitekey="siteKey"
       data-callback="recaptchaSuccessCallback"
@@ -23,8 +23,12 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    props: {
-      type: Object as () => EceRecaptchaProps,
+    recaptchaElementId: {
+      type: String,
+      required: true,
+    },
+    rules: {
+      type: Array as () => EceRecaptchaProps["rules"],
       required: true,
     },
   },
@@ -44,7 +48,7 @@ export default defineComponent({
 
     if (window.grecaptcha) {
       //checks to see if we've already loaded the grecaptcha script.
-      window.grecaptcha.render(this.props.recaptchaElementId);
+      window.grecaptcha.render(this.recaptchaElementId);
     }
   },
   methods: {
@@ -55,7 +59,7 @@ export default defineComponent({
       this.$emit("update:model-value", "");
     },
     recaptchaOnloadCallback() {
-      window.grecaptcha.render(this.props.recaptchaElementId);
+      window.grecaptcha.render(this.recaptchaElementId);
     },
   },
 });

@@ -1,10 +1,8 @@
 <template>
   <v-checkbox
     color="primary"
-    :label="props.label"
-    :disabled="props.disabled"
+    v-bind:="$attrs"
     :readonly="readonly"
-    :rules="props.rules"
     :model-value="modelValue"
     @click="!readonly && $emit('update:model-value', $event.target.checked)"
   ></v-checkbox>
@@ -13,18 +11,16 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import type { EceCheckboxProps } from "@/types/input";
-
 export default defineComponent({
   name: "EceCheckbox",
   props: {
-    props: {
-      type: Object as () => EceCheckboxProps,
-      required: true,
-    },
     modelValue: {
       type: Boolean,
       required: true,
+    },
+    checkableOnce: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: {
@@ -32,7 +28,7 @@ export default defineComponent({
   },
   computed: {
     readonly(): boolean {
-      return this.props.checkableOnce && this.modelValue ? true : false;
+      return this.checkableOnce && this.modelValue ? true : false;
     },
   },
 });

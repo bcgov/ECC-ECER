@@ -46,15 +46,19 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-autocomplete
-            label="Type of child care program"
-            variant="outlined"
-            color="primary"
-            :rules="[Rules.required('Select an option')]"
-            :items="childrenProgramTypeDropdown"
-            hide-details="auto"
-            @update:model-value="childrenProgramTypeChanged"
-          ></v-autocomplete>
+          <label>
+            Type of child care program
+            <v-autocomplete
+              label=""
+              variant="outlined"
+              color="primary"
+              :rules="[Rules.required('Select an option')]"
+              :items="childrenProgramTypeDropdown"
+              hide-details="auto"
+              class="pt-2"
+              @update:model-value="childrenProgramTypeChanged"
+            ></v-autocomplete>
+          </label>
         </v-col>
       </v-row>
 
@@ -90,6 +94,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceDateInput
             label="Start date of hours"
+            :model-value="modelValue.startDate"
             :max="today"
             :rules="[Rules.required('Enter the start date of hours'), Rules.futureDateNotAllowedRule('Start date of hours cannot be in the future')]"
             @update:model-value="updateField('startDate', $event)"
@@ -100,6 +105,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceDateInput
             label="End date of hours"
+            :model-value="modelValue.endDate"
             :max="today"
             :rules="[
               Rules.required('Enter the end date of hours'),

@@ -87,6 +87,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceDateInput
             label="Start date of hours"
+            :model-value="modelValue.startDate"
             :max="today"
             :rules="[Rules.required('Enter the start date of hours'), Rules.futureDateNotAllowedRule('Start date of hours cannot be in the future')]"
             @update:model-value="updateField('startDate', $event)"
@@ -97,6 +98,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceDateInput
             label="End date of hours"
+            :model-value="modelValue.endDate"
             :max="today"
             :rules="[
               Rules.required('Enter the end date of hours'),
@@ -218,7 +220,6 @@ export default defineComponent({
         [fieldName]: value,
       });
     },
-
     formatDate,
   },
 });
