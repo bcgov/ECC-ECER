@@ -215,10 +215,10 @@ export default defineComponent({
   },
   methods: {
     isNumber,
-    updateField(fieldName: keyof Components.Schemas.ReferenceContactInformation, event: any) {
+    updateField(fieldName: keyof Components.Schemas.ReferenceContactInformation, value: any) {
       this.$emit("update:model-value", {
         ...this.modelValue,
-        [fieldName]: event.target.value,
+        [fieldName]: value,
       });
     },
     customOptionalIfNotBCRule() {
