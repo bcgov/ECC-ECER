@@ -139,6 +139,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
+			public const string ecer_bcgov_documenturl_CertificateSummaryId = "ecer_bcgov_documenturl_CertificateSummaryId";
 			public const string ecer_bcgov_documenturl_CommunicationId_ecer_communication = "ecer_bcgov_documenturl_CommunicationId_ecer_communication";
 			public const string ecer_bcgov_documenturl_InvestigationInterviewI = "ecer_bcgov_documenturl_InvestigationInterviewI";
 			public const string ecer_bcgov_documenturl_ProfessionalDevelopmentId = "ecer_bcgov_documenturl_ProfessionalDevelopmentId";
@@ -149,6 +150,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CertificateId = "ecer_certificateid";
 			public const string ecer_CertificateIdName = "ecer_certificateidname";
 			public const string ecer_certificatesummary_DocumentURL_bcgov_documenturl = "ecer_certificatesummary_DocumentURL_bcgov_documenturl";
+			public const string ecer_CertificateSummaryId = "ecer_certificatesummaryid";
+			public const string ecer_CertificateSummaryIdName = "ecer_certificatesummaryidname";
 			public const string ecer_CommunicationId = "ecer_communicationid";
 			public const string ecer_CommunicationIdName = "ecer_communicationidname";
 			public const string ecer_DisableExternalViewing = "ecer_disableexternalviewing";
@@ -1015,6 +1018,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatesummaryid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CertificateSummaryId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_certificatesummaryid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificatesummaryid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatesummaryidname")]
+		public string ecer_CertificateSummaryIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_certificatesummaryid"))
+				{
+					return this.FormattedValues["ecer_certificatesummaryid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_CommunicationId
 		{
@@ -1843,6 +1878,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag3_bcgov_documenturl", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_bcgov_documenturl_CertificateSummaryId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatesummaryid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_CertificateSummaryId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_CertificateSummary ecer_bcgov_documenturl_CertificateSummaryId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateSummary>("ecer_bcgov_documenturl_CertificateSummaryId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CertificateSummary>("ecer_bcgov_documenturl_CertificateSummaryId", null, value);
 			}
 		}
 		
