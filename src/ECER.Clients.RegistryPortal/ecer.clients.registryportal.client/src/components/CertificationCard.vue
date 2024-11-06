@@ -58,6 +58,7 @@ export default defineComponent({
       // "Active" | "Cancelled" | "Expired" | "Inactive" | "Reprinted" | "Suspended"
       switch (this.certificationStore.latestCertification?.statusCode) {
         case "Active":
+        case "Renewed":
         case "Reprinted":
           return "Active";
         case "Expired":
