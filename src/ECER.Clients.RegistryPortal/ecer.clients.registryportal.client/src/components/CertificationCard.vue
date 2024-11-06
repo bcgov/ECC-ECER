@@ -86,7 +86,7 @@ export default defineComponent({
       }
     },
     isLatestCertificateActive(): boolean {
-      return this.certificationStore.latestCertification?.statusCode === "Active";
+      return this.certificationStore.latestCertification?.statusCode === "Active" || this.certificationStore.latestCertification?.statusCode === "Renewed";
     },
   },
   async mounted() {
