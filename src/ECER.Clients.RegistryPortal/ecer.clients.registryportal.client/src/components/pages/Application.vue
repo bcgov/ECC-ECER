@@ -4,7 +4,6 @@
       <WizardHeader
         class="mb-6"
         :handle-save-draft="handleSaveAndExit"
-        :show-save-button="showSaveButtons"
         :is-renewal="applicationStore?.draftApplication.applicationType === 'Renewal'"
         :is-registrant="userStore.isRegistrant"
         :validate-form="validateForm"
@@ -17,7 +16,7 @@
       </v-container>
     </template>
     <template #stepperHeader>
-      <v-container v-show="!$vuetify.display.mobile">
+      <v-container v-show="showSteps">
         <v-stepper-header class="elevation-0">
           <template v-for="(step, index) in Object.values(wizardStore.steps)" :key="step.stage">
             <v-stepper-item
@@ -30,7 +29,7 @@
               :class="`small ${mdAndDown ? 'text-wrap' : 'text-no-wrap'}`"
             >
               <template #title>
-                <a v-if="index + 1 < wizardStore.step && wizardStore.listComponentMode !== 'add'" href="#" @click.prevent>{{ step.title }}</a>
+                <a v-if="index + 1 < wizardStore.step" href="#" @click.prevent>{{ step.title }}</a>
                 <div v-else>{{ step.title }}</div>
               </template>
             </v-stepper-item>
@@ -102,7 +101,7 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const applicationStore = useApplicationStore();
     const loadingStore = useLoadingStore();
-    const { mdAndDown } = useDisplay();
+    const { mdAndDown, mobile } = useDisplay();
     const router = useRouter();
 
     // Refresh userProfile from the server
@@ -123,6 +122,7 @@ export default defineComponent({
       applicationWizardFiveYear,
       applicationWizardAssistantAndOneYear,
       mdAndDown,
+      mobile,
       router,
     };
   },
@@ -138,6 +138,9 @@ export default defineComponent({
     },
     showSubmitApplication() {
       return this.wizardStore.currentStepStage === "Review";
+    },
+    showSteps() {
+      return !this.mobile && this.wizardStore.listComponentMode !== "add";
     },
   },
   mounted() {
