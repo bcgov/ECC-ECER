@@ -29,7 +29,9 @@
         <v-col>
           <EceCheckbox
             :model-value="checkboxValue"
-            :props="{ label: 'I understand and agree with the statements above', checkableOnce: true, rules: [Rules.hasCheckbox('required')] }"
+            label="I understand and agree with the statements above"
+            :checkableOnce="true"
+            :rules="[Rules.hasCheckbox('required')]"
             @update:model-value="(value) => (checkboxValue = !!value)"
           />
         </v-col>
