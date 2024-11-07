@@ -33,10 +33,10 @@
     <ConfirmationDialog
       :show="showSaveExitConfirmation"
       :title="wizardStore.listComponentMode === 'add' ? 'Your information will not be saved' : 'Missing or invalid information'"
-      accept-button-text="Ok"
-      cancel-button-text="Discard changes"
-      @accept="toggleSaveExitConfirmation"
-      @cancel="goToDashboard"
+      accept-button-text="Discard changes"
+      cancel-button-text="Continue editing"
+      @accept="goToDashboard"
+      @cancel="toggleSaveExitConfirmation"
     >
       <template #confirmation-text>
         <p class="pb-3">
