@@ -32,7 +32,7 @@
     </ConfirmationDialog>
     <ConfirmationDialog
       :show="showSaveExitConfirmation"
-      :title="wizardStore.listComponentMode === 'add' ? 'Please confirm' : 'Missing or invalid information'"
+      :title="wizardStore.listComponentMode === 'add' ? 'Your information will not be saved' : 'Missing or invalid information'"
       accept-button-text="Ok"
       cancel-button-text="Discard changes"
       @accept="toggleSaveExitConfirmation"
@@ -42,7 +42,7 @@
         <p class="pb-3">
           {{
             wizardStore.listComponentMode === "add"
-              ? "You must complete this entry in to save your changes"
+              ? "You must complete this entry to save your changes."
               : "To save your changes, you must enter all required fields in a valid format."
           }}
         </p>
