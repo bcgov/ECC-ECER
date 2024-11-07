@@ -57,17 +57,21 @@
 
         <v-row class="mt-5">
           <v-col cols="12" md="8" lg="6" xl="4">
-            <v-autocomplete
-              :model-value="modelValue.certificateProvinceId"
-              label="Province/Territory Certified/Registered In (Optional)"
-              variant="outlined"
-              color="primary"
-              :items="configStore?.provinceList"
-              clearable
-              hide-details="auto"
-              @update:model-value="certificateProvinceIdChanged"
-              @click:clear="provinceClearClicked"
-            ></v-autocomplete>
+            <label>
+              Province/Territory Certified/Registered In (Optional)
+              <v-autocomplete
+                :model-value="modelValue.certificateProvinceId"
+                label=""
+                variant="outlined"
+                color="primary"
+                class="pt-2"
+                :items="configStore?.provinceList"
+                clearable
+                hide-details="auto"
+                @update:model-value="certificateProvinceIdChanged"
+                @click:clear="provinceClearClicked"
+              ></v-autocomplete>
+            </label>
           </v-col>
         </v-row>
         <v-row>
@@ -94,23 +98,31 @@
         </div>
         <v-row class="mt-5">
           <v-col cols="12" md="8" lg="6" xl="4">
-            <v-autocomplete
-              v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER"
-              :model-value="modelValue.certificateProvinceId"
-              label="Province/Territory Certified/Registered In (Optional)"
-              :items="configStore?.provinceList"
-              clearable
-              @update:model-value="certificateProvinceIdChanged"
-              @click:clear="provinceClearClicked"
-            ></v-autocomplete>
-            <v-autocomplete
-              v-if="wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE"
-              :model-value="modelValue.certificateProvinceId"
-              label="Province/Territory Certified/Registered In"
-              :items="configStore?.provinceList.filter((province) => province.title !== ProvinceTerritoryType.OTHER)"
-              :rules="[Rules.required()]"
-              @update:model-value="certificateProvinceIdChanged"
-            ></v-autocomplete>
+            <label>
+              Province/Territory Certified/Registered In (Optional)
+              <v-autocomplete
+                v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER"
+                :model-value="modelValue.certificateProvinceId"
+                label=""
+                class="pt-2"
+                :items="configStore?.provinceList"
+                clearable
+                @update:model-value="certificateProvinceIdChanged"
+                @click:clear="provinceClearClicked"
+              ></v-autocomplete>
+            </label>
+            <label>
+              Province/Territory Certified/Registered In
+              <v-autocomplete
+                v-if="wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE"
+                :model-value="modelValue.certificateProvinceId"
+                label=""
+                class="pt-2"
+                :items="configStore?.provinceList.filter((province) => province.title !== ProvinceTerritoryType.OTHER)"
+                :rules="[Rules.required()]"
+                @update:model-value="certificateProvinceIdChanged"
+              ></v-autocomplete>
+            </label>
           </v-col>
         </v-row>
         <v-row>
@@ -203,10 +215,10 @@ export default defineComponent({
   },
   methods: {
     isNumber,
-    updateField(fieldName: keyof Components.Schemas.ReferenceContactInformation, event: any) {
+    updateField(fieldName: keyof Components.Schemas.ReferenceContactInformation, value: any) {
       this.$emit("update:model-value", {
         ...this.modelValue,
-        [fieldName]: event.target.value,
+        [fieldName]: value,
       });
     },
     customOptionalIfNotBCRule() {

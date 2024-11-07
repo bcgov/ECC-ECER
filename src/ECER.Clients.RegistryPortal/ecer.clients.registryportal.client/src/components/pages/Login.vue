@@ -15,7 +15,7 @@
         <li>Available to people with ID issued in Canada</li>
       </ul>
     </div>
-    <v-btn @click="handleLogin('bcsc')" class="my-8" :size="smAndDown ? undefined : 'large'" color="primary" append-icon="mdi-arrow-right">
+    <v-btn @click="handleLogin('bcsc')" class="my-8" :size="smAndDown ? 'default' : 'large'" color="primary" append-icon="mdi-arrow-right">
       Log in with BC Services Card
     </v-btn>
     <p>

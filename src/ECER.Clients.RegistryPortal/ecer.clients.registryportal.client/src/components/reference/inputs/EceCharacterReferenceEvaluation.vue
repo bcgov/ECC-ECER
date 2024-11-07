@@ -9,15 +9,19 @@
       </div>
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-autocomplete
-            label="What is your relationship with the applicant?"
-            variant="outlined"
-            color="primary"
-            :rules="[Rules.required('Select an option')]"
-            :items="referenceRelationshipDropdown"
-            hide-details="auto"
-            @update:model-value="referenceRelationshipChanged"
-          ></v-autocomplete>
+          <label>
+            What is your relationship with the applicant?
+            <v-autocomplete
+              label=""
+              variant="outlined"
+              color="primary"
+              :rules="[Rules.required('Select an option')]"
+              :items="referenceRelationshipDropdown"
+              hide-details="auto"
+              class="pt-2"
+              @update:model-value="referenceRelationshipChanged"
+            ></v-autocomplete>
+          </label>
         </v-col>
       </v-row>
       <v-row v-if="modelValue.referenceRelationship === 'Other'" class="mt-5">
@@ -32,15 +36,19 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
-          <v-autocomplete
-            label="How long have you known the applicant? (Approximately)"
-            variant="outlined"
-            color="primary"
-            :rules="[Rules.required('Select an option')]"
-            :items="lengthOfAcquaintanceDropdown"
-            hide-details="auto"
-            @update:model-value="updateField('lengthOfAcquaintance', $event)"
-          ></v-autocomplete>
+          <label>
+            How long have you known the applicant? (Approximately)
+            <v-autocomplete
+              label=""
+              variant="outlined"
+              class="pt-2"
+              color="primary"
+              :rules="[Rules.required('Select an option')]"
+              :items="lengthOfAcquaintanceDropdown"
+              hide-details="auto"
+              @update:model-value="updateField('lengthOfAcquaintance', $event)"
+            ></v-autocomplete>
+          </label>
         </v-col>
       </v-row>
       <v-row>

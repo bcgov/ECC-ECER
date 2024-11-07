@@ -89,7 +89,6 @@ import { defineComponent } from "vue";
 
 import ReferencePreviewCard from "@/components/reference/inputs/ReferencePreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
-import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { likertScaleRadio } from "@/utils/constant";
 
@@ -97,12 +96,6 @@ export default defineComponent({
   name: "EceWorkExperienceReferenceAssessmentPreview",
   components: {
     ReferencePreviewCard,
-  },
-  props: {
-    props: {
-      type: Object as () => EcePreviewProps,
-      required: true,
-    },
   },
   setup: () => {
     const wizardStore = useWizardStore();
