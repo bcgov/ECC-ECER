@@ -46,7 +46,7 @@
               : "To save your changes, you must enter all required fields in a valid format."
           }}
         </p>
-        <p>Or, you can discard your changes and no information on this page will be saved.</p>
+        <p>If you discard your changes, no information on this page will be saved.</p>
       </template>
     </ConfirmationDialog>
   </v-container>
