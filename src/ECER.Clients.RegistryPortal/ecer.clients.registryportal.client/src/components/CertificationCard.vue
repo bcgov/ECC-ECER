@@ -58,6 +58,7 @@ export default defineComponent({
       // "Active" | "Cancelled" | "Expired" | "Inactive" | "Reprinted" | "Suspended"
       switch (this.certificationStore.latestCertification?.statusCode) {
         case "Active":
+        case "Renewed":
         case "Reprinted":
           return "Active";
         case "Expired":
@@ -86,7 +87,7 @@ export default defineComponent({
       }
     },
     isLatestCertificateActive(): boolean {
-      return this.certificationStore.latestCertification?.statusCode === "Active";
+      return this.certificationStore.latestCertification?.statusCode === "Active" || this.certificationStore.latestCertification?.statusCode === "Renewed";
     },
   },
   async mounted() {

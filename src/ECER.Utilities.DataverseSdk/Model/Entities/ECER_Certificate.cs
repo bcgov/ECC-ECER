@@ -77,6 +77,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_application_Certificateid = "ecer_application_Certificateid";
 			public const string ecer_application_FromCertificateId = "ecer_application_FromCertificateId";
+			public const string ecer_BaseCertificateTypeID = "ecer_basecertificatetypeid";
 			public const string ecer_CancelledDate = "ecer_cancelleddate";
 			public const string ecer_Certificate_ecer_CertificateTypes = "ecer_Certificate_ecer_CertificateTypes";
 			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
@@ -287,6 +288,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		/// <summary>
+		/// Matching the Base Legacy Certificate Level ID from Certificate Type
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_basecertificatetypeid")]
+		public string ecer_BaseCertificateTypeID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_basecertificatetypeid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_basecertificatetypeid", value);
 			}
 		}
 		
