@@ -67,7 +67,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_certifiedlevel_CertificateTypeId = "ecer_certifiedlevel_CertificateTypeId";
 			public const string ecer_course_CertificateTypeid = "ecer_course_CertificateTypeid";
 			public const string ecer_DisplayName = "ecer_displayname";
-			public const string ecer_DisplayOrder = "ecer_displayorder";
 			public const string ecer_educationassessment_CertificateType_ecer_certificatetype = "ecer_educationassessment_CertificateType_ecer_certificatetype";
 			public const string ecer_LegacyEducationLevelID = "ecer_legacyeducationlevelid";
 			public const string ecer_LongName = "ecer_longname";
@@ -306,21 +305,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_displayname", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_displayorder")]
-		public System.Nullable<int> ecer_DisplayOrder
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<int>>("ecer_displayorder");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_displayorder", value);
 			}
 		}
 		
