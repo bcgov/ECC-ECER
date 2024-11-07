@@ -24,18 +24,8 @@
       </ul>
     </div>
   </v-col>
-  <v-col v-if="expired" cols="12">
-    <ECEHeader title="Reason why you’re renewing your ECE One Year certification" />
-    <div class="d-flex flex-column ga-3 my-6">
-      <p>You need to provide the reason why you were unable to either:</p>
-      <ul class="ml-10">
-        <li>Complete the required 500 hours of supervised work experience during the term of your certificate</li>
-        <li>Provide a reference from the certified ECE who supervised the hours</li>
-      </ul>
-    </div>
-  </v-col>
-  <v-col v-else cols="12">
-    <ECEHeader title="Reason why you were unable to complete 500 hours work experience " />
+  <v-col cols="12">
+    <ECEHeader title="Reason why you're renewing your ECE One Year certification" />
     <div class="d-flex flex-column ga-3 my-6">
       <p>
         You will need to provide a reason for why you were unable to complete the required 500 hours of supervised work experience during the term of your ECE
