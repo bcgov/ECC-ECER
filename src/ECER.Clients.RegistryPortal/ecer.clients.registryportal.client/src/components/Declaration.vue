@@ -44,7 +44,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <EceDateInput :model-value="date" label="Signed Date" :readonly="true" :rules="[]"></EceDateInput>
+          <EceDateInput :model-value="date" label="Signed date" :readonly="true" :rules="[]"></EceDateInput>
         </v-col>
       </v-row>
     </v-form>
