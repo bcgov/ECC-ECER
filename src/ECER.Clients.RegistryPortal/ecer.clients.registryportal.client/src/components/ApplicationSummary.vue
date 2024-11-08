@@ -346,7 +346,9 @@ export default defineComponent({
       return !!this.applicationStatus?.workExperienceReferencesStatus?.length;
     },
     totalRequiredWorkExperienceHours(): number {
-      return this.applicationStatus?.workExperienceReferencesStatus?.every((reference) => reference.type === WorkExperienceType.IS_400_Hours) ? 400 : 500;
+      // Check for work experience reference (status), if it's null return 500
+      let has400Hours = this.applicationStatus?.workExperienceReferencesStatus?.some((reference) => reference.type === WorkExperienceType.IS_400_Hours);
+      return has400Hours ? 400 : 500;
     },
     totalRequiredProfessionalDevelopmentHours(): number {
       return 40;
