@@ -10,7 +10,7 @@
             </a>
           </div>
           <div :class="[{ ['text-right mb-2']: mobile }]">
-            <v-btn v-if="showSaveButton" variant="outlined" :loading="loadingStore.isLoading('draftapplication_put')" @click="saveAndExit">Save and exit</v-btn>
+            <v-btn variant="outlined" :loading="loadingStore.isLoading('draftapplication_put')" @click="saveAndExit">Save and exit</v-btn>
           </div>
         </v-col>
       </v-row>
@@ -30,6 +30,25 @@
         </ul>
       </template>
     </ConfirmationDialog>
+    <ConfirmationDialog
+      :show="showSaveExitConfirmation"
+      :title="wizardStore.listComponentMode === 'add' ? 'Your information will not be saved' : 'Missing or invalid information'"
+      accept-button-text="Discard changes"
+      cancel-button-text="Continue editing"
+      @accept="goToDashboard"
+      @cancel="toggleSaveExitConfirmation"
+    >
+      <template #confirmation-text>
+        <p class="pb-3">
+          {{
+            wizardStore.listComponentMode === "add"
+              ? "You must complete this entry to save your changes."
+              : "To save your changes, you must enter all required fields in a valid format."
+          }}
+        </p>
+        <p>If you discard your changes, no information on this page will be saved.</p>
+      </template>
+    </ConfirmationDialog>
   </v-container>
 </template>
 
@@ -43,6 +62,7 @@ import { useLoadingStore } from "@/store/loading";
 import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHeader.vue";
 import ConfirmationDialog from "./ConfirmationDialog.vue";
 import { useRouter } from "vue-router";
+import { useWizardStore } from "@/store/wizard";
 
 export default defineComponent({
   name: "WizardHeader",
@@ -50,10 +70,6 @@ export default defineComponent({
   props: {
     handleSaveDraft: {
       type: Function,
-      required: true,
-    },
-    showSaveButton: {
-      type: Boolean,
       required: true,
     },
     isRenewal: {
@@ -64,16 +80,22 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    validateForm: {
+      type: Function,
+      required: true,
+    },
   },
   setup() {
     const applicationStore = useApplicationStore();
     const loadingStore = useLoadingStore();
+    const wizardStore = useWizardStore();
     const { mobile } = useDisplay();
     const router = useRouter();
 
     return {
       applicationStore,
       loadingStore,
+      wizardStore,
       mobile,
       router,
     };
@@ -93,18 +115,36 @@ export default defineComponent({
       },
     ],
     showConfirmation: false,
+    showSaveExitConfirmation: false,
   }),
   methods: {
     toggleChangeCertificationConfirmation() {
       this.showConfirmation = !this.showConfirmation;
     },
+    toggleSaveExitConfirmation() {
+      this.showSaveExitConfirmation = !this.showSaveExitConfirmation;
+    },
     async saveAndExit() {
-      await this.handleSaveDraft();
-      this.router.push({ name: "dashboard" });
+      const valid = await this.validateForm();
+      const step = this.wizardStore.currentStep.stage;
+
+      //if user is on the list screen for these ones, they should be able to save and exit while saving what they currently have
+      if (!valid && step !== "Education" && step !== "WorkReferences" && step !== "ProfessionalDevelopment") {
+        this.showSaveExitConfirmation = true;
+      } else if (this.wizardStore.listComponentMode === "add") {
+        this.showSaveExitConfirmation = true;
+      } else {
+        await this.handleSaveDraft();
+        this.goToDashboard();
+      }
     },
     async changeCertification() {
       this.showConfirmation = false;
       this.router.push({ name: "application-certification" });
+    },
+    goToDashboard() {
+      this.showSaveExitConfirmation = false; //prevents issue where router will stop responding
+      this.router.push({ name: "dashboard" });
     },
   },
 });
