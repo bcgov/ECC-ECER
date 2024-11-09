@@ -17,12 +17,18 @@
     <template #append>
       <v-tooltip text="Edit reference" location="top">
         <template #activator="{ props }">
-          <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editReference" />
+          <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editReference" :loading="loadingStore.isLoading('draftapplication_put')" />
         </template>
       </v-tooltip>
       <v-tooltip text="Delete reference" location="top">
         <template #activator="{ props }">
-          <v-btn v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteReference" />
+          <v-btn
+            v-bind="props"
+            icon="mdi-trash-can-outline"
+            variant="plain"
+            @click="deleteReference"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          />
         </template>
       </v-tooltip>
     </template>
@@ -31,11 +37,17 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useLoadingStore } from "@/store/loading";
 
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "WorkExperienceReferenceCard",
+  setup() {
+    const loadingStore = useLoadingStore();
+
+    return { loadingStore };
+  },
   props: {
     reference: {
       type: Object as () => Components.Schemas.WorkExperienceReference,

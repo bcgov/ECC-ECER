@@ -194,8 +194,10 @@
           </v-row>
         </div>
         <v-row justify="start" class="ml-1 mt-10">
-          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">Save education</v-btn>
-          <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
+          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit" :loading="loadingStore.isLoading('draftapplication_put')">
+            Save education
+          </v-btn>
+          <v-btn rounded="lg" variant="outlined" @click="handleCancel" :loading="loadingStore.isLoading('draftapplication_put')">Cancel</v-btn>
         </v-row>
       </v-form>
     </v-col>
@@ -205,7 +207,16 @@
       </v-col>
       <v-col cols="12" class="mt-6">
         <v-row justify="start" class="ml-1">
-          <v-btn v-if="showAddEducationButton" prepend-icon="mdi-plus" rounded="lg" color="primary" @click="handleAddEducation">Add education</v-btn>
+          <v-btn
+            v-if="showAddEducationButton"
+            prepend-icon="mdi-plus"
+            rounded="lg"
+            color="primary"
+            @click="handleAddEducation"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          >
+            Add education
+          </v-btn>
         </v-row>
       </v-col>
       <v-col>
@@ -231,6 +242,7 @@ import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
+import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
@@ -280,12 +292,14 @@ export default defineComponent({
     const wizardStore = useWizardStore();
     const applicationStore = useApplicationStore();
     const userStore = useUserStore();
+    const loadingStore = useLoadingStore();
 
     return {
       alertStore,
       wizardStore,
       applicationStore,
       userStore,
+      loadingStore,
       educationRecognitionRadio,
       educationOriginRadio,
     };
@@ -403,6 +417,9 @@ export default defineComponent({
 
         // Set success alert message
         const message = this.modelValue[clientId] ? "You have successfully edited your Education." : "You have successfully added your Education.";
+
+        await this.applicationStore.saveDraft();
+
         this.alertStore.setSuccessAlert(message);
 
         // Change mode to education list
@@ -463,7 +480,7 @@ export default defineComponent({
       // Change mode to add
       this.mode = "add";
     },
-    handleDelete(educationId: string | number) {
+    async handleDelete(educationId: string | number) {
       //Remove the education from the modelValue
 
       if (educationId in this.modelValue) {
@@ -474,6 +491,8 @@ export default defineComponent({
         // Emit the updated modelValue
         this.$emit("update:model-value", updatedModelValue);
       }
+
+      await this.applicationStore.saveDraft();
 
       this.alertStore.setSuccessAlert("You have deleted your education.");
     },

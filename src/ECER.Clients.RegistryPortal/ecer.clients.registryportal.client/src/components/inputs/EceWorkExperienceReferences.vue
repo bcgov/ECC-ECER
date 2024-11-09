@@ -54,8 +54,10 @@
         </v-row>
 
         <v-row justify="start" class="ml-1 my-10">
-          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">Save reference</v-btn>
-          <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
+          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit" :loading="loadingStore.isLoading('draftapplication_put')">
+            Save reference
+          </v-btn>
+          <v-btn rounded="lg" variant="outlined" @click="handleCancel" :loading="loadingStore.isLoading('draftapplication_put')">Cancel</v-btn>
         </v-row>
       </v-form>
     </v-col>
@@ -109,7 +111,17 @@
             No additional work references may be added. You provided the required hours. After you submit your application, we’ll email the work references to
             complete their reference. If needed, we'll contact you for additional information.
           </p>
-          <v-btn v-else prepend-icon="mdi-plus" rounded="lg" color="primary" :disabled="isDisabled" @click="handleAddReference">Add reference</v-btn>
+          <v-btn
+            v-else
+            prepend-icon="mdi-plus"
+            rounded="lg"
+            color="primary"
+            :disabled="isDisabled"
+            @click="handleAddReference"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          >
+            Add reference
+          </v-btn>
         </v-col>
       </v-row>
       <!-- this prevents form from proceeding if rules are not met -->
@@ -140,6 +152,7 @@ import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import { useWizardStore } from "@/store/wizard";
+import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
 import { WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
@@ -165,12 +178,14 @@ export default defineComponent({
     const wizardStore = useWizardStore();
     const applicationStore = useApplicationStore();
     const certificationStore = useCertificationStore();
+    const loadingStore = useLoadingStore();
 
     return {
       alertStore,
       wizardStore,
       applicationStore,
       certificationStore,
+      loadingStore,
     };
   },
   data: function () {
@@ -268,6 +283,9 @@ export default defineComponent({
 
         // Set success alert message
         const message = this.modelValue[clientId] ? "You have successfully edited your reference." : "You have successfully added your reference.";
+
+        await this.applicationStore.saveDraft();
+
         this.alertStore.setSuccessAlert(message);
 
         // Change mode to list
@@ -299,7 +317,7 @@ export default defineComponent({
       // Change mode to add
       this.mode = "add";
     },
-    handleDelete(referenceId: string | number) {
+    async handleDelete(referenceId: string | number) {
       //Remove the entry from the modelValue
 
       if (referenceId in this.modelValue) {
@@ -311,7 +329,9 @@ export default defineComponent({
         this.$emit("update:model-value", updatedModelValue);
       }
 
-      this.alertStore.setSuccessAlert("You have deleted your reference.");
+      await this.applicationStore.saveDraft();
+
+      await this.alertStore.setSuccessAlert("You have deleted your reference.");
     },
     resetFormData() {
       this.id = null;

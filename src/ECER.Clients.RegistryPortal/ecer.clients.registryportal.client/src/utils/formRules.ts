@@ -150,6 +150,15 @@ const dateBetweenRule = (startDate: string, endDate: string, message = `Date sho
       const start = DateTime.fromISO(startDate);
       const input = DateTime.fromJSDate(new Date(v));
 
+      console.log("input");
+      console.log(input.toFormat("yyyy-MM-ddZhh:mm:ss"));
+
+      console.log("start");
+      console.log(start.toFormat("yyyy-MM-ddZhh:mm:ss"));
+
+      console.log("end");
+      console.log(end.toFormat("yyyy-MM-ddZhh:mm:ss"));
+
       return (input <= end && input >= start) || message;
     }
 
