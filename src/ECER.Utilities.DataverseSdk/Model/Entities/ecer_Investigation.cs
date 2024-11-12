@@ -219,6 +219,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Concluded = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ConclusionReview = 621870018,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -293,6 +296,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_AssigntoInvestigator = "ecer_assigntoinvestigator";
 			public const string ecer_AssigntoInvestigatorName = "ecer_assigntoinvestigatorname";
 			public const string ecer_AssigntoInvestigatorYomiName = "ecer_assigntoinvestigatoryominame";
+			public const string ecer_assigntositeamforconclusionreview = "ecer_assigntositeamforconclusionreview";
+			public const string ecer_assigntositeamforconclusionreviewName = "ecer_assigntositeamforconclusionreviewname";
 			public const string ecer_AssigntoSITeamforIntakeReview = "ecer_assigntositeamforintakereview";
 			public const string ecer_assigntositeamforintakereviewName = "ecer_assigntositeamforintakereviewname";
 			public const string ecer_BehaviouralGuidance = "ecer_behaviouralguidance";
@@ -978,6 +983,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_assigntoinvestigator"))
 				{
 					return this.FormattedValues["ecer_assigntoinvestigator"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntositeamforconclusionreview")]
+		public System.Nullable<bool> ecer_assigntositeamforconclusionreview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_assigntositeamforconclusionreview");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_assigntositeamforconclusionreview", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntositeamforconclusionreviewname")]
+		public string ecer_assigntositeamforconclusionreviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_assigntositeamforconclusionreview"))
+				{
+					return this.FormattedValues["ecer_assigntositeamforconclusionreview"];
 				}
 				else
 				{
