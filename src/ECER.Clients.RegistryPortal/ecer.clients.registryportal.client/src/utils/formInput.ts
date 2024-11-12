@@ -30,7 +30,7 @@ const isNotSpecialCharacterName = function (event: KeyboardEvent): void {
   const charCode = event instanceof KeyboardEvent ? event.key : "";
 
   // Check if the key pressed is not a number and not a valid input event
-  if (event instanceof KeyboardEvent && /[^A-Za-z\s-']/.test(charCode)) {
+  if (event instanceof KeyboardEvent && /[^a-zA-Z\u00C0-\u017F\s'-]/.test(charCode)) {
     event.preventDefault();
   }
 };
