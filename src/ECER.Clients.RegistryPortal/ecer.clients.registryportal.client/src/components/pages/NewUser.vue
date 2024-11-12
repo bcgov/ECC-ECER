@@ -87,7 +87,7 @@
                 <template #label>
                   <div>
                     I have read and accept the
-                    <router-link to="/new-user/terms-of-use">Terms of Use</router-link>
+                    <router-link to="/terms-of-use" target="_blank">Terms of Use</router-link>
                   </div>
                 </template>
               </v-checkbox>
