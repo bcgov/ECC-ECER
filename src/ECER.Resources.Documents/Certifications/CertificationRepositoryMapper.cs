@@ -52,5 +52,10 @@ internal class CertificationRepositoryMapper : Profile
     CreateMap<YesNoNull, ecer_YesNoNull>()
     .ConvertUsingEnumMapping(opts => opts.MapByName(true))
     .ReverseMap();
+
+    CreateMap<ecer_CertificateSummary, CertificationSummary>()
+    .ForCtorParam(nameof(CertificationSummary.Id), opt => opt.MapFrom(src => src.ecer_CertificateSummaryId))
+    .ForMember(dest => dest.FileName, opt => opt.MapFrom(src => src.ecer_certificatesummary_DocumentURL_bcgov_documenturl != null ? src.ecer_certificatesummary_DocumentURL_bcgov_documenturl.bcgov_FileName : null))
+    .ForMember(dest => dest.FilePath, opt => opt.MapFrom(src => src.ecer_certificatesummary_DocumentURL_bcgov_documenturl != null ? src.ecer_certificatesummary_DocumentURL_bcgov_documenturl.bcgov_Url : null));
   }
 }
