@@ -77,7 +77,7 @@ internal class CertificationRepository : ICertificationRepository
 
     var results = context.From(certificationSummaries)
     .Join()
-    .Include(a => a.ecer_certificatesummary_DocumentURL_bcgov_documenturl)
+    .Include(a => a.ecer_bcgov_documenturl_CertificateSummaryId)
     .Execute();
 
     return mapper.Map<IEnumerable<CertificationSummary>>(results)!.ToList();
