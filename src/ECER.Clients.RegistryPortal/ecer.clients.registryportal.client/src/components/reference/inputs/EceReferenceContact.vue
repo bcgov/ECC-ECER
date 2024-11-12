@@ -104,6 +104,8 @@
                 v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER"
                 :model-value="modelValue.certificateProvinceId"
                 label=""
+                variant="outlined"
+                color="primary"
                 class="pt-2"
                 :items="configStore?.provinceList"
                 clearable
