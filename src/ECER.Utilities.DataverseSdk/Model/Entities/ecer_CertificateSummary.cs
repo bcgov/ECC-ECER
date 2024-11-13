@@ -75,6 +75,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_generatejsonName = "ecer_generatejsonname";
 			public const string ecer_LastName = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_ReadytoCallAPI = "ecer_readytocallapi";
+			public const string ecer_readytocallapiName = "ecer_readytocallapiname";
 			public const string ecer_RegistrantId = "ecer_registrantid";
 			public const string ecer_RegistrantIdName = "ecer_registrantidname";
 			public const string ecer_RegistrantIdYomiName = "ecer_registrantidyominame";
@@ -446,6 +448,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_readytocallapi")]
+		public System.Nullable<bool> ecer_ReadytoCallAPI
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_readytocallapi");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_readytocallapi", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_readytocallapiname")]
+		public string ecer_readytocallapiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_readytocallapi"))
+				{
+					return this.FormattedValues["ecer_readytocallapi"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
