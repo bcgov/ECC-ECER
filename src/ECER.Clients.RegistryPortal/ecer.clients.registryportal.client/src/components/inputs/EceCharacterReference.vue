@@ -88,7 +88,6 @@ import EceTextField from "@/components/inputs/EceTextField.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
-import type { EceCharacterReferenceProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { isNumber } from "@/utils/formInput";
 import { isNotSpecialCharacterName } from "@/utils/formInput";

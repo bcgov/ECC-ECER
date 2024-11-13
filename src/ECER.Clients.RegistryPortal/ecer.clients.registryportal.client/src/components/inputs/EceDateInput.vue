@@ -2,7 +2,7 @@
   <label>
     {{ label }}
     <v-date-input
-      :model-value="new Date(modelValue ?? '')"
+      :model-value="value"
       :value="formattedDate"
       :aria-label="label"
       prepend-icon=""
@@ -49,6 +49,14 @@ export default defineComponent({
      */
     formattedDate() {
       return formatDate(this.modelValue ?? "", "LLLL d, yyyy");
+    },
+    value() {
+      if (!this.modelValue) {
+        return new Date(); // Return current date as default Date object
+      }
+      // Convert modelValue to a Date object for date picker consistency
+      const [year, month, day] = this.modelValue.split("-").map(Number);
+      return new Date(year, month - 1, day); // No UTC to keep in local time
     },
   },
 });
