@@ -98,12 +98,13 @@
         </div>
         <v-row class="mt-5">
           <v-col cols="12" md="8" lg="6" xl="4">
-            <label>
+            <label v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER">
               Province/Territory Certified/Registered In (Optional)
               <v-autocomplete
-                v-if="wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER"
                 :model-value="modelValue.certificateProvinceId"
                 label=""
+                variant="outlined"
+                color="primary"
                 class="pt-2"
                 :items="configStore?.provinceList"
                 clearable
@@ -111,12 +112,13 @@
                 @click:clear="provinceClearClicked"
               ></v-autocomplete>
             </label>
-            <label>
+            <label v-if="wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE">
               Province/Territory Certified/Registered In
               <v-autocomplete
-                v-if="wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE"
                 :model-value="modelValue.certificateProvinceId"
                 label=""
+                variant="outlined"
+                color="primary"
                 class="pt-2"
                 :items="configStore?.provinceList.filter((province) => province.title !== ProvinceTerritoryType.OTHER)"
                 :rules="[Rules.required()]"
