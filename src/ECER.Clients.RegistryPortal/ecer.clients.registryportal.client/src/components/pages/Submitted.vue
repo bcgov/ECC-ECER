@@ -45,7 +45,7 @@
     <h3>Assessment</h3>
     <br />
     <ul class="ml-10">
-      <li>We'll assess your application after we've received your transcripts and references</li>
+      <li>We'll assess your application after we've received any required references and documents</li>
       <li>We assess complete applications in the order they're received</li>
       <li>We'll email you after we've assessed your application</li>
     </ul>
