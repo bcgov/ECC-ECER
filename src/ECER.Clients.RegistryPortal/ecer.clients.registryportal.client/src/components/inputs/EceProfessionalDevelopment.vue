@@ -56,7 +56,12 @@
       </v-row>
       <v-row>
         <v-col md="8" lg="6" xl="4">
-          <EceTextField label="Website with description of course or workshop (optional)" maxlength="500" :rules="[Rules.website()]"></EceTextField>
+          <EceTextField
+            v-model="courseorWorkshopLink"
+            label="Website with description of course or workshop (optional)"
+            maxlength="500"
+            :rules="[Rules.website()]"
+          ></EceTextField>
         </v-col>
       </v-row>
       <v-row>
