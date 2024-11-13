@@ -56,6 +56,8 @@ internal class CertificationRepositoryMapper : Profile
     CreateMap<ecer_CertificateSummary, CertificationSummary>()
     .ForCtorParam(nameof(CertificationSummary.Id), opt => opt.MapFrom(src => src.ecer_CertificateSummaryId))
     .ForMember(dest => dest.FileName, opt => opt.MapFrom(src => src.ecer_bcgov_documenturl_CertificateSummaryId != null && src.ecer_bcgov_documenturl_CertificateSummaryId.Count() > 0 ? src.ecer_bcgov_documenturl_CertificateSummaryId.OrderByDescending(f => f.CreatedOn).First().bcgov_FileName : null))
-    .ForMember(dest => dest.FilePath, opt => opt.MapFrom(src => src.ecer_bcgov_documenturl_CertificateSummaryId != null && src.ecer_bcgov_documenturl_CertificateSummaryId.Count() > 0 ? src.ecer_bcgov_documenturl_CertificateSummaryId.OrderByDescending(f => f.CreatedOn).First().bcgov_Url : null));
+    .ForMember(dest => dest.FilePath, opt => opt.MapFrom(src => src.ecer_bcgov_documenturl_CertificateSummaryId != null && src.ecer_bcgov_documenturl_CertificateSummaryId.Count() > 0 ? src.ecer_bcgov_documenturl_CertificateSummaryId.OrderByDescending(f => f.CreatedOn).First().bcgov_Url : null))
+    .ForMember(dest => dest.FileExtention, opt => opt.MapFrom(src => src.ecer_bcgov_documenturl_CertificateSummaryId != null && src.ecer_bcgov_documenturl_CertificateSummaryId.Count() > 0 ? src.ecer_bcgov_documenturl_CertificateSummaryId.OrderByDescending(f => f.CreatedOn).First().bcgov_FileExtension : null))
+    .ForMember(dest => dest.FileId, opt => opt.MapFrom(src => src.ecer_bcgov_documenturl_CertificateSummaryId != null && src.ecer_bcgov_documenturl_CertificateSummaryId.Count() > 0 ? src.ecer_bcgov_documenturl_CertificateSummaryId.OrderByDescending(f => f.CreatedOn).First().bcgov_DocumentUrlId : null));
   }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Managers.Admin.Contract.Certifications;
+using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -22,11 +23,31 @@ public class CertificationEndpoints : IRegisterEndpoints
     })
     .RequireAuthorization()
     .WithParameterValidation();
+
+    endpointRouteBuilder.MapGet("/api/certifications/file/download/{id?}", async Task<Results<FileStreamHttpResult, BadRequest<string>, NotFound>> (
+   string? id,
+   IMapper mapper,
+   IMediator messageBus,
+   HttpContext ctx,
+   CancellationToken ct) =>
+    {
+      var certifications = await messageBus.Send<GetCertificationsCommandResponse>(new GetCertificationsCommand(id), ct);
+      var certificate = certifications.Items.SingleOrDefault();
+
+      if (certificate == null || certificate.FileId == null) return TypedResults.NotFound();
+      var files = await messageBus.Send(new FileQuery([new FileLocation(certificate!.FileId!, certificate.FilePath ?? string.Empty)]), ct);
+      var file = files.Items.SingleOrDefault();
+      if (file == null) return TypedResults.NotFound();
+
+      return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
+    })
+    .RequireAuthorization()
+    .WithParameterValidation();
   }
 }
 
 public record CertificationSummary(string Id)
 {
   public string? FileName { get; set; }
-  public string? FilePath { get; set; }
+  public string? FileId { get; set; }
 }
