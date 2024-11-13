@@ -8,12 +8,18 @@
     <template #append>
       <v-tooltip text="Edit Education" location="top">
         <template #activator="{ props }">
-          <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editEducation" />
+          <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editEducation" :loading="loadingStore.isLoading('draftapplication_put')" />
         </template>
       </v-tooltip>
       <v-tooltip text="Delete Education" location="top">
         <template #activator="{ props }">
-          <v-btn v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteEducation" />
+          <v-btn
+            v-bind="props"
+            icon="mdi-trash-can-outline"
+            variant="plain"
+            @click="deleteEducation"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          />
         </template>
       </v-tooltip>
     </template>
@@ -22,18 +28,23 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useLoadingStore } from "@/store/loading";
 
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
   name: "EducationCard",
+  setup() {
+    const loadingStore = useLoadingStore();
+
+    return { loadingStore };
+  },
   props: {
     education: {
       type: Object as () => Components.Schemas.Transcript,
       required: true,
     },
   },
-
   emits: {
     edit: (_education: Components.Schemas.Transcript) => true,
     delete: (_education: Components.Schemas.Transcript) => true,

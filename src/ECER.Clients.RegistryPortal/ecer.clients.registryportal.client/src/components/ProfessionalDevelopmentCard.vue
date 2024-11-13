@@ -17,12 +17,24 @@
     <template #append>
       <v-tooltip text="Edit professional development" location="top">
         <template #activator="{ props }">
-          <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editProfessionalDevelopment" />
+          <v-btn
+            v-bind="props"
+            icon="mdi-pencil"
+            variant="plain"
+            @click="editProfessionalDevelopment"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          />
         </template>
       </v-tooltip>
       <v-tooltip text="Delete professional development" location="top">
         <template #activator="{ props }">
-          <v-btn v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteProfessionalDevelopment" />
+          <v-btn
+            v-bind="props"
+            icon="mdi-trash-can-outline"
+            variant="plain"
+            @click="deleteProfessionalDevelopment"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          />
         </template>
       </v-tooltip>
     </template>
@@ -31,6 +43,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useLoadingStore } from "@/store/loading";
 
 import type { ProfessionalDevelopmentExtended } from "./inputs/EceProfessionalDevelopment.vue";
 
@@ -42,7 +55,10 @@ export default defineComponent({
       required: true,
     },
   },
-
+  setup() {
+    const loadingStore = useLoadingStore();
+    return { loadingStore };
+  },
   emits: {
     edit: (_reference: ProfessionalDevelopmentExtended) => true,
     delete: (_reference: ProfessionalDevelopmentExtended) => true,

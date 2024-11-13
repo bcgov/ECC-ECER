@@ -216,8 +216,10 @@
     <v-row class="mt-10">
       <v-col>
         <v-row justify="start" class="ml-1">
-          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit">Save course or workshop</v-btn>
-          <v-btn rounded="lg" variant="outlined" @click="handleCancel">Cancel</v-btn>
+          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit" :loading="loadingStore.isLoading('draftapplication_put')">
+            Save course or workshop
+          </v-btn>
+          <v-btn rounded="lg" variant="outlined" @click="handleCancel" :loading="loadingStore.isLoading('draftapplication_put')">Cancel</v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -257,7 +259,15 @@
           No additional professional development may be added. You provided the required 40 hours. After you submit your application, the registry will review
           and verify the professional development added. If needed, the registry will contact you for additional information.
         </p>
-        <v-btn v-else prepend-icon="mdi-plus" rounded="lg" color="primary" :disabled="isDisabled" @click="handleAddProfessionalDevelopment">
+        <v-btn
+          v-else
+          prepend-icon="mdi-plus"
+          rounded="lg"
+          color="primary"
+          :disabled="isDisabled"
+          @click="handleAddProfessionalDevelopment"
+          :loading="loadingStore.isLoading('draftapplication_put')"
+        >
           Add course or workshop
         </v-btn>
       </v-col>
@@ -289,6 +299,7 @@ import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import { useWizardStore } from "@/store/wizard";
+import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
@@ -328,12 +339,14 @@ export default defineComponent({
     const wizardStore = useWizardStore();
     const applicationStore = useApplicationStore();
     const certificationStore = useCertificationStore();
+    const loadingStore = useLoadingStore();
 
     return {
       alertStore,
       wizardStore,
       applicationStore,
       certificationStore,
+      loadingStore,
       formatDate,
       Rules,
     };
@@ -472,8 +485,10 @@ export default defineComponent({
       this.mode = "add";
       this.professionalDevelopmentFormMode = "edit";
     },
-    handleDelete(_professionalDevelopment: ProfessionalDevelopmentExtended, index: number) {
+    async handleDelete(_professionalDevelopment: ProfessionalDevelopmentExtended, index: number) {
       this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
+
+      await this.applicationStore.saveDraft();
       this.alertStore.setSuccessAlert("You have deleted your professional development.");
     },
     async handleSubmit() {
@@ -507,7 +522,12 @@ export default defineComponent({
           updatedModelValue.push(newProfessionalDevelopment);
         }
 
+        this.$emit("update:model-value", updatedModelValue);
+
+        await this.applicationStore.saveDraft();
+
         this.resetFormData();
+
         this.mode = "list";
         this.alertStore.setSuccessAlert(
           newProfessionalDevelopment.id
@@ -515,7 +535,6 @@ export default defineComponent({
             : "You have successfully added your professional development.",
         );
 
-        this.$emit("update:model-value", updatedModelValue);
         window.scroll(0, 0);
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
