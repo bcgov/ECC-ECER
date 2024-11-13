@@ -15,8 +15,8 @@ public class CertificationEndpoints : IRegisterEndpoints
       string? id,
       IMapper mapper,
       IMediator messageBus,
-    HttpContext ctx,
-    CancellationToken ct) =>
+      HttpContext ctx,
+      CancellationToken ct) =>
     {
       var results = await messageBus.Send<GetCertificationsCommandResponse>(new GetCertificationsCommand(id), ct);
       return TypedResults.Ok(mapper.Map<IEnumerable<CertificationSummary>>(results.Items));
@@ -25,24 +25,24 @@ public class CertificationEndpoints : IRegisterEndpoints
     .WithParameterValidation();
 
     endpointRouteBuilder.MapGet("/api/certifications/file/download/{id?}", async Task<Results<FileStreamHttpResult, BadRequest<string>, NotFound>> (
-   string? id,
-   IMapper mapper,
-   IMediator messageBus,
-   HttpContext ctx,
-   CancellationToken ct) =>
-    {
-      var certifications = await messageBus.Send<GetCertificationsCommandResponse>(new GetCertificationsCommand(id), ct);
-      var certificate = certifications.Items.SingleOrDefault();
+      string? id,
+      IMapper mapper,
+      IMediator messageBus,
+      HttpContext ctx,
+      CancellationToken ct) =>
+     {
+       var certifications = await messageBus.Send<GetCertificationsCommandResponse>(new GetCertificationsCommand(id), ct);
+       var certificate = certifications.Items.SingleOrDefault();
 
-      if (certificate == null || certificate.FileId == null) return TypedResults.NotFound();
-      var files = await messageBus.Send(new FileQuery([new FileLocation(certificate!.FileId!, certificate.FilePath ?? string.Empty)]), ct);
-      var file = files.Items.SingleOrDefault();
-      if (file == null) return TypedResults.NotFound();
+       if (certificate == null || certificate.FileId == null) return TypedResults.NotFound();
+       var files = await messageBus.Send(new FileQuery([new FileLocation(certificate!.FileId!, certificate.FilePath ?? string.Empty)]), ct);
+       var file = files.Items.SingleOrDefault();
+       if (file == null) return TypedResults.NotFound();
 
-      return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
-    })
-    .RequireAuthorization()
-    .WithParameterValidation();
+       return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
+     })
+     .RequireAuthorization()
+     .WithParameterValidation();
   }
 }
 
