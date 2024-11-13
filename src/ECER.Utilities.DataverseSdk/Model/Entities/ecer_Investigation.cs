@@ -219,6 +219,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Concluded = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ConclusionReview = 621870018,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -293,6 +296,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_AssigntoInvestigator = "ecer_assigntoinvestigator";
 			public const string ecer_AssigntoInvestigatorName = "ecer_assigntoinvestigatorname";
 			public const string ecer_AssigntoInvestigatorYomiName = "ecer_assigntoinvestigatoryominame";
+			public const string ecer_assigntomanagerforactivestagereview = "ecer_assigntomanagerforactivestagereview";
+			public const string ecer_assigntomanagerforactivestagereviewName = "ecer_assigntomanagerforactivestagereviewname";
+			public const string ecer_assigntomanagerforconclusionstagereview = "ecer_assigntomanagerforconclusionstagereview";
+			public const string ecer_assigntomanagerforconclusionstagereviewName = "ecer_assigntomanagerforconclusionstagereviewname";
+			public const string ecer_assigntomanagerforintakestagereview = "ecer_assigntomanagerforintakestagereview";
+			public const string ecer_assigntomanagerforintakestagereviewName = "ecer_assigntomanagerforintakestagereviewname";
+			public const string ecer_AssigntoManagerforSummaryStageReview = "ecer_assigntomanagerforsummarystagereview";
+			public const string ecer_assigntomanagerforsummarystagereviewName = "ecer_assigntomanagerforsummarystagereviewname";
+			public const string ecer_assigntositeamforconclusionreview = "ecer_assigntositeamforconclusionreview";
+			public const string ecer_assigntositeamforconclusionreviewName = "ecer_assigntositeamforconclusionreviewname";
 			public const string ecer_AssigntoSITeamforIntakeReview = "ecer_assigntositeamforintakereview";
 			public const string ecer_assigntositeamforintakereviewName = "ecer_assigntositeamforintakereviewname";
 			public const string ecer_BehaviouralGuidance = "ecer_behaviouralguidance";
@@ -506,6 +519,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_mailaddressincident = "ecer_mailaddressincident";
 			public const string ecer_MailingAddress = "ecer_mailingaddress";
 			public const string ecer_MailingAddressContact = "ecer_mailingaddresscontact";
+			public const string ecer_managerreviewcompleteactivestage = "ecer_managerreviewcompleteactivestage";
+			public const string ecer_managerreviewcompleteactivestageName = "ecer_managerreviewcompleteactivestagename";
+			public const string ecer_managerreviewcompleteconclusionstage = "ecer_managerreviewcompleteconclusionstage";
+			public const string ecer_managerreviewcompleteconclusionstageName = "ecer_managerreviewcompleteconclusionstagename";
+			public const string ecer_managerreviewcompleteintakestage = "ecer_managerreviewcompleteintakestage";
+			public const string ecer_managerreviewcompleteintakestageName = "ecer_managerreviewcompleteintakestagename";
+			public const string ecer_managerreviewcompletesummarystage = "ecer_managerreviewcompletesummarystage";
+			public const string ecer_managerreviewcompletesummarystageName = "ecer_managerreviewcompletesummarystagename";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NoGapsIdentified = "ecer_nogapsidentified";
 			public const string ecer_nogapsidentifiedName = "ecer_nogapsidentifiedname";
@@ -978,6 +999,166 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_assigntoinvestigator"))
 				{
 					return this.FormattedValues["ecer_assigntoinvestigator"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntomanagerforactivestagereview")]
+		public virtual ecer_YesNoNull? ecer_assigntomanagerforactivestagereview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_assigntomanagerforactivestagereview")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_assigntomanagerforactivestagereview", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntomanagerforactivestagereviewname")]
+		public string ecer_assigntomanagerforactivestagereviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_assigntomanagerforactivestagereview"))
+				{
+					return this.FormattedValues["ecer_assigntomanagerforactivestagereview"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntomanagerforconclusionstagereview")]
+		public virtual ecer_YesNoNull? ecer_assigntomanagerforconclusionstagereview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_assigntomanagerforconclusionstagereview")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_assigntomanagerforconclusionstagereview", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntomanagerforconclusionstagereviewname")]
+		public string ecer_assigntomanagerforconclusionstagereviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_assigntomanagerforconclusionstagereview"))
+				{
+					return this.FormattedValues["ecer_assigntomanagerforconclusionstagereview"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntomanagerforintakestagereview")]
+		public virtual ecer_YesNoNull? ecer_assigntomanagerforintakestagereview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_assigntomanagerforintakestagereview")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_assigntomanagerforintakestagereview", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntomanagerforintakestagereviewname")]
+		public string ecer_assigntomanagerforintakestagereviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_assigntomanagerforintakestagereview"))
+				{
+					return this.FormattedValues["ecer_assigntomanagerforintakestagereview"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntomanagerforsummarystagereview")]
+		public virtual ecer_YesNoNull? ecer_AssigntoManagerforSummaryStageReview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_assigntomanagerforsummarystagereview")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_assigntomanagerforsummarystagereview", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntomanagerforsummarystagereviewname")]
+		public string ecer_assigntomanagerforsummarystagereviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_assigntomanagerforsummarystagereview"))
+				{
+					return this.FormattedValues["ecer_assigntomanagerforsummarystagereview"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntositeamforconclusionreview")]
+		public virtual ecer_YesNoNull? ecer_assigntositeamforconclusionreview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_assigntositeamforconclusionreview")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_assigntositeamforconclusionreview", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntositeamforconclusionreviewname")]
+		public string ecer_assigntositeamforconclusionreviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_assigntositeamforconclusionreview"))
+				{
+					return this.FormattedValues["ecer_assigntositeamforconclusionreview"];
 				}
 				else
 				{
@@ -4029,6 +4210,134 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_mailingaddresscontact", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_managerreviewcompleteactivestage")]
+		public virtual ecer_YesNoNull? ecer_managerreviewcompleteactivestage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_managerreviewcompleteactivestage")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_managerreviewcompleteactivestage", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_managerreviewcompleteactivestagename")]
+		public string ecer_managerreviewcompleteactivestageName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_managerreviewcompleteactivestage"))
+				{
+					return this.FormattedValues["ecer_managerreviewcompleteactivestage"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_managerreviewcompleteconclusionstage")]
+		public virtual ecer_YesNoNull? ecer_managerreviewcompleteconclusionstage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_managerreviewcompleteconclusionstage")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_managerreviewcompleteconclusionstage", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_managerreviewcompleteconclusionstagename")]
+		public string ecer_managerreviewcompleteconclusionstageName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_managerreviewcompleteconclusionstage"))
+				{
+					return this.FormattedValues["ecer_managerreviewcompleteconclusionstage"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_managerreviewcompleteintakestage")]
+		public virtual ecer_YesNoNull? ecer_managerreviewcompleteintakestage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_managerreviewcompleteintakestage")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_managerreviewcompleteintakestage", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_managerreviewcompleteintakestagename")]
+		public string ecer_managerreviewcompleteintakestageName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_managerreviewcompleteintakestage"))
+				{
+					return this.FormattedValues["ecer_managerreviewcompleteintakestage"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_managerreviewcompletesummarystage")]
+		public virtual ecer_YesNoNull? ecer_managerreviewcompletesummarystage
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_managerreviewcompletesummarystage")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_managerreviewcompletesummarystage", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_managerreviewcompletesummarystagename")]
+		public string ecer_managerreviewcompletesummarystageName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_managerreviewcompletesummarystage"))
+				{
+					return this.FormattedValues["ecer_managerreviewcompletesummarystage"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
