@@ -22,6 +22,7 @@ public class CertificationEndpoints : IRegisterEndpoints
       var items = mapper.Map<IEnumerable<CertificationSummary>>(results.Items);
       return TypedResults.Ok(items);
     })
+    .WithOpenApi("Returns certification summaries", string.Empty, "certification_get")
     .RequireAuthorization()
     .WithParameterValidation();
 
@@ -42,6 +43,7 @@ public class CertificationEndpoints : IRegisterEndpoints
 
        return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
      })
+     .WithOpenApi("Downloads a certification summary file", string.Empty, "certificationFile_get")
      .RequireAuthorization()
      .WithParameterValidation();
   }
