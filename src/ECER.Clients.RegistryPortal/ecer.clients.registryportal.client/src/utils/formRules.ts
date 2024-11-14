@@ -32,28 +32,10 @@ const number = (message = "Must be a number") => {
   return (v: string) => !v || /^\d+$/.test(v) || message;
 };
 
-/**
- * Form input must not contain special characters
- *
- * @param {String} [message]
- * @returns {(value: string) => true|string}
- */
-const noSpecialCharactersAddress =
-  (
-    message = "Special characters currently aren’t accepted, but we recognize their importance and are working on an update. For now, please remove or replace them.",
-  ) =>
-  (v: string) =>
-    !v || !/[^A-Za-z0-9\s-.#/]/.test(v) || message;
-
-const noSpecialCharactersContactTitle =
+const validContactName =
   (message = "Remove or replace any special characters in this field.") =>
   (v: string) =>
-    !v || !/[^A-Za-z.'\s-&()]/.test(v) || message;
-
-const noSpecialCharactersContactName =
-  (message = "Remove or replace any special characters in this field.") =>
-  (v: string) =>
-    !v || !/[^A-Za-z.'\s-]/.test(v) || message;
+    !v || !/[^a-zA-Z\u00C0-\u017F\s'-]/.test(v) || message;
 
 /**
  * Rule for phone numbers also works for fax numbers too
@@ -225,9 +207,7 @@ export {
   email,
   futureDateNotAllowedRule,
   hasCheckbox,
-  noSpecialCharactersAddress,
-  noSpecialCharactersContactName,
-  noSpecialCharactersContactTitle,
+  validContactName,
   number,
   phoneNumber,
   postalCode,

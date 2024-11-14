@@ -56,7 +56,12 @@
       </v-row>
       <v-row>
         <v-col md="8" lg="6" xl="4">
-          <EceTextField label="Website with description of course or workshop (optional)" maxlength="500" :rules="[Rules.website()]"></EceTextField>
+          <EceTextField
+            v-model="courseorWorkshopLink"
+            label="Website with description of course or workshop (optional)"
+            maxlength="500"
+            :rules="[Rules.website()]"
+          ></EceTextField>
         </v-col>
       </v-row>
       <v-row>
@@ -203,6 +208,7 @@
         <v-col>
           <FileUploader
             :allow-multiple-files="false"
+            :max-number-of-files="1"
             :show-add-file-button="generateUserFileArray.length === 0 && !isFileUploadInProgress"
             :user-files="generateUserFileArray"
             :rules="[Rules.atLeastOneOptionRequired('Upload a certificate or document that shows you completed the course or workshop')]"
@@ -227,7 +233,7 @@
   <!-- List view -->
   <div v-else>
     <v-row>
-      <v-col>
+      <v-col sm="12" md="10" lg="8" xl="6">
         <p>
           You must have completed at least 40 hours of professional development relevant to early childhood education. Add the courses or workshops you’ve
           taken.
@@ -235,26 +241,27 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col sm="12" md="10" lg="8" xl="6">
         <ProgressBar :hours-required="hoursRequired" :total-hours="totalHours"></ProgressBar>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col v-if="modelValue.length > 0">
+    <v-row v-if="modelValue.length > 0" v-for="(professionalDevelopment, index) in modelValue">
+      <v-col sm="12" md="10" lg="8" xl="6">
         <ProfessionalDevelopmentCard
-          v-for="(professionalDevelopment, index) in modelValue"
           :key="index"
           :professional-development="professionalDevelopment"
           @edit="handleEdit"
           @delete="(professionalDevelopment) => handleDelete(professionalDevelopment, index)"
         />
       </v-col>
-      <!-- empty list -->
-      <v-col v-else><p>No courses or workshops added yet.</p></v-col>
+    </v-row>
+    <!-- empty list -->
+    <v-row v-else>
+      <v-col sm="12" md="10" lg="8" xl="6"><p>No courses or workshops added yet.</p></v-col>
     </v-row>
 
     <v-row>
-      <v-col>
+      <v-col sm="12" md="10" lg="8" xl="6">
         <p v-if="totalHours >= hoursRequired">
           No additional professional development may be added. You provided the required 40 hours. After you submit your application, the registry will review
           and verify the professional development added. If needed, the registry will contact you for additional information.
