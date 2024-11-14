@@ -8,7 +8,9 @@
       <p>You can upload images, Microsoft Word documents, Microsoft Excel documents, and PDFs. Max file size accepted is 10MB.</p>
       <Callout class="mt-3" type="warning">
         <div class="d-flex flex-column ga-3">
-          <p v-if="selectedFiles.length >= maxNumberOfFiles">No more files can be added. You can only add {{ maxNumberOfFiles }} files.</p>
+          <p v-if="selectedFiles.length >= maxNumberOfFiles">
+            No more files can be added. You can only add {{ maxNumberOfFiles }} file{{ maxNumberOfFiles > 1 ? "s" : "" }}.
+          </p>
           <p v-else>Selected files: {{ selectedFiles.length }}/{{ maxNumberOfFiles }}</p>
         </div>
       </Callout>

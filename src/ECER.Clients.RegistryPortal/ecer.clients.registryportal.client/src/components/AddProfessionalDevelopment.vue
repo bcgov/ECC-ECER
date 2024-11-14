@@ -61,6 +61,7 @@
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceTextField
+              v-model="professionalDevelopment.courseorWorkshopLink"
               variant="outlined"
               label="Website with description of course or workshop (optional)"
               maxlength="500"
