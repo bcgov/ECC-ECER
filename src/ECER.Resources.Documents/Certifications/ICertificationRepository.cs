@@ -3,8 +3,14 @@
 public interface ICertificationRepository
 {
   Task<IEnumerable<Certification>> Query(UserCertificationQuery query);
+
+  Task<IEnumerable<CertificationSummary>> QueryCertificateSummary(UserCertificationSummaryQuery query);
 }
 
+public record UserCertificationSummaryQuery
+{
+  public string? ById { get; set; }
+}
 public record UserCertificationQuery
 {
   public string? ById { get; set; }
@@ -16,7 +22,13 @@ public record UserCertificationQuery
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
 }
-
+public record CertificationSummary(string Id)
+{
+  public string? FileName { get; set; }
+  public string? FilePath { get; set; }
+  public string? FileExtention { get; set; }
+  public string? FileId { get; set; }
+}
 public record Certification(string Id)
 {
   public string? Name { get; set; }

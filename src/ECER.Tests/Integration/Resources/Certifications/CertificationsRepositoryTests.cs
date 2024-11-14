@@ -29,4 +29,11 @@ public class CertificationsRepositoryTests : RegistryPortalWebAppScenarioBase
     // Assert
     Certifications.ShouldHaveSingleItem();
   }
+
+  [Fact]
+  public async Task QueryCertificateSummary_Found()
+  {
+    var Certifications = await repository.QueryCertificateSummary(new UserCertificationSummaryQuery { ById = null });
+    Certifications.ShouldNotBeEmpty();
+  }
 }

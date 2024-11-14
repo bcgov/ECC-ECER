@@ -67,4 +67,19 @@ internal class CertificationRepository : ICertificationRepository
 
     return mapper.Map<IEnumerable<Certification>>(results)!.ToList();
   }
+
+  public async Task<IEnumerable<CertificationSummary>> QueryCertificateSummary(UserCertificationSummaryQuery query)
+  {
+    await Task.CompletedTask;
+    var certificationSummaries = context.ecer_CertificateSummarySet.Where(c => c.StatusCode == ecer_CertificateSummary_StatusCode.Active).AsQueryable();
+
+    if (query.ById != null) certificationSummaries = certificationSummaries.Where(r => r.ecer_CertificateSummaryId == Guid.Parse(query.ById));
+
+    var results = context.From(certificationSummaries)
+    .Join()
+    .Include(a => a.ecer_bcgov_documenturl_CertificateSummaryId)
+    .Execute();
+
+    return mapper.Map<IEnumerable<CertificationSummary>>(results)!.ToList();
+  }
 }
