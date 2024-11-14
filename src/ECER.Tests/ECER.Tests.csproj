@@ -5,7 +5,6 @@
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <NoWarn>CA1001;1701;1702;CA1707</NoWarn>
-    <UserSecretsId>2435d405-b699-4b67-bfde-d7d73e7c2c6c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
