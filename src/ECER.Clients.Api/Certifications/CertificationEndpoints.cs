@@ -19,7 +19,8 @@ public class CertificationEndpoints : IRegisterEndpoints
       CancellationToken ct) =>
     {
       var results = await messageBus.Send<GetCertificationsCommandResponse>(new GetCertificationsCommand(id), ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<CertificationSummary>>(results.Items));
+      var items = mapper.Map<IEnumerable<CertificationSummary>>(results.Items);
+      return TypedResults.Ok(items);
     })
     .RequireAuthorization()
     .WithParameterValidation();
