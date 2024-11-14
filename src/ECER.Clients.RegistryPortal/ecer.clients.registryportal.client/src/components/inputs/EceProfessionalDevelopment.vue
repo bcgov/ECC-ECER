@@ -208,6 +208,7 @@
         <v-col>
           <FileUploader
             :allow-multiple-files="false"
+            :max-number-of-files="1"
             :show-add-file-button="generateUserFileArray.length === 0 && !isFileUploadInProgress"
             :user-files="generateUserFileArray"
             :rules="[Rules.atLeastOneOptionRequired('Upload a certificate or document that shows you completed the course or workshop')]"
