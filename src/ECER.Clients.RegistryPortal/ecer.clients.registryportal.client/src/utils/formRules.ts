@@ -32,7 +32,7 @@ const number = (message = "Must be a number") => {
   return (v: string) => !v || /^\d+$/.test(v) || message;
 };
 
-const noSpecialCharactersContactName =
+const validContactName =
   (message = "Remove or replace any special characters in this field.") =>
   (v: string) =>
     !v || !/[^a-zA-Z\u00C0-\u017F\s'-]/.test(v) || message;
@@ -207,7 +207,7 @@ export {
   email,
   futureDateNotAllowedRule,
   hasCheckbox,
-  noSpecialCharactersContactName,
+  validContactName,
   number,
   phoneNumber,
   postalCode,

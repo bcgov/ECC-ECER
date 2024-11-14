@@ -26,7 +26,7 @@ const isNumber = function (event: KeyboardEvent | InputEvent): void {
  * @param {Object} event
  * @returns void
  */
-const isNotSpecialCharacterName = function (event: KeyboardEvent): void {
+const validContactNameCharacter = function (event: KeyboardEvent): void {
   const charCode = event instanceof KeyboardEvent ? event.key : "";
 
   // Check if the key pressed is not a number and not a valid input event
@@ -35,4 +35,4 @@ const isNotSpecialCharacterName = function (event: KeyboardEvent): void {
   }
 };
 
-export { isNotSpecialCharacterName, isNumber };
+export { validContactNameCharacter, isNumber };
