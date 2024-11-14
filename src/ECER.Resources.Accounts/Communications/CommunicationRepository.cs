@@ -174,7 +174,9 @@ internal class CommunicationRepository : ICommunicationRepository
           bcgov_FileSize = document.Size,
           bcgov_FileExtension = document.Extention,
           StatusCode = bcgov_DocumentUrl_StatusCode.Active,
-          StateCode = bcgov_documenturl_statecode.Active
+          StateCode = bcgov_documenturl_statecode.Active,
+          bcgov_OriginCode = bcgov_OriginCode.Web,
+          ecer_DocumentInternallyReviewed = ecer_YesNoNull.Yes
         };
 
         context.AddObject(documenturl);

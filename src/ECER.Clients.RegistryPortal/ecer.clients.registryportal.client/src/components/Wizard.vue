@@ -18,7 +18,7 @@
         :reverse-transition="false"
       >
         <v-container>
-          <v-row class="justify-space-between mb-4">
+          <v-row class="justify-space-between mb-4" v-if="step.title || wizardStore.currentStepStage === 'Review'">
             <v-col cols="auto">
               <h1>{{ step.title }}</h1>
             </v-col>
@@ -26,7 +26,7 @@
               <slot name="PrintPreview"></slot>
             </v-col>
           </v-row>
-          <h4>{{ step.subtitle }}</h4>
+          <h4 v-if="step.subtitle">{{ step.subtitle }}</h4>
           <v-row>
             <v-col cols="12">
               <EceForm :ref="step.form.id" :form="step.form" :form-data="wizardStore.wizardData" @updated-form-data="wizardStore.setWizardData" />

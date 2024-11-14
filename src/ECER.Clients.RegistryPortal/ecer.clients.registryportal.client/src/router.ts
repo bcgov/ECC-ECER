@@ -163,12 +163,6 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/new-user/terms-of-use",
-      component: () => import("./components/pages/TermsOfUse.vue"),
-      meta: { requiresAuth: true },
-      props: { hasBackButton: true },
-    },
-    {
       path: "/terms-of-use",
       component: () => import("./components/pages/TermsOfUse.vue"),
       meta: { requiresAuth: false },

@@ -157,6 +157,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DisableExternalViewing = "ecer_disableexternalviewing";
 			public const string ecer_disableexternalviewingName = "ecer_disableexternalviewingname";
 			public const string ecer_DocumentExternallyViewed = "ecer_documentexternallyviewed";
+			public const string ecer_DocumentInternallyReviewed = "ecer_documentinternallyreviewed";
+			public const string ecer_documentinternallyreviewedName = "ecer_documentinternallyreviewedname";
 			public const string ecer_documenturl_ApplicationId = "ecer_documenturl_ApplicationId";
 			public const string ecer_documenturl_CertificateId = "ecer_documenturl_CertificateId";
 			public const string ecer_documenturl_InvestigationId = "ecer_documenturl_InvestigationId";
@@ -1126,6 +1128,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_documentexternallyviewed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentinternallyreviewed")]
+		public virtual ecer_YesNoNull? ecer_DocumentInternallyReviewed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_documentinternallyreviewed")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_documentinternallyreviewed", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentinternallyreviewedname")]
+		public string ecer_documentinternallyreviewedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_documentinternallyreviewed"))
+				{
+					return this.FormattedValues["ecer_documentinternallyreviewed"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
