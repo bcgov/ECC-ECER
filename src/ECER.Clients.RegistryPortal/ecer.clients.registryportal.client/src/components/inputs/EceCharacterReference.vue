@@ -30,11 +30,11 @@
     <v-col cols="12" md="8" lg="6" xl="4">
       <EceTextField
         v-model="lastName"
-        :rules="[Rules.required('Enter your reference\'s last name'), Rules.noSpecialCharactersContactName()]"
+        :rules="[Rules.required('Enter your reference\'s last name'), Rules.validContactName()]"
         label="Last name"
         maxlength="100"
         @update:model-value="updateCharacterReference()"
-        @keypress="isNotSpecialCharacterName"
+        @keypress="validContactNameCharacter"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -42,11 +42,11 @@
     <v-col cols="12" md="8" lg="6" xl="4">
       <EceTextField
         v-model="firstName"
-        :rules="[Rules.noSpecialCharactersContactName()]"
+        :rules="[Rules.validContactName()]"
         label="First name"
         maxlength="100"
         @update:model-value="updateCharacterReference()"
-        @keypress="isNotSpecialCharacterName"
+        @keypress="validContactNameCharacter"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -90,7 +90,7 @@ import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import { isNumber } from "@/utils/formInput";
-import { isNotSpecialCharacterName } from "@/utils/formInput";
+import { validContactNameCharacter } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 import Alert from "../Alert.vue";
@@ -158,7 +158,7 @@ export default defineComponent({
         { firstName: this.firstName, lastName: this.lastName, emailAddress: this.emailAddress, phoneNumber: this.phoneNumber },
       ] as Components.Schemas.CharacterReference);
     },
-    isNotSpecialCharacterName,
+    validContactNameCharacter,
   },
 });
 </script>
