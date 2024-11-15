@@ -50,7 +50,7 @@ public class CertificationHandlers(IObjecStorageProvider objectStorageProvider, 
         TagsList = file?.Tags?.Where(t => t.Key != "classification")
       };
 
-      if (file != null) files.Add(new FileData(fileLocation, fileProperties, file.FileName, file.ContentType, file.Content));
+      if (file != null) files.Add(new FileData(fileLocation, fileProperties, file.FileName, "application/json", file.Content));
     });
 
     return new FileQueryResults(files.ToList());
