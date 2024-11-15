@@ -28,6 +28,7 @@ public record CertificationSummary(string Id)
   public string? FilePath { get; set; }
   public string? FileExtention { get; set; }
   public string? FileId { get; set; }
+  public DateTime? CreatedOn { get; set; }
 }
 public record Certification(string Id)
 {

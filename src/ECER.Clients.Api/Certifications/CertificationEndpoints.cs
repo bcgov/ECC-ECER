@@ -33,12 +33,9 @@ public class CertificationEndpoints : IRegisterEndpoints
       HttpContext ctx,
       CancellationToken ct) =>
      {
-       var certifications = await messageBus.Send<GetCertificationsCommandResponse>(new GetCertificationsCommand(id), ct);
-       var certificate = certifications.Items.SingleOrDefault();
+       var certificationFiles = await messageBus.Send(new GetCertificationFileCommand(id), ct);
 
-       if (certificate == null || certificate.FileId == null) return TypedResults.NotFound();
-       var files = await messageBus.Send(new FileQuery([new FileLocation(certificate!.FileId!, certificate.FilePath ?? string.Empty)]), ct);
-       var file = files.Items.SingleOrDefault();
+       var file = certificationFiles.Items.SingleOrDefault();
        if (file == null) return TypedResults.NotFound();
 
        return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
@@ -53,4 +50,5 @@ public record CertificationSummary(string Id)
 {
   public string? FileName { get; set; }
   public string? FileId { get; set; }
+  public DateTime? CreatedOn { get; set; }
 }
