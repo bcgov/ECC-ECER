@@ -5,7 +5,10 @@
     <!-- Renewal -->
     <template v-if="applicationStore.isDraftApplicationRenewal">
       <ECEAssistantRenewalRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
-      <ECEOneYearRenewalRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
+      <ECEOneYearRenewalRequirements
+        v-if="applicationStore.isDraftCertificateTypeOneYear"
+        :expired="certificationStore.latestCertificateStatus === 'Expired'"
+      />
       <ECEFiveYearRenewalRequirements
         v-if="applicationStore.isDraftCertificateTypeFiveYears"
         :expired="certificationStore.latestCertificateStatus === 'Expired'"
