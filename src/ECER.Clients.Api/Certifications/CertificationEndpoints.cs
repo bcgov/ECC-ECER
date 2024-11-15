@@ -26,8 +26,8 @@ public class CertificationEndpoints : IRegisterEndpoints
     .RequireAuthorization()
     .WithParameterValidation();
 
-    endpointRouteBuilder.MapGet("/api/certifications/file/download/{id?}", async Task<Results<FileStreamHttpResult, BadRequest<string>, NotFound>> (
-      string? id,
+    endpointRouteBuilder.MapGet("/api/certifications/file/download/{id}", async Task<Results<FileStreamHttpResult, BadRequest<string>, NotFound>> (
+      string id,
       IMapper mapper,
       IMediator messageBus,
       HttpContext ctx,
