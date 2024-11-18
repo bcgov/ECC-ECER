@@ -137,7 +137,6 @@ public class ApplicationHandlers(
       ByApplicantId = request.ByApplicantId,
       ByStatus = request.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
     }, cancellationToken);
-
     return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
   }
 
