@@ -1,11 +1,11 @@
 <template>
   <v-col v-if="certificationStore.latestCertificateStatus == 'Active'" cols="12">
-    <Alert title="Got 500 hours of supervised work experience?">
+    <Alert title="Do you have 500 hours of supervised work experience?">
       You should
       <a class="cursor-pointer text-decoration-underline" @click="applicationStore.draftApplication.certificationTypes = ['FiveYears']">
-        apply for an ECE Five Year certification
+        apply for ECE Five Year certification
       </a>
-      if you've completed 500 hours of work experience.
+      if you have completed 500 hours of work experience.
     </Alert>
   </v-col>
   <v-col cols="12">
