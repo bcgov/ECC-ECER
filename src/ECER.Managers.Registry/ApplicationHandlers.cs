@@ -138,10 +138,7 @@ public class ApplicationHandlers(
       ByStatus = request.ByStatus?.Convert<Contract.Applications.ApplicationStatus, Resources.Documents.Applications.ApplicationStatus>(),
     }, cancellationToken);
 
-    // Sort applications by CreatedOn date in descending order
-    var sortedApplications = applications.OrderByDescending(app => app.CreatedOn);
-
-    return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(sortedApplications)!);
+    return new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
   }
 
   /// <summary>

@@ -42,6 +42,9 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     if (query.ById != null) applications = applications.Where(r => r.ecer_ApplicationId == Guid.Parse(query.ById));
     if (query.ByApplicantId != null) applications = applications.Where(r => r.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
 
+    // Order by CreatedOn descending
+    applications = applications.OrderByDescending(a => a.CreatedOn);
+
     var results = context.From(applications)
       .Join()
       .Include(a => a.ecer_transcript_Applicationid)
