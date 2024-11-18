@@ -6,7 +6,7 @@
     <p>You need the following information to renew your certificate.</p>
   </v-col>
   <v-col v-if="expired && !expiredMoreThan5Years" cols="12">
-    <ECEHeader title="Reason why you’re late renewing your ECE Five Year certification" />
+    <ECEHeader title="Reason why you're late renewing your ECE Five Year certification" />
     <div class="d-flex flex-column ga-3 my-6">
       <p>You need to provide the reason why you did not submit an application before your certificate expired.</p>
     </div>
@@ -21,6 +21,7 @@
         <li>Can speak to your ability to educate and care for young children</li>
         <li>Has known you for at least 6 months</li>
         <li>Is not your relative, partner, spouse or yourself</li>
+        <li>Is not the same person as your work experience reference</li>
       </ul>
       <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
     </div>
@@ -35,11 +36,14 @@
       <p>The hours must:</p>
       <ul class="ml-10">
         <li>Be related to the field of early childhood education</li>
-        <li>Have been completed within the term of your current certificate (between May 2, 2021 and May 2, 2025)</li>
+        <li>
+          Have been completed within the term of your current certificate (between {{ formattedLatestCertificationEffectiveDate }} and
+          {{ formattedLatestCertificationExpiryDate }})
+        </li>
       </ul>
       <p>The reference must:</p>
       <ul class="ml-10">
-        <li>Be able to confirm you’ve completed the hours</li>
+        <li>Be able to confirm you've completed the hours</li>
         <li>Be a co-worker, supervisor, or a parent/guardian of a child you worked with</li>
         <li>Not be the same person you provide as a character reference</li>
       </ul>
@@ -85,15 +89,19 @@
       <p>The course or workshop must:</p>
       <ul class="ml-10">
         <li>Be relevant to the field of early childhood education</li>
-        <li>Have been completed within the term of your current certificate (between the May 2, 2021 and May 2, 2024)</li>
+        <li v-if="!expired">
+          Have been completed within the term of your current certificate (between {{ formattedLatestCertificationEffectiveDate }} and
+          {{ formattedLatestCertificationExpiryDate }})
+        </li>
+        <li v-else>Have been completed within the last 5 years</li>
       </ul>
-      <p>You’ll need to provide the following information about each course or workshop:</p>
+      <p>You'll need to provide the following information about each course or workshop:</p>
       <ul class="ml-10">
         <li>Name of the course or workshop</li>
         <li>Name of the place where you took it</li>
         <li>Dates when you started and completed it</li>
         <li>How many hours it was</li>
-        <li>Contact information for the facilitator/instructor or a document to show you’ve completed the course</li>
+        <li>Contact information for the facilitator/instructor or a document to show you've completed the course</li>
       </ul>
     </div>
   </v-col>
@@ -103,10 +111,16 @@
 import { defineComponent } from "vue";
 
 import ECEHeader from "@/components/ECEHeader.vue";
+import { useCertificationStore } from "@/store/certification";
+import { formatDate } from "@/utils/format";
 
 export default defineComponent({
   name: "ECEFiveYearRenewalRequirements",
   components: { ECEHeader },
+  setup() {
+    const certificationStore = useCertificationStore();
+    return { certificationStore };
+  },
   props: {
     expired: {
       type: Boolean,
@@ -115,6 +129,14 @@ export default defineComponent({
     expiredMoreThan5Years: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    formattedLatestCertificationExpiryDate(): string {
+      return formatDate(this.certificationStore.latestCertification?.expiryDate ?? "", "LLL d, yyyy");
+    },
+    formattedLatestCertificationEffectiveDate(): string {
+      return formatDate(this.certificationStore.latestCertification?.effectiveDate ?? "", "LLL d, yyyy");
     },
   },
 });
