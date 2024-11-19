@@ -8,10 +8,10 @@
   <v-col cols="12">
     <ECEHeader title="Education information" />
     <div class="d-flex flex-column ga-3 my-6">
-      <p>You must have completed a new course that:</p>
+      <p>You must have successfully completed one additional early childhood education course. The course must:</p>
       <ul class="ml-10">
-        <li>Must have been completed within the last 5 years</li>
-        <li>Cannot be one you previously used in an application for an ECE Assistant certification</li>
+        <li>Have been completed within the last 5 years</li>
+        <li>Be a different course than the one you previously used for ECE Assistant certification</li>
         <li>
           Be part of an early childhood education training
           <a href="https://www2.gov.bc.ca/gov/content?id=62102395C4F64F068A63E42921E67720">program recognized by the ECE Registry</a>
@@ -41,8 +41,8 @@
     <ECEHeader title="Work experience" />
     <div class="d-flex flex-column ga-3 my-6">
       <p>
-        You need to have completed 400 hours of work experience. And be able to provide references to attest to the hours. If you worked at multiple locations,
-        you can provide multiple references.
+        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
+        can provide multiple references.
       </p>
       <p>The hours must:</p>
       <ul class="ml-10">

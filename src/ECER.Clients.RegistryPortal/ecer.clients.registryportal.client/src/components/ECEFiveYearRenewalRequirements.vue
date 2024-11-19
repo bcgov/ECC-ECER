@@ -30,8 +30,8 @@
     <ECEHeader title="Work experience" />
     <div v-if="!expired" class="d-flex flex-column ga-3 my-6">
       <p>
-        You need to have completed 400 hours of work experience. And be able to provide references to attest to the hours. If you worked at multiple locations,
-        you can provide multiple references.
+        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
+        can provide multiple references.
       </p>
       <p>The hours must:</p>
       <ul class="ml-10">
@@ -52,32 +52,32 @@
       <p>You need to have completed 400 hours of work experience. And be able to provide references to attest to all the hours.</p>
       <p>Important information about calculating hours:</p>
       <ul class="ml-10">
-        <li>Only include hours you worked after you started your education</li>
+        <li>Only include hours you worked once you began your early childhood education training program</li>
         <li>Only include hours completed within the last 5 years</li>
-        <li>Cannot include hours you work as part of your practicum</li>
+        <li>Cannot include hours that were part of your education (practicum or placement hours)</li>
         <li>Can include hours you volunteered</li>
       </ul>
       <p>The reference must be someone who:</p>
       <ul class="ml-10">
-        <li>Have directly supervised or observed the hours they can attest to</li>
-        <li>Can speak to your knowledge, skills, and ability as an ECE</li>
-        <li>Has held valid Canadian ECE certificate during the hours they supervised or observed you</li>
+        <li>Has directly supervised or observed you working with children from birth to 5 years old</li>
+        <li>Can speak to your knowledge, skills, and abilities (competencies) as an ECE</li>
+        <li>Held valid Canadian ECE certification during the hours they supervised or observed you</li>
       </ul>
     </div>
     <div v-if="expired && expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
-      <p>You need to have completed 500 hours of work experience. And be able to provide references to attest to all the hours.</p>
+      <p>You need to have completed 500 hours of work experience and be able to provide references to verify the hours.</p>
       <p>Important information about calculating hours:</p>
       <ul class="ml-10">
-        <li>Only include hours you worked after you started your education</li>
+        <li>Only include hours you worked once you began your early childhood education training program</li>
         <li>Only include hours completed within the last 5 years</li>
-        <li>Cannot include hours you work as part of your practicum</li>
+        <li>Cannot include hours that were part of your education (practicum or placement hours)</li>
         <li>Can include hours you volunteered</li>
       </ul>
       <p>The reference must be someone who:</p>
       <ul class="ml-10">
-        <li>Have directly supervised or observed the hours they can attest to</li>
-        <li>Can speak to your knowledge, skills, and ability as an ECE</li>
-        <li>Has held valid Canadian ECE certificate during the hours they supervised or observed you</li>
+        <li>Has directly supervised or observed you working with children from birth to 5 years old</li>
+        <li>Can speak to your knowledge, skills, and abilities (competencies) as an ECE</li>
+        <li>Held valid Canadian ECE certification during the hours they supervised or observed you</li>
         <li>The person cannot be your character reference.</li>
       </ul>
     </div>

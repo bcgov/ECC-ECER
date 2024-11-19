@@ -20,7 +20,7 @@
       <ul class="ml-10">
         <li>You can only renew this certificate once</li>
         <li>You cannot renew an ECE One Year Certificate if it has been expired for more than 5 years</li>
-        <li>After you renew you'll only be able to apply for a ECE Five Year certificate or an ECE Assistant certificate</li>
+        <li>After you renew you’ll only be able to apply for an ECE Five Year certificate or an ECE Assistant certificate</li>
       </ul>
     </div>
   </v-col>
@@ -58,8 +58,8 @@
     <ECEHeader title="Work experience" />
     <div class="d-flex flex-column ga-3 my-6">
       <p>
-        You need to have completed 400 hours of work experience. And be able to provide references to attest to the hours. If you worked at multiple locations,
-        you can provide multiple references.
+        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
+        can provide multiple references.
       </p>
       <p>The hours must:</p>
       <ul class="ml-10">
