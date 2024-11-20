@@ -5,7 +5,7 @@ namespace ECER.Managers.Registry.Contract.Applications;
 /// <summary>
 /// Invokes draft application saving use case
 /// </summary>
-public record SaveDraftApplicationCommand(Application Application) : IRequest<string>;
+public record SaveDraftApplicationCommand(Application Application) : IRequest<Contract.Applications.Application?>;
 
 /// <summary>
 /// Invokes draft application saving use case
