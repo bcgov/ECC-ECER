@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <Breadcrumb :items="items" />
-    <h1 class="mb-6">What type of certification do you want to apply for?</h1>
+    <h1 class="mb-6">What type of certification are you applying for?</h1>
     <v-form ref="certificationForm">
       <v-expansion-panels v-model="selection" variant="accordion">
         <v-expansion-panel v-for="option in certificationOptions" :key="option.id" :value="option.id" class="rounded-lg">

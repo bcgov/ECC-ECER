@@ -25,7 +25,7 @@
   <v-row v-if="!isLaborMobility">
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
-      <p>You must have completed an early childhood education course in either:</p>
+      <p>You must have completed at least one early childhood education course in one of the following:</p>
       <br />
       <ul class="ml-10">
         <li>Child guidance</li>

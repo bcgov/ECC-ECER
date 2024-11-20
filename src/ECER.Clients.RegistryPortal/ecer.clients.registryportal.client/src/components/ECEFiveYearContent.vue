@@ -3,19 +3,11 @@
     <v-row>
       <v-col cols="12">
         <p>
-          This certification allows you to work alone. You can be the primary educator in a licensed child care program for children 3 to 5 years old. You can
-          also work alongside an Infant Toddler Educator in a licensed program for children under 36 months old.
+          This certification allows you to work alone and/or as the primary educator in licensed child care programs for children 3 to 5 years of age and to
+          work alongside an Infant Toddler Educator in licensed programs for children under 36-months.
         </p>
         <br />
-        <p>You must have at least one of the following:</p>
-        <br />
-        <ul class="ml-10">
-          <li>An early childhood education program from a recognized educational institution</li>
-          <li>A training program deemed equivalent by the ECE registry</li>
-          <li>Equivalent certification or registration in another Canadian province or territory</li>
-        </ul>
-        <br />
-        <p>You must also have completed 500 hours of supervised work experience.</p>
+        <p>This certificate needs to be renewed every 5 years.</p>
       </v-col>
       <v-col cols="12">
         <v-checkbox
@@ -27,7 +19,7 @@
           aria-describedby="ITEDescription"
         ></v-checkbox>
         <div id="ITEDescription" class="ml-10 text-caption">
-          An Infant and Toddler specialization requires successful completion of an infant and toddler educator training program recognized by the ECE Registry.
+          This certification allows you to work alone and/or as the primary educator in licensed child care programs for children birth to 5 years of age.
         </div>
         <v-checkbox
           v-model="certificationTypeStore.subSelection"
@@ -38,8 +30,8 @@
           aria-describedby="SNEDescription"
         />
         <div id="SNEDescription" class="ml-10 text-caption">
-          A Special Needs specialization requires successful completion of a special needs early childhood educator training program recognized by the ECE
-          Registry.
+          This certification allows you to work alone and/or as the primary educator in inclusive, licensed child care programs for children 3 to 5 years of
+          age.
         </div>
       </v-col>
     </v-row>
