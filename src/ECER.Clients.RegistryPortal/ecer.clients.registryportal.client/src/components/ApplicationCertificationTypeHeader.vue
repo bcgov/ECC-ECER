@@ -53,7 +53,7 @@ export default defineComponent({
     certificationTypeSubtitleForFiveYear() {
       let certificationTypeSubtitle = "";
       if (this.certificationTypes?.includes(CertificationType.ITE) && this.certificationTypes?.includes(CertificationType.SNE)) {
-        certificationTypeSubtitle = "Including certification for Special Needs Education (SNE) and Infant and Toddler Educator (ITE)";
+        certificationTypeSubtitle = "Including certification for Special Needs Educator (SNE) and Infant and Toddler Educator (ITE)";
       } else if (this.certificationTypes?.includes(CertificationType.SNE)) {
         certificationTypeSubtitle = "Including certification for Special Needs Educator (SNE)";
       } else if (this.certificationTypes?.includes(CertificationType.ITE)) {
