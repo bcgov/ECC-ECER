@@ -24,6 +24,8 @@ public class QueryTests : IAsyncLifetime
     Guid.Parse("40188b8a-9fa7-4a2f-b065-c4f9dd3b0fdf")
   ];
 
+  private static string applicationId = "36ae9353-28b6-4c15-827f-2fe14a609e70";
+
   public QueryTests()
   {
     var configBuilder = new ConfigurationBuilder().AddUserSecrets(typeof(Clients.RegistryPortal.Server.Program).Assembly);
@@ -75,6 +77,23 @@ public class QueryTests : IAsyncLifetime
     result.ShouldNotBeNull();
     result!.ecer_certificate_Registrantid.ShouldNotBeNull();
     var output = result.ecer_certificate_Registrantid.ecer_certificateconditions_Registrantid;
+    output.ShouldNotBeNull();
+  }
+
+  [Fact]
+  public void Join_OneToMany_NestedObjectApplication()
+  {
+    var query = dataverseContext.ecer_ApplicationSet.Where(a => a.ecer_ApplicationId == Guid.Parse(applicationId));
+
+    var results = dataverseContext.From(query).Join()
+      .Include(a => a.ecer_ecer_professionaldevelopment_Applicationi)
+      .IncludeNested(a => a.ecer_bcgov_documenturl_ProfessionalDevelopmentId)
+      .Execute();
+
+    var result = results.FirstOrDefault();
+    result.ShouldNotBeNull();
+    result!.ecer_ecer_professionaldevelopment_Applicationi.ShouldNotBeNull();
+    var output = result.ecer_ecer_professionaldevelopment_Applicationi.First().ecer_bcgov_documenturl_ProfessionalDevelopmentId;
     output.ShouldNotBeNull();
   }
 
