@@ -323,7 +323,7 @@ export const useApplicationStore = defineStore("application", {
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       const { data: draftApplicationResponse } = await createOrUpdateDraftApplication(this.draftApplication);
       if (draftApplicationResponse !== null && draftApplicationResponse !== undefined) {
-        this.draftApplication.id = draftApplicationResponse.applicationId;
+        this.draftApplication = draftApplicationResponse.application!;
       }
       return draftApplicationResponse;
     },

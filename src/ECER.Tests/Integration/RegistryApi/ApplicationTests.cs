@@ -44,7 +44,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application.Id;
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
@@ -75,7 +75,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application.Id;
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
@@ -105,7 +105,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application.Id;
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
@@ -162,7 +162,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     });
 
     var savedApplication = (await response.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull();
-    savedApplication.ApplicationId.ShouldBe(application.Id);
+    savedApplication.Application.Id.ShouldBe(application.Id);
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
@@ -191,7 +191,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application.Id;
 
     var applicationStatusByIdResponse = await Host.Scenario(_ =>
     {
@@ -218,7 +218,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application.Id;
 
     var applicationStatusByIdResponse = await Host.Scenario(_ =>
     {
@@ -248,7 +248,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.Put.Json(new SaveDraftApplicationRequest(application)).ToUrl($"/api/draftapplications/{application.Id}");
       _.StatusCodeShouldBeOk();
     });
-    var existingApplicationId = (await existingAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    var existingApplicationId = (await existingAppResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application.Id;
     existingApplicationId.ShouldBe(application.Id);
   }
 
@@ -324,7 +324,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    var applicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application.Id;
 
     var applicationByIdResponse = await Host.Scenario(_ =>
     {
@@ -453,7 +453,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var draftApplicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    var draftApplicationId = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application.Id;
 
     // Submit Renewal Application
     var applicationResponse = await Host.Scenario(_ =>

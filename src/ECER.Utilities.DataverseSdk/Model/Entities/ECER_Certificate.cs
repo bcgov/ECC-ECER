@@ -100,9 +100,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_hasconditionsName = "ecer_hasconditionsname";
 			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
 			public const string ecer_ineligiblereferenceName = "ecer_ineligiblereferencename";
+			public const string ecer_legacyapplicationid = "ecer_legacyapplicationid";
+			public const string ecer_legacyapplicationidtext = "ecer_legacyapplicationidtext";
 			public const string ecer_legacycertificateid = "ecer_legacycertificateid";
 			public const string ecer_legacyenteredby = "ecer_legacyenteredby";
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
+			public const string ecer_legacyexpirydate = "ecer_legacyexpirydate";
 			public const string ecer_legacystatusid = "ecer_legacystatusid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PrintedDate = "ecer_printeddate";
@@ -592,6 +595,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyapplicationid")]
+		public System.Nullable<int> ecer_legacyapplicationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_legacyapplicationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyapplicationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyapplicationidtext")]
+		public string ecer_legacyapplicationidtext
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyapplicationidtext");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyapplicationidtext", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacycertificateid")]
 		public string ecer_legacycertificateid
 		{
@@ -634,6 +667,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyentrydate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyexpirydate")]
+		public System.Nullable<System.DateTime> ecer_legacyexpirydate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyexpirydate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyexpirydate", value);
 			}
 		}
 		

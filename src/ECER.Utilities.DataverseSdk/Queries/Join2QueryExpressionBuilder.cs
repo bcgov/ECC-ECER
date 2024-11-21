@@ -63,7 +63,8 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
           rootEntities.Any(e => e.GetType() == j.EnityType) ?
           QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, keys) :
           QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName,
-            rootEntities.Select(e => e.GetAttributeValue<EntityReference>(j.RelatedEntityForeignKeyAttributeName)!.Id).Distinct().ToArray()),
+          relatedEntitiesMap.SelectMany(entry => entry.Value.Entities).ToList().First(e => e.GetType() == j.EnityType)!.Id
+          ),
 
           ManyToOneJoinData j => QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, rootEntities.Select(e => e.GetAttributeValue<EntityReference>(j.KeyAttributeName)!.Id).Distinct().ToArray()),
           _ => throw new NotImplementedException()

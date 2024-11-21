@@ -21,17 +21,17 @@ public class ApplicationHandlers(
      IMapper mapper,
      IApplicationValidationEngineResolver validationResolver,
      EcerContext ecerContext)
-  : IRequestHandler<SaveDraftApplicationCommand, string>,
+  : IRequestHandler<SaveDraftApplicationCommand, Contract.Applications.Application?>,
     IRequestHandler<CancelDraftApplicationCommand, string>,
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
     IRequestHandler<ApplicationsQuery, ApplicationsQueryResults>,
-    IRequestHandler<Contract.Applications.SubmitReferenceCommand, ReferenceSubmissionResult>,
+    IRequestHandler<SubmitReferenceCommand, ReferenceSubmissionResult>,
     IRequestHandler<Contract.Applications.OptOutReferenceRequest, ReferenceSubmissionResult>,
     IRequestHandler<Contract.Applications.UpdateWorkExperienceReferenceCommand, UpdateWorkExperienceReferenceResult>,
-    IRequestHandler<Contract.Applications.UpdateCharacterReferenceCommand, UpdateCharacterReferenceResult>,
+    IRequestHandler<UpdateCharacterReferenceCommand, UpdateCharacterReferenceResult>,
     IRequestHandler<ResendCharacterReferenceInviteRequest, string>,
     IRequestHandler<ResendWorkExperienceReferenceInviteRequest, string>,
-    IRequestHandler<Contract.Applications.AddProfessionalDevelopmentCommand, AddProfessionalDevelopmentResult>
+    IRequestHandler<AddProfessionalDevelopmentCommand, AddProfessionalDevelopmentResult>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -39,7 +39,7 @@ public class ApplicationHandlers(
   /// <param name="request">The command</param>
   /// <param name="cancellationToken">cancellation token</param>
   /// <returns></returns>
-  public async Task<string> Handle(SaveDraftApplicationCommand request, CancellationToken cancellationToken)
+  public async Task<Contract.Applications.Application?> Handle(SaveDraftApplicationCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
 
@@ -63,7 +63,14 @@ public class ApplicationHandlers(
     }
     request.Application.Origin = Contract.Applications.ApplicationOrigin.Portal; // Set application origin to "Portal"
     var applicationId = await applicationRepository.SaveApplication(mapper.Map<Resources.Documents.Applications.Application>(request.Application)!, cancellationToken);
-    return applicationId;
+
+    var freshApplications = await applicationRepository.Query(new ApplicationQuery
+    {
+      ById = applicationId,
+      ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
+    }, cancellationToken);
+
+    return mapper.Map<Contract.Applications.Application>(freshApplications.SingleOrDefault())!;
   }
 
   public async Task<string> Handle(CancelDraftApplicationCommand request, CancellationToken cancellationToken)
