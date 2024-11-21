@@ -32,7 +32,7 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
     var faker = new Faker("en_CA");
     int lookUpPageSize = 20;
 
-    var CertificationId = this.Fixture.certificationOneId;
+    var CertificationId = this.Fixture.activeCertificationOneId;
 
     var CertificationsIdResponse = await Host.Scenario(_ =>
     {
@@ -84,7 +84,7 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
   {
     var faker = new Faker("en_CA");
 
-    var CertificationId = this.Fixture.certificationTwoId;
+    var CertificationId = this.Fixture.activeCertificationTwoId;
 
     var CertificationsIdResponse = await Host.Scenario(_ =>
     {

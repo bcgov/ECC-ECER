@@ -39,8 +39,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Communication testCommunication3 = null!;
   private ecer_Communication testCommunication4 = null!;
 
-  private ecer_Certificate testCertification = null!;
-  private ecer_Certificate testCertification2 = null!;
+  private ecer_Certificate testActiveCertification = null!;
+  private ecer_Certificate testActiveCertification2 = null!;
+  private ecer_Certificate testInactiveCertification = null!;
 
   private ecer_PortalInvitation testPortalInvitationOne = null!;
   private ecer_PortalInvitation testPortalInvitationCharacterReferenceSubmit = null!;
@@ -63,8 +64,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public string inProgressApplicationId => inProgressTestApplication.Id.ToString();
   public string draftTestApplicationId => draftTestApplication.Id.ToString();
 
-  public string certificationOneId => testCertification.Id.ToString();
-  public string certificationTwoId => testCertification2.Id.ToString();
+  public string activeCertificationOneId => testActiveCertification.Id.ToString();
+  public string activeCertificationTwoId => testActiveCertification2.Id.ToString();
+  public string inactiveCertificationId => testInactiveCertification.Id.ToString(); 
 
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationCharacterReferenceIdSubmit => testPortalInvitationCharacterReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
@@ -150,9 +152,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2", null);
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3", null);
     testCommunication4 = GetOrAddCommunication(context, inProgressTestApplication, "comm4", null);
-    testCertification = GetOrAddCertification(context, AuthenticatedBcscUser);
-    testCertification2 = GetOrAddCertification(context, AuthenticatedBcscUser);
+    testActiveCertification = GetOrAddCertification(context, AuthenticatedBcscUser);
+    testActiveCertification2 = GetOrAddCertification(context, AuthenticatedBcscUser);
+    testInactiveCertification = GetOrAddCertification(context, AuthenticatedBcscUser, statusCode: ecer_Certificate_StatusCode.Inactive, stateCode: ecer_certificate_statecode.Inactive, expiryDate: DateTime.MaxValue);
 
+    
     previousName = GetOrAddPreviousName(context, AuthenticatedBcscUser);
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, AuthenticatedBcscUser, "name1");
     testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, AuthenticatedBcscUser, "name2");
@@ -361,7 +365,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return communication;
   }
 
-  private ecer_Certificate GetOrAddCertification(EcerContext context, Contact registrant)
+  private ecer_Certificate GetOrAddCertification(EcerContext context, Contact registrant, ecer_Certificate_StatusCode statusCode = ecer_Certificate_StatusCode.Active, ecer_certificate_statecode stateCode = ecer_certificate_statecode.Active, DateTime? expiryDate = null)
   {
     var certification = context.ecer_CertificateSet.FirstOrDefault(c => c.ecer_CertificateNumber == TestRunId + "cert");
 
@@ -371,8 +375,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       {
         Id = Guid.NewGuid(),
         ecer_CertificateNumber = TestRunId + "cert",
-        StatusCode = ecer_Certificate_StatusCode.Active,
-        ecer_GenerateCertificate = true
+        StatusCode = statusCode,
+        StateCode = stateCode,
+        ecer_ExpiryDate = expiryDate ?? DateTime.Today, // Default to today if expiryDate is null
+        ecer_GenerateCertificate = true,
       };
       context.AddObject(certification);
 
