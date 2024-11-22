@@ -496,6 +496,7 @@ export default defineComponent({
       this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
 
       await this.applicationStore.saveDraft();
+      await this.wizardStore.initializeWizard(this.applicationStore.applicationConfiguration, this.applicationStore.draftApplication);
       this.alertStore.setSuccessAlert("You have deleted your professional development.");
     },
     async handleSubmit() {
@@ -532,6 +533,7 @@ export default defineComponent({
         this.$emit("update:model-value", updatedModelValue);
 
         await this.applicationStore.saveDraft();
+        await this.wizardStore.initializeWizard(this.applicationStore.applicationConfiguration, this.applicationStore.draftApplication);
 
         this.resetFormData();
 
