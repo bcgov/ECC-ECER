@@ -66,7 +66,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   public string activeCertificationOneId => testActiveCertification.Id.ToString();
   public string activeCertificationTwoId => testActiveCertification2.Id.ToString();
-  public string inactiveCertificationId => testInactiveCertification.Id.ToString(); 
+  public string inactiveCertificationId => testInactiveCertification.Id.ToString();
 
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
   public Guid portalInvitationCharacterReferenceIdSubmit => testPortalInvitationCharacterReferenceSubmit.ecer_PortalInvitationId ?? Guid.Empty;
@@ -154,9 +154,8 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testCommunication4 = GetOrAddCommunication(context, inProgressTestApplication, "comm4", null);
     testActiveCertification = GetOrAddCertification(context, AuthenticatedBcscUser);
     testActiveCertification2 = GetOrAddCertification(context, AuthenticatedBcscUser);
-    testInactiveCertification = GetOrAddCertification(context, AuthenticatedBcscUser, statusCode: ecer_Certificate_StatusCode.Inactive, stateCode: ecer_certificate_statecode.Inactive, expiryDate: DateTime.MaxValue);
+    testInactiveCertification = GetOrAddCertification(context, AuthenticatedBcscUser);
 
-    
     previousName = GetOrAddPreviousName(context, AuthenticatedBcscUser);
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, AuthenticatedBcscUser, "name1");
     testPortalInvitationCharacterReferenceSubmit = GetOrAddPortalInvitation_CharacterReference(context, AuthenticatedBcscUser, "name2");
@@ -167,7 +166,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testPortalInvitation400HoursTypeWorkExperienceReferenceSubmit = GetOrAddPortalInvitation_400HoursTypeWorkExperienceReference(context, AuthenticatedBcscUser, "name7");
 
     context.SaveChanges();
-
+    MarkCertificateAsInactive(context, testInactiveCertification.Id);
     CompletePortalInvitation_WorkExperienceReference(context, "name6");
 
     //load dependent properties
@@ -365,35 +364,39 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     return communication;
   }
 
+  private void MarkCertificateAsInactive(EcerContext context, Guid certificateId)
+  {
+    var certificate = context.ecer_CertificateSet.SingleOrDefault(c => c.ecer_CertificateId == certificateId);
+    if (certificate != null)
+    {
+      certificate.StatusCode = ecer_Certificate_StatusCode.Inactive;
+      certificate.StateCode = ecer_certificate_statecode.Inactive;
+    }
+  }
+
   private ecer_Certificate GetOrAddCertification(EcerContext context, Contact registrant, ecer_Certificate_StatusCode statusCode = ecer_Certificate_StatusCode.Active, ecer_certificate_statecode stateCode = ecer_certificate_statecode.Active, DateTime? expiryDate = null)
   {
-    var certification = context.ecer_CertificateSet.FirstOrDefault(c => c.ecer_CertificateNumber == TestRunId + "cert");
-
-    if (certification == null)
+    var certification = new ecer_Certificate
     {
-      certification = new ecer_Certificate
-      {
-        Id = Guid.NewGuid(),
-        ecer_CertificateNumber = TestRunId + "cert",
-        StatusCode = statusCode,
-        StateCode = stateCode,
-        ecer_ExpiryDate = expiryDate ?? DateTime.Today, // Default to today if expiryDate is null
-        ecer_GenerateCertificate = true,
-      };
-      context.AddObject(certification);
+      Id = Guid.NewGuid(),
+      ecer_CertificateNumber = TestRunId + "cert",
+      StatusCode = statusCode,
+      StateCode = stateCode,
+      ecer_ExpiryDate = expiryDate ?? DateTime.Today, // Default to today if expiryDate is null
+      ecer_GenerateCertificate = true,
+    };
+    context.AddObject(certification);
 
-      var level = new ecer_CertifiedLevel
-      {
-        Id = Guid.NewGuid(),
-      };
-      context.AddObject(level);
+    var type = context.ecer_CertificateTypeSet.First();
+    var level = new ecer_CertifiedLevel()
+    {
+      Id = Guid.NewGuid(),
+    };
 
-      var type = context.ecer_CertificateTypeSet.First();
-
-      context.AddLink(certification, ecer_Certificate.Fields.ecer_certifiedlevel_CertificateId, level);
-      context.AddLink(level, ecer_CertifiedLevel.Fields.ecer_certifiedlevel_CertificateTypeId, type);
-      context.AddLink(certification, ecer_Certificate.Fields.ecer_certificate_Registrantid, registrant);
-    }
+    context.AddObject(level);
+    context.AddLink(certification, ecer_Certificate.Fields.ecer_certifiedlevel_CertificateId, level);
+    context.AddLink(level, ecer_CertifiedLevel.Fields.ecer_certifiedlevel_CertificateTypeId, type);
+    context.AddLink(certification, ecer_Certificate.Fields.ecer_certificate_Registrantid, registrant);
 
     return certification;
   }
