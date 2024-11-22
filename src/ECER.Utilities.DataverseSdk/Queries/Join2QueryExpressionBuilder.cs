@@ -54,7 +54,8 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
     {
       var keys = rootEntities.Select(e => e.Id).ToArray();
       var relatedEntitiesMap = new Dictionary<JoinData, EntityCollection>();
-
+      var allEntities = new List<Microsoft.Xrm.Sdk.Entity>();
+      allEntities.AddRange(rootEntities);
       foreach (var join in Joins)
       {
         var entities = join switch
@@ -63,13 +64,14 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
           rootEntities.Any(e => e.GetType() == j.EnityType) ?
           QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, keys) :
           QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName,
-          relatedEntitiesMap.SelectMany(entry => entry.Value.Entities).ToList().First(e => e.GetType() == j.EnityType)!.Id
+          allEntities.SingleOrDefault(e => e.GetType() == j.EnityType) != null ? allEntities.SingleOrDefault(e => e.GetType() == j.EnityType)!.Id : Guid.Empty
           ),
 
           ManyToOneJoinData j => QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, rootEntities.Select(e => e.GetAttributeValue<EntityReference>(j.KeyAttributeName)!.Id).Distinct().ToArray()),
           _ => throw new NotImplementedException()
         };
         relatedEntitiesMap.Add(join, entities);
+        allEntities.AddRange(entities.Entities);
       }
 
       foreach (var entity in rootEntities)
