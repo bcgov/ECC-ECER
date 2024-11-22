@@ -7,14 +7,15 @@
             <v-col>
               <h1>{{ inviteTypeTitle }}</h1>
               <div role="doc-subtitle">{{ `For applicant: ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</div>
-
-              <v-btn v-if="wizardStore.step !== 1" slim variant="text" rounded="lg" color="primary" @click="handleBack">
-                <v-icon size="x-large" icon="mdi-chevron-left" />
-                Back
-              </v-btn>
             </v-col>
           </v-row>
         </v-container>
+      </v-container>
+      <v-container>
+        <v-btn v-if="wizardStore.step !== 1" slim variant="text" rounded="lg" color="primary" @click="handleBack">
+          <v-icon size="x-large" icon="mdi-chevron-left" />
+          Back
+        </v-btn>
       </v-container>
     </template>
     <template #PrintPreview>
