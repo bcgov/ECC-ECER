@@ -283,6 +283,7 @@ export default defineComponent({
         const message = this.modelValue[clientId] ? "You have successfully edited your reference." : "You have successfully added your reference.";
 
         await this.applicationStore.saveDraft();
+        //we need to update wizardData with the latest information to avoid creating duplicate new entries
         await this.wizardStore.initializeWizard(this.applicationStore.applicationConfiguration, this.applicationStore.draftApplication);
 
         this.alertStore.setSuccessAlert(message);
@@ -328,6 +329,7 @@ export default defineComponent({
       }
 
       await this.applicationStore.saveDraft();
+      //we need to update wizardData with the latest information to avoid creating duplicate new entries
       await this.wizardStore.initializeWizard(this.applicationStore.applicationConfiguration, this.applicationStore.draftApplication);
 
       await this.alertStore.setSuccessAlert("You have deleted your reference.");
