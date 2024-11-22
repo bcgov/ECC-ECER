@@ -1,8 +1,7 @@
 <template>
   <v-row no-gutters>
     <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
-      <h2 v-if="!clientId">Reference {{ newClientId }} [Up to 6]</h2>
-      <h2 v-if="clientId">Edit {{ previousFullName }}</h2>
+      <h2>{{ `${id ? "Edit" : "Add"} work experience reference` }}</h2>
       <v-form ref="addWorkExperienceReferenceForm" validate-on="input" class="mt-6">
         <v-row>
           <v-col cols="12">
@@ -192,7 +191,6 @@ export default defineComponent({
     return {
       clientId: "",
       id: null as string | null,
-      previousFullName: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -308,7 +306,6 @@ export default defineComponent({
       // Set the form fields to component data
       this.id = referenceData.reference.id ?? null;
       this.clientId = referenceData.referenceId.toString();
-      this.previousFullName = `${referenceData.reference.firstName} ${referenceData.reference.lastName}`;
       this.firstName = referenceData.reference.firstName ?? "";
       this.lastName = referenceData.reference.lastName ?? "";
       this.email = referenceData.reference.emailAddress ?? "";
@@ -335,7 +332,6 @@ export default defineComponent({
     },
     resetFormData() {
       this.id = null;
-      this.previousFullName = "";
       this.firstName = "";
       this.lastName = "";
       this.email = "";
