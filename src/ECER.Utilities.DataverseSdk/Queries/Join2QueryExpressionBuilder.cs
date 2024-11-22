@@ -64,7 +64,7 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
           rootEntities.Any(e => e.GetType() == j.EnityType) ?
           QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, keys) :
           QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName,
-          allEntities.SingleOrDefault(e => e.GetType() == j.EnityType) != null ? allEntities.SingleOrDefault(e => e.GetType() == j.EnityType)!.Id : Guid.Empty
+          allEntities.FirstOrDefault(e => e.GetType() == j.EnityType) != null ? allEntities.FirstOrDefault(e => e.GetType() == j.EnityType)!.Id : Guid.Empty
           ),
 
           ManyToOneJoinData j => QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, rootEntities.Select(e => e.GetAttributeValue<EntityReference>(j.KeyAttributeName)!.Id).Distinct().ToArray()),
