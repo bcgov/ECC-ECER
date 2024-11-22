@@ -366,12 +366,15 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private void MarkCertificateAsInactive(EcerContext context, Guid certificateId)
   {
-    var certificate = context.ecer_CertificateSet.SingleOrDefault(c => c.ecer_CertificateId == certificateId);
+    var certificate = context.ecer_CertificateSet.FirstOrDefault(d => d.Id == certificateId); ;
+    context.Detach(certificate);
     if (certificate != null)
     {
       certificate.StatusCode = ecer_Certificate_StatusCode.Inactive;
       certificate.StateCode = ecer_certificate_statecode.Inactive;
     }
+    context.Attach(certificate);
+    context.UpdateObject(certificate);
   }
 
   private ecer_Certificate GetOrAddCertification(EcerContext context, Contact registrant, ecer_Certificate_StatusCode statusCode = ecer_Certificate_StatusCode.Active, ecer_certificate_statecode stateCode = ecer_certificate_statecode.Active, DateTime? expiryDate = null)
