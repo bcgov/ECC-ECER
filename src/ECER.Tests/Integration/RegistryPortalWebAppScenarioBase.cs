@@ -154,7 +154,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     testCommunication4 = GetOrAddCommunication(context, inProgressTestApplication, "comm4", null);
     testActiveCertification = GetOrAddCertification(context, AuthenticatedBcscUser);
     testActiveCertification2 = GetOrAddCertification(context, AuthenticatedBcscUser);
-    testInactiveCertification = GetOrAddCertification(context, AuthenticatedBcscUser);
+    testInactiveCertification = GetOrAddCertification(context, AuthenticatedBcscUser, expiryDate: DateTime.MaxValue);
 
     previousName = GetOrAddPreviousName(context, AuthenticatedBcscUser);
     testPortalInvitationOne = GetOrAddPortalInvitation_CharacterReference(context, AuthenticatedBcscUser, "name1");
@@ -377,14 +377,13 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     context.UpdateObject(certificate);
   }
 
-  private ecer_Certificate GetOrAddCertification(EcerContext context, Contact registrant, ecer_Certificate_StatusCode statusCode = ecer_Certificate_StatusCode.Active, ecer_certificate_statecode stateCode = ecer_certificate_statecode.Active, DateTime? expiryDate = null)
+  private ecer_Certificate GetOrAddCertification(EcerContext context, Contact registrant, DateTime? expiryDate = null)
   {
     var certification = new ecer_Certificate
     {
       Id = Guid.NewGuid(),
       ecer_CertificateNumber = TestRunId + "cert",
-      StatusCode = statusCode,
-      StateCode = stateCode,
+      StatusCode = ecer_Certificate_StatusCode.Active,
       ecer_ExpiryDate = expiryDate ?? DateTime.Today, // Default to today if expiryDate is null
       ecer_GenerateCertificate = true,
     };
