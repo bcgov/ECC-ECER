@@ -211,7 +211,7 @@ export default defineComponent({
     },
     async saveDraftAndAlertSuccess(exit: boolean) {
       const draftApplicationResponse = await this.applicationStore.saveDraft();
-      if (draftApplicationResponse?.applicationId) {
+      if (draftApplicationResponse?.application) {
         let message = "Information saved. If you save and exit, you can resume your application later.";
         if (exit) message = "Information saved. You can resume your application later.";
         this.alertStore.setSuccessAlert(message);

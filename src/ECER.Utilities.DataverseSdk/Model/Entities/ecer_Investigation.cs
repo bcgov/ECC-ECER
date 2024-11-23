@@ -225,9 +225,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Inactive = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		IntakeComplete = 621870014,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
 		IntakeinProgress = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -293,6 +290,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_application_parallelprocessinvestigationid_ecer_investigation = "ecer_application_parallelprocessinvestigationid_ecer_investigation";
 			public const string ecer_ApplicationInProgressIntake = "ecer_applicationinprogressintake";
 			public const string ecer_applicationinprogressintakeName = "ecer_applicationinprogressintakename";
+			public const string ecer_AssessmentandRecommendationsComplete = "ecer_assessmentandrecommendationscomplete";
+			public const string ecer_assessmentandrecommendationscompleteName = "ecer_assessmentandrecommendationscompletename";
 			public const string ecer_AssigntoInvestigator = "ecer_assigntoinvestigator";
 			public const string ecer_AssigntoInvestigatorName = "ecer_assigntoinvestigatorname";
 			public const string ecer_AssigntoInvestigatorYomiName = "ecer_assigntoinvestigatoryominame";
@@ -950,6 +949,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_applicationinprogressintake"))
 				{
 					return this.FormattedValues["ecer_applicationinprogressintake"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assessmentandrecommendationscomplete")]
+		public virtual ecer_YesNoNull? ecer_AssessmentandRecommendationsComplete
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_assessmentandrecommendationscomplete")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_assessmentandrecommendationscomplete", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assessmentandrecommendationscompletename")]
+		public string ecer_assessmentandrecommendationscompleteName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_assessmentandrecommendationscomplete"))
+				{
+					return this.FormattedValues["ecer_assessmentandrecommendationscomplete"];
 				}
 				else
 				{
