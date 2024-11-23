@@ -50,6 +50,7 @@
         <li>Can speak to your ability to educate and care for young children</li>
         <li>Has known you for at least 6 months</li>
         <li>Is not your relative, partner, spouse or yourself</li>
+        <li>Is not the same person as your work experience reference</li>
       </ul>
       <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
     </div>
