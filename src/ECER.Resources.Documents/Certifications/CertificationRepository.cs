@@ -49,7 +49,10 @@ internal class CertificationRepository : ICertificationRepository
       queryWithJoin = queryWithJoin.Where(r => r.cert.ecer_CertificateNumber.Equals(query.ByCertificateNumber));
 
     //Order by latest first (based on expiry date),
-    queryWithJoin = queryWithJoin.OrderByDescending(r => r.cert.ecer_ExpiryDate).ThenBy(r => r.cert.ecer_BaseCertificateTypeID);
+    queryWithJoin = queryWithJoin
+      .OrderBy(r => r.cert.StatusCode)
+      .ThenByDescending(r => r.cert.ecer_ExpiryDate)
+      .ThenBy(r => r.cert.ecer_BaseCertificateTypeID);
 
     //Apply Pagination
     if (query.PageSize > 0)

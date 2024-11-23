@@ -21,13 +21,21 @@ public class CertificationsRepositoryTests : RegistryPortalWebAppScenarioBase
   public async Task QueryCertifications_ById_Found()
   {
     // Arrange
-    var CertificationId = Fixture.certificationOneId;
+    var CertificationId = Fixture.activeCertificationOneId;
 
     // Act
     var Certifications = await repository.Query(new UserCertificationQuery { ById = CertificationId });
 
     // Assert
     Certifications.ShouldHaveSingleItem();
+  }
+
+  [Fact]
+  public async Task QueryCertifications_ByApplicantId_Found()
+  {
+    var Certifications = await repository.Query(new UserCertificationQuery { ByApplicantId = Fixture.AuthenticatedBcscUserId });
+    Certifications.ShouldHaveSingleItem();
+    Certifications.First().StatusCode.ShouldBe(CertificateStatusCode.Active);
   }
 
   [Fact]

@@ -55,7 +55,9 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.AddMoreCharacterReference, opts => opts.MapFrom(s => s.ecer_AddMoreCharacterReference))
        .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.MapFrom(s => s.ecer_AddMoreWorkExperienceReference))
        .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.MapFrom(s => s.ecer_AddMoreProfessionalDevelopment))
-       .ForMember(d => d.Origin, opts => opts.MapFrom(s => s.ecer_Origin));
+       .ForMember(d => d.Origin, opts => opts.MapFrom(s => s.ecer_Origin))
+       .ForMember(d => d.Stage, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.ecer_PortalStage) ? "ContactInformation": s.ecer_PortalStage));
+    
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
         .ConstructUsing((s, _) =>
