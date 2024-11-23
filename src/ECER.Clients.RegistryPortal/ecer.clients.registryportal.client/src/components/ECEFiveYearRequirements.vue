@@ -96,6 +96,7 @@
         <li>Has directly supervised or observed you working with children from birth to 5 years old</li>
         <li>Can speak to your knowledge, skills, and abilities (competencies) as an ECE</li>
         <li>Held valid Canadian ECE certification during the hours they supervised or observed you</li>
+        <li>Is not the same person as your character reference</li>
       </ul>
     </v-col>
   </v-row>
