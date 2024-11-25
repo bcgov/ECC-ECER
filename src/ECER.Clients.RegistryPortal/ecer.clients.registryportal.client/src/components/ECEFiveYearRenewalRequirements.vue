@@ -62,6 +62,7 @@
         <li>Has directly supervised or observed you working with children from birth to 5 years old</li>
         <li>Can speak to your knowledge, skills, and abilities (competencies) as an ECE</li>
         <li>Held valid Canadian ECE certification during the hours they supervised or observed you</li>
+        <li>The person cannot be your character reference.</li>
       </ul>
     </div>
     <div v-if="expired && expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
