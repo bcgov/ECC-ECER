@@ -3,7 +3,9 @@ using ECER.Utilities.Hosting;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Diagnostics;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
@@ -61,21 +63,28 @@ internal class Program
 
       builder.Services.Configure<JsonOptions>(opts => opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
       builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-
       builder.Services
+        .AddTransient<AuthenticationService>()
         .AddAuthentication()
         .AddJwtBearer("api", opts =>
         {
           opts.Events = new JwtBearerEvents
           {
+            OnAuthenticationFailed = ctx =>
+            {
+              logger.Information($"Authentication failed: {ctx.Exception}");
+              return Task.CompletedTask;
+            },
             OnTokenValidated = async ctx =>
             {
               await Task.CompletedTask;
-              if (ctx.Options.TokenValidationParameters.ValidAudiences.Any(item => item.Contains("ecer-api")))
+
+              var aud = ctx.Principal?.FindFirst("aud")?.Value;
+              if (aud!.Contains("ecer-api"))
               {
                 ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "ecer-api") }));
               }
-              else if (ctx.Options.TokenValidationParameters.ValidAudiences.Any(item => item.Contains("ecer-ew")))
+              if (aud!.Contains("ecer-ew"))
               {
                 ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "ecer-ew") }));
               }
