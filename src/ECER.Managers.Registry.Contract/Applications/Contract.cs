@@ -137,7 +137,7 @@ public enum CertificationType
   Sne
 }
 
-public enum OneYearRenewalexplanations
+public enum FiveYearRenewalExplanations
 {
   Ileftthechildcarefieldforpersonalreasons,
   Iwasunabletocompletetherequiredhoursofprofessionaldevelopment,
@@ -146,7 +146,7 @@ public enum OneYearRenewalexplanations
   Other,
 }
 
-public enum FiveYearRenewalExplanations
+public enum OneYearRenewalexplanations
 {
   IliveandworkinacommunitywithoutothercertifiedECEs,
   Iwasunabletofindemploymentinthechildcarefieldtocompletetherequirednumberofhours,
