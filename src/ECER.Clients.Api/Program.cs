@@ -1,9 +1,11 @@
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 
 namespace ECER.Clients.Api;
@@ -69,6 +71,15 @@ internal class Program
             OnTokenValidated = async ctx =>
             {
               await Task.CompletedTask;
+              if (ctx.Options.TokenValidationParameters.ValidAudiences.Any(item => item.Contains("ecer-api")))
+              {
+                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "ecer-api") }));
+              }
+              else if (ctx.Options.TokenValidationParameters.ValidAudiences.Any(item => item.Contains("ecer-ew")))
+              {
+                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "ecer-ew") }));
+              }
+              ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal!, ctx.HttpContext.RequestAborted);
             }
           };
           opts.Validate();
@@ -79,6 +90,13 @@ internal class Program
         {
           policy
             .AddAuthenticationSchemes("api")
+            .RequireClaim(ClaimTypes.Name, "ecer-api")
+            .RequireAuthenticatedUser();
+        }).AddPolicy("ew_user", policy =>
+        {
+          policy
+            .AddAuthenticationSchemes("api")
+            .RequireClaim(ClaimTypes.Name, "ecer-ew")
             .RequireAuthenticatedUser();
         });
 
