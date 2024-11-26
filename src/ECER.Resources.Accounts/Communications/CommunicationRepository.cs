@@ -176,7 +176,7 @@ internal class CommunicationRepository : ICommunicationRepository
           StatusCode = bcgov_DocumentUrl_StatusCode.Active,
           StateCode = bcgov_documenturl_statecode.Active,
           bcgov_OriginCode = bcgov_OriginCode.Web,
-          ecer_DocumentInternallyReviewed = ecer_YesNoNull.Yes
+          ecer_DocumentInternallyReviewed = ecer_YesNoNull.No
         };
 
         context.AddObject(documenturl);
