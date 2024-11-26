@@ -26,7 +26,7 @@ public class ApplicationRenewalValidationEngineTests
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
-      OneYearRenewalExplanationChoice = OneYearRenewalexplanations.Iwasunabletofindemploymentinthechildcarefieldinmycommunity,
+      OneYearRenewalExplanationChoice = OneYearRenewalexplanations.IliveandworkinacommunitywithoutothercertifiedECEs,
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
     };
 
