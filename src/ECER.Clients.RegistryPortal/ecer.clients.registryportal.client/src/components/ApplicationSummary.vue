@@ -80,6 +80,12 @@
         :key="index"
         :text="`Proof of previous name ${previousName.firstName} ${previousName.lastName}`"
         :go-to="() => router.push({ name: 'profile' })"
+      />
+      <ApplicationSummaryActionListItem
+        v-for="(previousName, index) in userStore.readyForVerificationPreviousNames"
+        :key="index"
+        :text="`Proof of previous name ${previousName.firstName} ${previousName.lastName}`"
+        :go-to="() => router.push({ name: 'profile' })"
         :active="false"
       />
       <ApplicationSummaryActionListItem
