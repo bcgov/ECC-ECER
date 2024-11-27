@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ECER.Managers.Admin.Contract.Certifications;
-using ECER.Managers.Admin.Contract.Files;
 using ECER.Utilities.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -23,7 +22,7 @@ public class CertificationEndpoints : IRegisterEndpoints
       return TypedResults.Ok(items);
     })
     .WithOpenApi("Returns certification summaries", string.Empty, "certification_get")
-    .RequireAuthorization()
+    .RequireAuthorization("ew_user")
     .WithParameterValidation();
 
     endpointRouteBuilder.MapGet("/api/certifications/file/download/{id}", async Task<Results<FileStreamHttpResult, BadRequest<string>, NotFound>> (
@@ -41,7 +40,7 @@ public class CertificationEndpoints : IRegisterEndpoints
        return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
      })
      .WithOpenApi("Downloads a certification summary file", string.Empty, "certificationFile_get")
-     .RequireAuthorization()
+     .RequireAuthorization("ew_user")
      .WithParameterValidation();
   }
 }
