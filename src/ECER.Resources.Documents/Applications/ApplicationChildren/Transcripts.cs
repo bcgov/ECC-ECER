@@ -17,13 +17,15 @@ internal sealed partial class ApplicationRepository
         context.DeleteObject(transcript);
       }
     }
-
+    
+    // Update Existing Transcripts
     foreach (var transcript in updatedEntities.Where(d => d.ecer_TranscriptId != null))
     {
       var oldTranscript = existingTranscripts.SingleOrDefault(t => t.ecer_TranscriptId == transcript.ecer_TranscriptId);
       if (oldTranscript != null)
       {
         context.Detach(oldTranscript);
+        transcript.StatusCode = oldTranscript.StatusCode;
       }
       context.Attach(transcript);
       context.UpdateObject(transcript);
@@ -32,6 +34,7 @@ internal sealed partial class ApplicationRepository
     foreach (var transcript in updatedEntities.Where(d => d.ecer_TranscriptId == null))
     {
       transcript.ecer_TranscriptId = Guid.NewGuid();
+      transcript.StatusCode = ecer_Transcript_StatusCode.Draft;
       context.AddObject(transcript);
       context.AddLink(application, ecer_Application.Fields.ecer_transcript_Applicationid, transcript);
     }

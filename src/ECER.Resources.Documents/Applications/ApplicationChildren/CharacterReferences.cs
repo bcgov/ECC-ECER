@@ -18,14 +18,17 @@ internal partial class ApplicationRepository
         context.DeleteObject(reference);
       }
     }
-
+    
+    // Update Existing Character References
     foreach (var reference in updatedEntities.Where(d => d.ecer_CharacterReferenceId != null))
     {
       var oldReference = existingCharacterReferences.SingleOrDefault(t => t.ecer_CharacterReferenceId == reference.ecer_CharacterReferenceId);
       if (oldReference != null)
       {
         context.Detach(oldReference);
+        reference.StatusCode = oldReference.StatusCode;
       }
+      
       context.Attach(reference);
       context.UpdateObject(reference);
     }
@@ -33,6 +36,7 @@ internal partial class ApplicationRepository
     foreach (var reference in updatedEntities.Where(d => d.ecer_CharacterReferenceId == null))
     {
       reference.ecer_CharacterReferenceId = Guid.NewGuid();
+      reference.StatusCode = ecer_CharacterReference_StatusCode.Draft;
       context.AddObject(reference);
       context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, reference);
     }
