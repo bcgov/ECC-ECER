@@ -49,7 +49,7 @@
       </ul>
     </div>
     <div v-if="expired && !expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
-      <p>You need to have completed 400 hours of work experience. And be able to provide references to attest to all the hours.</p>
+      <p>You need to have completed 400 hours of work experience and be able to provide references to verify the hours.</p>
       <p>Important information about calculating hours:</p>
       <ul class="ml-10">
         <li>Only include hours you worked once you began your early childhood education training program</li>
