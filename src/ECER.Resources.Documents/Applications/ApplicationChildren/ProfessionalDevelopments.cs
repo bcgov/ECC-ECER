@@ -22,15 +22,18 @@ internal sealed partial class ApplicationRepository
       }
     }
 
+    // Update Existing Professional Developments
     foreach (var professionalDevelopment in updatedEntities.Where(d => !string.IsNullOrEmpty(d.Id)))
     {
       var oldProfessionalDevelopment = existingProfessionalDevelopments.SingleOrDefault(t => t.Id.ToString() == professionalDevelopment.Id);
+      var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
+
       if (oldProfessionalDevelopment != null)
       {
         context.Detach(oldProfessionalDevelopment);
+        ecerProfessionalDevelopment.StatusCode = oldProfessionalDevelopment.StatusCode;
       }
 
-      var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
       context.Attach(ecerProfessionalDevelopment);
       context.UpdateObject(ecerProfessionalDevelopment);
       await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.NewFiles, professionalDevelopment.DeletedFiles, ct);
@@ -39,6 +42,7 @@ internal sealed partial class ApplicationRepository
     foreach (var professionalDevelopment in updatedEntities.Where(d => string.IsNullOrEmpty(d.Id)))
     {
       var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
+      ecerProfessionalDevelopment.StatusCode = ecer_ProfessionalDevelopment_StatusCode.Draft;
       var newId = Guid.NewGuid();
       ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId = newId;
       context.AddObject(ecerProfessionalDevelopment);

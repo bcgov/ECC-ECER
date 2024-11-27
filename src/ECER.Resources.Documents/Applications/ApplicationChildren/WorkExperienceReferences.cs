@@ -25,6 +25,7 @@ internal sealed partial class ApplicationRepository
       if (oldReference != null)
       {
         context.Detach(oldReference);
+        reference.StatusCode = oldReference.StatusCode;
       }
       context.Attach(reference);
       context.UpdateObject(reference);
@@ -33,6 +34,7 @@ internal sealed partial class ApplicationRepository
     foreach (var reference in updatedEntities.Where(d => d.ecer_WorkExperienceRefId == null))
     {
       reference.ecer_WorkExperienceRefId = Guid.NewGuid();
+      reference.StatusCode = ecer_WorkExperienceRef_StatusCode.Draft;
       context.AddObject(reference);
       context.AddLink(application, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer, reference);
     }
