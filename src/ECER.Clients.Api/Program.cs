@@ -64,17 +64,11 @@ internal class Program
       builder.Services.Configure<JsonOptions>(opts => opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
       builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
       builder.Services
-        .AddTransient<AuthenticationService>()
         .AddAuthentication()
         .AddJwtBearer("api", opts =>
         {
           opts.Events = new JwtBearerEvents
           {
-            OnAuthenticationFailed = ctx =>
-            {
-              logger.Information($"Authentication failed: {ctx.Exception}");
-              return Task.CompletedTask;
-            },
             OnTokenValidated = async ctx =>
             {
               await Task.CompletedTask;
@@ -88,7 +82,6 @@ internal class Program
               {
                 ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "ecer-ew") }));
               }
-              ctx.Principal = await ctx.HttpContext.RequestServices.GetRequiredService<AuthenticationService>().EnrichUserSecurityContext(ctx.Principal!, ctx.HttpContext.RequestAborted);
             }
           };
           opts.Validate();
