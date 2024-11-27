@@ -26,7 +26,6 @@
 import { defineComponent } from "vue";
 
 import { useWizardStore } from "@/store/wizard";
-import type { EceRenewalInformationProps } from "@/types/input";
 import { renewalInformationRadio } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
 
