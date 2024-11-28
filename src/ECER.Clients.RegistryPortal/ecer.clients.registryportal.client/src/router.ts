@@ -3,6 +3,10 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useApplicationStore } from "./store/application";
 import { useOidcStore } from "./store/oidc";
 import { useUserStore } from "./store/user";
+import { useCertificationStore } from "./store/certification";
+import { useFormStore } from "./store/form";
+import { useMessageStore } from "./store/message";
+import { useWizardStore } from "./store/wizard";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -231,7 +235,23 @@ const router = createRouter({
 router.beforeEach(async (to, _) => {
   const oidcStore = useOidcStore();
   const userStore = useUserStore();
+
   const user = await oidcStore.getUser();
+
+  if (!user) {
+    // Reset user store to clear any stale data
+    const applicationStore = useApplicationStore();
+    const certificationStore = useCertificationStore();
+    const formStore = useFormStore();
+    const messageStore = useMessageStore();
+    const wizardStore = useWizardStore();
+    userStore.$reset();
+    applicationStore.$reset();
+    certificationStore.$reset();
+    formStore.$reset();
+    messageStore.$reset();
+    wizardStore.$reset();
+  }
 
   // instead of having to check every route record with
   // to.matched.some(record => record.meta.requiresAuth)
