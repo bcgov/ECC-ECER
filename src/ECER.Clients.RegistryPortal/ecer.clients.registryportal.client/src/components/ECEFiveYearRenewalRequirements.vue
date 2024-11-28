@@ -50,13 +50,13 @@
     </div>
     <div v-if="expired && !expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
       <p>
-        You need to have completed 400 hours of work experience. And be able to provide references to attest to all the hours. If you worked at multiple
-        locations you can provide multiple references.
+        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
+        can provide multiple references.
       </p>
       <p>The hours must:</p>
       <ul class="ml-10">
         <li>Be related to the field of early childhood education</li>
-        <li>Have been completed withis the least 5 years</li>
+        <li>Have been completed within the last 5 years</li>
       </ul>
       <p>The reference must:</p>
       <ul class="ml-10">
