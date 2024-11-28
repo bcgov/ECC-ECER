@@ -166,10 +166,6 @@ export default defineComponent({
             this.alertStore.setFailureAlert("You must enter at least one option");
           }
         } else {
-          if (this.lookupCertificationStore.registrationNumber) {
-            this.lookupCertificationStore.registrationNumber = this.lookupCertificationStore.registrationNumber.padStart(6, "0");
-          }
-
           const { data } = await postLookupCertificate({
             firstName: this.lookupCertificationStore.firstName,
             lastName: this.lookupCertificationStore.lastName,
