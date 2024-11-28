@@ -115,6 +115,7 @@ internal partial class ApplicationRepository
     ecerCharacterReference.ecer_CharacterReferenceId = Guid.NewGuid();
     ecerCharacterReference.StatusCode = ecer_CharacterReference_StatusCode.ApplicationSubmitted;
     ecerCharacterReference.ecer_IsAdditional = true;
+    ecerCharacterReference.ecer_Origin = ecer_Origin.Portal;
     context.AddObject(ecerCharacterReference);
     context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, ecerCharacterReference);
     context.SaveChanges();
