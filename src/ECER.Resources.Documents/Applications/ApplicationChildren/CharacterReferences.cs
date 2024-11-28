@@ -18,7 +18,7 @@ internal partial class ApplicationRepository
         context.DeleteObject(reference);
       }
     }
-    
+
     // Update Existing Character References
     foreach (var reference in updatedEntities.Where(d => d.ecer_CharacterReferenceId != null))
     {
@@ -28,7 +28,7 @@ internal partial class ApplicationRepository
         context.Detach(oldReference);
         reference.StatusCode = oldReference.StatusCode;
       }
-      
+      reference.ecer_Origin = ecer_Origin.Portal;
       context.Attach(reference);
       context.UpdateObject(reference);
     }
@@ -37,6 +37,7 @@ internal partial class ApplicationRepository
     {
       reference.ecer_CharacterReferenceId = Guid.NewGuid();
       reference.StatusCode = ecer_CharacterReference_StatusCode.Draft;
+      reference.ecer_Origin = ecer_Origin.Portal;
       context.AddObject(reference);
       context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, reference);
     }

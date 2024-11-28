@@ -27,6 +27,7 @@ internal sealed partial class ApplicationRepository
         context.Detach(oldReference);
         reference.StatusCode = oldReference.StatusCode;
       }
+      reference.ecer_Origin = ecer_Origin.Portal;
       context.Attach(reference);
       context.UpdateObject(reference);
     }
@@ -35,6 +36,7 @@ internal sealed partial class ApplicationRepository
     {
       reference.ecer_WorkExperienceRefId = Guid.NewGuid();
       reference.StatusCode = ecer_WorkExperienceRef_StatusCode.Draft;
+      reference.ecer_Origin = ecer_Origin.Portal;
       context.AddObject(reference);
       context.AddLink(application, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer, reference);
     }
