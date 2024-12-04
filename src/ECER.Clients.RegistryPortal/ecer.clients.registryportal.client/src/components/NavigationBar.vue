@@ -2,9 +2,9 @@
   <v-app-bar height="80" elevation="0" border>
     <v-container>
       <v-row align="center">
-        <router-link to="/">
-          <img src="../assets/bc-gov-logo.png" width="155" class="logo" alt="B.C. Government Logo" />
-        </router-link>
+        <!-- <router-link to="/"> -->
+        <img src="../assets/bc-gov-logo.png" width="155" class="logo" alt="B.C. Government Logo" />
+        <!-- </router-link> -->
         <v-toolbar-title>My ECE Registry</v-toolbar-title>
         <template v-if="userStore.hasUserInfo">
           <v-menu v-if="$vuetify.display.smAndDown" offset-y bottom transition="slide-y-transition">
