@@ -85,6 +85,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_GoodCharacterAccepted = "ecer_goodcharacteraccepted";
 			public const string ecer_goodcharacteracceptedName = "ecer_goodcharacteracceptedname";
 			public const string ecer_legacyapplicationassessmentid = "ecer_legacyapplicationassessmentid";
+			public const string ecer_legacyassessmenttraininglocationid = "ecer_legacyassessmenttraininglocationid";
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_RecommendationLetterAccepted = "ecer_recommendationletteraccepted";
@@ -563,6 +564,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyapplicationassessmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyassessmenttraininglocationid")]
+		public System.Nullable<int> ecer_legacyassessmenttraininglocationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_legacyassessmenttraininglocationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyassessmenttraininglocationid", value);
 			}
 		}
 		
