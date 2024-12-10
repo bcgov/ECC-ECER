@@ -168,7 +168,7 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.OrganizationContactInformation, opts => opts.MapFrom(s => s.ecer_HostOrganizationContactInformation))
           .ForMember(d => d.OrganizationEmailAddress, opts => opts.MapFrom(s => s.ecer_OrganizationEmailAddress))
           .ForMember(d => d.InstructorName, opts => opts.MapFrom(s => s.ecer_InstructorName))
-          .ForMember(d => d.NumberOfHours, opts => opts.MapFrom(s => s.ecer_NumberofHours))
+          .ForMember(d => d.NumberOfHours, opts => opts.MapFrom(s => s.ecer_TotalAnticipatedHours))
           .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
           .ForMember(d => d.CourseorWorkshopLink, opts => opts.MapFrom(s => s.ecer_CourseorWorkshopLink))
           .ForMember(d => d.NewFiles, opts => opts.Ignore())
