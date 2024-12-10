@@ -20,10 +20,15 @@ public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfigur
     var saveFileResults = new ConcurrentBag<SaveFileResult>();
     await Parallel.ForEachAsync(request.Items, cancellationToken, async (file, ct) =>
     {
-      var tags = new Dictionary<string, string>(file.FileProperties.TagsList ?? Array.Empty<KeyValuePair<string, string>>())
+
+      var tags = new Dictionary<string, string>(file.FileProperties.TagsList ?? Array.Empty<KeyValuePair<string, string>>());
+
+      // Check if the classification property is not null or empty and the key doesn't already exist
+      if (!string.IsNullOrEmpty(file.FileProperties.Classification) && !tags.ContainsKey("classification"))
       {
-        { "classification", file.FileProperties.Classification }
-      };
+        tags.Add("classification", file.FileProperties.Classification);
+      }
+
       var scanResult = await fileScannerProvider.ScanAsync(file.Content, ct);
       if (scanResult.IsClean)
       {
