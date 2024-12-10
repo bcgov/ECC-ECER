@@ -156,7 +156,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.ecer_HostOrganizationContactInformation, opts => opts.MapFrom(s => s.OrganizationContactInformation))
        .ForMember(d => d.ecer_OrganizationEmailAddress, opts => opts.MapFrom(s => s.OrganizationEmailAddress))
        .ForMember(d => d.ecer_InstructorName, opts => opts.MapFrom(s => s.InstructorName))
-       .ForMember(d => d.ecer_NumberofHours, opts => opts.MapFrom(s => s.NumberOfHours))
+       .ForMember(d => d.ecer_TotalAnticipatedHours, opts => opts.MapFrom(s => s.NumberOfHours))
        .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
 
     CreateMap<ecer_ProfessionalDevelopment, ProfessionalDevelopment>(MemberList.Source)
