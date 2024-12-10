@@ -7,7 +7,7 @@ namespace ECER.Resources.Documents.Applications;
 
 internal sealed partial class ApplicationRepository
 {
-  private async Task UpdateProfessionalDevelopments(ecer_Application application, string ApplicantId, List<ProfessionalDevelopment> updatedEntities, CancellationToken ct)
+  private async Task UpdateProfessionalDevelopments(ecer_Application application, Contact contact, string ApplicantId, List<ProfessionalDevelopment> updatedEntities, CancellationToken ct)
   {
     await Task.CompletedTask;
 
@@ -47,6 +47,7 @@ internal sealed partial class ApplicationRepository
       ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId = newId;
       context.AddObject(ecerProfessionalDevelopment);
       context.AddLink(application, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, ecerProfessionalDevelopment);
+      context.AddLink(contact, Contact.Fields.ecer_ecer_professionaldevelopment_Applicantid_, ecerProfessionalDevelopment);
       await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.NewFiles, professionalDevelopment.DeletedFiles, ct);
     }
   }

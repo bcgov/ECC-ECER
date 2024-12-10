@@ -66,7 +66,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
     }, cancellationToken);
 
     var countries = await metadataResourceRepository.QueryCountries(new CountriesQuery() { ByCode = request.Profile.ResidentialAddress!.Country }, cancellationToken);
-    var countryName = countries.First().CountryName;
+    var countryName = countries.FirstOrDefault()?.CountryName ?? throw new InvalidOperationException($"Could not find country code {request.Profile.ResidentialAddress!.Country}");
     request.Profile.ResidentialAddress = request.Profile.ResidentialAddress with { Country = countryName };
     request.Profile.MailingAddress = request.Profile.ResidentialAddress;
     var registrant = mapper.Map<Resources.Accounts.Registrants.Registrant>(request);

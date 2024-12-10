@@ -210,11 +210,7 @@
         </v-row>
         <v-row v-if="showFileInput">
           <v-col>
-            <FileUploader
-              :allow-multiple-files="false"
-              :show-add-file-button="!professionalDevelopment.isFileUploadInProgress"
-              @update:files="handleFileUpdate"
-            />
+            <FileUploader :allow-multiple-files="false" :show-add-file-button="true" @update:files="handleFileUpdate" />
           </v-col>
         </v-row>
       </v-form>

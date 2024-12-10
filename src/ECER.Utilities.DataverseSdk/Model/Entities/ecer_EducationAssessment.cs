@@ -76,6 +76,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EducationAssessmentId = "ecer_educationassessmentid";
 			public const string Id = "ecer_educationassessmentid";
 			public const string ecer_legacyapplicationassessmentid = "ecer_legacyapplicationassessmentid";
+			public const string ecer_legacyassessmentraininglocationid = "ecer_legacyassessmentraininglocationid";
 			public const string ecer_legacyassmtrank = "ecer_legacyassmtrank";
 			public const string ecer_legacyeducationassessmentid = "ecer_legacyeducationassessmentid";
 			public const string ecer_legacyeducationlevel = "ecer_legacyeducationlevel";
@@ -460,6 +461,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyapplicationassessmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyassessmentraininglocationid")]
+		public System.Nullable<int> ecer_legacyassessmentraininglocationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_legacyassessmentraininglocationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyassessmentraininglocationid", value);
 			}
 		}
 		

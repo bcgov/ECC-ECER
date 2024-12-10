@@ -105,8 +105,6 @@ public class FilesEndpoints : IRegisterEndpoints
     .DisableAntiforgery();
 
     endpointRouteBuilder.MapPost("/api/files/{fileId}", async Task<Results<Ok<FileResponse>, BadRequest<ProblemDetails>, NotFound>> (string fileId,
-        [FromHeader(Name = "file-classification")][Required] string classification,
-        [FromHeader(Name = "file-tag")] string? tags,
         [FromForm(Name = "file")] IFormFile file, HttpContext httpContext, CancellationToken ct, IMediator messageBus, IMapper mapper, IOptions<UploaderSettings> uploaderOptions) =>
     {
       if (!Guid.TryParse(fileId, out _))
@@ -126,7 +124,7 @@ public class FilesEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails { Title = "Unsupported file type", Detail = $"Supported file types: {string.Join(", ", uploaderOptions.Value.AllowedFileTypes)}" });
       }
 
-      var fileProperties = new FileProperties() { Classification = classification, Tags = tags };
+      var fileProperties = new FileProperties();
       var sanitizedFilename = Encoding.ASCII.GetString(Encoding.ASCII.GetBytes(file.FileName));
 
       var files = httpContext.Request.Form.Files.Select(file => new FileData(new FileLocation(fileId, uploaderOptions.Value.TempFolderName ?? string.Empty), fileProperties, sanitizedFilename, file.ContentType, file.OpenReadStream())).ToList();

@@ -201,6 +201,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_HasProvided500HoursWorkExperience = "ecer_hasprovided500hoursworkexperience";
 			public const string ecer_hasprovided500hoursworkexperienceName = "ecer_hasprovided500hoursworkexperiencename";
 			public const string ecer_historicaldecision_ApplicationId = "ecer_historicaldecision_ApplicationId";
+			public const string ecer_IDVerifiedManualApplication = "ecer_idverifiedmanualapplication";
+			public const string ecer_idverifiedmanualapplicationName = "ecer_idverifiedmanualapplicationname";
 			public const string ecer_investigationparallelprocesscommunication = "ecer_investigationparallelprocesscommunication";
 			public const string ecer_IsCharacterReferenceProvided = "ecer_ischaracterreferenceprovided";
 			public const string ecer_ischaracterreferenceprovidedName = "ecer_ischaracterreferenceprovidedname";
@@ -1862,6 +1864,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_hasprovided500hoursworkexperience"))
 				{
 					return this.FormattedValues["ecer_hasprovided500hoursworkexperience"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_idverifiedmanualapplication")]
+		public System.Nullable<bool> ecer_IDVerifiedManualApplication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_idverifiedmanualapplication");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_idverifiedmanualapplication", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_idverifiedmanualapplicationname")]
+		public string ecer_idverifiedmanualapplicationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_idverifiedmanualapplication"))
+				{
+					return this.FormattedValues["ecer_idverifiedmanualapplication"];
 				}
 				else
 				{
