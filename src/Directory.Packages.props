@@ -12,7 +12,7 @@
     <PackageVersion Include="AWSSDK.S3" Version="3.7.410.3" />
     <PackageVersion Include="HtmlSanitizer" Version="8.1.870" />
     <PackageVersion Include="IdentityModel" Version="7.0.0" />
-    <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.4.0" />
+    <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.5.0" />
     <PackageVersion Include="MediatR" Version="12.4.1" />
     <PackageVersion Include="MediatR.Contracts" Version="2.0.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
