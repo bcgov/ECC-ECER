@@ -22,7 +22,7 @@ internal class CertificationRepositoryMapper : Profile
      .ForMember(d => d.IneligibleReference, opts => opts.MapFrom(s => s.ecer_IneligibleReference))
      .ForMember(d => d.Levels, opts => opts.MapFrom(s => s.ecer_certifiedlevel_CertificateId))
      .ForMember(d => d.Files, opts => opts.MapFrom(s => s.ecer_documenturl_CertificateId))
-     .ForMember(d => d.CertificateConditions, opts => opts.MapFrom(s => s.ecer_certificate_Registrantid.ecer_certificateconditions_Registrantid));
+     .ForMember(d => d.CertificateConditions, opts => opts.MapFrom(s => s.ecer_certificate_Registrantid.ecer_certificateconditions_Registrantid.Where(cc => cc.StatusCode == ecer_CertificateConditions_StatusCode.Active)));
 
     CreateMap<ecer_CertificateConditions, CertificateCondition>(MemberList.Destination)
     .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
