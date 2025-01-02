@@ -144,6 +144,11 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
 
   protected virtual EntityCollection QuerySubEntities(string entityName, string keyAttributeName, params Guid[] keys)
   {
+    if (keys == null || keys.Length == 0)
+    {
+      return new EntityCollection();
+    }
+
     var query = new QueryExpression(entityName)
     {
       Criteria = new FilterExpression(LogicalOperator.Or)
