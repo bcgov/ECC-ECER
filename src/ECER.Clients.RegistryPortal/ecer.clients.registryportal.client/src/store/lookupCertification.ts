@@ -42,7 +42,7 @@ export const useLookupCertificationStore = defineStore("lookupCertification", {
         return "ECE Five Year with Infant and Toddler Educator (ITE)";
       }
 
-      if (levels.some((level) => level.type === "ECE 5 YR") && levels.some((level) => level.type === "ITE")) {
+      if (levels.some((level) => level.type === "ECE 5 YR") && levels.some((level) => level.type === "SNE")) {
         return "ECE Five Year with Special Needs Educator (SNE)";
       }
 
