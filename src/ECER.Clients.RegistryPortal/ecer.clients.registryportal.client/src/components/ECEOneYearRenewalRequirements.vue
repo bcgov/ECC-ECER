@@ -2,7 +2,13 @@
   <v-col v-if="certificationStore.latestCertificateStatus == 'Active'" cols="12">
     <Alert title="Do you have 500 hours of supervised work experience?">
       You should
-      <a class="cursor-pointer text-decoration-underline" @click="applicationStore.draftApplication.certificationTypes = ['FiveYears']">
+      <a
+        class="cursor-pointer text-decoration-underline"
+        @click="
+          applicationStore.draftApplication.certificationTypes = ['FiveYears'];
+          applicationStore.draftApplication.applicationType = 'New';
+        "
+      >
         apply for ECE Five Year certification
       </a>
       if you have completed 500 hours of work experience.
@@ -33,7 +39,13 @@
       </p>
       <p>
         If you've completed 500 hours, you should apply for
-        <a class="cursor-pointer text-decoration-underline" @click="applicationStore.draftApplication.certificationTypes = ['FiveYears']">
+        <a
+          class="cursor-pointer text-decoration-underline"
+          @click="
+            applicationStore.draftApplication.certificationTypes = ['FiveYears'];
+            applicationStore.draftApplication.applicationType = 'New';
+          "
+        >
           ECE Five Year certification
         </a>
         instead.
