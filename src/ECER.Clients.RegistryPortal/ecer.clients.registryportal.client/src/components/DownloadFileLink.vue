@@ -30,7 +30,13 @@ export default defineComponent({
       try {
         const response = await this.getFileFunction();
         this.documentUrl = window.URL.createObjectURL(response.data);
-        window.open(this.documentUrl, "_blank");
+
+        const anchor = document.createElement("a");
+        anchor.href = this.documentUrl;
+        anchor.target = "_blank";
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
       } catch (e) {
         console.log(e);
       } finally {
