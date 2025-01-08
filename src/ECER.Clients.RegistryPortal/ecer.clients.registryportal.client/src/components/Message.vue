@@ -27,7 +27,7 @@
                 Attachments
               </p>
               <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
-                <DownloadFileLink :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
+                <DownloadFileLink :name="file.name" :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
                   <div>{{ `${file.name} (${file.size!.replace(/\s+/g, "")})` }}</div>
                 </DownloadFileLink>
               </div>
@@ -57,7 +57,7 @@
           Attachments
         </p>
         <div v-for="(file, fileIndex) in message.documents" :key="fileIndex" class="mt-3">
-          <DownloadFileLink :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
+          <DownloadFileLink :name="file.name" :get-file-function="() => getCommunicationFile(message.id || '', file.id || '')">
             <div>{{ `${file.name} (${file.size!.replace(/\s+/g, "")})` }}</div>
           </DownloadFileLink>
         </div>
