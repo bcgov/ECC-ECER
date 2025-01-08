@@ -100,7 +100,7 @@
       <v-col cols="12">
         <div>
           <v-btn rounded="lg" :loading="loadingStore.isLoading('userinfo_post')" color="primary" class="mr-2" @click="submit">Save and continue</v-btn>
-          <v-btn rounded="lg" variant="outlined" @click="logout">Cancel</v-btn>
+          <v-btn rounded="lg" :loading="loadingStore.isLoading('userinfo_post')" variant="outlined" @click="logout">Cancel</v-btn>
         </div>
       </v-col>
     </v-row>
