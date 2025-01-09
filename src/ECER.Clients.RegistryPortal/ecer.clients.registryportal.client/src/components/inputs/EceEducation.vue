@@ -26,7 +26,10 @@
 
         <v-row>
           <v-radio-group v-model="transcriptStatus" :rules="[Rules.required('Indicate the status of your transcript(s)')]" color="primary">
-            <v-radio label="I have requested the official transcript from my education institution" value="requested"></v-radio>
+            <v-radio
+              label="I have requested the official transcript to be sent to the ECE Registry from my educational institution"
+              value="requested"
+            ></v-radio>
             <v-radio
               label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
               value="received"
