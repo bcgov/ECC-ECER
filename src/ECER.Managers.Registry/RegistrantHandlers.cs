@@ -4,13 +4,14 @@ using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Certifications;
 using ECER.Resources.Documents.MetadataResources;
 using MediatR;
+using ILogger = Serilog.ILogger;
 
 namespace ECER.Managers.Registry;
 
 /// <summary>
 /// User Manager
 /// </summary>
-public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICertificationRepository certificationRepository, IMetadataResourceRepository metadataResourceRepository, IMapper mapper)
+public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICertificationRepository certificationRepository, IMetadataResourceRepository metadataResourceRepository, IMapper mapper, ILogger logger)
   : IRequestHandler<SearchRegistrantQuery, RegistrantQueryResults>,
     IRequestHandler<RegisterNewUserCommand, string>,
     IRequestHandler<UpdateRegistrantProfileCommand, string>
@@ -66,7 +67,13 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
     }, cancellationToken);
 
     var countries = await metadataResourceRepository.QueryCountries(new CountriesQuery() { ByCode = request.Profile.ResidentialAddress!.Country }, cancellationToken);
-    var countryName = countries.FirstOrDefault()?.CountryName ?? throw new InvalidOperationException($"Could not find country code {request.Profile.ResidentialAddress!.Country}");
+    var countryName = countries.FirstOrDefault()?.CountryName ?? string.Empty;
+
+    if (string.IsNullOrEmpty(countryName))
+    {
+      logger.Warning("Could not find country name for country {0}", request.Profile.ResidentialAddress!.Country);
+    }
+
     request.Profile.ResidentialAddress = request.Profile.ResidentialAddress with { Country = countryName };
     request.Profile.MailingAddress = request.Profile.ResidentialAddress;
     var registrant = mapper.Map<Resources.Accounts.Registrants.Registrant>(request);

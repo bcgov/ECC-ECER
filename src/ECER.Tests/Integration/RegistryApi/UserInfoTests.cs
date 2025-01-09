@@ -37,6 +37,39 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task PostUserInfo_NewBceidUser_WithInvalidCountryCode_ShouldReturnOkAndCountryNameNull()
+  {
+    var identity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bceidbasic");
+    var newUser = CreateNewUser();
+    var addressWithInvalidCountry = new Faker<Address>("en_CA")
+     .CustomInstantiator(f => new Address(
+    f.Address.StreetAddress(),
+    null,
+    f.Address.City(),
+    f.Address.ZipCode(),
+    f.Address.State(), "invalid country code"
+    ));
+    newUser.ResidentialAddress = addressWithInvalidCountry;
+
+    await Host.Scenario(_ =>
+    {
+      _.WithNewUser(identity);
+      _.Post.Json(CreateNewUser()).ToUrl("/api/userinfo");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithNewUser(identity);
+      _.Get.Url("/api/userinfo");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var userProfile = (await response.ReadAsJsonAsync<UserInfo>()).ShouldNotBeNull();
+    userProfile.ResidentialAddress!.Country.ShouldBe(null);
+  }
+
+  [Fact]
   public async Task GetUserInfo_ExistingBCSCUser_UserProfile()
   {
     var identity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
