@@ -99,8 +99,10 @@
       <!-- Buttons -->
       <v-col cols="12">
         <div>
-          <v-btn rounded="lg" :loading="loadingStore.isLoading('userinfo_post')" color="primary" class="mr-2" @click="submit">Save and continue</v-btn>
-          <v-btn rounded="lg" :loading="loadingStore.isLoading('userinfo_post')" variant="outlined" @click="logout">Cancel</v-btn>
+          <v-btn rounded="lg" :loading="loadingStore.isLoading('userinfo_post') || isRedirecting" color="primary" class="mr-2" @click="submit">
+            Save and continue
+          </v-btn>
+          <v-btn rounded="lg" :loading="loadingStore.isLoading('userinfo_post') || isRedirecting" variant="outlined" @click="logout">Cancel</v-btn>
         </div>
       </v-col>
     </v-row>
@@ -141,6 +143,7 @@ export default defineComponent({
 
   data: () => ({
     hasAgreed: false,
+    isRedirecting: false,
     eceRegistrationNumber: "",
     eceCertificateStatus: undefined as boolean | undefined,
     Rules,
@@ -151,6 +154,7 @@ export default defineComponent({
       let { valid } = await (this.$refs.form as VForm).validate();
 
       if (valid) {
+        this.isRedirecting = true;
         const registrationNumber = this.eceCertificateStatus ? this.eceRegistrationNumber : "";
         const userCreated: boolean = await postUserInfo({
           ...this.oidcUserInfo,
@@ -168,6 +172,8 @@ export default defineComponent({
           }
 
           this.router.push("/");
+        } else {
+          this.isRedirecting = false;
         }
       }
     },
