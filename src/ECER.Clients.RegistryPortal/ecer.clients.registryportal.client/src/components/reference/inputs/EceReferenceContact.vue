@@ -145,9 +145,10 @@
           <v-col cols="12" md="8" lg="6" xl="4">
             <EceDateInput
               v-if="modelValue.certificateProvinceId && !userSelectProvinceIdBC"
-              :model-value="modelValue.dateOfBirth"
+              v-model="modelValue.dateOfBirth"
               label="Your date of birth (Optional)"
               :max="today"
+              :rules="[]"
             ></EceDateInput>
           </v-col>
         </v-row>
