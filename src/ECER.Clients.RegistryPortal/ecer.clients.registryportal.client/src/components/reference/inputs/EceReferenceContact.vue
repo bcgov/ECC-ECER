@@ -147,7 +147,6 @@
               v-if="modelValue.certificateProvinceId && !userSelectProvinceIdBC"
               :model-value="modelValue.dateOfBirth"
               label="Your date of birth (Optional)"
-              type="date"
               :max="today"
             ></EceDateInput>
           </v-col>
