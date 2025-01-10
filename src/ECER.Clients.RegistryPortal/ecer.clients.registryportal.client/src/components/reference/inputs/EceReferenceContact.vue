@@ -149,7 +149,6 @@
               label="Your date of birth (Optional)"
               type="date"
               :max="today"
-              @update:model-value="updateField('dateOfBirth', $event)"
             ></EceDateInput>
           </v-col>
         </v-row>
