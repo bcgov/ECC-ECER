@@ -1,4 +1,4 @@
-@import "./_colors.scss";
+@use "_colors.scss";
 
 .v-text-field {
   &.v-input--readonly {

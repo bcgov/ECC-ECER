@@ -1,4 +1,4 @@
-@import "./_colors.scss";
+@use "_colors.scss";
 
 .message-list {
   .v-list-item {
@@ -9,7 +9,7 @@
     }
     .v-list-item-title {
       text-decoration: underline;
-      color: #{$links};
+      color: #{colors.$links};
     }
     .v-list-item-subtitle {
       opacity: 1;

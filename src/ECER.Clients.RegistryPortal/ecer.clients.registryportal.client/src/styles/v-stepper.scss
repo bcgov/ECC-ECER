@@ -1,21 +1,21 @@
-@import "./colors.scss";
+@use "colors.scss";
 // disabled step styling
 .v-stepper-item {
-  color: #{$grey-stepper};
+  color: #{colors.$grey-stepper};
   opacity: 1;
   .v-avatar {
-    background-color: #{$grey-stepper};
+    background-color: #{colors.$grey-stepper};
   }
 }
 
 .v-stepper-item--selected {
   font-weight: bold;
-  color: #{$primary};
+  color: #{colors.$primary};
 }
 
 .v-stepper-item--complete {
-  color: #{$links};
+  color: #{colors.$links};
   .v-stepper-item__avatar.v-avatar {
-    background: #{$links} !important;
+    background: #{colors.$links} !important;
   }
 }
