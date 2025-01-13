@@ -26,7 +26,7 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <p class="small">Health, safety and nutiriton</p>
+          <p class="small">Health, safety and nutrition</p>
         </v-col>
         <v-col cols="8">
           <p class="small font-weight-bold">{{ assessment.healthSafetyAndNutrition }}</p>
