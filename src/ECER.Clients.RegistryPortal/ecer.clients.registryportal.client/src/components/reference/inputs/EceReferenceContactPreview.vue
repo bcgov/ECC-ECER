@@ -67,7 +67,6 @@ import { defineComponent } from "vue";
 import ReferencePreviewCard from "@/components/reference/inputs/ReferencePreviewCard.vue";
 import { useConfigStore } from "@/store/config";
 import { useWizardStore } from "@/store/wizard";
-import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 

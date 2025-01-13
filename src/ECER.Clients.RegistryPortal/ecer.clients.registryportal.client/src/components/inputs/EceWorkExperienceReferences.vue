@@ -8,14 +8,14 @@
             <EceTextField
               v-model="lastName"
               :rules="[Rules.required('Enter your reference\'s last name')]"
-              label="Reference Last Name"
+              label="Reference last name"
               maxlength="100"
             ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12">
-            <EceTextField v-model="firstName" label="Reference First Name" maxlength="100"></EceTextField>
+            <EceTextField v-model="firstName" label="Reference first name" maxlength="100"></EceTextField>
           </v-col>
         </v-row>
         <v-row>
@@ -23,7 +23,7 @@
             <EceTextField
               v-model="email"
               :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
-              label="Reference Email"
+              label="Reference email"
               maxlength="200"
             ></EceTextField>
           </v-col>
@@ -33,7 +33,7 @@
             <EceTextField
               v-model="phoneNumber"
               :rules="[Rules.phoneNumber('Enter your reference\'s 10-digit phone number')]"
-              label="Reference Phone Number (Optional)"
+              label="Reference phone number (Optional)"
               maxlength="20"
               @keypress="isNumber($event)"
             ></EceTextField>
@@ -45,7 +45,7 @@
               v-model.number="hours"
               :rules="[Rules.required('Enter your work experience hours')]"
               type="number"
-              label="Work Experience Hours"
+              label="Work experience hours observed by reference"
               maxlength="8"
               @keypress="isNumber($event)"
             ></EceTextField>
