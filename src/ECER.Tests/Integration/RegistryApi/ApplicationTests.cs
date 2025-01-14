@@ -270,7 +270,8 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   private DraftApplication Create400HoursTypeRenewalDraftApplication()
   {
     var application = new Faker<DraftApplication>("en_CA")
-        .RuleFor(f => f.CertificationTypes, f => f.Make(f.Random.Number(2), () => f.PickRandom<CertificationType>()))
+        .RuleFor(f => f.CertificationTypes, f => [CertificationType.FiveYears])
+        .RuleFor(f => f.FiveYearRenewalExplanationChoice, f => FiveYearRenewalExplanations.Ileftthechildcarefieldforpersonalreasons)
         .RuleFor(f => f.SignedDate, f => f.Date.Recent())
         .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript()))
         .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference()))
@@ -569,7 +570,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     )
     {
       // Populate optional properties
-      Id = faker.Random.Guid().ToString(),
+      Id = null,
       CampusLocation = faker.Address.City(),
       StudentFirstName = faker.Name.FirstName(),
       StudentNumber = faker.Random.Number(10000000, 99999999).ToString(),
@@ -620,7 +621,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   private WorkExperienceReference Create400HoursTypeWorkExperienceReference()
   {
     return new WorkExperienceReference(
-        faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(10, 150)
+        faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", 400
     )
     {
       FirstName = faker.Name.FirstName(),
