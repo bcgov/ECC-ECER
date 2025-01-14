@@ -1,19 +1,19 @@
-@import "./_colors.scss";
+@use "_colors.scss";
 
 .v-alert {
   .v-alert-title {
     font-weight: bold;
   }
   &.info {
-    background-color: #{$alert-info};
+    background-color: #{colors.$alert-info};
   }
   &.warning {
-    background-color: #{$alert-warning};
+    background-color: #{colors.$alert-warning};
   }
   &.error {
-    background-color: #{$alert-error};
+    background-color: #{colors.$alert-error};
   }
   &.success {
-    background-color: #{$alert-success};
+    background-color: #{colors.$alert-success};
   }
 }

@@ -10,7 +10,7 @@ const workExperienceReferencesUpsertForm: Form = {
       id: "lastName",
       component: EceTextField,
       props: {
-        label: "Last Name",
+        label: "Last name",
         rules: [Rules.required("Enter your reference's last name")],
         maxLength: 100,
       },
@@ -24,7 +24,7 @@ const workExperienceReferencesUpsertForm: Form = {
       id: "firstName",
       component: EceTextField,
       props: {
-        label: "First Name",
+        label: "First name",
         maxLength: 100,
       },
       cols: {
@@ -51,7 +51,7 @@ const workExperienceReferencesUpsertForm: Form = {
       id: "phoneNumber",
       component: EceTextField,
       props: {
-        label: "Phone Number (optional)",
+        label: "Phone number (optional)",
         rules: [Rules.phoneNumber("Enter your reference's 10-digit phone number")],
         maxLength: 10,
       },
@@ -65,7 +65,7 @@ const workExperienceReferencesUpsertForm: Form = {
       id: "hours",
       component: EceTextField,
       props: {
-        label: "Work Experience Hours",
+        label: "Work experience hours observed by reference",
         rules: [Rules.required("Enter your work experience hours")],
         maxLength: 10,
         isNumeric: true,
