@@ -3,6 +3,7 @@ using Bogus;
 using ECER.Clients.RegistryPortal.Server.Users;
 using ECER.Utilities.Security;
 using Shouldly;
+using System;
 using System.Net;
 using Xunit.Abstractions;
 
@@ -142,13 +143,21 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
   {
     var userIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
     var newUser = CreateNewUser();
-    newUser.RegistrationNumber = "1234";
+    newUser.RegistrationNumber = "1234567";
     await Host.Scenario(_ =>
+   {
+     _.WithNewUser(userIdentity);
+     _.Post.Json(newUser).ToUrl("/api/userinfo");
+     _.StatusCodeShouldBeOk();
+   });
+    var response = await Host.Scenario(_ =>
     {
       _.WithNewUser(userIdentity);
-      _.Post.Json(newUser).ToUrl("/api/userinfo");
+      _.Get.Json(newUser).ToUrl("/api/userinfo");
       _.StatusCodeShouldBeOk();
     });
+
+    var registeredUser = (await response.ReadAsJsonAsync<UserInfo>()).ShouldNotBeNull();
 
     newUser = new UserInfo(
     newUser.LastName,
@@ -156,8 +165,8 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     "updatedemail@test.com",
     newUser.Phone
     )
-    { FirstName = newUser.FirstName, GivenName = newUser.FirstName };
-    newUser.RegistrationNumber = "1234";
+    { FirstName = newUser.FirstName, GivenName = newUser.FirstName, ResidentialAddress = new Address("1007 Glen Dr", "", "Coquitlam", "V3B0B4", "BC", "CA") };
+    newUser.RegistrationNumber = registeredUser.RegistrationNumber;
 
     var newUserIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
     await Host.Scenario(_ =>
@@ -167,14 +176,14 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var response = await Host.Scenario(_ =>
+    var updatedResponse = await Host.Scenario(_ =>
     {
       _.WithNewUser(userIdentity);
       _.Get.Url("/api/userinfo");
       _.StatusCodeShouldBeOk();
     });
 
-    var updatedUser = (await response.ReadAsJsonAsync<UserInfo>()).ShouldNotBeNull();
+    var updatedUser = (await updatedResponse.ReadAsJsonAsync<UserInfo>()).ShouldNotBeNull();
     updatedUser.Email.ShouldBe("updatedemail@test.com");
   }
 
@@ -190,17 +199,19 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     })).ReadAsJsonAsync<UserInfo>().ShouldNotBeNull();
 
-    var userProfile = existingUserProfile with { LastName = Fixture.TestRunId, GivenName = Fixture.TestRunId };
+    var userProfile = existingUserProfile with { LastName = Fixture.TestRunId, GivenName = Fixture.TestRunId, ResidentialAddress = new Address("1007 Glen Dr", "", "Coquitlam", "V3B0B4", "BC", "CA") };
+    var newUserIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
+
     await Host.Scenario(_ =>
     {
-      _.WithNewUser(userIdentity);
+      _.WithNewUser(newUserIdentity);
       _.Post.Json(userProfile).ToUrl("/api/userinfo");
       _.StatusCodeShouldBeOk();
     });
 
     var response = await Host.Scenario(_ =>
     {
-      _.WithNewUser(userIdentity);
+      _.WithNewUser(newUserIdentity);
       _.Get.Url("/api/userinfo");
       _.StatusCodeShouldBeOk();
     });
@@ -217,7 +228,7 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
         null,
         f.Address.City(),
         f.Address.ZipCode(),
-        f.Address.State(), f.Address.Country()
+        f.Address.State(), "CA"
         ));
 
     var userProfile = new Faker<UserInfo>("en_CA")
