@@ -62,7 +62,7 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     await Host.Scenario(_ =>
     {
       _.WithNewUser(identity);
-      _.Post.Json(CreateNewUser()).ToUrl("/api/userinfo");
+      _.Post.Json(newUser).ToUrl("/api/userinfo");
       _.StatusCodeShouldBeOk();
     });
 
