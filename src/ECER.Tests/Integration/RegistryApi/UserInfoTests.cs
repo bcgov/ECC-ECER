@@ -1,18 +1,25 @@
 ﻿using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Users;
+using ECER.Resources.Accounts.Registrants;
+using ECER.Resources.Documents.Applications;
 using ECER.Utilities.Security;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System;
 using System.Net;
 using Xunit.Abstractions;
+using Address = ECER.Clients.RegistryPortal.Server.Users.Address;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
 public class UserInfoTests : RegistryPortalWebAppScenarioBase
 {
+  private readonly IRegistrantRepository repository;
+
   public UserInfoTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
+    repository = Fixture.Services.GetRequiredService<IRegistrantRepository>();
   }
 
   [Fact]
@@ -143,21 +150,14 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
   {
     var userIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
     var newUser = CreateNewUser();
-    newUser.RegistrationNumber = "1234567";
     await Host.Scenario(_ =>
-   {
-     _.WithNewUser(userIdentity);
-     _.Post.Json(newUser).ToUrl("/api/userinfo");
-     _.StatusCodeShouldBeOk();
-   });
-    var response = await Host.Scenario(_ =>
     {
       _.WithNewUser(userIdentity);
-      _.Get.Json(newUser).ToUrl("/api/userinfo");
+      _.Post.Json(newUser).ToUrl("/api/userinfo");
       _.StatusCodeShouldBeOk();
     });
 
-    var registeredUser = (await response.ReadAsJsonAsync<UserInfo>()).ShouldNotBeNull();
+    var registrants = await repository.Query(new RegistrantQuery() { ByIdentity = userIdentity }, default);
 
     newUser = new UserInfo(
     newUser.LastName,
@@ -166,7 +166,7 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     newUser.Phone
     )
     { FirstName = newUser.FirstName, GivenName = newUser.FirstName, ResidentialAddress = new Address("1007 Glen Dr", "", "Coquitlam", "V3B0B4", "BC", "CA") };
-    newUser.RegistrationNumber = registeredUser.RegistrationNumber;
+    newUser.RegistrationNumber = registrants.FirstOrDefault()!.Profile.RegistrationNumber;
 
     var newUserIdentity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
     await Host.Scenario(_ =>
