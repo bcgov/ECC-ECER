@@ -15,16 +15,16 @@
     </v-row>
     <div class="d-flex flex-column ga-3 my-6">
       <p>
-        This is only needed when you’re applying for certification and a transcript or other document has a different name then your current legal name. For
+        This is only needed when you’re applying for certification and a transcript or other document has a different name than your current legal name. For
         example, if your transcript has a different name than the name in your account.
       </p>
       <p>There are 3 steps:</p>
       <ol class="ml-10">
         <li>Enter your previous name below</li>
-        <li>Provide government-issued ID</li>
-        <li>We’ll review your ID and add this name to your account</li>
+        <li>Provide proof of name change document(s)</li>
+        <li>We will review your proof of name change document and add this name to your account</li>
       </ol>
-      <p>Before you continue, make sure you have one of the accepted goverment-issued IDs:</p>
+      <p>Before you continue, make sure you have an accepted proof of name change document such as:</p>
       <ul class="ml-10">
         <li>Government-issued marriage certificate</li>
         <li>Divorce certificate or papers</li>

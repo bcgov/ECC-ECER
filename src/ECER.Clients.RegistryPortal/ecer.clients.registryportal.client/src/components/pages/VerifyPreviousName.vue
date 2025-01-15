@@ -15,25 +15,24 @@
     </v-row>
     <v-row class="mt-5">
       <v-col>
-        <ECEHeader title="Accepted ID" />
-        <p class="mt-3">The following ID is accepted for proof of previous name.</p>
+        <ECEHeader title="Accepted proof of name change documents" />
+        <p class="mt-3">The following are examples of accepted proof of name change documents:</p>
         <ul class="ml-10 mt-2">
           <li>Government-issued marriage certificate</li>
           <li>Divorce certificate or papers</li>
           <li>Government-issued change of name document</li>
         </ul>
-        <p class="mt-3">The ID must:</p>
+        <p class="mt-3">The proof of name change documents must:</p>
         <ul class="ml-10 mt-2">
           <li>Show both names above</li>
           <li>Be valid (not expired)</li>
-          <li>Be government-issued</li>
           <li>Be in English</li>
         </ul>
       </v-col>
     </v-row>
     <v-row class="mt-5">
       <v-col>
-        <ECEHeader title="Upload a photo of the ID" />
+        <ECEHeader title="Upload a photo of the proof of name change document" />
         <FileUploader class="mt-1" @update:files="handleFileUpdate" />
       </v-col>
     </v-row>
