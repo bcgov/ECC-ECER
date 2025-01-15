@@ -86,11 +86,6 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
     }
     else
     {
-      registrants = await registrantRepository.Query(new RegistrantQuery
-      {
-        ByRegistrationNumber = request.Profile.RegistrationNumber,
-      }, cancellationToken);
-
       var matchedRegistrant = registrants.FirstOrDefault();
 
       if (matchedRegistrant != null)
