@@ -66,15 +66,7 @@ internal class CertificationRepository : ICertificationRepository
       .Include(a => a.ecer_documenturl_CertificateId)
       .Include(a => a.ecer_certificate_Registrantid)
       .IncludeNested(a => a.ecer_certificateconditions_Registrantid)
-      .Execute().GroupBy(r => r.ecer_Registrantid.Id).Select(g => g
-      .OrderBy(r =>
-              r.StatusCode == ecer_Certificate_StatusCode.Active ? 1 :
-              r.StatusCode == ecer_Certificate_StatusCode.Cancelled ? 2 :
-              r.StatusCode == ecer_Certificate_StatusCode.Suspended ? 3 :
-              r.StatusCode == ecer_Certificate_StatusCode.Expired ? 4 :
-              5)
-      .ThenByDescending(r => r.ecer_ExpiryDate)
-      .ThenBy(r => r.ecer_BaseCertificateTypeID).FirstOrDefault()); // Group by unique identifier (assuming RegistrantId)
+      .Execute();
 
     return mapper.Map<IEnumerable<Certification>>(results)!.ToList();
   }

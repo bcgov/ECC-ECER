@@ -12,6 +12,16 @@ public record UserCertificationQuery : IRequest<CertificationsQueryResults>
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
 }
+public record UserCertificationQueryLookup : IRequest<CertificationsQueryResults>
+{
+  public string? ById { get; set; }
+  public string? ByApplicantId { get; set; }
+  public string? ByCertificateNumber { get; set; }
+  public string? ByFirstName { get; set; }
+  public string? ByLastName { get; set; }
+  public int PageNumber { get; set; }
+  public int PageSize { get; set; }
+}
 public record CertificationsQueryResults(IEnumerable<Certification> Items);
 
 public record Certification(string Id)

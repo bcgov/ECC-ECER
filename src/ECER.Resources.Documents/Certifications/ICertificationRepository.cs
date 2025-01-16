@@ -34,12 +34,14 @@ public record Certification(string Id)
 {
   public string? Name { get; set; }
   public string? Number { get; set; }
+  public string? RegistrantId { get; set; }
   public DateTime? ExpiryDate { get; set; }
   public DateTime? EffectiveDate { get; set; }
   public DateTime? Date { get; set; }
   public DateTime? PrintDate { get; set; }
   public bool? HasConditions { get; set; }
   public string? LevelName { get; set; }
+  public int? BaseCertificateTypeId { get; set; }
   public CertificateStatusCode? StatusCode { get; set; }
   public YesNoNull? IneligibleReference { get; set; }
   public IEnumerable<CertificationLevel> Levels { get; set; } = Array.Empty<CertificationLevel>();

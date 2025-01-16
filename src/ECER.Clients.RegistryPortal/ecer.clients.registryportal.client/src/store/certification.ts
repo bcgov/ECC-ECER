@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 
 import { getCertifications } from "@/api/certification";
 import type { Components } from "@/types/openapi";
+import { sortArrayDate } from "@/utils/functions";
 
 export interface CertificationState {
   certifications: Components.Schemas.Certification[] | null | undefined;
@@ -124,7 +125,7 @@ export const useCertificationStore = defineStore("certification", {
       const { data: certifications } = await getCertifications();
       if (certifications?.length && certifications.length > 0) {
         this.certifications = certifications;
-        this.latestCertification = certifications[0];
+        this.latestCertification = certifications.sort((a, b) => sortArrayDate(a, b, "expiryDate"))[0]; //the certificate with the latest expiry date should be the latest
       }
       return certifications;
     },
