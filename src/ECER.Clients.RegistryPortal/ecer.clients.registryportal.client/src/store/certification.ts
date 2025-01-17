@@ -1,9 +1,9 @@
 import { DateTime } from "luxon";
 import { defineStore } from "pinia";
+import { orderBy } from "lodash";
 
 import { getCertifications } from "@/api/certification";
 import type { Components } from "@/types/openapi";
-import { sortArrayDateDescending } from "@/utils/functions";
 
 export interface CertificationState {
   certifications: Components.Schemas.Certification[] | null | undefined;
@@ -125,9 +125,34 @@ export const useCertificationStore = defineStore("certification", {
       const { data: certifications } = await getCertifications();
       if (certifications?.length && certifications.length > 0) {
         this.certifications = certifications;
-        this.latestCertification = [...certifications].sort((a, b) => sortArrayDateDescending(a, b, "expiryDate"))[0]; //the certificate with the latest expiry date should be the latest
+        this.latestCertification = getLatestCertification(certifications); //the certificate with the latest expiry date should be the latest
       }
       return certifications;
     },
   },
 });
+
+const getLatestCertification = (certifications: Components.Schemas.Certification[]) => {
+  //sorts certifications by status code first and then expiry date. Returns first one in the list which should be the latest certificate
+  return orderBy(
+    certifications,
+    [
+      ({ statusCode }) => {
+        switch (statusCode) {
+          case "Active":
+            return 1;
+          case "Cancelled":
+            return 2;
+          case "Suspended":
+            return 3;
+          case "Expired":
+            return 4;
+          default:
+            return 5;
+        }
+      },
+      "expiryDate",
+    ],
+    ["asc", "desc"],
+  )[0];
+};

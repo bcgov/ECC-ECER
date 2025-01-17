@@ -1,5 +1,3 @@
-import { DateTime } from "luxon";
-
 export function areObjectsEqual(obj1: any, obj2: any): boolean {
   if (obj1 === obj2) {
     return true;
@@ -100,33 +98,6 @@ export function sortArray(a: any, b: any, key: string, exceptions: string[] = []
   }
 
   return 0;
-}
-
-/**
- * Sorts an array of objects based on a date property.
- *
- * @param {Record<string, any>} a - The first object to compare.
- * @param {Record<string, any>} b - The second object to compare.
- * @param {string} key - The key of the date property in the objects.
- * @returns {number} - Returns -1 if a[key] is before b[key], 1 if a[key] is after b[key], and 0 if they are equal.
- * @throws {Error} - Throws an error if the date values for a[key] or b[key] are invalid.
- */
-export function sortArrayDateDescending(a: any, b: any, key: string) {
-  if (DateTime.fromISO(a[key]).isValid && DateTime.fromISO(b[key].isValid)) {
-    const dateA = DateTime.fromISO(a[key]);
-    const dateB = DateTime.fromISO(b[key]);
-
-    if (dateA > dateB) {
-      return -1;
-    }
-
-    if (dateA < dateB) {
-      return 1;
-    }
-    return 0;
-  } else {
-    throw new Error(`invalid dates for sortArrayDate function please check ${a[key]} - ${b[key]} using key ${key}`);
-  }
 }
 
 /**

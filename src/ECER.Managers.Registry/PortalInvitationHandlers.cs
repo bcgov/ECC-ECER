@@ -44,7 +44,7 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
 
     var Certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id });
 
-    var latestCertification = Certifications.OrderByDescending(c => c.ExpiryDate).ThenBy(a => a.BaseCertificateTypeId).FirstOrDefault(); // Get the first certification with the latest expiry date
+    var latestCertification = Certifications.FirstOrDefault();
 
     var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
     var application = applications.SingleOrDefault();
