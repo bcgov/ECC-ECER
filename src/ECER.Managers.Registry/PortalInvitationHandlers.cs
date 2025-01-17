@@ -4,10 +4,9 @@ using ECER.Engines.Transformation.PortalInvitations;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Applications;
-using ECER.Resources.Documents.PortalInvitations;
 using ECER.Resources.Documents.Certifications;
+using ECER.Resources.Documents.PortalInvitations;
 using MediatR;
-using InviteType = ECER.Managers.Registry.Contract.PortalInvitations.InviteType;
 using PortalInvitationStatusCode = ECER.Managers.Registry.Contract.PortalInvitations.PortalInvitationStatusCode;
 
 namespace ECER.Managers.Registry;
@@ -45,7 +44,7 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
 
     var Certifications = await certificationRepository.Query(new UserCertificationQuery() { ByApplicantId = applicant.Id });
 
-    var latestCertification = Certifications.FirstOrDefault(); // Get the first certification with the latest expiry date
+    var latestCertification = Certifications.OrderBy(c => c.ExpiryDate).ThenBy(a => a.BaseCertificateTypeId).FirstOrDefault(); // Get the first certification with the latest expiry date
 
     var applications = await applicationRepository.Query(new ApplicationQuery() { ById = portalInvitation.ApplicationId }, cancellationToken);
     var application = applications.SingleOrDefault();

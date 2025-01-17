@@ -13,45 +13,16 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
 {
   public async Task<CertificationsQueryResults> Handle(Contract.Certifications.UserCertificationQuery request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(CertificationRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
-    ArgumentNullException.ThrowIfNull(request);
-
-    request.PageSize = (request.PageSize == 0) ? 100 : request.PageSize; // By Default get Max. 100 records.
-
-    var Certifications = await CertificationRepository.Query(new Resources.Documents.Certifications.UserCertificationQuery
-    {
-      ById = request.ById,
-      ByApplicantId = request.ByApplicantId,
-      ByCertificateNumber = request.ByCertificateNumber,
-      ByFirstName = request.ByFirstName,
-      ByLastName = request.ByLastName,
-      PageNumber = request.PageNumber,
-      PageSize = request.PageSize,
-    });
+    var Certifications = await GetCertificationsPaginated(request);
 
     return new CertificationsQueryResults(mapper.Map<IEnumerable<Contract.Certifications.Certification>>(Certifications)!);
   }
 
   public async Task<CertificationsQueryResults> Handle(UserCertificationQueryLookup request, CancellationToken cancellationToken)
   {
-    ArgumentNullException.ThrowIfNull(CertificationRepository);
-    ArgumentNullException.ThrowIfNull(mapper);
-    ArgumentNullException.ThrowIfNull(request);
+    var Certifications = await GetCertificationsPaginated(request);
 
-    request.PageSize = (request.PageSize == 0) ? 100 : request.PageSize; // By Default get Max. 100 records.
-
-    var Certifications = await CertificationRepository.Query(new Resources.Documents.Certifications.UserCertificationQuery
-    {
-      ById = request.ById,
-      ByApplicantId = request.ByApplicantId,
-      ByCertificateNumber = request.ByCertificateNumber,
-      ByFirstName = request.ByFirstName,
-      ByLastName = request.ByLastName,
-      PageNumber = request.PageNumber,
-      PageSize = request.PageSize,
-    });
-
+    //additional logic for query lookup which only wants 1 certification returned for each registrant
     var sortedCertifications = Certifications.GroupBy(c => c.RegistrantId).Select(g => g.OrderBy(c =>
     {
       switch (c.StatusCode)
@@ -76,5 +47,25 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
     .FirstOrDefault());
 
     return new CertificationsQueryResults(mapper.Map<IEnumerable<Contract.Certifications.Certification>>(sortedCertifications)!);
+  }
+
+  private async Task<IEnumerable<Resources.Documents.Certifications.Certification>> GetCertificationsPaginated(UserCertificationQueryBase request)
+  {
+    ArgumentNullException.ThrowIfNull(CertificationRepository);
+    ArgumentNullException.ThrowIfNull(mapper);
+    ArgumentNullException.ThrowIfNull(request);
+
+    request.PageSize = (request.PageSize == 0) ? 100 : request.PageSize; // By Default get Max. 100 records.
+
+    return await CertificationRepository.Query(new Resources.Documents.Certifications.UserCertificationQuery
+    {
+      ById = request.ById,
+      ByApplicantId = request.ByApplicantId,
+      ByCertificateNumber = request.ByCertificateNumber,
+      ByFirstName = request.ByFirstName,
+      ByLastName = request.ByLastName,
+      PageNumber = request.PageNumber,
+      PageSize = request.PageSize,
+    });
   }
 }
