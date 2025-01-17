@@ -125,7 +125,7 @@ export const useCertificationStore = defineStore("certification", {
       const { data: certifications } = await getCertifications();
       if (certifications?.length && certifications.length > 0) {
         this.certifications = certifications;
-        this.latestCertification = certifications.sort((a, b) => sortArrayDateDescending(a, b, "expiryDate"))[0]; //the certificate with the latest expiry date should be the latest
+        this.latestCertification = [...certifications].sort((a, b) => sortArrayDateDescending(a, b, "expiryDate"))[0]; //the certificate with the latest expiry date should be the latest
       }
       return certifications;
     },
