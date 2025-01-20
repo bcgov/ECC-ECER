@@ -17,6 +17,7 @@
     "@mdi/font": "^7.3.67",
     "@vueuse/core": "^12.4.0",
     "axios": "^1.7.9",
+    "lodash": "^4.17.21",
     "luxon": "^3.5.0",
     "oidc-client-ts": "3.1.0",
     "openapi-client-axios": "^7.4.0",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.4",
+    "@types/lodash": "^4.17.14",
     "@types/luxon": "^3.4.2",
     "@types/node": "^22.10.5",
     "@types/uuid": "^10.0.0",

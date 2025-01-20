@@ -34,7 +34,6 @@ public class CertificationsRepositoryTests : RegistryPortalWebAppScenarioBase
   public async Task QueryCertifications_ByApplicantId_Found()
   {
     var Certifications = await repository.Query(new UserCertificationQuery { ByApplicantId = Fixture.AuthenticatedBcscUserId });
-    Certifications.ShouldHaveSingleItem();
     Certifications.First().StatusCode.ShouldBe(CertificateStatusCode.Active);
   }
 

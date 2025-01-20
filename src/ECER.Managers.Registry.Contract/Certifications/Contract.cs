@@ -2,7 +2,7 @@
 
 namespace ECER.Managers.Registry.Contract.Certifications;
 
-public record UserCertificationQuery : IRequest<CertificationsQueryResults>
+public record UserCertificationQueryBase : IRequest<CertificationsQueryResults>
 {
   public string? ById { get; set; }
   public string? ByApplicantId { get; set; }
@@ -12,6 +12,11 @@ public record UserCertificationQuery : IRequest<CertificationsQueryResults>
   public int PageNumber { get; set; }
   public int PageSize { get; set; }
 }
+
+public record UserCertificationQuery : UserCertificationQueryBase;
+
+public record UserCertificationQueryLookup : UserCertificationQueryBase;
+
 public record CertificationsQueryResults(IEnumerable<Certification> Items);
 
 public record Certification(string Id)
