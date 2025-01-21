@@ -1,11 +1,8 @@
 using ECER.Infrastructure.Common;
 using ECER.Utilities.Hosting;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Diagnostics;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
@@ -29,6 +26,13 @@ internal class Program
 
     try
     {
+      if (builder.Environment.IsEnvironment("EFXDevelopment"))
+      {
+        foreach (var assembly in assemblies)
+        {
+          builder.Configuration.AddUserSecrets(assembly);
+        }
+      }
       builder.Services.AddMediatR(opts =>
       {
         opts.RegisterServicesFromAssemblies(assemblies);
