@@ -4,10 +4,9 @@ using ECER.Engines.Transformation.PortalInvitations;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Applications;
-using ECER.Resources.Documents.PortalInvitations;
 using ECER.Resources.Documents.Certifications;
+using ECER.Resources.Documents.PortalInvitations;
 using MediatR;
-using InviteType = ECER.Managers.Registry.Contract.PortalInvitations.InviteType;
 using PortalInvitationStatusCode = ECER.Managers.Registry.Contract.PortalInvitations.PortalInvitationStatusCode;
 
 namespace ECER.Managers.Registry;

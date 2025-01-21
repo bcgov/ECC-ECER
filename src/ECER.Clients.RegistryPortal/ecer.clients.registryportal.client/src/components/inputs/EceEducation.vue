@@ -26,7 +26,10 @@
 
         <v-row>
           <v-radio-group v-model="transcriptStatus" :rules="[Rules.required('Indicate the status of your transcript(s)')]" color="primary">
-            <v-radio label="I have requested the official transcript from my education institution" value="requested"></v-radio>
+            <v-radio
+              label="I have requested the official transcript to be sent to the ECE Registry from my educational institution"
+              value="requested"
+            ></v-radio>
             <v-radio
               label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
               value="received"
@@ -57,7 +60,7 @@
                 Rules.required('Enter the start date'),
                 Rules.futureDateNotAllowedRule(),
                 Rules.conditionalWrapper(
-                  isDraftApplicationAssistantRenewal,
+                  isDraftApplicationAssistant,
                   Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'Start date must be within the last 5 years'),
                 ),
               ]"
@@ -77,7 +80,7 @@
                 Rules.futureDateNotAllowedRule(),
                 Rules.dateBeforeRule(startYear || ''),
                 Rules.conditionalWrapper(
-                  isDraftApplicationAssistantRenewal,
+                  isDraftApplicationAssistant,
                   Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'End date must be within the last 5 years'),
                 ),
               ]"
@@ -353,6 +356,9 @@ export default defineComponent({
 
       radioOptions.push({ label: "Other name", value: "other" });
       return radioOptions;
+    },
+    isDraftApplicationAssistant(): boolean {
+      return this.applicationStore.isDraftCertificateTypeEceAssistant;
     },
     isDraftApplicationAssistantRenewal(): boolean {
       return this.applicationStore.isDraftApplicationRenewal && this.applicationStore.isDraftCertificateTypeEceAssistant;

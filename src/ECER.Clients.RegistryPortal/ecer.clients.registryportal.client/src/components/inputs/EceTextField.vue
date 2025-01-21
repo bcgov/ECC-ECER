@@ -2,6 +2,7 @@
   <label>
     {{ label }}
     <v-text-field
+      ref="textField"
       v-bind="$attrs"
       :aria-label="label"
       label=""
@@ -19,6 +20,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { isNumber } from "@/utils/formInput";
+import type { VTextField } from "vuetify/components";
+
+export type ECETextField = {
+  resetValidation(): void;
+};
 
 export default defineComponent({
   name: "EceTextField",
@@ -35,6 +41,9 @@ export default defineComponent({
   emits: ["input"],
   methods: {
     isNumber,
+    resetValidation() {
+      (this.$refs.textField as VTextField).resetValidation();
+    },
   },
 });
 </script>

@@ -12,7 +12,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/certifications/{id?}", async (string? id, HttpContext httpContext, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapGet("/api/certifications/{id?}", async (string? id, HttpContext httpContext, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       var userId = httpContext.User.GetUserContext()?.UserId;
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
@@ -22,7 +22,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
         ById = id,
         ByApplicantId = userId,
       };
-      var results = await messageBus.Send<CertificationsQueryResults>(query);
+      var results = await messageBus.Send<CertificationsQueryResults>(query, ct);
       return TypedResults.Ok(mapper.Map<IEnumerable<Certification>>(results.Items));
     })
      .WithOpenApi("Handles certification queries", string.Empty, "certification_get")
@@ -44,7 +44,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(problemDetails);
       }
 
-      var query = new UserCertificationQuery
+      var query = new UserCertificationQueryLookup
       {
         ByCertificateNumber = request.RegistrationNumber,
         ByFirstName = request.FirstName,

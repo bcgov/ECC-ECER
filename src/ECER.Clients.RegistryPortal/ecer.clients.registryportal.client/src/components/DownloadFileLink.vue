@@ -4,13 +4,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 
 export default defineComponent({
   name: "DownloadFileLink",
   props: {
     getFileFunction: {
       type: Function,
+      required: true,
+    },
+    name: {
+      type: String as PropType<string | null | undefined>,
       required: true,
     },
   },
@@ -30,12 +34,25 @@ export default defineComponent({
       try {
         const response = await this.getFileFunction();
         this.documentUrl = window.URL.createObjectURL(response.data);
-        window.open(this.documentUrl, "_blank");
+
+        const anchor = document.createElement("a");
+        anchor.href = this.documentUrl;
+        anchor.target = "_blank";
+        if (this.isSafari()) {
+          anchor.download = this.name || "default-filename";
+        }
+        document.body.appendChild(anchor);
+        anchor.click();
+        document.body.removeChild(anchor);
       } catch (e) {
         console.log(e);
       } finally {
         this.loading = false;
       }
+    },
+    isSafari() {
+      const ua = navigator.userAgent.toLowerCase();
+      return ua.includes("safari") && !ua.includes("chrome") && !ua.includes("android");
     },
   },
 });

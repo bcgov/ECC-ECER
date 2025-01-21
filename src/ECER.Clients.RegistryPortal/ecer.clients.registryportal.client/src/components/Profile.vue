@@ -9,7 +9,7 @@
     </v-row>
     <v-row>
       <v-col class="ml-1" cols="12">
-        <h1>Your Profile</h1>
+        <h1>Your profile</h1>
       </v-col>
     </v-row>
     <v-row>
@@ -25,7 +25,7 @@
         <Callout type="warning" :title="`Previous name: ${fullName(prev)}`">
           <div class="d-flex flex-column ga-3 mt-3">
             <p>You need to provide proof of name change to add this name to your account.</p>
-            <router-link :to="{ name: 'verify-previous-name', params: { previousNameId: prev.id } }">Add ID for proof of previous name</router-link>
+            <router-link :to="{ name: 'verify-previous-name', params: { previousNameId: prev.id } }">Add proof of name change document</router-link>
           </div>
         </Callout>
       </v-container>
@@ -34,7 +34,7 @@
       <v-container>
         <Callout type="warning" :title="`Previous name: ${fullName(prev)}`">
           <div class="d-flex flex-column ga-3 mt-3">
-            <p>We’ve received your ID. We’ll review it shortly and add this name to your account.</p>
+            <p>We have received your proof of name change document. We will review it shortly and add this name to your account.</p>
           </div>
         </Callout>
       </v-container>

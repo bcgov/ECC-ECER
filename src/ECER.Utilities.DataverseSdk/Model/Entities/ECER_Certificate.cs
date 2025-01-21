@@ -96,6 +96,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_generatecertificateName = "ecer_generatecertificatename";
 			public const string ecer_GenerateCoverLetter = "ecer_generatecoverletter";
 			public const string ecer_generatecoverletterName = "ecer_generatecoverlettername";
+			public const string ecer_HasCertificatePDF = "ecer_hascertificatepdf";
+			public const string ecer_hascertificatepdfName = "ecer_hascertificatepdfname";
 			public const string ecer_HasConditions = "ecer_hasconditions";
 			public const string ecer_hasconditionsName = "ecer_hasconditionsname";
 			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
@@ -520,6 +522,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_generatecoverletter"))
 				{
 					return this.FormattedValues["ecer_generatecoverletter"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertificatepdf")]
+		public virtual ecer_CertificatePDFGeneration? ecer_HasCertificatePDF
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_CertificatePDFGeneration?)(EntityOptionSetEnum.GetEnum(this, "ecer_hascertificatepdf")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hascertificatepdf", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertificatepdfname")]
+		public string ecer_hascertificatepdfName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hascertificatepdf"))
+				{
+					return this.FormattedValues["ecer_hascertificatepdf"];
 				}
 				else
 				{

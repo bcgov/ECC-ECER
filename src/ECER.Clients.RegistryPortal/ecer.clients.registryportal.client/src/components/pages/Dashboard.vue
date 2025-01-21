@@ -208,6 +208,7 @@ export default defineComponent({
 
     if (!user) {
       window.location.href = "/login";
+      return; //stops the rest of the component from loading. Prevents 401 calls for the methods below
     }
 
     [this.applications, this.certifications, this.userInfo, this.userProfile] = await Promise.all([

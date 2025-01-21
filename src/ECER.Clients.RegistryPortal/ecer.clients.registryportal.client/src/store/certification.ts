@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import { defineStore } from "pinia";
+import { orderBy } from "lodash";
 
 import { getCertifications } from "@/api/certification";
 import type { Components } from "@/types/openapi";
@@ -124,9 +125,66 @@ export const useCertificationStore = defineStore("certification", {
       const { data: certifications } = await getCertifications();
       if (certifications?.length && certifications.length > 0) {
         this.certifications = certifications;
-        this.latestCertification = certifications[0];
+        this.latestCertification = getLatestCertification(certifications); //the certificate with the latest expiry date should be the latest
       }
       return certifications;
     },
   },
 });
+
+const getLatestCertification = (certifications: Components.Schemas.Certification[]): Components.Schemas.Certification => {
+  //sorts certifications by status code first and then expiry date and then certificate type. Returns first one in the list which should be the latest certificate
+  return orderBy(
+    certifications,
+    [
+      ({ statusCode }) => {
+        switch (statusCode) {
+          case "Active":
+            return 1;
+          case "Cancelled":
+            return 2;
+          case "Suspended":
+            return 3;
+          case "Expired":
+            return 4;
+          default:
+            return 5;
+        }
+      },
+      "expiryDate",
+      ({ levels }) => {
+        //in case expiry date is the same, we will also rank it based on certificateType 5Y+SNE+ITE -> 5Y + SNE||ITE -> 5Y -> Assistant -> 1YR
+        if (
+          levels?.some((level) => level.type === "ECE 5 YR") &&
+          levels?.some((level) => level.type === "ITE") &&
+          levels?.some((level) => level.type === "SNE")
+        ) {
+          return 1;
+        }
+
+        if (
+          (levels?.some((level) => level.type === "ECE 5 YR") && levels?.some((level) => level.type === "ITE")) ||
+          (levels?.some((level) => level.type === "ECE 5 YR") && levels?.some((level) => level.type === "SNE"))
+        ) {
+          return 2;
+        }
+
+        if (levels?.some((level) => level.type === "ECE 5 YR")) {
+          return 3;
+        }
+
+        if (levels?.some((level) => level.type === "Assistant")) {
+          return 4;
+        }
+
+        if (levels?.some((level) => level.type === "ECE 1 YR")) {
+          return 5;
+        }
+
+        console.warn(`unmapped level type ${levels}`);
+        return 6;
+      },
+    ],
+    ["asc", "desc", "asc"],
+  )[0];
+};

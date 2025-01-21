@@ -26,7 +26,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Work experience hours</p>
+            <p class="small">Work experience hours observed by reference</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ experience.hours }}</p>

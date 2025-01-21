@@ -50,9 +50,9 @@ internal class CertificationRepository : ICertificationRepository
 
     //Order by latest first (based on expiry date),
     queryWithJoin = queryWithJoin
-      .OrderBy(r => r.cert.StatusCode)
-      .ThenByDescending(r => r.cert.ecer_ExpiryDate)
-      .ThenBy(r => r.cert.ecer_BaseCertificateTypeID);
+        .OrderBy(r => r.cert.StatusCode)
+        .ThenByDescending(r => r.cert.ecer_ExpiryDate)
+        .ThenBy(r => r.cert.ecer_BaseCertificateTypeID);
 
     //Apply Pagination
     if (query.PageSize > 0)
@@ -66,7 +66,7 @@ internal class CertificationRepository : ICertificationRepository
       .Include(a => a.ecer_documenturl_CertificateId)
       .Include(a => a.ecer_certificate_Registrantid)
       .IncludeNested(a => a.ecer_certificateconditions_Registrantid)
-      .Execute().GroupBy(r => r.ecer_Registrantid.Id).Select(g => g.FirstOrDefault()); // Group by unique identifier (assuming RegistrantId)
+      .Execute();
 
     return mapper.Map<IEnumerable<Certification>>(results)!.ToList();
   }

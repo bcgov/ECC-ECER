@@ -691,6 +691,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ecer_professionaldevelopment_Applicantid_ = "ecer_ecer_professionaldevelopment_Applicantid_";
 			public const string ecer_ecer_workexperienceref_ReferenceContactid = "ecer_ecer_workexperienceref_ReferenceContactid";
 			public const string ecer_educationassessment_ApplicantId = "ecer_educationassessment_ApplicantId";
+			public const string ecer_GenerateCertificate = "ecer_generatecertificate";
+			public const string ecer_generatecertificateName = "ecer_generatecertificatename";
 			public const string ecer_guardianreference_Applicantid = "ecer_guardianreference_Applicantid";
 			public const string ecer_HasCertificate = "ecer_hascertificate";
 			public const string ecer_HasCertificateCancelled = "ecer_hascertificatecancelled";
@@ -4151,6 +4153,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_dateweextracted", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecertificate")]
+		public System.Nullable<bool> ecer_GenerateCertificate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_generatecertificate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_generatecertificate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecertificatename")]
+		public string ecer_generatecertificateName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_generatecertificate"))
+				{
+					return this.FormattedValues["ecer_generatecertificate"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

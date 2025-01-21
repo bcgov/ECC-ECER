@@ -90,7 +90,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);
     }
-    await UpdateProfessionalDevelopments(ecerApplication, application.ApplicantId, application.ProfessionalDevelopments.ToList(), cancellationToken);
+    await UpdateProfessionalDevelopments(ecerApplication, applicant, application.ApplicantId, application.ProfessionalDevelopments.ToList(), cancellationToken);
     await UpdateWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     await UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     await UpdateTranscripts(ecerApplication, ecerTranscripts);

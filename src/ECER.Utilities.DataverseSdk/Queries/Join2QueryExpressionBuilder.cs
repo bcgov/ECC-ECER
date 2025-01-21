@@ -64,26 +64,29 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
           rootEntities.Any(e => e.GetType() == j.EnityType) ?
           QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, keys) :
           QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName,
-          allEntities.FirstOrDefault(e => e.GetType() == j.EnityType) != null ? allEntities.FirstOrDefault(e => e.GetType() == j.EnityType)!.Id : Guid.Empty
+          allEntities.Any(e => e.GetType() == j.EnityType) ? allEntities.Where(e => e.GetType() == j.EnityType).Select(i => i.Id).ToArray() : Array.Empty<Guid>()
           ),
 
           ManyToOneJoinData j => QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, rootEntities.Select(e => e.GetAttributeValue<EntityReference>(j.KeyAttributeName)!.Id).Distinct().ToArray()),
           _ => throw new NotImplementedException()
         };
+
         relatedEntitiesMap.Add(join, entities);
         allEntities.AddRange(entities.Entities);
       }
 
-      foreach (var entity in rootEntities)
+      foreach (var entity in allEntities) // Process all entities, not just rootEntities
       {
         foreach (var related in relatedEntitiesMap)
         {
           if (related.Key is OneToManyJoinData o2mj)
           {
+            // Identify the parent entity
             var parentEntity = FindParentEntity(entity, o2mj);
 
             if (parentEntity != null)
             {
+              // Get related entities that belong to the identified parent
               var relatedEntities = related.Value.Entities
                   .Where(e => e.GetAttributeValue<EntityReference>(o2mj.RelatedEntityForeignKeyAttributeName)!.Id == parentEntity.Id)
                   .ToArray();
@@ -93,9 +96,15 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
           }
           else if (related.Key is ManyToOneJoinData m2oj)
           {
+            // Handle Many-to-One relationships
+            if (entity.GetAttributeValue<EntityReference>(m2oj.KeyAttributeName) == null) continue;
             var key = entity.GetAttributeValue<EntityReference>(m2oj.KeyAttributeName)!.Id;
             var relatedEntity = related.Value.Entities.SingleOrDefault(e => e.GetAttributeValue<Guid>(m2oj.RelatedEntityForeignKeyAttributeName) == key);
-            if (relatedEntity != null) AddRelatedEntities(entity, m2oj.RelationshipSchemaName, relatedEntity);
+
+            if (relatedEntity != null)
+            {
+              AddRelatedEntities(entity, m2oj.RelationshipSchemaName, relatedEntity);
+            }
           }
           else
           {
@@ -110,36 +119,36 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
 
   private Entity? FindParentEntity(Entity baseEntity, OneToManyJoinData joinData)
   {
+    // Check if the baseEntity matches the target type
     if (baseEntity.GetType() == joinData.EnityType)
     {
       return baseEntity;
     }
 
+    // Iterate over all related entities
     foreach (var relatedEntities in baseEntity.RelatedEntities.Values)
     {
-      var parentEntity = relatedEntities.Entities
-          .FirstOrDefault(e => e.GetType() == joinData.EnityType);
-
-      if (parentEntity != null)
-      {
-        return parentEntity;
-      }
-
       foreach (var entity in relatedEntities.Entities)
       {
-        var nestedParent = FindParentEntity(entity, joinData);
-        if (nestedParent != null)
+        // Recursive call to find the parent in nested entities
+        var parentEntity = FindParentEntity(entity, joinData);
+        if (parentEntity != null)
         {
-          return nestedParent;
+          return parentEntity;
         }
       }
     }
 
-    return null;
+    return null; // Return null if no parent is found
   }
 
   protected virtual EntityCollection QuerySubEntities(string entityName, string keyAttributeName, params Guid[] keys)
   {
+    if (keys == null || keys.Length == 0)
+    {
+      return new EntityCollection();
+    }
+
     var query = new QueryExpression(entityName)
     {
       Criteria = new FilterExpression(LogicalOperator.Or)

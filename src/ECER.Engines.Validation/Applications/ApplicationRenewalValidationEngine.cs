@@ -1,6 +1,5 @@
 ﻿using ECER.Managers.Registry.Contract.Applications;
 using ECER.Resources.Documents.Certifications;
-using System.Runtime.CompilerServices;
 
 namespace ECER.Engines.Validation.Applications;
 
@@ -70,7 +69,7 @@ internal sealed partial class ApplicationRenewalValidationEngine : IApplicationV
   private async Task<DateTime> getLastCertificateExpiryDate(string applicantId)
   {
     var certificates = await _certificateRepository.Query(new UserCertificationQuery() { ByApplicantId = applicantId });
-    var lastCertificate = certificates.OrderByDescending(d => d.ExpiryDate).FirstOrDefault();
+    var lastCertificate = certificates.OrderByDescending(d => d.ExpiryDate).ThenBy(e => e.BaseCertificateTypeId).FirstOrDefault();
     if (lastCertificate == null || lastCertificate.ExpiryDate == null)
     {
       throw new InvalidOperationException("Certificate or datetime is null");
