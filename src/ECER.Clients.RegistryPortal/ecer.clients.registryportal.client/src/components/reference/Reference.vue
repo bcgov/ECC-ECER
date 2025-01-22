@@ -1,5 +1,6 @@
 <template>
-  <Wizard :ref="'wizard'" :wizard="wizardConfigSetup" :show-steps="false">
+  <Loading v-if="fetchingData" />
+  <Wizard v-else :ref="'wizard'" :wizard="wizardConfigSetup" :show-steps="false">
     <template #header>
       <v-container fluid class="bg-primary">
         <v-container>
@@ -7,14 +8,15 @@
             <v-col>
               <h1>{{ inviteTypeTitle }}</h1>
               <div role="doc-subtitle">{{ `For applicant: ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</div>
-
-              <v-btn v-if="wizardStore.step !== 1" slim variant="text" rounded="lg" color="primary" @click="handleBack">
-                <v-icon size="x-large" icon="mdi-chevron-left" />
-                Back
-              </v-btn>
             </v-col>
           </v-row>
         </v-container>
+      </v-container>
+      <v-container>
+        <v-btn v-if="wizardStore.step !== 1" slim variant="text" rounded="lg" color="primary" @click="handleBack">
+          <v-icon size="x-large" icon="mdi-chevron-left" />
+          Back
+        </v-btn>
       </v-container>
     </template>
     <template #PrintPreview>
@@ -75,18 +77,23 @@ import type { Wizard as WizardType } from "@/types/wizard";
 import { PortalInviteType, WorkExperienceType } from "@/utils/constant";
 
 import Wizard from "../Wizard.vue";
+import Loading from "../Loading.vue";
 
 export default defineComponent({
   name: "Reference",
-  components: { Wizard },
+  components: { Wizard, Loading },
   async setup() {
     const route = useRoute();
     const router = useRouter();
     const { data, error } = await getReference(route.params.token as string);
     let wizardConfigSetup: WizardType | undefined = undefined;
+    //this variable prevents errors initializing the wizard when portal invitation in invalid which prevents redirecting the user to the invalid-reference page
+    let fetchingData = true;
 
     if (error) {
       router.push("/invalid-reference");
+    } else {
+      fetchingData = false;
     }
 
     const wizardStore = useWizardStore();
@@ -116,6 +123,7 @@ export default defineComponent({
       wizardConfigSetup,
       router,
       route,
+      fetchingData,
     };
   },
   computed: {

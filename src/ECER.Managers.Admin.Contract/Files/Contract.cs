@@ -16,7 +16,7 @@ public record FileProperties
 
   public string Classification
   {
-    get => properties["classification"] ?? string.Empty;
+    get => properties.TryGetValue("classification", out var value) ? value : string.Empty;
     set => properties["classification"] = value ?? string.Empty;
   }
 

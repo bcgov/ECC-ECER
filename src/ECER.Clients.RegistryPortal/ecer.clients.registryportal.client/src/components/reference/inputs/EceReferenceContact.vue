@@ -145,11 +145,10 @@
           <v-col cols="12" md="8" lg="6" xl="4">
             <EceDateInput
               v-if="modelValue.certificateProvinceId && !userSelectProvinceIdBC"
-              :model-value="modelValue.dateOfBirth"
+              v-model="modelValue.dateOfBirth"
               label="Your date of birth (Optional)"
-              type="date"
               :max="today"
-              @input="updateField('dateOfBirth', $event)"
+              :rules="[]"
             ></EceDateInput>
           </v-col>
         </v-row>
@@ -161,9 +160,8 @@
 <script lang="ts">
 import { DateTime } from "luxon";
 import { defineComponent } from "vue";
-import type { VTextField } from "vuetify/components";
 
-import EceTextField from "@/components/inputs/EceTextField.vue";
+import EceTextField, { type ECETextField } from "@/components/inputs/EceTextField.vue";
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import { useConfigStore } from "@/store/config";
 import { useWizardStore } from "@/store/wizard";
@@ -230,7 +228,7 @@ export default defineComponent({
       return true;
     },
     certificateProvinceIdChanged(value: string) {
-      (this.$refs.certificateNumberRef as VTextField)?.resetValidation();
+      (this.$refs.certificateNumberRef as ECETextField)?.resetValidation();
       if (value === "BC") {
         this.$emit("update:model-value", {
           ...this.modelValue,

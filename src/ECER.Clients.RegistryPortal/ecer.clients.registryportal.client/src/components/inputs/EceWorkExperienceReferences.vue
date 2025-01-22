@@ -1,22 +1,21 @@
 <template>
   <v-row no-gutters>
     <v-col v-if="mode == 'add'" md="8" lg="6" xl="4">
-      <h2 v-if="!clientId">Reference {{ newClientId }} [Up to 6]</h2>
-      <h2 v-if="clientId">Edit {{ previousFullName }}</h2>
+      <h2>{{ `${id ? "Edit" : "Add"} work experience reference` }}</h2>
       <v-form ref="addWorkExperienceReferenceForm" validate-on="input" class="mt-6">
         <v-row>
           <v-col cols="12">
             <EceTextField
               v-model="lastName"
               :rules="[Rules.required('Enter your reference\'s last name')]"
-              label="Reference Last Name"
+              label="Reference last name"
               maxlength="100"
             ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12">
-            <EceTextField v-model="firstName" label="Reference First Name" maxlength="100"></EceTextField>
+            <EceTextField v-model="firstName" label="Reference first name" maxlength="100"></EceTextField>
           </v-col>
         </v-row>
         <v-row>
@@ -24,7 +23,7 @@
             <EceTextField
               v-model="email"
               :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
-              label="Reference Email"
+              label="Reference email"
               maxlength="200"
             ></EceTextField>
           </v-col>
@@ -34,7 +33,7 @@
             <EceTextField
               v-model="phoneNumber"
               :rules="[Rules.phoneNumber('Enter your reference\'s 10-digit phone number')]"
-              label="Reference Phone Number (Optional)"
+              label="Reference phone number (Optional)"
               maxlength="20"
               @keypress="isNumber($event)"
             ></EceTextField>
@@ -46,7 +45,7 @@
               v-model.number="hours"
               :rules="[Rules.required('Enter your work experience hours')]"
               type="number"
-              label="Work Experience Hours"
+              label="Work experience hours observed by reference"
               maxlength="8"
               @keypress="isNumber($event)"
             ></EceTextField>
@@ -192,7 +191,6 @@ export default defineComponent({
     return {
       clientId: "",
       id: null as string | null,
-      previousFullName: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -285,6 +283,8 @@ export default defineComponent({
         const message = this.modelValue[clientId] ? "You have successfully edited your reference." : "You have successfully added your reference.";
 
         await this.applicationStore.saveDraft();
+        //we need to update wizardData with the latest information to avoid creating duplicate new entries
+        await this.wizardStore.initializeWizard(this.applicationStore.applicationConfiguration, this.applicationStore.draftApplication);
 
         this.alertStore.setSuccessAlert(message);
 
@@ -308,7 +308,6 @@ export default defineComponent({
       // Set the form fields to component data
       this.id = referenceData.reference.id ?? null;
       this.clientId = referenceData.referenceId.toString();
-      this.previousFullName = `${referenceData.reference.firstName} ${referenceData.reference.lastName}`;
       this.firstName = referenceData.reference.firstName ?? "";
       this.lastName = referenceData.reference.lastName ?? "";
       this.email = referenceData.reference.emailAddress ?? "";
@@ -330,12 +329,13 @@ export default defineComponent({
       }
 
       await this.applicationStore.saveDraft();
+      //we need to update wizardData with the latest information to avoid creating duplicate new entries
+      await this.wizardStore.initializeWizard(this.applicationStore.applicationConfiguration, this.applicationStore.draftApplication);
 
       await this.alertStore.setSuccessAlert("You have deleted your reference.");
     },
     resetFormData() {
       this.id = null;
-      this.previousFullName = "";
       this.firstName = "";
       this.lastName = "";
       this.email = "";

@@ -223,7 +223,7 @@ export const useApplicationStore = defineStore("application", {
 
       const { data: applications } = await getApplications();
 
-      const filteredApplications = applications?.filter((application) => application.status !== "Decision");
+      const filteredApplications = applications?.filter((application) => application.status !== "Decision" && application.status !== "Complete");
       // Load the first application as the current draft application
       if (filteredApplications?.length && filteredApplications.length > 0) {
         this.applications = applications;
@@ -323,7 +323,7 @@ export const useApplicationStore = defineStore("application", {
     async upsertDraftApplication(): Promise<Components.Schemas.DraftApplicationResponse | null | undefined> {
       const { data: draftApplicationResponse } = await createOrUpdateDraftApplication(this.draftApplication);
       if (draftApplicationResponse !== null && draftApplicationResponse !== undefined) {
-        this.draftApplication.id = draftApplicationResponse.applicationId;
+        this.draftApplication = draftApplicationResponse.application!;
       }
       return draftApplicationResponse;
     },

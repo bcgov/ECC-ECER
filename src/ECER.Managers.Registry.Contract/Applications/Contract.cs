@@ -5,7 +5,7 @@ namespace ECER.Managers.Registry.Contract.Applications;
 /// <summary>
 /// Invokes draft application saving use case
 /// </summary>
-public record SaveDraftApplicationCommand(Application Application) : IRequest<string>;
+public record SaveDraftApplicationCommand(Application Application) : IRequest<Contract.Applications.Application?>;
 
 /// <summary>
 /// Invokes draft application saving use case
@@ -137,7 +137,7 @@ public enum CertificationType
   Sne
 }
 
-public enum OneYearRenewalexplanations
+public enum FiveYearRenewalExplanations
 {
   Ileftthechildcarefieldforpersonalreasons,
   Iwasunabletocompletetherequiredhoursofprofessionaldevelopment,
@@ -146,7 +146,7 @@ public enum OneYearRenewalexplanations
   Other,
 }
 
-public enum FiveYearRenewalExplanations
+public enum OneYearRenewalexplanations
 {
   IliveandworkinacommunitywithoutothercertifiedECEs,
   Iwasunabletofindemploymentinthechildcarefieldtocompletetherequirednumberofhours,

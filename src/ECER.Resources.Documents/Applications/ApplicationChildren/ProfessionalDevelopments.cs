@@ -7,7 +7,7 @@ namespace ECER.Resources.Documents.Applications;
 
 internal sealed partial class ApplicationRepository
 {
-  private async Task UpdateProfessionalDevelopments(ecer_Application application, string ApplicantId, List<ProfessionalDevelopment> updatedEntities, CancellationToken ct)
+  private async Task UpdateProfessionalDevelopments(ecer_Application application, Contact contact, string ApplicantId, List<ProfessionalDevelopment> updatedEntities, CancellationToken ct)
   {
     await Task.CompletedTask;
 
@@ -22,15 +22,18 @@ internal sealed partial class ApplicationRepository
       }
     }
 
+    // Update Existing Professional Developments
     foreach (var professionalDevelopment in updatedEntities.Where(d => !string.IsNullOrEmpty(d.Id)))
     {
       var oldProfessionalDevelopment = existingProfessionalDevelopments.SingleOrDefault(t => t.Id.ToString() == professionalDevelopment.Id);
+      var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
+
       if (oldProfessionalDevelopment != null)
       {
         context.Detach(oldProfessionalDevelopment);
+        ecerProfessionalDevelopment.StatusCode = oldProfessionalDevelopment.StatusCode;
       }
 
-      var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
       context.Attach(ecerProfessionalDevelopment);
       context.UpdateObject(ecerProfessionalDevelopment);
       await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.NewFiles, professionalDevelopment.DeletedFiles, ct);
@@ -39,10 +42,12 @@ internal sealed partial class ApplicationRepository
     foreach (var professionalDevelopment in updatedEntities.Where(d => string.IsNullOrEmpty(d.Id)))
     {
       var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
+      ecerProfessionalDevelopment.StatusCode = ecer_ProfessionalDevelopment_StatusCode.Draft;
       var newId = Guid.NewGuid();
       ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId = newId;
       context.AddObject(ecerProfessionalDevelopment);
       context.AddLink(application, ecer_Application.Fields.ecer_ecer_professionaldevelopment_Applicationi, ecerProfessionalDevelopment);
+      context.AddLink(contact, Contact.Fields.ecer_ecer_professionaldevelopment_Applicantid_, ecerProfessionalDevelopment);
       await HandleProfessionalDevelopmentFiles(ecerProfessionalDevelopment, Guid.Parse(ApplicantId), professionalDevelopment.NewFiles, professionalDevelopment.DeletedFiles, ct);
     }
   }
@@ -148,8 +153,6 @@ internal sealed partial class ApplicationRepository
       context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_ProfessionalDevelopmentId, professionalDevelopment);
     }
   }
-
-
 
   private static string GetBucketName(IConfiguration configuration) =>
   configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");

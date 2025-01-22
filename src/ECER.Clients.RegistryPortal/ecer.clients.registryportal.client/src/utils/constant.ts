@@ -105,7 +105,7 @@ export const lengthOfAcquaintanceDropdown: DropdownWrapper<Components.Schemas.Re
   { title: "5 or more years", value: "Morethan5years" },
 ];
 
-export const renewalInformationRadio: RadioButtonWrapper<Components.Schemas.OneYearRenewalexplanations>[] = [
+export const fiveYearRenewalInformationRadio: RadioButtonWrapper<Components.Schemas.FiveYearRenewalExplanations>[] = [
   { label: "I left the childcare field for personal reasons", value: "Ileftthechildcarefieldforpersonalreasons" },
   { label: "I was unable to complete the required hours of professional development", value: "Iwasunabletocompletetherequiredhoursofprofessionaldevelopment" },
   { label: "I was unable to find employment in the childcare field in my community", value: "Iwasunabletofindemploymentinthechildcarefieldinmycommunity" },
@@ -116,7 +116,7 @@ export const renewalInformationRadio: RadioButtonWrapper<Components.Schemas.OneY
   { label: "Other", value: "Other" },
 ];
 
-export const fiveYearRenewalInformationRadio: RadioButtonWrapper<Components.Schemas.FiveYearRenewalExplanations>[] = [
+export const renewalInformationRadio: RadioButtonWrapper<Components.Schemas.OneYearRenewalexplanations>[] = [
   { label: "I live and work in a community without other certified ECEs", value: "IliveandworkinacommunitywithoutothercertifiedECEs" },
   {
     label: "I was unable to find employment in the childcare field to complete the required number of hours",

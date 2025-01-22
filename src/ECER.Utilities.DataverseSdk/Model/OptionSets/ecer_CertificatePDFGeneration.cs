@@ -14,23 +14,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_fiveyrrenewalexplanations
+	public enum ecer_CertificatePDFGeneration
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Ileftthechildcarefieldforpersonalreasons = 621870000,
+		No = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Iwasunabletocompletetherequiredhoursofprofessionaldevelopment = 621870001,
+		Requested = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Iwasunabletofindemploymentinthechildcarefieldinmycommunity = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Other = 621870004,
+		Yes = 621870001,
 	}
 }
 #pragma warning restore CS1591

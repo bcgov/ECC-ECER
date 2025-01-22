@@ -18,16 +18,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Ileftthechildcarefieldforpersonalreasons = 621870000,
+		IliveandworkinacommunitywithoutothercertifiedECEs = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Iwasunabletocompletetherequiredhoursofprofessionaldevelopment = 621870003,
+		Iwasunabletofindemploymentinthechildcarefieldtocompletetherequirednumberofhours = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Iwasunabletofindemploymentinthechildcarefieldinmycommunity = 621870001,
+		Iwasunabletoworkduetothestatusofmyvisaorwasunabletoenterthecountryasexpected = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc = 621870002,
+		Iwasunabletoworkinthechildcarefieldforpersonalreasons = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Other = 621870004,

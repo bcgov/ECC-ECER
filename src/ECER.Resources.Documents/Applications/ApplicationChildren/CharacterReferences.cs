@@ -19,13 +19,16 @@ internal partial class ApplicationRepository
       }
     }
 
+    // Update Existing Character References
     foreach (var reference in updatedEntities.Where(d => d.ecer_CharacterReferenceId != null))
     {
       var oldReference = existingCharacterReferences.SingleOrDefault(t => t.ecer_CharacterReferenceId == reference.ecer_CharacterReferenceId);
       if (oldReference != null)
       {
         context.Detach(oldReference);
+        reference.StatusCode = oldReference.StatusCode;
       }
+      reference.ecer_Origin = ecer_Origin.Portal;
       context.Attach(reference);
       context.UpdateObject(reference);
     }
@@ -33,6 +36,8 @@ internal partial class ApplicationRepository
     foreach (var reference in updatedEntities.Where(d => d.ecer_CharacterReferenceId == null))
     {
       reference.ecer_CharacterReferenceId = Guid.NewGuid();
+      reference.StatusCode = ecer_CharacterReference_StatusCode.Draft;
+      reference.ecer_Origin = ecer_Origin.Portal;
       context.AddObject(reference);
       context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, reference);
     }
@@ -110,6 +115,7 @@ internal partial class ApplicationRepository
     ecerCharacterReference.ecer_CharacterReferenceId = Guid.NewGuid();
     ecerCharacterReference.StatusCode = ecer_CharacterReference_StatusCode.ApplicationSubmitted;
     ecerCharacterReference.ecer_IsAdditional = true;
+    ecerCharacterReference.ecer_Origin = ecer_Origin.Portal;
     context.AddObject(ecerCharacterReference);
     context.AddLink(application, ecer_Application.Fields.ecer_characterreference_Applicationid, ecerCharacterReference);
     context.SaveChanges();

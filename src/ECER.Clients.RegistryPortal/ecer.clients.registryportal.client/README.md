@@ -59,3 +59,11 @@ npm run lint
    docker build -t clamav:latest .
 3. Run ClamAV container:
    docker run --name clamav -p 3310:3310 -d clamav:latest
+
+### swapping between Development and EFXDevelopment environments
+
+1. In Visual Studio launchSettings.json (in both ECER.Clients.Api and ECER.Clients.RegistryPortal.Server) change the variable ASPNETCORE_ENVIRONMENT from
+
+```
+ASPNETCORE_ENVIRONMENT: "Development" to "EFXDevelopment"
+```

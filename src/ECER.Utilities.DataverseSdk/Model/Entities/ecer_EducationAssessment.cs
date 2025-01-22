@@ -75,7 +75,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_educationassessment_RequirementAreaId = "ecer_educationassessment_RequirementAreaId";
 			public const string ecer_EducationAssessmentId = "ecer_educationassessmentid";
 			public const string Id = "ecer_educationassessmentid";
+			public const string ecer_legacyapplicationassessmentid = "ecer_legacyapplicationassessmentid";
+			public const string ecer_legacyassessmentraininglocationid = "ecer_legacyassessmentraininglocationid";
+			public const string ecer_legacyassmtrank = "ecer_legacyassmtrank";
 			public const string ecer_legacyeducationassessmentid = "ecer_legacyeducationassessmentid";
+			public const string ecer_legacyeducationlevel = "ecer_legacyeducationlevel";
+			public const string ecer_legacyrequirementarea = "ecer_legacyrequirementarea";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_Notes = "ecer_notes";
 			public const string ecer_RequirementAreaId = "ecer_requirementareaid";
@@ -444,6 +449,51 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyapplicationassessmentid")]
+		public System.Nullable<int> ecer_legacyapplicationassessmentid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_legacyapplicationassessmentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyapplicationassessmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyassessmentraininglocationid")]
+		public System.Nullable<int> ecer_legacyassessmentraininglocationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_legacyassessmentraininglocationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyassessmentraininglocationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyassmtrank")]
+		public System.Nullable<int> ecer_legacyassmtrank
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_legacyassmtrank");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyassmtrank", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyeducationassessmentid")]
 		public string ecer_legacyeducationassessmentid
 		{
@@ -456,6 +506,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyeducationassessmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyeducationlevel")]
+		public string ecer_legacyeducationlevel
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyeducationlevel");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyeducationlevel", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyrequirementarea")]
+		public string ecer_legacyrequirementarea
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyrequirementarea");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyrequirementarea", value);
 			}
 		}
 		

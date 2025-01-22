@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 
 namespace ECER.Clients.Api;
@@ -25,6 +26,13 @@ internal class Program
 
     try
     {
+      if (builder.Environment.IsEnvironment("EFXDevelopment"))
+      {
+        foreach (var assembly in assemblies)
+        {
+          builder.Configuration.AddUserSecrets(assembly);
+        }
+      }
       builder.Services.AddMediatR(opts =>
       {
         opts.RegisterServicesFromAssemblies(assemblies);
@@ -59,7 +67,6 @@ internal class Program
 
       builder.Services.Configure<JsonOptions>(opts => opts.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
       builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-
       builder.Services
         .AddAuthentication()
         .AddJwtBearer("api", opts =>
@@ -69,6 +76,16 @@ internal class Program
             OnTokenValidated = async ctx =>
             {
               await Task.CompletedTask;
+
+              var aud = ctx.Principal?.FindFirst("aud")?.Value;
+              if (aud!.Contains("ecer-api"))
+              {
+                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "ecer-api") }));
+              }
+              if (aud!.Contains("ecer-ew"))
+              {
+                ctx.Principal!.AddIdentity(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "ecer-ew") }));
+              }
             }
           };
           opts.Validate();
@@ -79,6 +96,13 @@ internal class Program
         {
           policy
             .AddAuthenticationSchemes("api")
+            .RequireClaim(ClaimTypes.Name, "ecer-api")
+            .RequireAuthenticatedUser();
+        }).AddPolicy("ew_user", policy =>
+        {
+          policy
+            .AddAuthenticationSchemes("api")
+            .RequireClaim(ClaimTypes.Name, "ecer-ew")
             .RequireAuthenticatedUser();
         });
 

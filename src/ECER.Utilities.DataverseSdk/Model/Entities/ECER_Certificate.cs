@@ -96,13 +96,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_generatecertificateName = "ecer_generatecertificatename";
 			public const string ecer_GenerateCoverLetter = "ecer_generatecoverletter";
 			public const string ecer_generatecoverletterName = "ecer_generatecoverlettername";
+			public const string ecer_HasCertificatePDF = "ecer_hascertificatepdf";
+			public const string ecer_hascertificatepdfName = "ecer_hascertificatepdfname";
 			public const string ecer_HasConditions = "ecer_hasconditions";
 			public const string ecer_hasconditionsName = "ecer_hasconditionsname";
 			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
 			public const string ecer_ineligiblereferenceName = "ecer_ineligiblereferencename";
+			public const string ecer_legacyapplicationid = "ecer_legacyapplicationid";
+			public const string ecer_legacyapplicationidtext = "ecer_legacyapplicationidtext";
 			public const string ecer_legacycertificateid = "ecer_legacycertificateid";
 			public const string ecer_legacyenteredby = "ecer_legacyenteredby";
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
+			public const string ecer_legacyexpirydate = "ecer_legacyexpirydate";
 			public const string ecer_legacystatusid = "ecer_legacystatusid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PrintedDate = "ecer_printeddate";
@@ -525,6 +530,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertificatepdf")]
+		public virtual ecer_CertificatePDFGeneration? ecer_HasCertificatePDF
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_CertificatePDFGeneration?)(EntityOptionSetEnum.GetEnum(this, "ecer_hascertificatepdf")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hascertificatepdf", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertificatepdfname")]
+		public string ecer_hascertificatepdfName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hascertificatepdf"))
+				{
+					return this.FormattedValues["ecer_hascertificatepdf"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasconditions")]
 		public System.Nullable<bool> ecer_HasConditions
 		{
@@ -592,6 +629,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyapplicationid")]
+		public System.Nullable<int> ecer_legacyapplicationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_legacyapplicationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyapplicationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyapplicationidtext")]
+		public string ecer_legacyapplicationidtext
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyapplicationidtext");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyapplicationidtext", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacycertificateid")]
 		public string ecer_legacycertificateid
 		{
@@ -634,6 +701,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyentrydate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyexpirydate")]
+		public System.Nullable<System.DateTime> ecer_legacyexpirydate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyexpirydate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyexpirydate", value);
 			}
 		}
 		

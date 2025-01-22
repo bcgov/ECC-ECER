@@ -42,12 +42,16 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     if (query.ById != null) applications = applications.Where(r => r.ecer_ApplicationId == Guid.Parse(query.ById));
     if (query.ByApplicantId != null) applications = applications.Where(r => r.ecer_Applicantid.Id == Guid.Parse(query.ByApplicantId));
 
+    // Order by CreatedOn descending
+    applications = applications.OrderByDescending(a => a.CreatedOn);
+
     var results = context.From(applications)
       .Join()
       .Include(a => a.ecer_transcript_Applicationid)
       .Include(a => a.ecer_workexperienceref_Applicationid_ecer)
       .Include(a => a.ecer_characterreference_Applicationid)
       .Include(a => a.ecer_ecer_professionaldevelopment_Applicationi)
+      .IncludeNested(a => a.ecer_bcgov_documenturl_ProfessionalDevelopmentId)
       .Execute();
 
     return mapper.Map<IEnumerable<Application>>(results)!.ToList();
@@ -86,7 +90,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       context.Attach(ecerApplication);
       context.UpdateObject(ecerApplication);
     }
-    await UpdateProfessionalDevelopments(ecerApplication, application.ApplicantId, application.ProfessionalDevelopments.ToList(), cancellationToken);
+    await UpdateProfessionalDevelopments(ecerApplication, applicant, application.ApplicantId, application.ProfessionalDevelopments.ToList(), cancellationToken);
     await UpdateWorkExperienceReferences(ecerApplication, ecerWorkExperienceReferences);
     await UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     await UpdateTranscripts(ecerApplication, ecerTranscripts);

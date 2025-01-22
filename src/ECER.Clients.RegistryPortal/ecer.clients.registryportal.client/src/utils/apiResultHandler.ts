@@ -39,7 +39,8 @@ class ApiResultHandler {
       const status = error.response.status;
       if (status === 400) {
         // Extract error message from server's response
-        const errorMessage = error.response.data.message || error.response.data.detail || "Bad request. Please check your input.";
+        const errorMessage =
+          error.response.data.message || error.response.data.detail || error.response.data.errors?.join(", ") || "Bad request. Please check your input.";
         this.showErrorMessage(errorMessage, suppressErrorToast);
       } else if (status === 404) {
         // Handle 404 Not Found

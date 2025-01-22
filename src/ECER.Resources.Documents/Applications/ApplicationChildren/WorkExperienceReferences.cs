@@ -25,7 +25,9 @@ internal sealed partial class ApplicationRepository
       if (oldReference != null)
       {
         context.Detach(oldReference);
+        reference.StatusCode = oldReference.StatusCode;
       }
+      reference.ecer_Origin = ecer_Origin.Portal;
       context.Attach(reference);
       context.UpdateObject(reference);
     }
@@ -33,6 +35,8 @@ internal sealed partial class ApplicationRepository
     foreach (var reference in updatedEntities.Where(d => d.ecer_WorkExperienceRefId == null))
     {
       reference.ecer_WorkExperienceRefId = Guid.NewGuid();
+      reference.StatusCode = ecer_WorkExperienceRef_StatusCode.Draft;
+      reference.ecer_Origin = ecer_Origin.Portal;
       context.AddObject(reference);
       context.AddLink(application, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer, reference);
     }
@@ -138,6 +142,7 @@ internal sealed partial class ApplicationRepository
         ecerWorkExperienceReference.ecer_Type = firstExistingWorkExp.ecer_Type; // setting ecer_type of new work experience reference to be same as existing ones
       }
     }
+    ecerWorkExperienceReference.ecer_Origin = ecer_Origin.Portal;
     context.AddObject(ecerWorkExperienceReference);
     context.AddLink(application, ecer_Application.Fields.ecer_workexperienceref_Applicationid_ecer, ecerWorkExperienceReference);
     context.SaveChanges();

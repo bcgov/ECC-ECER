@@ -269,10 +269,7 @@ declare namespace Components {
      * Save draft application response
      */
     export interface DraftApplicationResponse {
-      /**
-       * The application id
-       */
-      applicationId?: string | null;
+      application?: Application;
     }
     export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
     export type EducationRecognition = "Recognized" | "NotRecognized";
@@ -294,10 +291,10 @@ declare namespace Components {
       url?: string | null;
     }
     export type FiveYearRenewalExplanations =
-      | "IliveandworkinacommunitywithoutothercertifiedECEs"
-      | "Iwasunabletofindemploymentinthechildcarefieldtocompletetherequirednumberofhours"
-      | "Iwasunabletoworkduetothestatusofmyvisaorwasunabletoenterthecountryasexpected"
-      | "Iwasunabletoworkinthechildcarefieldforpersonalreasons"
+      | "Ileftthechildcarefieldforpersonalreasons"
+      | "Iwasunabletocompletetherequiredhoursofprofessionaldevelopment"
+      | "Iwasunabletofindemploymentinthechildcarefieldinmycommunity"
+      | "MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc"
       | "Other";
     export interface GetMessagesResponse {
       communications?: Communication[] | null;
@@ -331,10 +328,10 @@ declare namespace Components {
       idp?: string | null;
     }
     export type OneYearRenewalexplanations =
-      | "Ileftthechildcarefieldforpersonalreasons"
-      | "Iwasunabletocompletetherequiredhoursofprofessionaldevelopment"
-      | "Iwasunabletofindemploymentinthechildcarefieldinmycommunity"
-      | "MyemploymentdiddoesnotrequirecertificationasanECEforexamplenannyteachercollegeinstructoradministratoretc"
+      | "IliveandworkinacommunitywithoutothercertifiedECEs"
+      | "Iwasunabletofindemploymentinthechildcarefieldtocompletetherequirednumberofhours"
+      | "Iwasunabletoworkduetothestatusofmyvisaorwasunabletoenterthecountryasexpected"
+      | "Iwasunabletoworkinthechildcarefieldforpersonalreasons"
       | "Other";
     export interface OptOutReferenceRequest {
       token?: string | null;

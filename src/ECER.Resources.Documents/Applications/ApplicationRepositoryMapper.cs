@@ -55,7 +55,9 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.AddMoreCharacterReference, opts => opts.MapFrom(s => s.ecer_AddMoreCharacterReference))
        .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.MapFrom(s => s.ecer_AddMoreWorkExperienceReference))
        .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.MapFrom(s => s.ecer_AddMoreProfessionalDevelopment))
-       .ForMember(d => d.Origin, opts => opts.MapFrom(s => s.ecer_Origin));
+       .ForMember(d => d.Origin, opts => opts.MapFrom(s => s.ecer_Origin))
+       .ForMember(d => d.Stage, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.ecer_PortalStage) ? "ContactInformation": s.ecer_PortalStage));
+    
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
         .ConstructUsing((s, _) =>
@@ -154,7 +156,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.ecer_HostOrganizationContactInformation, opts => opts.MapFrom(s => s.OrganizationContactInformation))
        .ForMember(d => d.ecer_OrganizationEmailAddress, opts => opts.MapFrom(s => s.OrganizationEmailAddress))
        .ForMember(d => d.ecer_InstructorName, opts => opts.MapFrom(s => s.InstructorName))
-       .ForMember(d => d.ecer_NumberofHours, opts => opts.MapFrom(s => s.NumberOfHours))
+       .ForMember(d => d.ecer_TotalAnticipatedHours, opts => opts.MapFrom(s => s.NumberOfHours))
        .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status));
 
     CreateMap<ecer_ProfessionalDevelopment, ProfessionalDevelopment>(MemberList.Source)
@@ -166,7 +168,7 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.OrganizationContactInformation, opts => opts.MapFrom(s => s.ecer_HostOrganizationContactInformation))
           .ForMember(d => d.OrganizationEmailAddress, opts => opts.MapFrom(s => s.ecer_OrganizationEmailAddress))
           .ForMember(d => d.InstructorName, opts => opts.MapFrom(s => s.ecer_InstructorName))
-          .ForMember(d => d.NumberOfHours, opts => opts.MapFrom(s => s.ecer_NumberofHours))
+          .ForMember(d => d.NumberOfHours, opts => opts.MapFrom(s => s.ecer_TotalAnticipatedHours))
           .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
           .ForMember(d => d.CourseorWorkshopLink, opts => opts.MapFrom(s => s.ecer_CourseorWorkshopLink))
           .ForMember(d => d.NewFiles, opts => opts.Ignore())

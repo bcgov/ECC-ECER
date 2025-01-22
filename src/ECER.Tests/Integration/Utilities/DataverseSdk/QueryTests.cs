@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.Xrm.Sdk.Client;
 using Shouldly;
+using System;
 using Xunit.Categories;
 
 namespace ECER.Tests.Integration.Utilities.DataverseSdk;
@@ -14,7 +15,8 @@ public class QueryTests : IAsyncLifetime
   private readonly IConfigurationRoot configuration;
   private ServiceClient serviceClient = null!;
   private EcerContext dataverseContext = null!;
-  private static readonly Guid contactId = Guid.Parse("73127545-c481-ef11-899c-00090faa0001");
+  private static readonly Guid contactId = Guid.Parse("34852992-be02-4815-a4ef-9cd1f934109d");
+  private static string applicationId = "0e40773d-39a7-47cb-93a7-47fe46ec7e74";
 
   private static readonly Guid[] applicationIds =
   [
@@ -98,6 +100,26 @@ public class QueryTests : IAsyncLifetime
     results.Count().ShouldBe(pageSize);
     results.ShouldAllBe(r => applicationIds.Any(id => r.Id == id));
     results.ShouldAllBe(r => r.ecer_transcript_Applicationid.Any());
+  }
+
+  [Fact]
+  public void Join_OneToMany_NestedObjectApplication()
+  {
+    var query = dataverseContext.ecer_ApplicationSet.Where(a => a.ecer_ApplicationId == Guid.Parse(applicationId));
+
+    var results = dataverseContext.From(query).Join()
+      .Include(a => a.ecer_ecer_professionaldevelopment_Applicationi)
+      .IncludeNested(a => a.ecer_bcgov_documenturl_ProfessionalDevelopmentId)
+      .Execute();
+
+    var result = results.FirstOrDefault();
+    result.ShouldNotBeNull();
+    result!.ecer_ecer_professionaldevelopment_Applicationi.ShouldNotBeNull();
+
+    foreach (var item in result!.ecer_ecer_professionaldevelopment_Applicationi)
+    {
+      item.ecer_bcgov_documenturl_ProfessionalDevelopmentId.ShouldNotBeNull();
+    }
   }
 
   [Fact]

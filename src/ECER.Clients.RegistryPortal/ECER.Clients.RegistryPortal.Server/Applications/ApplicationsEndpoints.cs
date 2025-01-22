@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Contracts;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
@@ -22,10 +23,10 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 
           if (request.DraftApplication.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
           var userContext = ctx.User.GetUserContext();
-          var application = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
+          var draftApplication = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
 
-          var applicationId = await messageBus.Send(new SaveDraftApplicationCommand(application), ct);
-          return TypedResults.Ok(new DraftApplicationResponse(applicationId));
+          var application = await messageBus.Send(new SaveDraftApplicationCommand(draftApplication), ct);
+          return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<RegistryPortal.Server.Applications.Application>(application)));
         })
         .WithOpenApi("Save a draft application for the current user", string.Empty, "draftapplication_put")
         .RequireAuthorization()
@@ -293,8 +294,8 @@ public record ApplicationSubmissionRequest(string Id);
 /// <summary>
 /// Save draft application response
 /// </summary>
-/// <param name="ApplicationId">The application id</param>
-public record DraftApplicationResponse(string ApplicationId);
+/// <param name="Application">The application</param>
+public record DraftApplicationResponse(Application Application);
 
 /// <summary>
 /// delete draft application response
@@ -412,7 +413,7 @@ public enum CertificationType
   Sne,
 }
 
-public enum OneYearRenewalexplanations
+public enum FiveYearRenewalExplanations
 {
   Ileftthechildcarefieldforpersonalreasons,
   Iwasunabletocompletetherequiredhoursofprofessionaldevelopment,
@@ -421,7 +422,7 @@ public enum OneYearRenewalexplanations
   Other,
 }
 
-public enum FiveYearRenewalExplanations
+public enum OneYearRenewalexplanations
 {
   IliveandworkinacommunitywithoutothercertifiedECEs,
   Iwasunabletofindemploymentinthechildcarefieldtocompletetherequirednumberofhours,

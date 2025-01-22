@@ -103,9 +103,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_IsOfficialTranscriptRequested = "ecer_isofficialtranscriptrequested";
 			public const string ecer_isofficialtranscriptrequestedName = "ecer_isofficialtranscriptrequestedname";
 			public const string ecer_LanguageofInstruction = "ecer_languageofinstruction";
+			public const string ecer_legacyeducationinstitutename = "ecer_legacyeducationinstitutename";
 			public const string ecer_legacyeducationtranscriptid = "ecer_legacyeducationtranscriptid";
 			public const string ecer_legacyentryby = "ecer_legacyentryby";
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
+			public const string ecer_legacytraininginstituteid = "ecer_legacytraininginstituteid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PostSecondaryInstituteid = "ecer_postsecondaryinstituteid";
 			public const string ecer_PostSecondaryInstituteidName = "ecer_postsecondaryinstituteidname";
@@ -714,6 +716,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyeducationinstitutename")]
+		public string ecer_legacyeducationinstitutename
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyeducationinstitutename");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyeducationinstitutename", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyeducationtranscriptid")]
 		public string ecer_legacyeducationtranscriptid
 		{
@@ -756,6 +773,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyentrydate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacytraininginstituteid")]
+		public System.Nullable<int> ecer_legacytraininginstituteid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("ecer_legacytraininginstituteid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacytraininginstituteid", value);
 			}
 		}
 		

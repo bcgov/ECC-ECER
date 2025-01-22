@@ -69,6 +69,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_legacycertificateid = "ecer_legacycertificateid";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_nextcheckindate = "ecer_nextcheckindate";
 			public const string ecer_PresetConditionId = "ecer_presetconditionid";
 			public const string ecer_PresetConditionIdName = "ecer_presetconditionidname";
 			public const string ecer_Registrantid = "ecer_registrantid";
@@ -366,6 +367,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_nextcheckindate")]
+		public System.Nullable<System.DateTime> ecer_nextcheckindate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_nextcheckindate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_nextcheckindate", value);
 			}
 		}
 		
