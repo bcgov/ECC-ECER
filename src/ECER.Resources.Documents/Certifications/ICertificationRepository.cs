@@ -5,6 +5,8 @@ public interface ICertificationRepository
   Task<IEnumerable<Certification>> Query(UserCertificationQuery query);
 
   Task<IEnumerable<CertificationSummary>> QueryCertificateSummary(UserCertificationSummaryQuery query);
+
+  Task<string> RequestPdf(string certificateId, CancellationToken cancellationToken);
 }
 
 public record UserCertificationSummaryQuery

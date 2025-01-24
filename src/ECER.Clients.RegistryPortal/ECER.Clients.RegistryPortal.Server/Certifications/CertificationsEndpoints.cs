@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -24,6 +25,30 @@ public class CertificationsEndpoints : IRegisterEndpoints
       };
       var results = await messageBus.Send<CertificationsQueryResults>(query, ct);
       return TypedResults.Ok(mapper.Map<IEnumerable<Certification>>(results.Items));
+    })
+     .WithOpenApi("Handles certification queries", string.Empty, "certification_get")
+    .RequireAuthorization()
+    .WithParameterValidation();
+
+    endpointRouteBuilder.MapPut("/api/certifications/RequestPdf/{id?}", async Task<Results<Ok<string>, BadRequest<ProblemDetails>>> (string? id, HttpContext httpContext, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var userId = httpContext.User.GetUserContext()?.UserId;
+      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
+      if (IdIsNotGuid)
+      {
+        var problemDetails = new ProblemDetails
+        {
+          Status = StatusCodes.Status400BadRequest,
+          Detail = "Invalid certificate Id",
+          Extensions = { ["errors"] = "Invalid certificate Id" }
+        };
+        return TypedResults.BadRequest(problemDetails);
+      }
+
+      var query = new RequestCertificationPdfCommand(id!, userId!);
+      var result = await messageBus.Send(query, ct);
+
+      return TypedResults.Ok(result.CertificationId);
     })
      .WithOpenApi("Handles certification queries", string.Empty, "certification_get")
     .RequireAuthorization()

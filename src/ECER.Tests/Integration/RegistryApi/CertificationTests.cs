@@ -80,6 +80,35 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task RequestCertificationPdf_ReturnsCertificationId()
+  {
+    // Arrange
+    var validCertificationId = this.Fixture.activeCertificationOneId;
+    var invalidCertificationId = "invalid-guid";
+    var expectedCertificationId = validCertificationId;
+
+    // Act - Valid ID Test
+    var validResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Json(new { }).ToUrl($"/api/certifications/RequestPdf/{validCertificationId}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var returnedCertificationId = await validResponse.ReadAsJsonAsync<string>();
+    returnedCertificationId.ShouldBe(expectedCertificationId);
+
+    // Act - Invalid ID Test
+    var invalidResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Json(new { }).ToUrl($"/api/certifications/RequestPdf/{invalidCertificationId}");
+    });
+
+    invalidResponse.Context.Response.StatusCode.ShouldBe(400);
+  }
+
+  [Fact]
   public async Task CertificationsLookup_ByRegistrationNumber_ReturnsCertifications()
   {
     var faker = new Faker("en_CA");
