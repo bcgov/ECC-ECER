@@ -1,6 +1,9 @@
-﻿using MediatR;
+﻿using ECER.Managers.Registry.Contract.Applications;
+using MediatR;
 
 namespace ECER.Managers.Registry.Contract.Certifications;
+
+public record RequestCertificationPdfCommand(string certificationId, string userId) : IRequest<CertificationRequestPdfResult>;
 
 public record UserCertificationQueryBase : IRequest<CertificationsQueryResults>
 {
@@ -83,4 +86,8 @@ public enum YesNoNull
 {
   No,
   Yes,
+}
+
+public record CertificationRequestPdfResult(string CertificationId)
+{
 }
