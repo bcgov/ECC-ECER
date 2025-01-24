@@ -71,6 +71,7 @@ public record Certification(string Id)
   public bool? HasConditions { get; set; }
   public string? LevelName { get; set; }
   public CertificateStatusCode? StatusCode { get; set; }
+  public CertificatePDFGeneration? CertificatePDFGeneration { get; set; }
   public YesNoNull? IneligibleReference { get; set; }
   public IEnumerable<CertificationLevel> Levels { get; set; } = Array.Empty<CertificationLevel>();
   public IEnumerable<CertificationFile> Files { get; set; } = Array.Empty<CertificationFile>();
@@ -130,6 +131,13 @@ public enum CertificateStatusCode
   Renewed,
   Reprinted,
   Suspended
+}
+
+public enum CertificatePDFGeneration
+{
+  No,
+  Requested,
+  Yes,
 }
 
 public enum YesNoNull

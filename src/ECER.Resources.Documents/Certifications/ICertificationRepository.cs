@@ -43,6 +43,7 @@ public record Certification(string Id)
   public string? LevelName { get; set; }
   public int? BaseCertificateTypeId { get; set; }
   public CertificateStatusCode? StatusCode { get; set; }
+  public CertificatePDFGeneration? CertificatePDFGeneration { get; set; }
   public YesNoNull? IneligibleReference { get; set; }
   public IEnumerable<CertificationLevel> Levels { get; set; } = Array.Empty<CertificationLevel>();
   public IEnumerable<CertificationFile> Files { get; set; } = Array.Empty<CertificationFile>();
@@ -87,5 +88,12 @@ public enum CertificateStatusCode
 public enum YesNoNull
 {
   No,
+  Yes,
+}
+
+public enum CertificatePDFGeneration
+{
+  No,
+  Requested,
   Yes,
 }
