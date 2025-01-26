@@ -46,6 +46,12 @@ const router = createRouter({
       name: "login",
     },
     {
+      path: "/register",
+      component: () => import("./components/pages/Register.vue"),
+      meta: { requiresAuth: false },
+      name: "register",
+    },
+    {
       path: "/silent-callback",
       component: () => import("./components/pages/SilentCallback.vue"),
       meta: { requiresAuth: false },

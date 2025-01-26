@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import LoginCard from "@/components/LoginCard.vue";
 import PageContainer from "@/components/PageContainer.vue";
@@ -41,10 +41,12 @@ export default defineComponent({
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
+    const router = useRouter();
+
     const route = useRoute();
     const { smAndDown } = useDisplay();
 
-    return { userStore, oidcStore, route, smAndDown };
+    return { userStore, oidcStore, route, smAndDown, router };
   },
   methods: {
     async handleLogin(provider: string) {
@@ -54,7 +56,7 @@ export default defineComponent({
       await this.oidcStore.login(provider == "bceid" ? "bceidbasic" : "bcsc", redirectTo);
     },
     handleCreateAccount() {
-      this.$router.push({ name: "register" });
+      this.router.push({ name: "register" });
     },
   },
 });
