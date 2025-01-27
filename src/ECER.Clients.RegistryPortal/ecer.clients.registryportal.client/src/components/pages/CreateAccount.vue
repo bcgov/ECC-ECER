@@ -112,7 +112,7 @@ export default defineComponent({
         href: "/",
       },
       {
-        title: "Create Account",
+        title: "Create account",
         disabled: true,
         href: "/create-account",
       },
