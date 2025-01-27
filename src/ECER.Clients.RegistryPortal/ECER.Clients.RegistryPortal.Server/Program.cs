@@ -29,14 +29,6 @@ internal class Program
 
     try
     {
-      if (builder.Environment.IsEnvironment("EFXDevelopment"))
-      {
-        foreach (var assembly in assemblies)
-        {
-          builder.Configuration.AddUserSecrets(assembly);
-        }
-      }
-
       builder.Services.AddMediatR(opts =>
             {
               opts.RegisterServicesFromAssemblies(assemblies);

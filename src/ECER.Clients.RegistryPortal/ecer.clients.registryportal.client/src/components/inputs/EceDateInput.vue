@@ -52,7 +52,7 @@ export default defineComponent({
     },
     value() {
       if (!this.modelValue) {
-        return new Date(); // Return current date as default Date object
+        return; // Return current date as default Date object
       }
       // Convert modelValue to a Date object for date picker consistency
       const [year, month, day] = this.modelValue.split("-").map(Number);
