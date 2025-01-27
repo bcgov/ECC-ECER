@@ -6,6 +6,12 @@
     </PageContainer>
   </v-sheet>
   <PageContainer :margin-top="false">
+    <div class="d-flex flex-column ga-3 mb-10">
+      <Banner
+        type="info"
+        title="We're working to resolve technical issues affecting certificate information in the My ECE Registry platform. Recent users are asked to review their profiles for accuracy and contact the ECE Registry at 1-888-338-6622 if there are any issues."
+      />
+    </div>
     <v-row>
       <v-col cols="12" md="6" class="mb-12">
         <div class="d-flex flex-column ga-4">
@@ -34,10 +40,11 @@ import PageContainer from "@/components/PageContainer.vue";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useDisplay } from "vuetify";
+import Banner from "../Banner.vue";
 
 export default defineComponent({
   name: "Login",
-  components: { LoginCard, PageContainer },
+  components: { LoginCard, PageContainer, Banner },
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
