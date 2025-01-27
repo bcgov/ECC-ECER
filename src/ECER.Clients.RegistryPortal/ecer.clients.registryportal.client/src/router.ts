@@ -46,10 +46,10 @@ const router = createRouter({
       name: "login",
     },
     {
-      path: "/register",
-      component: () => import("./components/pages/Register.vue"),
+      path: "/create-account",
+      component: () => import("./components/pages/CreateAccount.vue"),
       meta: { requiresAuth: false },
-      name: "register",
+      name: "createAccount",
     },
     {
       path: "/silent-callback",
