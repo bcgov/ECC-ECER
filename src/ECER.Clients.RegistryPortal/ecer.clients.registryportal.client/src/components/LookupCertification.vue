@@ -3,7 +3,7 @@
     <v-container><h1>Validate an ECE certificate</h1></v-container>
   </v-sheet>
   <v-container>
-    <v-row>
+    <v-row class="mt-10 mb-10">
       <Banner
         type="info"
         title="We're working to resolve technical issues affecting certificate information in the My ECE Registry platform. Recent users are asked to review their profiles for accuracy and contact the ECE Registry at 1-888-338-6622 if there are any issues."
