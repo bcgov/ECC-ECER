@@ -63,7 +63,7 @@ export default defineComponent({
       await this.oidcStore.login(provider == "bceid" ? "bceidbasic" : "bcsc", redirectTo);
     },
     handleCreateAccount() {
-      this.router.push({ name: "register" });
+      this.router.push({ name: "createAccount" });
     },
   },
 });
