@@ -17,6 +17,34 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row justify="center">
+        <v-col cols="12">
+          <!-- user has not provided id -->
+          <v-card :rounded="0" flat color="background-light" class="pa-4">
+            <v-card-item class="ma-4">
+              <h3>ID needed to complete account setup</h3>
+              <p class="mt-2">
+                Before you can submit new applications or access existing certifications, we need to verify your identity by reviewing your ID.
+              </p>
+              <v-btn prepend-icon="mdi-card-account-details-outline" color="primary" class="mt-2" @click="router.push({ name: 'upload-id-new-user' })">
+                Verify my identity
+              </v-btn>
+            </v-card-item>
+          </v-card>
+          <!-- user provided id -->
+          <v-card :rounded="0" flat color="background-light" class="pa-4">
+            <v-card-item class="ma-4">
+              <h3>ID Pending review</h3>
+              <p class="mt-2">
+                Before you can submit new applications or access existing certifications, we need to verify your identity by reviewing your ID.
+              </p>
+              <p class="mt-2 font-weight-bold">We have received your IDs. We will email you when our review is complete in 2-3 business days.</p>
+            </v-card-item>
+          </v-card>
+        </v-col>
+      </v-row>
+      <!-- user provided id waiting for verification-->
+
       <v-row v-if="messageStore.unreadMessageCount > 0" justify="center">
         <v-col>
           <v-row>
