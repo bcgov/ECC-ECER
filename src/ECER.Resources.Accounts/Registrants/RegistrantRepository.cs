@@ -20,13 +20,19 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     {
       contact = mapper.Map<Contact>(registrant.Profile)!;
       contact.Id = Guid.NewGuid();
+      contact.ecer_ClientID = null;
+      contact.ecer_TempClientID = null;
       context.AddObject(contact);
     }
     else
     {
+      var oldClientId = contact.ecer_ClientID;
+      var oldTemClientId = contact.ecer_TempClientID;
       context.Detach(contact);
       contact = mapper.Map<Contact>(registrant.Profile)!;
       contact.Id = Guid.Parse(registrant.Id);
+      contact.ecer_ClientID = oldClientId;
+      contact.ecer_TempClientID = oldTemClientId;
       context.Attach(contact);
       context.UpdateObject(contact);
     }
@@ -97,11 +103,13 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     var verified = contact.ecer_IsVerified;
 
     context.Detach(contact);
-
+    var clientId = contact.ecer_ClientID;
+    var tempClientId = contact.ecer_TempClientID;
     contact = mapper.Map<Contact>(registrant.Profile)!;
     contact.ContactId = contactId;
     contact.ecer_IsVerified = verified;
-
+    contact.ecer_ClientID = clientId;
+    contact.ecer_TempClientID = tempClientId;
     context.Attach(contact);
     context.UpdateObject(contact);
 
