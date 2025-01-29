@@ -11,6 +11,11 @@ const getCertifications = async (): Promise<ApiResponse<Components.Schemas.Certi
   return apiResultHandler.execute<Components.Schemas.Certification[]>({ request: client.certification_get({ id: "" }) });
 };
 
+const requestCertificateFileGeneration = async (id: string): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute<any>({ request: client.certification_requestpdf_put({ id: id }) });
+};
+
 const getCertificateFileById = async (id: string): Promise<ApiResponse<any>> => {
   const client = await getClient();
   const config: AxiosRequestConfig = { responseType: "blob" };
@@ -24,4 +29,4 @@ const postLookupCertificate = async (
   return apiResultHandler.execute({ request: client.certifications_lookup_post(null, body), key: "certifications_lookup_post" });
 };
 
-export { getCertificateFileById, getCertifications, postLookupCertificate };
+export { getCertificateFileById, getCertifications, postLookupCertificate, requestCertificateFileGeneration };
