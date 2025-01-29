@@ -687,6 +687,18 @@ declare namespace Paths {
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
         }
     }
+    namespace CertificationRequestpdfPut {
+        namespace Parameters {
+            export type Id = string;
+        }
+        export interface PathParameters {
+            id?: Parameters.Id;
+        }
+        namespace Responses {
+            export type $200 = string;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+        }
+    }
     namespace CertificationsLookupPost {
         export type RequestBody = Components.Schemas.CertificationLookupRequest;
         namespace Responses {
@@ -1078,13 +1090,13 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CertificationGet.Responses.$200>
   /**
-   * certification_get - Handles certification queries
+   * certification_requestpdf_put - Handles certification queries
    */
-  'certification_get'(
-    parameters?: Parameters<Paths.CertificationGet.PathParameters> | null,
+  'certification_requestpdf_put'(
+    parameters?: Parameters<Paths.CertificationRequestpdfPut.PathParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CertificationGet.Responses.$200>
+  ): OperationResponse<Paths.CertificationRequestpdfPut.Responses.$200>
   /**
    * certifications_lookup_post - Handles certifications lookup queries
    */
@@ -1388,13 +1400,13 @@ export interface PathsDictionary {
   }
   ['/api/certifications/RequestPdf/{id}']: {
     /**
-     * certification_get - Handles certification queries
+     * certification_requestpdf_put - Handles certification queries
      */
     'put'(
-      parameters?: Parameters<Paths.CertificationGet.PathParameters> | null,
+      parameters?: Parameters<Paths.CertificationRequestpdfPut.PathParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CertificationGet.Responses.$200>
+    ): OperationResponse<Paths.CertificationRequestpdfPut.Responses.$200>
   }
   ['/api/certifications/lookup']: {
     /**

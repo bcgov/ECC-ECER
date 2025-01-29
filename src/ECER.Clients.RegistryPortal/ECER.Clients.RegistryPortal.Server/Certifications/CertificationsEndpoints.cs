@@ -50,7 +50,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
 
       return TypedResults.Ok(result.CertificationId);
     })
-    .WithOpenApi("Handles certification queries", string.Empty, "certification_get")
+    .WithOpenApi("Handles certification queries", string.Empty, "certification_requestpdf_put")
     .RequireAuthorization()
     .WithParameterValidation();
 
