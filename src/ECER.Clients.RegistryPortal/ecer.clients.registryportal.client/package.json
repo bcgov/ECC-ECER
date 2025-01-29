@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@mdi/font": "^7.3.67",
-    "@vueuse/core": "^12.4.0",
+    "@vueuse/core": "^12.5.0",
     "axios": "^1.7.9",
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
@@ -32,20 +32,20 @@
     "@tsconfig/node18": "^18.2.4",
     "@types/lodash": "^4.17.14",
     "@types/luxon": "^3.4.2",
-    "@types/node": "^22.10.7",
+    "@types/node": "^22.10.10",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.2.0",
     "@vue/tsconfig": "^0.7.0",
-    "eslint": "^9.18.0",
+    "eslint": "^9.19.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.1.4",
     "eslint-plugin-vue": "^9.32.0",
     "openapicmd": "^2.6.1",
     "sass": "^1.83.4",
     "typescript": "~5.7.3",
-    "vite": "^6.0.9",
+    "vite": "^6.0.11",
     "vue-tsc": "^2.2.0"
   }
 }
