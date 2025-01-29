@@ -15,7 +15,7 @@ const uploadFile = async (
 ): Promise<ApiResponse<Components.Schemas.FileResponse>> => {
   const client = await getClient();
 
-  const parameters: Paths.UploadFile.PathParameters & Paths.UploadFile.PathParameters = {
+  const parameters: Paths.UploadFile.PathParameters = {
     fileId,
   };
 
