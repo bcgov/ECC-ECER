@@ -3,6 +3,12 @@
     <v-container><h1>Validate an ECE certificate</h1></v-container>
   </v-sheet>
   <v-container>
+    <v-row class="mt-10 mb-10">
+      <Banner
+        type="info"
+        title="We're working to resolve technical issues affecting certificate information in the My ECE Registry platform. Recent users are asked to review their profiles for accuracy and contact the ECE Registry at 1-888-338-6622 if there are any issues."
+      />
+    </v-row>
     <v-row>
       <v-col class="text-break">
         To work as an Early Childhood Educator (ECE) or ECE Assistant in a licensed child care facility in B.C. people must be certified by the ECE Registry.
@@ -114,7 +120,7 @@ import { useLoadingStore } from "@/store/loading";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import { postLookupCertificate } from "@/api/certification";
-
+import Banner from "@/components/Banner.vue";
 import * as Rules from "../utils/formRules";
 import EceRecaptcha from "./inputs/EceRecaptcha.vue";
 import type { Components } from "@/types/openapi";
@@ -128,7 +134,7 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 export default defineComponent({
   name: "LookupCertification",
-  components: { EceRecaptcha, EceTextField },
+  components: { EceRecaptcha, EceTextField, Banner },
   setup() {
     const alertStore = useAlertStore();
     const lookupCertificationStore = useLookupCertificationStore();
