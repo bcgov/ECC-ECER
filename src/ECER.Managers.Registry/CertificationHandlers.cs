@@ -8,7 +8,8 @@ namespace ECER.Managers.Registry;
 
 public class CertificationHandlers(ICertificationRepository CertificationRepository, IMapper mapper)
     : IRequestHandler<Contract.Certifications.UserCertificationQuery, CertificationsQueryResults>,
-  IRequestHandler<UserCertificationQueryLookup, CertificationsQueryResults>
+  IRequestHandler<UserCertificationQueryLookup, CertificationsQueryResults>,
+  IRequestHandler<RequestCertificationPdfCommand, CertificationRequestPdfResult>
 
 {
   public async Task<CertificationsQueryResults> Handle(Contract.Certifications.UserCertificationQuery request, CancellationToken cancellationToken)
@@ -16,6 +17,18 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
     var Certifications = await GetCertificationsPaginated(request);
 
     return new CertificationsQueryResults(mapper.Map<IEnumerable<Contract.Certifications.Certification>>(Certifications)!);
+  }
+
+  public async Task<CertificationRequestPdfResult> Handle(RequestCertificationPdfCommand request, CancellationToken cancellationToken)
+  {
+    var certificates = await CertificationRepository.Query(new Resources.Documents.Certifications.UserCertificationQuery
+    {
+      ById = request?.certificationId,
+      ByApplicantId = request?.userId
+    });
+    var certificate = certificates.FirstOrDefault();
+    await CertificationRepository.RequestPdf(certificate!.Id, cancellationToken);
+    return new CertificationRequestPdfResult(certificate!.Id);
   }
 
   public async Task<CertificationsQueryResults> Handle(UserCertificationQueryLookup request, CancellationToken cancellationToken)
