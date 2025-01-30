@@ -5,6 +5,7 @@ import { defineStore } from "pinia";
 import type { Components } from "@/types/openapi";
 
 import { useConfigStore } from "./config";
+import { identity } from "lodash";
 
 export interface UserState {
   userManager: UserManager;
@@ -37,6 +38,11 @@ export const useOidcStore = defineStore("oidc", {
         country: user ? (user.profile.address?.country ?? "") : "",
         postalCode: user ? (user.profile.address?.postal_code ?? "") : "",
       };
+    },
+
+    async oidcIdentityProvider(): Promise<any> {
+      const user = await this.getUser();
+      return user ? (user.profile.identity_provider ?? "") : "";
     },
 
     async getUser(): Promise<User | null> {
