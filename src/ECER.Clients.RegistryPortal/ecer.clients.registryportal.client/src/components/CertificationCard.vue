@@ -7,8 +7,11 @@
           {{ title }}
         </p>
       </div>
-      <a v-if="isLatestCertificateActive" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
-
+      <a v-if="isLatestCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
+      <div v-if="certificateGenerationRequested" class="mt-8">
+        <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
+        <p>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</p>
+      </div>
       <p class="font-weight-bold mt-8">Expires on</p>
       <div class="d-flex flex-column flex-sm-row align-start align-sm-center mt-2 ga-4">
         <p>{{ formattedExpiryDate }}</p>
@@ -23,8 +26,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
-import { getCertificateFileById } from "@/api/certification";
+import { getCertificateFileById, requestCertificateFileGeneration } from "@/api/certification";
 import { useCertificationStore } from "@/store/certification";
 import { formatDate } from "@/utils/format";
 import { humanFileSize } from "@/utils/functions";
@@ -86,16 +88,28 @@ export default defineComponent({
           return "grey-darkest";
       }
     },
+    certificateGenerationRequested(): boolean {
+      return this.certificationStore.latestCertification?.certificatePDFGeneration === "Requested";
+    },
+    doesCertificateFileExist(): boolean {
+      return this.certificationStore.latestCertification?.certificatePDFGeneration === "Yes";
+    },
     isLatestCertificateActive(): boolean {
       return this.certificationStore.latestCertification?.statusCode === "Active" || this.certificationStore.latestCertification?.statusCode === "Renewed";
     },
   },
   async mounted() {
     if (this.certificationStore.certifications && this.certificationStore.certifications.length > 0 && this.isLatestCertificateActive) {
-      const file = await getCertificateFileById(this.certificationStore.certifications[0].id ?? "");
-
-      this.pdfUrl = window.URL.createObjectURL(file.data);
-      this.fileSize = humanFileSize(file.data.size);
+      if (this.certificationStore.latestCertification?.certificatePDFGeneration === "No") {
+        const response = await requestCertificateFileGeneration(this.certificationStore.certifications[0].id ?? "");
+        if (response) {
+          this.certificationStore.latestCertification.certificatePDFGeneration = "Requested";
+        }
+      } else if (this.certificationStore.latestCertification?.certificatePDFGeneration === "Yes") {
+        const file = await getCertificateFileById(this.certificationStore.certifications[0].id ?? "");
+        this.pdfUrl = window.URL.createObjectURL(file.data);
+        this.fileSize = humanFileSize(file.data.size);
+      }
     }
   },
   unmounted() {

@@ -74,6 +74,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_course_ProgramApplication_ecer_postsecond = "ecer_course_ProgramApplication_ecer_postsecond";
 			public const string ecer_course_Programid = "ecer_course_Programid";
 			public const string ecer_course_ProvincialRequirement_ecer_provinc = "ecer_course_ProvincialRequirement_ecer_provinc";
+			public const string ecer_coursehourdecimal = "ecer_coursehourdecimal";
 			public const string ecer_CourseHours = "ecer_coursehours";
 			public const string ecer_CourseId = "ecer_courseid";
 			public const string Id = "ecer_courseid";
@@ -346,6 +347,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_code", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_coursehourdecimal")]
+		public System.Nullable<decimal> ecer_coursehourdecimal
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_coursehourdecimal");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_coursehourdecimal", value);
 			}
 		}
 		

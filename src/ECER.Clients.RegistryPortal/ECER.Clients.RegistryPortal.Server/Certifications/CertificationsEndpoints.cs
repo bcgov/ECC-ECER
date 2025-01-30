@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -26,6 +27,30 @@ public class CertificationsEndpoints : IRegisterEndpoints
       return TypedResults.Ok(mapper.Map<IEnumerable<Certification>>(results.Items));
     })
      .WithOpenApi("Handles certification queries", string.Empty, "certification_get")
+    .RequireAuthorization()
+    .WithParameterValidation();
+
+    endpointRouteBuilder.MapPut("/api/certifications/RequestPdf/{id?}", async Task<Results<Ok<string>, BadRequest<ProblemDetails>>> (string? id, HttpContext httpContext, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var userId = httpContext.User.GetUserContext()?.UserId;
+      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
+      if (IdIsNotGuid)
+      {
+        var problemDetails = new ProblemDetails
+        {
+          Status = StatusCodes.Status400BadRequest,
+          Detail = "Invalid certificate Id",
+          Extensions = { ["errors"] = "Invalid certificate Id" }
+        };
+        return TypedResults.BadRequest(problemDetails);
+      }
+
+      var query = new RequestCertificationPdfCommand(id!, userId!);
+      var result = await messageBus.Send(query, ct);
+
+      return TypedResults.Ok(result.CertificationId);
+    })
+    .WithOpenApi("Handles certification queries", string.Empty, "certification_requestpdf_put")
     .RequireAuthorization()
     .WithParameterValidation();
 
@@ -71,6 +96,7 @@ public record Certification(string Id)
   public bool? HasConditions { get; set; }
   public string? LevelName { get; set; }
   public CertificateStatusCode? StatusCode { get; set; }
+  public CertificatePDFGeneration? CertificatePDFGeneration { get; set; }
   public YesNoNull? IneligibleReference { get; set; }
   public IEnumerable<CertificationLevel> Levels { get; set; } = Array.Empty<CertificationLevel>();
   public IEnumerable<CertificationFile> Files { get; set; } = Array.Empty<CertificationFile>();
@@ -130,6 +156,13 @@ public enum CertificateStatusCode
   Renewed,
   Reprinted,
   Suspended
+}
+
+public enum CertificatePDFGeneration
+{
+  No,
+  Requested,
+  Yes,
 }
 
 public enum YesNoNull
