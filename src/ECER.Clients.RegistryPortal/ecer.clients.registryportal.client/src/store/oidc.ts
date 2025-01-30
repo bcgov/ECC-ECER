@@ -5,7 +5,6 @@ import { defineStore } from "pinia";
 import type { Components } from "@/types/openapi";
 
 import { useConfigStore } from "./config";
-import { identity } from "lodash";
 
 export interface UserState {
   userManager: UserManager;
