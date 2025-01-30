@@ -39,6 +39,11 @@ export const useOidcStore = defineStore("oidc", {
       };
     },
 
+    async oidcIdentityProvider(): Promise<any> {
+      const user = await this.getUser();
+      return user ? (user.profile.identity_provider ?? "") : "";
+    },
+
     async getUser(): Promise<User | null> {
       return await this.userManager.getUser();
     },
