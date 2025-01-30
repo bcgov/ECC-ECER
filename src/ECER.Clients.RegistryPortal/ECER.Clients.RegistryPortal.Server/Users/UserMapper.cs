@@ -22,6 +22,7 @@ internal sealed class UserMapper : AutoMapper.Profile
       .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => (PreviousName[]?)null))
       .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.MiddleName))
       .ForMember(d => d.IsRegistrant, opts => opts.MapFrom(s => s.IsRegistrant))
+      .ForMember(d => d.IdentityVerificationStatus, opts => opts.MapFrom(s => s.IdentityVerificationStatus))
       .ReverseMap()
       .ValidateMemberList(MemberList.Source)
       .ForSourceMember(s => s.ResidentialAddress, opts => opts.DoNotValidate())
@@ -50,6 +51,7 @@ internal sealed class UserMapper : AutoMapper.Profile
       .ForMember(d => d.GivenName, opts => opts.Ignore())
       .ForMember(d => d.RegistrationNumber, opts => opts.Ignore())
       .ForMember(d => d.IsRegistrant, opts => opts.Ignore())
+      .ForMember(d => d.IdentityVerificationStatus, opts => opts.Ignore())
       .ReverseMap()
 
       .ValidateMemberList(MemberList.Destination)

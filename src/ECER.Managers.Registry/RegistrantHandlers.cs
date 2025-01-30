@@ -78,6 +78,9 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
     request.Profile.MailingAddress = request.Profile.ResidentialAddress;
     var registrant = mapper.Map<Resources.Accounts.Registrants.Registrant>(request);
 
+    //for BCSC users we are assured of their identity so we set this as verified for all
+    registrant.Profile.IdentityVerificationStatus = Resources.Accounts.Registrants.VerificationStatus.Verified;
+
     if (string.IsNullOrEmpty(request.Profile.RegistrationNumber))
     {
       registrant.Profile.IsVerified = !registrants.Any();
