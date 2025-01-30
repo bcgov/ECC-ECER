@@ -284,6 +284,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_referencelettersentName = "ecer_referencelettersentname";
 			public const string ecer_renewalassessment_ApplicationId = "ecer_renewalassessment_ApplicationId";
 			public const string ecer_RenewalExplanationOther = "ecer_renewalexplanationother";
+			public const string ecer_RenewalsLateInYears = "ecer_renewalslateinyears";
 			public const string ecer_RequestCharacterReference = "ecer_requestcharacterreference";
 			public const string ecer_requestcharacterreferenceName = "ecer_requestcharacterreferencename";
 			public const string ecer_RequestWkExpReference = "ecer_requestwkexpreference";
@@ -3131,6 +3132,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_renewalexplanationother", value);
+			}
+		}
+		
+		/// <summary>
+		/// Compare Application Submitted Date against Last Certificate of the same type - 5 YR, 1 YR, or Assistant
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_renewalslateinyears")]
+		public System.Nullable<decimal> ecer_RenewalsLateInYears
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_renewalslateinyears");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_renewalslateinyears", value);
 			}
 		}
 		

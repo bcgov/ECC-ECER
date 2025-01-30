@@ -105,11 +105,13 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     context.Detach(contact);
     var clientId = contact.ecer_ClientID;
     var tempClientId = contact.ecer_TempClientID;
+    var bceidVerificationStatus = contact.ecer_BCeIDVerificationStatus;
     contact = mapper.Map<Contact>(registrant.Profile)!;
     contact.ContactId = contactId;
     contact.ecer_IsVerified = verified;
     contact.ecer_ClientID = clientId;
     contact.ecer_TempClientID = tempClientId;
+    contact.ecer_BCeIDVerificationStatus = bceidVerificationStatus;
     context.Attach(contact);
     context.UpdateObject(contact);
 
