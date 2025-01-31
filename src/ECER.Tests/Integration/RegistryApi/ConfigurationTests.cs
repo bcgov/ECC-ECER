@@ -28,6 +28,20 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetSystemMessages_ReturnsSystemMessages()
+  {
+    var systemMessagesResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/systemMessages");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var systemMessages = await systemMessagesResponse.ReadAsJsonAsync<SystemMessage[]>();
+    systemMessages.ShouldNotBeNull();
+  }
+
+  [Fact]
   public async Task GetRecaptchaSiteKey_ReturnsSiteKey()
   {
     var siteKeyResponse = await Host.Scenario(_ =>

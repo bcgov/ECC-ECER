@@ -33,4 +33,13 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
 
     return mapper.Map<IEnumerable<Province>>(provinces)!.ToList();
   }
+
+  public async Task<IEnumerable<SystemMessage>> QuerySystemMessages(SystemMessagesQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var systemMessages = context.ecer_SystemMessageSet;
+    if (query.ById != null) systemMessages = systemMessages.Where(r => r.ecer_SystemMessageId == Guid.Parse(query.ById));
+
+    return mapper.Map<IEnumerable<SystemMessage>>(systemMessages)!.ToList();
+  }
 }

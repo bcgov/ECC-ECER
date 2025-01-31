@@ -12,6 +12,13 @@ internal class MetadataResourceRepositoryMapper : Profile
     .ForCtorParam(nameof(Province.ProvinceName), opt => opt.MapFrom(src => src.ecer_Name))
     .ValidateMemberList(MemberList.Destination);
 
+    CreateMap<ecer_SystemMessage, SystemMessage>(MemberList.Source)
+    .ForCtorParam(nameof(SystemMessage.Message), opt => opt.MapFrom(src => src.ecer_message))
+    .ForCtorParam(nameof(SystemMessage.Subject), opt => opt.MapFrom(src => src.ecer_subject))
+    .ForCtorParam(nameof(SystemMessage.Name), opt => opt.MapFrom(src => src.ecer_name))
+    .ForCtorParam(nameof(SystemMessage.PortalTag), opt => opt.MapFrom(src => src.ecer_portaltag))
+    .ValidateMemberList(MemberList.Destination);
+
     CreateMap<ecer_Country, Country>(MemberList.Source)
     .ForCtorParam(nameof(Country.CountryId), opt => opt.MapFrom(src => src.ecer_CountryId))
     .ForCtorParam(nameof(Country.CountryName), opt => opt.MapFrom(src => src.ecer_Name))

@@ -7,9 +7,9 @@ namespace ECER.Managers.Admin;
 
 public class MetadataHandlers(
    IMetadataResourceRepository metadataResourceRepository,
-   IMapper mapper
-  ) : IRequestHandler<Contract.Metadatas.ProvincesQuery, ProvincesQueryResults>,
-      IRequestHandler<Contract.Metadatas.CountriesQuery, CountriesQueryResults>
+   IMapper mapper) : IRequestHandler<Contract.Metadatas.ProvincesQuery, ProvincesQueryResults>,
+   IRequestHandler<Contract.Metadatas.CountriesQuery, CountriesQueryResults>,
+   IRequestHandler<Contract.Metadatas.SystemMessagesQuery, SystemMessagesQueryResults>
 {
   public async Task<ProvincesQueryResults> Handle(Contract.Metadatas.ProvincesQuery request, CancellationToken cancellationToken)
   {
@@ -17,6 +17,14 @@ public class MetadataHandlers(
 
     var provinces = await metadataResourceRepository.QueryProvinces(new Resources.Documents.MetadataResources.ProvincesQuery() { ById = request.ById }, cancellationToken);
     return new ProvincesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.Province>>(provinces)!);
+  }
+
+  public async Task<SystemMessagesQueryResults> Handle(Contract.Metadatas.SystemMessagesQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var systemMessages = await metadataResourceRepository.QuerySystemMessages(new Resources.Documents.MetadataResources.SystemMessagesQuery() { ById = request.ById }, cancellationToken);
+    return new SystemMessagesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.SystemMessage>>(systemMessages)!);
   }
 
   public async Task<CountriesQueryResults> Handle(Contract.Metadatas.CountriesQuery request, CancellationToken cancellationToken)

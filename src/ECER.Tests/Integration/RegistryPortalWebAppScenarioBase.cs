@@ -34,6 +34,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Application draftTestApplication = null!;
   private bcgov_DocumentUrl testDocument1 = null!;
 
+  private ecer_SystemMessage testSystemMessage = null!;
   private ecer_Communication testCommunication1 = null!;
   private ecer_Communication testCommunication2 = null!;
   private ecer_Communication testCommunication3 = null!;
@@ -148,6 +149,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     submittedTestApplicationCharacterRef = AddCharacterReferenceToApplication(context, submittedTestApplication3);
 
     testDocument1 = GetOrAddDocument(context, AuthenticatedBcscUser, "https://example.com/document1.pdf");
+    testSystemMessage = GetOrAddSystemMessage(context);
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2", null);
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3", null);
@@ -199,6 +201,29 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     context.AddLink(registrant, Contact.Fields.bcgov_contact_bcgov_documenturl, document);
 
     return document;
+  }
+
+  private ecer_SystemMessage GetOrAddSystemMessage(EcerContext context)
+  {
+    var systemMessage = context.ecer_SystemMessageSet.FirstOrDefault();
+
+    if (systemMessage == null)
+    {
+      systemMessage = new ecer_SystemMessage
+      {
+        ecer_name = "test",
+        ecer_startdate = DateTime.Now,
+        ecer_enddate = DateTime.Now.AddDays(100),
+        ecer_message = "test message",
+        ecer_portaltag = "test",
+        ecer_subject = "test",
+        StatusCode = ecer_SystemMessage_StatusCode.Active,
+        StateCode = ecer_systemmessage_statecode.Active,
+      };
+      context.AddObject(systemMessage);
+    }
+
+    return systemMessage;
   }
 
   private Contact GetOrAddApplicant(EcerContext context, string identityProvider, string userId)
