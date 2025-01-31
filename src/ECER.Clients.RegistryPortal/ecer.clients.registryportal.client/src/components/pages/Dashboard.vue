@@ -40,7 +40,6 @@
           </v-card>
         </v-col>
       </v-row>
-      <!-- user provided id waiting for verification-->
 
       <v-row v-if="messageStore.unreadMessageCount > 0" justify="center">
         <v-col>
