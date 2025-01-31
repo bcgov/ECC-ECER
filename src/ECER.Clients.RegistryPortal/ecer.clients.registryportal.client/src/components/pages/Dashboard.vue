@@ -3,24 +3,10 @@
   <PageContainer :margin-top="false">
     <Loading v-if="showLoading"></Loading>
     <div v-else>
-      <v-row v-if="!userStore.isVerified" justify="center">
-        <v-col cols="12">
-          <v-card :rounded="0" flat color="background-light" class="pa-4">
-            <v-card-item class="ma-4">
-              <h3>Your account is being reviewed</h3>
-              <p class="mt-2">
-                We're finishing setting up your account for you. Once we're done you'll be able to do things like view your certification, renew it or apply for
-                new certification.
-              </p>
-              <p class="mt-2">We'll send you a message as soon as your account is ready. It may take 1-3 business days.</p>
-            </v-card-item>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row justify="center">
+      <v-row v-if="!userStore.isUserVerifiedAndIdentityVerified" justify="center">
         <v-col cols="12">
           <!-- user has not provided id -->
-          <v-card :rounded="0" flat color="background-light" class="pa-4">
+          <v-card v-if="userStore.isIdentityStatusUnverified" :rounded="0" flat color="background-light" class="pa-4">
             <v-card-item class="ma-4">
               <h3>ID needed to complete account setup</h3>
               <p class="mt-2">
@@ -31,14 +17,25 @@
               </v-btn>
             </v-card-item>
           </v-card>
-          <!-- user provided id -->
-          <v-card :rounded="0" flat color="background-light" class="pa-4">
+          <!-- user provided id waiting for verification-->
+          <v-card v-else-if="userStore.isIdentityStatusReadyForVerification" :rounded="0" flat color="background-light" class="pa-4">
             <v-card-item class="ma-4">
               <h3>ID Pending review</h3>
               <p class="mt-2">
                 Before you can submit new applications or access existing certifications, we need to verify your identity by reviewing your ID.
               </p>
               <p class="mt-2 font-weight-bold">We have received your IDs. We will email you when our review is complete in 2-3 business days.</p>
+            </v-card-item>
+          </v-card>
+          <!-- user has not been verified -->
+          <v-card v-else="!userStore.isVerified" :rounded="0" flat color="background-light" class="pa-4">
+            <v-card-item class="ma-4">
+              <h3>Your account is being reviewed</h3>
+              <p class="mt-2">
+                We're finishing setting up your account for you. Once we're done you'll be able to do things like view your certification, renew it or apply for
+                new certification.
+              </p>
+              <p class="mt-2">We'll send you a message as soon as your account is ready. It may take 1-3 business days.</p>
             </v-card-item>
           </v-card>
         </v-col>
@@ -56,7 +53,7 @@
       </v-row>
 
       <!-- Your ECE applications -->
-      <v-row v-if="applications && userStore.isVerified && showApplicationCard" justify="center">
+      <v-row v-if="applications && userStore.isUserVerifiedAndIdentityVerified && showApplicationCard" justify="center">
         <v-col>
           <v-row>
             <v-col cols="12">
@@ -67,7 +64,7 @@
       </v-row>
 
       <!-- Your ECE certifications -->
-      <v-row v-if="userStore.isVerified" justify="center" class="mt-6">
+      <v-row v-if="userStore.isUserVerifiedAndIdentityVerified" justify="center" class="mt-6">
         <v-col>
           <v-row>
             <v-col cols="12">
@@ -126,7 +123,7 @@
               </ActionCard>
             </v-col>
 
-            <v-col v-if="userStore.isVerified" cols="12" sm="6" lg="4">
+            <v-col v-if="userStore.isUserVerifiedAndIdentityVerified" cols="12" sm="6" lg="4">
               <ActionCard title="Your profile" icon="mdi-account-circle">
                 <template #content>Manage your names, address and contact information.</template>
                 <template #action>
@@ -290,7 +287,7 @@ export default defineComponent({
       );
     },
     showOptions(): boolean {
-      return this.certificationStore.hasCertifications && !this.showApplicationCard;
+      return this.certificationStore.hasCertifications && !this.showApplicationCard && this.userStore.isUserVerifiedAndIdentityVerified;
     },
   },
 

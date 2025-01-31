@@ -276,7 +276,7 @@ router.beforeEach(async (to, _) => {
     };
   }
 
-  if (to.meta.requiresVerification && !userStore.isVerified) {
+  if (to.meta.requiresVerification && !userStore.isUserVerifiedAndIdentityVerified) {
     return {
       path: "/",
     };
