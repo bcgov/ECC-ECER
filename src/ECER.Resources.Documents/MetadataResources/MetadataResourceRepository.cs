@@ -37,7 +37,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
   public async Task<IEnumerable<SystemMessage>> QuerySystemMessages(SystemMessagesQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    var systemMessages = context.ecer_SystemMessageSet;
+    var systemMessages = context.ecer_SystemMessageSet.Where(m => m.StatusCode == ecer_SystemMessage_StatusCode.Active);
     if (query.ById != null) systemMessages = systemMessages.Where(r => r.ecer_SystemMessageId == Guid.Parse(query.ById));
 
     return mapper.Map<IEnumerable<SystemMessage>>(systemMessages)!.ToList();
