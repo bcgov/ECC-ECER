@@ -2,6 +2,9 @@
   <v-row>
     <v-col cols="12" md="12" lg="12" xl="12">
       <v-row no-gutters>
+        <v-col cols="12" v-for="(systemMessage, index) in configStore.$state.systemMessages">
+          <Banner v-if="systemMessage.portalTags && systemMessage.portalTags.includes('REFERENCES')" type="info" :title="systemMessage.message" />
+        </v-col>
         <v-col>
           <p>
             <b>{{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</b>
@@ -77,7 +80,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import { useConfigStore } from "@/store/config";
 import { useWizardStore } from "@/store/wizard";
 import { CertificationType, WorkExperienceType } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
@@ -90,7 +93,8 @@ export default defineComponent({
   },
   setup: () => {
     const wizardStore = useWizardStore();
-    return { wizardStore, WorkExperienceType };
+    const configStore = useConfigStore();
+    return { wizardStore, configStore, WorkExperienceType };
   },
   data() {
     return {

@@ -3,11 +3,10 @@
     <v-container><h1>Validate an ECE certificate</h1></v-container>
   </v-sheet>
   <v-container>
-    <v-row class="mt-10 mb-10">
-      <Banner
-        type="info"
-        title="We're working to resolve technical issues affecting certificate information in the My ECE Registry platform. Recent users are asked to review their profiles for accuracy and contact the ECE Registry at 1-888-338-6622 if there are any issues."
-      />
+    <v-row v-for="(systemMessage, index) in configStore.$state.systemMessages" class="mt-10 mb-10">
+      <v-col v-if="systemMessage.portalTags && systemMessage.portalTags.includes('LOOKUP')" cols="12">
+        <Banner type="info" :title="systemMessage.message" />
+      </v-col>
     </v-row>
     <v-row>
       <v-col class="text-break">
@@ -120,6 +119,7 @@ import { useLoadingStore } from "@/store/loading";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import { postLookupCertificate } from "@/api/certification";
+import { useConfigStore } from "@/store/config";
 import Banner from "@/components/Banner.vue";
 import * as Rules from "../utils/formRules";
 import EceRecaptcha from "./inputs/EceRecaptcha.vue";
@@ -139,10 +139,11 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const lookupCertificationStore = useLookupCertificationStore();
     const { mobile } = useDisplay();
+    const configStore = useConfigStore();
     const router = useRouter();
     const loadingStore = useLoadingStore();
 
-    return { alertStore, Rules, mobile, lookupCertificationStore, loadingStore, router, isNumber, formatDate };
+    return { alertStore, configStore, Rules, mobile, lookupCertificationStore, loadingStore, router, isNumber, formatDate };
   },
   data(): LookupCertificationData {
     return {

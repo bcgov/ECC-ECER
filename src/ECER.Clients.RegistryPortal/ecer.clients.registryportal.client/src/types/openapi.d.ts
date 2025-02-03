@@ -309,6 +309,7 @@ declare namespace Components {
         export interface PortalInvitationQueryResult {
             portalInvitation?: PortalInvitation;
         }
+        export type PortalTags = "LOGIN" | "LOOKUP" | "REFERENCES";
         /**
          * Previous Name
          */
@@ -422,11 +423,11 @@ declare namespace Components {
         }
         export interface SystemMessage {
             name?: string | null;
-            portalTag?: string | null;
             subject?: string | null;
             message?: string | null;
             startDate?: string; // date-time
             endDate?: string; // date-time
+            portalTags?: PortalTags[] | null;
         }
         export interface Transcript {
             educationalInstitutionName?: string | null;
@@ -1577,6 +1578,7 @@ export type OneYearRenewalexplanations = Components.Schemas.OneYearRenewalexplan
 export type OptOutReferenceRequest = Components.Schemas.OptOutReferenceRequest;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
+export type PortalTags = Components.Schemas.PortalTags;
 export type PreviousName = Components.Schemas.PreviousName;
 export type PreviousNameSources = Components.Schemas.PreviousNameSources;
 export type PreviousNameStage = Components.Schemas.PreviousNameStage;
