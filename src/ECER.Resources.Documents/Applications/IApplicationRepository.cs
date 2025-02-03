@@ -71,7 +71,7 @@ public record ProfessionalDevelopment(string? Id, string? CourseName, string? Or
   public string? OrganizationContactInformation { get; set; }
   public string? OrganizationEmailAddress { get; set; }
   public string? InstructorName { get; set; }
-  public int? NumberOfHours { get; set; }
+  public double? NumberOfHours { get; set; }
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
   public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
