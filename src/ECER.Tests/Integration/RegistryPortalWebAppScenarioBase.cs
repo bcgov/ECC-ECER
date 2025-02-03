@@ -1,4 +1,5 @@
-﻿using ECER.Utilities.DataverseSdk.Model;
+﻿using ECER.Clients.RegistryPortal.Server;
+using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -215,7 +216,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         ecer_startdate = DateTime.Now.AddYears(-3),
         ecer_enddate = DateTime.Now.AddYears(3),
         ecer_message = "test message",
-        ecer_portaltag = "test",
+        ecer_PortalTags = new List<ecer_PortalTags>() { ecer_PortalTags.LOGIN, ecer_PortalTags.REFERENCES, ecer_PortalTags.REFERENCES },
         ecer_subject = "test",
         StatusCode = ecer_SystemMessage_StatusCode.Active,
         StateCode = ecer_systemmessage_statecode.Active,
@@ -391,7 +392,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private void MarkCertificateAsInactive(EcerContext context, Guid certificateId)
   {
-    var certificate = context.ecer_CertificateSet.FirstOrDefault(d => d.Id == certificateId); ;
+    var certificate = context.ecer_CertificateSet.FirstOrDefault(d => d.Id == certificateId);
     context.Detach(certificate);
     if (certificate != null)
     {
