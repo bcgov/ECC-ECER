@@ -39,8 +39,7 @@
           <EceTextField
             v-model="numberOfHours"
             label="How many hours was it?"
-            :rules="[Rules.required('Enter your course of workshop hours')]"
-            @keypress="isNumber($event)"
+            :rules="[Rules.required('Enter your course or workshop hours'), Rules.numberToDecimalPlaces()]"
           ></EceTextField>
         </v-col>
       </v-row>
@@ -286,7 +285,7 @@
       :rules="[
         () =>
           totalHours >= hoursRequired ||
-          `You need ${hoursRequired} hours of professional development. You need to add ${hoursRequired - totalHours} more hours.`,
+          `You need ${hoursRequired} hours of professional development. You need to add ${(hoursRequired - totalHours).toFixed(2)} more hours.`,
       ]"
       auto-hide="auto"
     ></v-input>

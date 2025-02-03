@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Contracts;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
@@ -362,7 +361,7 @@ public record Application
   public string? RenewalExplanationOther { get; set; }
   public ApplicationOrigin? Origin { get; set; }
 }
-public record ProfessionalDevelopment([Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] int NumberOfHours)
+public record ProfessionalDevelopment([Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] double NumberOfHours)
 {
   public string? Id { get; set; }
   public string? OrganizationContactInformation { get; set; }

@@ -2,7 +2,7 @@
   <v-tooltip :text="`${hoursRemaining} Hours Remaining`" location="top">
     <template #activator="{ props }">
       <v-progress-linear v-bind="props" v-model="percentHours" rounded="lg" height="25" color="#67cb7b" bg-color="#f0f2f4" bg-opacity="1">
-        <strong>{{ `${Math.ceil(totalHours)}/${hoursRequired} hours` }}</strong>
+        <strong>{{ `${totalHours}/${hoursRequired} hours` }}</strong>
       </v-progress-linear>
     </template>
   </v-tooltip>
@@ -28,7 +28,7 @@ export default defineComponent({
       return (this.totalHours / this.hoursRequired) * 100;
     },
     hoursRemaining(): number {
-      return this.hoursRequired - this.totalHours;
+      return Number((this.hoursRequired - this.totalHours).toFixed(2));
     },
   },
 });
