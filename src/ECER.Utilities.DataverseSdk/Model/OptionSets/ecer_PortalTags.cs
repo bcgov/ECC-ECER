@@ -12,19 +12,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 {
 	
 	
+	/// <summary>
+	/// Ability to set which pages it displays on (portal landing page, public validation, references)
+	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_VerificationStatus
+	public enum ecer_PortalTags
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ReadyforVerifications = 621870001,
+		LOGIN = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Unverified = 621870000,
+		LOOKUP = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Verified = 621870002,
+		REFERENCES = 621870002,
 	}
 }
 #pragma warning restore CS1591

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.EnumMapping;
 using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Documents.MetadataResources;
@@ -16,9 +17,9 @@ internal class MetadataResourceRepositoryMapper : Profile
     .ForCtorParam(nameof(SystemMessage.Message), opt => opt.MapFrom(src => src.ecer_message))
     .ForCtorParam(nameof(SystemMessage.Subject), opt => opt.MapFrom(src => src.ecer_subject))
     .ForCtorParam(nameof(SystemMessage.Name), opt => opt.MapFrom(src => src.ecer_name))
-    .ForCtorParam(nameof(SystemMessage.PortalTag), opt => opt.MapFrom(src => src.ecer_portaltag))
     .ForMember(d => d.StartDate, opts => opts.MapFrom(s => s.ecer_startdate))
     .ForMember(d => d.EndDate, opts => opts.MapFrom(s => s.ecer_enddate))
+    .ForMember(d => d.PortalTags, opts => opts.MapFrom(s => s.ecer_PortalTags))
     .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ecer_Country, Country>(MemberList.Source)
@@ -26,5 +27,9 @@ internal class MetadataResourceRepositoryMapper : Profile
     .ForCtorParam(nameof(Country.CountryName), opt => opt.MapFrom(src => src.ecer_Name))
     .ForCtorParam(nameof(Country.CountryCode), opt => opt.MapFrom(src => src.ecer_ShortName))
     .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<PortalTags, ecer_PortalTags>()
+    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+    .ReverseMap();
   }
 }

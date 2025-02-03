@@ -66,7 +66,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_enddate = "ecer_enddate";
 			public const string ecer_message = "ecer_message";
 			public const string ecer_name = "ecer_name";
-			public const string ecer_portaltag = "ecer_portaltag";
+			public const string ecer_PortalTags = "ecer_portaltags";
+			public const string ecer_portaltagsName = "ecer_portaltagsname";
 			public const string ecer_startdate = "ecer_startdate";
 			public const string ecer_subject = "ecer_subject";
 			public const string ecer_SystemMessageId = "ecer_systemmessageid";
@@ -292,21 +293,35 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Ability to set which pages it displays on (portal landing page, public validation, references)
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portaltag")]
-		public string ecer_portaltag
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portaltags")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_PortalTags> ecer_PortalTags
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_portaltag");
+				return EntityOptionSetEnum.GetMultiEnum<ecer_PortalTags>(this, "ecer_portaltags");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_portaltag", value);
+				this.SetAttributeValue("ecer_portaltags", EntityOptionSetEnum.GetMultiEnum(this, "ecer_portaltags", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_portaltagsname")]
+		public string ecer_portaltagsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_portaltags"))
+				{
+					return this.FormattedValues["ecer_portaltags"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

@@ -11,11 +11,20 @@ public interface IMetadataResourceRepository
 
 public record Province(string ProvinceId, string ProvinceName);
 public record Country(string CountryId, string CountryName, string CountryCode);
-public record SystemMessage(string Name, string PortalTag, string Subject, string Message)
+public record SystemMessage(string Name, string Subject, string Message)
 {
   public DateTime StartDate { get; set; }
   public DateTime EndDate { get; set; }
-};
+  public IEnumerable<PortalTags> PortalTags { get; set; } = Array.Empty<PortalTags>();
+}
+
+public enum PortalTags
+{
+  LOGIN,
+  LOOKUP,
+  REFERENCES
+}
+
 public record ProvincesQuery
 {
   public string? ById { get; set; }
