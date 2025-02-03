@@ -205,15 +205,15 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private ecer_SystemMessage GetOrAddSystemMessage(EcerContext context)
   {
-    var systemMessage = context.ecer_SystemMessageSet.FirstOrDefault();
+    var systemMessage = context.ecer_SystemMessageSet.FirstOrDefault(item => item.ecer_name == "test");
 
     if (systemMessage == null)
     {
       systemMessage = new ecer_SystemMessage
       {
         ecer_name = "test",
-        ecer_startdate = DateTime.Now,
-        ecer_enddate = DateTime.Now.AddDays(100),
+        ecer_startdate = DateTime.Now.AddYears(-3),
+        ecer_enddate = DateTime.Now.AddYears(3),
         ecer_message = "test message",
         ecer_portaltag = "test",
         ecer_subject = "test",

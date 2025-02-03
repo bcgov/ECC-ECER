@@ -24,6 +24,10 @@ public class MetadataHandlers(
     ArgumentNullException.ThrowIfNull(request);
 
     var systemMessages = await metadataResourceRepository.QuerySystemMessages(new Resources.Documents.MetadataResources.SystemMessagesQuery() { ById = request.ById }, cancellationToken);
+
+    // Return only active system messages
+    systemMessages = systemMessages.Where(m => m.StartDate < DateTime.Now && m.EndDate > DateTime.Now).ToList();
+
     return new SystemMessagesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.SystemMessage>>(systemMessages)!);
   }
 
