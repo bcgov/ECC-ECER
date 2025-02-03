@@ -1,15 +1,16 @@
 import type { UserManagerSettings } from "oidc-client-ts";
 import { defineStore } from "pinia";
 
-import { getConfiguration, getProvinceList } from "@/api/configuration";
+import { getConfiguration, getProvinceList, getSystemMessages } from "@/api/configuration";
 import oidcConfig from "@/oidc-config";
 import type { DropdownWrapper } from "@/types/form";
-import type { Components } from "@/types/openapi";
+import type { Components, SystemMessage } from "@/types/openapi";
 import { ProvinceTerritoryType } from "@/utils/constant";
 import { sortArray } from "@/utils/functions";
 
 export interface UserState {
   applicationConfiguration: Components.Schemas.ApplicationConfiguration;
+  systemMessages: SystemMessage[];
   provinceList: DropdownWrapper<String>[];
 }
 
@@ -20,6 +21,7 @@ export const useConfigStore = defineStore("config", {
   state: (): UserState => ({
     applicationConfiguration: {} as Components.Schemas.ApplicationConfiguration,
     provinceList: [] as DropdownWrapper<String>[],
+    systemMessages: [] as SystemMessage[],
   }),
   getters: {
     kcOidcConfiguration: (state): UserManagerSettings => {
@@ -43,12 +45,15 @@ export const useConfigStore = defineStore("config", {
 
   actions: {
     async initialize(): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> {
-      const [configuration, provinceList] = await Promise.all([getConfiguration(), getProvinceList()]);
+      const [configuration, provinceList, systemMessages] = await Promise.all([getConfiguration(), getProvinceList(), getSystemMessages()]);
 
       if (configuration !== null && configuration !== undefined) {
         this.applicationConfiguration = configuration;
       }
 
+      if (systemMessages !== null && systemMessages !== undefined) {
+        this.systemMessages = systemMessages;
+      }
       if (provinceList !== null && provinceList !== undefined) {
         this.provinceList = provinceList
           .map((province) => {
