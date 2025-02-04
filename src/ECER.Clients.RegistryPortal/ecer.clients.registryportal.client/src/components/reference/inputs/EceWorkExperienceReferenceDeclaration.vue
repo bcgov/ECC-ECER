@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="12" v-for="(systemMessage, index) in configStore.systemMessages">
+    <v-col cols="12" v-for="systemMessage in configStore.systemMessages">
       <Banner
         v-if="systemMessage.portalTags && systemMessage.portalTags.includes('REFERENCES')"
         type="info"
