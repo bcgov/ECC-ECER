@@ -1,6 +1,9 @@
-﻿using MediatR;
+﻿using ECER.Managers.Registry.Contract.Applications;
+using MediatR;
 
 namespace ECER.Managers.Registry.Contract.Certifications;
+
+public record RequestCertificationPdfCommand(string certificationId, string userId) : IRequest<CertificationRequestPdfResult>;
 
 public record UserCertificationQueryBase : IRequest<CertificationsQueryResults>
 {
@@ -29,6 +32,7 @@ public record Certification(string Id)
   public DateTime? PrintDate { get; set; }
   public bool? HasConditions { get; set; }
   public string? LevelName { get; set; }
+  public CertificatePDFGeneration? CertificatePDFGeneration { get; set; }
   public CertificateStatusCode? StatusCode { get; set; }
   public YesNoNull? IneligibleReference { get; set; }
   public IEnumerable<CertificationLevel> Levels { get; set; } = Array.Empty<CertificationLevel>();
@@ -71,8 +75,19 @@ public enum CertificateStatusCode
   Suspended
 }
 
+public enum CertificatePDFGeneration
+{
+  No,
+  Requested,
+  Yes,
+}
+
 public enum YesNoNull
 {
   No,
   Yes,
+}
+
+public record CertificationRequestPdfResult(string CertificationId)
+{
 }
