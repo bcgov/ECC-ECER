@@ -7,5 +7,6 @@ public class ConfigurationMapper : Profile
   public ConfigurationMapper()
   {
     CreateMap<Managers.Admin.Contract.Metadatas.Province, Province>();
+    CreateMap<Managers.Admin.Contract.Metadatas.SystemMessage, SystemMessage>();
   }
 }
