@@ -241,7 +241,7 @@
     </v-row>
     <v-row>
       <v-col sm="12" md="10" lg="8" xl="6">
-        <ProgressBar :hours-required="hoursRequired" :total-hours="totalHours"></ProgressBar>
+        <ProgressBar :hours-required="hoursRequired" :total-hours="totalHours" :decimal-places="2"></ProgressBar>
       </v-col>
     </v-row>
     <v-row v-if="modelValue.length > 0" v-for="(professionalDevelopment, index) in modelValue">
