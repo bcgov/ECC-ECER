@@ -6,7 +6,7 @@
     </PageContainer>
   </v-sheet>
   <PageContainer :margin-top="false">
-    <div v-for="(systemMessage, index) in configStore.systemMessages">
+    <div v-for="systemMessage in configStore.systemMessages">
       <div v-if="systemMessage.portalTags && systemMessage.portalTags.includes('LOGIN')" class="d-flex flex-column ga-3 mb-10">
         <Banner type="info" :title="systemMessage.message ? systemMessage.message : ''" />
       </div>
