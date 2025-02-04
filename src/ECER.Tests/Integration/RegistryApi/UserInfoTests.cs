@@ -2,11 +2,9 @@
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Users;
 using ECER.Resources.Accounts.Registrants;
-using ECER.Resources.Documents.Applications;
 using ECER.Utilities.Security;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System;
 using System.Net;
 using Xunit.Abstractions;
 using Address = ECER.Clients.RegistryPortal.Server.Users.Address;
@@ -101,6 +99,8 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     userProfile.LastName.ShouldBe(request.LastName);
     userProfile.DateOfBirth.ShouldBe(request.DateOfBirth);
     userProfile.Phone.ShouldBe(request.Phone);
+    //since this is a created BCSC user IdentityVerificationStatus should be automatically set to verified
+    userProfile.IdentityVerificationStatus.ShouldBe(Clients.RegistryPortal.Server.Users.VerificationStatus.Verified);
   }
 
   [Fact]

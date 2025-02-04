@@ -61,6 +61,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
         .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => s.ecer_previousname_Contactid))
         .ForMember(d => d.RegistrationNumber, opts => opts.MapFrom(s => s.ecer_ClientID))
         .ForMember(d => d.IsRegistrant, opts => opts.Ignore())
+        .ForMember(d => d.IdentityVerificationStatus, opts => opts.MapFrom(s => s.ecer_BCeIDVerificationStatus))
         .ReverseMap()
         .ValidateMemberList(MemberList.Source)
         .ForSourceMember(s => s.ResidentialAddress, opts => opts.DoNotValidate())

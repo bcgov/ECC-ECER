@@ -72,7 +72,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_For = "ecer_for";
 			public const string ecer_forName = "ecer_forname";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_Source = "ecer_source";
+			public const string ecer_SourceToText = "ecer_sourcetotext";
+			public const string ecer_sourcetotextName = "ecer_sourcetotextname";
 			public const string ecer_Text = "ecer_text";
+			public const string ecer_TexttoSource = "ecer_texttosource";
+			public const string ecer_texttosourceName = "ecer_texttosourcename";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -384,6 +389,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_source")]
+		public string ecer_Source
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_source");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_source", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sourcetotext")]
+		public System.Nullable<bool> ecer_SourceToText
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_sourcetotext");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_sourcetotext", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sourcetotextname")]
+		public string ecer_sourcetotextName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_sourcetotext"))
+				{
+					return this.FormattedValues["ecer_sourcetotext"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_text")]
 		public string ecer_Text
 		{
@@ -396,6 +448,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_text", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_texttosource")]
+		public System.Nullable<bool> ecer_TexttoSource
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_texttosource");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_texttosource", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_texttosourcename")]
+		public string ecer_texttosourceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_texttosource"))
+				{
+					return this.FormattedValues["ecer_texttosource"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

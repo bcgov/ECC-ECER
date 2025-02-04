@@ -53,9 +53,17 @@ public record UserInfo([Required] string LastName, [Required] DateOnly DateOfBir
   public string? MiddleName { get; set; }
   public string? RegistrationNumber { get; set; }
   public bool IsVerified { get; set; }
+  public VerificationStatus IdentityVerificationStatus { get; set; }
   public int UnreadMessagesCount { get; set; }
   public Address? ResidentialAddress { get; set; }
   public Address? MailingAddress { get; set; }
 
   public bool IsRegistrant { get; set; }
+}
+
+public enum VerificationStatus
+{
+  ReadyforVerifications,
+  Unverified,
+  Verified
 }

@@ -39,6 +39,10 @@ export const useUserStore = defineStore("user", {
     phoneNumber: (state): string => state.userProfile?.phone ?? "",
     isRegistrant: (state): boolean => state.userInfo?.isRegistrant ?? false,
     isVerified: (state): boolean => state.userInfo?.isVerified ?? false,
+    isIdentityStatusVerified: (state): boolean => state.userInfo?.identityVerificationStatus === "Verified",
+    isIdentityStatusUnverified: (state): boolean => state.userInfo?.identityVerificationStatus === "Unverified",
+    isIdentityStatusReadyForVerification: (state): boolean => state.userInfo?.identityVerificationStatus === "ReadyforVerifications",
+    isUserVerifiedAndIdentityVerified: (state): boolean => (state.userInfo?.isVerified ?? false) && state.userInfo?.identityVerificationStatus === "Verified", //they should have full access to dashboard
   },
   actions: {
     setUserInfo(userInfo: Components.Schemas.UserInfo | null): void {

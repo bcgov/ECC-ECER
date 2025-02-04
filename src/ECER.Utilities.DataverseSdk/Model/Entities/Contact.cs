@@ -662,6 +662,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_agreetotermsandconditionsName = "ecer_agreetotermsandconditionsname";
 			public const string ecer_application_Applicantid_contact = "ecer_application_Applicantid_contact";
 			public const string ecer_applicationassessment_ApplicantId = "ecer_applicationassessment_ApplicantId";
+			public const string ecer_BCeIDVerificationStatus = "ecer_bceidverificationstatus";
+			public const string ecer_bceidverificationstatusName = "ecer_bceidverificationstatusname";
 			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
 			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
 			public const string ecer_certificatesummary_RegistrantId = "ecer_certificatesummary_RegistrantId";
@@ -694,6 +696,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_GenerateCertificate = "ecer_generatecertificate";
 			public const string ecer_generatecertificateName = "ecer_generatecertificatename";
 			public const string ecer_guardianreference_Applicantid = "ecer_guardianreference_Applicantid";
+			public const string ecer_HasBCeID = "ecer_hasbceid";
+			public const string ecer_hasbceidName = "ecer_hasbceidname";
+			public const string ecer_HasBCSC = "ecer_hasbcsc";
+			public const string ecer_hasbcscName = "ecer_hasbcscname";
 			public const string ecer_HasCertificate = "ecer_hascertificate";
 			public const string ecer_HasCertificateCancelled = "ecer_hascertificatecancelled";
 			public const string ecer_hascertificatecancelledName = "ecer_hascertificatecancelledname";
@@ -4078,6 +4084,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bceidverificationstatus")]
+		public virtual ecer_VerificationStatus? ecer_BCeIDVerificationStatus
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_VerificationStatus?)(EntityOptionSetEnum.GetEnum(this, "ecer_bceidverificationstatus")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_bceidverificationstatus", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bceidverificationstatusname")]
+		public string ecer_bceidverificationstatusName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_bceidverificationstatus"))
+				{
+					return this.FormattedValues["ecer_bceidverificationstatus"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationlevel")]
 		public string ecer_CertificationLevel
 		{
@@ -4180,6 +4218,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_generatecertificate"))
 				{
 					return this.FormattedValues["ecer_generatecertificate"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasbceid")]
+		public System.Nullable<bool> ecer_HasBCeID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_hasbceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hasbceid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasbceidname")]
+		public string ecer_hasbceidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hasbceid"))
+				{
+					return this.FormattedValues["ecer_hasbceid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasbcsc")]
+		public System.Nullable<bool> ecer_HasBCSC
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_hasbcsc");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hasbcsc", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasbcscname")]
+		public string ecer_hasbcscName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hasbcsc"))
+				{
+					return this.FormattedValues["ecer_hasbcsc"];
 				}
 				else
 				{

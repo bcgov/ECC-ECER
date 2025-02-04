@@ -461,6 +461,7 @@ declare namespace Components {
             middleName?: string | null;
             registrationNumber?: string | null;
             isVerified?: boolean;
+            identityVerificationStatus?: VerificationStatus;
             unreadMessagesCount?: number; // int32
             residentialAddress?: /* Address */ Address;
             mailingAddress?: /* Address */ Address;
@@ -482,6 +483,7 @@ declare namespace Components {
             mailingAddress?: /* Address */ Address;
             previousNames?: /* Previous Name */ PreviousName[] | null;
         }
+        export type VerificationStatus = "ReadyforVerifications" | "Unverified" | "Verified";
         export interface VersionMetadata {
             version?: string | null;
             timestamp?: string | null;
@@ -1603,6 +1605,7 @@ export type UnabletoProvideReferenceReasons = Components.Schemas.UnabletoProvide
 export type UpdateReferenceResponse = Components.Schemas.UpdateReferenceResponse;
 export type UserInfo = Components.Schemas.UserInfo;
 export type UserProfile = Components.Schemas.UserProfile;
+export type VerificationStatus = Components.Schemas.VerificationStatus;
 export type VersionMetadata = Components.Schemas.VersionMetadata;
 export type WorkExperienceRefStage = Components.Schemas.WorkExperienceRefStage;
 export type WorkExperienceReference = Components.Schemas.WorkExperienceReference;

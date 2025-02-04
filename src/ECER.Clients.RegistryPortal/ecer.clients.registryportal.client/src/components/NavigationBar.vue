@@ -26,7 +26,7 @@
               </v-list-item>
               <v-divider />
               <v-list-subheader>{{ userStore.firstName }}</v-list-subheader>
-              <v-list-item v-if="userStore.isVerified" link>
+              <v-list-item v-if="userStore.isUserVerifiedAndIdentityVerified" link>
                 <v-list-item-title>
                   <router-link class="small" to="/profile">My profile</router-link>
                 </v-list-item-title>
@@ -49,7 +49,7 @@
                 </v-btn>
               </template>
               <v-list>
-                <v-list-item v-if="userStore.isVerified" link>
+                <v-list-item v-if="userStore.isUserVerifiedAndIdentityVerified" link>
                   <v-list-item-title>
                     <router-link class="small" to="/profile">My profile</router-link>
                   </v-list-item-title>
