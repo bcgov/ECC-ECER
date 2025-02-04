@@ -3,7 +3,7 @@
     <v-container><h1>Validate an ECE certificate</h1></v-container>
   </v-sheet>
   <v-container>
-    <v-row v-for="(systemMessage, index) in configStore.$state.systemMessages" class="mt-10 mb-10">
+    <v-row v-for="(systemMessage, index) in configStore.systemMessages" class="mt-10 mb-10" :index="index">
       <v-col v-if="systemMessage.portalTags && systemMessage.portalTags.includes('LOOKUP')" cols="12">
         <Banner type="info" :title="systemMessage.message ? systemMessage.message : ''" />
       </v-col>
