@@ -8,7 +8,7 @@
   <PageContainer :margin-top="false">
     <div v-for="(systemMessage, index) in configStore.$state.systemMessages">
       <div v-if="systemMessage.portalTags && systemMessage.portalTags.includes('LOGIN')" class="d-flex flex-column ga-3 mb-10">
-        <Banner type="info" :title="systemMessage.message" />
+        <Banner type="info" :title="systemMessage.message ? systemMessage.message : ''" />
       </div>
     </div>
     <div class="d-flex flex-column ga-3">

@@ -5,7 +5,7 @@
   <v-container>
     <v-row v-for="(systemMessage, index) in configStore.$state.systemMessages" class="mt-10 mb-10">
       <v-col v-if="systemMessage.portalTags && systemMessage.portalTags.includes('LOOKUP')" cols="12">
-        <Banner type="info" :title="systemMessage.message" />
+        <Banner type="info" :title="systemMessage.message ? systemMessage.message : ''" />
       </v-col>
     </v-row>
     <v-row>
