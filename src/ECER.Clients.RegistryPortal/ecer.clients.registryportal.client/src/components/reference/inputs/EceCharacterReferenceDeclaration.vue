@@ -74,7 +74,7 @@ import { useConfigStore } from "@/store/config";
 import { useWizardStore } from "@/store/wizard";
 import { CertificationType } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
-import Banner from "../Banner.vue";
+import Banner from "../../Banner.vue";
 
 export default defineComponent({
   name: "EceReferenceIntroduction",
