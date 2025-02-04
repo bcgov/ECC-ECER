@@ -77,6 +77,10 @@ declare namespace Components {
             endDate?: string; // date-time
             displayOrder?: number; // int32
         }
+<<<<<<< HEAD
+=======
+        export type CertificatePDFGeneration = "No" | "Requested" | "Yes";
+>>>>>>> origin/release/1.0.10
         export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
         export interface Certification {
             id?: string | null;
@@ -89,6 +93,10 @@ declare namespace Components {
             hasConditions?: boolean | null;
             levelName?: string | null;
             statusCode?: CertificateStatusCode;
+<<<<<<< HEAD
+=======
+            certificatePDFGeneration?: CertificatePDFGeneration;
+>>>>>>> origin/release/1.0.10
             ineligibleReference?: YesNoNull;
             levels?: CertificationLevel[] | null;
             files?: CertificationFile[] | null;
@@ -309,7 +317,10 @@ declare namespace Components {
         export interface PortalInvitationQueryResult {
             portalInvitation?: PortalInvitation;
         }
+<<<<<<< HEAD
         export type PortalTags = "LOGIN" | "LOOKUP" | "REFERENCES";
+=======
+>>>>>>> origin/release/1.0.10
         /**
          * Previous Name
          */
@@ -420,14 +431,6 @@ declare namespace Components {
             addMoreWorkExperienceReference?: boolean | null;
             addMoreProfessionalDevelopment?: boolean | null;
             applicationType?: ApplicationTypes;
-        }
-        export interface SystemMessage {
-            name?: string | null;
-            subject?: string | null;
-            message?: string | null;
-            startDate?: string; // date-time
-            endDate?: string; // date-time
-            portalTags?: PortalTags[] | null;
         }
         export interface Transcript {
             educationalInstitutionName?: string | null;
@@ -694,6 +697,21 @@ declare namespace Paths {
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
         }
     }
+<<<<<<< HEAD
+=======
+    namespace CertificationRequestpdfPut {
+        namespace Parameters {
+            export type Id = string;
+        }
+        export interface PathParameters {
+            id?: Parameters.Id;
+        }
+        namespace Responses {
+            export type $200 = string;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+        }
+    }
+>>>>>>> origin/release/1.0.10
     namespace CertificationsLookupPost {
         export type RequestBody = Components.Schemas.CertificationLookupRequest;
         namespace Responses {
@@ -868,11 +886,14 @@ declare namespace Paths {
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
         }
     }
+<<<<<<< HEAD
     namespace SystemMessageGet {
         namespace Responses {
             export type $200 = Components.Schemas.SystemMessage[];
         }
     }
+=======
+>>>>>>> origin/release/1.0.10
     namespace UploadFile {
         namespace Parameters {
             export type FileId = string;
@@ -937,6 +958,7 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ProvinceGet.Responses.$200>
+<<<<<<< HEAD
   /**
    * systemMessage_get - Handles system messages queries
    */
@@ -945,6 +967,8 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.SystemMessageGet.Responses.$200>
+=======
+>>>>>>> origin/release/1.0.10
   /**
    * recaptcha_site_key_get - Obtains site key for recaptcha
    */
@@ -1097,6 +1121,17 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CertificationGet.Responses.$200>
+<<<<<<< HEAD
+=======
+  /**
+   * certification_requestpdf_put - Handles certification queries
+   */
+  'certification_requestpdf_put'(
+    parameters?: Parameters<Paths.CertificationRequestpdfPut.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CertificationRequestpdfPut.Responses.$200>
+>>>>>>> origin/release/1.0.10
   /**
    * certifications_lookup_post - Handles certifications lookup queries
    */
@@ -1214,6 +1249,7 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ProvinceGet.Responses.$200>
   }
+<<<<<<< HEAD
   ['/api/systemMessages']: {
     /**
      * systemMessage_get - Handles system messages queries
@@ -1224,6 +1260,8 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.SystemMessageGet.Responses.$200>
   }
+=======
+>>>>>>> origin/release/1.0.10
   ['/api/recaptchaSiteKey']: {
     /**
      * recaptcha_site_key_get - Obtains site key for recaptcha
@@ -1408,6 +1446,19 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CertificationGet.Responses.$200>
   }
+<<<<<<< HEAD
+=======
+  ['/api/certifications/RequestPdf/{id}']: {
+    /**
+     * certification_requestpdf_put - Handles certification queries
+     */
+    'put'(
+      parameters?: Parameters<Paths.CertificationRequestpdfPut.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CertificationRequestpdfPut.Responses.$200>
+  }
+>>>>>>> origin/release/1.0.10
   ['/api/certifications/lookup']: {
     /**
      * certifications_lookup_post - Handles certifications lookup queries
@@ -1539,6 +1590,7 @@ export type ApplicationSubmissionRequest = Components.Schemas.ApplicationSubmiss
 export type ApplicationTypes = Components.Schemas.ApplicationTypes;
 export type CancelDraftApplicationResponse = Components.Schemas.CancelDraftApplicationResponse;
 export type CertificateCondition = Components.Schemas.CertificateCondition;
+export type CertificatePDFGeneration = Components.Schemas.CertificatePDFGeneration;
 export type CertificateStatusCode = Components.Schemas.CertificateStatusCode;
 export type Certification = Components.Schemas.Certification;
 export type CertificationFile = Components.Schemas.CertificationFile;

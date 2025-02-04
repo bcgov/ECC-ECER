@@ -71,6 +71,19 @@ internal class CertificationRepository : ICertificationRepository
     return mapper.Map<IEnumerable<Certification>>(results)!.ToList();
   }
 
+  public async Task<string> RequestPdf(string certificateId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var certification = context.ecer_CertificateSet.FirstOrDefault(d => d.ecer_CertificateId == Guid.Parse(certificateId));
+    if (certification == null) throw new InvalidOperationException($"Certification '{certificateId}' not found");
+
+    certification.ecer_HasCertificatePDF = ecer_CertificatePDFGeneration.Requested;
+    context.UpdateObject(certification);
+
+    context.SaveChanges();
+    return certificateId;
+  }
+
   public async Task<IEnumerable<CertificationSummary>> QueryCertificateSummary(UserCertificationSummaryQuery query)
   {
     await Task.CompletedTask;

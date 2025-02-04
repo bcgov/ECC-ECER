@@ -43,8 +43,7 @@
             <EceTextField
               v-model="professionalDevelopment.numberOfHours"
               label="How many hours was it?"
-              :rules="[Rules.required('Enter your course of workshop hours')]"
-              @keypress="isNumber($event)"
+              :rules="[Rules.required('Enter your course or workshop hours'), Rules.numberToDecimalPlaces()]"
             ></EceTextField>
           </v-col>
         </v-row>

@@ -15,10 +15,8 @@ const uploadFile = async (
 ): Promise<ApiResponse<Components.Schemas.FileResponse>> => {
   const client = await getClient();
 
-  const parameters: Paths.UploadFile.PathParameters & Paths.UploadFile.HeaderParameters = {
+  const parameters: Paths.UploadFile.PathParameters = {
     fileId,
-    "file-classification": fileClassification,
-    "file-tag": fileTag,
   };
 
   const formData = new FormData();

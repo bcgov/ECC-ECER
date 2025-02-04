@@ -80,6 +80,18 @@ const required = (message = "This field is required") => {
 };
 
 /**
+ * Validates if a number has a specified number of decimal places.
+ *
+ * @param {number} [decimal=2] - The maximum number of decimal places allowed.
+ * @param {string} [message=`Input a number up to ${decimal} decimal places. Ex. ${Number(1).toFixed(decimal)}`] - The error message to display if the validation fails.
+ * @returns {function(string): boolean|string} A validation function that accepts a string and returns true if valid, or the error message if invalid.
+ */
+const numberToDecimalPlace = (decimal = 2, message = `Input a number up to ${decimal} decimal places. Ex. ${Number(1).toFixed(decimal)}`) => {
+  const regex = new RegExp(`^\\d+(\\.\\d{0,${decimal}})?$`);
+  return (v: string) => !v || regex.test(v) || message;
+};
+
+/**
  * Rule required for radio buttons
  * @param {String} message
  * @returns Function
@@ -209,6 +221,7 @@ export {
   hasCheckbox,
   validContactName,
   number,
+  numberToDecimalPlace as numberToDecimalPlaces,
   phoneNumber,
   postalCode,
   required,
