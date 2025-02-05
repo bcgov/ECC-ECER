@@ -11,9 +11,14 @@ const getProvinceList = async (): Promise<Components.Schemas.Province[] | null |
   return (await client.province_get()).data;
 };
 
+const getSystemMessages = async (): Promise<Components.Schemas.SystemMessage[] | null | undefined> => {
+  const client = await getClient(false);
+  return (await client.systemMessage_get()).data;
+};
+
 const getRecaptchaSiteKey = async (): Promise<string | null | undefined> => {
   const client = await getClient(false);
   return (await client.recaptcha_site_key_get()).data;
 };
 
-export { getConfiguration, getProvinceList, getRecaptchaSiteKey };
+export { getConfiguration, getProvinceList, getRecaptchaSiteKey, getSystemMessages };

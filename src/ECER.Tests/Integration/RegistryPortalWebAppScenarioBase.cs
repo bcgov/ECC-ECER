@@ -1,4 +1,5 @@
-﻿using ECER.Utilities.DataverseSdk.Model;
+﻿using ECER.Clients.RegistryPortal.Server;
+using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -34,6 +35,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   private ecer_Application draftTestApplication = null!;
   private bcgov_DocumentUrl testDocument1 = null!;
 
+  private ecer_SystemMessage testSystemMessage = null!;
   private ecer_Communication testCommunication1 = null!;
   private ecer_Communication testCommunication2 = null!;
   private ecer_Communication testCommunication3 = null!;
@@ -148,6 +150,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     submittedTestApplicationCharacterRef = AddCharacterReferenceToApplication(context, submittedTestApplication3);
 
     testDocument1 = GetOrAddDocument(context, AuthenticatedBcscUser, "https://example.com/document1.pdf");
+    testSystemMessage = GetOrAddSystemMessage(context);
     testCommunication1 = GetOrAddCommunication(context, inProgressTestApplication, "comm1", null);
     testCommunication2 = GetOrAddCommunication(context, inProgressTestApplication, "comm2", null);
     testCommunication3 = GetOrAddCommunication(context, inProgressTestApplication, "comm3", null);
@@ -199,6 +202,29 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     context.AddLink(registrant, Contact.Fields.bcgov_contact_bcgov_documenturl, document);
 
     return document;
+  }
+
+  private ecer_SystemMessage GetOrAddSystemMessage(EcerContext context)
+  {
+    var systemMessage = context.ecer_SystemMessageSet.FirstOrDefault(item => item.ecer_name == "test");
+
+    if (systemMessage == null)
+    {
+      systemMessage = new ecer_SystemMessage
+      {
+        ecer_name = "test",
+        ecer_startdate = DateTime.Now.AddYears(-3),
+        ecer_enddate = DateTime.Now.AddYears(3),
+        ecer_message = "test message",
+        ecer_PortalTags = new List<ecer_PortalTags>() { ecer_PortalTags.LOGIN, ecer_PortalTags.REFERENCES, ecer_PortalTags.REFERENCES },
+        ecer_subject = "test",
+        StatusCode = ecer_SystemMessage_StatusCode.Active,
+        StateCode = ecer_systemmessage_statecode.Active,
+      };
+      context.AddObject(systemMessage);
+    }
+
+    return systemMessage;
   }
 
   private Contact GetOrAddApplicant(EcerContext context, string identityProvider, string userId)
@@ -366,7 +392,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
 
   private void MarkCertificateAsInactive(EcerContext context, Guid certificateId)
   {
-    var certificate = context.ecer_CertificateSet.FirstOrDefault(d => d.Id == certificateId); ;
+    var certificate = context.ecer_CertificateSet.FirstOrDefault(d => d.Id == certificateId);
     context.Detach(certificate);
     if (certificate != null)
     {

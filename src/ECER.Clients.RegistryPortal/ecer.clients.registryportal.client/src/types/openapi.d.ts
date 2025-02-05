@@ -311,6 +311,7 @@ declare namespace Components {
         export interface PortalInvitationQueryResult {
             portalInvitation?: PortalInvitation;
         }
+        export type PortalTags = "LOGIN" | "LOOKUP" | "REFERENCES";
         /**
          * Previous Name
          */
@@ -339,7 +340,7 @@ declare namespace Components {
             organizationName?: string | null;
             startDate?: string; // date-time
             endDate?: string; // date-time
-            numberOfHours?: number; // int32
+            numberOfHours?: number; // double
             id?: string | null;
             organizationContactInformation?: string | null;
             organizationEmailAddress?: string | null;
@@ -421,6 +422,14 @@ declare namespace Components {
             addMoreWorkExperienceReference?: boolean | null;
             addMoreProfessionalDevelopment?: boolean | null;
             applicationType?: ApplicationTypes;
+        }
+        export interface SystemMessage {
+            name?: string | null;
+            subject?: string | null;
+            message?: string | null;
+            startDate?: string; // date-time
+            endDate?: string; // date-time
+            portalTags?: PortalTags[] | null;
         }
         export interface Transcript {
             educationalInstitutionName?: string | null;
@@ -873,6 +882,11 @@ declare namespace Paths {
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
         }
     }
+    namespace SystemMessageGet {
+        namespace Responses {
+            export type $200 = Components.Schemas.SystemMessage[];
+        }
+    }
     namespace UploadFile {
         namespace Parameters {
             export type FileId = string;
@@ -937,6 +951,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ProvinceGet.Responses.$200>
+  /**
+   * systemMessage_get - Handles system messages queries
+   */
+  'systemMessage_get'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.SystemMessageGet.Responses.$200>
   /**
    * recaptcha_site_key_get - Obtains site key for recaptcha
    */
@@ -1213,6 +1235,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ProvinceGet.Responses.$200>
+  }
+  ['/api/systemMessages']: {
+    /**
+     * systemMessage_get - Handles system messages queries
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.SystemMessageGet.Responses.$200>
   }
   ['/api/recaptchaSiteKey']: {
     /**
@@ -1579,6 +1611,7 @@ export type OneYearRenewalexplanations = Components.Schemas.OneYearRenewalexplan
 export type OptOutReferenceRequest = Components.Schemas.OptOutReferenceRequest;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
+export type PortalTags = Components.Schemas.PortalTags;
 export type PreviousName = Components.Schemas.PreviousName;
 export type PreviousNameSources = Components.Schemas.PreviousNameSources;
 export type PreviousNameStage = Components.Schemas.PreviousNameStage;
@@ -1596,6 +1629,7 @@ export type SendMessageRequest = Components.Schemas.SendMessageRequest;
 export type SendMessageResponse = Components.Schemas.SendMessageResponse;
 export type SubmitApplicationResponse = Components.Schemas.SubmitApplicationResponse;
 export type SubmittedApplicationStatus = Components.Schemas.SubmittedApplicationStatus;
+export type SystemMessage = Components.Schemas.SystemMessage;
 export type Transcript = Components.Schemas.Transcript;
 export type TranscriptStage = Components.Schemas.TranscriptStage;
 export type TranscriptStatus = Components.Schemas.TranscriptStatus;

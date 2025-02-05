@@ -6,11 +6,10 @@
     </PageContainer>
   </v-sheet>
   <PageContainer :margin-top="false">
-    <div class="d-flex flex-column ga-3 mb-10">
-      <Banner
-        type="info"
-        title="We're working to resolve technical issues affecting certificate information in the My ECE Registry platform. Recent users are asked to review their profiles for accuracy and contact the ECE Registry at 1-888-338-6622 if there are any issues."
-      />
+    <div v-for="systemMessage in configStore.systemMessages">
+      <div v-if="systemMessage.portalTags && systemMessage.portalTags.includes('LOGIN')" class="d-flex flex-column ga-3 mb-10">
+        <Banner type="info" :title="systemMessage.message ? systemMessage.message : ''" />
+      </div>
     </div>
     <div class="d-flex flex-column ga-3">
       <h2>Log in with BC Services Card</h2>
@@ -32,12 +31,13 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 import LoginCard from "@/components/LoginCard.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
+import { useConfigStore } from "@/store/config";
 import { useDisplay } from "vuetify";
 import Banner from "../Banner.vue";
 
@@ -47,10 +47,13 @@ export default defineComponent({
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
+    const configStore = useConfigStore();
+    const router = useRouter();
+
     const route = useRoute();
     const { smAndDown } = useDisplay();
 
-    return { userStore, oidcStore, route, smAndDown };
+    return { userStore, oidcStore, configStore, route, smAndDown, router };
   },
   methods: {
     async handleLogin(provider: string) {
