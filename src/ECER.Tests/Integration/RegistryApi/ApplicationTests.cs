@@ -540,6 +540,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     newProfessionalDev.ShouldNotBeNull();
     newProfessionalDev.Files.ShouldHaveSingleItem();
     newProfessionalDev.Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
+    newProfessionalDev.Status.ShouldBe(ProfessionalDevelopmentStatusCode.Submitted); //for an already submitted application, the professional development should be submitted
   }
 
   private static Transcript CreateTranscript()
