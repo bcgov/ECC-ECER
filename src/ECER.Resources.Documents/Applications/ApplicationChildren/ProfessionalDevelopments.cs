@@ -42,7 +42,10 @@ internal sealed partial class ApplicationRepository
     foreach (var professionalDevelopment in updatedEntities.Where(d => string.IsNullOrEmpty(d.Id)))
     {
       var ecerProfessionalDevelopment = mapper.Map<ecer_ProfessionalDevelopment>(professionalDevelopment)!;
-      ecerProfessionalDevelopment.StatusCode = ecer_ProfessionalDevelopment_StatusCode.Draft;
+      if (application.StatusCode == ecer_Application_StatusCode.Draft)
+      {
+        ecerProfessionalDevelopment.StatusCode = ecer_ProfessionalDevelopment_StatusCode.Draft;
+      }
       var newId = Guid.NewGuid();
       ecerProfessionalDevelopment.ecer_ProfessionalDevelopmentId = newId;
       context.AddObject(ecerProfessionalDevelopment);
