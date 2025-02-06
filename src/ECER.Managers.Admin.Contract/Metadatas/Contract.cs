@@ -21,11 +21,19 @@ public record SystemMessagesQuery : IRequest<SystemMessagesQueryResults>
   public string? ById { get; set; }
 }
 
+public record IdentificationTypesQuery : IRequest<IdentificationTypesQueryResults>
+{
+  public string? ById { get; set; }
+  public bool? ForPrimary { get; set; }
+  public bool? ForSecondary { get; set; }
+}
 public record SystemMessagesQueryResults(IEnumerable<SystemMessage> Items);
+public record IdentificationTypesQueryResults(IEnumerable<IdentificationType> Items);
 public record ProvincesQueryResults(IEnumerable<Province> Items);
 public record CountriesQueryResults(IEnumerable<Country> Items);
 public record Province(string ProvinceId, string ProvinceName);
 public record Country(string CountryId, string CountryName, string CountryCode);
+public record IdentificationType(string Name, bool ForPrimary, bool ForSecondary);
 public record SystemMessage(string Name, string Subject, string Message)
 {
   public DateTime StartDate { get; set; }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
@@ -35,6 +36,15 @@ public class ConfigurationEndpoints : IRegisterEndpoints
      .WithOpenApi("Handles system messages queries", string.Empty, "systemMessage_get")
      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
+    endpointRouteBuilder.MapGet("/api/identificationTypes", async ([AsParameters] IdentificationTypesQuery request, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var query = new Managers.Admin.Contract.Metadatas.IdentificationTypesQuery() { ById = request.ById, ForPrimary = request.ForPrimary, ForSecondary = request.ForSecondary };
+      var results = await messageBus.Send(query, ct);
+      return TypedResults.Ok(mapper.Map<IEnumerable<IdentificationType>>(results.Items));
+    })
+     .WithOpenApi("Handles identification types queries", string.Empty, "identificationTypes_get")
+     .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
+
     endpointRouteBuilder.MapGet("/api/recaptchaSiteKey", async (IOptions<RecaptchaSettings> recaptchaSettings, CancellationToken ct) =>
     {
       await Task.CompletedTask;
@@ -61,6 +71,7 @@ public record OidcAuthenticationSettings
   public string Scope { get; set; } = null!;
   public string? Idp { get; set; }
 }
+public record IdentificationType(string Name, bool ForPrimary, bool ForSecondary);
 
 public record Province(string ProvinceId, string ProvinceName);
 public record SystemMessage(string Name, string Subject, string Message)
@@ -75,4 +86,11 @@ public enum PortalTags
   LOGIN,
   LOOKUP,
   REFERENCES
+}
+
+public record IdentificationTypesQuery
+{
+  public string? ById { get; set; }
+  public bool? ForPrimary { get; set; }
+  public bool? ForSecondary { get; set; }
 }
