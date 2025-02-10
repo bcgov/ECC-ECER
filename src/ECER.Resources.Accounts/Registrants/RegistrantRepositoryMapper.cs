@@ -45,8 +45,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
 
     CreateMap<ecer_Authentication, UserIdentity>()
         .ForCtorParam(nameof(UserIdentity.UserId), opts => opts.MapFrom(s => s.ecer_ExternalID))
-        .ForCtorParam(nameof(UserIdentity.IdentityProvider), opts => opts.MapFrom(s => s.ecer_IdentityProvider))
-        ;
+        .ForCtorParam(nameof(UserIdentity.IdentityProvider), opts => opts.MapFrom(s => s.ecer_IdentityProvider));
 
     CreateMap<Contact, UserProfile>()
         .ForMember(d => d.DateOfBirth, opts => opts.MapFrom(s => DateOnly.FromDateTime(s.BirthDate.GetValueOrDefault())))
@@ -87,8 +86,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
         .ForMember(d => d.Address2_City, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.City))
         .ForMember(d => d.Address2_PostalCode, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.PostalCode))
         .ForMember(d => d.Address2_StateOrProvince, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.Province))
-        .ForMember(d => d.Address2_Country, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.Country))
-        ;
+        .ForMember(d => d.Address2_Country, opts => opts.MapFrom(s => s.MailingAddress == null ? null : s.MailingAddress.Country));
 
     CreateMap<ecer_PreviousName_StatusCode, PreviousNameStage>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))

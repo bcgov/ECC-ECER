@@ -71,7 +71,7 @@ public record OidcAuthenticationSettings
   public string Scope { get; set; } = null!;
   public string? Idp { get; set; }
 }
-public record IdentificationType(string Name, bool ForPrimary, bool ForSecondary);
+public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 
 public record Province(string ProvinceId, string ProvinceName);
 public record SystemMessage(string Name, string Subject, string Message)

@@ -29,6 +29,15 @@ public class ProfileEndpoints : IRegisterEndpoints
     })
   .WithOpenApi("Gets the current user profile", string.Empty, "profile_put")
   .RequireAuthorization();
+
+    endpointRouteBuilder.MapPost("/api/profile/verificationIds", async Task<Ok> (ProfileIdentification profileIdentification, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+    {
+      profileIdentification.RegistrantId = ctx.User.GetUserContext()!.UserId;
+      await bus.Send(new UpdateRegistrantProfileIdentificationCommand(mapper.Map<Managers.Registry.Contract.Registrants.ProfileIdentification>(profileIdentification)!), ctx.RequestAborted);
+      return TypedResults.Ok();
+    })
+  .WithOpenApi("Sets user verification Ids", string.Empty, "profileVerification_post")
+  .RequireAuthorization();
   }
 }
 
@@ -99,3 +108,12 @@ public record Address(
     string? Province,
     string Country
     );
+
+public record ProfileIdentification()
+{
+  public string RegistrantId { get; set; } = null!;
+  public string PrimaryIdTypeObjectId { get; set; } = null!;
+  public IEnumerable<IdentityDocument> PrimaryIds { get; set; } = Array.Empty<IdentityDocument>();
+  public string SecondaryIdTypeObjectId { get; set; } = null!;
+  public IEnumerable<IdentityDocument> SecondaryIds { get; set; } = Array.Empty<IdentityDocument>();
+}

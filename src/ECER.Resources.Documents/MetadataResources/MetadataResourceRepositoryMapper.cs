@@ -29,6 +29,7 @@ internal class MetadataResourceRepositoryMapper : Profile
     .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ecer_identificationtype, IdentificationType>(MemberList.Source)
+    .ForCtorParam(nameof(IdentificationType.Id), opt => opt.MapFrom(src => src.ecer_identificationtypeId))
     .ForCtorParam(nameof(IdentificationType.Name), opt => opt.MapFrom(src => src.ecer_Name))
     .ForCtorParam(nameof(IdentificationType.ForPrimary), opt => opt.MapFrom(src => src.ecer_ForPrimary))
     .ForCtorParam(nameof(IdentificationType.ForSecondary), opt => opt.MapFrom(src => src.ecer_ForSecondary))

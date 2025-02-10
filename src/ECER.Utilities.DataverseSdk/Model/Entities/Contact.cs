@@ -699,6 +699,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_educationassessment_ApplicantId = "ecer_educationassessment_ApplicantId";
 			public const string ecer_GenerateCertificate = "ecer_generatecertificate";
 			public const string ecer_generatecertificateName = "ecer_generatecertificatename";
+			public const string ecer_GenerateCommunicationfromIDrejected = "ecer_generatecommunicationfromidrejected";
+			public const string ecer_generatecommunicationfromidrejectedName = "ecer_generatecommunicationfromidrejectedname";
 			public const string ecer_guardianreference_Applicantid = "ecer_guardianreference_Applicantid";
 			public const string ecer_HasCertificate = "ecer_hascertificate";
 			public const string ecer_HasCertificateCancelled = "ecer_hascertificatecancelled";
@@ -4209,6 +4211,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_generatecertificate"))
 				{
 					return this.FormattedValues["ecer_generatecertificate"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecommunicationfromidrejected")]
+		public virtual ecer_YesNoNull? ecer_GenerateCommunicationfromIDrejected
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_generatecommunicationfromidrejected")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_generatecommunicationfromidrejected", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecommunicationfromidrejectedname")]
+		public string ecer_generatecommunicationfromidrejectedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_generatecommunicationfromidrejected"))
+				{
+					return this.FormattedValues["ecer_generatecommunicationfromidrejected"];
 				}
 				else
 				{

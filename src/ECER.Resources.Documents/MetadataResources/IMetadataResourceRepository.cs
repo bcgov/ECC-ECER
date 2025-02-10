@@ -13,7 +13,7 @@ public interface IMetadataResourceRepository
 
 public record Province(string ProvinceId, string ProvinceName);
 public record Country(string CountryId, string CountryName, string CountryCode);
-public record IdentificationType(string Name, bool ForPrimary, bool ForSecondary);
+public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 
 public record SystemMessage(string Name, string Subject, string Message)
 {
