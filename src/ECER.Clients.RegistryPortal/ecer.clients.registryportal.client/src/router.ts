@@ -63,8 +63,9 @@ const router = createRouter({
     },
     {
       path: "/verify-identification",
+      name: "verify identification",
       component: () => import("./components/pages/VerifyIdentification.vue"),
-      meta: { requiresAuth: true, requiresVerification: false },
+      meta: { requiresAuth: true },
     },
     {
       path: "/manage-application/:applicationId",
@@ -290,7 +291,7 @@ router.beforeEach(async (to, _) => {
 
   // instead of having to check every route record with
   // to.matched.some(record => record.meta.requiresAuth)
-  if (!to.path.startsWith("/new-user") && to.meta.requiresAuth && user && !userStore.hasUserInfo) {
+  if (!to.path.startsWith("/verify-identification") && !to.path.startsWith("/new-user") && to.meta.requiresAuth && user && !userStore.hasUserInfo) {
     return {
       path: "/new-user",
     };

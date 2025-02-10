@@ -12,56 +12,93 @@
         <li>We will send you a message when your account is ready in 2-3 business days</li>
       </ol>
     </div>
-    <div class="mt-12">
-      <ECEHeader title="Important information" />
-    </div>
-    <div class="d-flex flex-column ga-4">
-      <p>The ID you provide must:</p>
+    <v-form ref="verifyIdentificationForm">
+      <div class="mt-12">
+        <ECEHeader title="Important information" />
+      </div>
+      <div class="d-flex flex-column ga-4">
+        <p>The ID you provide must:</p>
 
-      <p>To verify your identity:</p>
-      <ul class="ml-10">
-        <li>Show the exact names as your account: JANET MARIE SMITH</li>
-        <li>Be valid (not expired)</li>
-        <li>Be in English</li>
-      </ul>
-      <p>Make sure the photo of your ID:</p>
-      <ul class="ml-10">
-        <li>Is clear and not blurry</li>
-        <li>Shows your full ID and does not cut off any part of the document</li>
-      </ul>
-    </div>
-    <div class="mt-12">
-      <ECEHeader title="First, choose a primary ID" />
-      <label>
-        What type of ID are you providing?
-        <v-select class="pt-2" :items="configStore.primaryIdentificationType" variant="outlined" label="" v-model="primaryIdType"></v-select>
-      </label>
-      <label>
-        Upload file
-        <FileUploader :allow-multiple-files="false" :max-number-of-files="1" class="mt-1" @update:files="handlePrimaryFileUpload" />
-      </label>
-    </div>
-    <div class="mt-12">
-      <ECEHeader title="Then, choose a secondary ID" />
-      <label>
-        What type of ID are you providing?
-        <v-select class="pt-2" :items="configStore.secondaryIdentificationType" variant="outlined" label="" v-model="secondaryIdType"></v-select>
-      </label>
-      <label>
-        Upload file
-        <FileUploader :allow-multiple-files="false" :max-number-of-files="1" class="mt-1" @update:files="handleSecondaryFileUpload" />
-      </label>
-    </div>
-    <v-btn @click="handleSubmit()" class="my-8" :size="smAndDown ? 'default' : 'large'" color="primary" append-icon="mdi-arrow-right">
-      Send for verification
-    </v-btn>
+        <p>To verify your identity:</p>
+        <ul class="ml-10">
+          <li>Show the exact names as your account: JANET MARIE SMITH</li>
+          <li>Be valid (not expired)</li>
+          <li>Be in English</li>
+        </ul>
+        <p>Make sure the photo of your ID:</p>
+        <ul class="ml-10">
+          <li>Is clear and not blurry</li>
+          <li>Shows your full ID and does not cut off any part of the document</li>
+        </ul>
+      </div>
+      <div class="mt-12">
+        <ECEHeader title="First, choose a primary ID" />
+        <label>
+          What type of ID are you providing?
+          <v-select
+            class="pt-2"
+            :items="configStore.primaryIdentificationType"
+            variant="outlined"
+            label=""
+            v-model="primaryIdType"
+            :rules="[Rules.required('Select your primary ID type')]"
+          ></v-select>
+        </label>
+        <label>
+          Upload file
+          <FileUploader
+            :allow-multiple-files="false"
+            :max-number-of-files="3"
+            :user-files="generateUserPrimaryFileArray"
+            class="mt-1"
+            @update:files="handlePrimaryFileUpload"
+            :rules="[Rules.atLeastOneOptionRequired('You must add at least one file')]"
+          />
+        </label>
+      </div>
+      <div class="mt-12">
+        <ECEHeader title="Then, choose a secondary ID" />
+        <label>
+          What type of ID are you providing?
+          <v-select
+            class="pt-2"
+            :items="configStore.secondaryIdentificationType"
+            variant="outlined"
+            label=""
+            v-model="secondaryIdType"
+            :rules="[Rules.required('Select your secondary ID type'), Rules.notSameAs(primaryIdType, 'Select a different type of ID than your primary ID')]"
+          ></v-select>
+        </label>
+        <label>
+          Upload file
+          <FileUploader
+            :allow-multiple-files="false"
+            :max-number-of-files="3"
+            :user-files="generateUserSecondaryFileArray"
+            class="mt-1"
+            @update:files="handleSecondaryFileUpload"
+            :rules="[Rules.atLeastOneOptionRequired('You must add at least one file')]"
+          />
+        </label>
+      </div>
+      <v-btn
+        @click="handleSubmit()"
+        :loading="loadingStore.isLoading('profileVerification_post')"
+        class="my-8"
+        :size="smAndDown ? 'default' : 'large'"
+        color="primary"
+        append-icon="mdi-arrow-right"
+      >
+        Send for verification
+      </v-btn>
+    </v-form>
   </PageContainer>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
-
+import * as Rules from "@/utils/formRules";
 import PageContainer from "@/components/PageContainer.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import IconCard from "@/components/IconCard.vue";
@@ -70,11 +107,19 @@ import Callout from "@/components/Callout.vue";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useDisplay } from "vuetify";
+import type { FileItem } from "@/components/UploadFileItem.vue";
 import ECEHeader from "../ECEHeader.vue";
 import { useConfigStore } from "@/store/config";
-import type { Components } from "@/types/openapi";
+import type { Components, IdentificationType, ProfileIdentification } from "@/types/openapi";
+import { parseHumanFileSize, removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
+import { useLoadingStore } from "@/store/loading";
 import * as Functions from "@/utils/functions";
-
+import { useAlertStore } from "@/store/alert";
+import { postProfileVerification } from "@/api/profile";
+import type { VForm } from "vuetify/components/VForm";
+export interface ProfileIdentificationExtended extends Components.Schemas.ProfileIdentification {
+  newFilesWithData?: FileItem[];
+}
 export default defineComponent({
   name: "VerifyIdentification",
   components: { PageContainer, Breadcrumb, IconCard, ECEHeader, Callout, FileUploader },
@@ -82,10 +127,11 @@ export default defineComponent({
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
     const configStore = useConfigStore();
+    const loadingStore = useLoadingStore();
     const route = useRoute();
     const { smAndDown } = useDisplay();
-
-    return { userStore, oidcStore, configStore, route, smAndDown };
+    const alertStore = useAlertStore();
+    return { userStore, oidcStore, configStore, route, smAndDown, Rules, alertStore, loadingStore };
   },
   data() {
     const items = [
@@ -104,9 +150,11 @@ export default defineComponent({
     return {
       items,
       primaryIdType: "",
-      primaryIdFile: [] as Components.Schemas.IdentityDocument[],
+      primaryIdFiles: [] as Components.Schemas.IdentityDocument[],
+      newPrimaryIdFiles: [],
       secondaryIdType: "",
-      secondaryIdFile: [] as Components.Schemas.IdentityDocument[],
+      secondaryIdFiles: [] as Components.Schemas.IdentityDocument[],
+      newSecondaryIdFiles: [],
       arePrimaryAttachedFilesValid: true,
       areSecondaryAttachedFilesValid: true,
       isFileUploadInProgress: false,
@@ -116,13 +164,22 @@ export default defineComponent({
   },
   methods: {
     async handleSubmit() {
-      /** TODO
-       * 1. Verify there is selection for primary and secondary ID types and files
-       * 2. Send post to API including (primaryIdType, primaryIdFile, secondaryIdType, secondaryIdFile)
-       * 3. Handle errors and success
-       *
-       * NOTE: Will need to run `npm run gen-api` to generate the API client when the backend endpoint is ready
-       */
+      const { valid } = await (this.$refs.verifyIdentificationForm as VForm).validate();
+
+      if (valid) {
+        const identification: ProfileIdentification = {
+          primaryIdTypeObjectId: this.primaryIdType,
+          secondaryIdTypeObjectId: this.secondaryIdType,
+          primaryIds: this.primaryIdFiles,
+          secondaryIds: this.secondaryIdFiles,
+        };
+        const { error } = await postProfileVerification(identification);
+        if (!error) {
+          this.alertStore.setSuccessAlert("You have successfully uploaded your verification Ids.");
+        }
+      } else {
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+      }
     },
     async handlePrimaryFileUpload(filesArray: any[]) {
       this.arePrimaryAttachedFilesValid = true;
@@ -130,7 +187,7 @@ export default defineComponent({
       this.isAtleastOnePrimaryFileAdded = false;
 
       // Reset attachments
-      this.primaryIdFile = [];
+      this.primaryIdFiles = [];
 
       if (filesArray && filesArray.length > 0) {
         this.isAtleastOnePrimaryFileAdded = true;
@@ -149,7 +206,7 @@ export default defineComponent({
 
           // If file is valid and fully uploaded, add to attachments
           if (this.arePrimaryAttachedFilesValid && !this.isFileUploadInProgress) {
-            this.primaryIdFile.push({
+            this.primaryIdFiles.push({
               id: file.fileId,
               name: file.file.name,
               size: Functions.humanFileSize(file.file.size),
@@ -165,7 +222,7 @@ export default defineComponent({
       this.isAtleastOneSecondaryFileAdded = false;
 
       // Reset attachments
-      this.secondaryIdFile = [];
+      this.secondaryIdFiles = [];
 
       if (filesArray && filesArray.length > 0) {
         this.isAtleastOneSecondaryFileAdded = true;
@@ -184,7 +241,7 @@ export default defineComponent({
 
           // If file is valid and fully uploaded, add to attachments
           if (this.areSecondaryAttachedFilesValid && !this.isFileUploadInProgress) {
-            this.secondaryIdFile.push({
+            this.secondaryIdFiles.push({
               id: file.fileId,
               name: file.file.name,
               size: Functions.humanFileSize(file.file.size),
@@ -193,6 +250,62 @@ export default defineComponent({
           }
         }
       }
+    },
+  },
+  computed: {
+    generateUserPrimaryFileArray() {
+      const userFileList: FileItem[] = [];
+
+      if (this.primaryIdFiles) {
+        for (let file of this.primaryIdFiles) {
+          const newFileItem: FileItem = {
+            fileId: file.id!,
+            fileErrors: [],
+            fileSize: parseHumanFileSize(file.size!),
+            fileName: file.name!,
+            progress: 101,
+            file: new File([], file.name!),
+            storageFolder: "permanent",
+          };
+
+          userFileList.push(newFileItem);
+        }
+      }
+
+      if (this.newPrimaryIdFiles) {
+        for (let each of this.newPrimaryIdFiles) {
+          userFileList.push(each);
+        }
+      }
+
+      return userFileList;
+    },
+    generateUserSecondaryFileArray() {
+      const userFileList: FileItem[] = [];
+
+      if (this.secondaryIdFiles) {
+        for (let file of this.secondaryIdFiles) {
+          const newFileItem: FileItem = {
+            fileId: file.id!,
+            fileErrors: [],
+            fileSize: parseHumanFileSize(file.size!),
+            fileName: file.name!,
+            progress: 101,
+            file: new File([], file.name!),
+            storageFolder: "permanent",
+          };
+
+          userFileList.push(newFileItem);
+        }
+      }
+
+      if (this.newSecondaryIdFiles) {
+        for (let each of this.newSecondaryIdFiles) {
+          userFileList.push(each);
+        }
+      }
+
+      return userFileList;
     },
   },
 });
