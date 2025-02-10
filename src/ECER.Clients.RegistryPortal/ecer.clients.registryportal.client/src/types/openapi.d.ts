@@ -100,7 +100,6 @@ declare namespace Components {
       endDate?: string; // date-time
       displayOrder?: number; // int32
     }
-
     export type CertificatePDFGeneration = "No" | "Requested" | "Yes";
     export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
     export interface Certification {
@@ -314,6 +313,11 @@ declare namespace Components {
         [name: string]: string[];
       } | null;
     }
+    export interface IdentificationType {
+      name?: string | null;
+      forPrimary?: boolean;
+      forSecondary?: boolean;
+    }
     export interface IdentityDocument {
       id?: string | null;
       url?: string | null;
@@ -361,9 +365,7 @@ declare namespace Components {
     export interface PortalInvitationQueryResult {
       portalInvitation?: PortalInvitation;
     }
-
     export type PortalTags = "LOGIN" | "LOOKUP" | "REFERENCES";
-
     /**
      * Previous Name
      */
@@ -392,7 +394,7 @@ declare namespace Components {
       organizationName?: string | null;
       startDate?: string; // date-time
       endDate?: string; // date-time
-      numberOfHours?: number; // int32
+      numberOfHours?: number; // double
       id?: string | null;
       organizationContactInformation?: string | null;
       organizationEmailAddress?: string | null;
@@ -483,7 +485,6 @@ declare namespace Components {
       addMoreProfessionalDevelopment?: boolean | null;
       applicationType?: ApplicationTypes;
     }
-
     export interface SystemMessage {
       name?: string | null;
       subject?: string | null;
@@ -492,7 +493,6 @@ declare namespace Components {
       endDate?: string; // date-time
       portalTags?: PortalTags[] | null;
     }
-
     export interface Transcript {
       educationalInstitutionName?: string | null;
       programName?: string | null;
@@ -767,7 +767,6 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
-
   namespace CertificationRequestpdfPut {
     namespace Parameters {
       export type Id = string;
@@ -780,7 +779,6 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
-
   namespace CertificationsLookupPost {
     export type RequestBody = Components.Schemas.CertificationLookupRequest;
     namespace Responses {
@@ -878,6 +876,21 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
+  namespace IdentificationTypesGet {
+    namespace Parameters {
+      export type ById = string;
+      export type ForPrimary = boolean;
+      export type ForSecondary = boolean;
+    }
+    export interface QueryParameters {
+      ById?: Parameters.ById;
+      ForPrimary?: Parameters.ForPrimary;
+      ForSecondary?: Parameters.ForSecondary;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.IdentificationType[];
+    }
+  }
   namespace MessageGet {
     namespace Parameters {
       export type ParentId = string;
@@ -945,13 +958,11 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
-
   namespace SystemMessageGet {
     namespace Responses {
       export type $200 = Components.Schemas.SystemMessage[];
     }
   }
-
   namespace UploadFile {
     namespace Parameters {
       export type FileId = string;
@@ -1012,7 +1023,6 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ProvinceGet.Responses.$200>;
-
   /**
    * systemMessage_get - Handles system messages queries
    */
@@ -1021,7 +1031,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.SystemMessageGet.Responses.$200>;
-
+  /**
+   * identificationTypes_get - Handles identification types queries
+   */
+  "identificationTypes_get"(
+    parameters?: Parameters<Paths.IdentificationTypesGet.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.IdentificationTypesGet.Responses.$200>;
   /**
    * recaptcha_site_key_get - Obtains site key for recaptcha
    */
@@ -1174,7 +1191,6 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CertificationGet.Responses.$200>;
-
   /**
    * certification_requestpdf_put - Handles certification queries
    */
@@ -1183,7 +1199,6 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CertificationRequestpdfPut.Responses.$200>;
-
   /**
    * certifications_lookup_post - Handles certifications lookup queries
    */
@@ -1297,7 +1312,6 @@ export interface PathsDictionary {
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.ProvinceGet.Responses.$200>;
   };
-
   ["/api/systemMessages"]: {
     /**
      * systemMessage_get - Handles system messages queries
@@ -1308,7 +1322,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.SystemMessageGet.Responses.$200>;
   };
-
+  ["/api/identificationTypes"]: {
+    /**
+     * identificationTypes_get - Handles identification types queries
+     */
+    "get"(
+      parameters?: Parameters<Paths.IdentificationTypesGet.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.IdentificationTypesGet.Responses.$200>;
+  };
   ["/api/recaptchaSiteKey"]: {
     /**
      * recaptcha_site_key_get - Obtains site key for recaptcha
@@ -1473,7 +1496,6 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CertificationGet.Responses.$200>;
   };
-
   ["/api/certifications/RequestPdf/{id}"]: {
     /**
      * certification_requestpdf_put - Handles certification queries
@@ -1484,7 +1506,6 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CertificationRequestpdfPut.Responses.$200>;
   };
-
   ["/api/certifications/lookup"]: {
     /**
      * certifications_lookup_post - Handles certifications lookup queries
@@ -1647,6 +1668,7 @@ export type FileResponse = Components.Schemas.FileResponse;
 export type FiveYearRenewalExplanations = Components.Schemas.FiveYearRenewalExplanations;
 export type GetMessagesResponse = Components.Schemas.GetMessagesResponse;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
+export type IdentificationType = Components.Schemas.IdentificationType;
 export type IdentityDocument = Components.Schemas.IdentityDocument;
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
 export type InviteType = Components.Schemas.InviteType;
