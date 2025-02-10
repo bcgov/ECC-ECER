@@ -118,8 +118,10 @@ export default defineComponent({
     async handleSubmit() {
       /** TODO
        * 1. Verify there is selection for primary and secondary ID types and files
-       * 2. Send post to API
+       * 2. Send post to API including (primaryIdType, primaryIdFile, secondaryIdType, secondaryIdFile)
        * 3. Handle errors and success
+       *
+       * NOTE: Will need to run `npm run gen-api` to generate the API client when the backend endpoint is ready
        */
     },
     async handlePrimaryFileUpload(filesArray: any[]) {
