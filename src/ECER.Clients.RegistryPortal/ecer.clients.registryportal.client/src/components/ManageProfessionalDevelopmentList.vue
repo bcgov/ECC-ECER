@@ -89,11 +89,11 @@ export default defineComponent({
   },
   setup: async () => {
     const { smAndUp } = useDisplay();
+    const router = useRouter();
     const route = useRoute();
     const certificationStore = useCertificationStore();
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
     const latestCertification = certificationStore.latestCertification;
-    const router = useRouter();
 
     return {
       applicationStatus,
