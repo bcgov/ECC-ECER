@@ -270,6 +270,7 @@ declare namespace Components {
             } | null;
         }
         export interface IdentificationType {
+            id?: string | null;
             name?: string | null;
             forPrimary?: boolean;
             forSecondary?: boolean;

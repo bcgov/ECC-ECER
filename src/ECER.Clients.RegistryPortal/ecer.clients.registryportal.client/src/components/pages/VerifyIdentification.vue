@@ -38,6 +38,8 @@
           <v-select
             class="pt-2"
             :items="configStore.primaryIdentificationType"
+            item-title="name"
+            item-value="id"
             variant="outlined"
             label=""
             v-model="primaryIdType"
@@ -63,6 +65,8 @@
           <v-select
             class="pt-2"
             :items="configStore.secondaryIdentificationType"
+            item-title="name"
+            item-value="id"
             variant="outlined"
             label=""
             v-model="secondaryIdType"
@@ -117,6 +121,8 @@ import * as Functions from "@/utils/functions";
 import { useAlertStore } from "@/store/alert";
 import { postProfileVerification } from "@/api/profile";
 import type { VForm } from "vuetify/components/VForm";
+import { useRouter } from "vue-router";
+
 export interface ProfileIdentificationExtended extends Components.Schemas.ProfileIdentification {
   newFilesWithData?: FileItem[];
 }
@@ -129,9 +135,10 @@ export default defineComponent({
     const configStore = useConfigStore();
     const loadingStore = useLoadingStore();
     const route = useRoute();
+    const router = useRouter();
     const { smAndDown } = useDisplay();
     const alertStore = useAlertStore();
-    return { userStore, oidcStore, configStore, route, smAndDown, Rules, alertStore, loadingStore };
+    return { userStore, oidcStore, configStore, route, router, smAndDown, Rules, alertStore, loadingStore };
   },
   data() {
     const items = [
@@ -176,6 +183,7 @@ export default defineComponent({
         const { error } = await postProfileVerification(identification);
         if (!error) {
           this.alertStore.setSuccessAlert("You have successfully uploaded your verification Ids.");
+          this.router.push("/");
         }
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");

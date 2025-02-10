@@ -44,10 +44,10 @@ export const useConfigStore = defineStore("config", {
       return (provinceId: string) => state.provinceList.find((province) => province.value === provinceId)?.title;
     },
     primaryIdentificationType(state) {
-      return state.identificationTypes.filter((type) => type.forPrimary).map((type) => type.name);
+      return state.identificationTypes.filter((type) => type.forPrimary).map((type) => type);
     },
     secondaryIdentificationType(state) {
-      return state.identificationTypes.filter((type) => type.forSecondary).map((type) => type.name);
+      return state.identificationTypes.filter((type) => type.forSecondary).map((type) => type);
     },
   },
 
