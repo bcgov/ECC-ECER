@@ -32,9 +32,25 @@
     </div>
     <div class="mt-12">
       <ECEHeader title="First, choose a primary ID" />
+      <label>
+        What type of ID are you providing?
+        <v-select class="pt-2" :items="configStore.primaryIdentificationType" variant="outlined" label=""></v-select>
+      </label>
+      <label>
+        Upload file
+        <FileUploader :allow-multiple-files="false" :max-number-of-files="1" class="mt-1" @update:files="" />
+      </label>
     </div>
     <div class="mt-12">
       <ECEHeader title="Then, choose a secondary ID" />
+      <label>
+        What type of ID are you providing?
+        <v-select class="pt-2" :items="configStore.secondaryIdentificationType" variant="outlined" label=""></v-select>
+      </label>
+      <label>
+        Upload file
+        <FileUploader :allow-multiple-files="false" :max-number-of-files="1" class="mt-1" @update:files="" />
+      </label>
     </div>
     <v-btn @click="handleSubmit()" class="my-8" :size="smAndDown ? 'default' : 'large'" color="primary" append-icon="mdi-arrow-right">
       Send for verification
@@ -49,22 +65,25 @@ import { useRoute } from "vue-router";
 import PageContainer from "@/components/PageContainer.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import IconCard from "@/components/IconCard.vue";
+import FileUploader from "@/components/FileUploader.vue";
 import Callout from "@/components/Callout.vue";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useDisplay } from "vuetify";
 import ECEHeader from "../ECEHeader.vue";
+import { useConfigStore } from "@/store/config";
 
 export default defineComponent({
   name: "VerifyIdentification",
-  components: { PageContainer, Breadcrumb, IconCard, ECEHeader, Callout },
+  components: { PageContainer, Breadcrumb, IconCard, ECEHeader, Callout, FileUploader },
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
+    const configStore = useConfigStore();
     const route = useRoute();
     const { smAndDown } = useDisplay();
 
-    return { userStore, oidcStore, route, smAndDown };
+    return { userStore, oidcStore, configStore, route, smAndDown };
   },
   data() {
     const items = [
