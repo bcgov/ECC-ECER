@@ -33,10 +33,6 @@ public class ProfileEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapPost("/api/profile/verificationIds", async Task<Ok> (ProfileIdentification profileIdentification, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
     {
       profileIdentification.RegistrantId = ctx.User.GetUserContext()!.UserId;
-      if (profileIdentification.RegistrantId == ctx.User.GetUserContext()!.UserId)
-      {
-        throw new InvalidOperationException();
-      }
 
       await bus.Send(new UpdateRegistrantProfileIdentificationCommand(mapper.Map<Managers.Registry.Contract.Registrants.ProfileIdentification>(profileIdentification)!), ctx.RequestAborted);
       return TypedResults.Ok();
