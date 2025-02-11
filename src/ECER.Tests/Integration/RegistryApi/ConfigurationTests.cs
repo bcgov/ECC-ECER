@@ -1,5 +1,6 @@
 ﻿using Alba;
 using ECER.Clients.RegistryPortal.Server;
+using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Managers.Admin;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -39,6 +40,20 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
 
     var systemMessages = await systemMessagesResponse.ReadAsJsonAsync<SystemMessage[]>();
     systemMessages.ShouldNotBeNull();
+  }
+
+  [Fact]
+  public async Task GetIdentificationTypes_ReturnsIdentificationTypes()
+  {
+    var identificationTypesResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Json(new IdentificationTypesQuery() { }).ToUrl("/api/identificationTypes");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var identificationTypes = await identificationTypesResponse.ReadAsJsonAsync<IdentificationType[]>();
+    identificationTypes.ShouldNotBeNull();
   }
 
   [Fact]

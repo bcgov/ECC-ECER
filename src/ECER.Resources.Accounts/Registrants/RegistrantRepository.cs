@@ -5,6 +5,7 @@ using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
+using System.Diagnostics;
 
 namespace ECER.Resources.Accounts.Registrants;
 
@@ -27,12 +28,12 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     else
     {
       var oldClientId = contact.ecer_ClientID;
-      var oldTemClientId = contact.ecer_TempClientID;
+      var oldTempClientId = contact.ecer_TempClientID;
       context.Detach(contact);
       contact = mapper.Map<Contact>(registrant.Profile)!;
       contact.Id = Guid.Parse(registrant.Id);
       contact.ecer_ClientID = oldClientId;
-      contact.ecer_TempClientID = oldTemClientId;
+      contact.ecer_TempClientID = oldTempClientId;
       context.Attach(contact);
       context.UpdateObject(contact);
     }
@@ -128,6 +129,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
         var destinationFolder = "ecer_previousname/" + previousName.Id;
         var existingPreviousName = context.ecer_PreviousNameSet.SingleOrDefault(c => c.Id == previousName.Id);
         if (existingPreviousName == null) throw new InvalidOperationException($"Previous name {previousName.Id} not found");
+
         foreach (var document in previousName.ecer_documenturl_PreviousNameId)
         {
           if (document.Id == Guid.Empty)
@@ -157,5 +159,55 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
   }
 
   private static string GetBucketName(IConfiguration configuration) =>
- configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
+    configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
+
+  public async Task SaveIdentityIds(Registrant registrant, ProfileIdentification profileIdentification, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+
+    if (!Guid.TryParse(registrant.Id, out var contactId)) throw new InvalidOperationException($"registrant id {registrant.Id} is not a guid");
+    var contact = context.ContactSet.SingleOrDefault(c => c.ContactId == contactId);
+
+    if (contact == null) throw new InvalidOperationException($"Registrant {registrant.Id} not found");
+
+    var primaryId = context.ecer_identificationtypeSet.SingleOrDefault(i => i.ecer_identificationtypeId == Guid.Parse(profileIdentification.PrimaryIdTypeObjectId));
+    var secondaryId = context.ecer_identificationtypeSet.SingleOrDefault(i => i.ecer_identificationtypeId == Guid.Parse(profileIdentification.SecondaryIdTypeObjectId));
+
+    context.AddLink(contact, Contact.Fields.ecer_contact_primaryidtype, primaryId!);
+    context.AddLink(contact, Contact.Fields.ecer_contact_secondaryidtype, secondaryId!);
+
+    await HandleFilesForIdentification(profileIdentification.PrimaryIds, contact, "Primary ID", ct);
+    await HandleFilesForIdentification(profileIdentification.SecondaryIds, contact, "Secondary ID", ct);
+
+    context.SaveChanges();
+  }
+
+  private async Task HandleFilesForIdentification(IEnumerable<IdentityDocument> inputList, Contact contact, string tagname, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    var list = mapper.Map<IEnumerable<bcgov_DocumentUrl>>(inputList);
+    var sourceFolder = "tempfolder";
+    var destinationFolder = "ecer_contact/" + contact.ContactId;
+    foreach (var document in list)
+    {
+      if (document.Id == Guid.Empty)
+      {
+        throw new InvalidOperationException($"Document '{document.Id}' is not valid");
+      }
+
+      var fileId = document.Id.ToString();
+      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+
+      document.bcgov_Url = destinationFolder;
+      document.StatusCode = bcgov_DocumentUrl_StatusCode.Active;
+      document.StateCode = bcgov_documenturl_statecode.Active;
+
+      context.AddObject(document);
+      context.AddLink(document, bcgov_DocumentUrl.Fields.bcgov_contact_bcgov_documenturl, contact);
+      var tag = context.bcgov_tagSet.SingleOrDefault(t => t.bcgov_name.Contains(tagname));
+      if (tag == null) throw new InvalidOperationException($"Tag {tagname} not found");
+
+      context.AddLink(document, bcgov_DocumentUrl.Fields.bcgov_tag1_bcgov_documenturl, tag);
+    }
+  }
 }

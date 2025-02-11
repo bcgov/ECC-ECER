@@ -9,7 +9,8 @@ public class MetadataHandlers(
    IMetadataResourceRepository metadataResourceRepository,
    IMapper mapper) : IRequestHandler<Contract.Metadatas.ProvincesQuery, ProvincesQueryResults>,
    IRequestHandler<Contract.Metadatas.CountriesQuery, CountriesQueryResults>,
-   IRequestHandler<Contract.Metadatas.SystemMessagesQuery, SystemMessagesQueryResults>
+   IRequestHandler<Contract.Metadatas.SystemMessagesQuery, SystemMessagesQueryResults>,
+   IRequestHandler<Contract.Metadatas.IdentificationTypesQuery, IdentificationTypesQueryResults>
 {
   public async Task<ProvincesQueryResults> Handle(Contract.Metadatas.ProvincesQuery request, CancellationToken cancellationToken)
   {
@@ -37,5 +38,13 @@ public class MetadataHandlers(
 
     var countries = await metadataResourceRepository.QueryCountries(new Resources.Documents.MetadataResources.CountriesQuery() { ById = request.ById, ByCode = request.ByCode, ByName = request.ByName }, cancellationToken);
     return new CountriesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.Country>>(countries)!);
+  }
+
+  public async Task<IdentificationTypesQueryResults> Handle(Contract.Metadatas.IdentificationTypesQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var identificationTypes = await metadataResourceRepository.QueryIdentificationTypes(new Resources.Documents.MetadataResources.IdentificationTypesQuery() { ById = request.ById, ForPrimary = request.ForPrimary, ForSecondary = request.ForSecondary }, cancellationToken);
+    return new IdentificationTypesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.IdentificationType>>(identificationTypes)!);
   }
 }

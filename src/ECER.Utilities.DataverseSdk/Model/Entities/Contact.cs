@@ -438,7 +438,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 		PendingforDocuments = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ReadyforVerification = 621870001,
+		ReadyforIDVerification = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ReadyforRegistrantMatch = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Unverified = 1,
@@ -682,10 +685,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_contact_ecer_previousaddress_251 = "ecer_contact_ecer_previousaddress_251";
 			public const string ecer_contact_ecer_previousaddress_legacycontactid = "ecer_contact_ecer_previousaddress_legacycontactid";
 			public const string ecer_contact_ecer_recordmanagement_contact = "ecer_contact_ecer_recordmanagement_contact";
+			public const string ecer_contact_primaryidtype = "ecer_contact_primaryidtype";
 			public const string ecer_contact_representedpsiid_ecer_postsecondaryinstitute = "ecer_contact_representedpsiid_ecer_postsecondaryinstitute";
+			public const string ecer_contact_secondaryidtype = "ecer_contact_secondaryidtype";
 			public const string ecer_DateCertificateCancelled = "ecer_datecertificatecancelled";
 			public const string ecer_DateCertificateSuspended = "ecer_datecertificatesuspended";
 			public const string ecer_DateWEExtracted = "ecer_dateweextracted";
+			public const string ecer_decisionreason = "ecer_decisionreason";
 			public const string ecer_eceprogramrepresentative_ContactId_contac = "ecer_eceprogramrepresentative_ContactId_contac";
 			public const string ecer_ecer_characterreference_Applicantid_conta = "ecer_ecer_characterreference_Applicantid_conta";
 			public const string ecer_ecer_professionaldevelopment_Applicantid_ = "ecer_ecer_professionaldevelopment_Applicantid_";
@@ -693,6 +699,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_educationassessment_ApplicantId = "ecer_educationassessment_ApplicantId";
 			public const string ecer_GenerateCertificate = "ecer_generatecertificate";
 			public const string ecer_generatecertificateName = "ecer_generatecertificatename";
+			public const string ecer_GenerateCommunicationfromIDrejected = "ecer_generatecommunicationfromidrejected";
+			public const string ecer_generatecommunicationfromidrejectedName = "ecer_generatecommunicationfromidrejectedname";
 			public const string ecer_guardianreference_Applicantid = "ecer_guardianreference_Applicantid";
 			public const string ecer_HasCertificate = "ecer_hascertificate";
 			public const string ecer_HasCertificateCancelled = "ecer_hascertificatecancelled";
@@ -704,8 +712,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_hascurrentcertificateconditionsName = "ecer_hascurrentcertificateconditionsname";
 			public const string ecer_HasProvidedID = "ecer_hasprovidedid";
 			public const string ecer_hasprovidedidName = "ecer_hasprovidedidname";
+			public const string ecer_idverificationdecision = "ecer_idverificationdecision";
+			public const string ecer_idverificationdecisionName = "ecer_idverificationdecisionname";
 			public const string ecer_IsBCECE = "ecer_isbcece";
 			public const string ecer_isbceceName = "ecer_isbcecename";
+			public const string ecer_isbceid = "ecer_isbceid";
+			public const string ecer_isbceidName = "ecer_isbceidname";
 			public const string ecer_IsUnder19 = "ecer_isunder19";
 			public const string ecer_isunder19Name = "ecer_isunder19name";
 			public const string ecer_IsVerified = "ecer_isverified";
@@ -723,10 +735,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PreferredName = "ecer_preferredname";
 			public const string ecer_PreviousName = "ecer_previousname";
 			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
+			public const string ecer_primaryidtype = "ecer_primaryidtype";
+			public const string ecer_primaryidtypeName = "ecer_primaryidtypename";
 			public const string ecer_renewalassessment_ApplicantId = "ecer_renewalassessment_ApplicantId";
 			public const string ecer_representedpsiid = "ecer_representedpsiid";
 			public const string ecer_representedpsiidName = "ecer_representedpsiidname";
 			public const string ecer_Role = "ecer_role";
+			public const string ecer_secondaryidtype = "ecer_secondaryidtype";
+			public const string ecer_secondaryidtypeName = "ecer_secondaryidtypename";
 			public const string ecer_TempClientID = "ecer_tempclientid";
 			public const string ecer_TermsandConditionsText = "ecer_termsandconditionstext";
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
@@ -4156,6 +4172,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisionreason")]
+		public string ecer_decisionreason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_decisionreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_decisionreason", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecertificate")]
 		public System.Nullable<bool> ecer_GenerateCertificate
 		{
@@ -4180,6 +4211,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_generatecertificate"))
 				{
 					return this.FormattedValues["ecer_generatecertificate"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecommunicationfromidrejected")]
+		public virtual ecer_YesNoNull? ecer_GenerateCommunicationfromIDrejected
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_generatecommunicationfromidrejected")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_generatecommunicationfromidrejected", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generatecommunicationfromidrejectedname")]
+		public string ecer_generatecommunicationfromidrejectedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_generatecommunicationfromidrejected"))
+				{
+					return this.FormattedValues["ecer_generatecommunicationfromidrejected"];
 				}
 				else
 				{
@@ -4348,6 +4411,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_idverificationdecision")]
+		public virtual ecer_IDVerificationDecision? ecer_idverificationdecision
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_IDVerificationDecision?)(EntityOptionSetEnum.GetEnum(this, "ecer_idverificationdecision")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_idverificationdecision", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_idverificationdecisionname")]
+		public string ecer_idverificationdecisionName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_idverificationdecision"))
+				{
+					return this.FormattedValues["ecer_idverificationdecision"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// is BC ECE Registrant. Use to show hide other tabs
 		/// </summary>
@@ -4375,6 +4470,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_isbcece"))
 				{
 					return this.FormattedValues["ecer_isbcece"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isbceid")]
+		public System.Nullable<bool> ecer_isbceid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_isbceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_isbceid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isbceidname")]
+		public string ecer_isbceidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isbceid"))
+				{
+					return this.FormattedValues["ecer_isbceid"];
 				}
 				else
 				{
@@ -4554,6 +4681,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_primaryidtype")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_primaryidtype
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_primaryidtype");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_primaryidtype", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_primaryidtypename")]
+		public string ecer_primaryidtypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_primaryidtype"))
+				{
+					return this.FormattedValues["ecer_primaryidtype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_representedpsiid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_representedpsiid
 		{
@@ -4601,6 +4760,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_role", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_secondaryidtype")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_secondaryidtype
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_secondaryidtype");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_secondaryidtype", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_secondaryidtypename")]
+		public string ecer_secondaryidtypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_secondaryidtype"))
+				{
+					return this.FormattedValues["ecer_secondaryidtype"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -8024,6 +8215,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// N:1 ecer_contact_primaryidtype
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_primaryidtype")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_primaryidtype")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_identificationtype ecer_contact_primaryidtype
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_identificationtype>("ecer_contact_primaryidtype", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_identificationtype>("ecer_contact_primaryidtype", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 ecer_contact_representedpsiid_ecer_postsecondaryinstitute
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_representedpsiid")]
@@ -8039,6 +8249,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_contact_representedpsiid_ecer_postsecondaryinstitute", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_contact_secondaryidtype
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_secondaryidtype")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_secondaryidtype")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_identificationtype ecer_contact_secondaryidtype
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_identificationtype>("ecer_contact_secondaryidtype", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_identificationtype>("ecer_contact_secondaryidtype", null, value);
 			}
 		}
 		

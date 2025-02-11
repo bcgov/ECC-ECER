@@ -21,4 +21,9 @@ const getRecaptchaSiteKey = async (): Promise<string | null | undefined> => {
   return (await client.recaptcha_site_key_get()).data;
 };
 
-export { getConfiguration, getProvinceList, getRecaptchaSiteKey, getSystemMessages };
+const getIdentificationTypes = async (): Promise<Components.Schemas.IdentificationType[] | null | undefined> => {
+  const client = await getClient(false);
+  return (await client.identificationTypes_get()).data;
+};
+
+export { getConfiguration, getProvinceList, getRecaptchaSiteKey, getSystemMessages, getIdentificationTypes };

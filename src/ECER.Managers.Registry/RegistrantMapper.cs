@@ -10,19 +10,17 @@ internal sealed class RegistrantMapper : AutoMapper.Profile
     CreateMap<Contract.Registrants.RegisterNewUserCommand, Registrant>()
       .ForMember(d => d.Identities, opts => opts.MapFrom(s => (new[] { s.Identity })))
       .ForMember(d => d.Profile, opts => opts.MapFrom(s => s.Profile))
-      .ForMember(d => d.Id, opts => opts.Ignore())
-      ;
+      .ForMember(d => d.Id, opts => opts.Ignore());
 
-    CreateMap<Contract.Registrants.Registrant, Resources.Accounts.Registrants.Registrant>()
+    CreateMap<Contract.Registrants.Registrant, Registrant>()
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.UserId))
       .ForMember(d => d.Identities, opts => opts.Ignore())
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination)
       .ForCtorParam(nameof(Contract.Registrants.Registrant.UserId), opts => opts.MapFrom(s => s.Id))
-      .ForCtorParam(nameof(Contract.Registrants.Registrant.Profile), opts => opts.MapFrom(s => s.Profile))
-      ;
+      .ForCtorParam(nameof(Contract.Registrants.Registrant.Profile), opts => opts.MapFrom(s => s.Profile));
 
-    CreateMap<Contract.Registrants.UserProfile, Resources.Accounts.Registrants.UserProfile>()
+    CreateMap<Contract.Registrants.UserProfile, UserProfile>()
       .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.MiddleName))
@@ -40,8 +38,7 @@ internal sealed class RegistrantMapper : AutoMapper.Profile
       .ReverseMap()
       .ForMember(d => d.GivenName, opts => opts.Ignore())
       .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.MiddleName))
-        .ValidateMemberList(MemberList.Destination)
-        ;
+        .ValidateMemberList(MemberList.Destination);
 
     CreateMap<Contract.Registrants.PreviousName, PreviousName>().ReverseMap();
 
@@ -49,7 +46,8 @@ internal sealed class RegistrantMapper : AutoMapper.Profile
 
     CreateMap<Contract.Registrants.Address, Address>()
         .ReverseMap()
-        .ValidateMemberList(MemberList.Destination)
-        ;
+        .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<Contract.Registrants.ProfileIdentification, ProfileIdentification>().ReverseMap();
   }
 }
