@@ -20,11 +20,31 @@
         <p>The ID you provide must:</p>
 
         <p>To verify your identity:</p>
+
         <ul class="ml-10">
-          <li>Show the exact names as your account: JANET MARIE SMITH</li>
+          <li>
+            Show the exact names as your account: {{ userStore.userProfile?.firstName }} {{ userStore.userProfile?.middleName }}
+            {{ userStore.userProfile?.lastName }}
+            <v-tooltip text="If this name does not match your ID, you will need to contact us to have it updated." location="top">
+              <template #activator="{ props }">
+                <v-icon v-bind="props" icon="mdi-help-circle" variant="plain" />
+              </template>
+            </v-tooltip>
+          </li>
           <li>Be valid (not expired)</li>
-          <li>Be in English</li>
+          <li>
+            Be in English
+            <v-tooltip
+              text="If you do not have ID in English, you need to have it professionally translated. Please provide both the original and translated copies."
+              location="top"
+            >
+              <template #activator="{ props }">
+                <v-icon v-bind="props" icon="mdi-help-circle" variant="plain" />
+              </template>
+            </v-tooltip>
+          </li>
         </ul>
+
         <p>Make sure the photo of your ID:</p>
         <ul class="ml-10">
           <li>Is clear and not blurry</li>
@@ -46,17 +66,15 @@
             :rules="[Rules.required('Select your primary ID type')]"
           ></v-select>
         </label>
-        <label>
-          Upload file
-          <FileUploader
-            :allow-multiple-files="false"
-            :max-number-of-files="3"
-            :user-files="generateUserPrimaryFileArray"
-            class="mt-1"
-            @update:files="handlePrimaryFileUpload"
-            :rules="[Rules.atLeastOneOptionRequired('You must add at least one file')]"
-          />
-        </label>
+        <label>Upload file</label>
+        <FileUploader
+          :allow-multiple-files="false"
+          :max-number-of-files="3"
+          :user-files="generateUserPrimaryFileArray"
+          class="mt-1"
+          @update:files="handlePrimaryFileUpload"
+          :rules="[Rules.atLeastOneOptionRequired('You must add at least one file')]"
+        />
       </div>
       <div class="mt-12">
         <ECEHeader title="Then, choose a secondary ID" />
@@ -73,17 +91,15 @@
             :rules="[Rules.required('Select your secondary ID type'), Rules.notSameAs(primaryIdType, 'Select a different type of ID than your primary ID')]"
           ></v-select>
         </label>
-        <label>
-          Upload file
-          <FileUploader
-            :allow-multiple-files="false"
-            :max-number-of-files="3"
-            :user-files="generateUserSecondaryFileArray"
-            class="mt-1"
-            @update:files="handleSecondaryFileUpload"
-            :rules="[Rules.atLeastOneOptionRequired('You must add at least one file')]"
-          />
-        </label>
+        <label>Upload file</label>
+        <FileUploader
+          :allow-multiple-files="false"
+          :max-number-of-files="3"
+          :user-files="generateUserSecondaryFileArray"
+          class="mt-1"
+          @update:files="handleSecondaryFileUpload"
+          :rules="[Rules.atLeastOneOptionRequired('You must add at least one file')]"
+        />
       </div>
       <v-btn
         @click="handleSubmit()"

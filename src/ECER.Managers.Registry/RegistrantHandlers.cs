@@ -16,7 +16,6 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
     IRequestHandler<RegisterNewUserCommand, string>,
     IRequestHandler<UpdateRegistrantProfileCommand, string>,
     IRequestHandler<UpdateRegistrantProfileIdentificationCommand, string>
-
 {
   /// <summary>
   /// Handles search registrants use case
