@@ -139,9 +139,6 @@ import { postProfileVerification } from "@/api/profile";
 import type { VForm } from "vuetify/components/VForm";
 import { useRouter } from "vue-router";
 
-export interface ProfileIdentificationExtended extends Components.Schemas.ProfileIdentification {
-  newFilesWithData?: FileItem[];
-}
 export default defineComponent({
   name: "VerifyIdentification",
   components: { PageContainer, Breadcrumb, IconCard, ECEHeader, Callout, FileUploader },
