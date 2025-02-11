@@ -12,7 +12,7 @@
               <p class="mt-2">
                 Before you can submit new applications or access existing certifications, we need to verify your identity by reviewing your ID.
               </p>
-              <v-btn prepend-icon="mdi-card-account-details-outline" color="primary" class="mt-2" @click="router.push({ name: 'upload-id-new-user' })">
+              <v-btn prepend-icon="mdi-card-account-details-outline" color="primary" class="mt-2" @click="router.push({ name: 'verifyIdentification' })">
                 Verify my identity
               </v-btn>
             </v-card-item>

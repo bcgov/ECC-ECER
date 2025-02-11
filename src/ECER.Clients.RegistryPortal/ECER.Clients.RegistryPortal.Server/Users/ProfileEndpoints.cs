@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.RegistryPortal.Server.Users;
 
@@ -33,6 +33,11 @@ public class ProfileEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapPost("/api/profile/verificationIds", async Task<Ok> (ProfileIdentification profileIdentification, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
     {
       profileIdentification.RegistrantId = ctx.User.GetUserContext()!.UserId;
+      if (profileIdentification.RegistrantId == ctx.User.GetUserContext()!.UserId)
+      {
+        throw new InvalidOperationException();
+      }
+
       await bus.Send(new UpdateRegistrantProfileIdentificationCommand(mapper.Map<Managers.Registry.Contract.Registrants.ProfileIdentification>(profileIdentification)!), ctx.RequestAborted);
       return TypedResults.Ok();
     })

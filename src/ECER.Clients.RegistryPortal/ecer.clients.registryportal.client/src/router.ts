@@ -63,7 +63,7 @@ const router = createRouter({
     },
     {
       path: "/verify-identification",
-      name: "verify identification",
+      name: "verifyIdentification",
       component: () => import("./components/pages/VerifyIdentification.vue"),
       meta: { requiresAuth: true },
     },
@@ -238,12 +238,6 @@ const router = createRouter({
       component: () => import("./components/LookupCertificationRecord.vue"),
       meta: { requiresAuth: false },
       name: "lookup-certification-record",
-    },
-    {
-      path: "/upload-id",
-      component: () => import("./components/UploadId.vue"),
-      meta: { requiresAuth: false },
-      name: "upload-id-new-user",
     },
     { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("./components/pages/PageNotFound.vue") },
   ],

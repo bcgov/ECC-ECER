@@ -5,7 +5,6 @@ using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
-using System.Diagnostics;
 
 namespace ECER.Resources.Accounts.Registrants;
 
@@ -176,6 +175,9 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     var primaryId = context.ecer_identificationtypeSet.SingleOrDefault(i => i.ecer_identificationtypeId == Guid.Parse(profileIdentification.PrimaryIdTypeObjectId));
     var secondaryId = context.ecer_identificationtypeSet.SingleOrDefault(i => i.ecer_identificationtypeId == Guid.Parse(profileIdentification.SecondaryIdTypeObjectId));
+
+    contact.StatusCode = Contact_StatusCode.ReadyforIDVerification;
+    context.UpdateObject(contact);
 
     context.AddLink(contact, Contact.Fields.ecer_contact_primaryidtype, primaryId!);
     context.AddLink(contact, Contact.Fields.ecer_contact_secondaryidtype, secondaryId!);
