@@ -78,8 +78,12 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
     request.Profile.MailingAddress = request.Profile.ResidentialAddress;
     var registrant = mapper.Map<Resources.Accounts.Registrants.Registrant>(request);
 
+    //all BCSC registrants have their identities verified
+    registrant.Profile.IDVerificationDecision = IDVerificationDecision.Approve;
+
     if (string.IsNullOrEmpty(request.Profile.RegistrationNumber))
     {
+      /*registrant.Profile.Status = !registrants.Any() ? Resources.Accounts.Registrants.StatusCode.Verified : Resources.Accounts.Registrants.StatusCode.ReadyforRegistrantMatch;*/
       registrant.Profile.IsVerified = !registrants.Any();
 
       return await registrantRepository.Create(registrant, cancellationToken);
@@ -91,6 +95,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
       if (matchedRegistrant != null)
       {
         matchedRegistrant.Profile.IsVerified = true;
+        registrant.Profile.Status = Resources.Accounts.Registrants.StatusCode.Verified;
         matchedRegistrant.Profile.ResidentialAddress = mapper.Map<Resources.Accounts.Registrants.Address>(request.Profile.ResidentialAddress);
         matchedRegistrant.Profile.MailingAddress = mapper.Map<Resources.Accounts.Registrants.Address>(request.Profile.MailingAddress);
         matchedRegistrant.Profile.Email = request.Profile.Email;
@@ -105,6 +110,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
       else
       {
         registrant.Profile.IsVerified = false;
+        registrant.Profile.Status = Resources.Accounts.Registrants.StatusCode.ReadyforRegistrantMatch;
         return await registrantRepository.Create(registrant, cancellationToken);
       }
     }

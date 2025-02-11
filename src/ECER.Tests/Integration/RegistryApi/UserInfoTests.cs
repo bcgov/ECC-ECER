@@ -2,11 +2,9 @@
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Users;
 using ECER.Resources.Accounts.Registrants;
-using ECER.Resources.Documents.Applications;
 using ECER.Utilities.Security;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System;
 using System.Net;
 using Xunit.Abstractions;
 using Address = ECER.Clients.RegistryPortal.Server.Users.Address;
@@ -101,6 +99,9 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
     userProfile.LastName.ShouldBe(request.LastName);
     userProfile.DateOfBirth.ShouldBe(request.DateOfBirth);
     userProfile.Phone.ShouldBe(request.Phone);
+    //without a registration number and registrant match we should set it to verified.
+    userProfile.Status.ShouldBe(Clients.RegistryPortal.Server.Users.StatusCode.Verified);
+    userProfile.IsVerified.ShouldBeTrue();
   }
 
   [Fact]

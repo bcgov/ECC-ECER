@@ -101,6 +101,8 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     if (contact == null) throw new InvalidOperationException($"Registrant {registrant.Id} not found");
 
     var verified = contact.ecer_IsVerified;
+    var statusCode = contact.StatusCode;
+    var idVerificationDecision = contact.ecer_idverificationdecision;
 
     context.Detach(contact);
     var clientId = contact.ecer_ClientID;
@@ -110,6 +112,8 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     contact.ecer_IsVerified = verified;
     contact.ecer_ClientID = clientId;
     contact.ecer_TempClientID = tempClientId;
+    contact.StatusCode = statusCode;
+    contact.ecer_idverificationdecision = idVerificationDecision;
     context.Attach(contact);
     context.UpdateObject(contact);
 

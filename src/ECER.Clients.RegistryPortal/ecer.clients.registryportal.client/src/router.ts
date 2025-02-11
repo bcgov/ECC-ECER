@@ -233,6 +233,12 @@ const router = createRouter({
       meta: { requiresAuth: false },
       name: "lookup-certification-record",
     },
+    {
+      path: "/upload-id",
+      component: () => import("./components/UploadId.vue"),
+      meta: { requiresAuth: false },
+      name: "upload-id-new-user",
+    },
     { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("./components/pages/PageNotFound.vue") },
   ],
 });
