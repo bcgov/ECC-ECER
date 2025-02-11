@@ -10,5 +10,6 @@ internal class MetadataMapper : Profile
     CreateMap<Province, Contract.Metadatas.Province>();
     CreateMap<Country, Contract.Metadatas.Country>();
     CreateMap<SystemMessage, Contract.Metadatas.SystemMessage>();
+    CreateMap<IdentificationType, Contract.Metadatas.IdentificationType>();
   }
 }

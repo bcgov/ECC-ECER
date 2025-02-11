@@ -15,4 +15,9 @@ const putProfile = async (user: Components.Schemas.UserProfile): Promise<ApiResp
   return apiResultHandler.execute({ request: client.profile_put({}, user), key: "profile_put" });
 };
 
-export { getProfile, putProfile };
+const postProfileVerification = async (identification: Components.Schemas.ProfileIdentification): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute({ request: client.profileVerification_post({}, identification), key: "profileVerification_post" });
+};
+
+export { getProfile, putProfile, postProfileVerification };

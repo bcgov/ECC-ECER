@@ -62,6 +62,12 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: "/verify-identification",
+      name: "verify identification",
+      component: () => import("./components/pages/VerifyIdentification.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/manage-application/:applicationId",
       name: "manageApplication",
       component: () => import("./components/ApplicationSummary.vue"),

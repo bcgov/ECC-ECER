@@ -60,7 +60,10 @@ internal sealed class UserMapper : AutoMapper.Profile
 
     CreateMap<Address, Managers.Registry.Contract.Registrants.Address>()
       .ReverseMap()
-      .ValidateMemberList(MemberList.Source)
-      ;
+      .ValidateMemberList(MemberList.Source);
+
+    CreateMap<ProfileIdentification, Managers.Registry.Contract.Registrants.ProfileIdentification>()
+      .ReverseMap()
+      .ValidateMemberList(MemberList.Source);
   }
 }

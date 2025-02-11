@@ -13,6 +13,8 @@ public record RegisterNewUserCommand(UserProfile Profile, UserIdentity Identity)
 /// <param name="Registrant"></param>
 public record UpdateRegistrantProfileCommand(Registrant Registrant) : IRequest<string>;
 
+public record UpdateRegistrantProfileIdentificationCommand(ProfileIdentification Identification) : IRequest<string>;
+
 /// <summary>
 /// Invokes a registrant query use case
 /// </summary>
@@ -100,4 +102,12 @@ public enum StatusCode
   ReadyforRegistrantMatch,
   Unverified,
   Verified,
+}
+public record ProfileIdentification()
+{
+  public string RegistrantId { get; set; } = null!;
+  public string PrimaryIdTypeObjectId { get; set; } = null!;
+  public IEnumerable<IdentityDocument> PrimaryIds { get; set; } = Array.Empty<IdentityDocument>();
+  public string SecondaryIdTypeObjectId { get; set; } = null!;
+  public IEnumerable<IdentityDocument> SecondaryIds { get; set; } = Array.Empty<IdentityDocument>();
 }

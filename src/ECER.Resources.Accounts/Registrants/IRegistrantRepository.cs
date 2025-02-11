@@ -1,4 +1,5 @@
-﻿using ECER.Utilities.Security;
+﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.Security;
 
 namespace ECER.Resources.Accounts.Registrants;
 
@@ -22,6 +23,11 @@ public interface IRegistrantRepository
   /// Saves a registrant's profile - registrant must exist
   /// </summary>
   Task Save(Registrant registrant, CancellationToken ct);
+
+  /// <summary>
+  /// Saves a registrant's profile - registrant must exist
+  /// </summary>
+  Task SaveIdentityIds(Registrant registrant, ProfileIdentification profileIdentification, CancellationToken ct);
 }
 
 public record RegistrantQuery
@@ -119,3 +125,10 @@ public record Address(
     string? Province,
     string Country
     );
+public record ProfileIdentification()
+{
+  public string PrimaryIdTypeObjectId { get; set; } = null!;
+  public IEnumerable<IdentityDocument> PrimaryIds { get; set; } = Array.Empty<IdentityDocument>();
+  public string SecondaryIdTypeObjectId { get; set; } = null!;
+  public IEnumerable<IdentityDocument> SecondaryIds { get; set; } = Array.Empty<IdentityDocument>();
+}

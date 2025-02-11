@@ -269,6 +269,12 @@ declare namespace Components {
                 [name: string]: string[];
             } | null;
         }
+        export interface IdentificationType {
+            id?: string | null;
+            name?: string | null;
+            forPrimary?: boolean;
+            forSecondary?: boolean;
+        }
         export interface IdentityDocument {
             id?: string | null;
             url?: string | null;
@@ -358,6 +364,13 @@ declare namespace Components {
             status?: ProfessionalDevelopmentStatusCode;
         }
         export type ProfessionalDevelopmentStatusCode = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingResponse";
+        export interface ProfileIdentification {
+            registrantId?: string | null;
+            primaryIdTypeObjectId?: string | null;
+            primaryIds?: IdentityDocument[] | null;
+            secondaryIdTypeObjectId?: string | null;
+            secondaryIds?: IdentityDocument[] | null;
+        }
         export interface Province {
             provinceId?: string | null;
             provinceName?: string | null;
@@ -812,6 +825,21 @@ declare namespace Paths {
             }
         }
     }
+    namespace IdentificationTypesGet {
+        namespace Parameters {
+            export type ById = string;
+            export type ForPrimary = boolean;
+            export type ForSecondary = boolean;
+        }
+        export interface QueryParameters {
+            ById?: Parameters.ById;
+            ForPrimary?: Parameters.ForPrimary;
+            ForSecondary?: Parameters.ForSecondary;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.IdentificationType[];
+        }
+    }
     namespace MessageGet {
         namespace Parameters {
             export type ParentId = string;
@@ -849,6 +877,13 @@ declare namespace Paths {
     }
     namespace ProfilePut {
         export type RequestBody = /* User profile information */ Components.Schemas.UserProfile;
+        namespace Responses {
+            export interface $200 {
+            }
+        }
+    }
+    namespace ProfileVerificationPost {
+        export type RequestBody = Components.Schemas.ProfileIdentification;
         namespace Responses {
             export interface $200 {
             }
@@ -962,6 +997,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.SystemMessageGet.Responses.$200>
   /**
+   * identificationTypes_get - Handles identification types queries
+   */
+  'identificationTypes_get'(
+    parameters?: Parameters<Paths.IdentificationTypesGet.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.IdentificationTypesGet.Responses.$200>
+  /**
    * recaptcha_site_key_get - Obtains site key for recaptcha
    */
   'recaptcha_site_key_get'(
@@ -993,6 +1036,14 @@ export interface OperationMethods {
     data?: Paths.ProfilePut.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ProfilePut.Responses.$200>
+  /**
+   * profileVerification_post - Sets user verification Ids
+   */
+  'profileVerification_post'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.ProfileVerificationPost.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ProfileVerificationPost.Responses.$200>
   /**
    * userinfo_get - Gets the currently logged in user profile or NotFound if no profile found
    */
@@ -1248,6 +1299,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.SystemMessageGet.Responses.$200>
   }
+  ['/api/identificationTypes']: {
+    /**
+     * identificationTypes_get - Handles identification types queries
+     */
+    'get'(
+      parameters?: Parameters<Paths.IdentificationTypesGet.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.IdentificationTypesGet.Responses.$200>
+  }
   ['/api/recaptchaSiteKey']: {
     /**
      * recaptcha_site_key_get - Obtains site key for recaptcha
@@ -1285,6 +1346,16 @@ export interface PathsDictionary {
       data?: Paths.ProfilePut.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ProfilePut.Responses.$200>
+  }
+  ['/api/profile/verificationIds']: {
+    /**
+     * profileVerification_post - Sets user verification Ids
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.ProfileVerificationPost.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ProfileVerificationPost.Responses.$200>
   }
   ['/api/userinfo']: {
     /**
@@ -1604,6 +1675,7 @@ export type FileResponse = Components.Schemas.FileResponse;
 export type FiveYearRenewalExplanations = Components.Schemas.FiveYearRenewalExplanations;
 export type GetMessagesResponse = Components.Schemas.GetMessagesResponse;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
+export type IdentificationType = Components.Schemas.IdentificationType;
 export type IdentityDocument = Components.Schemas.IdentityDocument;
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
 export type InviteType = Components.Schemas.InviteType;
@@ -1621,6 +1693,7 @@ export type ProblemDetails = Components.Schemas.ProblemDetails;
 export type ProfessionalDevelopment = Components.Schemas.ProfessionalDevelopment;
 export type ProfessionalDevelopmentStatus = Components.Schemas.ProfessionalDevelopmentStatus;
 export type ProfessionalDevelopmentStatusCode = Components.Schemas.ProfessionalDevelopmentStatusCode;
+export type ProfileIdentification = Components.Schemas.ProfileIdentification;
 export type Province = Components.Schemas.Province;
 export type ReferenceContactInformation = Components.Schemas.ReferenceContactInformation;
 export type ReferenceKnownTime = Components.Schemas.ReferenceKnownTime;

@@ -45,8 +45,7 @@ internal sealed class RegistrantRepositoryMapper : Profile
 
     CreateMap<ecer_Authentication, UserIdentity>()
         .ForCtorParam(nameof(UserIdentity.UserId), opts => opts.MapFrom(s => s.ecer_ExternalID))
-        .ForCtorParam(nameof(UserIdentity.IdentityProvider), opts => opts.MapFrom(s => s.ecer_IdentityProvider))
-        ;
+        .ForCtorParam(nameof(UserIdentity.IdentityProvider), opts => opts.MapFrom(s => s.ecer_IdentityProvider));
 
     CreateMap<Contact, UserProfile>()
         .ForMember(d => d.DateOfBirth, opts => opts.MapFrom(s => DateOnly.FromDateTime(s.BirthDate.GetValueOrDefault())))

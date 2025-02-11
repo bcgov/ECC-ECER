@@ -128,6 +128,15 @@ const dateRuleRange = (targetDate: string, years: number, message = `Date should
     return true;
   };
 };
+/**
+ * Rule to ensure two values are not the same
+ * @param {String} otherValue - The value to compare against.
+ * @param {String} message - The error message.
+ * @returns {Function}
+ */
+const notSameAs = (otherValue: string, message = "Both values must be different") => {
+  return (v: string) => v !== otherValue || message;
+};
 
 /**
  * Validates that a date string falls within a specified range.
@@ -150,6 +159,7 @@ const dateBetweenRule = (startDate: string, endDate: string, message = `Date sho
     return true;
   };
 };
+
 /**
  * Validates that a date string is not before a specified target date.
  *
@@ -227,4 +237,5 @@ export {
   required,
   requiredRadio,
   website,
+  notSameAs,
 };
