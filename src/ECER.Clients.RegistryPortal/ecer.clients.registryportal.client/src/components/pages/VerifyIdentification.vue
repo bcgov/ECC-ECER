@@ -68,7 +68,7 @@
         </label>
         <label>Upload file</label>
         <FileUploader
-          :allow-multiple-files="false"
+          :allow-multiple-files="true"
           :max-number-of-files="3"
           :user-files="generateUserPrimaryFileArray"
           class="mt-1"
@@ -93,7 +93,7 @@
         </label>
         <label>Upload file</label>
         <FileUploader
-          :allow-multiple-files="false"
+          :allow-multiple-files="true"
           :max-number-of-files="3"
           :user-files="generateUserSecondaryFileArray"
           class="mt-1"
