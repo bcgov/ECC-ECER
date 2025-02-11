@@ -83,7 +83,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
 
     if (string.IsNullOrEmpty(request.Profile.RegistrationNumber))
     {
-      /*registrant.Profile.Status = !registrants.Any() ? Resources.Accounts.Registrants.StatusCode.Verified : Resources.Accounts.Registrants.StatusCode.ReadyforRegistrantMatch;*/
+      registrant.Profile.Status = !registrants.Any() ? Resources.Accounts.Registrants.StatusCode.Verified : Resources.Accounts.Registrants.StatusCode.ReadyforRegistrantMatch;
       registrant.Profile.IsVerified = !registrants.Any();
 
       return await registrantRepository.Create(registrant, cancellationToken);
