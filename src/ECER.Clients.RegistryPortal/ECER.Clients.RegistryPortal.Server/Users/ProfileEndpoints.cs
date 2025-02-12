@@ -4,6 +4,7 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.RegistryPortal.Server.Users;
@@ -30,15 +31,22 @@ public class ProfileEndpoints : IRegisterEndpoints
   .WithOpenApi("Gets the current user profile", string.Empty, "profile_put")
   .RequireAuthorization();
 
-    endpointRouteBuilder.MapPost("/api/profile/verificationIds", async Task<Ok> (ProfileIdentification profileIdentification, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/profile/verificationIds", async Task<Results<Ok, BadRequest<ProblemDetails>>> (ProfileIdentification profileIdentification, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
     {
       profileIdentification.RegistrantId = ctx.User.GetUserContext()!.UserId;
+
+      var registrant = (await bus.Send(new SearchRegistrantQuery { ByUserIdentity = ctx.User.GetUserContext()!.Identity }, ctx.RequestAborted)).Items.SingleOrDefault();
+
+      if (registrant != null && registrant.Profile.Status != Managers.Registry.Contract.Registrants.StatusCode.Unverified)
+      {
+        return TypedResults.BadRequest(new ProblemDetails { Title = "Unable to upload verification IDs", Detail = $"unable to post verificationId:: registrant status is not unverified. Registrant status is {registrant.Profile.Status}" });
+      }
 
       await bus.Send(new UpdateRegistrantProfileIdentificationCommand(mapper.Map<Managers.Registry.Contract.Registrants.ProfileIdentification>(profileIdentification)!), ctx.RequestAborted);
       return TypedResults.Ok();
     })
   .WithOpenApi("Sets user verification Ids", string.Empty, "profileVerification_post")
-  .RequireAuthorization();
+  .RequireAuthorization("registry_unverified_user");
   }
 }
 

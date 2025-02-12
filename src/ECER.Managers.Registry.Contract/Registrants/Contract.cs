@@ -7,6 +7,12 @@ namespace ECER.Managers.Registry.Contract.Registrants;
 /// Invokes a new registrant registration use case
 /// </summary>
 public record RegisterNewUserCommand(UserProfile Profile, UserIdentity Identity) : IRequest<string>;
+
+public interface IRegistrationIdentityService
+{
+  Task<string> Resolve(RegisterNewUserCommand command, CancellationToken cancellationToken);
+}
+
 /// <summary>
 /// Invokes updating a registrant's profile use case
 /// </summary>
@@ -103,6 +109,7 @@ public enum StatusCode
   Unverified,
   Verified,
 }
+
 public record ProfileIdentification()
 {
   public string RegistrantId { get; set; } = null!;

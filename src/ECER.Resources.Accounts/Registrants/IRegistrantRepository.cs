@@ -1,5 +1,4 @@
-﻿using ECER.Utilities.DataverseSdk.Model;
-using ECER.Utilities.Security;
+﻿using ECER.Utilities.Security;
 
 namespace ECER.Resources.Accounts.Registrants;
 
@@ -63,7 +62,7 @@ public record UserProfile
   public IEnumerable<PreviousName> PreviousNames { get; set; } = Array.Empty<PreviousName>();
   public bool IsRegistrant { get; set; }
   public StatusCode Status { get; set; }
-  public IDVerificationDecision IDVerificationDecision { get; set; }
+  public IDVerificationDecision? IDVerificationDecision { get; set; }
 };
 
 public record PreviousName(string FirstName, string LastName)

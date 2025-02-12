@@ -21,7 +21,6 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
       contact = mapper.Map<Contact>(registrant.Profile)!;
       contact.Id = Guid.NewGuid();
       contact.ecer_ClientID = null;
-      contact.ecer_TempClientID = null;
       context.AddObject(contact);
     }
     else
