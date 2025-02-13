@@ -417,6 +417,7 @@ declare namespace Components {
              */
             communicationId?: string | null;
         }
+        export type StatusCode = "Inactive" | "PendingforDocuments" | "ReadyforIDVerification" | "ReadyforRegistrantMatch" | "Unverified" | "Verified";
         export interface SubmitApplicationResponse {
             applicationId?: string | null;
         }
@@ -483,6 +484,7 @@ declare namespace Components {
             middleName?: string | null;
             registrationNumber?: string | null;
             isVerified?: boolean;
+            status?: StatusCode;
             unreadMessagesCount?: number; // int32
             residentialAddress?: /* Address */ Address;
             mailingAddress?: /* Address */ Address;
@@ -1700,6 +1702,7 @@ export type ResendReferenceInviteResponse = Components.Schemas.ResendReferenceIn
 export type SaveDraftApplicationRequest = Components.Schemas.SaveDraftApplicationRequest;
 export type SendMessageRequest = Components.Schemas.SendMessageRequest;
 export type SendMessageResponse = Components.Schemas.SendMessageResponse;
+export type StatusCode = Components.Schemas.StatusCode;
 export type SubmitApplicationResponse = Components.Schemas.SubmitApplicationResponse;
 export type SubmittedApplicationStatus = Components.Schemas.SubmittedApplicationStatus;
 export type SystemMessage = Components.Schemas.SystemMessage;

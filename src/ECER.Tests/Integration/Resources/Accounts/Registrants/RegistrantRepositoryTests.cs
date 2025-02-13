@@ -86,6 +86,8 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
     await registrantRepository.Save(new Registrant { Profile = updatedUserProfile, Id = registrantId }, default);
     var user = (await registrantRepository.Query(new RegistrantQuery { ByUserId = registrantId }, default)).ShouldHaveSingleItem();
     user.Profile.PreviousNames = user.Profile.PreviousNames.ToArray();
+    //dynamics automatically assigns a registration number. So we mock it when doing our comparison.
+    updatedUserProfile.RegistrationNumber = user.Profile.RegistrationNumber;
     user.Profile.ShouldBe(updatedUserProfile);
   }
 
@@ -108,7 +110,8 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
       Email = "fake@test.com",
       Phone = Faker.Phone.PhoneNumber(),
       AlternateContactPhone = Faker.Phone.PhoneNumber(),
-      ResidentialAddress = new Address(Faker.Address.StreetAddress(), null, Faker.Address.City(), Faker.Address.ZipCode(), Faker.Address.State(), Faker.Address.Country())
+      ResidentialAddress = new Address(Faker.Address.StreetAddress(), null, Faker.Address.City(), Faker.Address.ZipCode(), Faker.Address.State(), Faker.Address.Country()),
+      Status = StatusCode.ReadyforRegistrantMatch,
     };
   }
 
@@ -120,6 +123,7 @@ public class RegistrantRepositoryTests : RegistryPortalWebAppScenarioBase
       LastName = $"{Fixture.TestRunId}_{Faker.Person.LastName}",
       Email = "fake@test.com",
       Phone = Faker.Phone.PhoneNumber(),
+      Status = StatusCode.ReadyforRegistrantMatch,
     };
   }
 }

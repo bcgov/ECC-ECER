@@ -7,6 +7,12 @@ namespace ECER.Managers.Registry.Contract.Registrants;
 /// Invokes a new registrant registration use case
 /// </summary>
 public record RegisterNewUserCommand(UserProfile Profile, UserIdentity Identity) : IRequest<string>;
+
+public interface IRegistrationIdentityService
+{
+  Task<string> Resolve(RegisterNewUserCommand command, CancellationToken cancellationToken);
+}
+
 /// <summary>
 /// Invokes updating a registrant's profile use case
 /// </summary>
@@ -47,6 +53,7 @@ public record UserProfile
   public bool IsVerified { get; set; }
   public IEnumerable<PreviousName> PreviousNames { get; set; } = Array.Empty<PreviousName>();
   public bool IsRegistrant { get; set; }
+  public StatusCode Status { get; set; }
 };
 
 public record PreviousName(string FirstName, string LastName)
@@ -92,6 +99,17 @@ public record Address(
     string? Province,
     string Country
     );
+
+public enum StatusCode
+{
+  Inactive,
+  PendingforDocuments,
+  ReadyforIDVerification,
+  ReadyforRegistrantMatch,
+  Unverified,
+  Verified,
+}
+
 public record ProfileIdentification()
 {
   public string RegistrantId { get; set; } = null!;

@@ -1,17 +1,18 @@
 ﻿using AutoMapper;
 using ECER.Managers.Registry.Contract.Registrants;
+using ECER.Managers.Registry.UserRegistrationIdentityService;
 using ECER.Resources.Accounts.Registrants;
 using ECER.Resources.Documents.Certifications;
 using ECER.Resources.Documents.MetadataResources;
 using MediatR;
-using ILogger = Serilog.ILogger;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ECER.Managers.Registry;
 
 /// <summary>
 /// User Manager
 /// </summary>
-public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICertificationRepository certificationRepository, IMetadataResourceRepository metadataResourceRepository, IMapper mapper, ILogger logger)
+public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICertificationRepository certificationRepository, IMetadataResourceRepository metadataResourceRepository, IMapper mapper, IServiceProvider serviceProvider)
   : IRequestHandler<SearchRegistrantQuery, RegistrantQueryResults>,
     IRequestHandler<RegisterNewUserCommand, string>,
     IRequestHandler<UpdateRegistrantProfileCommand, string>,
@@ -50,64 +51,14 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
   public async Task<string> Handle(RegisterNewUserCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
-
-    var registrants = await registrantRepository.Query(new RegistrantQuery
+    IRegistrationIdentityService resolver = request.Identity.IdentityProvider switch
     {
-      ByIdentity = request.Identity
-    }, cancellationToken);
+      "bcsc" => serviceProvider.GetRequiredService<BcscRegistrationIdentityService>(),
+      "bceidbasic" => serviceProvider.GetRequiredService<BceidRegistrationIdentityService>(),
+      _ => throw new ArgumentOutOfRangeException("request.Identity.IdentityProvider", request.Identity.IdentityProvider, null)
+    };
 
-    if (registrants.Any()) throw new InvalidOperationException($"Registrant with identity {request.Identity} already exists");
-
-    // If no ECE number, query based on last name and date of birth otherwise add registrationNumber.
-    registrants = await registrantRepository.Query(new RegistrantQuery
-    {
-      ByLastName = request.Profile.LastName,
-      ByDateOfBirth = request.Profile.DateOfBirth,
-      ByRegistrationNumber = string.IsNullOrEmpty(request.Profile.RegistrationNumber) ? null : request.Profile.RegistrationNumber,
-    }, cancellationToken);
-
-    var countries = await metadataResourceRepository.QueryCountries(new CountriesQuery() { ByCode = request.Profile.ResidentialAddress!.Country }, cancellationToken);
-    var countryName = countries.FirstOrDefault()?.CountryName ?? string.Empty;
-
-    if (string.IsNullOrEmpty(countryName))
-    {
-      logger.Warning("Could not find country name for country {0}", request.Profile.ResidentialAddress!.Country);
-    }
-
-    request.Profile.ResidentialAddress = request.Profile.ResidentialAddress with { Country = countryName };
-    request.Profile.MailingAddress = request.Profile.ResidentialAddress;
-    var registrant = mapper.Map<Resources.Accounts.Registrants.Registrant>(request);
-
-    if (string.IsNullOrEmpty(request.Profile.RegistrationNumber))
-    {
-      registrant.Profile.IsVerified = !registrants.Any();
-
-      return await registrantRepository.Create(registrant, cancellationToken);
-    }
-    else
-    {
-      var matchedRegistrant = registrants.FirstOrDefault();
-
-      if (matchedRegistrant != null)
-      {
-        matchedRegistrant.Profile.IsVerified = true;
-        matchedRegistrant.Profile.ResidentialAddress = mapper.Map<Resources.Accounts.Registrants.Address>(request.Profile.ResidentialAddress);
-        matchedRegistrant.Profile.MailingAddress = mapper.Map<Resources.Accounts.Registrants.Address>(request.Profile.MailingAddress);
-        matchedRegistrant.Profile.Email = request.Profile.Email;
-        matchedRegistrant.Profile.FirstName = request.Profile.FirstName;
-        matchedRegistrant.Profile.LastName = request.Profile.LastName;
-        matchedRegistrant.Profile.MiddleName = Infrastructure.Common.Utility.GetMiddleName(request.Profile.FirstName!, request.Profile.GivenName!);
-        matchedRegistrant.Profile.Phone = request.Profile.Phone;
-        matchedRegistrant.Identities = registrant.Identities;
-        await registrantRepository.Create(matchedRegistrant, cancellationToken);
-        return matchedRegistrant.Id;
-      }
-      else
-      {
-        registrant.Profile.IsVerified = false;
-        return await registrantRepository.Create(registrant, cancellationToken);
-      }
-    }
+    return await resolver.Resolve(request, cancellationToken);
   }
 
   /// <summary>
