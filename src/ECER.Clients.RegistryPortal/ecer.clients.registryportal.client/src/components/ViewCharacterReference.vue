@@ -33,7 +33,6 @@ import ResendEmail from "@/components/ResendEmail.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import type { Components } from "@/types/openapi";
-import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "ViewCharacterReference",
@@ -85,7 +84,6 @@ export default defineComponent({
   },
 
   methods: {
-    formatPhoneNumber,
     async handleResendReference() {
       const { error } = await resendCharacterReference({
         applicationId: this.applicationId,
