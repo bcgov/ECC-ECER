@@ -8,7 +8,7 @@
     <p class="mt-8"><b>Name</b></p>
     <p>{{ reference?.firstName }} {{ reference?.lastName }}</p>
     <p class="mt-6"><b>Phone number</b></p>
-    <p>{{ formatPhoneNumber(reference?.phoneNumber || "") }}</p>
+    <p>{{ reference?.phoneNumber }}</p>
     <p class="mt-6"><b>Email</b></p>
     <p class="mb-10">{{ reference?.emailAddress }}</p>
     <ECEHeader title="Options" />

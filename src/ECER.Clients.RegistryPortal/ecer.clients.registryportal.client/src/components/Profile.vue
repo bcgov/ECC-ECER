@@ -141,7 +141,7 @@
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Primary phone number</p>
             <p>
-              {{ userStore.userProfile?.phone ? formatPhoneNumber(userStore.userProfile?.phone ?? "") : "—" }}
+              {{ userStore.userProfile?.phone || "—" }}
             </p>
           </div>
         </v-col>
@@ -149,7 +149,7 @@
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Alternate phone number</p>
             <p>
-              {{ userStore.userProfile?.alternateContactPhone ? formatPhoneNumber(userStore.userProfile?.alternateContactPhone ?? "") : "—" }}
+              {{ userStore.userProfile?.alternateContactPhone || "—" }}
             </p>
           </div>
         </v-col>

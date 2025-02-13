@@ -96,12 +96,7 @@
               <v-row>
                 <!-- Phone Field -->
                 <v-col cols="12" sm="6">
-                  <EceTextField
-                    v-model="phoneNumber"
-                    label="Phone number"
-                    :rules="[Rules.required(), Rules.phoneNumber()]"
-                    @keypress="isNumber($event)"
-                  ></EceTextField>
+                  <EceTextField v-model="phoneNumber" label="Phone number" :rules="[Rules.required(), Rules.phoneNumber()]"></EceTextField>
                 </v-col>
               </v-row>
             </v-col>

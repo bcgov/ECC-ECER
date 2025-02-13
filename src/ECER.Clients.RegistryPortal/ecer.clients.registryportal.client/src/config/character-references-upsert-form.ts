@@ -56,8 +56,7 @@ const characterReferencesUpsertForm: Form = {
       component: EceTextField,
       props: {
         label: "Phone Number (optional)",
-        rules: [Rules.phoneNumber("Enter your reference's 10-digit phone number")],
-        maxLength: 10,
+        rules: [Rules.phoneNumber("Enter your reference's valid phone number")],
       },
       cols: {
         md: 4,

@@ -42,12 +42,10 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
             :model-value="modelValue.phoneNumber"
-            :rules="[Rules.required(), Rules.phoneNumber('Enter your 10-digit phone number')]"
+            :rules="[Rules.required('Enter a phone number'), Rules.phoneNumber('Enter your valid phone number')]"
             label="Phone Number"
             autocomplete="tel"
-            maxlength="10"
             @input="updateField('phoneNumber', $event)"
-            @keypress="isNumber($event)"
           ></EceTextField>
         </v-col>
       </v-row>

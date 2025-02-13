@@ -38,12 +38,19 @@ const validContactName =
     !v || !/[^a-zA-Z\u00C0-\u017F\s'-]/.test(v) || message;
 
 /**
- * Rule for phone numbers also works for fax numbers too
- * @param {String} message
+ * Rule for phone numbers
+ *
+ * The validator checks that the input is empty or:
+ * - 7 to 20 characters long,
+ * - Optionally starts with a '+',
+ * - Contains only digits, spaces, and dashes.
+ *
+ * @param {string} message
  * @returns Function
  */
-const phoneNumber = (message = "Enter a valid, 10-digit phone number") => {
-  return (v: string) => !v || /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(v) || message;
+
+const phoneNumber = (message = "Enter a valid phone number") => {
+  return (v: string) => !v || /^(?=.{7,20}$)(?:\+)?[\d\s\-]+$/.test(v) || message;
 };
 
 /**
