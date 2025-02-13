@@ -95,8 +95,7 @@ const profileInformationForm: Form = {
       component: EceTextField,
       props: {
         label: "Primary contact number",
-        isNumeric: true,
-        rules: [Rules.phoneNumber("Enter your primary 10-digit phone number"), Rules.required()],
+        rules: [Rules.phoneNumber("Enter a valid phone number"), Rules.required("Enter a phone number")],
       },
       cols: {
         md: 8,
@@ -109,8 +108,7 @@ const profileInformationForm: Form = {
       component: EceTextField,
       props: {
         label: "Alternate phone (optional)",
-        isNumeric: true,
-        rules: [Rules.phoneNumber("Enter your alternate 10-digit phone number")],
+        rules: [Rules.phoneNumber("Enter a valid alternate phone number")],
       },
       cols: {
         md: 8,
