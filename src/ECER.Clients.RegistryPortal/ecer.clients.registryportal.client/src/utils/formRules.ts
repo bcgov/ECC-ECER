@@ -50,7 +50,7 @@ const validContactName =
  */
 
 const phoneNumber = (message = "Enter a valid phone number") => {
-  return (v: string) => !v || /^(?=.{7,20}$)(?:\+)?[\d\s\-]+$/.test(v) || message;
+  return (v: string) => !v || /^(?=.{7,20}$)(?:\+)?[\d\s-]+$/.test(v) || message;
 };
 
 /**
