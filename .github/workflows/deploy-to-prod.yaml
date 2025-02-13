@@ -12,14 +12,14 @@ env:
 on:
   # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
   workflow_dispatch:
-  inputs:
-    app_environement_source:
-      description: "Environment image source for deployment"
-      required: true
-      type: choice
-      options:
-        - efxtest
-        - uat
+    inputs:
+      app_environement_source:
+        description: "Environment image source for deployment"
+        required: true
+        type: choice
+        options:
+          - efxtest
+          - uat
 
 jobs:
   openshift-cd:
