@@ -1,7 +1,7 @@
 import type { UserManagerSettings } from "oidc-client-ts";
 import { defineStore } from "pinia";
 
-import { getConfiguration, getProvinceList, getSystemMessages, getIdentificationTypes } from "@/api/configuration";
+import { getConfiguration, getProvinceList, getCountryList, getSystemMessages, getIdentificationTypes } from "@/api/configuration";
 import oidcConfig from "@/oidc-config";
 import type { DropdownWrapper } from "@/types/form";
 import type { Components, SystemMessage } from "@/types/openapi";
@@ -12,6 +12,7 @@ export interface UserState {
   applicationConfiguration: Components.Schemas.ApplicationConfiguration;
   systemMessages: SystemMessage[];
   provinceList: DropdownWrapper<String>[];
+  countryList: DropdownWrapper<String>[];
   identificationTypes: Components.Schemas.IdentificationType[];
 }
 
@@ -22,6 +23,7 @@ export const useConfigStore = defineStore("config", {
   state: (): UserState => ({
     applicationConfiguration: {} as Components.Schemas.ApplicationConfiguration,
     provinceList: [] as DropdownWrapper<String>[],
+    countryList: [] as DropdownWrapper<String>[],
     systemMessages: [] as SystemMessage[],
     identificationTypes: [] as Components.Schemas.IdentificationType[],
   }),
@@ -53,9 +55,10 @@ export const useConfigStore = defineStore("config", {
 
   actions: {
     async initialize(): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> {
-      const [configuration, provinceList, identificationTypes, systemMessages] = await Promise.all([
+      const [configuration, provinceList, countryList, identificationTypes, systemMessages] = await Promise.all([
         getConfiguration(),
         getProvinceList(),
+        getCountryList(),
         getIdentificationTypes(),
         getSystemMessages(),
       ]);
@@ -72,10 +75,23 @@ export const useConfigStore = defineStore("config", {
             return {
               value: province.provinceId as string,
               title: province.provinceName as string,
+              code: province.provinceCode as string,
             };
           })
           .sort((a, b) => sortArray(a, b, "title", [ProvinceTerritoryType.OTHER]));
       }
+
+      if (countryList !== null && countryList !== undefined) {
+        this.countryList = countryList
+          .map((country) => {
+            return {
+              value: country.countryName as string,
+              title: country.countryName as string,
+            };
+          })
+          .sort((a, b) => sortArray(a, b, "title"));
+      }
+
       if (identificationTypes !== null && identificationTypes !== undefined) {
         this.identificationTypes = identificationTypes;
       }

@@ -11,6 +11,11 @@ const getProvinceList = async (): Promise<Components.Schemas.Province[] | null |
   return (await client.province_get()).data;
 };
 
+const getCountryList = async (): Promise<Components.Schemas.Country[] | null | undefined> => {
+  const client = await getClient(false);
+  return (await client.country_get()).data;
+};
+
 const getSystemMessages = async (): Promise<Components.Schemas.SystemMessage[] | null | undefined> => {
   const client = await getClient(false);
   return (await client.systemMessage_get()).data;
@@ -26,4 +31,4 @@ const getIdentificationTypes = async (): Promise<Components.Schemas.Identificati
   return (await client.identificationTypes_get()).data;
 };
 
-export { getConfiguration, getProvinceList, getRecaptchaSiteKey, getSystemMessages, getIdentificationTypes };
+export { getConfiguration, getProvinceList, getCountryList, getRecaptchaSiteKey, getSystemMessages, getIdentificationTypes };

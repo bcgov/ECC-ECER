@@ -210,6 +210,11 @@ declare namespace Components {
         export interface CommunicationsStatusResults {
             status?: CommunicationsStatus;
         }
+        export interface Country {
+            countryId?: string | null;
+            countryName?: string | null;
+            countryCode?: string | null;
+        }
         export interface DraftApplication {
             id?: string | null;
             signedDate?: string | null; // date-time
@@ -374,6 +379,7 @@ declare namespace Components {
         export interface Province {
             provinceId?: string | null;
             provinceName?: string | null;
+            provinceCode?: string | null;
         }
         export interface ReferenceContactInformation {
             lastName?: string | null;
@@ -756,6 +762,11 @@ declare namespace Paths {
             export type $200 = Components.Schemas.ApplicationConfiguration;
         }
     }
+    namespace CountryGet {
+        namespace Responses {
+            export type $200 = Components.Schemas.Country[];
+        }
+    }
     namespace DeleteFile {
         namespace Parameters {
             export type FileId = string;
@@ -986,6 +997,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ProvinceGet.Responses.$200>
+  /**
+   * country_get - Handles country queries
+   */
+  'country_get'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CountryGet.Responses.$200>
   /**
    * systemMessage_get - Handles system messages queries
    */
@@ -1286,6 +1305,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ProvinceGet.Responses.$200>
+  }
+  ['/api/countrylist']: {
+    /**
+     * country_get - Handles country queries
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CountryGet.Responses.$200>
   }
   ['/api/systemMessages']: {
     /**
@@ -1664,6 +1693,7 @@ export type CommunicationSeenRequest = Components.Schemas.CommunicationSeenReque
 export type CommunicationStatus = Components.Schemas.CommunicationStatus;
 export type CommunicationsStatus = Components.Schemas.CommunicationsStatus;
 export type CommunicationsStatusResults = Components.Schemas.CommunicationsStatusResults;
+export type Country = Components.Schemas.Country;
 export type DraftApplication = Components.Schemas.DraftApplication;
 export type DraftApplicationResponse = Components.Schemas.DraftApplicationResponse;
 export type EducationOrigin = Components.Schemas.EducationOrigin;
