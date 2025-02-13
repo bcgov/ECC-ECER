@@ -1,5 +1,4 @@
-﻿using ECER.Clients.RegistryPortal.Server;
-using ECER.Utilities.DataverseSdk.Model;
+﻿using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -109,10 +108,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
     ArgumentNullException.ThrowIfNull(opts);
-    opts.AddPolicy("registry_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+    opts.AddPolicy("registry_verified_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_verified_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
     opts.AddPolicy("registry_new_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_new_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
     opts.AddPolicy("registry_unverified_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_unverified_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
-    opts.DefaultPolicy = opts.GetPolicy("registry_user")!;
+    opts.AddPolicy("registry_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+    opts.DefaultPolicy = opts.GetPolicy("registry_verified_user")!;
   }
 
   public override async Task InitializeAsync()
@@ -245,6 +245,7 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
         Address1_Telephone1 = "1234567890",
         EMailAddress1 = "test@test.com",
         ecer_IsVerified = true,
+        StatusCode = Contact_StatusCode.Verified,
         BirthDate = DateTime.Parse("2000-03-15", CultureInfo.InvariantCulture),
       };
 

@@ -59,6 +59,8 @@ internal sealed class RegistrantRepositoryMapper : Profile
         .ForMember(d => d.MailingAddress, opts => opts.MapFrom(s => s.Address2_Line1 == null ? null : new Address(s.Address2_Line1, s.Address2_Line2, s.Address2_City, s.Address2_PostalCode, s.Address2_StateOrProvince, s.Address2_Country)))
         .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => s.ecer_previousname_Contactid))
         .ForMember(d => d.RegistrationNumber, opts => opts.MapFrom(s => s.ecer_ClientID))
+        .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+        .ForMember(d => d.IDVerificationDecision, opts => opts.MapFrom(s => s.ecer_idverificationdecision))
         .ForMember(d => d.IsRegistrant, opts => opts.Ignore())
         .ReverseMap()
         .ValidateMemberList(MemberList.Source)

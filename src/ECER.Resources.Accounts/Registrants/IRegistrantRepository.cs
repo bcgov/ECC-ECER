@@ -1,5 +1,4 @@
-﻿using ECER.Utilities.DataverseSdk.Model;
-using ECER.Utilities.Security;
+﻿using ECER.Utilities.Security;
 
 namespace ECER.Resources.Accounts.Registrants;
 
@@ -62,6 +61,8 @@ public record UserProfile
   public string? RegistrationNumber { get; set; }
   public IEnumerable<PreviousName> PreviousNames { get; set; } = Array.Empty<PreviousName>();
   public bool IsRegistrant { get; set; }
+  public StatusCode Status { get; set; }
+  public IDVerificationDecision? IDVerificationDecision { get; set; }
 };
 
 public record PreviousName(string FirstName, string LastName)
@@ -89,6 +90,22 @@ public enum PreviousNameSources
   Profile,
   Transcript,
   OutofProvinceCertificate
+}
+
+public enum IDVerificationDecision
+{
+  Approve,
+  Reject
+}
+
+public enum StatusCode
+{
+  Inactive,
+  PendingforDocuments,
+  ReadyforIDVerification,
+  ReadyforRegistrantMatch,
+  Unverified,
+  Verified,
 }
 
 public record IdentityDocument(string Id)

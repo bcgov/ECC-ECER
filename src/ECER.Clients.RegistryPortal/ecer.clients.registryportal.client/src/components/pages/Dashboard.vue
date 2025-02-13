@@ -5,7 +5,30 @@
     <div v-else>
       <v-row v-if="!userStore.isVerified" justify="center">
         <v-col cols="12">
-          <v-card :rounded="0" flat color="background-light" class="pa-4">
+          <!-- user has not provided id -->
+          <v-card v-if="userStore.userInfo?.status === 'Unverified'" :rounded="0" flat color="background-light" class="pa-4">
+            <v-card-item class="ma-4">
+              <h3>ID needed to complete account setup</h3>
+              <p class="mt-2">
+                Before you can submit new applications or access existing certifications, we need to verify your identity by reviewing your ID.
+              </p>
+              <v-btn prepend-icon="mdi-card-account-details-outline" color="primary" class="mt-2" @click="router.push({ name: 'verifyIdentification' })">
+                Verify my identity
+              </v-btn>
+            </v-card-item>
+          </v-card>
+          <!-- user provided id waiting for verification-->
+          <v-card v-else-if="userStore.userInfo?.status === 'ReadyforIDVerification'" :rounded="0" flat color="background-light" class="pa-4">
+            <v-card-item class="ma-4">
+              <h3>ID Pending review</h3>
+              <p class="mt-2">
+                Before you can submit new applications or access existing certifications, we need to verify your identity by reviewing your ID.
+              </p>
+              <p class="mt-2 font-weight-bold">We have received your IDs. We will email you when our review is complete in 2-3 business days.</p>
+            </v-card-item>
+          </v-card>
+          <!-- user has not been verified -->
+          <v-card v-else :rounded="0" flat color="background-light" class="pa-4">
             <v-card-item class="ma-4">
               <h3>Your account is being reviewed</h3>
               <p class="mt-2">

@@ -21,8 +21,16 @@ public static class AuthenticationHelper
     if (user != null)
     {
       scenario.WithClaim(RegistryPortalClaims.UserId, user.Id.ToString());
-      bool verified = user.ecer_IsVerified ?? false;
-      scenario.WithClaim(RegistryPortalClaims.Verified, verified.ToString());
+      Claim verificationStatus = new Claim(RegistryPortalClaims.Verified, "");
+      if (user.StatusCode == Contact_StatusCode.Verified)
+      {
+        verificationStatus = new Claim(RegistryPortalClaims.Verified, "true");
+      }
+      else if (user.StatusCode == Contact_StatusCode.Unverified)
+      {
+        verificationStatus = new Claim(RegistryPortalClaims.Verified, "false");
+      }
+      scenario.WithClaim(verificationStatus);
     }
     return scenario;
   }

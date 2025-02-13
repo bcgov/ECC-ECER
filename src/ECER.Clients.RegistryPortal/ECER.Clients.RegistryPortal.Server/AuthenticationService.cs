@@ -39,7 +39,16 @@ public class AuthenticationService(IMediator messageBus, IDistributedCache cache
 
     // add registrant claims
     var userId = new Claim("user_id", registrant.UserId);
-    var verificationStatus = new Claim("verified", registrant.Profile.IsVerified.ToString());
+    Claim verificationStatus = new Claim("verified", "");
+    if (registrant.Profile.Status == StatusCode.Verified)
+    {
+      verificationStatus = new Claim("verified", "true");
+    }
+    else if (registrant.Profile.Status == StatusCode.Unverified)
+    {
+      verificationStatus = new Claim("verified", "false");
+    }
+
     return [userId, verificationStatus];
   }
 }
