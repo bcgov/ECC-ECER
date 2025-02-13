@@ -88,7 +88,7 @@ internal class Program
          });
 
       builder.Services.AddAuthorizationBuilder()
-        .AddDefaultPolicy("registry_user", policy =>
+        .AddDefaultPolicy("registry_verified_user", policy =>
         {
           policy
             .AddAuthenticationSchemes("kc")
@@ -106,6 +106,15 @@ internal class Program
             .RequireClaim(ClaimTypes.NameIdentifier)
             .RequireAuthenticatedUser();
         })
+        .AddPolicy("registry_user", policy =>
+        {
+          policy
+            .AddAuthenticationSchemes("kc")
+            .RequireClaim(RegistryPortalClaims.IdenityProvider)
+            .RequireClaim(ClaimTypes.Name)
+            .RequireClaim(RegistryPortalClaims.UserId)
+            .RequireAuthenticatedUser();
+        })
         .AddPolicy("registry_unverified_user", policy =>
         {
           policy
@@ -113,6 +122,7 @@ internal class Program
             .RequireClaim(RegistryPortalClaims.IdenityProvider)
             .RequireClaim(ClaimTypes.Name)
             .RequireClaim(RegistryPortalClaims.UserId)
+            .RequireClaim(RegistryPortalClaims.Verified, "false")
             .RequireAuthenticatedUser();
         });
 

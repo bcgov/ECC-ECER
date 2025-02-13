@@ -10,11 +10,6 @@ internal sealed class BceidRegistrationIdentityService(IRegistrantRepository reg
   {
     ArgumentNullException.ThrowIfNull(command);
 
-    //always unverified
-    //last name info
-    //address
-    //call create
-
     var registrants = await registrantRepository.Query(new RegistrantQuery
     {
       ByIdentity = command.Identity

@@ -108,10 +108,11 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
     ArgumentNullException.ThrowIfNull(opts);
-    opts.AddPolicy("registry_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+    opts.AddPolicy("registry_verified_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_verified_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
     opts.AddPolicy("registry_new_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_new_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
     opts.AddPolicy("registry_unverified_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_unverified_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
-    opts.DefaultPolicy = opts.GetPolicy("registry_user")!;
+    opts.AddPolicy("registry_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+    opts.DefaultPolicy = opts.GetPolicy("registry_verified_user")!;
   }
 
   public override async Task InitializeAsync()

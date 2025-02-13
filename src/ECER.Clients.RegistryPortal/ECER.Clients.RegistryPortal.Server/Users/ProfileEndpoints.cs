@@ -35,13 +35,6 @@ public class ProfileEndpoints : IRegisterEndpoints
     {
       profileIdentification.RegistrantId = ctx.User.GetUserContext()!.UserId;
 
-      var registrant = (await bus.Send(new SearchRegistrantQuery { ByUserIdentity = ctx.User.GetUserContext()!.Identity }, ctx.RequestAborted)).Items.SingleOrDefault();
-
-      if (registrant != null && registrant.Profile.Status != Managers.Registry.Contract.Registrants.StatusCode.Unverified)
-      {
-        return TypedResults.BadRequest(new ProblemDetails { Title = "Unable to upload verification IDs", Detail = $"unable to post verificationId:: registrant status is not unverified. Registrant status is {registrant.Profile.Status}" });
-      }
-
       await bus.Send(new UpdateRegistrantProfileIdentificationCommand(mapper.Map<Managers.Registry.Contract.Registrants.ProfileIdentification>(profileIdentification)!), ctx.RequestAborted);
       return TypedResults.Ok();
     })

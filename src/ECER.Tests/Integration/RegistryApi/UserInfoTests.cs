@@ -43,9 +43,9 @@ public class UserInfoTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task PostUserInfo_NewBceidUser_WithInvalidCountryCode_ShouldReturnOkAndCountryNameNull()
+  public async Task PostUserInfo_NewBcscUser_WithInvalidCountryCode_ShouldReturnOkAndCountryNameNull()
   {
-    var identity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bceidbasic");
+    var identity = new UserIdentity(Guid.NewGuid().ToString("N").ToUpperInvariant(), "bcsc");
     var newUser = CreateNewUser();
     var addressWithInvalidCountry = new Faker<Address>("en_CA")
      .CustomInstantiator(f => new Address(
