@@ -5,7 +5,6 @@ using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
-using System.Diagnostics;
 
 namespace ECER.Resources.Accounts.Registrants;
 
@@ -22,7 +21,6 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
       contact = mapper.Map<Contact>(registrant.Profile)!;
       contact.Id = Guid.NewGuid();
       contact.ecer_ClientID = null;
-      contact.ecer_TempClientID = null;
       context.AddObject(contact);
     }
     else
@@ -102,6 +100,8 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     if (contact == null) throw new InvalidOperationException($"Registrant {registrant.Id} not found");
 
     var verified = contact.ecer_IsVerified;
+    var statusCode = contact.StatusCode;
+    var idVerificationDecision = contact.ecer_idverificationdecision;
 
     context.Detach(contact);
     var clientId = contact.ecer_ClientID;
@@ -111,6 +111,8 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     contact.ecer_IsVerified = verified;
     contact.ecer_ClientID = clientId;
     contact.ecer_TempClientID = tempClientId;
+    contact.StatusCode = statusCode;
+    contact.ecer_idverificationdecision = idVerificationDecision;
     context.Attach(contact);
     context.UpdateObject(contact);
 
@@ -170,8 +172,13 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     if (contact == null) throw new InvalidOperationException($"Registrant {registrant.Id} not found");
 
+    if (contact.StatusCode != Contact_StatusCode.Unverified) throw new InvalidOperationException($"SaveIdentityIds :: Registrant {registrant.Id} is not in Unverified state. State is :: {contact.StatusCode}");
+
     var primaryId = context.ecer_identificationtypeSet.SingleOrDefault(i => i.ecer_identificationtypeId == Guid.Parse(profileIdentification.PrimaryIdTypeObjectId));
     var secondaryId = context.ecer_identificationtypeSet.SingleOrDefault(i => i.ecer_identificationtypeId == Guid.Parse(profileIdentification.SecondaryIdTypeObjectId));
+
+    contact.StatusCode = Contact_StatusCode.ReadyforIDVerification;
+    context.UpdateObject(contact);
 
     context.AddLink(contact, Contact.Fields.ecer_contact_primaryidtype, primaryId!);
     context.AddLink(contact, Contact.Fields.ecer_contact_secondaryidtype, secondaryId!);

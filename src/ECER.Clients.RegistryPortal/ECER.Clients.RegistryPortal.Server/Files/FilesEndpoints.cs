@@ -9,7 +9,6 @@ using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace ECER.Clients.RegistryPortal.Server.Files;
@@ -48,7 +47,7 @@ public class FilesEndpoints : IRegisterEndpoints
       return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
     })
       .WithOpenApi("Handles fetching certificate PDF's", string.Empty, "files_certificate_get")
-      .RequireAuthorization("registry_unverified_user")
+      .RequireAuthorization("registry_user")
       .WithParameterValidation();
 
     endpointRouteBuilder.MapGet("/api/files/communication/{communicationId}/file/{fileId}", async Task<Results<FileStreamHttpResult, BadRequest<ProblemDetails>, NotFound>> (
@@ -82,7 +81,7 @@ public class FilesEndpoints : IRegisterEndpoints
       return TypedResults.Stream(file.Content, file.ContentType, file.FileName);
     })
       .WithOpenApi("Handles fetching files", string.Empty, "files_communication_get")
-      .RequireAuthorization("registry_unverified_user")
+      .RequireAuthorization("registry_user")
       .WithParameterValidation();
 
     // This delete just works for temp folder...
@@ -100,7 +99,7 @@ public class FilesEndpoints : IRegisterEndpoints
     return TypedResults.Ok(new FileResponse(fileId));
   })
     .WithOpenApi("Handles delete uploaded file request", string.Empty, "delete_file")
-    .RequireAuthorization("registry_unverified_user")
+    .RequireAuthorization("registry_user")
     .WithParameterValidation()
     .DisableAntiforgery();
 
@@ -139,7 +138,7 @@ public class FilesEndpoints : IRegisterEndpoints
       return TypedResults.Ok(new FileResponse(fileId) { Url = saveResult.FileData.FileLocation.Folder + "/" + fileId });
     })
       .WithOpenApi("Handles upload file request", string.Empty, "upload_file")
-      .RequireAuthorization("registry_unverified_user")
+      .RequireAuthorization("registry_user")
       .DisableAntiforgery();
   }
 }

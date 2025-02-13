@@ -35,7 +35,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
       return TypedResults.Ok(new GetMessagesResponse() { Communications = mapper.Map<IEnumerable<Communication>>(results.Items), TotalMessagesCount = results.TotalMessagesCount });
     })
      .WithOpenApi("Handles messages queries", string.Empty, "message_get")
-     .RequireAuthorization("registry_unverified_user");
+     .RequireAuthorization("registry_user");
 
     endpointRouteBuilder.MapPost("/api/messages", async Task<Results<Ok<SendMessageResponse>, BadRequest<ProblemDetails>, NotFound>> (SendMessageRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
     {
@@ -63,7 +63,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
       return TypedResults.Ok(new SendMessageResponse(result.CommunicationId!));
     })
       .WithOpenApi("Handles message send request", string.Empty, "message_post")
-      .RequireAuthorization("registry_unverified_user");
+      .RequireAuthorization("registry_user");
 
     endpointRouteBuilder.MapPut("/api/messages/{id}/seen",
         async Task<Results<Ok<CommunicationResponse>, BadRequest<string>>> (string? id,
@@ -82,7 +82,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
           return TypedResults.Ok(new CommunicationResponse(communicationId));
         })
       .WithOpenApi("Marks a communication as seen", string.Empty, "communication_put")
-      .RequireAuthorization("registry_unverified_user");
+      .RequireAuthorization("registry_user");
 
     endpointRouteBuilder.MapGet("/api/messages/status", async (HttpContext httpContext, IMediator messageBus) =>
     {
@@ -93,7 +93,7 @@ public class CommunicationsEndpoints : IRegisterEndpoints
       return TypedResults.Ok(new CommunicationsStatusResults(result.Status));
     })
      .WithOpenApi("Handles messages status", string.Empty, "message_status_get")
-     .RequireAuthorization("registry_unverified_user");
+     .RequireAuthorization("registry_user");
   }
 }
 

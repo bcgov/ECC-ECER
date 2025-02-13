@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.RegistryPortal.Server.Users;
 
@@ -30,14 +31,15 @@ public class ProfileEndpoints : IRegisterEndpoints
   .WithOpenApi("Gets the current user profile", string.Empty, "profile_put")
   .RequireAuthorization();
 
-    endpointRouteBuilder.MapPost("/api/profile/verificationIds", async Task<Ok> (ProfileIdentification profileIdentification, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/profile/verificationIds", async Task<Results<Ok, BadRequest<ProblemDetails>>> (ProfileIdentification profileIdentification, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
     {
       profileIdentification.RegistrantId = ctx.User.GetUserContext()!.UserId;
+
       await bus.Send(new UpdateRegistrantProfileIdentificationCommand(mapper.Map<Managers.Registry.Contract.Registrants.ProfileIdentification>(profileIdentification)!), ctx.RequestAborted);
       return TypedResults.Ok();
     })
   .WithOpenApi("Sets user verification Ids", string.Empty, "profileVerification_post")
-  .RequireAuthorization();
+  .RequireAuthorization("registry_unverified_user");
   }
 }
 

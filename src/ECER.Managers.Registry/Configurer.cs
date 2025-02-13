@@ -1,4 +1,6 @@
 ﻿using ECER.Infrastructure.Common;
+using ECER.Managers.Registry.Contract.Registrants;
+using ECER.Managers.Registry.UserRegistrationIdentityService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -17,6 +19,10 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<RecaptchaHandlers>();
     configurationContext.Services.Configure<RecaptchaAppSettings>(recaptchaAppSettings =>
     configurationContext.Configuration.GetSection("Recaptcha").Bind(recaptchaAppSettings));
+    configurationContext.Services.AddTransient<BceidRegistrationIdentityService>();
+    configurationContext.Services.AddTransient<BcscRegistrationIdentityService>();
+    configurationContext.Services.AddTransient<IRegistrationIdentityService>(provider =>
+    { return provider.GetRequiredService<BcscRegistrationIdentityService>(); });
   }
 }
 
