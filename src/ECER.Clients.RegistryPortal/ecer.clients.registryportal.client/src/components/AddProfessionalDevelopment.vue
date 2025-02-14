@@ -191,10 +191,8 @@
               label="Phone number"
               :rules="[
                 Rules.required('Enter the phone number for your course or workshop contact'),
-                Rules.phoneNumber('Enter your reference\'s 10-digit phone number'),
+                Rules.phoneNumber('Enter your reference\'s valid phone number'),
               ]"
-              maxlength="10"
-              @keypress="isNumber($event)"
             ></EceTextField>
           </v-col>
         </v-row>

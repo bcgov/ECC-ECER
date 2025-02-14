@@ -176,7 +176,6 @@ import { useCertificationStore } from "@/store/certification";
 import { useMessageStore } from "@/store/message";
 import { useUserStore } from "@/store/user";
 import { useLoadingStore } from "@/store/loading";
-import { formatPhoneNumber } from "@/utils/format";
 import { useOidcStore } from "@/store/oidc";
 import type { Application, Certification, UserInfo, UserProfile } from "@/types/openapi";
 
@@ -290,7 +289,6 @@ export default defineComponent({
   },
 
   methods: {
-    formatPhoneNumber,
     async cancelApplication() {
       this.showCancelDialog = false;
       const { data: cancelledApplicationId } = await cancelDraftApplication(this.applicationStore.draftApplication.id!);

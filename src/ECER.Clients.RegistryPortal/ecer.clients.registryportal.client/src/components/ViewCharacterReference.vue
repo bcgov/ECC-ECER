@@ -8,7 +8,7 @@
     <p class="mt-8"><b>Name</b></p>
     <p>{{ reference?.firstName }} {{ reference?.lastName }}</p>
     <p class="mt-6"><b>Phone number</b></p>
-    <p>{{ formatPhoneNumber(reference?.phoneNumber || "") }}</p>
+    <p>{{ reference?.phoneNumber }}</p>
     <p class="mt-6"><b>Email</b></p>
     <p class="mb-10">{{ reference?.emailAddress }}</p>
     <ECEHeader title="Options" />
@@ -33,7 +33,6 @@ import ResendEmail from "@/components/ResendEmail.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import type { Components } from "@/types/openapi";
-import { formatPhoneNumber } from "@/utils/format";
 
 export default defineComponent({
   name: "ViewCharacterReference",
@@ -85,7 +84,6 @@ export default defineComponent({
   },
 
   methods: {
-    formatPhoneNumber,
     async handleResendReference() {
       const { error } = await resendCharacterReference({
         applicationId: this.applicationId,

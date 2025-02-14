@@ -141,7 +141,7 @@
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Primary phone number</p>
             <p>
-              {{ userStore.userProfile?.phone ? formatPhoneNumber(userStore.userProfile?.phone ?? "") : "—" }}
+              {{ userStore.userProfile?.phone || "—" }}
             </p>
           </div>
         </v-col>
@@ -149,7 +149,7 @@
           <div class="d-flex flex-column ga-3">
             <p class="font-weight-bold mb-3">Alternate phone number</p>
             <p>
-              {{ userStore.userProfile?.alternateContactPhone ? formatPhoneNumber(userStore.userProfile?.alternateContactPhone ?? "") : "—" }}
+              {{ userStore.userProfile?.alternateContactPhone || "—" }}
             </p>
           </div>
         </v-col>
@@ -167,7 +167,6 @@ import PageContainer from "@/components/PageContainer.vue";
 import { useUserStore } from "@/store/user";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
-import { formatPhoneNumber } from "@/utils/format";
 import { areObjectsEqual } from "@/utils/functions";
 import { useLoadingStore } from "@/store/loading";
 import Loading from "@/components/Loading.vue";
@@ -202,7 +201,6 @@ export default defineComponent({
   }),
   methods: {
     formatDate,
-    formatPhoneNumber,
     areObjectsEqual,
     fullName(name: Components.Schemas.PreviousName) {
       return `${name.firstName ?? ""} ${name.middleName ?? ""} ${name.lastName}`.trim();
