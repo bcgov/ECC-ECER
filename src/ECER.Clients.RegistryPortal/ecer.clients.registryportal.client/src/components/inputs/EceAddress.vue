@@ -8,8 +8,9 @@
   <!-- Country selection -->
   <v-row>
     <v-col cols="12">
-      <label>Country</label>
+      <label for="country-autocomplete">Country</label>
       <v-autocomplete
+        id="country-autocomplete"
         :model-value="modelValue.country"
         variant="outlined"
         color="primary"
@@ -58,8 +59,9 @@
   <!-- For Canada: Show Province/Territory list -->
   <v-row v-if="isCanada">
     <v-col cols="12">
-      <label>Province / Territory</label>
+      <label for="province-autocomplete">Province / Territory</label>
       <v-autocomplete
+        id="province-autocomplete"
         :model-value="modelValue.province"
         variant="outlined"
         color="primary"
