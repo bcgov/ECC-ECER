@@ -8,9 +8,9 @@
   <!-- Country selection -->
   <v-row>
     <v-col cols="12">
-      <label for="country-autocomplete">Country</label>
+      <label :for="`${addressLabel}-country-autocomplete`">Country</label>
       <v-autocomplete
-        id="country-autocomplete"
+        :id="`${addressLabel}-country-autocomplete`"
         :model-value="modelValue.country"
         variant="outlined"
         color="primary"
@@ -59,14 +59,14 @@
   <!-- For Canada: Show Province/Territory list -->
   <v-row v-if="isCanada">
     <v-col cols="12">
-      <label for="province-autocomplete">Province / Territory</label>
+      <label :for="`${addressLabel}-province-autocomplete`">Province / Territory</label>
       <v-autocomplete
-        id="province-autocomplete"
+        :id="`${addressLabel}-province-autocomplete`"
         :model-value="modelValue.province"
         variant="outlined"
         color="primary"
         class="pt-2"
-        :rules="[Rules.required('Select your province/territory')]"
+        :rules="[Rules.required('Select your province/territory'), Rules.mustExistInDropdown(filteredProvinceList, 'code')]"
         :items="filteredProvinceList"
         item-title="title"
         item-value="code"
@@ -98,7 +98,7 @@
       <EceTextField
         :model-value="modelValue.postalCode"
         :label="isCanada ? 'Postal code' : 'Postal / Zip code'"
-        :rules="postalRules"
+        :rules="[Rules.conditionalWrapper(isCanada, Rules.required('Postal code required')), Rules.conditionalWrapper(isCanada, Rules.postalCode())]"
         variant="outlined"
         color="primary"
         maxlength="7"
@@ -141,10 +141,6 @@ export default defineComponent({
     // Check if the selected country is Canada.
     isCanada(): boolean {
       return this.modelValue.country === "Canada";
-    },
-    // Set postal code validation rules based on the country.
-    postalRules(): any[] {
-      return this.isCanada ? [Rules.required("Postal code required"), Rules.postalCode()] : [];
     },
     filteredProvinceList() {
       return (this.configStore?.provinceList || []).filter((province) => province.title !== ProvinceTerritoryType.OTHER);

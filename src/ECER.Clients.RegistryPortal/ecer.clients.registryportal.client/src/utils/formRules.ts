@@ -12,6 +12,7 @@
 //  import * as Rule from @/utils/institute/form
 //  under data do rules: Rules <- allows you to use in <template>.
 
+import type { DropdownWrapper } from "@/types/form";
 import { DateTime } from "luxon";
 
 /**
@@ -60,6 +61,12 @@ const phoneNumber = (message = "Enter a valid phone number") => {
  */
 const postalCode = (message = "Enter your postal code in the format 'A1A 1A1'") => {
   return (v: string) => /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i.test(v) || message;
+};
+
+const mustExistInDropdown = (dropdown: DropdownWrapper<any>[], key: keyof DropdownWrapper<any>, message: string = "Must choose a valid option") => {
+  return (v: string) => {
+    return dropdown.some((item) => item[key] === v) || message;
+  };
 };
 
 /**
@@ -237,6 +244,7 @@ export {
   futureDateNotAllowedRule,
   hasCheckbox,
   validContactName,
+  mustExistInDropdown,
   number,
   numberToDecimalPlace as numberToDecimalPlaces,
   phoneNumber,
