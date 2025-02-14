@@ -49,7 +49,7 @@
         :rules="[Rules.required('Select your city/town')]"
         variant="outlined"
         color="primary"
-        maxlength="50"
+        maxlength="100"
         @update:model-value="(value: string) => updateField('city', value)"
       ></EceTextField>
     </v-col>
@@ -86,7 +86,7 @@
         label="Province or State"
         variant="outlined"
         color="primary"
-        maxlength="50"
+        maxlength="100"
         @update:model-value="(value: string) => updateField('province', value)"
       ></EceTextField>
     </v-col>
@@ -101,7 +101,7 @@
         :rules="[Rules.conditionalWrapper(isCanada, Rules.required('Postal code required')), Rules.conditionalWrapper(isCanada, Rules.postalCode())]"
         variant="outlined"
         color="primary"
-        maxlength="7"
+        maxlength="20"
         @update:model-value="(value: string) => updateField('postalCode', value)"
       ></EceTextField>
     </v-col>
