@@ -11,7 +11,7 @@ public interface IMetadataResourceRepository
   Task<IEnumerable<IdentificationType>> QueryIdentificationTypes(IdentificationTypesQuery query, CancellationToken cancellationToken);
 }
 
-public record Province(string ProvinceId, string ProvinceName);
+public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
 public record Country(string CountryId, string CountryName, string CountryCode);
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 
