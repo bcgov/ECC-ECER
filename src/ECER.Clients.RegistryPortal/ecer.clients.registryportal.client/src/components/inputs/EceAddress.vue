@@ -8,20 +8,18 @@
   <!-- Country selection -->
   <v-row>
     <v-col cols="12">
-      <label>
-        Country
-        <v-autocomplete
-          :model-value="modelValue.country"
-          variant="outlined"
-          color="primary"
-          class="pt-2"
-          :rules="[Rules.required('Select your country')]"
-          :items="configStore?.countryList"
-          clearable
-          hide-details="auto"
-          @update:model-value="(value: string) => updateField('country', value)"
-        ></v-autocomplete>
-      </label>
+      <label>Country</label>
+      <v-autocomplete
+        :model-value="modelValue.country"
+        variant="outlined"
+        color="primary"
+        class="pt-2"
+        :rules="[Rules.required('Select your country')]"
+        :items="configStore?.countryList"
+        clearable
+        hide-details="auto"
+        @update:model-value="(value: string) => updateField('country', value)"
+      ></v-autocomplete>
     </v-col>
   </v-row>
 
@@ -60,22 +58,20 @@
   <!-- For Canada: Show Province/Territory list -->
   <v-row v-if="isCanada">
     <v-col cols="12">
-      <label>
-        Province / Territory
-        <v-autocomplete
-          :model-value="modelValue.province"
-          variant="outlined"
-          color="primary"
-          class="pt-2"
-          :rules="[Rules.required('Select your province/territory')]"
-          :items="filteredProvinceList"
-          item-title="title"
-          item-value="code"
-          clearable
-          hide-details="auto"
-          @update:model-value="(value: string) => updateField('province', value)"
-        ></v-autocomplete>
-      </label>
+      <label>Province / Territory</label>
+      <v-autocomplete
+        :model-value="modelValue.province"
+        variant="outlined"
+        color="primary"
+        class="pt-2"
+        :rules="[Rules.required('Select your province/territory')]"
+        :items="filteredProvinceList"
+        item-title="title"
+        item-value="code"
+        clearable
+        hide-details="auto"
+        @update:model-value="(value: string) => updateField('province', value)"
+      ></v-autocomplete>
     </v-col>
   </v-row>
 
@@ -111,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent } from "vue";
 import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
 import EceTextField from "@/components/inputs/EceTextField.vue";

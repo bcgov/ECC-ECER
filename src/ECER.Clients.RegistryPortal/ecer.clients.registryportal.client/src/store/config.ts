@@ -12,7 +12,7 @@ export interface UserState {
   applicationConfiguration: Components.Schemas.ApplicationConfiguration;
   systemMessages: SystemMessage[];
   provinceList: DropdownWrapper<String>[];
-  countryList: DropdownWrapper<String>[];
+  countryList: DropdownWrapper<string>[];
   identificationTypes: Components.Schemas.IdentificationType[];
 }
 
@@ -23,7 +23,7 @@ export const useConfigStore = defineStore("config", {
   state: (): UserState => ({
     applicationConfiguration: {} as Components.Schemas.ApplicationConfiguration,
     provinceList: [] as DropdownWrapper<String>[],
-    countryList: [] as DropdownWrapper<String>[],
+    countryList: [] as DropdownWrapper<string>[],
     systemMessages: [] as SystemMessage[],
     identificationTypes: [] as Components.Schemas.IdentificationType[],
   }),
