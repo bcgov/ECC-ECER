@@ -63,7 +63,7 @@ const postalCode = (message = "Enter your postal code in the format 'A1A 1A1'") 
   return (v: string) => /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][ -]?\d[ABCEGHJ-NPRSTV-Z]\d$/i.test(v) || message;
 };
 
-const mustExistInDropdown = (dropdown: DropdownWrapper<any>[], key: keyof DropdownWrapper<any>, message: string = "Must choose a valid option") => {
+const mustExistInDropdown = (dropdown: DropdownWrapper<any>[], key: keyof DropdownWrapper<any>, message: string = "Please select a valid option") => {
   return (v: string) => {
     return dropdown.some((item) => item[key] === v) || message;
   };
