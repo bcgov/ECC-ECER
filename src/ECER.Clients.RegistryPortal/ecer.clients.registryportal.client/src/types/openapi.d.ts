@@ -465,7 +465,6 @@ declare namespace Components {
             studentFirstName?: string | null;
             studentMiddleName?: string | null;
             studentNumber?: string | null;
-            languageofInstruction?: string | null;
             isECEAssistant?: boolean;
             doesECERegistryHaveTranscript?: boolean;
             isOfficialTranscriptRequested?: boolean;

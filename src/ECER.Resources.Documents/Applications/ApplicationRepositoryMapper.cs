@@ -111,7 +111,6 @@ internal class ApplicationRepositoryMapper : Profile
            .ForMember(d => d.ecer_StudentLastName, opts => opts.MapFrom(s => s.StudentLastName))
            .ForMember(d => d.ecer_StudentNumber, opts => opts.MapFrom(s => s.StudentNumber))
            .ForMember(d => d.ecer_EducationInstitutionFullName, opts => opts.MapFrom(s => s.EducationalInstitutionName))
-           .ForMember(d => d.ecer_LanguageofInstruction, opts => opts.MapFrom(s => s.LanguageofInstruction))
            .ForMember(d => d.ecer_TranscriptId, opts => opts.MapFrom(s => s.Id))
            .ForMember(d => d.ecer_IsECEAssistant, opts => opts.MapFrom(s => s.IsECEAssistant))
            .ForMember(d => d.ecer_DoesECERegistryHaveTranscript, opts => opts.MapFrom(s => s.DoesECERegistryHaveTranscript))
@@ -137,7 +136,6 @@ internal class ApplicationRepositoryMapper : Profile
           .ForCtorParam(nameof(Transcript.EducationRecognition), opt => opt.MapFrom(src => src.ecer_EducationRecognition))
           .ForCtorParam(nameof(Transcript.EducationOrigin), opt => opt.MapFrom(src => src.ecer_EducationOrigin))
           .ForMember(d => d.CampusLocation, opts => opts.MapFrom(s => s.ecer_CampusLocation))
-          .ForMember(d => d.LanguageofInstruction, opts => opts.MapFrom(s => s.ecer_LanguageofInstruction))
           .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
           .ForMember(d => d.StudentMiddleName, opts => opts.MapFrom(s => s.ecer_StudentMiddleName))
     .ValidateMemberList(MemberList.Destination);

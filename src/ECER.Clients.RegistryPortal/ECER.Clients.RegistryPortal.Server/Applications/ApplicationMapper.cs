@@ -53,8 +53,6 @@ public class ApplicationMapper : Profile
          opt => opt.MapFrom(src => src.EducationOrigin))
       .ForMember(d => d.CampusLocation,
              opts => opts.MapFrom(src => src.CampusLocation))
-      .ForMember(d => d.LanguageofInstruction,
-             opts => opts.MapFrom(src => src.LanguageofInstruction))
       .ForMember(d => d.StudentMiddleName,
        opts => opts.MapFrom(src => src.StudentMiddleName))
       .ReverseMap();

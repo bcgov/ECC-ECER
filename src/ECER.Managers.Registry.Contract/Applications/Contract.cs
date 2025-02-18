@@ -74,7 +74,6 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested, string StudentFirstName, string StudentLastName, bool IsNameUnverified, EducationRecognition EducationRecognition, EducationOrigin EducationOrigin)
 {
   public string? CampusLocation { get; set; }
-  public string? LanguageofInstruction { get; set; }
   public TranscriptStage? Status { get; set; }
   public string? StudentMiddleName { get; set; }
 }

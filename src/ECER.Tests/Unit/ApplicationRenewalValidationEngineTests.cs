@@ -412,7 +412,6 @@ public class ApplicationRenewalValidationEngineTests
     )
     {
       CampusLocation = _faker.Address.City(), // Random city for CampusLocation
-      LanguageofInstruction = "English",
       Status = _faker.Random.Enum<TranscriptStage>(), // Random enum value for Status
       StudentMiddleName = _faker.Name.FirstName() // Random middle name
     };

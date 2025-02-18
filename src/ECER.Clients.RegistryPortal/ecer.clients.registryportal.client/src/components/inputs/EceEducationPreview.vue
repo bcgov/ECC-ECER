@@ -72,14 +72,6 @@
             <p class="small font-weight-bold">{{ studentFullName(education) }}</p>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col cols="4">
-            <p class="small">Language of institution</p>
-          </v-col>
-          <v-col>
-            <p class="small font-weight-bold">{{ education.languageofInstruction }}</p>
-          </v-col>
-        </v-row>
       </div>
     </template>
   </PreviewCard>

@@ -545,8 +545,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
   private static Transcript CreateTranscript()
   {
-    var languages = new List<string> { "English", "French", "Spanish", "German", "Mandarin", "Japanese", "Russian", "Arabic", "Portuguese", "Hindi" };
-
     // Use Faker to generate values for the required parameters
     var faker = new Faker("en_CA");
     var educationalInstitutionName = faker.Company.CompanyName();
@@ -575,7 +573,6 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       CampusLocation = faker.Address.City(),
       StudentFirstName = faker.Name.FirstName(),
       StudentNumber = faker.Random.Number(10000000, 99999999).ToString(),
-      LanguageofInstruction = faker.PickRandom(languages),
       IsECEAssistant = faker.Random.Bool(),
       DoesECERegistryHaveTranscript = faker.Random.Bool(),
       IsOfficialTranscriptRequested = faker.Random.Bool()
