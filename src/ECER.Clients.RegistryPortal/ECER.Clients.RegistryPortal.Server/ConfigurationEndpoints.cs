@@ -28,6 +28,14 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       .WithOpenApi("Handles province queries", string.Empty, "province_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
+    endpointRouteBuilder.MapGet("/api/countrylist", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var results = await messageBus.Send(new CountriesQuery(), ct);
+      return TypedResults.Ok(mapper.Map<IEnumerable<Country>>(results.Items));
+    })
+  .WithOpenApi("Handles country queries", string.Empty, "country_get")
+  .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
+
     endpointRouteBuilder.MapGet("/api/systemMessages", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       var results = await messageBus.Send(new SystemMessagesQuery(), ct);
@@ -73,7 +81,9 @@ public record OidcAuthenticationSettings
 }
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 
-public record Province(string ProvinceId, string ProvinceName);
+public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
+
+public record Country(string CountryId, string CountryName, string CountryCode);
 public record SystemMessage(string Name, string Subject, string Message)
 {
   public DateTime StartDate { get; set; }

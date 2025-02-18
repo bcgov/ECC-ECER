@@ -32,10 +32,8 @@
           <v-col cols="12">
             <EceTextField
               v-model="phoneNumber"
-              :rules="[Rules.phoneNumber('Enter your reference\'s 10-digit phone number')]"
+              :rules="[Rules.phoneNumber('Enter your reference\'s valid phone number')]"
               label="Reference phone number (Optional)"
-              maxlength="20"
-              @keypress="isNumber($event)"
             ></EceTextField>
           </v-col>
         </v-row>

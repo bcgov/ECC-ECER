@@ -12,6 +12,7 @@ interface Form {
 interface DropdownWrapper<T> {
   title: string;
   value: T;
+  code?: string;
 }
 
 // Wrap any type to a Radio button list for v-radio

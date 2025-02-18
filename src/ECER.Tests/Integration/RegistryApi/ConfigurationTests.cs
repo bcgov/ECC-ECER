@@ -5,6 +5,7 @@ using ECER.Managers.Admin;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
+using static Pipelines.Sockets.Unofficial.SocketConnection;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
@@ -26,6 +27,22 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
 
     var provinces = await provincesResponse.ReadAsJsonAsync<Province[]>();
     provinces.ShouldNotBeNull();
+    provinces.Length.ShouldBeGreaterThan(0);
+  }
+
+  [Fact]
+  public async Task GetCountries_ReturnsCountries()
+  {
+    var countriesResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/countrylist");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var countries = await countriesResponse.ReadAsJsonAsync<Country[]>();
+    countries.ShouldNotBeNull();
+    countries.Length.ShouldBeGreaterThan(0);
   }
 
   [Fact]
