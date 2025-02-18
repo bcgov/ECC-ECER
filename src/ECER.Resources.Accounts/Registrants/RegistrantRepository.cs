@@ -176,7 +176,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     var primaryId = context.ecer_identificationtypeSet.SingleOrDefault(i => i.ecer_identificationtypeId == Guid.Parse(profileIdentification.PrimaryIdTypeObjectId));
     var secondaryId = context.ecer_identificationtypeSet.SingleOrDefault(i => i.ecer_identificationtypeId == Guid.Parse(profileIdentification.SecondaryIdTypeObjectId));
-
+    contact.ecer_HasProvidedID = true;
     contact.StatusCode = Contact_StatusCode.ReadyforIDVerification;
     context.UpdateObject(contact);
 
