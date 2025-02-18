@@ -6,7 +6,7 @@
       <v-row v-if="!userStore.isVerified" justify="center">
         <v-col cols="12">
           <!-- user has not provided id -->
-          <v-card v-if="userStore.userInfo?.status === 'Unverified'" :rounded="0" flat color="background-light" class="pa-4">
+          <v-card v-if="userStore.userInfo?.status === 'Unverified'" :rounded="0" flat color="grey-pale-background" class="pa-4">
             <v-card-item class="ma-4">
               <h3>ID needed to complete account setup</h3>
               <p class="mt-2">
@@ -18,7 +18,7 @@
             </v-card-item>
           </v-card>
           <!-- user provided id waiting for verification-->
-          <v-card v-else-if="userStore.userInfo?.status === 'ReadyforIDVerification'" :rounded="0" flat color="background-light" class="pa-4">
+          <v-card v-else-if="userStore.userInfo?.status === 'ReadyforIDVerification'" :rounded="0" flat color="grey-pale-background" class="pa-4">
             <v-card-item class="ma-4">
               <h3>ID Pending review</h3>
               <p class="mt-2">
@@ -28,7 +28,7 @@
             </v-card-item>
           </v-card>
           <!-- user has not been verified -->
-          <v-card v-else :rounded="0" flat color="background-light" class="pa-4">
+          <v-card v-else :rounded="0" flat color="grey-pale-background" class="pa-4">
             <v-card-item class="ma-4">
               <h3>Your account is being reviewed</h3>
               <p class="mt-2">
