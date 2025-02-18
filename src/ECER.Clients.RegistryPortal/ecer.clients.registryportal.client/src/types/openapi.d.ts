@@ -465,7 +465,6 @@ declare namespace Components {
             studentFirstName?: string | null;
             studentMiddleName?: string | null;
             studentNumber?: string | null;
-            languageofInstruction?: string | null;
             isECEAssistant?: boolean;
             doesECERegistryHaveTranscript?: boolean;
             isOfficialTranscriptRequested?: boolean;
@@ -898,6 +897,7 @@ declare namespace Paths {
         namespace Responses {
             export interface $200 {
             }
+            export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
         }
     }
     namespace ProvinceGet {

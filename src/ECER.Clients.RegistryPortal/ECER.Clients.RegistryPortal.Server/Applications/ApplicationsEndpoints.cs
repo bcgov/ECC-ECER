@@ -380,8 +380,6 @@ public record Transcript([Required] string EducationalInstitutionName, [Required
   public string StudentFirstName { get; set; } = string.Empty;
   public string? StudentMiddleName { get; set; }
   public string? StudentNumber { get; set; }
-  public string? LanguageofInstruction { get; set; }
-
   public bool IsECEAssistant { get; set; }
   public bool DoesECERegistryHaveTranscript { get; set; }
   public bool IsOfficialTranscriptRequested { get; set; }

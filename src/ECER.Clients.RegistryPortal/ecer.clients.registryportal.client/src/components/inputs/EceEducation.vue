@@ -148,11 +148,6 @@
         </v-row>
         <v-row>
           <v-col>
-            <EceTextField v-model="language" label="Language of institution (optional)" variant="outlined" color="primary" maxlength="100"></EceTextField>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
             <h3>Name and student number on transcript</h3>
             <br />
             <p>Make sure this exactly matches your transcript. It may cause delays if we cannot match a transcript we receive to your application.</p>
@@ -259,7 +254,6 @@ interface EceEducationData {
   program: string;
   campusLocation: string;
   studentNumber: string;
-  language: string;
   startYear: string;
   endYear: string;
   transcriptStatus: "received" | "requested" | "";
@@ -316,7 +310,6 @@ export default defineComponent({
       program: "",
       campusLocation: "",
       studentNumber: "",
-      language: "",
       startYear: "",
       endYear: "",
       transcriptStatus: "",
@@ -400,7 +393,6 @@ export default defineComponent({
           studentMiddleName: this.studentMiddleName,
           studentLastName: this.studentLastName,
           studentNumber: this.studentNumber,
-          languageofInstruction: this.language,
           startDate: this.startYear,
           endDate: this.endYear,
           doesECERegistryHaveTranscript: this.transcriptStatus === "received",
@@ -460,7 +452,6 @@ export default defineComponent({
         (this.studentLastName = educationData.education.studentLastName ?? ""),
         (this.studentNumber = educationData.education.studentNumber ?? "");
       this.isNameUnverified = educationData.education.isNameUnverified ?? false;
-      this.language = educationData.education.languageofInstruction ?? "";
       this.startYear = formatDate(educationData.education.startDate || "") ?? "";
       this.endYear = formatDate(educationData.education.endDate || "") ?? "";
       this.educationRecognition = educationData.education.educationRecognition;
@@ -526,7 +517,6 @@ export default defineComponent({
       this.program = "";
       this.campusLocation = "";
       this.studentNumber = "";
-      this.language = "";
       this.startYear = "";
       this.endYear = "";
       this.transcriptStatus = "";
