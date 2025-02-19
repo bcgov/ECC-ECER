@@ -183,7 +183,6 @@ import * as Rules from "@/utils/formRules";
 
 import PageContainer from "../PageContainer.vue";
 import { useRouter } from "vue-router";
-import { putProfile } from "@/api/profile";
 
 export default defineComponent({
   name: "NewUser",
@@ -248,6 +247,7 @@ export default defineComponent({
           firstName: this.firstName,
           lastName: this.lastName,
           middleName: this.middleName,
+          preferredName: this.preferredName,
           dateOfBirth: this.dateOfBirth,
           residentialAddress: this.oidcAddress,
           mailingAddress: this.oidcAddress,
@@ -261,20 +261,6 @@ export default defineComponent({
           if (userInfo !== null) {
             this.userStore.setUserInfo(userInfo);
           }
-
-          // If preferred name is provided, update profile (this is only for BCeID Basic auth flow)
-          if (this.preferredName) {
-            await putProfile({
-              firstName: this.firstName,
-              lastName: this.lastName,
-              middleName: this.middleName,
-              dateOfBirth: this.dateOfBirth,
-              email: this.email,
-              phone: this.phoneNumber,
-              preferredName: this.preferredName,
-            });
-          }
-
           this.router.push("/");
         } else {
           this.isRedirecting = false;
