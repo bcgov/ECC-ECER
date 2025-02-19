@@ -51,6 +51,7 @@ public record UserInfo([Required] string LastName, [Required] DateOnly DateOfBir
   public string? FirstName { get; set; }
   public string? GivenName { get; set; }
   public string? MiddleName { get; set; }
+  public string? PreferredName { get; set; }
   public string? RegistrationNumber { get; set; }
   public bool IsVerified { get; set; }
   public StatusCode Status { get; set; }
