@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.DataverseSdk.Queries;
 
 namespace ECER.Resources.Documents.MetadataResources;
 
@@ -23,6 +24,28 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     if (query.ByName != null) countries = countries.Where(r => r.ecer_Name == query.ByName);
 
     return mapper.Map<IEnumerable<Country>>(countries)!.ToList();
+  }
+
+  public async Task<IEnumerable<PostSecondaryInstitution>> QueryPostSecondaryInstitutions(PostSecondaryInstitutionsQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var postSecondaryInstitutions = context.ecer_PostSecondaryInstituteSet.AsQueryable();
+    var provinces = context.ecer_ProvinceSet.AsQueryable();
+
+    var queryWithJoin = from inst in postSecondaryInstitutions
+                        join prov in provinces on inst.ecer_ProvinceId.Id equals prov.Id
+                        select new { inst, prov };
+
+    if (query.ById != null) queryWithJoin = queryWithJoin.Where(r => r.inst.ecer_PostSecondaryInstituteId == Guid.Parse(query.ById));
+    if (query.ByProvinceId != null) queryWithJoin = queryWithJoin.Where(r => r.prov.ecer_ProvinceId == Guid.Parse(query.ByProvinceId));
+    if (query.ByName != null) queryWithJoin = queryWithJoin.Where(r => r.inst.ecer_Name == query.ByName);
+
+    var results = context.From(queryWithJoin.Select(c => c.inst))
+      .Join()
+      .Include(a => a.ecer_postsecondaryinstitute_ProvinceId)
+      .Execute();
+
+    return mapper.Map<IEnumerable<PostSecondaryInstitution>>(results)!.ToList();
   }
 
   public async Task<IEnumerable<IdentificationType>> QueryIdentificationTypes(IdentificationTypesQuery query, CancellationToken cancellationToken)

@@ -33,8 +33,16 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       var results = await messageBus.Send(new CountriesQuery(), ct);
       return TypedResults.Ok(mapper.Map<IEnumerable<Country>>(results.Items));
     })
-  .WithOpenApi("Handles country queries", string.Empty, "country_get")
-  .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
+    .WithOpenApi("Handles country queries", string.Empty, "country_get")
+    .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
+
+    endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async (string? id, string? name, string? provinceId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var results = await messageBus.Send(new PostSecondaryInstitutionsQuery() { ById = id, ByName = name, ByProvinceId = provinceId }, ct);
+      return TypedResults.Ok(mapper.Map<IEnumerable<PostSecondaryInstitution>>(results.Items));
+    })
+    .WithOpenApi("Handles psi queries", string.Empty, "psi_get")
+    .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
     endpointRouteBuilder.MapGet("/api/systemMessages", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
@@ -82,7 +90,7 @@ public record OidcAuthenticationSettings
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
-
+public record PostSecondaryInstitution(string Id, string Name, string ProvinceId);
 public record Country(string CountryId, string CountryName, string CountryCode);
 public record SystemMessage(string Name, string Subject, string Message)
 {

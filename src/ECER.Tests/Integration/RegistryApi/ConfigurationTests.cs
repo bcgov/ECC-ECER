@@ -46,6 +46,21 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetPostSecondaryInstitutions_ReturnsPostSecondaryInstitutions()
+  {
+    var postSecondaryInstitutionsResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/postSecondaryInstitutionList");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var postSecondaryInstitutions = await postSecondaryInstitutionsResponse.ReadAsJsonAsync<PostSecondaryInstitution[]>();
+    postSecondaryInstitutions.ShouldNotBeNull();
+    postSecondaryInstitutions.Length.ShouldBeGreaterThan(0);
+  }
+
+  [Fact]
   public async Task GetSystemMessages_ReturnsSystemMessages()
   {
     var systemMessagesResponse = await Host.Scenario(_ =>

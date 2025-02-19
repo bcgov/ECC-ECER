@@ -112,7 +112,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PostSecondaryInstituteid = "ecer_postsecondaryinstituteid";
 			public const string ecer_PostSecondaryInstituteidName = "ecer_postsecondaryinstituteidname";
 			public const string ecer_PostSecondaryInstituteidYomiName = "ecer_postsecondaryinstituteidyominame";
+			public const string ecer_postsecondaryinstitutionid = "ecer_postsecondaryinstitutionid";
+			public const string ecer_postsecondaryinstitutionidName = "ecer_postsecondaryinstitutionidname";
 			public const string ecer_ProgramCourseName = "ecer_programcoursename";
+			public const string ecer_ProvinceId = "ecer_provinceid";
+			public const string ecer_ProvinceIdName = "ecer_provinceidname";
 			public const string ecer_StartDate = "ecer_startdate";
 			public const string ecer_StudentFirstName = "ecer_studentfirstname";
 			public const string ecer_StudentLastName = "ecer_studentlastname";
@@ -121,6 +125,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_transcript_Applicantid_Contact = "ecer_transcript_Applicantid_Contact";
 			public const string ecer_transcript_Applicationid = "ecer_transcript_Applicationid";
 			public const string ecer_transcript_InstituteCountryId = "ecer_transcript_InstituteCountryId";
+			public const string ecer_transcript_postsecondaryinstitutionid = "ecer_transcript_postsecondaryinstitutionid";
+			public const string ecer_transcript_ProvinceId = "ecer_transcript_ProvinceId";
 			public const string ecer_transcript_TranscriptDocumentId = "ecer_transcript_TranscriptDocumentId";
 			public const string ecer_TranscriptDocumentId = "ecer_transcriptdocumentid";
 			public const string ecer_TranscriptDocumentIdName = "ecer_transcriptdocumentidname";
@@ -855,6 +861,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstitutionid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_postsecondaryinstitutionid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_postsecondaryinstitutionid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_postsecondaryinstitutionid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstitutionidname")]
+		public string ecer_postsecondaryinstitutionidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_postsecondaryinstitutionid"))
+				{
+					return this.FormattedValues["ecer_postsecondaryinstitutionid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programcoursename")]
 		public string ecer_ProgramCourseName
 		{
@@ -867,6 +905,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_programcoursename", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_provinceid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProvinceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_provinceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_provinceid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_provinceidname")]
+		public string ecer_ProvinceIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_provinceid"))
+				{
+					return this.FormattedValues["ecer_provinceid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1489,6 +1559,44 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Country>("ecer_transcript_InstituteCountryId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_transcript_postsecondaryinstitutionid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstitutionid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_transcript_postsecondaryinstitutionid")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute ecer_transcript_postsecondaryinstitutionid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_transcript_postsecondaryinstitutionid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_transcript_postsecondaryinstitutionid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_transcript_ProvinceId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_provinceid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_transcript_ProvinceId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Province ecer_transcript_ProvinceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Province>("ecer_transcript_ProvinceId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Province>("ecer_transcript_ProvinceId", null, value);
 			}
 		}
 		

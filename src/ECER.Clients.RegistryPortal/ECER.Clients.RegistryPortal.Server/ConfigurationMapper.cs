@@ -10,5 +10,6 @@ public class ConfigurationMapper : Profile
     CreateMap<Managers.Admin.Contract.Metadatas.Country, Country>();
     CreateMap<Managers.Admin.Contract.Metadatas.SystemMessage, SystemMessage>();
     CreateMap<Managers.Admin.Contract.Metadatas.IdentificationType, IdentificationType>();
+    CreateMap<Managers.Admin.Contract.Metadatas.PostSecondaryInstitution, PostSecondaryInstitution>();
   }
 }

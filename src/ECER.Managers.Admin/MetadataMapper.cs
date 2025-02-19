@@ -11,5 +11,7 @@ internal class MetadataMapper : Profile
     CreateMap<Country, Contract.Metadatas.Country>();
     CreateMap<SystemMessage, Contract.Metadatas.SystemMessage>();
     CreateMap<IdentificationType, Contract.Metadatas.IdentificationType>();
+    CreateMap<PostSecondaryInstitution, Contract.Metadatas.PostSecondaryInstitution>();
+    CreateMap<PostSecondaryInstitutionsQuery, Contract.Metadatas.PostSecondaryInstitutionsQuery>().ReverseMap();
   }
 }

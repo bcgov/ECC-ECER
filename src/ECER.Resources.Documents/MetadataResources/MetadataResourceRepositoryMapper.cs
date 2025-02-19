@@ -29,6 +29,12 @@ internal class MetadataResourceRepositoryMapper : Profile
     .ForCtorParam(nameof(Country.CountryCode), opt => opt.MapFrom(src => src.ecer_ShortName))
     .ValidateMemberList(MemberList.Destination);
 
+    CreateMap<ecer_PostSecondaryInstitute, PostSecondaryInstitution>(MemberList.Source)
+   .ForCtorParam(nameof(PostSecondaryInstitution.Id), opt => opt.MapFrom(src => src.ecer_PostSecondaryInstituteId))
+   .ForCtorParam(nameof(PostSecondaryInstitution.Name), opt => opt.MapFrom(src => src.ecer_Name))
+   .ForCtorParam(nameof(PostSecondaryInstitution.ProvinceId), opt => opt.MapFrom(src => src.ecer_postsecondaryinstitute_ProvinceId.ecer_ProvinceId))
+   .ValidateMemberList(MemberList.Destination);
+
     CreateMap<ecer_identificationtype, IdentificationType>(MemberList.Source)
     .ForCtorParam(nameof(IdentificationType.Id), opt => opt.MapFrom(src => src.ecer_identificationtypeId))
     .ForCtorParam(nameof(IdentificationType.Name), opt => opt.MapFrom(src => src.ecer_Name))
