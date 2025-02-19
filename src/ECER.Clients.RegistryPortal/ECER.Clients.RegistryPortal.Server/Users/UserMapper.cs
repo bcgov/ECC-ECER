@@ -17,7 +17,7 @@ internal sealed class UserMapper : AutoMapper.Profile
       .ForMember(d => d.RegistrationNumber, opts => opts.MapFrom(s => s.RegistrationNumber))
       .ForMember(d => d.ResidentialAddress, opts => opts.MapFrom(s => s.ResidentialAddress))
       .ForMember(d => d.MailingAddress, opts => opts.MapFrom(s => s.MailingAddress))
-      .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => (string?)null))
+      .ForMember(d => d.PreferredName, opts => opts.MapFrom(s => s.PreferredName))
       .ForMember(d => d.AlternateContactPhone, opts => opts.MapFrom(s => (string?)null))
       .ForMember(d => d.PreviousNames, opts => opts.MapFrom(s => (PreviousName[]?)null))
       .ForMember(d => d.MiddleName, opts => opts.MapFrom(s => s.MiddleName))
