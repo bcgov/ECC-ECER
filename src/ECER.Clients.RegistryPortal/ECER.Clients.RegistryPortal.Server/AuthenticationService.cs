@@ -44,7 +44,7 @@ public class AuthenticationService(IMediator messageBus, IDistributedCache cache
     {
       verificationStatus = new Claim("verified", "true");
     }
-    else if (registrant.Profile.Status == StatusCode.Unverified)
+    else if (registrant.Profile.Status is StatusCode.Unverified or StatusCode.PendingforDocuments or StatusCode.ReadyforIDVerification)
     {
       verificationStatus = new Claim("verified", "false");
     }
