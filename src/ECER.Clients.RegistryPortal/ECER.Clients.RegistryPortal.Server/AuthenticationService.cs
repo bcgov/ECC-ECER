@@ -1,12 +1,14 @@
-﻿using ECER.Managers.Registry.Contract.Registrants;
+﻿using ECER.Clients.RegistryPortal.Server.Shared;
+using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
 namespace ECER.Clients.RegistryPortal.Server;
 
-public class AuthenticationService(IMediator messageBus, IDistributedCache cache)
+public class AuthenticationService(IMediator messageBus, IDistributedCache cache, IOptions<ClaimCacheSettings> claimCacheSettings)
 {
   public async Task<ClaimsPrincipal?> EnrichUserSecurityContext(ClaimsPrincipal principal, CancellationToken ct)
   {
@@ -32,7 +34,7 @@ public class AuthenticationService(IMediator messageBus, IDistributedCache cache
     // try to find the registrant
     var registrant = await cache.GetAsync($"userinfo:{userIdentity.UserId}@{userIdentity.IdentityProvider}",
       async ct => (await messageBus.Send(new SearchRegistrantQuery { ByUserIdentity = userIdentity }, ct)).Items.SingleOrDefault(),
-      new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) },
+      new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(claimCacheSettings.Value.CacheTimeInSeconds) },
       ct);
 
     if (registrant == null) return null;
