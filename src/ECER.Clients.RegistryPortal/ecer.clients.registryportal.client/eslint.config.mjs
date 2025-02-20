@@ -1,4 +1,7 @@
 import typescript from "@typescript-eslint/eslint-plugin";
+import pluginChaiFriendly from "eslint-plugin-chai-friendly";
+import pluginCypress from "eslint-plugin-cypress/flat";
+import pluginMocha from "eslint-plugin-mocha";
 import prettier from "eslint-plugin-prettier";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import unusedImports from "eslint-plugin-unused-imports";
@@ -40,5 +43,13 @@ export default [
     linterOptions: {
       // Optionally configure linter-specific options here
     },
+  },
+  // Cypress-specific override: applies only to files in the cypress folder
+  {
+    files: ["cypress/**/*.{js,ts,jsx,tsx}"],
+    ...pluginMocha.configs.flat.recommended,
+    ...pluginCypress.configs.recommended,
+    ...pluginChaiFriendly.configs.recommendedFlat,
+    ...typescript.configs.recommended,
   },
 ];
