@@ -6,7 +6,13 @@
       <v-row v-if="!userStore.isVerified" justify="center">
         <v-col cols="12">
           <!-- user has not provided id -->
-          <v-card v-if="userStore.userInfo?.status === 'Unverified'" :rounded="0" flat color="grey-pale-background" class="pa-4">
+          <v-card
+            v-if="userStore.userInfo?.status === 'Unverified' || userStore.userInfo?.status === 'PendingforDocuments'"
+            :rounded="0"
+            flat
+            color="grey-pale-background"
+            class="pa-4"
+          >
             <v-card-item class="ma-4">
               <h3>ID needed to complete account setup</h3>
               <p class="mt-2">
