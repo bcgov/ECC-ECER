@@ -18,3 +18,7 @@ public record RecaptchaSettings
 {
   public string SiteKey { get; set; } = string.Empty;
 }
+public record ClaimCacheSettings
+{
+  public double CacheTimeInSeconds { get; set; } = 500;
+}
