@@ -41,8 +41,7 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       var results = await messageBus.Send(new PostSecondaryInstitutionsQuery() { ById = id, ByName = name, ByProvinceId = provinceId }, ct);
       return TypedResults.Ok(mapper.Map<IEnumerable<PostSecondaryInstitution>>(results.Items));
     })
-    .WithOpenApi("Handles psi queries", string.Empty, "psi_get")
-    .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
+    .WithOpenApi("Handles psi queries", string.Empty, "psi_get");
 
     endpointRouteBuilder.MapGet("/api/systemMessages", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
