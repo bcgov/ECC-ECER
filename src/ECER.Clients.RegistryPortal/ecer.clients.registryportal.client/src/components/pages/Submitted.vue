@@ -25,7 +25,11 @@
       <h3>Supporting documents</h3>
       <br />
       <ul class="ml-10">
-        <li>In your application summary, you can submit supporting documents as your educational institution is not recognized by the ECE Registry</li>
+        <li>
+          <strong>
+            In your application summary, you can submit supporting documents as your educational institution is not recognized by the ECE Registry
+          </strong>
+        </li>
         <li>Once submitted, we will review these documents to help determine whether the course or program is considered equivalent</li>
       </ul>
       <br />
