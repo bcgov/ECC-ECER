@@ -51,7 +51,13 @@
           <v-row>
             <!-- Date of birth Field -->
             <v-col sm="12" md="4" xl="2">
-              <EceDateInput v-model="dateOfBirth" :rules="[Rules.required()]" label="Date of birth (yyyy-mm-dd)"></EceDateInput>
+              <EceDateInput
+                v-model="dateOfBirth"
+                :rules="[Rules.required(), Rules.futureDateNotAllowedRule()]"
+                :max="today"
+                label="Date of birth"
+                placeholder=""
+              ></EceDateInput>
             </v-col>
           </v-row>
         </v-col>
@@ -183,6 +189,8 @@ import * as Rules from "@/utils/formRules";
 
 import PageContainer from "../PageContainer.vue";
 import { useRouter } from "vue-router";
+import { DateTime } from "luxon";
+import { formatDate } from "@/utils/format";
 
 export default defineComponent({
   name: "NewUser",
@@ -234,6 +242,11 @@ export default defineComponent({
     eceCertificateStatus: undefined as boolean | undefined,
     Rules,
   }),
+  computed: {
+    today() {
+      return formatDate(DateTime.now().toString());
+    },
+  },
   methods: {
     isNumber,
     async submit() {
