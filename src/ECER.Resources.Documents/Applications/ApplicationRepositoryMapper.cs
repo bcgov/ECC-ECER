@@ -123,24 +123,6 @@ internal class ApplicationRepositoryMapper : Profile
            .ForMember(d => d.ecer_transcript_ProvinceId, opts => opts.MapFrom(s => s.Province))
            .ForMember(d => d.ecer_transcript_postsecondaryinstitutionid, opts => opts.MapFrom(s => s.PostSecondaryInstitution));
 
-    CreateMap<ecer_Country, Country>(MemberList.Source)
-      .ForCtorParam(nameof(Country.CountryId), opt => opt.MapFrom(src => src.ecer_CountryId))
-      .ForCtorParam(nameof(Country.CountryName), opt => opt.MapFrom(src => src.ecer_Name))
-      .ForCtorParam(nameof(Country.CountryCode), opt => opt.MapFrom(src => src.ecer_ShortName))
-      .ValidateMemberList(MemberList.Destination).ReverseMap();
-
-    CreateMap<ecer_Province, Province>(MemberList.Source)
-      .ForCtorParam(nameof(Province.ProvinceId), opt => opt.MapFrom(src => src.ecer_ProvinceId))
-      .ForCtorParam(nameof(Province.ProvinceName), opt => opt.MapFrom(src => src.ecer_Name))
-      .ForCtorParam(nameof(Province.ProvinceCode), opt => opt.MapFrom(src => src.ecer_Abbreviation))
-      .ValidateMemberList(MemberList.Destination);
-
-    CreateMap<ecer_PostSecondaryInstitute, PostSecondaryInstitution>(MemberList.Source)
-      .ForCtorParam(nameof(PostSecondaryInstitution.Id), opt => opt.MapFrom(src => src.ecer_PostSecondaryInstituteId))
-      .ForCtorParam(nameof(PostSecondaryInstitution.Name), opt => opt.MapFrom(src => src.ecer_Name))
-      .ForCtorParam(nameof(PostSecondaryInstitution.ProvinceId), opt => opt.MapFrom(src => src.ecer_postsecondaryinstitute_ProvinceId.ecer_ProvinceId))
-      .ValidateMemberList(MemberList.Destination).ReverseMap();
-
     CreateMap<ecer_Transcript, Transcript>(MemberList.Source)
       .ForCtorParam(nameof(Transcript.Id), opt => opt.MapFrom(src => src.ecer_TranscriptId))
       .ForCtorParam(nameof(Transcript.EducationalInstitutionName), opt => opt.MapFrom(src => src.ecer_EducationInstitutionFullName))

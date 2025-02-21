@@ -35,9 +35,9 @@ internal sealed partial class ApplicationRepository
     {
       transcript.ecer_TranscriptId = Guid.NewGuid();
       transcript.StatusCode = ecer_Transcript_StatusCode.Draft;
-      var country = transcript.ecer_transcript_InstituteCountryId;
-      var province = transcript.ecer_transcript_ProvinceId;
-      var institution = transcript.ecer_transcript_postsecondaryinstitutionid;
+      var country = context.ecer_CountrySet.FirstOrDefault(c => c.ecer_CountryId == transcript.ecer_transcript_InstituteCountryId!.ecer_CountryId);
+      var province = context.ecer_ProvinceSet.FirstOrDefault(p => p.ecer_ProvinceId == transcript.ecer_transcript_ProvinceId!.ecer_ProvinceId);
+      var institution = context.ecer_PostSecondaryInstituteSet.FirstOrDefault(p => p.ecer_PostSecondaryInstituteId == transcript.ecer_transcript_postsecondaryinstitutionid!.ecer_PostSecondaryInstituteId);
       transcript.ecer_transcript_InstituteCountryId = null;
       transcript.ecer_transcript_ProvinceId = null;
       transcript.ecer_transcript_postsecondaryinstitutionid = null;
@@ -46,17 +46,14 @@ internal sealed partial class ApplicationRepository
 
       if (country != null)
       {
-        context.Attach(country);
         context.AddLink(country, ecer_Country.Fields.ecer_transcript_InstituteCountryId, transcript);
       }
       if (province != null)
       {
-        context.Attach(province);
         context.AddLink(province, ecer_Province.Fields.ecer_transcript_ProvinceId, transcript);
       }
       if (institution != null)
       {
-        context.Attach(institution);
         context.AddLink(institution, ecer_PostSecondaryInstitute.Fields.ecer_transcript_postsecondaryinstitutionid, transcript);
       }
     }

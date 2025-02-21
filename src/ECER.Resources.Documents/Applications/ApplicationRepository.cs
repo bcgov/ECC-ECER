@@ -72,6 +72,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     {
       ecerApplication.ecer_Origin = mapper.Map<ecer_Origin>(application.Origin);
     }
+
     var ecerTranscripts = mapper.Map<IEnumerable<ecer_Transcript>>(application.Transcripts)!.ToList();
     var ecerWorkExperienceReferences = mapper.Map<IEnumerable<ecer_WorkExperienceRef>>(application.WorkExperienceReferences)!.ToList();
     var ecerCharacterReferences = mapper.Map<IEnumerable<ecer_CharacterReference>>(application.CharacterReferences)!.ToList();
