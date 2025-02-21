@@ -26,10 +26,11 @@
       <br />
       <ul class="ml-10">
         <li>
-          We'll send you a message soon with a list of additional forms and supporting documentation we need from you because your educational institution is
-          not recognized by the ECE Registry
+          <strong>
+            In your application summary, you can submit supporting documents as your educational institution is not recognized by the ECE Registry
+          </strong>
         </li>
-        <li>We'll review these documents to help determine whether the course or program is deemed equivalent</li>
+        <li>Once submitted, we will review these documents to help determine whether the course or program is considered equivalent</li>
       </ul>
       <br />
     </div>
