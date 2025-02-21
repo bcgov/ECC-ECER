@@ -5,6 +5,7 @@ using ECER.Clients.RegistryPortal.Server.Files;
 using Shouldly;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using Xunit.Abstractions;
 using Xunit.Categories;
 
