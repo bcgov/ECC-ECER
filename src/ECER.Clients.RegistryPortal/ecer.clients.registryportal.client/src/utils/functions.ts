@@ -174,3 +174,36 @@ export function scrollToElement(
 
   element.scrollIntoView({ behavior, block, inline });
 }
+
+/**
+ * Parses a full name string into first and last name components.
+ *
+ * This function handles various name formats, including single names,
+ * names with multiple first names, and names with leading/trailing spaces.
+ * It treats a single name as the last name. Empty or null input will
+ * return empty strings for both first and last name.
+ *
+ * @param {string} name The full name string to parse.
+ * @returns {{ firstName: string; lastName: string }} An object containing the parsed first and last names.
+ *         If the input is null, undefined, or an empty string, both firstName and lastName will be empty strings.
+ *         If the input string contains only spaces, both firstName and lastName will be empty strings.
+ */
+export function parseFirstNameLastName(name: string) {
+  let firstName = "";
+  let lastName = "";
+  if (!name) {
+    return { firstName, lastName };
+  }
+
+  name = name.trim();
+
+  let nameArray = name.split(" ");
+  if (nameArray.length === 1) {
+    lastName = nameArray[0];
+  } else if (nameArray.length > 1) {
+    lastName = nameArray.pop() || "";
+    firstName = nameArray.join(" ");
+  }
+
+  return { firstName, lastName };
+}
