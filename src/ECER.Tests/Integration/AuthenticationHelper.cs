@@ -26,7 +26,7 @@ public static class AuthenticationHelper
       {
         verificationStatus = new Claim(RegistryPortalClaims.Verified, "true");
       }
-      else if (user.StatusCode is Contact_StatusCode.Unverified or Contact_StatusCode.PendingforDocuments or Contact_StatusCode.ReadyforIDVerification)
+      else if (user.StatusCode is Contact_StatusCode.Unverified or Contact_StatusCode.PendingforDocuments)
       {
         verificationStatus = new Claim(RegistryPortalClaims.Verified, "false");
       }
