@@ -69,6 +69,12 @@ const mustExistInDropdown = (dropdown: DropdownWrapper<any>[], key: keyof Dropdo
   };
 };
 
+const mustExistInList = <T>(list: T[], key: keyof T, message: string = "Please select a valid option") => {
+  return (v: string) => {
+    return list.some((item) => item[key] === v) || message;
+  };
+};
+
 /**
  * Rule for checkbox
  * @param {String} message
@@ -83,13 +89,16 @@ const hasCheckbox = (message = "You must check the box") => {
  * @param {String} message
  * @returns Function
  */
-const required = (message = "This field is required") => {
-  return (v: string | number) => {
+const required = (message = "This field is required", property?: string) => {
+  return (v: string | number | Record<string, any> | null) => {
     if (typeof v === "number") {
       return !!v || message;
-    } else {
-      return !!(v && v?.trim()) || message;
+    } else if (typeof v === "string") {
+      return !!v.trim() || message;
+    } else if (typeof v === "object" && v !== null && property) {
+      return !!v[property]?.toString().trim() || message;
     }
+    return message;
   };
 };
 
@@ -245,6 +254,7 @@ export {
   hasCheckbox,
   validContactName,
   mustExistInDropdown,
+  mustExistInList,
   number,
   numberToDecimalPlace as numberToDecimalPlaces,
   phoneNumber,

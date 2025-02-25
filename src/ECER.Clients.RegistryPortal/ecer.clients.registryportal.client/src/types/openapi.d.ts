@@ -323,6 +323,11 @@ declare namespace Components {
             portalInvitation?: PortalInvitation;
         }
         export type PortalTags = "LOGIN" | "LOOKUP" | "REFERENCES";
+        export interface PostSecondaryInstitution {
+            id?: string | null;
+            name?: string | null;
+            provinceId?: string | null;
+        }
         /**
          * Previous Name
          */
@@ -468,6 +473,9 @@ declare namespace Components {
             isECEAssistant?: boolean;
             doesECERegistryHaveTranscript?: boolean;
             isOfficialTranscriptRequested?: boolean;
+            country?: Country;
+            province?: Province;
+            postSecondaryInstitution?: PostSecondaryInstitution;
         }
         export type TranscriptStage = "Accepted" | "ApplicationSubmitted" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "WaitingforDetails";
         export interface TranscriptStatus {
@@ -905,6 +913,23 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Province[];
         }
     }
+    namespace PsiGet {
+        namespace Parameters {
+            export type Id = string;
+            export type Name = string;
+            export type ProvinceId = string;
+        }
+        export interface PathParameters {
+            id?: Parameters.Id;
+        }
+        export interface QueryParameters {
+            name?: Parameters.Name;
+            provinceId?: Parameters.ProvinceId;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.PostSecondaryInstitution[];
+        }
+    }
     namespace RecaptchaSiteKeyGet {
         namespace Responses {
             export type $200 = string;
@@ -1007,6 +1032,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CountryGet.Responses.$200>
+  /**
+   * psi_get - Handles psi queries
+   */
+  'psi_get'(
+    parameters?: Parameters<Paths.PsiGet.QueryParameters & Paths.PsiGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.PsiGet.Responses.$200>
   /**
    * systemMessage_get - Handles system messages queries
    */
@@ -1317,6 +1350,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.CountryGet.Responses.$200>
+  }
+  ['/api/postSecondaryInstitutionList/{id}']: {
+    /**
+     * psi_get - Handles psi queries
+     */
+    'get'(
+      parameters?: Parameters<Paths.PsiGet.QueryParameters & Paths.PsiGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.PsiGet.Responses.$200>
   }
   ['/api/systemMessages']: {
     /**
@@ -1716,6 +1759,7 @@ export type OptOutReferenceRequest = Components.Schemas.OptOutReferenceRequest;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
 export type PortalTags = Components.Schemas.PortalTags;
+export type PostSecondaryInstitution = Components.Schemas.PostSecondaryInstitution;
 export type PreviousName = Components.Schemas.PreviousName;
 export type PreviousNameSources = Components.Schemas.PreviousNameSources;
 export type PreviousNameStage = Components.Schemas.PreviousNameStage;

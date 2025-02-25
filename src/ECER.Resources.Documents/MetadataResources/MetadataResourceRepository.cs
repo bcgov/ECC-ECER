@@ -30,19 +30,12 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
   {
     await Task.CompletedTask;
     var postSecondaryInstitutions = context.ecer_PostSecondaryInstituteSet.AsQueryable();
-    var provinces = context.ecer_ProvinceSet.AsQueryable();
 
-    var queryWithJoin = from inst in postSecondaryInstitutions
-                        join prov in provinces on inst.ecer_ProvinceId.Id equals prov.Id
-                        select new { inst, prov };
+    if (query.ById != null) postSecondaryInstitutions = postSecondaryInstitutions.Where(r => r.ecer_PostSecondaryInstituteId == Guid.Parse(query.ById));
+    if (query.ByProvinceId != null) postSecondaryInstitutions = postSecondaryInstitutions.Where(r => r.ecer_ProvinceId.Id == Guid.Parse(query.ByProvinceId));
+    if (query.ByName != null) postSecondaryInstitutions = postSecondaryInstitutions.Where(r => r.ecer_Name == query.ByName);
 
-    if (query.ById != null) queryWithJoin = queryWithJoin.Where(r => r.inst.ecer_PostSecondaryInstituteId == Guid.Parse(query.ById));
-    if (query.ByProvinceId != null) queryWithJoin = queryWithJoin.Where(r => r.prov.ecer_ProvinceId == Guid.Parse(query.ByProvinceId));
-    if (query.ByName != null) queryWithJoin = queryWithJoin.Where(r => r.inst.ecer_Name == query.ByName);
-
-    var results = context.From(queryWithJoin.Select(c => c.inst))
-      .Join()
-      .Include(a => a.ecer_postsecondaryinstitute_ProvinceId)
+    var results = context.From(postSecondaryInstitutions)
       .Execute();
 
     return mapper.Map<IEnumerable<PostSecondaryInstitution>>(results)!.ToList();

@@ -40,7 +40,7 @@ internal class MetadataResourceRepositoryMapper : Profile
     CreateMap<ecer_PostSecondaryInstitute, PostSecondaryInstitution>(MemberList.Source)
        .ForCtorParam(nameof(PostSecondaryInstitution.Id), opt => opt.MapFrom(src => src.ecer_PostSecondaryInstituteId))
        .ForCtorParam(nameof(PostSecondaryInstitution.Name), opt => opt.MapFrom(src => src.ecer_Name))
-       .ForCtorParam(nameof(PostSecondaryInstitution.ProvinceId), opt => opt.MapFrom(src => src.ecer_postsecondaryinstitute_ProvinceId.ecer_ProvinceId))
+       .ForCtorParam(nameof(PostSecondaryInstitution.ProvinceId), opt => opt.MapFrom(src => src.ecer_ProvinceId.Id))
        .ValidateMemberList(MemberList.Destination)
        .ReverseMap()
        .ForMember(dest => dest.ecer_PostSecondaryInstituteId, opt => opt.MapFrom(src => src.Id))

@@ -373,7 +373,7 @@ public record ProfessionalDevelopment([Required] string CourseName, [Required] s
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
 }
-public record Transcript([Required] string EducationalInstitutionName, [Required] string ProgramName, [Required] string StudentLastName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] bool IsNameUnverified, [Required] EducationRecognition EducationRecognition, [Required] EducationOrigin EducationOrigin)
+public record Transcript(string? EducationalInstitutionName, [Required] string ProgramName, [Required] string StudentLastName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] bool IsNameUnverified, [Required] EducationRecognition EducationRecognition, [Required] EducationOrigin EducationOrigin)
 {
   public string? Id { get; set; }
   public string? CampusLocation { get; set; }

@@ -158,10 +158,7 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
     {
       Criteria = new FilterExpression(LogicalOperator.Or)
       {
-        Conditions =
-          {
-            new ConditionExpression(attributeName: keyAttributeName, conditionOperator: ConditionOperator.In, values: keys)
-          }
+        Conditions = { new ConditionExpression(attributeName: keyAttributeName, conditionOperator: ConditionOperator.In, values: keys) }
       }
     };
     query.ColumnSet.AllColumns = true;

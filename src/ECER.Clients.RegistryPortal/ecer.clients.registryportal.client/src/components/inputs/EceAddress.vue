@@ -19,6 +19,8 @@
         :items="configStore?.countryList"
         clearable
         hide-details="auto"
+        item-title="countryName"
+        item-value="countryName"
         @update:model-value="(value: string) => updateField('country', value)"
       ></v-autocomplete>
     </v-col>
@@ -66,10 +68,10 @@
         variant="outlined"
         color="primary"
         class="pt-2"
-        :rules="[Rules.required('Select your province/territory'), Rules.mustExistInDropdown(filteredProvinceList, 'code')]"
+        :rules="[Rules.required('Select your province/territory'), Rules.mustExistInList(filteredProvinceList, 'provinceName')]"
         :items="filteredProvinceList"
-        item-title="title"
-        item-value="code"
+        item-title="provinceName"
+        item-value="provinceName"
         clearable
         hide-details="auto"
         @update:model-value="(value: string) => updateField('province', value)"
@@ -138,12 +140,11 @@ export default defineComponent({
   },
 
   computed: {
-    // Check if the selected country is Canada.
     isCanada(): boolean {
-      return this.modelValue.country === "Canada";
+      return this.modelValue.country === this.configStore.canada?.countryName;
     },
     filteredProvinceList() {
-      return (this.configStore?.provinceList || []).filter((province) => province.title !== ProvinceTerritoryType.OTHER);
+      return (this.configStore?.provinceList || []).filter((province) => province.provinceName !== ProvinceTerritoryType.OTHER);
     },
   },
   data() {
@@ -154,18 +155,18 @@ export default defineComponent({
   mounted() {
     // On mount, default the country to Canada if not set.
     if (!this.modelValue.country) {
-      this.updateField("country", "Canada");
+      this.updateField("country", this.configStore.canada?.countryName ?? "");
     }
     // If country is Canada and province is not set, default it to British Columbia.
     if (this.modelValue.country === "Canada" && !this.modelValue.province) {
-      this.updateField("province", "BC");
+      this.updateField("province", this.configStore.britishColumbia?.provinceName ?? "");
     }
   },
   watch: {
     // When switching back to Canada, if no province is set, reset it to British Columbia.
     "modelValue.country"(newVal: string) {
       if (newVal === "Canada" && !this.modelValue.province) {
-        this.updateField("province", "BC");
+        this.updateField("province", this.configStore.britishColumbia?.provinceName ?? "");
       }
     },
   },

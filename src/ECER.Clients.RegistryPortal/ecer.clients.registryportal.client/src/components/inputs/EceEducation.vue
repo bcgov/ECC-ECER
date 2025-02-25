@@ -125,20 +125,58 @@
         </v-row>
         <v-row>
           <v-col>
-            <EceTextField
-              v-model="school"
-              :rules="[Rules.required('Enter the name of the educational institution')]"
-              label="Full name of educational institution"
-              maxlength="100"
-            ></EceTextField>
+            Country
+            <v-select
+              class="pt-2"
+              :items="configStore.countryList"
+              variant="outlined"
+              label=""
+              v-model="country"
+              item-title="countryName"
+              item-value="countryId"
+              :rules="[Rules.required('Select your country', 'countryId')]"
+              return-object
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row v-if="country?.countryId == configStore.canada?.countryId">
+          <v-col>
+            Province or territory
+            <v-select
+              class="pt-2"
+              :items="configStore.provinceList"
+              variant="outlined"
+              label=""
+              v-model="province"
+              item-title="provinceName"
+              item-value="provinceId"
+              :rules="[Rules.required('Select your province or territory', 'provinceId')]"
+              @update:modelValue="onProvinceChange"
+              return-object
+            ></v-select>
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
-            <p>Location of educational institution</p>
-            <v-radio-group v-model="educationOrigin" :rules="[Rules.requiredRadio('Select an option')]">
-              <v-radio v-for="(origin, index) in educationOriginRadio" :key="index" :label="origin.label" :value="origin.value"></v-radio>
-            </v-radio-group>
+          <v-col v-if="country?.countryId == configStore.canada?.countryId">
+            Educational institution
+            <v-select
+              class="pt-2"
+              :items="postSecondaryInstitutionByProvince"
+              variant="outlined"
+              item-title="name"
+              item-value="id"
+              v-model="postSecondaryInstitution"
+              :rules="[Rules.required('Select your post secondary institution', 'id')]"
+              return-object
+            ></v-select>
+          </v-col>
+          <v-col v-else>
+            <EceTextField
+              v-model="school"
+              :rules="[Rules.required('Enter the name of the educational institution')]"
+              label="Name of educational institution"
+              maxlength="100"
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
@@ -241,9 +279,10 @@ import { useApplicationStore } from "@/store/application";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import { useLoadingStore } from "@/store/loading";
-import type { Components } from "@/types/openapi";
+import type { Components, Country, PostSecondaryInstitution, Province } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
+import { useConfigStore } from "@/store/config";
 import { educationRecognitionRadio, educationOriginRadio } from "@/utils/constant";
 
 interface EceEducationData {
@@ -252,6 +291,9 @@ interface EceEducationData {
   previousSchool: string;
   school: string;
   program: string;
+  country: Country | undefined;
+  province: Province | undefined;
+  postSecondaryInstitution: PostSecondaryInstitution | undefined;
   campusLocation: string;
   studentNumber: string;
   startYear: string;
@@ -289,6 +331,7 @@ export default defineComponent({
     const wizardStore = useWizardStore();
     const applicationStore = useApplicationStore();
     const userStore = useUserStore();
+    const configStore = useConfigStore();
     const loadingStore = useLoadingStore();
 
     return {
@@ -296,6 +339,7 @@ export default defineComponent({
       wizardStore,
       applicationStore,
       userStore,
+      configStore,
       loadingStore,
       educationRecognitionRadio,
       educationOriginRadio,
@@ -308,6 +352,9 @@ export default defineComponent({
       previousSchool: "",
       school: "",
       program: "",
+      country: undefined,
+      province: undefined,
+      postSecondaryInstitution: undefined,
       campusLocation: "",
       studentNumber: "",
       startYear: "",
@@ -327,6 +374,9 @@ export default defineComponent({
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
+    },
+    postSecondaryInstitutionByProvince() {
+      return this.configStore.postSecondaryInstitutionList.filter((item) => item.provinceId === this.province?.provinceId);
     },
     applicantNameRadioOptions(): RadioOptions[] {
       let legalNameRadioOptions: RadioOptions[] = [
@@ -392,6 +442,9 @@ export default defineComponent({
           studentFirstName: this.studentFirstName,
           studentMiddleName: this.studentMiddleName,
           studentLastName: this.studentLastName,
+          country: this.country,
+          province: this.province,
+          postSecondaryInstitution: this.postSecondaryInstitution,
           studentNumber: this.studentNumber,
           startDate: this.startYear,
           endDate: this.endYear,
@@ -428,6 +481,9 @@ export default defineComponent({
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }
     },
+    onProvinceChange() {
+      this.postSecondaryInstitution = undefined;
+    },
     handleCancel() {
       // Change mode to education list
       this.mode = "list";
@@ -456,6 +512,9 @@ export default defineComponent({
       this.endYear = formatDate(educationData.education.endDate || "") ?? "";
       this.educationRecognition = educationData.education.educationRecognition;
       this.educationOrigin = educationData.education.educationOrigin;
+      this.country = educationData.education.country;
+      this.province = educationData.education.province;
+      this.postSecondaryInstitution = educationData.education.postSecondaryInstitution;
       if (educationData.education.isOfficialTranscriptRequested) {
         this.transcriptStatus = "requested";
       } else if (educationData.education.doesECERegistryHaveTranscript) {
@@ -517,6 +576,9 @@ export default defineComponent({
       this.program = "";
       this.campusLocation = "";
       this.studentNumber = "";
+      this.country = this.configStore.canada;
+      this.province = undefined;
+      this.postSecondaryInstitution = undefined;
       this.startYear = "";
       this.endYear = "";
       this.transcriptStatus = "";
