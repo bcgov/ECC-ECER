@@ -16,7 +16,7 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col v-if="mode === 'add'" md="8" lg="6" xl="4">
+    <v-col v-if="mode === 'add'">
       <v-form ref="addEducationForm" validate-on="input">
         <v-row>
           <v-col>
@@ -43,7 +43,7 @@
         </v-row>
 
         <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             <EceTextField
               v-model="program"
               :rules="[Rules.required('Enter the name of your program or course')]"
@@ -53,7 +53,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             <EceDateInput
               v-model="startYear"
               :rules="[
@@ -72,7 +72,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             <EceDateInput
               v-model="endYear"
               :rules="[
@@ -93,38 +93,11 @@
         </v-row>
         <v-row>
           <v-col>
-            <h3>Is this program or course recognized by the ECE Registry?</h3>
-            <p class="mt-3">
-              To be certified in B.C. as an Early Childhood Educator (ECE) requires the successful completion of an early childhood education training program
-              that's recognized by the ECE Registry, or a program that's deemed equivalent. ECE Assistant certification requires successful completion of a
-              course that's a part of a recognized early childhood education training program or deemed equivalent.
-            </p>
-            <p class="mt-3">
-              Check the list of
-              <a
-                href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-              >
-                recognized programs
-              </a>
-              if you're not sure if this program is recognized
-            </p>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <p>Is this program on the recognized list?</p>
-            <v-radio-group v-model="educationRecognition" :rules="[Rules.requiredRadio('Select an option')]">
-              <v-radio v-for="(recognition, index) in educationRecognitionRadio" :key="index" :label="recognition.label" :value="recognition.value"></v-radio>
-            </v-radio-group>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
             <h3>Where did you take it?</h3>
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             Country
             <v-select
               class="pt-2"
@@ -140,7 +113,7 @@
           </v-col>
         </v-row>
         <v-row v-if="country?.countryId == configStore.canada?.countryId">
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             Province or territory
             <v-select
               class="pt-2"
@@ -157,7 +130,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col v-if="country?.countryId == configStore.canada?.countryId">
+          <v-col v-if="country?.countryId == configStore.canada?.countryId" md="8" lg="6" xl="4">
             Educational institution
             <v-select
               class="pt-2"
@@ -170,7 +143,7 @@
               return-object
             ></v-select>
           </v-col>
-          <v-col v-else>
+          <v-col v-else md="8" lg="6" xl="4">
             <EceTextField
               v-model="school"
               :rules="[Rules.required('Enter the name of the educational institution')]"
@@ -180,10 +153,59 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             <EceTextField v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="200"></EceTextField>
           </v-col>
         </v-row>
+
+        <!-- If unrecognized, display information: -->
+        <template v-if="country?.countryId !== configStore.canada?.countryId || postSecondaryInstitution === undefined">
+          <v-row>
+            <v-col>
+              <callout type="warning">
+                <h3>You will need to provide supporting documents as part of your application.</h3>
+                <p class="mt-3">
+                  The ECE Registry does not recognize the program or course from the educational institution you entered. We will need additional information to
+                  assess if your education is considered equivalent.
+                </p>
+                <h3 class="mt-3">
+                  You may continue your application. After you submit, you can indicate how you will provide supporting documents in the application summary
+                  page.
+                </h3>
+              </callout>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <div class="d-flex flex-column ga-3">
+                <h3>Detailed course outlines or syllabi</h3>
+                <p>You will need to request course outlines or syllabi from your educational institution.</p>
+                <p>They must:</p>
+                <ul class="ml-10">
+                  <li>Include detailed descriptions of course content, learning goals, outcomes and expectations</li>
+                  <li>Be created by the educational institution</li>
+                  <li>Be for the year(s) you completed the course(s)</li>
+                  <li>Be in English – if they are not, you must have them translated by a professional translator</li>
+                </ul>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <div class="d-flex flex-column ga-3">
+                <h3>Program confirmation form</h3>
+                <p>You will need to:</p>
+                <ul class="ml-10">
+                  <li>Download the Program Confirmation Form (16KB, PDF)</li>
+                  <li>Complete Section 1 of the form</li>
+                  <li>Ask your educational institution to complete the rest of the form</li>
+                  <li>If they cannot complete the form in English, you will need to have it translated by a professional translator</li>
+                </ul>
+              </div>
+            </v-col>
+          </v-row>
+        </template>
+
         <v-row>
           <v-col>
             <h3>Name and student number on transcript</h3>
@@ -192,7 +214,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             <EceTextField
               v-model="studentNumber"
               :rules="[Rules.required('Enter your student number or ID')]"
@@ -209,17 +231,17 @@
         </v-radio-group>
         <div v-if="previousNameRadio === 'other'">
           <v-row>
-            <v-col>
+            <v-col md="8" lg="6" xl="4">
               <EceTextField v-model="studentFirstName" label="First name on transcript" variant="outlined" color="primary" maxlength="100"></EceTextField>
             </v-col>
           </v-row>
           <v-row>
-            <v-col>
+            <v-col md="8" lg="6" xl="4">
               <EceTextField v-model="studentMiddleName" label="Middle name(s) on transcript (optional)" maxlength="100"></EceTextField>
             </v-col>
           </v-row>
           <v-row>
-            <v-col>
+            <v-col md="8" lg="6" xl="4">
               <EceTextField
                 v-model="studentLastName"
                 :rules="[Rules.required('Enter your last name')]"
@@ -284,6 +306,7 @@ import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 import { useConfigStore } from "@/store/config";
 import { educationRecognitionRadio, educationOriginRadio } from "@/utils/constant";
+import Callout from "../Callout.vue";
 
 interface EceEducationData {
   clientId: string;
@@ -316,7 +339,7 @@ interface RadioOptions {
 
 export default defineComponent({
   name: "EceEducation",
-  components: { EducationList, EceTextField, EceDateInput },
+  components: { EducationList, EceTextField, EceDateInput, Callout },
   props: {
     modelValue: {
       type: Object as () => { [id: string]: Components.Schemas.Transcript },
