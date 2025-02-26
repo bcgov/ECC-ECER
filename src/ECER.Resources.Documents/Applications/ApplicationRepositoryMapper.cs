@@ -141,9 +141,18 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.CampusLocation, opts => opts.MapFrom(s => s.ecer_CampusLocation))
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
       .ForMember(d => d.StudentMiddleName, opts => opts.MapFrom(s => s.ecer_StudentMiddleName))
-      .ForMember(d => d.Country, opts => opts.MapFrom(src => src.ecer_transcript_InstituteCountryId))
-      .ForMember(d => d.Province, opts => opts.MapFrom(src => src.ecer_transcript_ProvinceId))
-      .ForMember(d => d.PostSecondaryInstitution, opts => opts.MapFrom(src => src.ecer_transcript_postsecondaryinstitutionid))
+      .ForMember(d => d.Country, opts => opts.MapFrom(src =>
+        src.ecer_InstituteCountryId != null
+        ? new Country(src.ecer_InstituteCountryId.Id.ToString(), src.ecer_InstituteCountryIdName, string.Empty)
+        : null))
+      .ForMember(d => d.Province, opts => opts.MapFrom(src =>
+        src.ecer_ProvinceId != null
+        ? new Province(src.ecer_ProvinceId.Id.ToString(), src.ecer_ProvinceIdName, string.Empty)
+        : null))
+      .ForMember(d => d.PostSecondaryInstitution, opts => opts.MapFrom(src =>
+        src.ecer_postsecondaryinstitutionid != null
+        ? new PostSecondaryInstitution(src.ecer_postsecondaryinstitutionid.Id.ToString(), src.ecer_postsecondaryinstitutionidName, string.Empty)
+        : null))
       .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ProfessionalDevelopment, ecer_ProfessionalDevelopment>(MemberList.Source)
