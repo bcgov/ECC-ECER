@@ -36,7 +36,12 @@ public class UserInfoEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapPost("api/userinfo", async Task<Ok> (UserInfo userInfo, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
         {
           var user = ctx.User.GetUserContext()!;
-          userInfo.MiddleName = ECER.Infrastructure.Common.Utility.GetMiddleName(userInfo.FirstName!, userInfo.GivenName!);
+          if (user.Identity.IdentityProvider == "bcsc")
+          {
+            //for bcsc users we need to derive middle name from user info
+            userInfo.MiddleName = ECER.Infrastructure.Common.Utility.GetMiddleName(userInfo.FirstName!, userInfo.GivenName!);
+          }
+
           await bus.Send(new RegisterNewUserCommand(mapper.Map<Managers.Registry.Contract.Registrants.UserProfile>(userInfo)!, user.Identity), ct);
           return TypedResults.Ok();
         })
@@ -51,6 +56,7 @@ public record UserInfo([Required] string LastName, [Required] DateOnly DateOfBir
   public string? FirstName { get; set; }
   public string? GivenName { get; set; }
   public string? MiddleName { get; set; }
+  public string? PreferredName { get; set; }
   public string? RegistrationNumber { get; set; }
   public bool IsVerified { get; set; }
   public StatusCode Status { get; set; }

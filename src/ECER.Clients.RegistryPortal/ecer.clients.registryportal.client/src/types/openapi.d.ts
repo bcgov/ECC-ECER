@@ -495,6 +495,7 @@ declare namespace Components {
             firstName?: string | null;
             givenName?: string | null;
             middleName?: string | null;
+            preferredName?: string | null;
             registrationNumber?: string | null;
             isVerified?: boolean;
             status?: StatusCode;

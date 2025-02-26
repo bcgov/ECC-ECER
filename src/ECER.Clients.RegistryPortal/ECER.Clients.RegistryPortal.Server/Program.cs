@@ -67,6 +67,7 @@ internal class Program
       builder.Services.Configure<PaginationSettings>(builder.Configuration.GetSection("Pagination"));
       builder.Services.Configure<UploaderSettings>(builder.Configuration.GetSection("Uploader"));
       builder.Services.Configure<RecaptchaSettings>(builder.Configuration.GetSection("Recaptcha"));
+      builder.Services.Configure<ClaimCacheSettings>(builder.Configuration.GetSection("Claims"));
 
       builder.Services
         .AddTransient<AuthenticationService>()
