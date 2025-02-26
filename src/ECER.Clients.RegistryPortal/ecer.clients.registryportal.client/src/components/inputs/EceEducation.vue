@@ -158,7 +158,7 @@
           </v-col>
         </v-row>
 
-        <!-- If unrecognized, display information: -->
+        <!-- If not Canada or no recognized institution selected: -->
         <template v-if="country?.countryId !== configStore.canada?.countryId || postSecondaryInstitution === undefined">
           <v-row>
             <v-col>
@@ -185,7 +185,14 @@
                   <li>Include detailed descriptions of course content, learning goals, outcomes and expectations</li>
                   <li>Be created by the educational institution</li>
                   <li>Be for the year(s) you completed the course(s)</li>
-                  <li>Be in English – if they are not, you must have them translated by a professional translator</li>
+                  <li>
+                    Be in English – if they are not, you must have them
+                    <a
+                      href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#prepare-your-application"
+                    >
+                      translated by a professional translator
+                    </a>
+                  </li>
                 </ul>
               </div>
             </v-col>
@@ -196,11 +203,50 @@
                 <h3>Program confirmation form</h3>
                 <p>You will need to:</p>
                 <ul class="ml-10">
-                  <li>Download the Program Confirmation Form (16KB, PDF)</li>
+                  <li>
+                    Download the
+                    <a href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program Confirmation Form (16KB, PDF)</a>
+                  </li>
                   <li>Complete Section 1 of the form</li>
                   <li>Ask your educational institution to complete the rest of the form</li>
-                  <li>If they cannot complete the form in English, you will need to have it translated by a professional translator</li>
+                  <li>
+                    If they cannot complete the form in English, you will need to have it
+                    <a
+                      href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#prepare-your-application"
+                    >
+                      translated by a professional translator
+                    </a>
+                  </li>
                 </ul>
+              </div>
+            </v-col>
+          </v-row>
+        </template>
+        <!-- If not Canada -->
+        <template v-if="country?.countryId !== configStore.canada?.countryId">
+          <v-row>
+            <v-col>
+              <div class="d-flex flex-column ga-3">
+                <h3>Comprehensive Evaluation Report</h3>
+                <p>
+                  You will need to request a Comprehensive Evaluation Report from BCIT’s International Credential Evaluation Service. This is needed for any
+                  program or course completed outside of Canada.
+                </p>
+                <p>
+                  You may be eligible for a fee waiver to cover the costs of the report.
+                  <b>
+                    If you wish to apply for a fee waiver, you can indicate this in your application summary (once you submit this application) before you
+                    request a report from BCIT.
+                  </b>
+                  The fee waiver is paid out directly to BCIT from the ECE Registry and cannot be used to reimburse the applicant.
+                </p>
+                <p>
+                  <a
+                    href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#education-requirements-equivalency-process:~:text=Apply%20for%20an%20International%20Credential%20Evaluation%20Service%20Comprehensive%20Report%C2%A0"
+                  >
+                    Learn more about Comprehensive Evaluation Report
+                  </a>
+                </p>
               </div>
             </v-col>
           </v-row>
