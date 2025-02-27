@@ -17,8 +17,8 @@ export default defineConfig({
     },
   },
   env: {
-    username: env.CYPRESS_USERNAME || "MyECE001",
-    password: env.CYPRESS_PASSWORD || "98900001",
-    devices: env.CYPRESS_DEVICES || JSON.stringify(defaultDevices),
+    BCSC_USERNAME: env.BCSC_USERNAME || "bcsc_username",
+    BCSC_PASSWORD: env.BCSC_PASSWORD || "bcsc_password",
+    DEVICES: env.DEVICES || JSON.stringify(defaultDevices),
   },
 });

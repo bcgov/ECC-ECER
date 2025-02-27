@@ -1,4 +1,5 @@
 import typescript from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
 import pluginChaiFriendly from "eslint-plugin-chai-friendly";
 import pluginCypress from "eslint-plugin-cypress/flat";
 import pluginMocha from "eslint-plugin-mocha";
@@ -47,9 +48,30 @@ export default [
   // Cypress-specific override: applies only to files in the cypress folder
   {
     files: ["cypress/**/*.{js,ts,jsx,tsx}"],
-    ...pluginMocha.configs.flat.recommended,
-    ...pluginCypress.configs.recommended,
-    ...pluginChaiFriendly.configs.recommendedFlat,
-    ...typescript.configs.recommended,
+
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
+      },
+    },
+
+    plugins: {
+      mocha: pluginMocha,
+      cypress: pluginCypress,
+      "chai-friendly": pluginChaiFriendly,
+      "@typescript-eslint": typescript,
+    },
+
+    rules: {
+      ...pluginMocha.configs.flat.recommended.rules,
+      ...pluginCypress.configs.recommended.rules,
+      ...pluginChaiFriendly.configs.recommendedFlat.rules,
+      ...typescript.configs.recommended.rules,
+      "mocha/no-mocha-arrows": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+    },
   },
 ];
