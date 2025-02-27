@@ -10,8 +10,8 @@ Cypress.Commands.add("resetState", () => {
 
 // Custom command to log in using default or provided credentials.
 Cypress.Commands.add("login", (username?: string, password?: string) => {
-  const user = username || (Cypress.env("BCSC_USERNAME") as string);
-  const pass = password || (Cypress.env("BCSC_PASSWORD") as string);
+  const user = username ?? (Cypress.env("BCSC_USERNAME") as string);
+  const pass = password ?? (Cypress.env("BCSC_PASSWORD") as string);
 
   // Adjust the URL if login page is at a different route.
   cy.visit("/login");

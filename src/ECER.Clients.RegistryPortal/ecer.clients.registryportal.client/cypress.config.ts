@@ -10,7 +10,7 @@ const defaultDevices = [
 
 export default defineConfig({
   e2e: {
-    baseUrl: "http://localhost:5121",
+    baseUrl: env.BASE_URL || "http://localhost:5121",
     setupNodeEvents(on, config) {
       // Implement any node event listeners here if needed.
       return config;
