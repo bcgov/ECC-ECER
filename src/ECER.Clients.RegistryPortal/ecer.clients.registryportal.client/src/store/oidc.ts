@@ -1,6 +1,7 @@
 import { type SignoutResponse, User } from "oidc-client-ts";
 import { UserManager } from "oidc-client-ts";
 import { defineStore } from "pinia";
+import { parseFirstNameLastName } from "../utils/functions";
 
 import type { Components } from "@/types/openapi";
 
@@ -17,15 +18,30 @@ export const useOidcStore = defineStore("oidc", {
   actions: {
     async oidcUserInfo(): Promise<any> {
       const user = await this.getUser();
-      return {
-        dateOfBirth: user ? (user.profile.birthdate ?? undefined) : undefined,
-        firstName: user ? (user.profile.given_name ?? "") : "",
-        givenName: user ? (user.profile.given_names ?? "") : "",
-        lastName: user ? (user.profile.family_name ?? "") : "",
-        phone: user ? (user.profile.phone_number ?? "") : "",
-        email: user ? (user.profile.email ?? "") : "",
-        address: user ? (user.profile.address ?? "") : "",
-      };
+
+      if (user?.profile.identity_provider === "bceidbasic") {
+        let { firstName, lastName } = parseFirstNameLastName(user?.profile.given_name || "");
+        console.log(user.profile);
+        return {
+          dateOfBirth: undefined,
+          firstName: firstName,
+          givenName: "",
+          lastName: lastName,
+          phone: "",
+          email: user ? (user.profile.email ?? "") : "",
+          address: "",
+        };
+      } else if (user?.profile.identity_provider === "bcsc") {
+        return {
+          dateOfBirth: user ? (user.profile.birthdate ?? undefined) : undefined,
+          firstName: user ? (user.profile.given_name ?? "") : "",
+          givenName: user ? (user.profile.given_names ?? "") : "",
+          lastName: user ? (user.profile.family_name ?? "") : "",
+          phone: user ? (user.profile.phone_number ?? "") : "",
+          email: user ? (user.profile.email ?? "") : "",
+          address: user ? (user.profile.address ?? "") : "",
+        };
+      }
     },
     async oidcAddress(): Promise<Components.Schemas.Address> {
       const user = await this.getUser();

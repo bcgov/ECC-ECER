@@ -45,13 +45,13 @@ internal sealed partial class ApplicationRenewalValidationEngine : IApplicationV
     try
     {
       var expiryDate = await getLastCertificateExpiryDate(applicantId);
-      var now = DateTime.Now;
+      var now = DateTime.Now.Date; //sets time stamp to 00:00:00
 
-      if (expiryDate > now)
+      if (expiryDate >= now)
       {
         return CertificateStatus.Active;
       }
-      else if (expiryDate <= now && expiryDate > now.AddYears(-5))
+      else if (expiryDate < now && expiryDate >= now.AddYears(-5))
       {
         return CertificateStatus.ExpiredLessThanFiveYearsAgo;
       }

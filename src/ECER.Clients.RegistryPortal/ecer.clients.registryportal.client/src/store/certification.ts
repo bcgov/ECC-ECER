@@ -25,7 +25,7 @@ export const useCertificationStore = defineStore("certification", {
     },
     latestExpiredMoreThan5Years(state): boolean {
       if (!state.latestCertification?.expiryDate) return false;
-      const dt1 = DateTime.now();
+      const dt1 = DateTime.now().startOf("day");
       const dt2 = DateTime.fromISO(state.latestCertification?.expiryDate);
       const differenceInYears = Math.abs(dt1.diff(dt2, "years").years);
       return differenceInYears > 5;
