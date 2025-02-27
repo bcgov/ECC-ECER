@@ -51,7 +51,7 @@ internal sealed partial class ApplicationRenewalValidationEngine : IApplicationV
       {
         return CertificateStatus.Active;
       }
-      else if (expiryDate < now && expiryDate > now.AddYears(-5))
+      else if (expiryDate < now && expiryDate >= now.AddYears(-5))
       {
         return CertificateStatus.ExpiredLessThanFiveYearsAgo;
       }
