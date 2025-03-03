@@ -171,6 +171,7 @@ public enum ApplicationStatus
   Complete,
   Reconsideration,
   Cancelled,
+  Closed,
   Escalated,
   Decision,
   Withdrawn,

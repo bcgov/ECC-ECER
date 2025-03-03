@@ -348,7 +348,7 @@ import { useApplicationStore } from "@/store/application";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import { useLoadingStore } from "@/store/loading";
-import type { Components, Country, PostSecondaryInstitution, Province } from "@/types/openapi";
+import type { Components, Country, PostSecondaryInstitution, Province, Transcript } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 import { useConfigStore } from "@/store/config";
@@ -527,8 +527,10 @@ export default defineComponent({
 
         // Remove undefined properties before sending
         Object.keys(newTranscript).forEach((key) => {
-          if (newTranscript[key] === undefined) {
-            delete newTranscript[key];
+          const transcriptRecord = newTranscript as Record<string, Transcript>;
+
+          if ((transcriptRecord[key] as any) === undefined) {
+            delete transcriptRecord[key];
           }
         });
 
