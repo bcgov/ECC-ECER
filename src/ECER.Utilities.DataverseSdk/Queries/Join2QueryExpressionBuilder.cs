@@ -102,7 +102,15 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
           else if (related.Key is ManyToOneJoinData m2oj)
           {
             // Handle Many-to-One relationships
-            if (entity.GetAttributeValue<EntityReference>(m2oj.KeyAttributeName) == null) continue;
+            try
+            {
+              if (entity.GetAttributeValue<EntityReference>(m2oj.KeyAttributeName) == null) continue;
+            }
+            catch (Exception ex)
+            {
+              Console.WriteLine(ex);
+              continue;
+            }
             var key = entity.GetAttributeValue<EntityReference>(m2oj.KeyAttributeName)!.Id;
             var relatedEntity = related.Value.Entities.SingleOrDefault(e => e.GetAttributeValue<Guid>(m2oj.RelatedEntityForeignKeyAttributeName) == key);
 

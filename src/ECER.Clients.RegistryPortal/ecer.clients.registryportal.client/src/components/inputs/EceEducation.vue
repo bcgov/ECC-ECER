@@ -108,6 +108,7 @@
               item-title="countryName"
               item-value="countryId"
               :rules="[Rules.required('Select your country', 'countryId')]"
+              @update:modelValue="onCountryChange"
               return-object
             ></v-select>
           </v-col>
@@ -524,6 +525,13 @@ export default defineComponent({
           educationOrigin: this.educationOrigin!,
         };
 
+        // Remove undefined properties before sending
+        Object.keys(newTranscript).forEach((key) => {
+          if (newTranscript[key] === undefined) {
+            delete newTranscript[key];
+          }
+        });
+
         // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
         const clientId = this.clientId ? this.clientId : this.newClientId;
         // Update the modelValue dictionary
@@ -551,6 +559,10 @@ export default defineComponent({
       }
     },
     onProvinceChange() {
+      this.postSecondaryInstitution = undefined;
+    },
+    onCountryChange() {
+      this.province = undefined;
       this.postSecondaryInstitution = undefined;
     },
     handleCancel() {

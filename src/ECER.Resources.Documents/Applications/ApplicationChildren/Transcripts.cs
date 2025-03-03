@@ -1,4 +1,5 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.DataverseSdk.Queries;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Applications;
@@ -8,7 +9,15 @@ internal sealed partial class ApplicationRepository
   private async Task UpdateTranscripts(ecer_Application application, List<ecer_Transcript> updatedEntities)
   {
     await Task.CompletedTask;
-    var existingTranscripts = context.ecer_TranscriptSet.Where(t => t.ecer_Applicationid.Id == application.ecer_ApplicationId).ToList();
+
+    var results = context.From(context.ecer_TranscriptSet.Where(t => t.ecer_Applicationid.Id == application.ecer_ApplicationId))
+    .Join()
+      .Include(a => a.ecer_transcript_InstituteCountryId)
+      .Include(a => a.ecer_transcript_ProvinceId)
+      .Include(a => a.ecer_transcript_postsecondaryinstitutionid)
+    .Execute();
+
+    var existingTranscripts = results.ToList();
 
     foreach (var transcript in existingTranscripts)
     {
@@ -18,23 +27,39 @@ internal sealed partial class ApplicationRepository
       }
     }
 
-    // Update Existing Transcripts
+    //// Update Existing Transcripts
     foreach (var transcript in updatedEntities.Where(d => d.ecer_TranscriptId != null))
     {
-      var country = context.ecer_CountrySet.FirstOrDefault(c => c.ecer_CountryId == transcript.ecer_transcript_InstituteCountryId!.ecer_CountryId);
-      var province = context.ecer_ProvinceSet.FirstOrDefault(p => p.ecer_ProvinceId == transcript.ecer_transcript_ProvinceId!.ecer_ProvinceId);
-      var institution = context.ecer_PostSecondaryInstituteSet.FirstOrDefault(p => p.ecer_PostSecondaryInstituteId == transcript.ecer_transcript_postsecondaryinstitutionid!.ecer_PostSecondaryInstituteId);
+      var oldTranscript = existingTranscripts.SingleOrDefault(t => t.ecer_TranscriptId == transcript.ecer_TranscriptId);
+
+      if (oldTranscript != null)
+      {
+        if (oldTranscript.ecer_transcript_InstituteCountryId != null)
+        {
+          //context.DeleteLink(oldTranscript.ecer_transcript_InstituteCountryId, ecer_Country.Fields.ecer_transcript_InstituteCountryId, oldTranscript);
+          oldTranscript.ecer_transcript_InstituteCountryId = null;
+        }
+        if (oldTranscript.ecer_transcript_ProvinceId != null)
+        {
+          //context.DeleteLink(oldTranscript.ecer_transcript_ProvinceId, ecer_Province.Fields.ecer_transcript_ProvinceId, oldTranscript);
+          oldTranscript.ecer_transcript_ProvinceId = null;
+        }
+        if (oldTranscript.ecer_transcript_postsecondaryinstitutionid != null)
+        {
+          //context.DeleteLink(oldTranscript.ecer_transcript_postsecondaryinstitutionid, ecer_PostSecondaryInstitute.Fields.ecer_transcript_postsecondaryinstitutionid, oldTranscript);
+          oldTranscript.ecer_transcript_postsecondaryinstitutionid = null;
+        }
+        context.Attach(oldTranscript);
+        context.UpdateObject(oldTranscript);
+        transcript.StatusCode = oldTranscript.StatusCode;
+        context.Detach(oldTranscript);
+      }
+      var country = transcript.ecer_transcript_InstituteCountryId == null ? null : context.ecer_CountrySet.SingleOrDefault(c => c.ecer_CountryId == transcript.ecer_transcript_InstituteCountryId!.ecer_CountryId);
+      var province = transcript.ecer_transcript_ProvinceId == null ? null : context.ecer_ProvinceSet.SingleOrDefault(p => p.ecer_ProvinceId == transcript.ecer_transcript_ProvinceId!.ecer_ProvinceId);
+      var institution = transcript.ecer_transcript_postsecondaryinstitutionid == null ? null : context.ecer_PostSecondaryInstituteSet.SingleOrDefault(p => p.ecer_PostSecondaryInstituteId == transcript.ecer_transcript_postsecondaryinstitutionid!.ecer_PostSecondaryInstituteId);
       transcript.ecer_transcript_InstituteCountryId = null;
       transcript.ecer_transcript_ProvinceId = null;
       transcript.ecer_transcript_postsecondaryinstitutionid = null;
-
-      var oldTranscript = existingTranscripts.SingleOrDefault(t => t.ecer_TranscriptId == transcript.ecer_TranscriptId);
-      if (oldTranscript != null)
-      {
-        context.Detach(oldTranscript);
-        transcript.StatusCode = oldTranscript.StatusCode;
-      }
-      
       context.Attach(transcript);
       context.UpdateObject(transcript);
       if (country != null)
