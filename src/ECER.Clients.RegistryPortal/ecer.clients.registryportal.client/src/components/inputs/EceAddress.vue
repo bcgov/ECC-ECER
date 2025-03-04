@@ -68,10 +68,10 @@
         variant="outlined"
         color="primary"
         class="pt-2"
-        :rules="[Rules.required('Select your province/territory'), Rules.mustExistInList(filteredProvinceList, 'provinceName')]"
+        :rules="[Rules.required('Select your province/territory'), Rules.mustExistInList(filteredProvinceList, 'provinceCode')]"
         :items="filteredProvinceList"
         item-title="provinceName"
-        item-value="provinceName"
+        item-value="provinceCode"
         clearable
         hide-details="auto"
         @update:model-value="(value: string) => updateField('province', value)"
