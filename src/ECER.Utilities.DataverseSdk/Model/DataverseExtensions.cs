@@ -25,6 +25,18 @@ public static class DataverseExtensions
   }
 
   /// <summary>
+  /// Deletes a link between 2 entities
+  /// </summary>
+  /// <param name="context">The context</param>
+  /// <param name="sourceEntity">The source entity to link to</param>
+  /// <param name="relationshipName">The relationship name; it is case sensitive</param>
+  /// <param name="linkedEntity">The target linked entity</param>
+  public static void DeleteLink([NotNull] this OrganizationServiceContext context, Entity sourceEntity, string relationshipName, Entity linkedEntity)
+  {
+    context.DeleteLink(sourceEntity, new Relationship(relationshipName), linkedEntity);
+  }
+
+  /// <summary>
   /// Adds a link between 2 entities and also adds the target linked entity
   /// </summary>
   /// <param name="context">The context</param>

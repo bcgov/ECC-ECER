@@ -16,7 +16,7 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col v-if="mode === 'add'" md="8" lg="6" xl="4">
+    <v-col v-if="mode === 'add'">
       <v-form ref="addEducationForm" validate-on="input">
         <v-row>
           <v-col>
@@ -43,7 +43,7 @@
         </v-row>
 
         <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             <EceTextField
               v-model="program"
               :rules="[Rules.required('Enter the name of your program or course')]"
@@ -53,7 +53,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             <EceDateInput
               v-model="startYear"
               :rules="[
@@ -72,7 +72,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             <EceDateInput
               v-model="endYear"
               :rules="[
@@ -93,59 +93,169 @@
         </v-row>
         <v-row>
           <v-col>
-            <h3>Is this program or course recognized by the ECE Registry?</h3>
-            <p class="mt-3">
-              To be certified in B.C. as an Early Childhood Educator (ECE) requires the successful completion of an early childhood education training program
-              that's recognized by the ECE Registry, or a program that's deemed equivalent. ECE Assistant certification requires successful completion of a
-              course that's a part of a recognized early childhood education training program or deemed equivalent.
-            </p>
-            <p class="mt-3">
-              Check the list of
-              <a
-                href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
-              >
-                recognized programs
-              </a>
-              if you're not sure if this program is recognized
-            </p>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <p>Is this program on the recognized list?</p>
-            <v-radio-group v-model="educationRecognition" :rules="[Rules.requiredRadio('Select an option')]">
-              <v-radio v-for="(recognition, index) in educationRecognitionRadio" :key="index" :label="recognition.label" :value="recognition.value"></v-radio>
-            </v-radio-group>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
             <h3>Where did you take it?</h3>
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
+            Country
+            <v-select
+              class="pt-2"
+              :items="configStore.countryList"
+              variant="outlined"
+              label=""
+              v-model="country"
+              item-title="countryName"
+              item-value="countryId"
+              :rules="[Rules.required('Select your country', 'countryId')]"
+              @update:modelValue="onCountryChange"
+              return-object
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row v-if="country?.countryId == configStore.canada?.countryId">
+          <v-col md="8" lg="6" xl="4">
+            Province or territory
+            <v-select
+              class="pt-2"
+              :items="configStore.provinceList"
+              variant="outlined"
+              label=""
+              v-model="province"
+              item-title="provinceName"
+              item-value="provinceId"
+              :rules="[Rules.required('Select your province or territory', 'provinceId')]"
+              @update:modelValue="onProvinceChange"
+              return-object
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col v-if="country?.countryId == configStore.canada?.countryId" md="8" lg="6" xl="4">
+            Educational institution
+            <v-select
+              class="pt-2"
+              :items="postSecondaryInstitutionByProvince"
+              variant="outlined"
+              item-title="name"
+              item-value="id"
+              v-model="postSecondaryInstitution"
+              :rules="[Rules.required('Select your post secondary institution', 'id')]"
+              return-object
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col v-if="country?.countryId !== configStore.canada?.countryId || postSecondaryInstitution?.name === 'Other'" md="8" lg="6" xl="4">
             <EceTextField
               v-model="school"
               :rules="[Rules.required('Enter the name of the educational institution')]"
-              label="Full name of educational institution"
+              label="Name of educational institution"
               maxlength="100"
             ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
-            <p>Location of educational institution</p>
-            <v-radio-group v-model="educationOrigin" :rules="[Rules.requiredRadio('Select an option')]">
-              <v-radio v-for="(origin, index) in educationOriginRadio" :key="index" :label="origin.label" :value="origin.value"></v-radio>
-            </v-radio-group>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             <EceTextField v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="200"></EceTextField>
           </v-col>
         </v-row>
+
+        <!-- Equivelency for unrecognized programs -->
+        <template v-if="recognizedPostSecondaryInstitution === 'NotRecognized'">
+          <v-row>
+            <v-col>
+              <callout type="warning">
+                <h3>You will need to provide supporting documents as part of your application.</h3>
+                <p class="mt-3">
+                  The ECE Registry does not recognize the program or course from the educational institution you entered. We will need additional information to
+                  assess if your education is considered equivalent.
+                </p>
+                <h3 class="mt-3">
+                  You may continue your application. After you submit, you can indicate how you will provide supporting documents in the application summary
+                  page.
+                </h3>
+              </callout>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <div class="d-flex flex-column ga-3">
+                <h3>Detailed course outlines or syllabi</h3>
+                <p>You will need to request course outlines or syllabi from your educational institution.</p>
+                <p>They must:</p>
+                <ul class="ml-10">
+                  <li>Include detailed descriptions of course content, learning goals, outcomes and expectations</li>
+                  <li>Be created by the educational institution</li>
+                  <li>Be for the year(s) you completed the course(s)</li>
+                  <li>
+                    Be in English – if they are not, you must have them
+                    <a
+                      href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#prepare-your-application"
+                    >
+                      translated by a professional translator
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </v-col>
+          </v-row>
+        </template>
+        <!-- Program Confirmation -->
+        <v-row v-if="recognizedPostSecondaryInstitution === 'NotRecognized' && !applicationStore.isDraftCertificateTypeEceAssistant">
+          <v-col>
+            <div class="d-flex flex-column ga-3">
+              <h3>Program confirmation form</h3>
+              <p>You will need to:</p>
+              <ul class="ml-10">
+                <li>
+                  Download the
+                  <a href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program Confirmation Form (16KB, PDF)</a>
+                </li>
+                <li>Complete Section 1 of the form</li>
+                <li>Ask your educational institution to complete the rest of the form</li>
+                <li>
+                  If they cannot complete the form in English, you will need to have it
+                  <a
+                    href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#prepare-your-application"
+                  >
+                    translated by a professional translator
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </v-col>
+        </v-row>
+        <!-- If not Canada -->
+        <template v-if="country?.countryId !== configStore.canada?.countryId">
+          <v-row>
+            <v-col>
+              <div class="d-flex flex-column ga-3">
+                <h3>Comprehensive Evaluation Report</h3>
+                <p>
+                  You will need to request a Comprehensive Evaluation Report from BCIT’s International Credential Evaluation Service. This is needed for any
+                  program or course completed outside of Canada.
+                </p>
+                <p>
+                  You may be eligible for a fee waiver to cover the costs of the report.
+                  <b>
+                    If you wish to apply for a fee waiver, you can indicate this in your application summary (once you submit this application) before you
+                    request a report from BCIT.
+                  </b>
+                  The fee waiver is paid out directly to BCIT from the ECE Registry and cannot be used to reimburse the applicant.
+                </p>
+                <p>
+                  <a
+                    href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#education-requirements-equivalency-process:~:text=Apply%20for%20an%20International%20Credential%20Evaluation%20Service%20Comprehensive%20Report%C2%A0"
+                  >
+                    Learn more about Comprehensive Evaluation Report
+                  </a>
+                </p>
+              </div>
+            </v-col>
+          </v-row>
+        </template>
+
         <v-row>
           <v-col>
             <h3>Name and student number on transcript</h3>
@@ -154,7 +264,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col md="8" lg="6" xl="4">
             <EceTextField
               v-model="studentNumber"
               :rules="[Rules.required('Enter your student number or ID')]"
@@ -171,17 +281,17 @@
         </v-radio-group>
         <div v-if="previousNameRadio === 'other'">
           <v-row>
-            <v-col>
+            <v-col md="8" lg="6" xl="4">
               <EceTextField v-model="studentFirstName" label="First name on transcript" variant="outlined" color="primary" maxlength="100"></EceTextField>
             </v-col>
           </v-row>
           <v-row>
-            <v-col>
+            <v-col md="8" lg="6" xl="4">
               <EceTextField v-model="studentMiddleName" label="Middle name(s) on transcript (optional)" maxlength="100"></EceTextField>
             </v-col>
           </v-row>
           <v-row>
-            <v-col>
+            <v-col md="8" lg="6" xl="4">
               <EceTextField
                 v-model="studentLastName"
                 :rules="[Rules.required('Enter your last name')]"
@@ -241,10 +351,12 @@ import { useApplicationStore } from "@/store/application";
 import { useUserStore } from "@/store/user";
 import { useWizardStore } from "@/store/wizard";
 import { useLoadingStore } from "@/store/loading";
-import type { Components } from "@/types/openapi";
+import type { Components, Country, PostSecondaryInstitution, Province, Transcript } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
+import { useConfigStore } from "@/store/config";
 import { educationRecognitionRadio, educationOriginRadio } from "@/utils/constant";
+import Callout from "../Callout.vue";
 
 interface EceEducationData {
   clientId: string;
@@ -252,6 +364,9 @@ interface EceEducationData {
   previousSchool: string;
   school: string;
   program: string;
+  country: Country | undefined;
+  province: Province | undefined;
+  postSecondaryInstitution: PostSecondaryInstitution | undefined;
   campusLocation: string;
   studentNumber: string;
   startYear: string;
@@ -274,7 +389,7 @@ interface RadioOptions {
 
 export default defineComponent({
   name: "EceEducation",
-  components: { EducationList, EceTextField, EceDateInput },
+  components: { EducationList, EceTextField, EceDateInput, Callout },
   props: {
     modelValue: {
       type: Object as () => { [id: string]: Components.Schemas.Transcript },
@@ -289,6 +404,7 @@ export default defineComponent({
     const wizardStore = useWizardStore();
     const applicationStore = useApplicationStore();
     const userStore = useUserStore();
+    const configStore = useConfigStore();
     const loadingStore = useLoadingStore();
 
     return {
@@ -296,6 +412,7 @@ export default defineComponent({
       wizardStore,
       applicationStore,
       userStore,
+      configStore,
       loadingStore,
       educationRecognitionRadio,
       educationOriginRadio,
@@ -308,6 +425,9 @@ export default defineComponent({
       previousSchool: "",
       school: "",
       program: "",
+      country: undefined,
+      province: undefined,
+      postSecondaryInstitution: undefined,
       campusLocation: "",
       studentNumber: "",
       startYear: "",
@@ -327,6 +447,11 @@ export default defineComponent({
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
+    },
+    postSecondaryInstitutionByProvince() {
+      return this.configStore.postSecondaryInstitutionList
+        .filter((item) => item.provinceId === this.province?.provinceId)
+        .concat({ id: "unrecognized", provinceId: "unrecognized", name: "Other" });
     },
     applicantNameRadioOptions(): RadioOptions[] {
       let legalNameRadioOptions: RadioOptions[] = [
@@ -360,6 +485,16 @@ export default defineComponent({
       //covers case where user has assistant renewal and can only add 1 education. Otherwise allow user to upload as many as needed.
       return this.isDraftApplicationAssistantRenewal ? Object.keys(this.modelValue).length < 1 : true;
     },
+    recognizedPostSecondaryInstitution(): Components.Schemas.EducationRecognition {
+      if (
+        this.postSecondaryInstitution &&
+        this.configStore.postSecondaryInstitutionList.some((institution) => institution.id === this.postSecondaryInstitution?.id)
+      ) {
+        return "Recognized";
+      } else {
+        return "NotRecognized";
+      }
+    },
     today() {
       return formatDate(DateTime.now().toString());
     },
@@ -392,15 +527,32 @@ export default defineComponent({
           studentFirstName: this.studentFirstName,
           studentMiddleName: this.studentMiddleName,
           studentLastName: this.studentLastName,
+          country: this.country,
+          province: this.province,
+          postSecondaryInstitution: this.postSecondaryInstitution,
           studentNumber: this.studentNumber,
           startDate: this.startYear,
           endDate: this.endYear,
           doesECERegistryHaveTranscript: this.transcriptStatus === "received",
           isOfficialTranscriptRequested: this.transcriptStatus === "requested",
           isNameUnverified: this.isNameUnverified,
-          educationRecognition: this.educationRecognition!,
+          educationRecognition: this.educationRecognition!, //TODO we should remove this if we are not using it anymore
           educationOrigin: this.educationOrigin!,
         };
+
+        //if the user puts in a Canadian school that is not recognized wipe out postSecondaryInstitution before saving
+        if (newTranscript.postSecondaryInstitution?.name === "Other") {
+          newTranscript.postSecondaryInstitution = undefined;
+        }
+
+        // Remove undefined properties before sending
+        Object.keys(newTranscript).forEach((key) => {
+          const transcriptRecord = newTranscript as Record<string, Transcript>;
+
+          if ((transcriptRecord[key] as any) === undefined) {
+            delete transcriptRecord[key];
+          }
+        });
 
         // see if we already have a clientId (which is edit), if not use the newClientId (which is add)
         const clientId = this.clientId ? this.clientId : this.newClientId;
@@ -427,6 +579,15 @@ export default defineComponent({
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }
+    },
+    onProvinceChange() {
+      this.postSecondaryInstitution = undefined;
+      this.school = "";
+    },
+    onCountryChange() {
+      this.province = undefined;
+      this.postSecondaryInstitution = undefined;
+      this.school = "";
     },
     handleCancel() {
       // Change mode to education list
@@ -456,6 +617,13 @@ export default defineComponent({
       this.endYear = formatDate(educationData.education.endDate || "") ?? "";
       this.educationRecognition = educationData.education.educationRecognition;
       this.educationOrigin = educationData.education.educationOrigin;
+      this.country = educationData.education.country;
+      this.province = educationData.education.province;
+      //this handles case where user is going to an unrecognized school in Canada we should show Other option selected
+      this.postSecondaryInstitution =
+        this.configStore.canada?.countryId === this.country?.countryId && this.province && !educationData.education.postSecondaryInstitution
+          ? { id: "unrecognized", provinceId: "unrecognized", name: "Other" }
+          : educationData.education.postSecondaryInstitution;
       if (educationData.education.isOfficialTranscriptRequested) {
         this.transcriptStatus = "requested";
       } else if (educationData.education.doesECERegistryHaveTranscript) {
@@ -517,6 +685,9 @@ export default defineComponent({
       this.program = "";
       this.campusLocation = "";
       this.studentNumber = "";
+      this.country = this.configStore.canada;
+      this.province = undefined;
+      this.postSecondaryInstitution = undefined;
       this.startYear = "";
       this.endYear = "";
       this.transcriptStatus = "";

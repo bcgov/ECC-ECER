@@ -118,7 +118,7 @@
                 variant="outlined"
                 color="primary"
                 class="pt-2"
-                :items="configStore?.provinceList.filter((province) => province.title !== ProvinceTerritoryType.OTHER)"
+                :items="configStore?.provinceList.filter((province) => province.provinceName !== ProvinceTerritoryType.OTHER)"
                 :rules="[Rules.required()]"
                 @update:model-value="certificateProvinceIdChanged"
               ></v-autocomplete>
@@ -207,7 +207,7 @@ export default defineComponent({
       this.wizardStore.wizardData.inviteType === PortalInviteType.WORK_EXPERIENCE &&
       this.wizardStore.wizardData.workExperienceType === WorkExperienceType.IS_500_Hours
     ) {
-      const bcProvinceId = this.configStore?.provinceList.find((province) => province.title === ProvinceTerritoryType.BC)?.value;
+      const bcProvinceId = this.configStore?.provinceList.find((province) => province.provinceName?.toLowerCase() === "british columbia")?.provinceId;
       this.certificateProvinceIdChanged(bcProvinceId as string);
     }
   },

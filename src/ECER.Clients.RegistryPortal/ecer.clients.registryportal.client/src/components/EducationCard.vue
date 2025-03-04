@@ -2,7 +2,8 @@
   <v-card min-width="100%" variant="elevated" rounded="lg" class="custom-card-styling" elevation="4">
     <template #title>
       <v-card-title>
-        <p class="font-weight-bold">{{ education.educationalInstitutionName }}</p>
+        <p v-if="education.postSecondaryInstitution == null" class="font-weight-bold">{{ education.educationalInstitutionName }}</p>
+        <p v-else class="font-weight-bold">{{ education.postSecondaryInstitution.name }}</p>
       </v-card-title>
     </template>
     <template #append>

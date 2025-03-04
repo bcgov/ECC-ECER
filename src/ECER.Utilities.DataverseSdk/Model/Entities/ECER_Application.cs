@@ -42,6 +42,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Cancelled = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Closed = 621870009,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Complete = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -162,6 +165,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_DateofBirth = "ecer_dateofbirth";
 			public const string ecer_DateSigned = "ecer_datesigned";
 			public const string ecer_DateSubmitted = "ecer_datesubmitted";
+			public const string ecer_decisiondate = "ecer_decisiondate";
 			public const string ecer_DeclarationConfirmation = "ecer_declarationconfirmation";
 			public const string ecer_declarationconfirmationName = "ecer_declarationconfirmationname";
 			public const string ecer_DeclarationStatements = "ecer_declarationstatements";
@@ -1342,6 +1346,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_datesubmitted", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisiondate")]
+		public System.Nullable<System.DateTime> ecer_decisiondate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_decisiondate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_decisiondate", value);
 			}
 		}
 		

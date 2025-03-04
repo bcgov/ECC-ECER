@@ -1,4 +1,5 @@
-﻿using ECER.Resources.Documents.PortalInvitations;
+﻿using ECER.Resources.Documents.MetadataResources;
+using ECER.Resources.Documents.PortalInvitations;
 
 namespace ECER.Resources.Documents.Applications;
 
@@ -62,6 +63,9 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public string? CampusLocation { get; set; }
   public TranscriptStage? Status { get; set; }
   public string? StudentMiddleName { get; set; }
+  public Country? Country { get; set; }
+  public Province? Province { get; set; }
+  public PostSecondaryInstitution? PostSecondaryInstitution { get; set; }
 }
 
 public record ProfessionalDevelopment(string? Id, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
@@ -110,6 +114,7 @@ public enum ApplicationStatus
   Draft,
   Submitted,
   Complete,
+  Closed,
   Reconsideration,
   Cancelled,
   Escalated,

@@ -47,11 +47,14 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
 
     var results = context.From(applications)
       .Join()
-      .Include(a => a.ecer_transcript_Applicationid)
       .Include(a => a.ecer_workexperienceref_Applicationid_ecer)
       .Include(a => a.ecer_characterreference_Applicationid)
       .Include(a => a.ecer_ecer_professionaldevelopment_Applicationi)
       .IncludeNested(a => a.ecer_bcgov_documenturl_ProfessionalDevelopmentId)
+      .Include(a => a.ecer_transcript_Applicationid)
+      .IncludeNested(a => a.ecer_transcript_InstituteCountryId)
+      .IncludeNested(a => a.ecer_transcript_ProvinceId)
+      .IncludeNested(a => a.ecer_transcript_postsecondaryinstitutionid)
       .Execute();
 
     return mapper.Map<IEnumerable<Application>>(results)!.ToList();
@@ -69,6 +72,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     {
       ecerApplication.ecer_Origin = mapper.Map<ecer_Origin>(application.Origin);
     }
+
     var ecerTranscripts = mapper.Map<IEnumerable<ecer_Transcript>>(application.Transcripts)!.ToList();
     var ecerWorkExperienceReferences = mapper.Map<IEnumerable<ecer_WorkExperienceRef>>(application.WorkExperienceReferences)!.ToList();
     var ecerCharacterReferences = mapper.Map<IEnumerable<ecer_CharacterReference>>(application.CharacterReferences)!.ToList();

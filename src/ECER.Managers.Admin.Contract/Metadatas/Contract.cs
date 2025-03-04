@@ -16,6 +16,13 @@ public record CountriesQuery : IRequest<CountriesQueryResults>
   public string? ByName { get; set; }
 }
 
+public record PostSecondaryInstitutionsQuery : IRequest<PostSecondaryInstitutionsQueryResults>
+{
+  public string? ById { get; set; }
+  public string? ByProvinceId { get; set; }
+  public string? ByName { get; set; }
+}
+
 public record SystemMessagesQuery : IRequest<SystemMessagesQueryResults>
 {
   public string? ById { get; set; }
@@ -31,8 +38,10 @@ public record SystemMessagesQueryResults(IEnumerable<SystemMessage> Items);
 public record IdentificationTypesQueryResults(IEnumerable<IdentificationType> Items);
 public record ProvincesQueryResults(IEnumerable<Province> Items);
 public record CountriesQueryResults(IEnumerable<Country> Items);
+public record PostSecondaryInstitutionsQueryResults(IEnumerable<PostSecondaryInstitution> Items);
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
 public record Country(string CountryId, string CountryName, string CountryCode);
+public record PostSecondaryInstitution(string Id, string Name, string ProvinceId);
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 public record SystemMessage(string Name, string Subject, string Message)
 {
