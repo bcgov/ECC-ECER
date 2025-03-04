@@ -144,7 +144,9 @@
               return-object
             ></v-select>
           </v-col>
-          <v-col v-else md="8" lg="6" xl="4">
+        </v-row>
+        <v-row>
+          <v-col v-if="country?.countryId !== configStore.canada?.countryId || postSecondaryInstitution?.name === 'Other'" md="8" lg="6" xl="4">
             <EceTextField
               v-model="school"
               :rules="[Rules.required('Enter the name of the educational institution')]"
@@ -159,8 +161,8 @@
           </v-col>
         </v-row>
 
-        <!-- If not Canada or no recognized institution selected: -->
-        <template v-if="country?.countryId !== configStore.canada?.countryId || postSecondaryInstitution === undefined">
+        <!-- Equivelency for unrecognized programs -->
+        <template v-if="recognizedPostSecondaryInstitution === 'NotRecognized'">
           <v-row>
             <v-col>
               <callout type="warning">
@@ -198,31 +200,32 @@
               </div>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col>
-              <div class="d-flex flex-column ga-3">
-                <h3>Program confirmation form</h3>
-                <p>You will need to:</p>
-                <ul class="ml-10">
-                  <li>
-                    Download the
-                    <a href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program Confirmation Form (16KB, PDF)</a>
-                  </li>
-                  <li>Complete Section 1 of the form</li>
-                  <li>Ask your educational institution to complete the rest of the form</li>
-                  <li>
-                    If they cannot complete the form in English, you will need to have it
-                    <a
-                      href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#prepare-your-application"
-                    >
-                      translated by a professional translator
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </v-col>
-          </v-row>
         </template>
+        <!-- Program Confirmation -->
+        <v-row v-if="recognizedPostSecondaryInstitution === 'NotRecognized' && !applicationStore.isDraftCertificateTypeEceAssistant">
+          <v-col>
+            <div class="d-flex flex-column ga-3">
+              <h3>Program confirmation form</h3>
+              <p>You will need to:</p>
+              <ul class="ml-10">
+                <li>
+                  Download the
+                  <a href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program Confirmation Form (16KB, PDF)</a>
+                </li>
+                <li>Complete Section 1 of the form</li>
+                <li>Ask your educational institution to complete the rest of the form</li>
+                <li>
+                  If they cannot complete the form in English, you will need to have it
+                  <a
+                    href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#prepare-your-application"
+                  >
+                    translated by a professional translator
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </v-col>
+        </v-row>
         <!-- If not Canada -->
         <template v-if="country?.countryId !== configStore.canada?.countryId">
           <v-row>
@@ -446,7 +449,9 @@ export default defineComponent({
       return Object.keys(this.modelValue).length + 1;
     },
     postSecondaryInstitutionByProvince() {
-      return this.configStore.postSecondaryInstitutionList.filter((item) => item.provinceId === this.province?.provinceId);
+      return this.configStore.postSecondaryInstitutionList
+        .filter((item) => item.provinceId === this.province?.provinceId)
+        .concat({ id: "unrecognized", provinceId: "unrecognized", name: "Other" });
     },
     applicantNameRadioOptions(): RadioOptions[] {
       let legalNameRadioOptions: RadioOptions[] = [
@@ -479,6 +484,16 @@ export default defineComponent({
     showAddEducationButton(): boolean {
       //covers case where user has assistant renewal and can only add 1 education. Otherwise allow user to upload as many as needed.
       return this.isDraftApplicationAssistantRenewal ? Object.keys(this.modelValue).length < 1 : true;
+    },
+    recognizedPostSecondaryInstitution(): Components.Schemas.EducationRecognition {
+      if (
+        this.postSecondaryInstitution &&
+        this.configStore.postSecondaryInstitutionList.some((institution) => institution.id === this.postSecondaryInstitution?.id)
+      ) {
+        return "Recognized";
+      } else {
+        return "NotRecognized";
+      }
     },
     today() {
       return formatDate(DateTime.now().toString());
@@ -521,9 +536,14 @@ export default defineComponent({
           doesECERegistryHaveTranscript: this.transcriptStatus === "received",
           isOfficialTranscriptRequested: this.transcriptStatus === "requested",
           isNameUnverified: this.isNameUnverified,
-          educationRecognition: this.educationRecognition!,
+          educationRecognition: this.educationRecognition!, //TODO we should remove this if we are not using it anymore
           educationOrigin: this.educationOrigin!,
         };
+
+        //if the user puts in a Canadian school that is not recognized wipe out postSecondaryInstitution before saving
+        if (newTranscript.postSecondaryInstitution?.name === "Other") {
+          newTranscript.postSecondaryInstitution = undefined;
+        }
 
         // Remove undefined properties before sending
         Object.keys(newTranscript).forEach((key) => {
@@ -562,10 +582,12 @@ export default defineComponent({
     },
     onProvinceChange() {
       this.postSecondaryInstitution = undefined;
+      this.school = "";
     },
     onCountryChange() {
       this.province = undefined;
       this.postSecondaryInstitution = undefined;
+      this.school = "";
     },
     handleCancel() {
       // Change mode to education list
@@ -597,7 +619,11 @@ export default defineComponent({
       this.educationOrigin = educationData.education.educationOrigin;
       this.country = educationData.education.country;
       this.province = educationData.education.province;
-      this.postSecondaryInstitution = educationData.education.postSecondaryInstitution;
+      //this handles case where user is going to an unrecognized school in Canada we should show Other option selected
+      this.postSecondaryInstitution =
+        this.configStore.canada?.countryId === this.country?.countryId && this.province && !educationData.education.postSecondaryInstitution
+          ? { id: "unrecognized", provinceId: "unrecognized", name: "Other" }
+          : educationData.education.postSecondaryInstitution;
       if (educationData.education.isOfficialTranscriptRequested) {
         this.transcriptStatus = "requested";
       } else if (educationData.education.doesECERegistryHaveTranscript) {
