@@ -1,18 +1,23 @@
 import type { UserManagerSettings } from "oidc-client-ts";
 import { defineStore } from "pinia";
-
-import { getConfiguration, getProvinceList, getCountryList, getSystemMessages, getIdentificationTypes } from "@/api/configuration";
+import {
+  getConfiguration,
+  getProvinceList,
+  getCountryList,
+  getSystemMessages,
+  getIdentificationTypes,
+  getPostSecondaryInstitutionList,
+} from "@/api/configuration";
 import oidcConfig from "@/oidc-config";
-import type { DropdownWrapper } from "@/types/form";
-import type { Components, SystemMessage } from "@/types/openapi";
+import type { Components } from "@/types/openapi";
 import { ProvinceTerritoryType } from "@/utils/constant";
 import { sortArray } from "@/utils/functions";
-
 export interface UserState {
   applicationConfiguration: Components.Schemas.ApplicationConfiguration;
-  systemMessages: SystemMessage[];
-  provinceList: DropdownWrapper<String>[];
-  countryList: DropdownWrapper<string>[];
+  systemMessages: Components.Schemas.SystemMessage[];
+  provinceList: Components.Schemas.Province[];
+  countryList: Components.Schemas.Country[];
+  postSecondaryInstitutionList: Components.Schemas.PostSecondaryInstitution[];
   identificationTypes: Components.Schemas.IdentificationType[];
 }
 
@@ -22,9 +27,10 @@ export const useConfigStore = defineStore("config", {
   },
   state: (): UserState => ({
     applicationConfiguration: {} as Components.Schemas.ApplicationConfiguration,
-    provinceList: [] as DropdownWrapper<String>[],
-    countryList: [] as DropdownWrapper<string>[],
-    systemMessages: [] as SystemMessage[],
+    provinceList: [] as Components.Schemas.Province[],
+    countryList: [] as Components.Schemas.Country[],
+    postSecondaryInstitutionList: [] as Components.Schemas.PostSecondaryInstitution[],
+    systemMessages: [] as Components.Schemas.SystemMessage[],
     identificationTypes: [] as Components.Schemas.IdentificationType[],
   }),
   getters: {
@@ -43,22 +49,29 @@ export const useConfigStore = defineStore("config", {
       return combinedConfig;
     },
     provinceName(state) {
-      return (provinceId: string) => state.provinceList.find((province) => province.value === provinceId)?.title;
+      return (provinceId: string) => state.provinceList.find((province) => province.provinceId === provinceId)?.provinceName;
+    },
+    canada(state) {
+      return state.countryList.find((country) => country.countryName!.toLowerCase() === "canada");
+    },
+    britishColumbia(state) {
+      return state.provinceList.find((province) => province.provinceName!.toLowerCase() === "british columbia");
     },
     primaryIdentificationType(state) {
-      return state.identificationTypes.filter((type) => type.forPrimary).map((type) => type);
+      return state.identificationTypes.filter((type) => type.forPrimary);
     },
     secondaryIdentificationType(state) {
-      return state.identificationTypes.filter((type) => type.forSecondary).map((type) => type);
+      return state.identificationTypes.filter((type) => type.forSecondary);
     },
   },
 
   actions: {
     async initialize(): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> {
-      const [configuration, provinceList, countryList, identificationTypes, systemMessages] = await Promise.all([
+      const [configuration, provinceList, countryList, postSecondaryInstitutionList, identificationTypes, systemMessages] = await Promise.all([
         getConfiguration(),
         getProvinceList(),
         getCountryList(),
+        getPostSecondaryInstitutionList(),
         getIdentificationTypes(),
         getSystemMessages(),
       ]);
@@ -70,26 +83,15 @@ export const useConfigStore = defineStore("config", {
         this.systemMessages = systemMessages;
       }
       if (provinceList !== null && provinceList !== undefined) {
-        this.provinceList = provinceList
-          .map((province) => {
-            return {
-              value: province.provinceId as string,
-              title: province.provinceName as string,
-              code: province.provinceCode as string,
-            };
-          })
-          .sort((a, b) => sortArray(a, b, "title", [ProvinceTerritoryType.OTHER]));
+        this.provinceList = provinceList.sort((a, b) => sortArray(a, b, "provinceName", [ProvinceTerritoryType.OTHER]));
       }
 
       if (countryList !== null && countryList !== undefined) {
-        this.countryList = countryList
-          .map((country) => {
-            return {
-              value: country.countryName as string,
-              title: country.countryName as string,
-            };
-          })
-          .sort((a, b) => sortArray(a, b, "title"));
+        this.countryList = countryList.sort((a, b) => sortArray(a, b, "countryName"));
+      }
+
+      if (postSecondaryInstitutionList !== null && postSecondaryInstitutionList !== undefined) {
+        this.postSecondaryInstitutionList = postSecondaryInstitutionList.sort((a, b) => sortArray(a, b, "name"));
       }
 
       if (identificationTypes !== null && identificationTypes !== undefined) {

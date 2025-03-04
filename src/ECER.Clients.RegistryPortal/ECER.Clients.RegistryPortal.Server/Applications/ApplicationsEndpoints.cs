@@ -373,7 +373,7 @@ public record ProfessionalDevelopment([Required] string CourseName, [Required] s
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
 }
-public record Transcript([Required] string EducationalInstitutionName, [Required] string ProgramName, [Required] string StudentLastName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] bool IsNameUnverified, [Required] EducationRecognition EducationRecognition, [Required] EducationOrigin EducationOrigin)
+public record Transcript(string? EducationalInstitutionName, [Required] string ProgramName, [Required] string StudentLastName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] bool IsNameUnverified, [Required] EducationRecognition EducationRecognition, [Required] EducationOrigin EducationOrigin)
 {
   public string? Id { get; set; }
   public string? CampusLocation { get; set; }
@@ -383,6 +383,9 @@ public record Transcript([Required] string EducationalInstitutionName, [Required
   public bool IsECEAssistant { get; set; }
   public bool DoesECERegistryHaveTranscript { get; set; }
   public bool IsOfficialTranscriptRequested { get; set; }
+  public Country? Country { get; set; }
+  public Province? Province { get; set; }
+  public PostSecondaryInstitution? PostSecondaryInstitution { get; set; }
 }
 public record WorkExperienceReference([Required] string LastName, [Required] string EmailAddress, [Required] int Hours)
 {
@@ -435,6 +438,7 @@ public enum ApplicationStatus
   Complete,
   Reconsideration,
   Cancelled,
+  Closed,
   Escalated,
   Decision,
   Withdrawn,

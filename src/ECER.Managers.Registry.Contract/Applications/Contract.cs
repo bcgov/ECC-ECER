@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using ECER.Managers.Admin.Contract.Metadatas;
+using MediatR;
 
 namespace ECER.Managers.Registry.Contract.Applications;
 
@@ -76,6 +77,9 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public string? CampusLocation { get; set; }
   public TranscriptStage? Status { get; set; }
   public string? StudentMiddleName { get; set; }
+  public Country? Country { get; set; }
+  public Province? Province { get; set; }
+  public PostSecondaryInstitution? PostSecondaryInstitution { get; set; }
 }
 
 public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
@@ -167,6 +171,7 @@ public enum ApplicationStatus
   Complete,
   Reconsideration,
   Cancelled,
+  Closed,
   Escalated,
   Decision,
   Withdrawn,

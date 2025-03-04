@@ -1,4 +1,6 @@
-﻿using ECER.Utilities.DataverseSdk.Model;
+﻿using AutoMapper;
+using ECER.Clients.RegistryPortal.Server;
+using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -28,6 +30,9 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
   public Contact AuthenticatedBcscUser { get; set; } = null!;
 
   public Contact AuthenticatedBcscUser2 { get; set; } = null!;
+  public ecer_Province Province { get; set; } = null!;
+  public ecer_Country Country { get; set; } = null!;
+  public ecer_PostSecondaryInstitute PostSecondaryInstitution { get; set; } = null!;
 
   private IServiceScope serviceScope = null!;
   private ecer_Application inProgressTestApplication = null!;
@@ -148,6 +153,10 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
     submittedTestApplicationWorkExperienceRef = AddWorkExperienceReferenceToApplication(context, submittedTestApplication);
     submittedTestApplicationWorkExperienceRef2 = AddWorkExperienceReferenceToApplication(context, submittedTestApplication2);
     submittedTestApplicationCharacterRef = AddCharacterReferenceToApplication(context, submittedTestApplication3);
+
+    Country = GetOrAddCountry(context);
+    Province = GetOrAddProvince(context);
+    PostSecondaryInstitution = GetOrAddPostSecondaryInstitude(context);
 
     testDocument1 = GetOrAddDocument(context, AuthenticatedBcscUser, "https://example.com/document1.pdf");
     testSystemMessage = GetOrAddSystemMessage(context);
@@ -281,6 +290,65 @@ public class RegistryPortalWebAppFixture : WebAppFixtureBase
       };
       context.AddObject(existing);
       context.AddLink(existing, ecer_PreviousName.Fields.ecer_previousname_Contactid, applicant);
+    }
+
+    return existing;
+  }
+
+  private ecer_Country GetOrAddCountry(EcerContext context)
+  {
+    var existing = (from p in context.ecer_CountrySet
+                    select p).FirstOrDefault();
+
+    if (existing == null)
+    {
+      existing = new ecer_Country
+      {
+        ecer_CountryId = Guid.NewGuid(),
+        ecer_Name = "Canada",
+        ecer_ShortName = "CA"
+      };
+      context.AddObject(existing);
+    }
+
+    return existing;
+  }
+
+  private ecer_Province GetOrAddProvince(EcerContext context)
+  {
+    var existing = (from p in context.ecer_ProvinceSet
+                    select p).FirstOrDefault();
+
+    if (existing == null)
+    {
+      existing = new ecer_Province
+      {
+        ecer_ProvinceId = Guid.NewGuid(),
+        ecer_Name = "British Columbia",
+        ecer_Abbreviation = "BC"
+      };
+      context.AddObject(existing);
+      context.AddLink(existing, ecer_Province.Fields.ecer_province_CountryId, GetOrAddCountry(context));
+    }
+
+    return existing;
+  }
+
+  private ecer_PostSecondaryInstitute GetOrAddPostSecondaryInstitude(EcerContext context)
+  {
+    var existing = (from p in context.ecer_PostSecondaryInstituteSet
+                    select p).FirstOrDefault();
+
+    if (existing == null)
+    {
+      existing = new ecer_PostSecondaryInstitute
+      {
+        ecer_PostSecondaryInstituteId = Guid.NewGuid(),
+        ecer_Name = "SFU",
+      };
+      context.AddObject(existing);
+      context.AddLink(existing, ecer_PostSecondaryInstitute.Fields.ecer_postsecondaryinstitute_CountryId, GetOrAddCountry(context));
+      context.AddLink(existing, ecer_PostSecondaryInstitute.Fields.ecer_postsecondaryinstitute_ProvinceId, GetOrAddProvince(context));
     }
 
     return existing;

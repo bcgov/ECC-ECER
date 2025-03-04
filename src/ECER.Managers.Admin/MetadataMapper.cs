@@ -7,9 +7,11 @@ internal class MetadataMapper : Profile
 {
   public MetadataMapper()
   {
-    CreateMap<Province, Contract.Metadatas.Province>();
-    CreateMap<Country, Contract.Metadatas.Country>();
+    CreateMap<Country, Contract.Metadatas.Country>().ReverseMap();
+    CreateMap<Province, Contract.Metadatas.Province>().ReverseMap();
+    CreateMap<PostSecondaryInstitution, Contract.Metadatas.PostSecondaryInstitution>().ReverseMap();
     CreateMap<SystemMessage, Contract.Metadatas.SystemMessage>();
     CreateMap<IdentificationType, Contract.Metadatas.IdentificationType>();
+    CreateMap<PostSecondaryInstitutionsQuery, Contract.Metadatas.PostSecondaryInstitutionsQuery>().ReverseMap();
   }
 }

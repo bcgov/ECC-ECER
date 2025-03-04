@@ -67,7 +67,12 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
           allEntities.Any(e => e.GetType() == j.EnityType) ? allEntities.Where(e => e.GetType() == j.EnityType).Select(i => i.Id).ToArray() : Array.Empty<Guid>()
           ),
 
-          ManyToOneJoinData j => QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, rootEntities.Select(e => e.GetAttributeValue<EntityReference>(j.KeyAttributeName)!.Id).Distinct().ToArray()),
+          ManyToOneJoinData j => QuerySubEntities(j.RelatedLogicalEntityName, j.RelatedEntityForeignKeyAttributeName, rootEntities
+            .Select(e => e.GetAttributeValue<EntityReference>(j.KeyAttributeName))
+            .Where(er => er != null)
+            .Select(er => er!.Id)
+            .Distinct()
+            .ToArray()),
           _ => throw new NotImplementedException()
         };
 
@@ -97,7 +102,15 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
           else if (related.Key is ManyToOneJoinData m2oj)
           {
             // Handle Many-to-One relationships
-            if (entity.GetAttributeValue<EntityReference>(m2oj.KeyAttributeName) == null) continue;
+            try
+            {
+              if (entity.GetAttributeValue<EntityReference>(m2oj.KeyAttributeName) == null) continue;
+            }
+            catch (Exception ex)
+            {
+              Console.WriteLine(ex);
+              continue;
+            }
             var key = entity.GetAttributeValue<EntityReference>(m2oj.KeyAttributeName)!.Id;
             var relatedEntity = related.Value.Entities.SingleOrDefault(e => e.GetAttributeValue<Guid>(m2oj.RelatedEntityForeignKeyAttributeName) == key);
 
@@ -153,10 +166,7 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
     {
       Criteria = new FilterExpression(LogicalOperator.Or)
       {
-        Conditions =
-          {
-            new ConditionExpression(attributeName: keyAttributeName, conditionOperator: ConditionOperator.In, values: keys)
-          }
+        Conditions = { new ConditionExpression(attributeName: keyAttributeName, conditionOperator: ConditionOperator.In, values: keys) }
       }
     };
     query.ColumnSet.AllColumns = true;

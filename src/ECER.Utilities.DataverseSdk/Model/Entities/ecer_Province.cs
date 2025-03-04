@@ -69,9 +69,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ID = "ecer_id";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_outofprovincecertificationtype_Province_ecer_province = "ecer_outofprovincecertificationtype_Province_ecer_province";
+			public const string ecer_postsecondaryinstitute_ProvinceId = "ecer_postsecondaryinstitute_ProvinceId";
 			public const string ecer_province_CountryId = "ecer_province_CountryId";
 			public const string ecer_ProvinceId = "ecer_provinceid";
 			public const string Id = "ecer_provinceid";
+			public const string ecer_transcript_ProvinceId = "ecer_transcript_ProvinceId";
 			public const string ecer_workexperienceref_RefCertifiedProvinceId = "ecer_workexperienceref_RefCertifiedProvinceId";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -817,6 +819,42 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_outofprovincecertificationtype>("ecer_outofprovincecertificationtype_Province_ecer_province", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_postsecondaryinstitute_ProvinceId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstitute_ProvinceId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute> ecer_postsecondaryinstitute_ProvinceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_postsecondaryinstitute_ProvinceId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_postsecondaryinstitute_ProvinceId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_transcript_ProvinceId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_transcript_ProvinceId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Transcript> ecer_transcript_ProvinceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_transcript_ProvinceId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_transcript_ProvinceId", null, value);
 			}
 		}
 		

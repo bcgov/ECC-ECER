@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.DataverseSdk.Queries;
 
 namespace ECER.Resources.Documents.MetadataResources;
 
@@ -23,6 +24,21 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     if (query.ByName != null) countries = countries.Where(r => r.ecer_Name == query.ByName);
 
     return mapper.Map<IEnumerable<Country>>(countries)!.ToList();
+  }
+
+  public async Task<IEnumerable<PostSecondaryInstitution>> QueryPostSecondaryInstitutions(PostSecondaryInstitutionsQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var postSecondaryInstitutions = context.ecer_PostSecondaryInstituteSet.AsQueryable();
+
+    if (query.ById != null) postSecondaryInstitutions = postSecondaryInstitutions.Where(r => r.ecer_PostSecondaryInstituteId == Guid.Parse(query.ById));
+    if (query.ByProvinceId != null) postSecondaryInstitutions = postSecondaryInstitutions.Where(r => r.ecer_ProvinceId.Id == Guid.Parse(query.ByProvinceId));
+    if (query.ByName != null) postSecondaryInstitutions = postSecondaryInstitutions.Where(r => r.ecer_Name == query.ByName);
+
+    var results = context.From(postSecondaryInstitutions)
+      .Execute();
+
+    return mapper.Map<IEnumerable<PostSecondaryInstitution>>(results)!.ToList();
   }
 
   public async Task<IEnumerable<IdentificationType>> QueryIdentificationTypes(IdentificationTypesQuery query, CancellationToken cancellationToken)

@@ -1,9 +1,13 @@
-﻿using Bogus;
+﻿using Amazon;
+using AutoMapper;
+using Bogus;
 using ECER.Resources.Documents.Applications;
+using ECER.Resources.Documents.MetadataResources;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
 using Xunit.Categories;
+using static StackExchange.Redis.Role;
 using Application = ECER.Resources.Documents.Applications.Application;
 using ApplicationStatus = ECER.Resources.Documents.Applications.ApplicationStatus;
 using CertificationType = ECER.Resources.Documents.Applications.CertificationType;
@@ -17,10 +21,12 @@ namespace ECER.Tests.Integration.Resources.Applications;
 public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
 {
   private readonly IApplicationRepository repository;
+  private readonly IMapper mapper;
 
   public ApplicationRepositoryTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
     repository = Fixture.Services.GetRequiredService<IApplicationRepository>();
+    mapper = Fixture.Services.GetRequiredService<IMapper>();
   }
 
   [Fact]
@@ -481,12 +487,14 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   private Transcript CreateTranscript()
   {
     var faker = new Faker("en_CA");
-
-    return new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program", faker.Random.Number(10000000, 99999999).ToString(), faker.Date.Past(), faker.Date.Recent(), faker.Random.Bool(), faker.Random.Bool(), faker.Random.Bool(), faker.Name.FirstName(), faker.Name.LastName(), faker.Random.Bool(), EducationRecognition.Recognized, EducationOrigin.InsideBC
-    )
+    var transcript = new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program", faker.Random.Number(10000000, 99999999).ToString(), faker.Date.Past(), faker.Date.Recent(), faker.Random.Bool(), faker.Random.Bool(), faker.Random.Bool(), faker.Name.FirstName(), faker.Name.LastName(), faker.Random.Bool(), EducationRecognition.Recognized, EducationOrigin.InsideBC)
     {
       CampusLocation = faker.Address.City(),
-      Status = TranscriptStage.Draft
+      Status = TranscriptStage.Draft,
+      Country = mapper.Map<Country>(Fixture.Country),
+      Province = mapper.Map<Province>(Fixture.Province),
+      PostSecondaryInstitution = mapper.Map<PostSecondaryInstitution>(Fixture.PostSecondaryInstitution)
     };
+    return transcript;
   }
 }

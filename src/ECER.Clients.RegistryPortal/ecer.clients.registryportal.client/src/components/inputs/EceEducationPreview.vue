@@ -5,12 +5,20 @@
         <v-divider v-if="index !== 0" :thickness="2" color="grey-lightest" class="border-opacity-100 my-6" />
         <v-row>
           <v-col>
-            <h4 class="text-black">{{ education.programName }}</h4>
+            <h4 class="text-black">{{ education.postSecondaryInstitution?.name ?? education.educationalInstitutionName ?? "" }}</h4>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Start date of program</p>
+            <p class="small">Name of program or course</p>
+          </v-col>
+          <v-col>
+            <p class="small font-weight-bold">{{ education.programName }}</p>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="4">
+            <p class="small">Start date of program or course</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ formatDate(education.startDate || "", "LLLL d, yyyy") }}</p>
@@ -18,7 +26,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">End date of program</p>
+            <p class="small">End date of program or course</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ formatDate(education.endDate || "", "LLLL d, yyyy") }}</p>
@@ -26,39 +34,31 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">{{ "Is this program on the recognized list?" }}</p>
+            <p class="small">Country</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ isProgramRecognized(education) }}</p>
+            <p class="small font-weight-bold">{{ education.country?.countryName ?? "" }}</p>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">{{ "Name of educational institution" }}</p>
+            <p class="small">Province or territory</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ education.educationalInstitutionName }}</p>
+            <p class="small font-weight-bold">{{ education.province?.provinceName ?? "" }}</p>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">{{ "Location of educational institution" }}</p>
+            <p class="small">Campus location</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ programOrigin(education) }}</p>
+            <p class="small font-weight-bold">{{ education.campusLocation ?? "-" }}</p>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Campus Location</p>
-          </v-col>
-          <v-col>
-            <p class="small font-weight-bold">{{ education.campusLocation }}</p>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="4">
-            <p class="small">Student ID or number</p>
+            <p class="small">Student number or ID</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ education.studentNumber }}</p>

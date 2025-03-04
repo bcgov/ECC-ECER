@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
 using ECER.Utilities.DataverseSdk.Model;
+using ECER.Resources.Documents.MetadataResources;
 
 namespace ECER.Resources.Documents.Applications;
 
@@ -56,8 +57,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.MapFrom(s => s.ecer_AddMoreWorkExperienceReference))
        .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.MapFrom(s => s.ecer_AddMoreProfessionalDevelopment))
        .ForMember(d => d.Origin, opts => opts.MapFrom(s => s.ecer_Origin))
-       .ForMember(d => d.Stage, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.ecer_PortalStage) ? "ContactInformation": s.ecer_PortalStage));
-    
+       .ForMember(d => d.Stage, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.ecer_PortalStage) ? "ContactInformation" : s.ecer_PortalStage));
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
         .ConstructUsing((s, _) =>
@@ -88,16 +88,16 @@ internal class ApplicationRepositoryMapper : Profile
         .ReverseMap();
 
     CreateMap<ApplicationTypes, ecer_ApplicationTypes>()
-    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-    .ReverseMap();
+        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+        .ReverseMap();
 
     CreateMap<EducationOrigin, ecer_EducationOrigin>()
-    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-    .ReverseMap();
+         .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+         .ReverseMap();
 
     CreateMap<EducationRecognition, ecer_EducationRecognition>()
-    .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-    .ReverseMap();
+        .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+        .ReverseMap();
 
     CreateMap<Transcript, ecer_Transcript>(MemberList.Source)
            .ForSourceMember(s => s.StartDate, opts => opts.DoNotValidate())
@@ -118,27 +118,42 @@ internal class ApplicationRepositoryMapper : Profile
            .ForMember(d => d.ecer_IsNameUnverified, opts => opts.MapFrom(s => s.IsNameUnverified))
            .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
            .ForMember(d => d.ecer_EducationRecognition, opts => opts.MapFrom(s => s.EducationRecognition))
-           .ForMember(d => d.ecer_EducationOrigin, opts => opts.MapFrom(s => s.EducationOrigin));
+           .ForMember(d => d.ecer_EducationOrigin, opts => opts.MapFrom(s => s.EducationOrigin))
+           .ForMember(d => d.ecer_transcript_InstituteCountryId, opts => opts.MapFrom(s => s.Country))
+           .ForMember(d => d.ecer_transcript_ProvinceId, opts => opts.MapFrom(s => s.Province))
+           .ForMember(d => d.ecer_transcript_postsecondaryinstitutionid, opts => opts.MapFrom(s => s.PostSecondaryInstitution));
 
     CreateMap<ecer_Transcript, Transcript>(MemberList.Source)
-          .ForCtorParam(nameof(Transcript.Id), opt => opt.MapFrom(src => src.ecer_TranscriptId))
-          .ForCtorParam(nameof(Transcript.EducationalInstitutionName), opt => opt.MapFrom(src => src.ecer_EducationInstitutionFullName))
-          .ForCtorParam(nameof(Transcript.ProgramName), opt => opt.MapFrom(src => src.ecer_ProgramCourseName))
-          .ForCtorParam(nameof(Transcript.StudentNumber), opt => opt.MapFrom(src => src.ecer_StudentNumber))
-          .ForCtorParam(nameof(Transcript.StartDate), opt => opt.MapFrom(src => src.ecer_StartDate))
-          .ForCtorParam(nameof(Transcript.EndDate), opt => opt.MapFrom(src => src.ecer_EndDate))
-          .ForCtorParam(nameof(Transcript.IsECEAssistant), opt => opt.MapFrom(src => src.ecer_IsECEAssistant))
-          .ForCtorParam(nameof(Transcript.DoesECERegistryHaveTranscript), opt => opt.MapFrom(src => src.ecer_DoesECERegistryHaveTranscript))
-          .ForCtorParam(nameof(Transcript.IsOfficialTranscriptRequested), opt => opt.MapFrom(src => src.ecer_IsOfficialTranscriptRequested))
-          .ForCtorParam(nameof(Transcript.StudentFirstName), opt => opt.MapFrom(src => src.ecer_StudentFirstName))
-          .ForCtorParam(nameof(Transcript.StudentLastName), opt => opt.MapFrom(src => src.ecer_StudentLastName))
-          .ForCtorParam(nameof(Transcript.IsNameUnverified), opt => opt.MapFrom(src => src.ecer_IsNameUnverified))
-          .ForCtorParam(nameof(Transcript.EducationRecognition), opt => opt.MapFrom(src => src.ecer_EducationRecognition))
-          .ForCtorParam(nameof(Transcript.EducationOrigin), opt => opt.MapFrom(src => src.ecer_EducationOrigin))
-          .ForMember(d => d.CampusLocation, opts => opts.MapFrom(s => s.ecer_CampusLocation))
-          .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
-          .ForMember(d => d.StudentMiddleName, opts => opts.MapFrom(s => s.ecer_StudentMiddleName))
-    .ValidateMemberList(MemberList.Destination);
+      .ForCtorParam(nameof(Transcript.Id), opt => opt.MapFrom(src => src.ecer_TranscriptId))
+      .ForCtorParam(nameof(Transcript.EducationalInstitutionName), opt => opt.MapFrom(src => src.ecer_EducationInstitutionFullName))
+      .ForCtorParam(nameof(Transcript.ProgramName), opt => opt.MapFrom(src => src.ecer_ProgramCourseName))
+      .ForCtorParam(nameof(Transcript.StudentNumber), opt => opt.MapFrom(src => src.ecer_StudentNumber))
+      .ForCtorParam(nameof(Transcript.StartDate), opt => opt.MapFrom(src => src.ecer_StartDate))
+      .ForCtorParam(nameof(Transcript.EndDate), opt => opt.MapFrom(src => src.ecer_EndDate))
+      .ForCtorParam(nameof(Transcript.IsECEAssistant), opt => opt.MapFrom(src => src.ecer_IsECEAssistant))
+      .ForCtorParam(nameof(Transcript.DoesECERegistryHaveTranscript), opt => opt.MapFrom(src => src.ecer_DoesECERegistryHaveTranscript))
+      .ForCtorParam(nameof(Transcript.IsOfficialTranscriptRequested), opt => opt.MapFrom(src => src.ecer_IsOfficialTranscriptRequested))
+      .ForCtorParam(nameof(Transcript.StudentFirstName), opt => opt.MapFrom(src => src.ecer_StudentFirstName))
+      .ForCtorParam(nameof(Transcript.StudentLastName), opt => opt.MapFrom(src => src.ecer_StudentLastName))
+      .ForCtorParam(nameof(Transcript.IsNameUnverified), opt => opt.MapFrom(src => src.ecer_IsNameUnverified))
+      .ForCtorParam(nameof(Transcript.EducationRecognition), opt => opt.MapFrom(src => src.ecer_EducationRecognition))
+      .ForCtorParam(nameof(Transcript.EducationOrigin), opt => opt.MapFrom(src => src.ecer_EducationOrigin))
+      .ForMember(d => d.CampusLocation, opts => opts.MapFrom(s => s.ecer_CampusLocation))
+      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+      .ForMember(d => d.StudentMiddleName, opts => opts.MapFrom(s => s.ecer_StudentMiddleName))
+      .ForMember(d => d.Country, opts => opts.MapFrom(src =>
+        src.ecer_InstituteCountryId != null
+        ? new Country(src.ecer_InstituteCountryId.Id.ToString(), src.ecer_InstituteCountryIdName, string.Empty)
+        : null))
+      .ForMember(d => d.Province, opts => opts.MapFrom(src =>
+        src.ecer_ProvinceId != null
+        ? new Province(src.ecer_ProvinceId.Id.ToString(), src.ecer_ProvinceIdName, string.Empty)
+        : null))
+      .ForMember(d => d.PostSecondaryInstitution, opts => opts.MapFrom(src =>
+        src.ecer_postsecondaryinstitutionid != null
+        ? new PostSecondaryInstitution(src.ecer_postsecondaryinstitutionid.Id.ToString(), src.ecer_postsecondaryinstitutionidName, string.Empty)
+        : null))
+      .ValidateMemberList(MemberList.Destination);
 
     CreateMap<ProfessionalDevelopment, ecer_ProfessionalDevelopment>(MemberList.Source)
        .ForSourceMember(s => s.StartDate, opts => opts.DoNotValidate())
@@ -172,7 +187,7 @@ internal class ApplicationRepositoryMapper : Profile
           .ForMember(d => d.NewFiles, opts => opts.Ignore())
           .ForMember(d => d.DeletedFiles, opts => opts.Ignore())
           .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_ProfessionalDevelopmentId.ToList()))
-    .ValidateMemberList(MemberList.Destination);
+          .ValidateMemberList(MemberList.Destination);
 
     CreateMap<WorkExperienceReference, ecer_WorkExperienceRef>(MemberList.Source)
           .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
