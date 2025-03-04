@@ -16,7 +16,9 @@
       <h3>Transcripts</h3>
       <br />
       <ul class="ml-10">
-        <li>Make sure you've requested the transcripts be sent to the ECE Registry directly from the educational institution</li>
+        <li>
+          <strong>Make sure you've requested the transcripts be sent to the ECE Registry directly from the educational institution</strong>
+        </li>
         <li>We'll email you once we receive them</li>
       </ul>
     </div>
