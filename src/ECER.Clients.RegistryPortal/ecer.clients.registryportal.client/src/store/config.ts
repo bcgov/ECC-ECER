@@ -9,8 +9,7 @@ import {
   getPostSecondaryInstitutionList,
 } from "@/api/configuration";
 import oidcConfig from "@/oidc-config";
-import type { DropdownWrapper } from "@/types/form";
-import type { Components, Country, Province, SystemMessage } from "@/types/openapi";
+import type { Components } from "@/types/openapi";
 import { ProvinceTerritoryType } from "@/utils/constant";
 import { sortArray } from "@/utils/functions";
 export interface UserState {
