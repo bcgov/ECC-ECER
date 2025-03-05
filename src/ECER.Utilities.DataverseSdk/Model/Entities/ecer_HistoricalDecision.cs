@@ -72,7 +72,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_countryofstudy = "ecer_countryofstudy";
 			public const string ecer_CountryofStudyId = "ecer_countryofstudyid";
 			public const string ecer_CountryofStudyIdName = "ecer_countryofstudyidname";
+			public const string ecer_CourseCodeTitle = "ecer_coursecodetitle";
 			public const string ecer_decisiondate = "ecer_decisiondate";
+			public const string ecer_EquivalentTo = "ecer_equivalentto";
+			public const string ecer_equivalenttoName = "ecer_equivalenttoname";
 			public const string ecer_historicaldecision_ApplicationId = "ecer_historicaldecision_ApplicationId";
 			public const string ecer_historicaldecision_CountryofStudyId_ecer_country = "ecer_historicaldecision_CountryofStudyId_ecer_country";
 			public const string ecer_HistoricalDecisionId = "ecer_historicaldecisionid";
@@ -82,6 +85,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_nameofcredential = "ecer_nameofcredential";
 			public const string ecer_programname = "ecer_programname";
 			public const string ecer_province = "ecer_province";
+			public const string ecer_Type = "ecer_type";
+			public const string ecer_typeName = "ecer_typename";
 			public const string ecer_YearofCompletion = "ecer_yearofcompletion";
 			public const string ecer_yearofstudy = "ecer_yearofstudy";
 			public const string ecer_years = "ecer_years";
@@ -389,6 +394,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_coursecodetitle")]
+		public string ecer_CourseCodeTitle
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_coursecodetitle");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_coursecodetitle", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisiondate")]
 		public System.Nullable<System.DateTime> ecer_decisiondate
 		{
@@ -401,6 +421,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_decisiondate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_equivalentto")]
+		public virtual ecer_EquivalentTo? ecer_EquivalentTo
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_EquivalentTo?)(EntityOptionSetEnum.GetEnum(this, "ecer_equivalentto")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_equivalentto", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_equivalenttoname")]
+		public string ecer_equivalenttoName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_equivalentto"))
+				{
+					return this.FormattedValues["ecer_equivalentto"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -517,6 +569,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_province", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_type")]
+		public virtual ecer_Type? ecer_Type
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_Type?)(EntityOptionSetEnum.GetEnum(this, "ecer_type")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_type", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_typename")]
+		public string ecer_typeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_type"))
+				{
+					return this.FormattedValues["ecer_type"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
