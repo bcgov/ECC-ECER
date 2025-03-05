@@ -26,7 +26,7 @@ internal sealed partial class ApplicationRenewalValidationEngine
         if (application.WorkExperienceReferences
        .Sum(we => we.Hours) < 400)
         {
-          validationErrors.Add("Work experience does not meet 400 hours");
+          validationErrors.Add("You must provide 400 hours of work experience");
         }
         break;
 
@@ -39,7 +39,7 @@ internal sealed partial class ApplicationRenewalValidationEngine
 
         if (application.FiveYearRenewalExplanationChoice == null)
         {
-          validationErrors.Add("five year explanation choice cannot be null");
+          validationErrors.Add("You must provide a reason for late renewal");
         }
         // each application should contain explanation letter
         if (string.IsNullOrEmpty(application.RenewalExplanationOther) && application.FiveYearRenewalExplanationChoice == FiveYearRenewalExplanations.Other)
@@ -55,7 +55,7 @@ internal sealed partial class ApplicationRenewalValidationEngine
         if (application.WorkExperienceReferences
        .Sum(we => we.Hours) < 400)
         {
-          validationErrors.Add("Work experience does not meet 400 hours");
+          validationErrors.Add("You must provide 400 hours of work experience");
         }
         break;
 
@@ -74,7 +74,7 @@ internal sealed partial class ApplicationRenewalValidationEngine
         if (application.WorkExperienceReferences
        .Sum(we => we.Hours) < 500)
         {
-          validationErrors.Add("Work experience does not meet 500 hours");
+          validationErrors.Add("You must provide 500 hours of work experience");
         }
         break;
 
