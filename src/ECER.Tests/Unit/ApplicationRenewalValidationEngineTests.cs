@@ -165,7 +165,7 @@ public class ApplicationRenewalValidationEngineTests
     var result = await _validator.Validate(application);
 
     // Assert
-    Assert.Contains("Work experience does not meet 500 hours", result.ValidationErrors);
+    Assert.Contains("You must provide 500 hours of work experience", result.ValidationErrors);
   }
 
   private Certification CreateMockCertification(DateTime expiryDate, CertificateStatusCode statusCode)
@@ -294,7 +294,7 @@ public class ApplicationRenewalValidationEngineTests
     var result = await _validator.Validate(application);
 
     // Assert
-    Assert.Contains("five year explanation choice cannot be null", result.ValidationErrors);
+    Assert.Contains("You must provide a reason for late renewal", result.ValidationErrors);
   }
 
   [Fact]

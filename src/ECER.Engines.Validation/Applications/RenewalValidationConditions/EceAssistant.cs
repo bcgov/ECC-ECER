@@ -28,7 +28,7 @@ internal sealed partial class ApplicationRenewalValidationEngine
         if (application.WorkExperienceReferences
        .Sum(we => we.Hours) < 400)
         {
-          validationErrors.Add("Work experience does not meet 400 hours");
+          validationErrors.Add("You must provide 400 hours of work experience");
         }
         break;
 
