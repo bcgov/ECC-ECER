@@ -25,7 +25,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           var draftApplication = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
 
           var application = await messageBus.Send(new SaveDraftApplicationCommand(draftApplication), ct);
-          return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<RegistryPortal.Server.Applications.Application>(application)));
+          return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<Application>(application)));
         })
         .WithOpenApi("Save a draft application for the current user", string.Empty, "draftapplication_put")
         .RequireAuthorization()
@@ -114,7 +114,6 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           }
 
           var cancelledApplicationId = await messageBus.Send(new CancelDraftApplicationCommand(id, userId!), ct);
-
           return TypedResults.Ok(new CancelDraftApplicationResponse(cancelledApplicationId));
         })
         .WithOpenApi("Cancel a draft application for the current user", "Changes status to cancelled", "draftapplication_delete")
@@ -275,6 +274,30 @@ public class ApplicationsEndpoints : IRegisterEndpoints
        .WithOpenApi("Add Professional Development", string.Empty, "application_professionaldevelopment_add_post")
        .RequireAuthorization()
        .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/transcriptDocuments", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (SaveApplicationTranscriptCommand request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    {
+      bool ApplicationIdIsNotGuid = !Guid.TryParse(request.TranscriptDocuments.ApplicationId, out _);
+      if (ApplicationIdIsNotGuid)
+      {
+        return TypedResults.BadRequest("ApplicationId is not guid");
+      }
+
+      bool TranscriptIdIsNotGuid = !Guid.TryParse(request.TranscriptDocuments.TranscriptId, out _);
+      if (TranscriptIdIsNotGuid)
+      {
+        return TypedResults.BadRequest("TranscriptId is not guid");
+      }
+
+      var userContext = ctx.User.GetUserContext();
+      var transcriptDocuments = mapper.Map<Managers.Registry.Contract.Applications.TranscriptDocuments>(request.TranscriptDocuments, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
+
+      var application = await messageBus.Send(new SaveApplicationTranscriptCommand(transcriptDocuments), ct);
+      return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<Application>(application)));
+    })
+    .WithOpenApi("Save a application transcript for the current user", string.Empty, "draftapplication_put")
+    .RequireAuthorization()
+    .WithParameterValidation();
   }
 }
 
@@ -596,4 +619,34 @@ public enum ProfessionalDevelopmentStatusCode
   Submitted,
   UnderReview,
   WaitingResponse,
+}
+
+public record TranscriptDocuments(string ApplicationId, string TranscriptId)
+{
+  public IEnumerable<string> NewCourseOutlineFiles { get; set; } = Array.Empty<string>();
+  public IEnumerable<FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<string> NewProgramConfirmationFiles { get; set; } = Array.Empty<string>();
+  public IEnumerable<FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public CourseOutlineOptions? CourseOutlineOptions { get; set; }
+  public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
+  public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
+}
+
+public enum CourseOutlineOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
+}
+
+public enum ComprehensiveReportOptions
+{
+  FeeWaiver,
+  InternationalCredentialEvaluationService,
+  RegistryAlreadyHas
+}
+
+public enum ProgramConfirmationOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
 }

@@ -9,6 +9,8 @@ public interface IApplicationRepository
 
   Task<string> SaveApplication(Application application, CancellationToken cancellationToken);
 
+  Task<string> SaveApplicationTranscripts(TranscriptDocuments transcriptDocuments, CancellationToken cancellationToken);
+
   Task<string> Submit(string applicationId, CancellationToken cancellationToken);
 
   Task<string> Cancel(string applicationId, CancellationToken cancellationToken);
@@ -374,4 +376,34 @@ public enum ReferenceKnownTime
   From6monthsto1year,
   Lessthan6months,
   Morethan5years,
+}
+
+public record TranscriptDocuments(string ApplicationId, string TranscriptId)
+{
+  public IEnumerable<FileInfo> NewCourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> NewProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public CourseOutlineOptions? CourseOutlineOptions { get; set; }
+  public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
+  public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
+}
+
+public enum CourseOutlineOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
+}
+
+public enum ComprehensiveReportOptions
+{
+  FeeWaiver,
+  InternationalCredentialEvaluationService,
+  RegistryAlreadyHas
+}
+
+public enum ProgramConfirmationOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
 }

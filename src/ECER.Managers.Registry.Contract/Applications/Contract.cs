@@ -9,6 +9,11 @@ namespace ECER.Managers.Registry.Contract.Applications;
 public record SaveDraftApplicationCommand(Application Application) : IRequest<Contract.Applications.Application?>;
 
 /// <summary>
+/// Save application transcript request
+/// </summary>
+/// <param name="TranscriptDocuments">The application transcript documents</param>
+public record SaveApplicationTranscriptCommand(TranscriptDocuments TranscriptDocuments) : IRequest<Contract.Applications.Application?>;
+/// <summary>
 /// Invokes draft application saving use case
 /// </summary>
 public record CancelDraftApplicationCommand(string applicationId, string userId) : IRequest<string>;
@@ -46,7 +51,17 @@ public record ApplicationSubmissionResult()
   public IEnumerable<string>? ValidationErrors { get; set; }
   public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
 }
-
+public record TranscriptDocuments(string ApplicationId, string TranscriptId)
+{
+  public IEnumerable<FileInfo> NewCourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> NewProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public CourseOutlineOptions? CourseOutlineOptions { get; set; }
+  public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
+  public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
+  public string? RegistrantId { get; set; }
+}
 public record Application(string? Id, string RegistrantId, ApplicationStatus Status)
 {
   public DateTime? SubmittedOn { get; set; }
@@ -432,4 +447,23 @@ public enum CharacterReferenceStage
   Submitted,
   UnderReview,
   WaitingResponse
+}
+
+public enum CourseOutlineOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
+}
+
+public enum ComprehensiveReportOptions
+{
+  FeeWaiver,
+  InternationalCredentialEvaluationService,
+  RegistryAlreadyHas
+}
+
+public enum ProgramConfirmationOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
 }

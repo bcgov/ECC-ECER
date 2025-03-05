@@ -31,7 +31,8 @@ public class ApplicationHandlers(
     IRequestHandler<UpdateCharacterReferenceCommand, UpdateCharacterReferenceResult>,
     IRequestHandler<ResendCharacterReferenceInviteRequest, string>,
     IRequestHandler<ResendWorkExperienceReferenceInviteRequest, string>,
-    IRequestHandler<AddProfessionalDevelopmentCommand, AddProfessionalDevelopmentResult>
+    IRequestHandler<AddProfessionalDevelopmentCommand, AddProfessionalDevelopmentResult>,
+    IRequestHandler<SaveApplicationTranscriptCommand, Contract.Applications.Application?>
 {
   /// <summary>
   /// Handles submitting a new application use case
@@ -50,7 +51,7 @@ public class ApplicationHandlers(
       var applications = await applicationRepository.Query(new ApplicationQuery
       {
         ByApplicantId = request.Application.RegistrantId,
-        ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
+        ByStatus = [Resources.Documents.Applications.ApplicationStatus.Draft]
       }, cancellationToken);
 
       var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
@@ -67,7 +68,42 @@ public class ApplicationHandlers(
     var freshApplications = await applicationRepository.Query(new ApplicationQuery
     {
       ById = applicationId,
-      ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
+      ByStatus = [Resources.Documents.Applications.ApplicationStatus.Draft]
+    }, cancellationToken);
+
+    return mapper.Map<Contract.Applications.Application>(freshApplications.SingleOrDefault())!;
+  }
+
+  /// <summary>
+  /// Handles submitting a new application use case
+  /// </summary>
+  /// <param name="request">The command</param>
+  /// <param name="cancellationToken">cancellation token</param>
+  /// <returns></returns>
+  public async Task<Contract.Applications.Application?> Handle(SaveApplicationTranscriptCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var applications = await applicationRepository.Query(new ApplicationQuery
+    {
+      ById = request.TranscriptDocuments.ApplicationId,
+      ByApplicantId = request.TranscriptDocuments.RegistrantId,
+      ByStatus = [Resources.Documents.Applications.ApplicationStatus.Submitted]
+    }, cancellationToken);
+
+    var applicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
+    var existingApplication = applicationResults.Items.FirstOrDefault();
+    if (existingApplication != null)
+    {
+      // user already has a draft application
+      throw new InvalidOperationException($"User already has a draft application with id '{existingApplication.Id}'");
+    }
+
+    var applicationId = await applicationRepository.SaveApplicationTranscripts(mapper.Map<Resources.Documents.Applications.TranscriptDocuments>(request.TranscriptDocuments)!, cancellationToken);
+
+    var freshApplications = await applicationRepository.Query(new ApplicationQuery
+    {
+      ById = applicationId,
     }, cancellationToken);
 
     return mapper.Map<Contract.Applications.Application>(freshApplications.SingleOrDefault())!;
@@ -81,7 +117,7 @@ public class ApplicationHandlers(
     {
       ById = request.applicationId,
       ByApplicantId = request.userId,
-      ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
+      ByStatus = [Resources.Documents.Applications.ApplicationStatus.Draft]
     }, cancellationToken);
 
     if (!applications.Any())
@@ -108,7 +144,7 @@ public class ApplicationHandlers(
     {
       ById = request.applicationId,
       ByApplicantId = request.userId,
-      ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Draft }
+      ByStatus = [Resources.Documents.Applications.ApplicationStatus.Draft]
     }, cancellationToken);
 
     var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
@@ -169,11 +205,11 @@ public class ApplicationHandlers(
     SubmitReferenceRequest submitReferenceRequest = new SubmitReferenceRequest();
     switch (portalInvitation.InviteType)
     {
-      case Resources.Documents.PortalInvitations.InviteType.CharacterReference:
+      case InviteType.CharacterReference:
         submitReferenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request.CharacterReferenceSubmissionRequest);
         break;
 
-      case Resources.Documents.PortalInvitations.InviteType.WorkExperienceReference:
+      case InviteType.WorkExperienceReference:
         submitReferenceRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
         break;
     }
@@ -255,7 +291,7 @@ public class ApplicationHandlers(
     {
       ById = request.ApplicationId,
       ByApplicantId = request.UserId,
-      ByStatus = new Resources.Documents.Applications.ApplicationStatus[] { Resources.Documents.Applications.ApplicationStatus.Submitted }
+      ByStatus = [Resources.Documents.Applications.ApplicationStatus.Submitted]
     }, cancellationToken);
 
     if (!applications.Any())
