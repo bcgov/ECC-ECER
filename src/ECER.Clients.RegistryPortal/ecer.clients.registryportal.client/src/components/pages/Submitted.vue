@@ -3,7 +3,7 @@
     <v-container>
       <div class="d-flex">
         <v-icon size="90px" color="#42814A" icon="mdi-check-circle" class="mr-2"></v-icon>
-        <h1 class="align-self-center">Application Submitted</h1>
+        <h1 id="titleApplicationSubmitted" class="align-self-center">Application Submitted</h1>
       </div>
     </v-container>
   </v-card>
@@ -62,7 +62,7 @@
     <br />
 
     <router-link :to="{ name: 'manageApplication', params: { applicationId: applicationId } }">
-      <v-btn class="mt-5" type="" rounded="lg" color="primary">Go to application summary</v-btn>
+      <v-btn id="btnApplicationSummary" class="mt-5" type="" rounded="lg" color="primary">Go to application summary</v-btn>
     </router-link>
   </PageContainer>
 </template>
