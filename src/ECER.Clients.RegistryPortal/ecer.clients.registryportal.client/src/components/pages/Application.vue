@@ -152,6 +152,10 @@ export default defineComponent({
     },
   },
   mounted() {
+    if (this.applicationStore.draftApplication.signedDate === null || this.applicationStore.draftApplication.certificationTypes?.length === 0) {
+      console.warn("user entered into /application route without a signedDate or certificationType");
+      this.router.push("/");
+    }
     this.mode = "list";
   },
   methods: {

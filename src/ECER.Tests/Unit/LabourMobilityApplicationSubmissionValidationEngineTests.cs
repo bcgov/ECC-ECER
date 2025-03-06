@@ -73,6 +73,19 @@ public class LabourMobilityApplicationSubmissionValidationEngineTests
     Assert.Empty(result.ValidationErrors);
   }
 
+  [Fact]
+  public async Task Validate_DraftApplicationWithoutCertificationType_ReturnsError()
+  {
+    // Arrange
+    var application = new Application("id", "registrantId", ApplicationStatus.Draft) { };
+
+    // Act
+    var result = await _validator.Validate(application);
+
+    // Assert
+    Assert.Contains("Application is not associated with a certification type", result.ValidationErrors);
+  }
+
   private static Transcript CreateMockTranscript(bool invalid)
   {
     DateTime startDate = DateTime.Now.AddYears(-2);
