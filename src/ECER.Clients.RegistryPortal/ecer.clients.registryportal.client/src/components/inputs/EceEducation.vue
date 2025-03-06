@@ -445,6 +445,18 @@ export default defineComponent({
   },
   computed: {
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
+    educationOriginResult(): Components.Schemas.EducationOrigin {
+      if (this.configStore.canada?.countryId !== this.country?.countryId) {
+        return "OutsideofCanada";
+      }
+
+      if (this.configStore.britishColumbia?.provinceId === this.province?.provinceId) {
+        return "InsideBC";
+      }
+
+      //at this stage, school is in Canada and not in BC, therefore is must be outside of BC
+      return "OutsideBC";
+    },
     newClientId() {
       return Object.keys(this.modelValue).length + 1;
     },
@@ -536,8 +548,8 @@ export default defineComponent({
           doesECERegistryHaveTranscript: this.transcriptStatus === "received",
           isOfficialTranscriptRequested: this.transcriptStatus === "requested",
           isNameUnverified: this.isNameUnverified,
-          educationRecognition: this.educationRecognition!, //TODO we should remove this if we are not using it anymore
-          educationOrigin: this.educationOrigin!,
+          educationRecognition: this.recognizedPostSecondaryInstitution,
+          educationOrigin: this.educationOriginResult,
         };
 
         //if the user puts in a Canadian school that is not recognized wipe out postSecondaryInstitution before saving
