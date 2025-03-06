@@ -6,7 +6,7 @@
           <p class="small">Certification type</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ certificationType }}</p>
+          <p id="certificationType" class="small font-weight-bold">{{ certificationType }}</p>
         </v-col>
       </v-row>
     </template>

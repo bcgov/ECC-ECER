@@ -29,6 +29,7 @@
   <v-row>
     <v-col cols="12" md="8" lg="6" xl="4">
       <EceTextField
+        id="txtReferenceLastName"
         v-model="lastName"
         :rules="[Rules.required('Enter your reference\'s last name'), Rules.validContactName()]"
         label="Last name"
@@ -41,6 +42,7 @@
   <v-row>
     <v-col cols="12" md="8" lg="6" xl="4">
       <EceTextField
+        id="txtReferenceFirstName"
         v-model="firstName"
         :rules="[Rules.validContactName()]"
         label="First name"
@@ -59,6 +61,7 @@
           Rules.email('Enter your reference\'s email in the format \'name@email.com\''),
         ]"
         label="Email"
+        id="txtReferenceEmail"
         maxlength="100"
         @update:model-value="updateCharacterReference()"
       ></EceTextField>
@@ -67,6 +70,7 @@
   <v-row>
     <v-col cols="12" md="8" lg="6" xl="4">
       <EceTextField
+        id="txtReferencePhoneNumber"
         v-model="phoneNumber"
         :rules="[Rules.phoneNumber('Enter your reference\'s valid phone number')]"
         label="Phone number (optional)"

@@ -37,7 +37,7 @@
             <p class="small">Country</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ education.country?.countryName ?? "" }}</p>
+            <p id="educationCountry" class="small font-weight-bold">{{ education.country?.countryName ?? "" }}</p>
           </v-col>
         </v-row>
         <v-row>
@@ -45,7 +45,7 @@
             <p class="small">Province or territory</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ education.province?.provinceName ?? "" }}</p>
+            <p id="educationProvince" class="small font-weight-bold">{{ education.province?.provinceName ?? "" }}</p>
           </v-col>
         </v-row>
         <v-row>

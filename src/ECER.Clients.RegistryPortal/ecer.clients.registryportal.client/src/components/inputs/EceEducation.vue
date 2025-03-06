@@ -25,7 +25,12 @@
         </v-row>
 
         <v-row>
-          <v-radio-group v-model="transcriptStatus" :rules="[Rules.required('Indicate the status of your transcript(s)')]" color="primary">
+          <v-radio-group
+            id="radioTranscriptStatus"
+            v-model="transcriptStatus"
+            :rules="[Rules.required('Indicate the status of your transcript(s)')]"
+            color="primary"
+          >
             <v-radio
               label="I have requested the official transcript to be sent to the ECE Registry from my educational institution"
               value="requested"
@@ -45,6 +50,7 @@
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceTextField
+              id="txtProgramName"
               v-model="program"
               :rules="[Rules.required('Enter the name of your program or course')]"
               label="Name of program or course"
@@ -55,6 +61,7 @@
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceDateInput
+              id="txtProgramStartDate"
               v-model="startYear"
               :rules="[
                 Rules.required('Enter the start date'),
@@ -74,6 +81,7 @@
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceDateInput
+              id="txtProgramEndDate"
               v-model="endYear"
               :rules="[
                 Rules.required('Enter the end date'),
@@ -117,6 +125,7 @@
           <v-col md="8" lg="6" xl="4">
             Province or territory
             <v-select
+              id="ddlProvince"
               class="pt-2"
               :items="configStore.provinceList"
               variant="outlined"
@@ -134,6 +143,7 @@
           <v-col v-if="country?.countryId == configStore.canada?.countryId" md="8" lg="6" xl="4">
             Educational institution
             <v-select
+              id="ddlPostSecondaryInstitution"
               class="pt-2"
               :items="postSecondaryInstitutionByProvince"
               variant="outlined"
@@ -148,6 +158,7 @@
         <v-row>
           <v-col v-if="country?.countryId !== configStore.canada?.countryId || postSecondaryInstitution?.name === 'Other'" md="8" lg="6" xl="4">
             <EceTextField
+              id="txtInstitutionName"
               v-model="school"
               :rules="[Rules.required('Enter the name of the educational institution')]"
               label="Name of educational institution"
@@ -266,6 +277,7 @@
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceTextField
+              id="txtStudentID"
               v-model="studentNumber"
               :rules="[Rules.required('Enter your student number or ID')]"
               label="Student number or ID"
@@ -276,7 +288,12 @@
         <br />
         <p>What name is shown on your transcript?</p>
         <br />
-        <v-radio-group v-model="previousNameRadio" :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="previousNameRadioChanged">
+        <v-radio-group
+          id="radioNameOnTranscript"
+          v-model="previousNameRadio"
+          :rules="[Rules.requiredRadio('Select an option')]"
+          @update:model-value="previousNameRadioChanged"
+        >
           <v-radio v-for="(step, index) in applicantNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
         </v-radio-group>
         <div v-if="previousNameRadio === 'other'">
@@ -302,7 +319,14 @@
           </v-row>
         </div>
         <v-row justify="start" class="ml-1 mt-10">
-          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit" :loading="loadingStore.isLoading('draftapplication_put')">
+          <v-btn
+            id="btnSaveEducation"
+            rounded="lg"
+            color="primary"
+            class="mr-2"
+            @click="handleSubmit"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          >
             Save education
           </v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel" :loading="loadingStore.isLoading('draftapplication_put')">Cancel</v-btn>
@@ -316,6 +340,7 @@
       <v-col cols="12" class="mt-6">
         <v-row justify="start" class="ml-1">
           <v-btn
+            id="btnAddEducation"
             v-if="showAddEducationButton"
             prepend-icon="mdi-plus"
             rounded="lg"

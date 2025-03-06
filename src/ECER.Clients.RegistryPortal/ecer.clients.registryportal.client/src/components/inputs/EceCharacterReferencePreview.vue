@@ -6,7 +6,7 @@
           <p class="small">Last name</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ characterReference.lastName }}</p>
+          <p id="characterReferenceLastName" class="small font-weight-bold">{{ characterReference.lastName }}</p>
         </v-col>
       </v-row>
       <v-row>
@@ -14,7 +14,7 @@
           <p class="small">First name</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ characterReference.firstName }}</p>
+          <p id="characterReferenceFirstName" class="small font-weight-bold">{{ characterReference.firstName }}</p>
         </v-col>
       </v-row>
       <v-row>
@@ -22,7 +22,7 @@
           <p class="small">Email</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ characterReference.emailAddress }}</p>
+          <p id="characterReferenceEmail" class="small font-weight-bold">{{ characterReference.emailAddress }}</p>
         </v-col>
       </v-row>
       <v-row>

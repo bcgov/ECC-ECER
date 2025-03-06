@@ -61,7 +61,7 @@
       <v-input v-model="selection" :rules="[Rules.required('Select a certificate type to begin your application')]"></v-input>
     </v-form>
 
-    <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick">Continue</v-btn>
+    <v-btn class="mt-6" rounded="lg" color="primary" id="btnContinue" @click="continueClick">Continue</v-btn>
   </v-container>
 </template>
 

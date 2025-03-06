@@ -36,7 +36,7 @@
 
       <!-- No application found -->
       <v-card-actions v-if="applicationStore.applicationStatus === undefined">
-        <v-btn variant="flat" size="large" color="warning" @click="handleStartNewApplication">
+        <v-btn variant="flat" size="large" color="warning" id="btnApplyNow" @click="handleStartNewApplication">
           <v-icon size="large" icon="mdi-arrow-right" />
           Apply now
         </v-btn>
