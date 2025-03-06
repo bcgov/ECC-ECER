@@ -17,6 +17,11 @@ internal sealed partial class ApplicationRenewalValidationEngine : IApplicationV
     await Task.CompletedTask;
     var validationErrors = new List<string>();
 
+    if (!application.CertificationTypes.Any())
+    {
+      validationErrors.Add("Application is not associated with a certification type");
+    }
+
     if (application.CertificationTypes.Contains(CertificationType.EceAssistant))
     {
       validationErrors = await EceAssistant(application);
