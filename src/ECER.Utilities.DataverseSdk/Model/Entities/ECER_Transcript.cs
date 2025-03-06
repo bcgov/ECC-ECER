@@ -130,6 +130,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_legacyentryby = "ecer_legacyentryby";
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_legacytraininginstituteid = "ecer_legacytraininginstituteid";
+			public const string ecer_mytranscriptwillrequireenglishtranslation = "ecer_mytranscriptwillrequireenglishtranslation";
+			public const string ecer_mytranscriptwillrequireenglishtranslationName = "ecer_mytranscriptwillrequireenglishtranslationname";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PostSecondaryInstituteid = "ecer_postsecondaryinstituteid";
 			public const string ecer_PostSecondaryInstituteidName = "ecer_postsecondaryinstituteidname";
@@ -1142,6 +1144,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacytraininginstituteid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_mytranscriptwillrequireenglishtranslation")]
+		public System.Nullable<bool> ecer_mytranscriptwillrequireenglishtranslation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_mytranscriptwillrequireenglishtranslation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_mytranscriptwillrequireenglishtranslation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_mytranscriptwillrequireenglishtranslationname")]
+		public string ecer_mytranscriptwillrequireenglishtranslationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_mytranscriptwillrequireenglishtranslation"))
+				{
+					return this.FormattedValues["ecer_mytranscriptwillrequireenglishtranslation"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
