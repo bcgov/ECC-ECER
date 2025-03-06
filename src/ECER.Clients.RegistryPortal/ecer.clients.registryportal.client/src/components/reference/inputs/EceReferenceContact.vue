@@ -64,6 +64,8 @@
                 color="primary"
                 class="pt-2"
                 :items="configStore?.provinceList"
+                item-title="provinceName"
+                item-value="provinceId"
                 clearable
                 hide-details="auto"
                 @update:model-value="certificateProvinceIdChanged"
@@ -106,6 +108,8 @@
                 class="pt-2"
                 :items="configStore?.provinceList"
                 clearable
+                item-title="provinceName"
+                item-value="provinceId"
                 @update:model-value="certificateProvinceIdChanged"
                 @click:clear="provinceClearClicked"
               ></v-autocomplete>
@@ -118,6 +122,8 @@
                 variant="outlined"
                 color="primary"
                 class="pt-2"
+                item-title="provinceName"
+                item-value="provinceId"
                 :items="configStore?.provinceList.filter((province) => province.provinceName !== ProvinceTerritoryType.OTHER)"
                 :rules="[Rules.required()]"
                 @update:model-value="certificateProvinceIdChanged"
