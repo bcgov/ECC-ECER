@@ -380,9 +380,9 @@ public enum ReferenceKnownTime
 
 public record TranscriptDocuments(string ApplicationId, string TranscriptId)
 {
-  public IEnumerable<FileInfo> NewCourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<string> NewCourseOutlineFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
-  public IEnumerable<FileInfo> NewProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<string> NewProgramConfirmationFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
   public CourseOutlineOptions? CourseOutlineOptions { get; set; }
   public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }

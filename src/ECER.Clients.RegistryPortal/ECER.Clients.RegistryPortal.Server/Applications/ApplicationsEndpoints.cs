@@ -290,7 +290,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
       }
 
       var userContext = ctx.User.GetUserContext();
-      var transcriptDocuments = mapper.Map<Managers.Registry.Contract.Applications.TranscriptDocuments>(request.TranscriptDocuments, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
+      var transcriptDocuments = mapper.Map<Managers.Registry.Contract.Applications.TranscriptDocuments>(request.TranscriptDocuments, opts => opts.Items.Add("RegistrantId", userContext!.UserId))!;
 
       var application = await messageBus.Send(new SaveApplicationTranscriptCommand(transcriptDocuments), ct);
       return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<Application>(application)));

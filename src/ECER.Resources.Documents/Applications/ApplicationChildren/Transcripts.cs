@@ -57,4 +57,52 @@ internal sealed partial class ApplicationRepository
       }
     }
   }
+
+  public async Task<string> SaveApplicationTranscripts(TranscriptDocuments transcriptDocuments, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var transcript = context.ecer_TranscriptSet.SingleOrDefault(
+      d => d.ecer_TranscriptId == Guid.Parse(transcriptDocuments.TranscriptId) && d.ecer_Applicationid.Id == Guid.Parse(transcriptDocuments.ApplicationId));
+    if (transcript == null) throw new InvalidOperationException($"Application '{transcriptDocuments.ApplicationId}' not found or Transcript '{transcriptDocuments.TranscriptId}' not found");
+    // TODO: Add flags to transcript object
+
+    if (transcriptDocuments.CourseOutlineOptions != null)
+    {
+      if (transcriptDocuments.CourseOutlineOptions.Value == CourseOutlineOptions.UploadNow)
+      {
+        transcript.ecer_isECEregistryalreadyhasmycourseoutline = false;
+        transcript.ecer_iseducationalinstitutionsendcourseoutline = false;
+      }
+      else if (transcriptDocuments.CourseOutlineOptions.Value == CourseOutlineOptions.RegistryAlreadyHas)
+      {
+        transcript.ecer_isECEregistryalreadyhasmycourseoutline = true;
+        transcript.ecer_iseducationalinstitutionsendcourseoutline = false;
+      }
+    }
+    //if (transcriptDocuments.ComprehensiveReportOptions != null)
+    //{
+    //  if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.FeeWaiver)
+    //  {
+    //    transcript
+    //  }
+    //  else if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.InternationalCredentialEvaluationService)
+    //  {
+    //  }
+    //  else if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.RegistryAlreadyHas)
+    //  {
+    //  }
+    //}
+    //if (transcriptDocuments.ProgramConfirmationOptions != null)
+    //{
+    //  if (transcriptDocuments.ProgramConfirmationOptions.Value == ProgramConfirmationOptions.UploadNow)
+    //  {
+    //  }
+    //  else if (transcriptDocuments.ProgramConfirmationOptions.Value == ProgramConfirmationOptions.RegistryAlreadyHas)
+    //  {
+    //  }
+    //}
+
+    // TODO: Add files to transcript object
+    return transcript.ecer_Applicationid.Id.ToString();
+  }
 }

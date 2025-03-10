@@ -140,13 +140,10 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     };
   }
 
-  public async Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  public async Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken) => request.PortalInvitation!.InviteType switch
   {
-    return request.PortalInvitation!.InviteType switch
-    {
-      InviteType.CharacterReference => await OptOutCharacterReference(request),
-      InviteType.WorkExperienceReference => await OptOutWorkExperienceReference(request),
-      _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
-    };
-  }
+    InviteType.CharacterReference => await OptOutCharacterReference(request),
+    InviteType.WorkExperienceReference => await OptOutWorkExperienceReference(request),
+    _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
+  };
 }
