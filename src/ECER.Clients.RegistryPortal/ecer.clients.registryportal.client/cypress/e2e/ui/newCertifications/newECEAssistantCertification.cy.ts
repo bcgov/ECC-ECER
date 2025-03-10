@@ -43,16 +43,24 @@ describe("New ECE Assistant Certificate Application", () => {
         const day = today.getDate();
 
         cy.login();
-
-        //cy.contains("button", "Open application").should("be.visible").click();
+        /** Dashboard */
         cy.get(selectors.dashboard.applyNowButton).should("be.visible").click();
+
+        /** Certification Type */
         cy.get(selectors.certificationType.eceAssistantRadio).check();
         cy.get(selectors.certificationType.continueButton).should("be.visible").click();
+
+        /** Application Requirements */
         cy.get(selectors.applicationRequirements.applyNowButton).should("be.visible").click();
+
+        /** Declaration */
         cy.get(selectors.declaration.declarationCheckbox).check({ force: true });
         cy.get(selectors.declaration.continueButton).should("be.visible").click();
+
+        /** Contact Information */
         cy.get(selectors.applicationWizard.saveAndContinueButton, { timeout: 20000 }).should("be.visible").should("contain.text", "Save and continue").click();
 
+        /** Education */
         cy.get(selectors.education.addEducationButton).should("be.visible").click();
 
         cy.get(selectors.education.transcriptStatusRadioDiv).within(() => {
@@ -93,6 +101,7 @@ describe("New ECE Assistant Certificate Application", () => {
 
         cy.get(selectors.applicationWizard.saveAndContinueButton, { timeout: 20000 }).should("be.visible").should("contain.text", "Save and continue").click();
 
+        /** Character Reference */
         cy.get(selectors.characterReference.lastNameInput).type("Reference Last Name");
         cy.get(selectors.characterReference.firstNameInput).type("Reference First Name");
         cy.get(selectors.characterReference.emailInput).type("Character_Reference@test.gov.bc.ca");
@@ -100,6 +109,7 @@ describe("New ECE Assistant Certificate Application", () => {
 
         cy.get(selectors.applicationWizard.saveAndContinueButton, { timeout: 20000 }).should("be.visible").should("contain.text", "Save and continue").click();
 
+        /** Application Review and Submit */
         cy.document({ timeout: 10000 }).its("readyState").should("eq", "complete");
         cy.contains("Review and submit", { timeout: 10000 }).should("be.visible");
         cy.get(selectors.applicationPreview.certificationType).should("be.visible").should("contain.text", "ECE Assistant");
@@ -112,6 +122,7 @@ describe("New ECE Assistant Certificate Application", () => {
         cy.get(selectors.applicationPreview.educationProvince).should("be.visible").should("contain.text", "British Columbia");
         cy.get(selectors.applicationWizard.submitApplicationButton).should("be.visible").should("contain.text", "Submit application").click();
 
+        /** Application Submitted */
         cy.document({ timeout: 10000 }).its("readyState").should("eq", "complete");
         cy.get(selectors.applicationSubmitted.pageTitle, { timeout: 10000 }).should("be.visible").should("contain.text", "Application Submitted");
         cy.get(selectors.applicationSubmitted.applicationSummaryButton, { timeout: 10000 })
