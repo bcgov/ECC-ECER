@@ -10,6 +10,11 @@ internal sealed class LabourMobilityApplicationSubmissionValidationEngine : IApp
 
     var validationErrors = new List<string>();
 
+    if (!application.CertificationTypes.Any())
+    {
+      validationErrors.Add("Application is not associated with a certification type");
+    }
+
     // each application should contain at least one character reference
     if (!application.CharacterReferences.Any())
     {
