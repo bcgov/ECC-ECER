@@ -119,7 +119,6 @@ public record ProfessionalDevelopment(string? Id, string? CourseName, string? Or
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
 }
-
 public record FileInfo(string Id)
 {
   public string? Url { get; set; } = string.Empty;

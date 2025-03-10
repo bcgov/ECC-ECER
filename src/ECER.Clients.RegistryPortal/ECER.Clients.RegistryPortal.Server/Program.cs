@@ -41,6 +41,7 @@ internal class Program
       builder.Services.AddEndpointsApiExplorer();
       builder.Services.AddSwaggerGen(opts =>
       {
+        opts.CustomSchemaIds(type => type.FullName);
         opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
         opts.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
         {
