@@ -52,7 +52,7 @@
               <v-col>
                 <v-btn
                   v-if="showSaveButtons"
-                  :loading="loadingStore.isLoading('draftapplication_put')"
+                  :loading="loadingStore.isLoading('draftapplication_put') || loadingStore.isLoading('profile_put') || loadingStore.isLoading('profile_get')"
                   rounded="lg"
                   color="primary"
                   @click="handleSaveAndContinue"
@@ -165,7 +165,7 @@ export default defineComponent({
       } else {
         switch (this.wizardStore.currentStepStage) {
           case "ContactInformation":
-            this.saveProfile(false);
+            await this.saveProfile(false);
             this.incrementWizard();
             break;
           case "ProfessionalDevelopment":
@@ -252,6 +252,16 @@ export default defineComponent({
         let message = "Information saved. If you save and exit, you can resume your application later.";
         if (exit) message = "Information saved. You can resume your application later.";
         this.alertStore.setSuccessAlert(message);
+        console.log(
+          "user info set" +
+            {
+              firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
+              lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalLastName.id],
+              email: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.email.id],
+              phone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.primaryContactNumber.id],
+              dateOfBirth: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id],
+            },
+        );
 
         this.userStore.setUserInfo({
           firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
@@ -260,6 +270,12 @@ export default defineComponent({
           phone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.primaryContactNumber.id],
           dateOfBirth: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id],
         });
+
+        //we should get the latest from getProfile and update the wizard. In case the wizard refreshes with stale profile data.
+        const userProfile = await getProfile();
+        if (userProfile !== null) {
+          this.userStore.setUserProfile(userProfile);
+        }
       }
     },
     printPage() {
