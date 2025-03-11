@@ -95,6 +95,7 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public Country? Country { get; set; }
   public Province? Province { get; set; }
   public PostSecondaryInstitution? PostSecondaryInstitution { get; set; }
+  public TranscriptDocuments? transcriptDocuments { get; set; }
 }
 
 public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)

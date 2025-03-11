@@ -545,7 +545,10 @@ public record FileInfo(string Id)
   public string? Name { get; set; } = string.Empty;
   public string? Size { get; set; } = string.Empty;
 }
-public record TranscriptStatus(string Id, TranscriptStage Status, string EducationalInstitutionName);
+public record TranscriptStatus(string Id, TranscriptStage Status, string EducationalInstitutionName)
+{
+  public TranscriptDocuments? TranscriptDocuments { get; set; }
+}
 
 public record WorkExperienceReferenceStatus(string Id, WorkExperienceRefStage Status, string FirstName, string LastName, string EmailAddress)
 {

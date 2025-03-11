@@ -1,4 +1,5 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Applications;
@@ -102,7 +103,38 @@ internal sealed partial class ApplicationRepository
     //  }
     //}
 
-    // TODO: Add files to transcript object
+    await AddFilesToTranscript(transcript, transcriptDocuments.NewCourseOutlineFiles, cancellationToken);
+    await AddFilesToTranscript(transcript, transcriptDocuments.NewProgramConfirmationFiles, cancellationToken);
     return transcript.ecer_Applicationid.Id.ToString();
+  }
+
+  private async Task AddFilesToTranscript(ecer_Transcript transcript, IEnumerable<string> fileIds, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+
+    foreach (var fileId in fileIds)
+    {
+      var sourceFolder = "tempfolder";
+      var destinationFolder = "ecer_transcript/" + transcript.Id;
+      var file = await objectStorageProvider.GetAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), ct);
+      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+
+      var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == transcript.ecer_Applicantid.Id);
+      if (applicant == null) throw new InvalidOperationException($"Applicant '{transcript.ecer_Applicantid.Id}' not found");
+
+      var documenturl = new bcgov_DocumentUrl()
+      {
+        bcgov_FileName = file!.FileName,
+        bcgov_FileSize = Infrastructure.Common.UtilityFunctions.HumanFileSize(file!.Content.Length),
+        bcgov_DocumentUrlId = Guid.Parse(fileId),
+        bcgov_Url = destinationFolder,
+        StatusCode = bcgov_DocumentUrl_StatusCode.Active,
+        StateCode = bcgov_documenturl_statecode.Active
+      };
+
+      context.AddObject(documenturl);
+      context.AddLink(documenturl, bcgov_DocumentUrl.Fields.bcgov_contact_bcgov_documenturl, applicant);
+      context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_TranscriptId, transcript);
+    }
   }
 }

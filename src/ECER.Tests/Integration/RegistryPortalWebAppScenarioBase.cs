@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECER.Clients.RegistryPortal.Server;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
