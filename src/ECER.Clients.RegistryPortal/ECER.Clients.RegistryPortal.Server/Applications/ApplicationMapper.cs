@@ -20,7 +20,7 @@ public class ApplicationMapper : Profile
      .ForMember(d => d.NumberOfHours,
               opt => opt.MapFrom(src => src.NumberOfHours))
      .ReverseMap();
-
+    CreateMap<FileInfo, Managers.Registry.Contract.Applications.FileInfo>().ReverseMap();
     CreateMap<Transcript, Managers.Registry.Contract.Applications.Transcript>()
       .ForMember(d => d.Status, opts => opts.Ignore())
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.Id),

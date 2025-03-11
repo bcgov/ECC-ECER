@@ -275,22 +275,22 @@ public class ApplicationsEndpoints : IRegisterEndpoints
        .RequireAuthorization()
        .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications/{application_id}/transcriptDocuments", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (SaveApplicationTranscriptCommand request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/transcriptDocuments", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (TranscriptDocuments request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
     {
-      bool ApplicationIdIsNotGuid = !Guid.TryParse(request.TranscriptDocuments.ApplicationId, out _);
+      bool ApplicationIdIsNotGuid = !Guid.TryParse(request.ApplicationId, out _);
       if (ApplicationIdIsNotGuid)
       {
         return TypedResults.BadRequest("ApplicationId is not guid");
       }
 
-      bool TranscriptIdIsNotGuid = !Guid.TryParse(request.TranscriptDocuments.TranscriptId, out _);
+      bool TranscriptIdIsNotGuid = !Guid.TryParse(request.TranscriptId, out _);
       if (TranscriptIdIsNotGuid)
       {
         return TypedResults.BadRequest("TranscriptId is not guid");
       }
 
       var userContext = ctx.User.GetUserContext();
-      var transcriptDocuments = mapper.Map<Managers.Registry.Contract.Applications.TranscriptDocuments>(request.TranscriptDocuments, opts => opts.Items.Add("RegistrantId", userContext!.UserId))!;
+      var transcriptDocuments = mapper.Map<Managers.Registry.Contract.Applications.TranscriptDocuments>(request, opts => opts.Items.Add("RegistrantId", userContext!.UserId))!;
 
       var application = await messageBus.Send(new SaveApplicationTranscriptCommand(transcriptDocuments), ct);
       return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<Application>(application)));
@@ -394,7 +394,7 @@ public record ProfessionalDevelopment([Required] string CourseName, [Required] s
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
-  public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<ECER.Clients.RegistryPortal.Server.Applications.FileInfo> Files { get; set; } = Array.Empty<ECER.Clients.RegistryPortal.Server.Applications.FileInfo>();
 }
 public record Transcript(string? EducationalInstitutionName, [Required] string ProgramName, [Required] string StudentLastName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] bool IsNameUnverified, [Required] EducationRecognition EducationRecognition, [Required] EducationOrigin EducationOrigin)
 {
@@ -624,9 +624,9 @@ public enum ProfessionalDevelopmentStatusCode
 public record TranscriptDocuments(string ApplicationId, string TranscriptId)
 {
   public IEnumerable<string> NewCourseOutlineFiles { get; set; } = Array.Empty<string>();
-  public IEnumerable<FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<ECER.Clients.RegistryPortal.Server.Applications.FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<ECER.Clients.RegistryPortal.Server.Applications.FileInfo>();
   public IEnumerable<string> NewProgramConfirmationFiles { get; set; } = Array.Empty<string>();
-  public IEnumerable<FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<ECER.Clients.RegistryPortal.Server.Applications.FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<ECER.Clients.RegistryPortal.Server.Applications.FileInfo>();
   public CourseOutlineOptions? CourseOutlineOptions { get; set; }
   public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
   public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
