@@ -103,12 +103,16 @@ internal sealed partial class ApplicationRepository
     //  }
     //}
 
-    await AddFilesToTranscript(transcript, transcriptDocuments.NewCourseOutlineFiles, cancellationToken);
-    await AddFilesToTranscript(transcript, transcriptDocuments.NewProgramConfirmationFiles, cancellationToken);
+    await AddFilesToTranscript(transcript, transcriptDocuments.NewCourseOutlineFiles, "CourseOutlineFiles", cancellationToken);
+    if (transcriptDocuments.NewCourseOutlineFiles.Any()) transcript.ecer_CourseOutlineReceived = true;
+    await AddFilesToTranscript(transcript, transcriptDocuments.NewProgramConfirmationFiles, "ProgramConfirmationFiles", cancellationToken);
+    if (transcriptDocuments.NewProgramConfirmationFiles.Any()) transcript.ecer_ProgramConfirmationFormReceived = true;
+    context.UpdateObject(transcript);
+    context.SaveChanges();
     return transcript.ecer_Applicationid.Id.ToString();
   }
 
-  private async Task AddFilesToTranscript(ecer_Transcript transcript, IEnumerable<string> fileIds, CancellationToken ct)
+  private async Task AddFilesToTranscript(ecer_Transcript transcript, IEnumerable<string> fileIds, string tagName, CancellationToken ct)
   {
     await Task.CompletedTask;
 
@@ -129,12 +133,16 @@ internal sealed partial class ApplicationRepository
         bcgov_DocumentUrlId = Guid.Parse(fileId),
         bcgov_Url = destinationFolder,
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
-        StateCode = bcgov_documenturl_statecode.Active
+        StateCode = bcgov_documenturl_statecode.Active,
       };
 
       context.AddObject(documenturl);
       context.AddLink(documenturl, bcgov_DocumentUrl.Fields.bcgov_contact_bcgov_documenturl, applicant);
       context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_TranscriptId, transcript);
+
+      var tag = context.bcgov_tagSet.SingleOrDefault(t => t.bcgov_name.Contains(tagName));
+      if (tag == null) throw new InvalidOperationException($"Tag {tagName} not found");
+      context.AddLink(documenturl, bcgov_DocumentUrl.Fields.bcgov_tag1_bcgov_documenturl, tag);
     }
   }
 }

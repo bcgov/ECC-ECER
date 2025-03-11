@@ -157,7 +157,27 @@ public class ApplicationMapper : Profile
       .ForCtorParam(nameof(TranscriptStatus.EducationalInstitutionName),
         opt => opt.MapFrom(src => src.EducationalInstitutionName))
       .ForCtorParam(nameof(TranscriptStatus.Status),
-        opt => opt.MapFrom(src => src.Status));
+        opt => opt.MapFrom(src => src.Status))
+      .ForCtorParam(nameof(TranscriptStatus.programName),
+        opt => opt.MapFrom(src => src.ProgramName))
+      .ForMember(src => src.TranscriptReceivedByRegistry,
+        opt => opt.MapFrom(src => src.TranscriptReceivedByRegistry))
+      .ForMember(src => src.ComprehensiveReportReceivedByRegistry,
+        opt => opt.MapFrom(src => src.ComprehensiveReportReceivedByRegistry))
+      .ForMember(src => src.CourseOutlineReceivedByRegistry,
+        opt => opt.MapFrom(src => src.CourseOutlineReceivedByRegistry))
+      .ForMember(src => src.ProgramConfirmationReceivedByRegistry,
+        opt => opt.MapFrom(src => src.ProgramConfirmationReceivedByRegistry))
+      .ForMember(src => src.CourseOutlineFiles,
+        opt => opt.MapFrom(src => src.CourseOutlineFiles))
+      .ForMember(src => src.ProgramConfirmationFiles,
+        opt => opt.MapFrom(src => src.ProgramConfirmationFiles))
+       .ForMember(src => src.ComprehensiveReportOptions,
+        opt => opt.MapFrom(src => src.ComprehensiveReportOptions))
+      .ForMember(src => src.CourseOutlineOptions,
+        opt => opt.MapFrom(src => src.CourseOutlineOptions))
+      .ForMember(src => src.ProgramConfirmationOptions,
+        opt => opt.MapFrom(src => src.ProgramConfirmationOptions));
 
     CreateMap<Managers.Registry.Contract.Applications.ProfessionalDevelopment, ProfessionalDevelopmentStatus>()
       .ForCtorParam(nameof(ProfessionalDevelopmentStatus.Id),

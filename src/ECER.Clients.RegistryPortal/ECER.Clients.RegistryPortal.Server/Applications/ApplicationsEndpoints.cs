@@ -394,7 +394,7 @@ public record ProfessionalDevelopment([Required] string CourseName, [Required] s
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
-  public IEnumerable<ECER.Clients.RegistryPortal.Server.Applications.FileInfo> Files { get; set; } = Array.Empty<ECER.Clients.RegistryPortal.Server.Applications.FileInfo>();
+  public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
 }
 public record Transcript(string? EducationalInstitutionName, [Required] string ProgramName, [Required] string StudentLastName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] bool IsNameUnverified, [Required] EducationRecognition EducationRecognition, [Required] EducationOrigin EducationOrigin)
 {
@@ -545,9 +545,17 @@ public record FileInfo(string Id)
   public string? Name { get; set; } = string.Empty;
   public string? Size { get; set; } = string.Empty;
 }
-public record TranscriptStatus(string Id, TranscriptStage Status, string EducationalInstitutionName)
+public record TranscriptStatus(string Id, TranscriptStage Status, string EducationalInstitutionName, string programName)
 {
-  public TranscriptDocuments? TranscriptDocuments { get; set; }
+  public IEnumerable<FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public CourseOutlineOptions? CourseOutlineOptions { get; set; }
+  public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
+  public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
+  public bool? CourseOutlineReceivedByRegistry { get; set; }
+  public bool? ProgramConfirmationReceivedByRegistry { get; set; }
+  public bool? TranscriptReceivedByRegistry { get; set; }
+  public bool? ComprehensiveReportReceivedByRegistry { get; set; }
 }
 
 public record WorkExperienceReferenceStatus(string Id, WorkExperienceRefStage Status, string FirstName, string LastName, string EmailAddress)
@@ -627,9 +635,7 @@ public enum ProfessionalDevelopmentStatusCode
 public record TranscriptDocuments(string ApplicationId, string TranscriptId)
 {
   public IEnumerable<string> NewCourseOutlineFiles { get; set; } = Array.Empty<string>();
-  public IEnumerable<ECER.Clients.RegistryPortal.Server.Applications.FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<ECER.Clients.RegistryPortal.Server.Applications.FileInfo>();
   public IEnumerable<string> NewProgramConfirmationFiles { get; set; } = Array.Empty<string>();
-  public IEnumerable<ECER.Clients.RegistryPortal.Server.Applications.FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<ECER.Clients.RegistryPortal.Server.Applications.FileInfo>();
   public CourseOutlineOptions? CourseOutlineOptions { get; set; }
   public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
   public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }

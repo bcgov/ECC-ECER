@@ -68,6 +68,15 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public Country? Country { get; set; }
   public Province? Province { get; set; }
   public PostSecondaryInstitution? PostSecondaryInstitution { get; set; }
+  public bool? CourseOutlineReceivedByRegistry { get; set; }
+  public bool? ProgramConfirmationReceivedByRegistry { get; set; }
+  public bool? TranscriptReceivedByRegistry { get; set; }
+  public bool? ComprehensiveReportReceivedByRegistry { get; set; }
+  public IEnumerable<FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public CourseOutlineOptions? CourseOutlineOptions { get; set; }
+  public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
+  public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
 }
 
 public record ProfessionalDevelopment(string? Id, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
@@ -381,9 +390,7 @@ public enum ReferenceKnownTime
 public record TranscriptDocuments(string ApplicationId, string TranscriptId)
 {
   public IEnumerable<string> NewCourseOutlineFiles { get; set; } = Array.Empty<string>();
-  public IEnumerable<FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
   public IEnumerable<string> NewProgramConfirmationFiles { get; set; } = Array.Empty<string>();
-  public IEnumerable<FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
   public CourseOutlineOptions? CourseOutlineOptions { get; set; }
   public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
   public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }

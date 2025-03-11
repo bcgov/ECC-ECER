@@ -55,6 +55,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       .IncludeNested(a => a.ecer_transcript_InstituteCountryId)
       .IncludeNested(a => a.ecer_transcript_ProvinceId)
       .IncludeNested(a => a.ecer_transcript_postsecondaryinstitutionid)
+      .IncludeNested(a => a.ecer_bcgov_documenturl_TranscriptId)
       .Execute();
 
     return mapper.Map<IEnumerable<Application>>(results)!.ToList();
