@@ -2,11 +2,8 @@ import { defineConfig } from "cypress";
 import { env } from "process";
 
 // Define default devices if none are provided via environment variables.
-const defaultDevices = [
-  { device: "Desktop", width: 1280, height: 720 },
-  { device: "Mobile", width: 375, height: 667 }, // Example: iPhone 6 dimensions
-  { device: "Tablet", width: 768, height: 1024 }, // Example tablet dimensions
-];
+// can add multiple devices for testing
+const defaultDevices = [{ device: "Desktop", width: 1280, height: 720 }];
 
 export default defineConfig({
   e2e: {

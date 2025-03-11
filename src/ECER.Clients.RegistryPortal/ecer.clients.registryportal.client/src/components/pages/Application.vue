@@ -51,6 +51,7 @@
             <v-row>
               <v-col>
                 <v-btn
+                  id="btnSaveAndContinue"
                   v-if="showSaveButtons"
                   :loading="loadingStore.isLoading('draftapplication_put')"
                   rounded="lg"
@@ -59,7 +60,14 @@
                 >
                   Save and continue
                 </v-btn>
-                <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
+                <v-btn
+                  id="btnSubmitApplication"
+                  v-if="showSubmitApplication"
+                  rounded="lg"
+                  color="primary"
+                  :loading="loadingStore.isLoading('application_post')"
+                  @click="handleSubmit"
+                >
                   Submit application
                 </v-btn>
               </v-col>

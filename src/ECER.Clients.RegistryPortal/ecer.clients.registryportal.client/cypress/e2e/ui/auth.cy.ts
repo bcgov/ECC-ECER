@@ -5,21 +5,14 @@ interface DeviceConfig {
   height: number;
 }
 
-// Default device configurations.
-const defaultDevices: DeviceConfig[] = [
-  { device: "Desktop", width: 1280, height: 720 },
-  { device: "Mobile", width: 375, height: 667 },
-  { device: "Tablet", width: 768, height: 1024 },
-];
-
 // Compute devices synchronously using Cypress.env.
 // If the environment variable "DEVICES" is provided, parse it; otherwise, use the defaults.
 let devices: DeviceConfig[];
 try {
   const devicesEnv = Cypress.env("DEVICES");
-  devices = devicesEnv ? (JSON.parse(devicesEnv) as DeviceConfig[]) : defaultDevices;
+  devices = JSON.parse(devicesEnv) as DeviceConfig[];
 } catch (error) {
-  devices = defaultDevices;
+  devices = [];
 }
 
 // Precompute test cases outside of the describe block.
@@ -30,7 +23,7 @@ const testCases = devices.map(({ device, width, height }) => ({
   height,
 }));
 
-describe("Authentication Tests across Multiple Devices", () => {
+describe("BCSC Authentication Tests", () => {
   for (const test of testCases) {
     describe(test.title, () => {
       beforeEach(() => {
