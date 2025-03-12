@@ -99,6 +99,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_courseoutlinesreviewedName = "ecer_courseoutlinesreviewedname";
 			public const string ecer_DoesECERegistryHaveTranscript = "ecer_doeseceregistryhavetranscript";
 			public const string ecer_doeseceregistryhavetranscriptName = "ecer_doeseceregistryhavetranscriptname";
+			public const string ecer_ECERegistryalreadyhasmyComprehensiveReport = "ecer_eceregistryalreadyhasmycomprehensivereport";
+			public const string ecer_eceregistryalreadyhasmycomprehensivereportName = "ecer_eceregistryalreadyhasmycomprehensivereportname";
 			public const string ecer_EducationInstitutionFullName = "ecer_educationinstitutionfullname";
 			public const string ecer_EducationOrigin = "ecer_educationorigin";
 			public const string ecer_educationoriginName = "ecer_educationoriginname";
@@ -107,6 +109,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EducationTranscriptReviewed = "ecer_educationtranscriptreviewed";
 			public const string ecer_educationtranscriptreviewedName = "ecer_educationtranscriptreviewedname";
 			public const string ecer_EndDate = "ecer_enddate";
+			public const string ecer_Ihavemycourseoutlinessyllabiandwillupload = "ecer_ihavemycourseoutlinessyllabiandwillupload";
+			public const string ecer_ihavemycourseoutlinessyllabiandwilluploadName = "ecer_ihavemycourseoutlinessyllabiandwilluploadname";
+			public const string ecer_IhavemyProgramConfirmationandwillupload = "ecer_ihavemyprogramconfirmationandwillupload";
+			public const string ecer_ihavemyprogramconfirmationandwilluploadName = "ecer_ihavemyprogramconfirmationandwilluploadname";
+			public const string ecer_ihavesubmittedanapplicationtobcits = "ecer_ihavesubmittedanapplicationtobcits";
+			public const string ecer_ihavesubmittedanapplicationtobcitsName = "ecer_ihavesubmittedanapplicationtobcitsname";
 			public const string ecer_InstituteCountryId = "ecer_institutecountryid";
 			public const string ecer_InstituteCountryIdName = "ecer_institutecountryidname";
 			public const string ecer_InstituteCountryOther = "ecer_institutecountryother";
@@ -124,6 +132,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_isnameunverifiedName = "ecer_isnameunverifiedname";
 			public const string ecer_IsOfficialTranscriptRequested = "ecer_isofficialtranscriptrequested";
 			public const string ecer_isofficialtranscriptrequestedName = "ecer_isofficialtranscriptrequestedname";
+			public const string ecer_iwishtoapplyforafeewaiver = "ecer_iwishtoapplyforafeewaiver";
+			public const string ecer_iwishtoapplyforafeewaiverName = "ecer_iwishtoapplyforafeewaivername";
 			public const string ecer_LanguageofInstruction = "ecer_languageofinstruction";
 			public const string ecer_legacyeducationinstitutename = "ecer_legacyeducationinstitutename";
 			public const string ecer_legacyeducationtranscriptid = "ecer_legacyeducationtranscriptid";
@@ -660,6 +670,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_eceregistryalreadyhasmycomprehensivereport")]
+		public System.Nullable<bool> ecer_ECERegistryalreadyhasmyComprehensiveReport
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_eceregistryalreadyhasmycomprehensivereport");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_eceregistryalreadyhasmycomprehensivereport", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_eceregistryalreadyhasmycomprehensivereportname")]
+		public string ecer_eceregistryalreadyhasmycomprehensivereportName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_eceregistryalreadyhasmycomprehensivereport"))
+				{
+					return this.FormattedValues["ecer_eceregistryalreadyhasmycomprehensivereport"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationinstitutionfullname")]
 		public string ecer_EducationInstitutionFullName
 		{
@@ -783,6 +825,102 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_enddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ihavemycourseoutlinessyllabiandwillupload")]
+		public System.Nullable<bool> ecer_Ihavemycourseoutlinessyllabiandwillupload
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_ihavemycourseoutlinessyllabiandwillupload");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_ihavemycourseoutlinessyllabiandwillupload", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ihavemycourseoutlinessyllabiandwilluploadname")]
+		public string ecer_ihavemycourseoutlinessyllabiandwilluploadName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_ihavemycourseoutlinessyllabiandwillupload"))
+				{
+					return this.FormattedValues["ecer_ihavemycourseoutlinessyllabiandwillupload"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ihavemyprogramconfirmationandwillupload")]
+		public System.Nullable<bool> ecer_IhavemyProgramConfirmationandwillupload
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_ihavemyprogramconfirmationandwillupload");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_ihavemyprogramconfirmationandwillupload", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ihavemyprogramconfirmationandwilluploadname")]
+		public string ecer_ihavemyprogramconfirmationandwilluploadName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_ihavemyprogramconfirmationandwillupload"))
+				{
+					return this.FormattedValues["ecer_ihavemyprogramconfirmationandwillupload"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ihavesubmittedanapplicationtobcits")]
+		public System.Nullable<bool> ecer_ihavesubmittedanapplicationtobcits
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_ihavesubmittedanapplicationtobcits");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_ihavesubmittedanapplicationtobcits", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ihavesubmittedanapplicationtobcitsname")]
+		public string ecer_ihavesubmittedanapplicationtobcitsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_ihavesubmittedanapplicationtobcits"))
+				{
+					return this.FormattedValues["ecer_ihavesubmittedanapplicationtobcits"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1049,6 +1187,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_isofficialtranscriptrequested"))
 				{
 					return this.FormattedValues["ecer_isofficialtranscriptrequested"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_iwishtoapplyforafeewaiver")]
+		public System.Nullable<bool> ecer_iwishtoapplyforafeewaiver
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_iwishtoapplyforafeewaiver");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_iwishtoapplyforafeewaiver", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_iwishtoapplyforafeewaivername")]
+		public string ecer_iwishtoapplyforafeewaiverName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_iwishtoapplyforafeewaiver"))
+				{
+					return this.FormattedValues["ecer_iwishtoapplyforafeewaiver"];
 				}
 				else
 				{
