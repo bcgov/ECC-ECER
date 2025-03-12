@@ -44,11 +44,16 @@
       </v-card-text>
     </v-card>
     <div v-if="currentStep === 2">
-      <ApplicationSummaryTranscriptListItem
-        v-for="transcript in applicationStatus?.transcriptsStatus"
-        :key="transcript.id?.toString()"
-        :name="transcript.educationalInstitutionName"
-        :status="transcript.status"
+      <template v-for="transcript in applicationStatus?.transcriptsStatus" :key="transcript.id?.toString()">
+        <ApplicationSummaryHeader :text="`${transcript.educationalInstitutionName} - ${transcript.programName}`" />
+        <ApplicationSummaryTranscriptListItem :name="transcript.educationalInstitutionName" :status="transcript.status" />
+      </template>
+      <ApplicationSummaryHeader text="References" />
+      <ApplicationSummaryActionListItem
+        v-if="showWorkExperience"
+        :active="totalObservedWorkExperienceHours < totalRequiredWorkExperienceHours"
+        :text="`${totalRequiredWorkExperienceHours} hours of work experience with reference`"
+        :go-to="() => router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: route.params.applicationId } })"
       />
       <ApplicationSummaryCharacterReferenceListItem
         v-for="reference in applicationStatus?.characterReferencesStatus"
@@ -69,6 +74,7 @@
         text="Add character reference"
         :go-to="() => router.push({ name: 'addCharacterReference', params: { applicationId: route.params.applicationId } })"
       />
+      <ApplicationSummaryHeader v-if="showOtherInformation" text="Other information" />
       <ApplicationSummaryActionListItem
         v-for="(previousName, index) in userStore.unverifiedPreviousNames"
         :key="index"
@@ -87,12 +93,6 @@
         :text="`Proof of previous name ${previousName.firstName} ${previousName.lastName}`"
         :go-to="() => router.push({ name: 'profile' })"
         :active="false"
-      />
-      <ApplicationSummaryActionListItem
-        v-if="showWorkExperience"
-        :active="totalObservedWorkExperienceHours < totalRequiredWorkExperienceHours"
-        :text="`${totalRequiredWorkExperienceHours} hours of work experience with reference`"
-        :go-to="() => router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: route.params.applicationId } })"
       />
     </div>
     <v-card v-if="currentStep === 3" elevation="0" rounded="0" class="border-t border-b">
@@ -144,11 +144,18 @@
             <p>You need to provide the following items.</p>
           </v-card-text>
         </v-card>
-        <ApplicationSummaryTranscriptListItem
-          v-for="transcript in waitingForDetailsTranscripts"
-          :key="transcript.id?.toString()"
-          :name="transcript.educationalInstitutionName"
-          :status="transcript.status"
+        <template v-for="transcript in waitingForDetailsTranscripts" :key="transcript.id?.toString()">
+          <ApplicationSummaryHeader :text="`${transcript.educationalInstitutionName} - ${transcript.programName}`" />
+          <ApplicationSummaryTranscriptListItem :name="transcript.educationalInstitutionName" :status="transcript.status" />
+        </template>
+        <ApplicationSummaryHeader
+          v-if="
+            !hasCharacterReference ||
+            waitingForResponseCharacterReferences.length > 0 ||
+            addMoreProfessionalDevelopmentFlag ||
+            addMoreWorkExperienceReferencesFlag
+          "
+          text="References"
         />
         <ApplicationSummaryActionListItem
           v-if="!hasCharacterReference"
@@ -202,6 +209,7 @@ import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHe
 import ApplicationSummaryActionListItem from "./ApplicationSummaryActionListItem.vue";
 import ApplicationSummaryCharacterReferenceListItem from "./ApplicationSummaryCharacterReferenceListItem.vue";
 import ApplicationSummaryTranscriptListItem from "./ApplicationSummaryTranscriptListItem.vue";
+import ApplicationSummaryHeader from "./ApplicationSummaryHeader.vue";
 
 export default defineComponent({
   name: "ApplicationSummary",
@@ -210,6 +218,7 @@ export default defineComponent({
     ApplicationSummaryTranscriptListItem,
     ApplicationSummaryCharacterReferenceListItem,
     ApplicationSummaryActionListItem,
+    ApplicationSummaryHeader,
   },
   setup: async () => {
     const { smAndUp } = useDisplay();
@@ -358,6 +367,13 @@ export default defineComponent({
     },
     totalRequiredProfessionalDevelopmentHours(): number {
       return 40;
+    },
+    showOtherInformation(): boolean {
+      return (
+        this.userStore.unverifiedPreviousNames.length > 0 ||
+        this.userStore.pendingforDocumentsPreviousNames.length > 0 ||
+        this.userStore.readyForVerificationPreviousNames.length > 0
+      );
     },
   },
   methods: {
