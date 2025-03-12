@@ -542,9 +542,7 @@ declare namespace Components {
       applicationId?: string | null;
       transcriptId?: string | null;
       newCourseOutlineFiles?: string[] | null;
-      courseOutlineFiles?: FileInfo[] | null;
       newProgramConfirmationFiles?: string[] | null;
-      programConfirmationFiles?: FileInfo[] | null;
       courseOutlineOptions?: CourseOutlineOptions;
       comprehensiveReportOptions?: ComprehensiveReportOptions;
       programConfirmationOptions?: ProgramConfirmationOptions;
@@ -554,6 +552,16 @@ declare namespace Components {
       id?: string | null;
       status?: TranscriptStage;
       educationalInstitutionName?: string | null;
+      programName?: string | null;
+      courseOutlineFiles?: FileInfo[] | null;
+      programConfirmationFiles?: FileInfo[] | null;
+      courseOutlineOptions?: CourseOutlineOptions;
+      comprehensiveReportOptions?: ComprehensiveReportOptions;
+      programConfirmationOptions?: ProgramConfirmationOptions;
+      courseOutlineReceivedByRegistry?: boolean | null;
+      programConfirmationReceivedByRegistry?: boolean | null;
+      transcriptReceivedByRegistry?: boolean | null;
+      comprehensiveReportReceivedByRegistry?: boolean | null;
     }
     export type UnabletoProvideReferenceReasons =
       | "Iamunabletoatthistime"
