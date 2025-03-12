@@ -1,6 +1,8 @@
-﻿using Amazon;
+﻿using Alba;
+using Amazon;
 using AutoMapper;
 using Bogus;
+using Bogus.DataSets;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.MetadataResources;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +16,7 @@ using CertificationType = ECER.Resources.Documents.Applications.CertificationTyp
 using CharacterReference = ECER.Resources.Documents.Applications.CharacterReference;
 using Transcript = ECER.Resources.Documents.Applications.Transcript;
 using WorkExperienceReference = ECER.Resources.Documents.Applications.WorkExperienceReference;
+using System.Net.Http.Headers;
 
 namespace ECER.Tests.Integration.Resources.Applications;
 
@@ -442,6 +445,99 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     await Assert.ThrowsAsync<InvalidOperationException>(async () => await repository.Cancel(savedApplicationId, CancellationToken.None));
   }
 
+  [Fact]
+  public async Task SaveApplicationTranscripts_ShouldSaveSuccessfully()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var transcript = CreateTranscript();
+    var applicationId = await repository.SaveApplication(new Application(null, applicantId, new[] { CertificationType.OneYear })
+    {
+      Transcripts = new List<Transcript> { transcript }
+    }, CancellationToken.None);
+
+    var applications = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
+    var application = applications.ShouldHaveSingleItem();
+    application.Transcripts.ShouldHaveSingleItem();
+    transcript = application.Transcripts.FirstOrDefault();
+    application.ApplicantId.ShouldBe(applicantId);
+    var firstFileId = await UploadFile();
+    var secondFileId = await UploadFile();
+    var transcriptDocuments = new TranscriptDocuments(applicationId, transcript!.Id!)
+    {
+        NewCourseOutlineFiles = new List<string> { firstFileId },
+        NewProgramConfirmationFiles = new List<string> { secondFileId }
+    };
+
+    var result = await repository.SaveApplicationTranscripts(transcriptDocuments, CancellationToken.None);
+    result.ShouldNotBeNull();
+  }
+
+  [Fact]
+  public async Task SaveApplicationTranscripts_ShouldThrowException_WhenApplicationOrTranscriptNotFound()
+  {
+    var transcriptDocuments = new TranscriptDocuments(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+
+    await Should.ThrowAsync<InvalidOperationException>(async () =>
+        await repository.SaveApplicationTranscripts(transcriptDocuments, CancellationToken.None));
+  }
+
+  [Fact]
+  public async Task SaveApplicationTranscripts_ShouldUpdateCourseOutlineOptions()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var transcript = CreateTranscript();
+    var applicationId = await repository.SaveApplication(new Application(null, applicantId, new[] { CertificationType.OneYear })
+    {
+      Transcripts = new List<Transcript> { transcript }
+    }, CancellationToken.None);
+
+    var applications = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
+    var application = applications.ShouldHaveSingleItem();
+    application.Transcripts.ShouldHaveSingleItem();
+    transcript = application.Transcripts.FirstOrDefault();
+    application.ApplicantId.ShouldBe(applicantId);
+
+    var transcriptDocuments = new TranscriptDocuments(applicationId, transcript!.Id!)
+    {
+        CourseOutlineOptions = CourseOutlineOptions.UploadNow
+    };
+
+    await repository.SaveApplicationTranscripts(transcriptDocuments, CancellationToken.None);
+
+    var freshApplication = await repository.Query(new ApplicationQuery { ById = transcriptDocuments.ApplicationId }, CancellationToken.None);
+    var freshTranscript = freshApplication.FirstOrDefault()?.Transcripts.FirstOrDefault();
+    freshTranscript.ShouldNotBeNull();
+    freshTranscript.CourseOutlineOptions.ShouldBe(CourseOutlineOptions.UploadNow);
+  }
+
+  [Fact]
+  public async Task SaveApplicationTranscripts_ShouldUpdateProgramConfirmationOptions()
+  {
+    var applicantId = Fixture.AuthenticatedBcscUserId;
+    var transcript = CreateTranscript();
+    var applicationId = await repository.SaveApplication(new Application(null, applicantId, new[] { CertificationType.OneYear })
+    {
+      Transcripts = new List<Transcript> { transcript }
+    }, CancellationToken.None);
+
+    var applications = await repository.Query(new ApplicationQuery { ById = applicationId }, default);
+    var application = applications.ShouldHaveSingleItem();
+    application.Transcripts.ShouldHaveSingleItem();
+    transcript = application.Transcripts.FirstOrDefault();
+    application.ApplicantId.ShouldBe(applicantId);
+    var transcriptDocuments = new TranscriptDocuments(applicationId, transcript!.Id!)
+    {
+        ProgramConfirmationOptions = ProgramConfirmationOptions.UploadNow
+    };
+
+    await repository.SaveApplicationTranscripts(transcriptDocuments, CancellationToken.None);
+
+    var freshApplication = await repository.Query(new ApplicationQuery { ById = transcriptDocuments.ApplicationId }, CancellationToken.None);
+    var freshTranscript = freshApplication.FirstOrDefault()?.Transcripts.FirstOrDefault();
+    freshTranscript.ShouldNotBeNull();
+    freshTranscript.ProgramConfirmationOptions.ShouldBe(ProgramConfirmationOptions.UploadNow);
+  }
+
   private CharacterReference CreateCharacterReference()
   {
     var faker = new Faker("en_CA");
@@ -497,4 +593,35 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     };
     return transcript;
   }
+
+  private readonly Faker faker = new Faker("en_CA");
+
+  private async Task<string> UploadFile()
+  {
+    var fileLength = 1041;
+    var testFile = await faker.GenerateTestFile(fileLength);
+    var testFileId = Guid.NewGuid().ToString();
+    var testFolder = "tempfolder";
+    var testTags = "tag1=1,tag2=2";
+    var testClassification = "test-classification";
+    using var content = new StreamContent(testFile.Content);
+    content.Headers.ContentType = new MediaTypeHeaderValue(testFile.ContentType);
+
+    using var formData = new MultipartFormDataContent
+        {
+          { content, "file", testFile.FileName }
+        };
+
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.WithRequestHeader("file-classification", testClassification);
+      _.WithRequestHeader("file-tag", testTags);
+      _.WithRequestHeader("file-folder", testFolder);
+      _.Post.MultipartFormData(formData).ToUrl($"/api/files/{testFileId}");
+      _.StatusCodeShouldBeOk();
+    });
+    return testFileId;
+  }
+
 }
