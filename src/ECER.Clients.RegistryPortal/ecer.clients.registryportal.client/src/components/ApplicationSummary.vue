@@ -46,7 +46,30 @@
     <div v-if="currentStep === 2">
       <template v-for="transcript in applicationStatus?.transcriptsStatus" :key="transcript.id?.toString()">
         <ApplicationSummaryHeader :text="`${transcript.educationalInstitutionName} - ${transcript.programName}`" />
-        <ApplicationSummaryTranscriptListItem :name="transcript.educationalInstitutionName" :status="transcript.status" />
+        <ApplicationSummaryActionListItem
+          v-if="true"
+          :active="!transcript.transcriptReceivedByRegistry"
+          :text="`Transcript: ${transcript.educationalInstitutionName}`"
+          :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
+        />
+        <ApplicationSummaryActionListItem
+          v-if="true"
+          :active="!transcript.courseOutlineReceivedByRegistry"
+          :text="`Course outlines or syllabi: ${transcript.educationalInstitutionName}`"
+          :go-to="() => router.push({ name: 'manageCourseOutline', params: { applicationId: route.params.applicationId } })"
+        />
+        <ApplicationSummaryActionListItem
+          v-if="true"
+          :active="!transcript.programConfirmationReceivedByRegistry"
+          :text="`Program Confirmation Form: ${transcript.educationalInstitutionName}`"
+          :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
+        />
+        <ApplicationSummaryActionListItem
+          v-if="true"
+          :active="!transcript.comprehensiveReportReceivedByRegistry"
+          :text="`Comprehensive report: ${transcript.educationalInstitutionName}`"
+          :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
+        />
       </template>
       <ApplicationSummaryHeader text="References" />
       <ApplicationSummaryActionListItem
