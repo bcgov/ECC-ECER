@@ -252,16 +252,6 @@ export default defineComponent({
         let message = "Information saved. If you save and exit, you can resume your application later.";
         if (exit) message = "Information saved. You can resume your application later.";
         this.alertStore.setSuccessAlert(message);
-        console.log(
-          "user info set" +
-            {
-              firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
-              lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalLastName.id],
-              email: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.email.id],
-              phone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.primaryContactNumber.id],
-              dateOfBirth: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id],
-            },
-        );
 
         this.userStore.setUserInfo({
           firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
