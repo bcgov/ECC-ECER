@@ -131,7 +131,7 @@ internal sealed partial class ApplicationRepository
       context.AddLink(documenturl, bcgov_DocumentUrl.Fields.bcgov_contact_bcgov_documenturl, applicant);
       context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_TranscriptId, transcript);
 
-      var tag = context.bcgov_tagSet.SingleOrDefault(t => t.bcgov_name.Contains(tagName));
+      var tag = context.bcgov_tagSet.SingleOrDefault(t => t.bcgov_name == tagName);
       if (tag == null) throw new InvalidOperationException($"Tag {tagName} not found");
       context.AddLink(documenturl, bcgov_DocumentUrl.Fields.bcgov_tag1_bcgov_documenturl, tag);
     }
