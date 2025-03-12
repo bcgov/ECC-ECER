@@ -65,47 +65,38 @@ internal sealed partial class ApplicationRepository
     var transcript = context.ecer_TranscriptSet.SingleOrDefault(
       d => d.ecer_TranscriptId == Guid.Parse(transcriptDocuments.TranscriptId) && d.ecer_Applicationid.Id == Guid.Parse(transcriptDocuments.ApplicationId));
     if (transcript == null) throw new InvalidOperationException($"Application '{transcriptDocuments.ApplicationId}' not found or Transcript '{transcriptDocuments.TranscriptId}' not found");
-    // TODO: Add flags to transcript object
+
 
     if (transcriptDocuments.CourseOutlineOptions != null)
     {
       if (transcriptDocuments.CourseOutlineOptions.Value == CourseOutlineOptions.UploadNow)
       {
+        transcript.ecer_Ihavemycourseoutlinessyllabiandwillupload = true;
         transcript.ecer_isECEregistryalreadyhasmycourseoutline = false;
-        transcript.ecer_iseducationalinstitutionsendcourseoutline = false;
       }
       else if (transcriptDocuments.CourseOutlineOptions.Value == CourseOutlineOptions.RegistryAlreadyHas)
       {
+        transcript.ecer_Ihavemycourseoutlinessyllabiandwillupload = false;
         transcript.ecer_isECEregistryalreadyhasmycourseoutline = true;
-        transcript.ecer_iseducationalinstitutionsendcourseoutline = false;
       }
     }
-    //if (transcriptDocuments.ComprehensiveReportOptions != null)
-    //{
-    //  if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.FeeWaiver)
-    //  {
-    //    transcript
-    //  }
-    //  else if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.InternationalCredentialEvaluationService)
-    //  {
-    //  }
-    //  else if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.RegistryAlreadyHas)
-    //  {
-    //  }
-    //}
-    //if (transcriptDocuments.ProgramConfirmationOptions != null)
-    //{
-    //  if (transcriptDocuments.ProgramConfirmationOptions.Value == ProgramConfirmationOptions.UploadNow)
-    //  {
-    //  }
-    //  else if (transcriptDocuments.ProgramConfirmationOptions.Value == ProgramConfirmationOptions.RegistryAlreadyHas)
-    //  {
-    //  }
-    //}
+    if (transcriptDocuments.ProgramConfirmationOptions != null)
+    {
+      if (transcriptDocuments.ProgramConfirmationOptions.Value == ProgramConfirmationOptions.UploadNow)
+      {
+        transcript.ecer_IhavemyProgramConfirmationandwillupload = true;
+        transcript.ecer_isECEregistryhasprogramconfirmation = false;
+      }
+      else if (transcriptDocuments.ProgramConfirmationOptions.Value == ProgramConfirmationOptions.RegistryAlreadyHas)
+      {
+        transcript.ecer_IhavemyProgramConfirmationandwillupload = false;
+        transcript.ecer_isECEregistryhasprogramconfirmation = true;
+      }
+    }
 
-    await AddFilesToTranscript(transcript, transcriptDocuments.NewCourseOutlineFiles, "CourseOutlineFiles", cancellationToken);
+    await AddFilesToTranscript(transcript, transcriptDocuments.NewCourseOutlineFiles, "Course Outline", cancellationToken);
     if (transcriptDocuments.NewCourseOutlineFiles.Any()) transcript.ecer_CourseOutlineReceived = true;
-    await AddFilesToTranscript(transcript, transcriptDocuments.NewProgramConfirmationFiles, "ProgramConfirmationFiles", cancellationToken);
+    await AddFilesToTranscript(transcript, transcriptDocuments.NewProgramConfirmationFiles, "Program Confirmation Form", cancellationToken);
     if (transcriptDocuments.NewProgramConfirmationFiles.Any()) transcript.ecer_ProgramConfirmationFormReceived = true;
     context.UpdateObject(transcript);
     context.SaveChanges();
