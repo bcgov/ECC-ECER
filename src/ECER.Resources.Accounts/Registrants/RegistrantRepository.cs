@@ -172,7 +172,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     if (contact == null) throw new InvalidOperationException($"Registrant {registrant.Id} not found");
 
-    if (contact.StatusCode != Contact_StatusCode.Unverified) throw new InvalidOperationException($"SaveIdentityIds :: Registrant {registrant.Id} is not in Unverified state. State is :: {contact.StatusCode}");
+    if (contact.StatusCode != Contact_StatusCode.Unverified && contact.StatusCode != Contact_StatusCode.PendingforDocuments) throw new InvalidOperationException($"SaveIdentityIds :: Registrant {registrant.Id} is not in Unverified state. State is :: {contact.StatusCode}");
 
     var primaryId = context.ecer_identificationtypeSet.SingleOrDefault(i => i.ecer_identificationtypeId == Guid.Parse(profileIdentification.PrimaryIdTypeObjectId));
     var secondaryId = context.ecer_identificationtypeSet.SingleOrDefault(i => i.ecer_identificationtypeId == Guid.Parse(profileIdentification.SecondaryIdTypeObjectId));
