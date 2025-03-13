@@ -556,6 +556,8 @@ public record TranscriptStatus(string Id, TranscriptStage Status, string Educati
   public bool? ProgramConfirmationReceivedByRegistry { get; set; }
   public bool? TranscriptReceivedByRegistry { get; set; }
   public bool? ComprehensiveReportReceivedByRegistry { get; set; }
+  public Country? Country { get; set; }
+  public EducationRecognition EducationRecognition { get; set; }
 }
 
 public record WorkExperienceReferenceStatus(string Id, WorkExperienceRefStage Status, string FirstName, string LastName, string EmailAddress)

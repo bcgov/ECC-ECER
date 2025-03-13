@@ -176,6 +176,10 @@ public class ApplicationMapper : Profile
         opt => opt.MapFrom(src => src.ComprehensiveReportOptions))
       .ForMember(src => src.CourseOutlineOptions,
         opt => opt.MapFrom(src => src.CourseOutlineOptions))
+      .ForMember(src => src.Country,
+        opt => opt.MapFrom(src => src.Country))
+      .ForMember(src => src.EducationRecognition,
+        opt => opt.MapFrom(src => src.EducationRecognition))
       .ForMember(src => src.ProgramConfirmationOptions,
         opt => opt.MapFrom(src => src.ProgramConfirmationOptions));
 
