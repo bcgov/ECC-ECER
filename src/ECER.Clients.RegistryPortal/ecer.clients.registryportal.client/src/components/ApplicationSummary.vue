@@ -49,25 +49,25 @@
         <ApplicationSummaryActionListItem
           :active="!transcript.transcriptReceivedByRegistry"
           :text="`Transcript: ${transcript.educationalInstitutionName}`"
-          :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
+          :go-to="() => router.push({ name: 'viewTranscriptDetails', params: { applicationId: route.params.applicationId, transcriptId: transcript.id } })"
         />
         <ApplicationSummaryActionListItem
           v-if="transcript.educationRecognition === 'NotRecognized'"
           :active="!transcript.courseOutlineReceivedByRegistry"
           :text="`Course outlines or syllabi: ${transcript.educationalInstitutionName}`"
-          :go-to="() => router.push({ name: 'manageCourseOutline', params: { applicationId: route.params.applicationId } })"
+          :go-to="() => router.push({ name: 'viewCourseOutline', params: { applicationId: route.params.applicationId, transcriptId: transcript.id } })"
         />
         <ApplicationSummaryActionListItem
           v-if="transcript.educationRecognition === 'NotRecognized' && !applicationStatus?.certificationTypes?.includes('EceAssistant')"
           :active="!transcript.programConfirmationReceivedByRegistry"
           :text="`Program Confirmation Form: ${transcript.educationalInstitutionName}`"
-          :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
+          :go-to="() => router.push({ name: 'viewProgramConfirmation', params: { applicationId: route.params.applicationId, transcriptId: transcript.id } })"
         />
         <ApplicationSummaryActionListItem
           v-if="transcript.educationRecognition === 'NotRecognized' && transcript.country?.countryName?.toLowerCase() !== 'canada'"
           :active="!transcript.comprehensiveReportReceivedByRegistry"
           :text="`Comprehensive Report: ${transcript.educationalInstitutionName}`"
-          :go-to="() => router.push({ name: 'manageComprehensiveReport', params: { applicationId: route.params.applicationId } })"
+          :go-to="() => router.push({ name: 'viewComprehensiveReport', params: { applicationId: route.params.applicationId, transcriptId: transcript.id } })"
         />
       </template>
       <ApplicationSummaryHeader text="References" />
