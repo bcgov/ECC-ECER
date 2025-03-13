@@ -4,6 +4,7 @@ export default {
   },
   certificationType: {
     eceAssistantRadio: 'input[value="EceAssistant"]',
+    eceOneYearRadio: 'input[value="OneYear"]',
     continueButton: 'button[id="btnContinue"]',
   },
   applicationRequirements: {
