@@ -6,6 +6,7 @@
         <v-row>
           <v-col cols="12">
             <EceTextField
+              id="txtWorkReferenceLastName"
               v-model="lastName"
               :rules="[Rules.required('Enter your reference\'s last name')]"
               label="Reference last name"
@@ -15,12 +16,13 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            <EceTextField v-model="firstName" label="Reference first name" maxlength="100"></EceTextField>
+            <EceTextField id="txtWorkReferenceFirstName" v-model="firstName" label="Reference first name" maxlength="100"></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12">
             <EceTextField
+              id="txtWorkReferenceEmail"
               v-model="email"
               :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
               label="Reference email"
@@ -31,6 +33,7 @@
         <v-row>
           <v-col cols="12">
             <EceTextField
+              id="txtWorkReferencePhoneNumber"
               v-model="phoneNumber"
               :rules="[Rules.phoneNumber('Enter your reference\'s valid phone number')]"
               label="Reference phone number (Optional)"
@@ -40,6 +43,7 @@
         <v-row>
           <v-col cols="12">
             <EceTextField
+              id="txtWorkReferenceHours"
               v-model.number="hours"
               :rules="[Rules.required('Enter your work experience hours')]"
               type="number"
@@ -51,7 +55,14 @@
         </v-row>
 
         <v-row justify="start" class="ml-1 my-10">
-          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit" :loading="loadingStore.isLoading('draftapplication_put')">
+          <v-btn
+            id="btnSaveWorkReference"
+            rounded="lg"
+            color="primary"
+            class="mr-2"
+            @click="handleSubmit"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          >
             Save reference
           </v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel" :loading="loadingStore.isLoading('draftapplication_put')">Cancel</v-btn>
@@ -109,6 +120,7 @@
             complete their reference. If needed, we'll contact you for additional information.
           </p>
           <v-btn
+            id="btnAddWorkExperienceReference"
             v-else
             prepend-icon="mdi-plus"
             rounded="lg"
