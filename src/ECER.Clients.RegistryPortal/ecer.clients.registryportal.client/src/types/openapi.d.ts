@@ -562,6 +562,8 @@ declare namespace Components {
       programConfirmationReceivedByRegistry?: boolean | null;
       transcriptReceivedByRegistry?: boolean | null;
       comprehensiveReportReceivedByRegistry?: boolean | null;
+      country?: Country;
+      educationRecognition?: EducationRecognition;
     }
     export type UnabletoProvideReferenceReasons =
       | "Iamunabletoatthistime"
