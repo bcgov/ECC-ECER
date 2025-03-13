@@ -45,30 +45,29 @@
     </v-card>
     <div v-if="currentStep === 2">
       <template v-for="transcript in applicationStatus?.transcriptsStatus" :key="transcript.id?.toString()">
-        <ApplicationSummaryHeader :text="`${transcript.educationalInstitutionName} - ${transcript.programName}`" />
+        <ApplicationSummaryHeader :text="getTranscriptHeaderString(transcript)" />
         <ApplicationSummaryActionListItem
-          v-if="true"
           :active="!transcript.transcriptReceivedByRegistry"
           :text="`Transcript: ${transcript.educationalInstitutionName}`"
           :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
         />
         <ApplicationSummaryActionListItem
-          v-if="true"
+          v-if="transcript.educationRecognition === 'NotRecognized'"
           :active="!transcript.courseOutlineReceivedByRegistry"
           :text="`Course outlines or syllabi: ${transcript.educationalInstitutionName}`"
           :go-to="() => router.push({ name: 'manageCourseOutline', params: { applicationId: route.params.applicationId } })"
         />
         <ApplicationSummaryActionListItem
-          v-if="true"
+          v-if="transcript.educationRecognition === 'NotRecognized' && !applicationStatus?.certificationTypes?.includes('EceAssistant')"
           :active="!transcript.programConfirmationReceivedByRegistry"
           :text="`Program Confirmation Form: ${transcript.educationalInstitutionName}`"
           :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
         />
         <ApplicationSummaryActionListItem
-          v-if="true"
+          v-if="transcript.educationRecognition === 'NotRecognized' && transcript.country?.countryName?.toLowerCase() !== 'canada'"
           :active="!transcript.comprehensiveReportReceivedByRegistry"
-          :text="`Comprehensive report: ${transcript.educationalInstitutionName}`"
-          :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
+          :text="`Comprehensive Report: ${transcript.educationalInstitutionName}`"
+          :go-to="() => router.push({ name: 'manageComprehensiveReport', params: { applicationId: route.params.applicationId } })"
         />
       </template>
       <ApplicationSummaryHeader text="References" />
@@ -168,8 +167,30 @@
           </v-card-text>
         </v-card>
         <template v-for="transcript in waitingForDetailsTranscripts" :key="transcript.id?.toString()">
-          <ApplicationSummaryHeader :text="`${transcript.educationalInstitutionName} - ${transcript.programName}`" />
-          <ApplicationSummaryTranscriptListItem :name="transcript.educationalInstitutionName" :status="transcript.status" />
+          <ApplicationSummaryHeader :text="getTranscriptHeaderString(transcript)" />
+          <ApplicationSummaryActionListItem
+            :active="!transcript.transcriptReceivedByRegistry"
+            :text="`Transcript: ${transcript.educationalInstitutionName}`"
+            :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
+          />
+          <ApplicationSummaryActionListItem
+            v-if="transcript.educationRecognition === 'NotRecognized'"
+            :active="!transcript.courseOutlineReceivedByRegistry"
+            :text="`Course outlines or syllabi: ${transcript.educationalInstitutionName}`"
+            :go-to="() => router.push({ name: 'manageCourseOutline', params: { applicationId: route.params.applicationId } })"
+          />
+          <ApplicationSummaryActionListItem
+            v-if="transcript.educationRecognition === 'NotRecognized' && !applicationStatus?.certificationTypes?.includes('EceAssistant')"
+            :active="!transcript.programConfirmationReceivedByRegistry"
+            :text="`Program Confirmation Form: ${transcript.educationalInstitutionName}`"
+            :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
+          />
+          <ApplicationSummaryActionListItem
+            v-if="transcript.educationRecognition === 'NotRecognized' && transcript.country?.countryName?.toLowerCase() !== 'canada'"
+            :active="!transcript.comprehensiveReportReceivedByRegistry"
+            :text="`Comprehensive Report: ${transcript.educationalInstitutionName}`"
+            :go-to="() => router.push({ name: 'manageComprehensiveReport', params: { applicationId: route.params.applicationId } })"
+          />
         </template>
         <ApplicationSummaryHeader
           v-if="
@@ -400,6 +421,10 @@ export default defineComponent({
     },
   },
   methods: {
+    getTranscriptHeaderString(transcript: Components.Schemas.TranscriptStatus): string {
+      // Check if program name is null, if it is return educational institution
+      return transcript.programName ? `${transcript.educationalInstitutionName} - ${transcript.programName}` : `${transcript.educationalInstitutionName} `;
+    },
     goTo(id: string | undefined) {
       this.alertStore.setSuccessAlert("not implemented yet this will go to another route " + id);
     },
