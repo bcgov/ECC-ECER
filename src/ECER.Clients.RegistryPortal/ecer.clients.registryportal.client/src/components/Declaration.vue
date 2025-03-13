@@ -28,6 +28,7 @@
       <v-row>
         <v-col>
           <EceCheckbox
+            id="chkDeclaration"
             :model-value="checkboxValue"
             label="I understand and agree with the statements above"
             :checkableOnce="true"
@@ -48,7 +49,9 @@
         </v-col>
       </v-row>
     </v-form>
-    <v-btn class="mt-6" rounded="lg" color="primary" :loading="loadingStore.isLoading('draftapplication_put')" @click="continueClick">Continue</v-btn>
+    <v-btn class="mt-6" rounded="lg" color="primary" :loading="loadingStore.isLoading('draftapplication_put')" @click="continueClick" id="btnContinue">
+      Continue
+    </v-btn>
   </v-container>
 </template>
 

@@ -11,7 +11,10 @@
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "format": "prettier --write .",
-    "gen-api": "npx openapicmd typegen http://localhost:5120/swagger/v1/swagger.json > src/types/openapi.d.ts && npm run lint-fix"
+    "gen-api": "npx openapicmd typegen http://localhost:5120/swagger/v1/swagger.json > src/types/openapi.d.ts && npm run lint-fix",
+    "cy-open": "cypress open",
+    "cy-run": "cypress run",
+    "e2e-chrome": "cypress run --browser chrome --headed"
   },
   "dependencies": {
     "@mdi/font": "^7.3.67",
@@ -38,7 +41,11 @@
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.4.0",
     "@vue/tsconfig": "^0.7.0",
+    "cypress": "^14.0.3",
     "eslint": "^9.20.1",
+    "eslint-plugin-chai-friendly": "^1.0.1",
+    "eslint-plugin-cypress": "^4.1.0",
+    "eslint-plugin-mocha": "^10.5.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.1.4",
     "eslint-plugin-vue": "^9.32.0",

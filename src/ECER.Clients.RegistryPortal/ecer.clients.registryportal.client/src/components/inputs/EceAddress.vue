@@ -159,14 +159,14 @@ export default defineComponent({
     }
     // If country is Canada and province is not set, default it to British Columbia.
     if (this.modelValue.country === "Canada" && !this.modelValue.province) {
-      this.updateField("province", this.configStore.britishColumbia?.provinceName ?? "");
+      this.updateField("province", this.configStore.britishColumbia?.provinceCode ?? "");
     }
   },
   watch: {
     // When switching back to Canada, if no province is set, reset it to British Columbia.
     "modelValue.country"(newVal: string) {
       if (newVal === "Canada" && !this.modelValue.province) {
-        this.updateField("province", this.configStore.britishColumbia?.provinceName ?? "");
+        this.updateField("province", this.configStore.britishColumbia?.provinceCode ?? "");
       }
     },
   },

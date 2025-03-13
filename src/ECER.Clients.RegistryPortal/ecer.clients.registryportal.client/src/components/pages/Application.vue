@@ -51,15 +51,23 @@
             <v-row>
               <v-col>
                 <v-btn
+                  id="btnSaveAndContinue"
                   v-if="showSaveButtons"
-                  :loading="loadingStore.isLoading('draftapplication_put')"
+                  :loading="loadingStore.isLoading('draftapplication_put') || loadingStore.isLoading('profile_put') || loadingStore.isLoading('profile_get')"
                   rounded="lg"
                   color="primary"
                   @click="handleSaveAndContinue"
                 >
                   Save and continue
                 </v-btn>
-                <v-btn v-if="showSubmitApplication" rounded="lg" color="primary" :loading="loadingStore.isLoading('application_post')" @click="handleSubmit">
+                <v-btn
+                  id="btnSubmitApplication"
+                  v-if="showSubmitApplication"
+                  rounded="lg"
+                  color="primary"
+                  :loading="loadingStore.isLoading('application_post')"
+                  @click="handleSubmit"
+                >
                   Submit application
                 </v-btn>
               </v-col>
@@ -144,6 +152,10 @@ export default defineComponent({
     },
   },
   mounted() {
+    if (this.applicationStore.draftApplication.signedDate === null || this.applicationStore.draftApplication.certificationTypes?.length === 0) {
+      console.warn("user entered into /application route without a signedDate or certificationType");
+      this.router.push("/");
+    }
     this.mode = "list";
   },
   methods: {
@@ -161,7 +173,7 @@ export default defineComponent({
       } else {
         switch (this.wizardStore.currentStepStage) {
           case "ContactInformation":
-            this.saveProfile(false);
+            await this.saveProfile(false);
             this.incrementWizard();
             break;
           case "ProfessionalDevelopment":
@@ -256,6 +268,12 @@ export default defineComponent({
           phone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.primaryContactNumber.id],
           dateOfBirth: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id],
         });
+
+        //we should get the latest from getProfile and update the wizard. In case the wizard refreshes with stale profile data.
+        const userProfile = await getProfile();
+        if (userProfile !== null) {
+          this.userStore.setUserProfile(userProfile);
+        }
       }
     },
     printPage() {
