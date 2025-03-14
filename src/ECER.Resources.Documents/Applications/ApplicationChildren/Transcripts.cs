@@ -59,7 +59,7 @@ internal sealed partial class ApplicationRepository
     }
   }
 
-  public async Task<string> SaveApplicationTranscripts(TranscriptDocuments transcriptDocuments, CancellationToken cancellationToken)
+  public async Task<string> SaveApplicationTranscript(TranscriptDocuments transcriptDocuments, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
     var transcript = context.ecer_TranscriptSet.SingleOrDefault(

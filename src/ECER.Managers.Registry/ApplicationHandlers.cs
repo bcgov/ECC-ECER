@@ -99,7 +99,7 @@ public class ApplicationHandlers(
       throw new InvalidOperationException($"User already has a draft application with id '{existingApplication.Id}'");
     }
 
-    var applicationId = await applicationRepository.SaveApplicationTranscripts(mapper.Map<Resources.Documents.Applications.TranscriptDocuments>(request.TranscriptDocuments)!, cancellationToken);
+    var applicationId = await applicationRepository.SaveApplicationTranscript(mapper.Map<Resources.Documents.Applications.TranscriptDocuments>(request.TranscriptDocuments)!, cancellationToken);
 
     var freshApplications = await applicationRepository.Query(new ApplicationQuery
     {

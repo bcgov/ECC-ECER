@@ -9,7 +9,7 @@ public interface IApplicationRepository
 
   Task<string> SaveApplication(Application application, CancellationToken cancellationToken);
 
-  Task<string> SaveApplicationTranscripts(TranscriptDocuments transcriptDocuments, CancellationToken cancellationToken);
+  Task<string> SaveApplicationTranscript(TranscriptDocuments transcriptDocuments, CancellationToken cancellationToken);
 
   Task<string> Submit(string applicationId, CancellationToken cancellationToken);
 

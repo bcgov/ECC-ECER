@@ -468,7 +468,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
         NewProgramConfirmationFiles = new List<string> { secondFileId }
     };
 
-    var result = await repository.SaveApplicationTranscripts(transcriptDocuments, CancellationToken.None);
+    var result = await repository.SaveApplicationTranscript(transcriptDocuments, CancellationToken.None);
     result.ShouldNotBeNull();
   }
 
@@ -478,7 +478,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
     var transcriptDocuments = new TranscriptDocuments(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
 
     await Should.ThrowAsync<InvalidOperationException>(async () =>
-        await repository.SaveApplicationTranscripts(transcriptDocuments, CancellationToken.None));
+        await repository.SaveApplicationTranscript(transcriptDocuments, CancellationToken.None));
   }
 
   [Fact]
@@ -502,7 +502,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
         CourseOutlineOptions = CourseOutlineOptions.UploadNow
     };
 
-    await repository.SaveApplicationTranscripts(transcriptDocuments, CancellationToken.None);
+    await repository.SaveApplicationTranscript(transcriptDocuments, CancellationToken.None);
 
     var freshApplication = await repository.Query(new ApplicationQuery { ById = transcriptDocuments.ApplicationId }, CancellationToken.None);
     var freshTranscript = freshApplication.FirstOrDefault()?.Transcripts.FirstOrDefault();
@@ -530,7 +530,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
         ProgramConfirmationOptions = ProgramConfirmationOptions.UploadNow
     };
 
-    await repository.SaveApplicationTranscripts(transcriptDocuments, CancellationToken.None);
+    await repository.SaveApplicationTranscript(transcriptDocuments, CancellationToken.None);
 
     var freshApplication = await repository.Query(new ApplicationQuery { ById = transcriptDocuments.ApplicationId }, CancellationToken.None);
     var freshTranscript = freshApplication.FirstOrDefault()?.Transcripts.FirstOrDefault();
