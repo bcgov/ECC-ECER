@@ -16,7 +16,7 @@ jobs:
         name: Checkout
       - name: cypress.env.json
         run: |
-          echo '${{ secrets.CYPRESS_ENV_CI }}' > ./src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client/cypress/cypress.env.json
+          echo '${{ secrets.CYPRESS_ENV_CI }}' > ./src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client/cypress.env.json
       - uses: cypress-io/github-action@v6
         with:
           browser: chrome
