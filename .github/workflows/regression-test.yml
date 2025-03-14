@@ -8,7 +8,8 @@ on:
 jobs:
   regression:
     runs-on: ubuntu-22.04
-    fail-fast: false
+    strategy:
+      fail-fast: false
     environment: dev
     steps:
       - uses: actions/checkout@v4
@@ -26,4 +27,4 @@ jobs:
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-            CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+            CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
