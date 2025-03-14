@@ -121,7 +121,16 @@ internal class ApplicationRepositoryMapper : Profile
            .ForMember(d => d.ecer_EducationOrigin, opts => opts.MapFrom(s => s.EducationOrigin))
            .ForMember(d => d.ecer_transcript_InstituteCountryId, opts => opts.MapFrom(s => s.Country))
            .ForMember(d => d.ecer_transcript_ProvinceId, opts => opts.MapFrom(s => s.Province))
-           .ForMember(d => d.ecer_transcript_postsecondaryinstitutionid, opts => opts.MapFrom(s => s.PostSecondaryInstitution));
+           .ForMember(d => d.ecer_transcript_postsecondaryinstitutionid, opts => opts.MapFrom(s => s.PostSecondaryInstitution))
+           .ForSourceMember(d => d.CourseOutlineReceivedByRegistry, opts => opts.DoNotValidate())
+           .ForSourceMember(d => d.ProgramConfirmationReceivedByRegistry, opts => opts.DoNotValidate())
+           .ForSourceMember(d => d.TranscriptReceivedByRegistry, opts => opts.DoNotValidate())
+           .ForSourceMember(d => d.ComprehensiveReportReceivedByRegistry, opts => opts.DoNotValidate())
+           .ForSourceMember(d => d.CourseOutlineFiles, opts => opts.DoNotValidate())
+           .ForSourceMember(d => d.ProgramConfirmationFiles, opts => opts.DoNotValidate())
+           .ForSourceMember(d => d.CourseOutlineOptions, opts => opts.DoNotValidate())
+           .ForSourceMember(d => d.ComprehensiveReportOptions, opts => opts.DoNotValidate())
+           .ForSourceMember(d => d.ProgramConfirmationOptions, opts => opts.DoNotValidate());
 
     CreateMap<ecer_Transcript, Transcript>(MemberList.Source)
       .ForCtorParam(nameof(Transcript.Id), opt => opt.MapFrom(src => src.ecer_TranscriptId))

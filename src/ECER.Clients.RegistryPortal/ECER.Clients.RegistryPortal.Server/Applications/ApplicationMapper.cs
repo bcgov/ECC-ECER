@@ -55,6 +55,15 @@ public class ApplicationMapper : Profile
              opts => opts.MapFrom(src => src.CampusLocation))
       .ForMember(d => d.StudentMiddleName,
        opts => opts.MapFrom(src => src.StudentMiddleName))
+       .ForMember(d => d.CourseOutlineReceivedByRegistry, opts => opts.Ignore())
+       .ForMember(d => d.ProgramConfirmationReceivedByRegistry, opts => opts.Ignore())
+       .ForMember(d => d.TranscriptReceivedByRegistry, opts => opts.Ignore())
+       .ForMember(d => d.ComprehensiveReportReceivedByRegistry, opts => opts.Ignore())
+       .ForMember(d => d.CourseOutlineFiles, opts => opts.Ignore())
+       .ForMember(d => d.ProgramConfirmationFiles, opts => opts.Ignore())
+       .ForMember(d => d.CourseOutlineOptions, opts => opts.Ignore())
+       .ForMember(d => d.ComprehensiveReportOptions, opts => opts.Ignore())
+       .ForMember(d => d.ProgramConfirmationOptions, opts => opts.Ignore())
       .ReverseMap();
 
     CreateMap<CharacterReference, Managers.Registry.Contract.Applications.CharacterReference>()
