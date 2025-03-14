@@ -4,6 +4,7 @@ export default {
   },
   certificationType: {
     eceAssistantRadio: 'input[value="EceAssistant"]',
+    eceFiveYearRadio: 'input[value="FiveYears"]',
     continueButton: 'button[id="btnContinue"]',
   },
   applicationRequirements: {
@@ -36,6 +37,15 @@ export default {
     emailInput: 'input[id="txtReferenceEmail"]',
     phoneNumberInput: 'input[id="txtReferencePhoneNumber"]',
   },
+  workExperienceReference: {
+    addReferenceButton: 'button[id="btnAddWorkExperienceReference"]',
+    lastNameInput: 'input[id="txtWorkReferenceLastName"]',
+    firstNameInput: 'input[id="txtWorkReferenceFirstName"]',
+    emailInput: 'input[id="txtWorkReferenceEmail"]',
+    phoneNumberInput: 'input[id="txtWorkReferencePhoneNumber"]',
+    hoursInput: 'input[id="txtWorkReferenceHours"]',
+    saveReferenceButton: 'button[id="btnSaveWorkReference"]',
+  },
   datePicker: {
     monthDiv: "div.v-date-picker-month",
   },
@@ -46,6 +56,8 @@ export default {
     characterReferenceFirstName: 'p[id="characterReferenceFirstName"]',
     characterReferenceLastName: 'p[id="characterReferenceLastName"]',
     characterReferenceEmail: 'p[id="characterReferenceEmail"]',
+    workReferenceEmail: 'p[id="workReferenceEmail"]',
+    workReferenceName: 'h4[id="workReferenceName"]',
   },
   applicationSubmitted: {
     pageTitle: 'h1[id="titleApplicationSubmitted"]',
