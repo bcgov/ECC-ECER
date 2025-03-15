@@ -9,6 +9,8 @@ public interface IApplicationRepository
 
   Task<string> SaveApplication(Application application, CancellationToken cancellationToken);
 
+  Task<string> SaveApplicationTranscript(TranscriptDocuments transcriptDocuments, CancellationToken cancellationToken);
+
   Task<string> Submit(string applicationId, CancellationToken cancellationToken);
 
   Task<string> Cancel(string applicationId, CancellationToken cancellationToken);
@@ -66,6 +68,15 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public Country? Country { get; set; }
   public Province? Province { get; set; }
   public PostSecondaryInstitution? PostSecondaryInstitution { get; set; }
+  public bool? CourseOutlineReceivedByRegistry { get; set; }
+  public bool? ProgramConfirmationReceivedByRegistry { get; set; }
+  public bool? TranscriptReceivedByRegistry { get; set; }
+  public bool? ComprehensiveReportReceivedByRegistry { get; set; }
+  public IEnumerable<FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public CourseOutlineOptions? CourseOutlineOptions { get; set; }
+  public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
+  public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
 }
 
 public record ProfessionalDevelopment(string? Id, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
@@ -374,4 +385,32 @@ public enum ReferenceKnownTime
   From6monthsto1year,
   Lessthan6months,
   Morethan5years,
+}
+
+public record TranscriptDocuments(string ApplicationId, string TranscriptId)
+{
+  public IEnumerable<string> NewCourseOutlineFiles { get; set; } = Array.Empty<string>();
+  public IEnumerable<string> NewProgramConfirmationFiles { get; set; } = Array.Empty<string>();
+  public CourseOutlineOptions? CourseOutlineOptions { get; set; }
+  public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
+  public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
+}
+
+public enum CourseOutlineOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
+}
+
+public enum ComprehensiveReportOptions
+{
+  FeeWaiver,
+  InternationalCredentialEvaluationService,
+  RegistryAlreadyHas
+}
+
+public enum ProgramConfirmationOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
 }

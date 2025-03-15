@@ -9,6 +9,11 @@ namespace ECER.Managers.Registry.Contract.Applications;
 public record SaveDraftApplicationCommand(Application Application) : IRequest<Contract.Applications.Application?>;
 
 /// <summary>
+/// Save application transcript request
+/// </summary>
+/// <param name="TranscriptDocuments">The application transcript documents</param>
+public record SaveApplicationTranscriptCommand(TranscriptDocuments TranscriptDocuments) : IRequest<Contract.Applications.Application?>;
+/// <summary>
 /// Invokes draft application saving use case
 /// </summary>
 public record CancelDraftApplicationCommand(string applicationId, string userId) : IRequest<string>;
@@ -46,7 +51,15 @@ public record ApplicationSubmissionResult()
   public IEnumerable<string>? ValidationErrors { get; set; }
   public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
 }
-
+public record TranscriptDocuments(string ApplicationId, string TranscriptId)
+{
+  public IEnumerable<string> NewCourseOutlineFiles { get; set; } = Array.Empty<string>();
+  public IEnumerable<string> NewProgramConfirmationFiles { get; set; } = Array.Empty<string>();
+  public CourseOutlineOptions? CourseOutlineOptions { get; set; }
+  public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
+  public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
+  public string? RegistrantId { get; set; }
+}
 public record Application(string? Id, string RegistrantId, ApplicationStatus Status)
 {
   public DateTime? SubmittedOn { get; set; }
@@ -80,6 +93,15 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public Country? Country { get; set; }
   public Province? Province { get; set; }
   public PostSecondaryInstitution? PostSecondaryInstitution { get; set; }
+  public bool? CourseOutlineReceivedByRegistry { get; set; }
+  public bool? ProgramConfirmationReceivedByRegistry { get; set; }
+  public bool? TranscriptReceivedByRegistry { get; set; }
+  public bool? ComprehensiveReportReceivedByRegistry { get; set; }
+  public IEnumerable<FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public CourseOutlineOptions? CourseOutlineOptions { get; set; }
+  public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
+  public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
 }
 
 public record WorkExperienceReference(string? FirstName, string? LastName, string? EmailAddress, int? Hours)
@@ -104,7 +126,6 @@ public record ProfessionalDevelopment(string? Id, string? CourseName, string? Or
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<FileInfo> Files { get; set; } = Array.Empty<FileInfo>();
 }
-
 public record FileInfo(string Id)
 {
   public string? Url { get; set; } = string.Empty;
@@ -432,4 +453,23 @@ public enum CharacterReferenceStage
   Submitted,
   UnderReview,
   WaitingResponse
+}
+
+public enum CourseOutlineOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
+}
+
+public enum ComprehensiveReportOptions
+{
+  FeeWaiver,
+  InternationalCredentialEvaluationService,
+  RegistryAlreadyHas
+}
+
+public enum ProgramConfirmationOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
 }

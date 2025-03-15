@@ -137,6 +137,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_AssessorLeadYomiName = "ecer_assessorleadyominame";
 			public const string ecer_AssessorName = "ecer_assessorname";
 			public const string ecer_AssessorYomiName = "ecer_assessoryominame";
+			public const string ecer_CERReviewed = "ecer_cerreviewed";
+			public const string ecer_cerreviewedName = "ecer_cerreviewedname";
 			public const string ecer_Certificateid = "ecer_certificateid";
 			public const string ecer_CertificateidName = "ecer_certificateidname";
 			public const string ecer_CertificateLevel = "ecer_certificatelevel";
@@ -153,14 +155,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ComprehensiveEvaluationReportApproved = "ecer_comprehensiveevaluationreportapproved";
 			public const string ecer_comprehensiveevaluationreportapprovedName = "ecer_comprehensiveevaluationreportapprovedname";
 			public const string ecer_ComprehensiveEvaluationReportReceived = "ecer_comprehensiveevaluationreportreceived";
+			public const string ecer_ComprehensiveEvaluationReportReceivedDate = "ecer_comprehensiveevaluationreportreceiveddate";
 			public const string ecer_comprehensiveevaluationreportreceivedName = "ecer_comprehensiveevaluationreportreceivedname";
 			public const string ecer_Country = "ecer_country";
 			public const string ecer_CourseOutlineApproved = "ecer_courseoutlineapproved";
 			public const string ecer_courseoutlineapprovedName = "ecer_courseoutlineapprovedname";
 			public const string ecer_CourseOutlineReceived = "ecer_courseoutlinereceived";
+			public const string ecer_CourseOutlineReceivedDate = "ecer_courseoutlinereceiveddate";
 			public const string ecer_courseoutlinereceivedName = "ecer_courseoutlinereceivedname";
+			public const string ecer_CourseOutlinesReviewed = "ecer_courseoutlinesreviewed";
+			public const string ecer_courseoutlinesreviewedName = "ecer_courseoutlinesreviewedname";
 			public const string ecer_CurrentCertificationExpiryDate = "ecer_currentcertificationexpirydate";
 			public const string ecer_CurrentCertificationNumber = "ecer_currentcertificationnumber";
+			public const string ecer_CurriculumApproved = "ecer_curriculumapproved";
+			public const string ecer_curriculumapprovedName = "ecer_curriculumapprovedname";
 			public const string ecer_DateEscalated = "ecer_dateescalated";
 			public const string ecer_DateofBirth = "ecer_dateofbirth";
 			public const string ecer_DateSigned = "ecer_datesigned";
@@ -184,6 +192,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_educationrecognitionName = "ecer_educationrecognitionname";
 			public const string ecer_EducationTranscriptApproved = "ecer_educationtranscriptapproved";
 			public const string ecer_educationtranscriptapprovedName = "ecer_educationtranscriptapprovedname";
+			public const string ecer_EducationTranscriptReviewed = "ecer_educationtranscriptreviewed";
+			public const string ecer_educationtranscriptreviewedName = "ecer_educationtranscriptreviewedname";
 			public const string ecer_EmailAddress = "ecer_emailaddress";
 			public const string ecer_EscalateReason = "ecer_escalatereason";
 			public const string ecer_EscalatetoTeamLead = "ecer_escalatetoteamlead";
@@ -278,7 +288,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramConfirmationFormApproved = "ecer_programconfirmationformapproved";
 			public const string ecer_programconfirmationformapprovedName = "ecer_programconfirmationformapprovedname";
 			public const string ecer_ProgramConfirmationFormReceived = "ecer_programconfirmationformreceived";
+			public const string ecer_ProgramConfirmationFormReceivedDate = "ecer_programconfirmationformreceiveddate";
 			public const string ecer_programconfirmationformreceivedName = "ecer_programconfirmationformreceivedname";
+			public const string ecer_ProgramConfirmationReviewed = "ecer_programconfirmationreviewed";
+			public const string ecer_programconfirmationreviewedName = "ecer_programconfirmationreviewedname";
 			public const string ecer_Province = "ecer_province";
 			public const string ecer_ReadyforAssessment = "ecer_readyforassessment";
 			public const string ecer_ReadyforAssessmentDate = "ecer_readyforassessmentdate";
@@ -953,6 +966,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_cerreviewed")]
+		public System.Nullable<bool> ecer_CERReviewed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_cerreviewed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_cerreviewed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_cerreviewedname")]
+		public string ecer_cerreviewedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_cerreviewed"))
+				{
+					return this.FormattedValues["ecer_cerreviewed"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_Certificateid
 		{
@@ -1157,6 +1202,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_comprehensiveevaluationreportreceiveddate")]
+		public System.Nullable<System.DateTime> ecer_ComprehensiveEvaluationReportReceivedDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_comprehensiveevaluationreportreceiveddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_comprehensiveevaluationreportreceiveddate", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_comprehensiveevaluationreportreceivedname")]
 		public string ecer_comprehensiveevaluationreportreceivedName
 		{
@@ -1236,6 +1296,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseoutlinereceiveddate")]
+		public System.Nullable<System.DateTime> ecer_CourseOutlineReceivedDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_courseoutlinereceiveddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_courseoutlinereceiveddate", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseoutlinereceivedname")]
 		public string ecer_courseoutlinereceivedName
 		{
@@ -1245,6 +1320,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_courseoutlinereceived"))
 				{
 					return this.FormattedValues["ecer_courseoutlinereceived"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseoutlinesreviewed")]
+		public System.Nullable<bool> ecer_CourseOutlinesReviewed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_courseoutlinesreviewed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_courseoutlinesreviewed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseoutlinesreviewedname")]
+		public string ecer_courseoutlinesreviewedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_courseoutlinesreviewed"))
+				{
+					return this.FormattedValues["ecer_courseoutlinesreviewed"];
 				}
 				else
 				{
@@ -1286,6 +1393,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_currentcertificationnumber", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_curriculumapproved")]
+		public virtual ecer_YesNoNull? ecer_CurriculumApproved
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_curriculumapproved")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_curriculumapproved", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_curriculumapprovedname")]
+		public string ecer_curriculumapprovedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_curriculumapproved"))
+				{
+					return this.FormattedValues["ecer_curriculumapproved"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -1578,6 +1717,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_educationtranscriptapproved"))
 				{
 					return this.FormattedValues["ecer_educationtranscriptapproved"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationtranscriptreviewed")]
+		public System.Nullable<bool> ecer_EducationTranscriptReviewed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_educationtranscriptreviewed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_educationtranscriptreviewed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationtranscriptreviewedname")]
+		public string ecer_educationtranscriptreviewedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_educationtranscriptreviewed"))
+				{
+					return this.FormattedValues["ecer_educationtranscriptreviewed"];
 				}
 				else
 				{
@@ -3010,6 +3181,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programconfirmationformreceiveddate")]
+		public System.Nullable<System.DateTime> ecer_ProgramConfirmationFormReceivedDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_programconfirmationformreceiveddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programconfirmationformreceiveddate", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programconfirmationformreceivedname")]
 		public string ecer_programconfirmationformreceivedName
 		{
@@ -3019,6 +3205,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_programconfirmationformreceived"))
 				{
 					return this.FormattedValues["ecer_programconfirmationformreceived"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programconfirmationreviewed")]
+		public System.Nullable<bool> ecer_ProgramConfirmationReviewed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_programconfirmationreviewed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programconfirmationreviewed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programconfirmationreviewedname")]
+		public string ecer_programconfirmationreviewedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programconfirmationreviewed"))
+				{
+					return this.FormattedValues["ecer_programconfirmationreviewed"];
 				}
 				else
 				{
