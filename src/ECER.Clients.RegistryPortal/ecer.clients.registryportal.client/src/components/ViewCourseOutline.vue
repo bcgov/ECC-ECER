@@ -125,6 +125,8 @@ export default defineComponent({
       } else if (valid) {
         const { error } = await setTranscriptDocumentsAndOptions({
           courseOutlineOptions: this.courseOutlineOptions,
+          programConfirmationOptions: this.transcript?.programConfirmationOptions,
+          comprehensiveReportOptions: this.transcript?.comprehensiveReportOptions,
           newCourseOutlineFiles: this.newFiles,
           applicationId: this.applicationId,
           transcriptId: this.transcriptId,
