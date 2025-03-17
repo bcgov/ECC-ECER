@@ -124,10 +124,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_iseceregistryalreadyhasmycourseoutlineName = "ecer_iseceregistryalreadyhasmycourseoutlinename";
 			public const string ecer_isECEregistryhasprogramconfirmation = "ecer_iseceregistryhasprogramconfirmation";
 			public const string ecer_iseceregistryhasprogramconfirmationName = "ecer_iseceregistryhasprogramconfirmationname";
-			public const string ecer_iseducationalinstitutionsendcourseoutline = "ecer_iseducationalinstitutionsendcourseoutline";
-			public const string ecer_iseducationalinstitutionsendcourseoutlineName = "ecer_iseducationalinstitutionsendcourseoutlinename";
-			public const string ecer_iseducationalinstitutionsendprogram = "ecer_iseducationalinstitutionsendprogram";
-			public const string ecer_iseducationalinstitutionsendprogramName = "ecer_iseducationalinstitutionsendprogramname";
 			public const string ecer_IsNameUnverified = "ecer_isnameunverified";
 			public const string ecer_isnameunverifiedName = "ecer_isnameunverifiedname";
 			public const string ecer_IsOfficialTranscriptRequested = "ecer_isofficialtranscriptrequested";
@@ -1059,70 +1055,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_iseceregistryhasprogramconfirmation"))
 				{
 					return this.FormattedValues["ecer_iseceregistryhasprogramconfirmation"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_iseducationalinstitutionsendcourseoutline")]
-		public System.Nullable<bool> ecer_iseducationalinstitutionsendcourseoutline
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_iseducationalinstitutionsendcourseoutline");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_iseducationalinstitutionsendcourseoutline", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_iseducationalinstitutionsendcourseoutlinename")]
-		public string ecer_iseducationalinstitutionsendcourseoutlineName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_iseducationalinstitutionsendcourseoutline"))
-				{
-					return this.FormattedValues["ecer_iseducationalinstitutionsendcourseoutline"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_iseducationalinstitutionsendprogram")]
-		public System.Nullable<bool> ecer_iseducationalinstitutionsendprogram
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_iseducationalinstitutionsendprogram");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_iseducationalinstitutionsendprogram", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_iseducationalinstitutionsendprogramname")]
-		public string ecer_iseducationalinstitutionsendprogramName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_iseducationalinstitutionsendprogram"))
-				{
-					return this.FormattedValues["ecer_iseducationalinstitutionsendprogram"];
 				}
 				else
 				{
