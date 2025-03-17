@@ -37,7 +37,13 @@
       <v-row v-if="showFileInput">
         <v-col>
           <p class="mb-3"><b>Add your Program Confirmation Form</b></p>
-          <FileUploader :show-add-file-button="true" :max-number-of-files="3" @update:files="handleFileUpdate" />
+          <FileUploader
+            :user-files="generateUserPrimaryFileArray"
+            :show-add-file-button="true"
+            :max-number-of-files="3"
+            :can-delete-files="false"
+            @update:files="handleFileUpdate"
+          />
         </v-col>
       </v-row>
     </v-form>
@@ -57,6 +63,7 @@ import FileUploader from "@/components/FileUploader.vue";
 import type { FileItem } from "./UploadFileItem.vue";
 import * as Rules from "@/utils/formRules";
 import type { ProgramConfirmationOptions } from "@/types/openapi";
+import { parseHumanFileSize } from "@/utils/functions";
 import type { VForm } from "vuetify/components";
 
 export default defineComponent({
@@ -114,6 +121,27 @@ export default defineComponent({
     return { router, transcript, alertStore, Rules, programConfirmationOptions, items, areAttachedFilesValid, isFileUploadInProgress, newFiles };
   },
   computed: {
+    generateUserPrimaryFileArray() {
+      const userFileList: FileItem[] = [];
+
+      if (this.transcript?.programConfirmationFiles) {
+        for (let file of this.transcript?.programConfirmationFiles) {
+          const newFileItem: FileItem = {
+            fileId: file.id!,
+            fileErrors: [],
+            fileSize: parseHumanFileSize(file.size!),
+            fileName: file.name!,
+            progress: 101,
+            file: new File([], file.name!),
+            storageFolder: "permanent",
+          };
+
+          userFileList.push(newFileItem);
+        }
+      }
+
+      return userFileList;
+    },
     showFileInput(): boolean {
       return this.programConfirmationOptions === "UploadNow";
     },

@@ -35,7 +35,13 @@
             Check that you have all the relevant course outlines or syllabi before you add them here. The ECE Registry will contact you if additional
             information is required.
           </p>
-          <FileUploader :show-add-file-button="true" :max-number-of-files="24" @update:files="handleFileUpdate" />
+          <FileUploader
+            :user-files="generateUserPrimaryFileArray"
+            :show-add-file-button="true"
+            :max-number-of-files="24"
+            :can-delete-files="false"
+            @update:files="handleFileUpdate"
+          />
         </v-col>
       </v-row>
     </v-form>
@@ -54,6 +60,8 @@ import Breadcrumb from "./Breadcrumb.vue";
 import FileUploader from "@/components/FileUploader.vue";
 import type { FileItem } from "./UploadFileItem.vue";
 import * as Rules from "@/utils/formRules";
+import { parseHumanFileSize } from "@/utils/functions";
+
 import type { CourseOutlineOptions } from "@/types/openapi";
 import type { VForm } from "vuetify/components";
 
@@ -112,6 +120,27 @@ export default defineComponent({
     return { router, transcript, alertStore, Rules, courseOutlineOptions, items, areAttachedFilesValid, isFileUploadInProgress, newFiles };
   },
   computed: {
+    generateUserPrimaryFileArray() {
+      const userFileList: FileItem[] = [];
+
+      if (this.transcript?.courseOutlineFiles) {
+        for (let file of this.transcript?.courseOutlineFiles) {
+          const newFileItem: FileItem = {
+            fileId: file.id!,
+            fileErrors: [],
+            fileSize: parseHumanFileSize(file.size!),
+            fileName: file.name!,
+            progress: 101,
+            file: new File([], file.name!),
+            storageFolder: "permanent",
+          };
+
+          userFileList.push(newFileItem);
+        }
+      }
+
+      return userFileList;
+    },
     showFileInput(): boolean {
       return this.courseOutlineOptions === "UploadNow";
     },
