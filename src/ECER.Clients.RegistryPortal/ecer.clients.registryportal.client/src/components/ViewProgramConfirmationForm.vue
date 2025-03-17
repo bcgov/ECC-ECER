@@ -48,7 +48,7 @@
       </v-row>
     </v-form>
     <v-row class="mt-6">
-      <v-btn @click="handleSubmit" size="large" color="primary">Save</v-btn>
+      <v-btn :loading="loadingStore.isLoading('application_update_transcript_post')" @click="handleSubmit" size="large" color="primary">Save</v-btn>
     </v-row>
   </v-container>
 </template>
@@ -58,6 +58,7 @@ import { defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAlertStore } from "@/store/alert";
 import { getApplicationStatus, setTranscriptDocumentsAndOptions } from "@/api/application";
+import { useLoadingStore } from "@/store/loading";
 import Breadcrumb from "./Breadcrumb.vue";
 import FileUploader from "@/components/FileUploader.vue";
 import type { FileItem } from "./UploadFileItem.vue";
@@ -81,9 +82,10 @@ export default defineComponent({
   },
   setup: async (props) => {
     const alertStore = useAlertStore();
+
     const router = useRouter();
     const route = useRoute();
-
+    const loadingStore = useLoadingStore();
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
 
     const transcript = applicationStatus?.transcriptsStatus?.find((transcript) => transcript.id === props.transcriptId);
@@ -118,7 +120,7 @@ export default defineComponent({
       programConfirmationOptions = ref(transcript.programConfirmationOptions || undefined);
     }
 
-    return { router, transcript, alertStore, Rules, programConfirmationOptions, items, areAttachedFilesValid, isFileUploadInProgress, newFiles };
+    return { router, transcript, alertStore, Rules, programConfirmationOptions, items, areAttachedFilesValid, isFileUploadInProgress, newFiles, loadingStore };
   },
   computed: {
     generateUserPrimaryFileArray() {

@@ -46,7 +46,7 @@
       </v-row>
     </v-form>
     <v-row class="mt-6">
-      <v-btn @click="handleSubmit" size="large" color="primary">Save</v-btn>
+      <v-btn :loading="loadingStore.isLoading('application_update_transcript_post')" @click="handleSubmit" size="large" color="primary">Save</v-btn>
     </v-row>
   </v-container>
 </template>
@@ -64,6 +64,7 @@ import { parseHumanFileSize } from "@/utils/functions";
 
 import type { CourseOutlineOptions } from "@/types/openapi";
 import type { VForm } from "vuetify/components";
+import { useLoadingStore } from "@/store/loading";
 
 export default defineComponent({
   name: "ViewCourseOutline",
@@ -80,6 +81,7 @@ export default defineComponent({
   },
   setup: async (props) => {
     const alertStore = useAlertStore();
+    const loadingStore = useLoadingStore();
     const router = useRouter();
     const route = useRoute();
 
@@ -117,7 +119,7 @@ export default defineComponent({
       courseOutlineOptions = ref(transcript.courseOutlineOptions || undefined);
     }
 
-    return { router, transcript, alertStore, Rules, courseOutlineOptions, items, areAttachedFilesValid, isFileUploadInProgress, newFiles };
+    return { router, transcript, alertStore, Rules, courseOutlineOptions, items, areAttachedFilesValid, isFileUploadInProgress, newFiles, loadingStore };
   },
   computed: {
     generateUserPrimaryFileArray() {

@@ -38,7 +38,7 @@
       </v-row>
     </v-form>
     <v-row class="mt-6">
-      <v-btn @click="handleSubmit" size="large" color="primary">Save</v-btn>
+      <v-btn :loading="loadingStore.isLoading('application_update_transcript_post')" @click="handleSubmit" size="large" color="primary">Save</v-btn>
     </v-row>
   </v-container>
 </template>
@@ -50,6 +50,7 @@ import { useAlertStore } from "@/store/alert";
 import { getApplicationStatus, setTranscriptDocumentsAndOptions } from "@/api/application";
 import Breadcrumb from "./Breadcrumb.vue";
 import * as Rules from "@/utils/formRules";
+import { useLoadingStore } from "@/store/loading";
 import type { ComprehensiveReportOptions } from "@/types/openapi";
 import type { VForm } from "vuetify/components";
 
@@ -68,6 +69,7 @@ export default defineComponent({
   },
   setup: async (props) => {
     const alertStore = useAlertStore();
+    const loadingStore = useLoadingStore();
     const router = useRouter();
     const route = useRoute();
 
@@ -101,7 +103,7 @@ export default defineComponent({
       comprehensiveReportOptions = ref(transcript.comprehensiveReportOptions || undefined);
     }
 
-    return { router, transcript, alertStore, Rules, comprehensiveReportOptions, items };
+    return { router, transcript, alertStore, Rules, comprehensiveReportOptions, items, loadingStore };
   },
   methods: {
     async handleSubmit() {
