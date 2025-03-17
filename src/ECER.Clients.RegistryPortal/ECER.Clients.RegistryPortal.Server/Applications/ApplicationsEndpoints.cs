@@ -295,7 +295,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
       var application = await messageBus.Send(new SaveApplicationTranscriptCommand(transcriptDocuments), ct);
       return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<Application>(application)));
     })
-    .WithOpenApi("Save a application transcript for the current user", string.Empty, "draftapplication_put")
+    .WithOpenApi("Save application transcript documents and options", string.Empty, "application_update_transcript_post")
     .RequireAuthorization()
     .WithParameterValidation();
   }
