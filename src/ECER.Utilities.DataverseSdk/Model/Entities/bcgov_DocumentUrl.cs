@@ -180,6 +180,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_psiidName = "ecer_psiidname";
 			public const string ecer_PSPSiteVisitId = "ecer_pspsitevisitid";
 			public const string ecer_PSPSiteVisitIdName = "ecer_pspsitevisitidname";
+			public const string ecer_Tag1 = "ecer_tag1";
 			public const string ecer_transcript_TranscriptDocumentId = "ecer_transcript_TranscriptDocumentId";
 			public const string ecer_TranscriptId = "ecer_transcriptid";
 			public const string ecer_TranscriptIdName = "ecer_transcriptidname";
@@ -1422,6 +1423,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_tag1")]
+		public string ecer_Tag1
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_tag1");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_tag1", value);
 			}
 		}
 		
