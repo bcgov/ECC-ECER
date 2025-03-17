@@ -92,11 +92,10 @@ public class ApplicationHandlers(
     }, cancellationToken);
 
     var applicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
-    var existingApplication = applicationResults.Items.FirstOrDefault();
-    if (existingApplication != null)
+    if (!applicationResults.Items.Any())
     {
-      // user already has a draft application
-      throw new InvalidOperationException($"User already has a draft application with id '{existingApplication.Id}'");
+      // user does not have a submitted application
+      throw new InvalidOperationException($"user does not have a submitted application");
     }
 
     var applicationId = await applicationRepository.SaveApplicationTranscript(mapper.Map<Resources.Documents.Applications.TranscriptDocuments>(request.TranscriptDocuments)!, cancellationToken);
