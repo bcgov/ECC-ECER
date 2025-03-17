@@ -12,12 +12,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 {
 	
 	
+	[System.Runtime.Serialization.DataContractAttribute()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
+	public enum ecer_BulkCommunication_ecer_Method
+	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Communication = 621870001,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Email = 621870000,
+	}
+	
 	/// <summary>
-	/// Status of the Investigation Planning Core Factual Issue
+	/// Status of the Bulk Communication
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_investigationplanningcorefactualissue_statecode
+	public enum ecer_bulkcommunication_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +40,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Investigation Planning Core Factual Issue
+	/// Reason for the status of the Bulk Communication
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_InvestigationPlanningCoreFactualIssue_StatusCode
+	public enum ecer_BulkCommunication_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -43,13 +55,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_investigationplanningcorefactualissue")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_bulkcommunication")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_InvestigationPlanningCoreFactualIssue : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_BulkCommunication : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_investigationplanningcorefactualissue entity
+		/// Available fields, a the time of codegen, for the ecer_bulkcommunication entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,13 +72,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_Description = "ecer_description";
-			public const string ecer_Investigation = "ecer_investigation";
-			public const string ecer_InvestigationName = "ecer_investigationname";
-			public const string ecer_investigationplanningcorefactualissue_Inv = "ecer_investigationplanningcorefactualissue_Inv";
-			public const string ecer_InvestigationPlanningCoreFactualIssueId = "ecer_investigationplanningcorefactualissueid";
-			public const string Id = "ecer_investigationplanningcorefactualissueid";
+			public const string ecer_BulkCommunicationId = "ecer_bulkcommunicationid";
+			public const string Id = "ecer_bulkcommunicationid";
+			public const string ecer_Method = "ecer_method";
+			public const string ecer_methodName = "ecer_methodname";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_Subject = "ecer_subject";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -93,19 +104,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_InvestigationPlanningCoreFactualIssue(System.Guid id) : 
+		public ecer_BulkCommunication(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_InvestigationPlanningCoreFactualIssue(string keyName, object keyValue) : 
+		public ecer_BulkCommunication(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_InvestigationPlanningCoreFactualIssue(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_BulkCommunication(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -114,22 +125,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_InvestigationPlanningCoreFactualIssue() : 
+		public ecer_BulkCommunication() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_investigationplanningcorefactualissueid";
+		public const string PrimaryIdAttribute = "ecer_bulkcommunicationid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_InvestigationPlanningCoreFactualIssue";
+		public const string EntitySchemaName = "ecer_BulkCommunication";
 		
-		public const string EntityLogicalName = "ecer_investigationplanningcorefactualissue";
+		public const string EntityLogicalName = "ecer_bulkcommunication";
 		
-		public const string EntityLogicalCollectionName = "ecer_investigationplanningcorefactualissues";
+		public const string EntityLogicalCollectionName = "ecer_bulkcommunications";
 		
-		public const string EntitySetName = "ecer_investigationplanningcorefactualissues";
+		public const string EntitySetName = "ecer_bulkcommunications";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -243,68 +254,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_description")]
-		public string ecer_Description
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_description");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_description", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_Investigation
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigation");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_investigation", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationname")]
-		public string ecer_InvestigationName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_investigation"))
-				{
-					return this.FormattedValues["ecer_investigation"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationplanningcorefactualissueid")]
-		public System.Nullable<System.Guid> ecer_InvestigationPlanningCoreFactualIssueId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkcommunicationid")]
+		public System.Nullable<System.Guid> ecer_BulkCommunicationId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_investigationplanningcorefactualissueid");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_bulkcommunicationid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_investigationplanningcorefactualissueid", value);
+				this.SetAttributeValue("ecer_bulkcommunicationid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -316,7 +280,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationplanningcorefactualissueid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkcommunicationid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -327,7 +291,39 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_InvestigationPlanningCoreFactualIssueId = value;
+				this.ecer_BulkCommunicationId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_method")]
+		public virtual ecer_BulkCommunication_ecer_Method? ecer_Method
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_BulkCommunication_ecer_Method?)(EntityOptionSetEnum.GetEnum(this, "ecer_method")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_method", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_methodname")]
+		public string ecer_methodName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_method"))
+				{
+					return this.FormattedValues["ecer_method"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -343,6 +339,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_subject")]
+		public string ecer_Subject
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_subject");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_subject", value);
 			}
 		}
 		
@@ -609,15 +620,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Investigation Planning Core Factual Issue
+		/// Status of the Bulk Communication
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_investigationplanningcorefactualissue_statecode? StateCode
+		public virtual ecer_bulkcommunication_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_investigationplanningcorefactualissue_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_bulkcommunication_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -644,15 +655,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Investigation Planning Core Factual Issue
+		/// Reason for the status of the Bulk Communication
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_InvestigationPlanningCoreFactualIssue_StatusCode? StatusCode
+		public virtual ecer_BulkCommunication_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_InvestigationPlanningCoreFactualIssue_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_BulkCommunication_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -728,30 +739,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// N:1 ecer_investigationplanningcorefactualissue_Inv
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationplanningcorefactualissue_Inv")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_investigationplanningcorefactualissue_Inv
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigationplanningcorefactualissue_Inv", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_investigationplanningcorefactualissue_Inv", null, value);
-			}
-		}
-		
-		/// <summary>
 		/// Constructor for populating via LINQ queries given a LINQ anonymous type
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_InvestigationPlanningCoreFactualIssue(object anonymousType) : 
+		public ecer_BulkCommunication(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -769,9 +761,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_investigationplanningcorefactualissueid"] = base.Id;
+                        Attributes["ecer_bulkcommunicationid"] = base.Id;
                         break;
-                    case "ecer_investigationplanningcorefactualissueid":
+                    case "ecer_bulkcommunicationid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

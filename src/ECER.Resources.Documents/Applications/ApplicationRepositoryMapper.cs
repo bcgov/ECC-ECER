@@ -166,8 +166,8 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ComprehensiveReportReceivedByRegistry, opts => opts.MapFrom(s => s.ecer_ComprehensiveEvaluationReportReceived))
       .ForMember(d => d.CourseOutlineReceivedByRegistry, opts => opts.MapFrom(s => s.ecer_CourseOutlineReceived))
       .ForMember(d => d.ProgramConfirmationReceivedByRegistry, opts => opts.MapFrom(s => s.ecer_ProgramConfirmationFormReceived))
-      .ForMember(d => d.ProgramConfirmationFiles, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_TranscriptId.ToList())) // need to separate these based on document url flag
-      .ForMember(d => d.CourseOutlineFiles, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_TranscriptId.ToList()))
+      .ForMember(d => d.ProgramConfirmationFiles, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_TranscriptId.Where(i => i.ecer_Tag1 == "Program Confirmation Form").ToList()))
+      .ForMember(d => d.CourseOutlineFiles, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_TranscriptId.Where(i => i.ecer_Tag1 == "Course Outline").ToList()))
       .ForMember(d => d.CourseOutlineOptions, opts => opts.MapFrom(src =>
         src.ecer_Ihavemycourseoutlinessyllabiandwillupload == true ? CourseOutlineOptions.UploadNow :
         src.ecer_isECEregistryalreadyhasmycourseoutline == true ? CourseOutlineOptions.RegistryAlreadyHas : (CourseOutlineOptions?)null))
@@ -375,6 +375,7 @@ internal class ApplicationRepositoryMapper : Profile
     CreateMap<WorkHoursType, ecer_WorkHoursType>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
+
     CreateMap<ChildcareAgeRanges, ecer_ChildcareAgeRanges>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();

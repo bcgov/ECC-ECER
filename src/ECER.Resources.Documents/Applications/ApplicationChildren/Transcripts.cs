@@ -79,6 +79,7 @@ internal sealed partial class ApplicationRepository
         transcript.ecer_Ihavemycourseoutlinessyllabiandwillupload = false;
         transcript.ecer_isECEregistryalreadyhasmycourseoutline = true;
       }
+      transcript.ecer_CourseOutlineReceived = true;
     }
     if (transcriptDocuments.ProgramConfirmationOptions != null)
     {
@@ -92,6 +93,30 @@ internal sealed partial class ApplicationRepository
         transcript.ecer_IhavemyProgramConfirmationandwillupload = false;
         transcript.ecer_isECEregistryhasprogramconfirmation = true;
       }
+      transcript.ecer_ProgramConfirmationFormReceived = true;
+    }
+
+    if (transcriptDocuments.ComprehensiveReportOptions != null)
+    {
+      if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.FeeWaiver)
+      {
+        transcript.ecer_iwishtoapplyforafeewaiver = true;
+        transcript.ecer_ihavesubmittedanapplicationtobcits = false;
+        transcript.ecer_ECERegistryalreadyhasmyComprehensiveReport = false;
+      }
+      else if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.InternationalCredentialEvaluationService)
+      {
+        transcript.ecer_iwishtoapplyforafeewaiver = false;
+        transcript.ecer_ihavesubmittedanapplicationtobcits = true;
+        transcript.ecer_ECERegistryalreadyhasmyComprehensiveReport = false;
+      }
+      else if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.RegistryAlreadyHas)
+      {
+        transcript.ecer_iwishtoapplyforafeewaiver = false;
+        transcript.ecer_ihavesubmittedanapplicationtobcits = false;
+        transcript.ecer_ECERegistryalreadyhasmyComprehensiveReport = true;
+      }
+      transcript.ecer_ComprehensiveEvaluationReportReceived = true;
     }
 
     await AddFilesToTranscript(transcript, transcriptDocuments.NewCourseOutlineFiles, "Course Outline", cancellationToken);
@@ -125,6 +150,7 @@ internal sealed partial class ApplicationRepository
         bcgov_Url = destinationFolder,
         StatusCode = bcgov_DocumentUrl_StatusCode.Active,
         StateCode = bcgov_documenturl_statecode.Active,
+        ecer_Tag1 = tagName
       };
 
       context.AddObject(documenturl);
