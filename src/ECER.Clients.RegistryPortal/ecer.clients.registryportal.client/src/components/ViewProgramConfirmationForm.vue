@@ -179,6 +179,12 @@ export default defineComponent({
         for (let i = 0; i < filesArray.length; i++) {
           const file = filesArray[i];
 
+          // Check if file exists in transcript.programConfirmationFiles
+          if (this.transcript?.programConfirmationFiles?.find((f) => f.id === file.fileId)) {
+            // If file exists in transcript.programConfirmationFiles, continue
+            continue;
+          }
+
           // Check for file errors
           if (file.fileErrors && file.fileErrors.length > 0) {
             this.areAttachedFilesValid = false;
