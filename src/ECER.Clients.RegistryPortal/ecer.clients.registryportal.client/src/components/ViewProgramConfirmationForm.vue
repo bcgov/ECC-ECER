@@ -24,20 +24,44 @@
       </ol>
     </div>
     <h3>How will you provide your Program Confirmation Form?</h3>
+    <v-form ref="updateProgramConfirmationOptionsAndDocuments" validate-on="input">
+      <v-row class="mt-4">
+        <v-radio-group id="programConfirmationRadio" v-model="programConfirmationOptions" :rules="[Rules.required()]" color="primary">
+          <v-radio label="I have my Program Confirmation Form and will upload it now." value="UploadNow"></v-radio>
+          <v-radio
+            label="The ECE Registry already has my Program Confirmation Form on file for the program relevant to this application and certificate type."
+            value="RegistryAlreadyHas"
+          ></v-radio>
+        </v-radio-group>
+      </v-row>
+      <v-row v-if="showFileInput">
+        <v-col>
+          <p class="mb-3"><b>Attach files</b></p>
+          <FileUploader :show-add-file-button="true" :max-number-of-files="3" @update:files="handleFileUpdate" />
+        </v-col>
+      </v-row>
+    </v-form>
+    <v-row class="mt-6">
+      <v-btn @click="handleSubmit" size="large" color="primary">Save</v-btn>
+    </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAlertStore } from "@/store/alert";
-import { getApplicationStatus } from "@/api/application";
+import { getApplicationStatus, setTranscriptDocumentsAndOptions } from "@/api/application";
 import Breadcrumb from "./Breadcrumb.vue";
+import FileUploader from "@/components/FileUploader.vue";
+import type { FileItem } from "./UploadFileItem.vue";
+import * as Rules from "@/utils/formRules";
+import type { ProgramConfirmationOptions } from "@/types/openapi";
+import type { VForm } from "vuetify/components";
 
 export default defineComponent({
   name: "ViewProgramConfirmationForm",
   components: { Breadcrumb },
-
   props: {
     applicationId: {
       type: String,
@@ -57,34 +81,91 @@ export default defineComponent({
 
     const transcript = applicationStatus?.transcriptsStatus?.find((transcript) => transcript.id === props.transcriptId);
 
+    let programConfirmationOptions = ref<ProgramConfirmationOptions | undefined>(undefined);
+    const areAttachedFilesValid = ref(true);
+    const isFileUploadInProgress = ref(false);
+    const newFiles = ref<string[]>([]);
+
+    const items: { title: string; disabled: boolean; href: string }[] = [
+      {
+        title: "Home",
+        disabled: false,
+        href: "/",
+      },
+      {
+        title: "Application",
+        disabled: false,
+        href: `/manage-application/${props.applicationId}`,
+      },
+      {
+        title: "Program confirmation",
+        disabled: true,
+        href: `/manage-application/${props.applicationId}/transcript/${props.transcriptId}/program-confirmation`,
+      },
+    ];
+
     if (!transcript) {
       router.back();
+    } else {
+      // Set programConfirmationOptions based on a field from transcript
+      programConfirmationOptions = ref(transcript.programConfirmationOptions || undefined);
     }
 
-    return { transcript, alertStore };
+    return { router, transcript, alertStore, Rules, programConfirmationOptions, items, areAttachedFilesValid, isFileUploadInProgress, newFiles };
   },
-  data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}`,
-        },
-        {
-          title: "Program confirmation",
-          disabled: true,
-          href: `/manage-application/${this.applicationId}/transcript/${this.transcriptId}/program-confirmation`,
-        },
-      ],
-    };
+  computed: {
+    showFileInput(): boolean {
+      return this.programConfirmationOptions === "UploadNow";
+    },
   },
+  methods: {
+    async handleSubmit() {
+      // Validate the form
+      const { valid } = await (this.$refs.updateProgramConfirmationOptionsAndDocuments as VForm).validate();
+      if (this.isFileUploadInProgress) {
+        this.alertStore.setFailureAlert("Uploading files in progress. Please wait until files are uploaded and try again.");
+      } else if (valid) {
+        const { error } = await setTranscriptDocumentsAndOptions({
+          programConfirmationOptions: this.programConfirmationOptions,
+          newProgramConfirmationFiles: this.newFiles,
+          applicationId: this.applicationId,
+          transcriptId: this.transcriptId,
+        });
+        if (error) {
+          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+        } else {
+          this.alertStore.setSuccessAlert("Your changes have been saved.");
+          this.router.push({ name: "manageApplication", params: { applicationId: this.applicationId } });
+        }
+      } else {
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+      }
+    },
+    handleFileUpdate(filesArray: FileItem[]) {
+      this.areAttachedFilesValid = true;
+      this.isFileUploadInProgress = false;
+      this.newFiles = []; // Reset attachments
+      if (filesArray && filesArray.length > 0) {
+        for (let i = 0; i < filesArray.length; i++) {
+          const file = filesArray[i];
 
-  methods: {},
+          // Check for file errors
+          if (file.fileErrors && file.fileErrors.length > 0) {
+            this.areAttachedFilesValid = false;
+          }
+
+          // Check if file is still uploading
+          else if (file.progress < 101) {
+            this.isFileUploadInProgress = true;
+          }
+
+          // If file is valid and fully uploaded, add to attachments
+          if (this.areAttachedFilesValid && !this.isFileUploadInProgress) {
+            this.newFiles?.push(file.fileId);
+          }
+        }
+      }
+    },
+  },
 });
 </script>

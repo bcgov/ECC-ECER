@@ -19,20 +19,43 @@
       </p>
     </div>
     <h3>How will you provide your Comprehensive Report?</h3>
+    <v-form ref="updateProgramConfirmationOptionsAndDocuments" validate-on="input">
+      <v-row class="mt-4">
+        <v-radio-group id="programConfirmationRadio" v-model="comprehensiveReportOptions" :rules="[Rules.required()]" color="primary">
+          <v-radio
+            label="I wish to apply for a fee waiver before I request a report from BCIT. The Registry will send a message with more information."
+            value="FeeWaiver"
+          ></v-radio>
+          <v-radio
+            label="I have submitted an application to BCIT's International Credential Evaluation Service for a Comprehensive Report."
+            value="InternationalCredentialEvaluationService"
+          ></v-radio>
+          <v-radio
+            label="The ECE Registry already has my Comprehensive Report on file for the course or program relevant to this application and certificate type."
+            value="RegistryAlreadyHas"
+          ></v-radio>
+        </v-radio-group>
+      </v-row>
+    </v-form>
+    <v-row class="mt-6">
+      <v-btn @click="handleSubmit" size="large" color="primary">Save</v-btn>
+    </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useAlertStore } from "@/store/alert";
-import { getApplicationStatus } from "@/api/application";
+import { getApplicationStatus, setTranscriptDocumentsAndOptions } from "@/api/application";
 import Breadcrumb from "./Breadcrumb.vue";
+import * as Rules from "@/utils/formRules";
+import type { ComprehensiveReportOptions } from "@/types/openapi";
+import type { VForm } from "vuetify/components";
 
 export default defineComponent({
   name: "ViewComprehensiveReport",
   components: { Breadcrumb },
-
   props: {
     applicationId: {
       type: String,
@@ -50,36 +73,56 @@ export default defineComponent({
 
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
 
+    let comprehensiveReportOptions = ref<ComprehensiveReportOptions | undefined>(undefined);
+    const items: { title: string; disabled: boolean; href: string }[] = [
+      {
+        title: "Home",
+        disabled: false,
+        href: "/",
+      },
+      {
+        title: "Application",
+        disabled: false,
+        href: `/manage-application/${props.applicationId}`,
+      },
+      {
+        title: "Comprehensive evaluation",
+        disabled: true,
+        href: `/manage-application/${props.applicationId}/transcript/${props.transcriptId}/comprehensive-evaluation`,
+      },
+    ];
+
     const transcript = applicationStatus?.transcriptsStatus?.find((transcript) => transcript.id === props.transcriptId);
 
     if (!transcript) {
       router.back();
+    } else {
+      // Set comprehensiveReportOptions based on a field from transcript
+      comprehensiveReportOptions = ref(transcript.comprehensiveReportOptions || undefined);
     }
 
-    return { transcript, alertStore };
+    return { router, transcript, alertStore, Rules, comprehensiveReportOptions, items };
   },
-  data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}`,
-        },
-        {
-          title: "Comprehensive evaluation",
-          disabled: true,
-          href: `/manage-application/${this.applicationId}/transcript/${this.transcriptId}/comprehensive-evaluation`,
-        },
-      ],
-    };
+  methods: {
+    async handleSubmit() {
+      // Validate the form
+      const { valid } = await (this.$refs.updateProgramConfirmationOptionsAndDocuments as VForm).validate();
+      if (valid) {
+        const { error } = await setTranscriptDocumentsAndOptions({
+          comprehensiveReportOptions: this.comprehensiveReportOptions,
+          applicationId: this.applicationId,
+          transcriptId: this.transcriptId,
+        });
+        if (error) {
+          this.alertStore.setFailureAlert("Sorry, something went wrong and your changes could not be saved. Try again later.");
+        } else {
+          this.alertStore.setSuccessAlert("Your changes have been saved.");
+          this.router.push({ name: "manageApplication", params: { applicationId: this.applicationId } });
+        }
+      } else {
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");
+      }
+    },
   },
-
-  methods: {},
 });
 </script>
