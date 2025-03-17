@@ -36,7 +36,7 @@
       </v-row>
       <v-row v-if="showFileInput">
         <v-col>
-          <p class="mb-3"><b>Attach files</b></p>
+          <p class="mb-3"><b>Add your Program Confirmation Form</b></p>
           <FileUploader :show-add-file-button="true" :max-number-of-files="3" @update:files="handleFileUpdate" />
         </v-col>
       </v-row>
@@ -61,7 +61,7 @@ import type { VForm } from "vuetify/components";
 
 export default defineComponent({
   name: "ViewProgramConfirmationForm",
-  components: { Breadcrumb },
+  components: { Breadcrumb, FileUploader },
   props: {
     applicationId: {
       type: String,
