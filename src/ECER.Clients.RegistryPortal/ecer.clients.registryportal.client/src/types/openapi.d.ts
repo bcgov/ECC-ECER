@@ -774,6 +774,13 @@ declare namespace Paths {
       export type $404 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace ApplicationUpdateTranscriptPost {
+    export type RequestBody = Components.Schemas.TranscriptDocuments;
+    namespace Responses {
+      export type $200 = /* Save draft application response */ Components.Schemas.DraftApplicationResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
   namespace ApplicationWorkExperienceReferenceResendInvitePost {
     namespace Parameters {
       export type ApplicationId = string;
@@ -1396,13 +1403,13 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ApplicationProfessionaldevelopmentAddPost.Responses.$200>;
   /**
-   * draftapplication_put - Save a application transcript for the current user
+   * application_update_transcript_post - Save application transcript documents and options
    */
-  "draftapplication_put"(
-    parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,
-    data?: Paths.DraftapplicationPut.RequestBody,
+  "application_update_transcript_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.ApplicationUpdateTranscriptPost.RequestBody,
     config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.DraftapplicationPut.Responses.$200>;
+  ): OperationResponse<Paths.ApplicationUpdateTranscriptPost.Responses.$200>;
 }
 
 export interface PathsDictionary {
@@ -1760,13 +1767,13 @@ export interface PathsDictionary {
   };
   ["/api/applications/{application_id}/transcriptDocuments"]: {
     /**
-     * draftapplication_put - Save a application transcript for the current user
+     * application_update_transcript_post - Save application transcript documents and options
      */
     "post"(
-      parameters?: Parameters<Paths.DraftapplicationPut.PathParameters> | null,
-      data?: Paths.DraftapplicationPut.RequestBody,
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.ApplicationUpdateTranscriptPost.RequestBody,
       config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.DraftapplicationPut.Responses.$200>;
+    ): OperationResponse<Paths.ApplicationUpdateTranscriptPost.Responses.$200>;
   };
 }
 
