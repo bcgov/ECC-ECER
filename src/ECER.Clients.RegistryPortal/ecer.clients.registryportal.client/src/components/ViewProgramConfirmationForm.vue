@@ -41,7 +41,7 @@
             :user-files="generateUserPrimaryFileArray"
             :show-add-file-button="true"
             :max-number-of-files="3"
-            :can-delete-files="false"
+            :can-delete-permanent-files="false"
             @update:files="handleFileUpdate"
           />
         </v-col>
