@@ -64,7 +64,10 @@
           :go-to="() => router.push({ name: 'viewProgramConfirmation', params: { applicationId: route.params.applicationId, transcriptId: transcript.id } })"
         />
         <ApplicationSummaryActionListItem
-          v-if="transcript.educationRecognition === 'NotRecognized' && transcript.country?.countryName?.toLowerCase() !== 'canada'"
+          v-if="
+            transcript.educationRecognition === 'NotRecognized' &&
+            transcript.country?.countryName?.toLowerCase() !== configStore.canada?.countryName?.toLowerCase()
+          "
           :active="!transcript.comprehensiveReportReceivedByRegistry"
           :text="`Comprehensive Report: ${transcript.educationalInstitutionName}`"
           :go-to="() => router.push({ name: 'viewComprehensiveReport', params: { applicationId: route.params.applicationId, transcriptId: transcript.id } })"
@@ -186,7 +189,10 @@
             :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
           />
           <ApplicationSummaryActionListItem
-            v-if="transcript.educationRecognition === 'NotRecognized' && transcript.country?.countryName?.toLowerCase() !== 'canada'"
+            v-if="
+              transcript.educationRecognition === 'NotRecognized' &&
+              transcript.country?.countryName?.toLowerCase() !== configStore.canada?.countryName?.toLowerCase()
+            "
             :active="!transcript.comprehensiveReportReceivedByRegistry"
             :text="`Comprehensive Report: ${transcript.educationalInstitutionName}`"
             :go-to="() => router.push({ name: 'manageComprehensiveReport', params: { applicationId: route.params.applicationId } })"
@@ -254,6 +260,7 @@ import ApplicationSummaryActionListItem from "./ApplicationSummaryActionListItem
 import ApplicationSummaryCharacterReferenceListItem from "./ApplicationSummaryCharacterReferenceListItem.vue";
 import ApplicationSummaryTranscriptListItem from "./ApplicationSummaryTranscriptListItem.vue";
 import ApplicationSummaryHeader from "./ApplicationSummaryHeader.vue";
+import { useConfigStore } from "@/store/config";
 
 export default defineComponent({
   name: "ApplicationSummary",
@@ -267,6 +274,7 @@ export default defineComponent({
   setup: async () => {
     const { smAndUp } = useDisplay();
     const alertStore = useAlertStore();
+    const configStore = useConfigStore();
     const applicationStore = useApplicationStore();
     const userStore = useUserStore();
     const router = useRouter();
@@ -279,6 +287,7 @@ export default defineComponent({
       applicationStore,
       userStore,
       alertStore,
+      configStore,
       CertificationType,
       applicationStatus,
       smAndUp,
