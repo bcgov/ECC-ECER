@@ -20,7 +20,8 @@ public class ApplicationMapper : Profile
      .ForMember(d => d.NumberOfHours,
               opt => opt.MapFrom(src => src.NumberOfHours))
      .ReverseMap();
-
+    CreateMap<FileInfo, Managers.Registry.Contract.Applications.FileInfo>().ReverseMap();
+    CreateMap<TranscriptDocuments, Managers.Registry.Contract.Applications.TranscriptDocuments>().ForMember(d => d.RegistrantId, opts => opts.Ignore());
     CreateMap<Transcript, Managers.Registry.Contract.Applications.Transcript>()
       .ForMember(d => d.Status, opts => opts.Ignore())
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.Id),
@@ -55,6 +56,15 @@ public class ApplicationMapper : Profile
              opts => opts.MapFrom(src => src.CampusLocation))
       .ForMember(d => d.StudentMiddleName,
        opts => opts.MapFrom(src => src.StudentMiddleName))
+       .ForMember(d => d.CourseOutlineReceivedByRegistry, opts => opts.Ignore())
+       .ForMember(d => d.ProgramConfirmationReceivedByRegistry, opts => opts.Ignore())
+       .ForMember(d => d.TranscriptReceivedByRegistry, opts => opts.Ignore())
+       .ForMember(d => d.ComprehensiveReportReceivedByRegistry, opts => opts.Ignore())
+       .ForMember(d => d.CourseOutlineFiles, opts => opts.Ignore())
+       .ForMember(d => d.ProgramConfirmationFiles, opts => opts.Ignore())
+       .ForMember(d => d.CourseOutlineOptions, opts => opts.Ignore())
+       .ForMember(d => d.ComprehensiveReportOptions, opts => opts.Ignore())
+       .ForMember(d => d.ProgramConfirmationOptions, opts => opts.Ignore())
       .ReverseMap();
 
     CreateMap<CharacterReference, Managers.Registry.Contract.Applications.CharacterReference>()
@@ -157,7 +167,31 @@ public class ApplicationMapper : Profile
       .ForCtorParam(nameof(TranscriptStatus.EducationalInstitutionName),
         opt => opt.MapFrom(src => src.EducationalInstitutionName))
       .ForCtorParam(nameof(TranscriptStatus.Status),
-        opt => opt.MapFrom(src => src.Status));
+        opt => opt.MapFrom(src => src.Status))
+      .ForCtorParam(nameof(TranscriptStatus.programName),
+        opt => opt.MapFrom(src => src.ProgramName))
+      .ForMember(src => src.TranscriptReceivedByRegistry,
+        opt => opt.MapFrom(src => src.TranscriptReceivedByRegistry))
+      .ForMember(src => src.ComprehensiveReportReceivedByRegistry,
+        opt => opt.MapFrom(src => src.ComprehensiveReportReceivedByRegistry))
+      .ForMember(src => src.CourseOutlineReceivedByRegistry,
+        opt => opt.MapFrom(src => src.CourseOutlineReceivedByRegistry))
+      .ForMember(src => src.ProgramConfirmationReceivedByRegistry,
+        opt => opt.MapFrom(src => src.ProgramConfirmationReceivedByRegistry))
+      .ForMember(src => src.CourseOutlineFiles,
+        opt => opt.MapFrom(src => src.CourseOutlineFiles))
+      .ForMember(src => src.ProgramConfirmationFiles,
+        opt => opt.MapFrom(src => src.ProgramConfirmationFiles))
+       .ForMember(src => src.ComprehensiveReportOptions,
+        opt => opt.MapFrom(src => src.ComprehensiveReportOptions))
+      .ForMember(src => src.CourseOutlineOptions,
+        opt => opt.MapFrom(src => src.CourseOutlineOptions))
+      .ForMember(src => src.Country,
+        opt => opt.MapFrom(src => src.Country))
+      .ForMember(src => src.EducationRecognition,
+        opt => opt.MapFrom(src => src.EducationRecognition))
+      .ForMember(src => src.ProgramConfirmationOptions,
+        opt => opt.MapFrom(src => src.ProgramConfirmationOptions));
 
     CreateMap<Managers.Registry.Contract.Applications.ProfessionalDevelopment, ProfessionalDevelopmentStatus>()
       .ForCtorParam(nameof(ProfessionalDevelopmentStatus.Id),

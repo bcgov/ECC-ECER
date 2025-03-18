@@ -20,11 +20,8 @@ internal class Program
   private static async Task<int> Main(string[] args)
   {
     var builder = WebApplication.CreateBuilder(args);
-
     var assemblies = ReflectionExtensions.DiscoverLocalAessemblies(prefix: "ECER.");
-
     var logger = builder.ConfigureWebApplicationObservability(discoveryAssemblies: assemblies);
-
     logger.Information("Starting up");
 
     try
