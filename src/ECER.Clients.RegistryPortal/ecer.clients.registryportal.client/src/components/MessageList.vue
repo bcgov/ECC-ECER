@@ -11,75 +11,73 @@
       ref="messageListItems"
       @update:message-is-read="message.isRead = $event"
     />
-    <v-pagination v-if="messageCount > 1" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages" />
-    >>>>>>> b488ff10 (ECER-2852: PR feedback to use vue3 Ref)
+    <v-pagination v-if="messageCount > 1" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages"></v-pagination>
   </v-list>
 </template>
 
 <script lang="ts">
-import { ref, computed, onMounted, nextTick } from "vue";
+import { defineComponent, nextTick } from "vue";
 import { getMessages } from "@/api/message";
+import { useDisplay } from "vuetify";
 import MessageListItem from "@/components/MessageListItem.vue";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
-import { useDisplay } from "vuetify";
+
 const PAGE_SIZE = 10;
 
-export default {
+export default defineComponent({
   name: "MessageList",
   components: { MessageListItem },
   setup() {
     const messageStore = useMessageStore();
-    const messages = ref<Components.Schemas.Communication[]>([]);
-    const messageCount = ref(0);
     const { mdAndUp } = useDisplay();
-    const page = ref(1);
-    // This ref will automatically become an array of MessageListItem component instances.
-    const messageListItems = ref<InstanceType<typeof MessageListItem>[]>([]);
-
-    const totalPages = computed(() => Math.ceil(messageCount.value / PAGE_SIZE));
-
-    const currentPage = computed({
-      get() {
-        return page.value;
-      },
-      set(newPage: number) {
-        page.value = newPage;
-        messageStore.$reset();
-        fetchMessages(newPage);
-      },
-    });
-
-    const fetchMessages = async (pageNumber: number) => {
-      const params = { page: pageNumber, pageSize: PAGE_SIZE };
-      const response = await getMessages(params);
-      messages.value = response.data?.communications || [];
-      messageCount.value = response.data?.totalMessagesCount || 0;
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      // After the list is rendered, select/load the first message if available
-      await nextTick();
-      if (messages.value.length > 0 && messageListItems.value.length > 0 && mdAndUp.value) {
-        const firstItem = messageListItems.value[0];
-        if (firstItem && typeof firstItem.loadChildMessages === "function" && messages.value[0]?.id) {
-          firstItem.loadChildMessages(messages.value[0].id);
-        }
-      }
-    };
-
-    onMounted(async () => {
-      messageStore.$reset();
-      await fetchMessages(page.value);
-    });
-
+    return { messageStore, mdAndUp };
+  },
+  data() {
     return {
-      messages,
-      messageCount,
-      totalPages,
-      currentPage,
-      messageListItems,
-      fetchMessages,
+      messages: [] as Components.Schemas.Communication[],
+      messageCount: 0,
+      page: 1,
     };
   },
-};
+  computed: {
+    totalPages() {
+      return Math.ceil(this.messageCount / PAGE_SIZE);
+    },
+    currentPage: {
+      get() {
+        return this.page;
+      },
+      set(newValue: number) {
+        this.page = newValue;
+        this.messageStore.$reset();
+        this.fetchMessages(newValue);
+      },
+    },
+  },
+  async mounted() {
+    this.messageStore.$reset();
+    await this.fetchMessages(this.page);
+  },
+  methods: {
+    async fetchMessages(page: number) {
+      const params = { page, pageSize: PAGE_SIZE };
+      const response = await getMessages(params);
+      this.messages = response.data?.communications || [];
+      this.messageCount = response.data?.totalMessagesCount || 0;
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // After the list is rendered, select/load the first message if available
+      await nextTick();
+      const messageListItems = this.$refs.messageListItems as Array<{ loadChildMessages: (id: string) => void }>;
+      if (this.messages.length > 0 && messageListItems && this.mdAndUp) {
+        const firstItem = messageListItems[0];
+        if (firstItem && typeof firstItem.loadChildMessages === "function" && this.messages[0]?.id) {
+          firstItem.loadChildMessages(this.messages[0].id);
+        }
+      }
+    },
+  },
+});
 </script>
