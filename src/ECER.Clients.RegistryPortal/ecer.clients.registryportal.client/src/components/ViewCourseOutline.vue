@@ -126,7 +126,7 @@ export default defineComponent({
       const userFileList: FileItem[] = [];
 
       if (this.transcript?.courseOutlineFiles) {
-        for (let file of this.transcript?.courseOutlineFiles) {
+        for (let file of this.transcript.courseOutlineFiles) {
           const newFileItem: FileItem = {
             fileId: file.id!,
             fileErrors: [],
