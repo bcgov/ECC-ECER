@@ -106,7 +106,7 @@ export default defineComponent({
         href: `/manage-application/${props.applicationId}`,
       },
       {
-        title: "Course oultine",
+        title: "Course Outline",
         disabled: true,
         href: `/manage-application/${props.applicationId}/transcript/${props.transcriptId}/course-outline`,
       },

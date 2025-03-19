@@ -88,7 +88,7 @@ export default defineComponent({
         href: `/manage-application/${props.applicationId}`,
       },
       {
-        title: "Comprehensive evaluation",
+        title: "Comprehensive Report",
         disabled: true,
         href: `/manage-application/${props.applicationId}/transcript/${props.transcriptId}/comprehensive-evaluation`,
       },

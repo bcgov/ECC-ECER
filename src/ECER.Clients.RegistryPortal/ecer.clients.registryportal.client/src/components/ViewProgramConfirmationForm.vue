@@ -107,7 +107,7 @@ export default defineComponent({
         href: `/manage-application/${props.applicationId}`,
       },
       {
-        title: "Program confirmation",
+        title: "Program Confirmation Form",
         disabled: true,
         href: `/manage-application/${props.applicationId}/transcript/${props.transcriptId}/program-confirmation`,
       },
