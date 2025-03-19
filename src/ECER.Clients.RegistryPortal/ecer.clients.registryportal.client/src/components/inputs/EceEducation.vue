@@ -4,14 +4,14 @@
       <h2>{{ clientId ? "Edit" : "Add" }} education</h2>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution for this course or program. It must be sent to us directly from them.
+        You will need to request an official transcript from your educational institution for this course or program. It must be sent to us directly from them.
       </p>
       <br />
       <p>When we receive your transcript, we will:</p>
       <br />
       <ul class="ml-10">
         <li>Attach it to your application</li>
-        <li>Email you to let you know we've received it</li>
+        <li>Email you to let you know we have received it</li>
       </ul>
     </v-col>
   </v-row>

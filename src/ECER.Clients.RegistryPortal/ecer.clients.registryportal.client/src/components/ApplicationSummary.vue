@@ -6,7 +6,7 @@
 
     <ApplicationCertificationTypeHeader :certification-types="applicationStore.applications?.[0]?.certificationTypes || []" class="pb-5" />
     <h2>Status</h2>
-    <p class="pb-3">It's a 3-step process to apply.</p>
+    <p class="pb-3">It is a 3-step process to apply.</p>
     <!-- Step 1 Start-->
     <v-card elevation="0" color="white-smoke" class="border-top mt-5" rounded="0">
       <v-card-text>
@@ -144,7 +144,7 @@
     <div v-if="currentStep !== 3">
       <v-card elevation="0" rounded="0" class="border-t border-b">
         <v-card-text>
-          <p>We'll review your application after we receive all references and documents.</p>
+          <p>We will review your application after we receive all references and documents.</p>
         </v-card-text>
       </v-card>
     </div>
@@ -152,10 +152,10 @@
       <v-card v-if="!hasStepThreeTasks" elevation="0" rounded="0" class="border-t border-b">
         <v-card-text>
           <p v-if="stepThreeStatusText !== 'Action required'">
-            We're reviewing your application. We'll contact you with questions or once assessment is complete.
+            We are reviewing your application. We will contact you with questions or once assessment is complete.
           </p>
           <p v-if="stepThreeStatusText === 'Action required'">
-            We’re waiting for additional information before we continue to review your application.
+            We are waiting for additional information before we continue to review your application.
             <router-link to="/messages">Read your messages</router-link>
             or
             <a href="https://www2.gov.bc.ca/gov/content?id=9376DE7539D44C64B3E667DB53320E71">contact us</a>
