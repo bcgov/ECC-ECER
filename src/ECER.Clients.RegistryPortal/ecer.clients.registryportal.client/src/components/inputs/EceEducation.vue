@@ -202,6 +202,7 @@
                   <li>
                     Be in English – if they are not, you must have them
                     <a
+                      target="_blank"
                       href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#prepare-your-application"
                     >
                       translated by a professional translator
@@ -221,7 +222,7 @@
               <ul class="ml-10">
                 <li>
                   Download the
-                  <a href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program Confirmation Form (16KB, PDF)</a>
+                  <a target="_blank" ref="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program Confirmation Form (16KB, PDF)</a>
                 </li>
                 <li>Complete Section 1 of the form</li>
                 <li>Ask your educational institution to complete the rest of the form</li>
@@ -257,6 +258,7 @@
                 </p>
                 <p>
                   <a
+                    target="_blank"
                     href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#education-requirements-equivalency-process:~:text=Apply%20for%20an%20International%20Credential%20Evaluation%20Service%20Comprehensive%20Report%C2%A0"
                   >
                     Learn more about Comprehensive Evaluation Report
