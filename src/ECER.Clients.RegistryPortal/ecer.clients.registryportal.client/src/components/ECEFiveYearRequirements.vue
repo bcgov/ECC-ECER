@@ -48,8 +48,16 @@
       <p>The program must be either:</p>
       <br />
       <ul class="ml-10">
-        <li>Recognized by the ECE Registry</li>
-        <li>Deemed equivalent by the ECE Registry</li>
+        <li>
+          <a
+            target="_blank"
+            href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
+          >
+            Recognized
+          </a>
+          by the ECE Registry
+        </li>
+        <li>Considered equivalent by the ECE Registry</li>
       </ul>
       <br />
       <p>
@@ -66,8 +74,16 @@
       <p>The program must be either:</p>
       <br />
       <ul class="ml-10">
-        <li>Recognized by the ECE Registry</li>
-        <li>Deemed equivalent by the ECE Registry</li>
+        <li>
+          <a
+            target="_blank"
+            href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
+          >
+            Recognized
+          </a>
+          by the ECE Registry
+        </li>
+        <li>Considered equivalent by the ECE Registry</li>
       </ul>
       <br />
       <p>
