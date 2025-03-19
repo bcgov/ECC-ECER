@@ -1,65 +1,84 @@
 <template>
   <v-list lines="two" class="flex-grow-1 message-list" style="padding: 0px">
+    <<<<<<< HEAD
     <MessageListItem v-for="(message, index) in messages" :key="index" :message="message" @update:message-is-read="message.isRead = $event" />
     <v-pagination v-if="messageCount > 1" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages"></v-pagination>
+    =======
+    <MessageListItem
+      v-for="(message, index) in messages"
+      :key="index"
+      :message="message"
+      ref="messageListItems"
+      @update:message-is-read="message.isRead = $event"
+    />
+    <v-pagination v-if="messageCount > 1" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages" />
+    >>>>>>> b488ff10 (ECER-2852: PR feedback to use vue3 Ref)
   </v-list>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { ref, computed, onMounted, nextTick } from "vue";
 import { getMessages } from "@/api/message";
 import MessageListItem from "@/components/MessageListItem.vue";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
 const PAGE_SIZE = 10;
 
-export default defineComponent({
+export default {
   name: "MessageList",
   components: { MessageListItem },
   setup() {
     const messageStore = useMessageStore();
-    return { messageStore };
-  },
-  data() {
+    const messages = ref<Components.Schemas.Communication[]>([]);
+    const messageCount = ref(0);
+    const page = ref(1);
+    // This ref will automatically become an array of MessageListItem component instances.
+    const messageListItems = ref<InstanceType<typeof MessageListItem>[]>([]);
+
+    const totalPages = computed(() => Math.ceil(messageCount.value / PAGE_SIZE));
+
+    const currentPage = computed({
+      get() {
+        return page.value;
+      },
+      set(newPage: number) {
+        page.value = newPage;
+        messageStore.$reset();
+        fetchMessages(newPage);
+      },
+    });
+
+    const fetchMessages = async (pageNumber: number) => {
+      const params = { page: pageNumber, pageSize: PAGE_SIZE };
+      const response = await getMessages(params);
+      messages.value = response.data?.communications || [];
+      messageCount.value = response.data?.totalMessagesCount || 0;
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // After the list is rendered, select/load the first message if available
+      await nextTick();
+      if (messages.value.length > 0 && messageListItems.value.length > 0) {
+        const firstItem = messageListItems.value[0];
+        if (firstItem && typeof firstItem.loadChildMessages === "function" && messages.value[0]?.id) {
+          firstItem.loadChildMessages(messages.value[0].id);
+        }
+      }
+    };
+
+    onMounted(async () => {
+      messageStore.$reset();
+      await fetchMessages(page.value);
+    });
+
     return {
-      messages: [] as Components.Schemas.Communication[],
-      messageCount: 0,
-      page: 1,
+      messages,
+      messageCount,
+      totalPages,
+      currentPage,
+      messageListItems,
+      fetchMessages,
     };
   },
-  computed: {
-    totalPages() {
-      return Math.ceil(this.messageCount / PAGE_SIZE);
-    },
-    currentPage: {
-      get() {
-        return this.page;
-      },
-      set(newValue: number) {
-        this.page = newValue;
-        this.messageStore.$reset();
-        this.fetchMessages(newValue);
-      },
-    },
-  },
-  mounted() {
-    this.messageStore.$reset();
-    this.fetchMessages(this.page);
-  },
-  methods: {
-    async fetchMessages(page: number) {
-      const params = {
-        page,
-        pageSize: PAGE_SIZE,
-      };
-      const response = await getMessages(params);
-      this.messages = response.data?.communications || [];
-      this.messageCount = response.data?.totalMessagesCount || 0;
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    },
-  },
-});
+};
 </script>
