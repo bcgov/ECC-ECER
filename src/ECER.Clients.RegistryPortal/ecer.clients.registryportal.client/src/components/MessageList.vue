@@ -57,7 +57,6 @@ export default {
       messageCount.value = response.data?.totalMessagesCount || 0;
 
       window.scrollTo({ top: 0, behavior: "smooth" });
-      console.log(mdAndUp.value);
       // After the list is rendered, select/load the first message if available
       await nextTick();
       if (messages.value.length > 0 && messageListItems.value.length > 0 && mdAndUp.value) {
