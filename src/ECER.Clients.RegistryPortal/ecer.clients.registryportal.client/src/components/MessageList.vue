@@ -17,7 +17,7 @@ import { getMessages } from "@/api/message";
 import MessageListItem from "@/components/MessageListItem.vue";
 import { useMessageStore } from "@/store/message";
 import type { Components } from "@/types/openapi";
-
+import { useDisplay } from "vuetify";
 const PAGE_SIZE = 10;
 
 export default {
@@ -27,6 +27,7 @@ export default {
     const messageStore = useMessageStore();
     const messages = ref<Components.Schemas.Communication[]>([]);
     const messageCount = ref(0);
+    const { mdAndUp } = useDisplay();
     const page = ref(1);
     // This ref will automatically become an array of MessageListItem component instances.
     const messageListItems = ref<InstanceType<typeof MessageListItem>[]>([]);
@@ -51,10 +52,10 @@ export default {
       messageCount.value = response.data?.totalMessagesCount || 0;
 
       window.scrollTo({ top: 0, behavior: "smooth" });
-
+      console.log(mdAndUp.value);
       // After the list is rendered, select/load the first message if available
       await nextTick();
-      if (messages.value.length > 0 && messageListItems.value.length > 0) {
+      if (messages.value.length > 0 && messageListItems.value.length > 0 && mdAndUp.value) {
         const firstItem = messageListItems.value[0];
         if (firstItem && typeof firstItem.loadChildMessages === "function" && messages.value[0]?.id) {
           firstItem.loadChildMessages(messages.value[0].id);
