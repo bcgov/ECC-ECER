@@ -13,7 +13,7 @@
       <ol class="ml-10">
         <li>
           Download a
-          <a href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0 ">Program Confirmation Form (16KB, PDF).</a>
+          <a target="_blank" href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program Confirmation Form (16KB, PDF).</a>
         </li>
         <li>Complete Section 1 of the form.</li>
         <li>
@@ -107,7 +107,7 @@ export default defineComponent({
         href: `/manage-application/${props.applicationId}`,
       },
       {
-        title: "Program confirmation",
+        title: "Program Confirmation Form",
         disabled: true,
         href: `/manage-application/${props.applicationId}/transcript/${props.transcriptId}/program-confirmation`,
       },
@@ -127,7 +127,7 @@ export default defineComponent({
       const userFileList: FileItem[] = [];
 
       if (this.transcript?.programConfirmationFiles) {
-        for (let file of this.transcript?.programConfirmationFiles) {
+        for (let file of this.transcript.programConfirmationFiles) {
           const newFileItem: FileItem = {
             fileId: file.id!,
             fileErrors: [],

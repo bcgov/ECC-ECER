@@ -12,6 +12,7 @@
       <p>After we receive the report from BCIT, this item will be updated and marked as received.</p>
       <p>
         <a
+          target="_blank"
           href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#education-requirements-equivalency-process:~:text=Apply%20for%20an%20International%20Credential%20Evaluation%20Service%20Comprehensive%20Report%C2%A0"
         >
           Learn more about the Comprehensive Report
@@ -88,7 +89,7 @@ export default defineComponent({
         href: `/manage-application/${props.applicationId}`,
       },
       {
-        title: "Comprehensive evaluation",
+        title: "Comprehensive Report",
         disabled: true,
         href: `/manage-application/${props.applicationId}/transcript/${props.transcriptId}/comprehensive-evaluation`,
       },

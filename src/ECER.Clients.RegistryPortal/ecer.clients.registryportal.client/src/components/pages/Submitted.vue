@@ -10,16 +10,16 @@
   <PageContainer>
     <h2>What to expect next</h2>
     <br />
-    <p>It's important to keep your contact information up-to-date in your My ECE Registry profile.</p>
+    <p>It is important to keep your contact information up-to-date in your My ECE Registry profile.</p>
     <br />
     <div v-if="draftApplicationHasTranscripts">
       <h3>Transcripts</h3>
       <br />
       <ul class="ml-10">
         <li>
-          <strong>Make sure you've requested the transcripts be sent to the ECE Registry directly from the educational institution</strong>
+          <strong>Make sure you have requested the transcripts be sent to the ECE Registry directly from the educational institution</strong>
         </li>
-        <li>We'll email you once we receive them</li>
+        <li>We will email you once we receive them</li>
       </ul>
     </div>
     <br />
@@ -29,28 +29,28 @@
       <ul class="ml-10">
         <li>
           <strong>
-            In your application summary, you can submit supporting documents as your educational institution is not recognized by the ECE Registry
+            Your application summary lists the supporting documents you need to submit as your educational institution is not recognized by the ECE Registry
           </strong>
         </li>
-        <li>Once submitted, we will review these documents to help determine whether the course or program is considered equivalent</li>
+        <li>Once submitted, we will review these documents to determine whether the course or program is considered equivalent</li>
       </ul>
       <br />
     </div>
     <h3>References</h3>
     <br />
     <ul class="ml-10">
-      <li>We've emailed the people you identified as a reference with a link to an online form</li>
+      <li>We have emailed the people you identified as a reference with a link to an online form</li>
       <li>Your reference must complete the online form to provide a reference for you</li>
-      <li>We'll notify you when we receive the reference</li>
+      <li>We will notify you when we receive the reference</li>
       <li>You can view messages in your My ECE Registry account</li>
     </ul>
     <br />
     <h3>Assessment</h3>
     <br />
     <ul class="ml-10">
-      <li>We'll assess your application after we've received any required references and documents</li>
-      <li>We assess complete applications in the order they're received</li>
-      <li>We'll email you after we've assessed your application</li>
+      <li>We will assess your application after we have received any required references and documents</li>
+      <li>We assess complete applications in the order they are received</li>
+      <li>We will email you after we have assessed your application</li>
     </ul>
     <br />
     <h3>Status</h3>
