@@ -1,9 +1,6 @@
 <template>
-  <v-list lines="two" class="flex-grow-1 message-list" style="padding: 0px">
-    <<<<<<< HEAD
-    <MessageListItem v-for="(message, index) in messages" :key="index" :message="message" @update:message-is-read="message.isRead = $event" />
-    <v-pagination v-if="messageCount > 1" v-model="currentPage" size="small" class="mt-4" elevation="2" :length="totalPages"></v-pagination>
-    =======
+  <p v-if="messageCount === 0">You have no messages.</p>
+  <v-list v-else-if="messageCount > 1" lines="two" class="flex-grow-1 message-list" style="padding: 0px">
     <MessageListItem
       v-for="(message, index) in messages"
       :key="index"
