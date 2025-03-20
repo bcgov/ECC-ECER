@@ -213,7 +213,12 @@
           </v-row>
         </template>
         <!-- Program Confirmation -->
-        <v-row v-if="recognizedPostSecondaryInstitution === 'NotRecognized' && !applicationStore.isDraftCertificateTypeEceAssistant">
+        <v-row
+          v-if="
+            (country?.countryId !== configStore.canada?.countryId || recognizedPostSecondaryInstitution === 'NotRecognized') &&
+            !applicationStore.isDraftCertificateTypeEceAssistant
+          "
+        >
           <v-col>
             <div class="d-flex flex-column ga-3">
               <h3>Program confirmation form</h3>
