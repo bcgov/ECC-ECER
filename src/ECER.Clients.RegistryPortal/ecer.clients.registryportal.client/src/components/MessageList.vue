@@ -1,6 +1,6 @@
 <template>
   <p v-if="messageCount === 0">You have no messages.</p>
-  <v-list lines="two" class="flex-grow-1 message-list" style="padding: 0px">
+  <v-list v-else-if="messageCount > 1" lines="two" class="flex-grow-1 message-list" style="padding: 0px">
     <MessageListItem
       v-for="(message, index) in messages"
       :key="index"
