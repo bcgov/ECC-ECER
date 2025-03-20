@@ -29,7 +29,7 @@
     "uuid": "^11.1.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
-    "vuetify": "^3.7.16"
+    "vuetify": "^3.7.18"
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.4",
@@ -50,7 +50,7 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "eslint-plugin-vue": "^9.28.0",
     "openapicmd": "^2.6.1",
-    "sass": "^1.85.1",
+    "sass": "^1.86.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.2",
     "vue-tsc": "^2.2.8"
