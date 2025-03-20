@@ -2,7 +2,7 @@
   <v-card elevation="0" rounded="0" class="border-t border-b">
     <v-card-text>
       <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
-        <div v-if="statusText === 'Complete' || statusText === 'Cancelled'">
+        <div v-if="statusText === 'Received' || statusText === 'Cancelled'">
           <p>Character reference provided by {{ name }}</p>
         </div>
         <a v-else href="#" @click.prevent="buttonClick">
@@ -58,10 +58,10 @@ export default defineComponent({
         case "UnderReview":
         case "WaitingResponse":
         case "Submitted":
-          return "Complete";
+          return "Received";
         case "ApplicationSubmitted":
         case "Draft":
-          return "Incomplete";
+          return "Not yet received";
         case "Rejected":
           return this.willProvideReference ? "" : "Cancelled";
         default:
@@ -70,9 +70,9 @@ export default defineComponent({
     },
     sheetColor() {
       switch (this.statusText) {
-        case "Complete":
+        case "Received":
           return "white-smoke";
-        case "Incomplete":
+        case "Not yet received":
           return "hawkes-blue";
         case "Cancelled":
           return "white-smoke";
