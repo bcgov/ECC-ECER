@@ -1,6 +1,13 @@
 <template>
   <slot name="radioLabel" :for="`${valueKey}Label`"></slot>
-  <v-radio-group :id="`${valueKey}Label`" :rules="radioRules" hide-details="auto" :model-value="modelValue" @update:model-value="modalValueUpdated">
+  <v-radio-group
+    :class="triggerForAdditionalInformation ? 'mb-5' : ''"
+    :id="`${valueKey}Label`"
+    :rules="radioRules"
+    hide-details="auto"
+    :model-value="modelValue"
+    @update:model-value="modalValueUpdated"
+  >
     <v-radio v-for="(item, index) in items" :key="index" :label="item[itemLabel]" :value="item[itemValue]"></v-radio>
   </v-radio-group>
   <slot v-if="triggerForAdditionalInformation" name="textAreaLabel" :for="`${additionalInfoKey}Label`"></slot>

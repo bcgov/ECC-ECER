@@ -18,7 +18,9 @@
         :additional-info-props="{ autoGrow: true, counter: 500, maxlength: 500, rules: [Rules.required('Enter a reason')] }"
         :text-input-value="wizardStore.wizardData.renewalExplanationOther"
         @update:model-value="updateFields"
-      ></RadioWithAdditionalOption>
+      >
+        <template #textAreaLabel><label>Please specify</label></template>
+      </RadioWithAdditionalOption>
     </v-col>
   </v-row>
 </template>
