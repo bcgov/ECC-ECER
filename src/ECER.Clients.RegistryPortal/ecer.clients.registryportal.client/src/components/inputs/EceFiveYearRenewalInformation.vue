@@ -13,7 +13,9 @@
         :additional-info-props="{ autoGrow: true, counter: 500, maxlength: 500, rules: [Rules.required('Enter a reason')] }"
         :text-input-value="wizardStore.wizardData.renewalExplanationOther"
         @update:model-value="updateFields"
-      ></RadioWithAdditionalOption>
+      >
+        <template #textAreaLabel><label>Please specify</label></template>
+      </RadioWithAdditionalOption>
     </v-col>
   </v-row>
 </template>
@@ -21,7 +23,7 @@
 import { defineComponent } from "vue";
 
 import { useWizardStore } from "@/store/wizard";
-import type { EceRenewalInformationProps } from "@/types/input";
+
 import { fiveYearRenewalInformationRadio } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
 
