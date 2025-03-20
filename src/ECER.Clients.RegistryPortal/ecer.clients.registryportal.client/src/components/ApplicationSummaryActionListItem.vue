@@ -44,7 +44,7 @@ export default defineComponent({
   },
   computed: {
     statusText() {
-      return this.active ? "Incomplete" : "Complete";
+      return this.active ? "Not yet received" : "Received";
     },
     sheetColor() {
       return this.active ? "hawkes-blue" : "white-smoke";
