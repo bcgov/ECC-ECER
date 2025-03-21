@@ -1,5 +1,6 @@
 <template>
-  <v-list lines="two" class="flex-grow-1 message-list" style="padding: 0px">
+  <p v-if="messageCount === 0">You have no messages.</p>
+  <v-list v-else-if="messageCount > 1" lines="two" class="flex-grow-1 message-list" style="padding: 0px">
     <MessageListItem
       v-for="(message, index) in messages"
       :key="index"
@@ -32,7 +33,7 @@ export default defineComponent({
   data() {
     return {
       messages: [] as Components.Schemas.Communication[],
-      messageCount: 0,
+      messageCount: -1,
       page: 1,
     };
   },
