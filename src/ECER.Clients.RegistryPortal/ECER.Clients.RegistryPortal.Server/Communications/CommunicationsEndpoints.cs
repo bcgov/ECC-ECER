@@ -133,6 +133,7 @@ public record Communication
   public bool DoNotReply { get; set; }
   public DateTime? LatestMessageNotifiedOn { get; set; }
   public bool? IsRead { get; set; }
+  public string? ApplicationId { get; set; }
   public IEnumerable<CommunicationDocument> Documents { get; set; } = Array.Empty<CommunicationDocument>();
 }
 

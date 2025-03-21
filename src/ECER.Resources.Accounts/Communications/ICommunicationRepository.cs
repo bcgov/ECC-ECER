@@ -38,6 +38,7 @@ public record Communication(string? Id)
   public CommunicationStatus Status { get; set; }
   public bool DoNotReply { get; set; }
   public DateTime? LatestMessageNotifiedOn { get; set; }
+  public string? ApplicationId { get; set; }
   public bool? IsRead { get; set; }
   public IEnumerable<CommunicationDocument> Documents { get; set; } = Array.Empty<CommunicationDocument>();
 }
