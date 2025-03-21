@@ -674,6 +674,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
 			public const string ecer_ClientID = "ecer_clientid";
 			public const string ecer_comment_Contact_contact = "ecer_comment_Contact_contact";
+			public const string ecer_communicationrecipient_RecipientId = "ecer_communicationrecipient_RecipientId";
 			public const string ecer_completedcourse_Applicantid = "ecer_completedcourse_Applicantid";
 			public const string ecer_Contact_Contact_ecer_health_authorities = "ecer_Contact_Contact_ecer_health_authorities";
 			public const string ecer_Contact_Contact_ecer_licensing_officers = "ecer_Contact_Contact_ecer_licensing_officers";
@@ -7692,6 +7693,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Comment>("ecer_comment_Contact_contact", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_communicationrecipient_RecipientId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communicationrecipient_RecipientId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient> ecer_communicationrecipient_RecipientId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient>("ecer_communicationrecipient_RecipientId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient>("ecer_communicationrecipient_RecipientId", null, value);
 			}
 		}
 		
