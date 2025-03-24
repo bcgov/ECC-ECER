@@ -25,7 +25,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           var draftApplication = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
 
           var application = await messageBus.Send(new SaveDraftApplicationCommand(draftApplication), ct);
-          return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<RegistryPortal.Server.Applications.Application>(application)));
+          return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<Application>(application)));
         })
         .WithOpenApi("Save a draft application for the current user", string.Empty, "draftapplication_put")
         .RequireAuthorization()
@@ -114,7 +114,6 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           }
 
           var cancelledApplicationId = await messageBus.Send(new CancelDraftApplicationCommand(id, userId!), ct);
-
           return TypedResults.Ok(new CancelDraftApplicationResponse(cancelledApplicationId));
         })
         .WithOpenApi("Cancel a draft application for the current user", "Changes status to cancelled", "draftapplication_delete")
@@ -275,6 +274,30 @@ public class ApplicationsEndpoints : IRegisterEndpoints
        .WithOpenApi("Add Professional Development", string.Empty, "application_professionaldevelopment_add_post")
        .RequireAuthorization()
        .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/applications/{application_id}/transcriptDocuments", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (TranscriptDocuments request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    {
+      bool ApplicationIdIsNotGuid = !Guid.TryParse(request.ApplicationId, out _);
+      if (ApplicationIdIsNotGuid)
+      {
+        return TypedResults.BadRequest("ApplicationId is not guid");
+      }
+
+      bool TranscriptIdIsNotGuid = !Guid.TryParse(request.TranscriptId, out _);
+      if (TranscriptIdIsNotGuid)
+      {
+        return TypedResults.BadRequest("TranscriptId is not guid");
+      }
+
+      var userContext = ctx.User.GetUserContext();
+      var transcriptDocuments = mapper.Map<Managers.Registry.Contract.Applications.TranscriptDocuments>(request, opts => opts.Items.Add("RegistrantId", userContext!.UserId))!;
+
+      var application = await messageBus.Send(new SaveApplicationTranscriptCommand(transcriptDocuments), ct);
+      return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<Application>(application)));
+    })
+    .WithOpenApi("Save application transcript documents and options", string.Empty, "application_update_transcript_post")
+    .RequireAuthorization()
+    .WithParameterValidation();
   }
 }
 
@@ -522,7 +545,20 @@ public record FileInfo(string Id)
   public string? Name { get; set; } = string.Empty;
   public string? Size { get; set; } = string.Empty;
 }
-public record TranscriptStatus(string Id, TranscriptStage Status, string EducationalInstitutionName);
+public record TranscriptStatus(string Id, TranscriptStage Status, string EducationalInstitutionName, string programName)
+{
+  public IEnumerable<FileInfo> CourseOutlineFiles { get; set; } = Array.Empty<FileInfo>();
+  public IEnumerable<FileInfo> ProgramConfirmationFiles { get; set; } = Array.Empty<FileInfo>();
+  public CourseOutlineOptions? CourseOutlineOptions { get; set; }
+  public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
+  public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
+  public bool? CourseOutlineReceivedByRegistry { get; set; }
+  public bool? ProgramConfirmationReceivedByRegistry { get; set; }
+  public bool? TranscriptReceivedByRegistry { get; set; }
+  public bool? ComprehensiveReportReceivedByRegistry { get; set; }
+  public Country? Country { get; set; }
+  public EducationRecognition EducationRecognition { get; set; }
+}
 
 public record WorkExperienceReferenceStatus(string Id, WorkExperienceRefStage Status, string FirstName, string LastName, string EmailAddress)
 {
@@ -596,4 +632,32 @@ public enum ProfessionalDevelopmentStatusCode
   Submitted,
   UnderReview,
   WaitingResponse,
+}
+
+public record TranscriptDocuments(string ApplicationId, string TranscriptId)
+{
+  public IEnumerable<string> NewCourseOutlineFiles { get; set; } = Array.Empty<string>();
+  public IEnumerable<string> NewProgramConfirmationFiles { get; set; } = Array.Empty<string>();
+  public CourseOutlineOptions? CourseOutlineOptions { get; set; }
+  public ComprehensiveReportOptions? ComprehensiveReportOptions { get; set; }
+  public ProgramConfirmationOptions? ProgramConfirmationOptions { get; set; }
+}
+
+public enum CourseOutlineOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
+}
+
+public enum ComprehensiveReportOptions
+{
+  FeeWaiver,
+  InternationalCredentialEvaluationService,
+  RegistryAlreadyHas
+}
+
+public enum ProgramConfirmationOptions
+{
+  UploadNow,
+  RegistryAlreadyHas
 }

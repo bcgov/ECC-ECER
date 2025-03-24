@@ -42,6 +42,7 @@
           :file-item="file"
           :upload-progress="file.progress"
           :errors="file.fileErrors"
+          :can-delete="canDeletePermanentFiles || file.storageFolder === 'temporary'"
           @delete-file="removeFile"
         ></UploadFileItem>
       </v-list>
@@ -99,6 +100,11 @@ export default defineComponent({
       default: () => [],
     },
     deleteFileFromTempWhenRemoved: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    canDeletePermanentFiles: {
       type: Boolean,
       required: false,
       default: true,

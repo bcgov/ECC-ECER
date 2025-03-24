@@ -42,21 +42,21 @@ export default defineComponent({
         case "Accepted":
         case "InProgress":
         case "Submitted":
-          return "Complete";
+          return "Received";
         case "ApplicationSubmitted":
         case "Draft":
         case "WaitingforDetails":
         case "Rejected":
-          return "Incomplete";
+          return "Not yet received";
         default:
           return "Unhandled Status";
       }
     },
     sheetColor() {
       switch (this.statusText) {
-        case "Complete":
+        case "Received":
           return "white-smoke";
-        case "Incomplete":
+        case "Not yet received":
           return "hawkes-blue";
         default:
           return "";

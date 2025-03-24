@@ -74,15 +74,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_BulkCommunicationId = "ecer_bulkcommunicationid";
 			public const string Id = "ecer_bulkcommunicationid";
-			public const string ecer_communicationrecipient_ParentBulkCommunicationId = "ecer_communicationrecipient_ParentBulkCommunicationId";
-			public const string ecer_DateProcessed = "ecer_dateprocessed";
-			public const string ecer_Message = "ecer_message";
 			public const string ecer_Method = "ecer_method";
 			public const string ecer_methodName = "ecer_methodname";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_RowCount = "ecer_rowcount";
-			public const string ecer_SendNow = "ecer_sendnow";
-			public const string ecer_sendnowName = "ecer_sendnowname";
 			public const string ecer_Subject = "ecer_subject";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -301,36 +295,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateprocessed")]
-		public System.Nullable<System.DateTime> ecer_DateProcessed
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_dateprocessed");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_dateprocessed", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_message")]
-		public string ecer_Message
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_message");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_message", value);
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_method")]
 		public virtual ecer_BulkCommunication_ecer_Method? ecer_Method
 		{
@@ -375,53 +339,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rowcount")]
-		public System.Nullable<int> ecer_RowCount
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<int>>("ecer_rowcount");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_rowcount", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sendnow")]
-		public System.Nullable<bool> ecer_SendNow
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_sendnow");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_sendnow", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sendnowname")]
-		public string ecer_sendnowName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_sendnow"))
-				{
-					return this.FormattedValues["ecer_sendnow"];
-				}
-				else
-				{
-					return default(string);
-				}
 			}
 		}
 		
@@ -818,24 +735,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_communicationrecipient_ParentBulkCommunicationId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communicationrecipient_ParentBulkCommunicationId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient> ecer_communicationrecipient_ParentBulkCommunicationId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient>("ecer_communicationrecipient_ParentBulkCommunicationId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient>("ecer_communicationrecipient_ParentBulkCommunicationId", null, value);
 			}
 		}
 		

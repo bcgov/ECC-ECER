@@ -24,7 +24,13 @@
       <v-col cols="2" class="d-flex justify-end">
         <v-tooltip text="Delete" location="top">
           <template #activator="{ props }">
-            <v-btn v-if="fileItem.fileErrors.length > 0 || isUploadComplete" v-bind="props" icon="mdi-trash-can-outline" variant="plain" @click="deleteFile" />
+            <v-btn
+              v-if="(fileItem.fileErrors.length > 0 || isUploadComplete) && canDelete"
+              v-bind="props"
+              icon="mdi-trash-can-outline"
+              variant="plain"
+              @click="deleteFile"
+            />
           </template>
         </v-tooltip>
       </v-col>
@@ -64,6 +70,11 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    canDelete: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
     errors: { type: Array, required: true },
   },
   emits: ["delete-file"], // Declare the delete-file event here
@@ -80,7 +91,9 @@ export default defineComponent({
   methods: {
     deleteFile() {
       // Emit the delete-file event with the file as payload
-      this.$emit("delete-file", this.$props.fileItem);
+      if (this.canDelete) {
+        this.$emit("delete-file", this.$props.fileItem);
+      }
     },
   },
 });

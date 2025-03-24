@@ -72,4 +72,20 @@ const addProfessionalDevelopment = async (
   });
 };
 
-export { addProfessionalDevelopment, cancelDraftApplication, createOrUpdateDraftApplication, getApplications, getApplicationStatus, submitDraftApplication };
+const setTranscriptDocumentsAndOptions = async (body: Paths.ApplicationUpdateTranscriptPost.RequestBody): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute({
+    request: client.application_update_transcript_post(null, body),
+    key: "application_update_transcript_post",
+  });
+};
+
+export {
+  addProfessionalDevelopment,
+  cancelDraftApplication,
+  createOrUpdateDraftApplication,
+  getApplications,
+  getApplicationStatus,
+  submitDraftApplication,
+  setTranscriptDocumentsAndOptions,
+};

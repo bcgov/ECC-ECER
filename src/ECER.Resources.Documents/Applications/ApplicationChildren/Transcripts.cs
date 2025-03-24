@@ -1,4 +1,5 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
+using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.Applications;
@@ -55,6 +56,112 @@ internal sealed partial class ApplicationRepository
       {
         context.AddLink(institution, ecer_PostSecondaryInstitute.Fields.ecer_transcript_postsecondaryinstitutionid, transcript);
       }
+    }
+  }
+
+  public async Task<string> SaveApplicationTranscript(TranscriptDocuments transcriptDocuments, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var transcript = context.ecer_TranscriptSet.SingleOrDefault(
+      d => d.ecer_TranscriptId == Guid.Parse(transcriptDocuments.TranscriptId) && d.ecer_Applicationid.Id == Guid.Parse(transcriptDocuments.ApplicationId));
+    if (transcript == null) throw new InvalidOperationException($"Application '{transcriptDocuments.ApplicationId}' not found or Transcript '{transcriptDocuments.TranscriptId}' not found");
+
+
+    if (transcriptDocuments.CourseOutlineOptions != null)
+    {
+      if (transcriptDocuments.CourseOutlineOptions.Value == CourseOutlineOptions.UploadNow)
+      {
+        transcript.ecer_Ihavemycourseoutlinessyllabiandwillupload = true;
+        transcript.ecer_isECEregistryalreadyhasmycourseoutline = false;
+      }
+      else if (transcriptDocuments.CourseOutlineOptions.Value == CourseOutlineOptions.RegistryAlreadyHas)
+      {
+        transcript.ecer_Ihavemycourseoutlinessyllabiandwillupload = false;
+        transcript.ecer_isECEregistryalreadyhasmycourseoutline = true;
+      }
+      transcript.ecer_CourseOutlineReceived = true;
+    }
+    if (transcriptDocuments.ProgramConfirmationOptions != null)
+    {
+      if (transcriptDocuments.ProgramConfirmationOptions.Value == ProgramConfirmationOptions.UploadNow)
+      {
+        transcript.ecer_IhavemyProgramConfirmationandwillupload = true;
+        transcript.ecer_isECEregistryhasprogramconfirmation = false;
+      }
+      else if (transcriptDocuments.ProgramConfirmationOptions.Value == ProgramConfirmationOptions.RegistryAlreadyHas)
+      {
+        transcript.ecer_IhavemyProgramConfirmationandwillupload = false;
+        transcript.ecer_isECEregistryhasprogramconfirmation = true;
+      }
+      transcript.ecer_ProgramConfirmationFormReceived = true;
+    }
+
+    if (transcriptDocuments.ComprehensiveReportOptions != null)
+    {
+      if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.FeeWaiver)
+      {
+        transcript.ecer_iwishtoapplyforafeewaiver = true;
+        transcript.ecer_ihavesubmittedanapplicationtobcits = false;
+        transcript.ecer_ECERegistryalreadyhasmyComprehensiveReport = false;
+      }
+      else if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.InternationalCredentialEvaluationService)
+      {
+        transcript.ecer_iwishtoapplyforafeewaiver = false;
+        transcript.ecer_ihavesubmittedanapplicationtobcits = true;
+        transcript.ecer_ECERegistryalreadyhasmyComprehensiveReport = false;
+      }
+      else if (transcriptDocuments.ComprehensiveReportOptions.Value == ComprehensiveReportOptions.RegistryAlreadyHas)
+      {
+        transcript.ecer_iwishtoapplyforafeewaiver = false;
+        transcript.ecer_ihavesubmittedanapplicationtobcits = false;
+        transcript.ecer_ECERegistryalreadyhasmyComprehensiveReport = true;
+
+        transcript.ecer_ComprehensiveEvaluationReportReceived = true;
+      }
+
+    }
+
+    await AddFilesToTranscript(transcript, transcriptDocuments.NewCourseOutlineFiles, "Course Outline", cancellationToken);
+    if (transcriptDocuments.NewCourseOutlineFiles.Any()) transcript.ecer_CourseOutlineReceived = true;
+    await AddFilesToTranscript(transcript, transcriptDocuments.NewProgramConfirmationFiles, "Program Confirmation Form", cancellationToken);
+    if (transcriptDocuments.NewProgramConfirmationFiles.Any()) transcript.ecer_ProgramConfirmationFormReceived = true;
+    context.UpdateObject(transcript);
+    context.SaveChanges();
+    return transcript.ecer_Applicationid.Id.ToString();
+  }
+
+  private async Task AddFilesToTranscript(ecer_Transcript transcript, IEnumerable<string> fileIds, string tagName, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+
+    foreach (var fileId in fileIds)
+    {
+      var sourceFolder = "tempfolder";
+      var destinationFolder = "ecer_transcript/" + transcript.Id;
+      var file = await objectStorageProvider.GetAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), ct);
+      await objectStorageProvider.MoveAsync(new S3Descriptor(GetBucketName(configuration), fileId, sourceFolder), new S3Descriptor(GetBucketName(configuration), fileId, destinationFolder), ct);
+
+      var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == transcript.ecer_Applicantid.Id);
+      if (applicant == null) throw new InvalidOperationException($"Applicant '{transcript.ecer_Applicantid.Id}' not found");
+
+      var documenturl = new bcgov_DocumentUrl()
+      {
+        bcgov_FileName = file!.FileName,
+        bcgov_FileSize = Infrastructure.Common.UtilityFunctions.HumanFileSize(file!.Content.Length),
+        bcgov_DocumentUrlId = Guid.Parse(fileId),
+        bcgov_Url = destinationFolder,
+        StatusCode = bcgov_DocumentUrl_StatusCode.Active,
+        StateCode = bcgov_documenturl_statecode.Active,
+        ecer_Tag1 = tagName
+      };
+
+      context.AddObject(documenturl);
+      context.AddLink(documenturl, bcgov_DocumentUrl.Fields.bcgov_contact_bcgov_documenturl, applicant);
+      context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_TranscriptId, transcript);
+
+      var tag = context.bcgov_tagSet.SingleOrDefault(t => t.bcgov_name == tagName);
+      if (tag == null) throw new InvalidOperationException($"Tag {tagName} not found");
+      context.AddLink(documenturl, bcgov_DocumentUrl.Fields.bcgov_tag1_bcgov_documenturl, tag);
     }
   }
 }

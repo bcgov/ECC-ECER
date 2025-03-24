@@ -1,0 +1,29 @@
+name: regression
+on:
+  workflow_dispatch:
+  # Uncomment out when we want to run this daily
+  # schedule:
+  #   - cron: '0 3 * * *' # Runs at 3am UTC
+
+jobs:
+  regression:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout
+      - name: cypress.env.json
+        run: |
+          echo '${{ secrets.CYPRESS_ENV_CI }}' > ./src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client/cypress.env.json
+      - uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          working-directory: ././src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client
+          # upload records to cypress cloud
+          record: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}

@@ -55,6 +55,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       .IncludeNested(a => a.ecer_transcript_InstituteCountryId)
       .IncludeNested(a => a.ecer_transcript_ProvinceId)
       .IncludeNested(a => a.ecer_transcript_postsecondaryinstitutionid)
+      .IncludeNested(a => a.ecer_bcgov_documenturl_TranscriptId)
       .Execute();
 
     return mapper.Map<IEnumerable<Application>>(results)!.ToList();
@@ -140,13 +141,10 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     };
   }
 
-  public async Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken)
+  public async Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken) => request.PortalInvitation!.InviteType switch
   {
-    return request.PortalInvitation!.InviteType switch
-    {
-      InviteType.CharacterReference => await OptOutCharacterReference(request),
-      InviteType.WorkExperienceReference => await OptOutWorkExperienceReference(request),
-      _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
-    };
-  }
+    InviteType.CharacterReference => await OptOutCharacterReference(request),
+    InviteType.WorkExperienceReference => await OptOutWorkExperienceReference(request),
+    _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
+  };
 }
