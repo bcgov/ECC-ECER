@@ -82,8 +82,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_educationassessment_AppAssessmentId = "ecer_educationassessment_AppAssessmentId";
 			public const string ecer_EducationTranscriptReviewedId = "ecer_educationtranscriptreviewedid";
 			public const string ecer_EducationTranscriptReviewedIdName = "ecer_educationtranscriptreviewedidname";
+			public const string ecer_EquivalencyAnalysisType = "ecer_equivalencyanalysistype";
+			public const string ecer_equivalencyanalysistypeName = "ecer_equivalencyanalysistypename";
+			public const string ecer_GeneralInformationNotes = "ecer_generalinformationnotes";
 			public const string ecer_GoodCharacterAccepted = "ecer_goodcharacteraccepted";
 			public const string ecer_goodcharacteracceptedName = "ecer_goodcharacteracceptedname";
+			public const string ecer_Hours = "ecer_hours";
+			public const string ecer_JurisdictionalResearch = "ecer_jurisdictionalresearch";
 			public const string ecer_legacyapplicationassessmentid = "ecer_legacyapplicationassessmentid";
 			public const string ecer_legacyassessmenttraininglocationid = "ecer_legacyassessmenttraininglocationid";
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
@@ -520,6 +525,56 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_equivalencyanalysistype")]
+		public virtual ecer_EquivalencyAnalysisType? ecer_EquivalencyAnalysisType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_EquivalencyAnalysisType?)(EntityOptionSetEnum.GetEnum(this, "ecer_equivalencyanalysistype")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_equivalencyanalysistype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_equivalencyanalysistypename")]
+		public string ecer_equivalencyanalysistypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_equivalencyanalysistype"))
+				{
+					return this.FormattedValues["ecer_equivalencyanalysistype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// For equivalency
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generalinformationnotes")]
+		public string ecer_GeneralInformationNotes
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_generalinformationnotes");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_generalinformationnotes", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_goodcharacteraccepted")]
 		public virtual ecer_YesNoNull? ecer_GoodCharacterAccepted
 		{
@@ -549,6 +604,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hours")]
+		public System.Nullable<decimal> ecer_Hours
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_hours");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hours", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_jurisdictionalresearch")]
+		public string ecer_JurisdictionalResearch
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_jurisdictionalresearch");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_jurisdictionalresearch", value);
 			}
 		}
 		

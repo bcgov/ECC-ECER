@@ -12,24 +12,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 {
 	
 	
-	[System.Runtime.Serialization.DataContractAttribute()]
-	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_BulkCommunication_ecer_Method
-	{
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Communication = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Email = 621870000,
-	}
-	
 	/// <summary>
-	/// Status of the Bulk Communication
+	/// Status of the Program Area Assessment
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_bulkcommunication_statecode
+	public enum ecer_programareaassessment_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -40,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Bulk Communication
+	/// Reason for the status of the Program Area Assessment
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_BulkCommunication_StatusCode
+	public enum ecer_ProgramAreaAssessment_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -55,13 +43,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_bulkcommunication")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_programareaassessment")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_BulkCommunication : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_ProgramAreaAssessment : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_bulkcommunication entity
+		/// Available fields, a the time of codegen, for the ecer_programareaassessment entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -72,18 +60,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_BulkCommunicationId = "ecer_bulkcommunicationid";
-			public const string Id = "ecer_bulkcommunicationid";
-			public const string ecer_communicationrecipient_ParentBulkCommunicationId = "ecer_communicationrecipient_ParentBulkCommunicationId";
-			public const string ecer_DateProcessed = "ecer_dateprocessed";
-			public const string ecer_Message = "ecer_message";
-			public const string ecer_Method = "ecer_method";
-			public const string ecer_methodName = "ecer_methodname";
+			public const string ecer_CompetenciesMet = "ecer_competenciesmet";
+			public const string ecer_CompetenciesMetPercentage = "ecer_competenciesmetpercentage";
+			public const string ecer_CompetenciesRequired = "ecer_competenciesrequired";
+			public const string ecer_Description = "ecer_description";
+			public const string ecer_HoursCompletedPercentage = "ecer_hourscompletedpercentage";
+			public const string ecer_HoursofStudyCompleted = "ecer_hoursofstudycompleted";
+			public const string ecer_HoursofStudyRequired = "ecer_hoursofstudyrequired";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_RowCount = "ecer_rowcount";
-			public const string ecer_SendNow = "ecer_sendnow";
-			public const string ecer_sendnowName = "ecer_sendnowname";
-			public const string ecer_Subject = "ecer_subject";
+			public const string ecer_ProgramAreaAssessmentId = "ecer_programareaassessmentid";
+			public const string Id = "ecer_programareaassessmentid";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -110,19 +96,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_BulkCommunication(System.Guid id) : 
+		public ecer_ProgramAreaAssessment(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_BulkCommunication(string keyName, object keyValue) : 
+		public ecer_ProgramAreaAssessment(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_BulkCommunication(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_ProgramAreaAssessment(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -131,22 +117,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_BulkCommunication() : 
+		public ecer_ProgramAreaAssessment() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_bulkcommunicationid";
+		public const string PrimaryIdAttribute = "ecer_programareaassessmentid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_BulkCommunication";
+		public const string EntitySchemaName = "ecer_ProgramAreaAssessment";
 		
-		public const string EntityLogicalName = "ecer_bulkcommunication";
+		public const string EntityLogicalName = "ecer_programareaassessment";
 		
-		public const string EntityLogicalCollectionName = "ecer_bulkcommunications";
+		public const string EntityLogicalCollectionName = "ecer_programareaassessments";
 		
-		public const string EntitySetName = "ecer_bulkcommunications";
+		public const string EntitySetName = "ecer_programareaassessments";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -260,106 +246,108 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkcommunicationid")]
-		public System.Nullable<System.Guid> ecer_BulkCommunicationId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competenciesmet")]
+		public System.Nullable<decimal> ecer_CompetenciesMet
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_bulkcommunicationid");
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_competenciesmet");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_bulkcommunicationid", value);
-				if (value.HasValue)
-				{
-					base.Id = value.Value;
-				}
-				else
-				{
-					base.Id = System.Guid.Empty;
-				}
+				this.SetAttributeValue("ecer_competenciesmet", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkcommunicationid")]
-		public override System.Guid Id
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competenciesmetpercentage")]
+		public System.Nullable<decimal> ecer_CompetenciesMetPercentage
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return base.Id;
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_competenciesmetpercentage");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_BulkCommunicationId = value;
+				this.SetAttributeValue("ecer_competenciesmetpercentage", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateprocessed")]
-		public System.Nullable<System.DateTime> ecer_DateProcessed
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_competenciesrequired")]
+		public System.Nullable<decimal> ecer_CompetenciesRequired
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_dateprocessed");
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_competenciesrequired");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_dateprocessed", value);
+				this.SetAttributeValue("ecer_competenciesrequired", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_message")]
-		public string ecer_Message
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_description")]
+		public string ecer_Description
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_message");
+				return this.GetAttributeValue<string>("ecer_description");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_message", value);
+				this.SetAttributeValue("ecer_description", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_method")]
-		public virtual ecer_BulkCommunication_ecer_Method? ecer_Method
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hourscompletedpercentage")]
+		public System.Nullable<decimal> ecer_HoursCompletedPercentage
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_BulkCommunication_ecer_Method?)(EntityOptionSetEnum.GetEnum(this, "ecer_method")));
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_hourscompletedpercentage");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_method", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+				this.SetAttributeValue("ecer_hourscompletedpercentage", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_methodname")]
-		public string ecer_methodName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hoursofstudycompleted")]
+		public System.Nullable<decimal> ecer_HoursofStudyCompleted
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_method"))
-				{
-					return this.FormattedValues["ecer_method"];
-				}
-				else
-				{
-					return default(string);
-				}
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_hoursofstudycompleted");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hoursofstudycompleted", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hoursofstudyrequired")]
+		public System.Nullable<decimal> ecer_HoursofStudyRequired
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_hoursofstudyrequired");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hoursofstudyrequired", value);
 			}
 		}
 		
@@ -378,65 +366,44 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_rowcount")]
-		public System.Nullable<int> ecer_RowCount
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programareaassessmentid")]
+		public System.Nullable<System.Guid> ecer_ProgramAreaAssessmentId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<int>>("ecer_rowcount");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_programareaassessmentid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_rowcount", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sendnow")]
-		public System.Nullable<bool> ecer_SendNow
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_sendnow");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_sendnow", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sendnowname")]
-		public string ecer_sendnowName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_sendnow"))
+				this.SetAttributeValue("ecer_programareaassessmentid", value);
+				if (value.HasValue)
 				{
-					return this.FormattedValues["ecer_sendnow"];
+					base.Id = value.Value;
 				}
 				else
 				{
-					return default(string);
+					base.Id = System.Guid.Empty;
 				}
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_subject")]
-		public string ecer_Subject
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programareaassessmentid")]
+		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_subject");
+				return base.Id;
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_subject", value);
+				this.ecer_ProgramAreaAssessmentId = value;
 			}
 		}
 		
@@ -703,15 +670,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Bulk Communication
+		/// Status of the Program Area Assessment
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_bulkcommunication_statecode? StateCode
+		public virtual ecer_programareaassessment_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_bulkcommunication_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_programareaassessment_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -738,15 +705,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Bulk Communication
+		/// Reason for the status of the Program Area Assessment
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_BulkCommunication_StatusCode? StatusCode
+		public virtual ecer_ProgramAreaAssessment_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_BulkCommunication_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_ProgramAreaAssessment_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -822,29 +789,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_communicationrecipient_ParentBulkCommunicationId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communicationrecipient_ParentBulkCommunicationId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient> ecer_communicationrecipient_ParentBulkCommunicationId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient>("ecer_communicationrecipient_ParentBulkCommunicationId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient>("ecer_communicationrecipient_ParentBulkCommunicationId", null, value);
-			}
-		}
-		
-		/// <summary>
 		/// Constructor for populating via LINQ queries given a LINQ anonymous type
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_BulkCommunication(object anonymousType) : 
+		public ecer_ProgramAreaAssessment(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -862,9 +811,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_bulkcommunicationid"] = base.Id;
+                        Attributes["ecer_programareaassessmentid"] = base.Id;
                         break;
-                    case "ecer_bulkcommunicationid":
+                    case "ecer_programareaassessmentid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;
