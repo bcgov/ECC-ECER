@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>50e0f27d-5e80-4a15-92ea-03ec4bc705a4</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MinimalApis.Extensions" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ECER.Managers.E2ETest.Contract\ECER.Managers.E2ETest.Contract.csproj" />
+    <ProjectReference Include="..\ECER.Managers.E2ETest\ECER.Managers.E2ETest.csproj" />
+    <ProjectReference Include="..\ECER.Utilities.Hosting\ECER.Utilities.Hosting.csproj" />
+  </ItemGroup>
+
+</Project>
