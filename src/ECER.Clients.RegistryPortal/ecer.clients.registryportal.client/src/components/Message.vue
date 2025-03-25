@@ -42,9 +42,25 @@
       </v-card>
     </v-dialog>
   </div>
-  <div v-if="mdAndUp && messageStore.currentMessage != null">
-    <v-sheet v-if="messageStore.currentMessage?.doNotReply == false" class="message-reply mb-6">
-      <v-btn prepend-icon="mdi-reply" variant="text" color="primary" text="Reply" @click="handleMessageReply"></v-btn>
+  <div v-if="mdAndUp && messageStore.currentMessage !== null">
+    <v-sheet v-if="messageStore.currentMessage?.doNotReply === false || messageStore.currentMessage?.applicationId" class="message-reply mb-6">
+      <v-btn
+        v-if="messageStore.currentMessage?.doNotReply === false"
+        prepend-icon="mdi-reply"
+        variant="text"
+        color="primary"
+        text="Reply"
+        @click="handleMessageReply"
+      ></v-btn>
+      <span v-if="messageStore.currentMessage?.doNotReply === false && messageStore.currentMessage?.applicationId">|</span>
+      <v-btn
+        v-if="messageStore.currentMessage?.applicationId"
+        prepend-icon="mdi-list-box"
+        variant="text"
+        color="primary"
+        text="Go to application summary"
+        @click="handleApplicationSummary"
+      ></v-btn>
     </v-sheet>
     <h2>{{ messageStore.currentMessage?.subject }}</h2>
     <div v-for="(message, index) in messageStore.currentThread" :key="index" class="small mt-6">
@@ -115,6 +131,13 @@ export default defineComponent({
         params: { messageId: this.messageStore.currentMessage?.id },
       });
       this.messageStore.currentMessage = null; // Putting this in to make router redirect correctly for mobile devices
+    },
+    handleApplicationSummary() {
+      this.router.push({
+        name: "manageApplication",
+        params: { applicationId: this.messageStore.currentMessage?.applicationId },
+      });
+      this.messageStore.currentMessage = null;
     },
     messageFromString(message: Communication): string {
       switch (message.from) {

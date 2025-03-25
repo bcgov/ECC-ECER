@@ -19,6 +19,21 @@ internal class CommunicationRepositoryMapper : Profile
      .ForMember(d => d.Acknowledged, opts => opts.MapFrom(s => s.ecer_Acknowledged))
      .ForMember(d => d.NotifiedOn, opts => opts.MapFrom(s => s.ecer_DateNotified))
      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+     .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s =>
+      s.ecer_communication_Applicationid != null &&
+      !new[]
+      {
+        ecer_Application_StatusCode.Draft,
+        ecer_Application_StatusCode.Decision,
+        ecer_Application_StatusCode.Reconsideration,
+        ecer_Application_StatusCode.ReconsiderationDecision,
+        ecer_Application_StatusCode.AppealDecision,
+        ecer_Application_StatusCode.Withdrawn,
+        ecer_Application_StatusCode.Complete,
+        ecer_Application_StatusCode.Cancelled
+      }.ToList().Contains(s.ecer_communication_Applicationid.StatusCode!.Value)
+        ? s.ecer_communication_Applicationid.ecer_ApplicationId
+        : null))
      .ForMember(d => d.DoNotReply, opts => opts.MapFrom(s => s.ecer_DoNotReply))
      .ForMember(d => d.Documents, opts => opts.MapFrom(s => s.ecer_bcgov_documenturl_CommunicationId_ecer_communication))
      .ForMember(d => d.LatestMessageNotifiedOn, opts => opts.MapFrom(s => s.ecer_IsRoot != null && s.ecer_IsRoot == true ? (s.ecer_LatestMessageNotifiedDate ?? s.ecer_DateNotified) : s.ecer_DateNotified))
@@ -35,6 +50,7 @@ internal class CommunicationRepositoryMapper : Profile
      .ForSourceMember(s => s.LatestMessageNotifiedOn, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.IsRead, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.Documents, opts => opts.DoNotValidate())
+     .ForSourceMember(s => s.ApplicationId, opts => opts.DoNotValidate())
      .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)));
 
     CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()
