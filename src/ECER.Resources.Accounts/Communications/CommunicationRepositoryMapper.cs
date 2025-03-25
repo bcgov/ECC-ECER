@@ -50,6 +50,7 @@ internal class CommunicationRepositoryMapper : Profile
      .ForSourceMember(s => s.LatestMessageNotifiedOn, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.IsRead, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.Documents, opts => opts.DoNotValidate())
+     .ForSourceMember(s => s.ApplicationId, opts => opts.DoNotValidate())
      .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)));
 
     CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()
