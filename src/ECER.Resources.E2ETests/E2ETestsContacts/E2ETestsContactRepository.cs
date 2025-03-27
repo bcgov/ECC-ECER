@@ -8,17 +8,10 @@ namespace ECER.Resources.E2ETests.E2ETestsContacts;
 internal sealed partial class E2ETestsContactRepository : IE2ETestsContactRepository
 {
     private readonly EcerContext context;
-    private readonly IMapper mapper;
-    private readonly IConfiguration configuration;
 
-  public E2ETestsContactRepository(
-         EcerContext context,
-         IMapper mapper,
-         IConfiguration configuration)
+  public E2ETestsContactRepository(EcerContext context)
   {
     this.context = context;
-    this.mapper = mapper;
-    this.configuration = configuration;
   }
 
 
