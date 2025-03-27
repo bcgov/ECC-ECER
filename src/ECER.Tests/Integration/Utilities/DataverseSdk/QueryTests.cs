@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.Xrm.Sdk.Client;
 using Shouldly;
-using System;
 using Xunit.Categories;
 
 namespace ECER.Tests.Integration.Utilities.DataverseSdk;

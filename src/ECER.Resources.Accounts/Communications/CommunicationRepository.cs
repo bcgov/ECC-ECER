@@ -76,7 +76,7 @@ internal class CommunicationRepository : ICommunicationRepository
     {
       communications = communications.OrderByDescending(item => item.ecer_DateNotified);
     }
-    var results = context.From(communications).Join().Include(c => c.ecer_bcgov_documenturl_CommunicationId_ecer_communication).Execute();
+    var results = context.From(communications).Join().Include(c => c.ecer_bcgov_documenturl_CommunicationId_ecer_communication).Include(c=>c.ecer_communication_Applicationid).Execute();
 
     var finalCommunications = mapper.Map<IEnumerable<Communication>>(results)!.ToList();
 
