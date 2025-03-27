@@ -13,7 +13,7 @@
       <ol class="ml-10">
         <li>
           Download a
-          <a target="_blank" href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program Confirmation Form (16KB, PDF).</a>
+          <a target="_blank" href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program Confirmation Form (880KB, PDF).</a>
         </li>
         <li>Complete Section 1 of the form.</li>
         <li>
