@@ -31,15 +31,16 @@ describe("New ECE Assistant Certificate Application", () => {
       beforeEach(() => {
         // Reset cookies and local storage (cy.resetState() is defined in custom commands)
         cy.resetState();
+
         // Set the viewport for the current device.
         cy.viewport(test.width, test.height);
-
-        //Register Intercepts for Application workflow
-        cy.registerApiIntercepts();
 
         // Visit the base URL (configured in your cypress.config.ts).
         cy.visit("/login");
         cy.document().its("readyState").should("eq", "complete");
+
+        //Reset User State
+        cy.resetUserState();
       });
 
       it(`should sucessfully create a New ECE Assistant Application on ${test.device}`, () => {
@@ -47,14 +48,6 @@ describe("New ECE Assistant Certificate Application", () => {
         const day = today.getDate();
 
         cy.login();
-
-        /** Reset Application state if application exists at start of workflow */
-
-        cy.getApplicationID().then((appId) => {
-          if (appId !== "") {
-            cy.resetApplicationState(appId);
-          }
-        });
 
         /** Dashboard */
         cy.get(selectors.dashboard.applyNowButton).should("be.visible").click();
@@ -139,15 +132,6 @@ describe("New ECE Assistant Certificate Application", () => {
         cy.document().its("readyState").should("eq", "complete");
         cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
         cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
-      });
-
-      //Rollback and Reset Application State
-      afterEach(() => {
-        cy.getApplicationID().then((appId) => {
-          if (appId !== "") {
-            cy.resetApplicationState(appId);
-          }
-        });
       });
     });
   }

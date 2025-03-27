@@ -10,8 +10,8 @@ Cypress.Commands.add("resetState", () => {
 
 // Custom command to log in using default or provided credentials.
 Cypress.Commands.add("login", (username?: string, password?: string) => {
-  const user = username ?? (Cypress.env("BCSC_USERNAME") as string);
-  const pass = password ?? (Cypress.env("BCSC_PASSWORD") as string);
+  const user = username ?? (Cypress.env("PORTAL_USER").BCSC_USERNAME as string);
+  const pass = password ?? (Cypress.env("PORTAL_USER").BCSC_PASSWORD as string);
 
   // Adjust the URL if login page is at a different route.
   cy.visit("/login");
@@ -35,61 +35,25 @@ Cypress.Commands.add("login", (username?: string, password?: string) => {
   cy.contains("Your ECE certifications").should("be.visible");
 });
 
-Cypress.Commands.add("resetApplicationState", (applicationId: string) => {
+Cypress.Commands.add("resetUserState", () => {
   const apiUrl: string = Cypress.env("API_URL");
   const apiKey: string = Cypress.env("API_KEY");
+  const externalUserId: string = Cypress.env("PORTAL_USER").EXTERNAL_USER_ID;
 
   return cy
     .request({
       method: "DELETE",
-      url: `${apiUrl}/api/E2ETests/applications/delete/${applicationId}`,
+      url: `${apiUrl}/api/E2ETests/user/reset`,
       headers: {
         "X-API-KEY": apiKey,
+        "EXTERNAL-USER-ID": externalUserId,
       },
       failOnStatusCode: false,
     })
     .then((response) => {
       expect(response.status).to.eq(200);
-      cy.log("Application State has been Reset sucessfully");
-      cy.log("Navigate to the base URL");
-      // Navigate to the base URL
-      cy.visit("/");
+      cy.log("User State Reset sucessfull");
       // Return the response if needed for further chaining
       return cy.wrap(response);
     });
-});
-
-// Global variable to store the latest response message from either API.
-let applicationID: string = "";
-// Custom command to register intercepts for GET and PUT endpoints.
-Cypress.Commands.add("registerApiIntercepts", () => {
-  // Reset the variable if necessary at the start of each test.
-  applicationID = "";
-  // Intercept GET requests to '/api/applications/'
-  cy.intercept("GET", "/api/applications/", (req) => {
-    req.continue((res) => {
-      const body = res.body[0] as { id?: string };
-      if (body?.id) {
-        applicationID = body.id;
-      }
-    });
-  }).as("getApplicationApiCall");
-
-  // Intercept PUT requests to '/api/draftapplications'
-  cy.intercept("PUT", "/api/draftapplications", (req) => {
-    req.continue((res) => {
-      const body = res.body.application as { id?: string };
-      if (body?.id) {
-        applicationID = body.id;
-      }
-    });
-  }).as("putDraftApplicationApiCall");
-
-  // Return a cy chainable for consistency.
-  return cy.wrap(null);
-});
-
-// Optional custom command to retrieve the latest response string.
-Cypress.Commands.add("getApplicationID", () => {
-  return cy.wrap(applicationID);
 });

@@ -1,5 +1,5 @@
 ﻿using ECER.Infrastructure.Common;
-using ECER.Resources.E2ETests.Applications;
+using ECER.Resources.E2ETests.E2ETestsContacts;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 
@@ -9,7 +9,7 @@ public class Configurer : IConfigureComponents
 {
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
-    configurationContext.Services.AddTransient<IApplicationRepository, ApplicationRepository>();
+    configurationContext.Services.AddTransient<IE2ETestsContactRepository, E2ETestsContactRepository>();
   }
 }
 

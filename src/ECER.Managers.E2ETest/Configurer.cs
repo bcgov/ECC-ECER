@@ -8,7 +8,7 @@ public class Configurer : IConfigureComponents
 {
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
-    configurationContext.Services.AddTransient<ApplicationHandlers>();
+    configurationContext.Services.AddTransient<E2ETestsContactHandlers>();
 
   }
 }

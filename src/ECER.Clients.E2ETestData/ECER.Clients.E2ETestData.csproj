@@ -15,6 +15,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ECER.Managers.E2ETest.Contract\ECER.Managers.E2ETest.Contract.csproj" />
     <ProjectReference Include="..\ECER.Managers.E2ETest\ECER.Managers.E2ETest.csproj" />
+    <ProjectReference Include="..\ECER.Managers.Registry.Contract\ECER.Managers.Registry.Contract.csproj" />
+    <ProjectReference Include="..\ECER.Managers.Registry\ECER.Managers.Registry.csproj" />
     <ProjectReference Include="..\ECER.Utilities.Hosting\ECER.Utilities.Hosting.csproj" />
   </ItemGroup>
 
