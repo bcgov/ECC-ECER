@@ -477,6 +477,7 @@ declare namespace Components {
             isECEAssistant?: boolean;
             doesECERegistryHaveTranscript?: boolean;
             isOfficialTranscriptRequested?: boolean;
+            myTranscriptWillRequireEnglishTranslation?: boolean;
             country?: Country;
             province?: Province;
             postSecondaryInstitution?: PostSecondaryInstitution;

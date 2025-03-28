@@ -417,6 +417,7 @@ public class ApplicationRenewalValidationEngineTests
         _faker.Random.Bool(), // IsECEAssistant
         _faker.Random.Bool(), // DoesECERegistryHaveTranscript
         _faker.Random.Bool(), // IsOfficialTranscriptRequested
+        false, // MyTranscriptWillRequireEnglishTranslation
         _faker.Name.FirstName(), // StudentFirstName
         _faker.Name.LastName(), // StudentLastName
         _faker.Random.Bool(), // IsNameUnverified

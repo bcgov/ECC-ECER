@@ -225,6 +225,10 @@
         >
           <v-radio label="I have requested the official transcript to be sent to the ECE Registry from my educational institution" value="requested"></v-radio>
           <v-radio
+            label="My transcript needs English translation. I will ask my educational institution to send my transcript to me to be professionally translated."
+            value="requiresTranslation"
+          ></v-radio>
+          <v-radio
             label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
             value="received"
           ></v-radio>
@@ -410,7 +414,7 @@ interface EceEducationData {
   studentNumber: string;
   startYear: string;
   endYear: string;
-  transcriptStatus: "received" | "requested" | "";
+  transcriptStatus: "received" | "requested" | "requiresTranslation" | "";
   previousNameRadio: any;
   Rules: typeof Rules;
   studentFirstName: string | null;
@@ -584,8 +588,10 @@ export default defineComponent({
           studentNumber: this.studentNumber,
           startDate: this.startYear,
           endDate: this.endYear,
+          //required to convert 3 dynamic booleans to 1 enum value for radio group
           doesECERegistryHaveTranscript: this.transcriptStatus === "received",
           isOfficialTranscriptRequested: this.transcriptStatus === "requested",
+          myTranscriptWillRequireEnglishTranslation: this.transcriptStatus === "requiresTranslation",
           isNameUnverified: this.isNameUnverified,
           educationRecognition: this.recognizedPostSecondaryInstitution,
           educationOrigin: this.educationOriginResult,
@@ -679,6 +685,8 @@ export default defineComponent({
         this.transcriptStatus = "requested";
       } else if (educationData.education.doesECERegistryHaveTranscript) {
         this.transcriptStatus = "received";
+      } else if (educationData.education.myTranscriptWillRequireEnglishTranslation) {
+        this.transcriptStatus = "requiresTranslation";
       } else {
         this.transcriptStatus = "";
       }
