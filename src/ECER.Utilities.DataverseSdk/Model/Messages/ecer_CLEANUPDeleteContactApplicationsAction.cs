@@ -13,18 +13,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/ecer/")]
-	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("ecer_CLEANUPDeleteApplicationAction")]
+	[Microsoft.Xrm.Sdk.Client.RequestProxyAttribute("ecer_CLEANUPDeleteContactApplicationsAction")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_CLEANUPDeleteApplicationActionRequest : Microsoft.Xrm.Sdk.OrganizationRequest
+	public partial class ecer_CLEANUPDeleteContactApplicationsActionRequest : Microsoft.Xrm.Sdk.OrganizationRequest
 	{
 		
-		public string ApplicationID
+		public string ContactID
 		{
 			get
 			{
-				if (this.Parameters.Contains("ApplicationID"))
+				if (this.Parameters.Contains("ContactID"))
 				{
-					return ((string)(this.Parameters["ApplicationID"]));
+					return ((string)(this.Parameters["ContactID"]));
 				}
 				else
 				{
@@ -33,7 +33,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 			set
 			{
-				this.Parameters["ApplicationID"] = value;
+				this.Parameters["ContactID"] = value;
 			}
 		}
 		
@@ -56,20 +56,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		public ecer_CLEANUPDeleteApplicationActionRequest()
+		public ecer_CLEANUPDeleteContactApplicationsActionRequest()
 		{
-			this.RequestName = "ecer_CLEANUPDeleteApplicationAction";
-			this.ApplicationID = default(string);
+			this.RequestName = "ecer_CLEANUPDeleteContactApplicationsAction";
+			this.ContactID = default(string);
 		}
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute(Namespace="http://schemas.microsoft.com/xrm/2011/ecer/")]
-	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("ecer_CLEANUPDeleteApplicationAction")]
+	[Microsoft.Xrm.Sdk.Client.ResponseProxyAttribute("ecer_CLEANUPDeleteContactApplicationsAction")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_CLEANUPDeleteApplicationActionResponse : Microsoft.Xrm.Sdk.OrganizationResponse
+	public partial class ecer_CLEANUPDeleteContactApplicationsActionResponse : Microsoft.Xrm.Sdk.OrganizationResponse
 	{
 		
-		public ecer_CLEANUPDeleteApplicationActionResponse()
+		public ecer_CLEANUPDeleteContactApplicationsActionResponse()
 		{
 		}
 		
