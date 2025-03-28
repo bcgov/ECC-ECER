@@ -24,7 +24,7 @@ internal sealed partial class E2ETestsContactRepository : IE2ETestsContactReposi
       throw new ArgumentException("Invalid contact ID", nameof(contactId));
     }
 
-    // Validate that the application exists.
+    // Validate that the contact exists.
     var contact = context.ContactSet.SingleOrDefault(a => a.ContactId == contactGuid);
     if (contact == null)
     {
@@ -49,12 +49,12 @@ internal sealed partial class E2ETestsContactRepository : IE2ETestsContactReposi
 
       else
       {
-        throw new InvalidOperationException("Custom Action failed to Complete");
+        throw new InvalidOperationException(" Custom Action - 'ecer_CLEANUPDeleteContactApplicationsAction' failed to Complete");
       }
     }
     catch (Exception ex)
     {
-      throw new InvalidOperationException("Failed to execute custom action", ex);
+      throw new InvalidOperationException("Failed to execute custom action - 'ecer_CLEANUPDeleteContactApplicationsAction'", ex);
     }
   }
 
