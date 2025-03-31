@@ -583,7 +583,7 @@ public class ApplicationRepositoryTests : RegistryPortalWebAppScenarioBase
   private Transcript CreateTranscript()
   {
     var faker = new Faker("en_CA");
-    var transcript = new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program", faker.Random.Number(10000000, 99999999).ToString(), faker.Date.Past(), faker.Date.Recent(), faker.Random.Bool(), faker.Random.Bool(), faker.Random.Bool(), false, faker.Name.FirstName(), faker.Name.LastName(), faker.Random.Bool(), EducationRecognition.Recognized, EducationOrigin.InsideBC)
+    var transcript = new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program", faker.Random.Number(10000000, 99999999).ToString(), faker.Date.Past(), faker.Date.Recent(), faker.Random.Bool(), TranscriptStatusOptions.OfficialTranscriptRequested, faker.Name.FirstName(), faker.Name.LastName(), faker.Random.Bool(), EducationRecognition.Recognized, EducationOrigin.InsideBC)
     {
       CampusLocation = faker.Address.City(),
       Status = TranscriptStage.Draft,
