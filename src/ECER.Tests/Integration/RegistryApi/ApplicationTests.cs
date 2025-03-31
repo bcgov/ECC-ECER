@@ -576,7 +576,8 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       StudentNumber = faker.Random.Number(10000000, 99999999).ToString(),
       IsECEAssistant = faker.Random.Bool(),
       DoesECERegistryHaveTranscript = faker.Random.Bool(),
-      IsOfficialTranscriptRequested = faker.Random.Bool()
+      IsOfficialTranscriptRequested = faker.Random.Bool(),
+      MyTranscriptWillRequireEnglishTranslation = false,
     };
 
     return transcript;

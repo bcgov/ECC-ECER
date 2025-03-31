@@ -1,7 +1,7 @@
 <template>
   <v-row v-if="mode === 'add'">
     <v-col>
-      <h2>{{ clientId ? "Edit" : "Add" }} education</h2>
+      <h1>{{ clientId ? "Edit" : "Add" }} education</h1>
       <br />
       <p>
         You will need to request an official transcript from your educational institution for this course or program. It must be sent to us directly from them.
@@ -20,33 +20,87 @@
       <v-form ref="addEducationForm" validate-on="input">
         <v-row>
           <v-col>
-            <h3>How will you provide your transcript?</h3>
+            <h2>Educational institution</h2>
           </v-col>
-        </v-row>
-
-        <v-row>
-          <v-radio-group
-            id="radioTranscriptStatus"
-            v-model="transcriptStatus"
-            :rules="[Rules.required('Indicate the status of your transcript(s)')]"
-            color="primary"
-          >
-            <v-radio
-              label="I have requested the official transcript to be sent to the ECE Registry from my educational institution"
-              value="requested"
-            ></v-radio>
-            <v-radio
-              label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
-              value="received"
-            ></v-radio>
-          </v-radio-group>
         </v-row>
         <v-row>
           <v-col>
-            <h3>What program did you take?</h3>
+            <h3>Where did you take your training?</h3>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col md="8" lg="6" xl="4">
+            Country
+            <v-select
+              class="pt-2"
+              :items="configStore.countryList"
+              variant="outlined"
+              label=""
+              v-model="country"
+              item-title="countryName"
+              item-value="countryId"
+              :rules="[Rules.required('Select your country', 'countryId')]"
+              @update:modelValue="onCountryChange"
+              return-object
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row v-if="country?.countryId === configStore.canada?.countryId">
+          <v-col md="8" lg="6" xl="4">
+            Province or territory
+            <v-select
+              id="ddlProvince"
+              class="pt-2"
+              :items="configStore.provinceList"
+              variant="outlined"
+              label=""
+              v-model="province"
+              item-title="provinceName"
+              item-value="provinceId"
+              :rules="[Rules.required('Select your province or territory', 'provinceId')]"
+              @update:modelValue="onProvinceChange"
+              return-object
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col v-if="country?.countryId === configStore.canada?.countryId" md="8" lg="6" xl="4">
+            Educational institution
+            <v-select
+              id="ddlPostSecondaryInstitution"
+              class="pt-2"
+              :items="postSecondaryInstitutionByProvince"
+              variant="outlined"
+              item-title="name"
+              item-value="id"
+              v-model="postSecondaryInstitution"
+              :rules="[Rules.required('Select your post secondary institution', 'id')]"
+              return-object
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col v-if="country?.countryId !== configStore.canada?.countryId || postSecondaryInstitution?.name === 'Other'" md="8" lg="6" xl="4">
+            <EceTextField
+              id="txtInstitutionName"
+              v-model="school"
+              :rules="[Rules.required('Enter the name of the educational institution')]"
+              label="Name of educational institution"
+              maxlength="100"
+            ></EceTextField>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col md="8" lg="6" xl="4">
+            <EceTextField v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="200"></EceTextField>
           </v-col>
         </v-row>
 
+        <v-row>
+          <v-col>
+            <h3>What program or course did you take?</h3>
+          </v-col>
+        </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceTextField
@@ -99,78 +153,86 @@
             ></EceDateInput>
           </v-col>
         </v-row>
+
         <v-row>
           <v-col>
-            <h3>Where did you take it?</h3>
+            <h2>Documents</h2>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <h3>Student number and Name on transcript</h3>
+            <br />
+            <p>Make sure this exactly matches your transcript. It may cause delays if we cannot match a transcript we receive to your application.</p>
           </v-col>
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            Country
-            <v-select
-              class="pt-2"
-              :items="configStore.countryList"
-              variant="outlined"
-              label=""
-              v-model="country"
-              item-title="countryName"
-              item-value="countryId"
-              :rules="[Rules.required('Select your country', 'countryId')]"
-              @update:modelValue="onCountryChange"
-              return-object
-            ></v-select>
-          </v-col>
-        </v-row>
-        <v-row v-if="country?.countryId == configStore.canada?.countryId">
-          <v-col md="8" lg="6" xl="4">
-            Province or territory
-            <v-select
-              id="ddlProvince"
-              class="pt-2"
-              :items="configStore.provinceList"
-              variant="outlined"
-              label=""
-              v-model="province"
-              item-title="provinceName"
-              item-value="provinceId"
-              :rules="[Rules.required('Select your province or territory', 'provinceId')]"
-              @update:modelValue="onProvinceChange"
-              return-object
-            ></v-select>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col v-if="country?.countryId == configStore.canada?.countryId" md="8" lg="6" xl="4">
-            Educational institution
-            <v-select
-              id="ddlPostSecondaryInstitution"
-              class="pt-2"
-              :items="postSecondaryInstitutionByProvince"
-              variant="outlined"
-              item-title="name"
-              item-value="id"
-              v-model="postSecondaryInstitution"
-              :rules="[Rules.required('Select your post secondary institution', 'id')]"
-              return-object
-            ></v-select>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col v-if="country?.countryId !== configStore.canada?.countryId || postSecondaryInstitution?.name === 'Other'" md="8" lg="6" xl="4">
             <EceTextField
-              id="txtInstitutionName"
-              v-model="school"
-              :rules="[Rules.required('Enter the name of the educational institution')]"
-              label="Name of educational institution"
+              id="txtStudentID"
+              v-model="studentNumber"
+              :rules="[Rules.required('Enter your student number or ID')]"
+              label="Student number or ID"
               maxlength="100"
             ></EceTextField>
           </v-col>
         </v-row>
+        <br />
+        <p>What name is shown on your transcript?</p>
+        <br />
+        <v-radio-group
+          id="radioNameOnTranscript"
+          v-model="previousNameRadio"
+          :rules="[Rules.requiredRadio('Select an option')]"
+          @update:model-value="previousNameRadioChanged"
+        >
+          <v-radio v-for="(step, index) in applicantNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
+        </v-radio-group>
+        <div v-if="previousNameRadio === 'other'">
+          <v-row>
+            <v-col md="8" lg="6" xl="4">
+              <EceTextField v-model="studentFirstName" label="First name on transcript" variant="outlined" color="primary" maxlength="100"></EceTextField>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col md="8" lg="6" xl="4">
+              <EceTextField v-model="studentMiddleName" label="Middle name(s) on transcript (optional)" maxlength="100"></EceTextField>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col md="8" lg="6" xl="4">
+              <EceTextField
+                v-model="studentLastName"
+                :rules="[Rules.required('Enter your last name')]"
+                label="Last name on transcript"
+                maxlength="100"
+              ></EceTextField>
+            </v-col>
+          </v-row>
+        </div>
+
         <v-row>
-          <v-col md="8" lg="6" xl="4">
-            <EceTextField v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="200"></EceTextField>
+          <v-col>
+            <h3>How will you provide your transcript?</h3>
           </v-col>
         </v-row>
+
+        <v-radio-group
+          id="radioTranscriptStatus"
+          v-model="transcriptStatus"
+          :rules="[Rules.required('Indicate the status of your transcript(s)')]"
+          color="primary"
+        >
+          <v-radio label="I have requested the official transcript to be sent to the ECE Registry from my educational institution" value="requested"></v-radio>
+          <v-radio
+            label="My transcript needs English translation. I will ask my educational institution to send my transcript to me to be professionally translated."
+            value="requiresTranslation"
+          ></v-radio>
+          <v-radio
+            label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
+            value="received"
+          ></v-radio>
+        </v-radio-group>
 
         <!-- Equivelency for unrecognized programs -->
         <template v-if="recognizedPostSecondaryInstitution === 'NotRecognized'">
@@ -214,12 +276,7 @@
           </v-row>
         </template>
         <!-- Program Confirmation -->
-        <v-row
-          v-if="
-            (country?.countryId !== configStore.canada?.countryId || recognizedPostSecondaryInstitution === 'NotRecognized') &&
-            !applicationStore.isDraftCertificateTypeEceAssistant
-          "
-        >
+        <v-row v-if="recognizedPostSecondaryInstitution === 'NotRecognized' && !applicationStore.isDraftCertificateTypeEceAssistant">
           <v-col>
             <div class="d-flex flex-column ga-3">
               <h3>Program confirmation form</h3>
@@ -274,58 +331,6 @@
             </v-col>
           </v-row>
         </template>
-
-        <v-row>
-          <v-col>
-            <h3>Name and student number on transcript</h3>
-            <br />
-            <p>Make sure this exactly matches your transcript. It may cause delays if we cannot match a transcript we receive to your application.</p>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col md="8" lg="6" xl="4">
-            <EceTextField
-              id="txtStudentID"
-              v-model="studentNumber"
-              :rules="[Rules.required('Enter your student number or ID')]"
-              label="Student number or ID"
-              maxlength="100"
-            ></EceTextField>
-          </v-col>
-        </v-row>
-        <br />
-        <p>What name is shown on your transcript?</p>
-        <br />
-        <v-radio-group
-          id="radioNameOnTranscript"
-          v-model="previousNameRadio"
-          :rules="[Rules.requiredRadio('Select an option')]"
-          @update:model-value="previousNameRadioChanged"
-        >
-          <v-radio v-for="(step, index) in applicantNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
-        </v-radio-group>
-        <div v-if="previousNameRadio === 'other'">
-          <v-row>
-            <v-col md="8" lg="6" xl="4">
-              <EceTextField v-model="studentFirstName" label="First name on transcript" variant="outlined" color="primary" maxlength="100"></EceTextField>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col md="8" lg="6" xl="4">
-              <EceTextField v-model="studentMiddleName" label="Middle name(s) on transcript (optional)" maxlength="100"></EceTextField>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col md="8" lg="6" xl="4">
-              <EceTextField
-                v-model="studentLastName"
-                :rules="[Rules.required('Enter your last name')]"
-                label="Last name on transcript"
-                maxlength="100"
-              ></EceTextField>
-            </v-col>
-          </v-row>
-        </div>
         <v-row justify="start" class="ml-1 mt-10">
           <v-btn
             id="btnSaveEducation"
@@ -404,7 +409,7 @@ interface EceEducationData {
   studentNumber: string;
   startYear: string;
   endYear: string;
-  transcriptStatus: "received" | "requested" | "";
+  transcriptStatus: "received" | "requested" | "requiresTranslation" | "";
   previousNameRadio: any;
   Rules: typeof Rules;
   studentFirstName: string | null;
@@ -530,14 +535,17 @@ export default defineComponent({
       //covers case where user has assistant renewal and can only add 1 education. Otherwise allow user to upload as many as needed.
       return this.isDraftApplicationAssistantRenewal ? Object.keys(this.modelValue).length < 1 : true;
     },
-    recognizedPostSecondaryInstitution(): Components.Schemas.EducationRecognition {
+    recognizedPostSecondaryInstitution(): Components.Schemas.EducationRecognition | undefined {
       if (
         this.postSecondaryInstitution &&
         this.configStore.postSecondaryInstitutionList.some((institution) => institution.id === this.postSecondaryInstitution?.id)
       ) {
         return "Recognized";
-      } else {
+      } else if (this.educationOriginResult === "OutsideofCanada" || this.postSecondaryInstitution?.name === "Other") {
         return "NotRecognized";
+      } else {
+        //user has not selected enough fields to determine whether institution is recognized or not
+        return undefined;
       }
     },
     today() {
@@ -578,8 +586,10 @@ export default defineComponent({
           studentNumber: this.studentNumber,
           startDate: this.startYear,
           endDate: this.endYear,
+          //required to convert 3 booleans from dynamics to 1 enum value for radio group
           doesECERegistryHaveTranscript: this.transcriptStatus === "received",
           isOfficialTranscriptRequested: this.transcriptStatus === "requested",
+          myTranscriptWillRequireEnglishTranslation: this.transcriptStatus === "requiresTranslation",
           isNameUnverified: this.isNameUnverified,
           educationRecognition: this.recognizedPostSecondaryInstitution,
           educationOrigin: this.educationOriginResult,
@@ -673,6 +683,8 @@ export default defineComponent({
         this.transcriptStatus = "requested";
       } else if (educationData.education.doesECERegistryHaveTranscript) {
         this.transcriptStatus = "received";
+      } else if (educationData.education.myTranscriptWillRequireEnglishTranslation) {
+        this.transcriptStatus = "requiresTranslation";
       } else {
         this.transcriptStatus = "";
       }
