@@ -113,9 +113,10 @@ internal class ApplicationRepositoryMapper : Profile
            .ForMember(d => d.ecer_EducationInstitutionFullName, opts => opts.MapFrom(s => s.EducationalInstitutionName))
            .ForMember(d => d.ecer_TranscriptId, opts => opts.MapFrom(s => s.Id))
            .ForMember(d => d.ecer_IsECEAssistant, opts => opts.MapFrom(s => s.IsECEAssistant))
-           .ForMember(d => d.ecer_DoesECERegistryHaveTranscript, opts => opts.MapFrom(s => s.DoesECERegistryHaveTranscript))
-           .ForMember(d => d.ecer_IsOfficialTranscriptRequested, opts => opts.MapFrom(s => s.IsOfficialTranscriptRequested))
-           .ForMember(d => d.ecer_mytranscriptwillrequireenglishtranslation, opts => opts.MapFrom(s => s.MyTranscriptWillRequireEnglishTranslation))
+           //next 3 lines converts enum TranscriptStatusOption to the 3 boolean fields within dynamics
+           .ForMember(d => d.ecer_DoesECERegistryHaveTranscript, opts => opts.MapFrom(s => s.TranscriptStatusOption == TranscriptStatusOptions.RegistryHasTranscript))
+           .ForMember(d => d.ecer_IsOfficialTranscriptRequested, opts => opts.MapFrom(s => s.TranscriptStatusOption == TranscriptStatusOptions.OfficialTranscriptRequested))
+           .ForMember(d => d.ecer_mytranscriptwillrequireenglishtranslation, opts => opts.MapFrom(s => s.TranscriptStatusOption == TranscriptStatusOptions.TranscriptWillRequireEnglishTranslation))
            .ForMember(d => d.ecer_IsNameUnverified, opts => opts.MapFrom(s => s.IsNameUnverified))
            .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
            .ForMember(d => d.ecer_EducationRecognition, opts => opts.MapFrom(s => s.EducationRecognition))
@@ -123,6 +124,7 @@ internal class ApplicationRepositoryMapper : Profile
            .ForMember(d => d.ecer_transcript_InstituteCountryId, opts => opts.MapFrom(s => s.Country))
            .ForMember(d => d.ecer_transcript_ProvinceId, opts => opts.MapFrom(s => s.Province))
            .ForMember(d => d.ecer_transcript_postsecondaryinstitutionid, opts => opts.MapFrom(s => s.PostSecondaryInstitution))
+           .ForSourceMember(d => d.TranscriptStatusOption, opts => opts.DoNotValidate())
            .ForSourceMember(d => d.CourseOutlineReceivedByRegistry, opts => opts.DoNotValidate())
            .ForSourceMember(d => d.ProgramConfirmationReceivedByRegistry, opts => opts.DoNotValidate())
            .ForSourceMember(d => d.TranscriptReceivedByRegistry, opts => opts.DoNotValidate())
@@ -141,9 +143,7 @@ internal class ApplicationRepositoryMapper : Profile
       .ForCtorParam(nameof(Transcript.StartDate), opt => opt.MapFrom(src => src.ecer_StartDate))
       .ForCtorParam(nameof(Transcript.EndDate), opt => opt.MapFrom(src => src.ecer_EndDate))
       .ForCtorParam(nameof(Transcript.IsECEAssistant), opt => opt.MapFrom(src => src.ecer_IsECEAssistant))
-      .ForCtorParam(nameof(Transcript.DoesECERegistryHaveTranscript), opt => opt.MapFrom(src => src.ecer_DoesECERegistryHaveTranscript))
-      .ForCtorParam(nameof(Transcript.IsOfficialTranscriptRequested), opt => opt.MapFrom(src => src.ecer_IsOfficialTranscriptRequested))
-      .ForCtorParam(nameof(Transcript.MyTranscriptWillRequireEnglishTranslation), opt => opt.MapFrom(src => src.ecer_mytranscriptwillrequireenglishtranslation))
+      .ForCtorParam(nameof(Transcript.TranscriptStatusOption), opt => opt.MapFrom(src => GetTranscriptStatusOption(src)))
       .ForCtorParam(nameof(Transcript.StudentFirstName), opt => opt.MapFrom(src => src.ecer_StudentFirstName))
       .ForCtorParam(nameof(Transcript.StudentLastName), opt => opt.MapFrom(src => src.ecer_StudentLastName))
       .ForCtorParam(nameof(Transcript.IsNameUnverified), opt => opt.MapFrom(src => src.ecer_IsNameUnverified))
@@ -394,4 +394,22 @@ internal class ApplicationRepositoryMapper : Profile
       .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_UnabletoProvideReferenceReason, opts => opts.MapFrom(s => s.UnabletoProvideReferenceReasons));
   }
+  private static TranscriptStatusOptions GetTranscriptStatusOption(ecer_Transcript src)
+  {
+    if (src.ecer_DoesECERegistryHaveTranscript == true)
+    {
+      return TranscriptStatusOptions.RegistryHasTranscript;
+    }
+    if (src.ecer_IsOfficialTranscriptRequested == true)
+    {
+      return TranscriptStatusOptions.OfficialTranscriptRequested;
+    }
+    if (src.ecer_mytranscriptwillrequireenglishtranslation == true)
+    {
+      return TranscriptStatusOptions.TranscriptWillRequireEnglishTranslation;
+    }
+    throw new InvalidOperationException("No status found for transcript");
+  }
 }
+
+
