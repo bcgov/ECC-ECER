@@ -1,0 +1,20 @@
+﻿{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5099",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DataProtection__DirectoryPath": "../",
+        "DataProtection__ApplicationName": "ECER",
+        "OTEL_SDK_DISABLED": "true",
+        "VERSION": "local",
+        "TIMESTAMP": "timestamp",
+        "COMMIT": "commit"
+      }
+    }
+  }
+}

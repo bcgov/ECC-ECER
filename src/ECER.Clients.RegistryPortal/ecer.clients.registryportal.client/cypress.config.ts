@@ -16,6 +16,7 @@ export default defineConfig({
       return config;
     },
   },
+  defaultCommandTimeout: 20000,
   env: {
     BCSC_USERNAME: env.BCSC_USERNAME,
     BCSC_PASSWORD: env.BCSC_PASSWORD,

@@ -41,7 +41,7 @@ describe("BCSC Authentication Tests", () => {
         // Check if the profile page is available.
         cy.visit("/profile");
         cy.document().its("readyState").should("eq", "complete");
-        cy.contains("Email address", { timeout: 10000 }).should("be.visible");
+        cy.contains("Email address").should("be.visible");
       });
     });
   }
