@@ -219,18 +219,21 @@
 
         <v-radio-group
           id="radioTranscriptStatus"
-          v-model="transcriptStatus"
+          v-model="transcriptStatusOption"
           :rules="[Rules.required('Indicate the status of your transcript(s)')]"
           color="primary"
         >
-          <v-radio label="I have requested the official transcript to be sent to the ECE Registry from my educational institution" value="requested"></v-radio>
+          <v-radio
+            label="I have requested the official transcript to be sent to the ECE Registry from my educational institution"
+            value="OfficialTranscriptRequested"
+          ></v-radio>
           <v-radio
             label="My transcript needs English translation. I will ask my educational institution to send my transcript to me to be professionally translated."
-            value="requiresTranslation"
+            value="TranscriptWillRequireEnglishTranslation"
           ></v-radio>
           <v-radio
             label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
-            value="received"
+            value="RegistryHasTranscript"
           ></v-radio>
         </v-radio-group>
 
@@ -409,7 +412,7 @@ interface EceEducationData {
   studentNumber: string;
   startYear: string;
   endYear: string;
-  transcriptStatus: "received" | "requested" | "requiresTranslation" | "";
+  transcriptStatusOption: Components.Schemas.TranscriptStatusOptions | undefined;
   previousNameRadio: any;
   Rules: typeof Rules;
   studentFirstName: string | null;
@@ -470,7 +473,7 @@ export default defineComponent({
       studentNumber: "",
       startYear: "",
       endYear: "",
-      transcriptStatus: "",
+      transcriptStatusOption: undefined,
       Rules,
       previousNameRadio: undefined,
       studentFirstName: "",
@@ -586,10 +589,7 @@ export default defineComponent({
           studentNumber: this.studentNumber,
           startDate: this.startYear,
           endDate: this.endYear,
-          //required to convert 3 booleans from dynamics to 1 enum value for radio group
-          doesECERegistryHaveTranscript: this.transcriptStatus === "received",
-          isOfficialTranscriptRequested: this.transcriptStatus === "requested",
-          myTranscriptWillRequireEnglishTranslation: this.transcriptStatus === "requiresTranslation",
+          transcriptStatusOption: this.transcriptStatusOption,
           isNameUnverified: this.isNameUnverified,
           educationRecognition: this.recognizedPostSecondaryInstitution,
           educationOrigin: this.educationOriginResult,
@@ -679,15 +679,7 @@ export default defineComponent({
         this.configStore.canada?.countryId === this.country?.countryId && this.province && !educationData.education.postSecondaryInstitution
           ? { id: "unrecognized", provinceId: "unrecognized", name: "Other" }
           : educationData.education.postSecondaryInstitution;
-      if (educationData.education.isOfficialTranscriptRequested) {
-        this.transcriptStatus = "requested";
-      } else if (educationData.education.doesECERegistryHaveTranscript) {
-        this.transcriptStatus = "received";
-      } else if (educationData.education.myTranscriptWillRequireEnglishTranslation) {
-        this.transcriptStatus = "requiresTranslation";
-      } else {
-        this.transcriptStatus = "";
-      }
+      this.transcriptStatusOption = educationData.education.transcriptStatusOption;
       //set the radio button for previous names and field buttons correctly
       if (educationData.education.isNameUnverified) {
         let index = this.applicantNameRadioOptions.findIndex((option) => option.value === "other");
@@ -747,7 +739,7 @@ export default defineComponent({
       this.postSecondaryInstitution = undefined;
       this.startYear = "";
       this.endYear = "";
-      this.transcriptStatus = "";
+      this.transcriptStatusOption = undefined;
       this.studentFirstName = "";
       this.studentMiddleName = "";
       this.studentLastName = "";
