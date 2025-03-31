@@ -161,7 +161,7 @@
         </v-row>
         <v-row>
           <v-col>
-            <h3>Name and student number on transcript</h3>
+            <h3>Student number and Name on transcript</h3>
             <br />
             <p>Make sure this exactly matches your transcript. It may cause delays if we cannot match a transcript we receive to your application.</p>
           </v-col>
@@ -276,12 +276,7 @@
           </v-row>
         </template>
         <!-- Program Confirmation -->
-        <v-row
-          v-if="
-            (country?.countryId !== configStore.canada?.countryId || recognizedPostSecondaryInstitution === 'NotRecognized') &&
-            !applicationStore.isDraftCertificateTypeEceAssistant
-          "
-        >
+        <v-row v-if="recognizedPostSecondaryInstitution === 'NotRecognized' && !applicationStore.isDraftCertificateTypeEceAssistant">
           <v-col>
             <div class="d-flex flex-column ga-3">
               <h3>Program confirmation form</h3>
@@ -540,15 +535,24 @@ export default defineComponent({
       //covers case where user has assistant renewal and can only add 1 education. Otherwise allow user to upload as many as needed.
       return this.isDraftApplicationAssistantRenewal ? Object.keys(this.modelValue).length < 1 : true;
     },
-    recognizedPostSecondaryInstitution(): Components.Schemas.EducationRecognition {
+    recognizedPostSecondaryInstitution(): Components.Schemas.EducationRecognition | undefined {
       if (
         this.postSecondaryInstitution &&
         this.configStore.postSecondaryInstitutionList.some((institution) => institution.id === this.postSecondaryInstitution?.id)
       ) {
         return "Recognized";
-      } else {
+      } else if (this.educationOriginResult === "OutsideofCanada" || this.postSecondaryInstitution?.name === "Other") {
         return "NotRecognized";
+      } else {
+        //user has not selected enough fields to determine whether institution is recognized or not
+        return undefined;
       }
+    },
+    isUserSelectionRecognizedPostSecondaryInstitution() {
+      return (
+        this.postSecondaryInstitution &&
+        this.configStore.postSecondaryInstitutionList.some((institution) => institution.id === this.postSecondaryInstitution?.id)
+      );
     },
     today() {
       return formatDate(DateTime.now().toString());
