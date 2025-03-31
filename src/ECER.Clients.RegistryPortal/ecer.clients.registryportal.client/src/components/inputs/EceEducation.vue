@@ -548,12 +548,6 @@ export default defineComponent({
         return undefined;
       }
     },
-    isUserSelectionRecognizedPostSecondaryInstitution() {
-      return (
-        this.postSecondaryInstitution &&
-        this.configStore.postSecondaryInstitutionList.some((institution) => institution.id === this.postSecondaryInstitution?.id)
-      );
-    },
     today() {
       return formatDate(DateTime.now().toString());
     },
@@ -592,7 +586,7 @@ export default defineComponent({
           studentNumber: this.studentNumber,
           startDate: this.startYear,
           endDate: this.endYear,
-          //required to convert 3 dynamic booleans to 1 enum value for radio group
+          //required to convert 3 booleans from dynamics to 1 enum value for radio group
           doesECERegistryHaveTranscript: this.transcriptStatus === "received",
           isOfficialTranscriptRequested: this.transcriptStatus === "requested",
           myTranscriptWillRequireEnglishTranslation: this.transcriptStatus === "requiresTranslation",
