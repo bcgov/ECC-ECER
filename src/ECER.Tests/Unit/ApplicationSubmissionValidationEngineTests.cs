@@ -112,7 +112,7 @@ public class ApplicationSubmissionValidationEngineTests
     }
 
     var faker = new Faker("en_CA");
-    var transcript = new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program", faker.Random.Number(10000000, 99999999).ToString(), startDate, endDate, faker.Random.Bool(), faker.Random.Bool(), faker.Random.Bool(), faker.Name.FirstName(), faker.Name.LastName(), faker.Random.Bool(), EducationRecognition.Recognized, EducationOrigin.InsideBC);
+    var transcript = new Transcript(null, faker.Company.CompanyName(), $"{faker.Hacker.Adjective()} Program", faker.Random.Number(10000000, 99999999).ToString(), startDate, endDate, faker.Random.Bool(), TranscriptStatusOptions.OfficialTranscriptRequested, faker.Name.FirstName(), faker.Name.LastName(), faker.Random.Bool(), EducationRecognition.Recognized, EducationOrigin.InsideBC);
 
     return transcript;
   }

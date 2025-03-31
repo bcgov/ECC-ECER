@@ -17,7 +17,7 @@
       <br />
       <ul class="ml-10">
         <li>
-          <strong>Make sure you have requested the transcripts be sent to the ECE Registry directly from the educational institution</strong>
+          <strong>Make sure the ECE Registry will receive your transcripts in English</strong>
         </li>
         <li>We will email you once we receive them</li>
       </ul>
@@ -48,7 +48,7 @@
     <h3>Assessment</h3>
     <br />
     <ul class="ml-10">
-      <li>We will assess your application after we have received any required references and documents</li>
+      <li>We will assess your application after we have received your transcripts and references</li>
       <li>We assess complete applications in the order they are received</li>
       <li>We will email you after we have assessed your application</li>
     </ul>

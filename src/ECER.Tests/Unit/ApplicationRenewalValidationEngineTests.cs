@@ -415,8 +415,7 @@ public class ApplicationRenewalValidationEngineTests
         _faker.Date.Past(5), // StartDate (random date within the last 5 years)
         _faker.Date.Recent(365), // EndDate (random date within the last year)
         _faker.Random.Bool(), // IsECEAssistant
-        _faker.Random.Bool(), // DoesECERegistryHaveTranscript
-        _faker.Random.Bool(), // IsOfficialTranscriptRequested
+        TranscriptStatusOptions.OfficialTranscriptRequested, // Transcript status option
         _faker.Name.FirstName(), // StudentFirstName
         _faker.Name.LastName(), // StudentLastName
         _faker.Random.Bool(), // IsNameUnverified

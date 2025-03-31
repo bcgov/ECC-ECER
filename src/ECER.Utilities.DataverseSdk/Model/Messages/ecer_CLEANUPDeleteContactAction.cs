@@ -72,6 +72,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 		public ecer_CLEANUPDeleteContactActionResponse()
 		{
 		}
+		
+		public bool Completed
+		{
+			get
+			{
+				if (this.Results.Contains("Completed"))
+				{
+					return ((bool)(this.Results["Completed"]));
+				}
+				else
+				{
+					return default(bool);
+				}
+			}
+		}
 	}
 }
 #pragma warning restore CS1591

@@ -404,8 +404,7 @@ public record Transcript(string? EducationalInstitutionName, [Required] string P
   public string? StudentMiddleName { get; set; }
   public string? StudentNumber { get; set; }
   public bool IsECEAssistant { get; set; }
-  public bool DoesECERegistryHaveTranscript { get; set; }
-  public bool IsOfficialTranscriptRequested { get; set; }
+  public TranscriptStatusOptions TranscriptStatusOption { get; set; }
   public Country? Country { get; set; }
   public Province? Province { get; set; }
   public PostSecondaryInstitution? PostSecondaryInstitution { get; set; }
@@ -660,4 +659,10 @@ public enum ProgramConfirmationOptions
 {
   UploadNow,
   RegistryAlreadyHas
+}
+public enum TranscriptStatusOptions
+{
+  RegistryHasTranscript,
+  OfficialTranscriptRequested,
+  TranscriptWillRequireEnglishTranslation
 }
