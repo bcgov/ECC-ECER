@@ -141,9 +141,7 @@ export const useApplicationStore = defineStore("application", {
         case "FiveYearWithIteAndSneRegistrant":
           return applicationWizardFiveYear;
         case "IteRegistrant":
-          return applicationWizardIteSne;
         case "SneRegistrant":
-          return applicationWizardIteSne;
         case "IteAndSneRegistrant":
           return applicationWizardIteSne;
         case "AssistantRenewal":
