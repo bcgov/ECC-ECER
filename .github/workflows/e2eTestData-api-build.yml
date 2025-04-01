@@ -1,4 +1,4 @@
-name: Registry Portal Build
+name: API Build
 on:
   workflow_dispatch:
 
@@ -8,21 +8,21 @@ on:
       - "release/**"
     paths:
       - src/**
+      - "!src/ECER.Clients.RegistryPortal/**"
       - "!src/ECER.Clients.Api/**"
-      - "!src/ECER.Clients.E2ETestData/**"
+      - "!src/registry-portal.Dockerfile"
       - "!src/api.Dockerfile"
-      - "!src/e2eTestData.Dockerfile"
-      - .github/workflows/registry-portal-build.yml
+      - .github/workflows/e2eTestData-api-build.yml
       - .github/workflows/build-template.yml
 
   pull_request:
     paths:
       - src/**
+      - "!src/ECER.Clients.RegistryPortal/**"
       - "!src/ECER.Clients.Api/**"
-      - "!src/ECER.Clients.E2ETestData/**"
+      - "!src/registry-portal.Dockerfile"
       - "!src/api.Dockerfile"
-      - "!src/e2eTestData.Dockerfile"
-      - .github/workflows/registry-portal-build.yml
+      - .github/workflows/e2eTestData-api-build.yml
       - .github/workflows/build-template.yml
 
 jobs:
@@ -35,8 +35,8 @@ jobs:
     uses: ./.github/workflows/build-template.yml
     with:
       IMAGE_CONTEXT: src
-      IMAGE_FILE: src/registry-portal.Dockerfile
-      IMAGE_NAME: registry-portal
+      IMAGE_FILE: src/e2eTestData.Dockerfile
+      IMAGE_NAME: e2eTestData
       REGISTRY: ${{ vars.DOCKER_REGISTRY }}
     secrets:
       REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
