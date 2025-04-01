@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { createOrUpdateDraftApplication, getApplications, submitDraftApplication } from "@/api/application";
 import type { ProfessionalDevelopmentExtended } from "@/components/inputs/EceProfessionalDevelopment.vue";
 import type { FileItem } from "@/components/UploadFileItem.vue";
+import applicationWizardIteSne from "@/config/application-wizard-ite-sne";
 import applicationWizardAssistantAndOneYear from "@/config/application-wizard-assistant-and-one-year";
 import applicationWizardFiveYear from "@/config/application-wizard-five-year";
 import applicationWizardRenewAssistant from "@/config/application-wizard-renew-assistant";
@@ -138,10 +139,11 @@ export const useApplicationStore = defineStore("application", {
         case "FiveYearWithIteRegistrant":
         case "FiveYearWithSneRegistrant":
         case "FiveYearWithIteAndSneRegistrant":
+          return applicationWizardFiveYear;
         case "IteRegistrant":
         case "SneRegistrant":
         case "IteAndSneRegistrant":
-          return applicationWizardFiveYear;
+          return applicationWizardIteSne;
         case "AssistantRenewal":
           return applicationWizardRenewAssistant;
         case "OneYearActiveRenewal":

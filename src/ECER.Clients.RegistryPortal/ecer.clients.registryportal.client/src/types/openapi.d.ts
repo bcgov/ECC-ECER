@@ -475,9 +475,7 @@ declare namespace Components {
             studentMiddleName?: string | null;
             studentNumber?: string | null;
             isECEAssistant?: boolean;
-            doesECERegistryHaveTranscript?: boolean;
-            isOfficialTranscriptRequested?: boolean;
-            myTranscriptWillRequireEnglishTranslation?: boolean;
+            transcriptStatusOption?: TranscriptStatusOptions;
             country?: Country;
             province?: Province;
             postSecondaryInstitution?: PostSecondaryInstitution;
@@ -509,6 +507,7 @@ declare namespace Components {
             country?: Country;
             educationRecognition?: EducationRecognition;
         }
+        export type TranscriptStatusOptions = "RegistryHasTranscript" | "OfficialTranscriptRequested" | "TranscriptWillRequireEnglishTranslation";
         export type UnabletoProvideReferenceReasons = "Iamunabletoatthistime" | "Idonothavetheinformationrequired" | "Idonotknowthisperson" | "Idonotmeettherequirementstoprovideareference" | "Other";
         export interface UpdateReferenceResponse {
             referenceId?: string | null;
@@ -1839,6 +1838,7 @@ export type Transcript = Components.Schemas.Transcript;
 export type TranscriptDocuments = Components.Schemas.TranscriptDocuments;
 export type TranscriptStage = Components.Schemas.TranscriptStage;
 export type TranscriptStatus = Components.Schemas.TranscriptStatus;
+export type TranscriptStatusOptions = Components.Schemas.TranscriptStatusOptions;
 export type UnabletoProvideReferenceReasons = Components.Schemas.UnabletoProvideReferenceReasons;
 export type UpdateReferenceResponse = Components.Schemas.UpdateReferenceResponse;
 export type UserInfo = Components.Schemas.UserInfo;

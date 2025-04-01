@@ -195,7 +195,7 @@ export default defineComponent({
         };
         const { error } = await postProfileVerification(identification);
         if (!error) {
-          this.alertStore.setSuccessAlert("You have successfully uploaded your verification Ids.");
+          this.alertStore.setSuccessAlert("ID received");
           this.router.push("/");
         }
       } else {

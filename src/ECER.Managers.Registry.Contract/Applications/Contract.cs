@@ -85,7 +85,7 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public ApplicationOrigin? Origin { get; set; }
 }
 
-public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, bool DoesECERegistryHaveTranscript, bool IsOfficialTranscriptRequested, bool MyTranscriptWillRequireEnglishTranslation, string StudentFirstName, string StudentLastName, bool IsNameUnverified, EducationRecognition EducationRecognition, EducationOrigin EducationOrigin)
+public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, TranscriptStatusOptions TranscriptStatusOption, string StudentFirstName, string StudentLastName, bool IsNameUnverified, EducationRecognition EducationRecognition, EducationOrigin EducationOrigin)
 {
   public string? CampusLocation { get; set; }
   public TranscriptStage? Status { get; set; }
@@ -472,4 +472,11 @@ public enum ProgramConfirmationOptions
 {
   UploadNow,
   RegistryAlreadyHas
+}
+
+public enum TranscriptStatusOptions
+{
+  RegistryHasTranscript,
+  OfficialTranscriptRequested,
+  TranscriptWillRequireEnglishTranslation
 }
