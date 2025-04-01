@@ -7,7 +7,7 @@ images:
     image: image-registry.openshift-image-registry.svc:5000/b4566a-tools/api
     tags:
       dev: master
-  e2eTestData:
-    image: image-registry.openshift-image-registry.svc:5000/b4566a-tools/e2eTestData
+  e2e-test-data:
+    image: image-registry.openshift-image-registry.svc:5000/b4566a-tools/e2e-test-data
     tags:
       dev: master

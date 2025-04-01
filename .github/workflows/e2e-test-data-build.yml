@@ -1,4 +1,4 @@
-name: API Build
+name: E2ETestData Build
 on:
   workflow_dispatch:
 
@@ -12,7 +12,7 @@ on:
       - "!src/ECER.Clients.Api/**"
       - "!src/registry-portal.Dockerfile"
       - "!src/api.Dockerfile"
-      - .github/workflows/e2eTestData-api-build.yml
+      - .github/workflows/e2e-test-data-build.yml
       - .github/workflows/build-template.yml
 
   pull_request:
@@ -22,7 +22,7 @@ on:
       - "!src/ECER.Clients.Api/**"
       - "!src/registry-portal.Dockerfile"
       - "!src/api.Dockerfile"
-      - .github/workflows/e2eTestData-api-build.yml
+      - .github/workflows/e2e-test-data-build.yml
       - .github/workflows/build-template.yml
 
 jobs:
@@ -35,8 +35,8 @@ jobs:
     uses: ./.github/workflows/build-template.yml
     with:
       IMAGE_CONTEXT: src
-      IMAGE_FILE: src/e2eTestData.Dockerfile
-      IMAGE_NAME: e2eTestData
+      IMAGE_FILE: src/e2e-test-data.Dockerfile
+      IMAGE_NAME: e2e-test-data
       REGISTRY: ${{ vars.DOCKER_REGISTRY }}
     secrets:
       REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
