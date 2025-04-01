@@ -9,7 +9,9 @@ on:
     paths:
       - src/**
       - "!src/ECER.Clients.RegistryPortal/**"
+      - "!src/ECER.Clients.E2ETestData/**"
       - "!src/registry-portal.Dockerfile"
+      - "!src/e2eTestData.Dockerfile"
       - .github/workflows/api-build.yml
       - .github/workflows/build-template.yml
 
@@ -17,7 +19,9 @@ on:
     paths:
       - src/**
       - "!src/ECER.Clients.RegistryPortal/**"
+      - "!src/ECER.Clients.E2ETestData/**"
       - "!src/registry-portal.Dockerfile"
+      - "!src/e2eTestData.Dockerfile"
       - .github/workflows/api-build.yml
       - .github/workflows/build-template.yml
 
@@ -26,7 +30,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write      
+      id-token: write
       security-events: write
     uses: ./.github/workflows/build-template.yml
     with:
