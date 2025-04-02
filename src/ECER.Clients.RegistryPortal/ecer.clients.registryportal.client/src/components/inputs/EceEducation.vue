@@ -39,7 +39,13 @@
               v-model="country"
               item-title="countryName"
               item-value="countryId"
-              :rules="[Rules.required('Select your country', 'countryId')]"
+              :rules="[
+                Rules.required('Select your country', 'countryId'),
+                Rules.conditionalWrapper(
+                  isDraftApplicationAssistantRenewal,
+                  (value: Country) => value?.countryId === configStore.canada?.countryId || 'New course must be part of a recognized program',
+                ),
+              ]"
               @update:modelValue="onCountryChange"
               return-object
             ></v-select>
@@ -74,7 +80,14 @@
               item-title="name"
               item-value="id"
               v-model="postSecondaryInstitution"
-              :rules="[Rules.required('Select your post secondary institution', 'id')]"
+              :rules="[
+                Rules.required('Select your post secondary institution', 'id'),
+                Rules.conditionalWrapper(
+                  isDraftApplicationAssistantRenewal,
+                  () =>
+                    recognizedPostSecondaryInstitution !== 'NotRecognized' || 'New course must be part of a recognized program at one of the schools listed',
+                ),
+              ]"
               return-object
             ></v-select>
           </v-col>
