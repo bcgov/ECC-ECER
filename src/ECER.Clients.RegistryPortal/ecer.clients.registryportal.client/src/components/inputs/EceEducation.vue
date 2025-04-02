@@ -224,7 +224,7 @@
           color="primary"
         >
           <v-radio
-            label="I have requested the official transcript to be sent to the ECE Registry from my educational institution"
+            label="I have requested the official transcript to be sent to the ECE Registry from my educational institution."
             value="OfficialTranscriptRequested"
           ></v-radio>
           <v-radio
@@ -232,7 +232,7 @@
             value="TranscriptWillRequireEnglishTranslation"
           ></v-radio>
           <v-radio
-            label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type"
+            label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type."
             value="RegistryHasTranscript"
           ></v-radio>
         </v-radio-group>
