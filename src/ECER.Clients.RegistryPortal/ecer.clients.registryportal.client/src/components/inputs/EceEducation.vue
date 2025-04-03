@@ -322,10 +322,10 @@
           <v-row>
             <v-col>
               <div class="d-flex flex-column ga-3">
-                <h3>Comprehensive Evaluation Report</h3>
+                <h3>Comprehensive Report</h3>
                 <p>
-                  You will need to request a Comprehensive Evaluation Report from BCIT’s International Credential Evaluation Service. This is needed for any
-                  program or course completed outside of Canada.
+                  You will need to request a Evaluation Report from BCIT’s International Credential Evaluation Service. This is needed for any program or course
+                  completed outside of Canada.
                 </p>
                 <p>
                   You may be eligible for a fee waiver to cover the costs of the report.
@@ -340,7 +340,7 @@
                     target="_blank"
                     href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#education-requirements-equivalency-process:~:text=Apply%20for%20an%20International%20Credential%20Evaluation%20Service%20Comprehensive%20Report%C2%A0"
                   >
-                    Learn more about Comprehensive Evaluation Report
+                    Learn more about Comprehensive Report
                   </a>
                 </p>
               </div>
