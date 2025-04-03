@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Campus
+	/// Status of the Immediate Actions
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_postsecondaryinstitutecampus_statecode
+	public enum ecer_immediateactions_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Campus
+	/// Reason for the status of the Immediate Actions
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_PostSecondaryInstituteCampus_StatusCode
+	public enum ecer_ImmediateActions_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -42,17 +42,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Inactive = 2,
 	}
 	
-	/// <summary>
-	/// Post Secondary Institute Campus
-	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_postsecondaryinstitutecampus")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_immediateactions")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_PostSecondaryInstituteCampus : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_ImmediateActions : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_postsecondaryinstitutecampus entity
+		/// Available fields, a the time of codegen, for the ecer_immediateactions entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -63,12 +60,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_course_Campus_ecer_postsecondaryinstitute = "ecer_course_Campus_ecer_postsecondaryinstitute";
-			public const string ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId = "ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId";
-			public const string ecer_IdNumber = "ecer_idnumber";
+			public const string ecer_appealperiodendDate = "ecer_appealperiodenddate";
+			public const string ecer_appealrequest = "ecer_appealrequest";
+			public const string ecer_appealrequestName = "ecer_appealrequestname";
+			public const string ecer_ImmediateActionReason = "ecer_immediateactionreason";
+			public const string ecer_immediateactions_Investigation = "ecer_immediateactions_Investigation";
+			public const string ecer_ImmediateActionsId = "ecer_immediateactionsid";
+			public const string Id = "ecer_immediateactionsid";
+			public const string ecer_ImmediateActionType = "ecer_immediateactiontype";
+			public const string ecer_immediateactiontypeName = "ecer_immediateactiontypename";
+			public const string ecer_Investigation = "ecer_investigation";
+			public const string ecer_InvestigationName = "ecer_investigationname";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_PostSecondaryInstituteCampusId = "ecer_postsecondaryinstitutecampusid";
-			public const string Id = "ecer_postsecondaryinstitutecampusid";
+			public const string ecer_reconsiderationperiodenddate = "ecer_reconsiderationperiodenddate";
+			public const string ecer_ReconsiderationRequest = "ecer_reconsiderationrequest";
+			public const string ecer_reconsiderationrequestName = "ecer_reconsiderationrequestname";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -95,19 +101,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PostSecondaryInstituteCampus(System.Guid id) : 
+		public ecer_ImmediateActions(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PostSecondaryInstituteCampus(string keyName, object keyValue) : 
+		public ecer_ImmediateActions(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PostSecondaryInstituteCampus(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_ImmediateActions(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -116,22 +122,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PostSecondaryInstituteCampus() : 
+		public ecer_ImmediateActions() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_postsecondaryinstitutecampusid";
+		public const string PrimaryIdAttribute = "ecer_immediateactionsid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_PostSecondaryInstituteCampus";
+		public const string EntitySchemaName = "ecer_ImmediateActions";
 		
-		public const string EntityLogicalName = "ecer_postsecondaryinstitutecampus";
+		public const string EntityLogicalName = "ecer_immediateactions";
 		
-		public const string EntityLogicalCollectionName = "ecer_postsecondaryinstitutecampuses";
+		public const string EntityLogicalCollectionName = "ecer_immediateactionses";
 		
-		public const string EntitySetName = "ecer_postsecondaryinstitutecampuses";
+		public const string EntitySetName = "ecer_immediateactionses";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -245,18 +251,170 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_idnumber")]
-		public string ecer_IdNumber
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appealperiodenddate")]
+		public System.Nullable<System.DateTime> ecer_appealperiodendDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_idnumber");
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_appealperiodenddate");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_idnumber", value);
+				this.SetAttributeValue("ecer_appealperiodenddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appealrequest")]
+		public System.Nullable<bool> ecer_appealrequest
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_appealrequest");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_appealrequest", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appealrequestname")]
+		public string ecer_appealrequestName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_appealrequest"))
+				{
+					return this.FormattedValues["ecer_appealrequest"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionreason")]
+		public string ecer_ImmediateActionReason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_immediateactionreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_immediateactionreason", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionsid")]
+		public System.Nullable<System.Guid> ecer_ImmediateActionsId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_immediateactionsid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_immediateactionsid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionsid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.ecer_ImmediateActionsId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactiontype")]
+		public virtual ecer_immediateaction? ecer_ImmediateActionType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_immediateaction?)(EntityOptionSetEnum.GetEnum(this, "ecer_immediateactiontype")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_immediateactiontype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactiontypename")]
+		public string ecer_immediateactiontypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_immediateactiontype"))
+				{
+					return this.FormattedValues["ecer_immediateactiontype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Investigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_investigation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationname")]
+		public string ecer_InvestigationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_investigation"))
+				{
+					return this.FormattedValues["ecer_investigation"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -275,44 +433,50 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstitutecampusid")]
-		public System.Nullable<System.Guid> ecer_PostSecondaryInstituteCampusId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationperiodenddate")]
+		public System.Nullable<System.DateTime> ecer_reconsiderationperiodenddate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_postsecondaryinstitutecampusid");
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_reconsiderationperiodenddate");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_postsecondaryinstitutecampusid", value);
-				if (value.HasValue)
-				{
-					base.Id = value.Value;
-				}
-				else
-				{
-					base.Id = System.Guid.Empty;
-				}
+				this.SetAttributeValue("ecer_reconsiderationperiodenddate", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_postsecondaryinstitutecampusid")]
-		public override System.Guid Id
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequest")]
+		public System.Nullable<bool> ecer_ReconsiderationRequest
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return base.Id;
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_reconsiderationrequest");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_PostSecondaryInstituteCampusId = value;
+				this.SetAttributeValue("ecer_reconsiderationrequest", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequestname")]
+		public string ecer_reconsiderationrequestName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_reconsiderationrequest"))
+				{
+					return this.FormattedValues["ecer_reconsiderationrequest"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -579,15 +743,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Post Secondary Institute Campus
+		/// Status of the Immediate Actions
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_postsecondaryinstitutecampus_statecode? StateCode
+		public virtual ecer_immediateactions_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_postsecondaryinstitutecampus_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_immediateactions_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -614,15 +778,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Post Secondary Institute Campus
+		/// Reason for the status of the Immediate Actions
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_PostSecondaryInstituteCampus_StatusCode? StatusCode
+		public virtual ecer_ImmediateActions_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_PostSecondaryInstituteCampus_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_ImmediateActions_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -698,41 +862,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_course_Campus_ecer_postsecondaryinstitute
+		/// N:1 ecer_immediateactions_Investigation
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_course_Campus_ecer_postsecondaryinstitute")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Course> ecer_course_Campus_ecer_postsecondaryinstitute
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_immediateactions_Investigation")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_immediateactions_Investigation
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_course_Campus_ecer_postsecondaryinstitute", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_immediateactions_Investigation", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_course_Campus_ecer_postsecondaryinstitute", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicai" +
-			"ton_CampusId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton> ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicai" +
-						"ton_CampusId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicai" +
-						"ton_CampusId", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_immediateactions_Investigation", null, value);
 			}
 		}
 		
@@ -741,7 +885,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PostSecondaryInstituteCampus(object anonymousType) : 
+		public ecer_ImmediateActions(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -759,9 +903,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_postsecondaryinstitutecampusid"] = base.Id;
+                        Attributes["ecer_immediateactionsid"] = base.Id;
                         break;
-                    case "ecer_postsecondaryinstitutecampusid":
+                    case "ecer_immediateactionsid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

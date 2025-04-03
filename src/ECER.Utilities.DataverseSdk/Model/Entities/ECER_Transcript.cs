@@ -13,7 +13,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Transcript
+	/// Status of the Education Transcript
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -28,7 +28,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Transcript
+	/// Reason for the status of the Education Transcript
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -82,6 +82,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
 			public const string ecer_CampusLocation = "ecer_campuslocation";
+			public const string ecer_communication_TranscriptId = "ecer_communication_TranscriptId";
 			public const string ecer_completedcourse_Transcriptid = "ecer_completedcourse_Transcriptid";
 			public const string ecer_CompletedOnline = "ecer_completedonline";
 			public const string ecer_completedonlineName = "ecer_completedonlinename";
@@ -1414,6 +1415,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_applicationassessment_EducationTranscriptReviewedId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_communication_TranscriptId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_TranscriptId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Communication> ecer_communication_TranscriptId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_TranscriptId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_TranscriptId", null, value);
 			}
 		}
 		

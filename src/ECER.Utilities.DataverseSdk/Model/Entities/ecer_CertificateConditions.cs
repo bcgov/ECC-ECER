@@ -67,6 +67,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Details = "ecer_details";
 			public const string ecer_DisplayOrder = "ecer_displayorder";
 			public const string ecer_EndDate = "ecer_enddate";
+			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
+			public const string ecer_ineligiblereferenceName = "ecer_ineligiblereferencename";
 			public const string ecer_legacycertificateid = "ecer_legacycertificateid";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_nextcheckindate = "ecer_nextcheckindate";
@@ -337,6 +339,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_enddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ineligiblereference")]
+		public System.Nullable<bool> ecer_IneligibleReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_ineligiblereference");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_ineligiblereference", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ineligiblereferencename")]
+		public string ecer_ineligiblereferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_ineligiblereference"))
+				{
+					return this.FormattedValues["ecer_ineligiblereference"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

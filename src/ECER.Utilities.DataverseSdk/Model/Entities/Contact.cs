@@ -671,6 +671,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
 			public const string ecer_ClientID = "ecer_clientid";
 			public const string ecer_comment_Contact_contact = "ecer_comment_Contact_contact";
+			public const string ecer_communicationrecipient_RecipientId = "ecer_communicationrecipient_RecipientId";
 			public const string ecer_completedcourse_Applicantid = "ecer_completedcourse_Applicantid";
 			public const string ecer_Contact_Contact_ecer_health_authorities = "ecer_Contact_Contact_ecer_health_authorities";
 			public const string ecer_Contact_Contact_ecer_licensing_officers = "ecer_Contact_Contact_ecer_licensing_officers";
@@ -704,6 +705,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_hascurrentcertificateconditionsName = "ecer_hascurrentcertificateconditionsname";
 			public const string ecer_HasProvidedID = "ecer_hasprovidedid";
 			public const string ecer_hasprovidedidName = "ecer_hasprovidedidname";
+			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
+			public const string ecer_ineligiblereferenceName = "ecer_ineligiblereferencename";
+			public const string ecer_investigationapplication_contact = "ecer_investigationapplication_contact";
 			public const string ecer_IsBCECE = "ecer_isbcece";
 			public const string ecer_isbceceName = "ecer_isbcecename";
 			public const string ecer_IsUnder19 = "ecer_isunder19";
@@ -711,8 +715,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_IsVerified = "ecer_isverified";
 			public const string ecer_isverifiedName = "ecer_isverifiedname";
 			public const string ecer_LegacyClientID = "ecer_legacyclientid";
-			public const string ecer_legacyenteredby = "ecer_legacyenteredby";
-			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_ParentalConsentVerified = "ecer_parentalconsentverified";
 			public const string ecer_parentalconsentverifiedName = "ecer_parentalconsentverifiedname";
 			public const string ecer_portalinvitation_ApplicantId = "ecer_portalinvitation_ApplicantId";
@@ -909,8 +911,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
-		
-		public const string AlternateKeys = "ecer_legacyclientid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -4348,6 +4348,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ineligiblereference")]
+		public System.Nullable<bool> ecer_IneligibleReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_ineligiblereference");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_ineligiblereference", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ineligiblereferencename")]
+		public string ecer_ineligiblereferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_ineligiblereference"))
+				{
+					return this.FormattedValues["ecer_ineligiblereference"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// is BC ECE Registrant. Use to show hide other tabs
 		/// </summary>
@@ -4459,36 +4491,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyclientid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyenteredby")]
-		public string ecer_legacyenteredby
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_legacyenteredby");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_legacyenteredby", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentrydate")]
-		public System.Nullable<System.DateTime> ecer_legacyentrydate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyentrydate");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_legacyentrydate", value);
 			}
 		}
 		
@@ -7505,6 +7507,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_communicationrecipient_RecipientId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communicationrecipient_RecipientId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient> ecer_communicationrecipient_RecipientId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient>("ecer_communicationrecipient_RecipientId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationRecipient>("ecer_communicationrecipient_RecipientId", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_completedcourse_Applicantid
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_completedcourse_Applicantid")]
@@ -7807,6 +7827,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference>("ecer_guardianreference_Applicantid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_investigationapplication_contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationapplication_contact")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_investigationapplication> ecer_investigationapplication_contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_investigationapplication>("ecer_investigationapplication_contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_investigationapplication>("ecer_investigationapplication_contact", null, value);
 			}
 		}
 		

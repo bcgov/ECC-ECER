@@ -42,6 +42,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Cancelled = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Closed = 621870009,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Complete = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -203,6 +206,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_historicaldecision_ApplicationId = "ecer_historicaldecision_ApplicationId";
 			public const string ecer_IDVerifiedManualApplication = "ecer_idverifiedmanualapplication";
 			public const string ecer_idverifiedmanualapplicationName = "ecer_idverifiedmanualapplicationname";
+			public const string ecer_investigationapplication_application = "ecer_investigationapplication_application";
 			public const string ecer_investigationparallelprocesscommunication = "ecer_investigationparallelprocesscommunication";
 			public const string ecer_IsCharacterReferenceProvided = "ecer_ischaracterreferenceprovided";
 			public const string ecer_ischaracterreferenceprovidedName = "ecer_ischaracterreferenceprovidedname";
@@ -4305,6 +4309,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_HistoricalDecision>("ecer_historicaldecision_ApplicationId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_investigationapplication_application
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationapplication_application")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_investigationapplication> ecer_investigationapplication_application
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_investigationapplication>("ecer_investigationapplication_application", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_investigationapplication>("ecer_investigationapplication_application", null, value);
 			}
 		}
 		
