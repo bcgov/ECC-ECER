@@ -13,7 +13,7 @@
     </div>
     <ECEHeader title="Transcript details" />
     <div class="d-flex flex-column ga-3 my-6">
-      <h3>Educational insitution</h3>
+      <h3>Educational institution</h3>
       <p>{{ transcript?.educationalInstitutionName }}</p>
     </div>
     <div class="d-flex flex-column ga-3 my-6">
