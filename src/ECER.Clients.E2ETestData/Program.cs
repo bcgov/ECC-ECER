@@ -76,6 +76,7 @@ internal class Program
       });
 
       builder.Services
+          .ConfigureHealthChecks()
           .AddProblemDetails()
           .AddHttpClient();
 
@@ -85,6 +86,7 @@ internal class Program
 
       app.UseAuthentication();
       app.UseAuthorization();
+      app.UseHealthChecks();
 
       app.UseSwagger();
       if (app.Environment.IsDevelopment())
