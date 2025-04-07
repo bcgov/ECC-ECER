@@ -31,7 +31,10 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
   {
     await Task.CompletedTask;
 
-    var applications = context.ecer_ApplicationSet.Where(a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled);
+    var applications = context.ecer_ApplicationSet.Where(
+      a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled && 
+      a.StatusCode!.Value != ecer_Application_StatusCode.Closed && 
+      a.StatusCode!.Value != ecer_Application_StatusCode.Withdrawn);
 
     if (query.ByStatus != null && query.ByStatus.Any())
     {
