@@ -19,6 +19,8 @@ public class CertificationEndpoints : IRegisterEndpoints
     {
       var results = await messageBus.Send<GetCertificationsCommandResponse>(new GetCertificationsCommand(id), ct);
       var items = mapper.Map<IEnumerable<CertificationSummary>>(results.Items);
+
+      // trigger build
       return TypedResults.Ok(items);
     })
     .WithOpenApi("Returns certification summaries", string.Empty, "certification_get")

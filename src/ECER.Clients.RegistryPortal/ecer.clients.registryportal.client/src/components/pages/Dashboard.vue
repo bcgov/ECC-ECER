@@ -269,6 +269,7 @@ export default defineComponent({
   methods: {
     formatPhoneNumber,
     async cancelApplication() {
+      console.log("silly change to trigger portal build");
       this.showCancelDialog = false;
       const { data: cancelledApplicationId } = await cancelDraftApplication(this.applicationStore.draftApplication.id!);
       if (cancelledApplicationId) {
