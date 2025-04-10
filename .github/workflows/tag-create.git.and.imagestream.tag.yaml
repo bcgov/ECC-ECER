@@ -42,7 +42,7 @@ jobs:
             modified_branch_name=$(echo "${{github.ref_name}}" | tr '/' '-')
             echo "IMAGETAG=$modified_branch_name" >> $GITHUB_ENV
 
-            echo branch validated ${{github.ref_name}} setting IMAGETAG to $IMAGETAG
+            echo branch validated ${{github.ref_name}} setting IMAGETAG to $modified_branch_name
           else
             echo ::error:: we must run workflow from master or release/master branch - selected branch was ${{github.ref_name}}
             exit 1
