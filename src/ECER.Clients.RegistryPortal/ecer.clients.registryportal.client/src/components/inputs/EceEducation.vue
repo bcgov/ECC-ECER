@@ -81,7 +81,7 @@
               item-value="id"
               v-model="postSecondaryInstitution"
               :rules="[
-                Rules.required('Select your post secondary institution', 'id'),
+                Rules.required('Select your educational institution', 'id'),
                 Rules.conditionalWrapper(
                   isDraftApplicationAssistantRenewal,
                   () =>
