@@ -111,6 +111,7 @@ public enum ApplicationStatus
   Draft,
   Submitted,
   Complete,
+  Closed,
   Reconsideration,
   Cancelled,
   Escalated,

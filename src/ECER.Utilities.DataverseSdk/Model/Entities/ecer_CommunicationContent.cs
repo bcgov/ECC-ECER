@@ -75,6 +75,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Source = "ecer_source";
 			public const string ecer_SourceToText = "ecer_sourcetotext";
 			public const string ecer_sourcetotextName = "ecer_sourcetotextname";
+			public const string ecer_Subject = "ecer_subject";
 			public const string ecer_Text = "ecer_text";
 			public const string ecer_TexttoSource = "ecer_texttosource";
 			public const string ecer_texttosourceName = "ecer_texttosourcename";
@@ -433,6 +434,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_subject")]
+		public string ecer_Subject
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_subject");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_subject", value);
 			}
 		}
 		
