@@ -4,7 +4,7 @@
 
 Government employees, public and members of the private sector are encouraged to contribute to the repository by **forking and submitting a pull request**.
 
-(If you are new to GitHub, you might start with a [basic tutorial](https://help.github.com/articles/set-up-git) and  check out a more detailed guide to [pull requests](https://help.github.com/articles/using-pull-requests/).)
+(If you are new to GitHub, you might start with a [basic tutorial](https://help.github.com/articles/set-up-git) and check out a more detailed guide to [pull requests](https://help.github.com/articles/using-pull-requests/).)
 
 Pull requests will be evaluated by the repository guardians on a schedule and if deemed beneficial will be committed to the master.
 
@@ -23,7 +23,7 @@ Required toolset:
 
 ## Directory structure
 
-All the functional code is located in [src](./src). The `ECER.sln` is the main Visual Studio solution (will aslo be used by Rider and C# Dev Kit). this folder also contains the shared files for the dotnet compiler (*.props) and style.
+All the functional code is located in [src](./src). The `ECER.sln` is the main Visual Studio solution (will aslo be used by Rider and C# Dev Kit). this folder also contains the shared files for the dotnet compiler (\*.props) and style.
 
 the [tools](./tools) directory contains various tools to support this repository:
 
@@ -35,7 +35,7 @@ Consult the relevant readme for more information
 
 ## Build and test
 
-The build process is designed to enable an equivalent developer experience using the installed .net 8 sdk as well as dockerfile build. There is a specific dockerfile for each deployable unit which also contains the 
+The build process is designed to enable an equivalent developer experience using the installed .net 8 sdk as well as dockerfile build. There is a specific dockerfile for each deployable unit which also contains the
 
 - Open the solution in your favourite IDE
   - run the unit and integration tests
@@ -67,7 +67,7 @@ All Vue projects use `prettier` and `eslint`. `.eslintrc.js` contains the projec
 
 ## Versioning
 
-TBD
+Please refer to our confluence page for information on versioning and deployment https://eccbc.atlassian.net/wiki/spaces/ECER/pages/596902589/Versioning+and+Deployment
 
 ## Contribute code changes
 
@@ -83,9 +83,9 @@ When merging a PR, the code owners will prefer to squash the commits into a sing
 
 ### C# services tests
 
-It is the contributing developers responsibility to ensure that modified, added or removed endpoint(s) have corresponding integration tests. 
+It is the contributing developers responsibility to ensure that modified, added or removed endpoint(s) have corresponding integration tests.
 
-__NOTE__: This is _not_ included in the code quality checks at build time. Developers are expected to run tests locally to ensure all tests are passing before PR.
+**NOTE**: This is _not_ included in the code quality checks at build time. Developers are expected to run tests locally to ensure all tests are passing before PR.
 
 ### Vue apps tests
 

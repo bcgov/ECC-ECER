@@ -1,0 +1,87 @@
+name: Create Tag
+
+# this action will create a tag from either release/master or master branch on github.
+# it will also tag the image in openshift at the same time.
+# once this is done, we can run the deploy-to-dev or deploy-efxdev action to bring it into the environment.
+# if we want to run this action again for the same tag number (ex. there are additional changes needed), we will have to delete the github tag first before rerunning it.
+
+env:
+  OPENSHIFT_SERVER: ${{ vars.OPENSHIFT_SERVER }}
+  OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
+  OPENSHIFT_NAMESPACE: ${{ secrets.ECER_NAMESPACE_NO_ENV }}-tools
+
+on:
+  # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version Number in x.x.x format ex. 1.0.0"
+        required: true
+
+jobs:
+  openshift-ci-cd:
+    name: Tag image
+    # ubuntu-latest can also be used.
+    runs-on: ubuntu-22.04
+    environment: dev
+
+    steps:
+      # this step will check the user input and branch name. Then set the IMAGETAG variable to be used to tag image in openshift. Ex. release/master => release-master
+      - name: Check user input and branch
+        run: |
+          regex='^[0-9]+\.[0-9]+\.[0-9]+$'
+          if [[ "${{github.event.inputs.version}}" =~ $regex ]]; then
+            echo user input validated ${{github.event.inputs.version}}
+          else
+            echo ::error::input must be in x.x.x format your input was ${{github.event.inputs.version}}
+            exit 1
+          fi
+
+          if [[ "${{github.ref_name}}" == "master" ]] || [[ "${{github.ref_name}}" == "release/master" ]]; then
+
+            modified_branch_name=$(echo "${{github.ref_name}}" | tr '/' '-')
+            echo "IMAGETAG=$modified_branch_name" >> $GITHUB_ENV
+
+            echo branch validated ${{github.ref_name}} setting IMAGETAG to $modified_branch_name
+          else
+            echo ::error:: we must run workflow from master or release/master branch - selected branch was ${{github.ref_name}}
+            exit 1
+          fi
+
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Create tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log(`this action was run on branch :: ${context.ref}`);
+            console.log(`Github SHA :: ${context.sha}`);
+            console.log(`Action run by :: ${context.actor}`);
+
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ github.event.inputs.version }}',
+              sha: context.sha
+            })
+
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: 4
+
+      # https://github.com/redhat-actions/oc-login#readme
+      - uses: actions/checkout@v3
+      - name: Tag in OpenShift
+        run: |
+          echo tagging from image tag $IMAGETAG to ${{github.event.inputs.version}}
+
+          set -eux
+          # Login to OpenShift and select project
+          oc login --token=${{ env.OPENSHIFT_TOKEN }} --server=${{ env.OPENSHIFT_SERVER }}
+          oc project ${{ env.OPENSHIFT_NAMESPACE }}
+
+          oc tag -n ${{env.OPENSHIFT_NAMESPACE}} registry-portal:"$IMAGETAG" registry-portal:release-${{github.event.inputs.version}}
+          oc tag -n ${{env.OPENSHIFT_NAMESPACE}} api:"$IMAGETAG" api:release-${{github.event.inputs.version}}
+          oc tag -n ${{env.OPENSHIFT_NAMESPACE}} e2e-test-data:"$IMAGETAG" e2e-test-data:release-${{github.event.inputs.version}}
