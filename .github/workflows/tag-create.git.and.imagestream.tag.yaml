@@ -37,7 +37,7 @@ jobs:
             exit 1
           fi
 
-          if [[ "${{github.ref_name}}" == "master" ]] || [[ "${{github.ref_name}}" == "release/master" ]] || [[ "${{github.ref_name}}" == "release/*" ]]; then
+          if [[ "${{github.ref_name}}" == "master" ]] || [[ "${{github.ref_name}}" == "release/master" ]] || [[ "${{github.ref_name}}" == "release/"* ]]; then
 
             modified_branch_name=$(echo "${{github.ref_name}}" | tr '/' '-')
             echo "IMAGETAG=$modified_branch_name" >> $GITHUB_ENV
