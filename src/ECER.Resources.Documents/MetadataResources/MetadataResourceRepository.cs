@@ -69,4 +69,22 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
 
     return mapper.Map<IEnumerable<SystemMessage>>(systemMessages)!.ToList();
   }
+
+  public async Task<string> SetDownloadDate(string fileId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+
+    var documentUrl =
+      context.bcgov_DocumentUrlSet.Single(c => c.bcgov_DocumentUrlId == Guid.Parse(fileId));
+
+    if (documentUrl == null) throw new InvalidOperationException($"documentUrl '{fileId}' not found");
+    if(documentUrl.ecer_DownloadDate == null)
+    {
+      documentUrl.ecer_DownloadDate = DateTime.UtcNow;
+      context.UpdateObject(documentUrl);
+      context.SaveChanges();
+    }
+    return documentUrl.Id.ToString();
+  }
+
 }
