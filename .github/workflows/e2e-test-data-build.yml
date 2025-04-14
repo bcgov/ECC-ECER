@@ -15,13 +15,6 @@ on:
       - .github/workflows/e2e-test-data-build.yml
       - .github/workflows/build-template.yml
 
-  push:
-    branches:
-      - master
-      - "release/**"
-    tags:
-      - "*.*.*"
-
   pull_request:
     paths:
       - src/**
@@ -31,6 +24,10 @@ on:
       - "!src/api.Dockerfile"
       - .github/workflows/e2e-test-data-build.yml
       - .github/workflows/build-template.yml
+
+  create:
+    tags:
+      - "*.*.*"
 
 jobs:
   build:
