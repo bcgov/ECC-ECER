@@ -27,7 +27,7 @@ on:
 
   create:
     tags:
-      - "*.*.*"
+      - "*"
 
 jobs:
   build:
