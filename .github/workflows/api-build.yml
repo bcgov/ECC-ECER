@@ -25,9 +25,9 @@ on:
       - .github/workflows/api-build.yml
       - .github/workflows/build-template.yml
 
-  create:
-    tags:
-      - "*"
+  # create:
+  #   tags:
+  #     - "*"
 
 jobs:
   build:
