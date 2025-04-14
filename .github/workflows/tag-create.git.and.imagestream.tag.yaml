@@ -23,6 +23,8 @@ jobs:
     name: Tag image
     # ubuntu-latest can also be used.
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write # Required for pushing tags
     environment: dev
 
     steps:
