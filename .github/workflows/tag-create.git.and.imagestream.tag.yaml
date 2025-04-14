@@ -68,6 +68,7 @@ jobs:
 
       - name: Create tag with git commands instead
         run: |
+          echo ${{github}}
           git config user.name ${{github.context.actor}}
           git config user.email ${{github.context.actor}}@github
           git tag ${{github.event.inputs.version}} github.sha
