@@ -51,20 +51,27 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Create tag
-        uses: actions/github-script@v7
-        with:
-          script: |
-            console.log(`this action was run on branch :: ${context.ref}`);
-            console.log(`Github SHA :: ${context.sha}`);
-            console.log(`Action run by :: ${context.actor}`);
+      # - name: Create tag
+      #   uses: actions/github-script@v7
+      #   with:
+      #     script: |
+      #       console.log(`this action was run on branch :: ${context.ref}`);
+      #       console.log(`Github SHA :: ${context.sha}`);
+      #       console.log(`Action run by :: ${context.actor}`);
 
-            await github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: 'refs/tags/${{ github.event.inputs.version }}',
-              sha: context.sha
-            })
+      #       await github.rest.git.createRef({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         ref: 'refs/tags/${{ github.event.inputs.version }}',
+      #         sha: context.sha
+      #       })
+
+      - name: Create tag with git commands instead
+        run: |
+          git config user.name ${{github.context.actor}}
+          git config user.email ${{github.context.actor}}@github
+          git tag ${{github.event.inputs.version}} github.sha
+          git push origin ${{github.event.inputs.version}}
 
       # - name: Install oc
       #   uses: redhat-actions/openshift-tools-installer@v1
