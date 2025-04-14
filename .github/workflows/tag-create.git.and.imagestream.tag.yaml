@@ -37,7 +37,7 @@ jobs:
             exit 1
           fi
 
-          if [[ "${{github.ref_name}}" == "master" ]] || [[ "${{github.ref_name}}" == "release/master" ]]; then
+          if [[ "${{github.ref_name}}" == "master" ]] || [[ "${{github.ref_name}}" == "release/master" ]] || [[ "${{github.ref_name}}" == "release/*" ]]; then
 
             modified_branch_name=$(echo "${{github.ref_name}}" | tr '/' '-')
             echo "IMAGETAG=$modified_branch_name" >> $GITHUB_ENV
@@ -66,22 +66,22 @@ jobs:
               sha: context.sha
             })
 
-      - name: Install oc
-        uses: redhat-actions/openshift-tools-installer@v1
-        with:
-          oc: 4
+      # - name: Install oc
+      #   uses: redhat-actions/openshift-tools-installer@v1
+      #   with:
+      #     oc: 4
 
-      # https://github.com/redhat-actions/oc-login#readme
-      - uses: actions/checkout@v3
-      - name: Tag in OpenShift
-        run: |
-          echo tagging from image tag $IMAGETAG to ${{github.event.inputs.version}}
+      # # https://github.com/redhat-actions/oc-login#readme
+      # - uses: actions/checkout@v3
+      # - name: Tag in OpenShift
+      #   run: |
+      #     echo tagging from image tag $IMAGETAG to ${{github.event.inputs.version}}
 
-          set -eux
-          # Login to OpenShift and select project
-          oc login --token=${{ env.OPENSHIFT_TOKEN }} --server=${{ env.OPENSHIFT_SERVER }}
-          oc project ${{ env.OPENSHIFT_NAMESPACE }}
+      #     set -eux
+      #     # Login to OpenShift and select project
+      #     oc login --token=${{ env.OPENSHIFT_TOKEN }} --server=${{ env.OPENSHIFT_SERVER }}
+      #     oc project ${{ env.OPENSHIFT_NAMESPACE }}
 
-          oc tag -n ${{env.OPENSHIFT_NAMESPACE}} registry-portal:"$IMAGETAG" registry-portal:release-${{github.event.inputs.version}}
-          oc tag -n ${{env.OPENSHIFT_NAMESPACE}} api:"$IMAGETAG" api:release-${{github.event.inputs.version}}
-          oc tag -n ${{env.OPENSHIFT_NAMESPACE}} e2e-test-data:"$IMAGETAG" e2e-test-data:release-${{github.event.inputs.version}}
+      #     oc tag -n ${{env.OPENSHIFT_NAMESPACE}} registry-portal:"$IMAGETAG" registry-portal:release-${{github.event.inputs.version}}
+      #     oc tag -n ${{env.OPENSHIFT_NAMESPACE}} api:"$IMAGETAG" api:release-${{github.event.inputs.version}}
+      #     oc tag -n ${{env.OPENSHIFT_NAMESPACE}} e2e-test-data:"$IMAGETAG" e2e-test-data:release-${{github.event.inputs.version}}
