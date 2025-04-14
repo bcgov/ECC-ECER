@@ -20,37 +20,35 @@ on:
 
 jobs:
   build-api:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-      - name: Build API Image
-        id: build-api-image
-        uses: ./.github/actions/build-template # corrected path
-        with:
-          IMAGE_CONTEXT: src
-          IMAGE_FILE: src/api.Dockerfile
-          IMAGE_NAME: api
-          REGISTRY: ${{ vars.DOCKER_REGISTRY }}
-        secrets:
-          REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
-          REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      security-events: write
+    uses: ./.github/workflows/build-template.yml
+    with:
+      IMAGE_CONTEXT: src
+      IMAGE_FILE: src/api.Dockerfile
+      IMAGE_NAME: api
+      REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+    secrets:
+      REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   build-registry-portal:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-      - name: Build Registry Portal Image
-        id: build-registry-portal-image
-        uses: ./.github/actions/build-template
-        with:
-          IMAGE_CONTEXT: src
-          IMAGE_FILE: src/api.Dockerfile
-          IMAGE_NAME: api
-          REGISTRY: ${{ vars.DOCKER_REGISTRY }}
-        secrets:
-          REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
-          REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      security-events: write
+    uses: ./.github/workflows/build-template.yml
+    with:
+      IMAGE_CONTEXT: src
+      IMAGE_FILE: src/registry-portal.Dockerfile
+      IMAGE_NAME: registry-portal
+      REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+    secrets:
+      REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
   openshift-ci-cd:
     name: Tag image
