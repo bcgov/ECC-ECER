@@ -246,7 +246,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 		New = 621870010,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		OutofMandate = 621870015,
+		OutofMandate_Active = 621870019,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		OutofMandate_Inactive = 621870015,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Reconsideration = 621870005,

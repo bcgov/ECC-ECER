@@ -164,6 +164,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_documenturl_CertificateId = "ecer_documenturl_CertificateId";
 			public const string ecer_documenturl_InvestigationId = "ecer_documenturl_InvestigationId";
 			public const string ecer_documenturl_PreviousNameId = "ecer_documenturl_PreviousNameId";
+			public const string ecer_DownloadDate = "ecer_downloaddate";
 			public const string ecer_investigationid = "ecer_investigationid";
 			public const string ecer_investigationidName = "ecer_investigationidname";
 			public const string ecer_InvestigationInterviewId = "ecer_investigationinterviewid";
@@ -1164,6 +1165,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_downloaddate")]
+		public System.Nullable<System.DateTime> ecer_DownloadDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_downloaddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_downloaddate", value);
 			}
 		}
 		

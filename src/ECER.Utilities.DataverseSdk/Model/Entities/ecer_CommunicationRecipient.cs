@@ -75,6 +75,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_RecipientId = "ecer_recipientid";
 			public const string ecer_RecipientIdName = "ecer_recipientidname";
 			public const string ecer_RecipientIdYomiName = "ecer_recipientidyominame";
+			public const string ecer_RegistrationNumber = "ecer_registrationnumber";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -449,6 +450,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrationnumber")]
+		public string ecer_RegistrationNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_registrationnumber");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_registrationnumber", value);
 			}
 		}
 		

@@ -71,6 +71,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_Acknowledged = "ecer_acknowledged";
 			public const string ecer_acknowledgedName = "ecer_acknowledgedname";
+			public const string ecer_Addressed = "ecer_addressed";
+			public const string ecer_addressedName = "ecer_addressedname";
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
 			public const string ecer_AreAllRead = "ecer_areallread";
@@ -342,6 +344,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_acknowledged"))
 				{
 					return this.FormattedValues["ecer_acknowledged"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addressed")]
+		public System.Nullable<bool> ecer_Addressed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_addressed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_addressed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addressedname")]
+		public string ecer_addressedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_addressed"))
+				{
+					return this.FormattedValues["ecer_addressed"];
 				}
 				else
 				{

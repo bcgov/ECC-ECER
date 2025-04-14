@@ -64,6 +64,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_Comments = "ecer_comments";
+			public const string ecer_description = "ecer_description";
 			public const string ecer_DocumentType = "ecer_documenttype";
 			public const string ecer_documenttypeName = "ecer_documenttypename";
 			public const string ecer_Investigation = "ecer_investigation";
@@ -260,6 +261,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_comments", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_description")]
+		public string ecer_description
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_description");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_description", value);
 			}
 		}
 		
