@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Build API Image
         id: build-api-image
-        uses: ./.github/workflows/build-template.yml
+        uses: ./.github/actions/build-template # corrected path
         with:
           IMAGE_CONTEXT: src
           IMAGE_FILE: src/api.Dockerfile
@@ -40,9 +40,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
-      - name: Build API Image
-        id: build-api-image
-        uses: ./.github/workflows/build-template.yml
+      - name: Build Registry Portal Image
+        id: build-registry-portal-image
+        uses: ./.github/actions/build-template
         with:
           IMAGE_CONTEXT: src
           IMAGE_FILE: src/api.Dockerfile
