@@ -19,10 +19,43 @@ on:
         required: true
 
 jobs:
+  build-api:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Build API Image
+        id: build-api-image
+        uses: ./.github/workflows/build-template.yml
+        with:
+          IMAGE_CONTEXT: src
+          IMAGE_FILE: src/api.Dockerfile
+          IMAGE_NAME: api
+          REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+        secrets:
+          REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  build-registry-portal:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Build API Image
+        id: build-api-image
+        uses: ./.github/workflows/build-template.yml
+        with:
+          IMAGE_CONTEXT: src
+          IMAGE_FILE: src/api.Dockerfile
+          IMAGE_NAME: api
+          REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+        secrets:
+          REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
   openshift-ci-cd:
     name: Tag image
-    # ubuntu-latest can also be used.
     runs-on: ubuntu-22.04
+    needs: [build-api, build-registry-portal]
     permissions:
       contents: write # Required for pushing tags
     environment: dev
@@ -56,7 +89,9 @@ jobs:
       - name: Create tag
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.PAT_GITHUB_TOKEN }}
+          # we need to use a PAT token instead of the GITHUB_TOKEN to be able to create a tag that will trigger events.
+          # https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication
+          # github-token: ${{ secrets.PAT_GITHUB_TOKEN }}
           script: |
             console.log(`this action was run on branch :: ${context.ref}`);
             console.log(`Github SHA :: ${context.sha}`);
@@ -69,17 +104,10 @@ jobs:
               sha: context.sha
             })
 
-      # - name: Create tag with git commands instead
-      #   run: |
-      #     git config user.name ${{github.actor}}
-      #     git config user.email ${{github.actor}}@github
-      #     git tag ${{github.event.inputs.version}} ${{github.sha}}
-      #     git push origin ${{github.event.inputs.version}}
-
-      # - name: Install oc
-      #   uses: redhat-actions/openshift-tools-installer@v1
-      #   with:
-      #     oc: 4
+      - name: Install oc
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: 4
 
       # # https://github.com/redhat-actions/oc-login#readme
       # - uses: actions/checkout@v3
