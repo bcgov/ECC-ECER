@@ -72,7 +72,7 @@ jobs:
         run: |
           git config user.name ${{github.context.actor}}
           git config user.email ${{github.context.actor}}@github
-          git tag ${{github.event.inputs.version}} github.sha
+          git tag ${{github.event.inputs.version}} ${{github.sha}}
           git push origin ${{github.event.inputs.version}}
 
       # - name: Install oc
