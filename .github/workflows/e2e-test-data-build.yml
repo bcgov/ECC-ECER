@@ -14,6 +14,8 @@ on:
       - "!src/api.Dockerfile"
       - .github/workflows/e2e-test-data-build.yml
       - .github/workflows/build-template.yml
+    tags:
+      - "*.*.*"
 
   pull_request:
     paths:
@@ -24,6 +26,10 @@ on:
       - "!src/api.Dockerfile"
       - .github/workflows/e2e-test-data-build.yml
       - .github/workflows/build-template.yml
+
+  create:
+    tags:
+      - "*.*.*"
 
 jobs:
   build:

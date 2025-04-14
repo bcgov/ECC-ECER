@@ -25,6 +25,9 @@ on:
       - .github/workflows/api-build.yml
       - .github/workflows/build-template.yml
 
+  tags:
+    - "*.*.*"
+
 jobs:
   build:
     permissions:

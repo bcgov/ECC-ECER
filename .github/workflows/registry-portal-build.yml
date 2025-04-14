@@ -25,6 +25,10 @@ on:
       - .github/workflows/registry-portal-build.yml
       - .github/workflows/build-template.yml
 
+  create:
+    tags:
+      - "*.*.*"
+
 jobs:
   build:
     permissions:
