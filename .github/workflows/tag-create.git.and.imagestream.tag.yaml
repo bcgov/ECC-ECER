@@ -1,7 +1,7 @@
-name: Create Tag
+name: Build and Tag Image in Openshift then Create Github Tag
 
 # this action will create a tag from either release/master or master branch on github.
-# it will also tag the image in openshift at the same time.
+# it will also build the image in openshift at the same time.
 # once this is done, we can run the deploy-to-dev or deploy-efxdev action to bring it into the environment.
 # if we want to run this action again for the same tag number (ex. there are additional changes needed), we will have to delete the github tag first before rerunning it.
 
@@ -19,12 +19,9 @@ on:
         required: true
 
 jobs:
-  openshift-ci-cd:
-    name: Tag image
-    # ubuntu-latest can also be used.
+  validate-input:
+    name: Validate Input
     runs-on: ubuntu-22.04
-    environment: dev
-
     steps:
       # this step will check the user input and branch name. Then set the IMAGETAG variable to be used to tag image in openshift. Ex. release/master => release-master
       - name: Check user input and branch
@@ -48,12 +45,56 @@ jobs:
             exit 1
           fi
 
+  build-api:
+    needs: validate-input
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      security-events: write
+    uses: ./.github/workflows/build-template.yml
+    with:
+      IMAGE_CONTEXT: src
+      IMAGE_FILE: src/api.Dockerfile
+      IMAGE_NAME: api
+      REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+    secrets:
+      REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  build-registry-portal:
+    needs: validate-input
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      security-events: write
+    uses: ./.github/workflows/build-template.yml
+    with:
+      IMAGE_CONTEXT: src
+      IMAGE_FILE: src/registry-portal.Dockerfile
+      IMAGE_NAME: registry-portal
+      REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+    secrets:
+      REGISTRY_USER: ${{ secrets.DOCKER_USERNAME }}
+      REGISTRY_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  git-tag:
+    name: Tag image
+    runs-on: ubuntu-22.04
+    needs:
+      [validate-input, build-api, build-registry-portal, build-e2e-test-data]
+    environment: dev
+
+    steps:
       - name: Check out repository
         uses: actions/checkout@v3
 
       - name: Create tag
         uses: actions/github-script@v7
         with:
+          # we need to use a PAT token instead of the GITHUB_TOKEN to be able to create a tag that will trigger events.
+          # https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication
           script: |
             console.log(`this action was run on branch :: ${context.ref}`);
             console.log(`Github SHA :: ${context.sha}`);
@@ -65,22 +106,3 @@ jobs:
               ref: 'refs/tags/${{ github.event.inputs.version }}',
               sha: context.sha
             })
-
-      - name: Install oc
-        uses: redhat-actions/openshift-tools-installer@v1
-        with:
-          oc: 4
-
-      # https://github.com/redhat-actions/oc-login#readme
-      - uses: actions/checkout@v3
-      - name: Tag in OpenShift
-        run: |
-          echo tagging from image tag $IMAGETAG to ${{github.event.inputs.version}}
-
-          set -eux
-          # Login to OpenShift and select project
-          oc login --token=${{ env.OPENSHIFT_TOKEN }} --server=${{ env.OPENSHIFT_SERVER }}
-          oc project ${{ env.OPENSHIFT_NAMESPACE }}
-
-          oc tag -n ${{env.OPENSHIFT_NAMESPACE}} registry-portal:"$IMAGETAG" registry-portal:release-${{github.event.inputs.version}}
-          oc tag -n ${{env.OPENSHIFT_NAMESPACE}} api:"$IMAGETAG" api:release-${{github.event.inputs.version}}
