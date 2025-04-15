@@ -11,6 +11,8 @@ public interface IMetadataResourceRepository
   Task<IEnumerable<PostSecondaryInstitution>> QueryPostSecondaryInstitutions(PostSecondaryInstitutionsQuery query, CancellationToken cancellationToken);
 
   Task<IEnumerable<IdentificationType>> QueryIdentificationTypes(IdentificationTypesQuery query, CancellationToken cancellationToken);
+
+  Task<string> SetDownloadDate(string fileId, CancellationToken cancellationToken);
 }
 
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);

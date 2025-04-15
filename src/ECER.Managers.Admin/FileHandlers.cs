@@ -1,4 +1,5 @@
 ﻿using ECER.Managers.Admin.Contract.Files;
+using ECER.Resources.Documents.MetadataResources;
 using ECER.Utilities.FileScanner;
 using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
@@ -8,7 +9,7 @@ using System.Collections.Concurrent;
 
 namespace ECER.Managers.Admin;
 
-public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfiguration configuration, IFileScannerProvider fileScannerProvider)
+public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfiguration configuration, IFileScannerProvider fileScannerProvider, IMetadataResourceRepository metadataResourceRepository)
   : IRequestHandler<SaveFileCommand, SaveFileCommandResponse>, IRequestHandler<DeleteFileCommand>, IRequestHandler<FileQuery, FileQueryResults>
 
 {
@@ -69,6 +70,7 @@ public class FileHandlers(IObjecStorageProvider objectStorageProvider, IConfigur
       };
 
       if (file != null) files.Add(new FileData(fileLocation, fileProperties, file.FileName, file.ContentType, file.Content));
+      await metadataResourceRepository.SetDownloadDate(fileLocation.Id, cancellationToken);
     });
 
     return new FileQueryResults(files.ToList());
