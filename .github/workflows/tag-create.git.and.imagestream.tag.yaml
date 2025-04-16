@@ -82,8 +82,7 @@ jobs:
   git-tag:
     name: Tag image
     runs-on: ubuntu-22.04
-    needs:
-      [validate-input, build-api, build-registry-portal, build-e2e-test-data]
+    needs: [validate-input, build-api, build-registry-portal]
     environment: dev
 
     steps:
