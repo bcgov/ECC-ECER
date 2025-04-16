@@ -9,6 +9,7 @@ public class MetadataHandlers(
    IMetadataResourceRepository metadataResourceRepository,
    IMapper mapper) : IRequestHandler<Contract.Metadatas.ProvincesQuery, ProvincesQueryResults>,
    IRequestHandler<Contract.Metadatas.CountriesQuery, CountriesQueryResults>,
+   IRequestHandler<Contract.Metadatas.CertificationComparisonQuery, CertificationComparisonQueryResults>,
    IRequestHandler<Contract.Metadatas.PostSecondaryInstitutionsQuery, PostSecondaryInstitutionsQueryResults>,
    IRequestHandler<Contract.Metadatas.SystemMessagesQuery, SystemMessagesQueryResults>,
    IRequestHandler<Contract.Metadatas.IdentificationTypesQuery, IdentificationTypesQueryResults>
