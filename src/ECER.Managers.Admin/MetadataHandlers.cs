@@ -21,6 +21,14 @@ public class MetadataHandlers(
     return new PostSecondaryInstitutionsQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.PostSecondaryInstitution>>(postSecondaryInstitutions)!);
   }
 
+  public async Task<CertificationComparisonQueryResults> Handle(Contract.Metadatas.CertificationComparisonQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var certificationComparisons = await metadataResourceRepository.QueryCertificationComparisons(new Resources.Documents.MetadataResources.CertificationComparisonQuery() { ById = request.ById, ByProvinceId = request.ByProvinceId }, cancellationToken);
+    return new CertificationComparisonQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.CertificationComparison>>(certificationComparisons)!);
+  }
+
   public async Task<ProvincesQueryResults> Handle(Contract.Metadatas.ProvincesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
@@ -56,4 +64,5 @@ public class MetadataHandlers(
     var identificationTypes = await metadataResourceRepository.QueryIdentificationTypes(new Resources.Documents.MetadataResources.IdentificationTypesQuery() { ById = request.ById, ForPrimary = request.ForPrimary, ForSecondary = request.ForSecondary }, cancellationToken);
     return new IdentificationTypesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.IdentificationType>>(identificationTypes)!);
   }
+
 }
