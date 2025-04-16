@@ -61,5 +61,16 @@ internal class MetadataResourceRepositoryMapper : Profile
     CreateMap<PortalTags, ecer_PortalTags>()
         .ConvertUsingEnumMapping(opts => opts.MapByName(true))
         .ReverseMap();
+
+    CreateMap<ecer_outofprovincecertificationtype, OutOfProvinceCertificationType>(MemberList.Source)
+        .ForCtorParam(nameof(ecer_outofprovincecertificationtype.Id), opt => opt.MapFrom(src => src.Id))
+        .ForMember(d => d.CertificationType, opts => opts.MapFrom(s => s.ecer_certificationtype))
+        .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<ecer_certificationcomparison, CertificationComparison>(MemberList.Source)
+        .ForCtorParam(nameof(ecer_certificationcomparison.Id), opt => opt.MapFrom(src => src.Id))
+        .ForMember(d => d.BcCertificate, opts => opts.MapFrom(s => s.ecer_bccertificate))
+        .ForMember(d => d.TransferringCertificate, opts => opts.MapFrom(s => s.ecer_transferringcertificate))
+        .ValidateMemberList(MemberList.Destination);
   }
 }

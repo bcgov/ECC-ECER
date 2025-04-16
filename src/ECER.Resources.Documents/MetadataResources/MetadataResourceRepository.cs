@@ -61,6 +61,21 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     return mapper.Map<IEnumerable<Province>>(provinces)!.ToList();
   }
 
+  public async Task<IEnumerable<CertificationComparison>> QueryCertificationComparisons(CertificationComparisonQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var certificationComparisons = context.ecer_certificationcomparisonSet;
+    var results = context.From(certificationComparisons)
+     .Join()
+     .Include(a => a.ecer_certificationcomparisontransferringcertificate)
+     .IncludeNested(a => a.ecer_Province).Execute();
+
+    if (query.ById != null) results = results.Where(r => r.Id == Guid.Parse(query.ById));
+    if (query.ByProvinceId != null) results = results.Where(r => r.ecer_certificationcomparisontransferringcertificate.ecer_Province.Id == Guid.Parse(query.ByProvinceId));
+
+    return mapper.Map<IEnumerable<CertificationComparison>>(results)!.ToList();
+  }
+
   public async Task<IEnumerable<SystemMessage>> QuerySystemMessages(SystemMessagesQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
