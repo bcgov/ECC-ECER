@@ -18,7 +18,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useApplicationStore } from "@/store/application";
-import { formatDate } from "@/utils/format";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -40,13 +39,6 @@ export default defineComponent({
     };
   },
   computed: {},
-  methods: {
-    handleStartNewApplication() {
-      this.router.push({ name: "application-certification" });
-    },
-    handleManageApplication() {
-      this.router.push({ name: "manageApplication", params: { applicationId: this.applicationStore?.application?.id } });
-    },
-  },
+  methods: {},
 });
 </script>
