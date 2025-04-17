@@ -1,5 +1,5 @@
 <template>
-  <v-container :class="{ 'mb-12': marginBottom, 'pt-12': marginTop }">
+  <v-container :class="{ 'mb-12': true, 'pt-12': marginTop }">
     <slot></slot>
   </v-container>
 </template>
@@ -11,10 +11,6 @@ export default defineComponent({
   name: "PageContainer",
   props: {
     marginTop: {
-      type: Boolean,
-      default: true,
-    },
-    marginBottom: {
       type: Boolean,
       default: true,
     },

@@ -1,8 +1,8 @@
 <template>
-  <Loading v-if="showLoading"></Loading>
-  <div v-else>
-    <!-- Messages -->
-    <v-container v-if="messageStore.unreadMessageCount > 0 || !userStore.isVerified">
+  <!-- Messages -->
+  <PageContainer :margin-top="false">
+    <Loading v-if="showLoading"></Loading>
+    <div v-else>
       <v-row v-if="!userStore.isVerified" justify="center">
         <v-col cols="12">
           <!-- user has not provided id -->
@@ -55,12 +55,7 @@
           </v-row>
         </v-col>
       </v-row>
-    </v-container>
 
-    <!-- Your ECE transfer or apply card when new applicant -->
-    <TransferCard v-if="applications && userStore.isVerified && showTransferCard" justify="center" />
-
-    <PageContainer>
       <!-- Your ECE applications -->
       <v-row v-if="applications && userStore.isVerified && showApplicationCard" justify="center">
         <v-col>
@@ -145,8 +140,8 @@
           </v-row>
         </v-col>
       </v-row>
-    </PageContainer>
-  </div>
+    </div>
+  </PageContainer>
 
   <ConfirmationDialog
     :cancel-button-text="'Keep Application'"
@@ -174,7 +169,6 @@ import { getProfile } from "@/api/profile";
 import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
-import TransferCard from "@/components/TransferCard.vue";
 import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
@@ -195,7 +189,6 @@ export default defineComponent({
   name: "Dashboard",
   components: {
     Loading,
-    TransferCard,
     ConfirmationDialog,
     PageContainer,
     ApplicationCard,
@@ -277,6 +270,7 @@ export default defineComponent({
       }
 
       return (
+        this.applicationStore.applicationStatus === undefined ||
         this.applicationStore.applicationStatus === "Draft" ||
         this.applicationStore.applicationStatus === "Submitted" ||
         this.applicationStore.applicationStatus === "Ready" ||
@@ -285,9 +279,6 @@ export default defineComponent({
         this.applicationStore.applicationStatus === "Pending" ||
         this.applicationStore.applicationStatus === "Escalated"
       );
-    },
-    showTransferCard(): boolean {
-      return !this.certificationStore.hasCertifications && !this.applicationStore.hasDraftApplication;
     },
     showLoading(): boolean {
       return (
