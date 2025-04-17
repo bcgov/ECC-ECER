@@ -76,7 +76,7 @@ describe("New ECE Assistant Certificate Application", () => {
 
         cy.get(selectors.education.programStartDateInput).click({ force: true });
         Cypress._.times(7, () => {
-          cy.get(selectors.datePicker.prevMonthButton).click();
+          cy.get(selectors.datePicker.prevMonthButton).first().click();
         });
         cy.get(selectors.datePicker.monthDiv)
           .first()
@@ -89,7 +89,7 @@ describe("New ECE Assistant Certificate Application", () => {
 
         cy.get(selectors.education.programEndDateInput).click({ force: true });
         Cypress._.times(1, () => {
-          cy.get(selectors.datePicker.prevMonthButton).click();
+          cy.get(selectors.datePicker.prevMonthButton).first().click();
         });
         cy.get(selectors.datePicker.monthDiv)
           .first()
