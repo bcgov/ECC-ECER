@@ -63,7 +63,6 @@
             <v-col cols="12" :sm="showTransferCard ? 6 : 12">
               <ApplicationCard @cancel-application="showCancelDialog = true" />
             </v-col>
-
             <v-col v-if="showTransferCard" cols="12" sm="6">
               <TransferCard />
             </v-col>
