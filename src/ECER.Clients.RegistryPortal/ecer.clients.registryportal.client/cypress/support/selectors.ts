@@ -49,6 +49,9 @@ export default {
   },
   datePicker: {
     monthDiv: "div.v-date-picker-month",
+    monthControlsDiv: "div.v-date-picker-controls__month",
+    controlsDiv: "div.v-date-picker-controls",
+    prevMonthButton: 'button[data-testid="prev-month"]',
   },
   applicationPreview: {
     certificationType: 'p[id="certificationType"]',

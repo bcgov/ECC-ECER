@@ -75,8 +75,11 @@ describe("New ECE Assistant Certificate Application", () => {
         cy.get(selectors.education.programNameInput).type("TEST ECE Assistant Course", { force: true });
 
         cy.get(selectors.education.programStartDateInput).click({ force: true });
-
+        Cypress._.times(7, () => {
+          cy.get(selectors.datePicker.prevMonthButton).click();
+        });
         cy.get(selectors.datePicker.monthDiv)
+          .first()
           .should("exist")
           .within(() => {
             cy.contains("span", `${day}`).click({ force: true });
@@ -85,7 +88,11 @@ describe("New ECE Assistant Certificate Application", () => {
         cy.get("button").contains("OK").click({ force: true });
 
         cy.get(selectors.education.programEndDateInput).click({ force: true });
+        Cypress._.times(1, () => {
+          cy.get(selectors.datePicker.prevMonthButton).click();
+        });
         cy.get(selectors.datePicker.monthDiv)
+          .first()
           .should("exist")
           .within(() => {
             cy.contains("span", `${day}`).click({ force: true });
