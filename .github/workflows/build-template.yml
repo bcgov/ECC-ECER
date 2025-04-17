@@ -54,7 +54,7 @@ jobs:
         with:
           images: ${{ inputs.REGISTRY }}/${{ inputs.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
+            type=ref,enable=${{github.event.inputs.version == ''}},event=branch
             type=ref,event=pr
             type=raw,priority=900,enable=${{github.event.inputs.version != ''}},value=release-${{ github.event.inputs.version }}
 
