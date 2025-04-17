@@ -41,8 +41,7 @@ describe("New ECE One Year Certificate Application", () => {
       it(`should create a sucessfull ECE One Year Application on ${test.device}`, () => {
         const today: Date = new Date();
         const day = today.getDate();
-        const start_day = day - 1;
-            
+
         cy.login();
         /** Dashboard */
         cy.get(selectors.dashboard.applyNowButton).should("be.visible").click();
@@ -69,23 +68,30 @@ describe("New ECE One Year Certificate Application", () => {
         });
         cy.get(selectors.education.programNameInput).type("TEST ECE One Year Course");
 
+        /* Start Date - DatePicker*/
         cy.get(selectors.education.programStartDateInput).click({ force: true });
-
+        Cypress._.times(7, () => {
+          cy.get(selectors.datePicker.prevMonthButton).first().click();
+        });
         cy.get(selectors.datePicker.monthDiv)
-          .should("exist")
-          .within(() => {
-            cy.contains("span", `${start_day}`).click({ force: true });
-          });
-
-        cy.get("button").contains("OK").click({ force: true });
-
-        cy.get(selectors.education.programEndDateInput).click({ force: true });
-        cy.get(selectors.datePicker.monthDiv)
+          .first()
           .should("exist")
           .within(() => {
             cy.contains("span", `${day}`).click({ force: true });
           });
+        cy.get("button").contains("OK").click({ force: true });
 
+        /* End Date - DatePicker*/
+        cy.get(selectors.education.programEndDateInput).click({ force: true });
+        Cypress._.times(1, () => {
+          cy.get(selectors.datePicker.prevMonthButton).first().click();
+        });
+        cy.get(selectors.datePicker.monthDiv)
+          .first()
+          .should("exist")
+          .within(() => {
+            cy.contains("span", `${day}`).click({ force: true });
+          });
         cy.get("button").contains("OK").click({ force: true });
 
         cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia", { force: true });

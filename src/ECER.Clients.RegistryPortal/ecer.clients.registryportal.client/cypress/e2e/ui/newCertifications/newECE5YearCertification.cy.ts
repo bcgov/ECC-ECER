@@ -68,23 +68,30 @@ describe("New ECE 5 Year Certificate Application", () => {
         });
         cy.get(selectors.education.programNameInput).type("TEST ECE 5 Year Course");
 
+        /* Start Date - DatePicker*/
         cy.get(selectors.education.programStartDateInput).click({ force: true });
-
+        Cypress._.times(7, () => {
+          cy.get(selectors.datePicker.prevMonthButton).first().click();
+        });
         cy.get(selectors.datePicker.monthDiv)
+          .first()
           .should("exist")
           .within(() => {
             cy.contains("span", `${day}`).click({ force: true });
           });
-
         cy.get("button").contains("OK").click({ force: true });
 
+        /* End Date - DatePicker*/
         cy.get(selectors.education.programEndDateInput).click({ force: true });
+        Cypress._.times(1, () => {
+          cy.get(selectors.datePicker.prevMonthButton).first().click();
+        });
         cy.get(selectors.datePicker.monthDiv)
+          .first()
           .should("exist")
           .within(() => {
             cy.contains("span", `${day}`).click({ force: true });
           });
-
         cy.get("button").contains("OK").click({ force: true });
 
         cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia", { force: true });

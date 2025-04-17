@@ -74,6 +74,7 @@ describe("New ECE Assistant Certificate Application", () => {
         });
         cy.get(selectors.education.programNameInput).type("TEST ECE Assistant Course", { force: true });
 
+        /* Start Date - DatePicker*/
         cy.get(selectors.education.programStartDateInput).click({ force: true });
         Cypress._.times(7, () => {
           cy.get(selectors.datePicker.prevMonthButton).first().click();
@@ -84,9 +85,9 @@ describe("New ECE Assistant Certificate Application", () => {
           .within(() => {
             cy.contains("span", `${day}`).click({ force: true });
           });
-
         cy.get("button").contains("OK").click({ force: true });
 
+        /* End Date - DatePicker*/
         cy.get(selectors.education.programEndDateInput).click({ force: true });
         Cypress._.times(1, () => {
           cy.get(selectors.datePicker.prevMonthButton).first().click();
@@ -97,7 +98,6 @@ describe("New ECE Assistant Certificate Application", () => {
           .within(() => {
             cy.contains("span", `${day}`).click({ force: true });
           });
-
         cy.get("button").contains("OK").click({ force: true });
 
         cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia", { force: true });
