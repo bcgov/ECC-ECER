@@ -10,7 +10,7 @@
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.301" />
     <PackageVersion Include="AWSSDK.S3" Version="3.7.410.3" />
-    <PackageVersion Include="HtmlSanitizer" Version="9.0.876" />
+    <PackageVersion Include="HtmlSanitizer" Version="9.0.881" />
     <PackageVersion Include="IdentityModel" Version="7.0.0" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.5.1" />
     <PackageVersion Include="MediatR" Version="12.4.1" />
