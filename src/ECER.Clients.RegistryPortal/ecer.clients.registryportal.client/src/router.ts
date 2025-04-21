@@ -171,6 +171,12 @@ const router = createRouter({
       name: "application-certification",
     },
     {
+      path: "/application/transfer",
+      component: () => import("./components/pages/PageNotFound.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "application-transfer",
+    },
+    {
       path: "/application/certification/requirements",
       component: () => import("./components/ApplicationRequirements.vue"),
       meta: { requiresAuth: true },
