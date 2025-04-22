@@ -68,7 +68,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     var results = context.From(certificationComparisons)
      .Join()
      .Include(a => a.ecer_certificationcomparisontransferringcertificate)
-     .IncludeNested(a => a.ecer_Province).Execute();
+     .IncludeNested(a => a.ecer_outofprovincecertificationtype_Province_ecer_province).Execute();
 
     if (query.ById != null) results = results.Where(r => r.Id == Guid.Parse(query.ById));
     if (query.ByProvinceId != null) results = results.Where(r => r.ecer_certificationcomparisontransferringcertificate.ecer_Province.Id == Guid.Parse(query.ByProvinceId));

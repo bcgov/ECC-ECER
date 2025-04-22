@@ -109,4 +109,42 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
     var provinces = await manager.Handle(new ECER.Managers.Admin.Contract.Metadatas.ProvincesQuery(), default);
     provinces.Items.ShouldNotBeEmpty();
   }
+
+  [Fact]
+  public async Task GetCertificationComparison_NoParams_ReturnsAll()
+  {
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/certificationComparison");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var items = await response.ReadAsJsonAsync<CertificationComparison[]>();
+    items.ShouldNotBeNull();
+  }
+
+  [Fact]
+  public async Task GetCertificationComparison_ByProvinceOnly_FiltersByProvince()
+  {
+    var provincesResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/provincelist");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var provinces = await provincesResponse.ReadAsJsonAsync<Province[]>();
+    var province = provinces.Select(x => x.ProvinceId).First();
+
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/certificationComparison?provinceId={province}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var items = await response.ReadAsJsonAsync<CertificationComparison[]>();
+    items.ShouldNotBeEmpty();
+  }
 }

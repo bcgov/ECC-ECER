@@ -70,7 +70,7 @@ internal class MetadataResourceRepositoryMapper : Profile
     CreateMap<ecer_certificationcomparison, CertificationComparison>(MemberList.Source)
         .ForCtorParam(nameof(ecer_certificationcomparison.Id), opt => opt.MapFrom(src => src.Id))
         .ForMember(d => d.BcCertificate, opts => opts.MapFrom(s => s.ecer_bccertificate))
-        .ForMember(d => d.TransferringCertificate, opts => opts.MapFrom(s => s.ecer_transferringcertificate))
+        .ForMember(d => d.TransferringCertificate, opts => opts.MapFrom(s => s.ecer_certificationcomparisontransferringcertificate))
         .ValidateMemberList(MemberList.Destination);
   }
 }
