@@ -12,7 +12,7 @@
       <br />
       <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
       <br />
-      <p v-if="applicationStore.isDraftCertificateTypeFiveYears">
+      <p v-if="hasWorkExperienceReferenceStep">
         The person
         <strong>cannot</strong>
         be any of your work experience references.
@@ -149,6 +149,14 @@ export default defineComponent({
         }
       }
 
+      return false;
+    },
+    hasWorkExperienceReferenceStep() {
+      this.wizardStore.steps.some((step) => {
+        if (step.stage === "WorkReferences") {
+          return true;
+        }
+      });
       return false;
     },
   },
