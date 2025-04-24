@@ -27,6 +27,7 @@
       <v-row>
         <v-col md="8" lg="6" xl="4">
           <EceTextField
+            id="txtCourseName"
             v-model="courseName"
             label="Name of course or workshop"
             maxlength="100"
@@ -37,6 +38,7 @@
       <v-row>
         <v-col md="8" lg="6" xl="4">
           <EceTextField
+            id="txtNumberOfHours"
             v-model="numberOfHours"
             label="How many hours was it?"
             :rules="[Rules.required('Enter your course or workshop hours'), Rules.numberToDecimalPlaces()]"
@@ -46,6 +48,7 @@
       <v-row>
         <v-col md="8" lg="6" xl="4">
           <EceTextField
+            id="txtOrganizationName"
             v-model="organizationName"
             label="Name of place that hosted the course or workshop"
             maxlength="300"
@@ -56,6 +59,7 @@
       <v-row>
         <v-col md="8" lg="6" xl="4">
           <EceTextField
+            id="txtCourseOrWorkshopLink"
             v-model="courseorWorkshopLink"
             label="Website with description of course or workshop (optional)"
             maxlength="500"
@@ -71,6 +75,7 @@
       <v-row>
         <v-col sm="6" md="4" lg="2">
           <EceDateInput
+            id="txtCourseStartDate"
             ref="startDateInput"
             v-model="startDate"
             :rules="[
@@ -102,6 +107,7 @@
       <v-row>
         <v-col sm="6" md="4" lg="2">
           <EceDateInput
+            id="txtCourseEndDate"
             ref="endDateInput"
             v-model="endDate"
             :rules="[
@@ -143,6 +149,7 @@
       <v-row>
         <v-col>
           <v-checkbox
+            id="chkInstructorPhoneNumber"
             v-model="selection"
             label="Phone number for instructor of course or workshop"
             :hide-details="true"
@@ -151,6 +158,7 @@
             @input="selectionChanged"
           ></v-checkbox>
           <v-checkbox
+            id="chkInstructorEmailAddress"
             v-model="selection"
             label="Email address for instructor of course or workshop"
             :hide-details="true"
@@ -159,6 +167,7 @@
             @input="selectionChanged"
           ></v-checkbox>
           <v-checkbox
+            id="chkCourseCompletionDocument"
             v-model="selection"
             label="A certificate or document that shows I completed the course"
             hide-details="auto"
@@ -172,6 +181,7 @@
       <v-row v-if="showInstructorNameInput">
         <v-col md="8" lg="6" xl="4">
           <EceTextField
+            id="txtInstructorName"
             v-model="instructorName"
             label="Instructor name"
             maxlength="100"
@@ -182,6 +192,7 @@
       <v-row v-if="showPhoneNumberInput">
         <v-col md="8" lg="6" xl="4">
           <EceTextField
+            id="txtOrganizationPhoneNumber"
             v-model="organizationContactInformation"
             label="Phone number"
             :rules="[
@@ -195,6 +206,7 @@
       <v-row v-if="showEmailInput">
         <v-col md="8" lg="6" xl="4">
           <EceTextField
+            id="txtOrganizationEmailAddress"
             v-model="organizationEmailAddress"
             label="Email address"
             :rules="[Rules.required('Enter the email address of your course or workshop contact'), Rules.email()]"
@@ -219,7 +231,14 @@
     <v-row class="mt-10">
       <v-col>
         <v-row justify="start" class="ml-1">
-          <v-btn rounded="lg" color="primary" class="mr-2" @click="handleSubmit" :loading="loadingStore.isLoading('draftapplication_put')">
+          <v-btn
+            id="btnSaveProfessionalDevelopment"
+            rounded="lg"
+            color="primary"
+            class="mr-2"
+            @click="handleSubmit"
+            :loading="loadingStore.isLoading('draftapplication_put')"
+          >
             Save course or workshop
           </v-btn>
           <v-btn rounded="lg" variant="outlined" @click="handleCancel" :loading="loadingStore.isLoading('draftapplication_put')">Cancel</v-btn>
