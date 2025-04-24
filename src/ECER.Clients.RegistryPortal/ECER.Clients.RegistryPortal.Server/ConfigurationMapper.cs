@@ -13,5 +13,6 @@ public class ConfigurationMapper : Profile
     CreateMap<Managers.Admin.Contract.Metadatas.PostSecondaryInstitution, PostSecondaryInstitution>().ReverseMap();
     CreateMap<Managers.Admin.Contract.Metadatas.OutOfProvinceCertificationType, OutOfProvinceCertificationType>().ReverseMap();
     CreateMap<Managers.Admin.Contract.Metadatas.CertificationComparison, CertificationComparison>().ReverseMap();
+    CreateMap<Managers.Admin.Contract.Metadatas.ComparisonRecord, ComparisonRecord>().ReverseMap();
   }
 }

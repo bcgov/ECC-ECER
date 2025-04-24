@@ -40,7 +40,7 @@ public class ConfigurationEndpoints : IRegisterEndpoints
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
       var results = await messageBus.Send(new CertificationComparisonQuery() { ById = id, ByProvinceId = provinceId }, ct);
-      return TypedResults.Ok(mapper.Map<IEnumerable<CertificationComparison>>(results.Items));
+      return TypedResults.Ok(mapper.Map<IEnumerable<ComparisonRecord>>(results.Items));
     })
     .WithOpenApi("Handles certification comparison queries", string.Empty, "certificationComparison_get");
 
@@ -119,13 +119,18 @@ public record IdentificationTypesQuery
   public bool? ForPrimary { get; set; }
   public bool? ForSecondary { get; set; }
 }
-public record OutOfProvinceCertificationType(string Id)
-{
-  public string? CertificationType { get; set; }
-}
+  public record OutOfProvinceCertificationType(string Id)
+  {
+    public string? CertificationType { get; set; }
+  }
 
-public record CertificationComparison(string Id)
-{
-  public string? BcCertificate { get; set; }
-  public OutOfProvinceCertificationType? TransferringCertificate { get; set; }
-}
+  public record CertificationComparison(string Id)
+  {
+    public string? BcCertificate { get; set; }
+  }
+
+  public record ComparisonRecord()
+  {
+    public OutOfProvinceCertificationType? TransferringCertificate { get; set; }
+    public IEnumerable<CertificationComparison> Options { get; set; } = Array.Empty<CertificationComparison>();
+  }
