@@ -408,7 +408,7 @@ internal class ApplicationRepositoryMapper : Profile
     {
       return TranscriptStatusOptions.TranscriptWillRequireEnglishTranslation;
     }
-    throw new InvalidOperationException($"No status found for transcript, application id: '{src.ecer_Applicationid}', transcript id: {src.ecer_TranscriptId}");
+    throw new InvalidOperationException($"No status found for transcript id: {src.ecer_TranscriptId}");
   }
 }
 
