@@ -85,15 +85,12 @@ export const useConfigStore = defineStore("config", {
       if (provinceList !== null && provinceList !== undefined) {
         this.provinceList = provinceList.sort((a, b) => sortArray(a, b, "provinceName", [ProvinceTerritoryType.OTHER]));
       }
-
       if (countryList !== null && countryList !== undefined) {
         this.countryList = countryList.sort((a, b) => sortArray(a, b, "countryName"));
       }
-
       if (postSecondaryInstitutionList !== null && postSecondaryInstitutionList !== undefined) {
         this.postSecondaryInstitutionList = postSecondaryInstitutionList.sort((a, b) => sortArray(a, b, "name"));
       }
-
       if (identificationTypes !== null && identificationTypes !== undefined) {
         this.identificationTypes = identificationTypes;
       }

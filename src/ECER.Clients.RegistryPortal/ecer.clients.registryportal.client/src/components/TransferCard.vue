@@ -8,7 +8,7 @@
     </v-card-item>
     <div class="d-flex flex-row justify-start ga-3 flex-wrap ma-4">
       <v-card-actions>
-        <v-btn class="pl-8 pr-8" size="large" variant="flat" color="warning">Transfer</v-btn>
+        <v-btn class="pl-8 pr-8" size="large" variant="flat" color="warning" @click="router.push('/transfer')">Transfer</v-btn>
       </v-card-actions>
     </div>
   </v-card>
