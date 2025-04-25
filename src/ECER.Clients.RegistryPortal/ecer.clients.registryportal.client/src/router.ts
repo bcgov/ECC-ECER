@@ -193,7 +193,8 @@ const router = createRouter({
         if (certificationTypes && !Array.isArray(certificationTypes)) {
           certificationTypes = [certificationTypes];
         }
-        return { certificationTypes: certificationTypes || [], isRenewal: query.isRenewal === "true" };
+
+        return { certificationTypes: certificationTypes || [], applicationType: query.applicationType || "New" };
       },
     },
     {
