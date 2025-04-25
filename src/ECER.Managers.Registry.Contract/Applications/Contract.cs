@@ -85,7 +85,7 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public ApplicationOrigin? Origin { get; set; }
 }
 
-public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, TranscriptStatusOptions TranscriptStatusOption, string StudentFirstName, string StudentLastName, bool IsNameUnverified, EducationRecognition EducationRecognition, EducationOrigin EducationOrigin)
+public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, string StudentFirstName, string StudentLastName, bool IsNameUnverified, EducationRecognition EducationRecognition, EducationOrigin EducationOrigin)
 {
   public string? CampusLocation { get; set; }
   public TranscriptStage? Status { get; set; }
@@ -93,6 +93,7 @@ public record Transcript(string? Id, string? EducationalInstitutionName, string?
   public Country? Country { get; set; }
   public Province? Province { get; set; }
   public PostSecondaryInstitution? PostSecondaryInstitution { get; set; }
+  public TranscriptStatusOptions? TranscriptStatusOption { get; set; }
   public bool? CourseOutlineReceivedByRegistry { get; set; }
   public bool? ProgramConfirmationReceivedByRegistry { get; set; }
   public bool? TranscriptReceivedByRegistry { get; set; }
