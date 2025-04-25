@@ -143,12 +143,12 @@ internal class ApplicationRepositoryMapper : Profile
       .ForCtorParam(nameof(Transcript.StartDate), opt => opt.MapFrom(src => src.ecer_StartDate))
       .ForCtorParam(nameof(Transcript.EndDate), opt => opt.MapFrom(src => src.ecer_EndDate))
       .ForCtorParam(nameof(Transcript.IsECEAssistant), opt => opt.MapFrom(src => src.ecer_IsECEAssistant))
-      .ForCtorParam(nameof(Transcript.TranscriptStatusOption), opt => opt.MapFrom(src => GetTranscriptStatusOption(src)))
       .ForCtorParam(nameof(Transcript.StudentFirstName), opt => opt.MapFrom(src => src.ecer_StudentFirstName))
       .ForCtorParam(nameof(Transcript.StudentLastName), opt => opt.MapFrom(src => src.ecer_StudentLastName))
       .ForCtorParam(nameof(Transcript.IsNameUnverified), opt => opt.MapFrom(src => src.ecer_IsNameUnverified))
       .ForCtorParam(nameof(Transcript.EducationRecognition), opt => opt.MapFrom(src => src.ecer_EducationRecognition))
       .ForCtorParam(nameof(Transcript.EducationOrigin), opt => opt.MapFrom(src => src.ecer_EducationOrigin))
+      .ForMember(d => d.TranscriptStatusOption, opt => opt.MapFrom(src => GetTranscriptStatusOption(src)))
       .ForMember(d => d.CampusLocation, opts => opts.MapFrom(s => s.ecer_CampusLocation))
       .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
       .ForMember(d => d.StudentMiddleName, opts => opts.MapFrom(s => s.ecer_StudentMiddleName))
@@ -394,7 +394,7 @@ internal class ApplicationRepositoryMapper : Profile
       .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_UnabletoProvideReferenceReason, opts => opts.MapFrom(s => s.UnabletoProvideReferenceReasons));
   }
-  private static TranscriptStatusOptions GetTranscriptStatusOption(ecer_Transcript src)
+  private static TranscriptStatusOptions? GetTranscriptStatusOption(ecer_Transcript src)
   {
     if (src.ecer_DoesECERegistryHaveTranscript == true)
     {
@@ -408,7 +408,7 @@ internal class ApplicationRepositoryMapper : Profile
     {
       return TranscriptStatusOptions.TranscriptWillRequireEnglishTranslation;
     }
-    throw new InvalidOperationException($"No status found for transcript id: {src.ecer_TranscriptId}");
+    return null;
   }
 }
 

@@ -44,7 +44,7 @@ internal sealed class PortalInvitationTransformationEngine(IDataProtectionProvid
     var splitIndex = decryptedData.IndexOf(':');
     if (splitIndex == -1)
     {
-      throw new InvalidOperationException("Invalid reference link format.");
+      throw new InvalidOperationException($"Invalid reference link format. decryptedData should be ReferenceType:PortalInvitation => '{decryptedData}'");
     }
 
     var referenceTypeString = decryptedData.Substring(0, splitIndex);
@@ -53,7 +53,7 @@ internal sealed class PortalInvitationTransformationEngine(IDataProtectionProvid
 
     if (!Enum.TryParse<InviteType>(referenceTypeString, out var referenceType))
     {
-      throw new InvalidOperationException("Invalid reference type.");
+      throw new InvalidOperationException($"Invalid reference type.");
     }
 
     return new DecryptInviteTokenResponse(portalInvitation, referenceType);
