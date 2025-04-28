@@ -60,10 +60,11 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public ApplicationOrigin? Origin { get; set; }
 }
 
-public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, TranscriptStatusOptions TranscriptStatusOption, string StudentFirstName, string StudentLastName, bool IsNameUnverified, EducationRecognition EducationRecognition, EducationOrigin EducationOrigin)
+public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, string StudentFirstName, string StudentLastName, bool IsNameUnverified, EducationRecognition EducationRecognition, EducationOrigin EducationOrigin)
 {
   public string? CampusLocation { get; set; }
   public TranscriptStage? Status { get; set; }
+  public TranscriptStatusOptions? TranscriptStatusOption { get; set; }
   public string? StudentMiddleName { get; set; }
   public Country? Country { get; set; }
   public Province? Province { get; set; }
