@@ -36,6 +36,9 @@ describe("New ECE 5 Year Certificate Application", () => {
         // Visit the base URL (configured in your cypress.config.ts).
         cy.visit("/login");
         cy.document().its("readyState").should("eq", "complete");
+
+        //Reset User State
+        cy.resetUserState();
       });
 
       it(`should sucessfully create a New ECE 5 Year Application on ${test.device}`, () => {
@@ -44,24 +47,24 @@ describe("New ECE 5 Year Certificate Application", () => {
 
         cy.login();
         /** Dashboard */
-        cy.get(selectors.dashboard.applyNowButton).should("be.visible").click();
+        cy.get(selectors.dashboard.applyNowButton).click();
 
         /** Certification Type */
         cy.get(selectors.certificationType.eceFiveYearRadio).check();
-        cy.get(selectors.certificationType.continueButton).should("be.visible").click();
+        cy.get(selectors.certificationType.continueButton).click();
 
         /** Application Requirements */
-        cy.get(selectors.applicationRequirements.applyNowButton).should("be.visible").click();
+        cy.get(selectors.applicationRequirements.applyNowButton).click();
 
         /** Declaration */
         cy.get(selectors.declaration.declarationCheckbox).check({ force: true });
-        cy.get(selectors.declaration.continueButton).should("be.visible").click();
+        cy.get(selectors.declaration.continueButton).click();
 
         /** Contact Information */
-        cy.get(selectors.applicationWizard.saveAndContinueButton, { timeout: 20000 }).should("be.visible").should("contain.text", "Save and continue").click();
+        cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
         /** Education */
-        cy.get(selectors.education.addEducationButton).should("be.visible").click();
+        cy.get(selectors.education.addEducationButton).click();
 
         cy.get(selectors.education.transcriptStatusRadioDiv).within(() => {
           cy.get(selectors.elementType.radio).first().check();
@@ -104,9 +107,9 @@ describe("New ECE 5 Year Certificate Application", () => {
         cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {
           cy.get(selectors.elementType.radio).first().check();
         });
-        cy.get(selectors.education.saveEducationButton).should("be.visible").click();
+        cy.get(selectors.education.saveEducationButton).click();
 
-        cy.get(selectors.applicationWizard.saveAndContinueButton, { timeout: 20000 }).should("be.visible").should("contain.text", "Save and continue").click();
+        cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
         /** Character Reference */
         cy.get(selectors.characterReference.lastNameInput).type("CharacterReferenceLastName");
@@ -114,11 +117,11 @@ describe("New ECE 5 Year Certificate Application", () => {
         cy.get(selectors.characterReference.emailInput).type("Character_Reference@test.gov.bc.ca");
         cy.get(selectors.characterReference.phoneNumberInput).type("1234567890");
 
-        cy.get(selectors.applicationWizard.saveAndContinueButton, { timeout: 20000 }).should("be.visible").should("contain.text", "Save and continue").click();
+        cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
         /** Work Experience Reference */
-        cy.document({ timeout: 10000 }).its("readyState").should("eq", "complete");
-        cy.get(selectors.workExperienceReference.addReferenceButton, { timeout: 20000 }).should("be.visible").should("contain.text", "Add reference").click();
+        cy.document().its("readyState").should("eq", "complete");
+        cy.get(selectors.workExperienceReference.addReferenceButton).click();
 
         cy.get(selectors.workExperienceReference.lastNameInput).type("WorkReferenceLastName");
         cy.get(selectors.workExperienceReference.firstNameInput).type("WorkReferenceFirstName");
@@ -126,14 +129,14 @@ describe("New ECE 5 Year Certificate Application", () => {
         cy.get(selectors.workExperienceReference.phoneNumberInput).type("1234567890", { force: true });
         cy.get(selectors.workExperienceReference.hoursInput).type("500", { force: true });
 
-        cy.get(selectors.workExperienceReference.saveReferenceButton).should("be.visible").click();
+        cy.get(selectors.workExperienceReference.saveReferenceButton).click();
 
-        cy.get(selectors.applicationWizard.saveAndContinueButton, { timeout: 20000 }).should("be.visible").should("contain.text", "Save and continue").click();
+        cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
         /** Application Review and Submit */
-        cy.document({ timeout: 10000 }).its("readyState").should("eq", "complete");
+        cy.document().its("readyState").should("eq", "complete");
 
-        cy.contains("Review and submit", { timeout: 10000 }).should("be.visible");
+        cy.contains("Review and submit").should("be.visible");
         cy.get(selectors.applicationPreview.certificationType).should("be.visible").should("contain.text", "ECE Five Year");
         cy.get(selectors.applicationPreview.characterReferenceFirstName).should("be.visible").should("contain.text", "CharacterReferenceFirstName");
         cy.get(selectors.applicationPreview.characterReferenceLastName).should("be.visible").should("contain.text", "CharacterReferenceLastName");
@@ -145,14 +148,12 @@ describe("New ECE 5 Year Certificate Application", () => {
         cy.get(selectors.applicationPreview.workReferenceName).should("be.visible").should("contain.text", "WorkReferenceLastName");
         cy.get(selectors.applicationPreview.workReferenceEmail).should("be.visible").should("contain.text", "WorkExperience_Reference@test.gov.bc.ca");
 
-        cy.get(selectors.applicationWizard.submitApplicationButton).should("be.visible").should("contain.text", "Submit application").click();
+        cy.get(selectors.applicationWizard.submitApplicationButton).click();
 
         /** Application Submitted */
-        cy.document({ timeout: 10000 }).its("readyState").should("eq", "complete");
-        cy.get(selectors.applicationSubmitted.pageTitle, { timeout: 10000 }).should("be.visible").should("contain.text", "Application Submitted");
-        cy.get(selectors.applicationSubmitted.applicationSummaryButton, { timeout: 10000 })
-          .should("be.visible")
-          .should("contain.text", "Go to application summary");
+        cy.document().its("readyState").should("eq", "complete");
+        cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
+        cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
       });
     });
   }

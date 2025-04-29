@@ -19,6 +19,9 @@ export default {
     saveAndContinueButton: 'button[id="btnSaveAndContinue"]',
     submitApplicationButton: 'button[id="btnSubmitApplication"]',
   },
+  applicationWizardHeader: {
+    saveAndExitButton: 'button[id="btnSaveAndExit"]',
+  },
   education: {
     addEducationButton: 'button[id="btnAddEducation"]',
     transcriptStatusRadioDiv: 'div[aria-describedby="radioTranscriptStatus-messages"]',

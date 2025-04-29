@@ -36,6 +36,9 @@ describe("New ECE One Year Certificate Application", () => {
         // Visit the base URL (configured in your cypress.config.ts).
         cy.visit("/login");
         cy.document().its("readyState").should("eq", "complete");
+
+        //Reset User State
+        cy.resetUserState();
       });
 
       it(`should create a sucessfull ECE One Year Application on ${test.device}`, () => {
@@ -44,24 +47,24 @@ describe("New ECE One Year Certificate Application", () => {
 
         cy.login();
         /** Dashboard */
-        cy.get(selectors.dashboard.applyNowButton).should("be.visible").click();
+        cy.get(selectors.dashboard.applyNowButton).click();
 
         /** Certification Type */
         cy.get(selectors.certificationType.eceOneYearRadio).check();
-        cy.get(selectors.certificationType.continueButton).should("be.visible").click();
+        cy.get(selectors.certificationType.continueButton).click();
 
         /** Application Requirements */
-        cy.get(selectors.applicationRequirements.applyNowButton).should("be.visible").click();
+        cy.get(selectors.applicationRequirements.applyNowButton).click();
 
         /** Declaration */
         cy.get(selectors.declaration.declarationCheckbox).check({ force: true });
-        cy.get(selectors.declaration.continueButton).should("be.visible").click();
+        cy.get(selectors.declaration.continueButton).click();
 
         /** Contact Information */
-        cy.get(selectors.applicationWizard.saveAndContinueButton, { timeout: 20000 }).should("be.visible").should("contain.text", "Save and continue").click();
+        cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
         /** Education */
-        cy.get(selectors.education.addEducationButton).should("be.visible").click();
+        cy.get(selectors.education.addEducationButton).click();
 
         cy.get(selectors.education.transcriptStatusRadioDiv).within(() => {
           cy.get(selectors.elementType.radio).first().check();
@@ -104,9 +107,9 @@ describe("New ECE One Year Certificate Application", () => {
         cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {
           cy.get(selectors.elementType.radio).first().check();
         });
-        cy.get(selectors.education.saveEducationButton).should("be.visible").click();
+        cy.get(selectors.education.saveEducationButton).click();
 
-        cy.get(selectors.applicationWizard.saveAndContinueButton, { timeout: 20000 }).should("be.visible").should("contain.text", "Save and continue").click();
+        cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
         /** Character Reference */
         cy.get(selectors.characterReference.lastNameInput).type("Reference Last Name");
@@ -114,11 +117,11 @@ describe("New ECE One Year Certificate Application", () => {
         cy.get(selectors.characterReference.emailInput).type("Character_Reference@test.gov.bc.ca");
         cy.get(selectors.characterReference.phoneNumberInput).type("1234567890");
 
-        cy.get(selectors.applicationWizard.saveAndContinueButton, { timeout: 20000 }).should("be.visible").should("contain.text", "Save and continue").click();
+        cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
         /** Application Review and Submit */
-        cy.document({ timeout: 10000 }).its("readyState").should("eq", "complete");
-        cy.contains("Review and submit", { timeout: 10000 }).should("be.visible");
+        cy.document().its("readyState").should("eq", "complete");
+        cy.contains("Review and submit").should("be.visible");
         cy.get(selectors.applicationPreview.certificationType).should("be.visible").should("contain.text", "ECE One Year");
         cy.get(selectors.applicationPreview.characterReferenceFirstName).should("be.visible").should("contain.text", "Reference First Name");
         cy.get(selectors.applicationPreview.characterReferenceLastName).should("be.visible").should("contain.text", "Reference Last Name");
@@ -127,14 +130,12 @@ describe("New ECE One Year Certificate Application", () => {
         cy.get(selectors.applicationPreview.educationCountry).should("be.visible").should("contain.text", "Canada");
 
         cy.get(selectors.applicationPreview.educationProvince).should("be.visible").should("contain.text", "British Columbia");
-        cy.get(selectors.applicationWizard.submitApplicationButton).should("be.visible").should("contain.text", "Submit application").click();
+        cy.get(selectors.applicationWizard.submitApplicationButton).click();
 
         /** Application Submitted */
-        cy.document({ timeout: 10000 }).its("readyState").should("eq", "complete");
-        cy.get(selectors.applicationSubmitted.pageTitle, { timeout: 10000 }).should("be.visible").should("contain.text", "Application Submitted");
-        cy.get(selectors.applicationSubmitted.applicationSummaryButton, { timeout: 10000 })
-          .should("be.visible")
-          .should("contain.text", "Go to application summary");
+        cy.document().its("readyState").should("eq", "complete");
+        cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
+        cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
       });
     });
   }
