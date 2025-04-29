@@ -39,6 +39,11 @@ export const useWizardStore = defineStore("wizard", {
     currentStepStage(state): ApplicationStage | ReferenceStage | RenewStage {
       return this.steps[state.step - 1].stage;
     },
+    hasStep() {
+      return (step: ApplicationStage | ReferenceStage | RenewStage) => {
+        return this.steps.some((s) => s.stage === step);
+      };
+    },
   },
   actions: {
     async initializeWizard(wizard: Wizard, draftApplication: Components.Schemas.DraftApplication): Promise<void> {
