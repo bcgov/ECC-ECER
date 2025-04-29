@@ -112,19 +112,16 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const userStore = useUserStore();
 
-    let items = [] as {
-      title: string;
-      disabled: boolean;
-      href: string;
-    }[];
+    let items: { title: string; disabled: boolean; href: string }[] = [
+      {
+        title: "Home",
+        disabled: false,
+        href: "/",
+      },
+    ];
 
     if (applicationStore.isDraftApplicationLaborMobility) {
-      items = [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
+      items.push(
         {
           title: "Check your transfer eligibility",
           disabled: false,
@@ -135,27 +132,15 @@ export default defineComponent({
           disabled: true,
           href: "/application/certification/requirements",
         },
-      ];
+      );
     } else if (applicationStore.isDraftApplicationRenewal || userStore.isRegistrant) {
-      items = [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Requirements",
-          disabled: true,
-          href: "/application/certification/requirements",
-        },
-      ];
+      items.push({
+        title: "Requirements",
+        disabled: true,
+        href: "/application/certification/requirements",
+      });
     } else {
-      items = [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
+      items.push(
         {
           title: "Application types",
           disabled: false,
@@ -166,7 +151,7 @@ export default defineComponent({
           disabled: true,
           href: "/application/certification/requirements",
         },
-      ];
+      );
     }
 
     return {
