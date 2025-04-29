@@ -415,7 +415,6 @@ public class ApplicationRenewalValidationEngineTests
         _faker.Date.Past(5), // StartDate (random date within the last 5 years)
         _faker.Date.Recent(365), // EndDate (random date within the last year)
         _faker.Random.Bool(), // IsECEAssistant
-        TranscriptStatusOptions.OfficialTranscriptRequested, // Transcript status option
         _faker.Name.FirstName(), // StudentFirstName
         _faker.Name.LastName(), // StudentLastName
         _faker.Random.Bool(), // IsNameUnverified
@@ -425,7 +424,8 @@ public class ApplicationRenewalValidationEngineTests
     {
       CampusLocation = _faker.Address.City(), // Random city for CampusLocation
       Status = _faker.Random.Enum<TranscriptStage>(), // Random enum value for Status
-      StudentMiddleName = _faker.Name.FirstName() // Random middle name
+      StudentMiddleName = _faker.Name.FirstName(), // Random middle name
+      TranscriptStatusOption = TranscriptStatusOptions.OfficialTranscriptRequested, // Transcript status option
     };
   }
 

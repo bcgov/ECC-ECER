@@ -95,7 +95,7 @@ public class ApplicationHandlers(
     if (!applicationResults.Items.Any())
     {
       // user does not have a submitted application
-      throw new InvalidOperationException($"user does not have a submitted application");
+      throw new InvalidOperationException($"Registrant {request.TranscriptDocuments.RegistrantId} does not have a submitted application");
     }
 
     var applicationId = await applicationRepository.SaveApplicationTranscript(mapper.Map<Resources.Documents.Applications.TranscriptDocuments>(request.TranscriptDocuments)!, cancellationToken);

@@ -19,8 +19,7 @@ on:
         type: choice
         options:
           - efxtest
-          # no option to deploy from uat for now
-          # - uat
+          - uat
 
 jobs:
   openshift-cd:
