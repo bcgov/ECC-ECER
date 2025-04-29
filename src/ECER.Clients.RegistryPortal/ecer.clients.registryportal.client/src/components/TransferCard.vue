@@ -37,9 +37,6 @@ export default defineComponent({
   },
 
   methods: {
-    handleStartNewApplication() {
-      this.router.push({ name: "application-certification" });
-    },
     handleTransferApplication() {
       this.router.push({ name: "application-transfer" });
     },
