@@ -66,9 +66,9 @@
       <p>We recommend the person is a certified ECE who has directly observed you working with young children.</p>
     </v-col>
   </v-row>
-  <v-row>
+  <v-row v-if="isPostBasic">
     <v-col cols="12">
-      <SpecializedCertificationOptions ref="SpecializedCertificationOptions" />
+      <SpecializedCertificationOptions ref="SpecializedCertificationOptions" :pre-selected="['Ite', 'Sne']" :is-labor-mobility="true" />
     </v-col>
   </v-row>
 </template>

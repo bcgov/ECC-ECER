@@ -6,9 +6,10 @@
       <li>Infant and Toddler Educator (ITE) - you must have completed an infant and toddler educator training program</li>
       <li>Special Needs Educator (SNE) - you must have completed a special needs early childhood educator training program</li>
     </ol>
-    <p>The program(s) must be either:</p>
-    <ul class="ml-10">
-      <li>
+    <template v-if="!isLaborMobility">
+      <p>The program(s) must be either:</p>
+      <ul class="ml-10">
+        <li>
           <a
             target="_blank"
             href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
@@ -18,11 +19,12 @@
           by the ECE Registry
         </li>
         <li>Considered equivalent by the ECE Registry</li>
-    </ul>
-    <p>
-      You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
-      Registry.
-    </p>
+      </ul>
+      <p>
+        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
+        Registry.
+      </p>
+    </template>
     <p class="mt-6">What do you want to add to your certificate?</p>
     <v-form ref="specializationForm" validate-on="lazy">
       <v-checkbox
@@ -73,10 +75,20 @@ export default defineComponent({
 
     return { applicationStore, handleSpecializationSelection };
   },
+  props: {
+    preSelected: {
+      type: Array as () => Components.Schemas.CertificationType[],
+      default: () => [],
+    },
+    isLaborMobility: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       Rules,
-      selected: [] as Components.Schemas.CertificationType[],
+      selected: [...this.preSelected] as Components.Schemas.CertificationType[],
     };
   },
 
