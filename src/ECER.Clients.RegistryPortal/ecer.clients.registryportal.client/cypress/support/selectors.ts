@@ -1,7 +1,6 @@
 export default {
   dashboard: {
     applyNowButton: 'button[id="btnApplyNow"]',
-    renewButton: 'button[id="btnRenew"]',
   },
   certificationType: {
     eceAssistantRadio: 'input[value="EceAssistant"]',
@@ -37,17 +36,6 @@ export default {
     studentIDInput: 'input[id="txtStudentID"]',
     nameOnTranscriptRadioDiv: 'div[aria-describedby="radioNameOnTranscript-messages"]',
     saveEducationButton: 'button[id="btnSaveEducation"]',
-  },
-  proffesonalDevelopment: {
-    nameOfCourse: 'input[aria-label="Name of course or workshop"]',
-    howManyHours: 'input[aria-label="How many hours was it?"]',
-    nameOfThePlace: 'input[aria-label="Name of place that hosted the course or workshop"]',
-    startDate: 'input[aria-label="Start date"]',
-    endDate: 'input[aria-label="End date"]',
-    phoneNoOfIntructorCheckBox: 'input[aria-label="Phone number for instructor of course or workshop"]',
-    instructorName: 'input[aria-label="Instructor name"]',
-    phoneNum: 'input[aria-label="Phone number"]',
-    saveCourseOrWorkshop: 'button[id="btnSaveEducation"]',
   },
   characterReference: {
     lastNameInput: 'input[id="txtReferenceLastName"]',
