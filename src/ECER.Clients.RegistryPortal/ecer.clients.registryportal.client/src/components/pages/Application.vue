@@ -65,7 +65,7 @@
                   v-if="showSubmitApplication"
                   rounded="lg"
                   color="primary"
-                  :loading="loadingStore.isLoading('application_post')"
+                  :loading="loadingStore.isLoading('application_post') || loadingStore.isLoading('draftapplication_put')"
                   @click="handleSubmit"
                 >
                   Submit application
