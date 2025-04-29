@@ -19,10 +19,10 @@
               :items="configStore.provinceList.filter((p) => p.provinceName !== 'British Columbia' && p.provinceName !== 'Other')"
               variant="outlined"
               label=""
-              v-model="transferData.province"
+              v-model="province"
               item-title="provinceName"
               item-value="provinceId"
-              :rules="[transferData!.Rules.required('Select your province or territory', 'provinceId')]"
+              :rules="[Rules.required('Select your province or territory', 'provinceId')]"
               @update:modelValue="onProvinceChange"
               return-object
             ></v-select>
@@ -37,15 +37,15 @@
               variant="outlined"
               label=""
               :items="outOfProvinceCertificationTypes"
-              v-model="transferData.outOfProvinceCertification"
+              v-model="outOfProvinceCertification"
               item-title="transferringCertificate.certificationType"
               item-value="transferringCertificate.id"
-              :rules="[transferData!.Rules.required('Select your out of province certification type', 'transferringCertificate.id')]"
+              :rules="[Rules.required('Select your out of province certification type', 'transferringCertificate')]"
               @update:modelValue="onCertificationChange"
               return-object
             ></v-select>
           </v-col>
-          <v-col v-if="outOfProvinceCertificationTypes.length === 0 && transferData.province && !outOfProvinceCertificationTypesLoading" class="ml-1" cols="12">
+          <v-col v-if="outOfProvinceCertificationTypes.length === 0 && province && !outOfProvinceCertificationTypesLoading" class="ml-1" cols="12">
             <Callout type="warning" title="The province or territory you hold certification in is not eligible to be transferred to B.C.">
               <p>
                 You need to
@@ -78,13 +78,7 @@
               <li>Must be observed by Canadian-certified ECE</li>
             </ul>
             <p class="mt-5">Do you have 500 hours of Canadian work experience?</p>
-            <v-radio-group
-              class="mt-3"
-              id="programConfirmationRadio"
-              v-model="has500HoursWorkExperience"
-              :rules="[transferData!.Rules.required()]"
-              color="primary"
-            >
+            <v-radio-group class="mt-3" id="programConfirmationRadio" v-model="has500HoursWorkExperience" :rules="[Rules.required()]" color="primary">
               <v-radio label="Yes" value="true"></v-radio>
               <v-radio label="No" value="false"></v-radio>
             </v-radio-group>
@@ -129,7 +123,11 @@
             </Callout>
           </v-col>
         </v-row>
-        <v-row></v-row>
+        <v-row>
+          <v-col class="ml-1" cols="12">
+            <v-btn v-if="showRequirementsButton" @click="handleRequirementsClick" rounded="lg" color="primary">View requirements</v-btn>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </PageContainer>
@@ -148,7 +146,6 @@ import Callout from "@/components/Callout.vue";
 interface EceTransferData {
   province: Province | undefined;
   outOfProvinceCertification: Components.Schemas.ComparisonRecord | undefined;
-  Rules: typeof Rules;
 }
 export default {
   name: "Transfer",
@@ -160,25 +157,40 @@ export default {
     };
   },
   methods: {
-    async onProvinceChange(value: Province) {
+    async onProvinceChange() {
       this.outOfProvinceCertificationTypesLoading = true;
-      this.transferData.outOfProvinceCertification = undefined;
+      this.outOfProvinceCertification = undefined;
       this.has500HoursWorkExperience = undefined;
       this.highestCertificationType = undefined;
-      if (value.provinceId) {
-        this.outOfProvinceCertificationTypes = (await getCertificationComparisonList(value.provinceId)) || [];
+      if (this.transferData.province!.provinceId) {
+        this.outOfProvinceCertificationTypes = (await getCertificationComparisonList(this.transferData.province!.provinceId)) || [];
         this.outOfProvinceCertificationTypesLoading = false;
       } else {
         this.outOfProvinceCertificationTypes = [];
         this.outOfProvinceCertificationTypesLoading = false;
       }
     },
-    async onCertificationChange(value: ComparisonRecord) {
+    async onCertificationChange() {
       this.highestCertificationType = undefined;
       this.has500HoursWorkExperience = undefined;
-      if (value.options) {
-        this.highestCertificationType = getHighestCertificationType(value.options!);
+      if (this.transferData.outOfProvinceCertification!.options) {
+        this.highestCertificationType = getHighestCertificationType(this.transferData.outOfProvinceCertification!.options);
       }
+    },
+    handleRequirementsClick() {
+      // this.highestCertificationType is an enum that has the required value
+    },
+  },
+  computed: {
+    transferData(): EceTransferData {
+      return {
+        province: this.province,
+        outOfProvinceCertification: this.outOfProvinceCertification,
+      };
+    },
+
+    showRequirementsButton() {
+      return this.highestCertificationType === CertificationType.Assistant || this.has500HoursWorkExperience;
     },
   },
   data: () => ({
@@ -198,11 +210,9 @@ export default {
     has500HoursWorkExperience: undefined,
     highestCertificationType: undefined as CertificationType | undefined,
     outOfProvinceCertificationTypes: [] as Components.Schemas.ComparisonRecord[],
-    transferData: {
-      province: undefined,
-      outOfProvinceCertification: undefined,
-      Rules,
-    } as EceTransferData,
+    Rules,
+    province: undefined,
+    outOfProvinceCertification: undefined,
     CertificationType,
   }),
 };
