@@ -80,7 +80,7 @@ import ECEHeader from "@/components/ECEHeader.vue";
 import SpecializedCertificationOptions from "@/components/SpecializedCertificationOptions.vue";
 
 export default defineComponent({
-  name: "ECEFiveYearRegistrantRequirements",
+  name: "ECEFiveYearLaborMobilityRequirements",
   components: { ECEHeader, SpecializedCertificationOptions },
   props: {
     isPostBasic: {

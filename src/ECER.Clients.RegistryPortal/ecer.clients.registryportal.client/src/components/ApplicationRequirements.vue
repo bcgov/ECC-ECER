@@ -112,38 +112,62 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const userStore = useUserStore();
 
-    // TODO adjust breadcrumbs for LM path
-    const items =
-      applicationStore.isDraftApplicationRenewal || userStore.isRegistrant
-        ? [
-            {
-              title: "Home",
-              disabled: false,
-              href: "/",
-            },
-            {
-              title: "Requirements",
-              disabled: true,
-              href: "/application/certification/requirements",
-            },
-          ]
-        : [
-            {
-              title: "Home",
-              disabled: false,
-              href: "/",
-            },
-            {
-              title: "Application types",
-              disabled: false,
-              href: "/application/certification",
-            },
-            {
-              title: "Requirements",
-              disabled: true,
-              href: "/application/certification/requirements",
-            },
-          ];
+    let items = [] as {
+      title: string;
+      disabled: boolean;
+      href: string;
+    }[];
+
+    if (applicationStore.isDraftApplicationLaborMobility) {
+      items = [
+        {
+          title: "Home",
+          disabled: false,
+          href: "/",
+        },
+        {
+          title: "Check your transfer eligibility",
+          disabled: false,
+          href: "/application/transfer-eligibility", // TODO adjust when merging self assessment work
+        },
+        {
+          title: "Requirements",
+          disabled: true,
+          href: "/application/certification/requirements",
+        },
+      ];
+    } else if (applicationStore.isDraftApplicationRenewal || userStore.isRegistrant) {
+      items = [
+        {
+          title: "Home",
+          disabled: false,
+          href: "/",
+        },
+        {
+          title: "Requirements",
+          disabled: true,
+          href: "/application/certification/requirements",
+        },
+      ];
+    } else {
+      items = [
+        {
+          title: "Home",
+          disabled: false,
+          href: "/",
+        },
+        {
+          title: "Application types",
+          disabled: false,
+          href: "/application/certification",
+        },
+        {
+          title: "Requirements",
+          disabled: true,
+          href: "/application/certification/requirements",
+        },
+      ];
+    }
 
     return {
       items,
