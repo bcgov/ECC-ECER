@@ -57,3 +57,27 @@ Cypress.Commands.add("resetUserState", () => {
       return cy.wrap(response);
     });
 });
+
+/* Custom command to wait for a button to be ready (not loading) before clicking
+  This is useful for Vuetify buttons that have a loading state */
+
+Cypress.Commands.overwrite("click", (originalFn, subject, options) => {
+  const $el = subject as unknown as JQuery<HTMLElement>;
+
+  // If it's not a Vuetify button, do the normal click and exit
+  if (!$el.hasClass("v-btn")) {
+    return originalFn(subject, options);
+  }
+
+  // Otherwise wait for it to be visible & spinner-free, then click
+  return cy
+    .wrap(subject)
+    .should("be.visible")
+    .should("not.have.class", "v-btn--loading")
+    .then(($el) => {
+      // **return** the real click so the Cypress chain stays intact
+      return originalFn($el, options);
+    });
+});
+
+export {};

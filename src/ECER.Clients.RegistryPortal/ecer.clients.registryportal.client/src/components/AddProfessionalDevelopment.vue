@@ -31,6 +31,7 @@
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceTextField
+              id="txtCourseName"
               v-model="professionalDevelopment.courseName"
               label="Name of course or workshop"
               maxlength="100"
@@ -41,6 +42,7 @@
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceTextField
+              id="txtNumberOfHours"
               v-model="professionalDevelopment.numberOfHours"
               label="How many hours was it?"
               :rules="[Rules.required('Enter your course or workshop hours'), Rules.numberToDecimalPlaces()]"
@@ -50,6 +52,7 @@
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceTextField
+              id="txtOrganizationName"
               v-model="professionalDevelopment.organizationName"
               label="Name of place that hosted the course or workshop"
               maxlength="300"
@@ -60,6 +63,7 @@
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceTextField
+              id="txtCourseOrWorkshopLink"
               v-model="professionalDevelopment.courseorWorkshopLink"
               variant="outlined"
               label="Website with description of course or workshop (optional)"
@@ -76,6 +80,7 @@
         <v-row>
           <v-col sm="6" md="4" lg="2">
             <EceDateInput
+              id="txtCourseStartDate"
               ref="startDateInput"
               v-model="professionalDevelopment.startDate"
               :rules="[
@@ -107,6 +112,7 @@
         <v-row>
           <v-col sm="6" md="4" lg="2">
             <EceDateInput
+              id="txtCourseEndDate"
               ref="endDateInput"
               v-model="professionalDevelopment.endDate"
               :rules="[
@@ -148,6 +154,7 @@
         <v-row>
           <v-col>
             <v-checkbox
+              id="chkInstructorPhoneNumber"
               v-model="professionalDevelopment.selection"
               label="Phone number for instructor of course or workshop"
               :hide-details="true"
@@ -156,6 +163,7 @@
               @input="selectionChanged"
             ></v-checkbox>
             <v-checkbox
+              id="chkInstructorEmailAddress"
               v-model="professionalDevelopment.selection"
               label="Email address for instructor of course or workshop"
               :hide-details="true"
@@ -164,6 +172,7 @@
               @input="selectionChanged"
             ></v-checkbox>
             <v-checkbox
+              id="chkCourseCompletionDocument"
               v-model="professionalDevelopment.selection"
               label="A certificate or document that shows I completed the course"
               hide-details="auto"
@@ -177,6 +186,7 @@
         <v-row v-if="showInstructorNameInput">
           <v-col cmd="8" lg="6" xl="4">
             <EceTextField
+              id="txtInstructorName"
               v-model="professionalDevelopment.instructorName"
               label="Instructor name"
               maxlength="100"
@@ -187,6 +197,7 @@
         <v-row v-if="showPhoneNumberInput">
           <v-col md="8" lg="6" xl="4">
             <EceTextField
+              id="txtOrganizationPhoneNumber"
               v-model="professionalDevelopment.organizationContactInformation"
               label="Phone number"
               :rules="[
@@ -199,6 +210,7 @@
         <v-row v-if="showEmailInput">
           <v-col md="8" lg="6" xl="4">
             <EceTextField
+              id="txtOrganizationEmailAddress"
               v-model="professionalDevelopment.organizationEmailAddress"
               label="Email address"
               :rules="[Rules.required('Enter the email address of your course or workshop contact'), Rules.email()]"
@@ -215,6 +227,7 @@
     <v-row class="mt-6">
       <v-col class="d-flex flex-row ga-3 flex-wrap">
         <v-btn
+          id="btnAddProfessionalDevelopment"
           size="large"
           color="primary"
           :loading="loadingStore.isLoading('application_professionaldevelopment_add_post')"

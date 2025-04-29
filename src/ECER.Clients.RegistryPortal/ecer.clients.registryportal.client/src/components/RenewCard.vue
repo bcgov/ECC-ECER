@@ -7,7 +7,7 @@
       </div>
     </template>
     <template #action>
-      <v-btn v-if="showRenewLink" variant="text" @click="handleRenewClicked">
+      <v-btn id="btnRenew" v-if="showRenewLink" variant="text" @click="handleRenewClicked">
         <a href="#" @click.prevent>Renew</a>
       </v-btn>
       <v-btn v-else-if="showRenewalRequirementsLink" variant="text" @click="handleLearnAboutRenewalRequirementsClicked">

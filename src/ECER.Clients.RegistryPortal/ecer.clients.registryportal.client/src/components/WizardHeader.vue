@@ -10,7 +10,7 @@
             </a>
           </div>
           <div :class="[{ ['text-right mb-2']: mobile }]">
-            <v-btn variant="outlined" :loading="loadingStore.isLoading('draftapplication_put')" @click="saveAndExit">Save and exit</v-btn>
+            <v-btn id="btnSaveAndExit" variant="outlined" :loading="loadingStore.isLoading('draftapplication_put')" @click="saveAndExit">Save and exit</v-btn>
           </div>
         </v-col>
       </v-row>
