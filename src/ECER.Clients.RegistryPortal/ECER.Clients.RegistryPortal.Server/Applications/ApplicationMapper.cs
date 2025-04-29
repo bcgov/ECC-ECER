@@ -42,8 +42,6 @@ public class ApplicationMapper : Profile
                opt => opt.MapFrom(src => src.EndDate))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.IsECEAssistant),
                opt => opt.MapFrom(src => src.IsECEAssistant))
-      .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.TranscriptStatusOption),
-   opt => opt.MapFrom(src => src.TranscriptStatusOption))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.IsNameUnverified),
          opt => opt.MapFrom(src => src.IsNameUnverified))
       .ForCtorParam(nameof(Managers.Registry.Contract.Applications.Transcript.EducationRecognition),
@@ -52,6 +50,8 @@ public class ApplicationMapper : Profile
          opt => opt.MapFrom(src => src.EducationOrigin))
       .ForMember(d => d.CampusLocation,
              opts => opts.MapFrom(src => src.CampusLocation))
+      .ForMember(d=>d.TranscriptStatusOption,
+             opt => opt.MapFrom(src => src.TranscriptStatusOption))
       .ForMember(d => d.StudentMiddleName,
        opts => opts.MapFrom(src => src.StudentMiddleName))
        .ForMember(d => d.CourseOutlineReceivedByRegistry, opts => opts.Ignore())
