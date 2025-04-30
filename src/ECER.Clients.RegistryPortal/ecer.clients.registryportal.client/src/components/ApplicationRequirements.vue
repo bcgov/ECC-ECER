@@ -161,11 +161,6 @@ export default defineComponent({
   },
   computed: {
     isPostBasic() {
-      console.log(
-        "certification types",
-        this.applicationStore.draftApplication.certificationTypes?.some((type) => type === "Ite" || type === "Sne"),
-      );
-
       return this.applicationStore.draftApplication.certificationTypes?.some((type) => type === "Ite" || type === "Sne");
     },
   },

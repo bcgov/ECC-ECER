@@ -184,8 +184,6 @@ export default {
       }
     },
     handleRequirementsClick() {
-      console.log(this.highestCertificationType);
-      console.log(this.selfAssessmentOutcome);
       this.applicationStore.$patch({ draftApplication: { certificationTypes: this.selfAssessmentOutcome, applicationType: "LaborMobility" } });
       this.router.push({ name: "application-requirements" });
     },
