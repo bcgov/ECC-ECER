@@ -140,20 +140,26 @@ import PageContainer from "@/components/PageContainer.vue";
 import ProfileForm from "@/components/ProfileForm.vue";
 import { getHighestCertificationType, CertificationType } from "@/utils/functions";
 import { useConfigStore } from "@/store/config";
+import { useApplicationStore } from "@/store/application";
+import { useRouter } from "vue-router";
 import * as Rules from "@/utils/formRules";
 import type { Components, Province, ComparisonRecord } from "@/types/openapi";
 import Callout from "@/components/Callout.vue";
 interface EceTransferData {
   province: Province | undefined;
-  outOfProvinceCertification: Components.Schemas.ComparisonRecord | undefined;
+  outOfProvinceCertification: ComparisonRecord | undefined;
 }
 export default {
   name: "Transfer",
   components: { ProfileForm, Breadcrumb, PageContainer, Callout },
   setup() {
     const configStore = useConfigStore();
+    const router = useRouter();
+    const applicationStore = useApplicationStore();
     return {
       configStore,
+      router,
+      applicationStore,
     };
   },
   methods: {
@@ -178,7 +184,23 @@ export default {
       }
     },
     handleRequirementsClick() {
-      // this.highestCertificationType is an enum that has the required value
+      let certificationTypes: Components.Schemas.CertificationType[] = [];
+      switch (this.highestCertificationType) {
+        case CertificationType.Assistant:
+          certificationTypes = ["EceAssistant"];
+          break;
+        case CertificationType.OneYear:
+          certificationTypes = ["OneYear"];
+          break;
+        case CertificationType.FiveYearCertificate:
+          certificationTypes = ["FiveYears"];
+          break;
+        case CertificationType.FiveYearCertificateITE_SNE:
+          certificationTypes = ["FiveYears", "Ite", "Sne"];
+          break;
+      }
+      this.applicationStore.$patch({ draftApplication: { certificationTypes: certificationTypes, applicationType: "LaborMobility" } });
+      this.router.push({ name: "application-requirements" });
     },
   },
   computed: {
