@@ -1,5 +1,5 @@
 <template>
-  <v-card :rounded="!isRounded ? '0' : ''" flat color="primary" class="h-100 d-flex flex-column justify-space-between h-100">
+<v-card :rounded="!isRounded ? '0' : ''" flat color="primary" class="h-100 d-flex flex-column justify-space-between h-100">
     <v-card-item class="ma-4">
       <h2 class="text-white">Transfer certification</h2>
       <p class="small text-white mt-4">
@@ -30,6 +30,7 @@ export default defineComponent({
       default: true,
     },
   },
+
   setup() {
     const router = useRouter();
 

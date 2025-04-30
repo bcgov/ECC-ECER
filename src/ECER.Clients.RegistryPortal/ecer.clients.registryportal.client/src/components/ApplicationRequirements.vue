@@ -125,7 +125,7 @@ export default defineComponent({
         {
           title: "Check your transfer eligibility",
           disabled: false,
-          href: "/application/transfer-eligibility", // TODO adjust when merging self assessment work
+          href: "/application/transfer",
         },
         {
           title: "Requirements",
@@ -161,8 +161,7 @@ export default defineComponent({
   },
   computed: {
     isPostBasic() {
-      // TODO Required from LM self assessment
-      return true;
+      return this.applicationStore.draftApplication.certificationTypes?.some((type) => type === "Ite" || type === "Sne");
     },
   },
   methods: {
@@ -178,7 +177,9 @@ export default defineComponent({
 
         const { valid } = await formRef.validate();
         if (valid) {
-          this.applicationStore.$patch({ draftApplication: { certificationTypes: this.specializationSelection } });
+          this.applicationStore.$patch({
+            draftApplication: { certificationTypes: this.specializationSelection },
+          });
           this.router.push({ name: "declaration" });
         }
       } else if (this.applicationStore.isDraftApplicationLaborMobility) {
@@ -194,7 +195,9 @@ export default defineComponent({
         const uniqueUpdatedTypes = Array.from(new Set(updatedTypes));
 
         // Patch the store with the updated types
-        this.applicationStore.$patch({ draftApplication: { certificationTypes: uniqueUpdatedTypes } });
+        this.applicationStore.$patch({
+          draftApplication: { certificationTypes: uniqueUpdatedTypes },
+        });
         this.router.push({ name: "declaration" });
       }
     },

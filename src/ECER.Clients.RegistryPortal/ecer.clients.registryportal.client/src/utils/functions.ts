@@ -1,3 +1,5 @@
+import type { CertificationComparison } from "@/types/openapi";
+
 export function areObjectsEqual(obj1: any, obj2: any): boolean {
   if (obj1 === obj2) {
     return true;
@@ -206,4 +208,44 @@ export function parseFirstNameLastName(name: string) {
   }
 
   return { firstName, lastName };
+}
+
+export enum CertificationType {
+  Assistant = "Assistant",
+  OneYear = "One Year",
+  FiveYearCertificate = "Five Year Certificate",
+  FiveYearCertificateITE_SNE = "Five Year Certificate+ITE+SNE",
+}
+
+const certificationTypeMap: Record<string, CertificationType> = Object.values(CertificationType).reduce(
+  (m, v) => {
+    m[v] = v;
+    return m;
+  },
+  {} as Record<string, CertificationType>,
+);
+
+const certificationWeights: Record<CertificationType, number> = {
+  [CertificationType.Assistant]: 1,
+  [CertificationType.OneYear]: 2,
+  [CertificationType.FiveYearCertificate]: 3,
+  [CertificationType.FiveYearCertificateITE_SNE]: 4,
+};
+
+export function parseCertificationType(input: string): CertificationType {
+  const cert = certificationTypeMap[input];
+  if (!cert) throw new Error(`Unrecognized certification type: "${input}"`);
+  return cert;
+}
+
+export function getHighestCertificationType(options: CertificationComparison[]): CertificationType {
+  const parsed = options
+    .map((o) => certificationTypeMap[o.bcCertificate!]) // map raw → enum
+    .filter((c): c is CertificationType => !!c); // drop unrecognized
+
+  if (parsed.length === 0) {
+    throw new Error("No valid certification found in options");
+  }
+
+  return parsed.reduce((best, curr) => (certificationWeights[curr] > certificationWeights[best] ? curr : best), parsed[0]);
 }
