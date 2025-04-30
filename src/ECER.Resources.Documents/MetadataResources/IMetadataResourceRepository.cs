@@ -13,6 +13,8 @@ public interface IMetadataResourceRepository
   Task<IEnumerable<IdentificationType>> QueryIdentificationTypes(IdentificationTypesQuery query, CancellationToken cancellationToken);
 
   Task<string> SetDownloadDate(string fileId, CancellationToken cancellationToken);
+  Task<IEnumerable<CertificationComparison>> QueryCertificationComparisons(CertificationComparisonQuery query, CancellationToken cancellationToken);
+
 }
 
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
@@ -37,6 +39,13 @@ public record ProvincesQuery
 {
   public string? ById { get; set; }
 }
+
+public record CertificationComparisonQuery
+{
+  public string? ById { get; set; }
+  public string? ByProvinceId { get; set; }
+}
+
 public record SystemMessagesQuery
 {
   public string? ById { get; set; }
@@ -48,15 +57,28 @@ public record CountriesQuery
   public string? ByCode { get; set; }
   public string? ByName { get; set; }
 }
+
 public record PostSecondaryInstitutionsQuery
 {
   public string? ById { get; set; }
   public string? ByProvinceId { get; set; }
   public string? ByName { get; set; }
 }
+
 public record IdentificationTypesQuery
 {
   public string? ById { get; set; }
   public bool? ForPrimary { get; set; }
   public bool? ForSecondary { get; set; }
+}
+
+public record OutOfProvinceCertificationType(string Id)
+{
+  public string? CertificationType { get; set; }
+}
+
+public record CertificationComparison(string Id) 
+{ 
+  public string? BcCertificate { get; set; }
+  public OutOfProvinceCertificationType? TransferringCertificate { get; set; }
 }
