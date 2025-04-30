@@ -21,7 +21,6 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
-import Callout from "@/components/Callout.vue";
 import { getChildMessages, markMessageAsRead } from "@/api/message";
 import { useAlertStore } from "@/store/alert";
 import { useMessageStore } from "@/store/message";
@@ -30,9 +29,7 @@ import { formatDate } from "@/utils/format";
 
 export default defineComponent({
   name: "MessageListItem",
-  components: {
-    Callout,
-  },
+  components: {},
   props: {
     message: {
       type: Object as PropType<Components.Schemas.Communication>,

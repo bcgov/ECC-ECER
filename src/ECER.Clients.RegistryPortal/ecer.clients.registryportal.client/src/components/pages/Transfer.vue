@@ -162,8 +162,8 @@ export default {
       this.outOfProvinceCertification = undefined;
       this.has500HoursWorkExperience = undefined;
       this.highestCertificationType = undefined;
-      if (this.transferData.province!.provinceId) {
-        this.outOfProvinceCertificationTypes = (await getCertificationComparisonList(this.transferData.province!.provinceId)) || [];
+      if (this.transferData.province?.provinceId) {
+        this.outOfProvinceCertificationTypes = (await getCertificationComparisonList(this.transferData.province?.provinceId)) || [];
         this.outOfProvinceCertificationTypesLoading = false;
       } else {
         this.outOfProvinceCertificationTypes = [];
@@ -173,8 +173,8 @@ export default {
     async onCertificationChange() {
       this.highestCertificationType = undefined;
       this.has500HoursWorkExperience = undefined;
-      if (this.transferData.outOfProvinceCertification!.options) {
-        this.highestCertificationType = getHighestCertificationType(this.transferData.outOfProvinceCertification!.options);
+      if (this.transferData.outOfProvinceCertification?.options) {
+        this.highestCertificationType = getHighestCertificationType(this.transferData.outOfProvinceCertification?.options);
       }
     },
     handleRequirementsClick() {
