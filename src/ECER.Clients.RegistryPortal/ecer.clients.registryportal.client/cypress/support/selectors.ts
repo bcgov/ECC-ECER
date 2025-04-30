@@ -7,6 +7,8 @@ export default {
     eceFiveYearRadio: 'input[value="FiveYears"]',
     eceOneYearRadio: 'input[value="OneYear"]',
     continueButton: 'button[id="btnContinue"]',
+    iteCheckBox: 'input[value="Ite"]',
+    sneCheckBox: 'input[value="Sne"]',
   },
   applicationRequirements: {
     applyNowButton: 'button[id="btnApplyNow"]',
