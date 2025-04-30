@@ -1,5 +1,5 @@
 import { getClient } from "@/api/client";
-import type { Components } from "@/types/openapi";
+import type { Components, Paths } from "@/types/openapi";
 
 const getConfiguration = async (): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> => {
   const client = await getClient(false);
@@ -21,6 +21,14 @@ const getPostSecondaryInstitutionList = async (provinceId?: string): Promise<Com
   return (await client.psi_get()).data;
 };
 
+const getCertificationComparisonList = async (provinceId?: string): Promise<Components.Schemas.ComparisonRecord[] | null | undefined> => {
+  const client = await getClient(false);
+  const parameters: Paths.CertificationComparisonGet.QueryParameters = {
+    provinceId: provinceId || "",
+  };
+  return (await client.certificationComparison_get(parameters)).data;
+};
+
 const getSystemMessages = async (): Promise<Components.Schemas.SystemMessage[] | null | undefined> => {
   const client = await getClient(false);
   return (await client.systemMessage_get()).data;
@@ -36,4 +44,13 @@ const getIdentificationTypes = async (): Promise<Components.Schemas.Identificati
   return (await client.identificationTypes_get()).data;
 };
 
-export { getConfiguration, getPostSecondaryInstitutionList, getProvinceList, getCountryList, getRecaptchaSiteKey, getSystemMessages, getIdentificationTypes };
+export {
+  getConfiguration,
+  getPostSecondaryInstitutionList,
+  getCertificationComparisonList,
+  getProvinceList,
+  getCountryList,
+  getRecaptchaSiteKey,
+  getSystemMessages,
+  getIdentificationTypes,
+};

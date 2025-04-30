@@ -172,7 +172,7 @@ const router = createRouter({
     },
     {
       path: "/application/transfer",
-      component: () => import("./components/pages/PageNotFound.vue"),
+      component: () => import("./components/pages/Transfer.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
       name: "application-transfer",
     },
