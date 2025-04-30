@@ -1,4 +1,5 @@
 import selectors from "../../../support/selectors";
+const day = new Date().getDate();
 
 describe("New ECE 5 Year + ITE & SNE Certificate Application", () => {
   it("should sucessfully create a New ECE 5 Year + ITE & SNE Application", () => {
@@ -30,7 +31,6 @@ describe("New ECE 5 Year + ITE & SNE Certificate Application", () => {
     cy.get(selectors.education.programNameInput).type("TEST ECE 5 Year Course");
 
     /* Start Date - DatePicker*/
-
     cy.get(selectors.education.programStartDateInput).click({ force: true });
     Cypress._.times(7, () => {
       cy.get(selectors.datePicker.prevMonthButton).first().click();

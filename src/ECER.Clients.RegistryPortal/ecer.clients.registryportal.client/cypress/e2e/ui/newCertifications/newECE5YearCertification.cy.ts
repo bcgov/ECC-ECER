@@ -1,4 +1,5 @@
 import selectors from "../../../support/selectors";
+const day = new Date().getDate();
 
 describe("New ECE 5 Year Certificate Application", () => {
   it("should sucessfully create a New ECE 5 Year Application", () => {
