@@ -19,6 +19,9 @@ export default {
     saveAndContinueButton: 'button[id="btnSaveAndContinue"]',
     submitApplicationButton: 'button[id="btnSubmitApplication"]',
   },
+  applicationWizardHeader: {
+    saveAndExitButton: 'button[id="btnSaveAndExit"]',
+  },
   education: {
     addEducationButton: 'button[id="btnAddEducation"]',
     transcriptStatusRadioDiv: 'div[aria-describedby="radioTranscriptStatus-messages"]',
@@ -49,6 +52,9 @@ export default {
   },
   datePicker: {
     monthDiv: "div.v-date-picker-month",
+    monthControlsDiv: "div.v-date-picker-controls__month",
+    controlsDiv: "div.v-date-picker-controls",
+    prevMonthButton: 'button[data-testid="prev-month"]',
   },
   applicationPreview: {
     certificationType: 'p[id="certificationType"]',
