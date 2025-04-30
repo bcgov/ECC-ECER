@@ -1,145 +1,97 @@
 import selectors from "../../../support/selectors";
-
-// Define the DeviceConfig interface.
-interface DeviceConfig {
-  device: string;
-  width: number;
-  height: number;
-}
-
-// Compute devices synchronously using Cypress.env.
-// If the environment variable "DEVICES" is provided, parse it; otherwise, use the defaults.
-let devices: DeviceConfig[];
-try {
-  const devicesEnv = Cypress.env("DEVICES");
-  devices = JSON.parse(devicesEnv) as DeviceConfig[];
-} catch (error) {
-  devices = [];
-}
-
-// Precompute test cases outside of the describe block.
-const testCases = devices.map(({ device, width, height }) => ({
-  title: `Testing on ${device} (${width}x${height})`,
-  device,
-  width,
-  height,
-}));
+const day = new Date().getDate();
 
 describe("New ECE Assistant Certificate Application", () => {
-  for (const test of testCases) {
-    describe(test.title, () => {
-      beforeEach(() => {
-        // Reset cookies and local storage (cy.resetState() is defined in custom commands)
-        cy.resetState();
+  it("should sucessfully create a New ECE Assistant Application", () => {
+    /** Dashboard */
+    cy.get(selectors.dashboard.applyNowButton).click();
 
-        // Set the viewport for the current device.
-        cy.viewport(test.width, test.height);
+    /** Certification Type */
+    cy.get(selectors.certificationType.eceAssistantRadio).check();
+    cy.get(selectors.certificationType.continueButton).click();
 
-        // Visit the base URL (configured in your cypress.config.ts).
-        cy.visit("/login");
-        cy.document().its("readyState").should("eq", "complete");
+    /** Application Requirements */
+    cy.get(selectors.applicationRequirements.applyNowButton).click();
 
-        //Reset User State
-        cy.resetUserState();
-      });
+    /** Declaration */
+    cy.get(selectors.declaration.declarationCheckbox).check({ force: true });
+    cy.get(selectors.declaration.continueButton).click();
 
-      it(`should sucessfully create a New ECE Assistant Application on ${test.device}`, () => {
-        const today: Date = new Date();
-        const day = today.getDate();
+    /** Contact Information */
+    cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
-        cy.login();
+    /** Education */
+    cy.get(selectors.education.addEducationButton).click();
 
-        /** Dashboard */
-        cy.get(selectors.dashboard.applyNowButton).click();
-
-        /** Certification Type */
-        cy.get(selectors.certificationType.eceAssistantRadio).check();
-        cy.get(selectors.certificationType.continueButton).click();
-
-        /** Application Requirements */
-        cy.get(selectors.applicationRequirements.applyNowButton).click();
-
-        /** Declaration */
-        cy.get(selectors.declaration.declarationCheckbox).check({ force: true });
-        cy.get(selectors.declaration.continueButton).click();
-
-        /** Contact Information */
-        cy.get(selectors.applicationWizard.saveAndContinueButton).click();
-
-        /** Education */
-        cy.get(selectors.education.addEducationButton).click();
-
-        cy.get(selectors.education.transcriptStatusRadioDiv).within(() => {
-          cy.get(selectors.elementType.radio).first().check();
-        });
-        cy.get(selectors.education.programNameInput).type("TEST ECE Assistant Course", { force: true });
-
-        /* Start Date - DatePicker*/
-        cy.get(selectors.education.programStartDateInput).click({ force: true });
-        Cypress._.times(7, () => {
-          cy.get(selectors.datePicker.prevMonthButton).first().click();
-        });
-        cy.get(selectors.datePicker.monthDiv)
-          .first()
-          .should("exist")
-          .within(() => {
-            cy.contains("span", `${day}`).click({ force: true });
-          });
-        cy.get("button").contains("OK").click({ force: true });
-
-        /* End Date - DatePicker*/
-        cy.get(selectors.education.programEndDateInput).click({ force: true });
-        Cypress._.times(1, () => {
-          cy.get(selectors.datePicker.prevMonthButton).first().click();
-        });
-        cy.get(selectors.datePicker.monthDiv)
-          .first()
-          .should("exist")
-          .within(() => {
-            cy.contains("span", `${day}`).click({ force: true });
-          });
-        cy.get("button").contains("OK").click({ force: true });
-
-        cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia", { force: true });
-
-        cy.get(selectors.education.postSecondaryInstitutionDropDownList).should("exist").type("Other", { force: true });
-        cy.get("body").click({ force: true });
-
-        cy.get(selectors.education.institutionNameInput).type("TEST Educational Institution", { force: true });
-        cy.get(selectors.education.studentIDInput).type("1234", { force: true });
-        cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {
-          cy.get(selectors.elementType.radio).first().check();
-        });
-        cy.get(selectors.education.saveEducationButton).click();
-
-        cy.get(selectors.applicationWizard.saveAndContinueButton).click();
-
-        /** Character Reference */
-        cy.get(selectors.characterReference.lastNameInput).type("Reference Last Name");
-        cy.get(selectors.characterReference.firstNameInput).type("Reference First Name");
-        cy.get(selectors.characterReference.emailInput).type("Character_Reference@test.gov.bc.ca");
-        cy.get(selectors.characterReference.phoneNumberInput).type("1234567890");
-
-        cy.get(selectors.applicationWizard.saveAndContinueButton).click();
-
-        /** Application Review and Submit */
-        cy.document().its("readyState").should("eq", "complete");
-        cy.contains("Review and submit").should("be.visible");
-        cy.get(selectors.applicationPreview.certificationType).should("be.visible").should("contain.text", "ECE Assistant");
-        cy.get(selectors.applicationPreview.characterReferenceFirstName).should("be.visible").should("contain.text", "Reference First Name");
-        cy.get(selectors.applicationPreview.characterReferenceLastName).should("be.visible").should("contain.text", "Reference Last Name");
-        cy.get(selectors.applicationPreview.characterReferenceEmail).should("be.visible").should("contain.text", "Character_Reference@test.gov.bc.ca");
-
-        cy.get(selectors.applicationPreview.educationCountry).should("be.visible").should("contain.text", "Canada");
-
-        cy.get(selectors.applicationPreview.educationProvince).should("be.visible").should("contain.text", "British Columbia");
-        cy.get(selectors.applicationWizard.submitApplicationButton).click();
-
-        /** Application Submitted */
-        cy.document().its("readyState").should("eq", "complete");
-        cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
-        cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
-      });
+    cy.get(selectors.education.transcriptStatusRadioDiv).within(() => {
+      cy.get(selectors.elementType.radio).first().check();
     });
-  }
+    cy.get(selectors.education.programNameInput).type("TEST ECE Assistant Course", { force: true });
+
+    /* Start Date - DatePicker*/
+    cy.get(selectors.education.programStartDateInput).click({ force: true });
+    Cypress._.times(7, () => {
+      cy.get(selectors.datePicker.prevMonthButton).first().click();
+    });
+    cy.get(selectors.datePicker.monthDiv)
+      .first()
+      .should("exist")
+      .within(() => {
+        cy.contains("span", `${day}`).click({ force: true });
+      });
+    cy.get("button").contains("OK").click({ force: true });
+
+    /* End Date - DatePicker*/
+    cy.get(selectors.education.programEndDateInput).click({ force: true });
+    Cypress._.times(1, () => {
+      cy.get(selectors.datePicker.prevMonthButton).first().click();
+    });
+    cy.get(selectors.datePicker.monthDiv)
+      .first()
+      .should("exist")
+      .within(() => {
+        cy.contains("span", `${day}`).click({ force: true });
+      });
+    cy.get("button").contains("OK").click({ force: true });
+
+    cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia", { force: true });
+
+    cy.get(selectors.education.postSecondaryInstitutionDropDownList).should("exist").type("Other", { force: true });
+    cy.get("body").click({ force: true });
+
+    cy.get(selectors.education.institutionNameInput).type("TEST Educational Institution", { force: true });
+    cy.get(selectors.education.studentIDInput).type("1234", { force: true });
+    cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {
+      cy.get(selectors.elementType.radio).first().check();
+    });
+    cy.get(selectors.education.saveEducationButton).click();
+
+    cy.get(selectors.applicationWizard.saveAndContinueButton).click();
+
+    /** Character Reference */
+    cy.get(selectors.characterReference.lastNameInput).type("Reference Last Name");
+    cy.get(selectors.characterReference.firstNameInput).type("Reference First Name");
+    cy.get(selectors.characterReference.emailInput).type("Character_Reference@test.gov.bc.ca");
+    cy.get(selectors.characterReference.phoneNumberInput).type("1234567890");
+
+    cy.get(selectors.applicationWizard.saveAndContinueButton).click();
+
+    /** Application Review and Submit */
+    cy.document().its("readyState").should("eq", "complete");
+    cy.contains("Review and submit").should("be.visible");
+    cy.get(selectors.applicationPreview.certificationType).should("be.visible").should("contain.text", "ECE Assistant");
+    cy.get(selectors.applicationPreview.characterReferenceFirstName).should("be.visible").should("contain.text", "Reference First Name");
+    cy.get(selectors.applicationPreview.characterReferenceLastName).should("be.visible").should("contain.text", "Reference Last Name");
+    cy.get(selectors.applicationPreview.characterReferenceEmail).should("be.visible").should("contain.text", "Character_Reference@test.gov.bc.ca");
+
+    cy.get(selectors.applicationPreview.educationCountry).should("be.visible").should("contain.text", "Canada");
+
+    cy.get(selectors.applicationPreview.educationProvince).should("be.visible").should("contain.text", "British Columbia");
+    cy.get(selectors.applicationWizard.submitApplicationButton).click();
+
+    /** Application Submitted */
+    cy.document().its("readyState").should("eq", "complete");
+    cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
+    cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
+  });
 });
