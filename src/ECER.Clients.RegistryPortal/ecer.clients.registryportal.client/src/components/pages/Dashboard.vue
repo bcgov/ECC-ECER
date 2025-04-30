@@ -60,15 +60,11 @@
       <v-row v-if="applications && userStore.isVerified && showApplicationCard" justify="center">
         <v-col>
           <v-row>
-
             <v-col cols="12" :sm="showTransferCard ? 6 : 12">
               <ApplicationCard @cancel-application="showCancelDialog = true" />
             </v-col>
             <v-col v-if="showTransferCard" cols="12" sm="6">
               <TransferCard />
-            </v-col>
-            <v-col cols="12" md="6">
-              <TransferCard :class="smAndDown ? 'mx-n6' : ''" />
             </v-col>
           </v-row>
         </v-col>

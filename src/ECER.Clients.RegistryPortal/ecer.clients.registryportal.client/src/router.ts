@@ -28,12 +28,6 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresVerification: true },
     },
     {
-      path: "/transfer",
-      component: () => import("./components/pages/Transfer.vue"),
-      name: "transfer",
-      meta: { requiresAuth: true, requiresVerification: true },
-    },
-    {
       path: "/messages",
       name: "messages",
       component: () => import("./components/Messages.vue"),
@@ -178,7 +172,7 @@ const router = createRouter({
     },
     {
       path: "/application/transfer",
-      component: () => import("./components/pages/PageNotFound.vue"),
+      component: () => import("./components/pages/Transfer.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
       name: "application-transfer",
     },

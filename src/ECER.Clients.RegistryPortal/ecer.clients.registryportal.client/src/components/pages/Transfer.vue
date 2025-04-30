@@ -184,22 +184,9 @@ export default {
       }
     },
     handleRequirementsClick() {
-      let certificationTypes: Components.Schemas.CertificationType[] = [];
-      switch (this.highestCertificationType) {
-        case CertificationType.Assistant:
-          certificationTypes = ["EceAssistant"];
-          break;
-        case CertificationType.OneYear:
-          certificationTypes = ["OneYear"];
-          break;
-        case CertificationType.FiveYearCertificate:
-          certificationTypes = ["FiveYears"];
-          break;
-        case CertificationType.FiveYearCertificateITE_SNE:
-          certificationTypes = ["FiveYears", "Ite", "Sne"];
-          break;
-      }
-      this.applicationStore.$patch({ draftApplication: { certificationTypes: certificationTypes, applicationType: "LaborMobility" } });
+      console.log(this.highestCertificationType);
+      console.log(this.selfAssessmentOutcome);
+      this.applicationStore.$patch({ draftApplication: { certificationTypes: this.selfAssessmentOutcome, applicationType: "LaborMobility" } });
       this.router.push({ name: "application-requirements" });
     },
   },
@@ -210,7 +197,25 @@ export default {
         outOfProvinceCertification: this.outOfProvinceCertification,
       };
     },
-
+    selfAssessmentOutcome(): Components.Schemas.CertificationType[] {
+      if (this.highestCertificationType === CertificationType.Assistant) {
+        return ["EceAssistant"];
+      }
+      if (
+        this.highestCertificationType === CertificationType.OneYear ||
+        (this.highestCertificationType === CertificationType.FiveYearCertificate && this.has500HoursWorkExperience === "false") ||
+        (this.highestCertificationType === CertificationType.FiveYearCertificateITE_SNE && this.has500HoursWorkExperience === "false")
+      ) {
+        return ["OneYear"];
+      }
+      if (this.highestCertificationType === CertificationType.FiveYearCertificate && this.has500HoursWorkExperience === "true") {
+        return ["FiveYears"];
+      }
+      if (this.highestCertificationType === CertificationType.FiveYearCertificateITE_SNE && this.has500HoursWorkExperience === "true") {
+        return ["FiveYears", "Ite", "Sne"];
+      }
+      return [];
+    },
     showRequirementsButton() {
       return this.highestCertificationType === CertificationType.Assistant || this.has500HoursWorkExperience;
     },

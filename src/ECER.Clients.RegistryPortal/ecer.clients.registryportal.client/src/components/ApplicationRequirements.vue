@@ -125,7 +125,7 @@ export default defineComponent({
         {
           title: "Check your transfer eligibility",
           disabled: false,
-          href: "/application/transfer-eligibility", // TODO adjust when merging self assessment work
+          href: "/application/transfer",
         },
         {
           title: "Requirements",
@@ -161,8 +161,12 @@ export default defineComponent({
   },
   computed: {
     isPostBasic() {
-      // TODO Required from LM self assessment
-      return true;
+      console.log(
+        "certification types",
+        this.applicationStore.draftApplication.certificationTypes?.some((type) => type === "Ite" || type === "Sne"),
+      );
+
+      return this.applicationStore.draftApplication.certificationTypes?.some((type) => type === "Ite" || type === "Sne");
     },
   },
   methods: {
