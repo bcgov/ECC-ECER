@@ -31,7 +31,7 @@ const applicationWizard: Wizard = {
       stage: "Review",
       title: "Review and submit",
       form: previewFormAssistantAndOneYearLaborMobility,
-      key: "item.5",
+      key: "item.4",
     },
   },
 };

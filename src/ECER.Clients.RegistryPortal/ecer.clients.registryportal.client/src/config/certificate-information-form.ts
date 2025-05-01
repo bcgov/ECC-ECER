@@ -5,8 +5,8 @@ const certificateInformationForm: Form = {
   id: "certificateInformationForm",
   title: "Certificate information",
   inputs: {
-    educationList: {
-      id: "educationList",
+    certificateInformation: {
+      id: "certificateInformation",
       component: EceCertificateInformation,
       cols: {
         md: 12,
