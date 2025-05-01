@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h1 v-if="!isRenewal">{{ `Application for ${certificationType} certification` }}</h1>
-    <h1 v-else>{{ `Application to renew ${certificationType} certification` }}</h1>
+    <h1 v-if="isLaborMobility">{{ `Transfer certification to ${certificationType}` }}</h1>
+    <h1 v-else-if="isRenewal">{{ `Application to renew ${certificationType} certification` }}</h1>
+    <h1 v-else>{{ `Application for ${certificationType} certification` }}</h1>
     <div v-if="certificationTypes.includes(CertificationType.FIVE_YEAR)" role="doc-subtitle">
       {{ certificationTypeSubtitleForFiveYear }}
     </div>
@@ -25,6 +26,10 @@ export default defineComponent({
       default: () => [],
     },
     isRenewal: {
+      type: Boolean,
+      default: false,
+    },
+    isLaborMobility: {
       type: Boolean,
       default: false,
     },

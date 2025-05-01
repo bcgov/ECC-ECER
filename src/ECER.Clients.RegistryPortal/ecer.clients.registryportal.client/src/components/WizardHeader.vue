@@ -4,8 +4,12 @@
       <v-row>
         <v-col :class="[mobile ? 'flex-column-reverse' : 'justify-space-between', 'd-flex']">
           <div>
-            <ApplicationCertificationTypeHeader :is-renewal="isRenewal" :certification-types="applicationStore.draftApplication.certificationTypes ?? []" />
-            <a v-if="!isRenewal && !isRegistrant" href="#" class="text-white" @click.prevent="toggleChangeCertificationConfirmation">
+            <ApplicationCertificationTypeHeader
+              :is-renewal="isRenewal"
+              :is-labor-mobility="isLaborMobility"
+              :certification-types="applicationStore.draftApplication.certificationTypes ?? []"
+            />
+            <a v-if="!isRenewal && !isRegistrant && !isLaborMobility" href="#" class="text-white" @click.prevent="toggleChangeCertificationConfirmation">
               Change certification type
             </a>
           </div>
@@ -73,6 +77,10 @@ export default defineComponent({
       required: true,
     },
     isRenewal: {
+      type: Boolean,
+      default: false,
+    },
+    isLaborMobility: {
       type: Boolean,
       default: false,
     },
