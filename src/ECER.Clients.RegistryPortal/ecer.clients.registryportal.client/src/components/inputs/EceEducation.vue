@@ -105,7 +105,7 @@
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <EceTextField v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="200"></EceTextField>
+            <EceTextField v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="100"></EceTextField>
           </v-col>
         </v-row>
 
