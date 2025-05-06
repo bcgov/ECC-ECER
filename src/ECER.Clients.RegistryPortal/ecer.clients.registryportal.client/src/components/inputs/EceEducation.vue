@@ -80,6 +80,7 @@
               item-title="name"
               item-value="id"
               v-model="postSecondaryInstitution"
+              @update:modelValue="onPostSecondaryInstitutionChange"
               :rules="[
                 Rules.required('Select an educational institution', 'id'),
                 Rules.conditionalWrapper(
@@ -241,6 +242,7 @@
             value="OfficialTranscriptRequested"
           ></v-radio>
           <v-radio
+            v-if="!(recognizedPostSecondaryInstitution === 'Recognized' && province?.provinceId === configStore.britishColumbia?.provinceId)"
             label="My transcript needs English translation. I will ask my educational institution to send my transcript to me to be professionally translated."
             value="TranscriptWillRequireEnglishTranslation"
           ></v-radio>
@@ -651,11 +653,16 @@ export default defineComponent({
     onProvinceChange() {
       this.postSecondaryInstitution = undefined;
       this.school = "";
+      this.transcriptStatusOption = undefined;
     },
     onCountryChange() {
       this.province = undefined;
       this.postSecondaryInstitution = undefined;
       this.school = "";
+      this.transcriptStatusOption = undefined;
+    },
+    onPostSecondaryInstitutionChange() {
+      this.transcriptStatusOption = undefined;
     },
     handleCancel() {
       // Change mode to education list
