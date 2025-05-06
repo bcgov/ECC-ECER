@@ -101,6 +101,15 @@ declare namespace Components {
       endDate?: string; // date-time
       displayOrder?: number; // int32
     }
+    export interface CertificateInformation {
+      certificateComparisonId?: string | null;
+      labourMobilityProvince?: Province;
+      currentCertificationNumber?: string | null;
+      existingCertificationType?: string | null;
+      legalFirstName?: string | null;
+      legalMiddleName?: string | null;
+      legalLastName?: string | null;
+    }
     export type CertificatePDFGeneration = "No" | "Requested" | "Yes";
     export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
     export interface Certification {
@@ -283,6 +292,7 @@ declare namespace Components {
       renewalExplanationOther?: string | null;
       createdOn?: string | null; // date-time
       origin?: ApplicationOrigin;
+      labourMobilityCertificateInformation?: CertificateInformation;
     }
     /**
      * Save draft application response
@@ -1836,6 +1846,7 @@ export type ApplicationSubmissionRequest = Components.Schemas.ApplicationSubmiss
 export type ApplicationTypes = Components.Schemas.ApplicationTypes;
 export type CancelDraftApplicationResponse = Components.Schemas.CancelDraftApplicationResponse;
 export type CertificateCondition = Components.Schemas.CertificateCondition;
+export type CertificateInformation = Components.Schemas.CertificateInformation;
 export type CertificatePDFGeneration = Components.Schemas.CertificatePDFGeneration;
 export type CertificateStatusCode = Components.Schemas.CertificateStatusCode;
 export type Certification = Components.Schemas.Certification;
