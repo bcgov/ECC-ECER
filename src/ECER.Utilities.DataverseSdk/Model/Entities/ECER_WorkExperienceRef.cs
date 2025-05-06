@@ -151,7 +151,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ReferenceECECertifiedProvince = "ecer_referenceececertifiedprovince";
 			public const string ecer_ReferenceECECertifiedProvinceId = "ecer_referenceececertifiedprovinceid";
 			public const string ecer_ReferenceECECertifiedProvinceIdName = "ecer_referenceececertifiedprovinceidname";
+			public const string ecer_referenceemailaddress = "ecer_referenceemailaddress";
+			public const string ecer_referencefirstname = "ecer_referencefirstname";
 			public const string ecer_ReferenceFullName = "ecer_referencefullname";
+			public const string ecer_referencelastname = "ecer_referencelastname";
+			public const string ecer_ReferencePhoneNumber = "ecer_referencephonenumber";
 			public const string ecer_ReferenceSignature = "ecer_referencesignature";
 			public const string ecer_RelationshiptoApplicant = "ecer_relationshiptoapplicant";
 			public const string ecer_relationshiptoapplicantName = "ecer_relationshiptoapplicantname";
@@ -1446,6 +1450,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referenceemailaddress")]
+		public string ecer_referenceemailaddress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_referenceemailaddress");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referenceemailaddress", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencefirstname")]
+		public string ecer_referencefirstname
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_referencefirstname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referencefirstname", value);
+			}
+		}
+		
 		/// <summary>
 		/// Reference Name for Email recipient.  Last Name unless First Name exist
 		/// </summary>
@@ -1461,6 +1495,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_referencefullname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencelastname")]
+		public string ecer_referencelastname
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_referencelastname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referencelastname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencephonenumber")]
+		public string ecer_ReferencePhoneNumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_referencephonenumber");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referencephonenumber", value);
 			}
 		}
 		

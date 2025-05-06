@@ -101,6 +101,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PostalCode = "ecer_postalcode";
 			public const string ecer_PrimaryPhoneNumber = "ecer_primaryphonenumber";
 			public const string ecer_Province = "ecer_province";
+			public const string ecer_referenceemailaddress = "ecer_referenceemailaddress";
+			public const string ecer_referencefirstname = "ecer_referencefirstname";
+			public const string ecer_referencelastname = "ecer_referencelastname";
+			public const string ecer_referencephonenumber = "ecer_referencephonenumber";
 			public const string ecer_RelationshiptoApplicant = "ecer_relationshiptoapplicant";
 			public const string ecer_relationshiptoapplicantName = "ecer_relationshiptoapplicantname";
 			public const string ecer_Street1 = "ecer_street1";
@@ -643,6 +647,66 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_province", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referenceemailaddress")]
+		public string ecer_referenceemailaddress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_referenceemailaddress");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referenceemailaddress", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencefirstname")]
+		public string ecer_referencefirstname
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_referencefirstname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referencefirstname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencelastname")]
+		public string ecer_referencelastname
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_referencelastname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referencelastname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencephonenumber")]
+		public string ecer_referencephonenumber
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_referencephonenumber");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referencephonenumber", value);
 			}
 		}
 		
