@@ -361,6 +361,8 @@ public record DraftApplication
   public string? RenewalExplanationOther { get; set; }
   public DateTime? CreatedOn { get; set; }
   public ApplicationOrigin? Origin { get; set; }
+  public CertificateInformation? LabourMobilityCertificateInformation { get; set; }
+
 }
 
 public record Application
@@ -665,4 +667,19 @@ public enum TranscriptStatusOptions
   RegistryHasTranscript,
   OfficialTranscriptRequested,
   TranscriptWillRequireEnglishTranslation
+}
+public record CertificateComparison(string id)
+{
+  public Province? LabourMobilityProvince { get; set; } 
+  public string? ExistingCertificationType { get; set; } = string.Empty;
+  public string? EligibleBCTransferApplication { get; set; } = string.Empty;
+}
+public record CertificateInformation
+{
+  public CertificateComparison? CertificateComparison { get; set; }
+  public string? LegalFirstName { get; set; } = string.Empty;
+  public string? LegalMiddleName { get; set; } = string.Empty;
+  public string? LegalLastName { get; set; } = string.Empty;
+  public string? CurrentCertificationNumber { get; set; } = string.Empty;
+
 }
