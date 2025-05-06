@@ -668,18 +668,14 @@ public enum TranscriptStatusOptions
   OfficialTranscriptRequested,
   TranscriptWillRequireEnglishTranslation
 }
-public record CertificateComparison(string id)
-{
-  public Province? LabourMobilityProvince { get; set; } 
-  public string? ExistingCertificationType { get; set; } = string.Empty;
-  public string? EligibleBCTransferApplication { get; set; } = string.Empty;
-}
+
 public record CertificateInformation
 {
-  public CertificateComparison? CertificateComparison { get; set; }
+  public string? CertificateComparisonId { get; set; }
+  public Province? LabourMobilityProvince { get; set; }
+  public string? CurrentCertificationNumber { get; set; } = string.Empty;
+  public string? ExistingCertificationType { get; set; } = string.Empty;
   public string? LegalFirstName { get; set; } = string.Empty;
   public string? LegalMiddleName { get; set; } = string.Empty;
   public string? LegalLastName { get; set; } = string.Empty;
-  public string? CurrentCertificationNumber { get; set; } = string.Empty;
-
 }
