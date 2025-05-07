@@ -4,7 +4,9 @@
       <!-- Header Section -->
       <v-col cols="12">
         <h1>Create your My ECE Registry account</h1>
-        <p v-if="oidcIdentityProvider === 'bcsc'" class="mt-2">Welcome {{ oidcUserInfo.firstName!.replace(/^(.*?)(\s.*)?$/, "$1") }}.</p>
+        <p v-if="oidcIdentityProvider === 'bcsc'" class="mt-2">
+          Welcome {{ cleanPreferredName(oidcUserInfo.firstName!.replace(/^(.*?)(\s.*)?$/, "$1"), oidcUserInfo.lastName) }}.
+        </p>
         <p v-if="oidcIdentityProvider === 'bceidbasic'" class="mt-2">
           After you enter your information below, you will need to provide government-issued ID so we can verify your identity.
         </p>
@@ -176,7 +178,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import type { VForm } from "vuetify/components";
-
+import { cleanPreferredName } from "@/utils/functions";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import { getUserInfo, postUserInfo } from "@/api/user";
@@ -219,6 +221,7 @@ export default defineComponent({
 
     return {
       userStore,
+      cleanPreferredName,
       oidcStore,
       phoneNumber,
       email,
