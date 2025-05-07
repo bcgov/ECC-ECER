@@ -45,7 +45,7 @@
             <v-menu offset-y bottom transition="slide-y-transition">
               <template #activator="{ props }">
                 <v-btn class="font-weight-regular" color="primary" v-bind="props" prepend-icon="mdi-account-circle" append-icon="mdi-chevron-down">
-                  {{ userStore.preferredName ? userStore.preferredName : userStore.firstName }}
+                  {{ userStore.preferredName ? userStore.preferredName : cleanPreferredName(userStore.firstName, userStore.lastName, "first") }}
                 </v-btn>
               </template>
               <v-list>
@@ -70,7 +70,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import { cleanPreferredName } from "@/utils/functions";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
@@ -81,7 +81,7 @@ export default defineComponent({
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
     const router = useRouter();
-    return { userStore, oidcStore, router };
+    return { userStore, oidcStore, router, cleanPreferredName };
   },
 });
 </script>

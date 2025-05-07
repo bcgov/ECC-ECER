@@ -7,7 +7,9 @@
           <v-row>
             <v-col>
               <h1>{{ inviteTypeTitle }}</h1>
-              <div role="doc-subtitle">{{ `For applicant: ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</div>
+              <div role="doc-subtitle">
+                {{ `For applicant: ${cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName)}` }}
+              </div>
             </v-col>
           </v-row>
         </v-container>
@@ -75,7 +77,7 @@ import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import type { Wizard as WizardType } from "@/types/wizard";
 import { PortalInviteType, WorkExperienceType } from "@/utils/constant";
-
+import { cleanPreferredName } from "@/utils/functions";
 import Wizard from "../Wizard.vue";
 import Loading from "../Loading.vue";
 
@@ -123,6 +125,7 @@ export default defineComponent({
       wizardConfigSetup,
       router,
       route,
+      cleanPreferredName,
       fetchingData,
     };
   },
