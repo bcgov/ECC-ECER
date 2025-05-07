@@ -27,7 +27,7 @@
 import type { PropType } from "vue";
 import { defineComponent } from "vue";
 import { useDisplay } from "vuetify";
-
+import { cleanPreferredName } from "@/utils/functions";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
@@ -94,7 +94,7 @@ export default defineComponent({
       return this.link ? "hawkes-blue" : "white-smoke";
     },
     referenceFullName(): string {
-      return `${this.reference.firstName} ${this.reference.lastName}`;
+      return cleanPreferredName(this.reference.firstName, this.reference.lastName);
     },
   },
   methods: {

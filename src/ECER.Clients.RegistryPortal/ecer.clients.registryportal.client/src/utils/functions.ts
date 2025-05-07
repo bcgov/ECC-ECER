@@ -1,3 +1,15 @@
+export function cleanPreferredName(firstName: string | null | undefined, lastName: string | null | undefined, mode = "full") {
+  const clean = (str: any) => (str ?? "").trim(); // null/undefined → '' and trim
+
+  const fn = clean(firstName);
+  const ln = clean(lastName);
+
+  if (mode === "full") {
+    return `${fn} ${ln}`.trim();
+  }
+  return fn || ln;
+}
+
 export function areObjectsEqual(obj1: any, obj2: any): boolean {
   if (obj1 === obj2) {
     return true;

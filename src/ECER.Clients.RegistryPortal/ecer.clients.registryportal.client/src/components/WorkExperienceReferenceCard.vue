@@ -38,7 +38,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useLoadingStore } from "@/store/loading";
-
+import { cleanPreferredName } from "@/utils/functions";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
@@ -64,7 +64,7 @@ export default defineComponent({
       return `${this.reference.hours} hours`;
     },
     referenceFullName() {
-      return `${this.reference.firstName} ${this.reference.lastName}`;
+      return cleanPreferredName(this.reference.firstName, this.reference.lastName);
     },
   },
   methods: {
