@@ -26,7 +26,7 @@ import { useDisplay } from "vuetify";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
-  name: "ApplicationSummaryTranscriptReferenceListItem",
+  name: "ApplicationSummaryCharacterReferenceListItem",
   props: {
     status: {
       type: String as PropType<Components.Schemas.CharacterReferenceStage | undefined>,
