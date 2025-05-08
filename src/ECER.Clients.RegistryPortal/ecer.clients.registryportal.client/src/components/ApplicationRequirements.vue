@@ -184,9 +184,15 @@ export default defineComponent({
         }
       } else if (this.applicationStore.isDraftApplicationLaborMobility) {
         if (this.specializationSelection.length > 0) {
-          this.applicationStore.$patch({ draftApplication: { certificationTypes: this.specializationSelection } });
-          this.router.push({ name: "declaration" });
+          this.applicationStore.$patch({
+            draftApplication: { certificationTypes: ["FiveYears", ...this.specializationSelection] },
+          });
+        } else {
+          this.applicationStore.$patch({
+            draftApplication: { certificationTypes: ["FiveYears"] },
+          });
         }
+        this.router.push({ name: "declaration" });
       } else {
         const currentTypes = this.applicationStore.draftApplication.certificationTypes || [];
         const updatedTypes = [...currentTypes, ...this.specializationSelection];

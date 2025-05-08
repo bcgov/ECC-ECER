@@ -11,7 +11,7 @@
       <v-row no-gutters>
         <v-col>
           <p>
-            <b>{{ `${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}` }}</b>
+            <b>{{ `${cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName)}` }}</b>
             is requesting a work experience reference for
             {{ certificationType }}. We'll review your reference when assessing if the applicant is eligible for certification.
           </p>
@@ -89,7 +89,7 @@ import { useWizardStore } from "@/store/wizard";
 import { CertificationType, WorkExperienceType } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
 import Banner from "../../Banner.vue";
-
+import { cleanPreferredName } from "@/utils/functions";
 export default defineComponent({
   name: "EceReferenceIntroduction",
   components: { Banner },
@@ -104,6 +104,7 @@ export default defineComponent({
   data() {
     return {
       selection: undefined,
+      cleanPreferredName,
       Rules,
     };
   },

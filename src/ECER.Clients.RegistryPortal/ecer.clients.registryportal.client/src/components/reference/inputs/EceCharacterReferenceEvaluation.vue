@@ -4,7 +4,7 @@
       <h2>Reference evaluation</h2>
       <div role="doc-subtitle">
         {{
-          `Tell us about your personal experience with the applicant ${wizardStore.wizardData.applicantFirstName} ${wizardStore.wizardData.applicantLastName}.`
+          `Tell us about your personal experience with the applicant ${cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName)}.`
         }}
       </div>
       <v-row class="mt-5">
@@ -114,7 +114,7 @@ import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import { lengthOfAcquaintanceDropdown, referenceRelationshipDropdown } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
-
+import { cleanPreferredName } from "@/utils/functions";
 export default defineComponent({
   name: "EceCharacterReferenceEvaluation",
   components: { EceTextField },
@@ -135,6 +135,7 @@ export default defineComponent({
   data() {
     return {
       Rules,
+      cleanPreferredName,
       applicantShouldNotBeECE: undefined,
     };
   },
