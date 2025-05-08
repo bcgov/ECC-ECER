@@ -35,6 +35,7 @@ declare namespace Components {
       fiveYearRenewalExplanationChoice?: FiveYearRenewalExplanations;
       renewalExplanationOther?: string | null;
       origin?: ApplicationOrigin;
+      labourMobilityCertificateInformation?: CertificateInformation;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -109,6 +110,7 @@ declare namespace Components {
       legalFirstName?: string | null;
       legalMiddleName?: string | null;
       legalLastName?: string | null;
+      hasOtherName?: boolean | null;
     }
     export type CertificatePDFGeneration = "No" | "Requested" | "Yes";
     export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
