@@ -9,7 +9,7 @@
         <template v-if="userStore.hasUserInfo">
           <v-menu v-if="$vuetify.display.smAndDown" offset-y bottom transition="slide-y-transition">
             <template #activator="{ props }">
-              <v-btn icon v-bind="props">
+              <v-btn id="btnToggleMenu" icon v-bind="props">
                 <v-icon>mdi-menu</v-icon>
               </v-btn>
             </template>
@@ -44,7 +44,14 @@
             <v-btn class="font-weight-regular" color="primary" prepend-icon="mdi-bell" @click="router.push('/messages')">Messages</v-btn>
             <v-menu offset-y bottom transition="slide-y-transition">
               <template #activator="{ props }">
-                <v-btn class="font-weight-regular" color="primary" v-bind="props" prepend-icon="mdi-account-circle" append-icon="mdi-chevron-down">
+                <v-btn
+                  id="btnUserName"
+                  class="font-weight-regular"
+                  color="primary"
+                  v-bind="props"
+                  prepend-icon="mdi-account-circle"
+                  append-icon="mdi-chevron-down"
+                >
                   {{ userStore.preferredName ? userStore.preferredName : userStore.firstName }}
                 </v-btn>
               </template>
@@ -56,7 +63,7 @@
                 </v-list-item>
                 <v-list-item link>
                   <v-list-item-title>
-                    <p class="small text-decoration-underline text-links" @click="oidcStore.logout">Log out</p>
+                    <p id="lnkLogOut" class="small text-decoration-underline text-links" @click="oidcStore.logout">Log out</p>
                   </v-list-item-title>
                 </v-list-item>
               </v-list>
