@@ -385,6 +385,8 @@ public record Application
   public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
   public string? RenewalExplanationOther { get; set; }
   public ApplicationOrigin? Origin { get; set; }
+  public CertificateInformation? LabourMobilityCertificateInformation { get; set; }
+
 }
 public record ProfessionalDevelopment([Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] double NumberOfHours)
 {
@@ -678,4 +680,5 @@ public record CertificateInformation
   public string? LegalFirstName { get; set; } = string.Empty;
   public string? LegalMiddleName { get; set; } = string.Empty;
   public string? LegalLastName { get; set; } = string.Empty;
+  public bool? HasOtherName { get; set; }
 }

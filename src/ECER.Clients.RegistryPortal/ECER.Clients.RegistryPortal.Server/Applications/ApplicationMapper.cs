@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Diagnostics.Contracts;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
@@ -103,7 +104,7 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.SignedDate))
       .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.CharacterReferences))
       ;
-
+    CreateMap<Managers.Registry.Contract.Applications.CertificateInformation, CertificateInformation>().ReverseMap();
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>();
     CreateMap<Managers.Registry.Contract.Applications.FileInfo, FileInfo>().ReverseMap();
 

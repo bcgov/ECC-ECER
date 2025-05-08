@@ -51,6 +51,8 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     var results = context.From(applications)
       .Join()
       .Include(a => a.ecer_workexperienceref_Applicationid_ecer)
+      .Include(a => a.ecer_application_lmprovinceid)
+      .Include(a => a.ecer_application_certificationcomparisonid)
       .Include(a => a.ecer_characterreference_Applicationid)
       .Include(a => a.ecer_ecer_professionaldevelopment_Applicationi)
       .IncludeNested(a => a.ecer_bcgov_documenturl_ProfessionalDevelopmentId)
