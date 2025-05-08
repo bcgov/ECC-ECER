@@ -246,6 +246,7 @@ export const useApplicationStore = defineStore("application", {
       // Get the IDs of the form inputs up front, if they are defined in the wizard config. If the ID is not defined, subsequent checks will
       // be skipped. Thus, the ID must be defined in the wizard config for the data to be set in the draft application object.
       const educationListId = wizardStore.wizardConfig?.steps?.education?.form?.inputs?.educationList?.id;
+      const certificateInformationId = wizardStore.wizardConfig?.steps?.certificateInformation?.form?.inputs?.certificateInformation?.id;
       const characterReferencesId = wizardStore.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id;
       const workExperienceReferenceListId = wizardStore.wizardConfig?.steps?.workReference?.form?.inputs?.referenceList?.id;
       const professionalDevelopmentsId = wizardStore.wizardConfig?.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id;
@@ -256,6 +257,9 @@ export const useApplicationStore = defineStore("application", {
 
       // Set wizard stage to the current step stage
       this.draftApplication.stage = wizardStore.currentStepStage as ApplicationStage;
+
+      // Certificate Information step data
+      this.draftApplication.labourMobilityCertificateInformation = certificateInformationId ? wizardStore.wizardData[certificateInformationId] : undefined;
 
       // Education step data
       this.draftApplication.transcripts = educationListId ? Object.values(wizardStore.wizardData[educationListId]) : [];
