@@ -258,6 +258,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_LegalFirstName = "ecer_legalfirstname";
 			public const string ecer_LegalLastName = "ecer_legallastname";
 			public const string ecer_LegalMiddleName = "ecer_legalmiddlename";
+			public const string ecer_lmcerthasothername = "ecer_lmcerthasothername";
+			public const string ecer_lmcerthasothernameName = "ecer_lmcerthasothernamename";
 			public const string ecer_lmprovinceid = "ecer_lmprovinceid";
 			public const string ecer_lmprovinceidName = "ecer_lmprovinceidname";
 			public const string ecer_Name = "ecer_name";
@@ -2675,6 +2677,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legalmiddlename", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lmcerthasothername")]
+		public System.Nullable<bool> ecer_lmcerthasothername
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_lmcerthasothername");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_lmcerthasothername", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lmcerthasothernamename")]
+		public string ecer_lmcerthasothernameName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_lmcerthasothername"))
+				{
+					return this.FormattedValues["ecer_lmcerthasothername"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
