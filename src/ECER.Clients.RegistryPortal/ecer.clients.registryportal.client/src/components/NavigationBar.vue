@@ -44,7 +44,14 @@
             <v-btn class="font-weight-regular" color="primary" prepend-icon="mdi-bell" @click="router.push('/messages')">Messages</v-btn>
             <v-menu offset-y bottom transition="slide-y-transition">
               <template #activator="{ props }">
-                <v-btn class="font-weight-regular" color="primary" v-bind="props" prepend-icon="mdi-account-circle" append-icon="mdi-chevron-down">
+                <v-btn
+                  id="btnUserName"
+                  class="font-weight-regular"
+                  color="primary"
+                  v-bind="props"
+                  prepend-icon="mdi-account-circle"
+                  append-icon="mdi-chevron-down"
+                >
                   {{ userStore.preferredName ? userStore.preferredName : cleanPreferredName(userStore.firstName, userStore.lastName, "first") }}
                 </v-btn>
               </template>
