@@ -1,5 +1,5 @@
 import selectors from "../../../support/selectors";
-const day = new Date().getDate();
+import { courseStartDay, courseEndDay } from "../../../support/utils";
 
 describe("New ECE One Year Certificate Application", () => {
   it("should create a sucessfull ECE One Year Application", () => {
@@ -24,36 +24,17 @@ describe("New ECE One Year Certificate Application", () => {
     cy.get(selectors.education.addEducationButton).click();
 
     cy.get(selectors.education.transcriptStatusRadioDiv).within(() => {
-      cy.get(selectors.elementType.radio).first().check();
+      cy.get(selectors.elementType.radio).first().check({ force: true });
     });
-    cy.get(selectors.education.programNameInput).type("TEST ECE One Year Course");
+    cy.get(selectors.education.programNameInput).type("TEST ECE One Year Course", { force: true });
 
     /* Start Date - DatePicker*/
-
     cy.get(selectors.education.programStartDateInput).click({ force: true });
-    Cypress._.times(7, () => {
-      cy.get(selectors.datePicker.prevMonthButton).first().click();
-    });
-    cy.get(selectors.datePicker.monthDiv)
-      .first()
-      .should("exist")
-      .within(() => {
-        cy.contains("span", `${day}`).click({ force: true });
-      });
-    cy.get("button").contains("OK").click({ force: true });
+    cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`, { force: true });
 
     /* End Date - DatePicker*/
     cy.get(selectors.education.programEndDateInput).click({ force: true });
-    Cypress._.times(1, () => {
-      cy.get(selectors.datePicker.prevMonthButton).first().click();
-    });
-    cy.get(selectors.datePicker.monthDiv)
-      .first()
-      .should("exist")
-      .within(() => {
-        cy.contains("span", `${day}`).click({ force: true });
-      });
-    cy.get("button").contains("OK").click({ force: true });
+    cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`, { force: true });
 
     cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia", { force: true });
 
@@ -63,7 +44,7 @@ describe("New ECE One Year Certificate Application", () => {
     cy.get(selectors.education.institutionNameInput).type("TEST Educational Institution", { force: true });
     cy.get(selectors.education.studentIDInput).type("1234", { force: true });
     cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {
-      cy.get(selectors.elementType.radio).first().check();
+      cy.get(selectors.elementType.radio).first().check({ force: true });
     });
     cy.get(selectors.education.saveEducationButton).click();
 

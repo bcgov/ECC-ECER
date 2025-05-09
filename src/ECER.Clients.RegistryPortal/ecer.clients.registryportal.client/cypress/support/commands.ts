@@ -1,5 +1,6 @@
+import selectors from "../support/selectors";
 // Custom command to reset state (clear cookies, local storage, and session storage)
-Cypress.Commands.add("resetState", () => {
+Cypress.Commands.add("resetBrowserState", () => {
   cy.clearCookies();
   cy.clearLocalStorage();
   // Clear session storage if your app uses it
@@ -33,6 +34,20 @@ Cypress.Commands.add("login", (username?: string, password?: string) => {
   cy.url().should("not.include", "/login");
   cy.document().its("readyState").should("eq", "complete");
   cy.contains("Your ECE certifications").should("be.visible");
+});
+
+// Custom command to log out of the ECER portal.
+Cypress.Commands.add("logout", () => {
+  cy.get("body").then(($body: JQuery<HTMLElement>) => {
+    // 1) check for username button
+    const $userBtn = $body.find(selectors.navigationBar.userNameButton);
+    if ($userBtn.length > 0 && $userBtn.is(":visible")) {
+      cy.wrap($userBtn).click();
+    }
+  });
+
+  // 2) click logout link
+  return cy.get(selectors.navigationBar.logOutLink).click();
 });
 
 Cypress.Commands.add("resetUserState", () => {

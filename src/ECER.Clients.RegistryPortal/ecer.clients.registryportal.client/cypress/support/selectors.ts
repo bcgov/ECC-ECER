@@ -2,6 +2,11 @@ export default {
   dashboard: {
     applyNowButton: 'button[id="btnApplyNow"]',
   },
+  navigationBar: {
+    logOutLink: 'p[id="lnkLogOut"]',
+    userNameButton: 'button[id="btnUserName"]',
+    toggleMenuButton: 'button[id="btnToggleMenu"]',
+  },
   certificationType: {
     eceAssistantRadio: 'input[value="EceAssistant"]',
     eceFiveYearRadio: 'input[value="FiveYears"]',
