@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Province
+	/// Status of the Immediate Actions
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_province_statecode
+	public enum ecer_immediateactions_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Province
+	/// Reason for the status of the Immediate Actions
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_Province_StatusCode
+	public enum ecer_ImmediateActions_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -43,13 +43,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_province")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_immediateactions")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_Province : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_ImmediateActions : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_province entity
+		/// Available fields, a the time of codegen, for the ecer_immediateactions entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,22 +60,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_Abbreviation = "ecer_abbreviation";
-			public const string ecer_application_lmprovinceid = "ecer_application_lmprovinceid";
-			public const string ecer_characterreference_RefCertifiedProvinceId = "ecer_characterreference_RefCertifiedProvinceId";
-			public const string ecer_city_ProvinceId = "ecer_city_ProvinceId";
-			public const string ecer_CountryId = "ecer_countryid";
-			public const string ecer_CountryIdName = "ecer_countryidname";
-			public const string ecer_DisplayOrder = "ecer_displayorder";
-			public const string ecer_ID = "ecer_id";
+			public const string ecer_appealperiodendDate = "ecer_appealperiodenddate";
+			public const string ecer_appealrequest = "ecer_appealrequest";
+			public const string ecer_appealrequestName = "ecer_appealrequestname";
+			public const string ecer_ImmediateActionReason = "ecer_immediateactionreason";
+			public const string ecer_immediateactions_Investigation = "ecer_immediateactions_Investigation";
+			public const string ecer_ImmediateActionsId = "ecer_immediateactionsid";
+			public const string Id = "ecer_immediateactionsid";
+			public const string ecer_ImmediateActionType = "ecer_immediateactiontype";
+			public const string ecer_immediateactiontypeName = "ecer_immediateactiontypename";
+			public const string ecer_Investigation = "ecer_investigation";
+			public const string ecer_InvestigationName = "ecer_investigationname";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_outofprovincecertificationtype_Province_ecer_province = "ecer_outofprovincecertificationtype_Province_ecer_province";
-			public const string ecer_postsecondaryinstitute_ProvinceId = "ecer_postsecondaryinstitute_ProvinceId";
-			public const string ecer_province_CountryId = "ecer_province_CountryId";
-			public const string ecer_ProvinceId = "ecer_provinceid";
-			public const string Id = "ecer_provinceid";
-			public const string ecer_transcript_ProvinceId = "ecer_transcript_ProvinceId";
-			public const string ecer_workexperienceref_RefCertifiedProvinceId = "ecer_workexperienceref_RefCertifiedProvinceId";
+			public const string ecer_reconsiderationperiodenddate = "ecer_reconsiderationperiodenddate";
+			public const string ecer_ReconsiderationRequest = "ecer_reconsiderationrequest";
+			public const string ecer_reconsiderationrequestName = "ecer_reconsiderationrequestname";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -102,19 +101,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Province(System.Guid id) : 
+		public ecer_ImmediateActions(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Province(string keyName, object keyValue) : 
+		public ecer_ImmediateActions(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Province(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_ImmediateActions(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -123,22 +122,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Province() : 
+		public ecer_ImmediateActions() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_provinceid";
+		public const string PrimaryIdAttribute = "ecer_immediateactionsid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_Province";
+		public const string EntitySchemaName = "ecer_ImmediateActions";
 		
-		public const string EntityLogicalName = "ecer_province";
+		public const string EntityLogicalName = "ecer_immediateactions";
 		
-		public const string EntityLogicalCollectionName = "ecer_provinces";
+		public const string EntityLogicalCollectionName = "ecer_immediateactionses";
 		
-		public const string EntitySetName = "ecer_provinces";
+		public const string EntitySetName = "ecer_immediateactionses";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -252,45 +251,45 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_abbreviation")]
-		public string ecer_Abbreviation
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appealperiodenddate")]
+		public System.Nullable<System.DateTime> ecer_appealperiodendDate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_abbreviation");
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_appealperiodenddate");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_abbreviation", value);
+				this.SetAttributeValue("ecer_appealperiodenddate", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_countryid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_CountryId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appealrequest")]
+		public System.Nullable<bool> ecer_appealrequest
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_countryid");
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_appealrequest");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_countryid", value);
+				this.SetAttributeValue("ecer_appealrequest", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_countryidname")]
-		public string ecer_CountryIdName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_appealrequestname")]
+		public string ecer_appealrequestName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_countryid"))
+				if (this.FormattedValues.Contains("ecer_appealrequest"))
 				{
-					return this.FormattedValues["ecer_countryid"];
+					return this.FormattedValues["ecer_appealrequest"];
 				}
 				else
 				{
@@ -299,36 +298,123 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_displayorder")]
-		public string ecer_DisplayOrder
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionreason")]
+		public string ecer_ImmediateActionReason
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_displayorder");
+				return this.GetAttributeValue<string>("ecer_immediateactionreason");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_displayorder", value);
+				this.SetAttributeValue("ecer_immediateactionreason", value);
 			}
 		}
 		
 		/// <summary>
-		/// Legacy ID from Oracle Database
+		/// Unique identifier for entity instances
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_id")]
-		public string ecer_ID
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionsid")]
+		public System.Nullable<System.Guid> ecer_ImmediateActionsId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_id");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_immediateactionsid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_id", value);
+				this.SetAttributeValue("ecer_immediateactionsid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactionsid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.ecer_ImmediateActionsId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactiontype")]
+		public virtual ecer_immediateaction? ecer_ImmediateActionType
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_immediateaction?)(EntityOptionSetEnum.GetEnum(this, "ecer_immediateactiontype")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_immediateactiontype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_immediateactiontypename")]
+		public string ecer_immediateactiontypeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_immediateactiontype"))
+				{
+					return this.FormattedValues["ecer_immediateactiontype"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Investigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_investigation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationname")]
+		public string ecer_InvestigationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_investigation"))
+				{
+					return this.FormattedValues["ecer_investigation"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -347,44 +433,50 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_provinceid")]
-		public System.Nullable<System.Guid> ecer_ProvinceId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationperiodenddate")]
+		public System.Nullable<System.DateTime> ecer_reconsiderationperiodenddate
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_provinceid");
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_reconsiderationperiodenddate");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_provinceid", value);
-				if (value.HasValue)
-				{
-					base.Id = value.Value;
-				}
-				else
-				{
-					base.Id = System.Guid.Empty;
-				}
+				this.SetAttributeValue("ecer_reconsiderationperiodenddate", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_provinceid")]
-		public override System.Guid Id
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequest")]
+		public System.Nullable<bool> ecer_ReconsiderationRequest
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return base.Id;
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_reconsiderationrequest");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_ProvinceId = value;
+				this.SetAttributeValue("ecer_reconsiderationrequest", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequestname")]
+		public string ecer_reconsiderationrequestName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_reconsiderationrequest"))
+				{
+					return this.FormattedValues["ecer_reconsiderationrequest"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -651,15 +743,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Province
+		/// Status of the Immediate Actions
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_province_statecode? StateCode
+		public virtual ecer_immediateactions_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_province_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_immediateactions_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -686,15 +778,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Province
+		/// Reason for the status of the Immediate Actions
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_Province_StatusCode? StatusCode
+		public virtual ecer_ImmediateActions_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_Province_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_ImmediateActions_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -770,147 +862,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_application_lmprovinceid
+		/// N:1 ecer_immediateactions_Investigation
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_lmprovinceid")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Application> ecer_application_lmprovinceid
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_immediateactions_Investigation")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Investigation ecer_immediateactions_Investigation
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_lmprovinceid", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_immediateactions_Investigation", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_lmprovinceid", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_characterreference_RefCertifiedProvinceId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_characterreference_RefCertifiedProvinceId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference> ecer_characterreference_RefCertifiedProvinceId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_characterreference_RefCertifiedProvinceId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_characterreference_RefCertifiedProvinceId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_city_ProvinceId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_city_ProvinceId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_City> ecer_city_ProvinceId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_City>("ecer_city_ProvinceId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_City>("ecer_city_ProvinceId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_outofprovincecertificationtype_Province_ecer_province
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_outofprovincecertificationtype_Province_ecer_province")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_outofprovincecertificationtype> ecer_outofprovincecertificationtype_Province_ecer_province
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_outofprovincecertificationtype>("ecer_outofprovincecertificationtype_Province_ecer_province", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_outofprovincecertificationtype>("ecer_outofprovincecertificationtype_Province_ecer_province", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_postsecondaryinstitute_ProvinceId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstitute_ProvinceId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute> ecer_postsecondaryinstitute_ProvinceId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_postsecondaryinstitute_ProvinceId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_postsecondaryinstitute_ProvinceId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_transcript_ProvinceId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_transcript_ProvinceId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Transcript> ecer_transcript_ProvinceId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_transcript_ProvinceId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Transcript>("ecer_transcript_ProvinceId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_workexperienceref_RefCertifiedProvinceId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_workexperienceref_RefCertifiedProvinceId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef> ecer_workexperienceref_RefCertifiedProvinceId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_workexperienceref_RefCertifiedProvinceId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_workexperienceref_RefCertifiedProvinceId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// N:1 ecer_province_CountryId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_countryid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_province_CountryId")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_Country ecer_province_CountryId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Country>("ecer_province_CountryId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Country>("ecer_province_CountryId", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_immediateactions_Investigation", null, value);
 			}
 		}
 		
@@ -919,7 +885,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_Province(object anonymousType) : 
+		public ecer_ImmediateActions(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -937,9 +903,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_provinceid"] = base.Id;
+                        Attributes["ecer_immediateactionsid"] = base.Id;
                         break;
-                    case "ecer_provinceid":
+                    case "ecer_immediateactionsid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

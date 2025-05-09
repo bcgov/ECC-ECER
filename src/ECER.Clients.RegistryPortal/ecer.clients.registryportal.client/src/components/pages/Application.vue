@@ -4,7 +4,8 @@
       <WizardHeader
         class="mb-6"
         :handle-save-draft="handleSaveAndExit"
-        :is-renewal="applicationStore?.draftApplication.applicationType === 'Renewal'"
+        :is-renewal="applicationStore?.isDraftApplicationRenewal"
+        :is-labor-mobility="applicationStore?.isDraftApplicationLaborMobility"
         :is-registrant="userStore.isRegistrant"
         :validate-form="validateForm"
       />
@@ -65,7 +66,7 @@
                   v-if="showSubmitApplication"
                   rounded="lg"
                   color="primary"
-                  :loading="loadingStore.isLoading('application_post')"
+                  :loading="loadingStore.isLoading('application_post') || loadingStore.isLoading('draftapplication_put')"
                   @click="handleSubmit"
                 >
                   Submit application

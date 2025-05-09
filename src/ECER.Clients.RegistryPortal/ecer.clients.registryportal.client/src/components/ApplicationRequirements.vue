@@ -16,6 +16,17 @@
       />
     </template>
 
+    <!-- Labor Mobility -->
+    <template v-if="applicationStore.isDraftApplicationLaborMobility">
+      <ECEAssistantLaborMobilityRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
+      <ECEOneYearLaborMobilityRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
+      <ECEFiveYearLaborMobilityRequirements
+        v-if="applicationStore.isDraftCertificateTypeFiveYears"
+        ref="ECEFiveYearLaborMobilityRequirements"
+        :is-post-basic="isPostBasic"
+      />
+    </template>
+
     <!-- Registrant -->
     <template v-else-if="userStore.isRegistrant">
       <ECEAssistantRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
@@ -28,17 +39,16 @@
       <ECEIteRegistrantRequirements v-else-if="applicationStore.isDraftCertificateTypeIte" />
     </template>
 
-    <!-- New / LaborMobility -->
+    <!-- New -->
     <template v-else>
-      <ECEAssistantRequirements
-        :is-labor-mobility="applicationStore.isDraftApplicationLaborMobility"
-        v-if="applicationStore.isDraftCertificateTypeEceAssistant"
-      />
-      <ECEOneYearRequirements :is-labor-mobility="applicationStore.isDraftApplicationLaborMobility" v-if="applicationStore.isDraftCertificateTypeOneYear" />
-      <ECEFiveYearRequirements :is-labor-mobility="applicationStore.isDraftApplicationLaborMobility" v-if="applicationStore.isDraftCertificateTypeFiveYears" />
+      <ECEAssistantRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
+      <ECEOneYearRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
+      <ECEFiveYearRequirements v-if="applicationStore.isDraftCertificateTypeFiveYears" />
     </template>
 
-    <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick" id="btnApplyNow">Apply now</v-btn>
+    <v-btn class="mt-6" rounded="lg" color="primary" @click="continueClick" id="btnApplyNow">
+      {{ applicationStore.isDraftApplicationLaborMobility ? "Transfer now" : "Apply now" }}
+    </v-btn>
   </v-container>
 </template>
 
@@ -52,6 +62,9 @@ import ECEAssistantRequirements from "@/components/ECEAssistantRequirements.vue"
 import ECEFiveYearRenewalRequirements from "@/components/ECEFiveYearRenewalRequirements.vue";
 import ECEFiveYearRequirements from "@/components/ECEFiveYearRequirements.vue";
 import ECEOneYearRenewalRequirements from "@/components/ECEOneYearRenewalRequirements.vue";
+import ECEAssistantLaborMobilityRequirements from "./ECEAssistantLaborMobilityRequirements.vue";
+import ECEOneYearLaborMobilityRequirements from "./ECEOneYearLaborMobilityRequirements.vue";
+import ECEFiveYearLaborMobilityRequirements from "./ECEFiveYearLaborMobilityRequirements.vue";
 import ECEOneYearRequirements from "@/components/ECEOneYearRequirements.vue";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
@@ -69,6 +82,9 @@ export default defineComponent({
     ECEAssistantRequirements,
     ECEOneYearRequirements,
     ECEFiveYearRequirements,
+    ECEAssistantLaborMobilityRequirements,
+    ECEOneYearLaborMobilityRequirements,
+    ECEFiveYearLaborMobilityRequirements,
     ECEAssistantRenewalRequirements,
     ECEOneYearRenewalRequirements,
     ECEFiveYearRenewalRequirements,
@@ -96,42 +112,57 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const userStore = useUserStore();
 
-    const items =
-      applicationStore.isDraftApplicationRenewal || userStore.isRegistrant
-        ? [
-            {
-              title: "Home",
-              disabled: false,
-              href: "/",
-            },
-            {
-              title: "Requirements",
-              disabled: true,
-              href: "/application/certification/requirements",
-            },
-          ]
-        : [
-            {
-              title: "Home",
-              disabled: false,
-              href: "/",
-            },
-            {
-              title: "Application types",
-              disabled: false,
-              href: "/application/certification",
-            },
-            {
-              title: "Requirements",
-              disabled: true,
-              href: "/application/certification/requirements",
-            },
-          ];
+    let items: { title: string; disabled: boolean; href: string }[] = [
+      {
+        title: "Home",
+        disabled: false,
+        href: "/",
+      },
+    ];
+
+    if (applicationStore.isDraftApplicationLaborMobility) {
+      items.push(
+        {
+          title: "Check your transfer eligibility",
+          disabled: false,
+          href: "/application/transfer",
+        },
+        {
+          title: "Requirements",
+          disabled: true,
+          href: "/application/certification/requirements",
+        },
+      );
+    } else if (applicationStore.isDraftApplicationRenewal || userStore.isRegistrant) {
+      items.push({
+        title: "Requirements",
+        disabled: true,
+        href: "/application/certification/requirements",
+      });
+    } else {
+      items.push(
+        {
+          title: "Application types",
+          disabled: false,
+          href: "/application/certification",
+        },
+        {
+          title: "Requirements",
+          disabled: true,
+          href: "/application/certification/requirements",
+        },
+      );
+    }
 
     return {
       items,
       specializationSelection: [] as Components.Schemas.CertificationType[],
     };
+  },
+  computed: {
+    isPostBasic() {
+      return this.applicationStore.draftApplication.certificationTypes?.some((type) => type === "Ite" || type === "Sne");
+    },
   },
   methods: {
     handleSpecializationSelection(payload?: Components.Schemas.CertificationType[]) {
@@ -139,16 +170,29 @@ export default defineComponent({
     },
     async continueClick() {
       if (this.applicationStore.draftApplication.certificationTypes?.length === 0) {
-        // Validate specialization form as we are in the add specialization(s) registrant flow
+        // Validate specialization form
 
         const formRef = (this.$refs.ECEFiveYearRegistrantRequirements as typeof ECEFiveYearRegistrantRequirements).$refs.SpecializedCertificationOptions.$refs
           .specializationForm as VForm;
 
         const { valid } = await formRef.validate();
         if (valid) {
-          this.applicationStore.$patch({ draftApplication: { certificationTypes: this.specializationSelection } });
+          this.applicationStore.$patch({
+            draftApplication: { certificationTypes: this.specializationSelection },
+          });
           this.router.push({ name: "declaration" });
         }
+      } else if (this.applicationStore.isDraftApplicationLaborMobility) {
+        if (this.specializationSelection.length > 0) {
+          this.applicationStore.$patch({
+            draftApplication: { certificationTypes: ["FiveYears", ...this.specializationSelection] },
+          });
+        } else {
+          this.applicationStore.$patch({
+            draftApplication: { certificationTypes: ["FiveYears"] },
+          });
+        }
+        this.router.push({ name: "declaration" });
       } else {
         const currentTypes = this.applicationStore.draftApplication.certificationTypes || [];
         const updatedTypes = [...currentTypes, ...this.specializationSelection];
@@ -157,7 +201,9 @@ export default defineComponent({
         const uniqueUpdatedTypes = Array.from(new Set(updatedTypes));
 
         // Patch the store with the updated types
-        this.applicationStore.$patch({ draftApplication: { certificationTypes: uniqueUpdatedTypes } });
+        this.applicationStore.$patch({
+          draftApplication: { certificationTypes: uniqueUpdatedTypes },
+        });
         this.router.push({ name: "declaration" });
       }
     },

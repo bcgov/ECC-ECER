@@ -9,6 +9,13 @@ public record ProvincesQuery : IRequest<ProvincesQueryResults>
 {
   public string? ById { get; set; }
 }
+
+public record CertificationComparisonQuery : IRequest<CertificationComparisonQueryResults>
+{
+  public string? ById { get; set; }
+  public string? ByProvinceId { get; set; }
+}
+
 public record CountriesQuery : IRequest<CountriesQueryResults>
 {
   public string? ById { get; set; }
@@ -36,6 +43,7 @@ public record IdentificationTypesQuery : IRequest<IdentificationTypesQueryResult
 }
 public record SystemMessagesQueryResults(IEnumerable<SystemMessage> Items);
 public record IdentificationTypesQueryResults(IEnumerable<IdentificationType> Items);
+public record CertificationComparisonQueryResults(IEnumerable<ComparisonRecord> Items);
 public record ProvincesQueryResults(IEnumerable<Province> Items);
 public record CountriesQueryResults(IEnumerable<Country> Items);
 public record PostSecondaryInstitutionsQueryResults(IEnumerable<PostSecondaryInstitution> Items);
@@ -55,4 +63,20 @@ public enum PortalTags
   LOGIN,
   LOOKUP,
   REFERENCES
+}
+
+public record OutOfProvinceCertificationType(string Id)
+{
+  public string? CertificationType { get; set; }
+}
+
+public record CertificationComparison(string Id)
+{
+  public string? BcCertificate { get; set; }
+}
+
+public record ComparisonRecord()
+{
+  public OutOfProvinceCertificationType? TransferringCertificate { get; set; }
+  public IEnumerable<CertificationComparison> Options { get; set; } = Array.Empty<CertificationComparison>();
 }

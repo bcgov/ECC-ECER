@@ -16,6 +16,7 @@ interface Wizard {
 }
 
 type ApplicationStage =
+  | "CertificateInformation"
   | "CertificationType"
   | "Declaration"
   | "ContactInformation"
@@ -25,6 +26,5 @@ type ApplicationStage =
   | "CharacterReferences"
   | "WorkReferences"
   | "Review";
-type RenewalAssitantStage = "Declaration" | "ContactInformation" | "Review";
 type ReferenceStage = "Declaration" | "Decline" | "ContactInformation" | "Assessment" | "Review" | "ReferenceEvaluation";
 type RenewStage = "ContactInformation" | "ExplanationLetter" | "Education" | "CharacterReferences" | "WorkReferences" | "Review";

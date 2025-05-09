@@ -90,8 +90,30 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    const items =
-      applicationStore.isDraftApplicationRenewal || userStore.isRegistrant
+    const items = applicationStore.isDraftApplicationLaborMobility
+      ? [
+          {
+            title: "Home",
+            disabled: false,
+            href: "/",
+          },
+          {
+            title: "Check your transfer eligibility",
+            disabled: false,
+            href: "/application/transfer",
+          },
+          {
+            title: "Requirements",
+            disabled: false,
+            href: "/application/certification/requirements",
+          },
+          {
+            title: "Declaration",
+            disabled: true,
+            href: "/application/declaration",
+          },
+        ]
+      : applicationStore.isDraftApplicationRenewal || userStore.isRegistrant
         ? [
             {
               title: "Home",

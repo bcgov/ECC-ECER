@@ -36,6 +36,14 @@ public class ConfigurationEndpoints : IRegisterEndpoints
     .WithOpenApi("Handles country queries", string.Empty, "country_get")
     .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
+    endpointRouteBuilder.MapGet("/api/certificationComparison/{id?}", async (string? id, string? provinceId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
+      var results = await messageBus.Send(new CertificationComparisonQuery() { ById = id, ByProvinceId = provinceId }, ct);
+      return TypedResults.Ok(mapper.Map<IEnumerable<ComparisonRecord>>(results.Items));
+    })
+    .WithOpenApi("Handles certification comparison queries", string.Empty, "certificationComparison_get");
+
     endpointRouteBuilder.MapGet("/api/postSecondaryInstitutionList/{id?}", async (string? id, string? name, string? provinceId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
@@ -88,7 +96,6 @@ public record OidcAuthenticationSettings
   public string? Idp { get; set; }
 }
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
-
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
 public record PostSecondaryInstitution(string Id, string Name, string ProvinceId);
 public record Country(string CountryId, string CountryName, string CountryCode);
@@ -112,3 +119,18 @@ public record IdentificationTypesQuery
   public bool? ForPrimary { get; set; }
   public bool? ForSecondary { get; set; }
 }
+  public record OutOfProvinceCertificationType(string Id)
+  {
+    public string? CertificationType { get; set; }
+  }
+
+  public record CertificationComparison(string Id)
+  {
+    public string? BcCertificate { get; set; }
+  }
+
+  public record ComparisonRecord()
+  {
+    public OutOfProvinceCertificationType? TransferringCertificate { get; set; }
+    public IEnumerable<CertificationComparison> Options { get; set; } = Array.Empty<CertificationComparison>();
+  }

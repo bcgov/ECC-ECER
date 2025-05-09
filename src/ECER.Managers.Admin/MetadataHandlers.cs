@@ -9,6 +9,7 @@ public class MetadataHandlers(
    IMetadataResourceRepository metadataResourceRepository,
    IMapper mapper) : IRequestHandler<Contract.Metadatas.ProvincesQuery, ProvincesQueryResults>,
    IRequestHandler<Contract.Metadatas.CountriesQuery, CountriesQueryResults>,
+   IRequestHandler<Contract.Metadatas.CertificationComparisonQuery, CertificationComparisonQueryResults>,
    IRequestHandler<Contract.Metadatas.PostSecondaryInstitutionsQuery, PostSecondaryInstitutionsQueryResults>,
    IRequestHandler<Contract.Metadatas.SystemMessagesQuery, SystemMessagesQueryResults>,
    IRequestHandler<Contract.Metadatas.IdentificationTypesQuery, IdentificationTypesQueryResults>
@@ -19,6 +20,30 @@ public class MetadataHandlers(
 
     var postSecondaryInstitutions = await metadataResourceRepository.QueryPostSecondaryInstitutions(mapper.Map<Resources.Documents.MetadataResources.PostSecondaryInstitutionsQuery>(request), cancellationToken);
     return new PostSecondaryInstitutionsQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.PostSecondaryInstitution>>(postSecondaryInstitutions)!);
+  }
+
+  public async Task<CertificationComparisonQueryResults> Handle(Contract.Metadatas.CertificationComparisonQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var certificationComparisons = await metadataResourceRepository.QueryCertificationComparisons(new Resources.Documents.MetadataResources.CertificationComparisonQuery() { ById = request.ById, ByProvinceId = request.ByProvinceId }, cancellationToken);
+    var comparisonRecords = certificationComparisons
+      .GroupBy(x => new { x.TransferringCertificate!.Id, x.TransferringCertificate.CertificationType })
+      .Select(g => new Contract.Metadatas.ComparisonRecord()
+      {
+      TransferringCertificate = new Contract.Metadatas.OutOfProvinceCertificationType(g.Key.Id)
+      {
+        CertificationType = g.Key.CertificationType
+      },
+      Options = g.Select(item => new Contract.Metadatas.CertificationComparison(item.Id)
+      {
+        BcCertificate = item.BcCertificate
+      })
+      .ToList()
+      })
+      .ToList();
+
+    return new CertificationComparisonQueryResults(comparisonRecords!);
   }
 
   public async Task<ProvincesQueryResults> Handle(Contract.Metadatas.ProvincesQuery request, CancellationToken cancellationToken)
@@ -56,4 +81,5 @@ public class MetadataHandlers(
     var identificationTypes = await metadataResourceRepository.QueryIdentificationTypes(new Resources.Documents.MetadataResources.IdentificationTypesQuery() { ById = request.ById, ForPrimary = request.ForPrimary, ForSecondary = request.ForSecondary }, cancellationToken);
     return new IdentificationTypesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.IdentificationType>>(identificationTypes)!);
   }
+
 }

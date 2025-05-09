@@ -60,8 +60,11 @@
       <v-row v-if="applications && userStore.isVerified && showApplicationCard" justify="center">
         <v-col>
           <v-row>
-            <v-col cols="12">
-              <ApplicationCard :class="smAndDown ? 'mx-n6' : ''" @cancel-application="showCancelDialog = true" />
+            <v-col cols="12" :sm="showTransferCard ? 6 : 12">
+              <ApplicationCard @cancel-application="showCancelDialog = true" />
+            </v-col>
+            <v-col v-if="showTransferCard" cols="12" sm="6">
+              <TransferCard />
             </v-col>
           </v-row>
         </v-col>
@@ -169,6 +172,7 @@ import { getProfile } from "@/api/profile";
 import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
+import TransferCard from "@/components/TransferCard.vue";
 import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
@@ -192,6 +196,7 @@ export default defineComponent({
     ConfirmationDialog,
     PageContainer,
     ApplicationCard,
+    TransferCard,
     CertificationCard,
     ECEHeader,
     ActionCard,
@@ -279,6 +284,9 @@ export default defineComponent({
         this.applicationStore.applicationStatus === "Pending" ||
         this.applicationStore.applicationStatus === "Escalated"
       );
+    },
+    showTransferCard(): boolean {
+      return !this.certificationStore.hasCertifications && !this.applicationStore.hasApplication && !this.applicationStore.hasDraftApplication;
     },
     showLoading(): boolean {
       return (

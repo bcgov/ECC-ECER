@@ -171,6 +171,12 @@ const router = createRouter({
       name: "application-certification",
     },
     {
+      path: "/application/transfer",
+      component: () => import("./components/pages/Transfer.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "application-transfer",
+    },
+    {
       path: "/application/certification/requirements",
       component: () => import("./components/ApplicationRequirements.vue"),
       meta: { requiresAuth: true },
@@ -187,7 +193,8 @@ const router = createRouter({
         if (certificationTypes && !Array.isArray(certificationTypes)) {
           certificationTypes = [certificationTypes];
         }
-        return { certificationTypes: certificationTypes || [], isRenewal: query.isRenewal === "true" };
+
+        return { certificationTypes: certificationTypes ?? [], applicationType: query.applicationType ?? "New" };
       },
     },
     {

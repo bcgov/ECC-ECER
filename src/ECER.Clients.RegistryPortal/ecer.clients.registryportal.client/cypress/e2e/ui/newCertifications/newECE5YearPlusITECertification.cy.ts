@@ -1,13 +1,14 @@
 import selectors from "../../../support/selectors";
 const day = new Date().getDate();
 
-describe("New ECE 5 Year Certificate Application", () => {
-  it("should sucessfully create a New ECE 5 Year Application", () => {
+describe("New ECE 5 Year + ITE Certificate Application", () => {
+  it("should sucessfully create a New ECE 5 Year + ITE Applicatio", () => {
     /** Dashboard */
     cy.get(selectors.dashboard.applyNowButton).click();
 
     /** Certification Type */
     cy.get(selectors.certificationType.eceFiveYearRadio).check();
+    cy.get(selectors.certificationType.iteCheckBox).check({ force: true });
     cy.get(selectors.certificationType.continueButton).click();
 
     /** Application Requirements */

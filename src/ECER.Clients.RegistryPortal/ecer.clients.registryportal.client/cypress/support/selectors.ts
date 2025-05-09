@@ -7,6 +7,8 @@ export default {
     eceFiveYearRadio: 'input[value="FiveYears"]',
     eceOneYearRadio: 'input[value="OneYear"]',
     continueButton: 'button[id="btnContinue"]',
+    iteCheckBox: 'input[value="Ite"]',
+    sneCheckBox: 'input[value="Sne"]',
   },
   applicationRequirements: {
     applyNowButton: 'button[id="btnApplyNow"]',
@@ -18,6 +20,9 @@ export default {
   applicationWizard: {
     saveAndContinueButton: 'button[id="btnSaveAndContinue"]',
     submitApplicationButton: 'button[id="btnSubmitApplication"]',
+  },
+  applicationWizardHeader: {
+    saveAndExitButton: 'button[id="btnSaveAndExit"]',
   },
   education: {
     addEducationButton: 'button[id="btnAddEducation"]',
@@ -49,6 +54,9 @@ export default {
   },
   datePicker: {
     monthDiv: "div.v-date-picker-month",
+    monthControlsDiv: "div.v-date-picker-controls__month",
+    controlsDiv: "div.v-date-picker-controls",
+    prevMonthButton: 'button[data-testid="prev-month"]',
   },
   applicationPreview: {
     certificationType: 'p[id="certificationType"]',

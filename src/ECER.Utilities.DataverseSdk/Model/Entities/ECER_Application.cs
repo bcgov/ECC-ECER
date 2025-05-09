@@ -123,8 +123,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicantSignature = "ecer_applicantsignature";
 			public const string ecer_application_Applicantid_contact = "ecer_application_Applicantid_contact";
 			public const string ecer_application_Certificateid = "ecer_application_Certificateid";
+			public const string ecer_application_certificationcomparisonid = "ecer_application_certificationcomparisonid";
 			public const string ecer_application_DenialReasonType_ecer_denialr = "ecer_application_DenialReasonType_ecer_denialr";
 			public const string ecer_application_FromCertificateId = "ecer_application_FromCertificateId";
+			public const string ecer_application_lmprovinceid = "ecer_application_lmprovinceid";
 			public const string ecer_application_parallelprocessinvestigationid_ecer_investigation = "ecer_application_parallelprocessinvestigationid_ecer_investigation";
 			public const string ecer_applicationassessment_ApplicationId = "ecer_applicationassessment_ApplicationId";
 			public const string ecer_applicationhistory_ApplicationId = "ecer_applicationhistory_ApplicationId";
@@ -143,6 +145,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CertificateidName = "ecer_certificateidname";
 			public const string ecer_CertificateLevel = "ecer_certificatelevel";
 			public const string ecer_CertificateType = "ecer_certificatetype";
+			public const string ecer_certificationcomparisonid = "ecer_certificationcomparisonid";
+			public const string ecer_certificationcomparisonidName = "ecer_certificationcomparisonidname";
 			public const string ecer_characterreference_Applicationid = "ecer_characterreference_Applicationid";
 			public const string ecer_CharacterReferenceApproved = "ecer_characterreferenceapproved";
 			public const string ecer_characterreferenceapprovedName = "ecer_characterreferenceapprovedname";
@@ -217,6 +221,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_historicaldecision_ApplicationId = "ecer_historicaldecision_ApplicationId";
 			public const string ecer_IDVerifiedManualApplication = "ecer_idverifiedmanualapplication";
 			public const string ecer_idverifiedmanualapplicationName = "ecer_idverifiedmanualapplicationname";
+			public const string ecer_investigationapplication_application = "ecer_investigationapplication_application";
 			public const string ecer_investigationparallelprocesscommunication = "ecer_investigationparallelprocesscommunication";
 			public const string ecer_IsCharacterReferenceProvided = "ecer_ischaracterreferenceprovided";
 			public const string ecer_ischaracterreferenceprovidedName = "ecer_ischaracterreferenceprovidedname";
@@ -253,6 +258,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_LegalFirstName = "ecer_legalfirstname";
 			public const string ecer_LegalLastName = "ecer_legallastname";
 			public const string ecer_LegalMiddleName = "ecer_legalmiddlename";
+			public const string ecer_lmprovinceid = "ecer_lmprovinceid";
+			public const string ecer_lmprovinceidName = "ecer_lmprovinceidname";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_NumberofHoursWorked = "ecer_numberofhoursworked";
 			public const string ecer_Origin = "ecer_origin";
@@ -1058,6 +1065,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_certificatetype", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationcomparisonid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_certificationcomparisonid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_certificationcomparisonid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificationcomparisonid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationcomparisonidname")]
+		public string ecer_certificationcomparisonidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_certificationcomparisonid"))
+				{
+					return this.FormattedValues["ecer_certificationcomparisonid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -2636,6 +2675,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legalmiddlename", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lmprovinceid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_lmprovinceid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_lmprovinceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_lmprovinceid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lmprovinceidname")]
+		public string ecer_lmprovinceidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_lmprovinceid"))
+				{
+					return this.FormattedValues["ecer_lmprovinceid"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -4546,6 +4617,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_investigationapplication_application
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationapplication_application")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_investigationapplication> ecer_investigationapplication_application
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_investigationapplication>("ecer_investigationapplication_application", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_investigationapplication>("ecer_investigationapplication_application", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_investigationparallelprocesscommunication
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationparallelprocesscommunication")]
@@ -4692,6 +4781,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// N:1 ecer_application_certificationcomparisonid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationcomparisonid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_certificationcomparisonid")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison ecer_application_certificationcomparisonid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison>("ecer_application_certificationcomparisonid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_certificationcomparison>("ecer_application_certificationcomparisonid", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// N:1 ecer_application_DenialReasonType_ecer_denialr
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasontype")]
@@ -4726,6 +4834,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_application_FromCertificateId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_application_lmprovinceid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lmprovinceid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_lmprovinceid")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Province ecer_application_lmprovinceid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Province>("ecer_application_lmprovinceid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Province>("ecer_application_lmprovinceid", null, value);
 			}
 		}
 		
