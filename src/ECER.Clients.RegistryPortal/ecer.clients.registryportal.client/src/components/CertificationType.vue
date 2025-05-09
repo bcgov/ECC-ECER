@@ -38,7 +38,7 @@
       </v-expansion-panels>
       <h2 class="mt-10">Certified in Canada?</h2>
       <p class="mt-3">
-        If you're certified in another province or territory in Canada, you might be able to transfer you certification to British Columbia. Check the
+        If you're certified in another province or territory in Canada, you might be able to transfer your certification to British Columbia. Check the
         <!-- prettier-ignore -->
         <a href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/transfer-your-certification/certification-from-province-to-province">certification levels from province to province chart</a>
         to find out if your certification transfers.
