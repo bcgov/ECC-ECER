@@ -108,13 +108,19 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
 
     if (application.ApplicationType == ApplicationTypes.LaborMobility)
     {
-      var comparisonRecord = context.ecer_certificationcomparisonSet.SingleOrDefault(c => c.ecer_certificationcomparisonId == Guid.Parse(application.LabourMobilityCertificateInformation!.CertificateComparisonId!));
-      if(comparisonRecord == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Certification comparison '{application.LabourMobilityCertificateInformation!.CertificateComparisonId}' not found");
-      context.AddLink(ecerApplication, ecer_Application.Fields.ecer_application_certificationcomparisonid, comparisonRecord);
+      if(application.LabourMobilityCertificateInformation != null && application.LabourMobilityCertificateInformation!.CertificateComparisonId != null)
+      {
+        var comparisonRecord = context.ecer_certificationcomparisonSet.SingleOrDefault(c => c.ecer_certificationcomparisonId == Guid.Parse(application.LabourMobilityCertificateInformation!.CertificateComparisonId!));
+        if (comparisonRecord == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Certification comparison '{application.LabourMobilityCertificateInformation!.CertificateComparisonId}' not found");
+        context.AddLink(ecerApplication, ecer_Application.Fields.ecer_application_certificationcomparisonid, comparisonRecord);
+      }
 
-      var province =context.ecer_ProvinceSet.SingleOrDefault(c => c.ecer_ProvinceId == Guid.Parse(application.LabourMobilityCertificateInformation!.LabourMobilityProvince!.ProvinceId));
-      if(province == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Province '{application.LabourMobilityCertificateInformation!.LabourMobilityProvince!.ProvinceId}' not found");
-      context.AddLink(ecerApplication, ecer_Application.Fields.ecer_application_lmprovinceid, province);
+      if (application.LabourMobilityCertificateInformation != null && application.LabourMobilityCertificateInformation!.LabourMobilityProvince != null)
+      {
+        var province = context.ecer_ProvinceSet.SingleOrDefault(c => c.ecer_ProvinceId == Guid.Parse(application.LabourMobilityCertificateInformation!.LabourMobilityProvince!.ProvinceId));
+        if (province == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Province '{application.LabourMobilityCertificateInformation!.LabourMobilityProvince!.ProvinceId}' not found");
+        context.AddLink(ecerApplication, ecer_Application.Fields.ecer_application_lmprovinceid, province);
+      }
     }
 
     context.SaveChanges();
