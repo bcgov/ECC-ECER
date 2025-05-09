@@ -23,9 +23,12 @@ describe("New ECE One Year Certificate Application", () => {
     /** Education */
     cy.get(selectors.education.addEducationButton).click();
 
-    cy.get(selectors.education.transcriptStatusRadioDiv).within(() => {
-      cy.get(selectors.elementType.radio).first().check({ force: true });
-    });
+    cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia", { force: true });
+
+    cy.get(selectors.education.postSecondaryInstitutionDropDownList).should("exist").type("Other", { force: true });
+    cy.get("body").click({ force: true });
+
+    cy.get(selectors.education.institutionNameInput).type("TEST Educational Institution", { force: true });
     cy.get(selectors.education.programNameInput).type("TEST ECE One Year Course", { force: true });
 
     /* Start Date - DatePicker*/
@@ -36,14 +39,11 @@ describe("New ECE One Year Certificate Application", () => {
     cy.get(selectors.education.programEndDateInput).click({ force: true });
     cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`, { force: true });
 
-    cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia", { force: true });
-
-    cy.get(selectors.education.postSecondaryInstitutionDropDownList).should("exist").type("Other", { force: true });
-    cy.get("body").click({ force: true });
-
-    cy.get(selectors.education.institutionNameInput).type("TEST Educational Institution", { force: true });
     cy.get(selectors.education.studentIDInput).type("1234", { force: true });
     cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {
+      cy.get(selectors.elementType.radio).first().check({ force: true });
+    });
+    cy.get(selectors.education.transcriptStatusRadioDiv).within(() => {
       cy.get(selectors.elementType.radio).first().check({ force: true });
     });
     cy.get(selectors.education.saveEducationButton).click();
