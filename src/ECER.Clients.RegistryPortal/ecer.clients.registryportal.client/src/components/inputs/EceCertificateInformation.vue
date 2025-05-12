@@ -2,19 +2,25 @@
   <v-row>
     <v-col cols="4"><p>Eligible B.C. transfer application</p></v-col>
     <v-col cols="8">
-      <p><b>ECE Assistant</b></p>
+      <p>
+        <b>{{ applicationStore.certificateName }}</b>
+      </p>
     </v-col>
   </v-row>
   <v-row>
     <v-col cols="4"><p>Province/territory of certification</p></v-col>
     <v-col cols="8">
-      <p><b>Alberta</b></p>
+      <p>
+        <b>{{ modelValue.labourMobilityProvince?.provinceName }}</b>
+      </p>
     </v-col>
   </v-row>
   <v-row>
     <v-col cols="4"><p>Certification type</p></v-col>
     <v-col cols="8">
-      <p><b>Level 1</b></p>
+      <p>
+        <b>{{ modelValue.existingCertificationType }}</b>
+      </p>
     </v-col>
   </v-row>
   <v-row>
@@ -94,6 +100,7 @@ import type { Components } from "@/types/openapi";
 import * as Rules from "@/utils/formRules";
 import { defineComponent } from "vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
+import { useApplicationStore } from "@/store/application";
 
 interface RadioOptions {
   value: any;
@@ -111,8 +118,9 @@ export default defineComponent({
   },
   setup() {
     const userStore = useUserStore();
+    const applicationStore = useApplicationStore();
 
-    return { userStore };
+    return { userStore, applicationStore };
   },
   data() {
     return {

@@ -495,5 +495,4 @@ public record CertificateInformation
   public string? LegalMiddleName { get; set; } = string.Empty;
   public string? LegalLastName { get; set; } = string.Empty;
   public bool? HasOtherName { get; set; }
-
 }

@@ -184,7 +184,18 @@ export default {
       }
     },
     handleRequirementsClick() {
-      this.applicationStore.$patch({ draftApplication: { certificationTypes: this.selfAssessmentOutcome, applicationType: "LaborMobility" } });
+      // Set the labor mobility certificate information that we have now
+      this.applicationStore.$patch({
+        draftApplication: {
+          certificationTypes: this.selfAssessmentOutcome,
+          applicationType: "LaborMobility",
+          stage: "CertificateInformation",
+          labourMobilityCertificateInformation: {
+            labourMobilityProvince: this.transferData.province,
+            existingCertificationType: this.transferData.outOfProvinceCertification?.transferringCertificate?.certificationType ?? undefined,
+          },
+        },
+      });
       this.router.push({ name: "application-requirements" });
     },
   },

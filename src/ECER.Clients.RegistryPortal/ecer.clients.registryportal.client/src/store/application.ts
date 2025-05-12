@@ -62,6 +62,7 @@ export const useApplicationStore = defineStore("application", {
       id: undefined,
       signedDate: null,
       stage: "ContactInformation",
+      labourMobilityCertificateInformation: {} as Components.Schemas.CertificateInformation,
       transcripts: [] as Components.Schemas.Transcript[],
       characterReferences: [] as Components.Schemas.CharacterReference[],
       workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
@@ -216,6 +217,30 @@ export const useApplicationStore = defineStore("application", {
       }
 
       return "Assistant";
+    },
+    certificateName(): string {
+      let certificationType = "";
+      if (this.isDraftCertificateTypeEceAssistant) {
+        certificationType = "ECE Assistant";
+      } else if (this.isDraftCertificateTypeOneYear) {
+        certificationType = "ECE One Year";
+      } else if (this.isDraftCertificateTypeFiveYears) {
+        certificationType = "ECE Five Year";
+
+        if (this.isDraftCertificateTypeSne) {
+          certificationType += " and Special Needs Educator (SNE)";
+        }
+        if (this.isDraftCertificateTypeIte) {
+          certificationType += " and Infant and Toddler Educator (ITE)";
+        }
+      } else if (!this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeSne && this.isDraftCertificateTypeIte) {
+        certificationType = "Special Needs Educator and Infant and Toddler Educator";
+      } else if (!this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeSne) {
+        certificationType = "Special Needs Educator";
+      } else if (!this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte) {
+        certificationType = "Infant and Toddler Educator";
+      }
+      return certificationType;
     },
   },
   actions: {
