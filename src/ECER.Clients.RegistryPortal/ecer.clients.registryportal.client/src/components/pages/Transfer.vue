@@ -89,7 +89,7 @@
             >
               <p class="mt-3">You will be able to work:</p>
               <ul class="mt-2 mb-8 ml-8">
-                <li>along and/or as the primay educator in licensed child care programs for children 3 to 5 years of age, and/or</li>
+                <li>along and/or as the primary educator in licensed child care programs for children 3 to 5 years of age, and/or</li>
                 <li>alongside an Infant and Toddler Educator in licensed programs of children under 36 months</li>
               </ul>
               <p>Once you get 500 hours of work experience observed by a Canadian-certified ECE, you can apply to upgrade to an ECE Five Year certificate.</p>
@@ -101,7 +101,7 @@
             >
               <p class="mt-3">You will be able to work:</p>
               <ul class="mt-2 ml-8">
-                <li>along and/or as the primay educator in licensed child care programs for children 3 to 5 years of age, and/or</li>
+                <li>along and/or as the primary educator in licensed child care programs for children 3 to 5 years of age, and/or</li>
                 <li>alongside an Infant and Toddler Educator in licensed programs of children under 36 months</li>
               </ul>
             </Callout>
@@ -112,13 +112,13 @@
             >
               <p strong class="mt-3">An ECE Five Year certification allows you to work in licensed child care programs:</p>
               <ul class="mt-2 mb-8 ml-8">
-                <li>along and/or as the primay educator in licensed child care programs for children 3 to 5 years of age, and/or</li>
+                <li>along and/or as the primary educator in licensed child care programs for children 3 to 5 years of age, and/or</li>
                 <li>alongside an Infant and Toddler Educator in licensed programs of children under 36 months</li>
               </ul>
               <p strong class="mt-3">Specialized certifications allow you to work in licensed child care programs:</p>
               <ul class="mt-2 ml-8">
-                <li>along and/or as the primay educator with children birth to 5 years (ITE)</li>
-                <li>along and/or as the primay educator in inclusive settings with children 3-5 years of age (SNE)</li>
+                <li>along and/or as the primary educator with children birth to 5 years (ITE)</li>
+                <li>along and/or as the primary educator in inclusive settings with children 3-5 years of age (SNE)</li>
               </ul>
             </Callout>
           </v-col>
@@ -138,7 +138,7 @@ import { getCertificationComparisonList } from "@/api/configuration";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import ProfileForm from "@/components/ProfileForm.vue";
-import { getHighestCertificationType, CertificationType } from "@/utils/functions";
+import { getHighestCertificationType, findHighestCertificateTypeId, CertificationType } from "@/utils/functions";
 import { useConfigStore } from "@/store/config";
 import { useApplicationStore } from "@/store/application";
 import { useRouter } from "vue-router";
@@ -193,6 +193,7 @@ export default {
           labourMobilityCertificateInformation: {
             labourMobilityProvince: this.transferData.province,
             existingCertificationType: this.transferData.outOfProvinceCertification?.transferringCertificate?.certificationType ?? undefined,
+            certificateComparisonId: findHighestCertificateTypeId(this.transferData.outOfProvinceCertification?.options ?? []),
           },
         },
       });
