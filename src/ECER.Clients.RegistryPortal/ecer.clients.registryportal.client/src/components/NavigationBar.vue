@@ -9,7 +9,7 @@
         <template v-if="userStore.hasUserInfo">
           <v-menu v-if="$vuetify.display.smAndDown" offset-y bottom transition="slide-y-transition">
             <template #activator="{ props }">
-              <v-btn icon v-bind="props">
+              <v-btn id="btnToggleMenu" icon v-bind="props">
                 <v-icon>mdi-menu</v-icon>
               </v-btn>
             </template>
@@ -44,8 +44,15 @@
             <v-btn class="font-weight-regular" color="primary" prepend-icon="mdi-bell" @click="router.push('/messages')">Messages</v-btn>
             <v-menu offset-y bottom transition="slide-y-transition">
               <template #activator="{ props }">
-                <v-btn class="font-weight-regular" color="primary" v-bind="props" prepend-icon="mdi-account-circle" append-icon="mdi-chevron-down">
-                  {{ userStore.preferredName ? userStore.preferredName : userStore.firstName }}
+                <v-btn
+                  id="btnUserName"
+                  class="font-weight-regular"
+                  color="primary"
+                  v-bind="props"
+                  prepend-icon="mdi-account-circle"
+                  append-icon="mdi-chevron-down"
+                >
+                  {{ userStore.preferredName ? userStore.preferredName : cleanPreferredName(userStore.firstName, userStore.lastName, "first") }}
                 </v-btn>
               </template>
               <v-list>
@@ -56,7 +63,7 @@
                 </v-list-item>
                 <v-list-item link>
                   <v-list-item-title>
-                    <p class="small text-decoration-underline text-links" @click="oidcStore.logout">Log out</p>
+                    <p id="lnkLogOut" class="small text-decoration-underline text-links" @click="oidcStore.logout">Log out</p>
                   </v-list-item-title>
                 </v-list-item>
               </v-list>
@@ -70,7 +77,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import { cleanPreferredName } from "@/utils/functions";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
@@ -81,7 +88,7 @@ export default defineComponent({
     const userStore = useUserStore();
     const oidcStore = useOidcStore();
     const router = useRouter();
-    return { userStore, oidcStore, router };
+    return { userStore, oidcStore, router, cleanPreferredName };
   },
 });
 </script>

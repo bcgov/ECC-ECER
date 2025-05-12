@@ -83,7 +83,7 @@
       <ApplicationSummaryCharacterReferenceListItem
         v-for="reference in applicationStatus?.characterReferencesStatus"
         :key="reference.id?.toString()"
-        :name="`${reference.firstName} ${reference.lastName}`"
+        :name="cleanPreferredName(reference.firstName, reference.lastName)"
         :status="reference.status"
         :go-to="
           () =>
@@ -103,19 +103,19 @@
       <ApplicationSummaryActionListItem
         v-for="(previousName, index) in userStore.unverifiedPreviousNames"
         :key="index"
-        :text="`Proof of previous name ${previousName.firstName} ${previousName.lastName}`"
+        :text="`Proof of previous name  ${cleanPreferredName(previousName.firstName, previousName.lastName)}`"
         :go-to="() => router.push({ name: 'profile' })"
       />
       <ApplicationSummaryActionListItem
         v-for="(previousName, index) in userStore.pendingforDocumentsPreviousNames"
         :key="index"
-        :text="`Proof of previous name ${previousName.firstName} ${previousName.lastName}`"
+        :text="`Proof of previous name ${cleanPreferredName(previousName.firstName, previousName.lastName)}`"
         :go-to="() => router.push({ name: 'profile' })"
       />
       <ApplicationSummaryActionListItem
         v-for="(previousName, index) in userStore.readyForVerificationPreviousNames"
         :key="index"
-        :text="`Proof of previous name ${previousName.firstName} ${previousName.lastName}`"
+        :text="`Proof of previous name ${cleanPreferredName(previousName.firstName, previousName.lastName)}`"
         :go-to="() => router.push({ name: 'profile' })"
         :active="false"
       />
@@ -215,7 +215,7 @@
         <ApplicationSummaryCharacterReferenceListItem
           v-for="reference in waitingForResponseCharacterReferences"
           :key="reference.id?.toString()"
-          :name="`${reference.firstName} ${reference.lastName}`"
+          :name="`${cleanPreferredName(reference.firstName, reference.lastName)}`"
           :status="reference.status"
           :go-to="
             () =>
@@ -246,7 +246,7 @@
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
-
+import { cleanPreferredName } from "@/utils/functions";
 import { getApplicationStatus } from "@/api/application";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -289,6 +289,7 @@ export default defineComponent({
       alertStore,
       configStore,
       CertificationType,
+      cleanPreferredName,
       applicationStatus,
       smAndUp,
       formatDate,
