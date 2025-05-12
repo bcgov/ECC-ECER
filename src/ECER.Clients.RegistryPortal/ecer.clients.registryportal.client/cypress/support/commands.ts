@@ -43,27 +43,28 @@ Cypress.Commands.add("logout", () => {
     const $userBtn = $body.find(selectors.navigationBar.userNameButton);
     if ($userBtn.length > 0 && $userBtn.is(":visible")) {
       cy.wrap($userBtn).click();
+      // click logout link
+      return cy.get(selectors.navigationBar.logOutLink).click();
     }
   });
-
-  // 2) click logout link
-  return cy.get(selectors.navigationBar.logOutLink).click();
 });
 
 Cypress.Commands.add("resetUserState", () => {
-  const apiUrl: string = Cypress.env("API_URL");
+  const baseApiUrl: string = Cypress.env("API_URL").replace(/\/+$/, "");
   const apiKey: string = Cypress.env("API_KEY");
   const externalUserId: string = Cypress.env("PORTAL_USER").EXTERNAL_USER_ID;
 
   return cy
     .request({
       method: "DELETE",
-      url: `${apiUrl}/api/E2ETests/user/reset`,
+      url: `${baseApiUrl}/api/E2ETests/user/reset`,
       headers: {
         "X-API-KEY": apiKey,
         "EXTERNAL-USER-ID": externalUserId,
       },
-      failOnStatusCode: false,
+      failOnStatusCode: true,
+      retryOnStatusCodeFailure: true,
+      retryOnNetworkFailure: true,
     })
     .then((response) => {
       expect(response.status).to.eq(200);
