@@ -58,6 +58,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
   public string? RenewalExplanationOther { get; set; }
   public ApplicationOrigin? Origin { get; set; }
+  public CertificateInformation? LabourMobilityCertificateInformation { get; set; }
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, string StudentFirstName, string StudentLastName, bool IsNameUnverified, EducationRecognition EducationRecognition, EducationOrigin EducationOrigin)
@@ -420,6 +421,18 @@ public enum TranscriptStatusOptions
   RegistryHasTranscript,
   OfficialTranscriptRequested,
   TranscriptWillRequireEnglishTranslation
+}
+
+public record CertificateInformation
+{
+  public string? CertificateComparisonId { get; set; }
+  public Province? LabourMobilityProvince { get; set; }
+  public string? CurrentCertificationNumber { get; set; } = string.Empty;
+  public string? ExistingCertificationType { get; set; } = string.Empty;
+  public string? LegalFirstName { get; set; } = string.Empty;
+  public string? LegalMiddleName { get; set; } = string.Empty;
+  public string? LegalLastName { get; set; } = string.Empty;
+  public bool? HasOtherName { get; set; }
 }
 
 

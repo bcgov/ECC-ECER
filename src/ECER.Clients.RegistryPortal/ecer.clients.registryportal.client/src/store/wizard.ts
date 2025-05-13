@@ -90,6 +90,11 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.profile.form.inputs.alternateContactNumber.id]: userStore.userProfile?.alternateContactPhone,
         [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || oidcUserInfo?.email,
 
+        // Certificate Information step data
+        ...(wizard.steps.certificateInformation.form.inputs.certificateInformation.id && {
+          [wizard.steps.certificateInformation.form.inputs.certificateInformation.id]: draftApplication?.labourMobilityCertificateInformation,
+        }),
+
         // Education step data
         ...(wizard.steps?.education?.form?.inputs?.educationList?.id && { [wizard.steps?.education?.form?.inputs?.educationList?.id]: transcriptsDict }),
 

@@ -250,6 +250,13 @@ export function parseCertificationType(input: string): CertificationType {
   return cert;
 }
 
+/**
+ * Returns the highest certification name from a list of options.
+ *
+ * @param {CertificationComparison[]} options - An array of certification comparison objects.
+ * @returns {string} - The highest certification name based on the defined weights.
+ * @throws {Error} - If no valid certification type is found in the options.
+ */
 export function getHighestCertificationType(options: CertificationComparison[]): CertificationType {
   const parsed = options
     .map((o) => certificationTypeMap[o.bcCertificate!]) // map raw → enum
@@ -260,4 +267,15 @@ export function getHighestCertificationType(options: CertificationComparison[]):
   }
 
   return parsed.reduce((best, curr) => (certificationWeights[curr] > certificationWeights[best] ? curr : best), parsed[0]);
+}
+
+/**
+ * Returns the ID of the highest certification type from a list of options.
+ *
+ * @param {CertificationComparison[]} options - An array of certification comparison objects.
+ * @returns {string} - The ID of the highest certification type.
+ */
+export function findHighestCertificateTypeId(options: CertificationComparison[]): string {
+  const highestTypeName = getHighestCertificationType(options);
+  return options.find((o) => o.bcCertificate === highestTypeName)?.id || "";
 }

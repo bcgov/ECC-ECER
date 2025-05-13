@@ -179,7 +179,7 @@ export default defineComponent({
         return;
       }
 
-      this.applicationStore.$patch({ draftApplication: { signedDate: this.date, stage: "ContactInformation" } });
+      this.applicationStore.$patch({ draftApplication: { signedDate: this.date } });
 
       let response = await this.applicationStore.upsertDraftApplication();
 

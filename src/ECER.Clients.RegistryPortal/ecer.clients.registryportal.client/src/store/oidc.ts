@@ -21,7 +21,6 @@ export const useOidcStore = defineStore("oidc", {
 
       if (user?.profile.identity_provider === "bceidbasic") {
         let { firstName, lastName } = parseFirstNameLastName(user?.profile.given_name || "");
-        console.log(user.profile);
         return {
           dateOfBirth: undefined,
           firstName: firstName,

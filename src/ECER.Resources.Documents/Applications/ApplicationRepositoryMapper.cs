@@ -10,6 +10,7 @@ internal class ApplicationRepositoryMapper : Profile
   public ApplicationRepositoryMapper()
   {
     CreateMap<Application, ecer_Application>(MemberList.Source)
+       .ForSourceMember(s => s.LabourMobilityCertificateInformation, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.CreatedOn, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.SubmittedOn, opts => opts.DoNotValidate())
        .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
@@ -39,6 +40,11 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.ecer_1YRExplanationChoice, opts => opts.MapFrom(s => s.OneYearRenewalExplanationChoice))
        .ForMember(d => d.ecer_5YRExplanationChoice, opts => opts.MapFrom(s => s.FiveYearRenewalExplanationChoice))
        .ForMember(d => d.ecer_RenewalExplanationOther, opts => opts.MapFrom(s => s.RenewalExplanationOther))
+       .ForMember(d => d.ecer_CurrentCertificationNumber, opts => opts.MapFrom(s => (s.LabourMobilityCertificateInformation != null) ? s.LabourMobilityCertificateInformation.CurrentCertificationNumber : string.Empty))
+       .ForMember(d => d.ecer_lmcerthasothername, opts => opts.MapFrom(s => (s.LabourMobilityCertificateInformation != null && s.LabourMobilityCertificateInformation.HasOtherName == true) ? true : false))
+       .ForMember(d => d.ecer_LegalFirstName, opts => opts.MapFrom(s => (s.LabourMobilityCertificateInformation != null) ? s.LabourMobilityCertificateInformation.LegalFirstName : string.Empty))
+       .ForMember(d => d.ecer_LegalMiddleName, opts => opts.MapFrom(s => (s.LabourMobilityCertificateInformation != null) ? s.LabourMobilityCertificateInformation.LegalMiddleName : string.Empty))
+       .ForMember(d => d.ecer_LegalLastName, opts => opts.MapFrom(s => (s.LabourMobilityCertificateInformation != null) ? s.LabourMobilityCertificateInformation.LegalLastName : string.Empty))
        .ReverseMap()
        .ValidateMemberList(MemberList.Destination)
        .ForCtorParam(nameof(Application.Id), opts => opts.MapFrom(s => s.ecer_ApplicationId!.ToString()))
@@ -57,7 +63,24 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.MapFrom(s => s.ecer_AddMoreWorkExperienceReference))
        .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.MapFrom(s => s.ecer_AddMoreProfessionalDevelopment))
        .ForMember(d => d.Origin, opts => opts.MapFrom(s => s.ecer_Origin))
+       .ForMember(d => d.LabourMobilityCertificateInformation, o => o.MapFrom(s => s))
        .ForMember(d => d.Stage, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.ecer_PortalStage) ? "ContactInformation" : s.ecer_PortalStage));
+
+    CreateMap<ecer_Application, CertificateInformation>()
+    .ForMember(d => d.CertificateComparisonId,
+        o => o.MapFrom(s =>
+            s.ecer_application_certificationcomparisonid.ecer_certificationcomparisonId.ToString()
+            ?? string.Empty))
+    .ForMember(d => d.ExistingCertificationType,
+        o => o.MapFrom(s =>
+            s.ecer_application_certificationcomparisonid.ecer_transferringcertificateName
+            ?? string.Empty))
+    .ForMember(d => d.CurrentCertificationNumber, o => o.MapFrom(s => s.ecer_CurrentCertificationNumber))
+    .ForMember(d => d.HasOtherName, o => o.MapFrom(s => s.ecer_lmcerthasothername))
+    .ForMember(d => d.LegalFirstName, o => o.MapFrom(s => s.ecer_LegalFirstName))
+    .ForMember(d => d.LegalMiddleName, o => o.MapFrom(s => s.ecer_LegalMiddleName))
+    .ForMember(d => d.LegalLastName, o => o.MapFrom(s => s.ecer_LegalLastName))
+    .ForMember(d => d.LabourMobilityProvince, o => o.MapFrom(s => s.ecer_application_lmprovinceid));
 
     CreateMap<ecer_Application, IEnumerable<CertificationType>>()
         .ConstructUsing((s, _) =>

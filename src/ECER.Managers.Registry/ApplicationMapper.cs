@@ -25,12 +25,13 @@ internal class ApplicationMapper : Profile
         .ValidateMemberList(MemberList.Destination)
         .ForCtorParam(nameof(Contract.Applications.Application.RegistrantId), opts => opts.MapFrom(s => s.ApplicantId))
         ;
+    CreateMap<Contract.Applications.CertificateInformation, CertificateInformation>().ReverseMap();
     CreateMap<Contract.Applications.Transcript, Transcript>().ReverseMap();
     CreateMap<Contract.Applications.TranscriptDocuments, TranscriptDocuments>().ReverseMap();
     CreateMap<Contract.Applications.ProfessionalDevelopment, ProfessionalDevelopment>().ReverseMap();
     CreateMap<Contract.Applications.WorkExperienceReference, WorkExperienceReference>().ReverseMap();
     CreateMap<Contract.Applications.CharacterReference, CharacterReference>().ReverseMap();
-
+    
     CreateMap<Contract.Applications.ReferenceContactInformation, ReferenceContactInformation>();
     CreateMap<Contract.Applications.CharacterReferenceEvaluation, CharacterReferenceEvaluation>();
     CreateMap<Contract.Applications.CharacterReferenceSubmissionRequest, CharacterReferenceSubmissionRequest>()

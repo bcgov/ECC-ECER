@@ -193,6 +193,7 @@ export default defineComponent({
           case "WorkReferences":
           case "CharacterReferences":
           case "Review":
+          case "CertificateInformation":
             this.saveDraftAndAlertSuccess(false);
             this.incrementWizard();
             break;
