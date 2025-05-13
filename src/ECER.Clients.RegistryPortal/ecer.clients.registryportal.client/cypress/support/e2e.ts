@@ -1,7 +1,7 @@
 import "./commands";
 
 // eslint-disable-next-line mocha/no-top-level-hooks
-before(() => {
+beforeEach(() => {
   // Set the viewport (pull width/height from Cypress.env)
   const width = Cypress.env("DEVICE_VIEWPORT")?.WIDTH ?? Cypress.config("viewportWidth");
   const height = Cypress.env("DEVICE_VIEWPORT")?.HEIGHT ?? Cypress.config("viewportHeight");
@@ -16,7 +16,6 @@ before(() => {
   cy.resetUserState();
 
   //login
-
   // cache under the key "bcsc-user"
   cy.session(
     "bcsc-user",
@@ -28,10 +27,6 @@ before(() => {
       cacheAcrossSpecs: true, // this will cache the session across all specs
     },
   );
-});
-
-// eslint-disable-next-line mocha/no-top-level-hooks
-beforeEach(() => {
-  // load app
+  //load app
   cy.visit("/");
 });
