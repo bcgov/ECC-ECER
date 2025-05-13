@@ -24,24 +24,24 @@ describe("New ECE 5 Year + ITE Certificate Application", () => {
     /** Education */
     cy.get(selectors.education.addEducationButton).click();
 
-    cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia", { force: true });
+    cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia");
 
-    cy.get(selectors.education.postSecondaryInstitutionDropDownList).should("exist").type("Other", { force: true });
+    cy.get(selectors.education.postSecondaryInstitutionDropDownList).should("exist").type("Other");
     cy.get("body").click({ force: true });
 
-    cy.get(selectors.education.institutionNameInput).type("TEST Educational Institution", { force: true });
+    cy.get(selectors.education.institutionNameInput).type("TEST Educational Institution");
 
-    cy.get(selectors.education.programNameInput).type("TEST ECE 5 Year Course", { force: true });
+    cy.get(selectors.education.programNameInput).type("TEST ECE 5 Year Course");
 
     /* Start Date - DatePicker*/
     cy.get(selectors.education.programStartDateInput).click({ force: true });
-    cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`, { force: true });
+    cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`);
 
     /* End Date - DatePicker*/
     cy.get(selectors.education.programEndDateInput).click({ force: true });
-    cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`, { force: true });
+    cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`);
 
-    cy.get(selectors.education.studentIDInput).type("1234", { force: true });
+    cy.get(selectors.education.studentIDInput).type("1234");
     cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {
       cy.get(selectors.elementType.radio).first().check({ force: true });
     });
@@ -67,8 +67,8 @@ describe("New ECE 5 Year + ITE Certificate Application", () => {
     cy.get(selectors.workExperienceReference.lastNameInput).type("WorkReferenceLastName");
     cy.get(selectors.workExperienceReference.firstNameInput).type("WorkReferenceFirstName");
     cy.get(selectors.workExperienceReference.emailInput).type("WorkExperience_Reference@test.gov.bc.ca");
-    cy.get(selectors.workExperienceReference.phoneNumberInput).type("1234567890", { force: true });
-    cy.get(selectors.workExperienceReference.hoursInput).type("500", { force: true });
+    cy.get(selectors.workExperienceReference.phoneNumberInput).type("1234567890");
+    cy.get(selectors.workExperienceReference.hoursInput).type("500");
 
     cy.get(selectors.workExperienceReference.saveReferenceButton).click();
 

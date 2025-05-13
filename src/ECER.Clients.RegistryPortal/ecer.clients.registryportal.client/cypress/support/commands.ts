@@ -50,7 +50,7 @@ Cypress.Commands.add("logout", () => {
 });
 
 Cypress.Commands.add("resetUserState", () => {
-  const baseApiUrl: string = Cypress.env("API_URL").replace(/\/+$/, "");
+  const baseApiUrl: string = Cypress.env("API_URL").replace(/\/$/, "");
   const apiKey: string = Cypress.env("API_KEY");
   const externalUserId: string = Cypress.env("PORTAL_USER").EXTERNAL_USER_ID;
 
@@ -96,4 +96,9 @@ Cypress.Commands.overwrite("click", (originalFn, subject, options) => {
     });
 });
 
+// overwrite the built-in 'type' to always include force: true
+Cypress.Commands.overwrite("type", (...args: any[]) => {
+  const [originalFn, subject, text, options = {}] = args;
+  return originalFn(subject, text, { force: true, ...options });
+});
 export {};

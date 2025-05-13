@@ -23,24 +23,24 @@ describe("New ECE Assistant Certificate Application", () => {
     /** Education */
     cy.get(selectors.education.addEducationButton).click();
 
-    cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia", { force: true });
+    cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia");
 
-    cy.get(selectors.education.postSecondaryInstitutionDropDownList).should("exist").type("Other", { force: true });
+    cy.get(selectors.education.postSecondaryInstitutionDropDownList).should("exist").type("Other");
     cy.get("body").click({ force: true });
 
-    cy.get(selectors.education.institutionNameInput).type("TEST Educational Institution", { force: true });
+    cy.get(selectors.education.institutionNameInput).type("TEST Educational Institution");
 
-    cy.get(selectors.education.programNameInput).type("TEST ECE Assistant Course", { force: true });
+    cy.get(selectors.education.programNameInput).type("TEST ECE Assistant Course");
 
     /* Start Date - DatePicker*/
     cy.get(selectors.education.programStartDateInput).click({ force: true });
-    cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`, { force: true });
+    cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`);
 
     /* End Date - DatePicker*/
     cy.get(selectors.education.programEndDateInput).click({ force: true });
-    cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`, { force: true });
+    cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`);
 
-    cy.get(selectors.education.studentIDInput).type("1234", { force: true });
+    cy.get(selectors.education.studentIDInput).type("1234");
     cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {
       cy.get(selectors.elementType.radio).first().check({ force: true });
     });
