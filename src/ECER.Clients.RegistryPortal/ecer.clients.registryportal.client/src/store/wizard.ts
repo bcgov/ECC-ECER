@@ -91,7 +91,7 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || oidcUserInfo?.email,
 
         // Certificate Information step data
-        ...(wizard.steps.certificateInformation.form.inputs.certificateInformation.id && {
+        ...(wizard.steps?.certificateInformation?.form?.inputs?.certificateInformation?.id && {
           [wizard.steps.certificateInformation.form.inputs.certificateInformation.id]: draftApplication?.labourMobilityCertificateInformation,
         }),
 
