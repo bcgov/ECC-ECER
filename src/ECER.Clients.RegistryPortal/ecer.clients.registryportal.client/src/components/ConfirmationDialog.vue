@@ -20,8 +20,8 @@
           <v-card-actions>
             <v-row>
               <v-col class="text-right d-flex flex-row justify-end flex-wrap ga-2">
-                <v-btn v-if="hasCancelButton" class="ma-0" variant="outlined" @click="cancel">{{ cancelButtonText }}</v-btn>
-                <v-btn class="ma-0" color="primary" variant="flat" @click="accept">{{ acceptButtonText }}</v-btn>
+                <v-btn v-if="hasCancelButton" :loading="loading" class="ma-0" variant="outlined" @click="cancel">{{ cancelButtonText }}</v-btn>
+                <v-btn class="ma-0" :loading="loading" color="primary" variant="flat" @click="accept">{{ acceptButtonText }}</v-btn>
               </v-col>
             </v-row>
           </v-card-actions>
@@ -70,6 +70,10 @@ export default defineComponent({
     hasCancelButton: {
       type: Boolean,
       default: true,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: {

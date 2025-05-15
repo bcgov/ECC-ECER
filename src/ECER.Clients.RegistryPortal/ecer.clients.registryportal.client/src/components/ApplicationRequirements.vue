@@ -183,14 +183,17 @@ export default defineComponent({
           this.router.push({ name: "declaration" });
         }
       } else if (this.applicationStore.isDraftApplicationLaborMobility) {
+        // handle case where user chooses 5 year specializations
         if (this.specializationSelection.length > 0) {
           this.applicationStore.$patch({
             draftApplication: { certificationTypes: ["FiveYears", ...this.specializationSelection] },
           });
-        } else {
+          //handle case where user does not select any specialization, we need to set the draftApplication to only FiveYears
+        } else if (this.specializationSelection.length === 0 && this.applicationStore.isDraftCertificateTypeFiveYears) {
           this.applicationStore.$patch({
             draftApplication: { certificationTypes: ["FiveYears"] },
           });
+          // in all other cases the draftApplication will be in the correct state (EceAssistant or OneYear)
         }
         this.router.push({ name: "declaration" });
       } else {
