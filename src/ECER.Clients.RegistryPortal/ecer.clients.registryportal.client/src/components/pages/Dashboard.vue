@@ -147,10 +147,11 @@
   </PageContainer>
 
   <ConfirmationDialog
-    :cancel-button-text="'Keep Application'"
-    :accept-button-text="'Cancel Application'"
-    :title="'Cancel Application'"
+    :cancel-button-text="'Keep application'"
+    :accept-button-text="'Cancel application'"
+    :title="'Cancel application'"
     :show="showCancelDialog"
+    :loading="cancelApplicationLoading"
     @cancel="() => (showCancelDialog = false)"
     @accept="cancelApplication"
   >
@@ -300,15 +301,18 @@ export default defineComponent({
     showOptions(): boolean {
       return this.certificationStore.hasCertifications && !this.showApplicationCard;
     },
+    cancelApplicationLoading(): boolean {
+      return this.loadingStore.isLoading("draftapplication_delete") || this.loadingStore.isLoading("application_get");
+    },
   },
 
   methods: {
     async cancelApplication() {
-      this.showCancelDialog = false;
       const { data: cancelledApplicationId } = await cancelDraftApplication(this.applicationStore.draftApplication.id!);
       if (cancelledApplicationId) {
-        this.applicationStore.fetchApplications();
+        await this.applicationStore.fetchApplications();
         this.alertStore.setSuccessAlert("Application successfully cancelled");
+        this.showCancelDialog = false;
       } else {
         this.alertStore.setFailureAlert("Unable to cancel application.");
       }
