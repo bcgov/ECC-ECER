@@ -36,28 +36,6 @@
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
-      <h2 class="mt-10">Certified in Canada?</h2>
-      <p class="mt-3">
-        If you're certified in another province or territory in Canada, you might be able to transfer your certification to British Columbia. Check the
-        <!-- prettier-ignore -->
-        <a href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/transfer-your-certification/certification-from-province-to-province">certification levels from province to province chart</a>
-        to find out if your certification transfers.
-      </p>
-      <p class="mt-6">Are you applying to transfer your certification?</p>
-      <v-radio-group
-        class="mb-10"
-        :model-value="applicationStore.draftApplication.applicationType"
-        @update:model-value="handleUpdateCertifiedInCanada"
-        :mandatory="true"
-        :hide-details="true"
-      >
-        <v-radio color="primary" label="No" value="New"></v-radio>
-        <v-radio
-          color="primary"
-          label="Yes – I have reviewed the certification levels from province to province chart and my certification is eligible to transfer"
-          value="LaborMobility"
-        ></v-radio>
-      </v-radio-group>
       <v-input v-model="selection" :rules="[Rules.required('Select a certificate type to begin your application')]"></v-input>
     </v-form>
 
