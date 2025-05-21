@@ -33,7 +33,7 @@ export interface RegistrantFlow {
 const assistantRegistrantFlow: RegistrantFlow = {
   types: ["EceAssistant"],
   title: "Apply for ECE Assistant certification",
-  text: "You'll be able to work alongside other ECE's in a licensed child care program for children birth to 5 years of age.",
+  text: "You'll be able to work alongside other ECEs in a licensed child care program for children birth to 5 years of age.",
 };
 
 const oneYearRegistrantFlow: RegistrantFlow = {
