@@ -91,7 +91,6 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     {
       var existingApplication = context.ecer_ApplicationSet.SingleOrDefault(c => c.ecer_ApplicationId == ecerApplication.ecer_ApplicationId);
       if (existingApplication == null) throw new InvalidOperationException($"ecer_Application '{ecerApplication.ecer_ApplicationId}' not found");
-      if (existingApplication.StatusCode != ecer_Application_StatusCode.Draft) throw new InvalidOperationException($"ecer_Application '{ecerApplication.ecer_ApplicationId}' is not in draft status. Save is not allowed, it's status is `{ecerApplication.statuscodeName}`");
 
       if (ecerApplication.ecer_DateSigned.HasValue && existingApplication.ecer_DateSigned.HasValue) ecerApplication.ecer_DateSigned = existingApplication.ecer_DateSigned;
 

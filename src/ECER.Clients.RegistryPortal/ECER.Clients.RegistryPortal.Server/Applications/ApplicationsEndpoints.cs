@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using AngleSharp.Dom;
+using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
+using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
@@ -15,7 +17,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (string? id, SaveDraftApplicationRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>,NotFound>> (string? id, SaveDraftApplicationRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
         {
           bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
           bool ApplicationIdIsNotGuid = !Guid.TryParse(request.DraftApplication.Id, out _); if (ApplicationIdIsNotGuid && request.DraftApplication.Id != null) { request.DraftApplication.Id = null; }
@@ -23,6 +25,18 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           if (request.DraftApplication.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
           var userContext = ctx.User.GetUserContext();
           var draftApplication = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
+          
+          if(id != null)
+          {
+            var query = new ApplicationsQuery
+            {
+              ById = id,
+              ByApplicantId = userContext!.UserId,
+              ByStatus =  [Managers.Registry.Contract.Applications.ApplicationStatus.Draft ]
+            };
+            var results = await messageBus.Send(query, ct);
+            if(!results.Items.Any()) return TypedResults.NotFound();
+          }
 
           var application = await messageBus.Send(new SaveDraftApplicationCommand(draftApplication), ct);
           return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<Application>(application)));
