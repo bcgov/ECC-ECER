@@ -156,7 +156,7 @@ export default defineComponent({
 
     return {
       items,
-      specializationSelection: [] as Components.Schemas.CertificationType[],
+      specializationSelection: ["Ite", "Sne"] as Components.Schemas.CertificationType[],
     };
   },
   computed: {
@@ -184,16 +184,14 @@ export default defineComponent({
         }
       } else if (this.applicationStore.isDraftApplicationLaborMobility) {
         // handle case where user chooses 5 year specializations
-        if (this.specializationSelection.length > 0) {
+        if (
+          this.applicationStore.isDraftCertificateTypeFiveYears &&
+          this.applicationStore.isDraftCertificateTypeIte &&
+          this.applicationStore.isDraftCertificateTypeSne
+        ) {
           this.applicationStore.$patch({
             draftApplication: { certificationTypes: ["FiveYears", ...this.specializationSelection] },
           });
-          //handle case where user does not select any specialization, we need to set the draftApplication to only FiveYears
-        } else if (this.specializationSelection.length === 0 && this.applicationStore.isDraftCertificateTypeFiveYears) {
-          this.applicationStore.$patch({
-            draftApplication: { certificationTypes: ["FiveYears"] },
-          });
-          // in all other cases the draftApplication will be in the correct state (EceAssistant or OneYear)
         }
         this.router.push({ name: "declaration" });
       } else {
