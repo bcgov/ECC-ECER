@@ -1,6 +1,7 @@
 export default {
   dashboard: {
     applyNowButton: 'button[id="btnApplyNow"]',
+    renew: 'button[id="btnRenew"]',
   },
   navigationBar: {
     logOutLink: 'p[id="lnkLogOut"]',
@@ -56,6 +57,19 @@ export default {
     phoneNumberInput: 'input[id="txtWorkReferencePhoneNumber"]',
     hoursInput: 'input[id="txtWorkReferenceHours"]',
     saveReferenceButton: 'button[id="btnSaveWorkReference"]',
+  },
+  professionalDevelopment: {
+    addCourseOrWorkshop: 'button span.v-btn__content',
+    courseNameInput: 'input[id="txtCourseName"]',
+    howManyHours: 'input[id="txtNumberOfHours"]',
+    nameOfPlace: 'input[id="txtOrganizationName"]',
+    phoneNoOfInstructorCheckBox: 'input[id="chkInstructorPhoneNumber"]',
+    nameOfInstructor: 'input[id="txtInstructorName"]',
+    PhoneNoOfInstructor: 'input[id="txtOrganizationPhoneNumber"]',
+    saveCourseOrWorkshop: 'button[id="btnSaveProfessionalDevelopment"]',
+    courseStartDateInput: 'input[id="txtCourseStartDate"]',
+    courseEndDateInput: 'input[id="txtCourseEndDate"]',
+    renewalInformationcheck: 'input[value="IliveandworkinacommunitywithoutothercertifiedECEs"]'
   },
   datePicker: {
     monthDiv: "div.v-date-picker-month",
