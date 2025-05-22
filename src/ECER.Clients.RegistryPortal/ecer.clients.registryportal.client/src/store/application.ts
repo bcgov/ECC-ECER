@@ -329,6 +329,20 @@ export const useApplicationStore = defineStore("application", {
       }
       return draftApplicationResponse;
     },
+    resetDraftApplication(): void {
+      this.draftApplication = {
+        certificationTypes: [] as Components.Schemas.CertificationType[],
+        id: undefined,
+        signedDate: null,
+        stage: "ContactInformation",
+        transcripts: [] as Components.Schemas.Transcript[],
+        characterReferences: [] as Components.Schemas.CharacterReference[],
+        workExperienceReferences: [] as Components.Schemas.WorkExperienceReference[],
+        professionalDevelopments: [] as Components.Schemas.ProfessionalDevelopment[],
+        applicationType: "New",
+        createdOn: null,
+      };
+    },
     async submitApplication(): Promise<Components.Schemas.SubmitApplicationResponse | null | undefined> {
       const { data: submitApplicationResponse } = await submitDraftApplication(this.draftApplication.id!);
       return submitApplicationResponse;
