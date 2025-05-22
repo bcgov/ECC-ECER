@@ -162,8 +162,12 @@ export default defineComponent({
     async handleSubmit() {
       const submitApplicationResponse = await this.applicationStore.submitApplication();
 
-      if (submitApplicationResponse?.applicationId) {
-        this.router.push({ name: "submitted", params: { applicationId: submitApplicationResponse.applicationId } });
+      if (submitApplicationResponse?.application) {
+        if (submitApplicationResponse !== null && submitApplicationResponse !== undefined && submitApplicationResponse.application) {
+          this.applicationStore.resetDraftApplication();
+          this.applicationStore.application = submitApplicationResponse.application;
+        }
+        this.router.push({ name: "submitted", params: { applicationId: submitApplicationResponse.application.id } });
       }
     },
     async handleSaveAndContinue() {
