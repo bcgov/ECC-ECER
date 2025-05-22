@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using static StackExchange.Redis.Role;
+using System.Diagnostics.Contracts;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
@@ -45,7 +47,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>, NotFound>> (ApplicationSubmissionRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>, NotFound>> (ApplicationSubmissionRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid)
@@ -69,7 +71,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             };
             return TypedResults.BadRequest(problemDetails);
           }
-          return TypedResults.Ok(new SubmitApplicationResponse(result.ApplicationId!));
+          return TypedResults.Ok(new SubmitApplicationResponse(mapper.Map<Application>(result.Application)));
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")
         .RequireAuthorization()
@@ -339,7 +341,7 @@ public record DraftApplicationResponse(Application Application);
 /// <param name="ApplicationId">The application id</param>
 public record CancelDraftApplicationResponse(string ApplicationId);
 
-public record SubmitApplicationResponse(string ApplicationId);
+public record SubmitApplicationResponse(Application Application);
 
 public record UpdateReferenceResponse(string ReferenceId);
 
