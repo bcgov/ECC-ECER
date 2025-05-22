@@ -106,9 +106,8 @@ public class Join2QueryExpressionBuilder<TEntity> : QueryExpressionBuilder<TEnti
             {
               if (entity.GetAttributeValue<EntityReference>(m2oj.KeyAttributeName) == null) continue;
             }
-            catch (Exception ex)
+            catch 
             {
-              Console.WriteLine(ex);
               continue;
             }
             var key = entity.GetAttributeValue<EntityReference>(m2oj.KeyAttributeName)!.Id;
