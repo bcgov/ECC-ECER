@@ -1,8 +1,6 @@
-﻿using AngleSharp.Dom;
-using AutoMapper;
+﻿using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
-using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
@@ -10,8 +8,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using static StackExchange.Redis.Role;
-using System.Diagnostics.Contracts;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
