@@ -101,6 +101,9 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     var verified = contact.ecer_IsVerified;
     var statusCode = contact.StatusCode;
+    var firstname = contact.FirstName;
+    var middlename = contact.MiddleName;
+    var lastname = contact.LastName;
     var idVerificationDecision = contact.ecer_idverificationdecision;
 
     context.Detach(contact);
@@ -108,6 +111,9 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
     var tempClientId = contact.ecer_TempClientID;
     contact = mapper.Map<Contact>(registrant.Profile)!;
     contact.ContactId = contactId;
+    contact.FirstName = firstname;
+    contact.MiddleName = middlename;
+    contact.LastName = lastname;
     contact.ecer_IsVerified = verified;
     contact.ecer_ClientID = clientId;
     contact.ecer_TempClientID = tempClientId;
