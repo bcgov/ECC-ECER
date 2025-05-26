@@ -12,7 +12,7 @@
     <br />
     <p>It is important to keep your contact information up-to-date in your My ECE Registry profile.</p>
     <br />
-    <div v-if="draftApplicationHasTranscripts">
+    <div v-if="applicationHasTranscripts">
       <h3>Transcripts</h3>
       <br />
       <ul class="ml-10">
@@ -23,7 +23,7 @@
       </ul>
     </div>
     <br />
-    <div v-if="draftApplicationHasTranscripts && draftApplicationHasEducationNotRecognized">
+    <div v-if="applicationHasTranscripts && applicationHasEducationNotRecognized">
       <h3>Supporting documents</h3>
       <br />
       <ul class="ml-10">
@@ -87,11 +87,11 @@ export default defineComponent({
     return { applicationStore };
   },
   computed: {
-    draftApplicationHasTranscripts() {
-      return (this.applicationStore.draftApplication.transcripts?.length || 0) > 0;
+    applicationHasTranscripts() {
+      return (this.applicationStore.application?.transcripts?.length || 0) > 0;
     },
-    draftApplicationHasEducationNotRecognized() {
-      return this.applicationStore.draftApplication.transcripts?.some((transcript) => transcript.educationRecognition === "NotRecognized");
+    applicationHasEducationNotRecognized() {
+      return this.applicationStore.application?.transcripts?.some((transcript) => transcript.educationRecognition === "NotRecognized");
     },
   },
 });
