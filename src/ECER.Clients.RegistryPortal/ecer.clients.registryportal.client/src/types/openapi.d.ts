@@ -35,6 +35,7 @@ declare namespace Components {
       fiveYearRenewalExplanationChoice?: FiveYearRenewalExplanations;
       renewalExplanationOther?: string | null;
       origin?: ApplicationOrigin;
+      labourMobilityCertificateInformation?: CertificateInformation;
     }
     export interface ApplicationConfiguration {
       clientAuthenticationMethods?: {
@@ -101,6 +102,16 @@ declare namespace Components {
       endDate?: string; // date-time
       displayOrder?: number; // int32
     }
+    export interface CertificateInformation {
+      certificateComparisonId?: string | null;
+      labourMobilityProvince?: Province;
+      currentCertificationNumber?: string | null;
+      existingCertificationType?: string | null;
+      legalFirstName?: string | null;
+      legalMiddleName?: string | null;
+      legalLastName?: string | null;
+      hasOtherName?: boolean | null;
+    }
     export type CertificatePDFGeneration = "No" | "Requested" | "Yes";
     export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
     export interface Certification {
@@ -119,6 +130,10 @@ declare namespace Components {
       levels?: CertificationLevel[] | null;
       files?: CertificationFile[] | null;
       certificateConditions?: CertificateCondition[] | null;
+    }
+    export interface CertificationComparison {
+      id?: string | null;
+      bcCertificate?: string | null;
     }
     export interface CertificationFile {
       id?: string | null;
@@ -251,6 +266,10 @@ declare namespace Components {
     export interface CommunicationsStatusResults {
       status?: CommunicationsStatus;
     }
+    export interface ComparisonRecord {
+      transferringCertificate?: OutOfProvinceCertificationType;
+      options?: CertificationComparison[] | null;
+    }
     export type ComprehensiveReportOptions = "FeeWaiver" | "InternationalCredentialEvaluationService" | "RegistryAlreadyHas";
     export interface Country {
       countryId?: string | null;
@@ -275,6 +294,7 @@ declare namespace Components {
       renewalExplanationOther?: string | null;
       createdOn?: string | null; // date-time
       origin?: ApplicationOrigin;
+      labourMobilityCertificateInformation?: CertificateInformation;
     }
     /**
      * Save draft application response
@@ -354,6 +374,10 @@ declare namespace Components {
       token?: string | null;
       unabletoProvideReferenceReasons?: UnabletoProvideReferenceReasons;
       recaptchaToken?: string | null;
+    }
+    export interface OutOfProvinceCertificationType {
+      id?: string | null;
+      certificationType?: string | null;
     }
     export interface PortalInvitation {
       id?: string | null;
@@ -812,6 +836,21 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
+  namespace CertificationComparisonGet {
+    namespace Parameters {
+      export type Id = string;
+      export type ProvinceId = string;
+    }
+    export interface PathParameters {
+      id?: Parameters.Id;
+    }
+    export interface QueryParameters {
+      provinceId?: Parameters.ProvinceId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ComparisonRecord[];
+    }
+  }
   namespace CertificationGet {
     namespace Parameters {
       export type Id = string;
@@ -1118,6 +1157,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.CountryGet.Responses.$200>;
+  /**
+   * certificationComparison_get - Handles certification comparison queries
+   */
+  "certificationComparison_get"(
+    parameters?: Parameters<Paths.CertificationComparisonGet.QueryParameters & Paths.CertificationComparisonGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.CertificationComparisonGet.Responses.$200>;
   /**
    * psi_get - Handles psi queries
    */
@@ -1436,6 +1483,16 @@ export interface PathsDictionary {
      * country_get - Handles country queries
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.CountryGet.Responses.$200>;
+  };
+  ["/api/certificationComparison/{id}"]: {
+    /**
+     * certificationComparison_get - Handles certification comparison queries
+     */
+    "get"(
+      parameters?: Parameters<Paths.CertificationComparisonGet.QueryParameters & Paths.CertificationComparisonGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CertificationComparisonGet.Responses.$200>;
   };
   ["/api/postSecondaryInstitutionList/{id}"]: {
     /**
@@ -1792,9 +1849,11 @@ export type ApplicationSubmissionRequest = Components.Schemas.ApplicationSubmiss
 export type ApplicationTypes = Components.Schemas.ApplicationTypes;
 export type CancelDraftApplicationResponse = Components.Schemas.CancelDraftApplicationResponse;
 export type CertificateCondition = Components.Schemas.CertificateCondition;
+export type CertificateInformation = Components.Schemas.CertificateInformation;
 export type CertificatePDFGeneration = Components.Schemas.CertificatePDFGeneration;
 export type CertificateStatusCode = Components.Schemas.CertificateStatusCode;
 export type Certification = Components.Schemas.Certification;
+export type CertificationComparison = Components.Schemas.CertificationComparison;
 export type CertificationFile = Components.Schemas.CertificationFile;
 export type CertificationLevel = Components.Schemas.CertificationLevel;
 export type CertificationLookupRequest = Components.Schemas.CertificationLookupRequest;
@@ -1814,6 +1873,7 @@ export type CommunicationSeenRequest = Components.Schemas.CommunicationSeenReque
 export type CommunicationStatus = Components.Schemas.CommunicationStatus;
 export type CommunicationsStatus = Components.Schemas.CommunicationsStatus;
 export type CommunicationsStatusResults = Components.Schemas.CommunicationsStatusResults;
+export type ComparisonRecord = Components.Schemas.ComparisonRecord;
 export type ComprehensiveReportOptions = Components.Schemas.ComprehensiveReportOptions;
 export type Country = Components.Schemas.Country;
 export type CourseOutlineOptions = Components.Schemas.CourseOutlineOptions;
@@ -1834,6 +1894,7 @@ export type LikertScale = Components.Schemas.LikertScale;
 export type OidcAuthenticationSettings = Components.Schemas.OidcAuthenticationSettings;
 export type OneYearRenewalexplanations = Components.Schemas.OneYearRenewalexplanations;
 export type OptOutReferenceRequest = Components.Schemas.OptOutReferenceRequest;
+export type OutOfProvinceCertificationType = Components.Schemas.OutOfProvinceCertificationType;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
 export type PortalTags = Components.Schemas.PortalTags;
