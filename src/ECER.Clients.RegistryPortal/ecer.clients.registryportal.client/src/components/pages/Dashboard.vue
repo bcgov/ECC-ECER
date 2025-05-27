@@ -83,7 +83,9 @@
                     {{ certificationStore.latestCertification?.number }}
                   </p>
                 </div>
-                <CertificationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" />
+                <template v-if="certificationStore.latestCertification">
+                  <CertificationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" :certification="certificationStore.latestCertification" />
+                </template>
               </div>
               <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
             </v-col>
