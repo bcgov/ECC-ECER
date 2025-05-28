@@ -6,6 +6,7 @@ const ecerTheme: ThemeDefinition = {
     primary: "#003366",
     alternate: "#1976D2",
     secondary: "#38598A",
+    tertiary: "#47759F",
     "grey-dark": "#313231",
     "grey-light": "#757575",
     "grey-lightest": "#dee2e6",

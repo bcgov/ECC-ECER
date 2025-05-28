@@ -1,5 +1,5 @@
 <template>
-  <v-card :rounded="!isRounded ? '0' : ''" flat color="background-light" class="pa-4">
+  <v-card :rounded="true" :border="true" flat class="pa-4 custom-border">
     <v-card-item class="ma-4">
       <p class="font-weight-bold">Certification</p>
       <div class="d-flex flex-column mt-2">
@@ -38,10 +38,6 @@ export default defineComponent({
     certification: {
       type: Object as PropType<Components.Schemas.Certification>,
       required: true,
-    },
-    isRounded: {
-      type: Boolean,
-      default: true,
     },
   },
   setup() {
@@ -160,3 +156,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="css" scoped>
+.custom-border {
+  border: 2px solid var(--v-theme-tertiary);
+}
+</style>
