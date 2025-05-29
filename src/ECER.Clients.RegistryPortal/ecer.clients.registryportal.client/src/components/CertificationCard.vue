@@ -1,34 +1,43 @@
 <template>
   <v-card :rounded="true" :border="true" flat class="px-8 pb-9 pt-4 custom-border">
     <v-card-item>
-      <div class="d-flex flex-column ga-5">
-        <h1>Early Childhood Educator - {{ titleArray.join(" ") }}</h1>
-        <div>
-          <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
-        </div>
-        <div v-if="certification.hasConditions">
-          <v-btn prepend-icon="mdi-newspaper-variant-outline" base-color="alert-warning" class="border-sm border-warning-border border-opacity-100">
-            View terms and conditions
-          </v-btn>
-        </div>
-        <p>{{ subText }}</p>
-        <div>
-          <p class="font-weight-bold">Effective date: {{ formattedEffectiveDate }}</p>
-          <p class="font-weight-bold">Expiry date: {{ formattedExpiryDate }}</p>
-        </div>
-        <RenewAction :certification="certification" />
-        <!-- <a v-if="isLatestCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a> -->
-        <!-- <div v-if="certificateGenerationRequested" class="mt-8">
-          <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
-          <p>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</p>
-        </div> -->
-      </div>
+      <v-row>
+        <v-col cols="9">
+          <div class="d-flex flex-column ga-5">
+            <h1>Early Childhood Educator - {{ titleArray.join(" ") }}</h1>
+            <div>
+              <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
+            </div>
+            <div v-if="certification.hasConditions">
+              <v-btn prepend-icon="mdi-newspaper-variant-outline" base-color="alert-warning" class="border-sm border-warning-border border-opacity-100">
+                View terms and conditions
+              </v-btn>
+            </div>
+            <p>{{ subText }}</p>
+            <div>
+              <p class="font-weight-bold">Effective date: {{ formattedEffectiveDate }}</p>
+              <p class="font-weight-bold">Expiry date: {{ formattedExpiryDate }}</p>
+            </div>
+            <RenewAction :certification="certification" />
+          </div>
+        </v-col>
+        <v-col cols="3" class="text-center d-flex justify-end align-center" style="min-width: 215px">
+          <div v-if="isLatestCertificateActive && doesCertificateFileExist">
+            <img src="../assets/certificate.svg" width="215" class="logo" alt="Certificate" />
+            <a v-if="isLatestCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
+          </div>
+          <div v-if="certificateGenerationRequested" class="mt-8">
+            <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
+            <h4>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</h4>
+          </div>
+        </v-col>
+      </v-row>
     </v-card-item>
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
+import { defineComponent, type DefineComponent, type PropType } from "vue";
 import { getCertificateFileById, requestCertificateFileGeneration } from "@/api/certification";
 import { useCertificationStore } from "@/store/certification";
 import { formatDate } from "@/utils/format";
@@ -172,26 +181,26 @@ export default defineComponent({
       return this.certification.statusCode === "Active" || this.certification.statusCode === "Renewed";
     },
   },
-  // async mounted() {
-  //   if (this.certificationStore.certifications && this.certificationStore.certifications.length > 0 && this.isLatestCertificateActive) {
-  //     if (this.certification.certificatePDFGeneration === "No") {
-  //       const response = await requestCertificateFileGeneration(this.certificationStore.certifications[0].id ?? "");
-  //       if (response) {
-  //         this.certificationStore.latestCertification.certificatePDFGeneration = "Requested";
-  //       }
-  //     } else if (this.certification.certificatePDFGeneration === "Yes") {
-  //       const file = await getCertificateFileById(this.certificationStore.certifications[0].id ?? "");
-  //       this.pdfUrl = window.URL.createObjectURL(file.data);
-  //       this.fileSize = humanFileSize(file.data.size);
-  //     }
-  //   }
-  // },
-  // unmounted() {
-  //   window.URL.revokeObjectURL(this.pdfUrl);
-  // },
+  async mounted() {
+    if (this.certificationStore.certifications && this.certificationStore.certifications.length > 0 && this.isLatestCertificateActive) {
+      if (this.certification.certificatePDFGeneration === "No") {
+        const response = await requestCertificateFileGeneration(this.certificationStore.certifications[0].id ?? "");
+        if (response) {
+          this.certification.certificatePDFGeneration = "Requested";
+        }
+      } else if (this.certification.certificatePDFGeneration === "Yes") {
+        const file = await getCertificateFileById(this.certificationStore.certifications[0].id ?? "");
+        this.pdfUrl = window.URL.createObjectURL(file.data);
+        this.fileSize = humanFileSize(file.data.size);
+      }
+    }
+  },
+  unmounted() {
+    window.URL.revokeObjectURL(this.pdfUrl);
+  },
   methods: {
     generateFileDisplayName() {
-      return `Download my certificate (PDF, ${this.fileSize})`;
+      return `Download certificate (PDF, ${this.fileSize})`;
     },
   },
 });
