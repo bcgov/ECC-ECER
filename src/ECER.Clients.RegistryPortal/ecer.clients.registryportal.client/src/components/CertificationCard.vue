@@ -7,7 +7,7 @@
           <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
         </div>
         <div v-if="certification.hasConditions">
-          <v-btn prepend-icon="mdi-newspaper-variant-outline" base-color="alert-warning" class="border-sm border-warning-border">
+          <v-btn prepend-icon="mdi-newspaper-variant-outline" base-color="alert-warning" class="border-sm border-warning-border border-opacity-100">
             View terms and conditions
           </v-btn>
         </div>
