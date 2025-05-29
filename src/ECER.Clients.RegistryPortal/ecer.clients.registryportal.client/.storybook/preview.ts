@@ -14,6 +14,8 @@ import { VDateInput } from "vuetify/labs/VDateInput";
 import ecerTheme from "../src/styles/ecer-theme"; // Your custom theme file
 import { createPinia } from "pinia";
 
+import "../src/styles/main.scss";
+
 // ✅ Global setup: Register Vuetify and Pinia
 setup((app) => {
   const vuetify = createVuetify({

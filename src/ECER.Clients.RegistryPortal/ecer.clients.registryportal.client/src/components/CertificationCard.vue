@@ -1,24 +1,27 @@
 <template>
-  <v-card :rounded="true" :border="true" flat class="pa-4 custom-border">
-    <v-card-item class="ma-4">
-      <p class="font-weight-bold">Certification</p>
-      <div class="d-flex flex-column mt-2">
-        <p v-for="(title, index) in titleArray" :key="index" class="extra-large">
-          {{ title }}
-        </p>
-      </div>
-      <a v-if="isLatestCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
-      <div v-if="certificateGenerationRequested" class="mt-8">
-        <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
-        <p>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</p>
-      </div>
-      <p class="font-weight-bold mt-8">Expires on</p>
-      <div class="d-flex flex-column flex-sm-row align-start align-sm-center mt-2 ga-4">
-        <p>{{ formattedExpiryDate }}</p>
-        <div class="d-flex ga-4">
+  <v-card :rounded="true" :border="true" flat class="px-8 pb-9 pt-4 custom-border">
+    <v-card-item>
+      <div class="d-flex flex-column ga-5">
+        <h1>Early Childhood Educator - {{ titleArray.join(" ") }}</h1>
+        <div>
           <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
-          <v-chip v-if="hasTermsAndConditions" color="grey-darkest" variant="outlined" size="small">Has Terms and Conditions</v-chip>
         </div>
+        <div v-if="certification.hasConditions">
+          <v-btn prepend-icon="mdi-newspaper-variant-outline" base-color="alert-warning" class="border-sm border-warning-border">
+            View terms and conditions
+          </v-btn>
+        </div>
+        <p>{{ subText }}</p>
+        <div>
+          <p class="font-weight-bold">Effective date: {{ formattedEffectiveDate }}</p>
+          <p class="font-weight-bold">Expiry date: {{ formattedExpiryDate }}</p>
+        </div>
+        <RenewAction :certification="certification" />
+        <!-- <a v-if="isLatestCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a> -->
+        <!-- <div v-if="certificateGenerationRequested" class="mt-8">
+          <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
+          <p>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</p>
+        </div> -->
       </div>
     </v-card-item>
   </v-card>
@@ -31,9 +34,13 @@ import { useCertificationStore } from "@/store/certification";
 import { formatDate } from "@/utils/format";
 import { humanFileSize } from "@/utils/functions";
 import type { Components } from "@/types/openapi";
+import RenewAction from "@/components/RenewAction.vue";
 
 export default defineComponent({
   name: "CertificationCard",
+  components: {
+    RenewAction,
+  },
   props: {
     certification: {
       type: Object as PropType<Components.Schemas.Certification>,
@@ -57,45 +64,62 @@ export default defineComponent({
     formattedExpiryDate(): string {
       return formatDate(this.certification.expiryDate ?? "", "LLLL d, yyyy");
     },
+    formattedEffectiveDate(): string {
+      return formatDate(this.certification.effectiveDate ?? "", "LLLL d, yyyy");
+    },
     chipText() {
-      // "Active" | "Cancelled" | "Expired" | "Inactive" | "Reprinted" | "Suspended"
+      let text;
       switch (this.certification.statusCode) {
         case "Active":
         case "Renewed":
         case "Reprinted":
-          return "Active";
+          text = "Active";
+          break;
         case "Expired":
         case "Inactive":
-          return "Expired";
+          text = "Expired";
+          break;
         case "Cancelled":
-          return "Cancelled";
+          text = "Cancelled";
+          break;
         case "Suspended":
-          return "Suspended";
+          text = "Suspended";
+          break;
         default:
-          return "Expired";
+          text = "Expired";
       }
+
+      if (this.certification.hasConditions) {
+        text += " with terms and conditions";
+      }
+
+      return text;
     },
     chipColor(): string {
       // "success" | "error" | "warning" | "info"
       switch (this.chipText) {
         case "Active":
+        case "Active with terms and conditions":
           return "success";
         case "Expired":
+        case "Expired with terms and conditions":
           return "error";
         case "Cancelled":
+        case "Cancelled with terms and conditions":
         case "Suspended":
+        case "Suspended with terms and conditions":
           return "grey-darkest";
         default:
           return "grey-darkest";
       }
     },
     titleArray() {
-      if (!this.certification.levels) return null;
+      if (!this.certification.levels) return [];
       return this.certification.levels
         ?.map((level: Components.Schemas.CertificationLevel) => {
           switch (level.type) {
             case "ITE":
-              return "+ Infant and Toddler";
+              return "+ Infant and Toddler Educator (ITE)";
             case "SNE":
               return "+ Special Needs Educator (SNE)";
             case "ECE 1 YR":
@@ -118,6 +142,22 @@ export default defineComponent({
             return 0;
           }
         });
+    },
+    subText() {
+      if (!this.certification.levels) return "";
+      const level = this.certification.levels.find((level) => level.type === "ECE 1 YR" || level.type === "ECE 5 YR" || level.type === "Assistant");
+      if (!level) return "";
+
+      switch (level.type) {
+        case "ECE 1 YR":
+          return "This certification allows you to work and complete work experience requirements for ECE Five Year certification. It is valid for 1 year.";
+        case "ECE 5 YR":
+          return "This is the highest level of certification in BC and allows you to work alone and/or as the primary educator. It is valid for 5 years.";
+        case "Assistant":
+          return "This certificate allows you to work alongside an ECE if you do not have the requirements (e.g., full educational program, work experience, professional development, etc.) for higher certification levels. It is valid for 5 years.";
+        default:
+          return "";
+      }
     },
     hasTermsAndConditions(): boolean {
       return this.certification.hasConditions ?? false;
@@ -159,6 +199,10 @@ export default defineComponent({
 
 <style lang="css" scoped>
 .custom-border {
-  border: 2px solid var(--v-theme-tertiary);
+  border-radius: 5px;
+  border-top: 16px solid rgba(var(--v-theme-primary, #013366));
+  border-right: 1px solid rgba(var(--v-theme-primary, #013366));
+  border-bottom: 1px solid rgba(var(--v-theme-primary, #013366));
+  border-left: 1px solid rgba(var(--v-theme-primary, #013366));
 }
 </style>

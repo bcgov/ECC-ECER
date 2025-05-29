@@ -3,10 +3,9 @@ import type { ThemeDefinition } from "vuetify";
 const ecerTheme: ThemeDefinition = {
   dark: false,
   colors: {
-    primary: "#003366",
+    primary: "#013366",
     alternate: "#1976D2",
     secondary: "#38598A",
-    tertiary: "#47759F",
     "grey-dark": "#313231",
     "grey-light": "#757575",
     "grey-lightest": "#dee2e6",
@@ -22,6 +21,7 @@ const ecerTheme: ThemeDefinition = {
     error: "#D8292F",
     success: "#2E8540",
     warning: "#FFC72C",
+    "warning-border": "#F8BB47",
     "alert-info": "#D4EAFF",
     "alert-warning": "#FEF1D8",
     "alert-error": "#F4E1E2",

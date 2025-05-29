@@ -102,9 +102,6 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12" sm="6" lg="4">
-              <RenewCard />
-            </v-col>
             <RegistrantCard />
           </v-row>
         </v-col>
@@ -181,7 +178,6 @@ import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import RegistrantCard from "@/components/RegistrantCard.vue";
-import RenewCard from "@/components/RenewCard.vue";
 import UnreadMessages from "@/components/UnreadMessages.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -205,7 +201,6 @@ export default defineComponent({
     ActionCard,
     Alert,
     UnreadMessages,
-    RenewCard,
     RegistrantCard,
   },
   async setup() {
