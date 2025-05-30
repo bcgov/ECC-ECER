@@ -56,6 +56,13 @@
         </v-col>
       </v-row>
 
+      <v-row>
+        <v-col cols="12">
+          <h1>{{ heading }}</h1>
+          <p v-if="subheading" class="mt-3">{{ subheading }}</p>
+        </v-col>
+      </v-row>
+
       <!-- Your ECE applications -->
       <v-row v-if="applications && userStore.isVerified && showApplicationCard" justify="center">
         <v-col>
@@ -267,6 +274,12 @@ export default defineComponent({
     userProfile: null as UserProfile | null,
   }),
   computed: {
+    heading(): string {
+      return this.showTransferCard ? "Apply for ECE certification in B.C." : "My ECE Registry dashboard";
+    },
+    subheading(): string {
+      return this.showTransferCard ? "There are two options to get certified in British Columbia." : "";
+    },
     showApplicationCard(): boolean {
       if (this.certificationStore.hasCertifications && this.applicationStore.applicationStatus === undefined) {
         return false;
