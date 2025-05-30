@@ -70,21 +70,21 @@
         </v-col>
       </v-row>
 
-      <!-- Your ECE certifications -->
+      <!-- My current certification -->
       <v-row v-if="userStore.isVerified" justify="center" class="mt-6">
         <v-col>
           <v-row>
             <v-col cols="12">
-              <ECEHeader title="Your ECE certifications" />
+              <ECEHeader title="My current certification" />
               <div v-if="certifications && certificationStore.hasCertifications">
                 <div class="d-flex flex-row justify-start ga-3 flex-wrap mt-4">
-                  <p>ECE registration number</p>
-                  <p>
+                  <p class="font-weight-bold">
+                    ECE registration number:
                     {{ certificationStore.latestCertification?.number }}
                   </p>
                 </div>
                 <template v-if="certificationStore.latestCertification">
-                  <CertificationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" :certification="certificationStore.latestCertification" />
+                  <CertificationCard class="mt-4" :is-rounded="false" :certification="certificationStore.latestCertification" />
                 </template>
               </div>
               <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
