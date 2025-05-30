@@ -2,7 +2,7 @@
   <v-card :rounded="true" :border="true" flat class="px-8 pb-9 pt-4 custom-border">
     <v-card-item>
       <v-row>
-        <v-col cols="9">
+        <v-col :cols="mdAndUp ? 8 : 12">
           <div class="d-flex flex-column ga-5">
             <h1>Early Childhood Educator - {{ titleArray.join(" ") }}</h1>
             <div>
@@ -18,13 +18,23 @@
               <p class="font-weight-bold">Effective date: {{ formattedEffectiveDate }}</p>
               <p class="font-weight-bold">Expiry date: {{ formattedExpiryDate }}</p>
             </div>
+
+            <!-- Certificate Inline on mobile -->
+            <template v-if="!mdAndUp">
+              <a v-if="isCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
+              <span v-if="certificateGenerationRequested" class="d-flex align-center ga-4">
+                <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
+                <h4>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</h4>
+              </span>
+            </template>
+
             <RenewAction :certification="certification" />
           </div>
         </v-col>
-        <v-col cols="3" class="text-center d-flex justify-end align-center" style="min-width: 215px">
-          <div v-if="isLatestCertificateActive && doesCertificateFileExist">
+        <v-col v-if="mdAndUp" cols="4" class="text-center d-flex justify-end align-center" style="min-width: 215px">
+          <div v-if="isCertificateActive && doesCertificateFileExist">
             <img src="../assets/certificate.svg" width="215" class="logo" alt="Certificate" />
-            <a v-if="isLatestCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
+            <a v-if="isCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
           </div>
           <div v-if="certificateGenerationRequested" class="mt-8">
             <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
@@ -44,6 +54,7 @@ import { formatDate } from "@/utils/format";
 import { humanFileSize } from "@/utils/functions";
 import type { Components } from "@/types/openapi";
 import RenewAction from "@/components/RenewAction.vue";
+import { useDisplay } from "vuetify";
 
 export default defineComponent({
   name: "CertificationCard",
@@ -58,9 +69,11 @@ export default defineComponent({
   },
   setup() {
     const certificationStore = useCertificationStore();
+    const { mdAndUp } = useDisplay();
 
     return {
       certificationStore,
+      mdAndUp,
     };
   },
   data() {
@@ -177,19 +190,24 @@ export default defineComponent({
     doesCertificateFileExist(): boolean {
       return this.certification.certificatePDFGeneration === "Yes";
     },
-    isLatestCertificateActive(): boolean {
+    isCertificateActive(): boolean {
       return this.certification.statusCode === "Active" || this.certification.statusCode === "Renewed";
     },
   },
   async mounted() {
-    if (this.certificationStore.certifications && this.certificationStore.certifications.length > 0 && this.isLatestCertificateActive) {
+    if (import.meta.env?.STORYBOOK) {
+      console.warn("Skipping API requests in Storybook");
+      return;
+    }
+
+    if (this.isCertificateActive) {
       if (this.certification.certificatePDFGeneration === "No") {
-        const response = await requestCertificateFileGeneration(this.certificationStore.certifications[0].id ?? "");
+        const response = await requestCertificateFileGeneration(this.certification.id ?? "");
         if (response) {
           this.certification.certificatePDFGeneration = "Requested";
         }
       } else if (this.certification.certificatePDFGeneration === "Yes") {
-        const file = await getCertificateFileById(this.certificationStore.certifications[0].id ?? "");
+        const file = await getCertificateFileById(this.certification.id ?? "");
         this.pdfUrl = window.URL.createObjectURL(file.data);
         this.fileSize = humanFileSize(file.data.size);
       }
