@@ -2,7 +2,7 @@
   <v-card :rounded="true" :border="true" flat class="px-8 pb-9 pt-4 custom-border">
     <v-card-item>
       <v-row>
-        <v-col :cols="mdAndUp ? 8 : 12">
+        <v-col :cols="mdAndUp && isCertificateActive ? 8 : 12">
           <div class="d-flex flex-column ga-5">
             <h1>Early Childhood Educator - {{ titleArray.join(" ") }}</h1>
             <div>
@@ -32,7 +32,7 @@
           </div>
         </v-col>
         <v-col v-if="mdAndUp" cols="4" class="text-center d-flex justify-end align-center" style="min-width: 215px">
-          <div v-if="isCertificateActive && doesCertificateFileExist">
+          <div v-if="isCertificateActive && doesCertificateFileExist" class="d-flex flex-column align-center justify-center">
             <img src="../assets/certificate.svg" width="215" class="logo" alt="Certificate" />
             <a v-if="isCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
           </div>
