@@ -12,7 +12,7 @@
     <br />
     <p>It is important to keep your contact information up-to-date in your My ECE Registry profile.</p>
     <br />
-    <div v-if="draftApplicationHasTranscripts">
+    <div v-if="applicationHasTranscripts">
       <h3>Transcripts</h3>
       <br />
       <ul class="ml-10">
@@ -23,7 +23,7 @@
       </ul>
     </div>
     <br />
-    <div v-if="draftApplicationHasTranscripts && draftApplicationHasEducationNotRecognized">
+    <div v-if="applicationHasTranscripts && applicationHasEducationNotRecognized">
       <h3>Supporting documents</h3>
       <br />
       <ul class="ml-10">
@@ -48,7 +48,7 @@
     <h3>Assessment</h3>
     <br />
     <ul class="ml-10">
-      <li v-if="draftApplicationHasTranscripts">We will assess your application after we have received your transcripts and references</li>
+      <li v-if="applicationHasTranscripts">We will assess your application after we have received your transcripts and references</li>
       <li v-else>We will assess your application after we have received your references</li>
       <li>We assess complete applications in the order they are received</li>
       <li>We will email you after we have assessed your application</li>
@@ -87,11 +87,11 @@ export default defineComponent({
     return { applicationStore };
   },
   computed: {
-    draftApplicationHasTranscripts() {
-      return (this.applicationStore.draftApplication.transcripts?.length || 0) > 0;
+    applicationHasTranscripts() {
+      return (this.applicationStore.application?.transcripts?.length || 0) > 0;
     },
-    draftApplicationHasEducationNotRecognized() {
-      return this.applicationStore.draftApplication.transcripts?.some((transcript) => transcript.educationRecognition === "NotRecognized");
+    applicationHasEducationNotRecognized() {
+      return this.applicationStore.application?.transcripts?.some((transcript) => transcript.educationRecognition === "NotRecognized");
     },
   },
 });

@@ -11,8 +11,6 @@
 // REMEMBER to do the following in your .vue file
 //  import * as Rule from @/utils/institute/form
 //  under data do rules: Rules <- allows you to use in <template>.
-
-import type { DropdownWrapper } from "@/types/form";
 import { DateTime } from "luxon";
 
 /**
@@ -21,9 +19,13 @@ import { DateTime } from "luxon";
  * @returns Function
  */
 const email = (message = "Enter a valid email address in the format 'name@email.com'") => {
-  return (v: string) => !v || /.+@.+\..+/.test(v) || message;
+  return (v: string) => {
+    if (!v) return true;
+    // RFC 5322 compliant pattern for most email addresses
+    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return pattern.test(v) || message;
+  };
 };
-
 /**
  * Rule to check input is a number
  * @param {String} message

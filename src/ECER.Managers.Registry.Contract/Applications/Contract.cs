@@ -46,7 +46,7 @@ public record ApplicationsQueryResults(IEnumerable<Application> Items);
 /// </summary>
 public record ApplicationSubmissionResult()
 {
-  public string? ApplicationId { get; set; }
+  public Application? Application { get; set; }
   public SubmissionError? Error { get; set; }
   public IEnumerable<string>? ValidationErrors { get; set; }
   public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
