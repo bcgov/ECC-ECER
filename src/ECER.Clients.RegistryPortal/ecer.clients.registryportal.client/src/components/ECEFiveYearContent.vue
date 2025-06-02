@@ -4,7 +4,7 @@
       <v-col cols="12">
         <p>
           This certification allows you to work alone and/or as the primary educator in licensed child care programs for children 3 to 5 years of age and to
-          work alongside an Infant Toddler Educator in licensed programs for children under 36-months.
+          work alongside an Infant and Toddler Educator in licensed programs for children under 36-months.
         </p>
         <br />
         <p>This certificate needs to be renewed every 5 years.</p>
