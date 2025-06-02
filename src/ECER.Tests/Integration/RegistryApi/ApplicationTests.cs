@@ -465,7 +465,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    var applicationId = (await applicationResponse.ReadAsJsonAsync<SubmitApplicationResponse>()).ShouldNotBeNull().ApplicationId;
+    var applicationId = (await applicationResponse.ReadAsJsonAsync<SubmitApplicationResponse>()).ShouldNotBeNull().Application.Id;
 
     var submittedApplicationByIdResponse = await Host.Scenario(_ =>
     {

@@ -15,7 +15,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>>> (string? id, SaveDraftApplicationRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>,NotFound>> (string? id, SaveDraftApplicationRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
         {
           bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
           bool ApplicationIdIsNotGuid = !Guid.TryParse(request.DraftApplication.Id, out _); if (ApplicationIdIsNotGuid && request.DraftApplication.Id != null) { request.DraftApplication.Id = null; }
@@ -23,6 +23,18 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           if (request.DraftApplication.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
           var userContext = ctx.User.GetUserContext();
           var draftApplication = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
+          
+          if(id != null)
+          {
+            var query = new ApplicationsQuery
+            {
+              ById = id,
+              ByApplicantId = userContext!.UserId,
+              ByStatus =  [Managers.Registry.Contract.Applications.ApplicationStatus.Draft ]
+            };
+            var results = await messageBus.Send(query, ct);
+            if(!results.Items.Any()) return TypedResults.NotFound();
+          }
 
           var application = await messageBus.Send(new SaveDraftApplicationCommand(draftApplication), ct);
           return TypedResults.Ok(new DraftApplicationResponse(mapper.Map<Application>(application)));
@@ -31,7 +43,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
         .RequireAuthorization()
         .WithParameterValidation();
 
-    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>, NotFound>> (ApplicationSubmissionRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+    endpointRouteBuilder.MapPost("/api/applications", async Task<Results<Ok<SubmitApplicationResponse>, BadRequest<ProblemDetails>, NotFound>> (ApplicationSubmissionRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
         {
           var userId = ctx.User.GetUserContext()?.UserId;
           bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid)
@@ -55,7 +67,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             };
             return TypedResults.BadRequest(problemDetails);
           }
-          return TypedResults.Ok(new SubmitApplicationResponse(result.ApplicationId!));
+          return TypedResults.Ok(new SubmitApplicationResponse(mapper.Map<Application>(result.Application)));
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")
         .RequireAuthorization()
@@ -325,7 +337,7 @@ public record DraftApplicationResponse(Application Application);
 /// <param name="ApplicationId">The application id</param>
 public record CancelDraftApplicationResponse(string ApplicationId);
 
-public record SubmitApplicationResponse(string ApplicationId);
+public record SubmitApplicationResponse(Application Application);
 
 public record UpdateReferenceResponse(string ReferenceId);
 

@@ -149,7 +149,7 @@ public class ApplicationHandlers(
     var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
     if (!draftApplicationResults.Items.Any())
     {
-      return new ApplicationSubmissionResult() { ApplicationId = request.applicationId, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
+      return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
     }
     var draftApplication = draftApplicationResults.Items.First();
 
@@ -157,10 +157,19 @@ public class ApplicationHandlers(
     var validationErrors = await validationEngine?.Validate(draftApplication)!;
     if (validationErrors.ValidationErrors.Any())
     {
-      return new ApplicationSubmissionResult() { ApplicationId = request.applicationId, Error = SubmissionError.DraftApplicationValidationFailed, ValidationErrors = validationErrors.ValidationErrors };
+      return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.DraftApplicationValidationFailed, ValidationErrors = validationErrors.ValidationErrors };
     }
     var applicationId = await applicationRepository.Submit(draftApplication.Id!, cancellationToken);
-    return new ApplicationSubmissionResult() { ApplicationId = applicationId };
+    var freshApplications = await applicationRepository.Query(new ApplicationQuery
+    {
+      ById = applicationId,
+      ByStatus = [Resources.Documents.Applications.ApplicationStatus.Submitted]
+    }, cancellationToken);
+    if (!freshApplications.Any())
+    {
+      return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
+    }
+    return new ApplicationSubmissionResult() { Application = mapper.Map<IEnumerable<Contract.Applications.Application>>(freshApplications)!.FirstOrDefault() };
   }
 
   /// <summary>
