@@ -48,7 +48,7 @@
     <h3>Assessment</h3>
     <br />
     <ul class="ml-10">
-      <li v-if="draftApplicationHasTranscripts">We will assess your application after we have received your transcripts and references</li>
+      <li v-if="applicationHasTranscripts">We will assess your application after we have received your transcripts and references</li>
       <li v-else>We will assess your application after we have received your references</li>
       <li>We assess complete applications in the order they are received</li>
       <li>We will email you after we have assessed your application</li>
