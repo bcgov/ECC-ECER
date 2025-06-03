@@ -84,6 +84,8 @@ export default defineComponent({
   },
   setup: () => {
     const applicationStore = useApplicationStore();
+    // reset the draft application, so user cannot click the back button and submit another application
+    applicationStore.resetDraftApplication();
     return { applicationStore };
   },
   computed: {
