@@ -31,8 +31,7 @@
       <EceTextField
         id="certificateNumber"
         :model-value="modelValue.currentCertificationNumber"
-        :rules="[Rules.required('Enter your certificate or registration number')]"
-        label="Certificate or registration number"
+        label="Certificate or registration number (if applicable to your province or territory)"
         maxlength="100"
         @update:model-value="(value: string) => updateField('currentCertificationNumber', value)"
       ></EceTextField>
