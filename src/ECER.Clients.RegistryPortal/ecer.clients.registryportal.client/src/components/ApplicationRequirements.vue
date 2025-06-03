@@ -156,7 +156,7 @@ export default defineComponent({
 
     return {
       items,
-      specializationSelection: ["Ite", "Sne"] as Components.Schemas.CertificationType[],
+      specializationSelection: [] as Components.Schemas.CertificationType[],
     };
   },
   computed: {

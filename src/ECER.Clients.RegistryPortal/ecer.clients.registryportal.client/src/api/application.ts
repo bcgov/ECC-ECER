@@ -39,13 +39,13 @@ const submitDraftApplication = async (applicationId: string): Promise<ApiRespons
   });
 };
 
-const cancelDraftApplication = async (applicationId: string): Promise<ApiResponse<Components.Schemas.SubmitApplicationResponse | null | undefined>> => {
+const cancelDraftApplication = async (applicationId: string): Promise<ApiResponse<Components.Schemas.CancelDraftApplicationResponse | null | undefined>> => {
   const client = await getClient();
   const pathParameters = {
     id: applicationId,
   };
 
-  return await apiResultHandler.execute<Components.Schemas.SubmitApplicationResponse | null | undefined>({
+  return await apiResultHandler.execute<Components.Schemas.CancelDraftApplicationResponse | null | undefined>({
     request: client.draftapplication_delete(pathParameters),
     key: "draftapplication_delete"
   });
