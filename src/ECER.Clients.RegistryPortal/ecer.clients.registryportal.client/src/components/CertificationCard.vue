@@ -1,49 +1,79 @@
 <template>
-  <v-card :rounded="!isRounded ? '0' : ''" flat color="background-light" class="pa-4">
-    <v-card-item class="ma-4">
-      <p class="font-weight-bold">Certification</p>
-      <div class="d-flex flex-column mt-2">
-        <p v-for="(title, index) in certificationStore.latestTitleArray" :key="index" class="extra-large">
-          {{ title }}
-        </p>
-      </div>
-      <a v-if="isLatestCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
-      <div v-if="certificateGenerationRequested" class="mt-8">
-        <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
-        <p>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</p>
-      </div>
-      <p class="font-weight-bold mt-8">Expires on</p>
-      <div class="d-flex flex-column flex-sm-row align-start align-sm-center mt-2 ga-4">
-        <p>{{ formattedExpiryDate }}</p>
-        <div class="d-flex ga-4">
-          <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
-          <v-chip v-if="certificationStore.latestHasTermsAndConditions" color="grey-darkest" variant="outlined" size="small">Has Terms and Conditions</v-chip>
-        </div>
-      </div>
+  <v-card :rounded="true" :border="true" flat class="px-8 pb-9 pt-4 custom-border">
+    <v-card-item>
+      <v-row>
+        <v-col :cols="mdAndUp && isCertificateActive ? 8 : 12">
+          <div class="d-flex flex-column ga-5">
+            <h1>Early Childhood Educator - {{ titleArray.join(" ") }}</h1>
+            <div>
+              <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
+            </div>
+            <div v-if="certification.hasConditions">
+              <v-btn prepend-icon="mdi-newspaper-variant-outline" base-color="alert-warning" class="border-sm border-warning-border border-opacity-100">
+                View terms and conditions
+              </v-btn>
+            </div>
+            <p>{{ subText }}</p>
+            <div>
+              <p class="font-weight-bold">Effective date: {{ formattedEffectiveDate }}</p>
+              <p class="font-weight-bold">Expiry date: {{ formattedExpiryDate }}</p>
+            </div>
+
+            <!-- Certificate Inline on mobile -->
+            <template v-if="!mdAndUp">
+              <a v-if="isCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
+              <span v-if="certificateGenerationRequested" class="d-flex align-center ga-4">
+                <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
+                <h4>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</h4>
+              </span>
+            </template>
+
+            <RenewAction :certification="certification" />
+          </div>
+        </v-col>
+        <v-col v-if="mdAndUp" cols="4" class="text-center d-flex justify-end align-center" style="min-width: 215px">
+          <div v-if="isCertificateActive && doesCertificateFileExist" class="d-flex flex-column align-center justify-center">
+            <img src="../assets/certificate.svg" width="215" class="logo" alt="Certificate" />
+            <a v-if="isCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
+          </div>
+          <div v-if="certificateGenerationRequested" class="mt-8">
+            <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
+            <h4>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</h4>
+          </div>
+        </v-col>
+      </v-row>
     </v-card-item>
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type DefineComponent, type PropType } from "vue";
 import { getCertificateFileById, requestCertificateFileGeneration } from "@/api/certification";
 import { useCertificationStore } from "@/store/certification";
 import { formatDate } from "@/utils/format";
 import { humanFileSize } from "@/utils/functions";
+import type { Components } from "@/types/openapi";
+import RenewAction from "@/components/RenewAction.vue";
+import { useDisplay } from "vuetify";
 
 export default defineComponent({
   name: "CertificationCard",
+  components: {
+    RenewAction,
+  },
   props: {
-    isRounded: {
-      type: Boolean,
-      default: true,
+    certification: {
+      type: Object as PropType<Components.Schemas.Certification>,
+      required: true,
     },
   },
   setup() {
     const certificationStore = useCertificationStore();
+    const { mdAndUp } = useDisplay();
 
     return {
       certificationStore,
+      mdAndUp,
     };
   },
   data() {
@@ -54,59 +84,130 @@ export default defineComponent({
   },
   computed: {
     formattedExpiryDate(): string {
-      return formatDate(this.certificationStore.latestCertification?.expiryDate ?? "", "LLLL d, yyyy");
+      return formatDate(this.certification.expiryDate ?? "", "LLLL d, yyyy");
+    },
+    formattedEffectiveDate(): string {
+      return formatDate(this.certification.effectiveDate ?? "", "LLLL d, yyyy");
     },
     chipText() {
-      // "Active" | "Cancelled" | "Expired" | "Inactive" | "Reprinted" | "Suspended"
-      switch (this.certificationStore.latestCertification?.statusCode) {
+      let text;
+      switch (this.certification.statusCode) {
         case "Active":
         case "Renewed":
         case "Reprinted":
-          return "Active";
+          text = "Active";
+          break;
         case "Expired":
         case "Inactive":
-          return "Expired";
+          text = "Expired";
+          break;
         case "Cancelled":
-          return "Cancelled";
+          text = "Cancelled";
+          break;
         case "Suspended":
-          return "Suspended";
+          text = "Suspended";
+          break;
         default:
-          return "Expired";
+          text = "Expired";
       }
+
+      if (this.certification.hasConditions) {
+        text += " with terms and conditions";
+      }
+
+      return text;
     },
     chipColor(): string {
       // "success" | "error" | "warning" | "info"
       switch (this.chipText) {
         case "Active":
+        case "Active with terms and conditions":
           return "success";
         case "Expired":
+        case "Expired with terms and conditions":
           return "error";
         case "Cancelled":
+        case "Cancelled with terms and conditions":
         case "Suspended":
+        case "Suspended with terms and conditions":
           return "grey-darkest";
         default:
           return "grey-darkest";
       }
     },
+    titleArray() {
+      if (!this.certification.levels) return [];
+      return this.certification.levels
+        ?.map((level: Components.Schemas.CertificationLevel) => {
+          switch (level.type) {
+            case "ITE":
+              return "+ Infant and Toddler Educator (ITE)";
+            case "SNE":
+              return "+ Special Needs Educator (SNE)";
+            case "ECE 1 YR":
+              return "ECE One Year";
+            case "ECE 5 YR":
+              return "ECE Five Year";
+            case "Assistant":
+              return "ECE Assistant";
+            default:
+              return "";
+          }
+        })
+        .sort((a: string, b: string) => {
+          // Move strings starting with '+' to the end of the array
+          if (a.startsWith("+") && !b.startsWith("+")) {
+            return 1;
+          } else if (!a.startsWith("+") && b.startsWith("+")) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+    },
+    subText() {
+      if (!this.certification.levels) return "";
+      const level = this.certification.levels.find((level) => level.type === "ECE 1 YR" || level.type === "ECE 5 YR" || level.type === "Assistant");
+      if (!level) return "";
+
+      switch (level.type) {
+        case "ECE 1 YR":
+          return "This certification allows you to work and complete work experience requirements for ECE Five Year certification. It is valid for 1 year.";
+        case "ECE 5 YR":
+          return "This is the highest level of certification in BC and allows you to work alone and/or as the primary educator. It is valid for 5 years.";
+        case "Assistant":
+          return "This certificate allows you to work alongside an ECE if you do not have the requirements (e.g., full educational program, work experience, professional development, etc.) for higher certification levels. It is valid for 5 years.";
+        default:
+          return "";
+      }
+    },
+    hasTermsAndConditions(): boolean {
+      return this.certification.hasConditions ?? false;
+    },
     certificateGenerationRequested(): boolean {
-      return this.certificationStore.latestCertification?.certificatePDFGeneration === "Requested";
+      return this.certification.certificatePDFGeneration === "Requested";
     },
     doesCertificateFileExist(): boolean {
-      return this.certificationStore.latestCertification?.certificatePDFGeneration === "Yes";
+      return this.certification.certificatePDFGeneration === "Yes";
     },
-    isLatestCertificateActive(): boolean {
-      return this.certificationStore.latestCertification?.statusCode === "Active" || this.certificationStore.latestCertification?.statusCode === "Renewed";
+    isCertificateActive(): boolean {
+      return this.certification.statusCode === "Active" || this.certification.statusCode === "Renewed";
     },
   },
   async mounted() {
-    if (this.certificationStore.certifications && this.certificationStore.certifications.length > 0 && this.isLatestCertificateActive) {
-      if (this.certificationStore.latestCertification?.certificatePDFGeneration === "No") {
-        const response = await requestCertificateFileGeneration(this.certificationStore.certifications[0].id ?? "");
+    if (import.meta.env?.STORYBOOK) {
+      console.warn("Skipping API requests in Storybook");
+      return;
+    }
+
+    if (this.isCertificateActive) {
+      if (this.certification.certificatePDFGeneration === "No") {
+        const response = await requestCertificateFileGeneration(this.certification.id ?? "");
         if (response) {
-          this.certificationStore.latestCertification.certificatePDFGeneration = "Requested";
+          this.certification.certificatePDFGeneration = "Requested";
         }
-      } else if (this.certificationStore.latestCertification?.certificatePDFGeneration === "Yes") {
-        const file = await getCertificateFileById(this.certificationStore.certifications[0].id ?? "");
+      } else if (this.certification.certificatePDFGeneration === "Yes") {
+        const file = await getCertificateFileById(this.certification.id ?? "");
         this.pdfUrl = window.URL.createObjectURL(file.data);
         this.fileSize = humanFileSize(file.data.size);
       }
@@ -117,8 +218,18 @@ export default defineComponent({
   },
   methods: {
     generateFileDisplayName() {
-      return `Download my certificate (PDF, ${this.fileSize})`;
+      return `Download certificate (PDF, ${this.fileSize})`;
     },
   },
 });
 </script>
+
+<style lang="css" scoped>
+.custom-border {
+  border-radius: 5px;
+  border-top: 16px solid rgba(var(--v-theme-primary, #013366));
+  border-right: 1px solid rgba(var(--v-theme-primary, #013366));
+  border-bottom: 1px solid rgba(var(--v-theme-primary, #013366));
+  border-left: 1px solid rgba(var(--v-theme-primary, #013366));
+}
+</style>

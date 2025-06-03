@@ -30,3 +30,5 @@ cypress.env.json
 *.sw?
 
 *.env
+
+*storybook.log
