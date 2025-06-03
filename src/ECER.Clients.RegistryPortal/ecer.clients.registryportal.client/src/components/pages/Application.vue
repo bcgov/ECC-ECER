@@ -165,7 +165,6 @@ export default defineComponent({
 
       if (submitApplicationResponse?.application) {
         if (submitApplicationResponse !== null && submitApplicationResponse !== undefined && submitApplicationResponse.application) {
-          this.applicationStore.resetDraftApplication();
           this.applicationStore.application = submitApplicationResponse.application;
         }
         this.router.push({ name: "submitted", params: { applicationId: submitApplicationResponse.application.id } });
