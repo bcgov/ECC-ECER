@@ -5,7 +5,7 @@
     :icon="icon"
     :title="title"
     :prominent="prominent"
-    closable
+    :closable="closable"
     variant="outlined"
     :rounded="rounded ? 'lg' : 0"
     :class="{
@@ -45,6 +45,10 @@ export default defineComponent({
     prominent: {
       type: Boolean,
       default: false,
+    },
+    closable: {
+      type: Boolean,
+      default: true,
     },
   },
 });
