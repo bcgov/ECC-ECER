@@ -85,6 +85,12 @@ export default defineComponent({
       default: false,
     },
   },
+  mounted() {
+    // we need to seed the preselected options for application.vue
+    if (this.preSelected.length > 0 && this.handleSpecializationSelection) {
+      this.handleSpecializationSelection(this.preSelected);
+    }
+  },
   data() {
     return {
       Rules,

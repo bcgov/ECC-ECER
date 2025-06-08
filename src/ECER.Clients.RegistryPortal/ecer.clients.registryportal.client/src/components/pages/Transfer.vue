@@ -57,7 +57,7 @@
         </v-row>
         <v-row v-if="highestCertificationType === CertificationType.Assistant">
           <v-col class="ml-1" cols="12">
-            <Callout type="warning" title="You can apply to transfer your certification to B.C. to an ECE Assistant">
+            <Callout type="warning" title="You can apply to transfer your certification to ECE Assistant certification in B.C.">
               <p>
                 You will be able to work alongside ECEs and/or Infant and Toddler Educators in licensed child care programs for children birth to 5 years of
                 age.
@@ -69,7 +69,8 @@
           <v-col class="ml-1" cols="12">
             <h2 class="mt-5">Work experience</h2>
             <p class="mt-5">
-              Your Canadian work experience determines your eligibility to apply for a transfer to either an ECE One Year or ECE Five Year certification in B.C.
+              Your Canadian work experience determines your eligibility to apply for a transfer for either an ECE One Year or ECE Five Year certification in
+              B.C.
             </p>
             <p class="mt-5">Your work experience:</p>
             <ul class="mt-3 ml-8">
@@ -85,7 +86,7 @@
             <Callout
               v-if="has500HoursWorkExperience === 'false'"
               type="warning"
-              title="You can apply to transfer your certification to B.C. to an ECE One Year certification"
+              title="You can apply to transfer your certification to ECE One Year certification in B.C."
             >
               <p class="mt-3">You will be able to work:</p>
               <ul class="mt-2 mb-8 ml-8">
@@ -97,7 +98,7 @@
             <Callout
               v-else-if="has500HoursWorkExperience === 'true' && highestCertificationType === CertificationType.FiveYearCertificate"
               type="warning"
-              title="You can apply to transfer your certification to B.C. to an ECE Five Year"
+              title="You can apply to transfer your certification to ECE Five Year certification in B.C."
             >
               <p class="mt-3">You will be able to work:</p>
               <ul class="mt-2 ml-8">
@@ -108,7 +109,7 @@
             <Callout
               v-else-if="has500HoursWorkExperience === 'true' && highestCertificationType === CertificationType.FiveYearCertificateITE_SNE"
               type="warning"
-              title="You can apply to transfer your certification to B.C. to an ECE Five Year with Infant and Toddler Educator (ITE) and Special Needs Educator (SNE)"
+              title="You can apply to transfer your certification to ECE Five Year certification with Infant and Toddler Educator (ITE) and Special Needs Educator (SNE) in B.C."
             >
               <p strong class="mt-3">An ECE Five Year certification allows you to work in licensed child care programs:</p>
               <ul class="mt-2 mb-8 ml-8">

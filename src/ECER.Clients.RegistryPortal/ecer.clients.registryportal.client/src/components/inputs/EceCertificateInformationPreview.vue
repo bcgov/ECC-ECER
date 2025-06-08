@@ -29,7 +29,7 @@
           <p class="small">Registration number</p>
         </v-col>
         <v-col>
-          <p class="small font-weight-bold">{{ certificateInformation.currentCertificationNumber }}</p>
+          <p class="small font-weight-bold">{{ certificateInformation.currentCertificationNumber || "—" }}</p>
         </v-col>
       </v-row>
       <v-row>
