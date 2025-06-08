@@ -350,9 +350,6 @@ export default defineComponent({
 <style scoped>
 ::v-deep(.force-full-content .v-btn__content) {
   flex: 1 1 auto !important;
-  width: 100% !important;
-  display: flex !important;
-  justify-content: space-between; /* optional */
-  align-items: center; /* optional */
+  justify-content: space-between;
 }
 </style>
