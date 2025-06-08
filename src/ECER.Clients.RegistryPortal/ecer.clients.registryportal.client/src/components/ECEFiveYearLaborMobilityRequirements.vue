@@ -6,7 +6,7 @@
   </v-row>
   <v-row>
     <v-col>
-      <p>You need the following information to apply to transfer your certification to British Columbia.</p>
+      <p>You need the following information to apply to transfer your certification to B.C.</p>
     </v-col>
   </v-row>
   <v-row>
@@ -34,8 +34,8 @@
       <ul class="ml-10">
         <li>Only include hours you worked once you began your early childhood education training program</li>
         <li>Only include hours completed within the last 5 years</li>
-        <li>Cannot include hours that were part of your education (practicum or placement hours)</li>
-        <li>Can include hours you volunteered</li>
+        <li>You cannot include hours that were part of your education (practicum or placement hours)</li>
+        <li>You can include hours you volunteered</li>
       </ul>
       <br />
       <p>The reference must be someone who:</p>

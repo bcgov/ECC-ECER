@@ -254,7 +254,7 @@ import { useUserStore } from "@/store/user";
 import type { Components } from "@/types/openapi";
 import { CertificationType, WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
-
+import { getProfile } from "@/api/profile";
 import ApplicationCertificationTypeHeader from "./ApplicationCertificationTypeHeader.vue";
 import ApplicationSummaryActionListItem from "./ApplicationSummaryActionListItem.vue";
 import ApplicationSummaryCharacterReferenceListItem from "./ApplicationSummaryCharacterReferenceListItem.vue";
@@ -282,7 +282,7 @@ export default defineComponent({
 
     await applicationStore.fetchApplications();
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
-
+    userStore.setUserProfile(await getProfile());
     return {
       applicationStore,
       userStore,

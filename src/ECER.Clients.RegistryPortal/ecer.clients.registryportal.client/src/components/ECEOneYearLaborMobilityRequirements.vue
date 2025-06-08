@@ -6,7 +6,7 @@
   </v-row>
   <v-row>
     <v-col>
-      <p>You need the following information to apply to transfer your certification to British Columbia.</p>
+      <p>You need the following information to apply to transfer your certification to B.C.</p>
     </v-col>
   </v-row>
   <v-row>
