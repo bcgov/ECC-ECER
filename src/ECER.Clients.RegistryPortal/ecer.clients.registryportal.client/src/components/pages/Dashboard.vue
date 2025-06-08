@@ -100,6 +100,22 @@
         </v-col>
       </v-row>
 
+      <!-- My Other Certifications -->
+      <v-row v-if="userStore.isVerified" justify="center" class="mt-6">
+        <v-col>
+          <v-row>
+            <v-col cols="12">
+              <div v-if="certifications && certificationStore.hasOtherCertifications">
+                <v-btn block size="large" variant="outlined" color="primary" @click="router.push('/my-other-certifications')" class="force-full-content">
+                  My other certifications
+                  <v-icon size="large" icon="mdi-arrow-right" />
+                </v-btn>
+              </div>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+
       <!-- Options -->
       <v-row v-if="showOptions" justify="center" class="mt-6">
         <v-col>
@@ -330,3 +346,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+::v-deep(.force-full-content .v-btn__content) {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between; /* optional */
+  align-items: center; /* optional */
+}
+</style>
