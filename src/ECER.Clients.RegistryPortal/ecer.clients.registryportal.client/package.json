@@ -37,7 +37,7 @@
     "@types/luxon": "^3.6.2",
     "@types/node": "^22.14.1",
     "@types/uuid": "^10.0.0",
-    "@vitejs/plugin-vue": "^5.2.2",
+    "@vitejs/plugin-vue": "^5.2.4",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.5.0",
     "@vue/tsconfig": "^0.7.0",
