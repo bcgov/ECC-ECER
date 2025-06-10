@@ -65,7 +65,7 @@ export default [
     },
 
     rules: {
-      ...pluginMocha.configs.flat.recommended.rules,
+      ...pluginMocha.configs.recommended.rules,
       ...pluginCypress.configs.recommended.rules,
       ...pluginChaiFriendly.configs.recommendedFlat.rules,
       ...typescript.configs.recommended.rules,
