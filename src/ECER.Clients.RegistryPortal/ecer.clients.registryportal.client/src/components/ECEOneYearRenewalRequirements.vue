@@ -1,5 +1,11 @@
 <template>
-  <v-col v-if="certificationStore.latestCertificateStatus == 'Active'" cols="12">
+  <v-col
+    v-if="
+      certificationStore.latestCertificateStatus == 'Active' ||
+      (certificationStore.latestCertificateStatus == 'Expired' && !certificationStore.latestExpiredMoreThan5Years)
+    "
+    cols="12"
+  >
     <Alert title="Do you have 500 hours of supervised work experience?">
       You should
       <a
