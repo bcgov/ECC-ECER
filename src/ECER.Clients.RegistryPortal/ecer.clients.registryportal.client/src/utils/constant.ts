@@ -89,12 +89,9 @@ export const likertScaleRadio: RadioButtonWrapper<Components.Schemas.LikertScale
 ];
 
 export const childcareAgeRangesCheckBox: CheckBoxWrapper<Components.Schemas.ChildcareAgeRanges>[] = [
-  { label: "0 to 12 Months", value: "From0to12Months" },
-  { label: "12 to 24 Months", value: "From12to24Months" },
-  { label: "25 to 30 Months", value: "From25to30Months" },
-  { label: "31 to 36 Months", value: "From31to36Months" },
-  { label: "In preschool", value: "Preschool" },
-  { label: "In grade 1", value: "Grade1" },
+  { label: "0 to 36 Months", value: "_036months" },
+  { label: "3 to 5 Years", value: "_35years" },
+  { label: "6 to 8 Years", value: "_68years" },
 ];
 
 export const lengthOfAcquaintanceDropdown: DropdownWrapper<Components.Schemas.ReferenceKnownTime>[] = [

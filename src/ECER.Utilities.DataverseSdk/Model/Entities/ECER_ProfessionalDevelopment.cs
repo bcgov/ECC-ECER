@@ -96,6 +96,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_AnticipatedHoursBulkApproved = "ecer_anticipatedhoursbulkapproved";
+			public const string ecer_anticipatedhoursbulkapprovedName = "ecer_anticipatedhoursbulkapprovedname";
 			public const string ecer_Applicantid = "ecer_applicantid";
 			public const string ecer_ApplicantidName = "ecer_applicantidname";
 			public const string ecer_ApplicantidYomiName = "ecer_applicantidyominame";
@@ -299,6 +301,41 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Set when Application Assessment Bulk Approves a Professional Development
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_anticipatedhoursbulkapproved")]
+		public System.Nullable<bool> ecer_AnticipatedHoursBulkApproved
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_anticipatedhoursbulkapproved");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_anticipatedhoursbulkapproved", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_anticipatedhoursbulkapprovedname")]
+		public string ecer_anticipatedhoursbulkapprovedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_anticipatedhoursbulkapproved"))
+				{
+					return this.FormattedValues["ecer_anticipatedhoursbulkapproved"];
 				}
 				else
 				{

@@ -61,7 +61,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Status of the Involved Person
+	/// Status of the Involved Person (Intake)
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -76,7 +76,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Involved Person
+	/// Reason for the status of the Involved Person (Intake)
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -114,11 +114,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CertificationNumber = "ecer_certificationnumber";
 			public const string ecer_CertificationType = "ecer_certificationtype";
 			public const string ecer_certificationtypeName = "ecer_certificationtypename";
+			public const string ecer_Contact = "ecer_contact";
+			public const string ecer_ContactName = "ecer_contactname";
+			public const string ecer_ContactYomiName = "ecer_contactyominame";
 			public const string ecer_DateOfBirth = "ecer_dateofbirth";
+			public const string ecer_DateofBirthText = "ecer_dateofbirthtext";
 			public const string ecer_firstname = "ecer_firstname";
 			public const string ecer_Initials = "ecer_initials";
 			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
+			public const string ecer_involvedperson_Contact_contact = "ecer_involvedperson_Contact_contact";
 			public const string ecer_involvedperson_Investigation_ecer_investi = "ecer_involvedperson_Investigation_ecer_investi";
 			public const string ecer_InvolvedPersonId = "ecer_involvedpersonid";
 			public const string Id = "ecer_involvedpersonid";
@@ -353,6 +358,55 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contact")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_Contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_contact");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_contact", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactname")]
+		public string ecer_ContactName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_contact"))
+				{
+					return this.FormattedValues["ecer_contact"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactyominame")]
+		public string ecer_ContactYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_contact"))
+				{
+					return this.FormattedValues["ecer_contact"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateofbirth")]
 		public System.Nullable<System.DateTime> ecer_DateOfBirth
 		{
@@ -365,6 +419,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_dateofbirth", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_dateofbirthtext")]
+		public string ecer_DateofBirthText
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_dateofbirthtext");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_dateofbirthtext", value);
 			}
 		}
 		
@@ -976,6 +1045,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_involvedperson_Contact_contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contact")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_involvedperson_Contact_contact")]
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_involvedperson_Contact_contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_involvedperson_Contact_contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_involvedperson_Contact_contact", null, value);
 			}
 		}
 		
