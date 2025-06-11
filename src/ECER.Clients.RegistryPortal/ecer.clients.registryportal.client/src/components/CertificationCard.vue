@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type DefineComponent, type PropType } from "vue";
+import { defineComponent, type PropType } from "vue";
 import { getCertificateFileById, requestCertificateFileGeneration } from "@/api/certification";
 import { useCertificationStore } from "@/store/certification";
 import { formatDate } from "@/utils/format";
