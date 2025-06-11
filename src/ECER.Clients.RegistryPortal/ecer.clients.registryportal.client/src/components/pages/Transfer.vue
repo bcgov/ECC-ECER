@@ -189,7 +189,7 @@ export default {
       this.applicationStore.$patch({
         draftApplication: {
           certificationTypes: this.selfAssessmentOutcome,
-          applicationType: "LaborMobility",
+          applicationType: "LabourMobility",
           stage: "CertificateInformation",
           labourMobilityCertificateInformation: {
             labourMobilityProvince: this.transferData.province,

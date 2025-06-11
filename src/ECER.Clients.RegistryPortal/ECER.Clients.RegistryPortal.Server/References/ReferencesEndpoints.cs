@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Utilities.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.RegistryPortal.Server.References;
 
@@ -224,14 +224,13 @@ public enum LikertScale
   No
 }
 
+#pragma warning disable CA1707
+
 public enum ChildcareAgeRanges
 {
-  From0to12Months,
-  From12to24Months,
-  From25to30Months,
-  From31to36Months,
-  Grade1,
-  Preschool,
+  _036months,
+  _35years,
+  _68years,
 }
 
 public enum ReferenceKnownTime
