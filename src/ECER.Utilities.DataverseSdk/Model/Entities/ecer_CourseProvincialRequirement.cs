@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Requirement Competency
+	/// Status of the Course Provincial Requirement
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_requirementcompetency_statecode
+	public enum ecer_courseprovincialrequirement_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Requirement Competency
+	/// Reason for the status of the Course Provincial Requirement
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_RequirementCompetency_StatusCode
+	public enum ecer_CourseProvincialRequirement_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -43,13 +43,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_requirementcompetency")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_courseprovincialrequirement")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_RequirementCompetency : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_CourseProvincialRequirement : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_requirementcompetency entity
+		/// Available fields, a the time of codegen, for the ecer_courseprovincialrequirement entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,12 +60,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_evidence_RequirementCompetencyId = "ecer_evidence_RequirementCompetencyId";
+			public const string ecer_CourseId = "ecer_courseid";
+			public const string ecer_CourseIdName = "ecer_courseidname";
+			public const string ecer_courseprovincialrequirement_CourseId = "ecer_courseprovincialrequirement_CourseId";
+			public const string ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement = "ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement";
+			public const string ecer_courseprovincialrequirement_ProgramProfileId = "ecer_courseprovincialrequirement_ProgramProfileId";
+			public const string ecer_CourseProvincialRequirementId = "ecer_courseprovincialrequirementid";
+			public const string Id = "ecer_courseprovincialrequirementid";
+			public const string ecer_Hours = "ecer_hours";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_RequirementCompetencyId = "ecer_requirementcompetencyid";
-			public const string Id = "ecer_requirementcompetencyid";
-			public const string ecer_RequirementsMet = "ecer_requirementsmet";
-			public const string ecer_requirementsmetName = "ecer_requirementsmetname";
+			public const string ecer_ProgramAreaId = "ecer_programareaid";
+			public const string ecer_ProgramAreaIdName = "ecer_programareaidname";
+			public const string ecer_ProgramProfileId = "ecer_programprofileid";
+			public const string ecer_ProgramProfileIdName = "ecer_programprofileidname";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -92,19 +99,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_RequirementCompetency(System.Guid id) : 
+		public ecer_CourseProvincialRequirement(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_RequirementCompetency(string keyName, object keyValue) : 
+		public ecer_CourseProvincialRequirement(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_RequirementCompetency(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_CourseProvincialRequirement(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -113,22 +120,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_RequirementCompetency() : 
+		public ecer_CourseProvincialRequirement() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_requirementcompetencyid";
+		public const string PrimaryIdAttribute = "ecer_courseprovincialrequirementid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_RequirementCompetency";
+		public const string EntitySchemaName = "ecer_CourseProvincialRequirement";
 		
-		public const string EntityLogicalName = "ecer_requirementcompetency";
+		public const string EntityLogicalName = "ecer_courseprovincialrequirement";
 		
-		public const string EntityLogicalCollectionName = "ecer_requirementcompetencies";
+		public const string EntityLogicalCollectionName = "ecer_courseprovincialrequirements";
 		
-		public const string EntitySetName = "ecer_requirementcompetencies";
+		public const string EntitySetName = "ecer_courseprovincialrequirements";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -242,6 +249,94 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_CourseId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_courseid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_courseid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseidname")]
+		public string ecer_CourseIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_courseid"))
+				{
+					return this.FormattedValues["ecer_courseid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseprovincialrequirementid")]
+		public System.Nullable<System.Guid> ecer_CourseProvincialRequirementId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_courseprovincialrequirementid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_courseprovincialrequirementid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseprovincialrequirementid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.ecer_CourseProvincialRequirementId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hours")]
+		public System.Nullable<decimal> ecer_Hours
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_hours");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hours", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -257,71 +352,62 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementcompetencyid")]
-		public System.Nullable<System.Guid> ecer_RequirementCompetencyId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programareaid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramAreaId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_requirementcompetencyid");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programareaid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_requirementcompetencyid", value);
-				if (value.HasValue)
+				this.SetAttributeValue("ecer_programareaid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programareaidname")]
+		public string ecer_ProgramAreaIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programareaid"))
 				{
-					base.Id = value.Value;
+					return this.FormattedValues["ecer_programareaid"];
 				}
 				else
 				{
-					base.Id = System.Guid.Empty;
+					return default(string);
 				}
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementcompetencyid")]
-		public override System.Guid Id
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programprofileid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramProfileId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return base.Id;
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programprofileid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_RequirementCompetencyId = value;
+				this.SetAttributeValue("ecer_programprofileid", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmet")]
-		public virtual ecer_YesNoNull? ecer_RequirementsMet
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programprofileidname")]
+		public string ecer_ProgramProfileIdName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_requirementsmet")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_requirementsmet", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetname")]
-		public string ecer_requirementsmetName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_requirementsmet"))
+				if (this.FormattedValues.Contains("ecer_programprofileid"))
 				{
-					return this.FormattedValues["ecer_requirementsmet"];
+					return this.FormattedValues["ecer_programprofileid"];
 				}
 				else
 				{
@@ -593,15 +679,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Requirement Competency
+		/// Status of the Course Provincial Requirement
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_requirementcompetency_statecode? StateCode
+		public virtual ecer_courseprovincialrequirement_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_requirementcompetency_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_courseprovincialrequirement_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -628,15 +714,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Requirement Competency
+		/// Reason for the status of the Course Provincial Requirement
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_RequirementCompetency_StatusCode? StatusCode
+		public virtual ecer_CourseProvincialRequirement_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_RequirementCompetency_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_CourseProvincialRequirement_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -712,20 +798,59 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_evidence_RequirementCompetencyId
+		/// N:1 ecer_courseprovincialrequirement_CourseId
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_evidence_RequirementCompetencyId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Evidence> ecer_evidence_RequirementCompetencyId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_courseid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_courseprovincialrequirement_CourseId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Course ecer_courseprovincialrequirement_CourseId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Evidence>("ecer_evidence_RequirementCompetencyId", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_courseprovincialrequirement_CourseId", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Evidence>("ecer_evidence_RequirementCompetencyId", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_courseprovincialrequirement_CourseId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programareaid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement>("ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement>("ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_courseprovincialrequirement_ProgramProfileId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programprofileid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_courseprovincialrequirement_ProgramProfileId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Program ecer_courseprovincialrequirement_ProgramProfileId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_courseprovincialrequirement_ProgramProfileId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Program>("ecer_courseprovincialrequirement_ProgramProfileId", null, value);
 			}
 		}
 		
@@ -734,7 +859,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_RequirementCompetency(object anonymousType) : 
+		public ecer_CourseProvincialRequirement(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -752,9 +877,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_requirementcompetencyid"] = base.Id;
+                        Attributes["ecer_courseprovincialrequirementid"] = base.Id;
                         break;
-                    case "ecer_requirementcompetencyid":
+                    case "ecer_courseprovincialrequirementid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

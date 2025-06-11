@@ -320,8 +320,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_cclroneninetwocName = "ecer_cclroneninetwocname";
 			public const string ecer_CclrThreeTwoB = "ecer_cclrthreetwob";
 			public const string ecer_cclrthreetwobName = "ecer_cclrthreetwobname";
+			public const string ecer_certificateexpirydateformatted = "ecer_certificateexpirydateformatted";
 			public const string ecer_CertificateNumber = "ecer_certificatenumber";
 			public const string ecer_CertificateStatus = "ecer_certificatestatus";
+			public const string ecer_certificatetypeabbreviation = "ecer_certificatetypeabbreviation";
+			public const string ecer_certificatetypeformatted = "ecer_certificatetypeformatted";
 			public const string ecer_CertificationExpireIntake = "ecer_certificationexpireintake";
 			public const string ecer_certificationexpireintakeName = "ecer_certificationexpireintakename";
 			public const string ecer_CertificationType = "ecer_certificationtype";
@@ -330,6 +333,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ClientId = "ecer_clientid";
 			public const string ecer_ClosedWithoutFindings = "ecer_closedwithoutfindings";
 			public const string ecer_closedwithoutfindingsName = "ecer_closedwithoutfindingsname";
+			public const string ecer_CollaborationDocument_ecer_Investigation_ecer_Investigation = "ecer_CollaborationDocument_ecer_Investigation_ecer_Investigation";
 			public const string ecer_communication_Investigation_ecer_investig = "ecer_communication_Investigation_ecer_investig";
 			public const string ecer_CompetencyGapsAddressed = "ecer_competencygapsaddressed";
 			public const string ecer_competencygapsaddressedName = "ecer_competencygapsaddressedname";
@@ -475,6 +479,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_intakeofficeridName = "ecer_intakeofficeridname";
 			public const string ecer_intakeofficeridYomiName = "ecer_intakeofficeridyominame";
 			public const string ecer_IntakeReceivedDate = "ecer_intakereceiveddate";
+			public const string ecer_intakereceiveddateformatted = "ecer_intakereceiveddateformatted";
 			public const string ecer_IntakeType = "ecer_intaketype";
 			public const string ecer_intaketypeName = "ecer_intaketypename";
 			public const string ecer_InterviewQuestionsReviewComplete = "ecer_interviewquestionsreviewcomplete";
@@ -1401,6 +1406,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificateexpirydateformatted")]
+		public string ecer_certificateexpirydateformatted
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_certificateexpirydateformatted");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificateexpirydateformatted", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatenumber")]
 		public string ecer_CertificateNumber
 		{
@@ -1428,6 +1448,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_certificatestatus", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypeabbreviation")]
+		public string ecer_certificatetypeabbreviation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_certificatetypeabbreviation");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificatetypeabbreviation", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypeformatted")]
+		public string ecer_certificatetypeformatted
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_certificatetypeformatted");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificatetypeformatted", value);
 			}
 		}
 		
@@ -3716,6 +3766,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_intakereceiveddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_intakereceiveddateformatted")]
+		public string ecer_intakereceiveddateformatted
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_intakereceiveddateformatted");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_intakereceiveddateformatted", value);
 			}
 		}
 		
@@ -6882,6 +6947,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_parallelprocessinvestigationid_ecer_investigation", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_CollaborationDocument_ecer_Investigation_ecer_Investigation
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_CollaborationDocument_ecer_Investigation_ecer_Investigation")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CollaborationDocument> ecer_CollaborationDocument_ecer_Investigation_ecer_Investigation
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CollaborationDocument>("ecer_CollaborationDocument_ecer_Investigation_ecer_Investigation", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CollaborationDocument>("ecer_CollaborationDocument_ecer_Investigation_ecer_Investigation", null, value);
 			}
 		}
 		
