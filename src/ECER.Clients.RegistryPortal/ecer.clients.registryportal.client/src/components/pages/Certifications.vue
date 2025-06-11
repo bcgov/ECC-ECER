@@ -1,15 +1,5 @@
 <template>
   <v-container>
-    <!-- TODO confirm with design -->
-    <!-- <v-row>
-      <v-col cols="12">
-        <Alert type="info" :rounded="true" :closable="false">
-          To apply for a new certificate, go to the
-          <router-link to="/messages"><b>certificate selection</b></router-link>
-          page.
-        </Alert>
-      </v-col>
-    </v-row> -->
     <Breadcrumb :items="items" />
     <h1>My other certifications</h1>
     <div class="d-flex flex-column ga-3 my-6">
