@@ -72,6 +72,13 @@ export const useCertificationStore = defineStore("certification", {
       }
       return certificationTypes;
     },
+    otherCertifications(state): Components.Schemas.Certification[] {
+      if (!state.certifications || !state.latestCertification) return [];
+      return state.certifications.filter((cert) => cert.id !== state.latestCertification?.id);
+    },
+    hasOtherCertifications(): boolean {
+      return this.otherCertifications.length > 0;
+    },
     hasMultipleEceOneYearCertifications(state): boolean {
       let count = 0;
       if (!state.certifications || state.certifications?.length < 2) return false;
