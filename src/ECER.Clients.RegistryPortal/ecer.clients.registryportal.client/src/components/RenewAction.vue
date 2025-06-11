@@ -1,35 +1,38 @@
 <template>
-  <ActionCard :title="title" icon="mdi-autorenew">
-    <template #content>
-      <div class="d-flex flex-column ga-3">
-        {{ text }}
-        <div v-if="canRenew && !readyToRenew">{{ dateText }}</div>
-      </div>
-    </template>
-    <template #action>
-      <v-btn id="btnRenew" v-if="showRenewLink" variant="text" @click="handleRenewClicked">
-        <a href="#" @click.prevent>Renew</a>
-      </v-btn>
-      <v-btn v-else-if="showRenewalRequirementsLink" variant="text" @click="handleLearnAboutRenewalRequirementsClicked">
+  <div>
+    <p class="d-flex flex-column pb-4">
+      {{ text }}
+      <p v-if="canRenew && !readyToRenew">{{ dateText }}</p>
+    </p>
+    <div>
+      <v-btn id="btnRenew" v-if="showRenewLink" color="primary" @click="handleRenewClicked">Renew</v-btn>
+      <div v-else-if="showRenewalRequirementsLink" @click="handleLearnAboutRenewalRequirementsClicked">
         <a href="#" @click.prevent>Learn about renewal requirements</a>
-      </v-btn>
-    </template>
-  </ActionCard>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { DateTime } from "luxon";
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 
 import ActionCard from "@/components/ActionCard.vue";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import { useRouter } from "vue-router";
+import type { Components } from "@/types/openapi";
 
 export default defineComponent({
-  name: "RenewCard",
+  name: "RenewAction",
   components: {
     ActionCard,
+  },
+  props: {
+    certification: {
+      type: Object as PropType<Components.Schemas.Certification>,
+      required: true,
+    },
   },
   setup() {
     const certificationStore = useCertificationStore();
@@ -44,10 +47,10 @@ export default defineComponent({
   },
   computed: {
     earliestRenewalDate() {
-      return DateTime.fromISO(this.certificationStore.latestCertification?.expiryDate ?? "").minus({ months: 6 });
+      return DateTime.fromISO(this.certification.expiryDate ?? "").minus({ months: 6 });
     },
     latestRenewalDate() {
-      return DateTime.fromISO(this.certificationStore.latestCertification?.expiryDate ?? "").plus({ years: 5 });
+      return DateTime.fromISO(this.certification.expiryDate ?? "").plus({ years: 5 });
     },
     todaysDate() {
       return DateTime.now();
@@ -60,8 +63,8 @@ export default defineComponent({
     },
     canRenew() {
       return (
-        !(this.certificationStore.hasMultipleEceOneYearCertifications && this.certificationStore.latestIsEceOneYear) &&
-        !(this.certificationStore.latestIsEceOneYear && this.expiredOverFiveYears)
+        !(this.certificationStore.hasMultipleEceOneYearCertifications && this.certificationStore.isEceOneYear(this.certification)) &&
+        !(this.certificationStore.isEceOneYear(this.certification) && this.expiredOverFiveYears)
       );
     },
     title() {
@@ -74,7 +77,7 @@ export default defineComponent({
       }
 
       // Assistant
-      if (this.certificationStore.latestIsEceAssistant) {
+      if (this.certificationStore.isEceAssistant(this.certification)) {
         if (this.expiredOverFiveYears) {
           return "You cannot renew your ECE Assistant certification because it's been expired for over 5 years.";
         }
@@ -82,7 +85,7 @@ export default defineComponent({
       }
 
       // One Year
-      if (this.certificationStore.latestIsEceOneYear) {
+      if (this.certificationStore.isEceOneYear(this.certification)) {
         if (this.certificationStore.hasMultipleEceOneYearCertifications) {
           return "You cannot renew your ECE One Year certification again. It can only be renewed once.";
         } else if (this.expiredOverFiveYears) {
@@ -92,12 +95,12 @@ export default defineComponent({
       }
 
       // Five Year
-      if (this.certificationStore.latestIsEceFiveYear) {
-        if (this.certificationStore.latestHasITE && this.certificationStore.latestHasSNE) {
+      if (this.certificationStore.isEceFiveYear(this.certification)) {
+        if (this.certificationStore.hasITE(this.certification) && this.certificationStore.hasSNE(this.certification)) {
           return "You can renew your ECE Five Year, SNE and ITE certification.";
-        } else if (this.certificationStore.latestHasITE) {
+        } else if (this.certificationStore.hasITE(this.certification)) {
           return "You can renew your ECE Five Year and ITE certification.";
-        } else if (this.certificationStore.latestHasSNE) {
+        } else if (this.certificationStore.hasSNE(this.certification)) {
           return "You can renew your ECE Five Year and SNE certification.";
         } else {
           return "You can renew your ECE Five Year certification.";
@@ -119,11 +122,13 @@ export default defineComponent({
     handleLearnAboutRenewalRequirementsClicked() {
       this.router.push({
         name: "certification-requirements",
-        query: { certificationTypes: this.certificationStore.latestCertificationTypes, isRenewal: "true" },
+        query: { certificationTypes: this.certificationStore.certificationTypes(this.certification), isRenewal: "true" },
       });
     },
     handleRenewClicked() {
-      this.applicationStore.$patch({ draftApplication: { applicationType: "Renewal", certificationTypes: this.certificationStore.latestCertificationTypes } });
+      this.applicationStore.$patch({
+        draftApplication: { applicationType: "Renewal", certificationTypes: this.certificationStore.certificationTypes(this.certification) },
+      });
 
       this.router.push({ name: "application-requirements" });
     },

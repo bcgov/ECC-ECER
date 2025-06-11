@@ -22,6 +22,12 @@ const router = createRouter({
       name: "dashboard",
     },
     {
+      path: "/my-other-certifications",
+      component: () => import("./components/pages/Certifications.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "my-other-certifications",
+    },
+    {
       path: "/profile",
       component: () => import("./components/Profile.vue"),
       name: "profile",
