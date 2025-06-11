@@ -107,7 +107,7 @@
             <v-row>
               <v-col cols="12">
                 <div>
-                  <v-btn block size="large" variant="outlined" color="primary" @click="router.push('/my-other-certifications')" class="force-full-content">
+                  <v-btn block size="x-large" variant="outlined" color="primary" @click="router.push('/my-other-certifications')" class="force-full-content">
                     My other certifications
                     <v-icon size="large" icon="mdi-arrow-right" />
                   </v-btn>
