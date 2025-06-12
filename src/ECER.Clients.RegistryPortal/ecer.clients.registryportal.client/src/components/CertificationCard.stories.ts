@@ -336,3 +336,33 @@ export const CertificateFileRequested: Story = {
     },
   },
 };
+
+export const HasApplication: Story = {
+  args: {
+    certification: {
+      id: "f403a278-8020-f011-998a-6045bdf9b81b",
+      name: "KARISSA CAULKINS",
+      number: "016359",
+      expiryDate: "2030-04-23T00:00:00",
+      effectiveDate: "2025-04-23T00:00:00",
+      date: "2025-04-23T00:00:00",
+      printDate: null,
+      hasConditions: false,
+      levelName: "ECE One Year",
+      statusCode: "Active",
+      certificatePDFGeneration: "Yes",
+      levels: [{ id: "556b387e-8020-f011-998a-7c1e52871876", type: "ECE 1 YR" }],
+      files: [
+        {
+          id: "3979ff88-f262-4747-b294-c289caa2402a",
+          url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+          extention: ".pdf",
+          size: "322.00 KB",
+          name: "Cover Letter-016359.pdf",
+        },
+      ],
+      certificateConditions: [],
+    },
+    hasApplication: true,
+  },
+};

@@ -64,7 +64,8 @@ export default defineComponent({
     canRenew() {
       return (
         !(this.certificationStore.hasMultipleEceOneYearCertifications && this.certificationStore.isEceOneYear(this.certification)) &&
-        !(this.certificationStore.isEceOneYear(this.certification) && this.expiredOverFiveYears)
+        !(this.certificationStore.isEceOneYear(this.certification) && this.expiredOverFiveYears) &&
+        !(this.certificationStore.isEceAssistant(this.certification) && this.expiredOverFiveYears) 
       );
     },
     title() {
