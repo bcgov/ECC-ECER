@@ -92,7 +92,12 @@
                     </p>
                   </div>
                   <template v-if="certificationStore.latestCertification">
-                    <CertificationCard class="mt-4" :is-rounded="false" :certification="certificationStore.latestCertification" />
+                    <CertificationCard
+                      class="mt-4"
+                      :is-rounded="false"
+                      :certification="certificationStore.latestCertification"
+                      :has-application="applicationStore.hasApplication"
+                    />
                   </template>
                 </div>
                 <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
@@ -107,7 +112,7 @@
             <v-row>
               <v-col cols="12">
                 <div>
-                  <v-btn block size="large" variant="outlined" color="primary" @click="router.push('/my-other-certifications')" class="force-full-content">
+                  <v-btn block size="x-large" variant="outlined" color="primary" @click="router.push('/my-other-certifications')" class="force-full-content">
                     My other certifications
                     <v-icon size="large" icon="mdi-arrow-right" />
                   </v-btn>
