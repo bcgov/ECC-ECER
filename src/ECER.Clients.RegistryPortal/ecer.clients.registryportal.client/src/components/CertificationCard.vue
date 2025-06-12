@@ -28,7 +28,7 @@
               </span>
             </template>
 
-            <RenewAction :certification="certification" />
+            <RenewAction v-if="!hasApplication" :certification="certification" />
           </div>
         </v-col>
         <v-col v-if="mdAndUp" cols="4" class="text-center d-flex justify-end align-center" style="min-width: 215px">
@@ -65,6 +65,10 @@ export default defineComponent({
     certification: {
       type: Object as PropType<Components.Schemas.Certification>,
       required: true,
+    },
+    hasApplication: {
+      type: Boolean,
+      default: false,
     },
   },
   setup() {
