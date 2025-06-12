@@ -31,11 +31,10 @@
       <EceTextField
         id="txtReferenceLastName"
         v-model="lastName"
-        :rules="[Rules.required('Enter your reference\'s last name'), Rules.validContactName()]"
+        :rules="[Rules.required('Enter your reference\'s last name')]"
         label="Last name"
         maxlength="100"
         @update:model-value="updateCharacterReference()"
-        @keypress="validContactNameCharacter"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -44,11 +43,9 @@
       <EceTextField
         id="txtReferenceFirstName"
         v-model="firstName"
-        :rules="[Rules.validContactName()]"
         label="First name"
         maxlength="100"
         @update:model-value="updateCharacterReference()"
-        @keypress="validContactNameCharacter"
       ></EceTextField>
     </v-col>
   </v-row>
@@ -91,7 +88,6 @@ import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
 import type { Components } from "@/types/openapi";
 import { isNumber } from "@/utils/formInput";
-import { validContactNameCharacter } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 import Alert from "../Alert.vue";
@@ -159,7 +155,6 @@ export default defineComponent({
         { firstName: this.firstName, lastName: this.lastName, emailAddress: this.emailAddress, phoneNumber: this.phoneNumber },
       ] as Components.Schemas.CharacterReference);
     },
-    validContactNameCharacter,
   },
 });
 </script>

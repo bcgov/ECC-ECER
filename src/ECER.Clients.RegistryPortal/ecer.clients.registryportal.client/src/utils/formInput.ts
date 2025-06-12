@@ -21,18 +21,4 @@ const isNumber = function (event: KeyboardEvent | InputEvent): void {
   }
 };
 
-/**
- * Will not allow special characters for names in an input field. Acceptable characters include ' and -
- * @param {Object} event
- * @returns void
- */
-const validContactNameCharacter = function (event: KeyboardEvent): void {
-  const charCode = event instanceof KeyboardEvent ? event.key : "";
-
-  // Check if the key pressed is not a number and not a valid input event
-  if (event instanceof KeyboardEvent && /[^a-zA-Z\u00C0-\u017F\s'-]/.test(charCode)) {
-    event.preventDefault();
-  }
-};
-
-export { validContactNameCharacter, isNumber };
+export { isNumber };
