@@ -59,7 +59,7 @@ public class E2ETestsEndpoints : IRegisterEndpoints
           certificationType = RegistryPortal.Server.Applications.CertificationType.OneYear;
           break;
 
-        case "5Year":
+        case "5Years":
           certificationType = RegistryPortal.Server.Applications.CertificationType.FiveYears;
           break;
 
@@ -77,6 +77,7 @@ public class E2ETestsEndpoints : IRegisterEndpoints
             .RuleFor(f => f.SignedDate, f => f.Date.Recent())
             .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript()))
             .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference()))
+            .RuleFor(f => f.WorkExperienceReferences, f => f.Make(f.Random.Number(2, 5), () => CreateWorkExperienceReference()))
             .Generate();
 
       var draftApplication = mapper.Map<Managers.Registry.Contract.Applications.Application>(draftApplicationObj, opts => opts.Items.Add("registrantId", contact_id))!;
@@ -153,5 +154,17 @@ public class E2ETestsEndpoints : IRegisterEndpoints
       faker.Name.LastName(), faker.Phone.PhoneNumber(), "Character_Reference@test.gov.bc.ca"
     )
     { FirstName = faker.Name.FirstName() };
+  }
+
+  private RegistryPortal.Server.Applications.WorkExperienceReference CreateWorkExperienceReference()
+  {
+    var faker = new Faker("en_CA");
+    return new RegistryPortal.Server.Applications.WorkExperienceReference(
+       faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(10, 150)
+    )
+    {
+      FirstName = faker.Name.FirstName(),
+      PhoneNumber = faker.Phone.PhoneNumber()
+    };
   }
 }

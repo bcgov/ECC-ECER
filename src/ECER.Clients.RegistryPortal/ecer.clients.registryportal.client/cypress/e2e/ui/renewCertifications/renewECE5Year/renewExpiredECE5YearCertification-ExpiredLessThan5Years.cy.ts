@@ -3,7 +3,7 @@ import { courseStartDay, courseEndDay } from "../../../../support/utils";
 
 describe("Renew Active ECE 5 Year Certificate Application", () => {
   it("should sucessfully create a Renewal ECE 5 Year Application", () => {
-    cy.seedRenewalApplication();
+    cy.seedRenewalApplication("5Years", false);
 
     cy.reload();
     /** Dashboard */

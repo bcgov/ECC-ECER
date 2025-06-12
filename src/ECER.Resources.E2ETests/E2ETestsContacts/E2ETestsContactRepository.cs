@@ -94,8 +94,8 @@ internal sealed partial class E2ETestsContactRepository : IE2ETestsContactReposi
     {
       throw new InvalidOperationException($"certificate '{application.ecer_Certificateid.Id}' not found");
     }
-    certificate.ecer_EffectiveDate = DateTime.UtcNow.AddMonths(-6);
-    certificate.ecer_ExpiryDate = DateTime.UtcNow.AddMonths(4);
+    certificate.ecer_EffectiveDate = DateTime.UtcNow.AddMonths(-62);
+    certificate.ecer_ExpiryDate = DateTime.UtcNow.AddMonths(-2);
     context.UpdateObject(certificate);
     context.SaveChanges();
 
