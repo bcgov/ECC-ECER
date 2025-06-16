@@ -365,6 +365,7 @@ public record DraftApplication
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
   public string? Stage { get; set; }
+  public string? FromCertificate { get; set; }
   public ApplicationTypes ApplicationType { get; set; }
   public EducationOrigin? EducationOrigin { get; set; }
   public EducationRecognition? EducationRecognition { get; set; }
