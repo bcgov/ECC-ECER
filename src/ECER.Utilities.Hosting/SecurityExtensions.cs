@@ -33,6 +33,10 @@ public static class SecurityExtensions
       options.AddDefaultPolicy(policy =>
       {
         policy.SetIsOriginAllowedToAllowWildcardSubdomains();
+        //TODO confirm these ones.
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+
         if (settings != null && settings.AllowedOrigins != null) policy.WithOrigins(settings.ToOriginsArray()!);
       });
     });

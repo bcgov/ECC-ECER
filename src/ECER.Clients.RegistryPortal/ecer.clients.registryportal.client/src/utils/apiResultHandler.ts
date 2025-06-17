@@ -51,6 +51,8 @@ class ApiResultHandler {
       }
     } else if (error.request) {
       // The request was made but no response was received
+      console.error(error);
+      console.error(error.request);
       this.showErrorMessage("No response from server. Please check your network.", suppressErrorToast);
     } else {
       // Something happened in setting up the request that triggered an Error

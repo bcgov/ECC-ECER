@@ -10,6 +10,9 @@ export const getClient = async (appendToken: boolean = true) => {
   if (!cachedClient) {
     const api = new OpenAPIClientAxios({
       definition: "/swagger/v1/swagger.json",
+      axiosConfigDefaults: {
+        baseURL: "https://ecer-api.dev.api.gov.bc.ca",
+      },
     });
     cachedClient = await api.init<Client>();
   }
