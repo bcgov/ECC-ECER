@@ -133,7 +133,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" sm="6">
-              <v-card :rounded="true" :border="true" flat class="pa-6 custom-border">
+              <v-card :rounded="true" :border="true" flat class="pa-6 border-primary border-opacity-100">
                 <h2>Apply for new certification</h2>
                 <p class="mt-4">Start an application for a new certificate level based on your education and work experience.</p>
                 <v-btn
@@ -374,13 +374,5 @@ export default defineComponent({
 ::v-deep(.force-full-content .v-btn__content) {
   flex: 1 1 auto !important;
   justify-content: space-between;
-}
-
-.custom-border {
-  border-radius: 5px;
-  border-top: 1px solid black;
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
-  border-left: 1px solid black;
 }
 </style>
