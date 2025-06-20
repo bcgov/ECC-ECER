@@ -123,7 +123,7 @@ export const useApplicationStore = defineStore("application", {
       return state.draftApplication.applicationType === "New";
     },
     isDraftApplicationLaborMobility(state): boolean {
-      return state.draftApplication.applicationType === "LaborMobility";
+      return state.draftApplication.applicationType === "LabourMobility";
     },
     applicationConfiguration(): Wizard {
       switch (this.draftApplicationFlow) {
@@ -210,7 +210,7 @@ export const useApplicationStore = defineStore("application", {
       }
 
       // LABOR MOBILITY flows
-      if (state.draftApplication.applicationType === "LaborMobility") {
+      if (state.draftApplication.applicationType === "LabourMobility") {
         if (this.isDraftCertificateTypeFiveYears) return "FiveYearLaborMobility";
         if (this.isDraftCertificateTypeOneYear) return "OneYearLaborMobility";
         if (this.isDraftCertificateTypeEceAssistant) return "AssistantLaborMobility";

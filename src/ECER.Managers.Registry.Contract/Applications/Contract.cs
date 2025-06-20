@@ -84,7 +84,6 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public string? RenewalExplanationOther { get; set; }
   public ApplicationOrigin? Origin { get; set; }
   public CertificateInformation? LabourMobilityCertificateInformation { get; set; }
-
 }
 
 public record Transcript(string? Id, string? EducationalInstitutionName, string? ProgramName, string? StudentNumber, DateTime StartDate, DateTime EndDate, bool IsECEAssistant, string StudentFirstName, string StudentLastName, bool IsNameUnverified, EducationRecognition EducationRecognition, EducationOrigin EducationOrigin)
@@ -237,7 +236,7 @@ public enum ApplicationTypes
 {
   New,
   Renewal,
-  LaborMobility
+  LabourMobility
 }
 
 public enum EducationOrigin
@@ -351,14 +350,13 @@ public enum ReferenceRelationship
   Teacher,
 }
 
+#pragma warning disable CA1707
+
 public enum ChildcareAgeRanges
 {
-  From0to12Months,
-  From12to24Months,
-  From25to30Months,
-  From31to36Months,
-  Grade1,
-  Preschool,
+  _036months,
+  _35years,
+  _68years,
 }
 
 public enum LikertScale
@@ -483,7 +481,6 @@ public enum TranscriptStatusOptions
   OfficialTranscriptRequested,
   TranscriptWillRequireEnglishTranslation
 }
-
 
 public record CertificateInformation
 {

@@ -63,6 +63,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CertificateTypeId = "ecer_certificatetypeid";
 			public const string ecer_CertificateTypeIdName = "ecer_certificatetypeidname";
 			public const string ecer_course_ProvincialRequirement_ecer_provinc = "ecer_course_ProvincialRequirement_ecer_provinc";
+			public const string ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement = "ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement";
 			public const string ecer_educationassessment_RequirementAreaId = "ecer_educationassessment_RequirementAreaId";
 			public const string ecer_LegacyRequiredAreaID = "ecer_legacyrequiredareaid";
 			public const string ecer_MinimumHours = "ecer_minimumhours";
@@ -799,6 +800,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_course_ProvincialRequirement_ecer_provinc", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement> ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement>("ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement>("ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement", null, value);
 			}
 		}
 		

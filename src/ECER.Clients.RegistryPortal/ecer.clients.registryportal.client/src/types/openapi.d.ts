@@ -60,7 +60,7 @@ declare namespace Components {
              */
             id?: string | null;
         }
-        export type ApplicationTypes = "New" | "Renewal" | "LaborMobility";
+        export type ApplicationTypes = "New" | "Renewal" | "LabourMobility";
         /**
          * delete draft application response
          */
@@ -177,7 +177,7 @@ declare namespace Components {
             confirmProvidedInformationIsRight?: boolean;
             recaptchaToken?: string | null;
         }
-        export type ChildcareAgeRanges = "From0to12Months" | "From12to24Months" | "From25to30Months" | "From31to36Months" | "Grade1" | "Preschool";
+        export type ChildcareAgeRanges = "_036months" | "_35years" | "_68years";
         export type ChildrenProgramType = "Childminding" | "Familychildcare" | "Groupchildcare" | "InHomeMultiAgechildcare" | "MultiAgechildcare" | "Occasionalchildcare" | "Other" | "Preschool";
         export interface Communication {
             id?: string | null;
@@ -1081,6 +1081,7 @@ declare namespace Paths {
     }
 }
 
+
 export interface OperationMethods {
   /**
    * configuration_get - Returns the UI initial configuration
@@ -1814,6 +1815,7 @@ export interface PathsDictionary {
 }
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
+
 
 export type AddProfessionalDevelopmentResponse = Components.Schemas.AddProfessionalDevelopmentResponse;
 export type Address = Components.Schemas.Address;
