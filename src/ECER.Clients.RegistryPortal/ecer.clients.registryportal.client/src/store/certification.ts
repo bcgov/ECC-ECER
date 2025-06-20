@@ -79,6 +79,15 @@ export const useCertificationStore = defineStore("certification", {
     hasOtherCertifications(): boolean {
       return this.otherCertifications.length > 0;
     },
+    holdsEceAssistantCertification(state): boolean {
+      return state.certifications?.some((cert) => cert.levels?.some((level) => level.type === "Assistant")) ?? false;
+    },
+    holdsEceOneYearCertification(state): boolean {
+      return state.certifications?.some((cert) => cert.levels?.some((level) => level.type === "ECE 1 YR")) ?? false;
+    },
+    holdsEceFiveYearCertification(state): boolean {
+      return state.certifications?.some((cert) => cert.levels?.some((level) => level.type === "ECE 5 YR")) ?? false;
+    },
     holdsAllCertifications(state): boolean {
       if (!state.certifications || state.certifications.length === 0) return false;
       return (
