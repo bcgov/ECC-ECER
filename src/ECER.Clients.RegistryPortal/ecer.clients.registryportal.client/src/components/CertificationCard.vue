@@ -1,5 +1,5 @@
 <template>
-  <v-card :rounded="true" :border="true" flat class="px-8 pb-9 pt-4 custom-border">
+  <Card :hasTopBorder="true" topBorderSize="large" class="px-8 pb-9 pt-4">
     <v-card-item>
       <v-row>
         <v-col :cols="mdAndUp && isCertificateActive ? 8 : 12">
@@ -43,7 +43,7 @@
         </v-col>
       </v-row>
     </v-card-item>
-  </v-card>
+  </Card>
 </template>
 
 <script lang="ts">
@@ -55,11 +55,13 @@ import { humanFileSize } from "@/utils/functions";
 import type { Components } from "@/types/openapi";
 import RenewAction from "@/components/RenewAction.vue";
 import { useDisplay } from "vuetify";
+import Card from "./Card.vue";
 
 export default defineComponent({
   name: "CertificationCard",
   components: {
     RenewAction,
+    Card,
   },
   props: {
     certification: {
@@ -227,13 +229,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="css" scoped>
-.custom-border {
-  border-radius: 5px;
-  border-top: 16px solid rgba(var(--v-theme-primary, #013366));
-  border-right: 1px solid rgba(var(--v-theme-primary, #013366));
-  border-bottom: 1px solid rgba(var(--v-theme-primary, #013366));
-  border-left: 1px solid rgba(var(--v-theme-primary, #013366));
-}
-</style>
