@@ -81,6 +81,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CancelledDate = "ecer_cancelleddate";
 			public const string ecer_Certificate_ecer_CertificateTypes = "ecer_Certificate_ecer_CertificateTypes";
 			public const string ecer_certificate_Registrantid = "ecer_certificate_Registrantid";
+			public const string ecer_certificateconditions_CertificateId = "ecer_certificateconditions_CertificateId";
 			public const string ecer_CertificateId = "ecer_certificateid";
 			public const string Id = "ecer_certificateid";
 			public const string ecer_CertificateLevel = "ecer_certificatelevel";
@@ -118,6 +119,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
 			public const string ecer_renewalassessment_CurrentCertificateId = "ecer_renewalassessment_CurrentCertificateId";
 			public const string ecer_SuspendedDate = "ecer_suspendeddate";
+			public const string ecer_workexperienceref_currentcertificate_ecer_certificate = "ecer_workexperienceref_currentcertificate_ecer_certificate";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -1278,6 +1280,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_certificateconditions_CertificateId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certificateconditions_CertificateId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions> ecer_certificateconditions_CertificateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions>("ecer_certificateconditions_CertificateId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CertificateConditions>("ecer_certificateconditions_CertificateId", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_certifiedlevel_CertificateId
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_certifiedlevel_CertificateId")]
@@ -1346,6 +1366,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_RenewalAssessment>("ecer_renewalassessment_CurrentCertificateId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_workexperienceref_currentcertificate_ecer_certificate
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_workexperienceref_currentcertificate_ecer_certificate")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef> ecer_workexperienceref_currentcertificate_ecer_certificate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_workexperienceref_currentcertificate_ecer_certificate", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_WorkExperienceRef>("ecer_workexperienceref_currentcertificate_ecer_certificate", null, value);
 			}
 		}
 		

@@ -32,8 +32,8 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     await Task.CompletedTask;
 
     var applications = context.ecer_ApplicationSet.Where(
-      a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled && 
-      a.StatusCode!.Value != ecer_Application_StatusCode.Closed && 
+      a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled &&
+      a.StatusCode!.Value != ecer_Application_StatusCode.Closed &&
       a.StatusCode!.Value != ecer_Application_StatusCode.Withdrawn);
 
     if (query.ByStatus != null && query.ByStatus.Any())
@@ -106,9 +106,9 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     await UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     await UpdateTranscripts(ecerApplication, ecerTranscripts);
 
-    if (application.ApplicationType == ApplicationTypes.LaborMobility)
+    if (application.ApplicationType == ApplicationTypes.LabourMobility)
     {
-      if(application.LabourMobilityCertificateInformation != null && application.LabourMobilityCertificateInformation!.CertificateComparisonId != null)
+      if (application.LabourMobilityCertificateInformation != null && application.LabourMobilityCertificateInformation!.CertificateComparisonId != null)
       {
         var comparisonRecord = context.ecer_certificationcomparisonSet.SingleOrDefault(c => c.ecer_certificationcomparisonId == Guid.Parse(application.LabourMobilityCertificateInformation!.CertificateComparisonId!));
         if (comparisonRecord == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Certification comparison '{application.LabourMobilityCertificateInformation!.CertificateComparisonId}' not found");

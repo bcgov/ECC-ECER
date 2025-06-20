@@ -63,12 +63,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_authentication_eceprogramrepresentative = "ecer_authentication_eceprogramrepresentative";
 			public const string ecer_AuthenticationId = "ecer_authenticationid";
 			public const string Id = "ecer_authenticationid";
 			public const string ecer_contact_ecer_authentication_455 = "ecer_contact_ecer_authentication_455";
 			public const string ecer_Customerid = "ecer_customerid";
 			public const string ecer_CustomeridName = "ecer_customeridname";
 			public const string ecer_CustomeridYomiName = "ecer_customeridyominame";
+			public const string ecer_eceprogramrepresentative = "ecer_eceprogramrepresentative";
+			public const string ecer_eceprogramrepresentativeName = "ecer_eceprogramrepresentativename";
 			public const string ecer_ExternalID = "ecer_externalid";
 			public const string ecer_IdentityProvider = "ecer_identityprovider";
 			public const string ecer_portaluser_Authenticationid = "ecer_portaluser_Authenticationid";
@@ -330,6 +333,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_customerid"))
 				{
 					return this.FormattedValues["ecer_customerid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_eceprogramrepresentative")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_eceprogramrepresentative
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_eceprogramrepresentative");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_eceprogramrepresentative", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_eceprogramrepresentativename")]
+		public string ecer_eceprogramrepresentativeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_eceprogramrepresentative"))
+				{
+					return this.FormattedValues["ecer_eceprogramrepresentative"];
 				}
 				else
 				{
@@ -764,6 +799,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalUser>("ecer_portaluser_Authenticationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_authentication_eceprogramrepresentative
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_eceprogramrepresentative")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_authentication_eceprogramrepresentative")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative ecer_authentication_eceprogramrepresentative
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>("ecer_authentication_eceprogramrepresentative", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>("ecer_authentication_eceprogramrepresentative", null, value);
 			}
 		}
 		
