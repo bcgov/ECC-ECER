@@ -669,6 +669,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
 			public const string ecer_certificatesummary_RegistrantId = "ecer_certificatesummary_RegistrantId";
 			public const string ecer_CertificationLevel = "ecer_certificationlevel";
+			public const string ecer_certificationpathway = "ecer_certificationpathway";
+			public const string ecer_certificationpathwayName = "ecer_certificationpathwayname";
 			public const string ecer_certifiedlevel_RegistrantId = "ecer_certifiedlevel_RegistrantId";
 			public const string ecer_changeofinformation_Contactid = "ecer_changeofinformation_Contactid";
 			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
@@ -703,6 +705,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_GenerateCommunicationfromIDrejected = "ecer_generatecommunicationfromidrejected";
 			public const string ecer_generatecommunicationfromidrejectedName = "ecer_generatecommunicationfromidrejectedname";
 			public const string ecer_guardianreference_Applicantid = "ecer_guardianreference_Applicantid";
+			public const string ecer_HasCertFile = "ecer_hascertfile";
+			public const string ecer_hascertfileName = "ecer_hascertfilename";
 			public const string ecer_HasCertificate = "ecer_hascertificate";
 			public const string ecer_HasCertificateCancelled = "ecer_hascertificatecancelled";
 			public const string ecer_hascertificatecancelledName = "ecer_hascertificatecancelledname";
@@ -715,7 +719,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_hasprovidedidName = "ecer_hasprovidedidname";
 			public const string ecer_idverificationdecision = "ecer_idverificationdecision";
 			public const string ecer_idverificationdecisionName = "ecer_idverificationdecisionname";
+			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
+			public const string ecer_ineligiblereferenceName = "ecer_ineligiblereferencename";
 			public const string ecer_investigationapplication_contact = "ecer_investigationapplication_contact";
+			public const string ecer_investigationplanninginvolvedperson_Contact = "ecer_investigationplanninginvolvedperson_Contact";
+			public const string ecer_involvedperson_Contact_contact = "ecer_involvedperson_Contact_contact";
 			public const string ecer_IsBCECE = "ecer_isbcece";
 			public const string ecer_isbceceName = "ecer_isbcecename";
 			public const string ecer_isbceid = "ecer_isbceid";
@@ -4111,6 +4119,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationpathway")]
+		public virtual ecer_Pathways? ecer_certificationpathway
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_Pathways?)(EntityOptionSetEnum.GetEnum(this, "ecer_certificationpathway")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificationpathway", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationpathwayname")]
+		public string ecer_certificationpathwayName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_certificationpathway"))
+				{
+					return this.FormattedValues["ecer_certificationpathway"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Readable ID For Contact.  Map to Oracle CLI_ID
 		/// </summary>
@@ -4245,6 +4285,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_generatecommunicationfromidrejected"))
 				{
 					return this.FormattedValues["ecer_generatecommunicationfromidrejected"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertfile")]
+		public virtual ecer_YesNoNull? ecer_HasCertFile
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_hascertfile")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hascertfile", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hascertfilename")]
+		public string ecer_hascertfileName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hascertfile"))
+				{
+					return this.FormattedValues["ecer_hascertfile"];
 				}
 				else
 				{
@@ -4437,6 +4509,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_idverificationdecision"))
 				{
 					return this.FormattedValues["ecer_idverificationdecision"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ineligiblereference")]
+		public System.Nullable<bool> ecer_IneligibleReference
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_ineligiblereference");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_ineligiblereference", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_ineligiblereferencename")]
+		public string ecer_ineligiblereferenceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_ineligiblereference"))
+				{
+					return this.FormattedValues["ecer_ineligiblereference"];
 				}
 				else
 				{
@@ -8036,6 +8140,42 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_investigationapplication>("ecer_investigationapplication_contact", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_investigationplanninginvolvedperson_Contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationplanninginvolvedperson_Contact")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInvolvedPerson> ecer_investigationplanninginvolvedperson_Contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInvolvedPerson>("ecer_investigationplanninginvolvedperson_Contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInvolvedPerson>("ecer_investigationplanninginvolvedperson_Contact", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_involvedperson_Contact_contact
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_involvedperson_Contact_contact")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_InvolvedPerson> ecer_involvedperson_Contact_contact
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvolvedPerson>("ecer_involvedperson_Contact_contact", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvolvedPerson>("ecer_involvedperson_Contact_contact", null, value);
 			}
 		}
 		

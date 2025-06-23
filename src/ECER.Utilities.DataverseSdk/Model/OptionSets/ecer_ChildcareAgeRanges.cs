@@ -14,7 +14,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_ChildcareAgeRanges
+	public enum ecer_childcareageranges
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
