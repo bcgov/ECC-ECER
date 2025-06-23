@@ -133,7 +133,7 @@
           </v-row>
           <v-row>
             <v-col cols="12" sm="6">
-              <v-card :rounded="true" :border="true" flat class="pa-6 border-primary border-opacity-100">
+              <Card>
                 <h2>Apply for new certification</h2>
                 <p class="mt-4">Start an application for a new certificate level based on your education and work experience.</p>
                 <v-btn
@@ -146,7 +146,7 @@
                 >
                   Apply now
                 </v-btn>
-              </v-card>
+              </Card>
             </v-col>
           </v-row>
         </v-col>
@@ -231,6 +231,7 @@ import { useUserStore } from "@/store/user";
 import { useLoadingStore } from "@/store/loading";
 import { useOidcStore } from "@/store/oidc";
 import type { Application, Certification, UserInfo, UserProfile } from "@/types/openapi";
+import Card from "@/components/Card.vue";
 
 export default defineComponent({
   name: "Dashboard",
@@ -245,6 +246,7 @@ export default defineComponent({
     ActionCard,
     Alert,
     UnreadMessages,
+    Card,
   },
   async setup() {
     const oidcStore = useOidcStore();

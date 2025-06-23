@@ -178,7 +178,7 @@ const router = createRouter({
     },
     {
       path: "/application/certification",
-      component: () => import("./components/CertificationType.vue"),
+      component: () => import("./components/pages/ApplyForNewCertification.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
       name: "application-certification",
     },

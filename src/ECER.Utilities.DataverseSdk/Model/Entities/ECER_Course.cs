@@ -79,7 +79,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CourseId = "ecer_courseid";
 			public const string Id = "ecer_courseid";
 			public const string ecer_CourseName = "ecer_coursename";
-			public const string ecer_courseprovincialrequirement_CourseId = "ecer_courseprovincialrequirement_CourseId";
 			public const string ecer_Description = "ecer_description";
 			public const string ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution = "ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution";
 			public const string ecer_Name = "ecer_name";
@@ -1026,24 +1025,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse>("ecer_completedcourse_Courseid", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_courseprovincialrequirement_CourseId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_courseprovincialrequirement_CourseId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement> ecer_courseprovincialrequirement_CourseId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement>("ecer_courseprovincialrequirement_CourseId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement>("ecer_courseprovincialrequirement_CourseId", null, value);
 			}
 		}
 		
