@@ -397,7 +397,7 @@ declare namespace Components {
         export interface ProfessionalDevelopmentStatus {
             id?: string | null;
             courseName?: string | null;
-            numberOfHours?: number; // int32
+            numberOfHours?: number; // double
             status?: ProfessionalDevelopmentStatusCode;
         }
         export type ProfessionalDevelopmentStatusCode = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingResponse";

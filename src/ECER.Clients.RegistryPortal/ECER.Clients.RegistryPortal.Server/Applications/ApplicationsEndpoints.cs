@@ -589,7 +589,7 @@ public record CharacterReferenceStatus(string Id, CharacterReferenceStage Status
   public bool? WillProvideReference { get; set; }
 }
 
-public record ProfessionalDevelopmentStatus(string Id, string CourseName, int NumberOfHours)
+public record ProfessionalDevelopmentStatus(string Id, string CourseName, double NumberOfHours)
 {
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
 }
