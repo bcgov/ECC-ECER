@@ -28,6 +28,13 @@ const router = createRouter({
       name: "my-other-certifications",
     },
     {
+      path: "/certificate-terms-and-conditions/:certificationId",
+      component: () => import("./components/pages/TermsAndConditions.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+      name: "my-other-certifications",
+      props: true,
+    },
+    {
       path: "/profile",
       component: () => import("./components/Profile.vue"),
       name: "profile",
