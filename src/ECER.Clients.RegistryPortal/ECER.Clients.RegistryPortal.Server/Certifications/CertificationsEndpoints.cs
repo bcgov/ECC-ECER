@@ -16,7 +16,16 @@ public class CertificationsEndpoints : IRegisterEndpoints
     endpointRouteBuilder.MapGet("/api/certifications/{id?}", async (string? id, HttpContext httpContext, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       var userId = httpContext.User.GetUserContext()?.UserId;
-      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
+      if (string.IsNullOrEmpty(id))
+      {
+        id == null;
+      }
+      else
+      {
+        bool IdIsNotGuid = !Guid.TryParse(id, out _); 
+        if (IdIsNotGuid) 
+        { return TypedResults.BadRequest("Id is not a valid guid"); }
+      }
 
       var query = new UserCertificationQuery
       {
