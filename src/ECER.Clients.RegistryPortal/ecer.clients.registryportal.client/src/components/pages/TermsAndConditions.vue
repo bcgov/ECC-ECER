@@ -96,13 +96,10 @@ export default defineComponent({
   },
   methods: {
     async loadCertification() {
-      try {
-        const response = await getCertificationsById(this.certificationId);
-        if (response.data && response.data.length > 0) {
-          this.certification = response.data[0];
-        }
-      } catch (error) {
-        this.alertStore.setFailureAlert("Could not load certification. Please try again later.");
+      const response = await getCertificationsById(this.certificationId);
+      if (response.data && response.data.length > 0) {
+        this.certification = response.data[0];
+      } else {
         this.$router.push("/");
       }
     },
