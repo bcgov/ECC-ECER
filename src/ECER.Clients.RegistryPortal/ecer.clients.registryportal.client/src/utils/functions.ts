@@ -1,4 +1,5 @@
-import type { CertificationComparison } from "@/types/openapi";
+import type { CertificationComparison, Components } from "@/types/openapi";
+import { DateTime } from "luxon";
 
 export function cleanPreferredName(firstName: string | null | undefined, lastName: string | null | undefined, mode = "full") {
   const clean = (str: any) => (str ?? "").trim(); // null/undefined → '' and trim
@@ -278,4 +279,17 @@ export function getHighestCertificationType(options: CertificationComparison[]):
 export function findHighestCertificateTypeId(options: CertificationComparison[]): string {
   const highestTypeName = getHighestCertificationType(options);
   return options.find((o) => o.bcCertificate === highestTypeName)?.id || "";
+}
+
+/**
+ * Expired more than 5 years
+ * @param certification
+ * @returns boolean
+ */
+export function expiredMoreThan5Years(certification: Components.Schemas.Certification): boolean {
+  if (!certification.expiryDate) return false;
+  const dt1 = DateTime.now().startOf("day");
+  const dt2 = DateTime.fromISO(certification.expiryDate);
+  const differenceInYears = Math.abs(dt1.diff(dt2, "years").years);
+  return differenceInYears > 5;
 }
