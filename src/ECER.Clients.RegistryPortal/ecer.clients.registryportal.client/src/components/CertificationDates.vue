@@ -1,6 +1,6 @@
 <template>
-  <p class="font-weight-bold">Effective date: {{ formattedEffectiveDate }}</p>
-  <p class="font-weight-bold">Expiry date: {{ formattedExpiryDate }}</p>
+  <p :class="{ 'font-weight-bold': isBold }">Effective date: {{ formattedEffectiveDate }}</p>
+  <p :class="{ 'font-weight-bold': isBold }">Expiry date: {{ formattedExpiryDate }}</p>
 </template>
 
 <script lang="ts">
@@ -15,6 +15,11 @@ export default defineComponent({
     certification: {
       type: Object as PropType<Components.Schemas.Certification>,
       required: true,
+    },
+    isBold: {
+      type: Boolean,
+      required: false,
+      default: true,
     },
   },
   computed: {

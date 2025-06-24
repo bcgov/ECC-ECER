@@ -37,4 +37,4 @@ const postLookupCertificate = async (
   return apiResultHandler.execute({ request: client.certifications_lookup_post(null, body), key: "certifications_lookup_post" });
 };
 
-export { getCertificateFileById, getCertifications, postLookupCertificate, requestCertificateFileGeneration };
+export { getCertificateFileById, getCertifications, getCertificationsById, postLookupCertificate, requestCertificateFileGeneration };

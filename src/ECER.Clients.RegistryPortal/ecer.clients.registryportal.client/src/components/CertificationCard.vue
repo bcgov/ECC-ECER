@@ -9,7 +9,12 @@
               <certification-chip :certification="certification" />
             </div>
             <div v-if="certification.hasConditions">
-              <v-btn prepend-icon="mdi-newspaper-variant-outline" base-color="alert-warning" class="border-sm border-warning-border border-opacity-100">
+              <v-btn
+                prepend-icon="mdi-newspaper-variant-outline"
+                base-color="alert-warning"
+                class="border-sm border-warning-border border-opacity-100"
+                @click="handleViewTermsAndConditions"
+              >
                 View terms and conditions
               </v-btn>
             </div>
@@ -139,9 +144,6 @@ export default defineComponent({
           return "";
       }
     },
-    hasTermsAndConditions(): boolean {
-      return this.certification.hasConditions ?? false;
-    },
     certificateGenerationRequested(): boolean {
       return this.certification.certificatePDFGeneration === "Requested";
     },
@@ -177,6 +179,9 @@ export default defineComponent({
   methods: {
     generateFileDisplayName() {
       return `Download certificate (PDF, ${this.fileSize})`;
+    },
+    handleViewTermsAndConditions() {
+      this.$router.push(`/certificate-terms-and-conditions/${this.certification.id}`);
     },
   },
 });
