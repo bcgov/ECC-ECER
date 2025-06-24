@@ -79,6 +79,7 @@
             your ECE 5 YR certificate. It is valid for 5 years.
           </p>
         </div>
+        <!-- TODO: Repair ITE and SNE pathways (emit an array? And tie to current 5 YR Certification?) -->
         <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'Ite')">Apply now</v-btn>
       </Card>
     </v-col>
@@ -96,6 +97,7 @@
             It will also renew your ECE 5 YR certificate. It is valid for 5 years.
           </p>
         </div>
+        <!-- TODO: Repair ITE and SNE pathways (emit an array? And tie to current 5 YR Certification?) -->
         <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'Ite')">Apply now</v-btn>
       </Card>
     </v-col>
@@ -113,6 +115,7 @@
             age. It will also renew your ECE 5 YR certificate. It is valid for 5 years.
           </p>
         </div>
+        <!-- TODO: Repair ITE and SNE pathways (emit an array? And tie to current 5 YR Certification?) -->
         <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'Sne')">Apply now</v-btn>
       </Card>
     </v-col>
