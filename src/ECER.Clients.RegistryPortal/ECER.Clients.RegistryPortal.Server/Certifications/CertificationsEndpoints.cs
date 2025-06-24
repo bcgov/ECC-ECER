@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -18,7 +17,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
       var userId = httpContext.User.GetUserContext()?.UserId;
       if (string.IsNullOrEmpty(id))
       {
-        id == null;
+        id = null;
       }
       else
       {
