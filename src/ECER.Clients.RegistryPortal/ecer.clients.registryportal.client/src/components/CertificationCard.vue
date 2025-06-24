@@ -4,9 +4,9 @@
       <v-row>
         <v-col :cols="mdAndUp && isCertificateActive ? 8 : 12">
           <div class="d-flex flex-column ga-5">
-            <h1><certification-title :certification="certification" /></h1>
+            <h1><CertificationTitle :certification="certification" /></h1>
             <div>
-              <certification-chip :certification="certification" />
+              <CertificationChip :certification="certification" />
             </div>
             <div v-if="certification.hasConditions">
               <v-btn
@@ -20,7 +20,7 @@
             </div>
             <p>{{ subText }}</p>
             <div>
-              <certification-dates :certification="certification" />
+              <CertificationDates :certification="certification" />
             </div>
 
             <!-- Certificate Inline on mobile -->

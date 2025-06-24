@@ -5,13 +5,13 @@
       <Breadcrumb :items="items" />
       <h1>Certificate terms and conditions</h1>
       <div class="d-flex flex-column ga-4 my-6">
-        <h2><certification-title :certification="certification" /></h2>
+        <h2><CertificationTitle :certification="certification" /></h2>
         <div>
-          <certification-chip :certification="certification" />
+          <CertificationChip :certification="certification" />
         </div>
         <h3>{{ certification.name }}</h3>
         <div>
-          <certification-dates :certification="certification" :is-bold="false" />
+          <CertificationDates :certification="certification" :is-bold="false" />
         </div>
       </div>
       <ECEHeader title="Terms and conditions" />
