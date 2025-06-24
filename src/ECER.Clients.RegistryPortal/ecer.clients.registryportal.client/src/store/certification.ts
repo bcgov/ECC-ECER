@@ -1,9 +1,9 @@
-import { DateTime } from "luxon";
 import { defineStore } from "pinia";
 import { orderBy } from "lodash";
 
 import { getCertifications } from "@/api/certification";
 import type { Components } from "@/types/openapi";
+import { expiredMoreThan5Years } from "@/utils/functions";
 
 export interface CertificationState {
   certifications: Components.Schemas.Certification[] | null | undefined;
@@ -24,11 +24,7 @@ export const useCertificationStore = defineStore("certification", {
       return state.latestCertification?.statusCode;
     },
     latestExpiredMoreThan5Years(state): boolean {
-      if (!state.latestCertification?.expiryDate) return false;
-      const dt1 = DateTime.now().startOf("day");
-      const dt2 = DateTime.fromISO(state.latestCertification?.expiryDate);
-      const differenceInYears = Math.abs(dt1.diff(dt2, "years").years);
-      return differenceInYears > 5;
+      return expiredMoreThan5Years(state.latestCertification ?? {});
     },
     latestCertificationExpiryDate(state): string | null | undefined {
       return state.latestCertification?.expiryDate;
@@ -98,6 +94,7 @@ export const useCertificationStore = defineStore("certification", {
         state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ITE"))
       );
     },
+
     holdsPostBasicCertification(state): boolean {
       if (!state.certifications || state.certifications.length === 0) return false;
       return (
@@ -126,6 +123,9 @@ export const useCertificationStore = defineStore("certification", {
     },
     isEceOneYear(certification: Components.Schemas.Certification): boolean {
       return certification.levels?.some((level) => level.type === "ECE 1 YR") ?? false;
+    },
+    expiredMoreThan5Years(certification: Components.Schemas.Certification): boolean {
+      return expiredMoreThan5Years(certification);
     },
     hasSNE(certification: Components.Schemas.Certification): boolean {
       return certification.levels?.some((level) => level.type === "SNE") ?? false;
