@@ -13,7 +13,7 @@ public class CertificationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/certifications/{id?}", async (string? id, HttpContext httpContext, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/certifications/{id?}", async Task<Results<Ok<IEnumerable<Certification>>, BadRequest<ProblemDetails>>> (string? id, HttpContext httpContext, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       var userId = httpContext.User.GetUserContext()?.UserId;
       if (string.IsNullOrEmpty(id))
@@ -24,7 +24,15 @@ public class CertificationsEndpoints : IRegisterEndpoints
       {
         bool IdIsNotGuid = !Guid.TryParse(id, out _); 
         if (IdIsNotGuid) 
-        { return TypedResults.BadRequest("Id is not a valid guid"); }
+        {
+          var problemDetails = new ProblemDetails
+          {
+            Status = StatusCodes.Status400BadRequest,
+            Detail = "Invalid certificate Id",
+            Extensions = { ["errors"] = "Invalid certificate Id" }
+          };
+          return TypedResults.BadRequest(problemDetails);
+        }
       }
 
       var query = new UserCertificationQuery
