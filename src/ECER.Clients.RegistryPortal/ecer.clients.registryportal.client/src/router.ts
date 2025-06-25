@@ -31,7 +31,7 @@ const router = createRouter({
       path: "/certificate-terms-and-conditions/:certificationId",
       component: () => import("./components/pages/TermsAndConditions.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
-      name: "my-other-certifications",
+      name: "certificate-terms-and-conditions",
       props: true,
     },
     {
