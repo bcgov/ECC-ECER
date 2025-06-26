@@ -16,12 +16,12 @@ export const getTodayDate = (): string => {
  * Get a date that is 2 years from today
  */
 export const getTwoYearsFromToday = (): string => {
-  return DateTime.now().plus({ years: 5 }).toISO();
+  return DateTime.now().plus({ years: 2 }).toISO();
 };
 
 /**
  * Get a date that is 2 years ago
  */
 export const getTwoYearsAgo = (): string => {
-  return DateTime.now().minus({ years: 5 }).toISO();
+  return DateTime.now().minus({ years: 2 }).toISO();
 };

@@ -86,9 +86,17 @@ export const useCertificationStore = defineStore("certification", {
     },
     holdsAllCertifications(state): boolean {
       if (!state.certifications || state.certifications.length === 0) return false;
+
+      const isRenewable = (certification: Components.Schemas.Certification): boolean => {
+        return (
+          certification.statusCode === "Active" ||
+          ((certification.statusCode === "Expired" || certification.statusCode === "Suspended") && !expiredMoreThan5Years(certification))
+        );
+      };
+
       return (
-        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "Assistant")) &&
-        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ECE 1 YR")) &&
+        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "Assistant") && isRenewable(cert)) &&
+        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ECE 1 YR") && isRenewable(cert)) &&
         state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ECE 5 YR")) &&
         state.certifications.some((cert) => cert.levels?.some((level) => level.type === "SNE")) &&
         state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ITE"))
