@@ -347,6 +347,7 @@ export default defineComponent({
       );
     },
     showOptions(): boolean {
+      // If the user has certifications, does not have an application, and does not hold all certifications (Active or renewable)
       return this.certificationStore.hasCertifications && !this.applicationStore.hasApplication && !this.certificationStore.holdsAllCertifications;
     },
     cancelApplicationLoading(): boolean {

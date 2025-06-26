@@ -169,10 +169,16 @@ export default defineComponent({
       );
     },
     showEceOneYearEdgeCasePathway() {
-      // If the user has an expired ECE 5 YR certification and is not showing standard ECE one year pathway, show the ECE one year edge case pathway
+      // If the user has an expired ECE 5 YR certification, does not have an active ECE 1 YR certification, and is not showing standard ECE one year pathway, show the ECE one year edge case pathway
       const eceFiveYearCertifications = this.certifications.filter((certification) => certification.levels?.some((level) => level.type === "ECE 5 YR"));
+      const eceOneYearCertifications = this.certifications.filter((certification) => certification.levels?.some((level) => level.type === "ECE 1 YR"));
 
-      return eceFiveYearCertifications.length > 0 && eceFiveYearCertifications.every((certification) => certification.statusCode === "Expired");
+      return (
+        eceFiveYearCertifications.length > 0 &&
+        eceFiveYearCertifications.every((certification) => certification.statusCode === "Expired") &&
+        (eceOneYearCertifications.length === 0 ||
+          eceOneYearCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification)))
+      );
     },
     showEceFiveYearPathway() {
       // If the user does not have ECE 5 YR, show the ECE 5 YR pathway
