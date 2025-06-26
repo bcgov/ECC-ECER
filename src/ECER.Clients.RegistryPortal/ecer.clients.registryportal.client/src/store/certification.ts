@@ -88,7 +88,10 @@ export const useCertificationStore = defineStore("certification", {
       if (!state.certifications || state.certifications.length === 0) return false;
 
       const isRenewable = (certification: Components.Schemas.Certification): boolean => {
-        return certification.statusCode === "Active" || (certification.statusCode === "Expired" && !expiredMoreThan5Years(certification));
+        return (
+          certification.statusCode === "Active" ||
+          ((certification.statusCode === "Expired" || certification.statusCode === "Suspended") && !expiredMoreThan5Years(certification))
+        );
       };
 
       return (
