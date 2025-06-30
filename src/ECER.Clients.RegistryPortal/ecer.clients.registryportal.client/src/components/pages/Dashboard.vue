@@ -148,6 +148,22 @@
                 </v-btn>
               </Card>
             </v-col>
+            <v-col cols="12" sm="6">
+              <Card>
+                <h2>Transfer certification</h2>
+                <p class="mt-4">If you are certified in another province or territory in Canada, you may be eligible to transfer your certification to B.C.</p>
+                <v-btn
+                  :variant="certificationStore.holdsPostBasicCertification ? 'outlined' : 'flat'"
+                  size="large"
+                  color="primary"
+                  id="btnNeedOtherOptions"
+                  class="mt-12"
+                  @click="handleTransfer"
+                >
+                  Transfer
+                </v-btn>
+              </Card>
+            </v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -367,6 +383,9 @@ export default defineComponent({
     },
     handleStartNewApplication() {
       this.router.push({ name: "application-certification" });
+    },
+    handleTransfer() {
+      this.router.push({ name: "application-transfer" });
     },
   },
 });
