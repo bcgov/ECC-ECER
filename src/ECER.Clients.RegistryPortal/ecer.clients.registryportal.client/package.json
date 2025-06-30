@@ -44,7 +44,7 @@
     "@tsconfig/node18": "^18.2.4",
     "@types/lodash": "^4.17.18",
     "@types/luxon": "^3.6.2",
-    "@types/node": "^24.0.3",
+    "@types/node": "^24.0.7",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vitest/browser": "^3.2.4",
