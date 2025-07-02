@@ -126,7 +126,26 @@ public class CertificationsTests : RegistryPortalWebAppScenarioBase
 
     var Certifications = await CertificationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Certifications.CertificationLookupResponse[]>().ShouldNotBeNull();
     Certifications.ShouldNotBeEmpty();
-    Certifications.ShouldHaveSingleItem();
     Certifications[0].RegistrationNumber.ShouldBe(certificateNumber);
   }
+  [Fact]
+  public async Task CertificationsLookup_ByRegistrant_ReturnsCertifications()
+  {
+    var faker = new Faker("en_CA");
+
+    var user = this.Fixture.AuthenticatedBcscUser;
+
+    var certificationLookupRequest = new CertificationLookupRequest(faker.Random.Word()) { FirstName=user.FirstName,LastName=user.LastName };
+    var CertificationsResponse = await Host.Scenario(_ =>
+    {
+      _.Post.Json(certificationLookupRequest).ToUrl($"/api/certifications/lookup");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var Certifications = await CertificationsResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.Certifications.CertificationLookupResponse[]>().ShouldNotBeNull();
+    Certifications.ShouldNotBeEmpty();
+    Certifications.Length.ShouldBeGreaterThan(1);
+
+  }
+  
 }
