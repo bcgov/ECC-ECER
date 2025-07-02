@@ -63,7 +63,6 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
             {
               switch (c.StatusCode)
               {
-                case CertificateStatusCode.Active: return 1;
                 case CertificateStatusCode.Cancelled: return 2;
                 case CertificateStatusCode.Suspended: return 3;
                 case CertificateStatusCode.Expired: return 4;
