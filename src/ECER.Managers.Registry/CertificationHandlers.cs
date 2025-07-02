@@ -1,7 +1,9 @@
-﻿using AutoMapper;
+﻿using AngleSharp.Dom;
+using AutoMapper;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Resources.Documents.Certifications;
 using MediatR;
+using System.Collections.Generic;
 using CertificateStatusCode = ECER.Resources.Documents.Certifications.CertificateStatusCode;
 
 namespace ECER.Managers.Registry;
@@ -31,35 +33,55 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
     return new CertificationRequestPdfResult(certificate!.Id);
   }
 
-  public async Task<CertificationsQueryResults> Handle(UserCertificationQueryLookup request, CancellationToken cancellationToken)
+  public async Task<CertificationsQueryResults> Handle(
+    UserCertificationQueryLookup request,
+    CancellationToken cancellationToken)
   {
-    var Certifications = await GetCertificationsPaginated(request);
+    var certifications = await GetCertificationsPaginated(request);
 
-    //additional logic for query lookup which only wants 1 certification returned for each registrant
-    var sortedCertifications = Certifications.GroupBy(c => c.RegistrantId).Select(g => g.OrderBy(c =>
+    var results = new List<Resources.Documents.Certifications.Certification>();
+
+    foreach (var group in certifications.GroupBy(c => c.RegistrantId))
     {
-      switch (c.StatusCode)
+      // 1) Collect and sort all active certs
+      var activeCerts = group
+          .Where(c => c.StatusCode == CertificateStatusCode.Active)
+          .OrderByDescending(c => c.ExpiryDate)
+          .ThenBy(c => c.BaseCertificateTypeId)
+          .ToList();
+
+      if (activeCerts.Count > 0)
       {
-        case CertificateStatusCode.Active:
-          return 1;
-
-        case CertificateStatusCode.Cancelled:
-          return 2;
-
-        case CertificateStatusCode.Suspended:
-          return 3;
-
-        case CertificateStatusCode.Expired:
-          return 4;
-
-        default:
-          return 5;
+        // add all active certificates
+        results.AddRange(activeCerts);
       }
-    }).ThenByDescending(c => c.ExpiryDate)
-    .ThenBy(r => r.BaseCertificateTypeId) //accounts for certificates with the same expiry date we rank them by type
-    .FirstOrDefault());
+      else
+      {
+        // pick the single highest-priority non-active
+        var top = group
+            .OrderBy(c =>
+            {
+              switch (c.StatusCode)
+              {
+                case CertificateStatusCode.Active: return 1;
+                case CertificateStatusCode.Cancelled: return 2;
+                case CertificateStatusCode.Suspended: return 3;
+                case CertificateStatusCode.Expired: return 4;
+                default: return 5;
+              }
+            })
+            .ThenByDescending(c => c.ExpiryDate)
+            .ThenBy(c => c.BaseCertificateTypeId)
+            .FirstOrDefault();
 
-    return new CertificationsQueryResults(mapper.Map<IEnumerable<Contract.Certifications.Certification>>(sortedCertifications)!);
+        if (top is not null)
+          results.Add(top);
+      }
+    }
+
+    // map and return results
+    var dtos = mapper.Map<IEnumerable<Contract.Certifications.Certification>>(results)!;
+    return new CertificationsQueryResults(dtos);
   }
 
   private async Task<IEnumerable<Resources.Documents.Certifications.Certification>> GetCertificationsPaginated(UserCertificationQueryBase request)
