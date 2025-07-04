@@ -27,7 +27,7 @@
           <p class="large">ECE One Year</p>
           <p>This certification allows you to work and complete work experience requirements for ECE 5 YR certification. It is valid for 1 year.</p>
         </div>
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'OneYear')">Apply now</v-btn>
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceOneYear" class="mt-12" @click="$emit('apply-now', 'OneYear')">Apply now</v-btn>
       </Card>
     </v-col>
   </v-row>
@@ -44,7 +44,9 @@
             is valid for 1 year.
           </p>
         </div>
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'OneYear')">Apply now</v-btn>
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceOneYearEdgeCase" class="mt-12" @click="$emit('apply-now', 'OneYear')">
+          Apply now
+        </v-btn>
       </Card>
     </v-col>
   </v-row>
@@ -62,7 +64,7 @@
           </p>
           <p>This is the highest level of certification in B.C. and allows you to work alone and/or as the primary educator. It is valid for 5 years. </p>
         </div>
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'FiveYears')">Apply now</v-btn>
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceFiveYear" class="mt-12" @click="$emit('apply-now', 'FiveYears')">Apply now</v-btn>
       </Card>
     </v-col>
   </v-row>
@@ -80,7 +82,7 @@
           </p>
         </div>
         <!-- TODO: Repair ITE and SNE pathways (emit an array? And tie to current 5 YR Certification?) -->
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'Ite')">Apply now</v-btn>
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowIteSne" class="mt-12" @click="$emit('apply-now', 'Ite')">Apply now</v-btn>
       </Card>
     </v-col>
   </v-row>
@@ -98,7 +100,7 @@
           </p>
         </div>
         <!-- TODO: Repair ITE and SNE pathways (emit an array? And tie to current 5 YR Certification?) -->
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'Ite')">Apply now</v-btn>
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowIte" class="mt-12" @click="$emit('apply-now', 'Ite')">Apply now</v-btn>
       </Card>
     </v-col>
   </v-row>
@@ -116,7 +118,7 @@
           </p>
         </div>
         <!-- TODO: Repair ITE and SNE pathways (emit an array? And tie to current 5 YR Certification?) -->
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'Sne')">Apply now</v-btn>
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowSne" class="mt-12" @click="$emit('apply-now', 'Sne')">Apply now</v-btn>
       </Card>
     </v-col>
   </v-row>
