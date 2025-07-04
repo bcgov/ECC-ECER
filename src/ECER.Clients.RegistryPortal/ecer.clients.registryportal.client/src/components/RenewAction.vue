@@ -128,7 +128,7 @@ export default defineComponent({
     },
     handleRenewClicked() {
       this.applicationStore.$patch({
-        draftApplication: { applicationType: "Renewal", certificationTypes: this.certificationStore.certificationTypes(this.certification) },
+        draftApplication: { applicationType: "Renewal", certificationTypes: this.certificationStore.certificationTypes(this.certification), fromCertificate: this.certification.id },
       });
 
       this.router.push({ name: "application-requirements" });
