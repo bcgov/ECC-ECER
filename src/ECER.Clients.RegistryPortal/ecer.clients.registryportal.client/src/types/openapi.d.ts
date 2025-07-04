@@ -246,6 +246,7 @@ declare namespace Components {
             characterReferences?: CharacterReference[] | null;
             professionalDevelopments?: ProfessionalDevelopment[] | null;
             stage?: string | null;
+            fromCertificate?: string | null;
             applicationType?: ApplicationTypes;
             educationOrigin?: EducationOrigin;
             educationRecognition?: EducationRecognition;
@@ -1081,6 +1082,7 @@ declare namespace Paths {
     }
 }
 
+
 export interface OperationMethods {
   /**
    * configuration_get - Returns the UI initial configuration
@@ -1814,6 +1816,7 @@ export interface PathsDictionary {
 }
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
+
 
 export type AddProfessionalDevelopmentResponse = Components.Schemas.AddProfessionalDevelopmentResponse;
 export type Address = Components.Schemas.Address;
