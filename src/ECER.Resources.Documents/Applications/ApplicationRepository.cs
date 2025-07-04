@@ -123,6 +123,13 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
       }
     }
 
+    if (!string.IsNullOrEmpty(application.FromCertificate))
+    {
+      var certification = context.ecer_certificationsSet.SingleOrDefault(c => c.Id == Guid.Parse(application.FromCertificate));
+      if (certification == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Certification '{application.FromCertificate}' not found");
+      context.AddLink(ecerApplication, ecer_Application.Fields.ecer_application_FromCertificateId, certification);
+    }
+
     context.SaveChanges();
     return ecerApplication.ecer_ApplicationId.Value.ToString();
   }
