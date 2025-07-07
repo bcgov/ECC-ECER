@@ -174,12 +174,18 @@ export const useApplicationStore = defineStore("application", {
       if (state.draftApplication.applicationType === "Renewal") {
         if (this.isDraftCertificateTypeEceAssistant) return "AssistantRenewal";
         if (this.isDraftCertificateTypeOneYear) {
-          if (certificationStore.latestCertificateStatus === "Active") return "OneYearActiveRenewal";
+          const fromCertificateId = state.draftApplication.fromCertificate;
+          if (fromCertificateId && certificationStore.certificateStatus(fromCertificateId) === "Active") return "OneYearActiveRenewal";
           return "OneYearExpiredRenewal";
         }
         if (this.isDraftCertificateTypeFiveYears) {
-          if (certificationStore.latestCertificateStatus === "Active") return "FiveYearActiveRenewal";
-          if (certificationStore.latestExpiredMoreThan5Years) return "FiveYearExpiredMoreThanFiveYearsRenewal";
+          const fromCertificateId = state.draftApplication.fromCertificate;
+          if (fromCertificateId) {
+            if (certificationStore.certificateStatus(fromCertificateId) === "Active") return "FiveYearActiveRenewal";
+            if (certificationStore.expiredMoreThan5Years(fromCertificateId)) return "FiveYearExpiredMoreThanFiveYearsRenewal";
+            return "FiveYearExpiredLessThanFiveYearsRenewal";
+          }
+          // Default to expired renewal if no fromCertificate is specified
           return "FiveYearExpiredLessThanFiveYearsRenewal";
         }
       }
