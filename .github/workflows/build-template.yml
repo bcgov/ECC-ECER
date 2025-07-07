@@ -80,7 +80,7 @@ jobs:
       # https://github.com/aquasecurity/trivy-action
       - name: Run Trivy vulnerability scanner in repo mode
         if: github.event_name == 'pull_request'
-        uses: aquasecurity/trivy-action@0.31.0
+        uses: aquasecurity/trivy-action@0.32.0
         with:
           scan-type: "fs"
           ignore-unfixed: true
@@ -98,7 +98,7 @@ jobs:
       # https://github.com/aquasecurity/trivy-action
       - name: Run Trivy Scan on the created container
         if: github.event_name != 'pull_request'
-        uses: aquasecurity/trivy-action@0.31.0
+        uses: aquasecurity/trivy-action@0.32.0
         with:
           image-ref: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
           format: "sarif"
