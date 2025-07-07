@@ -150,6 +150,26 @@ export default defineComponent({
       default: () => [],
     },
   },
+  methods: {
+    hasSne(activeFiveYearCertifications: Components.Schemas.Certification[]) {
+      return activeFiveYearCertifications.some((certification) => certification.levels?.some((level) => level.type === "SNE"));
+    },
+    hasIte(activeFiveYearCertifications: Components.Schemas.Certification[]) {
+      return activeFiveYearCertifications.some((certification) => certification.levels?.some((level) => level.type === "ITE"));
+    },
+    hasBothIteAndSne(activeFiveYearCertifications: Components.Schemas.Certification[]) {
+      return activeFiveYearCertifications.some(
+        (certification) => certification.levels?.some((level) => level.type === "ITE") && certification.levels?.some((level) => level.type === "SNE"),
+      );
+    },
+    getActiveFiveYearCertifications() {
+      return this.certifications.filter(
+        (certification) =>
+          certification.levels?.some((level) => level.type === "ECE 5 YR") &&
+          (certification.statusCode === "Active" || certification.statusCode === "Suspended"),
+      );
+    },
+  },
   computed: {
     showEceAssistantPathway() {
       // If the user does not have ECE assistant, or all the ECE assistant certifications have been expired for more than 5 years, show the ECE assistant pathway
@@ -182,47 +202,39 @@ export default defineComponent({
     },
     showSpecializedCertificationPathway() {
       // If the user has an active ECE 5 YR certification, without holding ITE or SNE, show the specialized certification pathway
-      const eceFiveYearCertifications = this.certifications.filter(
-        (certification) =>
-          certification.levels?.some((level) => level.type === "ECE 5 YR") &&
-          (certification.statusCode === "Active" || certification.statusCode === "Suspended"),
-      );
+      const eceFiveYearCertifications = this.getActiveFiveYearCertifications();
 
-      // Check if any ECE 5 YR certification already has both ITE and SNE
+      return (
+        eceFiveYearCertifications.length > 0 &&
+        !this.hasBothIteAndSne(eceFiveYearCertifications) &&
+        !this.hasSne(eceFiveYearCertifications) &&
+        !this.hasIte(eceFiveYearCertifications)
+      );
+    },
+    showItePathway(): boolean {
+      // If the user has an active ECE 5 YR certification, has SNE but does not have ITE, show the ITE pathway
+      const eceFiveYearCertifications = this.getActiveFiveYearCertifications();
+
       const hasBothIteAndSne = eceFiveYearCertifications.some(
         (certification) => certification.levels?.some((level) => level.type === "ITE") && certification.levels?.some((level) => level.type === "SNE"),
       );
 
-      return eceFiveYearCertifications.length > 0 && !this.showItePathway && !this.showSnePathway && !hasBothIteAndSne;
-    },
-    showItePathway(): boolean {
-      // If the user has an active ECE 5 YR certification, has SNE but does not have ITE, show the ITE pathway
-      const eceFiveYearCertifications = this.certifications.filter(
-        (certification) =>
-          certification.levels?.some((level) => level.type === "ECE 5 YR") &&
-          (certification.statusCode === "Active" || certification.statusCode === "Suspended"),
-      );
-
       return (
         eceFiveYearCertifications.length > 0 &&
-        !this.showSnePathway &&
-        !this.showSpecializedCertificationPathway &&
-        !this.certifications.some((certification) => certification.levels?.some((level) => level.type === "ITE"))
+        !this.hasBothIteAndSne(eceFiveYearCertifications) &&
+        this.hasSne(eceFiveYearCertifications) &&
+        !this.hasIte(eceFiveYearCertifications)
       );
     },
     showSnePathway(): boolean {
       // If the user has an active ECE 5 YR certification, has ITE but does not have SNE, show the SNE pathway
-      const eceFiveYearCertifications = this.certifications.filter(
-        (certification) =>
-          certification.levels?.some((level) => level.type === "ECE 5 YR") &&
-          (certification.statusCode === "Active" || certification.statusCode === "Suspended"),
-      );
+      const eceFiveYearCertifications = this.getActiveFiveYearCertifications();
 
       return (
         eceFiveYearCertifications.length > 0 &&
-        !this.showItePathway &&
-        !this.showSpecializedCertificationPathway &&
-        !this.certifications.some((certification) => certification.levels?.some((level) => level.type === "SNE"))
+        !this.hasBothIteAndSne(eceFiveYearCertifications) &&
+        !this.hasSne(eceFiveYearCertifications) &&
+        this.hasIte(eceFiveYearCertifications)
       );
     },
   },
