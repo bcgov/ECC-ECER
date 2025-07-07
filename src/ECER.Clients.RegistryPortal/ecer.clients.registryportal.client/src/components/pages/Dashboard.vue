@@ -56,6 +56,13 @@
         </v-col>
       </v-row>
 
+      <v-row>
+        <v-col cols="12">
+          <h1>{{ heading }}</h1>
+          <p v-if="subheading" class="mt-3">{{ subheading }}</p>
+        </v-col>
+      </v-row>
+
       <!-- Your ECE applications -->
       <v-row v-if="applications && userStore.isVerified && showApplicationCard" justify="center">
         <v-col>
@@ -70,75 +77,92 @@
         </v-col>
       </v-row>
 
-      <!-- Your ECE certifications -->
-      <v-row v-if="userStore.isVerified" justify="center" class="mt-6">
-        <v-col>
-          <v-row>
-            <v-col cols="12">
-              <ECEHeader title="Your ECE certifications" />
-              <div v-if="certifications && certificationStore.hasCertifications">
-                <div class="d-flex flex-row justify-start ga-3 flex-wrap mt-4">
-                  <p>ECE registration number</p>
-                  <p>
-                    {{ certificationStore.latestCertification?.number }}
-                  </p>
+      <!-- My current certification -->
+      <template v-if="userStore.isVerified">
+        <v-row justify="center" class="mt-6">
+          <v-col>
+            <v-row>
+              <v-col cols="12">
+                <ECEHeader title="My current certification" />
+                <div v-if="certifications && certificationStore.hasCertifications">
+                  <div class="d-flex flex-row justify-start ga-3 flex-wrap mt-4">
+                    <p class="font-weight-bold">
+                      ECE registration number:
+                      {{ certificationStore.latestCertification?.number }}
+                    </p>
+                  </div>
+                  <template v-if="certificationStore.latestCertification">
+                    <CertificationCard
+                      class="mt-4"
+                      :is-rounded="false"
+                      :certification="certificationStore.latestCertification"
+                      :has-application="applicationStore.hasApplication"
+                    />
+                  </template>
                 </div>
-                <CertificationCard :class="smAndDown ? 'mx-n6 mt-4' : 'mt-4'" :is-rounded="false" />
-              </div>
-              <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+                <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+
+        <!-- My Other Certifications -->
+        <v-row v-if="certifications && certificationStore.hasOtherCertifications" justify="center" class="mt-6">
+          <v-col>
+            <v-row>
+              <v-col cols="12">
+                <div>
+                  <v-btn block size="x-large" variant="outlined" color="primary" @click="router.push('/my-other-certifications')" class="force-full-content">
+                    My other certifications
+                    <v-icon size="large" icon="mdi-arrow-right" />
+                  </v-btn>
+                </div>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </template>
 
       <!-- Options -->
       <v-row v-if="showOptions" justify="center" class="mt-6">
         <v-col>
           <v-row>
             <v-col cols="12">
-              <ECEHeader title="Options" />
+              <ECEHeader title="Need other options?" />
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12" sm="6" lg="4">
-              <RenewCard />
+            <v-col cols="12" sm="6">
+              <Card>
+                <h2>Apply for new certification</h2>
+                <p class="mt-4">Start an application for a new certificate level based on your education and work experience.</p>
+                <v-btn
+                  :variant="certificationStore.holdsPostBasicCertification ? 'outlined' : 'flat'"
+                  size="large"
+                  color="primary"
+                  id="btnNeedOtherOptions"
+                  class="mt-12"
+                  @click="handleStartNewApplication"
+                >
+                  Apply now
+                </v-btn>
+              </Card>
             </v-col>
-            <RegistrantCard />
-          </v-row>
-        </v-col>
-      </v-row>
-
-      <!-- Your My ECE Registry account -->
-      <v-row justify="center" class="mt-6">
-        <v-col>
-          <v-row>
-            <v-col cols="12">
-              <ECEHeader title="Your My ECE Registry account" />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" sm="6" lg="4">
-              <ActionCard title="Messages" icon="mdi-bell">
-                <template #content>
-                  <UnreadMessages :linkable="false" />
-                </template>
-                <template #action>
-                  <v-btn variant="text">
-                    <router-link :to="{ name: 'messages' }">Read messages</router-link>
-                  </v-btn>
-                </template>
-              </ActionCard>
-            </v-col>
-
-            <v-col v-if="userStore.isVerified" cols="12" sm="6" lg="4">
-              <ActionCard title="Your profile" icon="mdi-account-circle">
-                <template #content>Manage your names, address and contact information.</template>
-                <template #action>
-                  <v-btn variant="text">
-                    <router-link :to="{ name: 'profile' }">My profile</router-link>
-                  </v-btn>
-                </template>
-              </ActionCard>
+            <v-col cols="12" sm="6">
+              <Card>
+                <h2>Transfer certification</h2>
+                <p class="mt-4">If you are certified in another province or territory in Canada, you may be eligible to transfer your certification to B.C.</p>
+                <v-btn
+                  :variant="certificationStore.holdsPostBasicCertification ? 'outlined' : 'flat'"
+                  size="large"
+                  color="primary"
+                  id="btnNeedOtherOptions"
+                  class="mt-12"
+                  @click="handleTransfer"
+                >
+                  Transfer
+                </v-btn>
+              </Card>
             </v-col>
           </v-row>
         </v-col>
@@ -178,8 +202,6 @@ import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
-import RegistrantCard from "@/components/RegistrantCard.vue";
-import RenewCard from "@/components/RenewCard.vue";
 import UnreadMessages from "@/components/UnreadMessages.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -189,6 +211,7 @@ import { useUserStore } from "@/store/user";
 import { useLoadingStore } from "@/store/loading";
 import { useOidcStore } from "@/store/oidc";
 import type { Application, Certification, UserInfo, UserProfile } from "@/types/openapi";
+import Card from "@/components/Card.vue";
 
 export default defineComponent({
   name: "Dashboard",
@@ -203,8 +226,7 @@ export default defineComponent({
     ActionCard,
     Alert,
     UnreadMessages,
-    RenewCard,
-    RegistrantCard,
+    Card,
   },
   async setup() {
     const oidcStore = useOidcStore();
@@ -270,6 +292,12 @@ export default defineComponent({
     userProfile: null as UserProfile | null,
   }),
   computed: {
+    heading(): string {
+      return this.showTransferCard ? "Apply for ECE certification in B.C." : "My ECE Registry dashboard";
+    },
+    subheading(): string {
+      return this.showTransferCard ? "There are two options to get certified in British Columbia." : "";
+    },
     showApplicationCard(): boolean {
       if (this.certificationStore.hasCertifications && this.applicationStore.applicationStatus === undefined) {
         return false;
@@ -299,7 +327,7 @@ export default defineComponent({
       );
     },
     showOptions(): boolean {
-      return this.certificationStore.hasCertifications && !this.showApplicationCard;
+      return this.certificationStore.hasCertifications && !this.applicationStore.hasApplication && !this.certificationStore.holdsAllCertifications;
     },
     cancelApplicationLoading(): boolean {
       return this.loadingStore.isLoading("draftapplication_delete") || this.loadingStore.isLoading("application_get");
@@ -317,6 +345,19 @@ export default defineComponent({
         this.alertStore.setFailureAlert("Unable to cancel application.");
       }
     },
+    handleStartNewApplication() {
+      this.router.push({ name: "application-certification" });
+    },
+    handleTransfer() {
+      this.router.push({ name: "application-transfer" });
+    },
   },
 });
 </script>
+
+<style scoped>
+::v-deep(.force-full-content .v-btn__content) {
+  flex: 1 1 auto !important;
+  justify-content: space-between;
+}
+</style>

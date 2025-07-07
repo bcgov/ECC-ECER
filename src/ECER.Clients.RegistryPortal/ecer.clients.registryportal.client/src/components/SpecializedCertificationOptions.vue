@@ -21,7 +21,7 @@
         <li>Considered equivalent by the ECE Registry</li>
       </ul>
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
+        You will need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
         Registry.
       </p>
       <p class="mt-6">What do you want to add to your certificate?</p>

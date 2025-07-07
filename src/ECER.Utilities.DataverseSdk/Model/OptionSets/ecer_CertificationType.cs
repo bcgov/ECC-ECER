@@ -27,7 +27,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		ECEAssistant = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ECEIT = 621870003,
+		ECEITE = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ECEITESNE = 621870005,

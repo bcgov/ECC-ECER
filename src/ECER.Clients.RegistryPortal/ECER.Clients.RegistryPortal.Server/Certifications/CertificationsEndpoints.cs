@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -13,10 +12,27 @@ public class CertificationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapGet("/api/certifications/{id?}", async (string? id, HttpContext httpContext, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/certifications/{id?}", async Task<Results<Ok<IEnumerable<Certification>>, BadRequest<ProblemDetails>>> (string? id, HttpContext httpContext, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       var userId = httpContext.User.GetUserContext()?.UserId;
-      bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid) { id = null; }
+      if (string.IsNullOrEmpty(id))
+      {
+        id = null;
+      }
+      else
+      {
+        bool IdIsNotGuid = !Guid.TryParse(id, out _); 
+        if (IdIsNotGuid) 
+        {
+          var problemDetails = new ProblemDetails
+          {
+            Status = StatusCodes.Status400BadRequest,
+            Detail = "Invalid certificate Id",
+            Extensions = { ["errors"] = "Invalid certificate Id" }
+          };
+          return TypedResults.BadRequest(problemDetails);
+        }
+      }
 
       var query = new UserCertificationQuery
       {

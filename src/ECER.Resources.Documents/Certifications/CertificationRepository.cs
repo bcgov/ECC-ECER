@@ -68,7 +68,19 @@ internal class CertificationRepository : ICertificationRepository
       .IncludeNested(a => a.ecer_certificateconditions_Registrantid)
       .Execute();
 
-    return mapper.Map<IEnumerable<Certification>>(results)!.ToList();
+    var mappedCerts =  mapper.Map<IEnumerable<Certification>>(results)!.ToList();
+
+    // Assumes CertificateConditions are already filtered to Active in AutoMapper
+    foreach (var cert in mappedCerts)
+    {
+      if (cert.CertificateConditions != null)
+      {
+        cert.CertificateConditions = cert.CertificateConditions
+          .Where(c => c.CertificateId == null || c.CertificateId == cert.Id)
+          .ToList();
+      }
+    }
+    return mappedCerts;
   }
 
   public async Task<string> RequestPdf(string certificateId, CancellationToken cancellationToken)
