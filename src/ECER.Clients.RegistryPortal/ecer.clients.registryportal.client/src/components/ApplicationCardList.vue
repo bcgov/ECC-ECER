@@ -215,10 +215,6 @@ export default defineComponent({
       // If the user has an active ECE 5 YR certification, has SNE but does not have ITE, show the ITE pathway
       const eceFiveYearCertifications = this.getActiveFiveYearCertifications();
 
-      const hasBothIteAndSne = eceFiveYearCertifications.some(
-        (certification) => certification.levels?.some((level) => level.type === "ITE") && certification.levels?.some((level) => level.type === "SNE"),
-      );
-
       return (
         eceFiveYearCertifications.length > 0 &&
         !this.hasBothIteAndSne(eceFiveYearCertifications) &&
