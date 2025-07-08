@@ -44,38 +44,13 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
     foreach (var group in certifications.GroupBy(c => c.RegistrantId))
     {
       // 1) Collect and sort all active certs
-      var activeCerts = group
-          .Where(c => c.StatusCode == CertificateStatusCode.Active)
+      var certs = group
+          .Where(c => (c.StatusCode == CertificateStatusCode.Active || c.StatusCode == CertificateStatusCode.Suspended || c.StatusCode == CertificateStatusCode.Cancelled) && c.ExpiryDate >= DateTime.UtcNow.Date)
           .OrderByDescending(c => c.ExpiryDate)
           .ThenBy(c => c.BaseCertificateTypeId)
           .ToList();
+      results.AddRange(certs);
 
-      if (activeCerts.Count > 0)
-      {
-        // add all active certificates
-        results.AddRange(activeCerts);
-      }
-      else
-      {
-        // pick the single highest-priority non-active
-        var top = group
-            .OrderBy(c =>
-            {
-              switch (c.StatusCode)
-              {
-                case CertificateStatusCode.Cancelled: return 2;
-                case CertificateStatusCode.Suspended: return 3;
-                case CertificateStatusCode.Expired: return 4;
-                default: return 5;
-              }
-            })
-            .ThenByDescending(c => c.ExpiryDate)
-            .ThenBy(c => c.BaseCertificateTypeId)
-            .FirstOrDefault();
-
-        if (top is not null)
-          results.Add(top);
-      }
     }
 
     // map and return results
