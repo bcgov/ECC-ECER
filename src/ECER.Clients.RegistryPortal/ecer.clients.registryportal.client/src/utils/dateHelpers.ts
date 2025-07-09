@@ -13,15 +13,17 @@ export const getTodayDate = (): string => {
 };
 
 /**
- * Get a date that is 2 years from today
+ * Get a date that is a given number of years from today
+ * @param years Number of years to add
  */
-export const getTwoYearsFromToday = (): string => {
-  return DateTime.now().plus({ years: 5 }).toISO();
+export const getDatePlusYears = (years: number): string => {
+  return DateTime.now().plus({ years }).toISO();
 };
 
 /**
- * Get a date that is 2 years ago
+ * Get a date that is a given number of years ago from today
+ * @param years Number of years to subtract
  */
-export const getTwoYearsAgo = (): string => {
-  return DateTime.now().minus({ years: 5 }).toISO();
+export const getDateMinusYears = (years: number): string => {
+  return DateTime.now().minus({ years }).toISO();
 };
