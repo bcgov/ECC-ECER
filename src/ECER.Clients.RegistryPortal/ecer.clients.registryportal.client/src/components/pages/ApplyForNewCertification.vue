@@ -49,10 +49,10 @@ export default defineComponent({
     };
   },
   methods: {
-    handleApplyNow(type: Components.Schemas.CertificationType) {
-      this.applicationStore.$patch({ draftApplication: { certificationTypes: [type] } });
+    handleApplyNow(type: Components.Schemas.CertificationType[]) {
+      this.applicationStore.$patch({ draftApplication: { certificationTypes: [...type] } });
 
-      if (type !== "FiveYears") {
+      if (!type.includes("FiveYears")) {
         this.applicationStore.$patch({ draftApplication: { workExperienceReferences: [] } });
       }
       this.router.push({ name: "application-requirements" });

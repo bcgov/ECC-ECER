@@ -11,7 +11,7 @@
             professional development, etc.) for higher certification levels. It is valid for 5 years.
           </p>
         </div>
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'EceAssistant')">
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', ['EceAssistant'])">
           Apply now
         </v-btn>
       </Card>
@@ -27,7 +27,7 @@
           <p class="large">ECE One Year</p>
           <p>This certification allows you to work and complete work experience requirements for ECE 5 YR certification. It is valid for 1 year.</p>
         </div>
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'OneYear')">Apply now</v-btn>
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceOneYear" class="mt-12" @click="$emit('apply-now', ['OneYear'])">Apply now</v-btn>
       </Card>
     </v-col>
   </v-row>
@@ -44,7 +44,9 @@
             is valid for 1 year.
           </p>
         </div>
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'OneYear')">Apply now</v-btn>
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceOneYearEdgeCase" class="mt-12" @click="$emit('apply-now', ['OneYear'])">
+          Apply now
+        </v-btn>
       </Card>
     </v-col>
   </v-row>
@@ -62,7 +64,9 @@
           </p>
           <p>This is the highest level of certification in B.C. and allows you to work alone and/or as the primary educator. It is valid for 5 years. </p>
         </div>
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'FiveYears')">Apply now</v-btn>
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceFiveYear" class="mt-12" @click="$emit('apply-now', ['FiveYears'])">
+          Apply now
+        </v-btn>
       </Card>
     </v-col>
   </v-row>
@@ -79,8 +83,8 @@
             your ECE 5 YR certificate. It is valid for 5 years.
           </p>
         </div>
-        <!-- TODO: Repair ITE and SNE pathways (emit an array? And tie to current 5 YR Certification?) -->
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'Ite')">Apply now</v-btn>
+        <!-- This is the ITE + SNE upgrade pathway. If user doesn't have a certification type, it will trigger this pathway -->
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowIteSne" class="mt-12" @click="$emit('apply-now', [])">Apply now</v-btn>
       </Card>
     </v-col>
   </v-row>
@@ -97,8 +101,7 @@
             It will also renew your ECE 5 YR certificate. It is valid for 5 years.
           </p>
         </div>
-        <!-- TODO: Repair ITE and SNE pathways (emit an array? And tie to current 5 YR Certification?) -->
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'Ite')">Apply now</v-btn>
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowIte" class="mt-12" @click="$emit('apply-now', ['Ite'])">Apply now</v-btn>
       </Card>
     </v-col>
   </v-row>
@@ -115,8 +118,7 @@
             age. It will also renew your ECE 5 YR certificate. It is valid for 5 years.
           </p>
         </div>
-        <!-- TODO: Repair ITE and SNE pathways (emit an array? And tie to current 5 YR Certification?) -->
-        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', 'Sne')">Apply now</v-btn>
+        <v-btn variant="flat" size="large" color="primary" id="btnApplyNowSne" class="mt-12" @click="$emit('apply-now', ['Sne'])">Apply now</v-btn>
       </Card>
     </v-col>
   </v-row>
@@ -140,12 +142,32 @@ export default defineComponent({
     };
   },
   emits: {
-    "apply-now": (type: Components.Schemas.CertificationType) => true,
+    "apply-now": (type: Components.Schemas.CertificationType[]) => true,
   },
   props: {
     certifications: {
       type: Array as PropType<Components.Schemas.Certification[]>,
       default: () => [],
+    },
+  },
+  methods: {
+    hasSne(activeFiveYearCertifications: Components.Schemas.Certification[]) {
+      return activeFiveYearCertifications.some((certification) => certification.levels?.some((level) => level.type === "SNE"));
+    },
+    hasIte(activeFiveYearCertifications: Components.Schemas.Certification[]) {
+      return activeFiveYearCertifications.some((certification) => certification.levels?.some((level) => level.type === "ITE"));
+    },
+    hasBothIteAndSne(activeFiveYearCertifications: Components.Schemas.Certification[]) {
+      return activeFiveYearCertifications.some(
+        (certification) => certification.levels?.some((level) => level.type === "ITE") && certification.levels?.some((level) => level.type === "SNE"),
+      );
+    },
+    getActiveFiveYearCertifications() {
+      return this.certifications.filter(
+        (certification) =>
+          certification.levels?.some((level) => level.type === "ECE 5 YR") &&
+          (certification.statusCode === "Active" || certification.statusCode === "Suspended"),
+      );
     },
   },
   computed: {
@@ -180,47 +202,35 @@ export default defineComponent({
     },
     showSpecializedCertificationPathway() {
       // If the user has an active ECE 5 YR certification, without holding ITE or SNE, show the specialized certification pathway
-      const eceFiveYearCertifications = this.certifications.filter(
-        (certification) =>
-          certification.levels?.some((level) => level.type === "ECE 5 YR") &&
-          (certification.statusCode === "Active" || certification.statusCode === "Suspended"),
-      );
-
-      // Check if any ECE 5 YR certification already has both ITE and SNE
-      const hasBothIteAndSne = eceFiveYearCertifications.some(
-        (certification) => certification.levels?.some((level) => level.type === "ITE") && certification.levels?.some((level) => level.type === "SNE"),
-      );
-
-      return eceFiveYearCertifications.length > 0 && !this.showItePathway && !this.showSnePathway && !hasBothIteAndSne;
-    },
-    showItePathway(): boolean {
-      // If the user has an active ECE 5 YR certification, has SNE but does not have ITE, show the ITE pathway
-      const eceFiveYearCertifications = this.certifications.filter(
-        (certification) =>
-          certification.levels?.some((level) => level.type === "ECE 5 YR") &&
-          (certification.statusCode === "Active" || certification.statusCode === "Suspended"),
-      );
+      const eceFiveYearCertifications = this.getActiveFiveYearCertifications();
 
       return (
         eceFiveYearCertifications.length > 0 &&
-        !this.showSnePathway &&
-        !this.showSpecializedCertificationPathway &&
-        !this.certifications.some((certification) => certification.levels?.some((level) => level.type === "ITE"))
+        !this.hasBothIteAndSne(eceFiveYearCertifications) &&
+        !this.hasSne(eceFiveYearCertifications) &&
+        !this.hasIte(eceFiveYearCertifications)
+      );
+    },
+    showItePathway(): boolean {
+      // If the user has an active ECE 5 YR certification, has SNE but does not have ITE, show the ITE pathway
+      const eceFiveYearCertifications = this.getActiveFiveYearCertifications();
+
+      return (
+        eceFiveYearCertifications.length > 0 &&
+        !this.hasBothIteAndSne(eceFiveYearCertifications) &&
+        this.hasSne(eceFiveYearCertifications) &&
+        !this.hasIte(eceFiveYearCertifications)
       );
     },
     showSnePathway(): boolean {
       // If the user has an active ECE 5 YR certification, has ITE but does not have SNE, show the SNE pathway
-      const eceFiveYearCertifications = this.certifications.filter(
-        (certification) =>
-          certification.levels?.some((level) => level.type === "ECE 5 YR") &&
-          (certification.statusCode === "Active" || certification.statusCode === "Suspended"),
-      );
+      const eceFiveYearCertifications = this.getActiveFiveYearCertifications();
 
       return (
         eceFiveYearCertifications.length > 0 &&
-        !this.showItePathway &&
-        !this.showSpecializedCertificationPathway &&
-        !this.certifications.some((certification) => certification.levels?.some((level) => level.type === "SNE"))
+        !this.hasBothIteAndSne(eceFiveYearCertifications) &&
+        !this.hasSne(eceFiveYearCertifications) &&
+        this.hasIte(eceFiveYearCertifications)
       );
     },
   },
