@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col>
-      <h1 v-if="certificationStore.latestIsEceFiveYear">Apply to add specialized certification</h1>
+      <h1 v-if="certificationStore.latestIsEceFiveYear">Apply for specialized certification</h1>
       <h1 v-else>Apply for ECE Five Year certification</h1>
       <p class="mt-6">You need the following information to apply.</p>
     </v-col>
@@ -27,7 +27,7 @@
       </ul>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
+        You will need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
         Registry.
       </p>
     </v-col>
@@ -51,7 +51,7 @@
   </v-row>
   <v-row>
     <v-col cols="12">
-      <SpecializedCertificationOptions ref="SpecializedCertificationOptions" />
+      <SpecializedCertificationOptions ref="SpecializedCertificationOptions" :pre-selected="['Ite', 'Sne']" />
     </v-col>
   </v-row>
 </template>

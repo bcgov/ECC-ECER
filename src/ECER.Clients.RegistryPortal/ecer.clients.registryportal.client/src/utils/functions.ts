@@ -271,17 +271,6 @@ export function getHighestCertificationType(options: CertificationComparison[]):
 }
 
 /**
- * Returns the ID of the highest certification type from a list of options.
- *
- * @param {CertificationComparison[]} options - An array of certification comparison objects.
- * @returns {string} - The ID of the highest certification type.
- */
-export function findHighestCertificateTypeId(options: CertificationComparison[]): string {
-  const highestTypeName = getHighestCertificationType(options);
-  return options.find((o) => o.bcCertificate === highestTypeName)?.id || "";
-}
-
-/**
  * Expired more than 5 years
  * @param certification
  * @returns boolean
