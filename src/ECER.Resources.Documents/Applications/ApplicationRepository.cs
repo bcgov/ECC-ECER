@@ -125,7 +125,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
 
     if (!string.IsNullOrEmpty(application.FromCertificate))
     {
-      var certification = context.ecer_certificationsSet.SingleOrDefault(c => c.Id == Guid.Parse(application.FromCertificate));
+      var certification = context.ecer_CertificateSet.SingleOrDefault(c => c.ecer_CertificateId == Guid.Parse(application.FromCertificate) && c.ecer_Registrantid.Id == Guid.Parse(application.ApplicantId));
       if (certification == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Certification '{application.FromCertificate}' not found");
       context.AddLink(ecerApplication, ecer_Application.Fields.ecer_application_FromCertificateId, certification);
     }
