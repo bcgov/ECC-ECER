@@ -13,12 +13,12 @@
           <br />
           <ul class="ml-10">
             <li>Be relevant to the field of early childhood education</li>
-            <li v-if="certificationStore.latestCertificateStatus === 'Active'">
+            <li v-if="getFromCertificateStatus() === 'Active'">
               {{
-                `Have been completed within the term of your current certificate (Between ${formatDate(certificationStore?.latestCertification?.effectiveDate || "", "LLLL d, yyyy")} to ${formatDate(certificationStore?.latestCertification?.expiryDate || "", "LLLL d, yyyy")})`
+                `Have been completed within the term of your current certificate (Between ${formatDate(getFromCertificateEffectiveDate() || "", "LLLL d, yyyy")} to ${formatDate(getFromCertificateExpiryDate() || "", "LLLL d, yyyy")})`
               }}
             </li>
-            <li v-else-if="certificationStore.latestCertificateStatus === 'Expired'">Have been completed within the last 5 years</li>
+            <li v-else-if="getFromCertificateStatus() === 'Expired'">Have been completed within the last 5 years</li>
           </ul>
         </v-col>
       </v-row>
@@ -87,15 +87,15 @@
                 Rules.required('Enter the start date of your course or workshop'),
                 Rules.futureDateNotAllowedRule(),
                 Rules.conditionalWrapper(
-                  certificationStore.latestCertificateStatus === 'Active',
+                  this.getFromCertificateStatus() === 'Active',
                   Rules.dateBetweenRule(
-                    certificationStore?.latestCertification?.effectiveDate || '',
-                    certificationStore?.latestCertification?.expiryDate || '',
+                    this.getFromCertificateEffectiveDate() || '',
+                    this.getFromCertificateExpiryDate() || '',
                     'The start date of your course or workshop must be within the term of your current certificate',
                   ),
                 ),
                 Rules.conditionalWrapper(
-                  certificationStore.latestCertificateStatus === 'Expired',
+                  this.getFromCertificateStatus() === 'Expired',
                   Rules.dateRuleRange(
                     applicationStore.draftApplication.createdOn || '',
                     5,
@@ -120,15 +120,15 @@
                 Rules.futureDateNotAllowedRule(),
                 Rules.dateBeforeRule(professionalDevelopment.startDate || ''),
                 Rules.conditionalWrapper(
-                  certificationStore.latestCertificateStatus === 'Active',
+                  this.getFromCertificateStatus() === 'Active',
                   Rules.dateBetweenRule(
-                    certificationStore?.latestCertification?.effectiveDate || '',
-                    certificationStore?.latestCertification?.expiryDate || '',
+                    this.getFromCertificateEffectiveDate() || '',
+                    this.getFromCertificateExpiryDate() || '',
                     'The end date of your course or workshop must be within the term of your current certificate',
                   ),
                 ),
                 Rules.conditionalWrapper(
-                  certificationStore.latestCertificateStatus === 'Expired',
+                  this.getFromCertificateStatus() === 'Expired',
                   Rules.dateRuleRange(
                     applicationStore.draftApplication.createdOn || '',
                     5,
@@ -350,6 +350,27 @@ export default defineComponent({
   },
 
   methods: {
+    getFromCertificateStatus() {
+      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
+      if (fromCertificateId) {
+        return this.certificationStore.certificateStatus(fromCertificateId);
+      }
+      return "Expired"; // Default to expired if no fromCertificate is specified
+    },
+    getFromCertificateEffectiveDate() {
+      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
+      if (fromCertificateId) {
+        return this.certificationStore.certificationEffectiveDate(fromCertificateId);
+      }
+      return undefined; // Default to undefined if no fromCertificate is specified
+    },
+    getFromCertificateExpiryDate() {
+      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
+      if (fromCertificateId) {
+        return this.certificationStore.certificationExpiryDate(fromCertificateId);
+      }
+      return undefined; // Default to undefined if no fromCertificate is specified
+    },
     async handleAddProfessionalDevelopment() {
       // Validate the form
       const { valid } = await (this.$refs.professionalDevelopmentForm as VForm).validate();
