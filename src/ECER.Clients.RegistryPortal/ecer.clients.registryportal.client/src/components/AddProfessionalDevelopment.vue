@@ -87,15 +87,15 @@
                 Rules.required('Enter the start date of your course or workshop'),
                 Rules.futureDateNotAllowedRule(),
                 Rules.conditionalWrapper(
-                  this.getFromCertificateStatus() === 'Active',
+                  getFromCertificateStatus() === 'Active',
                   Rules.dateBetweenRule(
-                    this.getFromCertificateEffectiveDate() || '',
-                    this.getFromCertificateExpiryDate() || '',
+                    getFromCertificateEffectiveDate() || '',
+                    getFromCertificateExpiryDate() || '',
                     'The start date of your course or workshop must be within the term of your current certificate',
                   ),
                 ),
                 Rules.conditionalWrapper(
-                  this.getFromCertificateStatus() === 'Expired',
+                  getFromCertificateStatus() === 'Expired',
                   Rules.dateRuleRange(
                     applicationStore.draftApplication.createdOn || '',
                     5,
@@ -120,15 +120,15 @@
                 Rules.futureDateNotAllowedRule(),
                 Rules.dateBeforeRule(professionalDevelopment.startDate || ''),
                 Rules.conditionalWrapper(
-                  this.getFromCertificateStatus() === 'Active',
+                  getFromCertificateStatus() === 'Active',
                   Rules.dateBetweenRule(
-                    this.getFromCertificateEffectiveDate() || '',
-                    this.getFromCertificateExpiryDate() || '',
+                    getFromCertificateEffectiveDate() || '',
+                    getFromCertificateExpiryDate() || '',
                     'The end date of your course or workshop must be within the term of your current certificate',
                   ),
                 ),
                 Rules.conditionalWrapper(
-                  this.getFromCertificateStatus() === 'Expired',
+                  getFromCertificateStatus() === 'Expired',
                   Rules.dateRuleRange(
                     applicationStore.draftApplication.createdOn || '',
                     5,
@@ -355,7 +355,7 @@ export default defineComponent({
       if (fromCertificateId) {
         return this.certificationStore.certificateStatus(fromCertificateId);
       }
-      return "Expired"; // Default to expired if no fromCertificate is specified
+      return undefined; // Default to undefined if no fromCertificate is specified
     },
     getFromCertificateEffectiveDate() {
       const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
