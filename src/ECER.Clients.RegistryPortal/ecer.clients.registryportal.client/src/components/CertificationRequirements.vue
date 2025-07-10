@@ -64,39 +64,26 @@ export default defineComponent({
   setup: () => {
     return { CertificationType };
   },
-  data(props) {
-    const items = props.isRenewal
-      ? [
-          {
-            title: "Home",
-            disabled: false,
-            href: "/",
-          },
-          {
-            title: "Renew",
-            disabled: true,
-            href: "/application/certification/requirements",
-          },
-        ]
-      : [
-          {
-            title: "Home",
-            disabled: false,
-            href: "/",
-          },
-          {
-            title: "Application types",
-            disabled: false,
-            href: "/application/certification",
-          },
-          {
-            title: "Requirements",
-            disabled: true,
-            href: "/application/certification/requirements",
-          },
-        ];
-
-    return { items };
+  data() {
+    return {
+      items: [
+        {
+          title: "Home",
+          disabled: false,
+          href: "/",
+        },
+        {
+          title: "Application types",
+          disabled: false,
+          href: "/application/certification",
+        },
+        {
+          title: "Requirements",
+          disabled: true,
+          href: "/application/certification/requirements",
+        },
+      ],
+    };
   },
   computed: {
     isRenewal() {

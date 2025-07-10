@@ -10,7 +10,7 @@
         <li>Missing a basic and/or specialized ECE educational training program</li>
       </ul>
     </div>
-    <CertificationList :certifications="certificationStore.otherCertifications" />
+    <CertificationList :certifications="getOtherCertifications()" />
   </v-container>
 </template>
 
@@ -50,6 +50,17 @@ export default defineComponent({
         },
       ],
     };
+  },
+  methods: {
+    getOtherCertifications() {
+      // Get all certifications except the current one
+      if (!this.certificationStore.certifications || this.certificationStore.certifications.length <= 1) {
+        return [];
+      }
+      const currentCertification = this.certificationStore.currentCertification;
+      if (!currentCertification) return [];
+      return this.certificationStore.certifications.filter((cert) => cert.id !== currentCertification.id);
+    },
   },
 });
 </script>

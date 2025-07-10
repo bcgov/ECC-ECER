@@ -5,14 +5,11 @@
     <!-- Renewal -->
     <template v-if="applicationStore.isDraftApplicationRenewal">
       <ECEAssistantRenewalRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
-      <ECEOneYearRenewalRequirements
-        v-if="applicationStore.isDraftCertificateTypeOneYear"
-        :expired="certificationStore.latestCertificateStatus === 'Expired'"
-      />
+      <ECEOneYearRenewalRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" :expired="getFromCertificateStatus() === 'Expired'" />
       <ECEFiveYearRenewalRequirements
         v-if="applicationStore.isDraftCertificateTypeFiveYears"
-        :expired="certificationStore.latestCertificateStatus === 'Expired'"
-        :expired-more-than5-years="certificationStore.latestExpiredMoreThan5Years"
+        :expired="getFromCertificateStatus() === 'Expired'"
+        :expired-more-than5-years="getFromCertificateExpiredMoreThan5Years()"
       />
     </template>
 
@@ -163,6 +160,20 @@ export default defineComponent({
     },
   },
   methods: {
+    getFromCertificateStatus() {
+      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
+      if (fromCertificateId) {
+        return this.certificationStore.certificateStatus(fromCertificateId);
+      }
+      return "Expired"; // Default to expired if no fromCertificate is specified
+    },
+    getFromCertificateExpiredMoreThan5Years() {
+      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
+      if (fromCertificateId) {
+        return this.certificationStore.expiredMoreThan5Years(fromCertificateId);
+      }
+      return true; // Default to expired more than 5 years if no fromCertificate is specified
+    },
     handleSpecializationSelection(payload?: Components.Schemas.CertificationType[]) {
       this.specializationSelection = payload ?? [];
     },

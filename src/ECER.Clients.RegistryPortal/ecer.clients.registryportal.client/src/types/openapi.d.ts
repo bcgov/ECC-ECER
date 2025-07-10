@@ -246,6 +246,7 @@ declare namespace Components {
             characterReferences?: CharacterReference[] | null;
             professionalDevelopments?: ProfessionalDevelopment[] | null;
             stage?: string | null;
+            fromCertificate?: string | null;
             applicationType?: ApplicationTypes;
             educationOrigin?: EducationOrigin;
             educationRecognition?: EducationRecognition;
@@ -474,6 +475,7 @@ declare namespace Components {
             addMoreCharacterReference?: boolean | null;
             addMoreWorkExperienceReference?: boolean | null;
             addMoreProfessionalDevelopment?: boolean | null;
+            fromCertificate?: string | null;
             applicationType?: ApplicationTypes;
         }
         export interface SystemMessage {

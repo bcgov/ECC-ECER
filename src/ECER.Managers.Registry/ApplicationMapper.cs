@@ -21,6 +21,7 @@ internal class ApplicationMapper : Profile
         .ForMember(d => d.ProfessionalDevelopments, opts => opts.MapFrom(s => s.ProfessionalDevelopments))
         .ForMember(d => d.WorkExperienceReferences, opts => opts.MapFrom(s => s.WorkExperienceReferences))
         .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.CharacterReferences))
+        .ForMember(d=>d.FromCertificate, opts => opts.MapFrom(s=>s.FromCertificate))
         .ReverseMap()
         .ValidateMemberList(MemberList.Destination)
         .ForCtorParam(nameof(Contract.Applications.Application.RegistrantId), opts => opts.MapFrom(s => s.ApplicantId))

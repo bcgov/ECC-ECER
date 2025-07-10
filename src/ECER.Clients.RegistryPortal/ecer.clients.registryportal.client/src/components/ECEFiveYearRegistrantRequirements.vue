@@ -1,12 +1,12 @@
 <template>
   <v-row>
     <v-col>
-      <h1 v-if="certificationStore.latestIsEceFiveYear">Apply for specialized certification</h1>
+      <h1 v-if="certificationStore.holdsEceFiveYearCertification">Apply for specialized certification</h1>
       <h1 v-else>Apply for ECE Five Year certification</h1>
       <p class="mt-6">You need the following information to apply.</p>
     </v-col>
   </v-row>
-  <v-row v-if="!certificationStore.latestIsEceFiveYear">
+  <v-row v-if="!certificationStore.holdsEceFiveYearCertification">
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
       <p>You must have completed a basic early childhood education training program.</p>

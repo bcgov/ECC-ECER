@@ -365,6 +365,7 @@ public record DraftApplication
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
   public string? Stage { get; set; }
+  public string? FromCertificate { get; set; }
   public ApplicationTypes ApplicationType { get; set; }
   public EducationOrigin? EducationOrigin { get; set; }
   public EducationRecognition? EducationRecognition { get; set; }
@@ -395,6 +396,7 @@ public record Application
   public OneYearRenewalexplanations? OneYearRenewalExplanationChoice { get; set; }
   public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
   public string? RenewalExplanationOther { get; set; }
+  public string? FromCertificate { get; set; }
   public ApplicationOrigin? Origin { get; set; }
   public CertificateInformation? LabourMobilityCertificateInformation { get; set; }
 }
@@ -549,6 +551,7 @@ public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, Applic
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
   public bool? AddMoreProfessionalDevelopment { get; set; }
+  public string? FromCertificate { get; set; }
   public ApplicationTypes? ApplicationType { get; set; }
 }
 public record FileInfo(string Id)

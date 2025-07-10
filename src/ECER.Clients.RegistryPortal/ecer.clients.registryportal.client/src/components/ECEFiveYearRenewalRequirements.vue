@@ -112,6 +112,7 @@
 import { defineComponent } from "vue";
 
 import ECEHeader from "@/components/ECEHeader.vue";
+import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import { formatDate } from "@/utils/format";
 
@@ -119,8 +120,9 @@ export default defineComponent({
   name: "ECEFiveYearRenewalRequirements",
   components: { ECEHeader },
   setup() {
+    const applicationStore = useApplicationStore();
     const certificationStore = useCertificationStore();
-    return { certificationStore };
+    return { applicationStore, certificationStore };
   },
   props: {
     expired: {
@@ -134,10 +136,18 @@ export default defineComponent({
   },
   computed: {
     formattedLatestCertificationExpiryDate(): string {
-      return formatDate(this.certificationStore.latestCertification?.expiryDate ?? "", "LLL d, yyyy");
+      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
+      if (fromCertificateId) {
+        return formatDate(this.certificationStore.certificationExpiryDate(fromCertificateId) ?? "", "LLL d, yyyy");
+      }
+      return formatDate("", "LLL d, yyyy"); // Default to empty if no fromCertificate is specified
     },
     formattedLatestCertificationEffectiveDate(): string {
-      return formatDate(this.certificationStore.latestCertification?.effectiveDate ?? "", "LLL d, yyyy");
+      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
+      if (fromCertificateId) {
+        return formatDate(this.certificationStore.certificationEffectiveDate(fromCertificateId) ?? "", "LLL d, yyyy");
+      }
+      return formatDate("", "LLL d, yyyy"); // Default to empty if no fromCertificate is specified
     },
   },
 });
