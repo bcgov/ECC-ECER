@@ -190,6 +190,13 @@ export const useApplicationStore = defineStore("application", {
         }
       }
 
+      // LABOR MOBILITY flows
+      if (state.draftApplication.applicationType === "LabourMobility") {
+        if (this.isDraftCertificateTypeFiveYears) return "FiveYearLaborMobility";
+        if (this.isDraftCertificateTypeOneYear) return "OneYearLaborMobility";
+        if (this.isDraftCertificateTypeEceAssistant) return "AssistantLaborMobility";
+      }
+
       // REGISTRANT flows
       if (userStore.isRegistrant) {
         if (this.isDraftCertificateTypeEceAssistant) return "AssistantRegistrant";
@@ -213,13 +220,6 @@ export const useApplicationStore = defineStore("application", {
         if (this.isDraftCertificateTypeFiveYears) return "FiveYear";
         if (this.isDraftCertificateTypeOneYear) return "OneYear";
         if (this.isDraftCertificateTypeEceAssistant) return "Assistant";
-      }
-
-      // LABOR MOBILITY flows
-      if (state.draftApplication.applicationType === "LabourMobility") {
-        if (this.isDraftCertificateTypeFiveYears) return "FiveYearLaborMobility";
-        if (this.isDraftCertificateTypeOneYear) return "OneYearLaborMobility";
-        if (this.isDraftCertificateTypeEceAssistant) return "AssistantLaborMobility";
       }
 
       return "Assistant";
