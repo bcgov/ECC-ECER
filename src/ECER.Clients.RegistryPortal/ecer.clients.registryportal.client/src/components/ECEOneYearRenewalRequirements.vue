@@ -1,11 +1,5 @@
 <template>
-  <v-col
-    v-if="
-      certificationStore.latestCertificateStatus == 'Active' ||
-      (certificationStore.latestCertificateStatus == 'Expired' && !certificationStore.latestExpiredMoreThan5Years)
-    "
-    cols="12"
-  >
+  <v-col v-if="getFromCertificateStatus() == 'Active' || (getFromCertificateStatus() == 'Expired' && !getFromCertificateExpiredMoreThan5Years())" cols="12">
     <Alert title="Do you have 500 hours of supervised work experience?">
       You should
       <a
@@ -139,6 +133,22 @@ export default defineComponent({
       certificationStore,
       applicationStore,
     };
+  },
+  methods: {
+    getFromCertificateStatus() {
+      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
+      if (fromCertificateId) {
+        return this.certificationStore.certificateStatus(fromCertificateId);
+      }
+      return "Expired"; // Default to expired if no fromCertificate is specified
+    },
+    getFromCertificateExpiredMoreThan5Years() {
+      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
+      if (fromCertificateId) {
+        return this.certificationStore.expiredMoreThan5Years(fromCertificateId);
+      }
+      return true; // Default to expired more than 5 years if no fromCertificate is specified
+    },
   },
 });
 </script>
