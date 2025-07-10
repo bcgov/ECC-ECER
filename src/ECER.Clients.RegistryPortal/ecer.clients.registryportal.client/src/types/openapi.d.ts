@@ -475,6 +475,7 @@ declare namespace Components {
             addMoreCharacterReference?: boolean | null;
             addMoreWorkExperienceReference?: boolean | null;
             addMoreProfessionalDevelopment?: boolean | null;
+            fromCertificate?: string | null;
             applicationType?: ApplicationTypes;
         }
         export interface SystemMessage {

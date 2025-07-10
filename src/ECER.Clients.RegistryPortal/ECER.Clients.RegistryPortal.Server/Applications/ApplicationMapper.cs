@@ -127,6 +127,7 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.AddMoreCharacterReference, opts => opts.MapFrom(s => s.AddMoreCharacterReference))
       .ForMember(d => d.AddMoreWorkExperienceReference, opts => opts.MapFrom(s => s.AddMoreWorkExperienceReference))
       .ForMember(d => d.AddMoreProfessionalDevelopment, opts => opts.MapFrom(s => s.AddMoreProfessionalDevelopment))
+      .ForMember(d => d.FromCertificate, opts => opts.MapFrom(s => s.FromCertificate))
       .ForMember(d => d.ApplicationType, opts => opts.MapFrom(s => s.ApplicationType));
 
     CreateMap<Managers.Registry.Contract.Applications.CharacterReference, CharacterReferenceStatus>()

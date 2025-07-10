@@ -550,6 +550,7 @@ public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, Applic
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
   public bool? AddMoreProfessionalDevelopment { get; set; }
+  public string? FromCertificate { get; set; }
   public ApplicationTypes? ApplicationType { get; set; }
 }
 public record FileInfo(string Id)
