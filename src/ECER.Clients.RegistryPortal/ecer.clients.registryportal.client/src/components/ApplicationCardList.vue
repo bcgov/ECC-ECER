@@ -177,7 +177,7 @@ export default defineComponent({
 
       return (
         eceAssistantCertifications.length === 0 ||
-        eceAssistantCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification))
+        eceAssistantCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification.id!))
       );
     },
     showEceOneYearPathway() {
@@ -187,7 +187,7 @@ export default defineComponent({
       return (
         !this.showEceOneYearEdgeCasePathway &&
         (eceOneYearCertifications.length === 0 ||
-          eceOneYearCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification)))
+          eceOneYearCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification.id!)))
       );
     },
     showEceOneYearEdgeCasePathway() {
@@ -199,7 +199,7 @@ export default defineComponent({
         eceFiveYearCertifications.length > 0 &&
         eceFiveYearCertifications.every((certification) => certification.statusCode === "Expired") &&
         (eceOneYearCertifications.length === 0 ||
-          eceOneYearCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification)))
+          eceOneYearCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification.id!)))
       );
     },
     showEceFiveYearPathway() {
