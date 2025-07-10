@@ -396,6 +396,7 @@ public record Application
   public OneYearRenewalexplanations? OneYearRenewalExplanationChoice { get; set; }
   public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
   public string? RenewalExplanationOther { get; set; }
+  public string? FromCertificate { get; set; }
   public ApplicationOrigin? Origin { get; set; }
   public CertificateInformation? LabourMobilityCertificateInformation { get; set; }
 }
