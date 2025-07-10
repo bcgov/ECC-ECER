@@ -1,9 +1,9 @@
-import { DateTime } from "luxon";
 import { defineStore } from "pinia";
 import { orderBy } from "lodash";
 
 import { getCertifications } from "@/api/certification";
 import type { Components } from "@/types/openapi";
+import { expiredMoreThan5Years } from "@/utils/functions";
 
 export interface CertificationState {
   certifications: Components.Schemas.Certification[] | null | undefined;
@@ -32,11 +32,7 @@ export const useCertificationStore = defineStore("certification", {
     expiredMoreThan5Years(state) {
       return (certificateId: string): boolean => {
         const certification = this.getCertificationById(certificateId);
-        if (!certification?.expiryDate) return false;
-        const dt1 = DateTime.now().startOf("day");
-        const dt2 = DateTime.fromISO(certification.expiryDate);
-        const differenceInYears = Math.abs(dt1.diff(dt2, "years").years);
-        return differenceInYears > 5;
+        return expiredMoreThan5Years(certification ?? {});
       };
     },
     certificationExpiryDate(state) {
@@ -121,6 +117,42 @@ export const useCertificationStore = defineStore("certification", {
         if (!state.certifications) return false;
         return state.certifications.filter((cert) => cert.id !== certificateId).length > 0;
       };
+    },
+    holdsEceAssistantCertification(state): boolean {
+      return state.certifications?.some((cert) => cert.levels?.some((level) => level.type === "Assistant")) ?? false;
+    },
+    holdsEceOneYearCertification(state): boolean {
+      return state.certifications?.some((cert) => cert.levels?.some((level) => level.type === "ECE 1 YR")) ?? false;
+    },
+    holdsEceFiveYearCertification(state): boolean {
+      return state.certifications?.some((cert) => cert.levels?.some((level) => level.type === "ECE 5 YR")) ?? false;
+    },
+    holdsAllCertifications(state): boolean {
+      if (!state.certifications || state.certifications.length === 0) return false;
+
+      const isRenewable = (certification: Components.Schemas.Certification): boolean => {
+        return (
+          certification.statusCode === "Active" ||
+          ((certification.statusCode === "Expired" || certification.statusCode === "Suspended") && !expiredMoreThan5Years(certification))
+        );
+      };
+
+      return (
+        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "Assistant") && isRenewable(cert)) &&
+        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ECE 1 YR") && isRenewable(cert)) &&
+        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ECE 5 YR")) &&
+        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "SNE")) &&
+        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ITE"))
+      );
+    },
+
+    holdsPostBasicCertification(state): boolean {
+      if (!state.certifications || state.certifications.length === 0) return false;
+      return (
+        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ECE 5 YR")) &&
+        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "SNE")) &&
+        state.certifications.some((cert) => cert.levels?.some((level) => level.type === "ITE"))
+      );
     },
     hasMultipleEceOneYearCertifications(state): boolean {
       let count = 0;

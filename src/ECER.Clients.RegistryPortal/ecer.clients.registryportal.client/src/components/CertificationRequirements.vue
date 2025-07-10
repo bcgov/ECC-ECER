@@ -103,7 +103,7 @@ export default defineComponent({
       return this.applicationType === "Renewal";
     },
     isLaborMobility() {
-      return this.applicationType === "LaborMobility";
+      return this.applicationType === "LabourMobility";
     },
   },
 });

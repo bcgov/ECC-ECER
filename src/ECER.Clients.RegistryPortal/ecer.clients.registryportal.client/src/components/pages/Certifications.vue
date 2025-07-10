@@ -23,7 +23,7 @@ import Alert from "@/components/Alert.vue";
 import { useCertificationStore } from "@/store/certification";
 
 export default defineComponent({
-  name: "ApplicationRequirements",
+  name: "Certifications",
   components: {
     Breadcrumb,
     CertificationList,

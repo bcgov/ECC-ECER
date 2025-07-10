@@ -101,6 +101,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_initiatedfromName = "ecer_initiatedfromname";
 			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
+			public const string ecer_IsLast = "ecer_islast";
+			public const string ecer_islastName = "ecer_islastname";
 			public const string ecer_IsRoot = "ecer_isroot";
 			public const string ecer_isrootName = "ecer_isrootname";
 			public const string ecer_LatestMessageNotifiedDate = "ecer_latestmessagenotifieddate";
@@ -689,6 +691,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_investigation"))
 				{
 					return this.FormattedValues["ecer_investigation"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_islast")]
+		public System.Nullable<bool> ecer_IsLast
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_islast");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_islast", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_islastname")]
+		public string ecer_islastName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_islast"))
+				{
+					return this.FormattedValues["ecer_islast"];
 				}
 				else
 				{

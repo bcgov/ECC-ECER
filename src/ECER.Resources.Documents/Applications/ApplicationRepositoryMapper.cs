@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
-using ECER.Utilities.DataverseSdk.Model;
 using ECER.Resources.Documents.MetadataResources;
+using ECER.Utilities.DataverseSdk.Model;
 
 namespace ECER.Resources.Documents.Applications;
 
@@ -363,7 +363,7 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.ecer_CompetenceFosteringRelationFamilyReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationFamilyReason))
       .ForMember(d => d.ecer_CompetenceFosteringPositiveRelationCoworker, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworker))
       .ForMember(d => d.ecer_CompetenceFosteringRelationCoworkerReason, opts => opts.MapFrom(s => s.WorkExperienceReferenceCompetenciesAssessment.FosteringPositiveRelationCoworkerReason))
-      .ForMember(d => d.ecer_ChildcareAgeRange, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildcareAgeRanges))
+      .ForMember(d => d.ecer_ChildcareAgeRangeNew, opts => opts.MapFrom(s => s.WorkExperienceReferenceDetails.ChildcareAgeRanges))
       .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
 
@@ -403,7 +403,7 @@ internal class ApplicationRepositoryMapper : Profile
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
 
-    CreateMap<ChildcareAgeRanges, ecer_ChildcareAgeRanges>()
+    CreateMap<ChildcareAgeRanges, ecer_ChildcareAgeRange>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
 
@@ -419,6 +419,7 @@ internal class ApplicationRepositoryMapper : Profile
       .ForSourceMember(s => s.PortalInvitation, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_UnabletoProvideReferenceReason, opts => opts.MapFrom(s => s.UnabletoProvideReferenceReasons));
   }
+
   private static TranscriptStatusOptions? GetTranscriptStatusOption(ecer_Transcript src)
   {
     if (src.ecer_DoesECERegistryHaveTranscript == true)
@@ -436,5 +437,3 @@ internal class ApplicationRepositoryMapper : Profile
     return null;
   }
 }
-
-

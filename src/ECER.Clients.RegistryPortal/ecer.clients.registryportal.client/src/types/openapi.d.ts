@@ -60,7 +60,7 @@ declare namespace Components {
              */
             id?: string | null;
         }
-        export type ApplicationTypes = "New" | "Renewal" | "LaborMobility";
+        export type ApplicationTypes = "New" | "Renewal" | "LabourMobility";
         /**
          * delete draft application response
          */
@@ -177,7 +177,7 @@ declare namespace Components {
             confirmProvidedInformationIsRight?: boolean;
             recaptchaToken?: string | null;
         }
-        export type ChildcareAgeRanges = "From0to12Months" | "From12to24Months" | "From25to30Months" | "From31to36Months" | "Grade1" | "Preschool";
+        export type ChildcareAgeRanges = "_036months" | "_35years" | "_68years";
         export type ChildrenProgramType = "Childminding" | "Familychildcare" | "Groupchildcare" | "InHomeMultiAgechildcare" | "MultiAgechildcare" | "Occasionalchildcare" | "Other" | "Preschool";
         export interface Communication {
             id?: string | null;
@@ -398,7 +398,7 @@ declare namespace Components {
         export interface ProfessionalDevelopmentStatus {
             id?: string | null;
             courseName?: string | null;
-            numberOfHours?: number; // int32
+            numberOfHours?: number; // double
             status?: ProfessionalDevelopmentStatusCode;
         }
         export type ProfessionalDevelopmentStatusCode = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingResponse";

@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col>
-      <h1>Apply to add Special Needs Educator certification</h1>
+      <h1>Apply for Special Needs Educator certification</h1>
       <p class="mt-6">You need the following information to apply.</p>
     </v-col>
   </v-row>
@@ -26,32 +26,9 @@
       </ul>
       <br />
       <p>
-        You'll need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
+        You will need to request an official transcript from your educational institution. It must be sent directly from the educational institution to the ECE
         Registry.
       </p>
-    </v-col>
-  </v-row>
-  <v-row>
-    <v-col>
-      <ECEHeader title="Work experience" />
-      <p>You need to have completed 500 hours of work experience and be able to provide references to verify the hours.</p>
-      <br />
-      <p>Important information about calculating hours:</p>
-      <br />
-      <ul class="ml-10">
-        <li>Only include hours you worked once you began your early childhood education training program</li>
-        <li>Only include hours completed within the last 5 years</li>
-        <li>You cannot include hours that were part of your education (practicum or placement hours)</li>
-        <li>You can include hours you volunteered</li>
-      </ul>
-      <br />
-      <p>The reference must be someone who:</p>
-      <br />
-      <ul class="ml-10">
-        <li>Has directly supervised or observed you working with children from birth to 5 years old</li>
-        <li>Can speak to your knowledge, skills, and abilities (competencies) as an ECE</li>
-        <li>Held valid Canadian ECE certification during the hours they supervised or observed you</li>
-      </ul>
     </v-col>
   </v-row>
   <v-row>

@@ -80,7 +80,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
       ChildrenProgramName = faker.Random.Word(), // ChildrenProgramName
       ChildrenProgramType = faker.PickRandom<ChildrenProgramType>(), // ChildrenProgramType
       ChildrenProgramTypeOther = faker.Random.Word(), // ChildrenProgramTypeOther
-      ChildcareAgeRanges = new List<ChildcareAgeRanges>() { ChildcareAgeRanges.Grade1 }, // Child care Age Ranges
+      ChildcareAgeRanges = new List<ChildcareAgeRanges>() { ChildcareAgeRanges._35years }, // Child care Age Ranges
       Role = null, //Role - skipped for 500 hours type work experience reference
       AgeofChildrenCaredFor = null, // age of children cared for - skipped for 500 hours type work experience reference
       StartDate = faker.Date.Between(DateTime.Now.AddYears(-10), DateTime.Now), // StartDate
