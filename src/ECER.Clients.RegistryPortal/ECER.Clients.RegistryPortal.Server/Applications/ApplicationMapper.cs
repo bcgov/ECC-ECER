@@ -103,6 +103,7 @@ public class ApplicationMapper : Profile
       .ForMember(d => d.RenewalExplanationOther, opts => opts.MapFrom(s => s.RenewalExplanationOther))
       .ForMember(d => d.SignedDate, opts => opts.MapFrom(s => s.SignedDate))
       .ForMember(d => d.CharacterReferences, opts => opts.MapFrom(s => s.CharacterReferences))
+      .ForMember(d => d.FromCertificate, opts => opts.MapFrom(s => s.FromCertificate))
       ;
     CreateMap<Managers.Registry.Contract.Applications.CertificateInformation, CertificateInformation>().ReverseMap();
     CreateMap<Managers.Registry.Contract.Applications.Application, Application>();

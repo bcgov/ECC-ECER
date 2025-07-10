@@ -51,7 +51,7 @@ internal class ApplicationRepositoryMapper : Profile
        .ForCtorParam(nameof(Application.Id), opts => opts.MapFrom(s => s.ecer_ApplicationId!.ToString()))
        .ForCtorParam(nameof(Application.ApplicantId), opts => opts.MapFrom(s => s.ecer_Applicantid.Id.ToString()))
        .ForCtorParam(nameof(Application.CertificationTypes), opts => opts.MapFrom(s => s))
-       .ForMember(d => d.FromCertificate, opts => opts.Ignore())
+       .ForMember(d => d.FromCertificate, opts => opts.MapFrom(s => s.ecer_FromCertificateId.Id))
        .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
        .ForMember(d => d.SubStatus, opts => opts.MapFrom(s => s.ecer_StatusReasonDetail))
        .ForMember(d => d.SubmittedOn, opts => opts.MapFrom(s => s.ecer_DateSubmitted))
