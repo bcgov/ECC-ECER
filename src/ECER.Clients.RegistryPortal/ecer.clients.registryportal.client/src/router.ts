@@ -207,7 +207,13 @@ const router = createRouter({
           certificationTypes = [certificationTypes];
         }
 
-        return { certificationTypes: certificationTypes ?? [], applicationType: query.applicationType ?? "New" };
+        // Handle isRenewal query parameter
+        let applicationType = query.applicationType ?? "New";
+        if (query.isRenewal === "true") {
+          applicationType = "Renewal";
+        }
+
+        return { certificationTypes: certificationTypes ?? [], applicationType };
       },
     },
     {
