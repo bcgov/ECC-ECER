@@ -65,7 +65,25 @@ export default defineComponent({
     return { CertificationType };
   },
   data() {
-    return { items: [] };
+    return {
+      items: [
+        {
+          title: "Home",
+          disabled: false,
+          href: "/",
+        },
+        {
+          title: "Application types",
+          disabled: false,
+          href: "/application/certification",
+        },
+        {
+          title: "Requirements",
+          disabled: true,
+          href: "/application/certification/requirements",
+        },
+      ],
+    };
   },
   computed: {
     isRenewal() {
@@ -73,38 +91,6 @@ export default defineComponent({
     },
     isLaborMobility() {
       return this.applicationType === "LabourMobility";
-    },
-    items() {
-      return this.isRenewal
-        ? [
-            {
-              title: "Home",
-              disabled: false,
-              href: "/",
-            },
-            {
-              title: "Renew",
-              disabled: true,
-              href: "/application/certification/requirements",
-            },
-          ]
-        : [
-            {
-              title: "Home",
-              disabled: false,
-              href: "/",
-            },
-            {
-              title: "Application types",
-              disabled: false,
-              href: "/application/certification",
-            },
-            {
-              title: "Requirements",
-              disabled: true,
-              href: "/application/certification/requirements",
-            },
-          ];
     },
   },
 });
