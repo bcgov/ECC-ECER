@@ -6,10 +6,7 @@
         <div class="d-flex flex-column ga-5">
           <h2>Application</h2>
           <p class="large">ECE Assistant</p>
-          <p>
-            This certificate allows you to work alongside an ECE if you do not have the requirements (e.g., full educational program, work experience,
-            professional development, etc.) for higher certification levels. It is valid for 5 years.
-          </p>
+          <p>This certification allows you to work alongside ECEs and/or Infant and Toddler Educators. It is valid for 5 years.</p>
         </div>
         <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceAssistant" class="mt-12" @click="$emit('apply-now', ['EceAssistant'])">
           Apply now
@@ -25,7 +22,10 @@
         <div class="d-flex flex-column ga-5">
           <h2>Application</h2>
           <p class="large">ECE One Year</p>
-          <p>This certification allows you to work and complete work experience requirements for ECE 5 YR certification. It is valid for 1 year.</p>
+          <p>
+            This certification allows you to work as an ECE while completing the work experience requirement for ECE Five Year certification. It is valid for 1
+            year.
+          </p>
         </div>
         <v-btn variant="flat" size="large" color="primary" id="btnApplyNowEceOneYear" class="mt-12" @click="$emit('apply-now', ['OneYear'])">Apply now</v-btn>
       </Card>
@@ -58,7 +58,7 @@
         <div class="d-flex flex-column ga-5">
           <h2>Application</h2>
           <p class="large">
-            ECE 5 YR
+            ECE Five Year
             <br />
             + Infant and Toddler Educator and Special Needs Educator
           </p>
