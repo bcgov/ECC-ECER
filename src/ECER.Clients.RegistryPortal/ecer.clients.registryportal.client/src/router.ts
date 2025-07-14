@@ -194,7 +194,7 @@ const router = createRouter({
           certificationTypes = [certificationTypes];
         }
 
-        return { certificationTypes: certificationTypes ?? [], applicationType: query.applicationType ?? "New" };
+        return { certificationTypes: certificationTypes ?? [] };
       },
     },
     {
