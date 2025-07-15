@@ -99,10 +99,7 @@
                 Rules.required('Enter the start date of your course or workshop'),
                 Rules.futureDateNotAllowedRule(),
                 Rules.conditionalWrapper(
-                  !!(
-                    applicationStore.draftApplication.fromCertificate &&
-                    certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active'
-                  ),
+                  certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active',
                   Rules.dateBetweenRule(
                     certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate ?? '') || '',
                     certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate ?? '') || '',
@@ -110,10 +107,7 @@
                   ),
                 ),
                 Rules.conditionalWrapper(
-                  !!(
-                    applicationStore.draftApplication.fromCertificate &&
-                    certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'
-                  ),
+                  certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired',
                   Rules.dateRuleRange(
                     applicationStore.draftApplication.createdOn || '',
                     5,
@@ -138,10 +132,7 @@
                 Rules.futureDateNotAllowedRule(),
                 Rules.dateBeforeRule(professionalDevelopment.startDate || ''),
                 Rules.conditionalWrapper(
-                  !!(
-                    applicationStore.draftApplication.fromCertificate &&
-                    certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active'
-                  ),
+                  certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active',
                   Rules.dateBetweenRule(
                     certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate ?? '') || '',
                     certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate ?? '') || '',
@@ -149,10 +140,7 @@
                   ),
                 ),
                 Rules.conditionalWrapper(
-                  !!(
-                    applicationStore.draftApplication.fromCertificate &&
-                    certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'
-                  ),
+                  certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired',
                   Rules.dateRuleRange(
                     applicationStore.draftApplication.createdOn || '',
                     5,
