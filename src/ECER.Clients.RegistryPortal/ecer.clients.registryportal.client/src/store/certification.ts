@@ -18,106 +18,6 @@ export const useCertificationStore = defineStore("certification", {
     hasCertifications(state): boolean {
       return state.certifications !== null && state.certifications !== undefined && state.certifications.length > 0;
     },
-    getCertificationById: (state) => {
-      return (certificateId: string): Components.Schemas.Certification | undefined => {
-        return state.certifications?.find((cert) => cert.id === certificateId);
-      };
-    },
-    certificateStatus(state) {
-      return (certificateId: string): Components.Schemas.CertificateStatusCode | undefined => {
-        const certification = this.getCertificationById(certificateId);
-        return certification?.statusCode;
-      };
-    },
-    expiredMoreThan5Years(state) {
-      return (certificateId: string): boolean => {
-        const certification = this.getCertificationById(certificateId);
-        return expiredMoreThan5Years(certification ?? {});
-      };
-    },
-    certificationExpiryDate(state) {
-      return (certificateId: string): string | null | undefined => {
-        const certification = this.getCertificationById(certificateId);
-        return certification?.expiryDate;
-      };
-    },
-    certificationEffectiveDate(state) {
-      return (certificateId: string): string | null | undefined => {
-        const certification = this.getCertificationById(certificateId);
-        return certification?.effectiveDate;
-      };
-    },
-    isEceAssistant(state) {
-      return (certificateId: string): boolean => {
-        const certification = this.getCertificationById(certificateId);
-        if (!certification) return false;
-        return certification.levels?.some((level) => level.type === "Assistant") ?? false;
-      };
-    },
-    isEceFiveYear(state) {
-      return (certificateId: string): boolean => {
-        const certification = this.getCertificationById(certificateId);
-        if (!certification) return false;
-        return certification.levels?.some((level) => level.type === "ECE 5 YR") ?? false;
-      };
-    },
-    isEceOneYear(state) {
-      return (certificateId: string): boolean => {
-        const certification = this.getCertificationById(certificateId);
-        if (!certification) return false;
-        return certification.levels?.some((level) => level.type === "ECE 1 YR") ?? false;
-      };
-    },
-    hasSNE(state) {
-      return (certificateId: string): boolean => {
-        const certification = this.getCertificationById(certificateId);
-        if (!certification) return false;
-        return certification.levels?.some((level) => level.type === "SNE") ?? false;
-      };
-    },
-    hasITE(state) {
-      return (certificateId: string): boolean => {
-        const certification = this.getCertificationById(certificateId);
-        if (!certification) return false;
-        return certification.levels?.some((level) => level.type === "ITE") ?? false;
-      };
-    },
-    certificationTypes(state) {
-      return (certificateId: string): Components.Schemas.CertificationType[] => {
-        const certification = this.getCertificationById(certificateId);
-        if (!certification) return [];
-
-        const certificationTypes = [] as Components.Schemas.CertificationType[];
-        if (certification.levels?.some((level) => level.type === "Assistant")) {
-          certificationTypes.push("EceAssistant");
-        }
-        if (certification.levels?.some((level) => level.type === "ECE 1 YR")) {
-          certificationTypes.push("OneYear");
-        }
-        if (certification.levels?.some((level) => level.type === "ECE 5 YR")) {
-          certificationTypes.push("FiveYears");
-        }
-        if (certification.levels?.some((level) => level.type === "SNE")) {
-          certificationTypes.push("Sne");
-        }
-        if (certification.levels?.some((level) => level.type === "ITE")) {
-          certificationTypes.push("Ite");
-        }
-        return certificationTypes;
-      };
-    },
-    otherCertifications(state) {
-      return (certificateId: string): Components.Schemas.Certification[] => {
-        if (!state.certifications) return [];
-        return state.certifications.filter((cert) => cert.id !== certificateId);
-      };
-    },
-    hasOtherCertifications(state) {
-      return (certificateId: string): boolean => {
-        if (!state.certifications) return false;
-        return state.certifications.filter((cert) => cert.id !== certificateId).length > 0;
-      };
-    },
     holdsEceAssistantCertification(state): boolean {
       return state.certifications?.some((cert) => cert.levels?.some((level) => level.type === "Assistant")) ?? false;
     },
@@ -226,6 +126,76 @@ export const useCertificationStore = defineStore("certification", {
     },
   },
   actions: {
+    getCertificationById(certificateId: string): Components.Schemas.Certification | undefined {
+      return this.certifications?.find((cert) => cert.id === certificateId);
+    },
+    certificateStatus(certificateId: string): Components.Schemas.CertificateStatusCode | undefined {
+      const certification = this.getCertificationById(certificateId);
+      return certification?.statusCode;
+    },
+    expiredMoreThan5Years(certificateId: string): boolean {
+      const certification = this.getCertificationById(certificateId);
+      return expiredMoreThan5Years(certification ?? {});
+    },
+    certificationExpiryDate(certificateId: string): string | null | undefined {
+      const certification = this.getCertificationById(certificateId);
+      return certification?.expiryDate;
+    },
+    certificationEffectiveDate(certificateId: string): string | null | undefined {
+      const certification = this.getCertificationById(certificateId);
+      return certification?.effectiveDate;
+    },
+    isEceAssistant(certificateId: string): boolean {
+      const certification = this.getCertificationById(certificateId);
+      if (!certification) return false;
+      return certification.levels?.some((level) => level.type === "Assistant") ?? false;
+    },
+    isEceFiveYear(certificateId: string): boolean {
+      const certification = this.getCertificationById(certificateId);
+      if (!certification) return false;
+      return certification.levels?.some((level) => level.type === "ECE 5 YR") ?? false;
+    },
+    isEceOneYear(certificateId: string): boolean {
+      const certification = this.getCertificationById(certificateId);
+      if (!certification) return false;
+      return certification.levels?.some((level) => level.type === "ECE 1 YR") ?? false;
+    },
+    hasSNE(certificateId: string): boolean {
+      const certification = this.getCertificationById(certificateId);
+      if (!certification) return false;
+      return certification.levels?.some((level) => level.type === "SNE") ?? false;
+    },
+    hasITE(certificateId: string): boolean {
+      const certification = this.getCertificationById(certificateId);
+      if (!certification) return false;
+      return certification.levels?.some((level) => level.type === "ITE") ?? false;
+    },
+    certificationTypes(certificateId: string): Components.Schemas.CertificationType[] {
+      const certification = this.getCertificationById(certificateId);
+      if (!certification) return [];
+
+      const certificationTypes = [] as Components.Schemas.CertificationType[];
+      if (certification.levels?.some((level) => level.type === "Assistant")) {
+        certificationTypes.push("EceAssistant");
+      }
+      if (certification.levels?.some((level) => level.type === "ECE 1 YR")) {
+        certificationTypes.push("OneYear");
+      }
+      if (certification.levels?.some((level) => level.type === "ECE 5 YR")) {
+        certificationTypes.push("FiveYears");
+      }
+      if (certification.levels?.some((level) => level.type === "SNE")) {
+        certificationTypes.push("Sne");
+      }
+      if (certification.levels?.some((level) => level.type === "ITE")) {
+        certificationTypes.push("Ite");
+      }
+      return certificationTypes;
+    },
+    hasOtherCertifications(certificateId: string): boolean {
+      if (!this.certifications) return false;
+      return this.certifications.filter((cert) => cert.id !== certificateId).length > 0;
+    },
     checkIsEceAssistant(certification: Components.Schemas.Certification): boolean {
       return certification.levels?.some((level) => level.type === "Assistant") ?? false;
     },
@@ -241,7 +211,12 @@ export const useCertificationStore = defineStore("certification", {
     checkHasITE(certification: Components.Schemas.Certification): boolean {
       return certification.levels?.some((level) => level.type === "ITE") ?? false;
     },
-    getCertificationTypes(certification: Components.Schemas.Certification): Components.Schemas.CertificationType[] {
+    // Action method for checking if a certification is expired more than 5 years
+    checkExpiredMoreThan5Years(certificateId: string): boolean {
+      const certification = this.getCertificationById(certificateId);
+      return expiredMoreThan5Years(certification ?? {});
+    },
+    getCertificationTypesForCertification(certification: Components.Schemas.Certification): Components.Schemas.CertificationType[] {
       const certificationTypes = [] as Components.Schemas.CertificationType[];
       if (this.checkIsEceAssistant(certification)) {
         certificationTypes.push("EceAssistant");
