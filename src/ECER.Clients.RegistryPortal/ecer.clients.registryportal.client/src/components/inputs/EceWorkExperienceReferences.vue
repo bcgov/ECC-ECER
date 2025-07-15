@@ -78,10 +78,10 @@
         <p>Your hours:</p>
         <ul v-if="applicationStore.isDraftApplicationRenewal" class="ml-10">
           <li>Be related to the field of early childhood education</li>
-          <li v-if="getFromCertificateStatus() != 'Expired'">
+          <li v-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) != 'Expired'">
             Have been completed within the term of your current certificate (between
-            {{ formatDate(getFromCertificateEffectiveDate() ?? "", "LLLL d, yyyy") }} and
-            {{ formatDate(getFromCertificateExpiryDate() ?? "", "LLLL d, yyyy") }})
+            {{ formatDate(certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) ?? "", "LLLL d, yyyy") }} and
+            {{ formatDate(certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) ?? "", "LLLL d, yyyy") }})
           </li>
           <li v-else>Have been completed within the last 5 years</li>
         </ul>
@@ -216,7 +216,11 @@ export default defineComponent({
     },
     hoursRequired() {
       //edge case for renewals > 5 year expired should be 500 hours otherwise all renewals are 400 hours
-      if (this.applicationStore.isDraftApplicationRenewal && this.getFromCertificateIsEceFiveYear() && this.getFromCertificateExpiredMoreThan5Years()) {
+      if (
+        this.applicationStore.isDraftApplicationRenewal &&
+        this.certificationStore.isEceFiveYear(this.applicationStore.draftApplication.fromCertificate) &&
+        this.certificationStore.expiredMoreThan5Years(this.applicationStore.draftApplication.fromCertificate)
+      ) {
         return 500;
       }
       return this.applicationStore.isDraftApplicationRenewal ? 400 : 500;
@@ -258,41 +262,6 @@ export default defineComponent({
   methods: {
     formatDate,
     isNumber,
-    getFromCertificateStatus() {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.certificateStatus(fromCertificateId);
-      }
-      return "Expired"; // Default to expired if no fromCertificate is specified
-    },
-    getFromCertificateEffectiveDate() {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.certificationEffectiveDate(fromCertificateId);
-      }
-      return undefined; // Default to undefined if no fromCertificate is specified
-    },
-    getFromCertificateExpiryDate() {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.certificationExpiryDate(fromCertificateId);
-      }
-      return undefined; // Default to undefined if no fromCertificate is specified
-    },
-    getFromCertificateIsEceFiveYear() {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.isEceFiveYear(fromCertificateId);
-      }
-      return false; // Default to false if no fromCertificate is specified
-    },
-    getFromCertificateExpiredMoreThan5Years() {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.expiredMoreThan5Years(fromCertificateId);
-      }
-      return true; // Default to expired more than 5 years if no fromCertificate is specified
-    },
     async handleSubmit() {
       // Validate the form
       const { valid } = await (this.$refs.addWorkExperienceReferenceForm as any).validate();

@@ -9,12 +9,14 @@
         <br />
         <ul class="ml-10">
           <li>Be relevant to the field of early childhood education</li>
-          <li v-if="getFromCertificateStatus() === 'Active'">
+          <li v-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active'">
             {{
-              `Have been completed within the term of your current certificate (Between ${formatDate(getFromCertificateEffectiveDate() || "", "LLLL d, yyyy")} to ${formatDate(getFromCertificateExpiryDate() || "", "LLLL d, yyyy")})`
+              `Have been completed within the term of your current certificate (Between ${formatDate(certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy")} to ${formatDate(certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy")})`
             }}
           </li>
-          <li v-else-if="getFromCertificateStatus() === 'Expired'">Have been completed within the last 5 years</li>
+          <li v-else-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'">
+            Have been completed within the last 5 years
+          </li>
         </ul>
       </v-col>
     </v-row>
@@ -82,15 +84,15 @@
               Rules.required('Enter the start date of your course or workshop'),
               Rules.futureDateNotAllowedRule(),
               Rules.conditionalWrapper(
-                getFromCertificateStatus() === 'Active',
+                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active',
                 Rules.dateBetweenRule(
-                  getFromCertificateEffectiveDate() || '',
-                  getFromCertificateExpiryDate() || '',
+                  certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || '',
+                  certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || '',
                   'The start date of your course or workshop must be within the term of your current certificate',
                 ),
               ),
               Rules.conditionalWrapper(
-                getFromCertificateStatus() === 'Expired',
+                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired',
                 Rules.dateRuleRange(
                   applicationStore.draftApplication.createdOn || '',
                   5,
@@ -115,15 +117,15 @@
               Rules.futureDateNotAllowedRule(),
               Rules.dateBeforeRule(startDate || ''),
               Rules.conditionalWrapper(
-                getFromCertificateStatus() === 'Active',
+                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active',
                 Rules.dateBetweenRule(
-                  getFromCertificateEffectiveDate() || '',
-                  getFromCertificateExpiryDate() || '',
+                  certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || '',
+                  certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || '',
                   'The end date of your course or workshop must be within the term of your current certificate',
                 ),
               ),
               Rules.conditionalWrapper(
-                getFromCertificateStatus() === 'Expired',
+                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired',
                 Rules.dateRuleRange(
                   applicationStore.draftApplication.createdOn || '',
                   5,
@@ -460,27 +462,6 @@ export default defineComponent({
     this.mode = "list";
   },
   methods: {
-    getFromCertificateStatus() {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.certificateStatus(fromCertificateId);
-      }
-      return undefined; // Default to undefined if no fromCertificate is specified
-    },
-    getFromCertificateEffectiveDate() {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.certificationEffectiveDate(fromCertificateId);
-      }
-      return undefined; // Default to undefined if no fromCertificate is specified
-    },
-    getFromCertificateExpiryDate() {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.certificationExpiryDate(fromCertificateId);
-      }
-      return undefined; // Default to undefined if no fromCertificate is specified
-    },
     isNumber,
     handleCancel() {
       this.resetFormData();

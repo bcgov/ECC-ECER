@@ -5,11 +5,14 @@
     <!-- Renewal -->
     <template v-if="applicationStore.isDraftApplicationRenewal">
       <ECEAssistantRenewalRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
-      <ECEOneYearRenewalRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" :expired="getFromCertificateStatus() === 'Expired'" />
+      <ECEOneYearRenewalRequirements
+        v-if="applicationStore.isDraftCertificateTypeOneYear"
+        :expired="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'"
+      />
       <ECEFiveYearRenewalRequirements
         v-if="applicationStore.isDraftCertificateTypeFiveYears"
-        :expired="getFromCertificateStatus() === 'Expired'"
-        :expired-more-than5-years="getFromCertificateExpiredMoreThan5Years()"
+        :expired="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'"
+        :expired-more-than5-years="certificationStore.expiredMoreThan5Years(applicationStore.draftApplication.fromCertificate)"
       />
     </template>
 
@@ -160,20 +163,6 @@ export default defineComponent({
     },
   },
   methods: {
-    getFromCertificateStatus() {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.certificateStatus(fromCertificateId);
-      }
-      return "Expired"; // Default to expired if no fromCertificate is specified
-    },
-    getFromCertificateExpiredMoreThan5Years() {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.expiredMoreThan5Years(fromCertificateId);
-      }
-      return true; // Default to expired more than 5 years if no fromCertificate is specified
-    },
     handleSpecializationSelection(payload?: Components.Schemas.CertificationType[]) {
       this.specializationSelection = payload ?? [];
     },
@@ -206,7 +195,7 @@ export default defineComponent({
       } else {
         //this corrects edge case where user clicks requirements and does not select a new path. We need to remove ITE + SNE or it will persist.
         const currentTypes =
-        this.applicationStore.draftApplication.certificationTypes?.filter((certification) => certification !== "Ite" && certification !== "Sne") || [];
+          this.applicationStore.draftApplication.certificationTypes?.filter((certification) => certification !== "Ite" && certification !== "Sne") || [];
         const updatedTypes = [...currentTypes, ...this.specializationSelection];
 
         // Remove duplicates if necessary

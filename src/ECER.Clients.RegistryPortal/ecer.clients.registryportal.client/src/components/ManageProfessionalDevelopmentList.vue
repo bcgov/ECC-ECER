@@ -16,11 +16,11 @@
       </div>
       <p>Your hours:</p>
       <ul class="ml-10">
-        <li v-if="getFromCertificateStatus() === 'Active'">
+        <li v-if="certificationStore.certificateStatus(applicationStatus?.fromCertificate) === 'Active'">
           Must have been completed within the term of your current certificate (between the
-          {{ formatDate(getFromCertificateEffectiveDate() || "", "LLL d, yyyy") }} and {{ formatDate(getFromCertificateExpiryDate() || "", "LLL d, yyyy") }})
+          {{ formatDate(certificationStore.certificationEffectiveDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }} and {{ formatDate(certificationStore.certificationExpiryDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }})
         </li>
-        <li v-if="getFromCertificateStatus() === 'Expired'">Must have been completed within the last 5 years</li>
+        <li v-if="certificationStore.certificateStatus(applicationStatus?.fromCertificate) === 'Expired'">Must have been completed within the last 5 years</li>
         <li>Can be work or volunteer hours</li>
         <li>Cannot include hours worked as part of your education on your practicum or work placement</li>
       </ul>
@@ -138,27 +138,6 @@ export default defineComponent({
     },
   },
   methods: {
-    getFromCertificateStatus() {
-      const fromCertificateId = this.applicationStatus?.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.certificateStatus(fromCertificateId);
-      }
-      return "Expired"; // Default to expired if no fromCertificate is specified
-    },
-    getFromCertificateEffectiveDate() {
-      const fromCertificateId = this.applicationStatus?.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.certificationEffectiveDate(fromCertificateId);
-      }
-      return undefined; // Default to undefined if no fromCertificate is specified
-    },
-    getFromCertificateExpiryDate() {
-      const fromCertificateId = this.applicationStatus?.fromCertificate;
-      if (fromCertificateId) {
-        return this.certificationStore.certificationExpiryDate(fromCertificateId);
-      }
-      return undefined; // Default to undefined if no fromCertificate is specified
-    },
     formatDate,
   },
 });

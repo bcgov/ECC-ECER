@@ -126,51 +126,51 @@ export const useCertificationStore = defineStore("certification", {
     },
   },
   actions: {
-    getCertificationById(certificateId: string): Components.Schemas.Certification | undefined {
+    getCertificationById(certificateId: string | null | undefined): Components.Schemas.Certification | undefined {
       return this.certifications?.find((cert) => cert.id === certificateId);
     },
-    certificateStatus(certificateId: string): Components.Schemas.CertificateStatusCode | undefined {
+    certificateStatus(certificateId: string | null | undefined): Components.Schemas.CertificateStatusCode | undefined {
       const certification = this.getCertificationById(certificateId);
       return certification?.statusCode;
     },
-    expiredMoreThan5Years(certificateId: string): boolean {
+    expiredMoreThan5Years(certificateId: string | null | undefined): boolean {
       const certification = this.getCertificationById(certificateId);
       return expiredMoreThan5Years(certification ?? {});
     },
-    certificationExpiryDate(certificateId: string): string | null | undefined {
+    certificationExpiryDate(certificateId: string | null | undefined): string | null | undefined {
       const certification = this.getCertificationById(certificateId);
       return certification?.expiryDate;
     },
-    certificationEffectiveDate(certificateId: string): string | null | undefined {
+    certificationEffectiveDate(certificateId: string | null | undefined): string | null | undefined {
       const certification = this.getCertificationById(certificateId);
       return certification?.effectiveDate;
     },
-    isEceAssistant(certificateId: string): boolean {
+    isEceAssistant(certificateId: string | null | undefined): boolean {
       const certification = this.getCertificationById(certificateId);
       if (!certification) return false;
       return certification.levels?.some((level) => level.type === "Assistant") ?? false;
     },
-    isEceFiveYear(certificateId: string): boolean {
+    isEceFiveYear(certificateId: string | null | undefined): boolean {
       const certification = this.getCertificationById(certificateId);
       if (!certification) return false;
       return certification.levels?.some((level) => level.type === "ECE 5 YR") ?? false;
     },
-    isEceOneYear(certificateId: string): boolean {
+    isEceOneYear(certificateId: string | null | undefined): boolean {
       const certification = this.getCertificationById(certificateId);
       if (!certification) return false;
       return certification.levels?.some((level) => level.type === "ECE 1 YR") ?? false;
     },
-    hasSNE(certificateId: string): boolean {
+    hasSNE(certificateId: string | null | undefined): boolean {
       const certification = this.getCertificationById(certificateId);
       if (!certification) return false;
       return certification.levels?.some((level) => level.type === "SNE") ?? false;
     },
-    hasITE(certificateId: string): boolean {
+    hasITE(certificateId: string | null | undefined): boolean {
       const certification = this.getCertificationById(certificateId);
       if (!certification) return false;
       return certification.levels?.some((level) => level.type === "ITE") ?? false;
     },
-    certificationTypes(certificateId: string): Components.Schemas.CertificationType[] {
+    certificationTypes(certificateId: string | null | undefined): Components.Schemas.CertificationType[] {
       const certification = this.getCertificationById(certificateId);
       if (!certification) return [];
 
@@ -192,7 +192,7 @@ export const useCertificationStore = defineStore("certification", {
       }
       return certificationTypes;
     },
-    hasOtherCertifications(certificateId: string): boolean {
+    hasOtherCertifications(certificateId: string | null | undefined): boolean {
       if (!this.certifications) return false;
       return this.certifications.filter((cert) => cert.id !== certificateId).length > 0;
     },
@@ -212,7 +212,7 @@ export const useCertificationStore = defineStore("certification", {
       return certification.levels?.some((level) => level.type === "ITE") ?? false;
     },
     // Action method for checking if a certification is expired more than 5 years
-    checkExpiredMoreThan5Years(certificateId: string): boolean {
+    checkExpiredMoreThan5Years(certificateId: string | null | undefined): boolean {
       const certification = this.getCertificationById(certificateId);
       return expiredMoreThan5Years(certification ?? {});
     },
