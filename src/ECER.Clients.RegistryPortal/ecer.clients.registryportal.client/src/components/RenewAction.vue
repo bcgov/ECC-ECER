@@ -63,9 +63,9 @@ export default defineComponent({
     },
     canRenew() {
       return (
-        !(this.certificationStore.hasMultipleEceOneYearCertifications && this.certificationStore.isEceOneYear(this.certification.id!)) &&
-        !(this.certificationStore.isEceOneYear(this.certification.id!) && this.expiredOverFiveYears) &&
-        !(this.certificationStore.isEceAssistant(this.certification.id!) && this.expiredOverFiveYears) 
+        !(this.certificationStore.hasMultipleEceOneYearCertifications && this.certificationStore.isEceOneYear(this.certification.id)) &&
+        !(this.certificationStore.isEceOneYear(this.certification.id) && this.expiredOverFiveYears) &&
+        !(this.certificationStore.isEceAssistant(this.certification.id) && this.expiredOverFiveYears) 
       );
     },
     title() {
@@ -78,7 +78,7 @@ export default defineComponent({
       }
 
       // Assistant
-      if (this.certificationStore.isEceAssistant(this.certification.id!)) {
+      if (this.certificationStore.isEceAssistant(this.certification.id)) {
         if (this.expiredOverFiveYears) {
           return "You cannot renew your ECE Assistant certification because it's been expired for over 5 years.";
         }
@@ -86,7 +86,7 @@ export default defineComponent({
       }
 
       // One Year
-      if (this.certificationStore.isEceOneYear(this.certification.id!)) {
+      if (this.certificationStore.isEceOneYear(this.certification.id)) {
         if (this.certificationStore.hasMultipleEceOneYearCertifications) {
           return "You cannot renew your ECE One Year certification again. It can only be renewed once.";
         } else if (this.expiredOverFiveYears) {
@@ -96,12 +96,12 @@ export default defineComponent({
       }
 
       // Five Year
-      if (this.certificationStore.isEceFiveYear(this.certification.id!)) {
-        if (this.certificationStore.hasITE(this.certification.id!) && this.certificationStore.hasSNE(this.certification.id!)) {
+      if (this.certificationStore.isEceFiveYear(this.certification.id)) {
+        if (this.certificationStore.hasITE(this.certification.id) && this.certificationStore.hasSNE(this.certification.id)) {
           return "You can renew your ECE Five Year, SNE and ITE certification.";
-        } else if (this.certificationStore.hasITE(this.certification.id!)) {
+        } else if (this.certificationStore.hasITE(this.certification.id)) {
           return "You can renew your ECE Five Year and ITE certification.";
-        } else if (this.certificationStore.hasSNE(this.certification.id!)) {
+        } else if (this.certificationStore.hasSNE(this.certification.id)) {
           return "You can renew your ECE Five Year and SNE certification.";
         } else {
           return "You can renew your ECE Five Year certification.";
@@ -123,12 +123,12 @@ export default defineComponent({
     handleLearnAboutRenewalRequirementsClicked() {
       this.router.push({
         name: "certification-requirements",
-        query: { certificationTypes: this.certificationStore.certificationTypes(this.certification.id!), isRenewal: "true" },
+        query: { certificationTypes: this.certificationStore.certificationTypes(this.certification.id), isRenewal: "true" },
       });
     },
     handleRenewClicked() {
       this.applicationStore.$patch({
-        draftApplication: { applicationType: "Renewal", certificationTypes: this.certificationStore.certificationTypes(this.certification.id!), fromCertificate: this.certification.id },
+        draftApplication: { applicationType: "Renewal", certificationTypes: this.certificationStore.certificationTypes(this.certification.id), fromCertificate: this.certification.id },
       });
 
       this.router.push({ name: "application-requirements" });

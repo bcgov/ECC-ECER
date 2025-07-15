@@ -88,22 +88,22 @@ export default defineComponent({
       const currentCertification = this.certificationStore.currentCertification;
       if (!currentCertification) return types;
 
-      if (this.certificationStore.isEceAssistant(currentCertification.id!)) {
+      if (this.certificationStore.isEceAssistant(currentCertification.id)) {
         types.push(oneYearRegistrantFlow, fiveYearRegistrantFlow);
       }
-      if (this.certificationStore.isEceOneYear(currentCertification.id!)) {
-        if (this.certificationStore.certificateStatus(currentCertification.id!) === "Expired") types.push(assistantRegistrantFlow);
+      if (this.certificationStore.isEceOneYear(currentCertification.id)) {
+        if (this.certificationStore.certificateStatus(currentCertification.id) === "Expired") types.push(assistantRegistrantFlow);
         types.push(fiveYearRegistrantFlow);
       }
-      if (this.certificationStore.isEceFiveYear(currentCertification.id!)) {
-        if (this.certificationStore.hasSNE(currentCertification.id!) && !this.certificationStore.hasITE(currentCertification.id!)) {
-          if (this.certificationStore.certificateStatus(currentCertification.id!) === "Expired") types.push(assistantRegistrantFlow);
+      if (this.certificationStore.isEceFiveYear(currentCertification.id)) {
+        if (this.certificationStore.hasSNE(currentCertification.id) && !this.certificationStore.hasITE(currentCertification.id)) {
+          if (this.certificationStore.certificateStatus(currentCertification.id) === "Expired") types.push(assistantRegistrantFlow);
           else types.push(iteRegistrantFlow);
-        } else if (this.certificationStore.hasITE(currentCertification.id!) && !this.certificationStore.hasSNE(currentCertification.id!)) {
-          if (this.certificationStore.certificateStatus(currentCertification.id!) === "Expired") types.push(assistantRegistrantFlow);
+        } else if (this.certificationStore.hasITE(currentCertification.id) && !this.certificationStore.hasSNE(currentCertification.id)) {
+          if (this.certificationStore.certificateStatus(currentCertification.id) === "Expired") types.push(assistantRegistrantFlow);
           else types.push(sneRegistrantFlow);
-        } else if (!this.certificationStore.hasITE(currentCertification.id!) && !this.certificationStore.hasSNE(currentCertification.id!)) {
-          if (this.certificationStore.certificateStatus(currentCertification.id!) === "Expired") types.push(assistantRegistrantFlow);
+        } else if (!this.certificationStore.hasITE(currentCertification.id) && !this.certificationStore.hasSNE(currentCertification.id)) {
+          if (this.certificationStore.certificateStatus(currentCertification.id) === "Expired") types.push(assistantRegistrantFlow);
           else types.push(specializationRegistrantFlow);
         }
       }
