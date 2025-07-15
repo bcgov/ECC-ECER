@@ -45,12 +45,7 @@ export default defineComponent({
           href: "/",
         },
         {
-          title: "Application types",
-          disabled: false,
-          href: "/application/certification",
-        },
-        {
-          title: "Requirements",
+          title: "Renew",
           disabled: true,
           href: "/application/certification/requirements",
         },
