@@ -27,6 +27,9 @@ export const useCertificationStore = defineStore("certification", {
     holdsEceFiveYearCertification(state): boolean {
       return state.certifications?.some((cert) => cert.levels?.some((level) => level.type === "ECE 5 YR")) ?? false;
     },
+    activeEceFiveYearCertification(state): Components.Schemas.Certification | null {
+      return state.certifications?.find((cert) => cert.levels?.some((level) => level.type === "ECE 5 YR") && cert.statusCode === "Active") ?? null;
+    },
     holdsAllCertifications(state): boolean {
       if (!state.certifications || state.certifications.length === 0) return false;
 

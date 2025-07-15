@@ -164,9 +164,7 @@ export default defineComponent({
     },
     getActiveFiveYearCertifications() {
       return this.certifications.filter(
-        (certification) =>
-          certification.levels?.some((level) => level.type === "ECE 5 YR") &&
-          (certification.statusCode === "Active" || certification.statusCode === "Suspended"),
+        (certification) => certification.levels?.some((level) => level.type === "ECE 5 YR") && certification.statusCode === "Active",
       );
     },
   },

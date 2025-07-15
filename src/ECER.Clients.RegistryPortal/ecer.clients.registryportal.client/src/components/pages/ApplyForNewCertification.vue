@@ -52,6 +52,13 @@ export default defineComponent({
     handleApplyNow(type: Components.Schemas.CertificationType[]) {
       this.applicationStore.$patch({ draftApplication: { certificationTypes: [...type] } });
 
+      // Registrant pathways, associate the most recent 5 year certificate
+      if (type.includes("Ite") || type.includes("Sne") || type.length === 0) {
+        if (this.certificationStore.activeEceFiveYearCertification) {
+          this.applicationStore.$patch({ draftApplication: { fromCertificate: this.certificationStore.activeEceFiveYearCertification.id } });
+        }
+      }
+
       if (!type.includes("FiveYears")) {
         this.applicationStore.$patch({ draftApplication: { workExperienceReferences: [] } });
       }
