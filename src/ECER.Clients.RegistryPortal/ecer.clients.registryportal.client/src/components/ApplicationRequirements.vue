@@ -7,12 +7,12 @@
       <ECEAssistantRenewalRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
       <ECEOneYearRenewalRequirements
         v-if="applicationStore.isDraftCertificateTypeOneYear"
-        :expired="certificationStore.latestCertificateStatus === 'Expired'"
+        :expired="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'"
       />
       <ECEFiveYearRenewalRequirements
         v-if="applicationStore.isDraftCertificateTypeFiveYears"
-        :expired="certificationStore.latestCertificateStatus === 'Expired'"
-        :expired-more-than5-years="certificationStore.latestExpiredMoreThan5Years"
+        :expired="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'"
+        :expired-more-than5-years="certificationStore.expiredMoreThan5Years(applicationStore.draftApplication.fromCertificate)"
       />
     </template>
 
@@ -195,7 +195,7 @@ export default defineComponent({
       } else {
         //this corrects edge case where user clicks requirements and does not select a new path. We need to remove ITE + SNE or it will persist.
         const currentTypes =
-        this.applicationStore.draftApplication.certificationTypes?.filter((certification) => certification !== "Ite" && certification !== "Sne") || [];
+          this.applicationStore.draftApplication.certificationTypes?.filter((certification) => certification !== "Ite" && certification !== "Sne") || [];
         const updatedTypes = [...currentTypes, ...this.specializationSelection];
 
         // Remove duplicates if necessary

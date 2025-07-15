@@ -9,12 +9,14 @@
         <br />
         <ul class="ml-10">
           <li>Be relevant to the field of early childhood education</li>
-          <li v-if="certificationStore.latestCertificateStatus === 'Active'">
+          <li v-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active'">
             {{
-              `Have been completed within the term of your current certificate (Between ${formatDate(certificationStore?.latestCertification?.effectiveDate || "", "LLLL d, yyyy")} to ${formatDate(certificationStore?.latestCertification?.expiryDate || "", "LLLL d, yyyy")})`
+              `Have been completed within the term of your current certificate (Between ${formatDate(certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy")} to ${formatDate(certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy")})`
             }}
           </li>
-          <li v-else-if="certificationStore.latestCertificateStatus === 'Expired'">Have been completed within the last 5 years</li>
+          <li v-else-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'">
+            Have been completed within the last 5 years
+          </li>
         </ul>
       </v-col>
     </v-row>
@@ -82,15 +84,15 @@
               Rules.required('Enter the start date of your course or workshop'),
               Rules.futureDateNotAllowedRule(),
               Rules.conditionalWrapper(
-                certificationStore.latestCertificateStatus === 'Active',
+                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active',
                 Rules.dateBetweenRule(
-                  certificationStore?.latestCertification?.effectiveDate || '',
-                  certificationStore?.latestCertification?.expiryDate || '',
+                  certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || '',
+                  certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || '',
                   'The start date of your course or workshop must be within the term of your current certificate',
                 ),
               ),
               Rules.conditionalWrapper(
-                certificationStore.latestCertificateStatus === 'Expired',
+                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired',
                 Rules.dateRuleRange(
                   applicationStore.draftApplication.createdOn || '',
                   5,
@@ -115,15 +117,15 @@
               Rules.futureDateNotAllowedRule(),
               Rules.dateBeforeRule(startDate || ''),
               Rules.conditionalWrapper(
-                certificationStore.latestCertificateStatus === 'Active',
+                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active',
                 Rules.dateBetweenRule(
-                  certificationStore?.latestCertification?.effectiveDate || '',
-                  certificationStore?.latestCertification?.expiryDate || '',
+                  certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || '',
+                  certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || '',
                   'The end date of your course or workshop must be within the term of your current certificate',
                 ),
               ),
               Rules.conditionalWrapper(
-                certificationStore.latestCertificateStatus === 'Expired',
+                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired',
                 Rules.dateRuleRange(
                   applicationStore.draftApplication.createdOn || '',
                   5,

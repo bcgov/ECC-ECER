@@ -16,11 +16,11 @@
       </div>
       <p>Your hours:</p>
       <ul class="ml-10">
-        <li v-if="latestCertification?.statusCode === 'Active'">
+        <li v-if="certificationStore.certificateStatus(applicationStatus?.fromCertificate) === 'Active'">
           Must have been completed within the term of your current certificate (between the
-          {{ formatDate(latestCertification.effectiveDate!, "LLL d, yyyy") }} and {{ formatDate(latestCertification.expiryDate!, "LLL d, yyyy") }})
+          {{ formatDate(certificationStore.certificationEffectiveDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }} and {{ formatDate(certificationStore.certificationExpiryDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }})
         </li>
-        <li v-if="latestCertification?.statusCode === 'Expired'">Must have been completed within the last 5 years</li>
+        <li v-if="certificationStore.certificateStatus(applicationStatus?.fromCertificate) === 'Expired'">Must have been completed within the last 5 years</li>
         <li>Can be work or volunteer hours</li>
         <li>Cannot include hours worked as part of your education on your practicum or work placement</li>
       </ul>
@@ -93,12 +93,11 @@ export default defineComponent({
     const route = useRoute();
     const certificationStore = useCertificationStore();
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
-    const latestCertification = certificationStore.latestCertification;
 
     return {
       applicationStatus,
       smAndUp,
-      latestCertification,
+      certificationStore,
       router,
     };
   },

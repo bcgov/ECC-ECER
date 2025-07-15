@@ -71,6 +71,7 @@ public record Application(string? Id, string RegistrantId, ApplicationStatus Sta
   public IEnumerable<WorkExperienceReference> WorkExperienceReferences { get; set; } = Array.Empty<WorkExperienceReference>();
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public string? Stage { get; set; }
+  public string? FromCertificate { get; set; }
   public ApplicationStatusReasonDetail SubStatus { get; set; }
   public DateTime? ReadyForAssessmentDate { get; set; }
   public bool? AddMoreCharacterReference { get; set; }

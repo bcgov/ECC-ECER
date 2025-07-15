@@ -88,14 +88,14 @@
                   <div class="d-flex flex-row justify-start ga-3 flex-wrap mt-4">
                     <p class="font-weight-bold">
                       ECE registration number:
-                      {{ certificationStore.latestCertification?.number }}
+                      {{ certificationStore.currentCertification?.number }}
                     </p>
                   </div>
-                  <template v-if="certificationStore.latestCertification">
+                  <template v-if="certificationStore.currentCertification">
                     <CertificationCard
                       class="mt-4"
                       :is-rounded="false"
-                      :certification="certificationStore.latestCertification"
+                      :certification="certificationStore.currentCertification"
                       :has-application="applicationStore.hasApplication"
                     />
                   </template>
@@ -107,7 +107,7 @@
         </v-row>
 
         <!-- My Other Certifications -->
-        <v-row v-if="certifications && certificationStore.hasOtherCertifications" justify="center" class="mt-6">
+        <v-row v-if="certifications && hasOtherCertifications()" justify="center" class="mt-6">
           <v-col>
             <v-row>
               <v-col cols="12">
@@ -336,6 +336,13 @@ export default defineComponent({
   },
 
   methods: {
+    hasOtherCertifications() {
+      const currentCert = this.certificationStore.currentCertification;
+      if (!currentCert || !this.certificationStore.certifications) {
+        return false;
+      }
+      return this.certificationStore.certifications.length > 1;
+    },
     async cancelApplication() {
       const { data: cancelledApplicationId } = await cancelDraftApplication(this.applicationStore.draftApplication.id!);
       if (cancelledApplicationId) {

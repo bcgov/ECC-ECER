@@ -45,11 +45,11 @@ internal sealed partial class ApplicationRenewalValidationEngine : IApplicationV
     NoCertificateFound
   }
 
-  private async Task<CertificateStatus> GetCertificateStatus(string applicantId)
+  private async Task<CertificateStatus> GetCertificateStatus(string certificateId,string registrantId)
   {
     try
     {
-      var expiryDate = await getLastCertificateExpiryDate(applicantId);
+      var expiryDate = await getCertificateExpiryDate(certificateId, registrantId);
       var now = DateTime.Now.Date; //sets time stamp to 00:00:00
 
       if (expiryDate >= now)
@@ -71,14 +71,14 @@ internal sealed partial class ApplicationRenewalValidationEngine : IApplicationV
     }
   }
 
-  private async Task<DateTime> getLastCertificateExpiryDate(string applicantId)
+  private async Task<DateTime> getCertificateExpiryDate(string certificateId,string applicantId)
   {
-    var certificates = await _certificateRepository.Query(new UserCertificationQuery() { ByApplicantId = applicantId });
-    var lastCertificate = certificates.OrderByDescending(d => d.ExpiryDate).ThenBy(e => e.BaseCertificateTypeId).FirstOrDefault();
-    if (lastCertificate == null || lastCertificate.ExpiryDate == null)
+    var certificatesQuery = await _certificateRepository.Query(new UserCertificationQuery() { ById = certificateId,ByApplicantId = applicantId });
+    var certificate = certificatesQuery.SingleOrDefault();
+    if (certificate == null || certificate.ExpiryDate == null)
     {
       throw new InvalidOperationException("Certificate or datetime is null");
     }
-    return (DateTime)lastCertificate.ExpiryDate;
+    return (DateTime)certificate.ExpiryDate;
   }
 }
