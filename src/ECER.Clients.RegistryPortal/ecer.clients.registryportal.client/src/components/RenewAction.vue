@@ -123,7 +123,7 @@ export default defineComponent({
     handleLearnAboutRenewalRequirementsClicked() {
       this.router.push({
         name: "certification-requirements",
-        query: { certificationTypes: this.certificationStore.certificationTypes(this.certification.id), isRenewal: "true" },
+        query: { certificationTypes: this.certificationStore.certificationTypes(this.certification.id)},
       });
     },
     handleRenewClicked() {
