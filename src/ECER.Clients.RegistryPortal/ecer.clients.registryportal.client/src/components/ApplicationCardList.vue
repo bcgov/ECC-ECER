@@ -195,7 +195,6 @@ export default defineComponent({
       const eceOneYearCertifications = this.certifications.filter((certification) => certification.levels?.some((level) => level.type === "ECE 1 YR"));
 
       const mostRecentFiveYearCertificate = this.certificationStore.getMostRecentCertificationByExpiryDate("ECE 5 YR");
-      console.log(mostRecentFiveYearCertificate);
 
       //this will flag whether user has received an ECE 1 yr certification after their five year expired. If yes, we should not show the edge case pathway
       const oneYearCertificateIssuedAfterMostRecentFiveYear =
