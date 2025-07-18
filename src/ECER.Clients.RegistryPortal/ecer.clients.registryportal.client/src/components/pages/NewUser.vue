@@ -58,7 +58,6 @@
                 :rules="[Rules.required(), Rules.futureDateNotAllowedRule()]"
                 :max="today"
                 label="Date of birth"
-                placeholder=""
               ></EceDateInput>
             </v-col>
           </v-row>

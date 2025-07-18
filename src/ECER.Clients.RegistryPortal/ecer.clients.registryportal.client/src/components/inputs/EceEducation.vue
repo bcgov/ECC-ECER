@@ -141,7 +141,6 @@
               ]"
               label="Start date of program or course"
               maxlength="50"
-              placeholder=""
               :max="today"
             ></EceDateInput>
           </v-col>
@@ -162,7 +161,6 @@
               ]"
               label="End date of program or course"
               maxlength="50"
-              placeholder=""
               :max="today"
             ></EceDateInput>
           </v-col>
