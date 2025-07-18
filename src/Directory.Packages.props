@@ -3,38 +3,38 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Alba" Version="8.2.0" />
+    <PackageVersion Include="Alba" Version="8.2.1" />
     <PackageVersion Include="AutoMapper" Version="14.0.0" />
     <PackageVersion Include="AutoMapper.Extensions.EnumMapping" Version="4.1.0" />
     <PackageVersion Include="Bogus" Version="35.6.3" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
-    <PackageVersion Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.301" />
+    <PackageVersion Include="AWSSDK.Extensions.NETCore.Setup" Version="4.0.2" />
     <PackageVersion Include="AWSSDK.S3" Version="3.7.410.3" />
-    <PackageVersion Include="HtmlSanitizer" Version="9.0.884" />
+    <PackageVersion Include="HtmlSanitizer" Version="9.0.886" />
     <PackageVersion Include="IdentityModel" Version="7.0.0" />
     <PackageVersion Include="MartinCostello.Logging.XUnit" Version="0.6.0" />
-    <PackageVersion Include="MediatR" Version="12.5.0" />
+    <PackageVersion Include="MediatR" Version="13.0.0" />
     <PackageVersion Include="MediatR.Contracts" Version="2.0.1" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.16" />
-    <PackageVersion Include="Microsoft.AspNetCore.DataProtection" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="8.0.16" />
-    <PackageVersion Include="Microsoft.AspNetCore.OutputCaching.StackExchangeRedis" Version="8.0.16" />
-    <PackageVersion Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.16" />
-    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5" />
-    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.12.0" />
-    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.12.0" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.12.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
-    <PackageVersion Include="Microsoft.PowerPlatform.Dataverse.Client" Version="1.2.7" />
-    <PackageVersion Include="Microsoft.PowerPlatform.Dataverse.Client.Dynamics" Version="1.2.7" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.18" />
+    <PackageVersion Include="Microsoft.AspNetCore.DataProtection" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.Abstractions" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="8.0.18" />
+    <PackageVersion Include="Microsoft.AspNetCore.OutputCaching.StackExchangeRedis" Version="8.0.18" />
+    <PackageVersion Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.18" />
+    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.IdentityModel.Abstractions" Version="8.12.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.12.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.12.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="Microsoft.PowerPlatform.Dataverse.Client" Version="1.2.9" />
+    <PackageVersion Include="Microsoft.PowerPlatform.Dataverse.Client.Dynamics" Version="1.2.9" />
     <PackageVersion Include="MinimalApis.Extensions" Version="0.11.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="nClam" Version="9.0.0" />
@@ -45,12 +45,12 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.12.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.StackExchangeRedis" Version="1.9.0-beta.1" />
     <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
-    <PackageVersion Include="Serilog.Enrichers.ClientInfo" Version="2.1.2" />
+    <PackageVersion Include="Serilog.Enrichers.ClientInfo" Version="2.2.0" />
     <PackageVersion Include="Serilog.Enrichers.Environment" Version="3.0.1" />
     <PackageVersion Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageVersion Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="9.0.3" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.categories" Version="3.0.1" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.1" />
