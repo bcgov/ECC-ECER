@@ -1,7 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import storybookTest from "@storybook/addon-vitest/vitest-plugin";
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { defineConfig } from "vitest/config";
 
 const dirname = typeof __dirname !== "undefined" ? __dirname : path.dirname(fileURLToPath(import.meta.url));
@@ -11,7 +11,7 @@ export default defineConfig({
   test: {
     projects: [
       {
-        extends: true,
+        extends: "vite.config.mts",
         plugins: [
           // The plugin will run tests for the stories defined in your Storybook config
           // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
@@ -25,7 +25,7 @@ export default defineConfig({
             name: "chromium",
             provider: "playwright",
           },
-          setupFiles: ["SETUP_FILE"],
+          setupFiles: [".storybook/vitest.setup.ts"],
         },
       },
     ],
