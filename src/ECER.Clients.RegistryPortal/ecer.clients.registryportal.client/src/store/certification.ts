@@ -4,6 +4,7 @@ import { orderBy } from "lodash";
 import { getCertifications } from "@/api/certification";
 import type { Components } from "@/types/openapi";
 import { expiredMoreThan5Years } from "@/utils/functions";
+import type { CertificationLevelType } from "@/types/certificationLevelType";
 
 export interface CertificationState {
   certifications: Components.Schemas.Certification[] | null | undefined;
@@ -237,6 +238,15 @@ export const useCertificationStore = defineStore("certification", {
         certificationTypes.push("Ite");
       }
       return certificationTypes;
+    },
+    getMostRecentCertificationByExpiryDate(certificateType: CertificationLevelType): Components.Schemas.Certification | undefined {
+      const mostRecentCertification = orderBy(
+        this.certifications?.filter((certification) => certification.levels?.some((level) => level.type === certificateType)),
+        ["expiryDate"],
+        ["desc"],
+      )?.[0];
+
+      return mostRecentCertification;
     },
     async fetchCertifications() {
       // Drop any existing certifications

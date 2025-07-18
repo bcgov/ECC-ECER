@@ -126,6 +126,7 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
+import { DateTime } from "luxon";
 import Card from "@/components/Card.vue";
 import type { Components } from "@/types/openapi";
 import { useCertificationStore } from "@/store/certification";
@@ -193,11 +194,21 @@ export default defineComponent({
       const eceFiveYearCertifications = this.certifications.filter((certification) => certification.levels?.some((level) => level.type === "ECE 5 YR"));
       const eceOneYearCertifications = this.certifications.filter((certification) => certification.levels?.some((level) => level.type === "ECE 1 YR"));
 
+      const mostRecentFiveYearCertificate = this.certificationStore.getMostRecentCertificationByExpiryDate("ECE 5 YR");
+
+      //this will flag whether user has received an ECE 1 yr certification after their five year expired. If yes, we should not show the edge case pathway
+      const oneYearCertificateIssuedAfterMostRecentFiveYear =
+        eceOneYearCertifications.filter(
+          (oneYearCert) => DateTime.fromISO(oneYearCert.effectiveDate || "") > DateTime.fromISO(mostRecentFiveYearCertificate?.expiryDate || ""),
+        ).length !== 0;
+
       return (
         eceFiveYearCertifications.length > 0 &&
         eceFiveYearCertifications.every((certification) => certification.statusCode === "Expired") &&
+        eceOneYearCertifications.every((certification) => certification.statusCode === "Expired") &&
         (eceOneYearCertifications.length === 0 ||
-          eceOneYearCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification.id)))
+          eceOneYearCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification.id)) ||
+          !oneYearCertificateIssuedAfterMostRecentFiveYear)
       );
     },
     showEceFiveYearPathway() {
