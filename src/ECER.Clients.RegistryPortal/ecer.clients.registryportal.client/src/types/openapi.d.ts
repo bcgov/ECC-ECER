@@ -40,6 +40,7 @@ declare namespace Components {
             oneYearRenewalExplanationChoice?: OneYearRenewalexplanations;
             fiveYearRenewalExplanationChoice?: FiveYearRenewalExplanations;
             renewalExplanationOther?: string | null;
+            fromCertificate?: string | null;
             origin?: ApplicationOrigin;
             labourMobilityCertificateInformation?: CertificateInformation;
         }
