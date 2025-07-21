@@ -15,5 +15,6 @@ internal class MetadataMapper : Profile
     CreateMap<PostSecondaryInstitutionsQuery, Contract.Metadatas.PostSecondaryInstitutionsQuery>().ReverseMap();
     CreateMap<CertificationComparison, Contract.Metadatas.CertificationComparison>().ReverseMap();
     CreateMap<OutOfProvinceCertificationType, Contract.Metadatas.OutOfProvinceCertificationType>().ReverseMap();
+    CreateMap<DefaultContent, Contract.Metadatas.DefaultContent>().ReverseMap();
   }
 }
