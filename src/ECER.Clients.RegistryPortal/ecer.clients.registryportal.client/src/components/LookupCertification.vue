@@ -5,7 +5,7 @@
   <v-container>
     <v-row v-for="systemMessage in configStore.systemMessages" class="mt-10 mb-10">
       <v-col v-if="systemMessage.portalTags && systemMessage.portalTags.includes('LOOKUP')" cols="12">
-        <Banner type="info" :title="systemMessage.message ? systemMessage.message : ''" />
+        <Alert title="Alert">{{ systemMessage.message ? systemMessage.message : "" }}</Alert>
       </v-col>
     </v-row>
     <v-row>
@@ -120,10 +120,10 @@ import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import { postLookupCertificate } from "@/api/certification";
 import { useConfigStore } from "@/store/config";
-import Banner from "@/components/Banner.vue";
 import * as Rules from "../utils/formRules";
 import EceRecaptcha from "./inputs/EceRecaptcha.vue";
 import type { Components } from "@/types/openapi";
+import Alert from "@/components/Alert.vue";
 
 interface LookupCertificationData {
   recaptchaToken: string;
@@ -134,7 +134,7 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 export default defineComponent({
   name: "LookupCertification",
-  components: { EceRecaptcha, EceTextField, Banner },
+  components: { EceRecaptcha, EceTextField, Alert },
   setup() {
     const alertStore = useAlertStore();
     const lookupCertificationStore = useLookupCertificationStore();

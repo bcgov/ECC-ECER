@@ -1,11 +1,9 @@
 <template>
   <v-row>
     <v-col cols="12" v-for="systemMessage in configStore.systemMessages">
-      <Banner
-        v-if="systemMessage.portalTags && systemMessage.portalTags.includes('REFERENCES')"
-        type="info"
-        :title="systemMessage.message ? systemMessage.message : ''"
-      />
+      <Alert v-if="systemMessage.portalTags && systemMessage.portalTags.includes('REFERENCES')" title="Alert">
+        {{ systemMessage.message ? systemMessage.message : "" }}
+      </Alert>
     </v-col>
     <v-col cols="12" md="12" lg="12" xl="12">
       <v-row no-gutters>
@@ -74,11 +72,11 @@ import { useConfigStore } from "@/store/config";
 import { useWizardStore } from "@/store/wizard";
 import { CertificationType } from "@/utils/constant";
 import * as Rules from "@/utils/formRules";
-import Banner from "../../Banner.vue";
 import { cleanPreferredName } from "@/utils/functions";
+import Alert from "@/components/Alert.vue";
 export default defineComponent({
   name: "EceReferenceIntroduction",
-  components: { Banner },
+  components: { Alert },
   emits: {
     "update:model-value": (_reference: boolean) => true,
   },
