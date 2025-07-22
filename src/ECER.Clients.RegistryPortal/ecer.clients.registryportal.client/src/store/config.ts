@@ -7,6 +7,7 @@ import {
   getSystemMessages,
   getIdentificationTypes,
   getPostSecondaryInstitutionList,
+  getDefaultContent,
 } from "@/api/configuration";
 import oidcConfig from "@/oidc-config";
 import type { Components } from "@/types/openapi";
@@ -19,6 +20,7 @@ export interface UserState {
   countryList: Components.Schemas.Country[];
   postSecondaryInstitutionList: Components.Schemas.PostSecondaryInstitution[];
   identificationTypes: Components.Schemas.IdentificationType[];
+  defaultContents: Components.Schemas.DefaultContent[];
 }
 
 export const useConfigStore = defineStore("config", {
@@ -32,6 +34,7 @@ export const useConfigStore = defineStore("config", {
     postSecondaryInstitutionList: [] as Components.Schemas.PostSecondaryInstitution[],
     systemMessages: [] as Components.Schemas.SystemMessage[],
     identificationTypes: [] as Components.Schemas.IdentificationType[],
+    defaultContents: [] as Components.Schemas.DefaultContent[],
   }),
   getters: {
     kcOidcConfiguration: (state): UserManagerSettings => {
@@ -67,13 +70,14 @@ export const useConfigStore = defineStore("config", {
 
   actions: {
     async initialize(): Promise<Components.Schemas.ApplicationConfiguration | null | undefined> {
-      const [configuration, provinceList, countryList, postSecondaryInstitutionList, identificationTypes, systemMessages] = await Promise.all([
+      const [configuration, provinceList, countryList, postSecondaryInstitutionList, identificationTypes, systemMessages, defaultContents] = await Promise.all([
         getConfiguration(),
         getProvinceList(),
         getCountryList(),
         getPostSecondaryInstitutionList(),
         getIdentificationTypes(),
         getSystemMessages(),
+        getDefaultContent(),
       ]);
 
       if (configuration !== null && configuration !== undefined) {
@@ -93,6 +97,9 @@ export const useConfigStore = defineStore("config", {
       }
       if (identificationTypes !== null && identificationTypes !== undefined) {
         this.identificationTypes = identificationTypes;
+      }
+      if (defaultContents !== null && defaultContents !== undefined) {
+        this.defaultContents = defaultContents;
       }
       return configuration;
     },
