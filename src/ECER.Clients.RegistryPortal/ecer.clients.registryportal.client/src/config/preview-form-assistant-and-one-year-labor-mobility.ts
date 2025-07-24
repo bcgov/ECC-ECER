@@ -5,7 +5,7 @@ import type { Form } from "@/types/form";
 
 const previewForm: Form = {
   id: "previewForm",
-  title: "Preview",
+  title: "Review",
   inputs: {
     certificateInformationPreview: {
       id: "certificateInformationPreview",
