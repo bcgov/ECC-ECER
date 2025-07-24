@@ -75,6 +75,20 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
+  public async Task GetDefaultContents_ReturnsDefaultContents()
+  {
+    var defaultConfigurationsResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/defaultContents");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var defaultContents = await defaultConfigurationsResponse.ReadAsJsonAsync<DefaultContent[]>();
+    defaultContents.ShouldNotBeNull();
+  }
+
+  [Fact]
   public async Task GetIdentificationTypes_ReturnsIdentificationTypes()
   {
     var identificationTypesResponse = await Host.Scenario(_ =>

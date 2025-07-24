@@ -28,6 +28,15 @@ public class ConfigurationEndpoints : IRegisterEndpoints
       .WithOpenApi("Handles province queries", string.Empty, "province_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
+
+    endpointRouteBuilder.MapGet("/api/defaultContents", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var results = await messageBus.Send(new DefaultContentsQuery(), ct);
+      return TypedResults.Ok(mapper.Map<IEnumerable<DefaultContent>>(results.Items));
+    })
+     .WithOpenApi("Handles default contents", string.Empty, "defaultContent_get")
+     .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
+
     endpointRouteBuilder.MapGet("/api/countrylist", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
       var results = await messageBus.Send(new CountriesQuery(), ct);
@@ -134,3 +143,9 @@ public record IdentificationTypesQuery
     public OutOfProvinceCertificationType? TransferringCertificate { get; set; }
     public IEnumerable<CertificationComparison> Options { get; set; } = Array.Empty<CertificationComparison>();
   }
+public record DefaultContent
+{
+  public string? Name { get; set; }
+  public string? SingleText { get; set; }
+  public string? MultiText { get; set; }
+}

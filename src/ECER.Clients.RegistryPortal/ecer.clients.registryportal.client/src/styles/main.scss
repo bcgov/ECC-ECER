@@ -9,3 +9,7 @@
 @use "v-list-item.scss";
 @use "v-stepper.scss";
 @use "v-label.scss";
+
+.multiline {
+  white-space: pre-line; /* turns \n into real line breaks */
+}

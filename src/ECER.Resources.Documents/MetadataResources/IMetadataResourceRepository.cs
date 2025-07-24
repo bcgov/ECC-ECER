@@ -5,6 +5,7 @@ public interface IMetadataResourceRepository
   Task<IEnumerable<Province>> QueryProvinces(ProvincesQuery query, CancellationToken cancellationToken);
 
   Task<IEnumerable<SystemMessage>> QuerySystemMessages(SystemMessagesQuery query, CancellationToken cancellationToken);
+  Task<IEnumerable<DefaultContent>> QueryDefaultContents(DefaultContentsQuery query, CancellationToken cancellationToken);
 
   Task<IEnumerable<Country>> QueryCountries(CountriesQuery query, CancellationToken cancellationToken);
 
@@ -28,6 +29,12 @@ public record SystemMessage(string Name, string Subject, string Message)
   public IEnumerable<PortalTags> PortalTags { get; set; } = Array.Empty<PortalTags>();
 }
 
+public record DefaultContent
+{
+  public string? Name { get; set; }
+  public string? SingleText { get; set; }
+  public string? MultiText { get; set; }
+}
 public enum PortalTags
 {
   LOGIN,
@@ -50,6 +57,7 @@ public record SystemMessagesQuery
 {
   public string? ById { get; set; }
 }
+public record DefaultContentsQuery { }
 
 public record CountriesQuery
 {

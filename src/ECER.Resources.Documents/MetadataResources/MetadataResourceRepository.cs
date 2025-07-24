@@ -102,4 +102,14 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     return documentUrl.Id.ToString();
   }
 
+  public async Task<IEnumerable<DefaultContent>> QueryDefaultContents(DefaultContentsQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var defaultContents = context.ecer_DefaultContentsSet.AsQueryable();
+
+    var results = context.From(defaultContents)
+      .Execute();
+
+    return mapper.Map<IEnumerable<DefaultContent>>(results)!.ToList();
+  }
 }

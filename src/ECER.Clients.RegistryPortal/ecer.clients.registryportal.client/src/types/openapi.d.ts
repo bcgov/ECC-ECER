@@ -238,6 +238,11 @@ declare namespace Components {
             countryCode?: string | null;
         }
         export type CourseOutlineOptions = "UploadNow" | "RegistryAlreadyHas";
+        export interface DefaultContent {
+            name?: string | null;
+            singleText?: string | null;
+            multiText?: string | null;
+        }
         export interface DraftApplication {
             id?: string | null;
             signedDate?: string | null; // date-time
@@ -851,6 +856,11 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Country[];
         }
     }
+    namespace DefaultContentGet {
+        namespace Responses {
+            export type $200 = Components.Schemas.DefaultContent[];
+        }
+    }
     namespace DeleteFile {
         namespace Parameters {
             export type FileId = string;
@@ -1102,6 +1112,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ProvinceGet.Responses.$200>
+  /**
+   * defaultContent_get - Handles default contents
+   */
+  'defaultContent_get'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DefaultContentGet.Responses.$200>
   /**
    * country_get - Handles country queries
    */
@@ -1434,6 +1452,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ProvinceGet.Responses.$200>
+  }
+  ['/api/defaultContents']: {
+    /**
+     * defaultContent_get - Handles default contents
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.DefaultContentGet.Responses.$200>
   }
   ['/api/countrylist']: {
     /**
@@ -1859,6 +1887,7 @@ export type ComparisonRecord = Components.Schemas.ComparisonRecord;
 export type ComprehensiveReportOptions = Components.Schemas.ComprehensiveReportOptions;
 export type Country = Components.Schemas.Country;
 export type CourseOutlineOptions = Components.Schemas.CourseOutlineOptions;
+export type DefaultContent = Components.Schemas.DefaultContent;
 export type DraftApplication = Components.Schemas.DraftApplication;
 export type DraftApplicationResponse = Components.Schemas.DraftApplicationResponse;
 export type EducationOrigin = Components.Schemas.EducationOrigin;

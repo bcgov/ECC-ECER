@@ -6,6 +6,11 @@ const getConfiguration = async (): Promise<Components.Schemas.ApplicationConfigu
   return (await client.configuration_get()).data;
 };
 
+const getDefaultContent = async (): Promise<Components.Schemas.DefaultContent[] | null | undefined> => {
+  const client = await getClient(false);
+  return (await client.defaultContent_get()).data;
+};
+
 const getProvinceList = async (): Promise<Components.Schemas.Province[] | null | undefined> => {
   const client = await getClient(false);
   return (await client.province_get()).data;
@@ -53,4 +58,5 @@ export {
   getRecaptchaSiteKey,
   getSystemMessages,
   getIdentificationTypes,
+  getDefaultContent,
 };
