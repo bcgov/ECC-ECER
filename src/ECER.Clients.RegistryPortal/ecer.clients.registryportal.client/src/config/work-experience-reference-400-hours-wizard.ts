@@ -28,7 +28,7 @@ const workExperienceReference400HoursWizardConfig: Wizard = {
       key: "item.3",
     },
     review: {
-      title: "Preview",
+      title: "Review",
       stage: "Review",
       form: workExperience400HoursReviewForm,
       key: "item.4",
