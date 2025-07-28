@@ -64,7 +64,7 @@
     "vitest": "^3.2.4",
     "sass": "^1.86.3",
     "typescript": "~5.8.3",
-    "vite": "^7.0.2",
+    "vite": "^7.0.6",
     "vue-eslint-parser": "^10.2.0",
     "vue-tsc": "^3.0.3"
   },
