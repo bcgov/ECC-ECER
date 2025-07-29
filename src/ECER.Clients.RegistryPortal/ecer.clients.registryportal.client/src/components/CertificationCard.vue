@@ -151,7 +151,7 @@ export default defineComponent({
       return this.certification.certificatePDFGeneration === "Yes";
     },
     isCertificateActive(): boolean {
-      return this.certification.statusCode === "Active" || this.certification.statusCode === "Renewed";
+      return this.certification.statusCode === "Active";
     },
   },
   async mounted() {
