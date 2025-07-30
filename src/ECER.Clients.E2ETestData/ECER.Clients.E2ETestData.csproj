@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECER.Clients.RegistryPortal\ECER.Clients.RegistryPortal.Server\ECER.Clients.RegistryPortal.Server.csproj">
-    <PrivateAssets>all</PrivateAssets>
+     <ExcludeAssets>contentFiles</ExcludeAssets>
     </ProjectReference>
     <ProjectReference Include="..\ECER.Managers.E2ETest.Contract\ECER.Managers.E2ETest.Contract.csproj" />
     <ProjectReference Include="..\ECER.Managers.E2ETest\ECER.Managers.E2ETest.csproj" />
