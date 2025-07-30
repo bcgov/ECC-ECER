@@ -10,7 +10,7 @@ describe("Labour Mobility - ECE III Certification Transfer Application for Saska
     /** Transfer Eligibility */
     cy.contains("Check your transfer eligibility").should("be.visible");
 
-    /** Alberta*/
+    /** Saskatchewan*/
     cy.get(selectors.transferEligibility.provinceDropDownList).should("exist").click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(provinceName).click();
 

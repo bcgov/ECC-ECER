@@ -10,7 +10,7 @@ describe("Labour Mobility - Child Care Worker II Certification Transfer Applicat
     /** Transfer Eligibility */
     cy.contains("Check your transfer eligibility").should("be.visible");
 
-    /** Alberta*/
+    /** Yukon*/
     cy.get(selectors.transferEligibility.provinceDropDownList).should("exist").click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(provinceName).click();
 

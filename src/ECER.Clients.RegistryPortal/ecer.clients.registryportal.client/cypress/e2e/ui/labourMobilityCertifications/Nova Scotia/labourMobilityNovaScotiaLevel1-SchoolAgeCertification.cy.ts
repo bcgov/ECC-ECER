@@ -10,7 +10,7 @@ describe("Labour Mobility - Level 1 or School Age Approval Certification Transfe
     /** Transfer Eligibility */
     cy.contains("Check your transfer eligibility").should("be.visible");
 
-    /** Alberta*/
+    /** Nova Scotia*/
     cy.get(selectors.transferEligibility.provinceDropDownList).should("exist").click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(provinceName).click();
 

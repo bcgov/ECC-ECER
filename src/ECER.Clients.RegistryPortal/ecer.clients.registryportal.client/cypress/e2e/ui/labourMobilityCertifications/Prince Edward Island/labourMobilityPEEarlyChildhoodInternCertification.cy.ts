@@ -10,7 +10,7 @@ describe("Labour Mobility - Early Childhood Intern Certification Transfer Applic
     /** Transfer Eligibility */
     cy.contains("Check your transfer eligibility").should("be.visible");
 
-    /** Alberta*/
+    /** Prince Edward Island*/
     cy.get(selectors.transferEligibility.provinceDropDownList).should("exist").click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(provinceName).click();
 

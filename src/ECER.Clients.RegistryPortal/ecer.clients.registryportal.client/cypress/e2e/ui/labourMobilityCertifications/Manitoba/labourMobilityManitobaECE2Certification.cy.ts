@@ -10,7 +10,7 @@ describe("Labour Mobility - ECE 2 Certification Transfer Application for Manitob
     /** Transfer Eligibility */
     cy.contains("Check your transfer eligibility").should("be.visible");
 
-    /** Alberta*/
+    /** Manitoba*/
     cy.get(selectors.transferEligibility.provinceDropDownList).should("exist").click({ force: true });
     cy.get(selectors.elementType.vListItem).contains(provinceName).click();
 
