@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <SpaRoot>..\ecer.clients.pspportal.client</SpaRoot>
+    <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
+    <SpaProxyServerUrl>https://localhost:5123</SpaProxyServerUrl>
+    <UserSecretsId>c88bcf5c-db2f-4814-aa30-1ef3c67d1808</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" />
+    <PackageReference Include="MinimalApis.Extensions" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ECER.Managers.Admin.Contract\ECER.Managers.Admin.Contract.csproj" />
+    <ProjectReference Include="..\..\ECER.Managers.Admin\ECER.Managers.Admin.csproj" />
+    <ProjectReference Include="..\..\ECER.Managers.PSP.Contract\ECER.Managers.PSP.Contract.csproj" />
+    <ProjectReference Include="..\..\ECER.Managers.PSP\ECER.Managers.PSP.csproj" />
+    <ProjectReference Include="..\..\ECER.Utilities.Hosting\ECER.Utilities.Hosting.csproj" />
+    <ProjectReference Include="..\..\ECER.Utilities.Security\ECER.Utilities.Security.csproj" />
+    <ProjectReference Include="..\ecer.clients.pspportal.client\ecer.clients.pspportal.client.esproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>
