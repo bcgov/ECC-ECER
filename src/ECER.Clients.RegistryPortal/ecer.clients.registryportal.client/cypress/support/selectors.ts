@@ -1,6 +1,7 @@
 export default {
   dashboard: {
     applyNowButton: 'button[id="btnApplyNow"]',
+    transferButton: 'button[id="btnTransfer"]',
     renew: 'button[id="btnRenew"]',
   },
   navigationBar: {
@@ -16,12 +17,22 @@ export default {
     iteCheckBox: 'input[value="Ite"]',
     sneCheckBox: 'input[value="Sne"]',
   },
+  transferEligibility: {
+    provinceDropDownList: 'input[id="province"]',
+    certificationTypeDropDownList: 'input[id="outOfProvinceCertification"]',
+    viewRequirementsButton: 'button[id="btnViewRequirements"]',
+    programConfirmationRadioYes: 'input[type="radio"][name="programConfirmationRadio"][aria-label="Yes"]',
+    programConfirmationRadioNo: 'input[type="radio"][name="programConfirmationRadio"][aria-label="No"]',
+  },
   applicationRequirements: {
     applyNowButton: 'button[id="btnApplyNow"]',
   },
   declaration: {
     declarationCheckbox: 'input[id="chkDeclaration"]',
     continueButton: 'button[id="btnContinue"]',
+  },
+  certificateInformation: {
+    nameOnCertificateRadio: 'input[type="radio"][name="radioNameOnCertificate"]',
   },
   applicationWizard: {
     saveAndContinueButton: 'button[id="btnSaveAndContinue"]',
@@ -96,5 +107,6 @@ export default {
     input: "input",
     body: "body",
     button: "button",
+    vListItem: "div.v-list-item",
   },
 };
