@@ -1,7 +1,9 @@
-﻿using AutoMapper;
+﻿using AngleSharp.Dom;
+using AutoMapper;
 using ECER.Managers.Registry.Contract.Certifications;
 using ECER.Resources.Documents.Certifications;
 using MediatR;
+using System.Collections.Generic;
 using CertificateStatusCode = ECER.Resources.Documents.Certifications.CertificateStatusCode;
 
 namespace ECER.Managers.Registry;
@@ -31,35 +33,29 @@ public class CertificationHandlers(ICertificationRepository CertificationReposit
     return new CertificationRequestPdfResult(certificate!.Id);
   }
 
-  public async Task<CertificationsQueryResults> Handle(UserCertificationQueryLookup request, CancellationToken cancellationToken)
+  public async Task<CertificationsQueryResults> Handle(
+    UserCertificationQueryLookup request,
+    CancellationToken cancellationToken)
   {
-    var Certifications = await GetCertificationsPaginated(request);
+    var certifications = await GetCertificationsPaginated(request);
 
-    //additional logic for query lookup which only wants 1 certification returned for each registrant
-    var sortedCertifications = Certifications.GroupBy(c => c.RegistrantId).Select(g => g.OrderBy(c =>
+    var results = new List<Resources.Documents.Certifications.Certification>();
+
+    foreach (var group in certifications.GroupBy(c => c.RegistrantId))
     {
-      switch (c.StatusCode)
-      {
-        case CertificateStatusCode.Active:
-          return 1;
+      // 1) Collect and sort all active certs
+      var certs = group
+          .Where(c => (c.StatusCode == CertificateStatusCode.Active || c.StatusCode == CertificateStatusCode.Suspended || c.StatusCode == CertificateStatusCode.Cancelled) && c.ExpiryDate >= DateTime.UtcNow.Date)
+          .OrderByDescending(c => c.ExpiryDate)
+          .ThenBy(c => c.BaseCertificateTypeId)
+          .ToList();
+      results.AddRange(certs);
 
-        case CertificateStatusCode.Cancelled:
-          return 2;
+    }
 
-        case CertificateStatusCode.Suspended:
-          return 3;
-
-        case CertificateStatusCode.Expired:
-          return 4;
-
-        default:
-          return 5;
-      }
-    }).ThenByDescending(c => c.ExpiryDate)
-    .ThenBy(r => r.BaseCertificateTypeId) //accounts for certificates with the same expiry date we rank them by type
-    .FirstOrDefault());
-
-    return new CertificationsQueryResults(mapper.Map<IEnumerable<Contract.Certifications.Certification>>(sortedCertifications)!);
+    // map and return results
+    var dtos = mapper.Map<IEnumerable<Contract.Certifications.Certification>>(results)!;
+    return new CertificationsQueryResults(dtos);
   }
 
   private async Task<IEnumerable<Resources.Documents.Certifications.Certification>> GetCertificationsPaginated(UserCertificationQueryBase request)

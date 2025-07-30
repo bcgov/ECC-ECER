@@ -8,7 +8,7 @@
   <PageContainer :margin-top="false">
     <div v-for="systemMessage in configStore.systemMessages">
       <div v-if="systemMessage.portalTags && systemMessage.portalTags.includes('LOGIN')" class="d-flex flex-column ga-3 mb-10">
-        <Banner type="info" :title="systemMessage.message ? systemMessage.message : ''" />
+        <Alert title="Alert">{{ systemMessage.message ? systemMessage.message : "" }}</Alert>
       </div>
     </div>
     <v-row>
@@ -40,11 +40,11 @@ import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useConfigStore } from "@/store/config";
 import { useDisplay } from "vuetify";
-import Banner from "../Banner.vue";
+import Alert from "../Alert.vue";
 
 export default defineComponent({
   name: "Login",
-  components: { LoginCard, PageContainer, Banner },
+  components: { LoginCard, PageContainer, Alert },
   setup() {
     const userStore = useUserStore();
     const oidcStore = useOidcStore();

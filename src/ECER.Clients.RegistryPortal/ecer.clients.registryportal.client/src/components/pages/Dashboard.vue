@@ -88,11 +88,16 @@
                   <div class="d-flex flex-row justify-start ga-3 flex-wrap mt-4">
                     <p class="font-weight-bold">
                       ECE registration number:
-                      {{ certificationStore.latestCertification?.number }}
+                      {{ certificationStore.currentCertification?.number }}
                     </p>
                   </div>
-                  <template v-if="certificationStore.latestCertification">
-                    <CertificationCard class="mt-4" :is-rounded="false" :certification="certificationStore.latestCertification" />
+                  <template v-if="certificationStore.currentCertification">
+                    <CertificationCard
+                      class="mt-4"
+                      :is-rounded="false"
+                      :certification="certificationStore.currentCertification"
+                      :has-application="applicationStore.hasApplication"
+                    />
                   </template>
                 </div>
                 <p v-else class="small mt-4">You do not have an ECE certificate in your My ECE Registry account.</p>
@@ -102,12 +107,12 @@
         </v-row>
 
         <!-- My Other Certifications -->
-        <v-row v-if="certifications && certificationStore.hasOtherCertifications" justify="center" class="mt-6">
+        <v-row v-if="certifications && hasOtherCertifications()" justify="center" class="mt-6">
           <v-col>
             <v-row>
               <v-col cols="12">
                 <div>
-                  <v-btn block size="large" variant="outlined" color="primary" @click="router.push('/my-other-certifications')" class="force-full-content">
+                  <v-btn block size="x-large" variant="outlined" color="primary" @click="router.push('/my-other-certifications')" class="force-full-content">
                     My other certifications
                     <v-icon size="large" icon="mdi-arrow-right" />
                   </v-btn>
@@ -123,46 +128,41 @@
         <v-col>
           <v-row>
             <v-col cols="12">
-              <ECEHeader title="Options" />
+              <ECEHeader title="Need other options?" />
             </v-col>
           </v-row>
           <v-row>
-            <RegistrantCard />
-          </v-row>
-        </v-col>
-      </v-row>
-
-      <!-- Your My ECE Registry account -->
-      <v-row justify="center" class="mt-6">
-        <v-col>
-          <v-row>
-            <v-col cols="12">
-              <ECEHeader title="Your My ECE Registry account" />
+            <v-col cols="12" sm="6">
+              <Card>
+                <h2>Apply for new certification</h2>
+                <p class="mt-4">Start an application for a new certificate level based on your education and work experience.</p>
+                <v-btn
+                  :variant="certificationStore.holdsPostBasicCertification ? 'outlined' : 'flat'"
+                  size="large"
+                  color="primary"
+                  id="btnNeedOtherOptions"
+                  class="mt-12"
+                  @click="handleStartNewApplication"
+                >
+                  Apply now
+                </v-btn>
+              </Card>
             </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" sm="6" lg="4">
-              <ActionCard title="Messages" icon="mdi-bell">
-                <template #content>
-                  <UnreadMessages :linkable="false" />
-                </template>
-                <template #action>
-                  <v-btn variant="text">
-                    <router-link :to="{ name: 'messages' }">Read messages</router-link>
-                  </v-btn>
-                </template>
-              </ActionCard>
-            </v-col>
-
-            <v-col v-if="userStore.isVerified" cols="12" sm="6" lg="4">
-              <ActionCard title="Your profile" icon="mdi-account-circle">
-                <template #content>Manage your names, address and contact information.</template>
-                <template #action>
-                  <v-btn variant="text">
-                    <router-link :to="{ name: 'profile' }">My profile</router-link>
-                  </v-btn>
-                </template>
-              </ActionCard>
+            <v-col cols="12" sm="6">
+              <Card>
+                <h2>Transfer certification</h2>
+                <p class="mt-4">If you are certified in another province or territory in Canada, you may be eligible to transfer your certification to B.C.</p>
+                <v-btn
+                  :variant="certificationStore.holdsPostBasicCertification ? 'outlined' : 'flat'"
+                  size="large"
+                  color="primary"
+                  id="btnNeedOtherOptions"
+                  class="mt-12"
+                  @click="handleTransfer"
+                >
+                  Transfer
+                </v-btn>
+              </Card>
             </v-col>
           </v-row>
         </v-col>
@@ -202,7 +202,6 @@ import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import PageContainer from "@/components/PageContainer.vue";
-import RegistrantCard from "@/components/RegistrantCard.vue";
 import UnreadMessages from "@/components/UnreadMessages.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -212,6 +211,7 @@ import { useUserStore } from "@/store/user";
 import { useLoadingStore } from "@/store/loading";
 import { useOidcStore } from "@/store/oidc";
 import type { Application, Certification, UserInfo, UserProfile } from "@/types/openapi";
+import Card from "@/components/Card.vue";
 
 export default defineComponent({
   name: "Dashboard",
@@ -226,7 +226,7 @@ export default defineComponent({
     ActionCard,
     Alert,
     UnreadMessages,
-    RegistrantCard,
+    Card,
   },
   async setup() {
     const oidcStore = useOidcStore();
@@ -327,7 +327,8 @@ export default defineComponent({
       );
     },
     showOptions(): boolean {
-      return this.certificationStore.hasCertifications && !this.showApplicationCard;
+      // If the user has certifications, does not have an application, and does not hold all certifications (Active or renewable)
+      return this.certificationStore.hasCertifications && !this.applicationStore.hasApplication && !this.certificationStore.holdsAllCertifications;
     },
     cancelApplicationLoading(): boolean {
       return this.loadingStore.isLoading("draftapplication_delete") || this.loadingStore.isLoading("application_get");
@@ -335,6 +336,13 @@ export default defineComponent({
   },
 
   methods: {
+    hasOtherCertifications() {
+      const currentCert = this.certificationStore.currentCertification;
+      if (!currentCert || !this.certificationStore.certifications) {
+        return false;
+      }
+      return this.certificationStore.certifications.length > 1;
+    },
     async cancelApplication() {
       const { data: cancelledApplicationId } = await cancelDraftApplication(this.applicationStore.draftApplication.id!);
       if (cancelledApplicationId) {
@@ -344,6 +352,12 @@ export default defineComponent({
       } else {
         this.alertStore.setFailureAlert("Unable to cancel application.");
       }
+    },
+    handleStartNewApplication() {
+      this.router.push({ name: "application-certification" });
+    },
+    handleTransfer() {
+      this.router.push({ name: "application-transfer" });
     },
   },
 });

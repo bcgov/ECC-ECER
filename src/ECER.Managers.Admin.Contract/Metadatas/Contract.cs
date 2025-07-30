@@ -15,7 +15,12 @@ public record CertificationComparisonQuery : IRequest<CertificationComparisonQue
   public string? ById { get; set; }
   public string? ByProvinceId { get; set; }
 }
-
+public record DefaultContent
+{
+  public string? Name { get; set; }
+  public string? SingleText { get; set; }
+  public string? MultiText { get; set; }
+}
 public record CountriesQuery : IRequest<CountriesQueryResults>
 {
   public string? ById { get; set; }
@@ -41,8 +46,10 @@ public record IdentificationTypesQuery : IRequest<IdentificationTypesQueryResult
   public bool? ForPrimary { get; set; }
   public bool? ForSecondary { get; set; }
 }
+public record DefaultContentsQuery : IRequest<DefaultContentsQueryResults> {}
 public record SystemMessagesQueryResults(IEnumerable<SystemMessage> Items);
 public record IdentificationTypesQueryResults(IEnumerable<IdentificationType> Items);
+public record DefaultContentsQueryResults(IEnumerable<DefaultContent> Items);
 public record CertificationComparisonQueryResults(IEnumerable<ComparisonRecord> Items);
 public record ProvincesQueryResults(IEnumerable<Province> Items);
 public record CountriesQueryResults(IEnumerable<Country> Items);

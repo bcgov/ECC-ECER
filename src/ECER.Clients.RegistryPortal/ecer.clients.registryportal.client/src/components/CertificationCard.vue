@@ -1,22 +1,26 @@
 <template>
-  <v-card :rounded="true" :border="true" flat class="px-8 pb-9 pt-4 custom-border">
+  <Card :hasTopBorder="true" topBorderSize="large" class="px-8 pb-9 pt-4">
     <v-card-item>
       <v-row>
         <v-col :cols="mdAndUp && isCertificateActive ? 8 : 12">
           <div class="d-flex flex-column ga-5">
-            <h1>Early Childhood Educator - {{ titleArray.join(" ") }}</h1>
+            <h1><CertificationTitle :certification="certification" /></h1>
             <div>
-              <v-chip :color="chipColor" variant="flat" size="small">{{ chipText }}</v-chip>
+              <CertificationChip :certification="certification" />
             </div>
             <div v-if="certification.hasConditions">
-              <v-btn prepend-icon="mdi-newspaper-variant-outline" base-color="alert-warning" class="border-sm border-warning-border border-opacity-100">
+              <v-btn
+                prepend-icon="mdi-newspaper-variant-outline"
+                base-color="alert-warning"
+                class="border-sm border-warning-border border-opacity-100"
+                @click="handleViewTermsAndConditions"
+              >
                 View terms and conditions
               </v-btn>
             </div>
             <p>{{ subText }}</p>
             <div>
-              <p class="font-weight-bold">Effective date: {{ formattedEffectiveDate }}</p>
-              <p class="font-weight-bold">Expiry date: {{ formattedExpiryDate }}</p>
+              <CertificationDates :certification="certification" />
             </div>
 
             <!-- Certificate Inline on mobile -->
@@ -28,7 +32,7 @@
               </span>
             </template>
 
-            <RenewAction :certification="certification" />
+            <RenewAction v-if="!hasApplication" :certification="certification" />
           </div>
         </v-col>
         <v-col v-if="mdAndUp" cols="4" class="text-center d-flex justify-end align-center" style="min-width: 215px">
@@ -43,28 +47,39 @@
         </v-col>
       </v-row>
     </v-card-item>
-  </v-card>
+  </Card>
 </template>
 
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import { getCertificateFileById, requestCertificateFileGeneration } from "@/api/certification";
 import { useCertificationStore } from "@/store/certification";
-import { formatDate } from "@/utils/format";
 import { humanFileSize } from "@/utils/functions";
 import type { Components } from "@/types/openapi";
 import RenewAction from "@/components/RenewAction.vue";
+import CertificationChip from "@/components/CertificationChip.vue";
+import CertificationDates from "@/components/CertificationDates.vue";
+import CertificationTitle from "@/components/CertificationTitle.vue";
 import { useDisplay } from "vuetify";
+import Card from "./Card.vue";
 
 export default defineComponent({
   name: "CertificationCard",
   components: {
     RenewAction,
+    CertificationChip,
+    CertificationDates,
+    CertificationTitle,
+    Card,
   },
   props: {
     certification: {
       type: Object as PropType<Components.Schemas.Certification>,
       required: true,
+    },
+    hasApplication: {
+      type: Boolean,
+      default: false,
     },
   },
   setup() {
@@ -83,58 +98,6 @@ export default defineComponent({
     };
   },
   computed: {
-    formattedExpiryDate(): string {
-      return formatDate(this.certification.expiryDate ?? "", "LLLL d, yyyy");
-    },
-    formattedEffectiveDate(): string {
-      return formatDate(this.certification.effectiveDate ?? "", "LLLL d, yyyy");
-    },
-    chipText() {
-      let text;
-      switch (this.certification.statusCode) {
-        case "Active":
-        case "Renewed":
-        case "Reprinted":
-          text = "Active";
-          break;
-        case "Expired":
-        case "Inactive":
-          text = "Expired";
-          break;
-        case "Cancelled":
-          text = "Cancelled";
-          break;
-        case "Suspended":
-          text = "Suspended";
-          break;
-        default:
-          text = "Expired";
-      }
-
-      if (this.certification.hasConditions) {
-        text += " with terms and conditions";
-      }
-
-      return text;
-    },
-    chipColor(): string {
-      // "success" | "error" | "warning" | "info"
-      switch (this.chipText) {
-        case "Active":
-        case "Active with terms and conditions":
-          return "success";
-        case "Expired":
-        case "Expired with terms and conditions":
-          return "error";
-        case "Cancelled":
-        case "Cancelled with terms and conditions":
-        case "Suspended":
-        case "Suspended with terms and conditions":
-          return "grey-darkest";
-        default:
-          return "grey-darkest";
-      }
-    },
     titleArray() {
       if (!this.certification.levels) return [];
       return this.certification.levels
@@ -181,9 +144,6 @@ export default defineComponent({
           return "";
       }
     },
-    hasTermsAndConditions(): boolean {
-      return this.certification.hasConditions ?? false;
-    },
     certificateGenerationRequested(): boolean {
       return this.certification.certificatePDFGeneration === "Requested";
     },
@@ -220,16 +180,9 @@ export default defineComponent({
     generateFileDisplayName() {
       return `Download certificate (PDF, ${this.fileSize})`;
     },
+    handleViewTermsAndConditions() {
+      this.$router.push(`/certificate-terms-and-conditions/${this.certification.id}`);
+    },
   },
 });
 </script>
-
-<style lang="css" scoped>
-.custom-border {
-  border-radius: 5px;
-  border-top: 16px solid rgba(var(--v-theme-primary, #013366));
-  border-right: 1px solid rgba(var(--v-theme-primary, #013366));
-  border-bottom: 1px solid rgba(var(--v-theme-primary, #013366));
-  border-left: 1px solid rgba(var(--v-theme-primary, #013366));
-}
-</style>

@@ -141,7 +141,7 @@ import { getCertificationComparisonList } from "@/api/configuration";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import ProfileForm from "@/components/ProfileForm.vue";
-import { getHighestCertificationType, findHighestCertificateTypeId, CertificationType } from "@/utils/functions";
+import { getHighestCertificationType, CertificationType } from "@/utils/functions";
 import { useConfigStore } from "@/store/config";
 import { useApplicationStore } from "@/store/application";
 import { useRouter } from "vue-router";
@@ -191,16 +191,40 @@ export default {
       this.applicationStore.$patch({
         draftApplication: {
           certificationTypes: this.selfAssessmentOutcome,
-          applicationType: "LaborMobility",
+          applicationType: "LabourMobility",
           stage: "CertificateInformation",
           labourMobilityCertificateInformation: {
             labourMobilityProvince: this.transferData.province,
             existingCertificationType: this.transferData.outOfProvinceCertification?.transferringCertificate?.certificationType ?? undefined,
-            certificateComparisonId: findHighestCertificateTypeId(this.transferData.outOfProvinceCertification?.options ?? []),
+            certificateComparisonId: this.getCertificationComparisonIdBasedOnSelfAssessmentOutcome(),
           },
         },
       });
       this.router.push({ name: "application-requirements" });
+    },
+    getCertificationComparisonIdBasedOnSelfAssessmentOutcome(): string | undefined | null {
+      //this function will leverage the logic from the selfAssessmentOutcome to generate the certificateComparisonId based on the options provided to registrant
+      if (this.selfAssessmentOutcome.length === 0) {
+        console.warn("No self-assessment outcome available.");
+        return undefined;
+      }
+      //convert selfAssessmentOutcome to bcCertificate CertificationType
+      let certificationType = "";
+
+      if (this.selfAssessmentOutcome.includes("FiveYears") && this.selfAssessmentOutcome.includes("Ite") && this.selfAssessmentOutcome.includes("Sne")) {
+        certificationType = CertificationType.FiveYearCertificateITE_SNE;
+      } else if (this.selfAssessmentOutcome.includes("FiveYears")) {
+        certificationType = CertificationType.FiveYearCertificate;
+      } else if (this.selfAssessmentOutcome.includes("OneYear")) {
+        certificationType = CertificationType.OneYear;
+      } else if (this.selfAssessmentOutcome.includes("EceAssistant")) {
+        certificationType = CertificationType.Assistant;
+      } else {
+        console.warn("Unsupported self-assessment outcome:", this.selfAssessmentOutcome);
+      }
+
+      // find the certification comparison id based on the certification type
+      return this.transferData.outOfProvinceCertification?.options?.find((option) => option.bcCertificate === certificationType)?.id;
     },
   },
   computed: {

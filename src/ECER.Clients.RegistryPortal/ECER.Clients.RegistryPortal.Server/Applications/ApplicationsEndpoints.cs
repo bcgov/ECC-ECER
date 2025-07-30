@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
@@ -6,8 +8,6 @@ using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
@@ -15,7 +15,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
-    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>,NotFound>> (string? id, SaveDraftApplicationRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    endpointRouteBuilder.MapPut("/api/draftapplications/{id?}", async Task<Results<Ok<DraftApplicationResponse>, BadRequest<string>, NotFound>> (string? id, SaveDraftApplicationRequest request, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
         {
           bool IdIsNotGuid = !Guid.TryParse(id, out _); if (IdIsNotGuid && id != null) { id = null; }
           bool ApplicationIdIsNotGuid = !Guid.TryParse(request.DraftApplication.Id, out _); if (ApplicationIdIsNotGuid && request.DraftApplication.Id != null) { request.DraftApplication.Id = null; }
@@ -23,17 +23,17 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           if (request.DraftApplication.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
           var userContext = ctx.User.GetUserContext();
           var draftApplication = mapper.Map<Managers.Registry.Contract.Applications.Application>(request.DraftApplication, opts => opts.Items.Add("registrantId", userContext!.UserId))!;
-          
-          if(id != null)
+
+          if (id != null)
           {
             var query = new ApplicationsQuery
             {
               ById = id,
               ByApplicantId = userContext!.UserId,
-              ByStatus =  [Managers.Registry.Contract.Applications.ApplicationStatus.Draft ]
+              ByStatus = [Managers.Registry.Contract.Applications.ApplicationStatus.Draft]
             };
             var results = await messageBus.Send(query, ct);
-            if(!results.Items.Any()) return TypedResults.NotFound();
+            if (!results.Items.Any()) return TypedResults.NotFound();
           }
 
           var application = await messageBus.Send(new SaveDraftApplicationCommand(draftApplication), ct);
@@ -365,6 +365,7 @@ public record DraftApplication
   public IEnumerable<CharacterReference> CharacterReferences { get; set; } = Array.Empty<CharacterReference>();
   public IEnumerable<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = Array.Empty<ProfessionalDevelopment>();
   public string? Stage { get; set; }
+  public string? FromCertificate { get; set; }
   public ApplicationTypes ApplicationType { get; set; }
   public EducationOrigin? EducationOrigin { get; set; }
   public EducationRecognition? EducationRecognition { get; set; }
@@ -374,7 +375,6 @@ public record DraftApplication
   public DateTime? CreatedOn { get; set; }
   public ApplicationOrigin? Origin { get; set; }
   public CertificateInformation? LabourMobilityCertificateInformation { get; set; }
-
 }
 
 public record Application
@@ -396,9 +396,9 @@ public record Application
   public OneYearRenewalexplanations? OneYearRenewalExplanationChoice { get; set; }
   public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
   public string? RenewalExplanationOther { get; set; }
+  public string? FromCertificate { get; set; }
   public ApplicationOrigin? Origin { get; set; }
   public CertificateInformation? LabourMobilityCertificateInformation { get; set; }
-
 }
 public record ProfessionalDevelopment([Required] string CourseName, [Required] string OrganizationName, [Required] DateTime StartDate, [Required] DateTime EndDate, [Required] double NumberOfHours)
 {
@@ -518,7 +518,7 @@ public enum ApplicationTypes
 {
   New,
   Renewal,
-  LaborMobility,
+  LabourMobility,
 }
 
 public enum EducationOrigin
@@ -551,6 +551,7 @@ public record SubmittedApplicationStatus(string Id, DateTime SubmittedOn, Applic
   public bool? AddMoreCharacterReference { get; set; }
   public bool? AddMoreWorkExperienceReference { get; set; }
   public bool? AddMoreProfessionalDevelopment { get; set; }
+  public string? FromCertificate { get; set; }
   public ApplicationTypes? ApplicationType { get; set; }
 }
 public record FileInfo(string Id)
@@ -591,7 +592,7 @@ public record CharacterReferenceStatus(string Id, CharacterReferenceStage Status
   public bool? WillProvideReference { get; set; }
 }
 
-public record ProfessionalDevelopmentStatus(string Id, string CourseName, int NumberOfHours)
+public record ProfessionalDevelopmentStatus(string Id, string CourseName, double NumberOfHours)
 {
   public ProfessionalDevelopmentStatusCode? Status { get; set; }
 }
@@ -676,6 +677,7 @@ public enum ProgramConfirmationOptions
   UploadNow,
   RegistryAlreadyHas
 }
+
 public enum TranscriptStatusOptions
 {
   RegistryHasTranscript,

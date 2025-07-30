@@ -97,6 +97,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramTypes = "ecer_programtypes";
 			public const string ecer_programtypesName = "ecer_programtypesname";
 			public const string ecer_SNECoursesTotalHours = "ecer_snecoursestotalhours";
+			public const string ecer_SNECoursesTotalHoursDecimal = "ecer_snecoursestotalhoursdecimal";
 			public const string ecer_StartDate = "ecer_startdate";
 			public const string ecer_TotalBasicEceHours = "ecer_totalbasicecehours";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -579,6 +580,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_snecoursestotalhours", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_snecoursestotalhoursdecimal")]
+		public System.Nullable<decimal> ecer_SNECoursesTotalHoursDecimal
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_snecoursestotalhoursdecimal");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_snecoursestotalhoursdecimal", value);
 			}
 		}
 		

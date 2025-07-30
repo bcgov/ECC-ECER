@@ -32,8 +32,8 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     await Task.CompletedTask;
 
     var applications = context.ecer_ApplicationSet.Where(
-      a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled && 
-      a.StatusCode!.Value != ecer_Application_StatusCode.Closed && 
+      a => a.StatusCode!.Value != ecer_Application_StatusCode.Cancelled &&
+      a.StatusCode!.Value != ecer_Application_StatusCode.Closed &&
       a.StatusCode!.Value != ecer_Application_StatusCode.Withdrawn);
 
     if (query.ByStatus != null && query.ByStatus.Any())
@@ -106,9 +106,9 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     await UpdateCharacterReferences(ecerApplication, ecerCharacterReferences);
     await UpdateTranscripts(ecerApplication, ecerTranscripts);
 
-    if (application.ApplicationType == ApplicationTypes.LaborMobility)
+    if (application.ApplicationType == ApplicationTypes.LabourMobility)
     {
-      if(application.LabourMobilityCertificateInformation != null && application.LabourMobilityCertificateInformation!.CertificateComparisonId != null)
+      if (application.LabourMobilityCertificateInformation != null && application.LabourMobilityCertificateInformation!.CertificateComparisonId != null)
       {
         var comparisonRecord = context.ecer_certificationcomparisonSet.SingleOrDefault(c => c.ecer_certificationcomparisonId == Guid.Parse(application.LabourMobilityCertificateInformation!.CertificateComparisonId!));
         if (comparisonRecord == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Certification comparison '{application.LabourMobilityCertificateInformation!.CertificateComparisonId}' not found");
@@ -121,6 +121,13 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
         if (province == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Province '{application.LabourMobilityCertificateInformation!.LabourMobilityProvince!.ProvinceId}' not found");
         context.AddLink(ecerApplication, ecer_Application.Fields.ecer_application_lmprovinceid, province);
       }
+    }
+
+    if (!string.IsNullOrEmpty(application.FromCertificate))
+    {
+      var certification = context.ecer_CertificateSet.SingleOrDefault(c => c.ecer_CertificateId == Guid.Parse(application.FromCertificate) && c.ecer_Registrantid.Id == Guid.Parse(application.ApplicantId));
+      if (certification == null) throw new InvalidOperationException($"Save application '{ecerApplication.ecer_ApplicationId}' failed. Certification '{application.FromCertificate}' not found");
+      context.AddLink(ecerApplication, ecer_Application.Fields.ecer_application_FromCertificateId, certification);
     }
 
     context.SaveChanges();

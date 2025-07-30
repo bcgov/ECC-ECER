@@ -89,6 +89,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_goodcharacteracceptedName = "ecer_goodcharacteracceptedname";
 			public const string ecer_Hours = "ecer_hours";
 			public const string ecer_JurisdictionalResearch = "ecer_jurisdictionalresearch";
+			public const string ecer_LabourMobilityCertificateAccepted = "ecer_labourmobilitycertificateaccepted";
+			public const string ecer_labourmobilitycertificateacceptedName = "ecer_labourmobilitycertificateacceptedname";
 			public const string ecer_legacyapplicationassessmentid = "ecer_legacyapplicationassessmentid";
 			public const string ecer_legacyassessmenttraininglocationid = "ecer_legacyassessmenttraininglocationid";
 			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
@@ -634,6 +636,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_jurisdictionalresearch", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_labourmobilitycertificateaccepted")]
+		public virtual ecer_YesNoNull? ecer_LabourMobilityCertificateAccepted
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_labourmobilitycertificateaccepted")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_labourmobilitycertificateaccepted", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_labourmobilitycertificateacceptedname")]
+		public string ecer_labourmobilitycertificateacceptedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_labourmobilitycertificateaccepted"))
+				{
+					return this.FormattedValues["ecer_labourmobilitycertificateaccepted"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

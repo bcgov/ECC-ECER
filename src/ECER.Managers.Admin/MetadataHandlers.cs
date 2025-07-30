@@ -12,6 +12,7 @@ public class MetadataHandlers(
    IRequestHandler<Contract.Metadatas.CertificationComparisonQuery, CertificationComparisonQueryResults>,
    IRequestHandler<Contract.Metadatas.PostSecondaryInstitutionsQuery, PostSecondaryInstitutionsQueryResults>,
    IRequestHandler<Contract.Metadatas.SystemMessagesQuery, SystemMessagesQueryResults>,
+   IRequestHandler<Contract.Metadatas.DefaultContentsQuery, DefaultContentsQueryResults>,
    IRequestHandler<Contract.Metadatas.IdentificationTypesQuery, IdentificationTypesQueryResults>
 {
   public async Task<PostSecondaryInstitutionsQueryResults> Handle(Contract.Metadatas.PostSecondaryInstitutionsQuery request, CancellationToken cancellationToken)
@@ -64,6 +65,15 @@ public class MetadataHandlers(
     systemMessages = systemMessages.Where(m => m.StartDate < DateTime.Now && m.EndDate > DateTime.Now).ToList();
 
     return new SystemMessagesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.SystemMessage>>(systemMessages)!);
+  }
+
+  public async Task<DefaultContentsQueryResults> Handle(Contract.Metadatas.DefaultContentsQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var defaultContents = await metadataResourceRepository.QueryDefaultContents(new Resources.Documents.MetadataResources.DefaultContentsQuery(), cancellationToken);
+
+    return new DefaultContentsQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.DefaultContent>>(defaultContents)!);
   }
 
   public async Task<CountriesQueryResults> Handle(Contract.Metadatas.CountriesQuery request, CancellationToken cancellationToken)

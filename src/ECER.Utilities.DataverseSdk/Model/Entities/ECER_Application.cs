@@ -153,6 +153,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CharacterReferenceReceived = "ecer_characterreferencereceived";
 			public const string ecer_CharacterReferenceReceivedDate = "ecer_characterreferencereceiveddate";
 			public const string ecer_characterreferencereceivedName = "ecer_characterreferencereceivedname";
+			public const string ecer_CharacterReferenceReviewed = "ecer_characterreferencereviewed";
+			public const string ecer_characterreferencereviewedName = "ecer_characterreferencereviewedname";
 			public const string ecer_City = "ecer_city";
 			public const string ecer_comment_Application_ecer_application = "ecer_comment_Application_ecer_application";
 			public const string ecer_communication_Applicationid = "ecer_communication_Applicationid";
@@ -325,6 +327,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Street1 = "ecer_street1";
 			public const string ecer_Street2 = "ecer_street2";
 			public const string ecer_Street3 = "ecer_street3";
+			public const string ecer_TotalAnticipatedProfessionalDevelopmentHours = "ecer_totalanticipatedprofessionaldevelopmenthours";
 			public const string ecer_TotalAnticipatedWorkExperienceHours = "ecer_totalanticipatedworkexperiencehours";
 			public const string ecer_TotalApprovedProfessionalDevelopmentHours = "ecer_totalapprovedprofessionaldevelopmenthours";
 			public const string ecer_TotalApprovedWorkExperienceHours = "ecer_totalapprovedworkexperiencehours";
@@ -346,6 +349,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_workexperienceref_Applicationid_ecer = "ecer_workexperienceref_Applicationid_ecer";
 			public const string ecer_WorkExperienceReferenceApproved = "ecer_workexperiencereferenceapproved";
 			public const string ecer_workexperiencereferenceapprovedName = "ecer_workexperiencereferenceapprovedname";
+			public const string ecer_WorkExperienceReferencesReviewed = "ecer_workexperiencereferencesreviewed";
+			public const string ecer_workexperiencereferencesreviewedName = "ecer_workexperiencereferencesreviewedname";
 			public const string ecer_WorkStartDate = "ecer_workstartdate";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -1173,6 +1178,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_characterreferencereceived"))
 				{
 					return this.FormattedValues["ecer_characterreferencereceived"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferencereviewed")]
+		public System.Nullable<bool> ecer_CharacterReferenceReviewed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_characterreferencereviewed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_characterreferencereviewed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_characterreferencereviewedname")]
+		public string ecer_characterreferencereviewedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_characterreferencereviewed"))
+				{
+					return this.FormattedValues["ecer_characterreferencereviewed"];
 				}
 				else
 				{
@@ -3709,6 +3746,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_totalanticipatedprofessionaldevelopmenthours")]
+		public System.Nullable<decimal> ecer_TotalAnticipatedProfessionalDevelopmentHours
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_totalanticipatedprofessionaldevelopmenthours");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_totalanticipatedprofessionaldevelopmenthours", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_totalanticipatedworkexperiencehours")]
 		public System.Nullable<decimal> ecer_TotalAnticipatedWorkExperienceHours
 		{
@@ -3973,6 +4025,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_workexperiencereferenceapproved"))
 				{
 					return this.FormattedValues["ecer_workexperiencereferenceapproved"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_workexperiencereferencesreviewed")]
+		public System.Nullable<bool> ecer_WorkExperienceReferencesReviewed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_workexperiencereferencesreviewed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_workexperiencereferencesreviewed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_workexperiencereferencesreviewedname")]
+		public string ecer_workexperiencereferencesreviewedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_workexperiencereferencesreviewed"))
+				{
+					return this.FormattedValues["ecer_workexperiencereferencesreviewed"];
 				}
 				else
 				{

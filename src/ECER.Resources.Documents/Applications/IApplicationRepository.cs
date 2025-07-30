@@ -57,6 +57,7 @@ public record Application(string? Id, string ApplicantId, IEnumerable<Certificat
   public OneYearRenewalexplanations? OneYearRenewalExplanationChoice { get; set; }
   public FiveYearRenewalExplanations? FiveYearRenewalExplanationChoice { get; set; }
   public string? RenewalExplanationOther { get; set; }
+  public string? FromCertificate { get; set; }
   public ApplicationOrigin? Origin { get; set; }
   public CertificateInformation? LabourMobilityCertificateInformation { get; set; }
 }
@@ -171,7 +172,7 @@ public enum ApplicationTypes
 {
   New,
   Renewal,
-  LaborMobility
+  LabourMobility
 }
 
 public enum EducationOrigin
@@ -370,14 +371,13 @@ public enum LikertScale
   No
 }
 
+#pragma warning disable CA1707
+
 public enum ChildcareAgeRanges
 {
-  From0to12Months,
-  From12to24Months,
-  From25to30Months,
-  From31to36Months,
-  Grade1,
-  Preschool,
+  _036months,
+  _35years,
+  _68years,
 }
 
 public enum ReferenceKnownTime
@@ -416,6 +416,7 @@ public enum ProgramConfirmationOptions
   UploadNow,
   RegistryAlreadyHas
 }
+
 public enum TranscriptStatusOptions
 {
   RegistryHasTranscript,
@@ -434,5 +435,3 @@ public record CertificateInformation
   public string? LegalLastName { get; set; } = string.Empty;
   public bool? HasOtherName { get; set; }
 }
-
-

@@ -22,18 +22,21 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_OneYearRenewalWithActiveCertificate_ReturnsNoValidationError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
       OneYearRenewalExplanationChoice = OneYearRenewalexplanations.IliveandworkinacommunitywithoutothercertifiedECEs,
-      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      FromCertificate =certId,
+     
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-                  CreateMockCertification(DateTime.Now.AddYears(1), CertificateStatusCode.Active) // Certification is active
+                  CreateMockCertification(certId,DateTime.Now.AddYears(1), CertificateStatusCode.Active) // Certification is active
         });
 
     // Act
@@ -46,19 +49,21 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_OneYearRenewalWithActiveCertificateOneYearRenewalOtherWithoutExplanationLetter_ReturnsExplanationLetterError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
       OneYearRenewalExplanationChoice = OneYearRenewalexplanations.Other,
       RenewalExplanationOther = null, // No explanation letter
-      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      FromCertificate=certId,
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-                  CreateMockCertification(DateTime.Now.AddYears(1), CertificateStatusCode.Active) // Certification is active
+                  CreateMockCertification(certId,DateTime.Now.AddYears(1), CertificateStatusCode.Active) // Certification is active
         });
 
     // Act
@@ -71,18 +76,20 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_OneYearRenewalWithActiveCertificateWithoutCharacterReferences_ReturnsCharacterReferenceError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
       RenewalExplanationOther = "This is an explanation letter",
-      CharacterReferences = new List<CharacterReference>() // No character references
+      CharacterReferences = new List<CharacterReference>(), // No character references,
+      FromCertificate = certId,
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-                  CreateMockCertification(DateTime.Now.AddYears(1), CertificateStatusCode.Active) // Certification is active
+                  CreateMockCertification(certId, DateTime.Now.AddYears(1), CertificateStatusCode.Active) // Certification is active
         });
 
     // Act
@@ -95,19 +102,21 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_FiveYearRenewalWithActiveCertificate_ReturnsNoValidationError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
       ProfessionalDevelopments = new List<ProfessionalDevelopment> { CreateMockProfessionalDevelopment() },
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) }
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) },
+      FromCertificate = certId,
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-            CreateMockCertification(DateTime.Now.AddYears(1), CertificateStatusCode.Active) // Certification is active
+            CreateMockCertification(certId, DateTime.Now.AddYears(1), CertificateStatusCode.Active) // Certification is active
         });
 
     // Act
@@ -120,6 +129,7 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_ExpiredLessThanFiveYearsWithMissingProfessionalDevelopment_ReturnsProfessionalDevelopmentError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
@@ -127,13 +137,14 @@ public class ApplicationRenewalValidationEngineTests
       ProfessionalDevelopments = new List<ProfessionalDevelopment>(), // No professional development
       RenewalExplanationOther = "This is an explanation letter",
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) }
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) },
+      FromCertificate=certId
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-            CreateMockCertification(DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Certification expired less than 5 years ago
+            CreateMockCertification(certId, DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Certification expired less than 5 years ago
         });
 
     // Act
@@ -146,19 +157,21 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_CertificateExpiredMoreThanFiveYearsAgo_ReturnsWorkExperienceError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
       ProfessionalDevelopments = new List<ProfessionalDevelopment> { CreateMockProfessionalDevelopment() },
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(300) } // Less than 500 hours
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(300) }, // Less than 500 hours
+      FromCertificate = certId
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-            CreateMockCertification(DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Certification expired more than 5 years ago
+            CreateMockCertification(certId, DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Certification expired more than 5 years ago
         });
 
     // Act
@@ -168,9 +181,9 @@ public class ApplicationRenewalValidationEngineTests
     Assert.Contains("You must provide 500 hours of work experience", result.ValidationErrors);
   }
 
-  private Certification CreateMockCertification(DateTime expiryDate, CertificateStatusCode statusCode)
+  private Certification CreateMockCertification(string id,DateTime expiryDate, CertificateStatusCode statusCode)
   {
-    return new Certification(_faker.Random.Guid().ToString())
+    return new Certification(id)
     {
       ExpiryDate = expiryDate,
       StatusCode = statusCode,
@@ -201,19 +214,21 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_EceAssistantWithExpiredLessThanFiveYearsNoEducation_ReturnsEducationError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.EceAssistant },
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
       WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) },
-      Transcripts = new List<Transcript>() // No education transcripts
+      Transcripts = new List<Transcript>(), // No education transcripts
+      FromCertificate = certId
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-            CreateMockCertification(DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Expired less than 5 years ago
+            CreateMockCertification(certId, DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Expired less than 5 years ago
         });
 
     // Act
@@ -226,18 +241,20 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_EceAssistantWithExpiredMoreThanFiveYears_ReturnsNoValidationError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.EceAssistant },
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) }
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) },
+      FromCertificate = certId
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-            CreateMockCertification(DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Expired more than 5 years ago
+            CreateMockCertification(certId, DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Expired more than 5 years ago
         });
 
     // Act
@@ -250,19 +267,21 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_OneYearRenewalWithExpiredLessThanFiveYearsNoProfessionalDevelopment_ReturnsProfessionalDevelopmentError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
       ProfessionalDevelopments = new List<ProfessionalDevelopment>(), // No professional development
       RenewalExplanationOther = "This is an explanation letter",
-      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      FromCertificate= certId
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-            CreateMockCertification(DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Expired less than 5 years ago
+            CreateMockCertification(certId, DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Expired less than 5 years ago
         });
 
     // Act
@@ -275,19 +294,21 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_FiveYearsWithExpiredLessThanFiveYearsWithoutFiveYearExplanationChoice_ReturnsError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
       ProfessionalDevelopments = new List<ProfessionalDevelopment> { CreateMockProfessionalDevelopment() },
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) }
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) },
+      FromCertificate = certId
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-            CreateMockCertification(DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Expired less than 5 years ago
+            CreateMockCertification(certId, DateTime.Now.AddYears(-3), CertificateStatusCode.Expired) // Expired less than 5 years ago
         });
 
     // Act
@@ -300,19 +321,21 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_ExpiredMoreThanFiveYearsNoProfessionalDevelopment_ReturnsProfessionalDevelopmentError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
       ProfessionalDevelopments = new List<ProfessionalDevelopment>(), // No professional development
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) }
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(500) },
+      FromCertificate=certId
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-            CreateMockCertification(DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Expired more than 5 years ago
+            CreateMockCertification(certId, DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Expired more than 5 years ago
         });
 
     // Act
@@ -325,18 +348,20 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_OneYearRenewalWithExpiredMoreThanFiveYears_ReturnsNoValidationError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.OneYear },
       RenewalExplanationOther = "This is an explanation letter",
-      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() }
+      CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
+      FromCertificate = certId
     };
 
     _certificationRepositoryMock
         .Setup(repo => repo.Query(It.IsAny<UserCertificationQuery>()))
         .ReturnsAsync(new List<Certification> {
-            CreateMockCertification(DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Expired more than 5 years ago
+            CreateMockCertification(certId, DateTime.Now.AddYears(-6), CertificateStatusCode.Expired) // Expired more than 5 years ago
         });
 
     // Act
@@ -349,13 +374,15 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_FiveYearsRenewalWithNoCertificateFound_ReturnsNoValidationError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.FiveYears },
       ProfessionalDevelopments = new List<ProfessionalDevelopment> { CreateMockProfessionalDevelopment() },
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
-      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) }
+      WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) },
+      FromCertificate = certId
     };
 
     _certificationRepositoryMock
@@ -372,13 +399,15 @@ public class ApplicationRenewalValidationEngineTests
   [Fact]
   public async Task Validate_EceAssistantWithNoCertificateFound_ReturnsNoValidationError()
   {
+    var certId = _faker.Random.Guid().ToString();
     // Arrange
     var application = new Application("id", "registrantId", ApplicationStatus.Draft)
     {
       CertificationTypes = new List<CertificationType> { CertificationType.EceAssistant },
       CharacterReferences = new List<CharacterReference> { CreateMockCharacterReference() },
       WorkExperienceReferences = new List<WorkExperienceReference> { CreateMockWorkExperienceReference(400) },
-      Transcripts = new List<Transcript> { CreateMockTranscript() } // With transcripts
+      Transcripts = new List<Transcript> { CreateMockTranscript() }, // With transcripts
+      FromCertificate = certId
     };
 
     _certificationRepositoryMock

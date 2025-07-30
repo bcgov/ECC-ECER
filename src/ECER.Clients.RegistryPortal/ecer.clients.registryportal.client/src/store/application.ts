@@ -123,7 +123,7 @@ export const useApplicationStore = defineStore("application", {
       return state.draftApplication.applicationType === "New";
     },
     isDraftApplicationLaborMobility(state): boolean {
-      return state.draftApplication.applicationType === "LaborMobility";
+      return state.draftApplication.applicationType === "LabourMobility";
     },
     applicationConfiguration(): Wizard {
       switch (this.draftApplicationFlow) {
@@ -174,14 +174,27 @@ export const useApplicationStore = defineStore("application", {
       if (state.draftApplication.applicationType === "Renewal") {
         if (this.isDraftCertificateTypeEceAssistant) return "AssistantRenewal";
         if (this.isDraftCertificateTypeOneYear) {
-          if (certificationStore.latestCertificateStatus === "Active") return "OneYearActiveRenewal";
+          const fromCertificateId = state.draftApplication.fromCertificate;
+          if (fromCertificateId && certificationStore.certificateStatus(fromCertificateId) === "Active") return "OneYearActiveRenewal";
           return "OneYearExpiredRenewal";
         }
         if (this.isDraftCertificateTypeFiveYears) {
-          if (certificationStore.latestCertificateStatus === "Active") return "FiveYearActiveRenewal";
-          if (certificationStore.latestExpiredMoreThan5Years) return "FiveYearExpiredMoreThanFiveYearsRenewal";
+          const fromCertificateId = state.draftApplication.fromCertificate;
+          if (fromCertificateId) {
+            if (certificationStore.certificateStatus(fromCertificateId) === "Active") return "FiveYearActiveRenewal";
+            if (certificationStore.expiredMoreThan5Years(fromCertificateId)) return "FiveYearExpiredMoreThanFiveYearsRenewal";
+            return "FiveYearExpiredLessThanFiveYearsRenewal";
+          }
+          // Default to expired renewal if no fromCertificate is specified
           return "FiveYearExpiredLessThanFiveYearsRenewal";
         }
+      }
+
+      // LABOR MOBILITY flows
+      if (state.draftApplication.applicationType === "LabourMobility") {
+        if (this.isDraftCertificateTypeFiveYears) return "FiveYearLaborMobility";
+        if (this.isDraftCertificateTypeOneYear) return "OneYearLaborMobility";
+        if (this.isDraftCertificateTypeEceAssistant) return "AssistantLaborMobility";
       }
 
       // REGISTRANT flows
@@ -207,13 +220,6 @@ export const useApplicationStore = defineStore("application", {
         if (this.isDraftCertificateTypeFiveYears) return "FiveYear";
         if (this.isDraftCertificateTypeOneYear) return "OneYear";
         if (this.isDraftCertificateTypeEceAssistant) return "Assistant";
-      }
-
-      // LABOR MOBILITY flows
-      if (state.draftApplication.applicationType === "LaborMobility") {
-        if (this.isDraftCertificateTypeFiveYears) return "FiveYearLaborMobility";
-        if (this.isDraftCertificateTypeOneYear) return "OneYearLaborMobility";
-        if (this.isDraftCertificateTypeEceAssistant) return "AssistantLaborMobility";
       }
 
       return "Assistant";

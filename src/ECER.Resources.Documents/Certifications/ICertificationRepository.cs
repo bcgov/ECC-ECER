@@ -55,6 +55,7 @@ public record Certification(string Id)
 public record CertificateCondition
 {
   public string? Id { get; set; }
+  public string? CertificateId { get; set; }
   public string? Name { get; set; }
   public string? Details { get; set; }
   public DateTime StartDate { get; set; }

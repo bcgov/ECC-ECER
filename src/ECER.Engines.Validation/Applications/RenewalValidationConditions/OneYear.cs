@@ -8,7 +8,12 @@ internal sealed partial class ApplicationRenewalValidationEngine
   {
     await Task.CompletedTask;
     var validationErrors = new List<string>();
-    switch (await GetCertificateStatus(application.RegistrantId))
+    if (string.IsNullOrEmpty(application.FromCertificate))
+    {
+      validationErrors.Add("certification id in the field FromCertificate should not be null");
+      return validationErrors;
+    }
+    switch (await GetCertificateStatus(application.FromCertificate,application.RegistrantId))
     {
       case CertificateStatus.Active:
 

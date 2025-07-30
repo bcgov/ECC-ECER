@@ -1,7 +1,7 @@
 // .storybook/preview.ts
 
-import type { Preview } from "@storybook/vue3";
-import { setup } from "@storybook/vue3"; // ✅ Use the setup function from Storybook
+import type { Preview } from "@storybook/vue3-vite";
+import { setup } from "@storybook/vue3-vite"; // ✅ Use the setup function from Storybook
 import { createVuetify } from "vuetify";
 import "vuetify/styles"; // Import Vuetify base styles
 import "@mdi/font/css/materialdesignicons.css"; // Optional: MDI icons

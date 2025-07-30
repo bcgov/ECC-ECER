@@ -78,10 +78,10 @@
         <p>Your hours:</p>
         <ul v-if="applicationStore.isDraftApplicationRenewal" class="ml-10">
           <li>Be related to the field of early childhood education</li>
-          <li v-if="certificationStore.latestCertificateStatus != 'Expired'">
+          <li v-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) != 'Expired'">
             Have been completed within the term of your current certificate (between
-            {{ formatDate(certificationStore.latestCertification?.effectiveDate ?? "", "LLLL d, yyyy") }} and
-            {{ formatDate(certificationStore.latestCertification?.expiryDate ?? "", "LLLL d, yyyy") }})
+            {{ formatDate(certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) ?? "", "LLLL d, yyyy") }} and
+            {{ formatDate(certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) ?? "", "LLLL d, yyyy") }})
           </li>
           <li v-else>Have been completed within the last 5 years</li>
         </ul>
@@ -218,8 +218,8 @@ export default defineComponent({
       //edge case for renewals > 5 year expired should be 500 hours otherwise all renewals are 400 hours
       if (
         this.applicationStore.isDraftApplicationRenewal &&
-        this.certificationStore.latestIsEceFiveYear &&
-        this.certificationStore.latestExpiredMoreThan5Years
+        this.certificationStore.isEceFiveYear(this.applicationStore.draftApplication.fromCertificate) &&
+        this.certificationStore.expiredMoreThan5Years(this.applicationStore.draftApplication.fromCertificate)
       ) {
         return 500;
       }

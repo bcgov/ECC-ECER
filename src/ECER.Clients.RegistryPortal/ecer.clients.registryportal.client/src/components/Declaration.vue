@@ -4,25 +4,7 @@
     <h1 class="mb-5">Declaration and consent</h1>
     <p>You must read and agree to the following to apply for certification.</p>
     <br />
-    <ul class="ml-10">
-      <li>I understand that the ECE Registry may require additional information (including supporting documents) in connection with this application.</li>
-      <li>
-        I confirm that the information provided in this application is complete and accurate. I understand if inaccurate information is submitted it may result
-        in the denial of certification.
-      </li>
-      <li>
-        I understand that information in this application or subsequently provided information may be reviewed, audited, and verified for the purpose of
-        determining or auditing my eligibility for an ECE Certificate in British Columbia.
-      </li>
-      <li>
-        I understand that the ECE Registry may take disciplinary actions against me, including action to cancel my certification, if I have, by omission or
-        commission, knowingly given false or misleading information in the course of completing this application.
-      </li>
-      <li>
-        I consent the work experience and character references indicated in this application to provide the ECE Registry with this reference and other
-        information as part of my application for certification.
-      </li>
-    </ul>
+    <p class="ml-10 multiline">{{ configStore.defaultContents.find((content) => content.name == "New BC Recognized Application")?.multiText }}</p>
 
     <v-form ref="declarationForm">
       <v-row>
@@ -59,7 +41,6 @@
 import { DateTime } from "luxon";
 import { defineComponent } from "vue";
 import type { VForm } from "vuetify/components";
-
 import { getProfile } from "@/api/profile";
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
@@ -68,6 +49,7 @@ import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useLoadingStore } from "@/store/loading";
+import { useConfigStore } from "@/store/config";
 import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
@@ -79,6 +61,7 @@ export default defineComponent({
   async setup() {
     const userStore = useUserStore();
     const applicationStore = useApplicationStore();
+    const configStore = useConfigStore();
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
@@ -154,7 +137,7 @@ export default defineComponent({
             },
           ];
 
-    return { items, Rules, userStore, applicationStore, alertStore, loadingStore, router };
+    return { items, Rules, userStore, applicationStore, alertStore, loadingStore, configStore, router };
   },
   data() {
     return {

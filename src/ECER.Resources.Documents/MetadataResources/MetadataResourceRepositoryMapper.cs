@@ -72,5 +72,11 @@ internal class MetadataResourceRepositoryMapper : Profile
         .ForMember(d => d.BcCertificate, opts => opts.MapFrom(s => s.ecer_bccertificate))
         .ForMember(d => d.TransferringCertificate, opts => opts.MapFrom(s => s.ecer_certificationcomparisontransferringcertificate))
         .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<ecer_DefaultContents, DefaultContent>(MemberList.Source)
+        .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_Name))
+        .ForMember(d => d.SingleText, opts => opts.MapFrom(s => s.ecer_SingleLineofText))
+        .ForMember(d => d.MultiText, opts => opts.MapFrom(s => s.ecer_MultipleLineofText))
+        .ValidateMemberList(MemberList.Destination);
   }
 }

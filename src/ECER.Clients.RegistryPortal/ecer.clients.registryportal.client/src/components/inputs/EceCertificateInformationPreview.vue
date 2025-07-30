@@ -1,29 +1,32 @@
 <template>
+  <!-- component outside of editable card -->
+  <h2 class="mb-2">Transfer information</h2>
+  <v-row>
+    <v-col cols="4">
+      <p class="small">
+        <b>Transfer to: {{ applicationStore.certificateName }}</b>
+      </p>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col cols="4">
+      <p class="small">Province</p>
+    </v-col>
+    <v-col>
+      <p class="small font-weight-bold">{{ certificateInformation.labourMobilityProvince?.provinceName }}</p>
+    </v-col>
+  </v-row>
+  <v-row class="mb-2">
+    <v-col cols="4">
+      <p class="small">Certificate type in province</p>
+    </v-col>
+    <v-col>
+      <p class="small font-weight-bold">{{ certificateInformation.existingCertificationType }}</p>
+    </v-col>
+  </v-row>
+
   <PreviewCard title="Certificate information" portal-stage="CertificateInformation">
     <template #content>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">
-            <b>Transfer to: {{ applicationStore.certificateName }}</b>
-          </p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Province</p>
-        </v-col>
-        <v-col>
-          <p class="small font-weight-bold">{{ certificateInformation.labourMobilityProvince?.provinceName }}</p>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="4">
-          <p class="small">Certificate type in province</p>
-        </v-col>
-        <v-col>
-          <p class="small font-weight-bold">{{ certificateInformation.existingCertificationType }}</p>
-        </v-col>
-      </v-row>
       <v-row>
         <v-col cols="4">
           <p class="small">Registration number</p>

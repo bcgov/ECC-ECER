@@ -1,8 +1,9 @@
 <template>
   <v-col
     v-if="
-      certificationStore.latestCertificateStatus == 'Active' ||
-      (certificationStore.latestCertificateStatus == 'Expired' && !certificationStore.latestExpiredMoreThan5Years)
+      certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) == 'Active' ||
+      (certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) == 'Expired' &&
+        !certificationStore.expiredMoreThan5Years(applicationStore.draftApplication.fromCertificate))
     "
     cols="12"
   >

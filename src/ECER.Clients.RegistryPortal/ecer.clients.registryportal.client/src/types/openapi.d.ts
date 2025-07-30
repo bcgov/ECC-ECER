@@ -40,6 +40,7 @@ declare namespace Components {
             oneYearRenewalExplanationChoice?: OneYearRenewalexplanations;
             fiveYearRenewalExplanationChoice?: FiveYearRenewalExplanations;
             renewalExplanationOther?: string | null;
+            fromCertificate?: string | null;
             origin?: ApplicationOrigin;
             labourMobilityCertificateInformation?: CertificateInformation;
         }
@@ -60,7 +61,7 @@ declare namespace Components {
              */
             id?: string | null;
         }
-        export type ApplicationTypes = "New" | "Renewal" | "LaborMobility";
+        export type ApplicationTypes = "New" | "Renewal" | "LabourMobility";
         /**
          * delete draft application response
          */
@@ -177,7 +178,7 @@ declare namespace Components {
             confirmProvidedInformationIsRight?: boolean;
             recaptchaToken?: string | null;
         }
-        export type ChildcareAgeRanges = "From0to12Months" | "From12to24Months" | "From25to30Months" | "From31to36Months" | "Grade1" | "Preschool";
+        export type ChildcareAgeRanges = "_036months" | "_35years" | "_68years";
         export type ChildrenProgramType = "Childminding" | "Familychildcare" | "Groupchildcare" | "InHomeMultiAgechildcare" | "MultiAgechildcare" | "Occasionalchildcare" | "Other" | "Preschool";
         export interface Communication {
             id?: string | null;
@@ -237,6 +238,11 @@ declare namespace Components {
             countryCode?: string | null;
         }
         export type CourseOutlineOptions = "UploadNow" | "RegistryAlreadyHas";
+        export interface DefaultContent {
+            name?: string | null;
+            singleText?: string | null;
+            multiText?: string | null;
+        }
         export interface DraftApplication {
             id?: string | null;
             signedDate?: string | null; // date-time
@@ -246,6 +252,7 @@ declare namespace Components {
             characterReferences?: CharacterReference[] | null;
             professionalDevelopments?: ProfessionalDevelopment[] | null;
             stage?: string | null;
+            fromCertificate?: string | null;
             applicationType?: ApplicationTypes;
             educationOrigin?: EducationOrigin;
             educationRecognition?: EducationRecognition;
@@ -397,7 +404,7 @@ declare namespace Components {
         export interface ProfessionalDevelopmentStatus {
             id?: string | null;
             courseName?: string | null;
-            numberOfHours?: number; // int32
+            numberOfHours?: number; // double
             status?: ProfessionalDevelopmentStatusCode;
         }
         export type ProfessionalDevelopmentStatusCode = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingResponse";
@@ -474,6 +481,7 @@ declare namespace Components {
             addMoreCharacterReference?: boolean | null;
             addMoreWorkExperienceReference?: boolean | null;
             addMoreProfessionalDevelopment?: boolean | null;
+            fromCertificate?: string | null;
             applicationType?: ApplicationTypes;
         }
         export interface SystemMessage {
@@ -848,6 +856,11 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Country[];
         }
     }
+    namespace DefaultContentGet {
+        namespace Responses {
+            export type $200 = Components.Schemas.DefaultContent[];
+        }
+    }
     namespace DeleteFile {
         namespace Parameters {
             export type FileId = string;
@@ -1081,6 +1094,7 @@ declare namespace Paths {
     }
 }
 
+
 export interface OperationMethods {
   /**
    * configuration_get - Returns the UI initial configuration
@@ -1098,6 +1112,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ProvinceGet.Responses.$200>
+  /**
+   * defaultContent_get - Handles default contents
+   */
+  'defaultContent_get'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DefaultContentGet.Responses.$200>
   /**
    * country_get - Handles country queries
    */
@@ -1430,6 +1452,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ProvinceGet.Responses.$200>
+  }
+  ['/api/defaultContents']: {
+    /**
+     * defaultContent_get - Handles default contents
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.DefaultContentGet.Responses.$200>
   }
   ['/api/countrylist']: {
     /**
@@ -1815,6 +1847,7 @@ export interface PathsDictionary {
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
 
+
 export type AddProfessionalDevelopmentResponse = Components.Schemas.AddProfessionalDevelopmentResponse;
 export type Address = Components.Schemas.Address;
 export type Application = Components.Schemas.Application;
@@ -1854,6 +1887,7 @@ export type ComparisonRecord = Components.Schemas.ComparisonRecord;
 export type ComprehensiveReportOptions = Components.Schemas.ComprehensiveReportOptions;
 export type Country = Components.Schemas.Country;
 export type CourseOutlineOptions = Components.Schemas.CourseOutlineOptions;
+export type DefaultContent = Components.Schemas.DefaultContent;
 export type DraftApplication = Components.Schemas.DraftApplication;
 export type DraftApplicationResponse = Components.Schemas.DraftApplicationResponse;
 export type EducationOrigin = Components.Schemas.EducationOrigin;

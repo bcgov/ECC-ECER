@@ -89,6 +89,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
 			public const string ecer_ChildcareAgeRange = "ecer_childcareagerange";
 			public const string ecer_childcareagerangeName = "ecer_childcareagerangename";
+			public const string ecer_ChildcareAgeRangeNew = "ecer_childcareagerangenew";
+			public const string ecer_childcareagerangenewName = "ecer_childcareagerangenewname";
 			public const string ecer_ChildCareProgramName = "ecer_childcareprogramname";
 			public const string ecer_CompetenceChildDevelopment = "ecer_competencechilddevelopment";
 			public const string ecer_competencechilddevelopmentName = "ecer_competencechilddevelopmentname";
@@ -115,6 +117,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CompetenceImplementanECECurriculum = "ecer_competenceimplementanececurriculum";
 			public const string ecer_competenceimplementanececurriculumName = "ecer_competenceimplementanececurriculumname";
 			public const string ecer_CompetenceImplementECECurriculumReason = "ecer_competenceimplementececurriculumreason";
+			public const string ecer_currentcertificate = "ecer_currentcertificate";
+			public const string ecer_currentcertificateName = "ecer_currentcertificatename";
 			public const string ecer_DateSigned = "ecer_datesigned";
 			public const string ecer_DateSubmitted = "ecer_datesubmitted";
 			public const string ecer_ecer_workexperienceref_ReferenceContactid = "ecer_ecer_workexperienceref_ReferenceContactid";
@@ -144,6 +148,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
 			public const string ecer_portalinvitation_WorkExperienceRefId = "ecer_portalinvitation_WorkExperienceRefId";
 			public const string ecer_ReferenceBirthDate = "ecer_referencebirthdate";
+			public const string ecer_referencecertificatestatus = "ecer_referencecertificatestatus";
 			public const string ecer_ReferenceContactid = "ecer_referencecontactid";
 			public const string ecer_ReferenceContactidName = "ecer_referencecontactidname";
 			public const string ecer_ReferenceContactidYomiName = "ecer_referencecontactidyominame";
@@ -176,6 +181,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_workexperienceassessment_WorkExpRefId = "ecer_workexperienceassessment_WorkExpRefId";
 			public const string ecer_workexperienceref_Applicantid = "ecer_workexperienceref_Applicantid";
 			public const string ecer_workexperienceref_Applicationid_ecer = "ecer_workexperienceref_Applicationid_ecer";
+			public const string ecer_workexperienceref_currentcertificate_ecer_certificate = "ecer_workexperienceref_currentcertificate_ecer_certificate";
 			public const string ecer_workexperienceref_RefCertifiedProvinceId = "ecer_workexperienceref_RefCertifiedProvinceId";
 			public const string ecer_WorkExperienceRefId = "ecer_workexperiencerefid";
 			public const string Id = "ecer_workexperiencerefid";
@@ -504,12 +510,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_childcareagerange")]
-		public virtual System.Collections.Generic.IEnumerable<ecer_ChildcareAgeRanges> ecer_ChildcareAgeRange
+		public virtual System.Collections.Generic.IEnumerable<ecer_childcareageranges> ecer_ChildcareAgeRange
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return EntityOptionSetEnum.GetMultiEnum<ecer_ChildcareAgeRanges>(this, "ecer_childcareagerange");
+				return EntityOptionSetEnum.GetMultiEnum<ecer_childcareageranges>(this, "ecer_childcareagerange");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -527,6 +533,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_childcareagerange"))
 				{
 					return this.FormattedValues["ecer_childcareagerange"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_childcareagerangenew")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_ChildcareAgeRange> ecer_ChildcareAgeRangeNew
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_ChildcareAgeRange>(this, "ecer_childcareagerangenew");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_childcareagerangenew", EntityOptionSetEnum.GetMultiEnum(this, "ecer_childcareagerangenew", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_childcareagerangenewname")]
+		public string ecer_childcareagerangenewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_childcareagerangenew"))
+				{
+					return this.FormattedValues["ecer_childcareagerangenew"];
 				}
 				else
 				{
@@ -941,6 +979,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_currentcertificate")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_currentcertificate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_currentcertificate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_currentcertificate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_currentcertificatename")]
+		public string ecer_currentcertificateName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_currentcertificate"))
+				{
+					return this.FormattedValues["ecer_currentcertificate"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_datesigned")]
 		public System.Nullable<System.DateTime> ecer_DateSigned
 		{
@@ -1336,6 +1406,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_referencebirthdate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_referencecertificatestatus")]
+		public string ecer_referencecertificatestatus
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_referencecertificatestatus");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_referencecertificatestatus", value);
 			}
 		}
 		
@@ -2361,6 +2446,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_workexperienceref_Applicationid_ecer", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_workexperienceref_currentcertificate_ecer_certificate
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_currentcertificate")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_workexperienceref_currentcertificate_ecer_certificate")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Certificate ecer_workexperienceref_currentcertificate_ecer_certificate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_workexperienceref_currentcertificate_ecer_certificate", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_workexperienceref_currentcertificate_ecer_certificate", null, value);
 			}
 		}
 		

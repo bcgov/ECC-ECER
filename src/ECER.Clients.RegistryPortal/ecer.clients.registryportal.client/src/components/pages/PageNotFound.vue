@@ -1,5 +1,5 @@
 <template>
-  <Banner type="error" title="404 Error - Page not found" />
+  <Alert type="error" title="404 Error - Page not found" />
   <v-container>
     <div class="d-flex flex-column ga-10 mt-10">
       <h3>The page you’re looking for might have been removed, moved, or is temporarily unavailable.</h3>
@@ -21,11 +21,11 @@
 </template>
 
 <script lang="ts">
-import Banner from "@/components/Banner.vue";
 import { useRouter } from "vue-router";
+import Alert from "../Alert.vue";
 export default {
   name: "PageNotFound",
-  components: { Banner },
+  components: { Alert },
   setup() {
     const router = useRouter();
     return { router };
