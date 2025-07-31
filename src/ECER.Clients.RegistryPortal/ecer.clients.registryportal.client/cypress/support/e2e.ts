@@ -1,4 +1,5 @@
 import "./commands";
+import "./labour-mobility-commands";
 
 // eslint-disable-next-line mocha/no-top-level-hooks
 beforeEach(() => {

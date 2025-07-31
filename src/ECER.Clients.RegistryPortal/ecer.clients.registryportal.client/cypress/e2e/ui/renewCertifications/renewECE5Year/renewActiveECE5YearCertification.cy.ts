@@ -1,15 +1,13 @@
-import selectors from "../../../support/selectors";
-import { courseStartDay, courseEndDay, todayDay } from "../../../support/utils";
+import selectors from "../../../../support/selectors";
+import { courseStartDay, courseEndDay } from "../../../../support/utils";
 
-describe("New ECE 5 Year + SNE Certificate Application", () => {
-  it("should sucessfully create a New ECE 5 Year + SNE Application", () => {
+describe("Renew Active ECE 5 Year Certificate Application", () => {
+  it("should sucessfully create a Renewal ECE 5 Year Application", () => {
+    cy.seedRenewalApplication();
+
+    cy.reload();
     /** Dashboard */
-    cy.get(selectors.dashboard.applyNowButton).click();
-
-    /** Certification Type */
-    cy.get(selectors.certificationType.eceFiveYearRadio).check();
-    cy.get(selectors.certificationType.sneCheckBox).check({ force: true });
-    cy.get(selectors.certificationType.continueButton).click();
+    cy.get(selectors.dashboard.renew).click();
 
     /** Application Requirements */
     cy.get(selectors.applicationRequirements.applyNowButton).click();
@@ -21,55 +19,29 @@ describe("New ECE 5 Year + SNE Certificate Application", () => {
     /** Contact Information */
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
-    /** Education */
-    cy.get(selectors.education.addEducationButton).click();
-    cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia");
+    /** Professional Development */
+    cy.get(selectors.professionalDevelopment.addCourseOrWorkshop).contains("Add course or workshop").click();
 
-    cy.get(selectors.education.postSecondaryInstitutionDropDownList).should("exist").type("Other");
-    cy.get("body").click({ force: true });
+    cy.get(selectors.professionalDevelopment.courseNameInput).should("exist").type("ECE 5 year");
 
-    cy.get(selectors.education.institutionNameInput).type("TEST Educational Institution");
+    cy.get(selectors.professionalDevelopment.howManyHours).should("exist").type("40");
+    // cy.get("body").click({ force: true });
 
-    cy.get(selectors.education.programNameInput).type("TEST ECE 5 Year Course");
+    cy.get(selectors.professionalDevelopment.nameOfPlace).type("British Columbia");
 
     /* Start Date - DatePicker*/
-    // cy.get(selectors.education.programStartDateInput).click({ force: true });
-    // cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`);
-
-    cy.get(selectors.education.programStartDateInput).click({ force: true });
-    Cypress._.times(5, () => {
-      cy.get(selectors.datePicker.prevMonthButton).first().click();
-    });
-    cy.get(selectors.datePicker.monthDiv)
-      .first()
-      .should("exist")
-      .within(() => {
-        cy.contains("span", `${todayDay}`).click({ force: true });
-      });
+    cy.get(selectors.professionalDevelopment.courseStartDateInput).click({ force: true });
+    cy.get(selectors.professionalDevelopment.courseStartDateInput).type(`${courseStartDay} {enter}`);
 
     /* End Date - DatePicker*/
-    // cy.get(selectors.education.programEndDateInput).click({ force: true });
-    // cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`);
+    cy.get(selectors.professionalDevelopment.courseEndDateInput).click({ force: true });
+    cy.get(selectors.professionalDevelopment.courseEndDateInput).type(`${courseEndDay} {enter}`);
+    cy.get(selectors.professionalDevelopment.phoneNoOfInstructorCheckBox).check();
 
-    cy.get(selectors.education.programEndDateInput).click({ force: true });
-    Cypress._.times(1, () => {
-      cy.get(selectors.datePicker.prevMonthButton).first().click();
-    });
-    cy.get(selectors.datePicker.monthDiv)
-      .first()
-      .should("exist")
-      .within(() => {
-        cy.contains("span", `${todayDay}`).click({ force: true });
-      });
+    cy.get(selectors.professionalDevelopment.nameOfInstructor).type("James Bond");
+    cy.get(selectors.professionalDevelopment.PhoneNoOfInstructor).type("6474895555");
 
-    cy.get(selectors.education.studentIDInput).type("1234");
-    cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {
-      cy.get(selectors.elementType.radio).first().check({ force: true });
-    });
-    cy.get(selectors.education.transcriptStatusRadioDiv).within(() => {
-      cy.get(selectors.elementType.radio).first().check({ force: true });
-    });
-    cy.get(selectors.education.saveEducationButton).click();
+    cy.get(selectors.professionalDevelopment.saveCourseOrWorkshop).click();
 
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
