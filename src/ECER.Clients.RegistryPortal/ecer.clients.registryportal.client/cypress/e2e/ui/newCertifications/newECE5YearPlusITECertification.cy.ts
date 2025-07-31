@@ -1,8 +1,8 @@
 import selectors from "../../../support/selectors";
-import { courseStartDay, courseEndDay } from "../../../support/utils";
+import { courseStartDay, courseEndDay, todayDay } from "../../../support/utils";
 
 describe("New ECE 5 Year + ITE Certificate Application", () => {
-  it("should sucessfully create a New ECE 5 Year + ITE Applicatio", () => {
+  it("should sucessfully create a New ECE 5 Year + ITE Application", () => {
     /** Dashboard */
     cy.get(selectors.dashboard.applyNowButton).click();
 
@@ -34,12 +34,34 @@ describe("New ECE 5 Year + ITE Certificate Application", () => {
     cy.get(selectors.education.programNameInput).type("TEST ECE 5 Year Course");
 
     /* Start Date - DatePicker*/
+    // cy.get(selectors.education.programStartDateInput).click({ force: true });
+    // cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`);
+
     cy.get(selectors.education.programStartDateInput).click({ force: true });
-    cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`);
+    Cypress._.times(5, () => {
+      cy.get(selectors.datePicker.prevMonthButton).first().click();
+    });
+    cy.get(selectors.datePicker.monthDiv)
+      .first()
+      .should("exist")
+      .within(() => {
+        cy.contains("span", `${todayDay}`).click({ force: true });
+      });
 
     /* End Date - DatePicker*/
+    // cy.get(selectors.education.programEndDateInput).click({ force: true });
+    // cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`);
+
     cy.get(selectors.education.programEndDateInput).click({ force: true });
-    cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`);
+    Cypress._.times(1, () => {
+      cy.get(selectors.datePicker.prevMonthButton).first().click();
+    });
+    cy.get(selectors.datePicker.monthDiv)
+      .first()
+      .should("exist")
+      .within(() => {
+        cy.contains("span", `${todayDay}`).click({ force: true });
+      });
 
     cy.get(selectors.education.studentIDInput).type("1234");
     cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {

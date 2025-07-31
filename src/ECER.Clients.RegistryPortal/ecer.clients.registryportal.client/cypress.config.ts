@@ -18,12 +18,10 @@ export default defineConfig({
     ],
   },
   defaultCommandTimeout: 20000,
+  scrollBehavior: "center", // or 'nearest'
   retries: {
     runMode: 1, // retry once when we do `cypress run`
     openMode: 0, // no retries when we’re developing with `cypress open`
   },
-  env: {
-    BCSC_USERNAME: env.BCSC_USERNAME,
-    BCSC_PASSWORD: env.BCSC_PASSWORD,
-  },
+  env: { BCSC_USERNAME: env.BCSC_USERNAME, BCSC_PASSWORD: env.BCSC_PASSWORD },
 });
