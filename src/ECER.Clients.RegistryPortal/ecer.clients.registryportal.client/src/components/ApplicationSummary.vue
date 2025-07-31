@@ -1,9 +1,6 @@
 <template>
   <v-container>
-    <v-breadcrumbs class="pl-0" :items="items" color="primary">
-      <template #divider>/</template>
-    </v-breadcrumbs>
-
+    <Breadcrumb />
     <ApplicationCertificationTypeHeader :certification-types="applicationStore.applications?.[0]?.certificationTypes || []" class="pb-5" />
     <h2>Status</h2>
     <p class="pb-3">It is a 3-step process to apply.</p>
@@ -88,7 +85,7 @@
         :go-to="
           () =>
             router.push({
-              name: 'viewCharacterReference',
+              name: 'view-character-reference',
               params: { applicationId: route.params.applicationId, referenceId: reference.id?.toString() },
             })
         "
@@ -220,7 +217,7 @@
           :go-to="
             () =>
               router.push({
-                name: 'viewCharacterReference',
+                name: 'view-character-reference',
                 params: { applicationId: route.params.applicationId, referenceId: reference.id?.toString() },
               })
           "
@@ -261,6 +258,7 @@ import ApplicationSummaryCharacterReferenceListItem from "./ApplicationSummaryCh
 import ApplicationSummaryTranscriptListItem from "./ApplicationSummaryTranscriptListItem.vue";
 import ApplicationSummaryHeader from "./ApplicationSummaryHeader.vue";
 import { useConfigStore } from "@/store/config";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 export default defineComponent({
   name: "ApplicationSummary",
@@ -270,6 +268,7 @@ export default defineComponent({
     ApplicationSummaryCharacterReferenceListItem,
     ApplicationSummaryActionListItem,
     ApplicationSummaryHeader,
+    Breadcrumb,
   },
   setup: async () => {
     const { smAndUp } = useDisplay();
@@ -297,22 +296,7 @@ export default defineComponent({
       route,
     };
   },
-  data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application",
-          disabled: true,
-          href: "application",
-        },
-      ],
-    };
-  },
+
   computed: {
     currentStep() {
       switch (this.applicationStatus?.status) {

@@ -2,7 +2,7 @@
   <PageContainer>
     <v-row>
       <v-col cols="12">
-        <Breadcrumb :items="items" />
+        <Breadcrumb />
       </v-col>
     </v-row>
     <v-row>
@@ -146,6 +146,7 @@ import { useRouter } from "vue-router";
 import * as Rules from "@/utils/formRules";
 import type { Components, Province, ComparisonRecord } from "@/types/openapi";
 import Callout from "@/components/Callout.vue";
+import { useUserStore } from "@/store/user";
 interface EceTransferData {
   province: Province | undefined;
   outOfProvinceCertification: ComparisonRecord | undefined;
@@ -157,10 +158,12 @@ export default {
     const configStore = useConfigStore();
     const router = useRouter();
     const applicationStore = useApplicationStore();
+    const userStore = useUserStore();
     return {
       configStore,
       router,
       applicationStore,
+      userStore,
     };
   },
   methods: {
@@ -198,7 +201,7 @@ export default {
           },
         },
       });
-      this.router.push({ name: "application-requirements" });
+      this.userStore.isUnder19 ? this.router.push({ name: "consent-required" }) : this.router.push({ name: "application-requirements" });
     },
     getCertificationComparisonIdBasedOnSelfAssessmentOutcome(): string | undefined | null {
       //this function will leverage the logic from the selfAssessmentOutcome to generate the certificateComparisonId based on the options provided to registrant
@@ -256,18 +259,6 @@ export default {
     },
   },
   data: () => ({
-    items: [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Check your transfer eligibility",
-        disabled: true,
-        href: "/transfer",
-      },
-    ],
     outOfProvinceCertificationTypesLoading: false,
     has500HoursWorkExperience: undefined,
     highestCertificationType: undefined as CertificationType | undefined,

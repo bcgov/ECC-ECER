@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
 
     <!-- Renewal -->
     <template v-if="applicationStore.isDraftApplicationRenewal">
@@ -107,53 +107,7 @@ export default defineComponent({
     return { applicationStore, certificationStore, userStore, router };
   },
   data() {
-    const applicationStore = useApplicationStore();
-    const userStore = useUserStore();
-
-    let items: { title: string; disabled: boolean; href: string }[] = [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-    ];
-
-    if (applicationStore.isDraftApplicationLaborMobility) {
-      items.push(
-        {
-          title: "Check your transfer eligibility",
-          disabled: false,
-          href: "/application/transfer",
-        },
-        {
-          title: "Requirements",
-          disabled: true,
-          href: "/application/certification/requirements",
-        },
-      );
-    } else if (applicationStore.isDraftApplicationRenewal || userStore.isRegistrant) {
-      items.push({
-        title: "Requirements",
-        disabled: true,
-        href: "/application/certification/requirements",
-      });
-    } else {
-      items.push(
-        {
-          title: "Application types",
-          disabled: false,
-          href: "/application/certification",
-        },
-        {
-          title: "Requirements",
-          disabled: true,
-          href: "/application/certification/requirements",
-        },
-      );
-    }
-
     return {
-      items,
       specializationSelection: [] as Components.Schemas.CertificationType[],
     };
   },

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <h1>My other certifications</h1>
     <div class="d-flex flex-column ga-3 my-6">
       <p>You may wish to renew another certification you hold if you do not meet the requirements for higher certification levels. This may be due to:</p>
@@ -33,22 +33,6 @@ export default defineComponent({
     const certificationStore = useCertificationStore();
     return {
       certificationStore,
-    };
-  },
-  data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "My other certifications",
-          disabled: true,
-          href: "/my-other-certifications",
-        },
-      ],
     };
   },
   methods: {
