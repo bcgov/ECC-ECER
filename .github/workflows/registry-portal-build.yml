@@ -10,8 +10,10 @@ on:
       - src/**
       - "!src/ECER.Clients.Api/**"
       - "!src/ECER.Clients.E2ETestData/**"
+      - "!src/ECER.Clients.PSPPortal/**"
       - "!src/api.Dockerfile"
       - "!src/e2e-test-data.Dockerfile"
+      - "!src/psp-portal.Dockerfile"
       - .github/workflows/registry-portal-build.yml
       - .github/workflows/build-template.yml
 
@@ -20,8 +22,10 @@ on:
       - src/**
       - "!src/ECER.Clients.Api/**"
       - "!src/ECER.Clients.E2ETestData/**"
+      - "!src/ECER.Clients.PSPPortal/**"
       - "!src/api.Dockerfile"
       - "!src/e2e-test-data.Dockerfile"
+      - "!src/psp-portal.Dockerfile"
       - .github/workflows/registry-portal-build.yml
       - .github/workflows/build-template.yml
 
