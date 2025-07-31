@@ -14,9 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ECER.Clients.RegistryPortal\ECER.Clients.RegistryPortal.Server\ECER.Clients.RegistryPortal.Server.csproj">
-      <IncludeAssets>compile;runtime</IncludeAssets>
-    </ProjectReference>
     <ProjectReference Include="..\ECER.Managers.E2ETest.Contract\ECER.Managers.E2ETest.Contract.csproj" />
     <ProjectReference Include="..\ECER.Managers.E2ETest\ECER.Managers.E2ETest.csproj" />
     <ProjectReference Include="..\ECER.Managers.Registry.Contract\ECER.Managers.Registry.Contract.csproj" />

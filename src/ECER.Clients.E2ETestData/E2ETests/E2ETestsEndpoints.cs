@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Security;
 using AutoMapper;
-using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Managers.Registry.Contract.Applications;
 using Bogus;
 
@@ -48,19 +47,19 @@ public class E2ETestsEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails { Title = "Missing header: APPLICATION-TYPE" });
       }
 
-      RegistryPortal.Server.Applications.CertificationType certificationType;
+      CertificationType certificationType;
       switch (applicationType.ToString())
       {
         case "Assistant":
-          certificationType = RegistryPortal.Server.Applications.CertificationType.EceAssistant;
+          certificationType = CertificationType.EceAssistant;
           break;
 
         case "OneYear":
-          certificationType = RegistryPortal.Server.Applications.CertificationType.OneYear;
+          certificationType = CertificationType.OneYear;
           break;
 
         case "5Years":
-          certificationType = RegistryPortal.Server.Applications.CertificationType.FiveYears;
+          certificationType = CertificationType.FiveYears;
           break;
 
         default:
@@ -72,7 +71,7 @@ public class E2ETestsEndpoints : IRegisterEndpoints
       if (profile == null) return TypedResults.NotFound();
       var contact_id = profile.UserId;
 
-      var draftApplicationObj = new Faker<DraftApplication>("en_CA")
+      var draftApplicationObj = new Faker<Application>("en_CA")
             .RuleFor(f => f.CertificationTypes, f => f.Make(1, () => certificationType))
             .RuleFor(f => f.SignedDate, f => f.Date.Recent())
             .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript()))
@@ -80,9 +79,7 @@ public class E2ETestsEndpoints : IRegisterEndpoints
             .RuleFor(f => f.WorkExperienceReferences, f => f.Make(f.Random.Number(2, 5), () => CreateWorkExperienceReference()))
             .Generate();
 
-      var draftApplication = mapper.Map<Managers.Registry.Contract.Applications.Application>(draftApplicationObj, opts => opts.Items.Add("registrantId", contact_id))!;
-
-      var application = await messageBus.Send(new SaveDraftApplicationCommand(draftApplication), ct);
+      var application = await messageBus.Send(new SaveDraftApplicationCommand(draftApplicationObj), ct);
 
       var cmd = new SubmitApplicationCommand(application!.Id!, contact_id!);
       var submitAppResult = await messageBus.Send(cmd, ct);
@@ -110,60 +107,62 @@ public class E2ETestsEndpoints : IRegisterEndpoints
     .WithParameterValidation();
   }
 
-  private static RegistryPortal.Server.Applications.Transcript CreateTranscript()
+  private static Transcript CreateTranscript()
   {
     // Use Faker to generate values for the required parameters
     var faker = new Faker("en_CA");
     var educationalInstitutionName = faker.Company.CompanyName();
     var programName = $"{faker.Hacker.Adjective()} Program";
+    var studentNumber = faker.Random.Number(10000000, 99999999).ToString();
     var studentLastName = faker.Name.LastName();
     var startDate = faker.Date.Past();
     var endDate = faker.Date.Past();
+    var isECEAssistant = faker.Random.Bool();
+    var studentFirstName = faker.Name.FirstName();
     var isNameUnverified = faker.Random.Bool();
-    var educationRecognition = new RegistryPortal.Server.Applications.EducationRecognition(); // Initialize as needed
-    var educationOrigin = new RegistryPortal.Server.Applications.EducationOrigin(); // Initialize as needed
+    var educationRecognition = EducationRecognition.Recognized; // Initialize as needed
+    var educationOrigin = EducationOrigin.InsideBC; // Initialize as needed
 
     // Instantiate the Transcript record with the required arguments
-    var transcript = new RegistryPortal.Server.Applications.Transcript(
+    var transcript = new Transcript(
+        null,
         educationalInstitutionName,
         programName,
-        studentLastName,
+        studentNumber,
         startDate,
         endDate,
+        isECEAssistant,
+        studentFirstName,
+        studentLastName,
         isNameUnverified,
         educationRecognition,
         educationOrigin
     )
     {
       // Populate optional properties
-      Id = null,
       CampusLocation = faker.Address.City(),
-      StudentFirstName = faker.Name.FirstName(),
-      StudentNumber = faker.Random.Number(10000000, 99999999).ToString(),
-      IsECEAssistant = faker.Random.Bool(),
-      TranscriptStatusOption = RegistryPortal.Server.Applications.TranscriptStatusOptions.OfficialTranscriptRequested,
+      TranscriptStatusOption = TranscriptStatusOptions.OfficialTranscriptRequested,
     };
 
     return transcript;
   }
 
-  private RegistryPortal.Server.Applications.CharacterReference CreateCharacterReference()
+  private CharacterReference CreateCharacterReference()
   {
     var faker = new Faker("en_CA");
-    return new RegistryPortal.Server.Applications.CharacterReference(
-      faker.Name.LastName(), faker.Phone.PhoneNumber(), "Character_Reference@test.gov.bc.ca"
+    return new CharacterReference(
+      faker.Name.FirstName(), faker.Name.LastName(), faker.Phone.PhoneNumber(), "Character_Reference@test.gov.bc.ca"
     )
-    { FirstName = faker.Name.FirstName() };
+    { Status = CharacterReferenceStage.Draft };
   }
 
-  private RegistryPortal.Server.Applications.WorkExperienceReference CreateWorkExperienceReference()
+  private WorkExperienceReference CreateWorkExperienceReference()
   {
     var faker = new Faker("en_CA");
-    return new RegistryPortal.Server.Applications.WorkExperienceReference(
-       faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(10, 150)
+    return new WorkExperienceReference(
+      faker.Name.FirstName(), faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(10, 150)
     )
     {
-      FirstName = faker.Name.FirstName(),
       PhoneNumber = faker.Phone.PhoneNumber()
     };
   }
