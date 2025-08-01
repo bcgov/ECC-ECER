@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <v-breadcrumbs class="pl-0" :items="items" color="primary">
-      <template #divider>/</template>
-    </v-breadcrumbs>
+    <Breadcrumb />
     <h2 class="mt-10">Character reference</h2>
     <div role="doc-subtitle">We’ve sent an email to the following person to request a reference.</div>
     <p class="mt-8"><b>Name</b></p>
@@ -33,10 +31,11 @@ import ResendEmail from "@/components/ResendEmail.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import type { Components } from "@/types/openapi";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 export default defineComponent({
   name: "ViewCharacterReference",
-  components: { ECEHeader, ResendEmail },
+  components: { ECEHeader, ResendEmail, Breadcrumb },
   props: {
     applicationId: {
       type: String,

@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <v-breadcrumbs class="pl-0" :items="items" color="primary">
-      <template #divider>/</template>
-    </v-breadcrumbs>
+    <Breadcrumb />
     <v-row>
       <v-col>
         <Alert v-model="isDuplicateReference" type="error" title="choose someone else" prominent>
@@ -60,10 +58,11 @@ import { useFormStore } from "@/store/form";
 import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
 import { CertificationType } from "@/utils/constant";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 export default defineComponent({
   name: "UpsertCharacterReference",
-  components: { EceForm, Alert },
+  components: { EceForm, Alert, Breadcrumb },
   props: {
     applicationId: {
       type: String,
@@ -100,37 +99,7 @@ export default defineComponent({
     return { applicationStore, alertStore, reference, formStore, loadingStore, characterReferenceUpsertForm, router, applicationStatus, CertificationType };
   },
   data() {
-    // Define a base array of always-present items.
-    const items = [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Application",
-        disabled: false,
-        href: `/manage-application/${this.applicationId}`,
-      },
-      {
-        title: "Add",
-        disabled: true,
-        href: `/manage-application/${this.applicationId}/character-reference/${this.referenceId}/add`,
-      },
-    ];
-
-    // Add the "Character reference" item only if `reference` is defined.
-    if (this.reference) {
-      items.splice(2, 0, {
-        // Insert at index 2, before "Add"
-        title: "Character reference",
-        disabled: false,
-        href: `/manage-application/${this.applicationId}/character-reference/${this.referenceId}`,
-      });
-    }
-
     return {
-      items,
       isDuplicateReference: false,
     };
   },
