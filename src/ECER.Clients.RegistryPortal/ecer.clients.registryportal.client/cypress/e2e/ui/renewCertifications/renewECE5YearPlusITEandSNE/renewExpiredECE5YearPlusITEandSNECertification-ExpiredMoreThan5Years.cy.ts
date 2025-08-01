@@ -1,16 +1,15 @@
-import selectors from "../../../support/selectors";
-import { courseStartDay, courseEndDay, todayDay } from "../../../support/utils";
+import selectors from "../../../../support/selectors";
+import { courseStartDay, courseEndDay } from "../../../../support/utils";
 
-describe("New ECE 5 Year + ITE Certificate Application", () => {
-  it("should sucessfully create a New ECE 5 Year + ITE Application", () => {
+describe("Renew Expired (for more that 5 years) ECE 5 Year Plus ITE & SNE Certificate Application", () => {
+  it("should sucessfully create a Renewal ECE 5 Year Application", () => {
+    cy.seedRenewalApplication("ECE5Years", false, true);
+
+    cy.reload();
     /** Dashboard */
-    cy.get(selectors.dashboard.applyNowButton).click();
-
-    /** Certification Type */
-    cy.get(selectors.certificationType.applyNowEceFiveYearButton).click();
+    cy.get(selectors.dashboard.renew).click();
 
     /** Application Requirements */
-    cy.get(selectors.certificationType.sneCheckBox).uncheck({ force: true });
     cy.get(selectors.applicationRequirements.applyNowButton).click();
 
     /** Declaration */
@@ -20,36 +19,32 @@ describe("New ECE 5 Year + ITE Certificate Application", () => {
     /** Contact Information */
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
-    /** Education */
-    cy.get(selectors.education.addEducationButton).click();
+    /** Professional Development */
+    cy.get(selectors.professionalDevelopment.addCourseOrWorkshop).contains("Add course or workshop").click();
 
-    cy.get(selectors.education.provinceDropDownList).should("exist").type("British Columbia");
+    cy.get(selectors.professionalDevelopment.courseNameInput).should("exist").type("ECE 5 year");
 
-    cy.get(selectors.education.postSecondaryInstitutionDropDownList).should("exist").type("Other");
-    cy.get("body").click({ force: true });
+    cy.get(selectors.professionalDevelopment.howManyHours).should("exist").type("40");
 
-    cy.get(selectors.education.institutionNameInput).type("TEST Educational Institution");
-
-    cy.get(selectors.education.programNameInput).type("TEST ECE 5 Year Course");
+    cy.get(selectors.professionalDevelopment.nameOfPlace).type("British Columbia");
 
     /* Start Date - DatePicker*/
-    cy.get(selectors.education.programStartDateInput).click({ force: true });
-    cy.get(selectors.education.programStartDateInput).clear();
-    cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`);
+    cy.get(selectors.professionalDevelopment.courseStartDateInput).click({ force: true });
+    cy.get(selectors.professionalDevelopment.courseStartDateInput).clear();
+    cy.get(selectors.professionalDevelopment.courseStartDateInput).type(`${courseStartDay} {enter}`);
+    cy.get("body").click(0, 0);
 
     /* End Date - DatePicker*/
-    cy.get(selectors.education.programEndDateInput).click({ force: true });
-    cy.get(selectors.education.programEndDateInput).clear();
-    cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`);
+    cy.get(selectors.professionalDevelopment.courseEndDateInput).click({ force: true });
+    cy.get(selectors.professionalDevelopment.courseEndDateInput).clear();
+    cy.get(selectors.professionalDevelopment.courseEndDateInput).type(`${courseEndDay} {enter}`);
 
-    cy.get(selectors.education.studentIDInput).type("1234");
-    cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {
-      cy.get(selectors.elementType.radio).first().check({ force: true });
-    });
-    cy.get(selectors.education.transcriptStatusRadioDiv).within(() => {
-      cy.get(selectors.elementType.radio).first().check({ force: true });
-    });
-    cy.get(selectors.education.saveEducationButton).click();
+    cy.get(selectors.professionalDevelopment.phoneNoOfInstructorCheckBox).check({ force: true });
+
+    cy.get(selectors.professionalDevelopment.nameOfInstructor).type("James Bond");
+    cy.get(selectors.professionalDevelopment.PhoneNoOfInstructor).type("6474895555");
+
+    cy.get(selectors.professionalDevelopment.saveCourseOrWorkshop).click();
 
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
@@ -79,12 +74,13 @@ describe("New ECE 5 Year + ITE Certificate Application", () => {
     cy.document().its("readyState").should("eq", "complete");
 
     cy.contains("Review and submit").should("be.visible");
-    cy.get(selectors.applicationPreview.certificationType).should("be.visible").should("contain.text", "ECE Five Year");
+    cy.get(selectors.applicationPreview.certificationType)
+      .should("be.visible")
+      .should("contain.text", "ECE Five Year and Special Needs Educator (SNE) and Infant and Toddler Educator (ITE)");
     cy.get(selectors.applicationPreview.characterReferenceFirstName).should("be.visible").should("contain.text", "CharacterReferenceFirstName");
     cy.get(selectors.applicationPreview.characterReferenceLastName).should("be.visible").should("contain.text", "CharacterReferenceLastName");
     cy.get(selectors.applicationPreview.characterReferenceEmail).should("be.visible").should("contain.text", "Character_Reference@test.gov.bc.ca");
-    cy.get(selectors.applicationPreview.educationCountry).should("be.visible").should("contain.text", "Canada");
-    cy.get(selectors.applicationPreview.educationProvince).should("be.visible").should("contain.text", "British Columbia");
+    cy.get(selectors.applicationPreview.courseProvince).should("be.visible").should("contain.text", "British Columbia");
 
     cy.get(selectors.applicationPreview.workReferenceName).should("be.visible").should("contain.text", "WorkReferenceFirstName");
     cy.get(selectors.applicationPreview.workReferenceName).should("be.visible").should("contain.text", "WorkReferenceLastName");

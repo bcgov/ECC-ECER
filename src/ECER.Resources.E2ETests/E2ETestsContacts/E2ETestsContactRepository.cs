@@ -56,7 +56,7 @@ internal sealed partial class E2ETestsContactRepository : IE2ETestsContactReposi
     }
   }
 
-  public async Task<string> E2ETestsGenerateCertificate(string applicationId, CancellationToken cancellationToken)
+  public async Task<string> E2ETestsGenerateCertificate(string applicationId, bool CertIsActive, bool IsExpiredMoreThan5Years, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
@@ -94,8 +94,25 @@ internal sealed partial class E2ETestsContactRepository : IE2ETestsContactReposi
     {
       throw new InvalidOperationException($"certificate '{application.ecer_Certificateid.Id}' not found");
     }
-    certificate.ecer_EffectiveDate = DateTime.UtcNow.AddMonths(-62);
-    certificate.ecer_ExpiryDate = DateTime.UtcNow.AddMonths(-2);
+
+    if (CertIsActive)
+    {
+      certificate.ecer_EffectiveDate = DateTime.UtcNow.AddMonths(-12);
+      certificate.ecer_ExpiryDate = DateTime.UtcNow.AddMonths(3);
+    }
+    else if (!CertIsActive && !IsExpiredMoreThan5Years)
+    {
+      certificate.ecer_EffectiveDate = DateTime.UtcNow.AddMonths(-20);
+      certificate.ecer_ExpiryDate = DateTime.UtcNow.AddMonths(-8);
+      certificate.StatusCode = ecer_Certificate_StatusCode.Expired;
+    }
+    else if (!CertIsActive && IsExpiredMoreThan5Years)
+    {
+      certificate.ecer_EffectiveDate = DateTime.UtcNow.AddMonths(-70);
+      certificate.ecer_ExpiryDate = DateTime.UtcNow.AddMonths(-64);
+      certificate.StatusCode = ecer_Certificate_StatusCode.Expired;
+    }
+
     context.UpdateObject(certificate);
     context.SaveChanges();
 

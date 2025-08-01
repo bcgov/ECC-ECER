@@ -42,6 +42,26 @@ public class E2ETestsEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails { Title = "Missing header: EXTERNAL-USER-ID" });
       }
 
+      if (!ctx.Request.Headers.TryGetValue("APP-STATUS", out var appStatus))
+      {
+        return TypedResults.BadRequest(new ProblemDetails { Title = "Missing header: APP-STATUS" });
+      }
+
+      if (!bool.TryParse(appStatus, out var certIsActive))
+      {
+        return TypedResults.BadRequest(new ProblemDetails { Title = "Invalid boolean value for header: APP-EXPIRATION" });
+      }
+
+      if (!ctx.Request.Headers.TryGetValue("APP-EXPIRATION", out var appExpiration))
+      {
+        return TypedResults.BadRequest(new ProblemDetails { Title = "Missing header: APP-STATUS" });
+      }
+
+      if (!bool.TryParse(appExpiration, out var isExpiredMoreThan5Years))
+      {
+        return TypedResults.BadRequest(new ProblemDetails { Title = "Invalid boolean value for header: APP-EXPIRATION" });
+      }
+
       if (!ctx.Request.Headers.TryGetValue("APPLICATION-TYPE", out var applicationType))
       {
         return TypedResults.BadRequest(new ProblemDetails { Title = "Missing header: APPLICATION-TYPE" });
@@ -50,15 +70,15 @@ public class E2ETestsEndpoints : IRegisterEndpoints
       CertificationType certificationType;
       switch (applicationType.ToString())
       {
-        case "Assistant":
+        case "ECEAssistant":
           certificationType = CertificationType.EceAssistant;
           break;
 
-        case "OneYear":
+        case "ECEOneYear":
           certificationType = CertificationType.OneYear;
           break;
 
-        case "5Years":
+        case "ECE5Years":
           certificationType = CertificationType.FiveYears;
           break;
 
@@ -71,15 +91,19 @@ public class E2ETestsEndpoints : IRegisterEndpoints
       if (profile == null) return TypedResults.NotFound();
       var contact_id = profile.UserId;
 
-      var draftApplicationObj = new Faker<Application>("en_CA")
-            .RuleFor(f => f.CertificationTypes, f => f.Make(1, () => certificationType))
-            .RuleFor(f => f.SignedDate, f => f.Date.Recent())
-            .RuleFor(f => f.Transcripts, f => f.Make(f.Random.Number(2, 5), () => CreateTranscript()))
-            .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference()))
-            .RuleFor(f => f.WorkExperienceReferences, f => f.Make(f.Random.Number(2, 5), () => CreateWorkExperienceReference()))
-            .Generate();
+      var faker = new Faker("en_CA");
 
-      var application = await messageBus.Send(new SaveDraftApplicationCommand(draftApplicationObj), ct);
+      var draftApplication = new Application(null, contact_id!, ApplicationStatus.Draft);
+      draftApplication.CertificationTypes = faker.Make(1, () => certificationType);
+      draftApplication.SignedDate = faker.Date.Recent();
+      draftApplication.Transcripts = faker.Make(faker.Random.Number(2, 5), () => CreateTranscript());
+      draftApplication.CharacterReferences = faker.Make(1, () => CreateCharacterReference());
+      if (certificationType == CertificationType.FiveYears)
+      {
+        draftApplication.WorkExperienceReferences = faker.Make(faker.Random.Number(3, 5), () => CreateWorkExperienceReference());
+      }
+
+      var application = await messageBus.Send(new SaveDraftApplicationCommand(draftApplication), ct);
 
       var cmd = new SubmitApplicationCommand(application!.Id!, contact_id!);
       var submitAppResult = await messageBus.Send(cmd, ct);
@@ -98,7 +122,7 @@ public class E2ETestsEndpoints : IRegisterEndpoints
         };
         return TypedResults.BadRequest(problemDetails);
       }
-      var result = await messageBus.Send(new E2ETestsGenerateCertificateCommand(submitAppResult.Application!.Id!), ct);
+      var result = await messageBus.Send(new E2ETestsGenerateCertificateCommand(submitAppResult.Application!.Id!, certIsActive, isExpiredMoreThan5Years), ct);
       return TypedResults.Ok(result);
     })
     .WithOpenApi("Handles seeding of Applications and certifications for Renewal workflow", string.Empty, "E2ETests_seed_post_application_certificate")
@@ -160,7 +184,7 @@ public class E2ETestsEndpoints : IRegisterEndpoints
   {
     var faker = new Faker("en_CA");
     return new WorkExperienceReference(
-      faker.Name.FirstName(), faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(10, 150)
+      faker.Name.FirstName(), faker.Name.LastName(), "Work_Experience_Reference@test.gov.bc.ca", faker.Random.Number(200, 250)
     )
     {
       PhoneNumber = faker.Phone.PhoneNumber()

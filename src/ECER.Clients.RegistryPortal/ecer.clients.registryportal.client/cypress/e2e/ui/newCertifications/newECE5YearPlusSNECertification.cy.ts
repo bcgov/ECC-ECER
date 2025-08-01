@@ -7,11 +7,10 @@ describe("New ECE 5 Year + SNE Certificate Application", () => {
     cy.get(selectors.dashboard.applyNowButton).click();
 
     /** Certification Type */
-    cy.get(selectors.certificationType.eceFiveYearRadio).check();
-    cy.get(selectors.certificationType.sneCheckBox).check({ force: true });
-    cy.get(selectors.certificationType.continueButton).click();
+    cy.get(selectors.certificationType.applyNowEceFiveYearButton).click();
 
     /** Application Requirements */
+    cy.get(selectors.certificationType.iteCheckBox).uncheck({ force: true });
     cy.get(selectors.applicationRequirements.applyNowButton).click();
 
     /** Declaration */
@@ -33,34 +32,14 @@ describe("New ECE 5 Year + SNE Certificate Application", () => {
     cy.get(selectors.education.programNameInput).type("TEST ECE 5 Year Course");
 
     /* Start Date - DatePicker*/
-    // cy.get(selectors.education.programStartDateInput).click({ force: true });
-    // cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`);
-
     cy.get(selectors.education.programStartDateInput).click({ force: true });
-    Cypress._.times(5, () => {
-      cy.get(selectors.datePicker.prevMonthButton).first().click();
-    });
-    cy.get(selectors.datePicker.monthDiv)
-      .first()
-      .should("exist")
-      .within(() => {
-        cy.contains("span", `${todayDay}`).click({ force: true });
-      });
+    cy.get(selectors.education.programStartDateInput).clear();
+    cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`);
 
     /* End Date - DatePicker*/
-    // cy.get(selectors.education.programEndDateInput).click({ force: true });
-    // cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`);
-
     cy.get(selectors.education.programEndDateInput).click({ force: true });
-    Cypress._.times(1, () => {
-      cy.get(selectors.datePicker.prevMonthButton).first().click();
-    });
-    cy.get(selectors.datePicker.monthDiv)
-      .first()
-      .should("exist")
-      .within(() => {
-        cy.contains("span", `${todayDay}`).click({ force: true });
-      });
+    cy.get(selectors.education.programEndDateInput).clear();
+    cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`);
 
     cy.get(selectors.education.studentIDInput).type("1234");
     cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {

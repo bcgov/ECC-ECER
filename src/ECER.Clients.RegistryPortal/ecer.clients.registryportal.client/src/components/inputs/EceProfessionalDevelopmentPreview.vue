@@ -21,7 +21,7 @@
             <p class="small">Name of place that hosted the course or workshop</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ professionalDevelopment.organizationName }}</p>
+            <p id="courseProvince" class="small font-weight-bold">{{ professionalDevelopment.organizationName }}</p>
           </v-col>
         </v-row>
         <v-row>
