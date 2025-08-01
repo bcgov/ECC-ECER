@@ -7,8 +7,7 @@ describe("New ECE Assistant Certificate Application", () => {
     cy.get(selectors.dashboard.applyNowButton).click();
 
     /** Certification Type */
-    cy.get(selectors.certificationType.eceAssistantRadio).check();
-    cy.get(selectors.certificationType.continueButton).click();
+    cy.get(selectors.certificationType.applyNowEceAssistantButton).click();
 
     /** Application Requirements */
     cy.get(selectors.applicationRequirements.applyNowButton).click();
@@ -33,40 +32,14 @@ describe("New ECE Assistant Certificate Application", () => {
     cy.get(selectors.education.programNameInput).type("TEST ECE Assistant Course");
 
     /* Start Date - DatePicker*/
-    // cy.get(selectors.education.programStartDateInput).click({ force: true });
-    // cy.log(`Course Start Day: ${courseStartDay}`);
-    // cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`);
-    cy.log(`Today Day: ${todayDay}`);
     cy.get(selectors.education.programStartDateInput).click({ force: true });
-    Cypress._.times(5, () => {
-      cy.get(selectors.datePicker.prevMonthButton).first().click();
-    });
-    cy.get(selectors.datePicker.monthDiv)
-      .first()
-      .should("exist")
-      .within(() => {
-        cy.contains("span", `${todayDay}`).click({ force: true });
-      });
-
-    //cy.get("button").contains("OK").click({ force: true });
+    cy.get(selectors.education.programStartDateInput).clear();
+    cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`);
 
     /* End Date - DatePicker*/
-    // cy.get(selectors.education.programEndDateInput).click({ force: true });
-    // cy.log(`Course Start Day: ${courseEndDay}`);
-    // cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`);
-
     cy.get(selectors.education.programEndDateInput).click({ force: true });
-    Cypress._.times(1, () => {
-      cy.get(selectors.datePicker.prevMonthButton).first().click();
-    });
-    cy.get(selectors.datePicker.monthDiv)
-      .first()
-      .should("exist")
-      .within(() => {
-        cy.contains("span", `${todayDay}`).click({ force: true });
-      });
-
-    // cy.get("button").contains("OK").click({ force: true });
+    cy.get(selectors.education.programEndDateInput).clear();
+    cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`);
 
     cy.get(selectors.education.studentIDInput).type("1234");
     cy.get(selectors.education.nameOnTranscriptRadioDiv).within(() => {

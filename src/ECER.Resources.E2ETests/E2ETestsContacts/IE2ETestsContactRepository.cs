@@ -4,5 +4,5 @@ public interface IE2ETestsContactRepository
 {
   Task<string> E2ETestsDeleteContactApplications(string contactId, CancellationToken cancellationToken);
 
-  Task<string> E2ETestsGenerateCertificate(string applicationId, CancellationToken cancellationToken);
+  Task<string> E2ETestsGenerateCertificate(string applicationId, bool CertIsActive, bool IsExpiredMoreThan5Years, CancellationToken cancellationToken);
 }

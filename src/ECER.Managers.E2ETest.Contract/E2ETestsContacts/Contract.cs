@@ -7,4 +7,4 @@ namespace ECER.Managers.E2ETest.Contract.E2ETestsContacts;
 /// </summary>
 public record E2ETestsDeleteContactApplicationsCommand(string contactId) : IRequest<string>;
 
-public record E2ETestsGenerateCertificateCommand(string applicationId) : IRequest<string>;
+public record E2ETestsGenerateCertificateCommand(string applicationId, bool CertIsActive, bool IsExpiredMoreThan5Years) : IRequest<string>;
