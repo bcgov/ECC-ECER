@@ -22,7 +22,7 @@ public class E2ETestsContactHandlers(IE2ETestsContactRepository E2ETestsContactR
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    var applicationId = await E2ETestsContactRepository.E2ETestsGenerateCertificate(request.applicationId, cancellationToken);
+    var applicationId = await E2ETestsContactRepository.E2ETestsGenerateCertificate(request.applicationId, request.CertIsActive, request.IsExpiredMoreThan5Years, cancellationToken);
 
     return applicationId;
   }
