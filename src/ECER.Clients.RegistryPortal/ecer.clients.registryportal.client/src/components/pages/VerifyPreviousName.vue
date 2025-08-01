@@ -49,7 +49,7 @@
 import { useRoute, useRouter } from "vue-router";
 
 import { putProfile } from "@/api/profile";
-import Breadcrumb, { type ItemsType } from "@/components/Breadcrumb.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import FileUploader from "@/components/FileUploader.vue";
 import PageContainer from "@/components/PageContainer.vue";
