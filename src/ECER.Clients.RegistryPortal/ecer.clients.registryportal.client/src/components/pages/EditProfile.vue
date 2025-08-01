@@ -2,7 +2,7 @@
   <PageContainer>
     <v-row>
       <v-col cols="12">
-        <Breadcrumb :items="items" />
+        <Breadcrumb />
       </v-col>
     </v-row>
     <v-row>
@@ -26,24 +26,5 @@ import ProfileForm from "@/components/ProfileForm.vue";
 export default {
   name: "EditProfile",
   components: { ProfileForm, Breadcrumb, PageContainer },
-  data: () => ({
-    items: [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Profile",
-        disabled: false,
-        href: "/profile",
-      },
-      {
-        title: "Edit profile",
-        disabled: true,
-        href: "/profile/edit-profile",
-      },
-    ],
-  }),
 };
 </script>

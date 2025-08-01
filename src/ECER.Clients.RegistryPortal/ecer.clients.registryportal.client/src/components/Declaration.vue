@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <h1 class="mb-5">Declaration and consent</h1>
     <p>You must read and agree to the following to apply for certification.</p>
     <br />
@@ -73,71 +73,7 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    const items = applicationStore.isDraftApplicationLaborMobility
-      ? [
-          {
-            title: "Home",
-            disabled: false,
-            href: "/",
-          },
-          {
-            title: "Check your transfer eligibility",
-            disabled: false,
-            href: "/application/transfer",
-          },
-          {
-            title: "Requirements",
-            disabled: false,
-            href: "/application/certification/requirements",
-          },
-          {
-            title: "Declaration",
-            disabled: true,
-            href: "/application/declaration",
-          },
-        ]
-      : applicationStore.isDraftApplicationRenewal || userStore.isRegistrant
-        ? [
-            {
-              title: "Home",
-              disabled: false,
-              href: "/",
-            },
-            {
-              title: "Requirements",
-              disabled: false,
-              href: "/application/certification/requirements",
-            },
-            {
-              title: "Declaration",
-              disabled: true,
-              href: "/application/declaration",
-            },
-          ]
-        : [
-            {
-              title: "Home",
-              disabled: false,
-              href: "/",
-            },
-            {
-              title: "Application types",
-              disabled: false,
-              href: "/application/certification",
-            },
-            {
-              title: "Requirements",
-              disabled: false,
-              href: "/application/certification/requirements",
-            },
-            {
-              title: "Declaration",
-              disabled: true,
-              href: "/application/declaration",
-            },
-          ];
-
-    return { items, Rules, userStore, applicationStore, alertStore, loadingStore, configStore, router };
+    return { Rules, userStore, applicationStore, alertStore, loadingStore, configStore, router };
   },
   data() {
     return {

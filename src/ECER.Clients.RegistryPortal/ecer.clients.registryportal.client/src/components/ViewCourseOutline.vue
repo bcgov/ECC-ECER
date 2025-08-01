@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <div class="d-flex flex-column ga-3 mb-6">
       <h2>Course outlines or syllabi</h2>
       <p>You need to provide detailed course outlines or syllabi for:</p>
@@ -94,24 +94,6 @@ export default defineComponent({
     const isFileUploadInProgress = ref(false);
     const newFiles = ref<string[]>([]);
 
-    const items: { title: string; disabled: boolean; href: string }[] = [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Application",
-        disabled: false,
-        href: `/manage-application/${props.applicationId}`,
-      },
-      {
-        title: "Course outlines or syllabi",
-        disabled: true,
-        href: `/manage-application/${props.applicationId}/transcript/${props.transcriptId}/course-outline`,
-      },
-    ];
-
     if (!transcript) {
       router.back();
     } else {
@@ -119,7 +101,7 @@ export default defineComponent({
       courseOutlineOptions = ref(transcript.courseOutlineOptions || undefined);
     }
 
-    return { router, transcript, alertStore, Rules, courseOutlineOptions, items, areAttachedFilesValid, isFileUploadInProgress, newFiles, loadingStore };
+    return { router, transcript, alertStore, Rules, courseOutlineOptions, areAttachedFilesValid, isFileUploadInProgress, newFiles, loadingStore };
   },
   computed: {
     generateUserPrimaryFileArray() {
