@@ -1,9 +1,6 @@
 <template>
   <v-container>
-    <v-breadcrumbs class="pl-0" :items="items" color="primary">
-      <template #divider>/</template>
-    </v-breadcrumbs>
-
+    <Breadcrumb />
     <div class="d-flex flex-column ga-3 mb-10">
       <h1 class="mb-5">Work experience references</h1>
       <h2>{{ totalRequiredWorkExperienceHours }} hours of work experience is required.</h2>
@@ -12,7 +9,8 @@
         <div v-if="applicationType === 'Renewal'">
           <li v-if="certificationStore.certificateStatus(applicationStatus?.fromCertificate) === 'Active'">
             Have been completed within the term of your current certificate (between the
-            {{ formatDate(certificationStore.certificationEffectiveDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }} and {{ formatDate(certificationStore.certificationExpiryDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }})
+            {{ formatDate(certificationStore.certificationEffectiveDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }} and
+            {{ formatDate(certificationStore.certificationExpiryDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }})
           </li>
           <li v-if="certificationStore.certificateStatus(applicationStatus?.fromCertificate) === 'Expired'">Have been completed within the last 5 years</li>
         </div>
@@ -96,12 +94,14 @@ import ManageWorkExperienceReferenceListItem from "@/components/ManageWorkExperi
 import { useCertificationStore } from "@/store/certification";
 import { WorkExperienceType } from "@/utils/constant";
 import { formatDate } from "@/utils/format";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 export default defineComponent({
   name: "ManageWorkExperienceReferenceList",
   components: {
     ManageWorkExperienceReferenceListItem,
     Callout,
+    Breadcrumb,
   },
   props: {
     applicationId: {
@@ -122,27 +122,6 @@ export default defineComponent({
       certificationStore,
       router,
       route,
-    };
-  },
-  data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}`,
-        },
-        {
-          title: "Work experience reference",
-          disabled: true,
-          href: `/manage-application/${this.applicationId}/work-experience-reference`,
-        },
-      ],
     };
   },
   computed: {

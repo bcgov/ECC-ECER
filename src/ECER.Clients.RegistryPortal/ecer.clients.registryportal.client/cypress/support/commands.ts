@@ -24,16 +24,20 @@ Cypress.Commands.add("login", (username?: string, password?: string) => {
     // 2. Click on the tile (or button) with the given id.
     cy.get("#tile_test_with_username_password_device_div_id").click({ force: true });
     // 3. Enter the username and password.
-    cy.get('input[name="username"]').type(user, { force: true });
-    cy.get('input[name="password"]').type(pass, { force: true });
+    cy.get('input[name="username"]').type(user, { force: true, log: false });
+    cy.get('input[name="password"]').type(pass, { force: true, log: false });
     // 4. Click the submit button.
     cy.get("#submit-btn").click({ force: true });
+    // 5. Check "I agree to the BC Login Service Terms of Use"
+    cy.get('input[id="accept"]').click({ force: true });
+    // 6. Click the "Continue" button.
+    cy.get('button[id="btnSubmit"').click({ force: true });
   });
 
   // 5. Verify that the login was successful.
   cy.url().should("not.include", "/login");
   cy.document().its("readyState").should("eq", "complete");
-  cy.contains("Your ECE certifications").should("be.visible");
+  cy.contains("My current certification").should("be.visible");
 });
 
 // Custom command to log out of the ECER portal.
@@ -58,10 +62,7 @@ Cypress.Commands.add("resetUserState", () => {
     .request({
       method: "DELETE",
       url: `${baseApiUrl}/api/E2ETests/user/reset`,
-      headers: {
-        "X-API-KEY": apiKey,
-        "EXTERNAL-USER-ID": externalUserId,
-      },
+      headers: { "X-API-KEY": apiKey, "EXTERNAL-USER-ID": externalUserId },
       failOnStatusCode: true,
       retryOnStatusCodeFailure: true,
       retryOnNetworkFailure: true,
@@ -69,6 +70,34 @@ Cypress.Commands.add("resetUserState", () => {
     .then((response) => {
       expect(response.status).to.eq(200);
       cy.log("User State Reset sucessfull");
+      // Return the response if needed for further chaining
+      return cy.wrap(response);
+    });
+});
+
+Cypress.Commands.add("seedRenewalApplication", (applicationType?: string, IsActive?: boolean, IsExpiredMoreThan5Years?: boolean) => {
+  const baseApiUrl: string = Cypress.env("API_URL").replace(/\/$/, "");
+  const apiKey: string = Cypress.env("API_KEY");
+  const externalUserId: string = Cypress.env("PORTAL_USER").EXTERNAL_USER_ID;
+
+  return cy
+    .request({
+      method: "POST",
+      url: `${baseApiUrl}/api/E2ETests/applications/seed/renewal`,
+      headers: {
+        "X-API-KEY": apiKey,
+        "EXTERNAL-USER-ID": externalUserId,
+        "APPLICATION-TYPE": applicationType,
+        "APP-STATUS": IsActive,
+        "APP-EXPIRATION": IsExpiredMoreThan5Years,
+      },
+      failOnStatusCode: true,
+      retryOnStatusCodeFailure: true,
+      retryOnNetworkFailure: true,
+    })
+    .then((response) => {
+      expect(response.status).to.eq(200);
+      cy.log("Applicaion and Certification seeded sucessfully");
       // Return the response if needed for further chaining
       return cy.wrap(response);
     });

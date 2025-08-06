@@ -2,9 +2,7 @@
   <PageContainer>
     <v-row>
       <v-col cols="12">
-        <v-breadcrumbs class="pa-0" :items="items" color="primary">
-          <template #divider>/</template>
-        </v-breadcrumbs>
+        <Breadcrumb />
       </v-col>
     </v-row>
     <v-row>
@@ -170,10 +168,11 @@ import { formatDate } from "@/utils/format";
 import { areObjectsEqual } from "@/utils/functions";
 import { useLoadingStore } from "@/store/loading";
 import Loading from "@/components/Loading.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 export default defineComponent({
   name: "Profile",
-  components: { PageContainer, LinkBar, Callout, Loading },
+  components: { PageContainer, LinkBar, Callout, Loading, Breadcrumb },
   setup: async () => {
     const userStore = useUserStore();
     const loadingStore = useLoadingStore();
@@ -186,19 +185,7 @@ export default defineComponent({
     this.userProfile = userProfile;
     this.userStore.setUserProfile(userProfile);
   },
-  data: () => ({
-    items: [
-      {
-        title: "Home",
-        disabled: false,
-        to: "/",
-      },
 
-      {
-        title: "Profile",
-      },
-    ],
-  }),
   methods: {
     formatDate,
     areObjectsEqual,

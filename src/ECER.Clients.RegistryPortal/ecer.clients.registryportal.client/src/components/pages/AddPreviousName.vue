@@ -1,6 +1,6 @@
 <template>
   <PageContainer>
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <v-row>
       <v-col>
         <Alert v-model="duplicatePreviousName" type="error" prominent>
@@ -74,25 +74,6 @@ export default {
 
     return { formStore, loadingStore, alertStore, userStore, previousNameForm, router };
   },
-  data: () => ({
-    items: [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Profile",
-        disabled: false,
-        href: "/profile",
-      },
-      {
-        title: "Add previous name",
-        disabled: true,
-        href: "/profile/add-previous-name",
-      },
-    ],
-  }),
   computed: {
     newPreviousName(): Components.Schemas.PreviousName {
       return {

@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <v-breadcrumbs class="pl-0" :items="items" color="primary">
-      <template #divider>/</template>
-    </v-breadcrumbs>
+    <Breadcrumb />
 
     <div class="d-flex flex-column ga-3 mb-10">
       <h1 class="mt-5">Professional development</h1>
@@ -18,7 +16,8 @@
       <ul class="ml-10">
         <li v-if="certificationStore.certificateStatus(applicationStatus?.fromCertificate) === 'Active'">
           Must have been completed within the term of your current certificate (between the
-          {{ formatDate(certificationStore.certificationEffectiveDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }} and {{ formatDate(certificationStore.certificationExpiryDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }})
+          {{ formatDate(certificationStore.certificationEffectiveDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }} and
+          {{ formatDate(certificationStore.certificationExpiryDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }})
         </li>
         <li v-if="certificationStore.certificateStatus(applicationStatus?.fromCertificate) === 'Expired'">Must have been completed within the last 5 years</li>
         <li>Can be work or volunteer hours</li>
@@ -74,12 +73,14 @@ import Callout from "@/components/Callout.vue";
 import ManageProfessionalDevelopmentListItem from "@/components/ManageProfessionalDevelopmentListItem.vue";
 import { useCertificationStore } from "@/store/certification";
 import { formatDate } from "@/utils/format";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 export default defineComponent({
   name: "ManageProfessionalDevelopmentList",
   components: {
     ManageProfessionalDevelopmentListItem,
     Callout,
+    Breadcrumb,
   },
   props: {
     applicationId: {
@@ -99,27 +100,6 @@ export default defineComponent({
       smAndUp,
       certificationStore,
       router,
-    };
-  },
-  data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}`,
-        },
-        {
-          title: "Professional development",
-          disabled: true,
-          href: `/manage-application/${this.applicationId}/professional-development`,
-        },
-      ],
     };
   },
   computed: {

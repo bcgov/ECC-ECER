@@ -2,9 +2,7 @@
   <PageContainer>
     <v-row>
       <v-col cols="12">
-        <v-breadcrumbs class="pa-0" :items="items" color="primary">
-          <template #divider>/</template>
-        </v-breadcrumbs>
+        <Breadcrumb />
       </v-col>
     </v-row>
     <v-row>
@@ -35,28 +33,16 @@ import PageContainer from "@/components/PageContainer.vue";
 import Loading from "@/components/Loading.vue";
 import { useMessageStore } from "@/store/message";
 import { useLoadingStore } from "@/store/loading";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 export default defineComponent({
   name: "Messages",
-  components: { MessageList, Message, PageContainer, Loading },
+  components: { MessageList, Message, PageContainer, Loading, Breadcrumb },
   setup() {
     const messageStore = useMessageStore();
     const loadingStore = useLoadingStore();
 
     return { messageStore, loadingStore };
   },
-  data: () => ({
-    items: [
-      {
-        title: "Home",
-        disabled: false,
-        to: "/",
-      },
-
-      {
-        title: "Messages",
-      },
-    ],
-  }),
 });
 </script>
