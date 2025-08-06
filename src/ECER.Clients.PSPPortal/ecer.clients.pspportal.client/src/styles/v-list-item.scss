@@ -1,0 +1,18 @@
+@use "_colors.scss";
+
+.message-list {
+  .v-list-item {
+    &.v-list-item--active {
+      .v-list-item-title {
+        font-weight: 700;
+      }
+    }
+    .v-list-item-title {
+      text-decoration: underline;
+      color: #{colors.$links};
+    }
+    .v-list-item-subtitle {
+      opacity: 1;
+    }
+  }
+}

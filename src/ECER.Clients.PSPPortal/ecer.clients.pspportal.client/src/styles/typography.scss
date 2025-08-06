@@ -1,0 +1,60 @@
+@mixin heading-style {
+  font-weight: 700;
+}
+
+@mixin subheading-style {
+  font-size: 14px;
+  font-weight: 900;
+  color: #757575;
+}
+
+h1 {
+  font-size: 24px;
+  @include heading-style;
+}
+
+h2 {
+  font-size: 21px;
+  @include heading-style;
+}
+
+h3 {
+  font-size: 18px;
+  @include heading-style;
+}
+
+h4 {
+  @include subheading-style;
+}
+
+p,
+ul,
+ol {
+  font-size: 16px;
+  line-height: normal;
+  font-weight: 400;
+}
+
+a {
+  color: #1a5a96;
+  display: inline-block;
+}
+
+.small {
+  font-size: 14px;
+  line-height: normal;
+}
+
+.large {
+  font-size: 18px;
+  line-height: normal;
+}
+
+.extra-large {
+  font-size: 21px;
+  line-height: normal;
+}
+
+.white {
+  color: #fff;
+}
