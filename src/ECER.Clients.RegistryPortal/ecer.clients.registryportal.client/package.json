@@ -70,7 +70,7 @@
     "vite": "^7.0.2",
     "vitest": "^3.2.4",
     "vue-eslint-parser": "^10.2.0",
-    "vue-tsc": "^3.0.3"
+    "vue-tsc": "^3.0.5"
   },
   "eslintConfig": {
     "extends": [
