@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <div class="d-flex flex-column ga-3 mb-6">
       <h2>Transcript</h2>
       <p>Your transcript has not yet been received. Make sure that you have made a request to your educational institution to send it to us directly.</p>
@@ -61,28 +61,6 @@ export default defineComponent({
 
     return { transcript, alertStore };
   },
-  data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}`,
-        },
-        {
-          title: "Transcript",
-          disabled: true,
-          href: `/manage-application/${this.applicationId}/transcript/${this.transcriptId}`,
-        },
-      ],
-    };
-  },
-
   methods: {},
 });
 </script>

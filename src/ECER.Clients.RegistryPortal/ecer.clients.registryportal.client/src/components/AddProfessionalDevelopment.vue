@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <v-breadcrumbs class="pl-0" :items="items" color="primary">
-      <template #divider>/</template>
-    </v-breadcrumbs>
+    <Breadcrumb />
     <div class="d-flex flex-column ga-3">
       <h1 class="mt-5">Professional development</h1>
       <v-row>
@@ -270,7 +268,7 @@ import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
-
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import type { FileItem } from "./UploadFileItem.vue";
 
 interface ProfessionalDevelopmentData {
@@ -281,7 +279,7 @@ interface ProfessionalDevelopmentData {
 
 export default defineComponent({
   name: "AddProfessionalDevelopment",
-  components: { FileUploader, EceTextField, EceDateInput },
+  components: { FileUploader, EceTextField, EceDateInput, Breadcrumb },
   props: {
     applicationId: {
       type: String,
@@ -309,36 +307,13 @@ export default defineComponent({
     };
   },
   data() {
-    const items = [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Application",
-        disabled: false,
-        href: `/manage-application/${this.applicationId}`,
-      },
-      {
-        title: "Professional development",
-        disabled: false,
-        href: `/manage-application/${this.applicationId}/professional-development`,
-      },
-      {
-        title: "Add",
-        disabled: true,
-        href: `/manage-application/${this.applicationId}/professional-development/add`,
-      },
-    ];
-
     const professionalDevelopment: ProfessionalDevelopmentData & Components.Schemas.ProfessionalDevelopment = {
       selection: [],
       areAttachedFilesValid: true,
       isFileUploadInProgress: false,
     };
 
-    return { items, professionalDevelopment, Rules };
+    return { professionalDevelopment, Rules };
   },
   computed: {
     applicationType() {

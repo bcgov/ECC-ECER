@@ -23,6 +23,7 @@ import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import type { Components } from "@/types/openapi";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/store/user";
 
 export interface RegistrantFlow {
   types: Components.Schemas.CertificationType[];
@@ -74,11 +75,13 @@ export default defineComponent({
   setup() {
     const certificationStore = useCertificationStore();
     const applicationStore = useApplicationStore();
+    const userStore = useUserStore();
     const router = useRouter();
 
     return {
       certificationStore,
       applicationStore,
+      userStore,
       router,
     };
   },
@@ -114,7 +117,7 @@ export default defineComponent({
     handleLearnMore(flow: RegistrantFlow) {
       this.applicationStore.$patch({ draftApplication: { applicationType: "New", certificationTypes: flow.types } });
 
-      this.router.push({ name: "application-requirements" });
+      this.userStore.isUnder19 ? this.router.push({ name: "consent-required" }) : this.router.push({ name: "application-requirements" });
     },
   },
 });
