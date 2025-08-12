@@ -28,7 +28,7 @@ const characterReferenceWizardConfig: Wizard = {
       key: "item.3",
     },
     review: {
-      title: "Preview",
+      title: "Review",
       stage: "Review",
       form: characterReferenceReviewForm,
       key: "item.4",

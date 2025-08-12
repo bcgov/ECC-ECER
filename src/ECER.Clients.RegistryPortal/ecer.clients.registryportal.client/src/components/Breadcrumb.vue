@@ -382,3 +382,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+.v-breadcrumbs__item:not(.v-breadcrumbs__item--disabled),
+.v-breadcrumbs-item:not(.v-breadcrumbs-item--disabled) {
+  text-decoration: underline !important;
+}
+</style>

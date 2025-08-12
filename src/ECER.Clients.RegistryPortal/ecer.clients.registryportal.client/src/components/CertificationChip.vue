@@ -20,12 +20,12 @@ export default defineComponent({
       let text;
       switch (this.certification.statusCode) {
         case "Active":
-        case "Renewed":
         case "Reprinted":
           text = "Active";
           break;
         case "Expired":
         case "Inactive":
+        case "Renewed":
           text = "Expired";
           break;
         case "Cancelled":

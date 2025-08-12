@@ -135,6 +135,8 @@ export const useWizardStore = defineStore("wizard", {
       this.setWizardData({
         applicantFirstName: portalInvitation.applicantFirstName,
         applicantLastName: portalInvitation.applicantLastName,
+        referenceFirstName: portalInvitation.referenceFirstName,
+        referenceLastName: portalInvitation.referenceLastName,
         inviteType: portalInvitation.inviteType,
         certificationTypes: portalInvitation.certificationTypes,
         [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
@@ -150,6 +152,8 @@ export const useWizardStore = defineStore("wizard", {
       this.setWizardData({
         applicantFirstName: portalInvitation.applicantFirstName,
         applicantLastName: portalInvitation.applicantLastName,
+        referenceFirstName: portalInvitation.referenceFirstName,
+        referenceLastName: portalInvitation.referenceLastName,
         inviteType: portalInvitation.inviteType,
         certificationTypes: portalInvitation.certificationTypes,
         workExperienceReferenceHours: portalInvitation.workExperienceReferenceHours,
@@ -168,6 +172,8 @@ export const useWizardStore = defineStore("wizard", {
       this.setWizardData({
         applicantFirstName: portalInvitation.applicantFirstName,
         applicantLastName: portalInvitation.applicantLastName,
+        referenceFirstName: portalInvitation.referenceFirstName,
+        referenceLastName: portalInvitation.referenceLastName,
         inviteType: portalInvitation.inviteType,
         certificationTypes: portalInvitation.certificationTypes,
         workExperienceReferenceHours: portalInvitation.workExperienceReferenceHours,

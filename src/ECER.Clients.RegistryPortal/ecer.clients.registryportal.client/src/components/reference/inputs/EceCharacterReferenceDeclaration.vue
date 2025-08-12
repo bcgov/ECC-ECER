@@ -14,6 +14,14 @@
             {{ certificationType }}. We'll review your reference when assessing if the applicant is eligible for certification.
           </div>
           <br />
+          <p>
+            <b>
+              This reference request is for {{ cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName) }}. If
+              you are not {{ cleanPreferredName(wizardStore.wizardData.referenceFirstName, wizardStore.wizardData.referenceLastName) }}, please select "No"
+              below and “Other” on the following page.
+            </b>
+          </p>
+          <br />
 
           <h2>Information you'll need</h2>
           <div>

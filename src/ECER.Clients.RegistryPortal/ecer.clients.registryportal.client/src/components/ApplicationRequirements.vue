@@ -147,9 +147,15 @@ export default defineComponent({
         }
         this.router.push({ name: "declaration" });
       } else {
-        //this corrects edge case where user clicks requirements and does not select a new path. We need to remove ITE + SNE or it will persist.
-        const currentTypes =
-          this.applicationStore.draftApplication.certificationTypes?.filter((certification) => certification !== "Ite" && certification !== "Sne") || [];
+        let currentTypes = this.applicationStore.draftApplication.certificationTypes || [];
+
+        // Filter out "Ite" and "Sne" unless currentTypes *only* contains "Ite" or "Sne".
+        // This corrects edge case where user clicks requirements and does not select a new path. We need to remove ITE + SNE or it will persist.
+        currentTypes =
+          currentTypes.length === 1 && (currentTypes.includes("Ite") || currentTypes.includes("Sne"))
+            ? currentTypes
+            : currentTypes.filter((certification) => certification !== "Ite" && certification !== "Sne");
+
         const updatedTypes = [...currentTypes, ...this.specializationSelection];
 
         // Remove duplicates if necessary
