@@ -42,7 +42,7 @@
     "@storybook/vue3-vite": "^9.0.17",
     "@tsconfig/node18": "^18.2.4",
     "@types/lodash": "^4.17.20",
-    "@types/luxon": "^3.6.2",
+    "@types/luxon": "^3.7.1",
     "@types/node": "^24.0.15",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-vue": "^6.0.0",
