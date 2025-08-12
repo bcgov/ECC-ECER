@@ -61,8 +61,7 @@ export function humanFileSize(bytes: number, decimals = 2) {
 export function parseHumanFileSize(humanSize: string): number {
   // Trim the input and split into size and unit
   const sizePattern = /^(\d+(\.\d+)?)\s?([a-zA-Z]+)$/;
-  const match = humanSize.trim().match(sizePattern);
-
+  const match = sizePattern.exec(humanSize.trim());
   if (!match) {
     throw new Error("Invalid file size format");
   }

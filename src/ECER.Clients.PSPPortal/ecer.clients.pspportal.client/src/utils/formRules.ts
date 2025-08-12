@@ -95,7 +95,7 @@ const required = (message = "This field is required", property?: string) => {
       return !!v[property]?.toString().trim() || message;
       // this handles case where we have a date object with undefined Property.
     } else if (typeof v === "object" && v !== null && !property) {
-      return !!(v && v.toString()) || message;
+      return !!(v?.toString()) || message;
     }
     return message;
   };
@@ -200,8 +200,6 @@ const dateBeforeRule = (targetDate: string, message = "End date cannot be before
 
     return true;
   };
-
-  return true;
 };
 
 /**
