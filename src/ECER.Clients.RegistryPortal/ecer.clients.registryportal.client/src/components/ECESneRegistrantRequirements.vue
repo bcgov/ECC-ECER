@@ -8,7 +8,7 @@
   <v-row>
     <v-col cols="12">
       <ECEHeader title="Education for Special Needs Educator (SNE)"></ECEHeader>
-      <p>You must have completed a special needs early childhood educator training program.</p>
+      <p>You must have completed a special needs early childhood educator program.</p>
       <br />
       <p>The program must be either:</p>
       <br />
