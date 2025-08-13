@@ -32,7 +32,7 @@
             value="InternationalCredentialEvaluationService"
           ></v-radio>
           <v-radio
-            label="The ECE Registry already has my Comprehensive Report on file for the course or program relevant to this application and certificate type."
+            :label="`The ECE Registry already has my Comprehensive Report on file for the ${applicationStatus?.certificationTypes?.includes('EceAssistant') ? 'course' : 'program'} relevant to this application and certificate type.`"
             value="RegistryAlreadyHas"
           ></v-radio>
         </v-radio-group>
@@ -54,6 +54,7 @@ import * as Rules from "@/utils/formRules";
 import { useLoadingStore } from "@/store/loading";
 import type { ComprehensiveReportOptions } from "@/types/openapi";
 import type { VForm } from "vuetify/components";
+import { useApplicationStore } from "@/store/application";
 
 export default defineComponent({
   name: "ViewComprehensiveReport",
@@ -86,7 +87,7 @@ export default defineComponent({
       comprehensiveReportOptions = ref(transcript.comprehensiveReportOptions || undefined);
     }
 
-    return { router, transcript, alertStore, Rules, comprehensiveReportOptions, loadingStore };
+    return { router, transcript, alertStore, Rules, comprehensiveReportOptions, loadingStore, applicationStatus };
   },
   methods: {
     async handleSubmit() {

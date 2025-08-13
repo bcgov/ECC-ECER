@@ -23,7 +23,7 @@
         <v-radio-group id="courseOutlineRadio" v-model="courseOutlineOptions" :rules="[Rules.required()]" color="primary">
           <v-radio label="I have my course outlines or syllabi and will upload them now." value="UploadNow"></v-radio>
           <v-radio
-            label="The ECE Registry already has my course outlines or syllabi on file for the course or program relevant to this application and certificate type."
+            :label="`The ECE Registry already has my course outlines or syllabi on file for the ${applicationStatus?.certificationTypes?.includes('EceAssistant') ? 'course' : 'program'} relevant to this application and certificate type.`"
             value="RegistryAlreadyHas"
           ></v-radio>
         </v-radio-group>
@@ -101,7 +101,18 @@ export default defineComponent({
       courseOutlineOptions = ref(transcript.courseOutlineOptions || undefined);
     }
 
-    return { router, transcript, alertStore, Rules, courseOutlineOptions, areAttachedFilesValid, isFileUploadInProgress, newFiles, loadingStore };
+    return {
+      router,
+      transcript,
+      alertStore,
+      Rules,
+      courseOutlineOptions,
+      areAttachedFilesValid,
+      isFileUploadInProgress,
+      newFiles,
+      loadingStore,
+      applicationStatus,
+    };
   },
   computed: {
     generateUserPrimaryFileArray() {
