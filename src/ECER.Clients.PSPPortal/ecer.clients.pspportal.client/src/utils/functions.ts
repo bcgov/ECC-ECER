@@ -1,6 +1,3 @@
-import type { CertificationComparison, Components } from "@/types/openapi";
-import { DateTime } from "luxon";
-
 export function cleanPreferredName(firstName: string | null | undefined, lastName: string | null | undefined, mode = "full") {
   const clean = (str: any) => (str ?? "").trim(); // null/undefined → '' and trim
 
@@ -248,36 +245,4 @@ export function parseCertificationType(input: string): CertificationType {
   const cert = certificationTypeMap[input];
   if (!cert) throw new Error(`Unrecognized certification type: "${input}"`);
   return cert;
-}
-
-/**
- * Returns the highest certification name from a list of options.
- *
- * @param {CertificationComparison[]} options - An array of certification comparison objects.
- * @returns {string} - The highest certification name based on the defined weights.
- * @throws {Error} - If no valid certification type is found in the options.
- */
-export function getHighestCertificationType(options: CertificationComparison[]): CertificationType {
-  const parsed = options
-    .map((o) => certificationTypeMap[o.bcCertificate!]) // map raw → enum
-    .filter((c): c is CertificationType => !!c); // drop unrecognized
-
-  if (parsed.length === 0) {
-    throw new Error("No valid certification found in options");
-  }
-
-  return parsed.reduce((best, curr) => (certificationWeights[curr] > certificationWeights[best] ? curr : best), parsed[0]);
-}
-
-/**
- * Expired more than 5 years
- * @param certification
- * @returns boolean
- */
-export function expiredMoreThan5Years(certification: Components.Schemas.Certification): boolean {
-  if (!certification.expiryDate) return false;
-  const dt1 = DateTime.now().startOf("day");
-  const dt2 = DateTime.fromISO(certification.expiryDate);
-  const differenceInYears = Math.abs(dt1.diff(dt2, "years").years);
-  return differenceInYears > 5;
 }

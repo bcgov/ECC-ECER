@@ -11,3 +11,7 @@ images:
     image: image-registry.openshift-image-registry.svc:5000/b4566a-tools/e2e-test-data
     tags:
       dev: master
+  psp-portal:
+    image: image-registry.openshift-image-registry.svc:5000/b4566a-tools/psp-portal
+    tags:
+      dev: master

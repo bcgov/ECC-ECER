@@ -1,5 +1,5 @@
 {
-  "name": "ecer.clients.registryportal.client",
+  "name": "ecer.clients.pspportal.client",
   "version": "0.0.0",
   "private": true,
   "scripts": {
