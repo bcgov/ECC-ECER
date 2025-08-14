@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 v-if="isLaborMobility">{{ `Transfer certification to ${certificationType}` }}</h1>
-    <h1 v-else-if="isRenewal">{{ `Application to renew ${certificationType} certification` }}</h1>
-    <h1 v-else>{{ `Application for ${certificationType} certification` }}</h1>
-    <div v-if="certificationTypes.includes(CertificationType.FIVE_YEAR)" role="doc-subtitle">
+    <h1 class="white" v-if="isLaborMobility">{{ `Transfer certification to ${certificationType}` }}</h1>
+    <h1 class="white" v-else-if="isRenewal">{{ `Application to renew ${certificationType} certification` }}</h1>
+    <h1 class="white" v-else>{{ `Application for ${certificationType} certification` }}</h1>
+    <div class="white" v-if="certificationTypes.includes(CertificationType.FIVE_YEAR)" role="doc-subtitle">
       {{ certificationTypeSubtitleForFiveYear }}
     </div>
   </div>
