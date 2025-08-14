@@ -9,10 +9,10 @@
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
           <v-row>
-            <v-col cols="12"><h3>Step 1</h3></v-col>
-            <v-col cols="12"><h3>Submit application</h3></v-col>
+            <v-col cols="12"><h3 :class="currentStep === 1 ? 'white' : ''">Step 1</h3></v-col>
+            <v-col cols="12"><h3 :class="currentStep === 1 ? 'white' : ''">Submit application</h3></v-col>
           </v-row>
-          <p class="large">
+          <p class="large" :class="currentStep === 1 ? 'white' : ''">
             <v-icon icon="mdi-check" />
             Complete
           </p>
@@ -30,10 +30,10 @@
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
           <v-row>
-            <v-col cols="12"><h3>Step 2</h3></v-col>
-            <v-col cols="12"><h3>References and documents</h3></v-col>
+            <v-col cols="12"><h3 :class="currentStep === 2 ? 'white' : ''">Step 2</h3></v-col>
+            <v-col cols="12"><h3 :class="currentStep === 2 ? 'white' : ''">References and documents</h3></v-col>
           </v-row>
-          <p class="large">
+          <p class="large" :class="currentStep === 2 ? 'white' : ''">
             <v-icon v-if="stepTwoIcon" :icon="stepTwoIcon" />
             {{ stepTwoStatusText }}
           </p>
@@ -128,10 +128,10 @@
       <v-card-text>
         <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
           <v-row>
-            <v-col cols="12"><h3>Step 3</h3></v-col>
-            <v-col cols="12"><h3>ECE Registry assessment</h3></v-col>
+            <v-col cols="12"><h3 :class="currentStep === 3 ? 'white' : ''">Step 3</h3></v-col>
+            <v-col cols="12"><h3 :class="currentStep === 3 ? 'white' : ''">ECE Registry assessment</h3></v-col>
           </v-row>
-          <p class="large">
+          <p class="large" :class="currentStep === 3 ? 'white' : ''">
             <v-icon v-if="stepThreeIcon" :icon="stepThreeIcon" />
             {{ stepThreeStatusText }}
           </p>

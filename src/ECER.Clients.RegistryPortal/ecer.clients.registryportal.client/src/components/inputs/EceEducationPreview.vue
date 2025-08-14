@@ -10,7 +10,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Name of program or course</p>
+            <p class="small">Name of {{ applicationStore.isDraftCertificateTypeEceAssistant ? "course" : "program" }}</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ education.programName }}</p>
@@ -18,7 +18,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">Start date of program or course</p>
+            <p class="small">Start date of {{ applicationStore.isDraftCertificateTypeEceAssistant ? "course" : "program" }}</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ formatDate(education.startDate || "", "LLLL d, yyyy") }}</p>
@@ -26,7 +26,7 @@
         </v-row>
         <v-row>
           <v-col cols="4">
-            <p class="small">End date of program or course</p>
+            <p class="small">End date of {{ applicationStore.isDraftCertificateTypeEceAssistant ? "course" : "program" }}</p>
           </v-col>
           <v-col>
             <p class="small font-weight-bold">{{ formatDate(education.endDate || "", "LLLL d, yyyy") }}</p>

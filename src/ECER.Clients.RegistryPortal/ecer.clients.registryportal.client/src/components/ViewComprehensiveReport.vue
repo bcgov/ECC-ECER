@@ -32,7 +32,7 @@
             value="InternationalCredentialEvaluationService"
           ></v-radio>
           <v-radio
-            label="The ECE Registry already has my Comprehensive Report on file for the course or program relevant to this application and certificate type."
+            :label="`The ECE Registry already has my Comprehensive Report on file for the ${applicationStatus?.certificationTypes?.includes('EceAssistant') ? 'course' : 'program'} relevant to this application and certificate type.`"
             value="RegistryAlreadyHas"
           ></v-radio>
         </v-radio-group>
@@ -86,7 +86,7 @@ export default defineComponent({
       comprehensiveReportOptions = ref(transcript.comprehensiveReportOptions || undefined);
     }
 
-    return { router, transcript, alertStore, Rules, comprehensiveReportOptions, loadingStore };
+    return { router, transcript, alertStore, Rules, comprehensiveReportOptions, loadingStore, applicationStatus };
   },
   methods: {
     async handleSubmit() {
