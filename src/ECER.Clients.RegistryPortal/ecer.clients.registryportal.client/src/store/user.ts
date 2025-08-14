@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { DateTime } from "luxon";
 import type { Components } from "@/types/openapi";
 
 export interface UserState {
@@ -39,6 +40,16 @@ export const useUserStore = defineStore("user", {
     phoneNumber: (state): string => state.userProfile?.phone ?? "",
     isRegistrant: (state): boolean => state.userInfo?.isRegistrant ?? false,
     isVerified: (state): boolean => state.userInfo?.status === "Verified",
+    isUnder19: (state): boolean => {
+      const dateOfBirth = state.userInfo?.dateOfBirth;
+      if (!dateOfBirth) return false;
+
+      const birthDate = DateTime.fromISO(dateOfBirth);
+      const today = DateTime.now();
+      const age = today.diff(birthDate, "years").years;
+
+      return age < 19;
+    },
   },
   actions: {
     setUserInfo(userInfo: Components.Schemas.UserInfo | null): void {

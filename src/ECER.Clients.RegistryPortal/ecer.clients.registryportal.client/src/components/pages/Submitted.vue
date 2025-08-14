@@ -32,7 +32,10 @@
             Your application summary lists the supporting documents you need to submit as your educational institution is not recognized by the ECE Registry
           </strong>
         </li>
-        <li>Once submitted, we will review these documents to determine whether the course or program is considered equivalent</li>
+        <li>
+          Once submitted, we will review these documents to determine whether the {{ applicationIsEceAssistant ? "course" : "program" }} is considered
+          equivalent
+        </li>
       </ul>
       <br />
     </div>
@@ -94,6 +97,9 @@ export default defineComponent({
     },
     applicationHasEducationNotRecognized() {
       return this.applicationStore.application?.transcripts?.some((transcript) => transcript.educationRecognition === "NotRecognized");
+    },
+    applicationIsEceAssistant() {
+      return this.applicationStore.application?.certificationTypes?.includes("EceAssistant");
     },
   },
 });

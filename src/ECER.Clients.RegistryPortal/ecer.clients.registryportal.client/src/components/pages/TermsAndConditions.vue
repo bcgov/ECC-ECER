@@ -2,7 +2,7 @@
   <v-container>
     <Loading v-if="showLoading" />
     <div v-else>
-      <Breadcrumb :items="items" />
+      <Breadcrumb />
       <h1>Certificate terms and conditions</h1>
       <div class="d-flex flex-column ga-4 my-6">
         <h2><CertificationTitle :certification="certification" /></h2>
@@ -72,18 +72,6 @@ export default defineComponent({
   data() {
     return {
       certification: {} as Components.Schemas.Certification,
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Certificate terms and conditions",
-          disabled: true,
-          href: "/certificate-terms-and-conditions",
-        },
-      ],
     };
   },
   async mounted() {

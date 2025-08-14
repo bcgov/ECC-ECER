@@ -1,6 +1,6 @@
 <template>
   <PageContainer>
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <v-row class="mt-3">
       <v-col cols="12">
         <h1>Provide proof of previous name</h1>
@@ -49,7 +49,7 @@
 import { useRoute, useRouter } from "vue-router";
 
 import { putProfile } from "@/api/profile";
-import Breadcrumb, { type ItemsType } from "@/components/Breadcrumb.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import FileUploader from "@/components/FileUploader.vue";
 import PageContainer from "@/components/PageContainer.vue";
@@ -60,7 +60,6 @@ import type { Components } from "@/types/openapi";
 import * as Functions from "@/utils/functions";
 
 interface VerifyPreviousName {
-  items: ItemsType[];
   areAttachedFilesValid: boolean;
   isFileUploadInProgress: boolean;
   isAtleastOneFileAdded: boolean;
@@ -90,18 +89,6 @@ export default {
   },
   data(): VerifyPreviousName {
     return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Verify",
-          disabled: true,
-          href: "/profile/verify-previous-name",
-        },
-      ],
       areAttachedFilesValid: true,
       isFileUploadInProgress: false,
       isAtleastOneFileAdded: false,

@@ -22,6 +22,7 @@ import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import { useRouter } from "vue-router";
 import type { Components } from "@/types/openapi";
+import { useUserStore } from "@/store/user";
 
 export default defineComponent({
   name: "RenewAction",
@@ -37,11 +38,13 @@ export default defineComponent({
   setup() {
     const certificationStore = useCertificationStore();
     const applicationStore = useApplicationStore();
+    const userStore = useUserStore();
     const router = useRouter();
 
     return {
       certificationStore,
       applicationStore,
+      userStore,
       router,
     };
   },
@@ -131,7 +134,7 @@ export default defineComponent({
         draftApplication: { applicationType: "Renewal", certificationTypes: this.certificationStore.certificationTypes(this.certification.id), fromCertificate: this.certification.id },
       });
 
-      this.router.push({ name: "application-requirements" });
+      this.userStore.isUnder19 ? this.router.push({ name: "consent-required" }) : this.router.push({ name: "application-requirements" });
     },
   },
 });

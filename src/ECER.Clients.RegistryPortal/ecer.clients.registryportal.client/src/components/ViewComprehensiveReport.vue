@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <div class="d-flex flex-column ga-3 mb-6">
       <h2>Comprehensive Report</h2>
       <p>For education completed outside of Canada, you need to request a Comprehensive Report from BCIT's International Credential Evaluation Service.</p>
@@ -32,7 +32,7 @@
             value="InternationalCredentialEvaluationService"
           ></v-radio>
           <v-radio
-            label="The ECE Registry already has my Comprehensive Report on file for the course or program relevant to this application and certificate type."
+            :label="`The ECE Registry already has my Comprehensive Report on file for the ${applicationStatus?.certificationTypes?.includes('EceAssistant') ? 'course' : 'program'} relevant to this application and certificate type.`"
             value="RegistryAlreadyHas"
           ></v-radio>
         </v-radio-group>
@@ -77,24 +77,6 @@ export default defineComponent({
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
 
     let comprehensiveReportOptions = ref<ComprehensiveReportOptions | undefined>(undefined);
-    const items: { title: string; disabled: boolean; href: string }[] = [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Application",
-        disabled: false,
-        href: `/manage-application/${props.applicationId}`,
-      },
-      {
-        title: "Comprehensive Report",
-        disabled: true,
-        href: `/manage-application/${props.applicationId}/transcript/${props.transcriptId}/comprehensive-evaluation`,
-      },
-    ];
-
     const transcript = applicationStatus?.transcriptsStatus?.find((transcript) => transcript.id === props.transcriptId);
 
     if (!transcript) {
@@ -104,7 +86,7 @@ export default defineComponent({
       comprehensiveReportOptions = ref(transcript.comprehensiveReportOptions || undefined);
     }
 
-    return { router, transcript, alertStore, Rules, comprehensiveReportOptions, items, loadingStore };
+    return { router, transcript, alertStore, Rules, comprehensiveReportOptions, loadingStore, applicationStatus };
   },
   methods: {
     async handleSubmit() {
