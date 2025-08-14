@@ -1,9 +1,8 @@
 import selectors from "../../../../support/selectors";
-import { courseStartDay, courseEndDay } from "../../../../support/utils";
 
-describe("Renew ECE One Year Certificate Application", () => {
+describe("Renew Active ECE One Year Certificate Application", () => {
   it("should create a sucessfull Renewal - ECE One Year Application", () => {
-    cy.seedRenewalApplication("OneYear", true);
+    cy.seedRenewalApplication("ECEOneYear", true, false);
 
     cy.reload();
     /** Dashboard */
@@ -20,7 +19,7 @@ describe("Renew ECE One Year Certificate Application", () => {
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     /** Renewal Information */
-    cy.get(selectors.professionalDevelopment.renewalInformationRadio).check();
+    cy.get(selectors.renewalInformation.oneYearRenewalInformationRadio).check();
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     /** Character Reference */

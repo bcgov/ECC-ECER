@@ -123,7 +123,7 @@ const router = createRouter({
     },
     {
       path: "/manage-application/:applicationId/character-reference/:referenceId",
-      name: "viewCharacterReference",
+      name: "view-character-reference",
       component: () => import("./components/ViewCharacterReference.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
       props: true,
@@ -215,6 +215,12 @@ const router = createRouter({
       component: () => import("./components/Declaration.vue"),
       meta: { requiresAuth: true },
       name: "declaration",
+    },
+    {
+      path: "/application/consent-required",
+      component: () => import("./components/ConsentRequired.vue"),
+      meta: { requiresAuth: true },
+      name: "consent-required",
     },
     {
       path: "/application",

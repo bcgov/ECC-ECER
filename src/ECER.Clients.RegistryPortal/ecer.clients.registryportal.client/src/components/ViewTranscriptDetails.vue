@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <div class="d-flex flex-column ga-3 mb-6">
       <h2>Transcript</h2>
       <p>Your transcript has not yet been received. Make sure that you have made a request to your educational institution to send it to us directly.</p>
@@ -17,7 +17,8 @@
       <p>{{ transcript?.educationalInstitutionName }}</p>
     </div>
     <div class="d-flex flex-column ga-3 my-6">
-      <h3>Program or course name</h3>
+      <h3 v-if="applicationStatus?.certificationTypes?.includes('EceAssistant')">Course name</h3>
+      <h3 v-else>Program name</h3>
       <p>{{ transcript?.programName }}</p>
     </div>
     <p class="my-6">We will notify you once we receive your transcript. You will also see this item marked as “Received” in your application summary.</p>
@@ -52,37 +53,14 @@ export default defineComponent({
     const route = useRoute();
 
     const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
-
     const transcript = applicationStatus?.transcriptsStatus?.find((transcript) => transcript.id === props.transcriptId);
 
     if (!transcript) {
       router.back();
     }
 
-    return { transcript, alertStore };
+    return { transcript, alertStore, applicationStatus };
   },
-  data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}`,
-        },
-        {
-          title: "Transcript",
-          disabled: true,
-          href: `/manage-application/${this.applicationId}/transcript/${this.transcriptId}`,
-        },
-      ],
-    };
-  },
-
   methods: {},
 });
 </script>

@@ -13,7 +13,8 @@ export default defineConfig({
     },
     specPattern: [
       "cypress/e2e/**/auth.cy.ts", // auth spec runs first
-      "cypress/e2e/**/*.cy.ts", // other specs next
+      "!cypress/e2e/**/z_logout.cy.ts", // exclude logout from wildcard
+      "cypress/e2e/**/*.cy.ts", // run all other specs
       "cypress/e2e/**/z_logout.cy.ts", // always run this last
     ],
   },

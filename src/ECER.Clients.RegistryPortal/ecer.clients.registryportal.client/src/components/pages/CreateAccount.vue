@@ -1,6 +1,6 @@
 <template>
   <PageContainer :margin-top="false">
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <h1>Create a My ECE Registry account</h1>
     <v-row class="mt-8">
       <v-col cols="12" md="4">
@@ -105,20 +105,8 @@ export default defineComponent({
   },
   data() {
     const panel = [0];
-    const items = [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Create account",
-        disabled: true,
-        href: "/create-account",
-      },
-    ];
 
-    return { items, panel };
+    return { panel };
   },
   methods: {
     async handleLogin(provider: string) {

@@ -16,6 +16,9 @@ export default {
     continueButton: 'button[id="btnContinue"]',
     iteCheckBox: 'input[value="Ite"]',
     sneCheckBox: 'input[value="Sne"]',
+    applyNowEceAssistantButton: 'button[id="btnApplyNowEceAssistant"]',
+    applyNowEceOneYearButton: 'button[id="btnApplyNowEceOneYear"]',
+    applyNowEceFiveYearButton: 'button[id="btnApplyNowEceFiveYear"]',
   },
   transferEligibility: {
     provinceDropDownList: 'input[id="province"]',
@@ -31,6 +34,11 @@ export default {
     declarationCheckbox: 'input[id="chkDeclaration"]',
     continueButton: 'button[id="btnContinue"]',
   },
+  renewalInformation: {
+    fiveYearRenewalInformationRadio: 'input[value="Ileftthechildcarefieldforpersonalreasons"]',
+    oneYearRenewalInformationRadio: 'input[value="IliveandworkinacommunitywithoutothercertifiedECEs"]',
+  },
+
   certificateInformation: {
     nameOnCertificateRadio: 'input[type="radio"][name="radioNameOnCertificate"]',
   },
@@ -65,7 +73,6 @@ export default {
     saveCourseOrWorkshop: 'button[id="btnSaveProfessionalDevelopment"]',
     courseStartDateInput: 'input[id="txtCourseStartDate"]',
     courseEndDateInput: 'input[id="txtCourseEndDate"]',
-    renewalInformationRadio: 'input[value="IliveandworkinacommunitywithoutothercertifiedECEs"]',
   },
   characterReference: {
     lastNameInput: 'input[id="txtReferenceLastName"]',
@@ -92,6 +99,7 @@ export default {
     certificationType: 'p[id="certificationType"]',
     educationCountry: 'p[id="educationCountry"]',
     educationProvince: 'p[id="educationProvince"]',
+    courseProvince: 'p[id="courseProvince"]',
     characterReferenceFirstName: 'p[id="characterReferenceFirstName"]',
     characterReferenceLastName: 'p[id="characterReferenceLastName"]',
     characterReferenceEmail: 'p[id="characterReferenceEmail"]',
