@@ -54,7 +54,6 @@ import * as Rules from "@/utils/formRules";
 import { useLoadingStore } from "@/store/loading";
 import type { ComprehensiveReportOptions } from "@/types/openapi";
 import type { VForm } from "vuetify/components";
-import { useApplicationStore } from "@/store/application";
 
 export default defineComponent({
   name: "ViewComprehensiveReport",
