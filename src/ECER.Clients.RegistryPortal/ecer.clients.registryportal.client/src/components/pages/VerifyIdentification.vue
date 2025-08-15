@@ -1,6 +1,6 @@
 <template>
   <PageContainer :margin-top="false">
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <h1>Verify your identity</h1>
     <div class="d-flex flex-column ga-4">
       <p>Before you can access your full My ECE Registry account, we need to verify your identity.</p>
@@ -154,21 +154,7 @@ export default defineComponent({
     return { userStore, oidcStore, configStore, route, router, smAndDown, Rules, alertStore, loadingStore };
   },
   data() {
-    const items = [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Verify",
-        disabled: true,
-        href: "/verify-identification",
-      },
-    ];
-
     return {
-      items,
       primaryIdType: "",
       primaryIdFiles: [] as Components.Schemas.IdentityDocument[],
       newPrimaryIdFiles: [],

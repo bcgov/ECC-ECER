@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <v-breadcrumbs class="pl-0" :items="items" color="primary">
-      <template #divider>/</template>
-    </v-breadcrumbs>
+    <Breadcrumb />
     <h2 class="mt-10">Work experience reference</h2>
     <div role="doc-subtitle">We’ve sent an email to the following person to request a reference.</div>
     <p class="mt-8"><b>Name</b></p>
@@ -35,10 +33,11 @@ import ResendEmail from "@/components/ResendEmail.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import type { Components } from "@/types/openapi";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 export default defineComponent({
   name: "ViewWorkExperienceReference",
-  components: { ECEHeader, ResendEmail },
+  components: { ECEHeader, ResendEmail, Breadcrumb },
 
   props: {
     applicationId: {
@@ -63,32 +62,6 @@ export default defineComponent({
     }
 
     return { applicationStore, reference, alertStore };
-  },
-  data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Application",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}`,
-        },
-        {
-          title: "Work experience reference",
-          disabled: false,
-          href: `/manage-application/${this.applicationId}/work-experience-references`,
-        },
-        {
-          title: "Reference",
-          disabled: true,
-          href: `/manage-application/${this.applicationId}/work-experience-reference/${this.referenceId}`,
-        },
-      ],
-    };
   },
 
   methods: {

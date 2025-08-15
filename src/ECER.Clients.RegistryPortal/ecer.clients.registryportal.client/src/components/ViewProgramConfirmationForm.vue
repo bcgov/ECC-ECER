@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <div class="d-flex flex-column ga-3 mb-6">
       <h2>Program Confirmation Form</h2>
       <p>You need to provide additional details about the program:</p>
@@ -96,24 +96,6 @@ export default defineComponent({
     const isFileUploadInProgress = ref(false);
     const newFiles = ref<string[]>([]);
 
-    const items: { title: string; disabled: boolean; href: string }[] = [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Application",
-        disabled: false,
-        href: `/manage-application/${props.applicationId}`,
-      },
-      {
-        title: "Program Confirmation Form",
-        disabled: true,
-        href: `/manage-application/${props.applicationId}/transcript/${props.transcriptId}/program-confirmation`,
-      },
-    ];
-
     if (!transcript) {
       router.back();
     } else {
@@ -121,7 +103,7 @@ export default defineComponent({
       programConfirmationOptions = ref(transcript.programConfirmationOptions || undefined);
     }
 
-    return { router, transcript, alertStore, Rules, programConfirmationOptions, items, areAttachedFilesValid, isFileUploadInProgress, newFiles, loadingStore };
+    return { router, transcript, alertStore, Rules, programConfirmationOptions, areAttachedFilesValid, isFileUploadInProgress, newFiles, loadingStore };
   },
   computed: {
     generateUserPrimaryFileArray() {

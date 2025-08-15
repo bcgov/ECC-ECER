@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <v-breadcrumbs class="pl-0" :items="items" color="primary">
-      <template #divider>/</template>
-    </v-breadcrumbs>
+    <Breadcrumb />
     <v-row>
       <v-col>
         <Alert v-model="isDuplicateReference" type="error" title="choose someone else" prominent>
@@ -63,10 +61,11 @@ import { useApplicationStore } from "@/store/application";
 import { useFormStore } from "@/store/form";
 import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 export default defineComponent({
   name: "UpsertWorkExperienceReference",
-  components: { EceForm, Alert },
+  components: { EceForm, Alert, Breadcrumb },
   props: {
     applicationId: {
       type: String,
@@ -102,45 +101,7 @@ export default defineComponent({
     return { applicationStore, alertStore, reference, formStore, loadingStore, workExperienceReferenceUpsertForm, router, applicationStatus };
   },
   data() {
-    const items = [
-      {
-        title: "Home",
-        disabled: false,
-        href: "/",
-      },
-      {
-        title: "Application",
-        disabled: false,
-        href: `/manage-application/${this.applicationId}`,
-      },
-      {
-        title: "Work experience reference",
-        disabled: false,
-        href: `/manage-application/${this.applicationId}/work-experience-references`,
-      },
-    ];
-
-    if (this.referenceId) {
-      // Check if referenceId is valid
-      items.push({
-        title: "Reference",
-        disabled: false,
-        href: `/manage-application/${this.applicationId}/work-experience-reference/${this.referenceId}`,
-      });
-      items.push({
-        title: "Add",
-        disabled: true,
-        href: `/manage-application/${this.applicationId}/work-experience-reference/${this.referenceId}/add`,
-      });
-    } else {
-      items.push({
-        title: "Add",
-        disabled: true,
-        href: `/manage-application/${this.applicationId}/work-experience-references/add`,
-      });
-    }
-
-    return { items, isDuplicateReference: false };
+    return { isDuplicateReference: false };
   },
   computed: {
     applicationType() {

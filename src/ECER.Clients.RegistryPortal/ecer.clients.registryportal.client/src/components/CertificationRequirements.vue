@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Breadcrumb :items="items" />
+    <Breadcrumb />
     <div v-for="certificationType in certificationTypes" :key="certificationType">
       <ECEAssistantRenewalRequirements v-if="certificationType === CertificationType.ECE_ASSISTANT" />
       <ECEOneYearRenewalRequirements v-if="certificationType === CertificationType.ONE_YEAR" />
@@ -35,22 +35,6 @@ export default defineComponent({
   },
   setup: () => {
     return { CertificationType };
-  },
-  data() {
-    return {
-      items: [
-        {
-          title: "Home",
-          disabled: false,
-          href: "/",
-        },
-        {
-          title: "Renew",
-          disabled: true,
-          href: "/application/certification/requirements",
-        },
-      ],
-    };
   },
 });
 </script>
