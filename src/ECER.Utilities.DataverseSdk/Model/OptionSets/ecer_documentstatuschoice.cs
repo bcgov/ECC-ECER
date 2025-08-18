@@ -14,32 +14,26 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_PSPIntervieweeType
+	public enum ecer_documentstatuschoice
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Administrator = 621870000,
+		Approved = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		DepartmentChairHead = 621870001,
+		Complete = 621870005,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ECECoordinatorECEProgramChair = 621870005,
+		InProgress = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Instructor = 621870002,
+		InReview = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PracticumInstructor = 621870006,
+		ReadyforReview = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PracticumMentor = 621870007,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Student = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		StudentSupportServices = 621870004,
+		RevisionRequired = 621870004,
 	}
 }
 #pragma warning restore CS1591

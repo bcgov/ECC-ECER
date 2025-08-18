@@ -82,6 +82,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_communication_Investigation_ecer_investig = "ecer_communication_Investigation_ecer_investig";
 			public const string Referencingecer_communication_ParentCommunicationid = "ecer_communication_ParentCommunicationid";
 			public const string ecer_communication_PresetContentsId = "ecer_communication_PresetContentsId";
+			public const string ecer_communication_PSPreferral_ecer_pspreferral = "ecer_communication_PSPreferral_ecer_pspreferral";
 			public const string ecer_communication_TranscriptId = "ecer_communication_TranscriptId";
 			public const string ecer_CommunicationId = "ecer_communicationid";
 			public const string Id = "ecer_communicationid";
@@ -120,6 +121,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ParentCommunicationidName = "ecer_parentcommunicationidname";
 			public const string ecer_PresetContentsId = "ecer_presetcontentsid";
 			public const string ecer_PresetContentsIdName = "ecer_presetcontentsidname";
+			public const string ecer_PSPreferral = "ecer_pspreferral";
+			public const string ecer_PSPreferralName = "ecer_pspreferralname";
 			public const string ecer_Registrantid = "ecer_registrantid";
 			public const string ecer_RegistrantidName = "ecer_registrantidname";
 			public const string ecer_RegistrantidYomiName = "ecer_registrantidyominame";
@@ -1002,6 +1005,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspreferral")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_PSPreferral
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_pspreferral");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_pspreferral", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspreferralname")]
+		public string ecer_PSPreferralName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_pspreferral"))
+				{
+					return this.FormattedValues["ecer_pspreferral"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_registrantid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_Registrantid
 		{
@@ -1830,6 +1865,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_CommunicationContent>("ecer_communication_PresetContentsId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_communication_PSPreferral_ecer_pspreferral
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspreferral")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_PSPreferral_ecer_pspreferral")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_pspreferral ecer_communication_PSPreferral_ecer_pspreferral
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral>("ecer_communication_PSPreferral_ecer_pspreferral", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral>("ecer_communication_PSPreferral_ecer_pspreferral", null, value);
 			}
 		}
 		

@@ -6745,6 +6745,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Contains the id of the stage where the entity is located.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("stageid")]
+		[System.Obsolete("This attribute is deprecated.")]
 		public System.Nullable<System.Guid> stageid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -6851,6 +6852,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// A comma separated list of string values representing the unique identifiers of stages in a Business Process Flow Instance in the order that they occur.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("traversedpath")]
+		[System.Obsolete("This attribute is deprecated.")]
 		public string traversedpath
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
