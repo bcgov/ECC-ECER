@@ -101,7 +101,13 @@
       <p>The course or workshop must:</p>
       <ul class="ml-10">
         <li>Be relevant to the field of early childhood education</li>
-        <li>Have been completed within the last 5 years</li>
+        <li v-if="!expired">
+          Have been completed within the dates of your current certificate:
+          <strong>{{ formattedLatestCertificationEffectiveDate }}</strong>
+          to
+          <strong>{{ formattedLatestCertificationExpiryDate }}</strong>
+        </li>
+        <li v-else>Have been completed within the last 5 years</li>
       </ul>
       <p>You'll need to provide the following information about each course or workshop:</p>
       <ul class="ml-10">
@@ -116,12 +122,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 
 import Alert from "@/components/Alert.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
+import { formatDate } from "@/utils/format";
 
 export default defineComponent({
   name: "ECEOneYearRenewalRequirements",
@@ -133,13 +140,25 @@ export default defineComponent({
     },
   },
   setup() {
-    const certificationStore = useCertificationStore();
     const applicationStore = useApplicationStore();
-
-    return {
-      certificationStore,
-      applicationStore,
-    };
+    const certificationStore = useCertificationStore();
+    return { applicationStore, certificationStore };
+  },
+  computed: {
+    formattedLatestCertificationExpiryDate(): string {
+      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
+      if (fromCertificateId) {
+        return formatDate(this.certificationStore.certificationExpiryDate(fromCertificateId) ?? "", "LLL d, yyyy");
+      }
+      return formatDate("", "LLL d, yyyy"); // Default to empty if no fromCertificate is specified
+    },
+    formattedLatestCertificationEffectiveDate(): string {
+      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
+      if (fromCertificateId) {
+        return formatDate(this.certificationStore.certificationEffectiveDate(fromCertificateId) ?? "", "LLL d, yyyy");
+      }
+      return formatDate("", "LLL d, yyyy"); // Default to empty if no fromCertificate is specified
+    },
   },
 });
 </script>

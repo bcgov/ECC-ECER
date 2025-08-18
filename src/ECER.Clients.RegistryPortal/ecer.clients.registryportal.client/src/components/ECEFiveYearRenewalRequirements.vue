@@ -91,8 +91,10 @@
       <ul class="ml-10">
         <li>Be relevant to the field of early childhood education</li>
         <li v-if="!expired">
-          Have been completed within the term of your current certificate (between {{ formattedLatestCertificationEffectiveDate }} and
-          {{ formattedLatestCertificationExpiryDate }})
+          Have been completed within the dates of your current certificate:
+          <strong>{{ formattedLatestCertificationEffectiveDate }}</strong>
+          to
+          <strong>{{ formattedLatestCertificationExpiryDate }}</strong>
         </li>
         <li v-else>Have been completed within the last 5 years</li>
       </ul>
