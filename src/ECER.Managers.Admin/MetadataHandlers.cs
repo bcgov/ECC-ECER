@@ -13,7 +13,8 @@ public class MetadataHandlers(
    IRequestHandler<Contract.Metadatas.PostSecondaryInstitutionsQuery, PostSecondaryInstitutionsQueryResults>,
    IRequestHandler<Contract.Metadatas.SystemMessagesQuery, SystemMessagesQueryResults>,
    IRequestHandler<Contract.Metadatas.DefaultContentsQuery, DefaultContentsQueryResults>,
-   IRequestHandler<Contract.Metadatas.IdentificationTypesQuery, IdentificationTypesQueryResults>
+   IRequestHandler<Contract.Metadatas.IdentificationTypesQuery, IdentificationTypesQueryResults>,
+   IRequestHandler<Contract.Metadatas.DynamicsConfigQuery, DynamicsConfigQueryResults>
 {
   public async Task<PostSecondaryInstitutionsQueryResults> Handle(Contract.Metadatas.PostSecondaryInstitutionsQuery request, CancellationToken cancellationToken)
   {
@@ -32,14 +33,14 @@ public class MetadataHandlers(
       .GroupBy(x => new { x.TransferringCertificate!.Id, x.TransferringCertificate.CertificationType })
       .Select(g => new Contract.Metadatas.ComparisonRecord()
       {
-      TransferringCertificate = new Contract.Metadatas.OutOfProvinceCertificationType(g.Key.Id)
-      {
-        CertificationType = g.Key.CertificationType
-      },
-      Options = g.Select(item => new Contract.Metadatas.CertificationComparison(item.Id)
-      {
-        BcCertificate = item.BcCertificate
-      })
+        TransferringCertificate = new Contract.Metadatas.OutOfProvinceCertificationType(g.Key.Id)
+        {
+          CertificationType = g.Key.CertificationType
+        },
+        Options = g.Select(item => new Contract.Metadatas.CertificationComparison(item.Id)
+        {
+          BcCertificate = item.BcCertificate
+        })
       .ToList()
       })
       .ToList();
@@ -92,4 +93,11 @@ public class MetadataHandlers(
     return new IdentificationTypesQueryResults(mapper.Map<IEnumerable<Contract.Metadatas.IdentificationType>>(identificationTypes)!);
   }
 
+  public async Task<DynamicsConfigQueryResults> Handle(Contract.Metadatas.DynamicsConfigQuery request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var dynamicsConfig = await metadataResourceRepository.QueryDynamicsConfiguration(new Resources.Documents.MetadataResources.DynamicsConfigQuery() { }, cancellationToken);
+    return new DynamicsConfigQueryResults(mapper.Map<Contract.Metadatas.DynamicsConfig>(dynamicsConfig)!);
+  }
 }

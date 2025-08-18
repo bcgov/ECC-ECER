@@ -669,8 +669,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
 			public const string ecer_certificatesummary_RegistrantId = "ecer_certificatesummary_RegistrantId";
 			public const string ecer_CertificationLevel = "ecer_certificationlevel";
-			public const string ecer_certificationpathway = "ecer_certificationpathway";
-			public const string ecer_certificationpathwayName = "ecer_certificationpathwayname";
 			public const string ecer_certifiedlevel_RegistrantId = "ecer_certifiedlevel_RegistrantId";
 			public const string ecer_changeofinformation_Contactid = "ecer_changeofinformation_Contactid";
 			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
@@ -2916,6 +2914,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// User’s preferred portal LCID
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_preferredlcid")]
+		[System.Obsolete("This attribute is deprecated.")]
 		public System.Nullable<int> adx_preferredlcid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -4116,38 +4115,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_certificationlevel", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationpathway")]
-		public virtual ecer_Pathways? ecer_certificationpathway
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_Pathways?)(EntityOptionSetEnum.GetEnum(this, "ecer_certificationpathway")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_certificationpathway", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationpathwayname")]
-		public string ecer_certificationpathwayName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_certificationpathway"))
-				{
-					return this.FormattedValues["ecer_certificationpathway"];
-				}
-				else
-				{
-					return default(string);
-				}
 			}
 		}
 		
@@ -7158,6 +7125,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Shows the ID of the stage.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("stageid")]
+		[System.Obsolete("This attribute is deprecated.")]
 		public System.Nullable<System.Guid> StageId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -7455,6 +7423,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// For internal use only.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("traversedpath")]
+		[System.Obsolete("This attribute is deprecated.")]
 		public string TraversedPath
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]

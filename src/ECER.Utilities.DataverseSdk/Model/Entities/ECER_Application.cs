@@ -63,6 +63,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Pending = 290700001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PendingPSPConsultationNeeded = 621870010,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		PendingQueue = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -139,6 +142,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_AssessorLeadYomiName = "ecer_assessorleadyominame";
 			public const string ecer_AssessorName = "ecer_assessorname";
 			public const string ecer_AssessorYomiName = "ecer_assessoryominame";
+			public const string ecer_assigntoPSPteam = "ecer_assigntopspteam";
+			public const string ecer_assigntopspteamName = "ecer_assigntopspteamname";
 			public const string ecer_CERReviewed = "ecer_cerreviewed";
 			public const string ecer_cerreviewedName = "ecer_cerreviewedname";
 			public const string ecer_Certificateid = "ecer_certificateid";
@@ -304,6 +309,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramConfirmationReviewed = "ecer_programconfirmationreviewed";
 			public const string ecer_programconfirmationreviewedName = "ecer_programconfirmationreviewedname";
 			public const string ecer_Province = "ecer_province";
+			public const string ecer_pspreferral_application_ecer_application = "ecer_pspreferral_application_ecer_application";
 			public const string ecer_ReadyforAssessment = "ecer_readyforassessment";
 			public const string ecer_ReadyforAssessmentDate = "ecer_readyforassessmentdate";
 			public const string ecer_readyforassessmentName = "ecer_readyforassessmentname";
@@ -972,6 +978,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_assessor"))
 				{
 					return this.FormattedValues["ecer_assessor"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntopspteam")]
+		public System.Nullable<bool> ecer_assigntoPSPteam
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_assigntopspteam");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_assigntopspteam", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assigntopspteamname")]
+		public string ecer_assigntopspteamName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_assigntopspteam"))
+				{
+					return this.FormattedValues["ecer_assigntopspteam"];
 				}
 				else
 				{
@@ -4367,6 +4405,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Contains the id of the stage where the entity is located.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("stageid")]
+		[System.Obsolete("This attribute is deprecated.")]
 		public System.Nullable<System.Guid> stageid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -4473,6 +4512,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// A comma separated list of string values representing the unique identifiers of stages in a Business Process Flow Instance in the order that they occur.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("traversedpath")]
+		[System.Obsolete("This attribute is deprecated.")]
 		public string traversedpath
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -4785,6 +4825,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_ApplicationId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_pspreferral_application_ecer_application
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_pspreferral_application_ecer_application")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral> ecer_pspreferral_application_ecer_application
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral>("ecer_pspreferral_application_ecer_application", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral>("ecer_pspreferral_application_ecer_application", null, value);
 			}
 		}
 		
