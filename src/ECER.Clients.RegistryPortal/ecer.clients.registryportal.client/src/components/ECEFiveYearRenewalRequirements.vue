@@ -14,7 +14,8 @@
   <v-col cols="12">
     <ECEHeader title="Character reference" />
     <div class="d-flex flex-column ga-3 my-6">
-      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
+      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later
+        after you submit your application.</p>
       <p>The reference must be someone who:</p>
       <ul class="ml-10">
         <li>Can speak to your character</li>
@@ -30,14 +31,16 @@
     <ECEHeader title="Work experience" />
     <div v-if="!expired" class="d-flex flex-column ga-3 my-6">
       <p>
-        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
+        You need to have completed 400 hours of work experience and be able to provide references to verify the hours.
+        If you worked at multiple locations, you
         can provide multiple references.
       </p>
       <p>The hours must:</p>
       <ul class="ml-10">
         <li>Be related to the field of early childhood education</li>
         <li>
-          Have been completed within the term of your current certificate (between {{ formattedLatestCertificationEffectiveDate }} and
+          Have been completed within the term of your current certificate (between {{
+            formattedLatestCertificationEffectiveDate }} and
           {{ formattedLatestCertificationExpiryDate }})
         </li>
       </ul>
@@ -50,7 +53,8 @@
     </div>
     <div v-if="expired && !expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
       <p>
-        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
+        You need to have completed 400 hours of work experience and be able to provide references to verify the hours.
+        If you worked at multiple locations, you
         can provide multiple references.
       </p>
       <p>The hours must:</p>
@@ -66,7 +70,8 @@
       </ul>
     </div>
     <div v-if="expired && expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
-      <p>You need to have completed 500 hours of work experience and be able to provide references to verify the hours.</p>
+      <p>You need to have completed 500 hours of work experience and be able to provide references to verify the hours.
+      </p>
       <p>Important information about calculating hours:</p>
       <ul class="ml-10">
         <li>Only include hours you worked once you began your early childhood education training program</li>
@@ -86,10 +91,11 @@
   <v-col cols="12">
     <ECEHeader title="Professional development" />
     <div class="d-flex flex-column ga-3 my-6">
-      <p>You must have completed at least 40 hours of professional development.</p>
-      <p>The course or workshop must:</p>
+      <p>To meet the professional development requirement, you need to have completed 40 hours of training.</p>
+      <h3>What courses or workshops are eligible?</h3>
+      <p>Each course or workshop must:</p>
       <ul class="ml-10">
-        <li>Be relevant to the field of early childhood education</li>
+        <li>Be related to early childhood education</li>
         <li v-if="!expired">
           Have been completed within the dates of your current certificate:
           <strong>{{ formattedLatestCertificationEffectiveDate }}</strong>
@@ -97,14 +103,6 @@
           <strong>{{ formattedLatestCertificationExpiryDate }}</strong>
         </li>
         <li v-else>Have been completed within the last 5 years</li>
-      </ul>
-      <p>You'll need to provide the following information about each course or workshop:</p>
-      <ul class="ml-10">
-        <li>Name of the course or workshop</li>
-        <li>Name of the place where you took it</li>
-        <li>Dates when you started and completed it</li>
-        <li>How many hours it was</li>
-        <li>Contact information for the facilitator/instructor or a document to show you've completed the course</li>
       </ul>
     </div>
   </v-col>
