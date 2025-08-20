@@ -58,7 +58,7 @@ jobs:
 
           oc tag -n ${{env.OPENSHIFT_NAMESPACE}} --alias=true registry-portal:${{github.event.inputs.version}} registry-portal:${{env.APP_ENVIRONMENT_DESTINATION}}
           oc tag -n ${{env.OPENSHIFT_NAMESPACE}} --alias=true api:${{github.event.inputs.version}} api:${{env.APP_ENVIRONMENT_DESTINATION}}
-          # oc tag -n ${{env.OPENSHIFT_NAMESPACE}} --alias=true psp-portal:${{github.event.inputs.version}} psp-portal:${{env.APP_ENVIRONMENT_DESTINATION}}
+          oc tag -n ${{env.OPENSHIFT_NAMESPACE}} --alias=true psp-portal:${{github.event.inputs.version}} psp-portal:${{env.APP_ENVIRONMENT_DESTINATION}}
 
           # E2ETestData only exists in Dev and is used for automation testing, this will not exist in higher environments. 
           oc tag -n ${{env.OPENSHIFT_NAMESPACE}} --alias=true e2e-test-data:${{github.event.inputs.version}} e2e-test-data:${{env.APP_ENVIRONMENT_DESTINATION}}
