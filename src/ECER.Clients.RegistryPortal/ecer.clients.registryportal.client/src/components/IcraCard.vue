@@ -12,7 +12,7 @@
 
     <div class="d-flex flex-row justify-start ga-3 flex-wrap ma-4">
       <v-card-actions>
-        <router-link to="icra/eligibility">Learn more</router-link>
+        <router-link :to="{ name: 'icra-eligibility' }">Learn more</router-link>
       </v-card-actions>
     </div>
   </v-card>
