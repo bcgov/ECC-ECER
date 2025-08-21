@@ -181,7 +181,7 @@
                   Canadian-certified ECE.
                 </p>
                 <div class="mt-auto">
-                  <router-link class="mt-4" to="test">Learn more</router-link>
+                  <router-link class="mt-4" :to="{name: 'icra-eligibility'}">Learn more</router-link>
                 </div>
               </Card>
             </v-col>
