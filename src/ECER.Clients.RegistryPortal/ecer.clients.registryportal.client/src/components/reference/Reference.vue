@@ -6,7 +6,7 @@
         <v-container>
           <v-row>
             <v-col>
-              <h1>{{ inviteTypeTitle }}</h1>
+              <h1 class="white">{{ inviteTypeTitle }}</h1>
               <div role="doc-subtitle">
                 {{ `For applicant: ${cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName)}` }}
               </div>

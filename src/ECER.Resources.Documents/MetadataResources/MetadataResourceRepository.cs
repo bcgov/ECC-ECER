@@ -64,7 +64,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
   public async Task<IEnumerable<CertificationComparison>> QueryCertificationComparisons(CertificationComparisonQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    var certificationComparisons = context.ecer_certificationcomparisonSet;
+    var certificationComparisons = context.ecer_certificationcomparisonSet.Where(r=>r.StateCode==ecer_certificationcomparison_statecode.Active);
     var results = context.From(certificationComparisons)
      .Join()
      .Include(a => a.ecer_certificationcomparisontransferringcertificate)

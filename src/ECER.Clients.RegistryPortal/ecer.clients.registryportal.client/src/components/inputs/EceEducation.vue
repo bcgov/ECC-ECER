@@ -4,7 +4,8 @@
       <h1>{{ clientId ? "Edit" : "Add" }} education</h1>
       <br />
       <p>
-        You will need to request an official transcript from your educational institution for this {{ isDraftApplicationAssistant ? "course" : "program" }}. It
+        You will need to request an official transcript from your educational institution for this {{
+          isDraftApplicationAssistant ? "course" : "program" }}. It
         must be sent to us directly from them.
       </p>
       <br />
@@ -32,82 +33,53 @@
         <v-row>
           <v-col md="8" lg="6" xl="4">
             Country
-            <v-select
-              class="pt-2"
-              :items="configStore.countryList"
-              variant="outlined"
-              label=""
-              v-model="country"
-              item-title="countryName"
-              item-value="countryId"
-              :rules="[
+            <v-select class="pt-2" :items="configStore.countryList" variant="outlined" label="" v-model="country"
+              item-title="countryName" item-value="countryId" :rules="[
                 Rules.required('Select your country', 'countryId'),
                 Rules.conditionalWrapper(
                   isDraftApplicationAssistantRenewal,
                   (value: Country) => value?.countryId === configStore.canada?.countryId || 'New course must be part of a recognized program',
                 ),
-              ]"
-              @update:modelValue="onCountryChange"
-              return-object
-            ></v-select>
+              ]" @update:modelValue="onCountryChange" return-object></v-select>
           </v-col>
         </v-row>
         <v-row v-if="country?.countryId === configStore.canada?.countryId">
           <v-col md="8" lg="6" xl="4">
             Province or territory
-            <v-select
-              id="ddlProvince"
-              class="pt-2"
-              :items="configStore.provinceList"
-              variant="outlined"
-              label=""
-              v-model="province"
-              item-title="provinceName"
-              item-value="provinceId"
+            <v-select id="ddlProvince" class="pt-2" :items="configStore.provinceList" variant="outlined" label=""
+              v-model="province" item-title="provinceName" item-value="provinceId"
               :rules="[Rules.required('Select your province or territory', 'provinceId')]"
-              @update:modelValue="onProvinceChange"
-              return-object
-            ></v-select>
+              @update:modelValue="onProvinceChange" return-object></v-select>
           </v-col>
         </v-row>
         <v-row>
           <v-col v-if="country?.countryId === configStore.canada?.countryId" md="8" lg="6" xl="4">
             Educational institution
-            <v-select
-              id="ddlPostSecondaryInstitution"
-              class="pt-2"
-              :items="postSecondaryInstitutionByProvince"
-              variant="outlined"
-              item-title="name"
-              item-value="id"
-              v-model="postSecondaryInstitution"
-              @update:modelValue="onPostSecondaryInstitutionChange"
-              :rules="[
+            <v-select id="ddlPostSecondaryInstitution" class="pt-2" :items="postSecondaryInstitutionByProvince"
+              variant="outlined" item-title="name" item-value="id" v-model="postSecondaryInstitution"
+              @update:modelValue="onPostSecondaryInstitutionChange" :rules="[
                 Rules.required('Select an educational institution', 'id'),
                 Rules.conditionalWrapper(
                   isDraftApplicationAssistantRenewal,
                   () =>
                     recognizedPostSecondaryInstitution !== 'NotRecognized' || 'New course must be part of a recognized program at one of the schools listed',
                 ),
-              ]"
-              return-object
-            ></v-select>
+              ]" return-object></v-select>
           </v-col>
         </v-row>
         <v-row>
-          <v-col v-if="country?.countryId !== configStore.canada?.countryId || postSecondaryInstitution?.name === 'Other'" md="8" lg="6" xl="4">
-            <EceTextField
-              id="txtInstitutionName"
-              v-model="school"
+          <v-col
+            v-if="country?.countryId !== configStore.canada?.countryId || postSecondaryInstitution?.name === 'Other'"
+            md="8" lg="6" xl="4">
+            <EceTextField id="txtInstitutionName" v-model="school"
               :rules="[Rules.required('Enter the name of the educational institution')]"
-              label="Name of educational institution"
-              maxlength="100"
-            ></EceTextField>
+              label="Name of educational institution" maxlength="100"></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <EceTextField v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary" maxlength="100"></EceTextField>
+            <EceTextField v-model="campusLocation" label="Campus location (optional)" variant="outlined" color="primary"
+              maxlength="100"></EceTextField>
           </v-col>
         </v-row>
 
@@ -119,40 +91,57 @@
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <EceTextField
-              id="txtProgramName"
-              v-model="program"
+            <<<<<<< HEAD <EceTextField id="txtProgramName" v-model="program"
               :rules="[Rules.required(`Enter the name of your ${isDraftApplicationAssistant ? 'course' : 'program'}`)]"
-              :label="`Name of ${isDraftApplicationAssistant ? 'course' : 'program'}`"
-              maxlength="100"
-            ></EceTextField>
+              :label="`Name of ${isDraftApplicationAssistant ? 'course' : 'program'}`" maxlength="100">
+              </EceTextField>
+              =======
+              <EceTextField id="txtProgramName" v-model="program"
+                :rules="[Rules.required(`Enter the name of your ${isDraftApplicationAssistant ? 'course' : 'program'}`)]"
+                :label="`Name of ${isDraftApplicationAssistant ? 'course' : 'program'}`" maxlength="100"></EceTextField>
+              >>>>>>> release/master
           </v-col>
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <EceDateInput
-              id="txtProgramStartDate"
-              v-model="startYear"
-              :rules="[
+            <<<<<<< HEAD <EceDateInput id="txtProgramStartDate" v-model="startYear" :rules="[
+              Rules.required('Enter the start date'),
+              Rules.futureDateNotAllowedRule(),
+              Rules.conditionalWrapper(
+                isDraftApplicationAssistant,
+                Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'Start date must be within the last 5 years'),
+              ),
+            ]" :label="`Start date of ${isDraftApplicationAssistant ? 'course' : 'program'}`" maxlength="50"
+              :max="today">
+              </EceDateInput>
+              =======
+              <EceDateInput id="txtProgramStartDate" v-model="startYear" :rules="[
                 Rules.required('Enter the start date'),
                 Rules.futureDateNotAllowedRule(),
                 Rules.conditionalWrapper(
                   isDraftApplicationAssistant,
                   Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'Start date must be within the last 5 years'),
                 ),
-              ]"
-              :label="`Start date of ${isDraftApplicationAssistant ? 'course' : 'program'}`"
-              maxlength="50"
-              :max="today"
-            ></EceDateInput>
+              ]" :label="`Start date of ${isDraftApplicationAssistant ? 'course' : 'program'}`" maxlength="50"
+                :max="today"></EceDateInput>
+              >>>>>>> release/master
           </v-col>
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <EceDateInput
-              id="txtProgramEndDate"
-              v-model="endYear"
-              :rules="[
+            <<<<<<< HEAD <EceDateInput id="txtProgramEndDate" v-model="endYear" :rules="[
+              Rules.required('Enter the end date'),
+              Rules.futureDateNotAllowedRule(),
+              Rules.dateBeforeRule(startYear || ''),
+              Rules.conditionalWrapper(
+                isDraftApplicationAssistant,
+                Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'End date must be within the last 5 years'),
+              ),
+            ]" :label="`End date of ${isDraftApplicationAssistant ? 'course' : 'program'}`" maxlength="50"
+              :max="today">
+              </EceDateInput>
+              =======
+              <EceDateInput id="txtProgramEndDate" v-model="endYear" :rules="[
                 Rules.required('Enter the end date'),
                 Rules.futureDateNotAllowedRule(),
                 Rules.dateBeforeRule(startYear || ''),
@@ -160,11 +149,9 @@
                   isDraftApplicationAssistant,
                   Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'End date must be within the last 5 years'),
                 ),
-              ]"
-              :label="`End date of ${isDraftApplicationAssistant ? 'course' : 'program'}`"
-              maxlength="50"
-              :max="today"
-            ></EceDateInput>
+              ]" :label="`End date of ${isDraftApplicationAssistant ? 'course' : 'program'}`" maxlength="50"
+                :max="today"></EceDateInput>
+              >>>>>>> release/master
           </v-col>
         </v-row>
 
@@ -177,50 +164,42 @@
           <v-col>
             <h3>Student number and Name on transcript</h3>
             <br />
-            <p>Make sure this exactly matches your transcript. It may cause delays if we cannot match a transcript we receive to your application.</p>
+            <p>Make sure this exactly matches your transcript. It may cause delays if we cannot match a transcript we
+              receive to your application.</p>
           </v-col>
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <EceTextField
-              id="txtStudentID"
-              v-model="studentNumber"
-              :rules="[Rules.required('Enter your student number or ID')]"
-              label="Student number or ID"
-              maxlength="100"
-            ></EceTextField>
+            <EceTextField id="txtStudentID" v-model="studentNumber"
+              :rules="[Rules.required('Enter your student number or ID')]" label="Student number or ID" maxlength="100">
+            </EceTextField>
           </v-col>
         </v-row>
         <br />
         <p>What name is shown on your transcript?</p>
         <br />
-        <v-radio-group
-          id="radioNameOnTranscript"
-          v-model="previousNameRadio"
-          :rules="[Rules.requiredRadio('Select an option')]"
-          @update:model-value="previousNameRadioChanged"
-        >
-          <v-radio v-for="(step, index) in applicantNameRadioOptions" :key="index" :label="step.label" :value="step.value"></v-radio>
+        <v-radio-group id="radioNameOnTranscript" v-model="previousNameRadio"
+          :rules="[Rules.requiredRadio('Select an option')]" @update:model-value="previousNameRadioChanged">
+          <v-radio v-for="(step, index) in applicantNameRadioOptions" :key="index" :label="step.label"
+            :value="step.value"></v-radio>
         </v-radio-group>
         <div v-if="previousNameRadio === 'other'">
           <v-row>
             <v-col md="8" lg="6" xl="4">
-              <EceTextField v-model="studentFirstName" label="First name on transcript" variant="outlined" color="primary" maxlength="100"></EceTextField>
+              <EceTextField v-model="studentFirstName" label="First name on transcript" variant="outlined"
+                color="primary" maxlength="100"></EceTextField>
             </v-col>
           </v-row>
           <v-row>
             <v-col md="8" lg="6" xl="4">
-              <EceTextField v-model="studentMiddleName" label="Middle name(s) on transcript (optional)" maxlength="100"></EceTextField>
+              <EceTextField v-model="studentMiddleName" label="Middle name(s) on transcript (optional)" maxlength="100">
+              </EceTextField>
             </v-col>
           </v-row>
           <v-row>
             <v-col md="8" lg="6" xl="4">
-              <EceTextField
-                v-model="studentLastName"
-                :rules="[Rules.required('Enter your last name')]"
-                label="Last name on transcript"
-                maxlength="100"
-              ></EceTextField>
+              <EceTextField v-model="studentLastName" :rules="[Rules.required('Enter your last name')]"
+                label="Last name on transcript" maxlength="100"></EceTextField>
             </v-col>
           </v-row>
         </div>
@@ -231,25 +210,18 @@
           </v-col>
         </v-row>
 
-        <v-radio-group
-          id="radioTranscriptStatus"
-          v-model="transcriptStatusOption"
-          :rules="[Rules.required('Indicate the status of your transcript(s)')]"
-          color="primary"
-        >
+        <v-radio-group id="radioTranscriptStatus" v-model="transcriptStatusOption"
+          :rules="[Rules.required('Indicate the status of your transcript(s)')]" color="primary">
           <v-radio
             label="I have requested the official transcript to be sent to the ECE Registry from my educational institution."
-            value="OfficialTranscriptRequested"
-          ></v-radio>
+            value="OfficialTranscriptRequested"></v-radio>
           <v-radio
             v-if="!(recognizedPostSecondaryInstitution === 'Recognized' && province?.provinceId === configStore.britishColumbia?.provinceId)"
             label="My transcript needs English translation. I will ask my educational institution to send my transcript to me to be professionally translated."
-            value="TranscriptWillRequireEnglishTranslation"
-          ></v-radio>
+            value="TranscriptWillRequireEnglishTranslation"></v-radio>
           <v-radio
             label="The ECE Registry already has my official transcript for the course/program relevant to this application and certificate type."
-            value="RegistryHasTranscript"
-          ></v-radio>
+            value="RegistryHasTranscript"></v-radio>
         </v-radio-group>
 
         <!-- Equivelency for unrecognized programs -->
@@ -259,11 +231,15 @@
               <callout type="warning">
                 <h3>You will need to provide supporting documents as part of your application.</h3>
                 <p class="mt-3">
-                  The ECE Registry does not recognize the {{ isDraftApplicationAssistant ? "course" : "program" }} from the educational institution you entered.
-                  We will need additional information to assess if your education is considered equivalent.
+                  <<<<<<< HEAD The ECE Registry does not recognize the {{ isDraftApplicationAssistant ? "course"
+                    : "program" }} from the educational institution you entered.=======The ECE Registry does not
+                    recognize the {{ isDraftApplicationAssistant ? "course" : "program" }} from the educational
+                    institution you entered.>>>>>>> release/master
+                    We will need additional information to assess if your education is considered equivalent.
                 </p>
                 <h3 class="mt-3">
-                  You may continue your application. After you submit, you can indicate how you will provide supporting documents in the application summary
+                  You may continue your application. After you submit, you can indicate how you will provide supporting
+                  documents in the application summary
                   page.
                 </h3>
               </callout>
@@ -281,10 +257,8 @@
                   <li>Be for the year(s) you completed the course(s)</li>
                   <li>
                     Be in English – if they are not, you must have them
-                    <a
-                      target="_blank"
-                      href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#prepare-your-application"
-                    >
+                    <a target="_blank"
+                      href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#prepare-your-application">
                       translated by a professional translator
                     </a>
                   </li>
@@ -294,7 +268,8 @@
           </v-row>
         </template>
         <!-- Program Confirmation -->
-        <v-row v-if="recognizedPostSecondaryInstitution === 'NotRecognized' && !applicationStore.isDraftCertificateTypeEceAssistant">
+        <v-row
+          v-if="recognizedPostSecondaryInstitution === 'NotRecognized' && !applicationStore.isDraftCertificateTypeEceAssistant">
           <v-col>
             <div class="d-flex flex-column ga-3">
               <h3>Program confirmation form</h3>
@@ -302,16 +277,16 @@
               <ul class="ml-10">
                 <li>
                   Download the
-                  <a target="_blank" href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program Confirmation Form (16KB, PDF)</a>
+                  <a target="_blank"
+                    href="https://www2.gov.bc.ca/assets/download/1DD5579B6A474ED2B095FD13B3268DA0">Program
+                    Confirmation Form (16KB, PDF)</a>
                 </li>
                 <li>Complete Section 1 of the form</li>
                 <li>Ask your educational institution to complete the rest of the form</li>
                 <li>
                   If they cannot complete the form in English, you will need to have it
-                  <a
-                    target="_blank"
-                    href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#prepare-your-application"
-                  >
+                  <a target="_blank"
+                    href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#prepare-your-application">
                     translated by a professional translator
                   </a>
                 </li>
@@ -326,22 +301,24 @@
               <div class="d-flex flex-column ga-3">
                 <h3>Comprehensive Report</h3>
                 <p>
-                  You will need to request a Evaluation Report from BCIT’s International Credential Evaluation Service. This is needed for any
-                  {{ isDraftApplicationAssistant ? "course" : "program" }} completed outside of Canada.
+                  <<<<<<< HEAD You will need to request a Evaluation Report from BCIT’s International Credential
+                    Evaluation Service. This is needed for any=======You will need to request a Evaluation Report from
+                    BCIT’s International Credential Evaluation Service. This is needed for any>>>>>>> release/master
+                    {{ isDraftApplicationAssistant ? "course" : "program" }} completed outside of Canada.
                 </p>
                 <p>
                   You may be eligible for a fee waiver to cover the costs of the report.
                   <b>
-                    If you wish to apply for a fee waiver, you can indicate this in your application summary (once you submit this application) before you
+                    If you wish to apply for a fee waiver, you can indicate this in your application summary (once you
+                    submit this application) before you
                     request a report from BCIT.
                   </b>
-                  The fee waiver is paid out directly to BCIT from the ECE Registry and cannot be used to reimburse the applicant.
+                  The fee waiver is paid out directly to BCIT from the ECE Registry and cannot be used to reimburse the
+                  applicant.
                 </p>
                 <p>
-                  <a
-                    target="_blank"
-                    href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#education-requirements-equivalency-process:~:text=Apply%20for%20an%20International%20Credential%20Evaluation%20Service%20Comprehensive%20Report%C2%A0"
-                  >
+                  <a target="_blank"
+                    href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/pathways/international#education-requirements-equivalency-process:~:text=Apply%20for%20an%20International%20Credential%20Evaluation%20Service%20Comprehensive%20Report%C2%A0">
                     Learn more about Comprehensive Report
                   </a>
                 </p>
@@ -350,17 +327,12 @@
           </v-row>
         </template>
         <v-row justify="start" class="ml-1 mt-10">
-          <v-btn
-            id="btnSaveEducation"
-            rounded="lg"
-            color="primary"
-            class="mr-2"
-            @click="handleSubmit"
-            :loading="loadingStore.isLoading('draftapplication_put')"
-          >
+          <v-btn id="btnSaveEducation" rounded="lg" color="primary" class="mr-2" @click="handleSubmit"
+            :loading="loadingStore.isLoading('draftapplication_put')">
             Save education
           </v-btn>
-          <v-btn rounded="lg" variant="outlined" @click="handleCancel" :loading="loadingStore.isLoading('draftapplication_put')">Cancel</v-btn>
+          <v-btn rounded="lg" variant="outlined" @click="handleCancel"
+            :loading="loadingStore.isLoading('draftapplication_put')">Cancel</v-btn>
         </v-row>
       </v-form>
     </v-col>
@@ -370,26 +342,17 @@
       </v-col>
       <v-col cols="12" class="mt-6">
         <v-row justify="start" class="ml-1">
-          <v-btn
-            id="btnAddEducation"
-            v-if="showAddEducationButton"
-            prepend-icon="mdi-plus"
-            rounded="lg"
-            color="primary"
-            @click="handleAddEducation"
-            :loading="loadingStore.isLoading('draftapplication_put')"
-          >
-            Add education
+          <v-btn id="btnAddEducation" v-if="showAddEducationButton" prepend-icon="mdi-plus" rounded="lg" color="primary"
+            @click="handleAddEducation" :loading="loadingStore.isLoading('draftapplication_put')">
+            {{ isDraftApplicationAssistant ? "Add course" : "Add program" }}
           </v-btn>
         </v-row>
       </v-col>
       <v-col>
         <!-- this prevents form from proceeding if rules are not met -->
-        <v-input
-          :model-value="modelValue"
+        <v-input :model-value="modelValue"
           :rules="[(v) => Object.keys(v).length > 0 || 'You must enter at least 1 education entry']"
-          auto-hide="auto"
-        ></v-input>
+          auto-hide="auto"></v-input>
       </v-col>
     </div>
   </v-row>

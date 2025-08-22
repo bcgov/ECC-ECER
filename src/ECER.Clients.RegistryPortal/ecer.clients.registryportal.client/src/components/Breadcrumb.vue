@@ -370,7 +370,6 @@ export default defineComponent({
         case "manageApplication":
           return [...this.baseItems, { title: "Application", disabled: true, href: `/manage-application/${params.applicationId}` }];
 
-
         case "icra-eligibility-requirements":
           return [
             ...this.baseItems,

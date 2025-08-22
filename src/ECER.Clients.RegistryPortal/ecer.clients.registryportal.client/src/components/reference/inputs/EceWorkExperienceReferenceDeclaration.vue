@@ -16,7 +16,7 @@
           <br />
           <p>
             <b>
-              This reference request is for {{ cleanPreferredName(wizardStore.wizardData.applicantFirstName, wizardStore.wizardData.applicantLastName) }}. If
+              This reference request is for {{ cleanPreferredName(wizardStore.wizardData.referenceFirstName, wizardStore.wizardData.referenceLastName) }}. If
               you are not {{ cleanPreferredName(wizardStore.wizardData.referenceFirstName, wizardStore.wizardData.referenceLastName) }}, please select "No"
               below and “Other” on the following page.
             </b>
@@ -25,8 +25,8 @@
 
           <h2 class="mb-5">Information you'll need</h2>
           <p>
-            It should take about 5 minutes to enter your reference. Make sure you get together all the information you need before you continue. If you're not
-            ready now, you can come back later using the link in your email.
+            It should take about 5 minutes to enter your reference. Make sure you gather all the information you need before you continue. If you're not ready
+            now, you can come back later using the link in your email.
           </p>
           <br />
 
@@ -51,7 +51,7 @@
           <br />
           <div>
             All personal information is collected by the Ministry of Education and Child Care under the authority of the Freedom of Information and Protection
-            of Privacy Act s. 26(a), and will be used to determine if the applicant has the, experience and other qualifications required by the regulations. If
+            of Privacy Act s. 26(a), and will be used to determine if the applicant has the experience and other qualifications required by the regulations. If
             you have any questions about the collection, use or disclosure of this information, contact the Early Childhood Educator (ECE) Registry, PO Box
             9961, STN PROV GOVT, Victoria BC V8W 9R4, Phone toll free: 1-888-338-6622, or email
             <a style="text-decoration: underline" href="mailto:ECERegistry@gov.bc.ca">ECERegistry@gov.bc.ca</a>
@@ -118,11 +118,11 @@ export default defineComponent({
     certificationType() {
       let certificationType = "Certificate type not found";
       if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.ECE_ASSISTANT)) {
-        certificationType = "ECE Assistant certificate";
+        certificationType = "ECE Assistant certification";
       } else if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.ONE_YEAR)) {
-        certificationType = "ECE One Year certificate";
+        certificationType = "ECE One Year certification";
       } else if (this.wizardStore.wizardData.certificationTypes?.includes(CertificationType.FIVE_YEAR)) {
-        certificationType = "ECE Five Year certificate";
+        certificationType = "ECE Five Year certification";
       }
       return certificationType;
     },

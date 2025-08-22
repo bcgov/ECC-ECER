@@ -4,8 +4,8 @@
     <template v-if="!isLaborMobility">
       <p>There are 2 types of specialized certifications in B.C. that you can add to your ECE Five Year certificate.</p>
       <ol class="ml-10">
-        <li>Infant and Toddler Educator (ITE) - you must have completed an infant and toddler educator training program</li>
-        <li>Special Needs Educator (SNE) - you must have completed a special needs early childhood educator training program</li>
+        <li>Infant and Toddler Educator (ITE) - you must have completed an infant and toddler educator program</li>
+        <li>Special Needs Educator (SNE) - you must have completed a special needs educator program</li>
       </ol>
       <p>The program(s) must be either:</p>
       <ul class="ml-10">
