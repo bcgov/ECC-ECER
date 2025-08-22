@@ -51,7 +51,7 @@
   </v-row>
   <v-row>
     <v-col cols="12">
-      <SpecializedCertificationOptions ref="SpecializedCertificationOptions" :pre-selected="['Ite', 'Sne']" />
+      <SpecializedCertificationOptions ref="SpecializedCertificationOptions" />
     </v-col>
   </v-row>
 </template>

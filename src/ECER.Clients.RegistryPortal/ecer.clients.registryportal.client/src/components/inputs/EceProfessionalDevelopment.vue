@@ -3,24 +3,35 @@
   <div v-if="mode === 'add'">
     <v-row v-if="mode === 'add'">
       <v-col>
-        <h3>{{ `${professionalDevelopmentFormMode === "add" ? "Add" : "Edit"} course or workshop` }}</h3>
+        <p>To meet the professional development requirement, you need to have completed 40 hours of training.</p>
         <br />
-        <p>The course or workshop must:</p>
+        <p>Each course or workshop must:</p>
         <br />
         <ul class="ml-10">
-          <li>Be relevant to the field of early childhood education</li>
+          <li>Be related to early childhood education</li>
           <li v-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active'">
-            {{
-              `Have been completed within the term of your current certificate (Between ${formatDate(certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy")} to ${formatDate(certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy")})`
-            }}
+            Have been completed within the dates of your current certificate:
+            <strong>
+              {{ formatDate(certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy") }}
+            </strong>
+            to
+            <strong>
+              {{ formatDate(certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy") }}
+            </strong>
           </li>
           <li v-else-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'">
             Have been completed within the last 5 years
           </li>
         </ul>
+        <template v-if="professionalDevelopmentFormMode === 'add'">
+          <br />
+          <p>
+            To add additional professional development, save this form, and add the next. Continue until you have reached the required 40 hours or training.
+          </p>
+        </template>
       </v-col>
     </v-row>
-    <v-form ref="professionalDevelopmentForm">
+    <v-form ref="professionalDevelopmentForm" class="mt-6">
       <v-row>
         <v-col>
           <h3>Course or workshop information</h3>
@@ -251,11 +262,44 @@
   <!-- List view -->
   <div v-else>
     <v-row>
-      <v-col sm="12" md="10" lg="8" xl="6">
-        <p>
-          You must have completed at least 40 hours of professional development relevant to early childhood education. Add the courses or workshops you’ve
-          taken.
-        </p>
+      <v-col>
+        <p>To meet the professional development requirement, you need to have completed 40 hours of training.</p>
+        <br />
+        <p><strong>What courses or workshops are eligible?</strong></p>
+        <br />
+        <p>Each course or workshop must:</p>
+        <br />
+        <ul class="ml-10">
+          <li>Be related to early childhood education</li>
+          <li v-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active'">
+            Have been completed within the dates of your current certificate:
+            <strong>
+              {{ formatDate(certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy") }}
+            </strong>
+            to
+            <strong>
+              {{ formatDate(certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy") }}
+            </strong>
+          </li>
+          <li v-else-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'">
+            Have been completed within the last 5 years
+          </li>
+        </ul>
+      </v-col>
+    </v-row>
+    <v-row v-if="totalHours < hoursRequired">
+      <v-col>
+        <Callout type="warning" title="Adding your courses and/or workshops">
+          <p class="mt-4">
+            You will be asked to provide details for
+            <strong>each course or workshop</strong>
+            . If you have taken multiple courses or workshops, please add them separately.
+          </p>
+          <br />
+          <p>As you add entries, the number of hours will increase in the progress bar, up to the 40 hours required.</p>
+          <br />
+          <p>There is no need to add courses or workshops past the 40 hour requirement.</p>
+        </Callout>
       </v-col>
     </v-row>
     <v-row>
@@ -280,12 +324,10 @@
 
     <v-row>
       <v-col sm="12" md="10" lg="8" xl="6">
-        <p v-if="totalHours >= hoursRequired">
-          No additional professional development may be added. You provided the required 40 hours. After you submit your application, the registry will review
-          and verify the professional development added. If needed, the registry will contact you for additional information.
+        <p v-if="isDisabled" class="mb-4">
+          You have provided the required number of hours. No more courses can be added. If needed, we will follow up for more info.
         </p>
         <v-btn
-          v-else
           prepend-icon="mdi-plus"
           rounded="lg"
           color="primary"
@@ -319,6 +361,7 @@ import type { VForm, VInput } from "vuetify/components";
 
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
+import Callout from "@/components/Callout.vue";
 import type { FileItem } from "@/components/UploadFileItem.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
@@ -349,7 +392,7 @@ export interface ProfessionalDevelopmentExtended extends Components.Schemas.Prof
 
 export default defineComponent({
   name: "EceProfessionalDevelopment",
-  components: { ProgressBar, FileUploader, ProfessionalDevelopmentCard, EceDateInput, EceTextField },
+  components: { ProgressBar, FileUploader, ProfessionalDevelopmentCard, EceDateInput, EceTextField, Callout },
   props: {
     modelValue: {
       type: Object as () => ProfessionalDevelopmentExtended[],
@@ -405,7 +448,7 @@ export default defineComponent({
   computed: {
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
     isDisabled() {
-      return false;
+      return this.totalHours >= this.hoursRequired;
     },
     totalHours() {
       return this.modelValue.reduce((acc, professionalDevelopment) => {

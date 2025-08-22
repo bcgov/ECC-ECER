@@ -93,7 +93,10 @@
                 <li>alone and/or as the primary educator in licensed child care programs for children 3 to 5 years of age, and/or</li>
                 <li>alongside an Infant and Toddler Educator in licensed programs of children under 36 months</li>
               </ul>
-              <p>Once you get 500 hours of work experience observed by a Canadian-certified ECE, you can apply to upgrade to an ECE Five Year certificate.</p>
+              <p>
+                Once you get 500 hours of work experience observed by a Canadian-certified ECE, you can apply to upgrade to an ECE Five Year with Infant and
+                Toddler Educator (ITE) and Special Needs Educator (SNE).
+              </p>
             </Callout>
             <Callout
               v-else-if="has500HoursWorkExperience === 'true' && highestCertificationType === CertificationType.FiveYearCertificate"
