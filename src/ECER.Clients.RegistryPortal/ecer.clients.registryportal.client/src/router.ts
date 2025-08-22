@@ -295,6 +295,12 @@ const router = createRouter({
       name: "lookup-certification",
     },
     {
+      path: "/icra/eligibility",
+      component: () => import("./components/pages/IcraEligibility.vue"),
+      meta: { requiresAuth: true, requiresICRAFeature: true, requiresVerification: true },
+      name: "icra-eligibility",
+    },
+    {
       path: "/lookup/certification/record",
       component: () => import("./components/LookupCertificationRecord.vue"),
       meta: { requiresAuth: false },
