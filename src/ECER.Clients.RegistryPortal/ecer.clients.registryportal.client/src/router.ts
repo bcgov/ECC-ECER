@@ -229,6 +229,12 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresVerification: true },
     },
     {
+      path: "/icra/eligibility/requirements",
+      name: "icra-eligibility-requirements",
+      component: () => import("./components/IcraEligibilityRequirements.vue"),
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
       path: "/new-user",
       component: () => import("./components/pages/NewUser.vue"),
       meta: { requiresAuth: true },
