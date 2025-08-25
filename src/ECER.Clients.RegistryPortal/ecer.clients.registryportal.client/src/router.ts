@@ -22,10 +22,10 @@ const router = createRouter({
       name: "dashboard",
     },
     {
-      path: "/my-other-certifications",
+      path: "/my-certifications",
       component: () => import("./components/pages/Certifications.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
-      name: "my-other-certifications",
+      name: "my-certifications",
     },
     {
       path: "/certificate-terms-and-conditions/:certificationId",
