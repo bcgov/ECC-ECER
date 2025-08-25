@@ -216,6 +216,7 @@ const router = createRouter({
       component: () => import("./components/Declaration.vue"),
       meta: { requiresAuth: true },
       name: "declaration",
+      props: (route) => ({ stream: route.query.stream }),
     },
     {
       path: "/application/consent-required",

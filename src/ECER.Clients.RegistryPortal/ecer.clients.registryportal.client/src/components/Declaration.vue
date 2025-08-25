@@ -1,5 +1,7 @@
 <template>
   <v-container>
+    {{ "my stream is" }}
+    {{ stream }}
     <Breadcrumb />
     <h1 class="mb-5">Declaration and consent</h1>
     <p>You must read and agree to the following to apply for certification.</p>
@@ -39,7 +41,7 @@
 
 <script lang="ts">
 import { DateTime } from "luxon";
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import type { VForm } from "vuetify/components";
 import { getProfile } from "@/api/profile";
 import Breadcrumb from "@/components/Breadcrumb.vue";
@@ -54,6 +56,8 @@ import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 import { useRouter } from "vue-router";
+
+export type StreamType = "Eligibility" | "Application";
 
 export default defineComponent({
   name: "Declaration",
@@ -74,6 +78,13 @@ export default defineComponent({
     }
 
     return { Rules, userStore, applicationStore, alertStore, loadingStore, configStore, router };
+  },
+  props: {
+    stream: {
+      type: String as PropType<StreamType>,
+      required: false,
+      default: "Application",
+    },
   },
   data() {
     return {
@@ -98,6 +109,15 @@ export default defineComponent({
         return;
       }
 
+      if (this.stream === "Application") {
+        await this.applicationPath();
+      } else if (this.stream === "Eligibility") {
+        await this.eligibilityPath();
+      } else {
+        console.warn("unknown stream type");
+      }
+    },
+    async applicationPath() {
       this.applicationStore.$patch({ draftApplication: { signedDate: this.date } });
 
       let response = await this.applicationStore.upsertDraftApplication();
@@ -105,6 +125,9 @@ export default defineComponent({
       if (response) {
         this.router.push("/application");
       }
+    },
+    async eligibilityPath() {
+      console.log("eligibility path");
     },
   },
 });
