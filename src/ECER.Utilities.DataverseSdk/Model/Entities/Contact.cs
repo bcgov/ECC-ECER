@@ -715,6 +715,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_hascurrentcertificateconditionsName = "ecer_hascurrentcertificateconditionsname";
 			public const string ecer_HasProvidedID = "ecer_hasprovidedid";
 			public const string ecer_hasprovidedidName = "ecer_hasprovidedidname";
+			public const string ecer_icraeligibilityassessment_ApplicantId = "ecer_icraeligibilityassessment_ApplicantId";
 			public const string ecer_idverificationdecision = "ecer_idverificationdecision";
 			public const string ecer_idverificationdecisionName = "ecer_idverificationdecisionname";
 			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
@@ -8091,6 +8092,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_GuardianReference>("ecer_guardianreference_Applicantid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_icraeligibilityassessment_ApplicantId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_icraeligibilityassessment_ApplicantId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment> ecer_icraeligibilityassessment_ApplicantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment>("ecer_icraeligibilityassessment_ApplicantId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment>("ecer_icraeligibilityassessment_ApplicantId", null, value);
 			}
 		}
 		
