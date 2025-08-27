@@ -14,8 +14,9 @@ public record ICRAQuery
   public string? ByApplicantId { get; set; }
 }
 
-public record ICRAEligibility(string? Id)
+public record ICRAEligibility()
 {
+  public string? Id { get; set; }
   public string ApplicantId { get; set; } = string.Empty;
   public ICRAStatus Status { get; set; }
 }

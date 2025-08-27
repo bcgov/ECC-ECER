@@ -7,8 +7,6 @@ internal class ICRAEligibilityMapper : Profile
 {
   public ICRAEligibilityMapper()
   {
-
     CreateMap<Contract.ICRA.ICRAEligibility, ICRAEligibility>().ReverseMap();
-
   }
 }
