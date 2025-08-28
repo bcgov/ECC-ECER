@@ -45,5 +45,6 @@ describe("Labour Mobility - Level 2 Certification Transfer Application for Nova 
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEOneYearWorkflow(provinceName, certificationName);
+    cy.resetBrowserState();
   });
 });

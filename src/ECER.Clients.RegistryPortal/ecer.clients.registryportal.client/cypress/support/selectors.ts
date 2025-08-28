@@ -2,6 +2,7 @@ export default {
   dashboard: {
     applyNowButton: 'button[id="btnApplyNow"]',
     transferButton: 'button[id="btnTransfer"]',
+    multiApplyButton: 'button[id="btnNeedOtherOptions"]',
     renew: 'button[id="btnRenew"]',
   },
   navigationBar: {
@@ -10,6 +11,7 @@ export default {
     toggleMenuButton: 'button[id="btnToggleMenu"]',
   },
   certificationType: {
+    multIEceIteSneButton: 'button[id="btnApplyNowIteSne"]',
     eceAssistantRadio: 'input[value="EceAssistant"]',
     eceFiveYearRadio: 'input[value="FiveYears"]',
     eceOneYearRadio: 'input[value="OneYear"]',

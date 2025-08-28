@@ -9,13 +9,14 @@ beforeEach(() => {
 
   cy.viewport(width, height);
 
-  // Visit login and wait for ready
-  cy.visit("/login");
-  cy.document().its("readyState").should("eq", "complete");
+
 
   //reset user state
   cy.resetUserState();
-
+  
+// Visit login and wait for ready
+cy.visit("/login");
+cy.document().its("readyState").should("eq", "complete");
   //login
   // cache under the key "bcsc-user"
   cy.session(

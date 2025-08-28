@@ -47,5 +47,6 @@ describe("Labour Mobility - ECE Level 3 Certification Transfer Application for A
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEFiveYearWorkflow(provinceName, certificationName);
+    cy.resetBrowserState();
   });
 });

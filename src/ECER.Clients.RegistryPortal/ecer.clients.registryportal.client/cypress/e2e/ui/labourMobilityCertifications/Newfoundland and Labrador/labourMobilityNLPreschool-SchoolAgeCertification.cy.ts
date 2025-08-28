@@ -41,5 +41,6 @@ describe("Labour Mobility - Preschool or School Age Orientation Course Certifica
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEAssistantWorkflow(provinceName, certificationName);
+    Cypress.session.clearAllSavedSessions();
   });
 });

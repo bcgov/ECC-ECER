@@ -3,3 +3,4 @@
 .vscode
 src/key-*.xml
 .env
+src/ECER.Clients.RegistryPortal/ecer.clients.registryportal.client/package.json

@@ -10,8 +10,8 @@ describe("Renew Active ECE 5 Year Certificate Application", () => {
     cy.get(selectors.dashboard.renew).click();
 
     /** Application Requirements */
-    cy.get(selectors.certificationType.iteCheckBox).uncheck({ force: true });
-    cy.get(selectors.certificationType.sneCheckBox).uncheck({ force: true });
+    // cy.get(selectors.certificationType.iteCheckBox).uncheck({ force: true });
+    // cy.get(selectors.certificationType.sneCheckBox).uncheck({ force: true });
     cy.get(selectors.applicationRequirements.applyNowButton).click();
 
     /** Declaration */
@@ -92,5 +92,6 @@ describe("Renew Active ECE 5 Year Certificate Application", () => {
     cy.document().its("readyState").should("eq", "complete");
     cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
     cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
+    cy.resetBrowserState();
   });
 });
