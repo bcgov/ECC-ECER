@@ -96,6 +96,5 @@ describe("Renew Expired ECE 5 Year Certificate Application", () => {
     cy.document().its("readyState").should("eq", "complete");
     cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
     cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
-    cy.resetBrowserState();
   });
 });
