@@ -82,7 +82,7 @@
   </v-row>
   <v-row>
     <v-col cols="12">
-      <SpecializedCertificationOptions :pre-selected="['Ite', 'Sne']" />
+      <SpecializedCertificationOptions />
     </v-col>
   </v-row>
 </template>

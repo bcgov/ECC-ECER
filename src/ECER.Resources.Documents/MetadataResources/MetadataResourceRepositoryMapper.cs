@@ -78,5 +78,10 @@ internal class MetadataResourceRepositoryMapper : Profile
         .ForMember(d => d.SingleText, opts => opts.MapFrom(s => s.ecer_SingleLineofText))
         .ForMember(d => d.MultiText, opts => opts.MapFrom(s => s.ecer_MultipleLineofText))
         .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<bcgov_config, DynamicsConfig>(MemberList.Source)
+        .ForCtorParam(nameof(DynamicsConfig.Key), opts => opts.MapFrom(s => s.bcgov_Key))
+        .ForCtorParam(nameof(DynamicsConfig.Value), opts => opts.MapFrom(s => s.bcgov_Value))
+        .ValidateMemberList(MemberList.Destination);
   }
 }

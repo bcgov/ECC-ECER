@@ -17,7 +17,7 @@
     </template>
 
     <!-- Labor Mobility -->
-    <template v-if="applicationStore.isDraftApplicationLaborMobility">
+    <template v-else-if="applicationStore.isDraftApplicationLaborMobility">
       <ECEAssistantLaborMobilityRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
       <ECEOneYearLaborMobilityRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" />
       <ECEFiveYearLaborMobilityRequirements
@@ -145,6 +145,9 @@ export default defineComponent({
             draftApplication: { certificationTypes: ["FiveYears", ...this.specializationSelection] },
           });
         }
+        this.router.push({ name: "declaration" });
+      } else if (this.applicationStore.isDraftApplicationRenewal) {
+        //for renewal applications we do not need to perform any additional checks. The certification types should be correctly set in the draft application store.
         this.router.push({ name: "declaration" });
       } else {
         let currentTypes = this.applicationStore.draftApplication.certificationTypes || [];

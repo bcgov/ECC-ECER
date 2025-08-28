@@ -8,7 +8,7 @@
   <v-row>
     <v-col cols="12">
       <ECEHeader title="Education for Infant and Toddler Educator (ITE)"></ECEHeader>
-      <p>You must have completed an infant and toddler educator training program.</p>
+      <p>You must have completed an infant and toddler educator program.</p>
       <br />
       <p>The program must be either:</p>
       <br />

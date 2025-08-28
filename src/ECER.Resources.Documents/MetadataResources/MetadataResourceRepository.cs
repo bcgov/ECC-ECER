@@ -64,7 +64,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
   public async Task<IEnumerable<CertificationComparison>> QueryCertificationComparisons(CertificationComparisonQuery query, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
-    var certificationComparisons = context.ecer_certificationcomparisonSet;
+    var certificationComparisons = context.ecer_certificationcomparisonSet.Where(r=>r.StateCode==ecer_certificationcomparison_statecode.Active);
     var results = context.From(certificationComparisons)
      .Join()
      .Include(a => a.ecer_certificationcomparisontransferringcertificate)
@@ -93,7 +93,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
       context.bcgov_DocumentUrlSet.Single(c => c.bcgov_DocumentUrlId == Guid.Parse(fileId));
 
     if (documentUrl == null) throw new InvalidOperationException($"documentUrl '{fileId}' not found");
-    if(documentUrl.ecer_DownloadDate == null)
+    if (documentUrl.ecer_DownloadDate == null)
     {
       documentUrl.ecer_DownloadDate = DateTime.UtcNow;
       context.UpdateObject(documentUrl);
@@ -111,5 +111,13 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
       .Execute();
 
     return mapper.Map<IEnumerable<DefaultContent>>(results)!.ToList();
+  }
+
+  public async Task<IEnumerable<DynamicsConfig>> QueryDynamicsConfiguration(DynamicsConfigQuery query, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var dynamicsConfig = context.bcgov_configSet.Where(config => config.bcgov_Group == "Portal" && config.StateCode == bcgov_config_statecode.Active);
+
+    return mapper.Map<IEnumerable<DynamicsConfig>>(dynamicsConfig)!.ToList();
   }
 }

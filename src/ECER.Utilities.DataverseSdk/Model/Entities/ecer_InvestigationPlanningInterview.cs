@@ -69,9 +69,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_InterviewOn = "ecer_interviewon";
 			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
+			public const string ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_InvestigationPlanni = "ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_InvestigationPlanni";
 			public const string ecer_investigationplanninginterview_Investigat = "ecer_investigationplanninginterview_Investigat";
 			public const string ecer_InvestigationPlanningInterviewId = "ecer_investigationplanninginterviewid";
 			public const string Id = "ecer_investigationplanninginterviewid";
+			public const string ecer_InvestigationPlanningInvolve = "ecer_investigationplanninginvolve";
+			public const string ecer_InvestigationPlanningInvolveName = "ecer_investigationplanninginvolvename";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
 			public const string ecer_Role = "ecer_role";
@@ -416,6 +419,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_InvestigationPlanningInterviewId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationplanninginvolve")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_InvestigationPlanningInvolve
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_investigationplanninginvolve");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_investigationplanninginvolve", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationplanninginvolvename")]
+		public string ecer_InvestigationPlanningInvolveName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_investigationplanninginvolve"))
+				{
+					return this.FormattedValues["ecer_investigationplanninginvolve"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -877,6 +912,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_InvestigationInterviewI", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_InvestigationPlanni
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigationplanninginvolve")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_Invest" +
+			"igationPlanni")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInvolvedPerson ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_InvestigationPlanni
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInvolvedPerson>("ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_Invest" +
+						"igationPlanni", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInvolvedPerson>("ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_Invest" +
+						"igationPlanni", null, value);
 			}
 		}
 		
