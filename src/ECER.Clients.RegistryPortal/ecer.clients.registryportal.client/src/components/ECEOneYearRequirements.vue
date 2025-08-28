@@ -12,7 +12,7 @@
   <v-row>
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
-      <p>You must have completed a basic early childhood education training program.</p>
+      <p>You must have completed a basic early childhood education program.</p>
       <br />
       <p>The program must be either:</p>
       <br />

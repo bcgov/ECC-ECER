@@ -7,6 +7,7 @@ import { useCertificationStore } from "./store/certification";
 import { useFormStore } from "./store/form";
 import { useMessageStore } from "./store/message";
 import { useWizardStore } from "./store/wizard";
+import { useConfigStore } from "./store/config";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -228,6 +229,12 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresVerification: true },
     },
     {
+      path: "/icra/eligibility/requirements",
+      name: "icra-eligibility-requirements",
+      component: () => import("./components/IcraEligibilityRequirements.vue"),
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
       path: "/new-user",
       component: () => import("./components/pages/NewUser.vue"),
       meta: { requiresAuth: true },
@@ -286,6 +293,12 @@ const router = createRouter({
       component: () => import("./components/LookupCertification.vue"),
       meta: { requiresAuth: false },
       name: "lookup-certification",
+    },
+    {
+      path: "/icra/eligibility",
+      component: () => import("./components/pages/IcraEligibility.vue"),
+      meta: { requiresAuth: true, requiresICRAFeature: true, requiresVerification: true },
+      name: "icra-eligibility",
     },
     {
       path: "/lookup/certification/record",
@@ -386,6 +399,15 @@ router.beforeEach((to, _, next) => {
   const applicationStore = useApplicationStore();
 
   if (to.path === "/application" && applicationStore.applicationStatus === "Draft" && applicationStore.applicationOrigin === "Manual") {
+    next({ path: "/" });
+  } else next();
+});
+
+// Guard to prevent users from accessing ICRA routes if the flag is not enabled
+router.beforeEach((to, _, next) => {
+  const configStore = useConfigStore();
+  if (to.meta.requiresICRAFeature && !configStore.applicationConfiguration.icraFeatureEnabled) {
+    console.warn("ICRA feature is not enabled, redirecting to home page.");
     next({ path: "/" });
   } else next();
 });

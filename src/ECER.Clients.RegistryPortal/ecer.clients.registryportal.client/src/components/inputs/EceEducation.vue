@@ -4,7 +4,8 @@
       <h1>{{ clientId ? "Edit" : "Add" }} education</h1>
       <br />
       <p>
-        You will need to request an official transcript from your educational institution for this course or program. It must be sent to us directly from them.
+        You will need to request an official transcript from your educational institution for this {{ isDraftApplicationAssistant ? "course" : "program" }}. It
+        must be sent to us directly from them.
       </p>
       <br />
       <p>When we receive your transcript, we will:</p>
@@ -112,7 +113,8 @@
 
         <v-row>
           <v-col>
-            <h3>What program or course did you take?</h3>
+            <h3 v-if="isDraftApplicationAssistant">What course did you take?</h3>
+            <h3 v-else>What program did you take?</h3>
           </v-col>
         </v-row>
         <v-row>
@@ -120,8 +122,8 @@
             <EceTextField
               id="txtProgramName"
               v-model="program"
-              :rules="[Rules.required('Enter the name of your program or course')]"
-              label="Name of program or course"
+              :rules="[Rules.required(`Enter the name of your ${isDraftApplicationAssistant ? 'course' : 'program'}`)]"
+              :label="`Name of ${isDraftApplicationAssistant ? 'course' : 'program'}`"
               maxlength="100"
             ></EceTextField>
           </v-col>
@@ -139,7 +141,7 @@
                   Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'Start date must be within the last 5 years'),
                 ),
               ]"
-              label="Start date of program or course"
+              :label="`Start date of ${isDraftApplicationAssistant ? 'course' : 'program'}`"
               maxlength="50"
               :max="today"
             ></EceDateInput>
@@ -159,7 +161,7 @@
                   Rules.dateRuleRange(applicationStore.draftApplication.createdOn!, 5, 'End date must be within the last 5 years'),
                 ),
               ]"
-              label="End date of program or course"
+              :label="`End date of ${isDraftApplicationAssistant ? 'course' : 'program'}`"
               maxlength="50"
               :max="today"
             ></EceDateInput>
@@ -257,8 +259,8 @@
               <callout type="warning">
                 <h3>You will need to provide supporting documents as part of your application.</h3>
                 <p class="mt-3">
-                  The ECE Registry does not recognize the program or course from the educational institution you entered. We will need additional information to
-                  assess if your education is considered equivalent.
+                  The ECE Registry does not recognize the {{ isDraftApplicationAssistant ? "course" : "program" }} from the educational institution you entered.
+                  We will need additional information to assess if your education is considered equivalent.
                 </p>
                 <h3 class="mt-3">
                   You may continue your application. After you submit, you can indicate how you will provide supporting documents in the application summary
@@ -324,8 +326,8 @@
               <div class="d-flex flex-column ga-3">
                 <h3>Comprehensive Report</h3>
                 <p>
-                  You will need to request a Evaluation Report from BCIT’s International Credential Evaluation Service. This is needed for any program or course
-                  completed outside of Canada.
+                  You will need to request a Evaluation Report from BCIT’s International Credential Evaluation Service. This is needed for any
+                  {{ isDraftApplicationAssistant ? "course" : "program" }} completed outside of Canada.
                 </p>
                 <p>
                   You may be eligible for a fee waiver to cover the costs of the report.
@@ -377,7 +379,7 @@
             @click="handleAddEducation"
             :loading="loadingStore.isLoading('draftapplication_put')"
           >
-            Add education
+            {{ isDraftApplicationAssistant ? "Add course" : "Add program" }}
           </v-btn>
         </v-row>
       </v-col>
@@ -681,10 +683,10 @@ export default defineComponent({
       this.school = educationData.education.educationalInstitutionName ?? "";
       this.program = educationData.education.programName ?? "";
       this.campusLocation = educationData.education.campusLocation ?? "";
-      (this.studentFirstName = educationData.education.studentFirstName ?? null),
+      ((this.studentFirstName = educationData.education.studentFirstName ?? null),
         (this.studentMiddleName = educationData.education.studentMiddleName ?? null),
         (this.studentLastName = educationData.education.studentLastName ?? ""),
-        (this.studentNumber = educationData.education.studentNumber ?? "");
+        (this.studentNumber = educationData.education.studentNumber ?? ""));
       this.isNameUnverified = educationData.education.isNameUnverified ?? false;
       this.startYear = formatDate(educationData.education.startDate || "") ?? "";
       this.endYear = formatDate(educationData.education.endDate || "") ?? "";

@@ -138,6 +138,7 @@ public enum ApplicationStatus
   Ready,
   InProgress,
   PendingQueue,
+  PendingPSPConsultationNeeded,
   ReconsiderationDecision,
   AppealDecision
 }
