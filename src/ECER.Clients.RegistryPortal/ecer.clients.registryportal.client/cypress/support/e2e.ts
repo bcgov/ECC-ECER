@@ -1,3 +1,4 @@
+import cypress from "cypress";
 import "./commands";
 import "./labour-mobility-commands";
 
@@ -9,10 +10,11 @@ beforeEach(() => {
 
   cy.viewport(width, height);
 
+  //Clear saved session if there is a retry
   if (Cypress.currentRetry > 0) {
     cy.log("retry count: " + Cypress.currentRetry);
-    cy.log("Resetting browser state in case session state is stale");
-    cy.resetBrowserState();
+    cy.log("Resetting browser state in case session state is stale");  
+    Cypress.session.clearAllSavedSessions();
   }
  
 
