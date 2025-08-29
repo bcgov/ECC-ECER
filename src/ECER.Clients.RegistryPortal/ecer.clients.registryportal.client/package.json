@@ -25,7 +25,7 @@
     "@vueuse/core": "^13.6.0",
     "axios": "^1.11.0",
     "lodash": "^4.17.21",
-    "luxon": "^3.6.1",
+    "luxon": "^3.7.1",
     "oidc-client-ts": "3.3.0",
     "openapi-client-axios": "^7.6.0",
     "pinia": "^3.0.3",
@@ -76,5 +76,5 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
-  }
+  }  
 }

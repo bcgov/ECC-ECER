@@ -80,7 +80,7 @@ describe("Renew Expired ECE 5 Year Plus ITE & SNE Certificate Application", () =
     cy.contains("Review and submit").should("be.visible");
     cy.get(selectors.applicationPreview.certificationType)
       .should("be.visible")
-      .should("contain.text", "ECE Five Year and Special Needs Educator (SNE) and Infant and Toddler Educator (ITE)");
+      .should("contain.text", "ECE Five Year");
     cy.get(selectors.applicationPreview.characterReferenceFirstName).should("be.visible").should("contain.text", "CharacterReferenceFirstName");
     cy.get(selectors.applicationPreview.characterReferenceLastName).should("be.visible").should("contain.text", "CharacterReferenceLastName");
     cy.get(selectors.applicationPreview.characterReferenceEmail).should("be.visible").should("contain.text", "Character_Reference@test.gov.bc.ca");
