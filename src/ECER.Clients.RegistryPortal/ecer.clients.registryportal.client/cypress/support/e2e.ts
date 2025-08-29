@@ -9,7 +9,12 @@ beforeEach(() => {
 
   cy.viewport(width, height);
 
-
+  if (Cypress.currentRetry > 0) {
+    cy.log("retry count: " + Cypress.currentRetry);
+    cy.log("Resetting browser state in case session state is stale");
+    cy.resetBrowserState();
+  }
+ 
 
   //reset user state
   cy.resetUserState();

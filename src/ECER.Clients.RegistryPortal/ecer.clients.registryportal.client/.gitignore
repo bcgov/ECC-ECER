@@ -28,7 +28,6 @@ cypress.env.json
 *.njsproj
 *.sln
 *.sw?
-
 *.env
 
 *storybook.log

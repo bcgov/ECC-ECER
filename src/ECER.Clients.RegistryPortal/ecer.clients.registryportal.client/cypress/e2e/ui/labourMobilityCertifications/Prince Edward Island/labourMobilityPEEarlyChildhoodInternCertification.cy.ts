@@ -41,6 +41,5 @@ describe("Labour Mobility - Early Childhood Intern Certification Transfer Applic
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEAssistantWorkflow(provinceName, certificationName);
-    cy.resetBrowserState();
   });
 });

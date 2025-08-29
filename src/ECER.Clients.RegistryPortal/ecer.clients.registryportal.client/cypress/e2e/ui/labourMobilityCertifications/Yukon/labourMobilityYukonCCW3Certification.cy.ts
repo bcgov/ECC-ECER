@@ -47,6 +47,5 @@ describe("Labour Mobility - Child Care Worker III Certification Transfer Applica
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEFiveYearWorkflow(provinceName, certificationName);
-    Cypress.session.clearAllSavedSessions();
   });
 });
