@@ -11,7 +11,6 @@ describe("Renew Expired ECE 5 Year Certificate Application", () => {
 
     /** Application Requirements */
     // cy.get(selectors.certificationType.iteCheckBox).uncheck({ force: true });
-    // cy.get(selectors.certificationType.sneCheckBox).uncheck({ force: true });
     cy.get(selectors.applicationRequirements.applyNowButton).click();
 
     /** Declaration */

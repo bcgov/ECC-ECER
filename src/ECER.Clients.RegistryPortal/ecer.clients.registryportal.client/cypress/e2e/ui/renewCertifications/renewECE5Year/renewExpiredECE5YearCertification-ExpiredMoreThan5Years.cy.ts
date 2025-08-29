@@ -10,8 +10,6 @@ describe("Renew Expired (for more than 5 Years) ECE 5 Year Certificate Applicati
     cy.get(selectors.dashboard.renew).click();
 
     /** Application Requirements */
-    // cy.get(selectors.certificationType.iteCheckBox).uncheck({ force: true });
-    // cy.get(selectors.certificationType.sneCheckBox).uncheck({ force: true });
     cy.get(selectors.applicationRequirements.applyNowButton).click();
 
     /** Declaration */

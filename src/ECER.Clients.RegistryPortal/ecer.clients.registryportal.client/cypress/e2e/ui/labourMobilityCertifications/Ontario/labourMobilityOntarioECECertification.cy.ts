@@ -45,6 +45,5 @@ describe("Labour Mobility - ECE Certification Transfer Application for Ontario",
     cy.get(selectors.applicationWizard.saveAndContinueButton).click();
 
     cy.ECEOneYearWorkflow(provinceName, certificationName);
-    Cypress.session.clearAllSavedSessions();
   });
 });

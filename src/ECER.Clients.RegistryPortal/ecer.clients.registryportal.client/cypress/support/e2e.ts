@@ -1,4 +1,3 @@
-import cypress from "cypress";
 import "./commands";
 import "./labour-mobility-commands";
 

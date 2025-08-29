@@ -11,7 +11,6 @@ describe("Renew Active ECE 5 Year Certificate Application", () => {
 
     /** Application Requirements */
     cy.get(selectors.certificationType.applyNowEceAssistantButton).click();
-    // cy.get(selectors.certificationType.sneCheckBox).uncheck({ force: true });
     cy.get(selectors.applicationRequirements.applyNowButton).click();
 
     /** Declaration */
