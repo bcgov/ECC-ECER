@@ -301,6 +301,18 @@ const router = createRouter({
       name: "icra-eligibility",
     },
     {
+      path: "/test",
+      component: () => import("./components/inputs/EceInternationalCertification.vue"),
+      meta: { requiresAuth: false, requiresICRAFeature: true },
+      name: "test",
+    },
+    {
+      path: "/test2",
+      component: () => import("./components/inputs/EceIcraWorkExperienceEligibility.vue"),
+      meta: { requiresAuth: false, requiresICRAFeature: true },
+      name: "test2",
+    },
+    {
       path: "/lookup/certification/record",
       component: () => import("./components/LookupCertificationRecord.vue"),
       meta: { requiresAuth: false },
