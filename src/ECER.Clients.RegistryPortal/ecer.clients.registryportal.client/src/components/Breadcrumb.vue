@@ -377,7 +377,6 @@ export default defineComponent({
             { title: "Requirements", disabled: true, href: "/icra/eligibility/requirements" },
           ];
 
-
         case "icra-eligibility":
           return [...this.baseItems, { title: "Apply with international certificate", disabled: true, href: "/icra/eligibility" }];
 

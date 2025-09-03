@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
 import type { Components } from "@/types/openapi";
-import type { ApplicationStage, ReferenceStage, RenewStage, Step, Wizard } from "@/types/wizard";
+import type { ApplicationStage, IcraEligibilityStage, ReferenceStage, RenewStage, Step, Wizard } from "@/types/wizard";
 import { AddressType } from "@/utils/constant";
 
 import { useOidcStore } from "./oidc";
@@ -36,11 +36,11 @@ export const useWizardStore = defineStore("wizard", {
     currentStepId(state): string {
       return this.steps[state.step - 1].id;
     },
-    currentStepStage(state): ApplicationStage | ReferenceStage | RenewStage {
+    currentStepStage(state): ApplicationStage | ReferenceStage | RenewStage | IcraEligibilityStage {
       return this.steps[state.step - 1].stage;
     },
     hasStep() {
-      return (step: ApplicationStage | ReferenceStage | RenewStage) => {
+      return (step: ApplicationStage | ReferenceStage | RenewStage | IcraEligibilityStage) => {
         return this.steps.some((s) => s.stage === step);
       };
     },
@@ -189,7 +189,7 @@ export const useWizardStore = defineStore("wizard", {
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };
     },
-    setCurrentStep(stage: ApplicationStage | ReferenceStage): void {
+    setCurrentStep(stage: ApplicationStage | ReferenceStage | IcraEligibilityStage): void {
       const item = Object.values(this.wizardConfig.steps).findIndex((step) => step.stage === stage) + 1;
       this.step = item;
       window.scrollTo({
