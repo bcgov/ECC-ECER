@@ -32,10 +32,8 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
     [Fact]
     public async Task SaveDraftIcraEligibility_AndGetById()
     {
-        var eligibilityId = Guid.NewGuid().ToString();
         var eligibility = new ICRAEligibility
         {
-            Id = eligibilityId,
             ApplicantId = this.Fixture.AuthenticatedBcscUser.Id.ToString(),
             Status = ICRAStatus.Draft
         };
@@ -43,24 +41,24 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
         var saveResponse = await Host.Scenario(_ =>
         {
             _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-            _.Put.Json(new SaveDraftICRAEligibilityRequest(eligibility)).ToUrl($"/api/icra/{eligibilityId}");
+            _.Put.Json(new SaveDraftICRAEligibilityRequest(eligibility)).ToUrl($"/api/icra/");
             _.StatusCodeShouldBeOk();
         });
 
         var savedEligibility = (await saveResponse.ReadAsJsonAsync<DraftICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
-        savedEligibility.Id.ShouldBe(eligibilityId);
+        savedEligibility.Id.ShouldNotBeNull();
         savedEligibility.Status.ShouldBe(ICRAStatus.Draft);
 
         var getResponse = await Host.Scenario(_ =>
         {
             _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-            _.Get.Url($"/api/icra/{eligibilityId}");
+            _.Get.Url($"/api/icra/{savedEligibility.Id}");
             _.StatusCodeShouldBeOk();
         });
 
         var eligibilities = await getResponse.ReadAsJsonAsync<IEnumerable<ICRAEligibility>>();
         eligibilities.ShouldNotBeNull();
-        eligibilities.ShouldContain(e => e.Id == eligibilityId);
+        eligibilities.ShouldContain(e => e.Id == savedEligibility.Id);
     }
 
     [Fact]
