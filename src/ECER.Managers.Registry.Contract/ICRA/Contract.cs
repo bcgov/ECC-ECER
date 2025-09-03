@@ -8,6 +8,7 @@ public record ICRAEligibilitiesQuery : IRequest<ICRAEligibilitiesQueryResults>
 {
   public string? ById { get; set; }
   public string? ByApplicantId { get; set; }
+  public string? PortalStage { get; set; }
   public IEnumerable<ICRAStatus>? ByStatus { get; set; }
 }
 
