@@ -17,6 +17,7 @@ public record ICRAEligibilitiesQueryResults(IEnumerable<ICRAEligibility> Items);
 public record ICRAEligibility()
 {
   public string? Id { get; set; }
+  public string? PortalStage { get; set; }
   public string ApplicantId { get; set; } = string.Empty;
   public ICRAStatus Status { get; set; }
 }
