@@ -47,9 +47,7 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-btn class="mt-6" rounded="lg" color="primary" @click="router.push({ name: 'declaration', query: { stream: 'Eligibility' } })" id="btnContinue">
-          Continue (not implemented)
-        </v-btn>
+        <v-btn class="mt-6" rounded="lg" color="primary" @click="router.push({ name: 'icra-eligibility-declaration' })" id="btnContinue">Continue</v-btn>
       </v-col>
     </v-row>
   </v-container>
