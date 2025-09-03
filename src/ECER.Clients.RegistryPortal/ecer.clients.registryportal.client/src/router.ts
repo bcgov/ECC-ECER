@@ -216,7 +216,14 @@ const router = createRouter({
       component: () => import("./components/Declaration.vue"),
       meta: { requiresAuth: true },
       name: "declaration",
-      props: (route) => ({ stream: route.query.stream }),
+      props: { stream: "Application" },
+    },
+    {
+      path: "/icra/eligibility/declaration",
+      component: () => import("./components/Declaration.vue"),
+      meta: { requiresAuth: true },
+      name: "icra-eligibility-declaration",
+      props: { stream: "Eligibility" },
     },
     {
       path: "/application/consent-required",
