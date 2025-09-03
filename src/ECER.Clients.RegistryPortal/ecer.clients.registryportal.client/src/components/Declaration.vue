@@ -1,7 +1,5 @@
 <template>
   <v-container>
-    {{ "my stream is" }}
-    {{ stream }}
     <Breadcrumb />
     <h1 class="mb-5">Declaration and consent</h1>
     <p>You must read and agree to the following to apply for certification.</p>
