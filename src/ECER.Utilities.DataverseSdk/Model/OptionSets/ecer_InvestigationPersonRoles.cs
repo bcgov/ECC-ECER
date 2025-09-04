@@ -54,6 +54,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		PrivateCitizen = 621870015,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Registrant = 621870018,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Relative = 621870016,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
