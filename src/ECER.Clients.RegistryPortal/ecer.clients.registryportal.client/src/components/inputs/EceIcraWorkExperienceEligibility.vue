@@ -1,7 +1,6 @@
 <template>
   <!-- add view -->
   <div v-if="icraWorkExperienceEligibilityFormMode === 'edit' || icraWorkExperienceEligibilityFormMode === 'add'">
-    <p>{{ icraWorkExperienceEligibilityFormMode }}</p>
     <ECEHeader title="Employment experience references" />
     <br />
     <p>
@@ -86,7 +85,7 @@
         <p>If your employment experience was completed at multiple locations:</p>
         <ul class="ml-10">
           <li>Provide a reference from each person</li>
-          <li>You may enter up to 6 references</li>
+          <li>{{ `You may enter up to ${MAX_NUM_REFERENCES} references` }}</li>
         </ul>
       </v-col>
     </v-row>
@@ -107,7 +106,7 @@
     </v-row>
     <!-- this prevents form from proceeding if rules are not met -->
     <v-input class="mt-6" :model-value="modelValue" :rules="[]" auto-hide="auto"></v-input>
-    <v-row v-if="showAddInternationalCertificationButton">
+    <v-row v-if="showAddWorkExperienceEligibilityButton">
       <v-col sm="12" md="10" lg="8" xl="6">
         <v-btn
           id="btnAddInternationalCertification"
@@ -125,13 +124,11 @@
     <!-- callouts and optional messages -->
     <v-row>
       <v-col>
-        <p v-if="modelValue?.length < 4">
-          No additional certifications may be added. You provided the required certifications. After you submit your application, the Registry will review and
-          verify your certifications and contact you for additional information if needed.
-        </p>
-        <Callout v-if="modelValue?.length >= 4" type="warning" title="Max limit reached">
-          You have reached the limit of 4 certifications. You can proceed to submit your application. The Registry will contact you to provide additional
-          certifications if needed.
+        <Callout v-if="modelValue?.length >= MAX_NUM_REFERENCES" type="warning" title="Max limit reached">
+          {{
+            `You have reached the limit of ${MAX_NUM_REFERENCES} employment experience references. You can still proceed to submit your application. The registry will contact you to
+          provide additional references.`
+          }}
         </Callout>
       </v-col>
     </v-row>
@@ -139,15 +136,13 @@
 </template>
 
 <script lang="ts">
-import { DateTime } from "luxon";
 import { mapWritableState } from "pinia";
-import { defineComponent, type Component } from "vue";
+import { defineComponent } from "vue";
 import type { VForm, VInput } from "vuetify/components";
 
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import Callout from "@/components/Callout.vue";
-import type { FileItem } from "@/components/UploadFileItem.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
@@ -155,22 +150,18 @@ import { useWizardStore } from "@/store/wizard";
 import { useLoadingStore } from "@/store/loading";
 import { useConfigStore } from "@/store/config";
 import { useUserStore } from "@/store/user";
-import type { Components, Country } from "@/types/openapi";
+import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
-import { parseHumanFileSize, removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
+import { removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
 
 import ECEHeader from "../ECEHeader.vue";
 import FileUploader from "../FileUploader.vue";
 import EceIcraWorkExperienceEligibilityCard from "../EceIcraWorkExperienceEligibilityCard.vue";
 import ProgressBar from "../ProgressBar.vue";
-import type { CpuInfo } from "os";
 
-interface RadioOptions {
-  value: any;
-  label: string;
-}
+const MAX_NUM_REFERENCES = 6;
 
 interface IcraWorkExperienceEligibilityData extends Components.Schemas.WorkExperienceReference {
   //other fields
@@ -185,76 +176,7 @@ export default defineComponent({
     modelValue2: {
       type: Object as () => Components.Schemas.WorkExperienceReference[],
       required: false, //to switch to true
-      default: [
-        // {
-        //   certificationStatus: "expired",
-        //   certificationTitle: "certificate one",
-        //   country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-        //   expiryDate: "2025-08-20",
-        //   firstName: "one",
-        //   id: "1",
-        //   isNameUnverified: true,
-        //   issueDate: "2025-08-12",
-        //   lastName: "three",
-        //   middleName: "two",
-        //   regulatoryAuthorityEmail: "test@gmail.com",
-        //   regulatoryAuthorityName: "one",
-        //   regulatoryAuthorityPhoneNumber: "1231424124",
-        //   regulatoryAuthorityValidation: "online verification",
-        //   regulatoryAuthorityWebsite: "https://www.google.com",
-        // },
-        // {
-        //   certificationStatus: "expired",
-        //   certificationTitle: "certificate two",
-        //   country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-        //   expiryDate: "2025-08-20",
-        //   firstName: "one",
-        //   id: "2",
-        //   isNameUnverified: true,
-        //   issueDate: "2025-08-12",
-        //   lastName: "three",
-        //   middleName: "two",
-        //   regulatoryAuthorityEmail: "test@gmail.com",
-        //   regulatoryAuthorityName: "two",
-        //   regulatoryAuthorityPhoneNumber: "1231424124",
-        //   regulatoryAuthorityValidation: "online verification",
-        //   regulatoryAuthorityWebsite: "https://www.google.com",
-        // },
-        // {
-        //   certificationStatus: "expired",
-        //   certificationTitle: "certificate three",
-        //   country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-        //   expiryDate: "2025-08-20",
-        //   firstName: "one",
-        //   id: "3",
-        //   isNameUnverified: true,
-        //   issueDate: "2025-08-12",
-        //   lastName: "three",
-        //   middleName: "two",
-        //   regulatoryAuthorityEmail: "test@gmail.com",
-        //   regulatoryAuthorityName: "three",
-        //   regulatoryAuthorityPhoneNumber: "1231424124",
-        //   regulatoryAuthorityValidation: "online verification",
-        //   regulatoryAuthorityWebsite: "https://www.google.com",
-        // },
-        // {
-        //   certificationStatus: "expired",
-        //   certificationTitle: "certificate four",
-        //   country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-        //   expiryDate: "2025-08-20",
-        //   firstName: "one",
-        //   id: "4",
-        //   isNameUnverified: true,
-        //   issueDate: "2025-08-12",
-        //   lastName: "three",
-        //   middleName: "two",
-        //   regulatoryAuthorityEmail: "test@gmail.com",
-        //   regulatoryAuthorityName: "four",
-        //   regulatoryAuthorityPhoneNumber: "1231424124",
-        //   regulatoryAuthorityValidation: "online verification",
-        //   regulatoryAuthorityWebsite: "https://www.google.com",
-        // },
-      ],
+      default: [],
     },
   },
   emits: {
@@ -279,6 +201,7 @@ export default defineComponent({
       userStore,
       formatDate,
       Rules,
+      MAX_NUM_REFERENCES,
     };
   },
   data(): IcraWorkExperienceEligibilityData {
@@ -299,8 +222,8 @@ export default defineComponent({
     isDisabled() {
       return false;
     },
-    showAddInternationalCertificationButton() {
-      return this.modelValue && this.modelValue?.length < 6;
+    showAddWorkExperienceEligibilityButton() {
+      return this.modelValue && this.modelValue?.length < MAX_NUM_REFERENCES;
     },
   },
 
@@ -340,7 +263,6 @@ export default defineComponent({
     async handleDelete(_reference: Components.Schemas.WorkExperienceReference, index: number) {
       // this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
       this.modelValue = removeElementByIndex(this.modelValue, index); //TODO remove
-      console.log(this.modelValue);
 
       // await this.applicationStore.saveDraft();
       //we need to update wizardData with the latest information to avoid creating duplicate new entries
@@ -390,9 +312,9 @@ export default defineComponent({
     },
     resetFormData() {
       this.id = "";
-      this.lastName = "";
-      this.firstName = "";
-      this.emailAddress = "";
+      this.lastName = "so";
+      this.firstName = "derek";
+      this.emailAddress = "derek.so@gov.bc.ca";
       this.phoneNumber = "";
 
       this.icraWorkExperienceEligibilityFormMode = undefined;

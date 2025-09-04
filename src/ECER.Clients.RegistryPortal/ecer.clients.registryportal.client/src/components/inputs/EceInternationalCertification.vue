@@ -1,7 +1,6 @@
 <template>
   <!-- add view -->
   <div v-if="internationalCertificationFormMode === 'edit' || internationalCertificationFormMode === 'add'">
-    <p>{{ internationalCertificationFormMode }}</p>
     <ECEHeader title="Regulatory authority information" />
     <br />
     <p>Your international certification must be issued by a country or region that regulates the practice of early childhood education.</p>
@@ -69,7 +68,7 @@
           <EceTextField
             id="txtRegulatoryAuthorityValidation"
             v-model="regulatoryAuthorityValidation"
-            label="Online vertificate validation tool of rgulatory authority (optional)"
+            label="Online certificate validation tool of regulatory authority (optional)"
             :rules="[]"
           ></EceTextField>
         </v-col>
@@ -105,7 +104,7 @@
             :rules="[Rules.required('Enter the issue date of your certificate'), Rules.futureDateNotAllowedRule()]"
             label="Issue date"
             :max="today"
-            @input="validateDates"
+            @update:model-value="validateDates"
             append-inner-icon="mdi-calendar"
           ></EceDateInput>
         </v-col>
@@ -116,10 +115,10 @@
             id="certificationExpiryDate"
             ref="expiryDateInput"
             v-model="expiryDate"
-            :rules="[Rules.futureDateNotAllowedRule()]"
+            :rules="[Rules.futureDateNotAllowedRule(), Rules.dateBeforeRule(issueDate || '')]"
             label="Expiry date"
             :max="today"
-            @input="validateDates"
+            @update:model-value="validateDates"
             append-inner-icon="mdi-calendar"
           ></EceDateInput>
         </v-col>
@@ -210,14 +209,15 @@
     <!-- this prevents form from proceeding if rules are not met -->
     <v-input
       class="mt-6"
+      validate-on="eager"
       :model-value="modelValue"
       :rules="[
-        () =>
+        (v) =>
           //if user has 4 certificates and they are all expired they cannot proceed
-          !!hasValidCertificate && modelValue.length < 4
-            ? `You have entered the maximum number of certifications. You must replace one of your entries with a valid certificate to proceed.`
-            : true,
-        () => !!hasValidCertificate || `You provided an expired certificate. To continue, you must also provide a valid certificate.`,
+          hasValidCertificate ||
+          v.length < MAX_NUM_CERTIFICATIONS ||
+          `You have entered the maximum number of certifications. You must replace one of your entries with a valid certificate to proceed.`,
+        () => hasValidCertificate || `You provided an expired certificate. To continue, you must also provide a valid certificate.`,
       ]"
       auto-hide="auto"
     ></v-input>
@@ -228,7 +228,6 @@
           prepend-icon="mdi-plus"
           rounded="lg"
           color="primary"
-          :disabled="isDisabled"
           @click="handleAddInternationalCertification"
           :loading="loadingStore.isLoading('draftapplication_put')"
         >
@@ -239,13 +238,15 @@
     <!-- callouts and optional messages -->
     <v-row>
       <v-col>
-        <p v-if="hasValidCertificate && modelValue.length < 4">
+        <p v-if="hasValidCertificate && modelValue.length < MAX_NUM_CERTIFICATIONS">
           No additional certifications may be added. You provided the required certifications. After you submit your application, the Registry will review and
           verify your certifications and contact you for additional information if needed.
         </p>
-        <Callout v-if="modelValue.length >= 4 && hasValidCertificate" type="warning" title="Max limit reached">
-          You have reached the limit of 4 certifications. You can proceed to submit your application. The Registry will contact you to provide additional
-          certifications if needed.
+        <Callout v-if="modelValue.length >= MAX_NUM_CERTIFICATIONS && hasValidCertificate" type="warning" title="Max limit reached">
+          {{
+            `You have reached the limit of ${MAX_NUM_CERTIFICATIONS} certifications. You can proceed to submit your application. The Registry will contact you to provide additional
+          certifications if needed.`
+          }}
         </Callout>
       </v-col>
     </v-row>
@@ -279,6 +280,8 @@ import ECEHeader from "../ECEHeader.vue";
 import FileUploader from "../FileUploader.vue";
 import InternationalCertificationCard from "../InternationalCertificationCard.vue";
 import ProgressBar from "../ProgressBar.vue";
+
+const MAX_NUM_CERTIFICATIONS = 4;
 
 interface RadioOptions {
   value: any;
@@ -319,79 +322,79 @@ export default defineComponent({
       type: Object as () => InternationalCertificationExtended[],
       required: false, //to switch to true
       default: [
-        // {
-        //   certificationStatus: "expired",
-        //   certificationTitle: "certificate one",
-        //   country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-        //   expiryDate: "2025-08-20",
-        //   firstName: "one",
-        //   id: "1",
-        //   isNameUnverified: true,
-        //   issueDate: "2025-08-12",
-        //   lastName: "three",
-        //   middleName: "two",
-        //   regulatoryAuthorityEmail: "test@gmail.com",
-        //   regulatoryAuthorityName: "one",
-        //   regulatoryAuthorityPhoneNumber: "1231424124",
-        //   regulatoryAuthorityValidation: "online verification",
-        //   regulatoryAuthorityWebsite: "https://www.google.com",
-        // },
-        // {
-        //   certificationStatus: "expired",
-        //   certificationTitle: "certificate two",
-        //   country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-        //   expiryDate: "2025-08-20",
-        //   firstName: "one",
-        //   id: "2",
-        //   isNameUnverified: true,
-        //   issueDate: "2025-08-12",
-        //   lastName: "three",
-        //   middleName: "two",
-        //   regulatoryAuthorityEmail: "test@gmail.com",
-        //   regulatoryAuthorityName: "two",
-        //   regulatoryAuthorityPhoneNumber: "1231424124",
-        //   regulatoryAuthorityValidation: "online verification",
-        //   regulatoryAuthorityWebsite: "https://www.google.com",
-        // },
-        // {
-        //   certificationStatus: "expired",
-        //   certificationTitle: "certificate three",
-        //   country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-        //   expiryDate: "2025-08-20",
-        //   firstName: "one",
-        //   id: "3",
-        //   isNameUnverified: true,
-        //   issueDate: "2025-08-12",
-        //   lastName: "three",
-        //   middleName: "two",
-        //   regulatoryAuthorityEmail: "test@gmail.com",
-        //   regulatoryAuthorityName: "three",
-        //   regulatoryAuthorityPhoneNumber: "1231424124",
-        //   regulatoryAuthorityValidation: "online verification",
-        //   regulatoryAuthorityWebsite: "https://www.google.com",
-        // },
-        // {
-        //   certificationStatus: "expired",
-        //   certificationTitle: "certificate four",
-        //   country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-        //   expiryDate: "2025-08-20",
-        //   firstName: "one",
-        //   id: "4",
-        //   isNameUnverified: true,
-        //   issueDate: "2025-08-12",
-        //   lastName: "three",
-        //   middleName: "two",
-        //   regulatoryAuthorityEmail: "test@gmail.com",
-        //   regulatoryAuthorityName: "four",
-        //   regulatoryAuthorityPhoneNumber: "1231424124",
-        //   regulatoryAuthorityValidation: "online verification",
-        //   regulatoryAuthorityWebsite: "https://www.google.com",
-        // },
+        {
+          certificationStatus: "expired",
+          certificationTitle: "certificate one",
+          country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
+          expiryDate: "2025-08-20",
+          firstName: "one",
+          id: "1",
+          isNameUnverified: true,
+          issueDate: "2025-08-12",
+          lastName: "three",
+          middleName: "two",
+          regulatoryAuthorityEmail: "test@gmail.com",
+          regulatoryAuthorityName: "one",
+          regulatoryAuthorityPhoneNumber: "1231424124",
+          regulatoryAuthorityValidation: "online verification",
+          regulatoryAuthorityWebsite: "https://www.google.com",
+        },
+        {
+          certificationStatus: "expired",
+          certificationTitle: "certificate two",
+          country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
+          expiryDate: "2025-08-20",
+          firstName: "one",
+          id: "2",
+          isNameUnverified: true,
+          issueDate: "2025-08-12",
+          lastName: "three",
+          middleName: "two",
+          regulatoryAuthorityEmail: "test@gmail.com",
+          regulatoryAuthorityName: "two",
+          regulatoryAuthorityPhoneNumber: "1231424124",
+          regulatoryAuthorityValidation: "online verification",
+          regulatoryAuthorityWebsite: "https://www.google.com",
+        },
+        {
+          certificationStatus: "expired",
+          certificationTitle: "certificate three",
+          country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
+          expiryDate: "2025-08-20",
+          firstName: "one",
+          id: "3",
+          isNameUnverified: true,
+          issueDate: "2025-08-12",
+          lastName: "three",
+          middleName: "two",
+          regulatoryAuthorityEmail: "test@gmail.com",
+          regulatoryAuthorityName: "three",
+          regulatoryAuthorityPhoneNumber: "1231424124",
+          regulatoryAuthorityValidation: "online verification",
+          regulatoryAuthorityWebsite: "https://www.google.com",
+        },
+        {
+          certificationStatus: "expired",
+          certificationTitle: "certificate four",
+          country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
+          expiryDate: "2025-08-20",
+          firstName: "one",
+          id: "4",
+          isNameUnverified: true,
+          issueDate: "2025-08-12",
+          lastName: "three",
+          middleName: "two",
+          regulatoryAuthorityEmail: "test@gmail.com",
+          regulatoryAuthorityName: "four",
+          regulatoryAuthorityPhoneNumber: "1231424124",
+          regulatoryAuthorityValidation: "online verification",
+          regulatoryAuthorityWebsite: "https://www.google.com",
+        },
       ],
     },
   },
   emits: {
-    "update:model-value": (_internationalCertificationData: Components.Schemas.ProfessionalDevelopment[]) => true,
+    "update:model-value": (_internationalCertificationData: Components.Schemas.ProfessionalDevelopment[]) => true, //TODO change type to InternationalCertificationExtended[]
   },
   setup: () => {
     const alertStore = useAlertStore();
@@ -412,6 +415,7 @@ export default defineComponent({
       userStore,
       formatDate,
       Rules,
+      MAX_NUM_CERTIFICATIONS,
     };
   },
   data(): InternationalCertificationData & InternationalCertificationExtended {
@@ -425,7 +429,7 @@ export default defineComponent({
       regulatoryAuthorityPhoneNumber: "",
       regulatoryAuthorityWebsite: "",
       regulatoryAuthorityValidation: "",
-      certificationStatus: undefined,
+      certificationStatus: "expired",
       certificationTitle: "",
       issueDate: "",
       expiryDate: "",
@@ -441,10 +445,8 @@ export default defineComponent({
     };
   },
   computed: {
-    //...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
-    isDisabled() {
-      return false;
-    },
+    ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
+
     today() {
       return formatDate(DateTime.now().toString());
     },
@@ -470,34 +472,33 @@ export default defineComponent({
       radioOptions.push({ label: "Other name", value: "other" });
       return radioOptions;
     },
-    hasValidCertificate() {
-      console.log(this.modelValue.some((certificate) => certificate.certificationStatus === "valid"));
-      return this.modelValue.some((certificate) => certificate.certificationStatus === "valid");
-    },
     showAddInternationalCertificationButton() {
-      return this.modelValue.length < 4 && !this.hasValidCertificate;
+      return this.modelValue.length < MAX_NUM_CERTIFICATIONS && !this.hasValidCertificate;
+    },
+    hasValidCertificate() {
+      return this.modelValue.some((certificate) => certificate.certificationStatus === "valid");
     },
   },
 
   unmounted() {
-    //this.mode = "list";
+    this.mode = "list";
   },
   mounted() {
     this.modelValue = this.modelValue2 || [];
-    //this.mode = "list";
+    this.mode = "list";
   },
   methods: {
     isNumber,
     handleCancel() {
       this.resetFormData();
       // Change mode to list
-      //this.mode = "list";
+      this.mode = "list";
       window.scroll(0, 0);
     },
     handleAddInternationalCertification() {
       // Reset the form fields
       this.resetFormData();
-      //this.mode = "add";
+      this.mode = "add";
       this.internationalCertificationFormMode = "add";
       window.scroll(0, 0);
     },
@@ -533,10 +534,10 @@ export default defineComponent({
         this.previousNameRadio = this.applicantNameRadioOptions[index].value;
       }
 
-      //this.mode = "add";
+      this.mode = "add";
       this.internationalCertificationFormMode = "edit";
     },
-    async handleDelete(_professionalDevelopment: InternationalCertificationExtended, index: number) {
+    async handleDelete(_internationalCertification: InternationalCertificationExtended, index: number) {
       // this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
       this.modelValue = removeElementByIndex(this.modelValue, index); //TODO remove
       console.log(this.modelValue);
@@ -551,7 +552,7 @@ export default defineComponent({
       const { valid } = await (this.$refs.internationalCertificationForm as VForm).validate();
 
       if (valid) {
-        const newProfessionalDevelopment: InternationalCertificationExtended = {
+        const newInternationalCertification: InternationalCertificationExtended = {
           id: this.id, //empty if we are adding
           country: this.country,
           regulatoryAuthorityName: this.regulatoryAuthorityName,
@@ -571,36 +572,14 @@ export default defineComponent({
         let updatedModelValue = this.modelValue.slice(); //create a copy of the array
 
         if (this.internationalCertificationFormMode === "edit") {
-          const indexOfEditedProfessionalDevelopment = updatedModelValue.findIndex(
-            (professionalDevelopment) => professionalDevelopment.id === newProfessionalDevelopment.id,
-          );
-          updatedModelValue = replaceElementByIndex(updatedModelValue, indexOfEditedProfessionalDevelopment, newProfessionalDevelopment);
+          const indexOfEditedInternationalCertification = updatedModelValue.findIndex((certification) => certification.id === newInternationalCertification.id);
+          updatedModelValue = replaceElementByIndex(updatedModelValue, indexOfEditedInternationalCertification, newInternationalCertification);
         } else if (this.internationalCertificationFormMode === "add") {
-          updatedModelValue.push(newProfessionalDevelopment);
+          updatedModelValue.push(newInternationalCertification);
         }
 
         this.$emit("update:model-value", updatedModelValue);
         this.modelValue = updatedModelValue; // TODO remove this
-
-        const test = {
-          certificationStatus: "valid",
-          certificationTitle: "certificate one",
-          country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-          expiryDate: "2025-08-20",
-          firstName: "one",
-          id: "",
-          isNameUnverified: true,
-          issueDate: "2025-08-12",
-          lastName: "three",
-          middleName: "two",
-          regulatoryAuthorityEmail: "test@gmail.com",
-          regulatoryAuthorityName: "80890",
-          regulatoryAuthorityPhoneNumber: "1231424124",
-          regulatoryAuthorityValidation: "online verification",
-          regulatoryAuthorityWebsite: "https://www.google.com",
-        };
-
-        console.log(this.modelValue);
 
         // await this.applicationStore.saveDraft();
         //we need to update wizardData with the latest information to avoid creating duplicate new entries
@@ -608,11 +587,11 @@ export default defineComponent({
 
         this.resetFormData();
 
-        //this.mode = "list";
+        this.mode = "list";
         this.alertStore.setSuccessAlert(
-          newProfessionalDevelopment.id
-            ? "You have successfully edited your professional development."
-            : "You have successfully added your professional development.",
+          newInternationalCertification.id
+            ? "You have successfully edited your international certification."
+            : "You have successfully added your international certification.",
         );
 
         window.scroll(0, 0);
@@ -643,10 +622,10 @@ export default defineComponent({
 
       this.internationalCertificationFormMode = "";
     },
-    validateDates() {
+    async validateDates() {
       if (this.issueDate && this.expiryDate) {
-        (this.$refs.issueDateInput as VInput).validate();
-        (this.$refs.expiryDateInput as VInput).validate();
+        await (this.$refs.issueDateInput as VInput).validate();
+        await (this.$refs.expiryDateInput as VInput).validate();
       }
     },
     previousNameRadioChanged(option: any) {
