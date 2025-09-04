@@ -238,7 +238,8 @@ public enum ApplicationTypes
 {
   New,
   Renewal,
-  LabourMobility
+  LabourMobility,
+  ICRA
 }
 
 public enum EducationOrigin
