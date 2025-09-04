@@ -21,22 +21,11 @@ public class ICRAEligibilityHandlers(
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    if (request.eligibility.Id == null)
-    {
-
-      var iCRAEligibilities = await iCRARepository.Query(new ICRAQuery
-      {
-        ByApplicantId = request.eligibility.ApplicantId,
-      }, cancellationToken);
-
-      var ICRAEligibilityResults = new ICRAEligibilitiesQueryResults(mapper.Map<IEnumerable<Contract.ICRA.ICRAEligibility>>(iCRAEligibilities)!);
-
-    }
-    var ICRAEligibilityId = await iCRARepository.Save(mapper.Map<Resources.Documents.ICRA.ICRAEligibility>(request.eligibility)!, cancellationToken);
+    var iCRAEligibilityId = await iCRARepository.Save(mapper.Map<Resources.Documents.ICRA.ICRAEligibility>(request.eligibility)!, cancellationToken);
 
     var freshIcraEligibilities = await iCRARepository.Query(new ICRAQuery
     {
-      ById = ICRAEligibilityId,
+      ById = iCRAEligibilityId,
     }, cancellationToken);
 
     return mapper.Map<Contract.ICRA.ICRAEligibility>(freshIcraEligibilities.SingleOrDefault())!;

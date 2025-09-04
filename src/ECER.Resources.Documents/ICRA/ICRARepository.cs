@@ -45,14 +45,14 @@ internal sealed partial class ICRARepository : IICRARepository
     return mapper.Map<IEnumerable<ICRAEligibility>>(results)!.ToList();
   }
 
-  public async Task<string> Save(ICRAEligibility eligibility, CancellationToken cancellationToken)
+  public async Task<string> Save(ICRAEligibility iCRAEligibility, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
 
-    var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == Guid.Parse(eligibility.ApplicantId));
-    if (applicant == null) throw new InvalidOperationException($"Applicant '{eligibility.ApplicantId}' not found");
+    var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == Guid.Parse(iCRAEligibility.ApplicantId));
+    if (applicant == null) throw new InvalidOperationException($"Applicant '{iCRAEligibility.ApplicantId}' not found");
 
-    var icraEligibility = mapper.Map<ecer_ICRAEligibilityAssessment>(eligibility)!;
+    var icraEligibility = mapper.Map<ecer_ICRAEligibilityAssessment>(iCRAEligibility)!;
     if (!icraEligibility.ecer_ICRAEligibilityAssessmentId.HasValue)
     {
       icraEligibility.ecer_ICRAEligibilityAssessmentId = Guid.NewGuid();
