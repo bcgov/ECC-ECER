@@ -619,7 +619,7 @@ export default defineComponent({
       this.newFilesWithData = []; // Reset attachments
       if (filesArray && filesArray.length > 0) {
         for (let i = 0; i < filesArray.length; i++) {
-          const file = filesArray[i];
+          const file = filesArray[i] as FileItem;
 
           // Check for file errors
           if (file.fileErrors && file.fileErrors.length > 0) {

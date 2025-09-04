@@ -58,7 +58,7 @@ export default defineComponent({
   },
   computed: {
     references(): { [id: string]: Components.Schemas.WorkExperienceReference } {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workReference.form.inputs.referenceList.id];
+      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.workReference?.form?.inputs?.referenceList?.id || ""];
     },
   },
 });

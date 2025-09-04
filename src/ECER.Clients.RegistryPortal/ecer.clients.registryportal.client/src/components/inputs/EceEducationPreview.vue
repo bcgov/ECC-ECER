@@ -103,7 +103,7 @@ export default defineComponent({
   },
   computed: {
     educations(): { [id: string]: Components.Schemas.Transcript } {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.education.form.inputs.educationList.id];
+      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.education?.form?.inputs?.educationList?.id || ""];
     },
   },
   methods: {
