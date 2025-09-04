@@ -90,7 +90,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_applicationassessment_CharacterReferenceReviewedId = "ecer_applicationassessment_CharacterReferenceReviewedId";
 			public const string ecer_Applicationid = "ecer_applicationid";
 			public const string ecer_ApplicationidName = "ecer_applicationidname";
+			public const string ecer_AssessmentId = "ecer_assessmentid";
+			public const string ecer_AssessmentIdName = "ecer_assessmentidname";
 			public const string ecer_characterreference_Applicationid = "ecer_characterreference_Applicationid";
+			public const string ecer_characterreference_AssessmentId = "ecer_characterreference_AssessmentId";
 			public const string ecer_characterreference_RefCertifiedProvinceId = "ecer_characterreference_RefCertifiedProvinceId";
 			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
 			public const string ecer_CharacterReferenceId = "ecer_characterreferenceid";
@@ -490,6 +493,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_applicationid"))
 				{
 					return this.FormattedValues["ecer_applicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assessmentid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_AssessmentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_assessmentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_assessmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assessmentidname")]
+		public string ecer_AssessmentIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_assessmentid"))
+				{
+					return this.FormattedValues["ecer_assessmentid"];
 				}
 				else
 				{
@@ -1615,6 +1650,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_characterreference_Applicationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_characterreference_AssessmentId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_assessmentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_characterreference_AssessmentId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment ecer_characterreference_AssessmentId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_characterreference_AssessmentId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessment>("ecer_characterreference_AssessmentId", null, value);
 			}
 		}
 		

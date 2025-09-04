@@ -45,7 +45,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		ReferenceChecks = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		SurvellanceorCameraFootage = 621870008,
+		SurveillanceandCameraFootage = 621870008,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		WrittenWitnessAccount = 621870007,
