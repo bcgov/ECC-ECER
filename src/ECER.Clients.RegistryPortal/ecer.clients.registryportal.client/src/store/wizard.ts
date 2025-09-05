@@ -128,6 +128,34 @@ export const useWizardStore = defineStore("wizard", {
         referenceList: workReferencesDict,
       };
     },
+    async initializeWizardForIcraEligibility(wizard: Wizard, draftIcraEligibility: Components.Schemas.ICRAEligibility) {
+      const userStore = useUserStore();
+      const oidcStore = useOidcStore();
+
+      const oidcUserInfo = await oidcStore.oidcUserInfo();
+      const oidcAddress = await oidcStore.oidcAddress();
+
+      this.$reset();
+      this.wizardConfig = wizard;
+
+      this.setWizardData({
+        // Contact Information step data
+        [wizard.steps.profile.form.inputs.legalLastName.id]: userStore.userProfile?.lastName || oidcUserInfo?.lastName,
+        [wizard.steps.profile.form.inputs.legalFirstName.id]: userStore.userProfile?.firstName || oidcUserInfo?.firstName,
+        [wizard.steps.profile.form.inputs.legalMiddleName.id]: userStore.userProfile?.middleName,
+        [wizard.steps.profile.form.inputs.preferredName.id]: userStore.userProfile?.preferredName,
+        [wizard.steps.profile.form.inputs.dateOfBirth.id]: userStore.userProfile?.dateOfBirth || oidcUserInfo?.dateOfBirth,
+        [wizard.steps.profile.form.inputs.addresses.id]: {
+          [AddressType.RESIDENTIAL]: userStore.userProfile?.residentialAddress || oidcAddress,
+          [AddressType.MAILING]: userStore.userProfile?.mailingAddress || oidcAddress,
+        },
+        [wizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.userProfile?.phone || oidcUserInfo?.phone,
+        [wizard.steps.profile.form.inputs.alternateContactNumber.id]: userStore.userProfile?.alternateContactPhone,
+        [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || oidcUserInfo?.email,
+
+        // TODO: Add other steps data
+      });
+    },
     initializeWizardForCharacterReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
       this.$reset();
       this.wizardConfig = wizard;

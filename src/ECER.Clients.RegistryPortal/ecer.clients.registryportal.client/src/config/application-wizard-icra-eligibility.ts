@@ -1,9 +1,11 @@
 import type { Wizard } from "@/types/wizard";
 
-import internationalCertificationForm from "./international-certification-form";
-import employmentExperienceForm from "./employment-experience-form";
+// import internationalCertificationForm from "./international-certification-form";
+// import employmentExperienceForm from "./employment-experience-form";
+
 import previewFormIcraEligibility from "./preview-form-icra-eligibility.ts";
 import profileInformationForm from "./profile-information-form";
+import characterReferencesForm from "./character-references-form.ts";
 
 const applicationWizard: Wizard = {
   id: "form-1",
@@ -17,13 +19,13 @@ const applicationWizard: Wizard = {
     education: {
       stage: "InternationalCertification",
       title: "International certification",
-      form: internationalCertificationForm,
+      form: characterReferencesForm,
       key: "item.2",
     },
     characterReferences: {
       stage: "EmploymentExperience",
       title: "Employment experience",
-      form: employmentExperienceForm,
+      form: characterReferencesForm,
       key: "item.3",
     },
     review: {

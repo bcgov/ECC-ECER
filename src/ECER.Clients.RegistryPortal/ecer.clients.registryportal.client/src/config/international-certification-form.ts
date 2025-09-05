@@ -1,4 +1,4 @@
-import EceIcraInternationalCertification from "@/components/inputs/EceIcraInternationalCertification.vue";
+import EceInternationalCertification from "@/components/inputs/EceInternationalCertification.vue";
 import type { Form } from "@/types/form";
 
 const internationalCertificationForm: Form = {
@@ -7,7 +7,7 @@ const internationalCertificationForm: Form = {
   inputs: {
     internationalCertificationList: {
       id: "internationalCertificationList",
-      component: EceIcraInternationalCertification,
+      component: EceInternationalCertification,
       cols: {
         md: 12,
         lg: 12,

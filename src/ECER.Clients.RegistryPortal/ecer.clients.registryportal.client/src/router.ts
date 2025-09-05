@@ -219,13 +219,6 @@ const router = createRouter({
       props: { stream: "Application" },
     },
     {
-      path: "/icra/eligibility/declaration",
-      component: () => import("./components/Declaration.vue"),
-      meta: { requiresAuth: true },
-      name: "icra-eligibility-declaration",
-      props: { stream: "Eligibility" },
-    },
-    {
       path: "/application/consent-required",
       component: () => import("./components/ConsentRequired.vue"),
       meta: { requiresAuth: true },
@@ -235,12 +228,6 @@ const router = createRouter({
       path: "/application",
       component: () => import("./components/pages/Application.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
-    },
-    {
-      path: "/icra/eligibility/requirements",
-      name: "icra-eligibility-requirements",
-      component: () => import("./components/IcraEligibilityRequirements.vue"),
-      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
       path: "/new-user",
@@ -303,10 +290,28 @@ const router = createRouter({
       name: "lookup-certification",
     },
     {
-      path: "/icra/eligibility",
+      path: "/icra-eligibility",
       component: () => import("./components/pages/IcraEligibility.vue"),
+      meta: { requiresAuth: true, requiresVerification: true },
+    },
+    {
+      path: "/icra-eligibility/check",
+      component: () => import("./components/pages/IcraEligibilityDisclaimer.vue"),
       meta: { requiresAuth: true, requiresICRAFeature: true, requiresVerification: true },
       name: "icra-eligibility",
+    },
+    {
+      path: "/icra-eligibility/requirements",
+      name: "icra-eligibility-requirements",
+      component: () => import("./components/IcraEligibilityRequirements.vue"),
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
+      path: "/icra-eligibility/declaration",
+      component: () => import("./components/Declaration.vue"),
+      meta: { requiresAuth: true },
+      name: "icra-eligibility-declaration",
+      props: { stream: "Eligibility" },
     },
     {
       path: "/lookup/certification/record",

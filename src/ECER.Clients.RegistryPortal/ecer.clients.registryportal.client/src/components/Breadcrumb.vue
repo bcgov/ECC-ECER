@@ -371,21 +371,21 @@ export default defineComponent({
           return [...this.baseItems, { title: "Application", disabled: true, href: `/manage-application/${params.applicationId}` }];
 
         case "icra-eligibility":
-          return [...this.baseItems, { title: "Apply with international certificate", disabled: true, href: "/icra/eligibility" }];
+          return [...this.baseItems, { title: "Apply with international certificate", disabled: true, href: "/icra-eligibility" }];
 
         case "icra-eligibility-requirements":
           return [
             ...this.baseItems,
-            { title: "Apply with international certificate", disabled: false, href: "/icra/eligibility" },
-            { title: "Requirements", disabled: true, href: "/icra/eligibility/requirements" },
+            { title: "Apply with international certificate", disabled: false, href: "/icra-eligibility" },
+            { title: "Requirements", disabled: true, href: "/icra-eligibility/requirements" },
           ];
 
         case "icra-eligibility-declaration":
           return [
             ...this.baseItems,
-            { title: "Apply with international certificate", disabled: false, href: "/icra/eligibility" },
-            { title: "Requirements", disabled: false, href: "/icra/eligibility/requirements" },
-            { title: "Declaration", disabled: true, href: "/icra/eligibility/declaration" },
+            { title: "Apply with international certificate", disabled: false, href: "/icra-eligibility" },
+            { title: "Requirements", disabled: false, href: "/icra-eligibility/requirements" },
+            { title: "Declaration", disabled: true, href: "/icra-eligibility/declaration" },
           ];
 
         default:

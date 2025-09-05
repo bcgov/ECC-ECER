@@ -54,6 +54,7 @@ import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 import { useRouter } from "vue-router";
+import { useIcraStore } from "@/store/icra";
 
 export type StreamType = "Eligibility" | "Application";
 
@@ -67,6 +68,7 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
+    const icraStore = useIcraStore();
 
     // Refresh userProfile from the server
     const userProfile = await getProfile();
@@ -75,7 +77,7 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    return { Rules, userStore, applicationStore, alertStore, loadingStore, configStore, router };
+    return { Rules, userStore, applicationStore, alertStore, loadingStore, configStore, router, icraStore };
   },
   props: {
     stream: {
@@ -125,7 +127,13 @@ export default defineComponent({
       }
     },
     async eligibilityPath() {
-      console.log("eligibility path");
+      this.icraStore.$patch({ draftIcraEligibility: { signedDate: this.date } });
+
+      let response = await this.icraStore.upsertDraftIcraEligibility();
+
+      if (response) {
+        this.router.push("/icra-eligibility");
+      }
     },
   },
 });
