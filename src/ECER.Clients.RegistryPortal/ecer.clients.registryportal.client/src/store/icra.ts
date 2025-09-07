@@ -4,6 +4,7 @@ import { createOrUpdateDraftIcraEligibility, getIcraEligibilities } from "@/api/
 import type { Components } from "@/types/openapi";
 
 import { useWizardStore } from "./wizard";
+import type { IcraEligibilityStage } from "@/types/wizard";
 
 export interface IcraState {
   icraEligibilities: Components.Schemas.ICRAEligibility[] | null | undefined;
@@ -49,7 +50,9 @@ export const useIcraStore = defineStore("icra", {
         this.icraEligibilities = icraEligibilities;
         this.icraEligibility = filteredIcraEligibilities[0];
 
-        const draftIcraEligibility = filteredIcraEligibilities.find((icraEligibility) => icraEligibility.status === "Draft");
+        const draftIcraEligibility = filteredIcraEligibilities.find(
+          (icraEligibility) => icraEligibility.status === "Draft" || icraEligibility.status === "Active",
+        );
 
         if (draftIcraEligibility) {
           this.draftIcraEligibility = draftIcraEligibility;
@@ -60,7 +63,14 @@ export const useIcraStore = defineStore("icra", {
     },
     prepareDraftIcraEligibilityFromWizard() {
       const wizardStore = useWizardStore();
-      //  TODO: Implement
+      // Get the IDs of the form inputs up front, if they are defined in the wizard config. If the ID is not defined, subsequent checks will
+      // be skipped. Thus, the ID must be defined in the wizard config for the data to be set in the draft application object.
+
+      // const internationalCertificationId = wizardStore.wizardConfig?.steps?.internationalCertification?.form?.inputs?.internationalCertificationList?.id;
+      // const employmentExperienceId = wizardStore.wizardConfig?.steps?.employmentExperience?.form?.inputs?.employmentExperienceList?.id;
+
+      // Set wizard stage to the current step stage
+      this.draftIcraEligibility.portalStage = wizardStore.currentStepStage as IcraEligibilityStage;
     },
     async upsertDraftIcraEligibility(): Promise<Components.Schemas.DraftICRAEligibilityResponse | null | undefined> {
       const { data: draftIcraEligibilityResponse } = await createOrUpdateDraftIcraEligibility(this.draftIcraEligibility);

@@ -292,7 +292,7 @@ const router = createRouter({
     {
       path: "/icra-eligibility",
       component: () => import("./components/pages/IcraEligibility.vue"),
-      meta: { requiresAuth: true, requiresVerification: true },
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
       path: "/icra-eligibility/check",
@@ -309,9 +309,15 @@ const router = createRouter({
     {
       path: "/icra-eligibility/declaration",
       component: () => import("./components/Declaration.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresICRAFeature: true },
       name: "icra-eligibility-declaration",
       props: { stream: "Eligibility" },
+    },
+    {
+      path: "/manage-icra-eligibility/:icraEligibilityId",
+      name: "manage-icra-eligibility",
+      component: () => import("./components/IcraEligibilitySummary.vue"),
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
       path: "/lookup/certification/record",

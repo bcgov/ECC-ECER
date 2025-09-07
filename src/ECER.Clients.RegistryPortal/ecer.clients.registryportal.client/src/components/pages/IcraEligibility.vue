@@ -111,7 +111,7 @@ export default defineComponent({
     }
 
     //Initialize wizard
-    await wizardStore.initializeWizard(applicationWizardIcraEligibility, icraStore.draftIcraEligibility);
+    await wizardStore.initializeWizardForIcraEligibility(applicationWizardIcraEligibility, icraStore.draftIcraEligibility);
 
     return {
       icraStore,
