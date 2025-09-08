@@ -46,19 +46,19 @@
         <ApplicationSummaryActionListItem
           :active="!transcript.transcriptReceivedByRegistry"
           :text="`Transcript: ${transcript.educationalInstitutionName}`"
-          :go-to="() => router.push({ name: 'viewTranscriptDetails', params: { applicationId: route.params.applicationId, transcriptId: transcript.id } })"
+          :go-to="() => router.push({ name: 'viewTranscriptDetails', params: { applicationId: applicationId, transcriptId: transcript.id } })"
         />
         <ApplicationSummaryActionListItem
           v-if="transcript.educationRecognition === 'NotRecognized'"
           :active="!transcript.courseOutlineReceivedByRegistry"
           :text="`Course outlines or syllabi: ${transcript.educationalInstitutionName}`"
-          :go-to="() => router.push({ name: 'viewCourseOutline', params: { applicationId: route.params.applicationId, transcriptId: transcript.id } })"
+          :go-to="() => router.push({ name: 'viewCourseOutline', params: { applicationId: applicationId, transcriptId: transcript.id } })"
         />
         <ApplicationSummaryActionListItem
           v-if="transcript.educationRecognition === 'NotRecognized' && !applicationStatus?.certificationTypes?.includes('EceAssistant')"
           :active="!transcript.programConfirmationReceivedByRegistry"
           :text="`Program Confirmation Form: ${transcript.educationalInstitutionName}`"
-          :go-to="() => router.push({ name: 'viewProgramConfirmation', params: { applicationId: route.params.applicationId, transcriptId: transcript.id } })"
+          :go-to="() => router.push({ name: 'viewProgramConfirmation', params: { applicationId: applicationId, transcriptId: transcript.id } })"
         />
         <ApplicationSummaryActionListItem
           v-if="
@@ -67,7 +67,7 @@
           "
           :active="!transcript.comprehensiveReportReceivedByRegistry"
           :text="`Comprehensive Report: ${transcript.educationalInstitutionName}`"
-          :go-to="() => router.push({ name: 'viewComprehensiveReport', params: { applicationId: route.params.applicationId, transcriptId: transcript.id } })"
+          :go-to="() => router.push({ name: 'viewComprehensiveReport', params: { applicationId: applicationId, transcriptId: transcript.id } })"
         />
       </template>
       <ApplicationSummaryHeader text="References" />
@@ -75,7 +75,7 @@
         v-if="showWorkExperience"
         :active="totalObservedWorkExperienceHours < totalRequiredWorkExperienceHours"
         :text="`${totalRequiredWorkExperienceHours} hours of work experience with reference`"
-        :go-to="() => router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: route.params.applicationId } })"
+        :go-to="() => router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: applicationId } })"
       />
       <ApplicationSummaryCharacterReferenceListItem
         v-for="reference in applicationStatus?.characterReferencesStatus"
@@ -86,7 +86,7 @@
           () =>
             router.push({
               name: 'view-character-reference',
-              params: { applicationId: route.params.applicationId, referenceId: reference.id?.toString() },
+              params: { applicationId: applicationId, referenceId: reference.id?.toString() },
             })
         "
         :will-provide-reference="reference.willProvideReference ? true : false"
@@ -94,7 +94,7 @@
       <ApplicationSummaryActionListItem
         v-if="!hasCharacterReference"
         text="Add character reference"
-        :go-to="() => router.push({ name: 'addCharacterReference', params: { applicationId: route.params.applicationId } })"
+        :go-to="() => router.push({ name: 'addCharacterReference', params: { applicationId: applicationId } })"
       />
       <ApplicationSummaryHeader v-if="showOtherInformation" text="Other information" />
       <ApplicationSummaryActionListItem
@@ -171,19 +171,19 @@
           <ApplicationSummaryActionListItem
             :active="!transcript.transcriptReceivedByRegistry"
             :text="`Transcript: ${transcript.educationalInstitutionName}`"
-            :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
+            :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: applicationId } })"
           />
           <ApplicationSummaryActionListItem
             v-if="transcript.educationRecognition === 'NotRecognized'"
             :active="!transcript.courseOutlineReceivedByRegistry"
             :text="`Course outlines or syllabi: ${transcript.educationalInstitutionName}`"
-            :go-to="() => router.push({ name: 'manageCourseOutline', params: { applicationId: route.params.applicationId } })"
+            :go-to="() => router.push({ name: 'manageCourseOutline', params: { applicationId: applicationId } })"
           />
           <ApplicationSummaryActionListItem
             v-if="transcript.educationRecognition === 'NotRecognized' && !applicationStatus?.certificationTypes?.includes('EceAssistant')"
             :active="!transcript.programConfirmationReceivedByRegistry"
             :text="`Program Confirmation Form: ${transcript.educationalInstitutionName}`"
-            :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: route.params.applicationId } })"
+            :go-to="() => router.push({ name: 'manageTranscript', params: { applicationId: applicationId } })"
           />
           <ApplicationSummaryActionListItem
             v-if="
@@ -192,7 +192,7 @@
             "
             :active="!transcript.comprehensiveReportReceivedByRegistry"
             :text="`Comprehensive Report: ${transcript.educationalInstitutionName}`"
-            :go-to="() => router.push({ name: 'manageComprehensiveReport', params: { applicationId: route.params.applicationId } })"
+            :go-to="() => router.push({ name: 'manageComprehensiveReport', params: { applicationId: applicationId } })"
           />
         </template>
         <ApplicationSummaryHeader
@@ -207,7 +207,7 @@
         <ApplicationSummaryActionListItem
           v-if="!hasCharacterReference"
           text="Add character reference"
-          :go-to="() => router.push({ name: 'addCharacterReference', params: { applicationId: route.params.applicationId } })"
+          :go-to="() => router.push({ name: 'addCharacterReference', params: { applicationId: applicationId } })"
         />
         <ApplicationSummaryCharacterReferenceListItem
           v-for="reference in waitingForResponseCharacterReferences"
@@ -218,7 +218,7 @@
             () =>
               router.push({
                 name: 'view-character-reference',
-                params: { applicationId: route.params.applicationId, referenceId: reference.id?.toString() },
+                params: { applicationId: applicationId, referenceId: reference.id?.toString() },
               })
           "
           :will-provide-reference="reference.willProvideReference ? true : false"
@@ -226,12 +226,12 @@
         <ApplicationSummaryActionListItem
           v-if="addMoreWorkExperienceReferencesFlag"
           :text="`${totalRequiredWorkExperienceHours} approved hours of work experience with reference`"
-          :go-to="() => router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: route.params.applicationId } })"
+          :go-to="() => router.push({ name: 'manageWorkExperienceReferences', params: { applicationId: applicationId } })"
         />
         <ApplicationSummaryActionListItem
           v-if="addMoreProfessionalDevelopmentFlag"
           :text="`${totalRequiredProfessionalDevelopmentHours} hours of professional development`"
-          :go-to="() => router.push({ name: 'manageProfessionalDevelopment', params: { applicationId: route.params.applicationId } })"
+          :go-to="() => router.push({ name: 'manageProfessionalDevelopment', params: { applicationId: applicationId } })"
         />
       </div>
     </div>
@@ -241,7 +241,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 import { cleanPreferredName } from "@/utils/functions";
 import { getApplicationStatus } from "@/api/application";
@@ -270,17 +270,22 @@ export default defineComponent({
     ApplicationSummaryHeader,
     Breadcrumb,
   },
-  setup: async () => {
+  props: {
+    applicationId: {
+      type: String,
+      required: true,
+    },
+  },
+  setup: async (props) => {
     const { smAndUp } = useDisplay();
     const alertStore = useAlertStore();
     const configStore = useConfigStore();
     const applicationStore = useApplicationStore();
     const userStore = useUserStore();
     const router = useRouter();
-    const route = useRoute();
 
     await applicationStore.fetchApplications();
-    const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
     userStore.setUserProfile(await getProfile());
     return {
       applicationStore,
@@ -293,7 +298,6 @@ export default defineComponent({
       smAndUp,
       formatDate,
       router,
-      route,
     };
   },
 

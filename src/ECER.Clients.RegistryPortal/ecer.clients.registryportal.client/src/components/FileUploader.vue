@@ -207,7 +207,7 @@ export default defineComponent({
           this.errorBannerMessage = `You can only upload ${this.maxNumberOfFiles} files. You need to remove files before you can continue.`;
         }
         for (let i = 0; i < files.length; i++) {
-          const file = files[i];
+          const file = files[i] as File;
           let fileErrors: string[] = [];
 
           if (file.size > this.maxFileSizeInBytes) {
@@ -254,13 +254,16 @@ export default defineComponent({
           const fileIndex = this.selectedFiles.findIndex((f: FileItem) => f.fileId === selectedFile.fileId);
           const total = progressEvent.total ? progressEvent.total : 10485760;
           const progress = Math.round((progressEvent.loaded * 100) / total);
-          if (fileIndex > -1) {
+          if (fileIndex > -1 && this.selectedFiles[fileIndex]) {
             this.selectedFiles[fileIndex].progress = progress;
           }
         });
+
         if (response.data) {
           const fileIndex = this.selectedFiles.findIndex((f: FileItem) => f.fileId === selectedFile.fileId);
-          this.selectedFiles[fileIndex].progress = 101; // means API call was successful
+          if (this.selectedFiles[fileIndex]) {
+            this.selectedFiles[fileIndex].progress = 101; // means API call was successful
+          }
         } else {
           this.removeFile(selectedFile);
           this.alertStore.setFailureAlert("An error occurred during file upload");

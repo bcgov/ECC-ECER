@@ -59,11 +59,16 @@ export default defineComponent({
   computed: {
     characterReference(): Components.Schemas.CharacterReference {
       return {
-        firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.firstName,
-        lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.lastName,
+        firstName:
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id || ""]?.[0]?.firstName,
+        lastName:
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id || ""]?.[0]?.lastName,
         emailAddress:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.emailAddress,
-        phoneNumber: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.characterReferences.form.inputs.characterReferences.id]?.[0]?.phoneNumber,
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id || ""]?.[0]
+            ?.emailAddress,
+        phoneNumber:
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.characterReferences?.form?.inputs?.characterReferences?.id || ""]?.[0]
+            ?.phoneNumber,
       };
     },
   },

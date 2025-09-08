@@ -104,39 +104,41 @@ export default defineComponent({
   },
   computed: {
     legalLastName() {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalLastName.id] ?? "—";
+      return this.wizardStore.wizardData[this.wizardStore.wizardConfig?.steps?.profile?.form?.inputs?.legalLastName?.id || ""] ?? "—";
     },
     legalFirstName() {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id] ?? "—";
+      return this.wizardStore.wizardData[this.wizardStore.wizardConfig?.steps?.profile?.form?.inputs?.legalFirstName?.id || ""] ?? "—";
     },
     previousName() {
       return "—";
     },
     legalMiddleName() {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalMiddleName.id] ?? "—";
+      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.legalMiddleName?.id || ""] ?? "—";
     },
     preferredName() {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.preferredName.id] ?? "—";
+      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.preferredName?.id || ""] ?? "—";
     },
     dateOfBirth() {
-      return formatDate(this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id], "LLLL d, yyyy") ?? "—";
+      return (
+        formatDate(this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.dateOfBirth?.id || ""], "LLLL d, yyyy") ?? "—"
+      );
     },
     residentialAddress() {
-      const addresses: AddressesData = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.addresses.id];
+      const addresses: AddressesData = this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.addresses?.id || ""];
       return `${addresses.residential.line1}, ${addresses.residential.city}, ${addresses.residential.province}, ${addresses.residential.postalCode}, ${addresses.residential.country}`;
     },
     mailingAddress() {
-      const addresses: AddressesData = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.addresses.id];
+      const addresses: AddressesData = this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.addresses?.id || ""];
       return `${addresses.mailing.line1}, ${addresses.mailing.city}, ${addresses.mailing.province}, ${addresses.mailing.postalCode}, ${addresses.mailing.country}`;
     },
     email() {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.email.id] ?? "—";
+      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.email?.id || ""] ?? "—";
     },
     primaryPhoneNumber() {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.primaryContactNumber.id] ?? "—";
+      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.primaryContactNumber?.id || ""] ?? "—";
     },
     alternatePhoneNumber() {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.alternateContactNumber.id] ?? "—";
+      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.alternateContactNumber?.id || ""] ?? "—";
     },
   },
 });

@@ -107,48 +107,55 @@ export default defineComponent({
     assessment(): Components.Schemas.WorkExperienceReferenceCompetenciesAssessment {
       const childDevelopmentDisplay = likertScaleRadio.find(
         (value) =>
-          value.value === this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.childDevelopment,
+          value.value ===
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]?.childDevelopment,
       )?.label;
 
       const childGuidanceDisplay = likertScaleRadio.find(
         (value) =>
-          value.value === this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.childGuidance,
+          value.value ===
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]?.childGuidance,
       )?.label;
 
       const healthSafetyAndNutritionDisplay = likertScaleRadio.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.healthSafetyAndNutrition,
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
+            ?.healthSafetyAndNutrition,
       )?.label;
 
       const developAnEceCurriculumDisplay = likertScaleRadio.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.developAnEceCurriculum,
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
+            ?.developAnEceCurriculum,
       )?.label;
 
       const implementAnEceCurriculumDisplay = likertScaleRadio.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.implementAnEceCurriculum,
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
+            ?.implementAnEceCurriculum,
       )?.label;
 
       const fosteringPositiveRelationChildDisplay = likertScaleRadio.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.fosteringPositiveRelationChild,
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
+            ?.fosteringPositiveRelationChild,
       )?.label;
 
       const fosteringPositiveRelationFamilyDisplay = likertScaleRadio.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.fosteringPositiveRelationFamily,
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
+            ?.fosteringPositiveRelationFamily,
       )?.label;
 
       const fosteringPositiveRelationCoworkerDisplay = likertScaleRadio.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
             ?.fosteringPositiveRelationCoworker,
       )?.label;
 
@@ -162,23 +169,27 @@ export default defineComponent({
         fosteringPositiveRelationFamily: fosteringPositiveRelationFamilyDisplay as Components.Schemas.LikertScale,
         fosteringPositiveRelationCoworker: fosteringPositiveRelationCoworkerDisplay as Components.Schemas.LikertScale,
         childDevelopmentReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.childDevelopmentReason,
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
+            ?.childDevelopmentReason,
         childGuidanceReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.childGuidanceReason,
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]?.childGuidanceReason,
         healthSafetyAndNutritionReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.healthSafetyAndNutritionReason,
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
+            ?.healthSafetyAndNutritionReason,
         developAnEceCurriculumReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.developAnEceCurriculumReason,
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
+            ?.developAnEceCurriculumReason,
         implementAnEceCurriculumReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]?.implementAnEceCurriculumReason,
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
+            ?.implementAnEceCurriculumReason,
         fosteringPositiveRelationChildReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
             ?.fosteringPositiveRelationChildReason,
         fosteringPositiveRelationFamilyReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
             ?.fosteringPositiveRelationFamilyReason,
         fosteringPositiveRelationCoworkerReason:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id]
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""]
             ?.fosteringPositiveRelationCoworkerReason,
       };
     },
