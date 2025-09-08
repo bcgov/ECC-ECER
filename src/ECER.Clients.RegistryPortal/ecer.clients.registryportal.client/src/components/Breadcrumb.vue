@@ -82,7 +82,7 @@ export default defineComponent({
         // Find the correct position based on rank
         let insertIndex = items.length;
         for (let i = 0; i < items.length; i++) {
-          const itemRank = this.applicationPageRankings[items[i].routeName || ""];
+          const itemRank = this.applicationPageRankings[items?.[i]?.routeName || ""];
           if (itemRank !== undefined && itemRank > rank) {
             insertIndex = i;
             break;

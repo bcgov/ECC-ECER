@@ -31,13 +31,19 @@ export const useWizardStore = defineStore("wizard", {
       return Object.values(state.wizardConfig.steps);
     },
     currentStep(state): Step {
-      return this.steps[state.step - 1];
+      const currentStep = this.steps[state.step - 1];
+      if (!currentStep) throw new Error("No current step found");
+      return currentStep;
     },
     currentStepId(state): string {
-      return this.steps[state.step - 1].id;
+      const stepId = this.steps[state.step - 1]?.id;
+      if (!stepId) throw new Error("No current step id found");
+      return stepId;
     },
     currentStepStage(state): ApplicationStage | ReferenceStage | RenewStage | IcraEligibilityStage {
-      return this.steps[state.step - 1].stage;
+      const stage = this.steps[state.step - 1]?.stage;
+      if (!stage) throw new Error("No current step stage found");
+      return stage;
     },
     hasStep() {
       return (step: ApplicationStage | ReferenceStage | RenewStage | IcraEligibilityStage) => {
@@ -77,18 +83,36 @@ export const useWizardStore = defineStore("wizard", {
 
       this.wizardData = {
         // Contact Information step data
-        [wizard.steps.profile.form.inputs.legalLastName.id]: userStore.userProfile?.lastName || oidcUserInfo?.lastName,
-        [wizard.steps.profile.form.inputs.legalFirstName.id]: userStore.userProfile?.firstName || oidcUserInfo?.firstName,
-        [wizard.steps.profile.form.inputs.legalMiddleName.id]: userStore.userProfile?.middleName,
-        [wizard.steps.profile.form.inputs.preferredName.id]: userStore.userProfile?.preferredName,
-        [wizard.steps.profile.form.inputs.dateOfBirth.id]: userStore.userProfile?.dateOfBirth || oidcUserInfo?.dateOfBirth,
-        [wizard.steps.profile.form.inputs.addresses.id]: {
-          [AddressType.RESIDENTIAL]: userStore.userProfile?.residentialAddress || oidcAddress,
-          [AddressType.MAILING]: userStore.userProfile?.mailingAddress || oidcAddress,
-        },
-        [wizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.userProfile?.phone || oidcUserInfo?.phone,
-        [wizard.steps.profile.form.inputs.alternateContactNumber.id]: userStore.userProfile?.alternateContactPhone,
-        [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || oidcUserInfo?.email,
+        ...(wizard?.steps?.profile?.form?.inputs?.legalLastName?.id && {
+          [wizard.steps.profile.form.inputs.legalLastName.id]: userStore.userProfile?.lastName || oidcUserInfo?.lastName,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.legalFirstName?.id && {
+          [wizard.steps.profile.form.inputs.legalFirstName.id]: userStore.userProfile?.firstName || oidcUserInfo?.firstName,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.legalMiddleName?.id && {
+          [wizard.steps.profile.form.inputs.legalMiddleName.id]: userStore.userProfile?.middleName,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.preferredName?.id && {
+          [wizard.steps.profile.form.inputs.preferredName.id]: userStore.userProfile?.preferredName,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.dateOfBirth?.id && {
+          [wizard.steps.profile.form.inputs.dateOfBirth.id]: userStore.userProfile?.dateOfBirth || oidcUserInfo?.dateOfBirth,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.addresses?.id && {
+          [wizard.steps.profile.form.inputs.addresses.id]: {
+            [AddressType.RESIDENTIAL]: userStore.userProfile?.residentialAddress || oidcAddress,
+            [AddressType.MAILING]: userStore.userProfile?.mailingAddress || oidcAddress,
+          },
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.primaryContactNumber?.id && {
+          [wizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.userProfile?.phone || oidcUserInfo?.phone,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.alternateContactNumber?.id && {
+          [wizard.steps.profile.form.inputs.alternateContactNumber.id]: userStore.userProfile?.alternateContactPhone,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.email?.id && {
+          [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || oidcUserInfo?.email,
+        }),
 
         // Certificate Information step data
         ...(wizard.steps?.certificateInformation?.form?.inputs?.certificateInformation?.id && {
@@ -115,9 +139,9 @@ export const useWizardStore = defineStore("wizard", {
         }),
 
         // Character References step data
-        [wizard.steps.characterReferences.form.inputs.characterReferences.id]: draftApplication?.characterReferences?.[0]
-          ? draftApplication?.characterReferences
-          : [],
+        ...(wizard.steps?.characterReferences?.form?.inputs?.characterReferences?.id && {
+          [wizard.steps?.characterReferences?.form?.inputs?.characterReferences?.id]: draftApplication?.characterReferences?.[0] || [],
+        }),
 
         // Professional Development
         ...(wizard.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id && {
@@ -140,18 +164,36 @@ export const useWizardStore = defineStore("wizard", {
 
       this.setWizardData({
         // Contact Information step data
-        [wizard.steps.profile.form.inputs.legalLastName.id]: userStore.userProfile?.lastName || oidcUserInfo?.lastName,
-        [wizard.steps.profile.form.inputs.legalFirstName.id]: userStore.userProfile?.firstName || oidcUserInfo?.firstName,
-        [wizard.steps.profile.form.inputs.legalMiddleName.id]: userStore.userProfile?.middleName,
-        [wizard.steps.profile.form.inputs.preferredName.id]: userStore.userProfile?.preferredName,
-        [wizard.steps.profile.form.inputs.dateOfBirth.id]: userStore.userProfile?.dateOfBirth || oidcUserInfo?.dateOfBirth,
-        [wizard.steps.profile.form.inputs.addresses.id]: {
-          [AddressType.RESIDENTIAL]: userStore.userProfile?.residentialAddress || oidcAddress,
-          [AddressType.MAILING]: userStore.userProfile?.mailingAddress || oidcAddress,
-        },
-        [wizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.userProfile?.phone || oidcUserInfo?.phone,
-        [wizard.steps.profile.form.inputs.alternateContactNumber.id]: userStore.userProfile?.alternateContactPhone,
-        [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || oidcUserInfo?.email,
+        ...(wizard?.steps?.profile?.form?.inputs?.legalLastName?.id && {
+          [wizard.steps.profile.form.inputs.legalLastName.id]: userStore.userProfile?.lastName || oidcUserInfo?.lastName,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.legalFirstName?.id && {
+          [wizard.steps.profile.form.inputs.legalFirstName.id]: userStore.userProfile?.firstName || oidcUserInfo?.firstName,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.legalMiddleName?.id && {
+          [wizard.steps.profile.form.inputs.legalMiddleName.id]: userStore.userProfile?.middleName,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.preferredName?.id && {
+          [wizard.steps.profile.form.inputs.preferredName.id]: userStore.userProfile?.preferredName,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.dateOfBirth?.id && {
+          [wizard.steps.profile.form.inputs.dateOfBirth.id]: userStore.userProfile?.dateOfBirth || oidcUserInfo?.dateOfBirth,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.addresses?.id && {
+          [wizard.steps.profile.form.inputs.addresses.id]: {
+            [AddressType.RESIDENTIAL]: userStore.userProfile?.residentialAddress || oidcAddress,
+            [AddressType.MAILING]: userStore.userProfile?.mailingAddress || oidcAddress,
+          },
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.primaryContactNumber?.id && {
+          [wizard.steps.profile.form.inputs.primaryContactNumber.id]: userStore.userProfile?.phone || oidcUserInfo?.phone,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.alternateContactNumber?.id && {
+          [wizard.steps.profile.form.inputs.alternateContactNumber.id]: userStore.userProfile?.alternateContactPhone,
+        }),
+        ...(wizard?.steps?.profile?.form?.inputs?.email?.id && {
+          [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || oidcUserInfo?.email,
+        }),
 
         // TODO: Add other steps data
       });
@@ -167,10 +209,18 @@ export const useWizardStore = defineStore("wizard", {
         referenceLastName: portalInvitation.referenceLastName,
         inviteType: portalInvitation.inviteType,
         certificationTypes: portalInvitation.certificationTypes,
-        [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
-        [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
-        [wizard.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]: {} as Components.Schemas.CharacterReferenceEvaluation,
-        [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        ...(wizard?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id && {
+          [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
+        }),
+        ...(wizard?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id && {
+          [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
+        }),
+        ...(wizard?.steps?.referenceEvaluation?.form?.inputs?.characterReferenceEvaluation?.id && {
+          [wizard.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]: {} as Components.Schemas.CharacterReferenceEvaluation,
+        }),
+        ...(wizard?.steps?.review?.form?.inputs?.recaptchaToken?.id && {
+          [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        }),
       });
     },
     initializeWizardForWorkExReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
@@ -186,11 +236,21 @@ export const useWizardStore = defineStore("wizard", {
         certificationTypes: portalInvitation.certificationTypes,
         workExperienceReferenceHours: portalInvitation.workExperienceReferenceHours,
         workExperienceType: portalInvitation.workExperienceType,
-        [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
-        [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
-        [wizard.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]: {} as Components.Schemas.WorkExperienceReferenceDetails,
-        [wizard.steps.assessment.form.inputs.workExperienceAssessment.id]: {} as Components.Schemas.WorkExperienceReferenceCompetenciesAssessment,
-        [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        ...(wizard?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id && {
+          [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
+        }),
+        ...(wizard?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id && {
+          [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
+        }),
+        ...(wizard?.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id && {
+          [wizard.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]: {} as Components.Schemas.WorkExperienceReferenceDetails,
+        }),
+        ...(wizard?.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id && {
+          [wizard.steps.assessment.form.inputs.workExperienceAssessment.id]: {} as Components.Schemas.WorkExperienceReferenceCompetenciesAssessment,
+        }),
+        ...(wizard?.steps?.review?.form?.inputs?.recaptchaToken?.id && {
+          [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        }),
       });
     },
     initializeWizardFor400HoursWorkExReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
@@ -207,11 +267,19 @@ export const useWizardStore = defineStore("wizard", {
         workExperienceReferenceHours: portalInvitation.workExperienceReferenceHours,
         workExperienceType: portalInvitation.workExperienceType,
         latestCertification: portalInvitation.latestCertification,
-        [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
-        [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
-        [wizard.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]:
-          {} as Components.Schemas.WorkExperienceReferenceDetails,
-        [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        ...(wizard?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id && {
+          [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
+        }),
+        ...(wizard?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id && {
+          [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
+        }),
+        ...(wizard?.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id && {
+          [wizard.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]:
+            {} as Components.Schemas.WorkExperienceReferenceDetails,
+        }),
+        ...(wizard?.steps?.review?.form?.inputs?.recaptchaToken?.id && {
+          [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        }),
       });
     },
     setWizardData(wizardData: WizardData): void {

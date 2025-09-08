@@ -85,7 +85,7 @@ export default defineComponent({
   methods: {
     async loadCertification() {
       const response = await getCertificationsById(this.certificationId);
-      if (response.data && response.data.length > 0) {
+      if (response.data && response.data[0]) {
         this.certification = response.data[0];
       } else {
         this.$router.push("/");

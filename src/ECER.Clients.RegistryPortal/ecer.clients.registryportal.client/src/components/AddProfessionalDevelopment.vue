@@ -253,7 +253,7 @@
 <script lang="ts">
 import { DateTime } from "luxon";
 import { defineComponent } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import type { VForm, VInput } from "vuetify/components";
 import EceTextField from "@/components/inputs/EceTextField.vue";
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
@@ -286,14 +286,13 @@ export default defineComponent({
       required: true,
     },
   },
-  setup: async () => {
+  setup: async (props) => {
     const applicationStore = useApplicationStore();
     const alertStore = useAlertStore();
 
     const loadingStore = useLoadingStore();
     const router = useRouter();
-    const route = useRoute();
-    const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId.toString()))?.data;
     const certificationStore = useCertificationStore();
 
     return {
@@ -387,6 +386,11 @@ export default defineComponent({
       if (filesArray && filesArray.length > 0) {
         for (let i = 0; i < filesArray.length; i++) {
           const file = filesArray[i];
+
+          if (!file) {
+            console.warn("file is undefined");
+            continue;
+          }
 
           // Check for file errors
           if (file.fileErrors && file.fileErrors.length > 0) {

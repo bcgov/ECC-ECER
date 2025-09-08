@@ -82,7 +82,7 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const router = useRouter();
     const route = useRoute();
-    const messageId = route.params.messageId.toString();
+    const messageId = route.params?.messageId?.toString();
     const messageThread = (await getChildMessages({ parentId: messageId })).data?.communications;
     let messageThreadSubject = "";
     const maxNumberOfFiles = 5;
