@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
+using ECER.Utilities.ObjectStorage.Providers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
 
@@ -8,16 +9,22 @@ namespace ECER.Resources.Documents.ICRA;
 
 internal sealed partial class ICRARepository : IICRARepository
 {
+
   private readonly EcerContext context;
   private readonly IMapper mapper;
+  private readonly IObjecStorageProvider objectStorageProvider;
+  private readonly IConfiguration configuration;
 
   public ICRARepository(
        EcerContext context,
+       IObjecStorageProvider objectStorageProvider,
        IMapper mapper,
        IConfiguration configuration)
   {
     this.context = context;
     this.mapper = mapper;
+    this.objectStorageProvider = objectStorageProvider;
+    this.configuration = configuration;
   }
 
   public async Task<IEnumerable<ICRAEligibility>> Query(ICRAQuery query, CancellationToken cancellationToken)

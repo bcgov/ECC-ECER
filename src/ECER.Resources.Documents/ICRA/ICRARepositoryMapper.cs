@@ -17,7 +17,6 @@ internal class ICRARepositoryMapper : Profile
       .ReverseMap()
       .ForMember(d => d.ApplicantId, opts => opts.MapFrom(s => s.ecer_icraeligibilityassessment_ApplicantId.Id));
 
-
     CreateMap<ICRAStatus, ecer_ICRAEligibilityAssessment_StatusCode>()
          .ConvertUsingEnumMapping(opts => opts.MapByName(true))
          .ReverseMap();

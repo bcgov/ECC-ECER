@@ -20,8 +20,27 @@ public record ICRAEligibility()
   public string? PortalStage { get; set; }
   public string ApplicantId { get; set; } = string.Empty;
   public ICRAStatus Status { get; set; }
+  public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
+}
+public record InternationalCertification
+{
+  public string? CountryId { get; set; }
+  public string? NameOfRegulatoryAuthority { get; set; }
+  public string? EmailOfRegulatoryAuthority { get; set; }
+  public string? PhoneOfRegulatoryAuthority { get; set; }
+  public string? WebsiteOfRegulatoryAuthority { get; set; }
+  public string? OnlineCertificateValidationToolOfRegulatoryAuthority { get; set; }
+  public CertificateStatus CertificateStatus { get; set; }
+  public string? CertificateTitle { get; set; }
+  public DateTime? IssueDate { get; set; }
+  public DateTime? ExpiryDate { get; set; }
 }
 
+public enum CertificateStatus
+{
+  Valid,
+  Expired
+}
 public enum ICRAStatus
 {
   Active,
