@@ -9,7 +9,7 @@ import type { IcraEligibilityStage } from "@/types/wizard";
 export interface IcraState {
   icraEligibilities: Components.Schemas.ICRAEligibility[] | null | undefined;
   draftIcraEligibility: Components.Schemas.ICRAEligibility;
-  icraEligibility: Components.Schemas.ICRAEligibility | null;
+  icraEligibility: Components.Schemas.ICRAEligibility | null | undefined;
 }
 
 export const useIcraStore = defineStore("icra", {

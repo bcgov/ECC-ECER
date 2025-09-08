@@ -523,7 +523,7 @@ export default defineComponent({
       //set the radio button for previous names and field buttons correctly
       if (internationalCertification.isNameUnverified) {
         let index = this.applicantNameRadioOptions.findIndex((option) => option.value === "other");
-        this.previousNameRadio = this.applicantNameRadioOptions[index].value;
+        this.previousNameRadio = this.applicantNameRadioOptions[index]?.value;
       } else {
         let index = this.applicantNameRadioOptions.findIndex(
           (option) =>
@@ -531,7 +531,7 @@ export default defineComponent({
             option.value?.lastName === internationalCertification.lastName &&
             option.value?.middleName === internationalCertification.middleName,
         );
-        this.previousNameRadio = this.applicantNameRadioOptions[index].value;
+        this.previousNameRadio = this.applicantNameRadioOptions[index]?.value;
       }
 
       this.mode = "add";
