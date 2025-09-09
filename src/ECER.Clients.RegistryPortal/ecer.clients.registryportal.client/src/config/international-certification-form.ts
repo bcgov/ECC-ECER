@@ -5,8 +5,8 @@ const internationalCertificationForm: Form = {
   id: "internationalCertificationForm",
   title: "International certification",
   inputs: {
-    internationalCertificationList: {
-      id: "internationalCertificationList",
+    internationalCertification: {
+      id: "internationalCertification",
       component: EceInternationalCertification,
       cols: {
         md: 12,

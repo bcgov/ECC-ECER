@@ -130,9 +130,8 @@ export default defineComponent({
     showSaveButtons() {
       return (
         this.wizardStore.currentStepStage !== "Review" &&
-        !(this.wizardStore.currentStepStage === "Education" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "WorkReferences" && this.wizardStore.listComponentMode === "add") &&
-        !(this.wizardStore.currentStepStage === "ProfessionalDevelopment" && this.wizardStore.listComponentMode === "add")
+        !(this.wizardStore.currentStepStage === "EmploymentExperience" && this.wizardStore.listComponentMode === "add") &&
+        !(this.wizardStore.currentStepStage === "InternationalCertification" && this.wizardStore.listComponentMode === "add")
       );
     },
     showSubmitEligibilitySubmission() {
@@ -167,6 +166,7 @@ export default defineComponent({
           case "InternationalCertification":
           case "EmploymentExperience":
             await this.saveDraftAndAlertSuccess(false);
+            this.incrementWizard();
             break;
           case "Review":
             this.saveDraftAndAlertSuccess(false);

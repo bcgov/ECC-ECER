@@ -14,13 +14,13 @@ const applicationWizard: Wizard = {
       form: profileInformationForm,
       key: "item.1",
     },
-    education: {
+    internationalCertification: {
       stage: "InternationalCertification",
       title: "International certification",
       form: internationalCertificationForm,
       key: "item.2",
     },
-    characterReferences: {
+    employmentExperience: {
       stage: "EmploymentExperience",
       title: "Employment experience",
       form: employmentExperienceForm,

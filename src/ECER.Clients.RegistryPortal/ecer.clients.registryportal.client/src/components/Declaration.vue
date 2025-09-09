@@ -127,7 +127,7 @@ export default defineComponent({
       }
     },
     async eligibilityPath() {
-      this.icraStore.$patch({ draftIcraEligibility: { signedDate: this.date } });
+      this.icraStore.$patch({ draftIcraEligibility: { signedDate: this.date, portalStage: "ContactInformation" } });
 
       let response = await this.icraStore.upsertDraftIcraEligibility();
 

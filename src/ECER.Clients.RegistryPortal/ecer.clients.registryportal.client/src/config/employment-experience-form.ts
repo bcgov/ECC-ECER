@@ -5,8 +5,8 @@ const employmentExperienceForm: Form = {
   id: "employmentExperienceForm",
   title: "Employment experience",
   inputs: {
-    employmentExperienceList: {
-      id: "employmentExperienceList",
+    employmentExperience: {
+      id: "employmentExperience",
       component: EceIcraWorkExperienceEligibility,
       cols: {
         md: 12,

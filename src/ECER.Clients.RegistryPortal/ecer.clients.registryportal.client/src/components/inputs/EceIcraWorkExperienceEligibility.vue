@@ -97,7 +97,6 @@
       </v-col>
     </v-row>
     <!-- this prevents form from proceeding if rules are not met -->
-    <v-input class="mt-6" :model-value="modelValue" :rules="[]" auto-hide="auto"></v-input>
     <v-row v-if="showAddWorkExperienceEligibilityButton">
       <v-col sm="12" md="10" lg="8" xl="6">
         <v-btn
@@ -113,6 +112,12 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-input
+      class="mt-6"
+      :model-value="modelValue"
+      :rules="[() => modelValue.length > 0 || 'You must provide at least one reference']"
+      auto-hide="auto"
+    ></v-input>
     <!-- callouts and optional messages -->
     <v-row>
       <v-col>
@@ -157,18 +162,16 @@ const MAX_NUM_REFERENCES = 6;
 
 interface IcraWorkExperienceEligibilityData extends Components.Schemas.WorkExperienceReference {
   //other fields
-  icraWorkExperienceEligibilityFormMode?: "add" | "edit" | undefined; //TODO not supposed to be optional
-  modelValue?: Components.Schemas.WorkExperienceReference[];
+  icraWorkExperienceEligibilityFormMode: "add" | "edit" | undefined; //TODO not supposed to be optional
 }
 
 export default defineComponent({
   name: "EceIcraWorkExperienceEligibility",
   components: { ProgressBar, FileUploader, EceIcraWorkExperienceEligibilityCard, EceDateInput, EceTextField, Callout, ECEHeader },
   props: {
-    modelValue2: {
+    modelValue: {
       type: Object as () => Components.Schemas.WorkExperienceReference[],
-      required: false, //to switch to true
-      default: [],
+      required: true, //to switch to true
     },
   },
   emits: {
@@ -199,7 +202,6 @@ export default defineComponent({
   data(): IcraWorkExperienceEligibilityData {
     return {
       //international certification
-      modelValue: undefined,
       id: "",
       lastName: "",
       firstName: "",
@@ -223,7 +225,6 @@ export default defineComponent({
     this.mode = "list";
   },
   mounted() {
-    this.modelValue = this.modelValue2 || [];
     this.mode = "list";
   },
   methods: {
@@ -253,12 +254,9 @@ export default defineComponent({
       this.icraWorkExperienceEligibilityFormMode = "edit";
     },
     async handleDelete(_reference: Components.Schemas.WorkExperienceReference, index: number) {
-      // this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
-      this.modelValue = removeElementByIndex(this.modelValue || [], index); //TODO remove
+      this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
 
       // await this.icraStore.saveDraft();
-      //we need to update wizardData with the latest information to avoid creating duplicate new entries
-      // await this.wizardStore.initializeWizard(this.icraStore.applicationConfiguration, this.icraStore.draftApplication);
 
       this.alertStore.setSuccessAlert("You have deleted your reference.");
     },
@@ -283,9 +281,8 @@ export default defineComponent({
         }
 
         this.$emit("update:model-value", updatedModelValue);
-        this.modelValue = updatedModelValue; // TODO remove this
 
-        // await this.icraStore.saveDraft();
+        // await this.icraStore.saveDraft(); //TODO add in when save draft is ready
 
         this.alertStore.setSuccessAlert(
           this.icraWorkExperienceEligibilityFormMode === "edit"
@@ -304,7 +301,7 @@ export default defineComponent({
     },
     resetFormData() {
       this.id = "";
-      this.lastName = "so";
+      this.lastName = "so"; //TODO remove test data
       this.firstName = "derek";
       this.emailAddress = "derek.so@gov.bc.ca";
       this.phoneNumber = "";

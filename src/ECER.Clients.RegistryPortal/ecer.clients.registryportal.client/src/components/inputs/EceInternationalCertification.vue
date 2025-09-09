@@ -318,79 +318,9 @@ export default defineComponent({
   name: "EceInternationalCertification",
   components: { ProgressBar, FileUploader, InternationalCertificationCard, EceDateInput, EceTextField, Callout, ECEHeader },
   props: {
-    modelValue2: {
+    modelValue: {
       type: Object as () => InternationalCertificationExtended[],
-      required: false, //to switch to true
-      default: [
-        {
-          certificationStatus: "expired",
-          certificationTitle: "certificate one",
-          country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-          expiryDate: "2025-08-20",
-          firstName: "one",
-          id: "1",
-          isNameUnverified: true,
-          issueDate: "2025-08-12",
-          lastName: "three",
-          middleName: "two",
-          regulatoryAuthorityEmail: "test@gmail.com",
-          regulatoryAuthorityName: "one",
-          regulatoryAuthorityPhoneNumber: "1231424124",
-          regulatoryAuthorityValidation: "online verification",
-          regulatoryAuthorityWebsite: "https://www.google.com",
-        },
-        {
-          certificationStatus: "expired",
-          certificationTitle: "certificate two",
-          country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-          expiryDate: "2025-08-20",
-          firstName: "one",
-          id: "2",
-          isNameUnverified: true,
-          issueDate: "2025-08-12",
-          lastName: "three",
-          middleName: "two",
-          regulatoryAuthorityEmail: "test@gmail.com",
-          regulatoryAuthorityName: "two",
-          regulatoryAuthorityPhoneNumber: "1231424124",
-          regulatoryAuthorityValidation: "online verification",
-          regulatoryAuthorityWebsite: "https://www.google.com",
-        },
-        {
-          certificationStatus: "expired",
-          certificationTitle: "certificate three",
-          country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-          expiryDate: "2025-08-20",
-          firstName: "one",
-          id: "3",
-          isNameUnverified: true,
-          issueDate: "2025-08-12",
-          lastName: "three",
-          middleName: "two",
-          regulatoryAuthorityEmail: "test@gmail.com",
-          regulatoryAuthorityName: "three",
-          regulatoryAuthorityPhoneNumber: "1231424124",
-          regulatoryAuthorityValidation: "online verification",
-          regulatoryAuthorityWebsite: "https://www.google.com",
-        },
-        {
-          certificationStatus: "expired",
-          certificationTitle: "certificate four",
-          country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
-          expiryDate: "2025-08-20",
-          firstName: "one",
-          id: "4",
-          isNameUnverified: true,
-          issueDate: "2025-08-12",
-          lastName: "three",
-          middleName: "two",
-          regulatoryAuthorityEmail: "test@gmail.com",
-          regulatoryAuthorityName: "four",
-          regulatoryAuthorityPhoneNumber: "1231424124",
-          regulatoryAuthorityValidation: "online verification",
-          regulatoryAuthorityWebsite: "https://www.google.com",
-        },
-      ],
+      required: true,
     },
   },
   emits: {
@@ -421,7 +351,6 @@ export default defineComponent({
   data(): InternationalCertificationData & InternationalCertificationExtended {
     return {
       //international certification
-      modelValue: [],
       id: "",
       country: undefined,
       regulatoryAuthorityName: "",
@@ -484,7 +413,6 @@ export default defineComponent({
     this.mode = "list";
   },
   mounted() {
-    this.modelValue = this.modelValue2 || [];
     this.mode = "list";
   },
   methods: {
@@ -538,9 +466,7 @@ export default defineComponent({
       this.internationalCertificationFormMode = "edit";
     },
     async handleDelete(_internationalCertification: InternationalCertificationExtended, index: number) {
-      // this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
-      this.modelValue = removeElementByIndex(this.modelValue || [], index); //TODO remove
-      console.log(this.modelValue);
+      this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
 
       // await this.icraStore.saveDraft();
       //we need to update wizardData with the latest information to avoid creating duplicate new entries
@@ -579,7 +505,6 @@ export default defineComponent({
         }
 
         this.$emit("update:model-value", updatedModelValue);
-        this.modelValue = updatedModelValue; // TODO remove this
 
         // await this.icraStore.saveDraft();
         //we need to update wizardData with the latest information to avoid creating duplicate new entries

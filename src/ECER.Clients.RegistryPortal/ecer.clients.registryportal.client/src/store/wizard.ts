@@ -162,6 +162,9 @@ export const useWizardStore = defineStore("wizard", {
       this.$reset();
       this.wizardConfig = wizard;
 
+      // set step to the index of steps where the stage matches the draft application stage
+      this.step = Object.values(wizard.steps).findIndex((step) => step.stage === draftIcraEligibility.portalStage) + 1;
+
       this.setWizardData({
         // Contact Information step data
         ...(wizard?.steps?.profile?.form?.inputs?.legalLastName?.id && {
@@ -195,7 +198,87 @@ export const useWizardStore = defineStore("wizard", {
           [wizard.steps.profile.form.inputs.email.id]: userStore.userProfile?.email || oidcUserInfo?.email,
         }),
 
-        // TODO: Add other steps data
+        //international certification
+        ...(wizard.steps?.internationalCertification?.form?.inputs?.internationalCertification?.id && {
+          [wizard.steps?.internationalCertification?.form?.inputs?.internationalCertification?.id]: [
+            {
+              certificationStatus: "expired",
+              certificationTitle: "certificate one",
+              country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
+              expiryDate: "2025-08-20",
+              firstName: "one",
+              id: "1",
+              isNameUnverified: true,
+              issueDate: "2025-08-12",
+              lastName: "three",
+              middleName: "two",
+              regulatoryAuthorityEmail: "test@gmail.com",
+              regulatoryAuthorityName: "one",
+              regulatoryAuthorityPhoneNumber: "1231424124",
+              regulatoryAuthorityValidation: "online verification",
+              regulatoryAuthorityWebsite: "https://www.google.com",
+            },
+            {
+              certificationStatus: "expired",
+              certificationTitle: "certificate two",
+              country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
+              expiryDate: "2025-08-20",
+              firstName: "one",
+              id: "2",
+              isNameUnverified: true,
+              issueDate: "2025-08-12",
+              lastName: "three",
+              middleName: "two",
+              regulatoryAuthorityEmail: "test@gmail.com",
+              regulatoryAuthorityName: "two",
+              regulatoryAuthorityPhoneNumber: "1231424124",
+              regulatoryAuthorityValidation: "online verification",
+              regulatoryAuthorityWebsite: "https://www.google.com",
+            },
+            {
+              certificationStatus: "expired",
+              certificationTitle: "certificate three",
+              country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
+              expiryDate: "2025-08-20",
+              firstName: "one",
+              id: "3",
+              isNameUnverified: true,
+              issueDate: "2025-08-12",
+              lastName: "three",
+              middleName: "two",
+              regulatoryAuthorityEmail: "test@gmail.com",
+              regulatoryAuthorityName: "three",
+              regulatoryAuthorityPhoneNumber: "1231424124",
+              regulatoryAuthorityValidation: "online verification",
+              regulatoryAuthorityWebsite: "https://www.google.com",
+            },
+            {
+              certificationStatus: "expired",
+              certificationTitle: "certificate four",
+              country: { countryId: "93dd2dc5-3d8b-ef11-8a6a-000d3af46d37", countryName: "Albania", countryCode: "AL" },
+              expiryDate: "2025-08-20",
+              firstName: "one",
+              id: "4",
+              isNameUnverified: true,
+              issueDate: "2025-08-12",
+              lastName: "three",
+              middleName: "two",
+              regulatoryAuthorityEmail: "test@gmail.com",
+              regulatoryAuthorityName: "four",
+              regulatoryAuthorityPhoneNumber: "1231424124",
+              regulatoryAuthorityValidation: "online verification",
+              regulatoryAuthorityWebsite: "https://www.google.com",
+            },
+          ], // TODO we need to add in the draft object here when it's ready
+        }),
+
+        //employment experience
+        ...(wizard.steps?.employmentExperience?.form?.inputs?.employmentExperience?.id && {
+          [wizard.steps?.employmentExperience?.form?.inputs?.employmentExperience?.id]: [
+            { id: "", lastName: "test", firstName: "test", emailAddress: "hohoho@gmail.com", phoneNumber: "" },
+            { id: "", lastName: "test2", firstName: "test2", emailAddress: "hohoho2@gmail.com", phoneNumber: "135131313" },
+          ], // TODO we need to add in the draft object here when it's ready
+        }),
       });
     },
     initializeWizardForCharacterReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
