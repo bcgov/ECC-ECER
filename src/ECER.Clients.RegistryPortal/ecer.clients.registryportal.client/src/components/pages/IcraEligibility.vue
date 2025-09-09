@@ -142,11 +142,10 @@ export default defineComponent({
     },
   },
   mounted() {
-    // TODO: Uncomment this when the backend schema has updated to include signedDate
-    // if (this.icraStore.draftIcraEligibility.signedDate === null) {
-    //   console.warn("user entered into /application route without a signedDate or certificationType");
-    //   this.router.push("/");
-    // }
+    if (this.icraStore.draftIcraEligibility.signedDate === null) {
+      console.warn("user entered into /application route without a signedDate or certificationType");
+      this.router.push("/");
+    }
     this.mode = "list";
   },
   methods: {
