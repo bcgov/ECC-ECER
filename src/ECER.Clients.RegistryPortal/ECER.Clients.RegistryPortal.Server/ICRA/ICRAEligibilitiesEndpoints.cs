@@ -72,6 +72,8 @@ public record ICRAEligibility()
   public string? Id { get; set; }
   public string ApplicantId { get; set; } = string.Empty;
   public string? PortalStage { get; set; }
+  public DateTime? SignedDate { get; set; }
+  public DateTime? CreatedOn { get; set; }
 
   public ICRAStatus Status { get; set; }
 }

@@ -56,13 +56,14 @@ internal sealed partial class ICRARepository : IICRARepository
     if (!icraEligibility.ecer_ICRAEligibilityAssessmentId.HasValue)
     {
       icraEligibility.ecer_ICRAEligibilityAssessmentId = Guid.NewGuid();
+      icraEligibility.StatusCode = ecer_ICRAEligibilityAssessment_StatusCode.Draft;
       context.AddObject(icraEligibility);
       context.AddLink(icraEligibility, ecer_ICRAEligibilityAssessment.Fields.ecer_icraeligibilityassessment_ApplicantId, applicant);
     }
     else
     {
       var existingIcraEligibility = context.ecer_ICRAEligibilityAssessmentSet.SingleOrDefault(c => c.ecer_ICRAEligibilityAssessmentId == icraEligibility.ecer_ICRAEligibilityAssessmentId);
-      if (existingIcraEligibility == null) throw new InvalidOperationException($"ecer_ICRAEligibilityAssessmentId '{icraEligibility.ecer_ICRAEligibilityAssessmentId}' not found");
+      if (existingIcraEligibility == null || existingIcraEligibility.StatusCode!=ecer_ICRAEligibilityAssessment_StatusCode.Draft) throw new InvalidOperationException($"ecer_ICRAEligibilityAssessmentId '{icraEligibility.ecer_ICRAEligibilityAssessmentId}' not found or is not draft!");
 
       if (icraEligibility.ecer_DateSigned.HasValue && existingIcraEligibility.ecer_DateSigned.HasValue) icraEligibility.ecer_DateSigned = existingIcraEligibility.ecer_DateSigned;
 
