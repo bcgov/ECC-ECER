@@ -19,7 +19,8 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
 
           if (request.Eligibility.Id != id) return TypedResults.BadRequest("resource id and payload id do not match");
           var userContext = ctx.User.GetUserContext();
-          var eligibility = mapper.Map<Managers.Registry.Contract.ICRA.ICRAEligibility>(request.Eligibility, opts => opts.Items.Add("ApplicantId", userContext!.UserId))!;
+          request.Eligibility.ApplicantId = userContext!.UserId;
+          var eligibility = mapper.Map<Managers.Registry.Contract.ICRA.ICRAEligibility>(request.Eligibility)!;
 
           if (id != null)
           {
@@ -71,6 +72,8 @@ public record ICRAEligibility()
   public string? Id { get; set; }
   public string ApplicantId { get; set; } = string.Empty;
   public string? PortalStage { get; set; }
+  public DateTime? SignedDate { get; set; }
+  public DateTime? CreatedOn { get; set; }
 
   public ICRAStatus Status { get; set; }
 }

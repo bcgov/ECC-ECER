@@ -31,7 +31,7 @@ import { defineComponent } from "vue";
 
 import { useApplicationStore } from "@/store/application";
 import { useWizardStore } from "@/store/wizard";
-import type { ApplicationStage } from "@/types/wizard";
+import type { ApplicationStage, IcraEligibilityStage } from "@/types/wizard";
 
 export default defineComponent({
   name: "PreviewCard",
@@ -45,7 +45,7 @@ export default defineComponent({
       required: true,
     },
     portalStage: {
-      type: String as PropType<ApplicationStage>,
+      type: String as PropType<ApplicationStage | IcraEligibilityStage>,
       required: true,
     },
     editable: {
@@ -71,7 +71,7 @@ export default defineComponent({
     },
   },
   methods: {
-    setWizard(stage: ApplicationStage) {
+    setWizard(stage: ApplicationStage | IcraEligibilityStage) {
       this.wizardStore.setCurrentStep(stage);
       this.applicationStore.draftApplication.stage = stage;
     },

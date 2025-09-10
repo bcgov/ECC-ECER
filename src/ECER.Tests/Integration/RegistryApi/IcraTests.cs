@@ -70,7 +70,8 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
         {
             Id = payloadId,
             ApplicantId = this.Fixture.AuthenticatedBcscUser.Id.ToString(),
-            Status = ICRAStatus.Draft
+            Status = ICRAStatus.Draft,
+            SignedDate = DateTime.UtcNow
         };
 
         await Host.Scenario(_ =>
