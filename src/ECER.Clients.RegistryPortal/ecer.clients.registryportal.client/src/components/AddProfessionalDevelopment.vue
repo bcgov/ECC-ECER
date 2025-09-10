@@ -52,21 +52,13 @@
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceTextField
-              id="txtNumberOfHours"
-              v-model="professionalDevelopment.numberOfHours"
-              label="How many hours was it?"
-              :rules="[Rules.required('Enter your course or workshop hours'), Rules.numberToDecimalPlaces()]"
-            ></EceTextField>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col md="8" lg="6" xl="4">
-            <EceTextField
               id="txtOrganizationName"
               v-model="professionalDevelopment.organizationName"
-              label="Name of place that hosted the course or workshop"
+              label="Name of the organization who offered this training"
+              tooltip-text="Provide the name of the school, organization, or instructor that offered the training or issued the certificate. 
+They should be able to confirm you completed the course or workshop."
               maxlength="300"
-              :rules="[Rules.required('Enter the name of the place that hosted the course or workshop')]"
+              :rules="[Rules.required('Enter the name of the organization that offered this training')]"
             ></EceTextField>
           </v-col>
         </v-row>
@@ -83,8 +75,18 @@
           </v-col>
         </v-row>
         <v-row>
+          <v-col cmd="8" lg="6" xl="4">
+            <EceTextField
+              id="txtInstructorName"
+              v-model="professionalDevelopment.instructorName"
+              label="Name of instructor or facilitator (if known)"
+              maxlength="100"
+            ></EceTextField>
+          </v-col>
+        </v-row>
+        <v-row>
           <v-col>
-            <h3>When did you take it?</h3>
+            <h3>Dates and duration</h3>
           </v-col>
         </v-row>
         <v-row>
@@ -153,8 +155,18 @@
           </v-col>
         </v-row>
         <v-row>
+          <v-col md="8" lg="6" xl="4">
+            <EceTextField
+              id="txtNumberOfHours"
+              v-model="professionalDevelopment.numberOfHours"
+              label="How many hours was this course or workshop?"
+              :rules="[Rules.required('Enter your course or workshop hours'), Rules.numberToDecimalPlaces()]"
+            ></EceTextField>
+          </v-col>
+        </v-row>
+        <v-row>
           <v-col>
-            <h3>Proof of course or workshop</h3>
+            <h3>Proof of completion</h3>
             <br />
             <p>We may need to verify you took this course. You'll need to provide at least one option below</p>
             <br />
@@ -166,7 +178,7 @@
             <v-checkbox
               id="chkInstructorPhoneNumber"
               v-model="professionalDevelopment.selection"
-              label="Phone number for instructor of course or workshop"
+              label="Phone number of host organization, instructor or facilitator"
               :hide-details="true"
               density="compact"
               value="phone"
@@ -175,7 +187,7 @@
             <v-checkbox
               id="chkInstructorEmailAddress"
               v-model="professionalDevelopment.selection"
-              label="Email address for instructor of course or workshop"
+              label="Email address of host organization, instructor or facilitator"
               :hide-details="true"
               value="email"
               density="compact"
@@ -184,24 +196,13 @@
             <v-checkbox
               id="chkCourseCompletionDocument"
               v-model="professionalDevelopment.selection"
-              label="A certificate or document that shows I completed the course"
+              label="I can't provide contact information"
               hide-details="auto"
               value="file"
               density="compact"
               :rules="[Rules.atLeastOneOptionRequired()]"
               @input="selectionChanged"
             ></v-checkbox>
-          </v-col>
-        </v-row>
-        <v-row v-if="showInstructorNameInput">
-          <v-col cmd="8" lg="6" xl="4">
-            <EceTextField
-              id="txtInstructorName"
-              v-model="professionalDevelopment.instructorName"
-              label="Instructor name"
-              maxlength="100"
-              :rules="[Rules.required('Enter the instructor name of your course or workshop')]"
-            ></EceTextField>
           </v-col>
         </v-row>
         <v-row v-if="showPhoneNumberInput">
@@ -322,9 +323,6 @@ export default defineComponent({
     today() {
       return formatDate(DateTime.now().toString());
     },
-    showInstructorNameInput() {
-      return this.professionalDevelopment.selection.includes("email") || this.professionalDevelopment.selection.includes("phone");
-    },
     showPhoneNumberInput() {
       return this.professionalDevelopment.selection.includes("phone");
     },
@@ -356,11 +354,6 @@ export default defineComponent({
     },
     isNumber,
     selectionChanged() {
-      if (!this.professionalDevelopment.selection.includes("phone") && !this.professionalDevelopment.selection.includes("email")) {
-        //no email or phone clear out instructor name
-        this.professionalDevelopment.instructorName = "";
-      }
-
       if (!this.professionalDevelopment.selection.includes("phone")) {
         this.professionalDevelopment.organizationContactInformation = "";
       }
