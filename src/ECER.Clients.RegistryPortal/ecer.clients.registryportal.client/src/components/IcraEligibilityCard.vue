@@ -12,9 +12,8 @@
       <v-card-actions v-if="icraStore.icraEligibilityStatus === 'Draft' || icraStore.icraEligibilityStatus === 'Active'">
         <v-btn size="large" variant="flat" color="warning" @click="router.push('/icra-eligibility')">
           <v-icon size="large" icon="mdi-arrow-right" />
-          Open ICRA eligibility
+          Continue submission
         </v-btn>
-        <!-- <v-btn class="ma-0" size="large" variant="outlined" color="white" @click="$emit('cancel-application')">Cancel application</v-btn> -->
       </v-card-actions>
 
       <!-- ICRA Eligibility status Submitted, Ready, In Progress, Pending Queue -->
@@ -39,6 +38,7 @@ import { defineComponent } from "vue";
 
 import { useIcraStore } from "@/store/icra";
 import { useRouter } from "vue-router";
+import { formatDate } from "@/utils/format";
 
 export default defineComponent({
   name: "IcraEligibilityCard",
@@ -66,7 +66,7 @@ export default defineComponent({
         case "InReview":
         case "ReadyforReview":
         case "Active":
-          return "ICRA Eligibility in progress";
+          return "Your submission to determine eligibility to apply with international certification is in progress";
         default:
           return "Apply with international certification";
       }
@@ -75,11 +75,10 @@ export default defineComponent({
       switch (this.icraStore.icraEligibilityStatus) {
         case "Draft":
         case "Active":
-          return "Your ICRA eligibility application is in progress.";
         case "Submitted":
         case "InReview":
         case "ReadyforReview":
-          return "Your ICRA eligibility application has been submitted and is being reviewed.";
+          return `Started ${formatDate(this.icraStore.icraEligibility?.createdOn || "", "LLLL d, yyyy")}`;
         default:
           return "Apply for ECE Five Year Certification if you are internationally certified in a country that regulates the ECE profession and do not have 500 hours work experience supervised by a Canadian-certified ECE.";
       }
