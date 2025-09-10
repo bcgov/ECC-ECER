@@ -65,6 +65,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_icraregulatedjurisdictions_CountryId = "ecer_icraregulatedjurisdictions_CountryId";
 			public const string ecer_ICRARegulatedJurisdictionsId = "ecer_icraregulatedjurisdictionsid";
 			public const string Id = "ecer_icraregulatedjurisdictionsid";
+			public const string ecer_internationalcertification_Country_ecer_icraregulatedjurisdictions = "ecer_internationalcertification_Country_ecer_icraregulatedjurisdictions";
 			public const string ecer_Name = "ecer_name";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -708,6 +709,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_internationalcertification_Country_ecer_icraregulatedjurisdictions
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_internationalcertification_Country_ecer_icraregulatedjurisdictions")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_InternationalCertification> ecer_internationalcertification_Country_ecer_icraregulatedjurisdictions
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InternationalCertification>("ecer_internationalcertification_Country_ecer_icraregulatedjurisdictions", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InternationalCertification>("ecer_internationalcertification_Country_ecer_icraregulatedjurisdictions", null, value);
 			}
 		}
 		
