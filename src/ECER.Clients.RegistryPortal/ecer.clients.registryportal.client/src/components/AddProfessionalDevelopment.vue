@@ -182,8 +182,22 @@ They should be able to confirm you completed the course or workshop."
               :hide-details="true"
               density="compact"
               value="phone"
+              :rules="[Rules.atLeastOneOptionRequired('')]"
               @input="selectionChanged"
             ></v-checkbox>
+            <v-row v-if="showPhoneNumberInput" class="ml-4 mb-2">
+              <v-col md="8" lg="6" xl="4">
+                <EceTextField
+                  id="txtOrganizationPhoneNumber"
+                  v-model="professionalDevelopment.organizationContactInformation"
+                  label="Phone number"
+                  :rules="[
+                    Rules.required('Enter the phone number for your course or workshop contact'),
+                    Rules.phoneNumber('Enter your reference\'s valid phone number'),
+                  ]"
+                ></EceTextField>
+              </v-col>
+            </v-row>
             <v-checkbox
               id="chkInstructorEmailAddress"
               v-model="professionalDevelopment.selection"
@@ -191,8 +205,19 @@ They should be able to confirm you completed the course or workshop."
               :hide-details="true"
               value="email"
               density="compact"
+              :rules="[Rules.atLeastOneOptionRequired('')]"
               @input="selectionChanged"
             ></v-checkbox>
+            <v-row v-if="showEmailInput" class="ml-4 mb-2">
+              <v-col md="8" lg="6" xl="4">
+                <EceTextField
+                  id="txtOrganizationEmailAddress"
+                  v-model="professionalDevelopment.organizationEmailAddress"
+                  label="Email address"
+                  :rules="[Rules.required('Enter the email address of your course or workshop contact'), Rules.email()]"
+                ></EceTextField>
+              </v-col>
+            </v-row>
             <v-checkbox
               id="chkCourseCompletionDocument"
               v-model="professionalDevelopment.selection"
@@ -205,30 +230,7 @@ They should be able to confirm you completed the course or workshop."
             ></v-checkbox>
           </v-col>
         </v-row>
-        <v-row v-if="showPhoneNumberInput">
-          <v-col md="8" lg="6" xl="4">
-            <EceTextField
-              id="txtOrganizationPhoneNumber"
-              v-model="professionalDevelopment.organizationContactInformation"
-              label="Phone number"
-              :rules="[
-                Rules.required('Enter the phone number for your course or workshop contact'),
-                Rules.phoneNumber('Enter your reference\'s valid phone number'),
-              ]"
-            ></EceTextField>
-          </v-col>
-        </v-row>
-        <v-row v-if="showEmailInput">
-          <v-col md="8" lg="6" xl="4">
-            <EceTextField
-              id="txtOrganizationEmailAddress"
-              v-model="professionalDevelopment.organizationEmailAddress"
-              label="Email address"
-              :rules="[Rules.required('Enter the email address of your course or workshop contact'), Rules.email()]"
-            ></EceTextField>
-          </v-col>
-        </v-row>
-        <v-row v-if="showFileInput">
+        <v-row v-if="showFileInput" class="ml-4">
           <v-col>
             <FileUploader :allow-multiple-files="false" :show-add-file-button="true" @update:files="handleFileUpdate" />
           </v-col>
