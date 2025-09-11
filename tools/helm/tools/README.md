@@ -6,14 +6,12 @@ This chart contains tools specific resources to support ECER deployments.
 
 To install or upgrade, run the following command :
 
-To install a new environment, ensure the values.yaml matches the environment, then run the following command:
+To upgrade/install a new environment, ensure the values.yaml matches the environment, navigate to the values.yaml file in this folder then run the following command:
+
+helm upgrade --install -f values.yaml <<helm-name>> . -n <<name-space>>
+
+Example:
 
 ```sh
-helm -n [namespace] install [env name] .
-```
-
-To upgrade an existing environment, run the following command:
-
-```sh
-helm -n [namespace] upgrade [env name] .
+helm upgrade --install -f values.yaml imagestreams . -n -tools
 ```
