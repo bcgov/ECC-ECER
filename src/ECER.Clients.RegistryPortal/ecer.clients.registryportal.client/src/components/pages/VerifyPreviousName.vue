@@ -79,7 +79,7 @@ export default {
     function fullName(name: Components.Schemas.PreviousName) {
       return `${name.firstName ?? ""} ${name.middleName ?? ""} ${name.lastName}`.trim();
     }
-    const previousNameId = route.params.previousNameId.toString();
+    const previousNameId = route.params.previousNameId?.toString() || "";
     const foundName = [...(userStore.pendingforDocumentsPreviousNames || []), ...(userStore.unverifiedPreviousNames || [])].find(
       (item) => item.id === previousNameId,
     );

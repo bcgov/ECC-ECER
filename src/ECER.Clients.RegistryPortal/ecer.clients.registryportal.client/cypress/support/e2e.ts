@@ -1,4 +1,5 @@
 import "./commands";
+import "./labour-mobility-commands";
 
 // eslint-disable-next-line mocha/no-top-level-hooks
 beforeEach(() => {
@@ -8,13 +9,20 @@ beforeEach(() => {
 
   cy.viewport(width, height);
 
-  // Visit login and wait for ready
-  cy.visit("/login");
-  cy.document().its("readyState").should("eq", "complete");
+  //Clear saved session if there is a retry
+  if (Cypress.currentRetry > 0) {
+    cy.log("retry count: " + Cypress.currentRetry);
+    cy.log("Resetting browser state in case session state is stale");  
+    Cypress.session.clearAllSavedSessions();
+  }
+ 
 
   //reset user state
   cy.resetUserState();
-
+  
+// Visit login and wait for ready
+cy.visit("/login");
+cy.document().its("readyState").should("eq", "complete");
   //login
   // cache under the key "bcsc-user"
   cy.session(

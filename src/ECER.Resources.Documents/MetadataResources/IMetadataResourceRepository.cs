@@ -5,6 +5,7 @@ public interface IMetadataResourceRepository
   Task<IEnumerable<Province>> QueryProvinces(ProvincesQuery query, CancellationToken cancellationToken);
 
   Task<IEnumerable<SystemMessage>> QuerySystemMessages(SystemMessagesQuery query, CancellationToken cancellationToken);
+
   Task<IEnumerable<DefaultContent>> QueryDefaultContents(DefaultContentsQuery query, CancellationToken cancellationToken);
 
   Task<IEnumerable<Country>> QueryCountries(CountriesQuery query, CancellationToken cancellationToken);
@@ -14,8 +15,10 @@ public interface IMetadataResourceRepository
   Task<IEnumerable<IdentificationType>> QueryIdentificationTypes(IdentificationTypesQuery query, CancellationToken cancellationToken);
 
   Task<string> SetDownloadDate(string fileId, CancellationToken cancellationToken);
+
   Task<IEnumerable<CertificationComparison>> QueryCertificationComparisons(CertificationComparisonQuery query, CancellationToken cancellationToken);
 
+  Task<IEnumerable<DynamicsConfig>> QueryDynamicsConfiguration(DynamicsConfigQuery query, CancellationToken cancellationToken);
 }
 
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
@@ -35,6 +38,8 @@ public record DefaultContent
   public string? SingleText { get; set; }
   public string? MultiText { get; set; }
 }
+public record DynamicsConfig(string Key, string Value) { };
+
 public enum PortalTags
 {
   LOGIN,
@@ -58,7 +63,7 @@ public record SystemMessagesQuery
   public string? ById { get; set; }
 }
 public record DefaultContentsQuery { }
-
+public record DynamicsConfigQuery { }
 public record CountriesQuery
 {
   public string? ById { get; set; }
@@ -85,8 +90,8 @@ public record OutOfProvinceCertificationType(string Id)
   public string? CertificationType { get; set; }
 }
 
-public record CertificationComparison(string Id) 
-{ 
+public record CertificationComparison(string Id)
+{
   public string? BcCertificate { get; set; }
   public OutOfProvinceCertificationType? TransferringCertificate { get; set; }
 }

@@ -25,7 +25,7 @@ import { useWizardStore } from "./wizard";
 export interface ApplicationState {
   applications: Components.Schemas.Application[] | null | undefined;
   draftApplication: Components.Schemas.DraftApplication;
-  application: Components.Schemas.Application | null;
+  application: Components.Schemas.Application | null | undefined;
 }
 
 export type ApplicationFlow =
@@ -303,17 +303,17 @@ export const useApplicationStore = defineStore("application", {
       // One year renewal explanation letter
       if (oneYearRenewalExplanationId && oneYearRenewalExplanationOtherId) {
         this.draftApplication.oneYearRenewalExplanationChoice =
-          wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.oneYearRenewalExplanation.id];
+          wizardStore.wizardData[oneYearRenewalExplanationId];
         this.draftApplication.renewalExplanationOther =
-          wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.renewalExplanationOther.id];
+          wizardStore.wizardData[oneYearRenewalExplanationOtherId];
       }
 
       // Five year renewal explanation letter
       if (fiveYearRenewalExplanationId && fiveYearRenewalExplanationOtherId) {
         this.draftApplication.fiveYearRenewalExplanationChoice =
-          wizardStore.wizardData[wizardStore.wizardConfig.steps.fiveYearRenewalExplanation.form.inputs.fiveYearRenewalExplanation.id];
+          wizardStore.wizardData[fiveYearRenewalExplanationId];
         this.draftApplication.renewalExplanationOther =
-          wizardStore.wizardData[wizardStore.wizardConfig.steps.fiveYearRenewalExplanation.form.inputs.renewalExplanationOther.id];
+          wizardStore.wizardData[fiveYearRenewalExplanationOtherId];
       }
 
       // Character References step data

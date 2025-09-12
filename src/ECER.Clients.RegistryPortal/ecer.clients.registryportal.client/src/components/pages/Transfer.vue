@@ -129,7 +129,9 @@
         </v-row>
         <v-row>
           <v-col class="ml-1" cols="12">
-            <v-btn v-if="showRequirementsButton" @click="handleRequirementsClick" rounded="lg" color="primary">View requirements</v-btn>
+            <v-btn id="btnViewRequirements" v-if="showRequirementsButton" @click="handleRequirementsClick" rounded="lg" color="primary">
+              View requirements
+            </v-btn>
           </v-col>
         </v-row>
       </v-col>

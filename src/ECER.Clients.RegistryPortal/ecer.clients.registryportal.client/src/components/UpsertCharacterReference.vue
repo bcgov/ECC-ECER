@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 import { getApplicationStatus } from "@/api/application";
 import { upsertCharacterReference } from "@/api/reference";
@@ -79,9 +79,8 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
-    const route = useRoute();
     const formStore = useFormStore();
-    const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
 
     let reference: Components.Schemas.CharacterReference | undefined = undefined;
 

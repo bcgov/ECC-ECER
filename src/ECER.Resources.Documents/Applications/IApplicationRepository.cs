@@ -138,6 +138,7 @@ public enum ApplicationStatus
   Ready,
   InProgress,
   PendingQueue,
+  PendingPSPConsultationNeeded,
   ReconsiderationDecision,
   AppealDecision
 }
@@ -172,7 +173,8 @@ public enum ApplicationTypes
 {
   New,
   Renewal,
-  LabourMobility
+  LabourMobility,
+  ICRA
 }
 
 public enum EducationOrigin

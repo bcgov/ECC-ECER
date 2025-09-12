@@ -1,6 +1,9 @@
 export default {
   dashboard: {
     applyNowButton: 'button[id="btnApplyNow"]',
+    transferButton: 'button[id="btnTransfer"]',
+    multiApplyButton: 'button[id="btnNeedOtherOptions"]',
+    renew: 'button[id="btnRenew"]',
   },
   navigationBar: {
     logOutLink: 'p[id="lnkLogOut"]',
@@ -8,12 +11,23 @@ export default {
     toggleMenuButton: 'button[id="btnToggleMenu"]',
   },
   certificationType: {
+    multIEceIteSneButton: 'button[id="btnApplyNowIteSne"]',
     eceAssistantRadio: 'input[value="EceAssistant"]',
     eceFiveYearRadio: 'input[value="FiveYears"]',
     eceOneYearRadio: 'input[value="OneYear"]',
     continueButton: 'button[id="btnContinue"]',
     iteCheckBox: 'input[value="Ite"]',
     sneCheckBox: 'input[value="Sne"]',
+    applyNowEceAssistantButton: 'button[id="btnApplyNowEceAssistant"]',
+    applyNowEceOneYearButton: 'button[id="btnApplyNowEceOneYear"]',
+    applyNowEceFiveYearButton: 'button[id="btnApplyNowEceFiveYear"]',
+  },
+  transferEligibility: {
+    provinceDropDownList: 'input[id="province"]',
+    certificationTypeDropDownList: 'input[id="outOfProvinceCertification"]',
+    viewRequirementsButton: 'button[id="btnViewRequirements"]',
+    programConfirmationRadioYes: 'input[type="radio"][name="programConfirmationRadio"][aria-label="Yes"]',
+    programConfirmationRadioNo: 'input[type="radio"][name="programConfirmationRadio"][aria-label="No"]',
   },
   applicationRequirements: {
     applyNowButton: 'button[id="btnApplyNow"]',
@@ -21,6 +35,14 @@ export default {
   declaration: {
     declarationCheckbox: 'input[id="chkDeclaration"]',
     continueButton: 'button[id="btnContinue"]',
+  },
+  renewalInformation: {
+    fiveYearRenewalInformationRadio: 'input[value="Ileftthechildcarefieldforpersonalreasons"]',
+    oneYearRenewalInformationRadio: 'input[value="IliveandworkinacommunitywithoutothercertifiedECEs"]',
+  },
+
+  certificateInformation: {
+    nameOnCertificateRadio: 'input[type="radio"][name="radioNameOnCertificate"]',
   },
   applicationWizard: {
     saveAndContinueButton: 'button[id="btnSaveAndContinue"]',
@@ -41,6 +63,18 @@ export default {
     studentIDInput: 'input[id="txtStudentID"]',
     nameOnTranscriptRadioDiv: 'div[aria-describedby="radioNameOnTranscript-messages"]',
     saveEducationButton: 'button[id="btnSaveEducation"]',
+  },
+  professionalDevelopment: {
+    addCourseOrWorkshop: "button span.v-btn__content",
+    courseNameInput: 'input[id="txtCourseName"]',
+    howManyHours: 'input[id="txtNumberOfHours"]',
+    nameOfPlace: 'input[id="txtOrganizationName"]',
+    phoneNoOfInstructorCheckBox: 'input[id="chkInstructorPhoneNumber"]',
+    nameOfInstructor: 'input[id="txtInstructorName"]',
+    PhoneNoOfInstructor: 'input[id="txtOrganizationPhoneNumber"]',
+    saveCourseOrWorkshop: 'button[id="btnSaveProfessionalDevelopment"]',
+    courseStartDateInput: 'input[id="txtCourseStartDate"]',
+    courseEndDateInput: 'input[id="txtCourseEndDate"]',
   },
   characterReference: {
     lastNameInput: 'input[id="txtReferenceLastName"]',
@@ -67,6 +101,7 @@ export default {
     certificationType: 'p[id="certificationType"]',
     educationCountry: 'p[id="educationCountry"]',
     educationProvince: 'p[id="educationProvince"]',
+    courseProvince: 'p[id="courseProvince"]',
     characterReferenceFirstName: 'p[id="characterReferenceFirstName"]',
     characterReferenceLastName: 'p[id="characterReferenceLastName"]',
     characterReferenceEmail: 'p[id="characterReferenceEmail"]',
@@ -82,5 +117,6 @@ export default {
     input: "input",
     body: "body",
     button: "button",
+    vListItem: "div.v-list-item",
   },
 };

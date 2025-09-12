@@ -65,7 +65,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 
 import { getApplicationStatus } from "@/api/application";
@@ -88,12 +88,11 @@ export default defineComponent({
       required: true,
     },
   },
-  setup: async () => {
+  setup: async (props) => {
     const { smAndUp } = useDisplay();
     const router = useRouter();
-    const route = useRoute();
     const certificationStore = useCertificationStore();
-    const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
 
     return {
       applicationStatus,

@@ -82,7 +82,7 @@ export default defineComponent({
         // Find the correct position based on rank
         let insertIndex = items.length;
         for (let i = 0; i < items.length; i++) {
-          const itemRank = this.applicationPageRankings[items[i].routeName || ""];
+          const itemRank = this.applicationPageRankings[items?.[i]?.routeName || ""];
           if (itemRank !== undefined && itemRank > rank) {
             insertIndex = i;
             break;
@@ -369,6 +369,24 @@ export default defineComponent({
 
         case "manageApplication":
           return [...this.baseItems, { title: "Application", disabled: true, href: `/manage-application/${params.applicationId}` }];
+
+        case "icra-eligibility":
+          return [...this.baseItems, { title: "Apply with international certificate", disabled: true, href: "/icra-eligibility/check" }];
+
+        case "icra-eligibility-requirements":
+          return [
+            ...this.baseItems,
+            { title: "Apply with international certificate", disabled: false, href: "/icra-eligibility/check" },
+            { title: "Requirements", disabled: true, href: "/icra-eligibility/requirements" },
+          ];
+
+        case "icra-eligibility-declaration":
+          return [
+            ...this.baseItems,
+            { title: "Apply with international certificate", disabled: false, href: "/icra-eligibility/check" },
+            { title: "Requirements", disabled: false, href: "/icra-eligibility/requirements" },
+            { title: "Declaration", disabled: true, href: "/icra-eligibility/declaration" },
+          ];
 
         default:
           return this.baseItems;

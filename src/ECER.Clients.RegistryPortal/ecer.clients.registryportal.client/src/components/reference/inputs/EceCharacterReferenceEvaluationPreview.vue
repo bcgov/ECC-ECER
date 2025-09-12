@@ -90,30 +90,31 @@ export default defineComponent({
       const referenceReferenceDisplay = referenceRelationshipDropdown.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.referenceEvaluation?.form?.inputs?.characterReferenceEvaluation?.id || ""]
             ?.referenceRelationship,
       )?.title;
 
       const lengthOfAcquaintanceDisplay = lengthOfAcquaintanceDropdown.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.referenceEvaluation?.form?.inputs?.characterReferenceEvaluation?.id || ""]
             ?.lengthOfAcquaintance,
       )?.title;
 
       return {
         referenceRelationship: referenceReferenceDisplay as Components.Schemas.ReferenceRelationship,
         referenceRelationshipOther:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.referenceEvaluation?.form?.inputs?.characterReferenceEvaluation?.id || ""]
             ?.referenceRelationshipOther,
         lengthOfAcquaintance: lengthOfAcquaintanceDisplay as Components.Schemas.ReferenceKnownTime,
         workedWithChildren:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]?.workedWithChildren,
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.referenceEvaluation?.form?.inputs?.characterReferenceEvaluation?.id || ""]
+            ?.workedWithChildren,
         childInteractionObservations:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.referenceEvaluation?.form?.inputs?.characterReferenceEvaluation?.id || ""]
             ?.childInteractionObservations,
         applicantTemperamentAssessment:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.referenceEvaluation?.form?.inputs?.characterReferenceEvaluation?.id || ""]
             ?.applicantTemperamentAssessment,
       };
     },
