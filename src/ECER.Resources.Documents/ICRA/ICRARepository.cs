@@ -47,6 +47,8 @@ internal sealed partial class ICRARepository : IICRARepository
     var results = context.From(icras)
       .Join()
       .Include(a => a.ecer_icraeligibilityassessment_ApplicantId)
+      .Include(a => a.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment)
+      .IncludeNested(a => a.ecer_bcgov_documenturl_internationalcertificationid)
       .Execute();
 
     return mapper.Map<IEnumerable<ICRAEligibility>>(results)!.ToList();
@@ -76,7 +78,8 @@ internal sealed partial class ICRARepository : IICRARepository
       icraEligibility.ecer_ICRAEligibilityAssessmentId = existingIcraEligibility.ecer_ICRAEligibilityAssessmentId;
       context.UpdateObject(icraEligibility);
     }
-
+    // Update international certifications and their files
+    await UpdateInternationalCertifications(icraEligibility, applicant, iCRAEligibility.ApplicantId, iCRAEligibility.InternationalCertifications.ToList(), cancellationToken);
     context.SaveChanges();
     return icraEligibility.ecer_ICRAEligibilityAssessmentId!.Value.ToString();
   }

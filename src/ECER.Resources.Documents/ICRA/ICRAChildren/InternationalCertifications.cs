@@ -1,35 +1,28 @@
-﻿using AutoMapper;
-using ECER.Utilities.DataverseSdk.Model;
-using ECER.Utilities.ObjectStorage.Providers;
+﻿using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Documents.ICRA;
 
 internal sealed partial class ICRARepository
 {
-  private async Task UpdateInternationalCertifications(ecer_Application application, Contact contact, string ApplicantId, List<InternationalCertification> updatedEntities, CancellationToken ct)
+  private async Task UpdateInternationalCertifications(ecer_ICRAEligibilityAssessment icraEligibility, Contact contact, string ApplicantId, List<InternationalCertification> updatedEntities, CancellationToken ct)
   {
     await Task.CompletedTask;
 
-    var existingInternationalCertifications = context.ecer_InternationalCertificationSet.Where(t => t.ecer_Applicationid.Id == application.Id).ToList();
+    var existingInternationalCertifications = context.ecer_InternationalCertificationSet.Where(t => t.ecer_EligibilityAssessment.Id == icraEligibility.Id).ToList();
     foreach (var InternationalCertification in existingInternationalCertifications)
     {
       if (!updatedEntities.Any(t => t.Id == InternationalCertification.Id.ToString()))
       {
-        // This deletes all files and document urls before deleting the professional development object
+        // This deletes all files and document urls before deleting the international certifications object
         await DeleteFilesForInternationalCertification(InternationalCertification.ecer_InternationalCertificationId, Guid.Parse(ApplicantId), ct);
         context.DeleteObject(InternationalCertification);
       }
     }
 
-    // Update Existing Professional Developments
+    // Update existing International Certifications
     foreach (var InternationalCertification in updatedEntities.Where(d => !string.IsNullOrEmpty(d.Id)))
     {
       var oldInternationalCertification = existingInternationalCertifications.SingleOrDefault(t => t.Id.ToString() == InternationalCertification.Id);
@@ -49,15 +42,11 @@ internal sealed partial class ICRARepository
     foreach (var InternationalCertification in updatedEntities.Where(d => string.IsNullOrEmpty(d.Id)))
     {
       var ecerInternationalCertification = mapper.Map<ecer_InternationalCertification>(InternationalCertification)!;
-      if (application.StatusCode == ecer_Application_StatusCode.Draft)
-      {
-        ecerInternationalCertification.StatusCode = ecer_InternationalCertification_StatusCode.Draft;
-      }
+      // no draft status handling required here beyond default mapping
       var newId = Guid.NewGuid();
       ecerInternationalCertification.ecer_InternationalCertificationId = newId;
       context.AddObject(ecerInternationalCertification);
-      context.AddLink(application, ecer_Application.Fields.ecer_ecer_InternationalCertification_Applicationi, ecerInternationalCertification);
-      context.AddLink(contact, Contact.Fields.ecer_ecer_InternationalCertification_Applicantid_, ecerInternationalCertification);
+      context.AddLink(icraEligibility, ecer_ICRAEligibilityAssessment.Fields.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment, ecerInternationalCertification);
       await HandleInternationalCertificationFiles(ecerInternationalCertification, Guid.Parse(ApplicantId), InternationalCertification.NewFiles, InternationalCertification.DeletedFiles, ct);
     }
   }
@@ -108,7 +97,7 @@ internal sealed partial class ICRARepository
         throw new InvalidOperationException($"InternationalCertification '{InternationalCertification}' not found");
       }
       // add file and create document url
-      // link it to professional development
+      // link it to international certification
       await AddFilesForInternationalCertification(InternationalCertification, applicantId, new List<string>() { fileId }, ct);
     }
   }
@@ -117,7 +106,7 @@ internal sealed partial class ICRARepository
   {
     await Task.CompletedTask;
 
-    var files = context.bcgov_DocumentUrlSet.Where(d => d.ecer_bcgov_documenturl_InternationalCertificationId.ecer_InternationalCertificationId == InternationalCertificationId && d.bcgov_contact_bcgov_documenturl.ContactId == applicantId).ToList();
+    var files = context.bcgov_DocumentUrlSet.Where(d => d.ecer_bcgov_documenturl_internationalcertificationid.ecer_InternationalCertificationId == InternationalCertificationId && d.bcgov_contact_bcgov_documenturl.ContactId == applicantId).ToList();
     for (int i = 0; i < files.Count; i++)
     {
       var items = files[i].bcgov_Url.Split('/');
@@ -160,7 +149,7 @@ internal sealed partial class ICRARepository
 
       context.AddObject(documenturl);
       context.AddLink(documenturl, bcgov_DocumentUrl.Fields.bcgov_contact_bcgov_documenturl, applicant);
-      context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_InternationalCertificationId, InternationalCertification);
+      context.AddLink(documenturl, bcgov_DocumentUrl.Fields.ecer_bcgov_documenturl_internationalcertificationid, InternationalCertification);
     }
   }
 
