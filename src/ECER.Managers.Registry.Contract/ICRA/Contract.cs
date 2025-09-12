@@ -24,6 +24,7 @@ public record ICRAEligibility()
 }
 public record InternationalCertification
 {
+  public string? Id { get; set; }
   public string? CountryId { get; set; }
   public string? NameOfRegulatoryAuthority { get; set; }
   public string? EmailOfRegulatoryAuthority { get; set; }
@@ -34,6 +35,9 @@ public record InternationalCertification
   public string? CertificateTitle { get; set; }
   public DateTime? IssueDate { get; set; }
   public DateTime? ExpiryDate { get; set; }
+  public IEnumerable<ECER.Managers.Registry.Contract.Applications.FileInfo> Files { get; set; } = Array.Empty<ECER.Managers.Registry.Contract.Applications.FileInfo>();
+  public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
+  public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
 }
 
 public enum CertificateStatus
@@ -53,3 +57,4 @@ public enum ICRAStatus
   ReadyforReview,
   Submitted
 }
+
