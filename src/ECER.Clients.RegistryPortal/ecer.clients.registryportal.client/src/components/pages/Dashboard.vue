@@ -103,6 +103,7 @@
                       :is-rounded="false"
                       :certification="certificationStore.currentCertification"
                       :has-application="applicationStore.hasApplication"
+                      :is-latest-of-type="true"
                     />
                   </template>
                 </div>
@@ -112,14 +113,14 @@
           </v-col>
         </v-row>
 
-        <!-- My Other Certifications -->
+        <!-- My Certifications -->
         <v-row v-if="certifications && hasOtherCertifications()" justify="center" class="mt-6">
           <v-col>
             <v-row>
               <v-col cols="12">
                 <div>
-                  <v-btn block size="x-large" variant="outlined" color="primary" @click="router.push('/my-other-certifications')" class="force-full-content">
-                    My other certifications
+                  <v-btn block size="x-large" variant="outlined" color="primary" @click="router.push('/my-certifications')" class="force-full-content">
+                    All my certifications
                     <v-icon size="large" icon="mdi-arrow-right" />
                   </v-btn>
                 </div>

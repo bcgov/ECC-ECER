@@ -26,13 +26,13 @@
             <!-- Certificate Inline on mobile -->
             <template v-if="!mdAndUp">
               <a v-if="isCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
-              <span v-if="certificateGenerationRequested" class="d-flex align-center ga-4">
+              <span v-if="isCertificateActive && certificateGenerationRequested" class="d-flex align-center ga-4">
                 <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
                 <h4>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</h4>
               </span>
             </template>
 
-            <RenewAction v-if="!hasApplication" :certification="certification" />
+            <RenewAction v-if="!hasApplication && isLatestOfType" :certification="certification" />
           </div>
         </v-col>
         <v-col v-if="mdAndUp" cols="4" class="text-center d-flex justify-end align-center" style="min-width: 215px">
@@ -40,7 +40,7 @@
             <img src="../assets/certificate.svg" width="215" class="logo" alt="Certificate" />
             <a v-if="isCertificateActive && doesCertificateFileExist" :href="pdfUrl" target="_blank">{{ generateFileDisplayName() }}</a>
           </div>
-          <div v-if="certificateGenerationRequested" class="mt-8">
+          <div v-if="isCertificateActive && certificateGenerationRequested" class="mt-8">
             <v-progress-circular class="mb-2" color="primary" indeterminate></v-progress-circular>
             <h4>Your certificate is being generated. This may take up to 10 minutes. Please check back later to download it.</h4>
           </div>
@@ -78,6 +78,10 @@ export default defineComponent({
       required: true,
     },
     hasApplication: {
+      type: Boolean,
+      default: false,
+    },
+    isLatestOfType: {
       type: Boolean,
       default: false,
     },

@@ -1,6 +1,5 @@
 <template>
   <Banner type="error" title="Sorry, this link is no longer valid" />
-  
 </template>
 
 <script lang="ts">

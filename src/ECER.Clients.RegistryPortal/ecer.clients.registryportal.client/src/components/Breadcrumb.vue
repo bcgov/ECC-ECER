@@ -351,8 +351,8 @@ export default defineComponent({
         case "certificate-terms-and-conditions":
           return [...this.baseItems, { title: "Terms and conditions", disabled: true, href: `/certificate-terms-and-conditions/${params.certificationId}` }];
 
-        case "my-other-certifications":
-          return [...this.baseItems, { title: "My other certifications", disabled: true, href: "/my-other-certifications" }];
+        case "my-certifications":
+          return [...this.baseItems, { title: "My certifications", disabled: true, href: "/my-certifications" }];
 
         case "profile":
           return [...this.baseItems, { title: "Profile", disabled: true, href: "/profile" }];
