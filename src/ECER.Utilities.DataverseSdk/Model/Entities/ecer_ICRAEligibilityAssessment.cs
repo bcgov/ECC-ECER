@@ -88,6 +88,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
 			public const string ecer_AssessmentNumber = "ecer_assessmentnumber";
+			public const string ecer_bcgov_documenturl_icraeligibilityassessmentid = "ecer_bcgov_documenturl_icraeligibilityassessmentid";
 			public const string ecer_CertificateReceived = "ecer_certificatereceived";
 			public const string ecer_CertificateReceivedDate = "ecer_certificatereceiveddate";
 			public const string ecer_certificatereceivedName = "ecer_certificatereceivedname";
@@ -1030,6 +1031,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_bcgov_documenturl_icraeligibilityassessmentid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_icraeligibilityassessmentid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_bcgov_documenturl_icraeligibilityassessmentid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_icraeligibilityassessmentid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_icraeligibilityassessmentid", null, value);
 			}
 		}
 		

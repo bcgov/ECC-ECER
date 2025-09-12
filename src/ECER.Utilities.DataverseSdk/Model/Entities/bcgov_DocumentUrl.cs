@@ -141,6 +141,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
 			public const string ecer_bcgov_documenturl_CertificateSummaryId = "ecer_bcgov_documenturl_CertificateSummaryId";
 			public const string ecer_bcgov_documenturl_CommunicationId_ecer_communication = "ecer_bcgov_documenturl_CommunicationId_ecer_communication";
+			public const string ecer_bcgov_documenturl_icraeligibilityassessmentid = "ecer_bcgov_documenturl_icraeligibilityassessmentid";
+			public const string ecer_bcgov_documenturl_internationalcertificationid = "ecer_bcgov_documenturl_internationalcertificationid";
 			public const string ecer_bcgov_documenturl_InvestigationInterviewI = "ecer_bcgov_documenturl_InvestigationInterviewI";
 			public const string ecer_bcgov_documenturl_ProfessionalDevelopmentId = "ecer_bcgov_documenturl_ProfessionalDevelopmentId";
 			public const string ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_bcgov_documenturl_programapplicationid_ecer_postsecondaryinstituteprogramapplicaiton";
@@ -165,6 +167,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_documenturl_InvestigationId = "ecer_documenturl_InvestigationId";
 			public const string ecer_documenturl_PreviousNameId = "ecer_documenturl_PreviousNameId";
 			public const string ecer_DownloadDate = "ecer_downloaddate";
+			public const string ecer_icraeligibilityassessmentid = "ecer_icraeligibilityassessmentid";
+			public const string ecer_icraeligibilityassessmentidName = "ecer_icraeligibilityassessmentidname";
+			public const string ecer_internationalcertificationid = "ecer_internationalcertificationid";
+			public const string ecer_internationalcertificationidName = "ecer_internationalcertificationidname";
 			public const string ecer_investigationid = "ecer_investigationid";
 			public const string ecer_investigationidName = "ecer_investigationidname";
 			public const string ecer_InvestigationInterviewId = "ecer_investigationinterviewid";
@@ -1183,6 +1189,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_icraeligibilityassessmentid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_icraeligibilityassessmentid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_icraeligibilityassessmentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_icraeligibilityassessmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_icraeligibilityassessmentidname")]
+		public string ecer_icraeligibilityassessmentidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_icraeligibilityassessmentid"))
+				{
+					return this.FormattedValues["ecer_icraeligibilityassessmentid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_internationalcertificationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_internationalcertificationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_internationalcertificationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_internationalcertificationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_internationalcertificationidname")]
+		public string ecer_internationalcertificationidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_internationalcertificationid"))
+				{
+					return this.FormattedValues["ecer_internationalcertificationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Unique identifier for Investigation associated with Document Url.
 		/// </summary>
@@ -2017,6 +2087,44 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_bcgov_documenturl_CommunicationId_ecer_communication", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_bcgov_documenturl_icraeligibilityassessmentid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_icraeligibilityassessmentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_icraeligibilityassessmentid")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment ecer_bcgov_documenturl_icraeligibilityassessmentid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment>("ecer_bcgov_documenturl_icraeligibilityassessmentid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment>("ecer_bcgov_documenturl_icraeligibilityassessmentid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_bcgov_documenturl_internationalcertificationid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_internationalcertificationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_internationalcertificationid")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_InternationalCertification ecer_bcgov_documenturl_internationalcertificationid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_InternationalCertification>("ecer_bcgov_documenturl_internationalcertificationid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_InternationalCertification>("ecer_bcgov_documenturl_internationalcertificationid", null, value);
 			}
 		}
 		

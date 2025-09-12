@@ -81,6 +81,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CharacterReferenceIdName = "ecer_characterreferenceidname";
 			public const string ecer_Consumed = "ecer_consumed";
 			public const string ecer_consumedName = "ecer_consumedname";
+			public const string ecer_EligibilityAssessment = "ecer_eligibilityassessment";
+			public const string ecer_eligibilityassessmentName = "ecer_eligibilityassessmentname";
 			public const string ecer_EmailAddress = "ecer_emailaddress";
 			public const string ecer_ErrorMessage = "ecer_errormessage";
 			public const string ecer_FirstName = "ecer_firstname";
@@ -427,6 +429,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_consumed"))
 				{
 					return this.FormattedValues["ecer_consumed"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_eligibilityassessment")]
+		public System.Nullable<bool> ecer_EligibilityAssessment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_eligibilityassessment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_eligibilityassessment", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_eligibilityassessmentname")]
+		public string ecer_eligibilityassessmentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_eligibilityassessment"))
+				{
+					return this.FormattedValues["ecer_eligibilityassessment"];
 				}
 				else
 				{
