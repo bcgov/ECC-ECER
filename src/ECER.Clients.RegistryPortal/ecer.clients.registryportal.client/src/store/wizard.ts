@@ -140,7 +140,9 @@ export const useWizardStore = defineStore("wizard", {
 
         // Character References step data
         ...(wizard.steps?.characterReferences?.form?.inputs?.characterReferences?.id && {
-          [wizard.steps?.characterReferences?.form?.inputs?.characterReferences?.id]: draftApplication?.characterReferences?.[0] || [],
+          [wizard.steps?.characterReferences?.form?.inputs?.characterReferences?.id]: draftApplication?.characterReferences?.[0]
+            ? draftApplication?.characterReferences
+            : [],
         }),
 
         // Professional Development
