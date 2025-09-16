@@ -44,6 +44,9 @@ internal class ICRARepositoryMapper : Profile
 
     CreateMap<ecer_InternationalCertification, InternationalCertification>(MemberList.Destination)
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_InternationalCertificationId))
+      .ForMember(d => d.OtherFirstName, opts => opts.MapFrom(s => s.ecer_OtherFirstName))
+      .ForMember(d => d.OtherMiddleName, opts => opts.MapFrom(s => s.ecer_OtherMiddleName))
+      .ForMember(d => d.OtherLastName, opts => opts.MapFrom(s => s.ecer_OtherLastName))
       .ForMember(d => d.CountryId, opts => opts.MapFrom(s => s.ecer_Country != null ? s.ecer_Country.Id.ToString() : null))
       .ForMember(d => d.NameOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityName))
       .ForMember(d => d.EmailOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityEmail))
