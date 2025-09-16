@@ -72,6 +72,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Supervisor = 621870010,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		UnderInvestigationAlso = 621870020,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Unknown = 621870018,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

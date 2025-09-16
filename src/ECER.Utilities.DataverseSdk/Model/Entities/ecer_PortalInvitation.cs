@@ -102,6 +102,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_portalinvitation_InvitedById = "ecer_portalinvitation_InvitedById";
 			public const string ecer_portalinvitation_PortalUserId = "ecer_portalinvitation_PortalUserId";
 			public const string ecer_portalinvitation_ProfessionalDevelopment = "ecer_portalinvitation_ProfessionalDevelopment";
+			public const string ecer_portalinvitation_psiprogramrepresentativeid = "ecer_portalinvitation_psiprogramrepresentativeid";
 			public const string ecer_portalinvitation_WorkExperienceRefId = "ecer_portalinvitation_WorkExperienceRefId";
 			public const string ecer_PortalInvitationId = "ecer_portalinvitationid";
 			public const string Id = "ecer_portalinvitationid";
@@ -109,6 +110,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_PortalUserIdName = "ecer_portaluseridname";
 			public const string ecer_ProfessionalDevelopmentId = "ecer_professionaldevelopmentid";
 			public const string ecer_ProfessionalDevelopmentIdName = "ecer_professionaldevelopmentidname";
+			public const string ecer_psiprogramrepresentativeid = "ecer_psiprogramrepresentativeid";
+			public const string ecer_psiprogramrepresentativeidName = "ecer_psiprogramrepresentativeidname";
 			public const string ecer_ValidDays = "ecer_validdays";
 			public const string ecer_Views = "ecer_views";
 			public const string ecer_WorkExperienceReferenceId = "ecer_workexperiencereferenceid";
@@ -761,6 +764,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiprogramrepresentativeid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_psiprogramrepresentativeid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_psiprogramrepresentativeid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_psiprogramrepresentativeid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiprogramrepresentativeidname")]
+		public string ecer_psiprogramrepresentativeidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_psiprogramrepresentativeid"))
+				{
+					return this.FormattedValues["ecer_psiprogramrepresentativeid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_validdays")]
 		public System.Nullable<int> ecer_ValidDays
 		{
@@ -1334,6 +1369,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ProfessionalDevelopment>("ecer_portalinvitation_ProfessionalDevelopment", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_portalinvitation_psiprogramrepresentativeid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psiprogramrepresentativeid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_psiprogramrepresentativeid")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative ecer_portalinvitation_psiprogramrepresentativeid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>("ecer_portalinvitation_psiprogramrepresentativeid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>("ecer_portalinvitation_psiprogramrepresentativeid", null, value);
 			}
 		}
 		

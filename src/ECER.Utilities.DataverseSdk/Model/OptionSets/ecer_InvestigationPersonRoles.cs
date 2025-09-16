@@ -30,6 +30,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Director = 621870008,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Employee = 621870019,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Employer = 621870012,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -49,6 +52,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ParentorGuardian = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PracticumStudent = 621870020,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		PrivateCitizen = 621870015,

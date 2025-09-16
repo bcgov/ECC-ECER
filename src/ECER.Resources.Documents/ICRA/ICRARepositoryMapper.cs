@@ -23,7 +23,6 @@ internal class ICRARepositoryMapper : Profile
       .ForSourceMember(s => s.DeletedFiles, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_InternationalCertificationId, opts => opts.MapFrom(s => s.Id))
-      .ForMember(d => d.ecer_Country, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.CountryId) ? null : new EntityReference("ecer_country", Guid.Parse(s.CountryId))))
       .ForMember(d => d.ecer_AuthorityName, opts => opts.MapFrom(s => s.NameOfRegulatoryAuthority))
       .ForMember(d => d.ecer_AuthorityEmail, opts => opts.MapFrom(s => s.EmailOfRegulatoryAuthority))
       .ForMember(d => d.ecer_AuthorityPhone, opts => opts.MapFrom(s => s.PhoneOfRegulatoryAuthority))

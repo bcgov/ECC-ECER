@@ -549,6 +549,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_notice_of_immediate_action_allegations = "ecer_notice_of_immediate_action_allegations";
 			public const string ecer_notice_of_Immediate_action_content = "ecer_notice_of_immediate_action_content";
 			public const string ecer_NoticeofInvestigationTemplateContent = "ecer_noticeofinvestigationtemplatecontent";
+			public const string ecer_NotificationofInvestigationLetterReviewed = "ecer_notificationofinvestigationletterreviewed";
+			public const string ecer_notificationofinvestigationletterreviewedName = "ecer_notificationofinvestigationletterreviewedname";
 			public const string ecer_OccupationalCompetencies = "ecer_occupationalcompetencies";
 			public const string ecer_occupationalcompetenciesName = "ecer_occupationalcompetenciesname";
 			public const string ecer_OpenApplication = "ecer_openapplication";
@@ -4648,6 +4650,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_noticeofinvestigationtemplatecontent", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_notificationofinvestigationletterreviewed")]
+		public System.Nullable<bool> ecer_NotificationofInvestigationLetterReviewed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_notificationofinvestigationletterreviewed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_notificationofinvestigationletterreviewed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_notificationofinvestigationletterreviewedname")]
+		public string ecer_notificationofinvestigationletterreviewedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_notificationofinvestigationletterreviewed"))
+				{
+					return this.FormattedValues["ecer_notificationofinvestigationletterreviewed"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
