@@ -41,9 +41,11 @@ internal sealed partial class ICRARepository
 
     foreach (var InternationalCertification in updatedEntities.Where(d => string.IsNullOrEmpty(d.Id)))
     {
+      var newId = Guid.NewGuid();
+      InternationalCertification.Id = newId.ToString();
       var ecerInternationalCertification = mapper.Map<ecer_InternationalCertification>(InternationalCertification)!;
       // no draft status handling required here beyond default mapping
-      var newId = Guid.NewGuid();
+
       ecerInternationalCertification.ecer_InternationalCertificationId = newId;
       context.AddObject(ecerInternationalCertification);
       context.AddLink(icraEligibility, ecer_ICRAEligibilityAssessment.Fields.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment, ecerInternationalCertification);
@@ -164,4 +166,3 @@ internal sealed partial class ICRARepository
   private static string GetBucketName(IConfiguration configuration) =>
   configuration.GetValue<string>("objectStorage:bucketName") ?? throw new InvalidOperationException("objectStorage:bucketName is not set");
 }
-

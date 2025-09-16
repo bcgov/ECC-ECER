@@ -4,11 +4,11 @@
       <v-card-title>
         <v-row>
           <v-col>
-            <p class="font-weight-bold">{{ internationalCertification.regulatoryAuthorityName }}</p>
+            <p class="font-weight-bold">{{ internationalCertification.nameOfRegulatoryAuthority }}</p>
           </v-col>
           <v-spacer></v-spacer>
           <v-col>
-            <p>{{ `${internationalCertification.certificationStatus}` }}</p>
+            <p>{{ `${internationalCertification.certificateStatus}` }}</p>
           </v-col>
         </v-row>
       </v-card-title>
@@ -16,13 +16,7 @@
     <template #append>
       <v-tooltip text="Edit professional development" location="top">
         <template #activator="{ props }">
-          <v-btn
-            v-bind="props"
-            icon="mdi-pencil"
-            variant="plain"
-            @click="editInternationalCertification"
-            :loading="loadingStore.isLoading('draftapplication_put')"
-          />
+          <v-btn v-bind="props" icon="mdi-pencil" variant="plain" @click="editInternationalCertification" :loading="loadingStore.isLoading('icra_put')" />
         </template>
       </v-tooltip>
       <v-tooltip text="Delete professional development" location="top">
@@ -32,7 +26,7 @@
             icon="mdi-trash-can-outline"
             variant="plain"
             @click="deleteInternationalCertification"
-            :loading="loadingStore.isLoading('draftapplication_put')"
+            :loading="loadingStore.isLoading('icra_put')"
           />
         </template>
       </v-tooltip>

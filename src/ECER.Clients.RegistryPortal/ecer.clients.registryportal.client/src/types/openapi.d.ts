@@ -91,6 +91,7 @@ declare namespace Components {
             hasOtherName?: boolean | null;
         }
         export type CertificatePDFGeneration = "No" | "Requested" | "Yes";
+        export type CertificateStatus = "Valid" | "Expired";
         export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
         export interface Certification {
             id?: string | null;
@@ -237,6 +238,7 @@ declare namespace Components {
             countryId?: string | null;
             countryName?: string | null;
             countryCode?: string | null;
+            isICRA?: boolean;
         }
         export type CourseOutlineOptions = "UploadNow" | "RegistryAlreadyHas";
         export interface DefaultContent {
@@ -315,6 +317,7 @@ declare namespace Components {
             signedDate?: string | null; // date-time
             createdOn?: string | null; // date-time
             status?: ICRAStatus;
+            internationalCertifications?: InternationalCertification[] | null;
         }
         export type ICRAStatus = "Active" | "Draft" | "Eligible" | "Inactive" | "Ineligible" | "InReview" | "ReadyforReview" | "Submitted";
         export interface IdentificationType {
@@ -331,6 +334,25 @@ declare namespace Components {
             size?: string | null;
         }
         export type InitiatedFrom = "Investigation" | "PortalUser" | "Registry";
+        export interface InternationalCertification {
+            id?: string | null;
+            otherFirstName?: string | null;
+            otherMiddleName?: string | null;
+            otherLastName?: string | null;
+            countryId?: string | null;
+            nameOfRegulatoryAuthority?: string | null;
+            emailOfRegulatoryAuthority?: string | null;
+            phoneOfRegulatoryAuthority?: string | null;
+            websiteOfRegulatoryAuthority?: string | null;
+            onlineCertificateValidationToolOfRegulatoryAuthority?: string | null;
+            certificateStatus?: CertificateStatus;
+            certificateTitle?: string | null;
+            issueDate?: string | null; // date-time
+            expiryDate?: string | null; // date-time
+            files?: FileInfo[] | null;
+            deletedFiles?: string[] | null;
+            newFiles?: string[] | null;
+        }
         export type InviteType = "CharacterReference" | "WorkExperienceReference";
         export type LikertScale = "Yes" | "No";
         export interface OidcAuthenticationSettings {
@@ -598,7 +620,7 @@ declare namespace Components {
             timestamp?: string | null;
             commit?: string | null;
         }
-        export type WorkExperienceRefStage = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingforResponse";
+        export type WorkExperienceRefStage = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingforResponse" | "ICRAEligibilitySubmitted";
         export interface WorkExperienceReference {
             lastName?: string | null;
             emailAddress?: string | null;
@@ -1942,6 +1964,7 @@ export type CancelDraftApplicationResponse = Components.Schemas.CancelDraftAppli
 export type CertificateCondition = Components.Schemas.CertificateCondition;
 export type CertificateInformation = Components.Schemas.CertificateInformation;
 export type CertificatePDFGeneration = Components.Schemas.CertificatePDFGeneration;
+export type CertificateStatus = Components.Schemas.CertificateStatus;
 export type CertificateStatusCode = Components.Schemas.CertificateStatusCode;
 export type Certification = Components.Schemas.Certification;
 export type CertificationComparison = Components.Schemas.CertificationComparison;
@@ -1984,6 +2007,7 @@ export type ICRAStatus = Components.Schemas.ICRAStatus;
 export type IdentificationType = Components.Schemas.IdentificationType;
 export type IdentityDocument = Components.Schemas.IdentityDocument;
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
+export type InternationalCertification = Components.Schemas.InternationalCertification;
 export type InviteType = Components.Schemas.InviteType;
 export type LikertScale = Components.Schemas.LikertScale;
 export type OidcAuthenticationSettings = Components.Schemas.OidcAuthenticationSettings;

@@ -28,7 +28,6 @@ internal class ICRARepositoryMapper : Profile
       .ForSourceMember(s => s.DeletedFiles, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.CountryId, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_InternationalCertificationId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.ecer_OtherFirstName, opts => opts.MapFrom(s => s.OtherFirstName))
       .ForMember(d => d.ecer_OtherMiddleName, opts => opts.MapFrom(s => s.OtherMiddleName))
       .ForMember(d => d.ecer_OtherLastName, opts => opts.MapFrom(s => s.OtherLastName))
