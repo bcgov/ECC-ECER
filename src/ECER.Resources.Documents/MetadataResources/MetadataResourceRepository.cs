@@ -22,6 +22,7 @@ internal sealed class MetadataResourceRepository : IMetadataResourceRepository
     if (query.ById != null) countries = countries.Where(r => r.ecer_CountryId == Guid.Parse(query.ById));
     if (query.ByCode != null) countries = countries.Where(r => r.ecer_ShortName == query.ByCode);
     if (query.ByName != null) countries = countries.Where(r => r.ecer_Name == query.ByName);
+    if (query.ByICRA != null) countries = countries.Where(r => r.ecer_EligibleforICRA == query.ByICRA);
 
     return mapper.Map<IEnumerable<Country>>(countries)!.ToList();
   }

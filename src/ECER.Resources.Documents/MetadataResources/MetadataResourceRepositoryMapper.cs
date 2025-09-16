@@ -31,10 +31,12 @@ internal class MetadataResourceRepositoryMapper : Profile
         .ForCtorParam(nameof(Country.CountryId), opt => opt.MapFrom(src => src.ecer_CountryId))
         .ForCtorParam(nameof(Country.CountryName), opt => opt.MapFrom(src => src.ecer_Name))
         .ForCtorParam(nameof(Country.CountryCode), opt => opt.MapFrom(src => src.ecer_ShortName))
+        .ForCtorParam(nameof(Country.IsICRA), opt => opt.MapFrom(src => src.ecer_EligibleforICRA))
         .ValidateMemberList(MemberList.Destination)
         .ReverseMap()
         .ForMember(dest => dest.ecer_CountryId, opt => opt.MapFrom(src => src.CountryId))
         .ForMember(dest => dest.ecer_Name, opt => opt.MapFrom(src => src.CountryName))
+        .ForMember(dest => dest.ecer_EligibleforICRA, opt => opt.MapFrom(src => src.IsICRA))
         .ForMember(dest => dest.ecer_ShortName, opt => opt.MapFrom(src => src.CountryCode));
 
     CreateMap<ecer_PostSecondaryInstitute, PostSecondaryInstitution>(MemberList.Source)

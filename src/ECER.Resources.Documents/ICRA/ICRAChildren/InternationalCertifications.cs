@@ -47,6 +47,14 @@ internal sealed partial class ICRARepository
       ecerInternationalCertification.ecer_InternationalCertificationId = newId;
       context.AddObject(ecerInternationalCertification);
       context.AddLink(icraEligibility, ecer_ICRAEligibilityAssessment.Fields.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment, ecerInternationalCertification);
+      if (InternationalCertification.CountryId != null)
+      {
+        var ecer_country = context.ecer_CountrySet.SingleOrDefault(c => c.ecer_CountryId == Guid.Parse(InternationalCertification.CountryId));
+        if (ecer_country != null)
+        {
+          context.AddLink(ecer_country, ecer_ICRAEligibilityAssessment.Fields.ecer_icraeligibilityassessment_CountryId, ecerInternationalCertification);
+        }
+      }
       await HandleInternationalCertificationFiles(ecerInternationalCertification, Guid.Parse(ApplicantId), InternationalCertification.NewFiles, InternationalCertification.DeletedFiles, ct);
     }
   }
