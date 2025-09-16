@@ -12,6 +12,7 @@ internal class ICRARepositoryMapper : Profile
     CreateMap<ICRAEligibility, ecer_ICRAEligibilityAssessment>(MemberList.Source)
       .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.CreatedOn, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.InternationalCertifications, opts => opts.DoNotValidate())
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.PortalStage))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
@@ -26,6 +27,7 @@ internal class ICRARepositoryMapper : Profile
       .ForSourceMember(s => s.NewFiles, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeletedFiles, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.CountryId, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_InternationalCertificationId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.ecer_AuthorityName, opts => opts.MapFrom(s => s.NameOfRegulatoryAuthority))
       .ForMember(d => d.ecer_AuthorityEmail, opts => opts.MapFrom(s => s.EmailOfRegulatoryAuthority))
@@ -37,7 +39,7 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.ecer_IssueDate, opts => opts.MapFrom(s => s.IssueDate))
       .ForMember(d => d.ecer_Expirydate, opts => opts.MapFrom(s => s.ExpiryDate));
 
-    CreateMap<ecer_InternationalCertification, InternationalCertification>(MemberList.Source)
+    CreateMap<ecer_InternationalCertification, InternationalCertification>(MemberList.Destination)
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_InternationalCertificationId))
       .ForMember(d => d.CountryId, opts => opts.MapFrom(s => s.ecer_Country != null ? s.ecer_Country.Id.ToString() : null))
       .ForMember(d => d.NameOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityName))
@@ -56,13 +58,6 @@ internal class ICRARepositoryMapper : Profile
     CreateMap<ICRAStatus, ecer_ICRAEligibilityAssessment_StatusCode>()
          .ConvertUsingEnumMapping(opts => opts.MapByName(true))
          .ReverseMap();
-
-    CreateMap<bcgov_DocumentUrl, Applications.FileInfo>(MemberList.Destination)
-      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.bcgov_DocumentUrlId))
-      .ForMember(d => d.Name, opts => opts.MapFrom(s => s.bcgov_FileName))
-      .ForMember(d => d.Size, opts => opts.MapFrom(s => s.bcgov_FileSize))
-      .ForMember(d => d.Url, opts => opts.MapFrom(s => s.bcgov_Url))
-      .ForMember(d => d.Extention, opts => opts.MapFrom(s => s.bcgov_FileExtension));
   }
 
   public static string IdOrEmpty(EntityReference? reference) =>

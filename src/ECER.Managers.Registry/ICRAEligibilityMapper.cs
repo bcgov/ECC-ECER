@@ -9,6 +9,5 @@ internal class ICRAEligibilityMapper : Profile
   {
     CreateMap<Contract.ICRA.ICRAEligibility, ICRAEligibility>().ReverseMap();
     CreateMap<Contract.ICRA.InternationalCertification, InternationalCertification>().ReverseMap();
-    CreateMap<ECER.Resources.Documents.Applications.FileInfo, ECER.Managers.Registry.Contract.Applications.FileInfo>().ReverseMap();
   }
 }
