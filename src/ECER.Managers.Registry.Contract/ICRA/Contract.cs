@@ -19,6 +19,8 @@ public record ICRAEligibility()
   public string? Id { get; set; }
   public string? PortalStage { get; set; }
   public string ApplicantId { get; set; } = string.Empty;
+  public DateTime? SignedDate { get; set; }
+  public DateTime? CreatedOn { get; set; }
   public ICRAStatus Status { get; set; }
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
 }

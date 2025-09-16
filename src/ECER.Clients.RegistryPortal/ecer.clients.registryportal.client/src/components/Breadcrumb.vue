@@ -82,7 +82,7 @@ export default defineComponent({
         // Find the correct position based on rank
         let insertIndex = items.length;
         for (let i = 0; i < items.length; i++) {
-          const itemRank = this.applicationPageRankings[items[i].routeName || ""];
+          const itemRank = this.applicationPageRankings[items?.[i]?.routeName || ""];
           if (itemRank !== undefined && itemRank > rank) {
             insertIndex = i;
             break;
@@ -351,8 +351,8 @@ export default defineComponent({
         case "certificate-terms-and-conditions":
           return [...this.baseItems, { title: "Terms and conditions", disabled: true, href: `/certificate-terms-and-conditions/${params.certificationId}` }];
 
-        case "my-other-certifications":
-          return [...this.baseItems, { title: "My other certifications", disabled: true, href: "/my-other-certifications" }];
+        case "my-certifications":
+          return [...this.baseItems, { title: "My certifications", disabled: true, href: "/my-certifications" }];
 
         case "profile":
           return [...this.baseItems, { title: "Profile", disabled: true, href: "/profile" }];
@@ -370,16 +370,23 @@ export default defineComponent({
         case "manageApplication":
           return [...this.baseItems, { title: "Application", disabled: true, href: `/manage-application/${params.applicationId}` }];
 
+        case "icra-eligibility":
+          return [...this.baseItems, { title: "Apply with international certificate", disabled: true, href: "/icra-eligibility/check" }];
+
         case "icra-eligibility-requirements":
           return [
             ...this.baseItems,
-            { title: "Apply with international certificate", disabled: false, href: "/icra/eligibility" },
-            { title: "Requirements", disabled: true, href: "/icra/eligibility/requirements" },
+            { title: "Apply with international certificate", disabled: false, href: "/icra-eligibility/check" },
+            { title: "Requirements", disabled: true, href: "/icra-eligibility/requirements" },
           ];
 
-
-        case "icra-eligibility":
-          return [...this.baseItems, { title: "Apply with international certificate", disabled: true, href: "/icra/eligibility" }];
+        case "icra-eligibility-declaration":
+          return [
+            ...this.baseItems,
+            { title: "Apply with international certificate", disabled: false, href: "/icra-eligibility/check" },
+            { title: "Requirements", disabled: false, href: "/icra-eligibility/requirements" },
+            { title: "Declaration", disabled: true, href: "/icra-eligibility/declaration" },
+          ];
 
         default:
           return this.baseItems;

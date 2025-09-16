@@ -23,10 +23,10 @@ const router = createRouter({
       name: "dashboard",
     },
     {
-      path: "/my-other-certifications",
+      path: "/my-certifications",
       component: () => import("./components/pages/Certifications.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
-      name: "my-other-certifications",
+      name: "my-certifications",
     },
     {
       path: "/certificate-terms-and-conditions/:certificationId",
@@ -85,6 +85,7 @@ const router = createRouter({
       path: "/manage-application/:applicationId",
       name: "manageApplication",
       component: () => import("./components/ApplicationSummary.vue"),
+      props: true,
       meta: { requiresAuth: true, requiresVerification: true },
     },
     {
@@ -216,6 +217,7 @@ const router = createRouter({
       component: () => import("./components/Declaration.vue"),
       meta: { requiresAuth: true },
       name: "declaration",
+      props: { stream: "Application" },
     },
     {
       path: "/application/consent-required",
@@ -227,12 +229,6 @@ const router = createRouter({
       path: "/application",
       component: () => import("./components/pages/Application.vue"),
       meta: { requiresAuth: true, requiresVerification: true },
-    },
-    {
-      path: "/icra/eligibility/requirements",
-      name: "icra-eligibility-requirements",
-      component: () => import("./components/IcraEligibilityRequirements.vue"),
-      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
       path: "/new-user",
@@ -295,10 +291,34 @@ const router = createRouter({
       name: "lookup-certification",
     },
     {
-      path: "/icra/eligibility",
+      path: "/icra-eligibility",
       component: () => import("./components/pages/IcraEligibility.vue"),
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
+      path: "/icra-eligibility/check",
+      component: () => import("./components/pages/IcraEligibilityDisclaimer.vue"),
       meta: { requiresAuth: true, requiresICRAFeature: true, requiresVerification: true },
       name: "icra-eligibility",
+    },
+    {
+      path: "/icra-eligibility/requirements",
+      name: "icra-eligibility-requirements",
+      component: () => import("./components/IcraEligibilityRequirements.vue"),
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
+      path: "/icra-eligibility/declaration",
+      component: () => import("./components/Declaration.vue"),
+      meta: { requiresAuth: true, requiresICRAFeature: true },
+      name: "icra-eligibility-declaration",
+      props: { stream: "Eligibility" },
+    },
+    {
+      path: "/manage-icra-eligibility/:icraEligibilityId",
+      name: "manage-icra-eligibility",
+      component: () => import("./components/IcraEligibilitySummary.vue"),
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
       path: "/lookup/certification/record",

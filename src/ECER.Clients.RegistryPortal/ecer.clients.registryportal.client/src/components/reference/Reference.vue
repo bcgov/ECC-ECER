@@ -147,7 +147,7 @@ export default defineComponent({
         for (let i = 0; i < document.querySelectorAll(".g-recaptcha").length; i++) {
           window.grecaptcha.reset(i);
         }
-        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id] = "";
+        this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""] = "";
       }
     },
   },
@@ -161,7 +161,7 @@ export default defineComponent({
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue");
       } else {
         if (
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id] === false &&
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""] === false &&
           this.wizardStore.step === 1
         ) {
           this.wizardStore.setStep(this.userDeclinedStep);
@@ -190,13 +190,14 @@ export default defineComponent({
       if (this.wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER) {
         const response = await postCharacterReference({
           token: this.route.params.token as string,
-          willProvideReference: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id],
+          willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
           referenceContactInformation:
-            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id],
-          referenceEvaluation: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id],
+            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
+          referenceEvaluation:
+            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.referenceEvaluation?.form?.inputs?.characterReferenceEvaluation?.id || ""],
           confirmProvidedInformationIsRight:
-            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
-          recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],
+            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
+          recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
         });
 
         if (!response?.error) {
@@ -209,17 +210,18 @@ export default defineComponent({
         const response = await postWorkExperienceReference({
           token: this.route.params.token as string,
           workExperienceType: this.wizardStore.wizardData.workExperienceType,
-          willProvideReference: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id],
+          willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
           referenceContactInformation:
-            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id],
+            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
           workExperienceReferenceDetails:
-            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id],
+            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""],
           workExperienceReferenceCompetenciesAssessment:
-            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id],
+            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.assessment?.form?.inputs?.workExperienceAssessment?.id || ""],
           confirmProvidedInformationIsRight:
-            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
-          recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],
+            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
+          recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
         });
+
         if (!response?.error) {
           this.router.push({ path: "/reference-submitted" });
         }
@@ -230,14 +232,16 @@ export default defineComponent({
         const response = await postWorkExperienceReference({
           token: this.route.params.token as string,
           workExperienceType: this.wizardStore.wizardData.workExperienceType,
-          willProvideReference: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.declaration.form.inputs.willProvideReference.id],
+          willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
           referenceContactInformation:
-            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id],
+            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""],
           workExperienceReferenceDetails:
-            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id],
+            this.wizardStore.wizardData[
+              this.wizardStore?.wizardConfig?.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+            ],
           confirmProvidedInformationIsRight:
-            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
-          recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],
+            this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
+          recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
         });
         if (!response?.error) {
           this.router.push({ path: "/reference-submitted" });
@@ -254,8 +258,8 @@ export default defineComponent({
         return;
       }
 
-      const reason = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.referenceDecline.id];
-      const recaptchaToken = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.recaptchaToken.id];
+      const reason = this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.decline?.form?.inputs?.referenceDecline?.id || ""];
+      const recaptchaToken = this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.decline?.form?.inputs?.recaptchaToken?.id || ""];
       const result = await optOutReference(this.route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons, recaptchaToken);
       if (!result.error) {
         this.router.push({ path: "/reference-submitted" });

@@ -94,19 +94,20 @@ export default defineComponent({
       const workHoursTypeDisplay = workHoursTypeRadio.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]?.workHoursType,
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""]
+            ?.workHoursType,
       )?.label;
       const childrenProgramTypeDisplay = childrenProgramTypeDropdown.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""]
             ?.childrenProgramType,
       )?.title;
 
       const childcareAgeRangesDisplay = childcareAgeRangesCheckBox
         .filter((value) =>
           this.wizardStore.wizardData[
-            this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id
+            this.wizardStore.wizardConfig.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""
           ]?.childcareAgeRanges.includes(value.value),
         )
         .map((value) => value.label);
@@ -114,26 +115,30 @@ export default defineComponent({
       const referenceRelationshipDisplay = workReferenceRelationshipRadio.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""]
             ?.referenceRelationship,
       )?.label;
 
       return {
-        hours: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]?.hours,
+        hours:
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""]?.hours,
         workHoursType: workHoursTypeDisplay as Components.Schemas.WorkHoursType,
         childrenProgramName:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""]
             ?.childrenProgramName,
         childrenProgramType: childrenProgramTypeDisplay as Components.Schemas.ChildrenProgramType,
         childrenProgramTypeOther:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""]
             ?.childrenProgramTypeOther,
         childcareAgeRanges: childcareAgeRangesDisplay as Components.Schemas.ChildcareAgeRanges[],
-        startDate: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]?.startDate,
-        endDate: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]?.endDate,
+        startDate:
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""]
+            ?.startDate,
+        endDate:
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""]?.endDate,
         referenceRelationship: referenceRelationshipDisplay as Components.Schemas.ReferenceRelationship,
         referenceRelationshipOther:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]
+          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""]
             ?.referenceRelationshipOther,
         workExperienceType: WorkExperienceType.IS_500_Hours,
       };

@@ -1,15 +1,21 @@
 <template>
-  <v-col v-if="
-    certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) == 'Active' ||
-    (certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) == 'Expired' &&
-      !certificationStore.expiredMoreThan5Years(applicationStore.draftApplication.fromCertificate))
-  " cols="12">
+  <v-col
+    v-if="
+      certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) == 'Active' ||
+      (certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) == 'Expired' &&
+        !certificationStore.expiredMoreThan5Years(applicationStore.draftApplication.fromCertificate))
+    "
+    cols="12"
+  >
     <Alert title="Do you have 500 hours of supervised work experience?">
       You should
-      <a class="cursor-pointer text-decoration-underline" @click="
-        applicationStore.draftApplication.certificationTypes = ['FiveYears'];
-      applicationStore.draftApplication.applicationType = 'New';
-      ">
+      <a
+        class="cursor-pointer text-decoration-underline"
+        @click="
+          applicationStore.draftApplication.certificationTypes = ['FiveYears'];
+          applicationStore.draftApplication.applicationType = 'New';
+        "
+      >
         apply for ECE Five Year certification
       </a>
       if you have completed 500 hours of work experience.
@@ -27,8 +33,7 @@
       <ul class="ml-10">
         <li>You can only renew this certificate once</li>
         <li>You cannot renew an ECE One Year Certificate if it has been expired for more than 5 years</li>
-        <li>After you renew you’ll only be able to apply for an ECE Five Year certificate or an ECE Assistant
-          certificate</li>
+        <li>After you renew you’ll only be able to apply for an ECE Five Year certificate or an ECE Assistant certificate</li>
       </ul>
     </div>
   </v-col>
@@ -36,17 +41,18 @@
     <ECEHeader title="Reason why you're renewing your ECE One Year certification" />
     <div class="d-flex flex-column ga-3 my-6">
       <p>
-        You will need to provide a reason for why you were unable to complete the required 500 hours of supervised work
-        experience during the term of your ECE
-        One Year Certificate and/or why you were unable to provide a reference from the certified ECE who supervised the
-        hours.
+        You will need to provide a reason for why you were unable to complete the required 500 hours of supervised work experience during the term of your ECE
+        One Year Certificate and/or why you were unable to provide a reference from the certified ECE who supervised the hours.
       </p>
       <p>
         If you've completed 500 hours, you should apply for
-        <a class="cursor-pointer text-decoration-underline" @click="
-          applicationStore.draftApplication.certificationTypes = ['FiveYears'];
-        applicationStore.draftApplication.applicationType = 'New';
-        ">
+        <a
+          class="cursor-pointer text-decoration-underline"
+          @click="
+            applicationStore.draftApplication.certificationTypes = ['FiveYears'];
+            applicationStore.draftApplication.applicationType = 'New';
+          "
+        >
           ECE Five Year certification
         </a>
         instead.
@@ -56,8 +62,7 @@
   <v-col cols="12">
     <ECEHeader title="Character reference" />
     <div class="d-flex flex-column ga-3 my-6">
-      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later
-        after you submit your application.</p>
+      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
       <p>The reference must be someone who:</p>
       <ul class="ml-10">
         <li>Can speak to your character</li>
@@ -73,8 +78,7 @@
     <ECEHeader title="Work experience" />
     <div class="d-flex flex-column ga-3 my-6">
       <p>
-        You need to have completed 400 hours of work experience and be able to provide references to verify the hours.
-        If you worked at multiple locations, you
+        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
         can provide multiple references.
       </p>
       <p>The hours must:</p>

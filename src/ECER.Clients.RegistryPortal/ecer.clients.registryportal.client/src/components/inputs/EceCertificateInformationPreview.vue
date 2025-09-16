@@ -70,7 +70,7 @@ export default defineComponent({
   },
   computed: {
     certificateInformation(): Components.Schemas.CertificateInformation {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.certificateInformation.form.inputs.certificateInformation.id];
+      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.certificateInformation?.form?.inputs?.certificateInformation?.id || ""];
     },
     nameOnCertificate(): string {
       const firstName = this.certificateInformation.legalFirstName || "";

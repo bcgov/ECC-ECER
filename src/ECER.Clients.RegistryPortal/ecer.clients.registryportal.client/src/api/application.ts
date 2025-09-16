@@ -47,7 +47,7 @@ const cancelDraftApplication = async (applicationId: string): Promise<ApiRespons
 
   return await apiResultHandler.execute<Components.Schemas.CancelDraftApplicationResponse | null | undefined>({
     request: client.draftapplication_delete(pathParameters),
-    key: "draftapplication_delete"
+    key: "draftapplication_delete",
   });
 };
 

@@ -171,9 +171,9 @@ const notSameAs = (otherValue: string, message = "Both values must be different"
 const dateBetweenRule = (startDate: string, endDate: string, message = `Date should be between ${startDate} and ${endDate}`) => {
   return (v: string) => {
     if (v && startDate && endDate) {
-      const end = DateTime.fromISO(endDate);
-      const start = DateTime.fromISO(startDate);
-      const input = DateTime.fromJSDate(new Date(v));
+      const end = DateTime.fromISO(endDate).toUTC().startOf("day");
+      const start = DateTime.fromISO(startDate).toUTC().startOf("day");
+      const input = DateTime.fromJSDate(new Date(v)).toUTC();
 
       return (input <= end && input >= start) || message;
     }
@@ -192,16 +192,14 @@ const dateBetweenRule = (startDate: string, endDate: string, message = `Date sho
 const dateBeforeRule = (targetDate: string, message = "End date cannot be before start date") => {
   return (v: string) => {
     if (v && targetDate) {
-      const input = DateTime.fromJSDate(new Date(v));
-      const target = DateTime.fromISO(targetDate);
+      const input = DateTime.fromJSDate(new Date(v)).toUTC();
+      const target = DateTime.fromISO(targetDate).toUTC().startOf("day");
 
       return input >= target || message;
     }
 
     return true;
   };
-
-  return true;
 };
 
 /**

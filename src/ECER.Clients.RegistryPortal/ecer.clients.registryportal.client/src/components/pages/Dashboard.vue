@@ -64,10 +64,13 @@
       </v-row>
 
       <!-- Your ECE applications -->
-      <v-row v-if="applications && userStore.isVerified && showApplicationCard" justify="center">
+      <v-row v-if="applications && userStore.isVerified && (showApplicationCard || showIcraEligibilityCard)" justify="center">
         <v-col>
           <v-row>
-            <v-col cols="12" :sm="showTransferCard ? 6 : 12">
+            <v-col v-if="showIcraEligibilityCard" cols="12" :sm="showTransferCard ? 6 : 12">
+              <IcraEligibilityCard @cancel-application="showCancelDialog = true" />
+            </v-col>
+            <v-col v-else-if="showApplicationCard" cols="12" :sm="showTransferCard ? 6 : 12">
               <ApplicationCard @cancel-application="showCancelDialog = true" />
             </v-col>
             <v-col v-if="showTransferCard" cols="12" sm="6">
@@ -100,6 +103,7 @@
                       :is-rounded="false"
                       :certification="certificationStore.currentCertification"
                       :has-application="applicationStore.hasApplication"
+                      :is-latest-of-type="true"
                     />
                   </template>
                 </div>
@@ -109,14 +113,14 @@
           </v-col>
         </v-row>
 
-        <!-- My Other Certifications -->
+        <!-- My Certifications -->
         <v-row v-if="certifications && hasOtherCertifications()" justify="center" class="mt-6">
           <v-col>
             <v-row>
               <v-col cols="12">
                 <div>
-                  <v-btn block size="x-large" variant="outlined" color="primary" @click="router.push('/my-other-certifications')" class="force-full-content">
-                    My other certifications
+                  <v-btn block size="x-large" variant="outlined" color="primary" @click="router.push('/my-certifications')" class="force-full-content">
+                    All my certifications
                     <v-icon size="large" icon="mdi-arrow-right" />
                   </v-btn>
                 </div>
@@ -181,7 +185,7 @@
                   Canadian-certified ECE.
                 </p>
                 <div class="mt-auto">
-                  <router-link class="mt-4" :to="{name: 'icra-eligibility'}">Learn more</router-link>
+                  <router-link class="mt-4" :to="{ name: 'icra-eligibility' }">Learn more</router-link>
                 </div>
               </Card>
             </v-col>
@@ -220,6 +224,7 @@ import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
 import TransferCard from "@/components/TransferCard.vue";
 import IcraCard from "@/components/IcraCard.vue";
+import IcraEligibilityCard from "@/components/IcraEligibilityCard.vue";
 import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
@@ -229,6 +234,7 @@ import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
 import { useConfigStore } from "@/store/config";
 import { useCertificationStore } from "@/store/certification";
+import { useIcraStore } from "@/store/icra";
 import { useMessageStore } from "@/store/message";
 import { useUserStore } from "@/store/user";
 import { useLoadingStore } from "@/store/loading";
@@ -245,6 +251,7 @@ export default defineComponent({
     ApplicationCard,
     TransferCard,
     IcraCard,
+    IcraEligibilityCard,
     CertificationCard,
     ECEHeader,
     ActionCard,
@@ -259,6 +266,7 @@ export default defineComponent({
     const applicationStore = useApplicationStore();
     const configurationStore = useConfigStore();
     const certificationStore = useCertificationStore();
+    const icraStore = useIcraStore();
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
     const messageStore = useMessageStore();
@@ -269,6 +277,7 @@ export default defineComponent({
       userStore,
       applicationStore,
       configurationStore,
+      icraStore,
       alertStore,
       loadingStore,
       messageStore,
@@ -299,6 +308,11 @@ export default defineComponent({
       getUserInfo(),
       getProfile(),
     ]);
+
+    // Fetch ICRA eligibilities if the feature is enabled
+    if (this.configurationStore.applicationConfiguration.icraFeatureEnabled) {
+      await this.icraStore.fetchIcraEligibilities();
+    }
     this.dataNotFetched = false;
 
     if (this.userInfo !== null) {
@@ -341,14 +355,23 @@ export default defineComponent({
       );
     },
     showTransferCard(): boolean {
-      return !this.certificationStore.hasCertifications && !this.applicationStore.hasApplication && !this.applicationStore.hasDraftApplication;
+      return (
+        !this.certificationStore.hasCertifications &&
+        !this.applicationStore.hasApplication &&
+        !this.applicationStore.hasDraftApplication &&
+        !this.icraStore.hasDraftIcraEligibility
+      );
     },
     showIcraCard(): boolean {
       return (
         (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) &&
         !this.applicationStore.hasApplication &&
-        !this.applicationStore.hasDraftApplication
+        !this.applicationStore.hasDraftApplication &&
+        !this.icraStore.hasDraftIcraEligibility
       );
+    },
+    showIcraEligibilityCard(): boolean {
+      return (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) && this.icraStore.hasDraftIcraEligibility;
     },
     showLoading(): boolean {
       return (
@@ -361,7 +384,12 @@ export default defineComponent({
     },
     showOptions(): boolean {
       // If the user has certifications, does not have an application, and does not hold all certifications (Active or renewable)
-      return this.certificationStore.hasCertifications && !this.applicationStore.hasApplication && !this.certificationStore.holdsAllCertifications;
+      return (
+        this.certificationStore.hasCertifications &&
+        !this.icraStore.hasIcraEligibility &&
+        !this.applicationStore.hasApplication &&
+        !this.certificationStore.holdsAllCertifications
+      );
     },
     cancelApplicationLoading(): boolean {
       return this.loadingStore.isLoading("draftapplication_delete") || this.loadingStore.isLoading("application_get");

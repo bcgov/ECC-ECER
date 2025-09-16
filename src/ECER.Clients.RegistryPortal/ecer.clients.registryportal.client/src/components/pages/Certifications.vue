@@ -1,16 +1,16 @@
 <template>
   <v-container>
     <Breadcrumb />
-    <h1>My other certifications</h1>
+    <h1>My certifications</h1>
     <div class="d-flex flex-column ga-3 my-6">
-      <p>You may wish to renew another certification you hold if you do not meet the requirements for higher certification levels. This may be due to:</p>
+      <p>Review your certification records. You can also:</p>
       <ul class="ml-10">
-        <li>Inability to complete work experience and/or professional development hours within the term of your current certificate</li>
-        <li>Working outside of the ECE field due to personal or extenuating circumstances</li>
-        <li>Missing a basic and/or specialized ECE educational training program</li>
+        <li>Download a PDF of your active certificate(s)</li>
+        <li>Renew your latest certificate</li>
+        <li>Renew another certificate type (e.g., if you do not meet the requirements for higher certification levels)</li>
       </ul>
     </div>
-    <CertificationList :certifications="getOtherCertifications()" />
+    <CertificationList :certifications="certificationStore.certifications ?? []" />
   </v-container>
 </template>
 
@@ -34,17 +34,6 @@ export default defineComponent({
     return {
       certificationStore,
     };
-  },
-  methods: {
-    getOtherCertifications() {
-      // Get all certifications except the current one
-      if (!this.certificationStore.certifications || this.certificationStore.certifications.length <= 1) {
-        return [];
-      }
-      const currentCertification = this.certificationStore.currentCertification;
-      if (!currentCertification) return [];
-      return this.certificationStore.certifications.filter((cert) => cert.id !== currentCertification.id);
-    },
   },
 });
 </script>

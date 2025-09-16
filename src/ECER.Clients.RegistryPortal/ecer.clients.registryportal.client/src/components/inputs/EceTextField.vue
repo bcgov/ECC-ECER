@@ -1,6 +1,13 @@
 <template>
   <label>
-    {{ label }}
+    <div>
+      {{ label }}
+      <v-tooltip v-if="tooltipText !== ''" :text="tooltipText" location="top">
+        <template #activator="{ props }">
+          <v-icon v-bind="props" :icon="tooltipIcon" variant="plain" />
+        </template>
+      </v-tooltip>
+    </div>
     <v-text-field
       ref="textField"
       v-bind="$attrs"
@@ -36,6 +43,16 @@ export default defineComponent({
     isNumeric: {
       type: Boolean,
       default: false,
+    },
+    tooltipText: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    tooltipIcon: {
+      type: String,
+      required: false,
+      default: "mdi-information-slab-circle",
     },
   },
   emits: ["input"],

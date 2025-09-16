@@ -14,8 +14,7 @@
   <v-col cols="12">
     <ECEHeader title="Character reference" />
     <div class="d-flex flex-column ga-3 my-6">
-      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later
-        after you submit your application.</p>
+      <p>You will need to provide a character reference. You'll enter their name and email. We'll contact them later after you submit your application.</p>
       <p>The reference must be someone who:</p>
       <ul class="ml-10">
         <li>Can speak to your character</li>
@@ -31,16 +30,14 @@
     <ECEHeader title="Work experience" />
     <div v-if="!expired" class="d-flex flex-column ga-3 my-6">
       <p>
-        You need to have completed 400 hours of work experience and be able to provide references to verify the hours.
-        If you worked at multiple locations, you
+        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
         can provide multiple references.
       </p>
       <p>The hours must:</p>
       <ul class="ml-10">
         <li>Be related to the field of early childhood education</li>
         <li>
-          Have been completed within the term of your current certificate (between {{
-            formattedLatestCertificationEffectiveDate }} and
+          Have been completed within the term of your current certificate (between {{ formattedLatestCertificationEffectiveDate }} and
           {{ formattedLatestCertificationExpiryDate }})
         </li>
       </ul>
@@ -53,8 +50,7 @@
     </div>
     <div v-if="expired && !expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
       <p>
-        You need to have completed 400 hours of work experience and be able to provide references to verify the hours.
-        If you worked at multiple locations, you
+        You need to have completed 400 hours of work experience and be able to provide references to verify the hours. If you worked at multiple locations, you
         can provide multiple references.
       </p>
       <p>The hours must:</p>
@@ -70,8 +66,7 @@
       </ul>
     </div>
     <div v-if="expired && expiredMoreThan5Years" class="d-flex flex-column ga-3 my-6">
-      <p>You need to have completed 500 hours of work experience and be able to provide references to verify the hours.
-      </p>
+      <p>You need to have completed 500 hours of work experience and be able to provide references to verify the hours.</p>
       <p>Important information about calculating hours:</p>
       <ul class="ml-10">
         <li>Only include hours you worked once you began your early childhood education training program</li>

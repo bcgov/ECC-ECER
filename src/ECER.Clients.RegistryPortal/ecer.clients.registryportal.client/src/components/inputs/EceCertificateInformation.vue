@@ -166,7 +166,7 @@ export default defineComponent({
           option.value.lastName === this.modelValue.legalLastName
         );
       });
-      this.previousNameRadio = matchingNameOption ? matchingNameOption.value : this.applicantNameRadioOptions[0].value;
+      this.previousNameRadio = matchingNameOption ? matchingNameOption.value : this.applicantNameRadioOptions?.[0]?.value;
     }
   },
   methods: {
