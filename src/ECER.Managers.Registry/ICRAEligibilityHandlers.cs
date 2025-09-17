@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using ECER.Infrastructure.Common;
+using ECER.Managers.Registry.Contract.Applications;
 using ECER.Managers.Registry.Contract.ICRA;
+using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.ICRA;
 using MediatR;
 
@@ -20,7 +22,21 @@ public class ICRAEligibilityHandlers(
   public async Task<Contract.ICRA.ICRAEligibility?> Handle(SaveICRAEligibilityCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
+    if (request.eligibility.Id == null)
+    {
+      var icraEligibilities = await iCRARepository.Query(new ICRAQuery
+      {
+        ByApplicantId = request.eligibility.ApplicantId,
+        ByStatus = [Resources.Documents.ICRA.ICRAStatus.Draft]
+      }, cancellationToken);
 
+      var existingDraftICRA = icraEligibilities.FirstOrDefault();
+      if (existingDraftICRA != null)
+      {
+        // user already has a draft icra eligibility
+        throw new InvalidOperationException($"User already has a draft ICRA with id '{existingDraftICRA.Id}'");
+      }
+    }
     var iCRAEligibilityId = await iCRARepository.Save(mapper.Map<Resources.Documents.ICRA.ICRAEligibility>(request.eligibility)!, cancellationToken);
 
     var freshIcraEligibilities = await iCRARepository.Query(new ICRAQuery

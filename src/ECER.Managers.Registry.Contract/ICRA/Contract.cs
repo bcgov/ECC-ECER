@@ -13,7 +13,6 @@ public record ICRAEligibilitiesQuery : IRequest<ICRAEligibilitiesQueryResults>
 }
 
 public record ICRAEligibilitiesQueryResults(IEnumerable<ICRAEligibility> Items);
-
 public record ICRAEligibility()
 {
   public string? Id { get; set; }
