@@ -339,6 +339,7 @@ declare namespace Components {
             otherFirstName?: string | null;
             otherMiddleName?: string | null;
             otherLastName?: string | null;
+            certificateHasOtherName?: boolean | null;
             countryId?: string | null;
             nameOfRegulatoryAuthority?: string | null;
             emailOfRegulatoryAuthority?: string | null;

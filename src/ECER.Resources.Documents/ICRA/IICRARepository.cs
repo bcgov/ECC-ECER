@@ -30,6 +30,7 @@ public record InternationalCertification
   public string? OtherFirstName { get; set; }
   public string? OtherMiddleName { get; set; }
   public string? OtherLastName { get; set; }
+  public bool? CertificateHasOtherName { get; set; }
   public string? CountryId { get; set; }
   public string? NameOfRegulatoryAuthority { get; set; }
   public string? EmailOfRegulatoryAuthority { get; set; }
@@ -50,6 +51,7 @@ public enum CertificateStatus
   Valid,
   Expired
 }
+
 public enum ICRAStatus
 {
   Active,

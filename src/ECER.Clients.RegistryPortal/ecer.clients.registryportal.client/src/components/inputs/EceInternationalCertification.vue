@@ -79,8 +79,8 @@
         <v-col md="8" lg="6" xl="4">
           <p>What is your certification status?</p>
           <v-radio-group id="certificateStatusRadio" v-model="certificateStatus" :rules="[Rules.requiredRadio('Select the status of your certification')]">
-            <v-radio label="Valid" :value="'valid'"></v-radio>
-            <v-radio label="Expired" :value="'expired'"></v-radio>
+            <v-radio label="Valid" :value="'Valid'"></v-radio>
+            <v-radio label="Expired" :value="'Expired'"></v-radio>
           </v-radio-group>
         </v-col>
       </v-row>
@@ -377,7 +377,7 @@ export default defineComponent({
       otherFirstName: "",
       otherMiddleName: "",
       otherLastName: "",
-      // isNameUnverified: false, TODO needs name verification
+      certificateHasOtherName: false,
       //other data
 
       internationalCertificationFormMode: undefined,
@@ -483,10 +483,10 @@ export default defineComponent({
       this.otherFirstName = internationalCertification.otherFirstName;
       this.otherMiddleName = internationalCertification.otherMiddleName;
       this.otherLastName = internationalCertification.otherLastName;
-      this.isNameUnverified = internationalCertification.isNameUnverified;
+      this.certificateHasOtherName = internationalCertification.certificateHasOtherName;
 
       //set the radio button for previous names and field buttons correctly
-      if (internationalCertification.isNameUnverified) {
+      if (internationalCertification.certificateHasOtherName) {
         let index = this.applicantNameRadioOptions.findIndex((option) => option.value === "other");
         this.previousNameRadio = this.applicantNameRadioOptions[index]?.value;
       } else {
@@ -530,7 +530,7 @@ export default defineComponent({
           otherFirstName: this.otherFirstName,
           otherMiddleName: this.otherMiddleName,
           otherLastName: this.otherLastName,
-          isNameUnverified: this.isNameUnverified,
+          certificateHasOtherName: this.certificateHasOtherName,
         };
         let updatedModelValue = this.modelValue?.slice() || []; //create a copy of the array
 
@@ -614,7 +614,7 @@ export default defineComponent({
       this.otherFirstName = "";
       this.otherMiddleName = "";
       this.otherLastName = "";
-      this.isNameUnverified = false;
+      this.certificateHasOtherName = false;
       //selection
 
       this.internationalCertificationFormMode = undefined;
@@ -630,12 +630,12 @@ export default defineComponent({
         this.otherFirstName = "";
         this.otherMiddleName = "";
         this.otherLastName = "";
-        this.isNameUnverified = true;
+        this.certificateHasOtherName = true;
       } else {
         this.otherFirstName = option.firstName;
         this.otherMiddleName = option.middleName;
         this.otherLastName = option.lastName;
-        this.isNameUnverified = false;
+        this.certificateHasOtherName = false;
       }
     },
   },

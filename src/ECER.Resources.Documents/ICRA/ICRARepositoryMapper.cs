@@ -22,7 +22,6 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.InternationalCertifications, opts => opts.MapFrom(s => s.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment))
       .ForMember(d => d.CreatedOn, opts => opts.MapFrom(s => s.CreatedOn));
 
-
     CreateMap<InternationalCertification, ecer_InternationalCertification>(MemberList.Source)
       .ForSourceMember(s => s.NewFiles, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.DeletedFiles, opts => opts.DoNotValidate())
@@ -31,6 +30,7 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.ecer_OtherFirstName, opts => opts.MapFrom(s => s.OtherFirstName))
       .ForMember(d => d.ecer_OtherMiddleName, opts => opts.MapFrom(s => s.OtherMiddleName))
       .ForMember(d => d.ecer_OtherLastName, opts => opts.MapFrom(s => s.OtherLastName))
+      .ForMember(d => d.ecer_CertificateHasOtherName, opts => opts.MapFrom(s => s.CertificateHasOtherName))
       .ForMember(d => d.ecer_AuthorityName, opts => opts.MapFrom(s => s.NameOfRegulatoryAuthority))
       .ForMember(d => d.ecer_AuthorityEmail, opts => opts.MapFrom(s => s.EmailOfRegulatoryAuthority))
       .ForMember(d => d.ecer_AuthorityPhone, opts => opts.MapFrom(s => s.PhoneOfRegulatoryAuthority))
@@ -46,6 +46,7 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.OtherFirstName, opts => opts.MapFrom(s => s.ecer_OtherFirstName))
       .ForMember(d => d.OtherMiddleName, opts => opts.MapFrom(s => s.ecer_OtherMiddleName))
       .ForMember(d => d.OtherLastName, opts => opts.MapFrom(s => s.ecer_OtherLastName))
+      .ForMember(d => d.CertificateHasOtherName, opts => opts.MapFrom(s => s.ecer_CertificateHasOtherName))
       .ForMember(d => d.CountryId, opts => opts.MapFrom(s => s.ecer_Country != null ? s.ecer_Country.Id.ToString() : null))
       .ForMember(d => d.NameOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityName))
       .ForMember(d => d.EmailOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityEmail))
@@ -67,6 +68,6 @@ internal class ICRARepositoryMapper : Profile
 
   public static string IdOrEmpty(EntityReference? reference) =>
       reference != null && reference.Id != Guid.Empty
-          ? reference.Id.ToString()  
-          : string.Empty;              
+          ? reference.Id.ToString()
+          : string.Empty;
 }
