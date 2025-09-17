@@ -372,12 +372,17 @@ export default defineComponent({
       certificateTitle: "",
       issueDate: "",
       expiryDate: "",
+      files: [],
+      newFiles: [],
+      deletedFiles: [],
+      //extended file data
+      newFilesWithData: [],
       //name fields
       previousNameRadio: undefined,
       otherFirstName: "",
       otherMiddleName: "",
       otherLastName: "",
-      certificateHasOtherName: false,
+      hasOtherName: false,
       //other data
 
       internationalCertificationFormMode: undefined,
@@ -483,10 +488,10 @@ export default defineComponent({
       this.otherFirstName = internationalCertification.otherFirstName;
       this.otherMiddleName = internationalCertification.otherMiddleName;
       this.otherLastName = internationalCertification.otherLastName;
-      this.certificateHasOtherName = internationalCertification.certificateHasOtherName;
+      this.hasOtherName = internationalCertification.hasOtherName;
 
       //set the radio button for previous names and field buttons correctly
-      if (internationalCertification.certificateHasOtherName) {
+      if (internationalCertification.hasOtherName) {
         let index = this.applicantNameRadioOptions.findIndex((option) => option.value === "other");
         this.previousNameRadio = this.applicantNameRadioOptions[index]?.value;
       } else {
@@ -530,7 +535,7 @@ export default defineComponent({
           otherFirstName: this.otherFirstName,
           otherMiddleName: this.otherMiddleName,
           otherLastName: this.otherLastName,
-          certificateHasOtherName: this.certificateHasOtherName,
+          hasOtherName: this.hasOtherName,
         };
         let updatedModelValue = this.modelValue?.slice() || []; //create a copy of the array
 
@@ -614,7 +619,7 @@ export default defineComponent({
       this.otherFirstName = "";
       this.otherMiddleName = "";
       this.otherLastName = "";
-      this.certificateHasOtherName = false;
+      this.hasOtherName = false;
       //selection
 
       this.internationalCertificationFormMode = undefined;
@@ -630,12 +635,12 @@ export default defineComponent({
         this.otherFirstName = "";
         this.otherMiddleName = "";
         this.otherLastName = "";
-        this.certificateHasOtherName = true;
+        this.hasOtherName = true;
       } else {
         this.otherFirstName = option.firstName;
         this.otherMiddleName = option.middleName;
         this.otherLastName = option.lastName;
-        this.certificateHasOtherName = false;
+        this.hasOtherName = false;
       }
     },
   },

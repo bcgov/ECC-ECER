@@ -78,6 +78,8 @@ internal sealed partial class ICRARepository : IICRARepository
       if (icraEligibility.ecer_DateSigned.HasValue && existingIcraEligibility.ecer_DateSigned.HasValue) icraEligibility.ecer_DateSigned = existingIcraEligibility.ecer_DateSigned;
 
       icraEligibility.ecer_ICRAEligibilityAssessmentId = existingIcraEligibility.ecer_ICRAEligibilityAssessmentId;
+      context.Detach(existingIcraEligibility);
+      context.Attach(icraEligibility);
       context.UpdateObject(icraEligibility);
     }
     // Update international certifications and their files

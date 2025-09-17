@@ -72,9 +72,6 @@ export const useIcraStore = defineStore("icra", {
       const internationalCertificationId = wizardStore.wizardConfig?.steps?.internationalCertification?.form?.inputs?.internationalCertification?.id;
       const employmentExperienceId = wizardStore.wizardConfig?.steps?.employmentExperience?.form?.inputs?.employmentExperience?.id;
 
-      console.log(internationalCertificationId);
-      console.log(employmentExperienceId);
-
       // Set wizard stage to the current step stage
       this.draftIcraEligibility.portalStage = wizardStore.currentStepStage as IcraEligibilityStage;
 
@@ -121,6 +118,7 @@ export const useIcraStore = defineStore("icra", {
     },
     async saveDraft(): Promise<Components.Schemas.DraftICRAEligibilityResponse | null | undefined> {
       this.prepareDraftIcraEligibilityFromWizard();
+      console.log("Draft ICRA Eligibility to be saved:", this.draftIcraEligibility);
       return await this.upsertDraftIcraEligibility();
     },
     async patchDraft(draftIcraEligibility: Components.Schemas.ICRAEligibility): Promise<Components.Schemas.DraftICRAEligibilityResponse | null | undefined> {
