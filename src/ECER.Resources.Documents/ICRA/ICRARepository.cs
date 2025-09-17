@@ -49,6 +49,7 @@ internal sealed partial class ICRARepository : IICRARepository
       .Include(a => a.ecer_icraeligibilityassessment_ApplicantId)
       .Include(a => a.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment)
       .IncludeNested(a => a.ecer_bcgov_documenturl_internationalcertificationid)
+      .IncludeNested(a => a.ecer_internationalcertification_CountryId)
       .Execute();
 
     return mapper.Map<IEnumerable<ICRAEligibility>>(results)!.ToList();
