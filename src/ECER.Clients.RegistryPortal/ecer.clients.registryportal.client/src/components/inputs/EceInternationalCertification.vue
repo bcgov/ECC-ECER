@@ -300,6 +300,7 @@ import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 import { parseHumanFileSize, removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
 
+import applicationWizardIcraEligibility from "@/config/application-wizard-icra-eligibility";
 import ECEHeader from "../ECEHeader.vue";
 import FileUploader from "../FileUploader.vue";
 import InternationalCertificationCard from "../InternationalCertificationCard.vue";
@@ -489,6 +490,10 @@ export default defineComponent({
       this.otherMiddleName = internationalCertification.otherMiddleName;
       this.otherLastName = internationalCertification.otherLastName;
       this.hasOtherName = internationalCertification.hasOtherName;
+      this.files = internationalCertification.files;
+      this.newFiles = internationalCertification.newFiles;
+      this.deletedFiles = internationalCertification.deletedFiles;
+      this.newFilesWithData = internationalCertification.newFilesWithData || [];
 
       //set the radio button for previous names and field buttons correctly
       if (internationalCertification.hasOtherName) {
@@ -510,9 +515,9 @@ export default defineComponent({
     async handleDelete(_internationalCertification: InternationalCertificationExtended, index: number) {
       this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
 
-      // await this.icraStore.saveDraft();
+      await this.icraStore.saveDraft();
       //we need to update wizardData with the latest information to avoid creating duplicate new entries
-      // await this.wizardStore.initializeWizard(this.icraStore.applicationConfiguration, this.icraStore.draftApplication);
+      await this.wizardStore.initializeWizardForIcraEligibility(applicationWizardIcraEligibility, this.icraStore.draftIcraEligibility);
 
       this.alertStore.setSuccessAlert("You have deleted your international certification.");
     },
@@ -536,6 +541,10 @@ export default defineComponent({
           otherMiddleName: this.otherMiddleName,
           otherLastName: this.otherLastName,
           hasOtherName: this.hasOtherName,
+          files: this.files,
+          newFiles: this.newFiles,
+          deletedFiles: this.deletedFiles,
+          newFilesWithData: this.newFilesWithData,
         };
         let updatedModelValue = this.modelValue?.slice() || []; //create a copy of the array
 
@@ -550,7 +559,7 @@ export default defineComponent({
 
         await this.icraStore.saveDraft();
         //we need to update wizardData with the latest information to avoid creating duplicate new entries
-        // await this.wizardStore.initializeWizard(this.icraStore.applicationConfiguration, this.icraStore.draftApplication);
+        await this.wizardStore.initializeWizardForIcraEligibility(applicationWizardIcraEligibility, this.icraStore.draftIcraEligibility);
 
         this.resetFormData();
 
@@ -614,13 +623,16 @@ export default defineComponent({
       this.certificateTitle = "aweoigwaogi";
       this.issueDate = "";
       this.expiryDate = "";
+      this.files = [];
+      this.newFiles = [];
+      this.deletedFiles = [];
+      this.newFilesWithData = [];
       //name fields
       this.previousNameRadio = undefined;
       this.otherFirstName = "";
       this.otherMiddleName = "";
       this.otherLastName = "";
       this.hasOtherName = false;
-      //selection
 
       this.internationalCertificationFormMode = undefined;
     },
