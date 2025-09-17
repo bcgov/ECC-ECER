@@ -68,7 +68,7 @@
             id="txtRegulatoryAuthorityValidation"
             v-model="onlineCertificateValidationToolOfRegulatoryAuthority"
             label="Online certificate validation tool of regulatory authority (optional)"
-            :rules="[]"
+            :rules="[Rules.website()]"
           ></EceTextField>
         </v-col>
       </v-row>
