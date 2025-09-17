@@ -10,7 +10,7 @@
           Country
           <v-select
             class="pt-2"
-            :items="configStore.countryList"
+            :items="configStore.countryList.filter((country) => country.isICRA === true)"
             variant="outlined"
             label=""
             v-model="countryId"

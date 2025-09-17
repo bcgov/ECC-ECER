@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import { createOrUpdateDraftIcraEligibility, getIcraEligibilities } from "@/api/icra";
 import type { Components } from "@/types/openapi";
 import type { FileItem } from "@/components/UploadFileItem.vue";
-import { humanFileSize } from "@/utils/functions";
 
 import { useWizardStore } from "./wizard";
 import type { IcraEligibilityStage } from "@/types/wizard";
