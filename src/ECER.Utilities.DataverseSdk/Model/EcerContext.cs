@@ -536,17 +536,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_ICRARegulatedJurisdictions"/> entities.
-		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_ICRARegulatedJurisdictions> ecer_ICRARegulatedJurisdictionsSet
-		{
-			get
-			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_ICRARegulatedJurisdictions>();
-			}
-		}
-		
-		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_identificationtype"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_identificationtype> ecer_identificationtypeSet
