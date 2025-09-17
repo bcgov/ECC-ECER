@@ -47,7 +47,7 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.OtherMiddleName, opts => opts.MapFrom(s => s.ecer_OtherMiddleName))
       .ForMember(d => d.OtherLastName, opts => opts.MapFrom(s => s.ecer_OtherLastName))
       .ForMember(d => d.HasOtherName, opts => opts.MapFrom(s => s.ecer_CertificateHasOtherName))
-      .ForMember(d => d.CountryId, opts => opts.MapFrom(s => s.ecer_CountryId != null ? s.ecer_CountryId.Id.ToString() : null))
+      .ForMember(d => d.CountryId, opts => opts.MapFrom(s => s.ecer_internationalcertification_CountryId != null ? s.ecer_internationalcertification_CountryId.Id.ToString() : null))
       .ForMember(d => d.NameOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityName))
       .ForMember(d => d.EmailOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityEmail))
       .ForMember(d => d.PhoneOfRegulatoryAuthority, opts => opts.MapFrom(s => s.ecer_AuthorityPhone))
