@@ -153,7 +153,6 @@ import * as Rules from "@/utils/formRules";
 import { removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
 
 import ECEHeader from "../ECEHeader.vue";
-import FileUploader from "../FileUploader.vue";
 import EceIcraWorkExperienceEligibilityCard from "../EceIcraWorkExperienceEligibilityCard.vue";
 import ProgressBar from "../ProgressBar.vue";
 import { useIcraStore } from "@/store/icra";
@@ -167,7 +166,7 @@ interface IcraWorkExperienceEligibilityData extends Components.Schemas.WorkExper
 
 export default defineComponent({
   name: "EceIcraWorkExperienceEligibility",
-  components: { ProgressBar, FileUploader, EceIcraWorkExperienceEligibilityCard, EceDateInput, EceTextField, Callout, ECEHeader },
+  components: { ProgressBar, EceIcraWorkExperienceEligibilityCard, EceDateInput, EceTextField, Callout, ECEHeader },
   props: {
     modelValue: {
       type: Object as () => Components.Schemas.WorkExperienceReference[],
