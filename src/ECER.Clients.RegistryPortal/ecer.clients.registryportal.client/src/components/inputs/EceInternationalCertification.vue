@@ -9,8 +9,9 @@
         <v-col md="8" lg="6" xl="4">
           Country
           <v-select
+            id="certificateCountrySelect"
             class="pt-2"
-            :items="configStore.countryList"
+            :items="configStore.countryList.filter((country) => country.isICRA === true)"
             variant="outlined"
             label=""
             v-model="countryId"
@@ -142,17 +143,25 @@
       <div v-if="previousNameRadio === 'other'">
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <EceTextField v-model="otherFirstName" label="First name on transcript" variant="outlined" color="primary" maxlength="100"></EceTextField>
+            <EceTextField
+              id="txtOtherFirstName"
+              v-model="otherFirstName"
+              label="First name on transcript"
+              variant="outlined"
+              color="primary"
+              maxlength="100"
+            ></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
-            <EceTextField v-model="otherMiddleName" label="Middle name(s) on transcript (optional)" maxlength="100"></EceTextField>
+            <EceTextField id="txtOtherMiddleName" v-model="otherMiddleName" label="Middle name(s) on transcript (optional)" maxlength="100"></EceTextField>
           </v-col>
         </v-row>
         <v-row>
           <v-col md="8" lg="6" xl="4">
             <EceTextField
+              id="txtOtherLastName"
               v-model="otherLastName"
               :rules="[Rules.required('Enter your last name')]"
               label="Last name on transcript"
@@ -176,9 +185,9 @@
             :delete-file-from-temp-when-removed="false"
             @update:files="handleFileUpdate"
             @delete:file="handleFileDelete"
+            :rules="[Rules.atLeastOneOptionRequired('Upload a certificate or document that shows you completed the course or workshop')]"
           />
         </v-col>
-        <!-- :rules="[Rules.atLeastOneOptionRequired('Upload a certificate or document that shows you completed the course or workshop')]" -->
       </v-row>
     </v-form>
 
@@ -229,22 +238,6 @@
         />
       </v-col>
     </v-row>
-    <!-- this prevents form from proceeding if rules are not met -->
-    <v-input
-      class="mt-6"
-      :model-value="modelValue"
-      :rules="[
-        (v) =>
-          //if user has 4 certificates and they are all expired they cannot proceed
-          hasValidCertificate ||
-          v.length < MAX_NUM_CERTIFICATIONS ||
-          `You have entered the maximum number of certifications. You must replace one of your entries with a valid certificate to proceed.`,
-        (v) =>
-          (v && v.some((certificate: any) => certificate.certificateStatus === 'Valid')) ||
-          `You provided an expired certificate. To continue, you must also provide a valid certificate.`,
-      ]"
-      auto-hide="auto"
-    ></v-input>
     <v-row v-if="showAddInternationalCertificationButton">
       <v-col sm="12" md="10" lg="8" xl="6">
         <v-btn
@@ -259,6 +252,20 @@
         </v-btn>
       </v-col>
     </v-row>
+    <!-- this prevents form from proceeding if rules are not met -->
+    <v-input
+      class="mt-6"
+      :model-value="modelValue"
+      :rules="[
+        (v) =>
+          //if user has 4 certificates and they are all expired they cannot proceed
+          hasValidCertificate ||
+          v.length < MAX_NUM_CERTIFICATIONS ||
+          `You have entered the maximum number of certifications. You must replace one of your entries with a valid certificate to proceed.`,
+        (v) => hasValidCertificate || `You provided an expired certificate. To continue, you must also provide a valid certificate.`,
+      ]"
+      auto-hide="auto"
+    ></v-input>
     <!-- callouts and optional messages -->
     <v-row>
       <v-col>
@@ -300,6 +307,7 @@ import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 import { parseHumanFileSize, removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
 
+import applicationWizardIcraEligibility from "@/config/application-wizard-icra-eligibility";
 import ECEHeader from "../ECEHeader.vue";
 import FileUploader from "../FileUploader.vue";
 import InternationalCertificationCard from "../InternationalCertificationCard.vue";
@@ -314,10 +322,10 @@ interface RadioOptions {
 
 interface InternationalCertificationData {
   //name fields
-  previousNameRadio?: any; //TODO not supposed to be optional
+  previousNameRadio: any;
   newFilesWithData?: FileItem[];
   //other fields
-  internationalCertificationFormMode?: "add" | "edit" | undefined; //TODO not supposed to be optional
+  internationalCertificationFormMode: "add" | "edit" | undefined;
 }
 
 export interface InternationalCertificationExtended extends Components.Schemas.InternationalCertification {
@@ -334,7 +342,7 @@ export default defineComponent({
     },
   },
   emits: {
-    "update:model-value": (_internationalCertificationData: Components.Schemas.InternationalCertification[]) => true, //TODO change type to InternationalCertificationExtended[]
+    "update:model-value": (_internationalCertificationData: InternationalCertificationExtended[]) => true,
   },
   setup: () => {
     const alertStore = useAlertStore();
@@ -489,6 +497,10 @@ export default defineComponent({
       this.otherMiddleName = internationalCertification.otherMiddleName;
       this.otherLastName = internationalCertification.otherLastName;
       this.hasOtherName = internationalCertification.hasOtherName;
+      this.files = internationalCertification.files;
+      this.newFiles = internationalCertification.newFiles;
+      this.deletedFiles = internationalCertification.deletedFiles;
+      this.newFilesWithData = internationalCertification.newFilesWithData || [];
 
       //set the radio button for previous names and field buttons correctly
       if (internationalCertification.hasOtherName) {
@@ -510,9 +522,9 @@ export default defineComponent({
     async handleDelete(_internationalCertification: InternationalCertificationExtended, index: number) {
       this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
 
-      // await this.icraStore.saveDraft();
+      await this.icraStore.saveDraft();
       //we need to update wizardData with the latest information to avoid creating duplicate new entries
-      // await this.wizardStore.initializeWizard(this.icraStore.applicationConfiguration, this.icraStore.draftApplication);
+      await this.wizardStore.initializeWizardForIcraEligibility(applicationWizardIcraEligibility, this.icraStore.draftIcraEligibility);
 
       this.alertStore.setSuccessAlert("You have deleted your international certification.");
     },
@@ -536,6 +548,10 @@ export default defineComponent({
           otherMiddleName: this.otherMiddleName,
           otherLastName: this.otherLastName,
           hasOtherName: this.hasOtherName,
+          files: this.files,
+          newFiles: this.newFiles,
+          deletedFiles: this.deletedFiles,
+          newFilesWithData: this.newFilesWithData,
         };
         let updatedModelValue = this.modelValue?.slice() || []; //create a copy of the array
 
@@ -550,7 +566,7 @@ export default defineComponent({
 
         await this.icraStore.saveDraft();
         //we need to update wizardData with the latest information to avoid creating duplicate new entries
-        // await this.wizardStore.initializeWizard(this.icraStore.applicationConfiguration, this.icraStore.draftApplication);
+        await this.wizardStore.initializeWizardForIcraEligibility(applicationWizardIcraEligibility, this.icraStore.draftIcraEligibility);
 
         this.resetFormData();
 
@@ -605,22 +621,25 @@ export default defineComponent({
       //international certification
       this.id = "";
       this.countryId = undefined;
-      this.nameOfRegulatoryAuthority = "test";
-      this.emailOfRegulatoryAuthority = "test@gmail.com";
-      this.phoneOfRegulatoryAuthority = "60464646846468";
+      this.nameOfRegulatoryAuthority = "";
+      this.emailOfRegulatoryAuthority = "";
+      this.phoneOfRegulatoryAuthority = "";
       this.websiteOfRegulatoryAuthority = "";
       this.onlineCertificateValidationToolOfRegulatoryAuthority = "";
-      this.certificateStatus = "Expired";
-      this.certificateTitle = "aweoigwaogi";
+      this.certificateStatus = undefined;
+      this.certificateTitle = "";
       this.issueDate = "";
       this.expiryDate = "";
+      this.files = [];
+      this.newFiles = [];
+      this.deletedFiles = [];
+      this.newFilesWithData = [];
       //name fields
       this.previousNameRadio = undefined;
       this.otherFirstName = "";
       this.otherMiddleName = "";
       this.otherLastName = "";
       this.hasOtherName = false;
-      //selection
 
       this.internationalCertificationFormMode = undefined;
     },

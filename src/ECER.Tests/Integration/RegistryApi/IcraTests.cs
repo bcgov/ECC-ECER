@@ -130,6 +130,8 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
 
         var uploadedFileResponse = (await fileResponse.ReadAsJsonAsync<ECER.Clients.RegistryPortal.Server.Files.FileResponse>()).ShouldNotBeNull();
 
+        var countryId = this.Fixture.Country.ecer_CountryId!.Value.ToString();
+
         var eligibility = new ICRAEligibility
         {
             Status = ICRAStatus.Draft,
@@ -141,6 +143,7 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
                     CertificateTitle = faker.Company.CatchPhrase(),
                     IssueDate = faker.Date.Past(),
                     ExpiryDate = faker.Date.Soon(),
+              CountryId = countryId,
                     NewFiles = new [] { uploadedFileResponse.fileId }
                 }
             }
@@ -168,5 +171,6 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
         fetched.InternationalCertifications.ShouldHaveSingleItem();
         fetched.InternationalCertifications.First().Files.ShouldHaveSingleItem();
         fetched.InternationalCertifications.First().Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
+        fetched.InternationalCertifications.First().CountryId.ShouldBe(countryId);
     }
 }

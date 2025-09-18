@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import { createOrUpdateDraftIcraEligibility, getIcraEligibilities } from "@/api/icra";
 import type { Components } from "@/types/openapi";
 import type { FileItem } from "@/components/UploadFileItem.vue";
-import { humanFileSize } from "@/utils/functions";
 
 import { useWizardStore } from "./wizard";
 import type { IcraEligibilityStage } from "@/types/wizard";
@@ -79,15 +78,9 @@ export const useIcraStore = defineStore("icra", {
         //remove all newFilesWithData elements and add them to newFiles as ID's
         const internationalCertificationCleaned = wizardStore.wizardData[internationalCertificationId].map((item: InternationalCertificationExtended) => {
           if (item?.newFilesWithData) {
+            //we meed to convert newFilesWithData to an array of ID's for newFiles
             for (const each of item?.newFilesWithData as FileItem[]) {
               item.newFiles?.push(each.fileId);
-              //we need to change wizardData to match what's been done on the server (added files)
-              const addedFile: Components.Schemas.FileInfo = {
-                id: each.fileId,
-                size: humanFileSize(each.fileSize),
-                name: each.fileName,
-              };
-              item.files?.push(addedFile);
             }
             delete item["newFilesWithData"];
           }
@@ -99,7 +92,7 @@ export const useIcraStore = defineStore("icra", {
       }
 
       if (employmentExperienceId) {
-        console.log("TODO not implemented"); //TODO
+        console.log("employment experience TODO not implemented"); //TODO
       }
     },
     async upsertDraftIcraEligibility(): Promise<Components.Schemas.DraftICRAEligibilityResponse | null | undefined> {
@@ -118,7 +111,6 @@ export const useIcraStore = defineStore("icra", {
     },
     async saveDraft(): Promise<Components.Schemas.DraftICRAEligibilityResponse | null | undefined> {
       this.prepareDraftIcraEligibilityFromWizard();
-      console.log("Draft ICRA Eligibility to be saved:", this.draftIcraEligibility);
       return await this.upsertDraftIcraEligibility();
     },
     async patchDraft(draftIcraEligibility: Components.Schemas.ICRAEligibility): Promise<Components.Schemas.DraftICRAEligibilityResponse | null | undefined> {
