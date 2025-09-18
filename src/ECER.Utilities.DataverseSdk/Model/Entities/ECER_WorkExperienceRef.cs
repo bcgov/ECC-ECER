@@ -45,6 +45,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Draft = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		EligibilityResponseSubmitted = 621870008,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ICRAEligibilitySubmitted = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
