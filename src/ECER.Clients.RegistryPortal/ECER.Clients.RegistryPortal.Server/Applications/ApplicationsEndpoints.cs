@@ -620,7 +620,8 @@ public enum WorkExperienceRefStage
   Submitted,
   UnderReview,
   WaitingforResponse,
-  ICRAEligibilitySubmitted
+  ICRAEligibilitySubmitted,
+  EligibilityResponseSubmitted
 }
 
 public enum WorkExperienceTypes
