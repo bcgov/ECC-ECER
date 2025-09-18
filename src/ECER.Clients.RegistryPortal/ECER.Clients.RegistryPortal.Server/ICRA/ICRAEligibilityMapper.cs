@@ -12,5 +12,6 @@ public class ICRAEligibilityMapper : Profile
 
     CreateMap<InternationalCertification, Managers.Registry.Contract.ICRA.InternationalCertification>()
       .ReverseMap();
+    CreateMap<EmploymentReference, Managers.Registry.Contract.ICRA.EmploymentReference>().ReverseMap();
   }
 }

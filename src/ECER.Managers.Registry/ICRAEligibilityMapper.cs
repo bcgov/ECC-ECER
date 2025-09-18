@@ -9,5 +9,6 @@ internal class ICRAEligibilityMapper : Profile
   {
     CreateMap<Contract.ICRA.ICRAEligibility, ICRAEligibility>().ReverseMap();
     CreateMap<Contract.ICRA.InternationalCertification, InternationalCertification>().ReverseMap();
+    CreateMap<Contract.ICRA.EmploymentReference, Resources.Documents.ICRA.EmploymentReference>().ReverseMap();
   }
 }
