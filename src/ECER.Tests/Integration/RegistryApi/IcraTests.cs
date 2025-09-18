@@ -1,7 +1,6 @@
 ﻿using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.ICRA;
-using ECER.Clients.RegistryPortal.Server;
 using Shouldly;
 using System.Net;
 using System.Net.Http.Headers;
@@ -131,16 +130,7 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
 
         var uploadedFileResponse = (await fileResponse.ReadAsJsonAsync<ECER.Clients.RegistryPortal.Server.Files.FileResponse>()).ShouldNotBeNull();
 
-        var countriesResponse = await Host.Scenario(_ =>
-        {
-            _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-            _.Get.Url("/api/countrylist");
-            _.StatusCodeShouldBeOk();
-        });
-
-        var countries = await countriesResponse.ReadAsJsonAsync<Country[]>();
-        countries.ShouldNotBeNull();
-        var countryId = countries.FirstOrDefault(c => c.IsICRA)?.CountryId ?? countries.First().CountryId;
+        var countryId = this.Fixture.Country.ecer_CountryId!.Value.ToString();
 
         var eligibility = new ICRAEligibility
         {
