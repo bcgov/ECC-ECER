@@ -22,7 +22,7 @@ public interface IMetadataResourceRepository
 }
 
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
-public record Country(string CountryId, string CountryName, string CountryCode);
+public record Country(string CountryId, string CountryName, string CountryCode, bool IsICRA);
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 public record PostSecondaryInstitution(string Id, string Name, string ProvinceId);
 public record SystemMessage(string Name, string Subject, string Message)
@@ -69,6 +69,7 @@ public record CountriesQuery
   public string? ById { get; set; }
   public string? ByCode { get; set; }
   public string? ByName { get; set; }
+  public bool? ByICRA { get; set; }
 }
 
 public record PostSecondaryInstitutionsQuery

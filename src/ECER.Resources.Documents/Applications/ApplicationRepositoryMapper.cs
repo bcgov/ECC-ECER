@@ -180,7 +180,7 @@ internal class ApplicationRepositoryMapper : Profile
       .ForMember(d => d.StudentMiddleName, opts => opts.MapFrom(s => s.ecer_StudentMiddleName))
       .ForMember(d => d.Country, opts => opts.MapFrom(src =>
         src.ecer_InstituteCountryId != null
-        ? new Country(src.ecer_InstituteCountryId.Id.ToString(), src.ecer_InstituteCountryIdName, string.Empty)
+        ? new Country(src.ecer_InstituteCountryId.Id.ToString(), src.ecer_InstituteCountryIdName, string.Empty,false)
         : null))
       .ForMember(d => d.Province, opts => opts.MapFrom(src =>
         src.ecer_ProvinceId != null

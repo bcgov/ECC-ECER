@@ -113,7 +113,7 @@ public record OidcAuthenticationSettings
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
 public record PostSecondaryInstitution(string Id, string Name, string ProvinceId);
-public record Country(string CountryId, string CountryName, string CountryCode);
+public record Country(string CountryId, string CountryName, string CountryCode, bool IsICRA);
 public record SystemMessage(string Name, string Subject, string Message)
 {
   public DateTime StartDate { get; set; }

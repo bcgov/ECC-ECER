@@ -63,6 +63,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Addby = "ecer_addby";
 			public const string ecer_AddbyName = "ecer_addbyname";
 			public const string ecer_authentication_eceprogramrepresentative = "ecer_authentication_eceprogramrepresentative";
+			public const string ecer_BusinessBCeID = "ecer_businessbceid";
 			public const string ecer_ContactId = "ecer_contactid";
 			public const string ecer_ContactIdName = "ecer_contactidname";
 			public const string ecer_ContactIdYomiName = "ecer_contactidyominame";
@@ -74,9 +75,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Id = "ecer_eceprogramrepresentativeid";
 			public const string ecer_EmailAddress = "ecer_emailaddress";
 			public const string ecer_FirstName = "ecer_firstname";
+			public const string ecer_InvitetoPortal = "ecer_invitetoportal";
+			public const string ecer_invitetoportalName = "ecer_invitetoportalname";
+			public const string ecer_LastInviteSentDate = "ecer_lastinvitesentdate";
 			public const string ecer_LastName = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
+			public const string ecer_portalinvitation_psiprogramrepresentativeid = "ecer_portalinvitation_psiprogramrepresentativeid";
 			public const string ecer_PostSecondaryInstitute = "ecer_postsecondaryinstitute";
 			public const string ecer_PostSecondaryInstituteName = "ecer_postsecondaryinstitutename";
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ = "ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ";
@@ -293,6 +298,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_businessbceid")]
+		public string ecer_BusinessBCeID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_businessbceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_businessbceid", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_ContactId
 		{
@@ -420,6 +440,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_firstname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_invitetoportal")]
+		public System.Nullable<bool> ecer_InvitetoPortal
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_invitetoportal");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_invitetoportal", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_invitetoportalname")]
+		public string ecer_invitetoportalName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_invitetoportal"))
+				{
+					return this.FormattedValues["ecer_invitetoportal"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lastinvitesentdate")]
+		public System.Nullable<System.DateTime> ecer_LastInviteSentDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_lastinvitesentdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_lastinvitesentdate", value);
 			}
 		}
 		
@@ -961,6 +1028,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ECEProgramRepresentative>("ecer_eceprogramrepresentative_addby", Microsoft.Xrm.Sdk.EntityRole.Referenced, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_portalinvitation_psiprogramrepresentativeid
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_portalinvitation_psiprogramrepresentativeid")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation> ecer_portalinvitation_psiprogramrepresentativeid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_psiprogramrepresentativeid", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PortalInvitation>("ecer_portalinvitation_psiprogramrepresentativeid", null, value);
 			}
 		}
 		

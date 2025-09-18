@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
+using ECER.Utilities.ObjectStorage.Providers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Xrm.Sdk.Client;
 
@@ -8,16 +9,22 @@ namespace ECER.Resources.Documents.ICRA;
 
 internal sealed partial class ICRARepository : IICRARepository
 {
+
   private readonly EcerContext context;
   private readonly IMapper mapper;
+  private readonly IObjecStorageProvider objectStorageProvider;
+  private readonly IConfiguration configuration;
 
   public ICRARepository(
        EcerContext context,
+       IObjecStorageProvider objectStorageProvider,
        IMapper mapper,
        IConfiguration configuration)
   {
     this.context = context;
     this.mapper = mapper;
+    this.objectStorageProvider = objectStorageProvider;
+    this.configuration = configuration;
   }
 
   public async Task<IEnumerable<ICRAEligibility>> Query(ICRAQuery query, CancellationToken cancellationToken)
@@ -40,6 +47,9 @@ internal sealed partial class ICRARepository : IICRARepository
     var results = context.From(icras)
       .Join()
       .Include(a => a.ecer_icraeligibilityassessment_ApplicantId)
+      .Include(a => a.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment)
+      .IncludeNested(a => a.ecer_bcgov_documenturl_internationalcertificationid)
+      .IncludeNested(a => a.ecer_internationalcertification_CountryId)
       .Execute();
 
     return mapper.Map<IEnumerable<ICRAEligibility>>(results)!.ToList();
@@ -68,9 +78,12 @@ internal sealed partial class ICRARepository : IICRARepository
       if (icraEligibility.ecer_DateSigned.HasValue && existingIcraEligibility.ecer_DateSigned.HasValue) icraEligibility.ecer_DateSigned = existingIcraEligibility.ecer_DateSigned;
 
       icraEligibility.ecer_ICRAEligibilityAssessmentId = existingIcraEligibility.ecer_ICRAEligibilityAssessmentId;
+      context.Detach(existingIcraEligibility);
+      context.Attach(icraEligibility);
       context.UpdateObject(icraEligibility);
     }
-
+    // Update international certifications and their files
+    await UpdateInternationalCertifications(icraEligibility, applicant, iCRAEligibility.ApplicantId, iCRAEligibility.InternationalCertifications.ToList(), cancellationToken);
     context.SaveChanges();
     return icraEligibility.ecer_ICRAEligibilityAssessmentId!.Value.ToString();
   }

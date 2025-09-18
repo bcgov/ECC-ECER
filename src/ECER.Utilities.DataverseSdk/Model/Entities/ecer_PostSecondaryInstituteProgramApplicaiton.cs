@@ -202,6 +202,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramAnalyst = "ecer_programanalyst";
 			public const string ecer_ProgramAnalystName = "ecer_programanalystname";
 			public const string ecer_ProgramAnalystYomiName = "ecer_programanalystyominame";
+			public const string ecer_programapplicationcomponent_ProgramApplication = "ecer_programapplicationcomponent_ProgramApplication";
+			public const string ecer_programapplicationcomponentgroup_ProgramApplication = "ecer_programapplicationcomponentgroup_ProgramApplication";
 			public const string ecer_ProgramContent = "ecer_programcontent";
 			public const string ecer_ProgramCoordinator = "ecer_programcoordinator";
 			public const string ecer_ProgramCoordinatorName = "ecer_programcoordinatorname";
@@ -4798,6 +4800,42 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_postsecondaryinstitutesitevisit_ProgramAp", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_programapplicationcomponent_ProgramApplication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programapplicationcomponent_ProgramApplication")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent> ecer_programapplicationcomponent_ProgramApplication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_programapplicationcomponent_ProgramApplication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_programapplicationcomponent_ProgramApplication", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_programapplicationcomponentgroup_ProgramApplication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programapplicationcomponentgroup_ProgramApplication")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup> ecer_programapplicationcomponentgroup_ProgramApplication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_programapplicationcomponentgroup_ProgramApplication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>("ecer_programapplicationcomponentgroup_ProgramApplication", null, value);
 			}
 		}
 		

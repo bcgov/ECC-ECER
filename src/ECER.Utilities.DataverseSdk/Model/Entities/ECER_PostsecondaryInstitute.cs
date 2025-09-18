@@ -63,6 +63,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Auspice = "ecer_auspice";
 			public const string ecer_auspiceName = "ecer_auspicename";
 			public const string ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute = "ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute";
+			public const string ecer_BusinessBCeID = "ecer_businessbceid";
 			public const string ecer_City = "ecer_city";
 			public const string ecer_contact_representedpsiid_ecer_postsecondaryinstitute = "ecer_contact_representedpsiid_ecer_postsecondaryinstitute";
 			public const string ecer_Country = "ecer_country";
@@ -315,6 +316,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_businessbceid")]
+		public string ecer_BusinessBCeID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_businessbceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_businessbceid", value);
 			}
 		}
 		

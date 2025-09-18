@@ -31,7 +31,14 @@
         </v-col>
       </v-row>
     </v-form>
-    <v-btn class="mt-6" rounded="lg" color="primary" :loading="loadingStore.isLoading('draftapplication_put')" @click="continueClick" id="btnContinue">
+    <v-btn
+      class="mt-6"
+      rounded="lg"
+      color="primary"
+      :loading="loadingStore.isLoading('draftapplication_put') || loadingStore.isLoading('icra_put')"
+      @click="continueClick"
+      id="btnContinue"
+    >
       Continue
     </v-btn>
   </v-container>

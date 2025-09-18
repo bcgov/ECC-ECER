@@ -15,7 +15,7 @@
         </div>
       </Callout>
       <v-btn
-        v-if="showAddFileButton && selectedFiles.length < maxNumberOfFiles"
+        v-if="showAddFileButton && selectedFiles.length < maxNumberOfFiles && !filesInProgress"
         prepend-icon="mdi-plus"
         variant="text"
         color="primary"

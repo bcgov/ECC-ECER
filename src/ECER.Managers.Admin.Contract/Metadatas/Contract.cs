@@ -26,6 +26,8 @@ public record CountriesQuery : IRequest<CountriesQueryResults>
   public string? ById { get; set; }
   public string? ByCode { get; set; }
   public string? ByName { get; set; }
+  public bool? ByICRA { get; set; }
+
 }
 
 public record PostSecondaryInstitutionsQuery : IRequest<PostSecondaryInstitutionsQueryResults>
@@ -57,7 +59,7 @@ public record CountriesQueryResults(IEnumerable<Country> Items);
 public record PostSecondaryInstitutionsQueryResults(IEnumerable<PostSecondaryInstitution> Items);
 public record DynamicsConfigQueryResults(DynamicsConfig config);
 public record Province(string ProvinceId, string ProvinceName, string ProvinceCode);
-public record Country(string CountryId, string CountryName, string CountryCode);
+public record Country(string CountryId, string CountryName, string CountryCode, bool IsICRA);
 public record PostSecondaryInstitution(string Id, string Name, string ProvinceId);
 public record IdentificationType(string Id, string Name, bool ForPrimary, bool ForSecondary);
 public record DynamicsConfig(bool ICRAFeatureEnabled);
