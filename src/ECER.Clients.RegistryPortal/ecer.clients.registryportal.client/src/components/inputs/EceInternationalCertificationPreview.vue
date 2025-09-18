@@ -5,10 +5,10 @@
         <v-divider v-if="index !== 0" :thickness="2" color="grey-lightest" class="border-opacity-100 my-6" />
         <v-row>
           <v-col cols="4">
-            <p class="small">Country of Institution  TODO: FIX countryName</p>
+            <p class="small">Country of Institution</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ `${internationalCertificate.countryId}` }}</p>
+            <p class="small font-weight-bold">{{ `${configStore.countryName(internationalCertificate.countryId || '')}` }}</p>
           </v-col>
         </v-row>
         <v-row>
@@ -141,6 +141,7 @@ import PreviewCard from "@/components/PreviewCard.vue";
 import { formatDate } from "@/utils/format";
 import type { Components } from "@/types/openapi";
 import { useWizardStore } from "@/store/wizard";
+import { useConfigStore } from "@/store/config";
 
 export default defineComponent({
   name: "EceInternationalCertificationPreview",
@@ -149,8 +150,11 @@ export default defineComponent({
   },
   setup: () => {
     const wizardStore = useWizardStore();
+    const configStore = useConfigStore();
+
     return {
       wizardStore,
+      configStore,
       formatDate,
     };
   },
