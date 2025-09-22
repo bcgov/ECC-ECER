@@ -423,6 +423,15 @@ router.beforeEach((to, _, next) => {
   } else next();
 });
 
+// Gaurd to prevent users from accessing /application if they have already submitted an application
+router.beforeEach((to, _, next) => {
+  const applicationStore = useApplicationStore();
+  if (to.path === "/application" && applicationStore.hasSubmittedApplication) {
+    console.warn("User has already submitted an application, redirecting to home page.");
+    next({ path: "/" });
+  } else next();
+});
+
 // Guard to prevent users from accessing ICRA routes if the flag is not enabled
 router.beforeEach((to, _, next) => {
   const configStore = useConfigStore();
