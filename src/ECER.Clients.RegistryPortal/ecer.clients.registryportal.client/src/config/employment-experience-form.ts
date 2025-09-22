@@ -1,4 +1,4 @@
-import EceIcraWorkExperienceEligibility from "@/components/inputs/EceIcraWorkExperienceEligibility.vue";
+import EceEmploymentExperience from "@/components/inputs/EceEmploymentExperience.vue";
 import type { Form } from "@/types/form";
 
 const employmentExperienceForm: Form = {
@@ -7,7 +7,7 @@ const employmentExperienceForm: Form = {
   inputs: {
     employmentExperience: {
       id: "employmentExperience",
-      component: EceIcraWorkExperienceEligibility,
+      component: EceEmploymentExperience,
       cols: {
         md: 12,
         lg: 12,

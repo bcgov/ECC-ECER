@@ -38,7 +38,7 @@ import { cleanPreferredName } from "@/utils/functions";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
-  name: "WorkExperienceReferenceCard",
+  name: "EmploymentExperienceCard",
   setup() {
     const loadingStore = useLoadingStore();
 
@@ -46,14 +46,14 @@ export default defineComponent({
   },
   props: {
     reference: {
-      type: Object as () => Components.Schemas.WorkExperienceReference,
+      type: Object as () => Components.Schemas.EmploymentReference,
       required: true,
     },
   },
 
   emits: {
-    edit: (_reference: Components.Schemas.WorkExperienceReference) => true,
-    delete: (_reference: Components.Schemas.WorkExperienceReference) => true,
+    edit: (_reference: Components.Schemas.EmploymentReference) => true,
+    delete: (_reference: Components.Schemas.EmploymentReference) => true,
   },
   computed: {
     referenceFullName() {

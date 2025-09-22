@@ -277,6 +277,13 @@ declare namespace Components {
         }
         export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
         export type EducationRecognition = "Recognized" | "NotRecognized";
+        export interface EmploymentReference {
+            id?: string | null;
+            lastName?: string | null;
+            firstName?: string | null;
+            emailAddress?: string | null;
+            phoneNumber?: string | null;
+        }
         export interface FileInfo {
             id?: string | null;
             url?: string | null;
@@ -318,6 +325,7 @@ declare namespace Components {
             createdOn?: string | null; // date-time
             status?: ICRAStatus;
             internationalCertifications?: InternationalCertification[] | null;
+            employmentReferences?: EmploymentReference[] | null;
         }
         export type ICRAStatus = "Active" | "Draft" | "Eligible" | "Inactive" | "Ineligible" | "InReview" | "ReadyforReview" | "Submitted";
         export interface IdentificationType {
@@ -621,7 +629,7 @@ declare namespace Components {
             timestamp?: string | null;
             commit?: string | null;
         }
-        export type WorkExperienceRefStage = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingforResponse" | "ICRAEligibilitySubmitted";
+        export type WorkExperienceRefStage = "ApplicationSubmitted" | "Approved" | "Draft" | "InProgress" | "Rejected" | "Submitted" | "UnderReview" | "WaitingforResponse" | "ICRAEligibilitySubmitted" | "EligibilityResponseSubmitted";
         export interface WorkExperienceReference {
             lastName?: string | null;
             emailAddress?: string | null;
@@ -1998,6 +2006,7 @@ export type DraftApplicationResponse = Components.Schemas.DraftApplicationRespon
 export type DraftICRAEligibilityResponse = Components.Schemas.DraftICRAEligibilityResponse;
 export type EducationOrigin = Components.Schemas.EducationOrigin;
 export type EducationRecognition = Components.Schemas.EducationRecognition;
+export type EmploymentReference = Components.Schemas.EmploymentReference;
 export type FileInfo = Components.Schemas.FileInfo;
 export type FileResponse = Components.Schemas.FileResponse;
 export type FiveYearRenewalExplanations = Components.Schemas.FiveYearRenewalExplanations;
