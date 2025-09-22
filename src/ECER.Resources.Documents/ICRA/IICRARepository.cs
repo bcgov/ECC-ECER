@@ -23,6 +23,7 @@ public record ICRAEligibility()
   public DateTime? CreatedOn { get; set; }
   public ICRAStatus Status { get; set; }
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
+  public IEnumerable<EmploymentReference> EmploymentReferences { get; set; } = Array.Empty<EmploymentReference>();
 }
 public record InternationalCertification
 {
@@ -44,6 +45,15 @@ public record InternationalCertification
   public IEnumerable<Applications.FileInfo> Files { get; set; } = Array.Empty<Applications.FileInfo>();
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
+}
+
+public record EmploymentReference
+{
+  public string? Id { get; set; }
+  public string? LastName { get; set; }
+  public string? FirstName { get; set; }
+  public string? EmailAddress { get; set; }
+  public string? PhoneNumber { get; set; }
 }
 
 public enum CertificateStatus

@@ -13,6 +13,7 @@ internal class ICRARepositoryMapper : Profile
       .ForSourceMember(s => s.ApplicantId, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.CreatedOn, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.InternationalCertifications, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.EmploymentReferences, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ICRAEligibilityAssessmentId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.PortalStage))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
@@ -20,6 +21,7 @@ internal class ICRARepositoryMapper : Profile
       .ReverseMap()
       .ForMember(d => d.ApplicantId, opts => opts.MapFrom(s => s.ecer_icraeligibilityassessment_ApplicantId.Id))
       .ForMember(d => d.InternationalCertifications, opts => opts.MapFrom(s => s.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment))
+      .ForMember(d => d.EmploymentReferences, opts => opts.MapFrom(s => s.ecer_WorkExperienceRef_ecer_ICRAEligibilityAssessment_ecer_ICRAEligibilityAssessment))
       .ForMember(d => d.CreatedOn, opts => opts.MapFrom(s => s.CreatedOn));
 
     CreateMap<InternationalCertification, ecer_InternationalCertification>(MemberList.Source)
@@ -64,6 +66,20 @@ internal class ICRARepositoryMapper : Profile
     CreateMap<ICRAStatus, ecer_ICRAEligibilityAssessment_StatusCode>()
          .ConvertUsingEnumMapping(opts => opts.MapByName(true))
          .ReverseMap();
+
+    CreateMap<EmploymentReference, ecer_WorkExperienceRef>(MemberList.Source)
+      .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => s.Id))
+      .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
+      .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
+      .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
+      .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber));
+
+    CreateMap<ecer_WorkExperienceRef, EmploymentReference>(MemberList.Destination)
+      .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_WorkExperienceRefId))
+      .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.ecer_FirstName))
+      .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.ecer_LastName))
+      .ForMember(d => d.EmailAddress, opts => opts.MapFrom(s => s.ecer_EmailAddress))
+      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber));
   }
 
   public static string IdOrEmpty(EntityReference? reference) =>
