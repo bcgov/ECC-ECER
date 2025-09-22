@@ -57,7 +57,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           {
             return TypedResults.NotFound();
           }
-          if (!result.IsSuccess && result.Error == SubmissionError.DraftApplicationValidationFailed)
+          if (!result.IsSuccess && result.Error == SubmissionError.DraftApplicationValidationFailed || result.Error == SubmissionError.SubmittedApplicationAlreadyExists)
           {
             var problemDetails = new ProblemDetails
             {
@@ -67,6 +67,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             };
             return TypedResults.BadRequest(problemDetails);
           }
+          
           return TypedResults.Ok(new SubmitApplicationResponse(mapper.Map<Application>(result.Application)));
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")

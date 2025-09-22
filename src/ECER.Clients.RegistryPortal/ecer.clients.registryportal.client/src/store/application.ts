@@ -79,6 +79,17 @@ export const useApplicationStore = defineStore("application", {
     hasDraftApplication(state): boolean {
       return state.draftApplication.id !== undefined;
     },
+    hasSubmittedApplication(state): boolean {
+      return (
+        state.application?.status === "Submitted" ||
+        state.application?.status === "Ready" ||
+        state.application?.status === "InProgress" ||
+        state.application?.status === "PendingQueue" ||
+        state.application?.status === "Pending" ||
+        state.application?.status === "PendingPSPConsultationNeeded" ||
+        state.application?.status === "Escalated"
+      );
+    },
     hasApplication(state): boolean {
       return state.application !== null;
     },
@@ -302,18 +313,14 @@ export const useApplicationStore = defineStore("application", {
 
       // One year renewal explanation letter
       if (oneYearRenewalExplanationId && oneYearRenewalExplanationOtherId) {
-        this.draftApplication.oneYearRenewalExplanationChoice =
-          wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.oneYearRenewalExplanation.id];
-        this.draftApplication.renewalExplanationOther =
-          wizardStore.wizardData[wizardStore.wizardConfig.steps.oneYearRenewalExplanation.form.inputs.renewalExplanationOther.id];
+        this.draftApplication.oneYearRenewalExplanationChoice = wizardStore.wizardData[oneYearRenewalExplanationId];
+        this.draftApplication.renewalExplanationOther = wizardStore.wizardData[oneYearRenewalExplanationOtherId];
       }
 
       // Five year renewal explanation letter
       if (fiveYearRenewalExplanationId && fiveYearRenewalExplanationOtherId) {
-        this.draftApplication.fiveYearRenewalExplanationChoice =
-          wizardStore.wizardData[wizardStore.wizardConfig.steps.fiveYearRenewalExplanation.form.inputs.fiveYearRenewalExplanation.id];
-        this.draftApplication.renewalExplanationOther =
-          wizardStore.wizardData[wizardStore.wizardConfig.steps.fiveYearRenewalExplanation.form.inputs.renewalExplanationOther.id];
+        this.draftApplication.fiveYearRenewalExplanationChoice = wizardStore.wizardData[fiveYearRenewalExplanationId];
+        this.draftApplication.renewalExplanationOther = wizardStore.wizardData[fiveYearRenewalExplanationOtherId];
       }
 
       // Character References step data

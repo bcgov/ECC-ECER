@@ -7,6 +7,7 @@ import { useCertificationStore } from "./store/certification";
 import { useFormStore } from "./store/form";
 import { useMessageStore } from "./store/message";
 import { useWizardStore } from "./store/wizard";
+import { useConfigStore } from "./store/config";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -386,6 +387,15 @@ router.beforeEach((to, _, next) => {
   const applicationStore = useApplicationStore();
 
   if (to.path === "/application" && applicationStore.applicationStatus === "Draft" && applicationStore.applicationOrigin === "Manual") {
+    next({ path: "/" });
+  } else next();
+});
+
+// Gaurd to prevent users from accessing /application if they have already submitted an application
+router.beforeEach((to, _, next) => {
+  const applicationStore = useApplicationStore();
+  if (to.path === "/application" && applicationStore.hasSubmittedApplication) {
+    console.warn("User has already submitted an application, redirecting to home page.");
     next({ path: "/" });
   } else next();
 });

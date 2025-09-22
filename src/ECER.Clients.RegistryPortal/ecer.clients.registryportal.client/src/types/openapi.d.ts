@@ -42,6 +42,7 @@ declare namespace Components {
       clientAuthenticationMethods?: {
         [name: string]: OidcAuthenticationSettings;
       } | null;
+      icraFeatureEnabled?: boolean;
     }
     export type ApplicationOrigin = "Manual" | "Oracle" | "Portal";
     export type ApplicationStatus =
@@ -58,6 +59,7 @@ declare namespace Components {
       | "Ready"
       | "InProgress"
       | "PendingQueue"
+      | "PendingPSPConsultationNeeded"
       | "ReconsiderationDecision"
       | "AppealDecision";
     export type ApplicationStatusReasonDetail =
@@ -85,7 +87,7 @@ declare namespace Components {
        */
       id?: string | null;
     }
-    export type ApplicationTypes = "New" | "Renewal" | "LabourMobility";
+    export type ApplicationTypes = "New" | "Renewal" | "LabourMobility" | "ICRA";
     /**
      * delete draft application response
      */
@@ -114,6 +116,7 @@ declare namespace Components {
       hasOtherName?: boolean | null;
     }
     export type CertificatePDFGeneration = "No" | "Requested" | "Yes";
+    export type CertificateStatus = "Valid" | "Expired";
     export type CertificateStatusCode = "Active" | "Cancelled" | "Expired" | "Inactive" | "Renewed" | "Reprinted" | "Suspended";
     export interface Certification {
       id?: string | null;
@@ -276,6 +279,7 @@ declare namespace Components {
       countryId?: string | null;
       countryName?: string | null;
       countryCode?: string | null;
+      isICRA?: boolean;
     }
     export type CourseOutlineOptions = "UploadNow" | "RegistryAlreadyHas";
     export interface DefaultContent {
@@ -308,6 +312,9 @@ declare namespace Components {
      */
     export interface DraftApplicationResponse {
       application?: Application;
+    }
+    export interface DraftICRAEligibilityResponse {
+      eligibility?: ICRAEligibility;
     }
     export type EducationOrigin = "InsideBC" | "OutsideBC" | "OutsideofCanada";
     export type EducationRecognition = "Recognized" | "NotRecognized";
@@ -349,6 +356,16 @@ declare namespace Components {
         [name: string]: string[];
       } | null;
     }
+    export interface ICRAEligibility {
+      id?: string | null;
+      applicantId?: string | null;
+      portalStage?: string | null;
+      signedDate?: string | null; // date-time
+      createdOn?: string | null; // date-time
+      status?: ICRAStatus;
+      internationalCertifications?: InternationalCertification[] | null;
+    }
+    export type ICRAStatus = "Active" | "Draft" | "Eligible" | "Inactive" | "Ineligible" | "InReview" | "ReadyforReview" | "Submitted";
     export interface IdentificationType {
       id?: string | null;
       name?: string | null;
@@ -363,6 +380,26 @@ declare namespace Components {
       size?: string | null;
     }
     export type InitiatedFrom = "Investigation" | "PortalUser" | "Registry";
+    export interface InternationalCertification {
+      id?: string | null;
+      otherFirstName?: string | null;
+      otherMiddleName?: string | null;
+      otherLastName?: string | null;
+      hasOtherName?: boolean;
+      countryId?: string | null;
+      nameOfRegulatoryAuthority?: string | null;
+      emailOfRegulatoryAuthority?: string | null;
+      phoneOfRegulatoryAuthority?: string | null;
+      websiteOfRegulatoryAuthority?: string | null;
+      onlineCertificateValidationToolOfRegulatoryAuthority?: string | null;
+      certificateStatus?: CertificateStatus;
+      certificateTitle?: string | null;
+      issueDate?: string | null; // date-time
+      expiryDate?: string | null; // date-time
+      files?: FileInfo[] | null;
+      deletedFiles?: string[] | null;
+      newFiles?: string[] | null;
+    }
     export type InviteType = "CharacterReference" | "WorkExperienceReference";
     export type LikertScale = "Yes" | "No";
     export interface OidcAuthenticationSettings {
@@ -505,6 +542,9 @@ declare namespace Components {
      */
     export interface SaveDraftApplicationRequest {
       draftApplication?: DraftApplication;
+    }
+    export interface SaveDraftICRAEligibilityRequest {
+      eligibility?: ICRAEligibility;
     }
     /**
      * Send Message Request
@@ -653,7 +693,9 @@ declare namespace Components {
       | "Rejected"
       | "Submitted"
       | "UnderReview"
-      | "WaitingforResponse";
+      | "WaitingforResponse"
+      | "ICRAEligibilitySubmitted"
+      | "EligibilityResponseSubmitted";
     export interface WorkExperienceReference {
       lastName?: string | null;
       emailAddress?: string | null;
@@ -991,6 +1033,36 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
+  namespace IcraGet {
+    namespace Parameters {
+      export type ByStatus = Components.Schemas.ICRAStatus[];
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id?: Parameters.Id;
+    }
+    export interface QueryParameters {
+      byStatus?: Parameters.ByStatus;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ICRAEligibility[];
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace IcraPut {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id?: Parameters.Id;
+    }
+    export type RequestBody = Components.Schemas.SaveDraftICRAEligibilityRequest;
+    namespace Responses {
+      export type $200 = Components.Schemas.DraftICRAEligibilityResponse;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace IdentificationTypesGet {
     namespace Parameters {
       export type ById = string;
@@ -1298,6 +1370,22 @@ export interface OperationMethods {
     data?: Paths.ReferenceOptout.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
+  /**
+   * icra_get - Handles icra queries
+   */
+  "icra_get"(
+    parameters?: Parameters<Paths.IcraGet.QueryParameters & Paths.IcraGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.IcraGet.Responses.$200>;
+  /**
+   * icra_put - Save a draft icra eligibility for the current user
+   */
+  "icra_put"(
+    parameters?: Parameters<Paths.IcraPut.PathParameters> | null,
+    data?: Paths.IcraPut.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.IcraPut.Responses.$200>;
   /**
    * files_certificate_get - Handles fetching certificate PDF's
    */
@@ -1648,6 +1736,24 @@ export interface PathsDictionary {
       data?: Paths.ReferenceOptout.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ReferenceOptout.Responses.$200>;
+  };
+  ["/api/icra/{id}"]: {
+    /**
+     * icra_put - Save a draft icra eligibility for the current user
+     */
+    "put"(
+      parameters?: Parameters<Paths.IcraPut.PathParameters> | null,
+      data?: Paths.IcraPut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.IcraPut.Responses.$200>;
+    /**
+     * icra_get - Handles icra queries
+     */
+    "get"(
+      parameters?: Parameters<Paths.IcraGet.QueryParameters & Paths.IcraGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.IcraGet.Responses.$200>;
   };
   ["/api/files/certificate/{certificateId}"]: {
     /**

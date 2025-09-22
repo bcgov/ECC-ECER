@@ -139,14 +139,31 @@ public class ApplicationHandlers(
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    var applications = await applicationRepository.Query(new ApplicationQuery
+    var draftApplications = await applicationRepository.Query(new ApplicationQuery
     {
       ById = request.applicationId,
       ByApplicantId = request.userId,
       ByStatus = [Resources.Documents.Applications.ApplicationStatus.Draft]
     }, cancellationToken);
 
-    var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
+    var submittedApplications = await applicationRepository.Query(new ApplicationQuery
+    {
+      ByApplicantId = request.userId,
+      ByStatus = new List<Resources.Documents.Applications.ApplicationStatus>
+      {
+        Resources.Documents.Applications.ApplicationStatus.Submitted,
+        Resources.Documents.Applications.ApplicationStatus.Ready,
+        Resources.Documents.Applications.ApplicationStatus.Escalated,
+        Resources.Documents.Applications.ApplicationStatus.Pending,
+        Resources.Documents.Applications.ApplicationStatus.InProgress,
+        Resources.Documents.Applications.ApplicationStatus.PendingPSPConsultationNeeded,
+        Resources.Documents.Applications.ApplicationStatus.PendingQueue,
+      }
+    }, cancellationToken);
+
+    var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(draftApplications)!);
+    var submittedApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(submittedApplications)!);
+    
     if (!draftApplicationResults.Items.Any())
     {
       return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
@@ -169,6 +186,12 @@ public class ApplicationHandlers(
     {
       return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
     }
+
+    if (submittedApplicationResults.Items.Any())
+    {
+      return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.SubmittedApplicationAlreadyExists, ValidationErrors = new List<string>() { "submitted application already exists" } };
+    }
+    
     return new ApplicationSubmissionResult() { Application = mapper.Map<IEnumerable<Contract.Applications.Application>>(freshApplications)!.FirstOrDefault() };
   }
 

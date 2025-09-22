@@ -185,7 +185,8 @@ public enum OneYearRenewalexplanations
 public enum SubmissionError
 {
   DraftApplicationNotFound,
-  DraftApplicationValidationFailed
+  DraftApplicationValidationFailed,
+  SubmittedApplicationAlreadyExists,
 }
 
 public enum ApplicationStatus
