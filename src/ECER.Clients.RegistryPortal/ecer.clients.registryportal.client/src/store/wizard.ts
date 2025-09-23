@@ -207,10 +207,7 @@ export const useWizardStore = defineStore("wizard", {
 
         //employment experience
         ...(wizard.steps?.employmentExperience?.form?.inputs?.employmentExperience?.id && {
-          [wizard.steps?.employmentExperience?.form?.inputs?.employmentExperience?.id]: [
-            { id: "", lastName: "test", firstName: "test", emailAddress: "hohoho@gmail.com", phoneNumber: "" },
-            { id: "", lastName: "test2", firstName: "test2", emailAddress: "hohoho2@gmail.com", phoneNumber: "135131313" },
-          ], // TODO we need to add in the draft object here when it's ready
+          [wizard.steps?.employmentExperience?.form?.inputs?.employmentExperience?.id]: draftIcraEligibility.employmentReferences || [],
         }),
       });
     },

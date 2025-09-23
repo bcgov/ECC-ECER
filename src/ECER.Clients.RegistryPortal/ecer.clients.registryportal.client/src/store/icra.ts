@@ -92,7 +92,7 @@ export const useIcraStore = defineStore("icra", {
       }
 
       if (employmentExperienceId) {
-        console.log("employment experience TODO not implemented"); //TODO
+        this.draftIcraEligibility.employmentReferences = wizardStore.wizardData[employmentExperienceId];
       }
     },
     async upsertDraftIcraEligibility(): Promise<Components.Schemas.DraftICRAEligibilityResponse | null | undefined> {

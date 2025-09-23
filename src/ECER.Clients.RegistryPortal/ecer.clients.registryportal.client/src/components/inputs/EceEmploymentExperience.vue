@@ -157,7 +157,7 @@ const MAX_NUM_REFERENCES = 6;
 
 interface EmploymentExperienceData extends Components.Schemas.EmploymentReference {
   //other fields
-  employmentExperienceFormMode: "add" | "edit" | undefined; //TODO not supposed to be optional
+  employmentExperienceFormMode: "add" | "edit" | undefined;
 }
 
 export default defineComponent({
@@ -197,7 +197,7 @@ export default defineComponent({
   data(): EmploymentExperienceData {
     return {
       //employment experience
-      id: "",
+      id: null,
       lastName: "",
       firstName: "",
       emailAddress: "",
@@ -278,7 +278,7 @@ export default defineComponent({
 
         this.$emit("update:model-value", updatedModelValue);
 
-        // await this.icraStore.saveDraft(); //TODO add in when save draft is ready
+        await this.icraStore.saveDraft();
 
         this.alertStore.setSuccessAlert(
           this.employmentExperienceFormMode === "edit" ? "You have successfully edited your reference." : "You have successfully added your reference.",
@@ -294,10 +294,10 @@ export default defineComponent({
       }
     },
     resetFormData() {
-      this.id = "";
-      this.lastName = "so"; //TODO remove test data
-      this.firstName = "derek";
-      this.emailAddress = "derek.so@gov.bc.ca";
+      this.id = null;
+      this.lastName = "";
+      this.firstName = "";
+      this.emailAddress = "";
       this.phoneNumber = "";
 
       this.employmentExperienceFormMode = undefined;
