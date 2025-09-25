@@ -51,6 +51,22 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
         savedEligibility.Id.ShouldNotBeNull();
         savedEligibility.Status.ShouldBe(ICRAStatus.Draft);
 
+    savedEligibility.EmploymentReferences = new []
+    {
+      new EmploymentReference { Id = null, FirstName = "John", LastName = "Doe", EmailAddress = "john.doe@example.com", PhoneNumber = "" },
+      new EmploymentReference { Id = null, FirstName = "Jane", LastName = "Smith", EmailAddress = "jane.smith@example.com", PhoneNumber = "1234567890" }
+    };
+
+    var saveWithRefsResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Json(new SaveDraftICRAEligibilityRequest(savedEligibility)).ToUrl($"/api/icra/{savedEligibility.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+    var savedWithRefs = (await saveWithRefsResponse.ReadAsJsonAsync<DraftICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
+    savedWithRefs.EmploymentReferences.ShouldNotBeNull();
+    savedWithRefs.EmploymentReferences.Count().ShouldBe(2);
+
         var getResponse = await Host.Scenario(_ =>
         {
             _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
@@ -61,6 +77,7 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
         var eligibilities = await getResponse.ReadAsJsonAsync<IEnumerable<ICRAEligibility>>();
         eligibilities.ShouldNotBeNull();
         eligibilities.ShouldContain(e => e.Id == savedEligibility.Id);
+        eligibilities.First(e => e.Id == savedEligibility.Id).EmploymentReferences.Count().ShouldBe(2);
     }
 
     [Fact]
@@ -143,7 +160,7 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
                     CertificateTitle = faker.Company.CatchPhrase(),
                     IssueDate = faker.Date.Past(),
                     ExpiryDate = faker.Date.Soon(),
-              CountryId = countryId,
+                    CountryId = countryId,
                     NewFiles = new [] { uploadedFileResponse.fileId }
                 }
             }

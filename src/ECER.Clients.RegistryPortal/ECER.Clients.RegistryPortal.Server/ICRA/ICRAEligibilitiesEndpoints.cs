@@ -78,6 +78,7 @@ public record ICRAEligibility()
 
   public ICRAStatus Status { get; set; }
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
+  public IEnumerable<EmploymentReference> EmploymentReferences { get; set; } = Array.Empty<EmploymentReference>();
 }
 public record InternationalCertification
 {
@@ -105,6 +106,15 @@ public enum CertificateStatus
 {
   Valid,
   Expired
+}
+
+public record EmploymentReference
+{
+  public string? Id { get; set; }
+  public string? LastName { get; set; }
+  public string? FirstName { get; set; }
+  public string? EmailAddress { get; set; }
+  public string? PhoneNumber { get; set; }
 }
 
 public enum ICRAStatus

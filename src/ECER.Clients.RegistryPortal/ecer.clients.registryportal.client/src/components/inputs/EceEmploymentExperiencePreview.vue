@@ -59,7 +59,7 @@ export default defineComponent({
     };
   },
   computed: {
-    employmentExperiences(): Components.Schemas.WorkExperienceReference[] {
+    employmentExperiences(): Components.Schemas.EmploymentReference[] {
       return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.employmentExperience?.form?.inputs?.employmentExperience?.id || ""];
     },
   },

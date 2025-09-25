@@ -1,6 +1,6 @@
 <template>
   <!-- add view -->
-  <div v-if="icraWorkExperienceEligibilityFormMode === 'edit' || icraWorkExperienceEligibilityFormMode === 'add'">
+  <div v-if="employmentExperienceFormMode === 'edit' || employmentExperienceFormMode === 'add'">
     <ECEHeader title="Employment experience references" />
     <br />
     <p>
@@ -84,11 +84,7 @@
     </v-row>
     <v-row v-if="Array.isArray(modelValue) && modelValue.length > 0" v-for="(reference, index) in modelValue" :key="index">
       <v-col sm="12" md="10" lg="8" xl="6">
-        <EceIcraWorkExperienceEligibilityCard
-          :reference="reference"
-          @edit="handleEdit"
-          @delete="(internationalCertification) => handleDelete(internationalCertification, index)"
-        />
+        <EceEmploymentExperienceCard :reference="reference" @edit="handleEdit" @delete="(reference) => handleDelete(reference, index)" />
       </v-col>
     </v-row>
     <v-row v-else-if="modelValue?.length === 0">
@@ -100,7 +96,7 @@
     <v-row v-if="showAddWorkExperienceEligibilityButton">
       <v-col sm="12" md="10" lg="8" xl="6">
         <v-btn
-          id="btnAddInternationalCertification"
+          id="btnAddEmploymentExperience"
           prepend-icon="mdi-plus"
           rounded="lg"
           color="primary"
@@ -134,7 +130,7 @@
 
 <script lang="ts">
 import { mapWritableState } from "pinia";
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import type { VForm, VInput } from "vuetify/components";
 
 import EceDateInput from "@/components/inputs/EceDateInput.vue";
@@ -153,28 +149,28 @@ import * as Rules from "@/utils/formRules";
 import { removeElementByIndex, replaceElementByIndex } from "@/utils/functions";
 
 import ECEHeader from "../ECEHeader.vue";
-import EceIcraWorkExperienceEligibilityCard from "../EceIcraWorkExperienceEligibilityCard.vue";
+import EceEmploymentExperienceCard from "../EceEmploymentExperienceCard.vue";
 import ProgressBar from "../ProgressBar.vue";
 import { useIcraStore } from "@/store/icra";
 
 const MAX_NUM_REFERENCES = 6;
 
-interface IcraWorkExperienceEligibilityData extends Components.Schemas.WorkExperienceReference {
+interface EmploymentExperienceData extends Components.Schemas.EmploymentReference {
   //other fields
-  icraWorkExperienceEligibilityFormMode: "add" | "edit" | undefined; //TODO not supposed to be optional
+  employmentExperienceFormMode: "add" | "edit" | undefined;
 }
 
 export default defineComponent({
-  name: "EceIcraWorkExperienceEligibility",
-  components: { ProgressBar, EceIcraWorkExperienceEligibilityCard, EceDateInput, EceTextField, Callout, ECEHeader },
+  name: "EceEmploymentExperience",
+  components: { ProgressBar, EceEmploymentExperienceCard, EceDateInput, EceTextField, Callout, ECEHeader },
   props: {
     modelValue: {
-      type: Object as () => Components.Schemas.WorkExperienceReference[],
+      type: Array as PropType<Components.Schemas.EmploymentReference[]>,
       required: true, //to switch to true
     },
   },
   emits: {
-    "update:model-value": (_icraWorkExperienceEligibility: Components.Schemas.WorkExperienceReference[]) => true,
+    "update:model-value": (_icraWorkExperienceEligibility: Components.Schemas.EmploymentReference[]) => true,
   },
   setup: () => {
     const alertStore = useAlertStore();
@@ -198,16 +194,16 @@ export default defineComponent({
       MAX_NUM_REFERENCES,
     };
   },
-  data(): IcraWorkExperienceEligibilityData {
+  data(): EmploymentExperienceData {
     return {
-      //international certification
-      id: "",
+      //employment experience
+      id: null,
       lastName: "",
       firstName: "",
       emailAddress: "",
       phoneNumber: "",
       //other data
-      icraWorkExperienceEligibilityFormMode: undefined,
+      employmentExperienceFormMode: undefined,
     };
   },
   computed: {
@@ -238,10 +234,10 @@ export default defineComponent({
       // Reset the form fields
       this.resetFormData();
       this.mode = "add";
-      this.icraWorkExperienceEligibilityFormMode = "add";
+      this.employmentExperienceFormMode = "add";
       window.scroll(0, 0);
     },
-    handleEdit(reference: Components.Schemas.WorkExperienceReference) {
+    handleEdit(reference: Components.Schemas.EmploymentReference) {
       // Set the form fields to component data
       this.id = reference.id;
       this.lastName = reference.lastName;
@@ -250,9 +246,10 @@ export default defineComponent({
       this.phoneNumber = reference.phoneNumber;
 
       this.mode = "add";
-      this.icraWorkExperienceEligibilityFormMode = "edit";
+      this.employmentExperienceFormMode = "edit";
+      window.scroll(0, 0);
     },
-    async handleDelete(_reference: Components.Schemas.WorkExperienceReference, index: number) {
+    async handleDelete(_reference: Components.Schemas.EmploymentReference, index: number) {
       this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
 
       // await this.icraStore.saveDraft();
@@ -263,7 +260,7 @@ export default defineComponent({
       const { valid } = await (this.$refs.icraWorkExperienceEligibilityForm as VForm).validate();
 
       if (valid) {
-        const newIcraWorkExperienceEligibilityReference: Components.Schemas.WorkExperienceReference = {
+        const newEmploymentExperienceReference: Components.Schemas.EmploymentReference = {
           id: this.id, //empty if we are adding
           lastName: this.lastName,
           firstName: this.firstName,
@@ -272,21 +269,19 @@ export default defineComponent({
         };
         let updatedModelValue = this.modelValue?.slice() || []; //create a copy of the array
 
-        if (this.icraWorkExperienceEligibilityFormMode === "edit") {
-          const indexOfEditedReference = updatedModelValue.findIndex((reference) => reference.id === newIcraWorkExperienceEligibilityReference.id);
-          updatedModelValue = replaceElementByIndex(updatedModelValue, indexOfEditedReference, newIcraWorkExperienceEligibilityReference);
-        } else if (this.icraWorkExperienceEligibilityFormMode === "add") {
-          updatedModelValue.push(newIcraWorkExperienceEligibilityReference);
+        if (this.employmentExperienceFormMode === "edit") {
+          const indexOfEditedReference = updatedModelValue.findIndex((reference) => reference.id === newEmploymentExperienceReference.id);
+          updatedModelValue = replaceElementByIndex(updatedModelValue, indexOfEditedReference, newEmploymentExperienceReference);
+        } else if (this.employmentExperienceFormMode === "add") {
+          updatedModelValue.push(newEmploymentExperienceReference);
         }
 
         this.$emit("update:model-value", updatedModelValue);
 
-        // await this.icraStore.saveDraft(); //TODO add in when save draft is ready
+        await this.icraStore.saveDraft();
 
         this.alertStore.setSuccessAlert(
-          this.icraWorkExperienceEligibilityFormMode === "edit"
-            ? "You have successfully edited your reference."
-            : "You have successfully added your reference.",
+          this.employmentExperienceFormMode === "edit" ? "You have successfully edited your reference." : "You have successfully added your reference.",
         );
 
         this.resetFormData();
@@ -299,13 +294,13 @@ export default defineComponent({
       }
     },
     resetFormData() {
-      this.id = "";
-      this.lastName = "so"; //TODO remove test data
-      this.firstName = "derek";
-      this.emailAddress = "derek.so@gov.bc.ca";
+      this.id = null;
+      this.lastName = "";
+      this.firstName = "";
+      this.emailAddress = "";
       this.phoneNumber = "";
 
-      this.icraWorkExperienceEligibilityFormMode = undefined;
+      this.employmentExperienceFormMode = undefined;
     },
   },
 });
