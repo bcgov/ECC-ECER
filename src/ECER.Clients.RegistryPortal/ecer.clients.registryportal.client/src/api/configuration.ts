@@ -39,9 +39,9 @@ const getSystemMessages = async (): Promise<Components.Schemas.SystemMessage[] |
   return (await client.systemMessage_get()).data;
 };
 
-const getRecaptchaSiteKey = async (): Promise<string | null | undefined> => {
+const getCaptchaSiteKey = async (): Promise<string | null | undefined> => {
   const client = await getClient(false);
-  return (await client.recaptcha_site_key_get()).data;
+  return (await client.captcha_site_key_get()).data;
 };
 
 const getIdentificationTypes = async (): Promise<Components.Schemas.IdentificationType[] | null | undefined> => {
@@ -55,7 +55,7 @@ export {
   getCertificationComparisonList,
   getProvinceList,
   getCountryList,
-  getRecaptchaSiteKey,
+  getCaptchaSiteKey,
   getSystemMessages,
   getIdentificationTypes,
   getDefaultContent,

@@ -59,9 +59,9 @@ interface EceCheckboxProps {
   checkableOnce?: boolean;
 }
 
-interface EceRecaptchaProps {
+interface EceCaptchaTurnstileProps {
   rules?: readonly ValidationRule$1[];
-  recaptchaElementId: string;
+  captchaElementId: string;
 }
 
 interface CheckboxMultipleDropdownItems {
@@ -101,7 +101,7 @@ interface Input {
     | EceWorkExperienceReferencePreview
     | EceCharacterReferencePreview
     | EceCharacterReference
-    | EceRecaptcha;
+    | EceCaptchaTurnstile;
   props?:
     | EceTextFieldProps
     | EceAddressProps
@@ -109,7 +109,7 @@ interface Input {
     | EceCheckboxProps
     | EcePreviewProps
     | EceCharacterReferenceProps
-    | EceRecaptchaProps
+    | EceCaptchaTurnstileProps
     | EceWorkExperienceReferencesProps;
   cols: {
     md: number;

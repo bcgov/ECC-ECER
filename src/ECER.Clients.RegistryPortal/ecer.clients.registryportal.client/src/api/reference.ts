@@ -20,13 +20,13 @@ const getReference = async (token: string): Promise<ApiResponse<Components.Schem
 const optOutReference = async (
   token: string,
   optOutReason: Components.Schemas.UnabletoProvideReferenceReasons,
-  recaptchaToken: string,
+  captchaToken: string,
 ): Promise<ApiResponse<any>> => {
   const client = await getClient();
   const body: Components.Schemas.OptOutReferenceRequest = {
     token: token,
     unabletoProvideReferenceReasons: optOutReason,
-    recaptchaToken: recaptchaToken,
+    captchaToken: captchaToken,
   };
   return apiResultHandler.execute({
     request: client.reference_optout(null, body),
