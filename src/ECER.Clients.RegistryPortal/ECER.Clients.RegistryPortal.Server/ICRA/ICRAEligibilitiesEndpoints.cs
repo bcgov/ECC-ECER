@@ -5,6 +5,7 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ECER.Clients.RegistryPortal.Server.ICRA;
 
@@ -56,6 +57,36 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
           return TypedResults.Ok(mapper.Map<IEnumerable<ICRAEligibility>>(results.Items));
         })
         .WithOpenApi("Handles icra queries", string.Empty, "icra_get")
+        .RequireAuthorization()
+        .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/icra", async Task<Results<Ok<SubmitICRAEligibilityResponse>, BadRequest<ProblemDetails>, NotFound>> (ICRAEligibilitySubmissionRequest request, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+          bool IdIsNotGuid = !Guid.TryParse(request.Id, out _); if (IdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "ICRAEligibilityId is not valid" });
+          }
+
+          var cmd = new SubmitICRAEligibilityCommand(request.Id!, userId!);
+          var result = await messageBus.Send(cmd, ct);
+          if (!result.IsSuccess && result.Error == Managers.Registry.Contract.ICRA.SubmissionError.DraftIcraEligibilityNotFound)
+          {
+            return TypedResults.NotFound();
+          }
+          if (!result.IsSuccess && result.Error == Managers.Registry.Contract.ICRA.SubmissionError.DraftIcraEligibilityValidationFailed)
+          {
+            var problemDetails = new ProblemDetails
+            {
+              Status = StatusCodes.Status400BadRequest,
+              Title = "ICRA Eligibility submission failed",
+              Extensions = { ["errors"] = result.ValidationErrors }
+            };
+            return TypedResults.BadRequest(problemDetails);
+          }
+          return TypedResults.Ok(new SubmitICRAEligibilityResponse(mapper.Map<ICRAEligibility>(result.Eligibility)));
+        })
+        .WithOpenApi("Submit an ICRA Eligibility", string.Empty, "icra_post")
         .RequireAuthorization()
         .WithParameterValidation();
   }
@@ -128,3 +159,6 @@ public enum ICRAStatus
   ReadyforReview,
   Submitted
 }
+
+public record ICRAEligibilitySubmissionRequest(string Id);
+public record SubmitICRAEligibilityResponse(ICRAEligibility Eligibility);

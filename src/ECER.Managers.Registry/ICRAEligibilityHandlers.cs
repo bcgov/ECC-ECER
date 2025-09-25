@@ -5,6 +5,7 @@ using ECER.Managers.Registry.Contract.ICRA;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.ICRA;
 using MediatR;
+using ECER.Engines.Validation.ICRA;
 
 
 namespace ECER.Managers.Registry;
@@ -14,9 +15,11 @@ namespace ECER.Managers.Registry;
 /// </summary>
 public class ICRAEligibilityHandlers(
      IICRARepository iCRARepository,
-     IMapper mapper)
+     IMapper mapper,
+     IICRAValidationEngine icraValidationEngine)
   : IRequestHandler<SaveICRAEligibilityCommand, Contract.ICRA.ICRAEligibility?>,
-    IRequestHandler<ICRAEligibilitiesQuery, ICRAEligibilitiesQueryResults>
+    IRequestHandler<ICRAEligibilitiesQuery, ICRAEligibilitiesQueryResults>,
+    IRequestHandler<SubmitICRAEligibilityCommand, SubmitICRAEligibilityResult>
 {
 
   public async Task<Contract.ICRA.ICRAEligibility?> Handle(SaveICRAEligibilityCommand request, CancellationToken cancellationToken)
@@ -27,7 +30,7 @@ public class ICRAEligibilityHandlers(
       var icraEligibilities = await iCRARepository.Query(new ICRAQuery
       {
         ByApplicantId = request.eligibility.ApplicantId,
-        ByStatus = [Resources.Documents.ICRA.ICRAStatus.Draft]
+        ByStatus = [Resources.Documents.ICRA.ICRAStatus.Draft] // IDE0028: already simplified
       }, cancellationToken);
 
       var existingDraftICRA = icraEligibilities.FirstOrDefault();
@@ -45,6 +48,37 @@ public class ICRAEligibilityHandlers(
     }, cancellationToken);
 
     return mapper.Map<Contract.ICRA.ICRAEligibility>(freshIcraEligibilities.SingleOrDefault())!;
+  }
+
+  public async Task<SubmitICRAEligibilityResult> Handle(SubmitICRAEligibilityCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var eligibilities = await iCRARepository.Query(new ICRAQuery
+    {
+      ById = request.icraEligibilityId,
+      ByApplicantId = request.userId,
+      ByStatus = [Resources.Documents.ICRA.ICRAStatus.Draft]
+    }, cancellationToken);
+
+    var draft = mapper.Map<IEnumerable<Contract.ICRA.ICRAEligibility>>(eligibilities)!.FirstOrDefault();
+    if (draft == null)
+    {
+      return new SubmitICRAEligibilityResult { Eligibility = null, Error = Contract.ICRA.SubmissionError.DraftIcraEligibilityNotFound, ValidationErrors = new List<string> { "draft icra eligibility does not exist" } };
+    }
+
+    var validation = await icraValidationEngine.Validate(draft!);
+    if (!validation.IsValid)
+    {
+      return new SubmitICRAEligibilityResult { Eligibility = null, Error = Contract.ICRA.SubmissionError.DraftIcraEligibilityValidationFailed, ValidationErrors = validation.ValidationErrors };
+    }
+
+    var repoModel = mapper.Map<Resources.Documents.ICRA.ICRAEligibility>(draft)!;
+    repoModel.Status = Resources.Documents.ICRA.ICRAStatus.Submitted;
+    var id = await iCRARepository.Save(repoModel, cancellationToken);
+
+    var fresh = await iCRARepository.Query(new ICRAQuery { ById = id }, cancellationToken);
+    return new SubmitICRAEligibilityResult { Eligibility = mapper.Map<Contract.ICRA.ICRAEligibility>(fresh.SingleOrDefault()) };
   }
 
 
