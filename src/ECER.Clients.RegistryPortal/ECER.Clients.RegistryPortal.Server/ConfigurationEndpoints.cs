@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Clients.RegistryPortal.Server.Shared;
 using ECER.Managers.Admin.Contract.Metadatas;
 using ECER.Utilities.Hosting;
@@ -27,7 +26,6 @@ public class ConfigurationEndpoints : IRegisterEndpoints
     })
       .WithOpenApi("Handles province queries", string.Empty, "province_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
-
 
     endpointRouteBuilder.MapGet("/api/defaultContents", async (HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
     {
@@ -78,12 +76,12 @@ public class ConfigurationEndpoints : IRegisterEndpoints
      .WithOpenApi("Handles identification types queries", string.Empty, "identificationTypes_get")
      .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
 
-    endpointRouteBuilder.MapGet("/api/recaptchaSiteKey", async (IOptions<RecaptchaSettings> recaptchaSettings, CancellationToken ct) =>
+    endpointRouteBuilder.MapGet("/api/captchaSiteKey", async (IOptions<CaptchaSettings> captchaSettings, CancellationToken ct) =>
     {
       await Task.CompletedTask;
-      return TypedResults.Ok(recaptchaSettings.Value.SiteKey);
+      return TypedResults.Ok(captchaSettings.Value.SiteKey);
     })
-      .WithOpenApi("Obtains site key for recaptcha", string.Empty, "recaptcha_site_key_get")
+      .WithOpenApi("Obtains site key for captcha", string.Empty, "captcha_site_key_get")
       .CacheOutput(p => p.Expire(TimeSpan.FromMinutes(5)));
   }
 }
@@ -128,21 +126,21 @@ public record IdentificationTypesQuery
   public bool? ForPrimary { get; set; }
   public bool? ForSecondary { get; set; }
 }
-  public record OutOfProvinceCertificationType(string Id)
-  {
-    public string? CertificationType { get; set; }
-  }
+public record OutOfProvinceCertificationType(string Id)
+{
+  public string? CertificationType { get; set; }
+}
 
-  public record CertificationComparison(string Id)
-  {
-    public string? BcCertificate { get; set; }
-  }
+public record CertificationComparison(string Id)
+{
+  public string? BcCertificate { get; set; }
+}
 
-  public record ComparisonRecord()
-  {
-    public OutOfProvinceCertificationType? TransferringCertificate { get; set; }
-    public IEnumerable<CertificationComparison> Options { get; set; } = Array.Empty<CertificationComparison>();
-  }
+public record ComparisonRecord()
+{
+  public OutOfProvinceCertificationType? TransferringCertificate { get; set; }
+  public IEnumerable<CertificationComparison> Options { get; set; } = Array.Empty<CertificationComparison>();
+}
 public record DefaultContent
 {
   public string? Name { get; set; }

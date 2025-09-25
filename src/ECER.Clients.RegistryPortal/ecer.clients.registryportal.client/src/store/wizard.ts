@@ -142,7 +142,7 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
         [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
         [wizard.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id]: {} as Components.Schemas.CharacterReferenceEvaluation,
-        [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        [wizard.steps.review.form.inputs.captchaToken.id]: "",
       });
     },
     initializeWizardForWorkExReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
@@ -162,7 +162,7 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
         [wizard.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]: {} as Components.Schemas.WorkExperienceReferenceDetails,
         [wizard.steps.assessment.form.inputs.workExperienceAssessment.id]: {} as Components.Schemas.WorkExperienceReferenceCompetenciesAssessment,
-        [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        [wizard.steps.review.form.inputs.captchaToken.id]: "",
       });
     },
     initializeWizardFor400HoursWorkExReference(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
@@ -183,7 +183,7 @@ export const useWizardStore = defineStore("wizard", {
         [wizard.steps.contactInformation.form.inputs.referenceContactInformation.id]: {} as Components.Schemas.ReferenceContactInformation,
         [wizard.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]:
           {} as Components.Schemas.WorkExperienceReferenceDetails,
-        [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        [wizard.steps.review.form.inputs.captchaToken.id]: "",
       });
     },
     setWizardData(wizardData: WizardData): void {

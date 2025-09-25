@@ -103,12 +103,12 @@ public class ConfigurationTests : RegistryPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task GetRecaptchaSiteKey_ReturnsSiteKey()
+  public async Task GetCaptchaSiteKey_ReturnsSiteKey()
   {
     var siteKeyResponse = await Host.Scenario(_ =>
     {
       _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
-      _.Get.Url("/api/recaptchaSiteKey");
+      _.Get.Url("/api/captchaSiteKey");
       _.StatusCodeShouldBeOk();
     });
 

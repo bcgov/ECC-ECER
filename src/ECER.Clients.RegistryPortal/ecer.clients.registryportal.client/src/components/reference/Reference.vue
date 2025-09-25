@@ -74,6 +74,7 @@ import workExperienceReferenceWizard from "@/config/work-experience-reference-wi
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useWizardStore } from "@/store/wizard";
+import { useCaptchaTurnstileStore } from "@/store/captchaTurnstile";
 import type { Components } from "@/types/openapi";
 import type { Wizard as WizardType } from "@/types/wizard";
 import { PortalInviteType, WorkExperienceType } from "@/utils/constant";
@@ -101,6 +102,7 @@ export default defineComponent({
     const wizardStore = useWizardStore();
     const loadingStore = useLoadingStore();
     const alertStore = useAlertStore();
+    const captchaTurnstileStore = useCaptchaTurnstileStore();
     if (data?.portalInvitation?.inviteType === PortalInviteType.WORK_EXPERIENCE) {
       if (data?.portalInvitation?.workExperienceType === WorkExperienceType.IS_400_Hours) {
         wizardStore.initializeWizardFor400HoursWorkExReference(workExperienceReference400HoursWizard, data.portalInvitation);
@@ -115,6 +117,7 @@ export default defineComponent({
     }
     return {
       alertStore,
+      captchaTurnstileStore,
       workExperienceReferenceWizard,
       characterReferenceWizard,
       wizardStore,
@@ -142,12 +145,10 @@ export default defineComponent({
   },
   watch: {
     "wizardStore.step"(step) {
-      //Resets recaptcha(s) if we navigate away. Prevents expiry bug if multiple recaptchas expire.
-      if (step !== this.userDeclinedStep && step !== this.userReviewStep && window.grecaptcha) {
-        for (let i = 0; i < document.querySelectorAll(".g-recaptcha").length; i++) {
-          window.grecaptcha.reset(i);
-        }
-        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id] = "";
+      //Resets captcha(s) if we navigate away. Prevents expiry bug if multiple captchas expire.
+      if (step !== this.userDeclinedStep && step !== this.userReviewStep && window.turnstile) {
+        this.captchaTurnstileStore.resetAllCaptchaTurnstileWidgets();
+        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.captchaToken.id] = "";
       }
     },
   },
@@ -196,7 +197,7 @@ export default defineComponent({
           referenceEvaluation: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.referenceEvaluation.form.inputs.characterReferenceEvaluation.id],
           confirmProvidedInformationIsRight:
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
-          recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],
+          captchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.captchaToken.id],
         });
 
         if (!response?.error) {
@@ -218,7 +219,7 @@ export default defineComponent({
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.assessment.form.inputs.workExperienceAssessment.id],
           confirmProvidedInformationIsRight:
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
-          recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],
+          captchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.captchaToken.id],
         });
         if (!response?.error) {
           this.router.push({ path: "/reference-submitted" });
@@ -237,7 +238,7 @@ export default defineComponent({
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id],
           confirmProvidedInformationIsRight:
             this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.confirmProvidedInformationIsRight.id],
-          recaptchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.recaptchaToken.id],
+          captchaToken: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.review.form.inputs.captchaToken.id],
         });
         if (!response?.error) {
           this.router.push({ path: "/reference-submitted" });
@@ -255,8 +256,8 @@ export default defineComponent({
       }
 
       const reason = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.referenceDecline.id];
-      const recaptchaToken = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.recaptchaToken.id];
-      const result = await optOutReference(this.route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons, recaptchaToken);
+      const captchaToken = this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.decline.form.inputs.captchaToken.id];
+      const result = await optOutReference(this.route.params.token as string, reason as Components.Schemas.UnabletoProvideReferenceReasons, captchaToken);
       if (!result.error) {
         this.router.push({ path: "/reference-submitted" });
       }

@@ -1,5 +1,5 @@
 <template>
-  <Banner type="error" title="Sorry, this link is no longer valid" />
+  <Alert type="error" title="Sorry, this link is no longer valid" :closable="false" :prominent="true" :rounded="false" />
 </template>
 
 <script lang="ts">

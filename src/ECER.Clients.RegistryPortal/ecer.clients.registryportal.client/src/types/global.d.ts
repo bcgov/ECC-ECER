@@ -1,14 +1,21 @@
 declare global {
   interface Window {
-    grecaptcha: {
-      getResponse(): string;
-      reset(string?): void; //if widget id is not provided, will default to first recaptcha instance
-      render(string): string;
+    turnstile: {
+      render(id: String, options: TurnstileOptions): string;
+      reset(string): void;
     };
-    recaptchaSuccessCallback: function;
-    recaptchaExpiredCallback: function;
-    recaptchaOnloadCallback: function;
   }
+}
+
+interface TurnstileOptions {
+  sitekey: string | undefined | null;
+  callback?: (token: string) => void;
+  "expired-callback"?: () => void;
+  "timeout-callback"?: () => void;
+  theme?: "light" | "dark" | "auto";
+  "response-field"?: boolean;
+  "response-field-name"?: string;
+  size?: "normal" | "compact" | "invisible" | "flexible";
 }
 
 export {};

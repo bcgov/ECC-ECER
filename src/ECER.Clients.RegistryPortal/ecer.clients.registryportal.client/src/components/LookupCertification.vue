@@ -44,12 +44,13 @@
       </v-row>
       <v-row>
         <v-col>
-          <EceRecaptcha
-            :model-value="recaptchaToken"
+          <EceCaptchaTurnstile
+            ref="captchaTurnstile"
+            :model-value="captchaToken"
             :rules="[Rules.required('Check to confirm you are not a robot')]"
-            recaptchaElementId="recaptchaLookup"
-            @update:model-value="(value: string) => (recaptchaToken = value)"
-          ></EceRecaptcha>
+            captchaElementId="captchaTurnstile"
+            @update:model-value="(value: string) => (captchaToken = value)"
+          ></EceCaptchaTurnstile>
         </v-col>
       </v-row>
       <!-- this is to check if all fields are blank without making one input box red -->
@@ -121,12 +122,13 @@ import { isNumber } from "@/utils/formInput";
 import { postLookupCertificate } from "@/api/certification";
 import { useConfigStore } from "@/store/config";
 import * as Rules from "../utils/formRules";
-import EceRecaptcha from "./inputs/EceRecaptcha.vue";
+import EceCaptchaTurnstile from "./inputs/EceCaptchaTurnstile.vue";
+import type { CaptchaTurnstile } from "@/components/inputs/EceCaptchaTurnstile.vue";
 import type { Components } from "@/types/openapi";
 import Alert from "@/components/Alert.vue";
 
 interface LookupCertificationData {
-  recaptchaToken: string;
+  captchaToken: string;
   headers: ReadonlyHeaders;
 }
 
@@ -134,7 +136,7 @@ type ReadonlyHeaders = VDataTable["$props"]["headers"];
 
 export default defineComponent({
   name: "LookupCertification",
-  components: { EceRecaptcha, EceTextField, Alert },
+  components: { EceCaptchaTurnstile, EceTextField, Alert },
   setup() {
     const alertStore = useAlertStore();
     const lookupCertificationStore = useLookupCertificationStore();
@@ -147,7 +149,7 @@ export default defineComponent({
   },
   data(): LookupCertificationData {
     return {
-      recaptchaToken: "",
+      captchaToken: "",
       headers: [
         { title: "Name", key: "name" },
         { title: "Registration number", key: "registrationNumber" },
@@ -177,14 +179,14 @@ export default defineComponent({
             firstName: this.lookupCertificationStore.firstName,
             lastName: this.lookupCertificationStore.lastName,
             registrationNumber: this.lookupCertificationStore.registrationNumber,
-            recaptchaToken: this.recaptchaToken,
+            captchaToken: this.captchaToken,
           });
 
           this.lookupCertificationStore.setCertificationSearchResults(data);
 
-          //reset grecaptcha after success, token cannot be reused
-          this.recaptchaToken = "";
-          window.grecaptcha.reset();
+          //reset captcha after success, token cannot be reused
+          this.captchaToken = "";
+          (this.$refs.captchaTurnstile as CaptchaTurnstile).reset();
           await this.$nextTick();
           (this.$refs.lookupForm as VForm).resetValidation();
         }
