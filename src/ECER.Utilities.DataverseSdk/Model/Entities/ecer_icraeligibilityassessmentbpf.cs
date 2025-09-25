@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the PSP Site Visit Checklist
+	/// Status of the ICRA Eligibility Assessment BPF
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_pspsitevisitchecklist_statecode
+	public enum ecer_icraeligibilityassessmentbpf_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,34 +28,48 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the PSP Site Visit Checklist
+	/// Reason for the status of the ICRA Eligibility Assessment BPF
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_PSPSiteVisitChecklist_StatusCode
+	public enum ecer_icraeligibilityassessmentbpf_StatusCode
 	{
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Aborted = 3,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Active = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Inactive = 2,
+		Finished = 2,
 	}
 	
 	/// <summary>
-	/// PSP Site Visit Checklist
+	/// Base entity for process ICRA Eligibility Assessment BPF
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_pspsitevisitchecklist")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_icraeligibilityassessmentbpf")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_PSPSiteVisitChecklist : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_icraeligibilityassessmentbpf : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_pspsitevisitchecklist entity
+		/// Available fields, a the time of codegen, for the ecer_icraeligibilityassessmentbpf entity
 		/// </summary>
 		public partial class Fields
 		{
+			public const string ActiveStageId = "activestageid";
+			public const string ActiveStageIdName = "activestageidname";
+			public const string ActiveStageStartedOn = "activestagestartedon";
+			public const string bpf_Duration = "bpf_duration";
+			public const string bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf = "bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf";
+			public const string bpf_ecer_icraeligibilityassessmentid = "bpf_ecer_icraeligibilityassessmentid";
+			public const string bpf_ecer_icraeligibilityassessmentidName = "bpf_ecer_icraeligibilityassessmentidname";
+			public const string bpf_name = "bpf_name";
+			public const string BusinessProcessFlowInstanceId = "businessprocessflowinstanceid";
+			public const string Id = "businessprocessflowinstanceid";
+			public const string CompletedOn = "completedon";
 			public const string CreatedBy = "createdby";
 			public const string CreatedByName = "createdbyname";
 			public const string CreatedByYomiName = "createdbyyominame";
@@ -63,18 +77,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_Complete = "ecer_complete";
-			public const string ecer_completeName = "ecer_completename";
-			public const string ecer_IsApproved = "ecer_isapproved";
-			public const string ecer_isapprovedName = "ecer_isapprovedname";
-			public const string ecer_Item = "ecer_item";
-			public const string ecer_Notes = "ecer_notes";
-			public const string ecer_NotesText = "ecer_notestext";
-			public const string ecer_PSPSiteVisitChecklistId = "ecer_pspsitevisitchecklistid";
-			public const string Id = "ecer_pspsitevisitchecklistid";
-			public const string ecer_sitevisitchecklist_SiteVisitId_ecer_po = "ecer_sitevisitchecklist_SiteVisitId_ecer_po";
-			public const string ecer_SiteVisitId = "ecer_sitevisitid";
-			public const string ecer_SiteVisitIdName = "ecer_sitevisitidname";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -83,37 +85,35 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
 			public const string ModifiedOnBehalfByName = "modifiedonbehalfbyname";
 			public const string ModifiedOnBehalfByYomiName = "modifiedonbehalfbyyominame";
+			public const string OrganizationId = "organizationid";
+			public const string OrganizationIdName = "organizationidname";
 			public const string OverriddenCreatedOn = "overriddencreatedon";
-			public const string OwnerId = "ownerid";
-			public const string OwnerIdName = "owneridname";
-			public const string OwnerIdYomiName = "owneridyominame";
-			public const string OwningBusinessUnit = "owningbusinessunit";
-			public const string OwningBusinessUnitName = "owningbusinessunitname";
-			public const string OwningTeam = "owningteam";
-			public const string OwningUser = "owninguser";
+			public const string ProcessId = "processid";
+			public const string ProcessIdName = "processidname";
 			public const string StateCode = "statecode";
 			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
 			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
+			public const string TraversedPath = "traversedpath";
 			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PSPSiteVisitChecklist(System.Guid id) : 
+		public ecer_icraeligibilityassessmentbpf(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PSPSiteVisitChecklist(string keyName, object keyValue) : 
+		public ecer_icraeligibilityassessmentbpf(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PSPSiteVisitChecklist(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_icraeligibilityassessmentbpf(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -122,22 +122,197 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PSPSiteVisitChecklist() : 
+		public ecer_icraeligibilityassessmentbpf() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_pspsitevisitchecklistid";
+		public const string PrimaryIdAttribute = "businessprocessflowinstanceid";
 		
-		public const string PrimaryNameAttribute = "ecer_item";
+		public const string PrimaryNameAttribute = "bpf_name";
 		
-		public const string EntitySchemaName = "ecer_PSPSiteVisitChecklist";
+		public const string EntitySchemaName = "ecer_icraeligibilityassessmentbpf";
 		
-		public const string EntityLogicalName = "ecer_pspsitevisitchecklist";
+		public const string EntityLogicalName = "ecer_icraeligibilityassessmentbpf";
 		
-		public const string EntityLogicalCollectionName = "ecer_pspsitevisitchecklists";
+		public const string EntityLogicalCollectionName = "ecer_icraeligibilityassessmentbpfs";
 		
-		public const string EntitySetName = "ecer_pspsitevisitchecklists";
+		public const string EntitySetName = "ecer_icraeligibilityassessmentbpfs";
+		
+		/// <summary>
+		/// Unique identifier of the active stage for the Business Process Flow instance.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("activestageid")]
+		public Microsoft.Xrm.Sdk.EntityReference ActiveStageId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("activestageid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("activestageid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("activestageidname")]
+		public string ActiveStageIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("activestageid"))
+				{
+					return this.FormattedValues["activestageid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when current active stage is started
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("activestagestartedon")]
+		public System.Nullable<System.DateTime> ActiveStageStartedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("activestagestartedon");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("activestagestartedon", value);
+			}
+		}
+		
+		/// <summary>
+		/// Duration of Business Process Flow
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bpf_duration")]
+		public System.Nullable<int> bpf_Duration
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("bpf_duration");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bpf_ecer_icraeligibilityassessmentid")]
+		public Microsoft.Xrm.Sdk.EntityReference bpf_ecer_icraeligibilityassessmentid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("bpf_ecer_icraeligibilityassessmentid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bpf_ecer_icraeligibilityassessmentid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bpf_ecer_icraeligibilityassessmentidname")]
+		public string bpf_ecer_icraeligibilityassessmentidName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("bpf_ecer_icraeligibilityassessmentid"))
+				{
+					return this.FormattedValues["bpf_ecer_icraeligibilityassessmentid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Description
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bpf_name")]
+		public string bpf_name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("bpf_name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("bpf_name", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("businessprocessflowinstanceid")]
+		public System.Nullable<System.Guid> BusinessProcessFlowInstanceId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("businessprocessflowinstanceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("businessprocessflowinstanceid", value);
+				if (value.HasValue)
+				{
+					base.Id = value.Value;
+				}
+				else
+				{
+					base.Id = System.Guid.Empty;
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("businessprocessflowinstanceid")]
+		public override System.Guid Id
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return base.Id;
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.BusinessProcessFlowInstanceId = value;
+			}
+		}
+		
+		/// <summary>
+		/// Date and time when Business Process Flow instance is completed.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("completedon")]
+		public System.Nullable<System.DateTime> CompletedOn
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("completedon");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("completedon", value);
+			}
+		}
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -243,188 +418,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_complete")]
-		public System.Nullable<bool> ecer_Complete
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_complete");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_complete", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_completename")]
-		public string ecer_completeName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_complete"))
-				{
-					return this.FormattedValues["ecer_complete"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isapproved")]
-		public virtual ecer_YesNoNull? ecer_IsApproved
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_isapproved")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_isapproved", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isapprovedname")]
-		public string ecer_isapprovedName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_isapproved"))
-				{
-					return this.FormattedValues["ecer_isapproved"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_item")]
-		public string ecer_Item
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_item");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_item", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_notes")]
-		public string ecer_Notes
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_notes");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_notes", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_notestext")]
-		public string ecer_NotesText
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_notestext");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_notestext", value);
-			}
-		}
-		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitchecklistid")]
-		public System.Nullable<System.Guid> ecer_PSPSiteVisitChecklistId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_pspsitevisitchecklistid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_pspsitevisitchecklistid", value);
-				if (value.HasValue)
-				{
-					base.Id = value.Value;
-				}
-				else
-				{
-					base.Id = System.Guid.Empty;
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitchecklistid")]
-		public override System.Guid Id
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return base.Id;
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.ecer_PSPSiteVisitChecklistId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_SiteVisitId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_sitevisitid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_sitevisitid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitidname")]
-		public string ecer_SiteVisitIdName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_sitevisitid"))
-				{
-					return this.FormattedValues["ecer_sitevisitid"];
 				}
 				else
 				{
@@ -564,6 +557,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Unique identifier for the organization
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationid")]
+		public Microsoft.Xrm.Sdk.EntityReference OrganizationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("organizationid");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("organizationidname")]
+		public string OrganizationIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("organizationid"))
+				{
+					return this.FormattedValues["organizationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
 		/// Date and time that the record was migrated.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("overriddencreatedon")]
@@ -582,35 +605,32 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Owner Id
+		/// Unique identifier of the workflow associated to the Business Process Flow instance.
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ownerid")]
-		public Microsoft.Xrm.Sdk.EntityReference OwnerId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("processid")]
+		public Microsoft.Xrm.Sdk.EntityReference ProcessId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ownerid");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("processid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ownerid", value);
+				this.SetAttributeValue("processid", value);
 			}
 		}
 		
-		/// <summary>
-		/// Name of the owner
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridname")]
-		public string OwnerIdName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("processidname")]
+		public string ProcessIdName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ownerid"))
+				if (this.FormattedValues.Contains("processid"))
 				{
-					return this.FormattedValues["ownerid"];
+					return this.FormattedValues["processid"];
 				}
 				else
 				{
@@ -620,91 +640,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Yomi name of the owner
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owneridyominame")]
-		public string OwnerIdYomiName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ownerid"))
-				{
-					return this.FormattedValues["ownerid"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		/// <summary>
-		/// Unique identifier for the business unit that owns the record
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunit")]
-		public Microsoft.Xrm.Sdk.EntityReference OwningBusinessUnit
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owningbusinessunit");
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunitname")]
-		public string OwningBusinessUnitName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("owningbusinessunit"))
-				{
-					return this.FormattedValues["owningbusinessunit"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		/// <summary>
-		/// Unique identifier for the team that owns the record.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningteam")]
-		public Microsoft.Xrm.Sdk.EntityReference OwningTeam
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owningteam");
-			}
-		}
-		
-		/// <summary>
-		/// Unique identifier for the user that owns the record.
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owninguser")]
-		public Microsoft.Xrm.Sdk.EntityReference OwningUser
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owninguser");
-			}
-		}
-		
-		/// <summary>
-		/// Status of the PSP Site Visit Checklist
+		/// Status of the ICRA Eligibility Assessment BPF
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_pspsitevisitchecklist_statecode? StateCode
+		public virtual ecer_icraeligibilityassessmentbpf_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_pspsitevisitchecklist_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_icraeligibilityassessmentbpf_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -731,15 +675,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the PSP Site Visit Checklist
+		/// Reason for the status of the ICRA Eligibility Assessment BPF
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_PSPSiteVisitChecklist_StatusCode? StatusCode
+		public virtual ecer_icraeligibilityassessmentbpf_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_PSPSiteVisitChecklist_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_icraeligibilityassessmentbpf_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -784,6 +728,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Comma delimited string of process stage ids that represent visited stages of the Business Process Flow instance.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("traversedpath")]
+		public string TraversedPath
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("traversedpath");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("traversedpath", value);
+			}
+		}
+		
+		/// <summary>
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
@@ -815,21 +777,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// N:1 ecer_sitevisitchecklist_SiteVisitId_ecer_po
+		/// N:1 bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_sitevisitchecklist_SiteVisitId_ecer_po")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit ecer_sitevisitchecklist_SiteVisitId_ecer_po
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("bpf_ecer_icraeligibilityassessmentid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_sitevisitchecklist_SiteVisitId_ecer_po", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment>("bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_sitevisitchecklist_SiteVisitId_ecer_po", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment>("bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf", null, value);
 			}
 		}
 		
@@ -838,7 +800,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PSPSiteVisitChecklist(object anonymousType) : 
+		public ecer_icraeligibilityassessmentbpf(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -856,9 +818,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_pspsitevisitchecklistid"] = base.Id;
+                        Attributes["businessprocessflowinstanceid"] = base.Id;
                         break;
-                    case "ecer_pspsitevisitchecklistid":
+                    case "businessprocessflowinstanceid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

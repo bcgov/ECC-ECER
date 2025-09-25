@@ -152,6 +152,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProgramCourseName = "ecer_programcoursename";
 			public const string ecer_ProvinceId = "ecer_provinceid";
 			public const string ecer_ProvinceIdName = "ecer_provinceidname";
+			public const string ecer_pspreferral_educationtranscript_ecer_transcript = "ecer_pspreferral_educationtranscript_ecer_transcript";
 			public const string ecer_StartDate = "ecer_startdate";
 			public const string ecer_StudentFirstName = "ecer_studentfirstname";
 			public const string ecer_StudentLastName = "ecer_studentlastname";
@@ -2148,6 +2149,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CompletedCourse>("ecer_completedcourse_Transcriptid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_pspreferral_educationtranscript_ecer_transcript
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_pspreferral_educationtranscript_ecer_transcript")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral> ecer_pspreferral_educationtranscript_ecer_transcript
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral>("ecer_pspreferral_educationtranscript_ecer_transcript", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral>("ecer_pspreferral_educationtranscript_ecer_transcript", null, value);
 			}
 		}
 		

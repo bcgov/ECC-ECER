@@ -14,41 +14,26 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_InvestigationDocumentTypes
+	public enum ecer_documentstatuschoice
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		CarePlan = 621870002,
+		Approved = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		EmailTextorIMCorrespondence = 621870005,
+		Complete = 621870005,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		FacilityPolicyandorProcedure = 621870004,
+		InProgress = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		HealthAuthorityReport = 621870000,
+		InReview = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Images = 621870009,
+		ReadyforReview = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Other = 621870010,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PerformanceEvaluationbyEmployer = 621870006,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PoliceRCMPReport = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ReferenceChecks = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		SurveillanceandCameraFootage = 621870008,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		WrittenWitnessAccount = 621870007,
+		RevisionRequired = 621870004,
 	}
 }
 #pragma warning restore CS1591
