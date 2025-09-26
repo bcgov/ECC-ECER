@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Utilities.Hosting;
@@ -8,6 +6,8 @@ using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECER.Clients.RegistryPortal.Server.Applications;
 
@@ -67,7 +67,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
             };
             return TypedResults.BadRequest(problemDetails);
           }
-          
+
           return TypedResults.Ok(new SubmitApplicationResponse(mapper.Map<Application>(result.Application)));
         })
         .WithOpenApi("Submit an application", string.Empty, "application_post")
@@ -486,7 +486,8 @@ public enum ApplicationStatus
   InProgress,
   PendingQueue,
   ReconsiderationDecision,
-  AppealDecision
+  AppealDecision,
+  PendingPSPConsultationNeeded
 }
 
 public enum ApplicationOrigin
@@ -520,6 +521,7 @@ public enum ApplicationTypes
   New,
   Renewal,
   LabourMobility,
+  ICRA
 }
 
 public enum EducationOrigin
