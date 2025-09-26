@@ -13,7 +13,7 @@
         <li>Have been completed within the last 5 years</li>
         <li>Be a different course than the one you previously used for ECE Assistant certification</li>
         <li>
-          Be part of an early childhood education training
+          Be part of an early childhood education
           <a href="https://www2.gov.bc.ca/gov/content?id=62102395C4F64F068A63E42921E67720">program recognized by the ECE Registry</a>
         </li>
       </ul>

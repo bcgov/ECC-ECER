@@ -69,7 +69,7 @@
       <p>You need to have completed 500 hours of work experience and be able to provide references to verify the hours.</p>
       <p>Important information about calculating hours:</p>
       <ul class="ml-10">
-        <li>Only include hours you worked once you began your early childhood education training program</li>
+        <li>Only include hours you worked once you began your basic early childhood education program</li>
         <li>Only include hours completed within the last 5 years</li>
         <li>You cannot include hours that were part of your education (practicum or placement hours)</li>
         <li>You can include hours you volunteered</li>
