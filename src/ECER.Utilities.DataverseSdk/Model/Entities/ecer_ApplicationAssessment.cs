@@ -75,7 +75,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
 			public const string ecer_ApproveAllProfessionalDevelopments = "ecer_approveallprofessionaldevelopments";
 			public const string ecer_approveallprofessionaldevelopmentsName = "ecer_approveallprofessionaldevelopmentsname";
-			public const string ecer_characterreference_AssessmentId = "ecer_characterreference_AssessmentId";
 			public const string ecer_CharacterReferenceReviewedId = "ecer_characterreferencereviewedid";
 			public const string ecer_CharacterReferenceReviewedIdName = "ecer_characterreferencereviewedidname";
 			public const string ecer_ConditionNotes = "ecer_conditionnotes";
@@ -1207,24 +1206,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ApplicationAssessmentResult>("ecer_applicationassessmentresult_AppAssessId", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_characterreference_AssessmentId
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_characterreference_AssessmentId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference> ecer_characterreference_AssessmentId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_characterreference_AssessmentId", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CharacterReference>("ecer_characterreference_AssessmentId", null, value);
 			}
 		}
 		

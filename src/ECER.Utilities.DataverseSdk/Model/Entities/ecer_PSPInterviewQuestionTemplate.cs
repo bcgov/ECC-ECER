@@ -67,10 +67,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_intervieweetypeName = "ecer_intervieweetypename";
 			public const string ecer_PSPInterviewQuestionTemplateId = "ecer_pspinterviewquestiontemplateid";
 			public const string Id = "ecer_pspinterviewquestiontemplateid";
-			public const string ecer_PSPQuestion = "ecer_pspquestion";
 			public const string ecer_Question = "ecer_question";
-			public const string ecer_SiteVisitType = "ecer_sitevisittype";
-			public const string ecer_sitevisittypeName = "ecer_sitevisittypename";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -320,21 +317,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspquestion")]
-		public string ecer_PSPQuestion
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_pspquestion");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_pspquestion", value);
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_question")]
 		public string ecer_Question
 		{
@@ -347,38 +329,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_question", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisittype")]
-		public virtual System.Collections.Generic.IEnumerable<ecer_PSISiteVisitType> ecer_SiteVisitType
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return EntityOptionSetEnum.GetMultiEnum<ecer_PSISiteVisitType>(this, "ecer_sitevisittype");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_sitevisittype", EntityOptionSetEnum.GetMultiEnum(this, "ecer_sitevisittype", value));
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisittypename")]
-		public string ecer_sitevisittypeName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_sitevisittype"))
-				{
-					return this.FormattedValues["ecer_sitevisittype"];
-				}
-				else
-				{
-					return default(string);
-				}
 			}
 		}
 		

@@ -63,14 +63,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_Item = "ecer_item";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_PSPSiteVisitChecklistTemplateId = "ecer_pspsitevisitchecklisttemplateid";
 			public const string Id = "ecer_pspsitevisitchecklisttemplateid";
-			public const string ecer_PSPSiteVisitType = "ecer_pspsitevisittype";
-			public const string ecer_pspsitevisittypeName = "ecer_pspsitevisittypename";
-			public const string ecer_RecognitionType = "ecer_recognitiontype";
-			public const string ecer_recognitiontypeName = "ecer_recognitiontypename";
 			public const string ecer_SiteVisitType = "ecer_sitevisittype";
 			public const string ecer_sitevisittypeName = "ecer_sitevisittypename";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -249,21 +244,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_item")]
-		public string ecer_Item
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_item");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_item", value);
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -317,70 +297,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_PSPSiteVisitChecklistTemplateId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisittype")]
-		public virtual System.Collections.Generic.IEnumerable<ecer_PSISiteVisitType> ecer_PSPSiteVisitType
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return EntityOptionSetEnum.GetMultiEnum<ecer_PSISiteVisitType>(this, "ecer_pspsitevisittype");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_pspsitevisittype", EntityOptionSetEnum.GetMultiEnum(this, "ecer_pspsitevisittype", value));
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisittypename")]
-		public string ecer_pspsitevisittypeName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_pspsitevisittype"))
-				{
-					return this.FormattedValues["ecer_pspsitevisittype"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recognitiontype")]
-		public virtual System.Collections.Generic.IEnumerable<ecer_RecognitionType> ecer_RecognitionType
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return EntityOptionSetEnum.GetMultiEnum<ecer_RecognitionType>(this, "ecer_recognitiontype");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_recognitiontype", EntityOptionSetEnum.GetMultiEnum(this, "ecer_recognitiontype", value));
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_recognitiontypename")]
-		public string ecer_recognitiontypeName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_recognitiontype"))
-				{
-					return this.FormattedValues["ecer_recognitiontype"];
-				}
-				else
-				{
-					return default(string);
-				}
 			}
 		}
 		

@@ -18,9 +18,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ICRA = 621870004,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
 		LabourMobility = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

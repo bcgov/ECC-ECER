@@ -63,13 +63,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_Complete = "ecer_complete";
-			public const string ecer_completeName = "ecer_completename";
 			public const string ecer_IsApproved = "ecer_isapproved";
 			public const string ecer_isapprovedName = "ecer_isapprovedname";
 			public const string ecer_Item = "ecer_item";
 			public const string ecer_Notes = "ecer_notes";
-			public const string ecer_NotesText = "ecer_notestext";
 			public const string ecer_PSPSiteVisitChecklistId = "ecer_pspsitevisitchecklistid";
 			public const string Id = "ecer_pspsitevisitchecklistid";
 			public const string ecer_sitevisitchecklist_SiteVisitId_ecer_po = "ecer_sitevisitchecklist_SiteVisitId_ecer_po";
@@ -251,38 +248,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_complete")]
-		public System.Nullable<bool> ecer_Complete
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_complete");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_complete", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_completename")]
-		public string ecer_completeName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_complete"))
-				{
-					return this.FormattedValues["ecer_complete"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isapproved")]
 		public virtual ecer_YesNoNull? ecer_IsApproved
 		{
@@ -342,21 +307,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_notes", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_notestext")]
-		public string ecer_NotesText
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_notestext");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_notestext", value);
 			}
 		}
 		
