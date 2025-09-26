@@ -59,7 +59,7 @@
                   v-if="showSubmitEligibilitySubmission"
                   rounded="lg"
                   color="primary"
-                  :loading="loadingStore.isLoading('icra_put')"
+                  :loading="loadingStore.isLoading('icra_put') || loadingStore.isLoading('icra_post')"
                   @click="handleSubmit"
                 >
                   Submit eligibility submission
@@ -150,7 +150,14 @@ export default defineComponent({
   },
   methods: {
     async handleSubmit() {
-      // TODO: Implement this when the backend API is implemented
+      const submitIcraEligibilityResponse = await this.icraStore.submitIcraEligibilityApplication();
+
+      if (submitIcraEligibilityResponse?.eligibility) {
+        if (submitIcraEligibilityResponse !== null && submitIcraEligibilityResponse !== undefined && submitIcraEligibilityResponse.eligibility) {
+          this.icraStore.icraEligibility = submitIcraEligibilityResponse.eligibility;
+        }
+        this.router.push({ name: "icra-eligibility-submitted", params: { icraEligibilityId: submitIcraEligibilityResponse.eligibility.id } });
+      }
     },
     async handleSaveAndContinue() {
       const valid = await this.validateForm();

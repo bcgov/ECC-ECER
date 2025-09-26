@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { createOrUpdateDraftIcraEligibility, getIcraEligibilities } from "@/api/icra";
+import { createOrUpdateDraftIcraEligibility, getIcraEligibilities, submitIcraEligibilityApplication } from "@/api/icra";
 import type { Components } from "@/types/openapi";
 import type { FileItem } from "@/components/UploadFileItem.vue";
 
@@ -116,6 +116,10 @@ export const useIcraStore = defineStore("icra", {
     async patchDraft(draftIcraEligibility: Components.Schemas.ICRAEligibility): Promise<Components.Schemas.DraftICRAEligibilityResponse | null | undefined> {
       this.$patch({ draftIcraEligibility: draftIcraEligibility });
       return await this.upsertDraftIcraEligibility();
+    },
+    async submitIcraEligibilityApplication(): Promise<Components.Schemas.SubmitICRAEligibilityResponse | null | undefined> {
+      const { data: submitIcraEligibilityResponse } = await submitIcraEligibilityApplication(this.draftIcraEligibility.id!);
+      return submitIcraEligibilityResponse;
     },
   },
 });

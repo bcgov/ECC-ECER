@@ -30,4 +30,16 @@ const createOrUpdateDraftIcraEligibility = async (
   });
 };
 
-export { createOrUpdateDraftIcraEligibility, getIcraEligibilities };
+const submitIcraEligibilityApplication = async (eligibilityId: string): Promise<ApiResponse<Components.Schemas.SubmitICRAEligibilityResponse | null | undefined>> => {
+  const client = await getClient();
+  const body: Components.Schemas.ICRAEligibilitySubmissionRequest = {
+    id: eligibilityId,
+  };
+
+  return apiResultHandler.execute<Components.Schemas.SubmitICRAEligibilityResponse | null | undefined>({
+    request: client.icra_post(null, body),
+    key: "icra_post",
+  });
+};
+
+export { createOrUpdateDraftIcraEligibility, getIcraEligibilities, submitIcraEligibilityApplication };
