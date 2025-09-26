@@ -14,20 +14,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_ApplicationTypes
+	public enum ecer_NameofCredential
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ICRA = 621870004,
+		ECE = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		LabourMobility = 621870003,
+		ITE = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		New = 621870000,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Renewal = 621870001,
+		SNE = 621870002,
 	}
 }
 #pragma warning restore CS1591

@@ -14,41 +14,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_InvestigationDocumentTypes
+	public enum ecer_PrivateAuspiceType
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		CarePlan = 621870002,
+		FirstNationsmandatedpostsecondaryinstitute = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		EmailTextorIMCorrespondence = 621870005,
+		Indigenouscontrolledpostsecondaryinstitute = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		FacilityPolicyandorProcedure = 621870004,
+		Other = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		HealthAuthorityReport = 621870000,
+		Privatetraininginstitution = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Images = 621870009,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Other = 621870010,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PerformanceEvaluationbyEmployer = 621870006,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PoliceRCMPReport = 621870001,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ReferenceChecks = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		SurveillanceandCameraFootage = 621870008,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		WrittenWitnessAccount = 621870007,
+		Theologicalinstitution = 621870000,
 	}
 }
 #pragma warning restore CS1591

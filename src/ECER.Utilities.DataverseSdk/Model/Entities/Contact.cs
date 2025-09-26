@@ -669,8 +669,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_certificateconditions_Registrantid = "ecer_certificateconditions_Registrantid";
 			public const string ecer_certificatesummary_RegistrantId = "ecer_certificatesummary_RegistrantId";
 			public const string ecer_CertificationLevel = "ecer_certificationlevel";
-			public const string ecer_certificationpathway = "ecer_certificationpathway";
-			public const string ecer_certificationpathwayName = "ecer_certificationpathwayname";
 			public const string ecer_certifiedlevel_RegistrantId = "ecer_certifiedlevel_RegistrantId";
 			public const string ecer_changeofinformation_Contactid = "ecer_changeofinformation_Contactid";
 			public const string ecer_characterreference_ReferenceContactid = "ecer_characterreference_ReferenceContactid";
@@ -733,8 +731,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_IsVerified = "ecer_isverified";
 			public const string ecer_isverifiedName = "ecer_isverifiedname";
 			public const string ecer_LegacyClientID = "ecer_legacyclientid";
-			public const string ecer_legacyenteredby = "ecer_legacyenteredby";
-			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_ParentalConsentVerified = "ecer_parentalconsentverified";
 			public const string ecer_parentalconsentverifiedName = "ecer_parentalconsentverifiedname";
 			public const string ecer_portalinvitation_ApplicantId = "ecer_portalinvitation_ApplicantId";
@@ -935,8 +931,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
-		
-		public const string AlternateKeys = "ecer_legacyclientid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -2916,6 +2910,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// User’s preferred portal LCID
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("adx_preferredlcid")]
+		[System.Obsolete("This attribute is deprecated.")]
 		public System.Nullable<int> adx_preferredlcid
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -4119,38 +4114,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationpathway")]
-		public virtual ecer_Pathways? ecer_certificationpathway
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return ((ecer_Pathways?)(EntityOptionSetEnum.GetEnum(this, "ecer_certificationpathway")));
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_certificationpathway", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificationpathwayname")]
-		public string ecer_certificationpathwayName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_certificationpathway"))
-				{
-					return this.FormattedValues["ecer_certificationpathway"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
 		/// <summary>
 		/// Readable ID For Contact.  Map to Oracle CLI_ID
 		/// </summary>
@@ -4692,36 +4655,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_legacyclientid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyenteredby")]
-		public string ecer_legacyenteredby
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_legacyenteredby");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_legacyenteredby", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentrydate")]
-		public System.Nullable<System.DateTime> ecer_legacyentrydate
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyentrydate");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_legacyentrydate", value);
 			}
 		}
 		
@@ -7158,6 +7091,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Shows the ID of the stage.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("stageid")]
+		[System.Obsolete("This attribute is deprecated.")]
 		public System.Nullable<System.Guid> StageId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -7455,6 +7389,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// For internal use only.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("traversedpath")]
+		[System.Obsolete("This attribute is deprecated.")]
 		public string TraversedPath
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]

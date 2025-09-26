@@ -64,11 +64,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_Answer = "ecer_answer";
+			public const string ecer_AnswerPlainText = "ecer_answerplaintext";
 			public const string ecer_PSPInterview = "ecer_pspinterview";
 			public const string ecer_PSPInterviewName = "ecer_pspinterviewname";
 			public const string ecer_pspinterviewquestion_PSPInterview_ecer_po = "ecer_pspinterviewquestion_PSPInterview_ecer_po";
 			public const string ecer_PSPInterviewQuestionId = "ecer_pspinterviewquestionid";
 			public const string Id = "ecer_pspinterviewquestionid";
+			public const string ecer_PSPQuestion = "ecer_pspquestion";
 			public const string ecer_Question = "ecer_question";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -261,6 +263,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_answerplaintext")]
+		public string ecer_AnswerPlainText
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_answerplaintext");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_answerplaintext", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspinterview")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_PSPInterview
 		{
@@ -331,6 +348,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.ecer_PSPInterviewQuestionId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspquestion")]
+		public string ecer_PSPQuestion
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_pspquestion");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_pspquestion", value);
 			}
 		}
 		

@@ -67,6 +67,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ID = "ecer_id";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_postsecondaryinstitute_CountryId = "ecer_postsecondaryinstitute_CountryId";
+			public const string ecer_postsecondaryinstitutecampus_country_ecer_country = "ecer_postsecondaryinstitutecampus_country_ecer_country";
 			public const string ecer_province_CountryId = "ecer_province_CountryId";
 			public const string ecer_ShortName = "ecer_shortname";
 			public const string ecer_transcript_InstituteCountryId = "ecer_transcript_InstituteCountryId";
@@ -764,6 +765,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_postsecondaryinstitute_CountryId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_postsecondaryinstitutecampus_country_ecer_country
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstitutecampus_country_ecer_country")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteCampus> ecer_postsecondaryinstitutecampus_country_ecer_country
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteCampus>("ecer_postsecondaryinstitutecampus_country_ecer_country", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteCampus>("ecer_postsecondaryinstitutecampus_country_ecer_country", null, value);
 			}
 		}
 		

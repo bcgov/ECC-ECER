@@ -185,7 +185,8 @@ public enum OneYearRenewalexplanations
 public enum SubmissionError
 {
   DraftApplicationNotFound,
-  DraftApplicationValidationFailed
+  DraftApplicationValidationFailed,
+  SubmittedApplicationAlreadyExists,
 }
 
 public enum ApplicationStatus
@@ -204,7 +205,8 @@ public enum ApplicationStatus
   InProgress,
   PendingQueue,
   ReconsiderationDecision,
-  AppealDecision
+  AppealDecision,
+  PendingPSPConsultationNeeded
 }
 
 public enum ApplicationOrigin
@@ -237,7 +239,8 @@ public enum ApplicationTypes
 {
   New,
   Renewal,
-  LabourMobility
+  LabourMobility,
+  ICRA
 }
 
 public enum EducationOrigin

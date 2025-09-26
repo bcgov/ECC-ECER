@@ -24,7 +24,16 @@ namespace ECER.Utilities.DataverseSdk.Model
 		DepartmentChairHead = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ECECoordinatorECEProgramChair = 621870005,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Instructor = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PracticumInstructor = 621870006,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		PracticumMentor = 621870007,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Student = 621870003,

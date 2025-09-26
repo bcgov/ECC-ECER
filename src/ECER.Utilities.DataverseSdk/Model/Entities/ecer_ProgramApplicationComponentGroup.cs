@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Requirement Competency
+	/// Status of the Program Application Component Group
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_requirementcompetency_statecode
+	public enum ecer_programapplicationcomponentgroup_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Requirement Competency
+	/// Reason for the status of the Program Application Component Group
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_RequirementCompetency_StatusCode
+	public enum ecer_ProgramApplicationComponentGroup_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -43,13 +43,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_requirementcompetency")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_programapplicationcomponentgroup")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_RequirementCompetency : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_ProgramApplicationComponentGroup : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_requirementcompetency entity
+		/// Available fields, a the time of codegen, for the ecer_programapplicationcomponentgroup entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,11 +60,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_evidence_RequirementCompetencyId = "ecer_evidence_RequirementCompetencyId";
+			public const string ecer_ComponentGroup = "ecer_componentgroup";
+			public const string ecer_ComponentGroupName = "ecer_componentgroupname";
 			public const string ecer_Name = "ecer_name";
-			public const string ecer_RequirementCompetencyId = "ecer_requirementcompetencyid";
-			public const string Id = "ecer_requirementcompetencyid";
+			public const string ecer_ProgramApplication = "ecer_programapplication";
+			public const string ecer_programapplicationcomponent_ComponentGroup = "ecer_programapplicationcomponent_ComponentGroup";
+			public const string ecer_programapplicationcomponentgroup_ComponentGroup = "ecer_programapplicationcomponentgroup_ComponentGroup";
+			public const string ecer_programapplicationcomponentgroup_ProgramApplication = "ecer_programapplicationcomponentgroup_ProgramApplication";
+			public const string ecer_ProgramApplicationComponentGroupId = "ecer_programapplicationcomponentgroupid";
+			public const string Id = "ecer_programapplicationcomponentgroupid";
+			public const string ecer_ProgramApplicationName = "ecer_programapplicationname";
 			public const string ecer_RequirementsMet = "ecer_requirementsmet";
+			public const string ecer_RequirementsMetDate = "ecer_requirementsmetdate";
 			public const string ecer_requirementsmetName = "ecer_requirementsmetname";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -92,19 +99,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_RequirementCompetency(System.Guid id) : 
+		public ecer_ProgramApplicationComponentGroup(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_RequirementCompetency(string keyName, object keyValue) : 
+		public ecer_ProgramApplicationComponentGroup(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_RequirementCompetency(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_ProgramApplicationComponentGroup(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -113,22 +120,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_RequirementCompetency() : 
+		public ecer_ProgramApplicationComponentGroup() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_requirementcompetencyid";
+		public const string PrimaryIdAttribute = "ecer_programapplicationcomponentgroupid";
 		
 		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_RequirementCompetency";
+		public const string EntitySchemaName = "ecer_ProgramApplicationComponentGroup";
 		
-		public const string EntityLogicalName = "ecer_requirementcompetency";
+		public const string EntityLogicalName = "ecer_programapplicationcomponentgroup";
 		
-		public const string EntityLogicalCollectionName = "ecer_requirementcompetencies";
+		public const string EntityLogicalCollectionName = "ecer_programapplicationcomponentgroups";
 		
-		public const string EntitySetName = "ecer_requirementcompetencies";
+		public const string EntitySetName = "ecer_programapplicationcomponentgroups";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -242,6 +249,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_componentgroup")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ComponentGroup
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_componentgroup");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_componentgroup", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_componentgroupname")]
+		public string ecer_ComponentGroupName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_componentgroup"))
+				{
+					return this.FormattedValues["ecer_componentgroup"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -257,21 +296,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		/// <summary>
-		/// Unique identifier for entity instances
-		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementcompetencyid")]
-		public System.Nullable<System.Guid> ecer_RequirementCompetencyId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplication")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ProgramApplication
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_requirementcompetencyid");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programapplication");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_requirementcompetencyid", value);
+				this.SetAttributeValue("ecer_programapplication", value);
+			}
+		}
+		
+		/// <summary>
+		/// Unique identifier for entity instances
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationcomponentgroupid")]
+		public System.Nullable<System.Guid> ecer_ProgramApplicationComponentGroupId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_programapplicationcomponentgroupid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programapplicationcomponentgroupid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -283,7 +337,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementcompetencyid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationcomponentgroupid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -294,7 +348,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_RequirementCompetencyId = value;
+				this.ecer_ProgramApplicationComponentGroupId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationname")]
+		public string ecer_ProgramApplicationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programapplication"))
+				{
+					return this.FormattedValues["ecer_programapplication"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -310,6 +381,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_requirementsmet", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_requirementsmetdate")]
+		public System.Nullable<System.DateTime> ecer_RequirementsMetDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_requirementsmetdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_requirementsmetdate", value);
 			}
 		}
 		
@@ -593,15 +679,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Requirement Competency
+		/// Status of the Program Application Component Group
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_requirementcompetency_statecode? StateCode
+		public virtual ecer_programapplicationcomponentgroup_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_requirementcompetency_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_programapplicationcomponentgroup_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -628,15 +714,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Requirement Competency
+		/// Reason for the status of the Program Application Component Group
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_RequirementCompetency_StatusCode? StatusCode
+		public virtual ecer_ProgramApplicationComponentGroup_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_RequirementCompetency_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_ProgramApplicationComponentGroup_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -712,20 +798,58 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_evidence_RequirementCompetencyId
+		/// 1:N ecer_programapplicationcomponent_ComponentGroup
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_evidence_RequirementCompetencyId")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Evidence> ecer_evidence_RequirementCompetencyId
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programapplicationcomponent_ComponentGroup")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent> ecer_programapplicationcomponent_ComponentGroup
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Evidence>("ecer_evidence_RequirementCompetencyId", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_programapplicationcomponent_ComponentGroup", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Evidence>("ecer_evidence_RequirementCompetencyId", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>("ecer_programapplicationcomponent_ComponentGroup", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_programapplicationcomponentgroup_ComponentGroup
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_componentgroup")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programapplicationcomponentgroup_ComponentGroup")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PSPComponentGroup ecer_programapplicationcomponentgroup_ComponentGroup
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PSPComponentGroup>("ecer_programapplicationcomponentgroup_ComponentGroup", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PSPComponentGroup>("ecer_programapplicationcomponentgroup_ComponentGroup", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_programapplicationcomponentgroup_ProgramApplication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplication")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_programapplicationcomponentgroup_ProgramApplication")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton ecer_programapplicationcomponentgroup_ProgramApplication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_programapplicationcomponentgroup_ProgramApplication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_programapplicationcomponentgroup_ProgramApplication", null, value);
 			}
 		}
 		
@@ -734,7 +858,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_RequirementCompetency(object anonymousType) : 
+		public ecer_ProgramApplicationComponentGroup(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -752,9 +876,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_requirementcompetencyid"] = base.Id;
+                        Attributes["ecer_programapplicationcomponentgroupid"] = base.Id;
                         break;
-                    case "ecer_requirementcompetencyid":
+                    case "ecer_programapplicationcomponentgroupid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

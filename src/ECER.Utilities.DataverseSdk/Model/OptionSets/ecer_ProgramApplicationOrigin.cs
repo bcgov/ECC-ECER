@@ -14,20 +14,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_Pathways
+	public enum ecer_ProgramApplicationOrigin
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		BCRecognized = 621870000,
+		Manual = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Equivalency = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ICRA = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		LabourMobility = 621870001,
+		Portal = 621870001,
 	}
 }
 #pragma warning restore CS1591

@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the PSP Site Visit Checklist
+	/// Status of the PSP Component
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_pspsitevisitchecklist_statecode
+	public enum ecer_pspcomponent_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the PSP Site Visit Checklist
+	/// Reason for the status of the PSP Component
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_PSPSiteVisitChecklist_StatusCode
+	public enum ecer_PSPComponent_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -42,17 +42,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Inactive = 2,
 	}
 	
-	/// <summary>
-	/// PSP Site Visit Checklist
-	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_pspsitevisitchecklist")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_pspcomponent")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_PSPSiteVisitChecklist : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_PSPComponent : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_pspsitevisitchecklist entity
+		/// Available fields, a the time of codegen, for the ecer_pspcomponent entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -63,18 +60,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_Complete = "ecer_complete";
-			public const string ecer_completeName = "ecer_completename";
-			public const string ecer_IsApproved = "ecer_isapproved";
-			public const string ecer_isapprovedName = "ecer_isapprovedname";
-			public const string ecer_Item = "ecer_item";
-			public const string ecer_Notes = "ecer_notes";
-			public const string ecer_NotesText = "ecer_notestext";
-			public const string ecer_PSPSiteVisitChecklistId = "ecer_pspsitevisitchecklistid";
-			public const string Id = "ecer_pspsitevisitchecklistid";
-			public const string ecer_sitevisitchecklist_SiteVisitId_ecer_po = "ecer_sitevisitchecklist_SiteVisitId_ecer_po";
-			public const string ecer_SiteVisitId = "ecer_sitevisitid";
-			public const string ecer_SiteVisitIdName = "ecer_sitevisitidname";
+			public const string ecer_Category = "ecer_category";
+			public const string ecer_categoryName = "ecer_categoryname";
+			public const string ecer_Component = "ecer_component";
+			public const string ecer_ComponentGroup = "ecer_componentgroup";
+			public const string ecer_ComponentGroupName = "ecer_componentgroupname";
+			public const string ecer_DeliveryMethod = "ecer_deliverymethod";
+			public const string ecer_deliverymethodName = "ecer_deliverymethodname";
+			public const string ecer_DisplayOrder = "ecer_displayorder";
+			public const string ecer_Filter = "ecer_filter";
+			public const string ecer_Name = "ecer_name";
+			public const string ecer_pspcomponent_ecer_pspcomponentgroup = "ecer_pspcomponent_ecer_pspcomponentgroup";
+			public const string ecer_PSPComponentId = "ecer_pspcomponentid";
+			public const string Id = "ecer_pspcomponentid";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -101,19 +99,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PSPSiteVisitChecklist(System.Guid id) : 
+		public ecer_PSPComponent(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PSPSiteVisitChecklist(string keyName, object keyValue) : 
+		public ecer_PSPComponent(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PSPSiteVisitChecklist(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_PSPComponent(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -122,22 +120,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PSPSiteVisitChecklist() : 
+		public ecer_PSPComponent() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_pspsitevisitchecklistid";
+		public const string PrimaryIdAttribute = "ecer_pspcomponentid";
 		
-		public const string PrimaryNameAttribute = "ecer_item";
+		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_PSPSiteVisitChecklist";
+		public const string EntitySchemaName = "ecer_PSPComponent";
 		
-		public const string EntityLogicalName = "ecer_pspsitevisitchecklist";
+		public const string EntityLogicalName = "ecer_pspcomponent";
 		
-		public const string EntityLogicalCollectionName = "ecer_pspsitevisitchecklists";
+		public const string EntityLogicalCollectionName = "ecer_pspcomponents";
 		
-		public const string EntitySetName = "ecer_pspsitevisitchecklists";
+		public const string EntitySetName = "ecer_pspcomponents";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -251,30 +249,30 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_complete")]
-		public System.Nullable<bool> ecer_Complete
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_category")]
+		public virtual ecer_PSPComponentCategory? ecer_Category
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<bool>>("ecer_complete");
+				return ((ecer_PSPComponentCategory?)(EntityOptionSetEnum.GetEnum(this, "ecer_category")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_complete", value);
+				this.SetAttributeValue("ecer_category", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_completename")]
-		public string ecer_completeName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_categoryname")]
+		public string ecer_categoryName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_complete"))
+				if (this.FormattedValues.Contains("ecer_category"))
 				{
-					return this.FormattedValues["ecer_complete"];
+					return this.FormattedValues["ecer_category"];
 				}
 				else
 				{
@@ -283,30 +281,45 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isapproved")]
-		public virtual ecer_YesNoNull? ecer_IsApproved
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_component")]
+		public string ecer_Component
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_YesNoNull?)(EntityOptionSetEnum.GetEnum(this, "ecer_isapproved")));
+				return this.GetAttributeValue<string>("ecer_component");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_isapproved", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+				this.SetAttributeValue("ecer_component", value);
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isapprovedname")]
-		public string ecer_isapprovedName
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_componentgroup")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ComponentGroup
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				if (this.FormattedValues.Contains("ecer_isapproved"))
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_componentgroup");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_componentgroup", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_componentgroupname")]
+		public string ecer_ComponentGroupName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_componentgroup"))
 				{
-					return this.FormattedValues["ecer_isapproved"];
+					return this.FormattedValues["ecer_componentgroup"];
 				}
 				else
 				{
@@ -315,66 +328,98 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_item")]
-		public string ecer_Item
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_deliverymethod")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_PSIDeliveryType> ecer_DeliveryMethod
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_item");
+				return EntityOptionSetEnum.GetMultiEnum<ecer_PSIDeliveryType>(this, "ecer_deliverymethod");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_item", value);
+				this.SetAttributeValue("ecer_deliverymethod", EntityOptionSetEnum.GetMultiEnum(this, "ecer_deliverymethod", value));
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_notes")]
-		public string ecer_Notes
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_deliverymethodname")]
+		public string ecer_deliverymethodName
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_notes");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_notes", value);
+				if (this.FormattedValues.Contains("ecer_deliverymethod"))
+				{
+					return this.FormattedValues["ecer_deliverymethod"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_notestext")]
-		public string ecer_NotesText
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_displayorder")]
+		public string ecer_DisplayOrder
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_notestext");
+				return this.GetAttributeValue<string>("ecer_displayorder");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_notestext", value);
+				this.SetAttributeValue("ecer_displayorder", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_filter")]
+		public string ecer_Filter
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_filter");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_filter", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
+		public string ecer_Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_name", value);
 			}
 		}
 		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitchecklistid")]
-		public System.Nullable<System.Guid> ecer_PSPSiteVisitChecklistId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspcomponentid")]
+		public System.Nullable<System.Guid> ecer_PSPComponentId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_pspsitevisitchecklistid");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_pspcomponentid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_pspsitevisitchecklistid", value);
+				this.SetAttributeValue("ecer_pspcomponentid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -386,7 +431,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspsitevisitchecklistid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_pspcomponentid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -397,39 +442,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_PSPSiteVisitChecklistId = value;
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitid")]
-		public Microsoft.Xrm.Sdk.EntityReference ecer_SiteVisitId
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_sitevisitid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_sitevisitid", value);
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitidname")]
-		public string ecer_SiteVisitIdName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_sitevisitid"))
-				{
-					return this.FormattedValues["ecer_sitevisitid"];
-				}
-				else
-				{
-					return default(string);
-				}
+				this.ecer_PSPComponentId = value;
 			}
 		}
 		
@@ -696,15 +709,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the PSP Site Visit Checklist
+		/// Status of the PSP Component
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_pspsitevisitchecklist_statecode? StateCode
+		public virtual ecer_pspcomponent_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_pspsitevisitchecklist_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_pspcomponent_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -731,15 +744,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the PSP Site Visit Checklist
+		/// Reason for the status of the PSP Component
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_PSPSiteVisitChecklist_StatusCode? StatusCode
+		public virtual ecer_PSPComponent_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_PSPSiteVisitChecklist_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_PSPComponent_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -815,21 +828,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// N:1 ecer_sitevisitchecklist_SiteVisitId_ecer_po
+		/// N:1 ecer_pspcomponent_ecer_pspcomponentgroup
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_sitevisitid")]
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_sitevisitchecklist_SiteVisitId_ecer_po")]
-		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit ecer_sitevisitchecklist_SiteVisitId_ecer_po
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_componentgroup")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_pspcomponent_ecer_pspcomponentgroup")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PSPComponentGroup ecer_pspcomponent_ecer_pspcomponentgroup
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_sitevisitchecklist_SiteVisitId_ecer_po", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PSPComponentGroup>("ecer_pspcomponent_ecer_pspcomponentgroup", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_sitevisitchecklist_SiteVisitId_ecer_po", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PSPComponentGroup>("ecer_pspcomponent_ecer_pspcomponentgroup", null, value);
 			}
 		}
 		
@@ -838,7 +851,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_PSPSiteVisitChecklist(object anonymousType) : 
+		public ecer_PSPComponent(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -856,9 +869,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_pspsitevisitchecklistid"] = base.Id;
+                        Attributes["ecer_pspcomponentid"] = base.Id;
                         break;
-                    case "ecer_pspsitevisitchecklistid":
+                    case "ecer_pspcomponentid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

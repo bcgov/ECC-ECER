@@ -61,13 +61,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_CollaborationDocument_ecer_Investigation_ecer_Investigation = "ecer_CollaborationDocument_ecer_Investigation_ecer_Investigation";
+			public const string ecer_collaborationdocument_programapplication_ecer_postsecondaryinstituteprogramapplicaiton = "ecer_collaborationdocument_programapplication_ecer_postsecondaryinstituteprogramapplicaiton";
 			public const string ecer_CollaborationDocumentId = "ecer_collaborationdocumentid";
 			public const string Id = "ecer_collaborationdocumentid";
 			public const string ecer_Description = "ecer_description";
+			public const string ecer_documentstatus = "ecer_documentstatus";
+			public const string ecer_documentstatusName = "ecer_documentstatusname";
 			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_OneDriveLink = "ecer_onedrivelink";
+			public const string ecer_primaryowner = "ecer_primaryowner";
+			public const string ecer_primaryownerName = "ecer_primaryownername";
+			public const string ecer_primaryownerYomiName = "ecer_primaryowneryominame";
+			public const string ecer_programapplication = "ecer_programapplication";
+			public const string ecer_programapplicationName = "ecer_programapplicationname";
+			public const string ecer_reviewer = "ecer_reviewer";
+			public const string ecer_reviewerName = "ecer_reviewername";
+			public const string ecer_reviewerYomiName = "ecer_revieweryominame";
+			public const string ecer_revisionreason = "ecer_revisionreason";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -300,6 +312,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentstatus")]
+		public virtual ecer_documentstatuschoice? ecer_documentstatus
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_documentstatuschoice?)(EntityOptionSetEnum.GetEnum(this, "ecer_documentstatus")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_documentstatus", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentstatusname")]
+		public string ecer_documentstatusName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_documentstatus"))
+				{
+					return this.FormattedValues["ecer_documentstatus"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_investigation")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_Investigation
 		{
@@ -359,6 +403,151 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_onedrivelink", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_primaryowner")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_primaryowner
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_primaryowner");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_primaryowner", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_primaryownername")]
+		public string ecer_primaryownerName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_primaryowner"))
+				{
+					return this.FormattedValues["ecer_primaryowner"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_primaryowneryominame")]
+		public string ecer_primaryownerYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_primaryowner"))
+				{
+					return this.FormattedValues["ecer_primaryowner"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplication")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_programapplication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_programapplication");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_programapplication", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplicationname")]
+		public string ecer_programapplicationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_programapplication"))
+				{
+					return this.FormattedValues["ecer_programapplication"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reviewer")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_reviewer
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_reviewer");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reviewer", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reviewername")]
+		public string ecer_reviewerName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_reviewer"))
+				{
+					return this.FormattedValues["ecer_reviewer"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_revieweryominame")]
+		public string ecer_reviewerYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_reviewer"))
+				{
+					return this.FormattedValues["ecer_reviewer"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_revisionreason")]
+		public string ecer_revisionreason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_revisionreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_revisionreason", value);
 			}
 		}
 		
@@ -759,6 +948,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Investigation>("ecer_CollaborationDocument_ecer_Investigation_ecer_Investigation", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_collaborationdocument_programapplication_ecer_postsecondaryinstituteprogramapplicaiton
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_programapplication")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_collaborationdocument_programapplication_ecer_postsecondaryinstituteprograma" +
+			"pplicaiton")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton ecer_collaborationdocument_programapplication_ecer_postsecondaryinstituteprogramapplicaiton
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_collaborationdocument_programapplication_ecer_postsecondaryinstituteprograma" +
+						"pplicaiton", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteProgramApplicaiton>("ecer_collaborationdocument_programapplication_ecer_postsecondaryinstituteprograma" +
+						"pplicaiton", null, value);
 			}
 		}
 		
