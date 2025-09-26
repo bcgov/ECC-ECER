@@ -83,6 +83,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Institution = "ecer_institution";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_nameofcredential = "ecer_nameofcredential";
+			public const string ecer_NameofCredentialsChoice = "ecer_nameofcredentialschoice";
+			public const string ecer_nameofcredentialschoiceName = "ecer_nameofcredentialschoicename";
 			public const string ecer_programname = "ecer_programname";
 			public const string ecer_province = "ecer_province";
 			public const string ecer_Type = "ecer_type";
@@ -539,6 +541,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_nameofcredential", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_nameofcredentialschoice")]
+		public virtual ecer_NameofCredential? ecer_NameofCredentialsChoice
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_NameofCredential?)(EntityOptionSetEnum.GetEnum(this, "ecer_nameofcredentialschoice")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_nameofcredentialschoice", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_nameofcredentialschoicename")]
+		public string ecer_nameofcredentialschoiceName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_nameofcredentialschoice"))
+				{
+					return this.FormattedValues["ecer_nameofcredentialschoice"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		

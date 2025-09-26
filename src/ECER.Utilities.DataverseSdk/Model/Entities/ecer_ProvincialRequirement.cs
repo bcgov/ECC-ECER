@@ -60,9 +60,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_CertificateLevels = "ecer_certificatelevels";
+			public const string ecer_certificatelevelsName = "ecer_certificatelevelsname";
 			public const string ecer_CertificateTypeId = "ecer_certificatetypeid";
 			public const string ecer_CertificateTypeIdName = "ecer_certificatetypeidname";
 			public const string ecer_course_ProvincialRequirement_ecer_provinc = "ecer_course_ProvincialRequirement_ecer_provinc";
+			public const string ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement = "ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement";
 			public const string ecer_educationassessment_RequirementAreaId = "ecer_educationassessment_RequirementAreaId";
 			public const string ecer_LegacyRequiredAreaID = "ecer_legacyrequiredareaid";
 			public const string ecer_MinimumHours = "ecer_minimumhours";
@@ -242,6 +245,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatelevels")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_CertificateLevel> ecer_CertificateLevels
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_CertificateLevel>(this, "ecer_certificatelevels");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificatelevels", EntityOptionSetEnum.GetMultiEnum(this, "ecer_certificatelevels", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatelevelsname")]
+		public string ecer_certificatelevelsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_certificatelevels"))
+				{
+					return this.FormattedValues["ecer_certificatelevels"];
 				}
 				else
 				{
@@ -799,6 +834,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_course_ProvincialRequirement_ecer_provinc", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement> ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement>("ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement>("ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement", null, value);
 			}
 		}
 		

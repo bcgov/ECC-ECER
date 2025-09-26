@@ -24,6 +24,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Directlyinvolved = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Other = 621870004,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Unknown = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -45,6 +48,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Manager = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Other = 621870008,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Parent = 621870006,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -61,7 +67,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Status of the Involved Person
+	/// Status of the Involved Person (Intake)
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -76,7 +82,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Involved Person
+	/// Reason for the status of the Involved Person (Intake)
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -129,6 +135,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Id = "ecer_involvedpersonid";
 			public const string ecer_lastname = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_OtherRelationshiptoIncident = "ecer_otherrelationshiptoincident";
+			public const string ecer_OtherTitle = "ecer_othertitle";
 			public const string ecer_phonenumber = "ecer_phonenumber";
 			public const string ecer_RelationshiptoIncident = "ecer_relationshiptoincident";
 			public const string ecer_relationshiptoincidentName = "ecer_relationshiptoincidentname";
@@ -567,6 +575,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_otherrelationshiptoincident")]
+		public string ecer_OtherRelationshiptoIncident
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_otherrelationshiptoincident");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_otherrelationshiptoincident", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_othertitle")]
+		public string ecer_OtherTitle
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_othertitle");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_othertitle", value);
 			}
 		}
 		

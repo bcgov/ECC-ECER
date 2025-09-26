@@ -13,7 +13,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Investigation Planning Involved Person
+	/// Status of the Involved Person
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -28,7 +28,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Investigation Planning Involved Person
+	/// Reason for the status of the Involved Person
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -73,6 +73,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_firstname = "ecer_firstname";
 			public const string ecer_Investigation = "ecer_investigation";
 			public const string ecer_InvestigationName = "ecer_investigationname";
+			public const string ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_InvestigationPlanni = "ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_InvestigationPlanni";
 			public const string ecer_investigationplanninginvolvedperson_Contact = "ecer_investigationplanninginvolvedperson_Contact";
 			public const string ecer_investigationplanninginvolvedperson_Inves = "ecer_investigationplanninginvolvedperson_Inves";
 			public const string ecer_InvestigationPlanningInvolvedPersonId = "ecer_investigationplanninginvolvedpersonid";
@@ -945,6 +946,27 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_InvestigationPlanni
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_Invest" +
+			"igationPlanni")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInterview> ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_InvestigationPlanni
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInterview>("ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_Invest" +
+						"igationPlanni", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_InvestigationPlanningInterview>("ecer_InvestigationPlanningInterview_ecer_InvestigationPlanningInvolve_ecer_Invest" +
+						"igationPlanni", null, value);
 			}
 		}
 		

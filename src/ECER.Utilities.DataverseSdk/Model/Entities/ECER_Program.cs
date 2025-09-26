@@ -39,9 +39,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 		Approved = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Denied = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -80,6 +77,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CertificateTypeid = "ecer_certificatetypeid";
 			public const string ecer_CertificateTypeidName = "ecer_certificatetypeidname";
 			public const string ecer_course_Programid = "ecer_course_Programid";
+			public const string ecer_courseprovincialrequirement_ProgramProfileId = "ecer_courseprovincialrequirement_ProgramProfileId";
 			public const string ecer_EndDate = "ecer_enddate";
 			public const string ecer_FamilyChildCareTraining = "ecer_familychildcaretraining";
 			public const string ecer_familychildcaretrainingName = "ecer_familychildcaretrainingname";
@@ -96,10 +94,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Id = "ecer_programid";
 			public const string ecer_ProgramTypes = "ecer_programtypes";
 			public const string ecer_programtypesName = "ecer_programtypesname";
+			public const string ecer_pspreferral_programprofile_ecer_program = "ecer_pspreferral_programprofile_ecer_program";
 			public const string ecer_SNECoursesTotalHours = "ecer_snecoursestotalhours";
 			public const string ecer_SNECoursesTotalHoursDecimal = "ecer_snecoursestotalhoursdecimal";
 			public const string ecer_StartDate = "ecer_startdate";
 			public const string ecer_TotalBasicEceHours = "ecer_totalbasicecehours";
+			public const string EmailAddress = "emailaddress";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -632,6 +632,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// The primary email address for the entity.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("emailaddress")]
+		public string EmailAddress
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("emailaddress");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("emailaddress", value);
+			}
+		}
+		
+		/// <summary>
 		/// Sequence number of the import that created this record.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("importsequencenumber")]
@@ -1049,6 +1067,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_courseprovincialrequirement_ProgramProfileId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_courseprovincialrequirement_ProgramProfileId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement> ecer_courseprovincialrequirement_ProgramProfileId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement>("ecer_courseprovincialrequirement_ProgramProfileId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement>("ecer_courseprovincialrequirement_ProgramProfileId", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_postsecondaryinstitutesitevisit_ProgramPr
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_postsecondaryinstitutesitevisit_ProgramPr")]
@@ -1063,6 +1099,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstituteSiteVisit>("ecer_postsecondaryinstitutesitevisit_ProgramPr", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_pspreferral_programprofile_ecer_program
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_pspreferral_programprofile_ecer_program")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral> ecer_pspreferral_programprofile_ecer_program
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral>("ecer_pspreferral_programprofile_ecer_program", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral>("ecer_pspreferral_programprofile_ecer_program", null, value);
 			}
 		}
 		
