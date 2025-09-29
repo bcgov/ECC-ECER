@@ -143,9 +143,9 @@ export default defineComponent({
   watch: {
     "wizardStore.step"(step) {
       //Resets recaptcha(s) if we navigate away. Prevents expiry bug if multiple recaptchas expire.
-      if (step !== this.userDeclinedStep && step !== this.userReviewStep && window.grecaptcha) {
+      if (step !== this.userDeclinedStep && step !== this.userReviewStep && globalThis.grecaptcha) {
         for (let i = 0; i < document.querySelectorAll(".g-recaptcha").length; i++) {
-          window.grecaptcha.reset(i);
+          globalThis.grecaptcha.reset(i);
         }
         this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""] = "";
       }
@@ -273,7 +273,7 @@ export default defineComponent({
       if (!valid) {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format before printing");
       } else {
-        window.print();
+        globalThis.print();
       }
     },
   },

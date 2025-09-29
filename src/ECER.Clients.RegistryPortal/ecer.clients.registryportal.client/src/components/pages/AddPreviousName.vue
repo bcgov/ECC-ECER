@@ -124,7 +124,7 @@ export default {
             }
           }
         } else {
-          window.scrollTo(0, 0);
+          globalThis.scrollTo(0, 0);
         }
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");

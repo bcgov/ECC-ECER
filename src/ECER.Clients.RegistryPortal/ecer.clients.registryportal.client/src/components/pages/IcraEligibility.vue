@@ -161,9 +161,7 @@ export default defineComponent({
     },
     async handleSaveAndContinue() {
       const valid = await this.validateForm();
-      if (!valid) {
-        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
-      } else {
+      if (valid) {
         switch (this.wizardStore.currentStepStage) {
           case "ContactInformation":
             await this.saveProfile(false);
@@ -179,6 +177,10 @@ export default defineComponent({
             this.incrementWizard();
             break;
         }
+        
+      } else {
+        this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+        
       }
     },
     async validateForm() {
@@ -261,7 +263,7 @@ export default defineComponent({
       }
     },
     printPage() {
-      window.print();
+      globalThis.print();
     },
   },
 });

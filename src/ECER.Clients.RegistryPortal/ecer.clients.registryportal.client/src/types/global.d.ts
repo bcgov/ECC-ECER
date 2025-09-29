@@ -1,5 +1,5 @@
 declare global {
-  interface Window {
+  interface globalThis {
     grecaptcha: {
       getResponse(): string;
       reset(string?): void; //if widget id is not provided, will default to first recaptcha instance
