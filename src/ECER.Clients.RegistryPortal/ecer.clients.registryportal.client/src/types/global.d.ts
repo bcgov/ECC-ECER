@@ -1,7 +1,7 @@
 declare global {
   var grecaptcha: {
     getResponse(): string;
-    reset(widgetId?: string): void;
+    reset(widgetId?: string | number): void;
     render(container: string): string;
   };
 
