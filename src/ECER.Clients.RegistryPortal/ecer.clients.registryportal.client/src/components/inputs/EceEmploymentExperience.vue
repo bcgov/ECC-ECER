@@ -228,14 +228,14 @@ export default defineComponent({
       this.resetFormData();
       // Change mode to list
       this.mode = "list";
-      window.scroll(0, 0);
+      globalThis.scroll(0, 0);
     },
     handleAddInternationalCertification() {
       // Reset the form fields
       this.resetFormData();
       this.mode = "add";
       this.employmentExperienceFormMode = "add";
-      window.scroll(0, 0);
+      globalThis.scroll(0, 0);
     },
     handleEdit(reference: Components.Schemas.EmploymentReference) {
       // Set the form fields to component data
@@ -247,7 +247,7 @@ export default defineComponent({
 
       this.mode = "add";
       this.employmentExperienceFormMode = "edit";
-      window.scroll(0, 0);
+      globalThis.scroll(0, 0);
     },
     async handleDelete(_reference: Components.Schemas.EmploymentReference, index: number) {
       this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
@@ -288,7 +288,7 @@ export default defineComponent({
 
         this.mode = "list";
 
-        window.scroll(0, 0);
+        globalThis.scroll(0, 0);
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }

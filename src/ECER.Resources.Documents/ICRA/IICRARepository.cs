@@ -5,6 +5,8 @@ public interface IICRARepository
   Task<IEnumerable<ICRAEligibility>> Query(ICRAQuery query, CancellationToken cancellationToken);
 
   Task<string> Save(ICRAEligibility iCRAEligibility, CancellationToken cancellationToken);
+
+  Task<string> Submit(string icraEligibilityId, CancellationToken cancellationToken);
 }
 
 public record ICRAQuery

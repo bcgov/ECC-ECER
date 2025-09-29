@@ -327,6 +327,9 @@ declare namespace Components {
             internationalCertifications?: InternationalCertification[] | null;
             employmentReferences?: EmploymentReference[] | null;
         }
+        export interface ICRAEligibilitySubmissionRequest {
+            id?: string | null;
+        }
         export type ICRAStatus = "Active" | "Draft" | "Eligible" | "Inactive" | "Ineligible" | "InReview" | "ReadyforReview" | "Submitted";
         export interface IdentificationType {
             id?: string | null;
@@ -513,6 +516,9 @@ declare namespace Components {
         export type StatusCode = "Inactive" | "PendingforDocuments" | "ReadyforIDVerification" | "ReadyforRegistrantMatch" | "Unverified" | "Verified";
         export interface SubmitApplicationResponse {
             application?: Application;
+        }
+        export interface SubmitICRAEligibilityResponse {
+            eligibility?: ICRAEligibility;
         }
         export interface SubmittedApplicationStatus {
             id?: string | null;
@@ -993,6 +999,15 @@ declare namespace Paths {
             export type $400 = Components.Schemas.HttpValidationProblemDetails;
         }
     }
+    namespace IcraPost {
+        export type RequestBody = Components.Schemas.ICRAEligibilitySubmissionRequest;
+        namespace Responses {
+            export type $200 = Components.Schemas.SubmitICRAEligibilityResponse;
+            export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+            export interface $404 {
+            }
+        }
+    }
     namespace IcraPut {
         namespace Parameters {
             export type Id = string;
@@ -1342,6 +1357,14 @@ export interface OperationMethods {
     data?: Paths.IcraPut.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.IcraPut.Responses.$200>
+  /**
+   * icra_post - Submit an ICRA Eligibility
+   */
+  'icra_post'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.IcraPost.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.IcraPost.Responses.$200>
   /**
    * files_certificate_get - Handles fetching certificate PDF's
    */
@@ -1731,6 +1754,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.IcraGet.Responses.$200>
   }
+  ['/api/icra']: {
+    /**
+     * icra_post - Submit an ICRA Eligibility
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.IcraPost.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.IcraPost.Responses.$200>
+  }
   ['/api/files/certificate/{certificateId}']: {
     /**
      * files_certificate_get - Handles fetching certificate PDF's
@@ -2013,6 +2046,7 @@ export type FiveYearRenewalExplanations = Components.Schemas.FiveYearRenewalExpl
 export type GetMessagesResponse = Components.Schemas.GetMessagesResponse;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
 export type ICRAEligibility = Components.Schemas.ICRAEligibility;
+export type ICRAEligibilitySubmissionRequest = Components.Schemas.ICRAEligibilitySubmissionRequest;
 export type ICRAStatus = Components.Schemas.ICRAStatus;
 export type IdentificationType = Components.Schemas.IdentificationType;
 export type IdentityDocument = Components.Schemas.IdentityDocument;
@@ -2048,6 +2082,7 @@ export type SendMessageRequest = Components.Schemas.SendMessageRequest;
 export type SendMessageResponse = Components.Schemas.SendMessageResponse;
 export type StatusCode = Components.Schemas.StatusCode;
 export type SubmitApplicationResponse = Components.Schemas.SubmitApplicationResponse;
+export type SubmitICRAEligibilityResponse = Components.Schemas.SubmitICRAEligibilityResponse;
 export type SubmittedApplicationStatus = Components.Schemas.SubmittedApplicationStatus;
 export type SystemMessage = Components.Schemas.SystemMessage;
 export type Transcript = Components.Schemas.Transcript;

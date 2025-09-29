@@ -90,4 +90,16 @@ internal sealed partial class ICRARepository : IICRARepository
     context.SaveChanges();
     return icraEligibility.ecer_ICRAEligibilityAssessmentId!.Value.ToString();
   }
+
+  public async Task<string> Submit(string icraEligibilityId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var icra = context.ecer_ICRAEligibilityAssessmentSet.FirstOrDefault(d => d.ecer_ICRAEligibilityAssessmentId == Guid.Parse(icraEligibilityId) && d.StatusCode == ecer_ICRAEligibilityAssessment_StatusCode.Draft);
+    if (icra == null) throw new InvalidOperationException($"ICRA Eligibility '{icraEligibilityId}' not found");
+
+    icra.StatusCode = ecer_ICRAEligibilityAssessment_StatusCode.Submitted;
+    context.UpdateObject(icra);
+    context.SaveChanges();
+    return icraEligibilityId;
+  }
 }

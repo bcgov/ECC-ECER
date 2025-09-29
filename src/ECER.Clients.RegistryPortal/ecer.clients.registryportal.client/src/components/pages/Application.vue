@@ -283,7 +283,7 @@ export default defineComponent({
       }
     },
     printPage() {
-      window.print();
+      globalThis.print();
     },
   },
 });

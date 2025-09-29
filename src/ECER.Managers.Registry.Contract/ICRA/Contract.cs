@@ -13,6 +13,22 @@ public record ICRAEligibilitiesQuery : IRequest<ICRAEligibilitiesQueryResults>
 }
 
 public record ICRAEligibilitiesQueryResults(IEnumerable<ICRAEligibility> Items);
+
+public record SubmitICRAEligibilityCommand(string icraEligibilityId, string userId) : IRequest<SubmitICRAEligibilityResult>;
+
+public record SubmitICRAEligibilityResult()
+{
+  public ICRAEligibility? Eligibility { get; set; }
+  public SubmissionError? Error { get; set; }
+  public IEnumerable<string>? ValidationErrors { get; set; }
+  public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
+}
+
+public enum SubmissionError
+{
+  DraftIcraEligibilityNotFound,
+  DraftIcraEligibilityValidationFailed
+}
 public record ICRAEligibility()
 {
   public string? Id { get; set; }

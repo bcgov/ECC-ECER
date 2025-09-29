@@ -125,7 +125,7 @@ export default defineComponent({
         if (refSet.has(`${this.formStore.formData.firstName.toLowerCase()} ${this.formStore.formData.lastName.toLowerCase()}`)) {
           this.isDuplicateReference = true;
           //scroll to top of page
-          window.scrollTo({
+          globalThis.scrollTo({
             top: 0,
             behavior: "smooth",
           });

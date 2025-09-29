@@ -54,7 +54,7 @@
     <br />
 
     <router-link :to="{ name: 'manage-icra-eligibility', params: { icraEligibilityId: icraEligibilityId } }">
-      <v-btn id="btnIcraEligibilitySummary" class="mt-5" type="" rounded="lg" color="primary">Go to submission summary (TODO NOT IMPLEMENTED)</v-btn>
+      <v-btn id="btnIcraEligibilitySummary" class="mt-5" rounded="lg" color="primary">Go to submission summary</v-btn>
     </router-link>
   </PageContainer>
 </template>

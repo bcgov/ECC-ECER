@@ -66,7 +66,7 @@
     <br />
 
     <router-link :to="{ name: 'manageApplication', params: { applicationId: applicationId } }">
-      <v-btn id="btnApplicationSummary" class="mt-5" type="" rounded="lg" color="primary">Go to application summary</v-btn>
+      <v-btn id="btnApplicationSummary" class="mt-5" rounded="lg" color="primary">Go to application summary</v-btn>
     </router-link>
   </PageContainer>
 </template>

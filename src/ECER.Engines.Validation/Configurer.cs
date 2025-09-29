@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using ECER.Engines.Validation.Applications;
+using ECER.Engines.Validation.ICRA;
 using ECER.Infrastructure.Common;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,5 +18,8 @@ public class Configurer : IConfigureComponents
     {
       return provider.GetRequiredService<NewApplicationSubmissionValidationEngine>();
     });
+
+    // ICRA
+    configurationContext.Services.AddTransient<IICRAValidationEngine, IcraEligibilitySubmissionValidationEngine>();
   }
 }

@@ -573,7 +573,7 @@ export default defineComponent({
   watch: {
     mode(newValue) {
       if (newValue === "list") {
-        window.scrollTo({
+        globalThis.scrollTo({
           top: 0,
           behavior: "smooth",
         });

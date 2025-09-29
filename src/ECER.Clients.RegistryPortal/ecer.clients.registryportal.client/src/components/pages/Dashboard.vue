@@ -298,7 +298,7 @@ export default defineComponent({
     } catch (error) {}
 
     if (!user) {
-      window.location.href = "/login";
+      globalThis.location.href = "/login";
       return; //stops the rest of the component from loading. Prevents 401 calls for the methods below
     }
 

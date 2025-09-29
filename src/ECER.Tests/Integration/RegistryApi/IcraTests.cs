@@ -81,6 +81,52 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
     }
 
     [Fact]
+    public async Task SubmitIcraEligibility_Succeeds()
+    {
+        var eligibility = new ICRAEligibility
+        {
+            ApplicantId = this.Fixture.AuthenticatedBcscUser.Id.ToString(),
+            Status = ICRAStatus.Draft,
+            EmploymentReferences = new []
+            {
+                new EmploymentReference { FirstName = "John", LastName = "Doe", EmailAddress = "john.doe@example.com" }
+            }
+        };
+
+        var saveResponse = await Host.Scenario(_ =>
+        {
+            _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+            _.Put.Json(new SaveDraftICRAEligibilityRequest(eligibility)).ToUrl($"/api/icra/");
+            _.StatusCodeShouldBeOk();
+        });
+
+        var saved = (await saveResponse.ReadAsJsonAsync<DraftICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
+
+        var submitResponse = await Host.Scenario(_ =>
+        {
+            _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+            _.Post.Json(new ICRAEligibilitySubmissionRequest(saved.Id!)).ToUrl($"/api/icra");
+            _.StatusCodeShouldBeOk();
+        });
+
+        var submitted = (await submitResponse.ReadAsJsonAsync<SubmitICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
+        submitted.ShouldNotBeNull();
+        submitted.Id.ShouldBe(saved.Id);
+        submitted.Status.ShouldBe(ICRAStatus.Submitted);
+    }
+
+    [Fact]
+    public async Task SubmitIcraEligibility_BadId_ReturnsBadRequest()
+    {
+        var response = await Host.Scenario(_ =>
+        {
+            _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+            _.Post.Json(new ICRAEligibilitySubmissionRequest("not-a-guid")).ToUrl($"/api/icra");
+            _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+        });
+    }
+
+    [Fact]
     public async Task SaveDraftIcraEligibility_WithMismatchedIds_ReturnsBadRequest()
     {
         var eligibilityId = Guid.NewGuid().ToString();

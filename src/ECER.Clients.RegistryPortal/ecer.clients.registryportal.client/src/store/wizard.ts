@@ -301,7 +301,7 @@ export const useWizardStore = defineStore("wizard", {
     setCurrentStep(stage: ApplicationStage | ReferenceStage | IcraEligibilityStage): void {
       const item = Object.values(this.wizardConfig.steps).findIndex((step) => step.stage === stage) + 1;
       this.step = item;
-      window.scrollTo({
+      globalThis.scrollTo({
         top: 0,
         behavior: "smooth",
       });
@@ -309,18 +309,18 @@ export const useWizardStore = defineStore("wizard", {
     incrementStep(): void {
       if (this.step < Object.keys(this.wizardConfig.steps).length) {
         this.step += 1;
-        window.scrollTo(0, 0);
+        globalThis.scrollTo(0, 0);
       }
     },
     decrementStep(): void {
       if (this.step > 1) {
         this.step -= 1;
-        window.scrollTo(0, 0);
+        globalThis.scrollTo(0, 0);
       }
     },
     setStep(step: number): void {
       this.step = step;
-      window.scrollTo(0, 0);
+      globalThis.scrollTo(0, 0);
     },
   },
 });
