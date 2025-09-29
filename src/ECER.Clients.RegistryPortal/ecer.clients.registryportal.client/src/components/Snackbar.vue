@@ -114,7 +114,7 @@ export default {
       }
     },
     timeoutCounter() {
-      this.polling = globalThis.setInterval(() => {
+      this.polling = window.setInterval(() => {
         if (this.pause) {
           this.timeout += 1;
         }

@@ -1,14 +1,13 @@
 declare global {
-  interface globalThis {
-    grecaptcha: {
-      getResponse(): string;
-      reset(string?): void; //if widget id is not provided, will default to first recaptcha instance
-      render(string): string;
-    };
-    recaptchaSuccessCallback: function;
-    recaptchaExpiredCallback: function;
-    recaptchaOnloadCallback: function;
-  }
+  var grecaptcha: {
+    getResponse(): string;
+    reset(widgetId?: string): void;
+    render(container: string): string;
+  };
+
+  var recaptchaSuccessCallback: function;
+  var recaptchaExpiredCallback: function;
+  var recaptchaOnloadCallback: function;
 }
 
 export {};
