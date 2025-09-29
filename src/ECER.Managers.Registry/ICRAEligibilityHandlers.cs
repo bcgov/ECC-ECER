@@ -56,12 +56,23 @@ public class ICRAEligibilityHandlers(
 
     var eligibilities = await iCRARepository.Query(new ICRAQuery
     {
-      ById = request.icraEligibilityId,
       ByApplicantId = request.userId,
-      ByStatus = [Resources.Documents.ICRA.ICRAStatus.Draft]
+      ByStatus = new Resources.Documents.ICRA.ICRAStatus[]
+      {
+        Resources.Documents.ICRA.ICRAStatus.Draft,
+        Resources.Documents.ICRA.ICRAStatus.Submitted,
+        Resources.Documents.ICRA.ICRAStatus.InReview,
+        Resources.Documents.ICRA.ICRAStatus.ReadyforReview
+      }
     }, cancellationToken);
 
-    var draft = mapper.Map<IEnumerable<Contract.ICRA.ICRAEligibility>>(eligibilities)!.FirstOrDefault();
+    if (eligibilities.Any(e => e.Status == Resources.Documents.ICRA.ICRAStatus.Submitted || e.Status == Resources.Documents.ICRA.ICRAStatus.InReview || e.Status == Resources.Documents.ICRA.ICRAStatus.ReadyforReview))
+    {
+      return new SubmitICRAEligibilityResult { Eligibility = null, Error = Contract.ICRA.SubmissionError.DraftIcraEligibilityValidationFailed, ValidationErrors = new List<string> { "submitted icra eligibility already exists" } };
+    }
+
+    var draftResource = eligibilities.FirstOrDefault(e => e.Id == request.icraEligibilityId && e.Status == Resources.Documents.ICRA.ICRAStatus.Draft);
+    var draft = mapper.Map<Contract.ICRA.ICRAEligibility>(draftResource!);
     if (draft == null)
     {
       return new SubmitICRAEligibilityResult { Eligibility = null, Error = Contract.ICRA.SubmissionError.DraftIcraEligibilityNotFound, ValidationErrors = new List<string> { "draft icra eligibility does not exist" } };
@@ -73,7 +84,6 @@ public class ICRAEligibilityHandlers(
       return new SubmitICRAEligibilityResult { Eligibility = null, Error = Contract.ICRA.SubmissionError.DraftIcraEligibilityValidationFailed, ValidationErrors = validation.ValidationErrors };
     }
 
-    // Delegate status change to repository (mirror applications)
     var id = await iCRARepository.Submit(draft.Id!, cancellationToken);
 
     var fresh = await iCRARepository.Query(new ICRAQuery { ById = id }, cancellationToken);
