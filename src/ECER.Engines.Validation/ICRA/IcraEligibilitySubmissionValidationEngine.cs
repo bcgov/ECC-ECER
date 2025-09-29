@@ -21,16 +21,10 @@ internal sealed class IcraEligibilitySubmissionValidationEngine : IICRAValidatio
     }
 
 
-    // If any InternationalCertification exists, ensure minimally required fields
-    if (eligibility.InternationalCertifications != null)
+    if ((eligibility.InternationalCertifications ?? Enumerable.Empty<InternationalCertification>())
+            .Any(ic => string.IsNullOrWhiteSpace(ic.CertificateTitle)))
     {
-      foreach (var ic in eligibility.InternationalCertifications)
-      {
-        if (string.IsNullOrWhiteSpace(ic.CertificateTitle))
-        {
-          errors.Add("International certification missing CertificateTitle");
-        }
-      }
+      errors.Add("International certification missing CertificateTitle");
     }
 
     if (!eligibility.EmploymentReferences.Any())
@@ -39,15 +33,13 @@ internal sealed class IcraEligibilitySubmissionValidationEngine : IICRAValidatio
     }
 
     // If any EmploymentReferences exist, ensure minimally required fields
-    if (eligibility.EmploymentReferences != null)
+    if ((eligibility.EmploymentReferences ?? Enumerable.Empty<EmploymentReference>())
+            .Any(r =>
+                string.IsNullOrWhiteSpace(r.FirstName) ||
+                string.IsNullOrWhiteSpace(r.LastName) ||
+                string.IsNullOrWhiteSpace(r.EmailAddress)))
     {
-      foreach (var r in eligibility.EmploymentReferences)
-      {
-        if (string.IsNullOrWhiteSpace(r.FirstName) || string.IsNullOrWhiteSpace(r.LastName) || string.IsNullOrWhiteSpace(r.EmailAddress))
-        {
-          errors.Add("Employment reference requires FirstName, LastName, and EmailAddress");
-        }
-      }
+      errors.Add("Employment reference requires FirstName, LastName, and EmailAddress");
     }
 
     return new Applications.ValidationResults(errors);
