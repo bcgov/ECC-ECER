@@ -73,9 +73,8 @@ public class ICRAEligibilityHandlers(
       return new SubmitICRAEligibilityResult { Eligibility = null, Error = Contract.ICRA.SubmissionError.DraftIcraEligibilityValidationFailed, ValidationErrors = validation.ValidationErrors };
     }
 
-    var repoModel = mapper.Map<Resources.Documents.ICRA.ICRAEligibility>(draft)!;
-    repoModel.Status = Resources.Documents.ICRA.ICRAStatus.Submitted;
-    var id = await iCRARepository.Save(repoModel, cancellationToken);
+    // Delegate status change to repository (mirror applications)
+    var id = await iCRARepository.Submit(draft.Id!, cancellationToken);
 
     var fresh = await iCRARepository.Query(new ICRAQuery { ById = id }, cancellationToken);
     return new SubmitICRAEligibilityResult { Eligibility = mapper.Map<Contract.ICRA.ICRAEligibility>(fresh.SingleOrDefault()) };
