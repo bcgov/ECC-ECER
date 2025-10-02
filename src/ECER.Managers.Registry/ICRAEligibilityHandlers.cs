@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
+using ECER.Engines.Validation.ICRA;
 using ECER.Infrastructure.Common;
-using ECER.Managers.Registry.Contract.Applications;
 using ECER.Managers.Registry.Contract.ICRA;
-using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.ICRA;
 using MediatR;
-using ECER.Engines.Validation.ICRA;
-
 
 namespace ECER.Managers.Registry;
 
@@ -21,7 +18,6 @@ public class ICRAEligibilityHandlers(
     IRequestHandler<ICRAEligibilitiesQuery, ICRAEligibilitiesQueryResults>,
     IRequestHandler<SubmitICRAEligibilityCommand, SubmitICRAEligibilityResult>
 {
-
   public async Task<Contract.ICRA.ICRAEligibility?> Handle(SaveICRAEligibilityCommand request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
@@ -30,14 +26,25 @@ public class ICRAEligibilityHandlers(
       var icraEligibilities = await iCRARepository.Query(new ICRAQuery
       {
         ByApplicantId = request.eligibility.ApplicantId,
-        ByStatus = [Resources.Documents.ICRA.ICRAStatus.Draft] // IDE0028: already simplified
+        ByStatus = new Resources.Documents.ICRA.ICRAStatus[] {
+          Resources.Documents.ICRA.ICRAStatus.Draft,
+          Resources.Documents.ICRA.ICRAStatus.Submitted,
+          Resources.Documents.ICRA.ICRAStatus.InReview,
+          Resources.Documents.ICRA.ICRAStatus.ReadyforReview,
+          Resources.Documents.ICRA.ICRAStatus.ReadyforAssessment
+        }
       }, cancellationToken);
 
-      var existingDraftICRA = icraEligibilities.FirstOrDefault();
-      if (existingDraftICRA != null)
+      //this checks for any submitted Icra eligibilities
+      if (icraEligibilities.Any(e => e.Status != Resources.Documents.ICRA.ICRAStatus.Draft))
+      {
+        throw new InvalidOperationException($"Applicant id: {request.eligibility.ApplicantId} has a submitted Icra eligibility assessment in progress. A new draft cannot be created.");
+      }
+
+      if (icraEligibilities.Any(e => e.Status == Resources.Documents.ICRA.ICRAStatus.Draft))
       {
         // user already has a draft icra eligibility
-        throw new InvalidOperationException($"User already has a draft ICRA with id '{existingDraftICRA.Id}'");
+        throw new InvalidOperationException($"Applicant id: {request.eligibility.ApplicantId} has a draft ICRA in progress. A new draft cannot be created");
       }
     }
     var iCRAEligibilityId = await iCRARepository.Save(mapper.Map<Resources.Documents.ICRA.ICRAEligibility>(request.eligibility)!, cancellationToken);
@@ -62,7 +69,8 @@ public class ICRAEligibilityHandlers(
         Resources.Documents.ICRA.ICRAStatus.Draft,
         Resources.Documents.ICRA.ICRAStatus.Submitted,
         Resources.Documents.ICRA.ICRAStatus.InReview,
-        Resources.Documents.ICRA.ICRAStatus.ReadyforReview
+        Resources.Documents.ICRA.ICRAStatus.ReadyforReview,
+        Resources.Documents.ICRA.ICRAStatus.ReadyforAssessment
       }
     }, cancellationToken);
 
@@ -90,7 +98,6 @@ public class ICRAEligibilityHandlers(
     return new SubmitICRAEligibilityResult { Eligibility = mapper.Map<Contract.ICRA.ICRAEligibility>(fresh.SingleOrDefault()) };
   }
 
-
   public async Task<ICRAEligibilitiesQueryResults> Handle(ICRAEligibilitiesQuery request, CancellationToken cancellationToken)
   {
     ArgumentNullException.ThrowIfNull(request);
@@ -103,5 +110,4 @@ public class ICRAEligibilityHandlers(
     }, cancellationToken);
     return new ICRAEligibilitiesQueryResults(mapper.Map<IEnumerable<Contract.ICRA.ICRAEligibility>>(eligibilities)!);
   }
-
 }

@@ -8,6 +8,7 @@ import { useFormStore } from "./store/form";
 import { useMessageStore } from "./store/message";
 import { useWizardStore } from "./store/wizard";
 import { useConfigStore } from "./store/config";
+import { useIcraStore } from "./store/icra";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -294,6 +295,16 @@ const router = createRouter({
       path: "/icra-eligibility",
       component: () => import("./components/pages/IcraEligibility.vue"),
       meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+      beforeEnter: (to, from, next) => {
+        //guard to prevent users from coming here if they have a submitted in-progress ICRA Eligibility application
+        const icraStore = useIcraStore();
+        if (icraStore.hasSubmittedIcraEligibility) {
+          console.warn("User has a submitted ICRA Eligibility application, redirecting to home page.");
+          next({ path: "/" });
+        } else {
+          next();
+        }
+      },
     },
     {
       path: "/icra-eligibility/check",

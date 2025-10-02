@@ -29,6 +29,7 @@ public enum SubmissionError
   DraftIcraEligibilityNotFound,
   DraftIcraEligibilityValidationFailed
 }
+
 public record ICRAEligibility()
 {
   public string? Id { get; set; }
@@ -86,5 +87,6 @@ public enum ICRAStatus
   Ineligible,
   InReview,
   ReadyforReview,
-  Submitted
+  Submitted,
+  ReadyforAssessment
 }

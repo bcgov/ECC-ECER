@@ -54,6 +54,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		InReview = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ReadyforAssessment = 621870007,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ReadyforReview = 621870003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -71,6 +74,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// </summary>
 		public partial class Fields
 		{
+			public const string bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf = "bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf";
 			public const string CreatedBy = "createdby";
 			public const string CreatedByName = "createdbyname";
 			public const string CreatedByYomiName = "createdbyyominame";
@@ -78,6 +82,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_AddAdditionalEmploymentExperienceReferences = "ecer_addadditionalemploymentexperiencereferences";
+			public const string ecer_addadditionalemploymentexperiencereferencesName = "ecer_addadditionalemploymentexperiencereferencesname";
 			public const string ecer_AgreedStatements = "ecer_agreedstatements";
 			public const string ecer_ApplicantId = "ecer_applicantid";
 			public const string ecer_ApplicantIdName = "ecer_applicantidname";
@@ -92,6 +98,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_CertificateReceived = "ecer_certificatereceived";
 			public const string ecer_CertificateReceivedDate = "ecer_certificatereceiveddate";
 			public const string ecer_certificatereceivedName = "ecer_certificatereceivedname";
+			public const string ecer_CertificateReviewed = "ecer_certificatereviewed";
+			public const string ecer_certificatereviewedName = "ecer_certificatereviewedname";
 			public const string ecer_communication_ICRAEligibilityAssessmentId = "ecer_communication_ICRAEligibilityAssessmentId";
 			public const string ecer_CountryId = "ecer_countryid";
 			public const string ecer_CountryIdName = "ecer_countryidname";
@@ -99,6 +107,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_EmploymentReferenceReceived = "ecer_employmentreferencereceived";
 			public const string ecer_EmploymentReferenceReceivedDate = "ecer_employmentreferencereceiveddate";
 			public const string ecer_employmentreferencereceivedName = "ecer_employmentreferencereceivedname";
+			public const string ecer_EmploymentReferenceReviewed = "ecer_employmentreferencereviewed";
+			public const string ecer_employmentreferencereviewedName = "ecer_employmentreferencereviewedname";
+			public const string ecer_GenerateApplication = "ecer_generateapplication";
+			public const string ecer_generateapplicationName = "ecer_generateapplicationname";
 			public const string ecer_icraeligibilityassessment_ApplicantId = "ecer_icraeligibilityassessment_ApplicantId";
 			public const string ecer_icraeligibilityassessment_ApplicationId = "ecer_icraeligibilityassessment_ApplicationId";
 			public const string ecer_icraeligibilityassessment_CountryId = "ecer_icraeligibilityassessment_CountryId";
@@ -126,11 +138,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string OwningBusinessUnitName = "owningbusinessunitname";
 			public const string OwningTeam = "owningteam";
 			public const string OwningUser = "owninguser";
+			public const string processid = "processid";
+			public const string stageid = "stageid";
 			public const string StateCode = "statecode";
 			public const string statecodeName = "statecodename";
 			public const string StatusCode = "statuscode";
 			public const string statuscodeName = "statuscodename";
 			public const string TimeZoneRuleVersionNumber = "timezoneruleversionnumber";
+			public const string traversedpath = "traversedpath";
 			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
@@ -278,6 +293,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addadditionalemploymentexperiencereferences")]
+		public System.Nullable<bool> ecer_AddAdditionalEmploymentExperienceReferences
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_addadditionalemploymentexperiencereferences");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_addadditionalemploymentexperiencereferences", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addadditionalemploymentexperiencereferencesname")]
+		public string ecer_addadditionalemploymentexperiencereferencesName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_addadditionalemploymentexperiencereferences"))
+				{
+					return this.FormattedValues["ecer_addadditionalemploymentexperiencereferences"];
 				}
 				else
 				{
@@ -491,6 +538,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatereviewed")]
+		public System.Nullable<bool> ecer_CertificateReviewed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_certificatereviewed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificatereviewed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatereviewedname")]
+		public string ecer_certificatereviewedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_certificatereviewed"))
+				{
+					return this.FormattedValues["ecer_certificatereviewed"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_countryid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_CountryId
 		{
@@ -577,6 +656,70 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_employmentreferencereceived"))
 				{
 					return this.FormattedValues["ecer_employmentreferencereceived"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_employmentreferencereviewed")]
+		public System.Nullable<bool> ecer_EmploymentReferenceReviewed
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_employmentreferencereviewed");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_employmentreferencereviewed", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_employmentreferencereviewedname")]
+		public string ecer_employmentreferencereviewedName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_employmentreferencereviewed"))
+				{
+					return this.FormattedValues["ecer_employmentreferencereviewed"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generateapplication")]
+		public System.Nullable<bool> ecer_GenerateApplication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_generateapplication");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_generateapplication", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_generateapplicationname")]
+		public string ecer_generateapplicationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_generateapplication"))
+				{
+					return this.FormattedValues["ecer_generateapplication"];
 				}
 				else
 				{
@@ -951,6 +1094,43 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Contains the id of the process associated with the entity.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("processid")]
+		public System.Nullable<System.Guid> processid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("processid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("processid", value);
+			}
+		}
+		
+		/// <summary>
+		/// Contains the id of the stage where the entity is located.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("stageid")]
+		[System.Obsolete("This attribute is deprecated.")]
+		public System.Nullable<System.Guid> stageid
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("stageid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("stageid", value);
+			}
+		}
+		
+		/// <summary>
 		/// Status of the ICRA Eligibility Assessment
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
@@ -1039,6 +1219,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// A comma separated list of string values representing the unique identifiers of stages in a Business Process Flow Instance in the order that they occur.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("traversedpath")]
+		[System.Obsolete("This attribute is deprecated.")]
+		public string traversedpath
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("traversedpath");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("traversedpath", value);
+			}
+		}
+		
+		/// <summary>
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("utcconversiontimezonecode")]
@@ -1066,6 +1265,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_icraeligibilityassessmentbpf> bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_icraeligibilityassessmentbpf>("bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_icraeligibilityassessmentbpf>("bpf_ecer_icraeligibilityassessment_ecer_icraeligibilityassessmentbpf", null, value);
 			}
 		}
 		
