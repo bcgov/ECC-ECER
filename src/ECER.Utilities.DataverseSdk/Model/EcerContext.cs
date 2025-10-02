@@ -162,6 +162,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication> ecer_BulkPSPCommunicationSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Certificate"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Certificate> ecer_CertificateSet
@@ -404,6 +415,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement> ecer_CourseProvincialRequirementSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_CourseProvincialRequirement>();
+			}
+		}
+		
+		/// <summary>
 		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_DefaultContents"/> entities.
 		/// </summary>
 		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_DefaultContents> ecer_DefaultContentsSet
@@ -444,17 +466,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_EducationAssessment>();
-			}
-		}
-		
-		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_Evidence"/> entities.
-		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_Evidence> ecer_EvidenceSet
-		{
-			get
-			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_Evidence>();
 			}
 		}
 		
@@ -899,13 +910,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_ProgramAreaAssessment"/> entities.
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent"/> entities.
 		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramAreaAssessment> ecer_ProgramAreaAssessmentSet
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent> ecer_ProgramApplicationComponentSet
 		{
 			get
 			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_ProgramAreaAssessment>();
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponent>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup> ecer_ProgramApplicationComponentGroupSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_ProgramApplicationComponentGroup>();
 			}
 		}
 		
@@ -928,6 +950,28 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_ProvincialRequirement>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_PSPComponent"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_PSPComponent> ecer_PSPComponentSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_PSPComponent>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_PSPComponentGroup"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_PSPComponentGroup> ecer_PSPComponentGroupSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_PSPComponentGroup>();
 			}
 		}
 		
@@ -961,6 +1005,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_pspobservation>();
+			}
+		}
+		
+		/// <summary>
+		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_pspreferral"/> entities.
+		/// </summary>
+		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral> ecer_pspreferralSet
+		{
+			get
+			{
+				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_pspreferral>();
 			}
 		}
 		
@@ -1005,17 +1060,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_RenewalAssessment>();
-			}
-		}
-		
-		/// <summary>
-		/// Gets a binding to the set of all <see cref="ECER.Utilities.DataverseSdk.Model.ecer_RequirementCompetency"/> entities.
-		/// </summary>
-		public System.Linq.IQueryable<ECER.Utilities.DataverseSdk.Model.ecer_RequirementCompetency> ecer_RequirementCompetencySet
-		{
-			get
-			{
-				return this.CreateQuery<ECER.Utilities.DataverseSdk.Model.ecer_RequirementCompetency>();
 			}
 		}
 		
