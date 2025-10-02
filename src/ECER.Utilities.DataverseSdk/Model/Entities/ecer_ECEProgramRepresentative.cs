@@ -60,6 +60,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_AccessToPortal = "ecer_accesstoportal";
+			public const string ecer_accesstoportalName = "ecer_accesstoportalname";
 			public const string ecer_Addby = "ecer_addby";
 			public const string ecer_AddbyName = "ecer_addbyname";
 			public const string ecer_authentication_eceprogramrepresentative = "ecer_authentication_eceprogramrepresentative";
@@ -80,12 +82,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_LastInviteSentDate = "ecer_lastinvitesentdate";
 			public const string ecer_LastName = "ecer_lastname";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_PhoneExtension = "ecer_phoneextension";
 			public const string ecer_PhoneNumber = "ecer_phonenumber";
 			public const string ecer_portalinvitation_psiprogramrepresentativeid = "ecer_portalinvitation_psiprogramrepresentativeid";
 			public const string ecer_PostSecondaryInstitute = "ecer_postsecondaryinstitute";
 			public const string ecer_PostSecondaryInstituteName = "ecer_postsecondaryinstitutename";
 			public const string ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ = "ecer_postsecondaryinstituteprogramapplicaiton_PSIProgramRepresentative_ecer_eceprogramrepresentativ";
 			public const string ecer_postsecondaryinstitutesitevisit_PSIProgramRepresentative_ecer_eceprogramrepresentative = "ecer_postsecondaryinstitutesitevisit_PSIProgramRepresentative_ecer_eceprogramrepresentative";
+			public const string ecer_PreferredFirstName = "ecer_preferredfirstname";
 			public const string ecer_RepresentativeRole = "ecer_representativerole";
 			public const string ecer_representativeroleName = "ecer_representativerolename";
 			public const string ecer_Role = "ecer_role";
@@ -258,6 +262,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_accesstoportal")]
+		public virtual ecer_AccessToPortal? ecer_AccessToPortal
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_AccessToPortal?)(EntityOptionSetEnum.GetEnum(this, "ecer_accesstoportal")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_accesstoportal", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_accesstoportalname")]
+		public string ecer_accesstoportalName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_accesstoportal"))
+				{
+					return this.FormattedValues["ecer_accesstoportal"];
 				}
 				else
 				{
@@ -520,6 +556,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_phoneextension")]
+		public string ecer_PhoneExtension
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_phoneextension");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_phoneextension", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_phonenumber")]
 		public string ecer_PhoneNumber
 		{
@@ -564,6 +615,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_preferredfirstname")]
+		public string ecer_PreferredFirstName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_preferredfirstname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_preferredfirstname", value);
 			}
 		}
 		
