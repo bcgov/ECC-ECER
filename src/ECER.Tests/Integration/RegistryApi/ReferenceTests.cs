@@ -7,7 +7,6 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit.Abstractions;
-using InviteType = ECER.Managers.Admin.Contract.PortalInvitations.InviteType;
 
 namespace ECER.Tests.Integration.RegistryApi;
 
@@ -182,7 +181,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
     var portalInvitation = Fixture.portalInvitationCharacterReferenceIdSubmit;
-    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.CharacterReference, 7), CancellationToken.None);
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.VerificationLink.Split('/')[2];
@@ -199,7 +198,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
     var portalInvitation = Fixture.portalInvitationWorkExperienceReferenceIdSubmit;
-    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation,  7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.VerificationLink.Split('/')[2];
@@ -216,7 +215,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
     var portalInvitation = Fixture.portalInvitation400HoursTypeWorkExperienceReferenceIdSubmit;
-    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.VerificationLink.Split('/')[2];
@@ -233,7 +232,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
     var portalInvitation = Fixture.portalInvitationCharacterReferenceIdOptout;
-    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.CharacterReference, 7), CancellationToken.None);
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.VerificationLink.Split('/')[2];
@@ -250,7 +249,7 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
   {
     var bus = Fixture.Services.GetRequiredService<IMediator>();
     var portalInvitation = Fixture.portalInvitationWorkExperienceReferenceIdOptout;
-    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, InviteType.WorkExperienceReference, 7), CancellationToken.None);
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, 7), CancellationToken.None);
     packingResponse.ShouldNotBeNull();
 
     var token = packingResponse.VerificationLink.Split('/')[2];

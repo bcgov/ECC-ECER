@@ -20,12 +20,10 @@ internal sealed class PortalInvitationTransformationEngine(IDataProtectionProvid
   {
     await Task.CompletedTask;
 
-    var expiryDate = DateTime.UtcNow.AddDays(request.ValidDays); // Example expiry date
+    var expiryDate = DateTime.UtcNow.AddDays(request.ValidDays);
     var protector = dataProtectionProvider.CreateProtector(nameof(PortalInvitationTransformationEngine)).ToTimeLimitedDataProtector();
 
-    // Combine referenceType and portalInvitation into a single string
-    var combinedData = $"{request.InviteType}:{request.PortalInvitation}";
-    var encryptedData = protector.Protect(combinedData, expiryDate);
+    var encryptedData = protector.Protect(request.PortalInvitation.ToString(), expiryDate);
 
     var referenceLink = WebUtility.UrlEncode(encryptedData);
     return new EncryptInviteTokenResponse(request.PortalInvitation, referenceLink);
@@ -40,22 +38,8 @@ internal sealed class PortalInvitationTransformationEngine(IDataProtectionProvid
     var protector = dataProtectionProvider.CreateProtector(nameof(PortalInvitationTransformationEngine)).ToTimeLimitedDataProtector();
     var decryptedData = protector.Unprotect(encryptedData);
 
-    // Split the decrypted data back into ReferenceType and PortalInvitation
-    var splitIndex = decryptedData.IndexOf(':');
-    if (splitIndex == -1)
-    {
-      throw new InvalidOperationException($"Invalid reference link format. decryptedData should be ReferenceType:PortalInvitation => '{decryptedData}'");
-    }
+    var portalInvitation = Guid.Parse(decryptedData);
 
-    var referenceTypeString = decryptedData.Substring(0, splitIndex);
-    var inviteIdString = decryptedData.Substring(splitIndex + 1);
-    var portalInvitation = Guid.Parse(inviteIdString);
-
-    if (!Enum.TryParse<InviteType>(referenceTypeString, out var referenceType))
-    {
-      throw new InvalidOperationException($"Invalid reference type.");
-    }
-
-    return new DecryptInviteTokenResponse(portalInvitation, referenceType);
+    return new DecryptInviteTokenResponse(portalInvitation);
   }
 }
