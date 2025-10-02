@@ -211,7 +211,6 @@
   </div>
   <!-- List view -->
   <div v-else>
-    else
     <v-row>
       <v-col>
         <p>Provide evidence of your international certification. Your certificate(s) must:</p>
