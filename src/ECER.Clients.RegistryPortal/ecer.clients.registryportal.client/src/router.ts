@@ -298,7 +298,7 @@ const router = createRouter({
   ],
 });
 
-// Gaurd for authenticated routes
+// Guard for authenticated routes
 router.beforeEach(async (to, _) => {
   const oidcStore = useOidcStore();
   const userStore = useUserStore();
@@ -391,7 +391,7 @@ router.beforeEach((to, _, next) => {
   } else next();
 });
 
-// Gaurd to prevent users from accessing /application if they have already submitted an application
+// Guard to prevent users from accessing /application if they have already submitted an application
 router.beforeEach((to, _, next) => {
   const applicationStore = useApplicationStore();
   if (to.path === "/application" && applicationStore.hasSubmittedApplication) {
