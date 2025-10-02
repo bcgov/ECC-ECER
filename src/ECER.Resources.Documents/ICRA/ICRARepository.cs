@@ -9,7 +9,6 @@ namespace ECER.Resources.Documents.ICRA;
 
 internal sealed partial class ICRARepository : IICRARepository
 {
-
   private readonly EcerContext context;
   private readonly IMapper mapper;
   private readonly IObjecStorageProvider objectStorageProvider;
@@ -74,7 +73,7 @@ internal sealed partial class ICRARepository : IICRARepository
     else
     {
       var existingIcraEligibility = context.ecer_ICRAEligibilityAssessmentSet.SingleOrDefault(c => c.ecer_ICRAEligibilityAssessmentId == icraEligibility.ecer_ICRAEligibilityAssessmentId);
-      if (existingIcraEligibility == null || existingIcraEligibility.StatusCode!=ecer_ICRAEligibilityAssessment_StatusCode.Draft) throw new InvalidOperationException($"ecer_ICRAEligibilityAssessmentId '{icraEligibility.ecer_ICRAEligibilityAssessmentId}' not found or is not draft!");
+      if (existingIcraEligibility == null || existingIcraEligibility.StatusCode != ecer_ICRAEligibilityAssessment_StatusCode.Draft) throw new InvalidOperationException($"ecer_ICRAEligibilityAssessmentId '{icraEligibility.ecer_ICRAEligibilityAssessmentId}' not found or is not draft!");
 
       if (icraEligibility.ecer_DateSigned.HasValue && existingIcraEligibility.ecer_DateSigned.HasValue) icraEligibility.ecer_DateSigned = existingIcraEligibility.ecer_DateSigned;
 
@@ -98,6 +97,19 @@ internal sealed partial class ICRARepository : IICRARepository
     if (icra == null) throw new InvalidOperationException($"ICRA Eligibility '{icraEligibilityId}' not found");
 
     icra.StatusCode = ecer_ICRAEligibilityAssessment_StatusCode.Submitted;
+    context.UpdateObject(icra);
+    context.SaveChanges();
+    return icraEligibilityId;
+  }
+
+  //This method is used for our unit tests to disable eligibility applications so multiple tests so not conflict
+  public async Task<string> SetIneligibleForUnitTests(string icraEligibilityId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var icra = context.ecer_ICRAEligibilityAssessmentSet.FirstOrDefault(d => d.ecer_ICRAEligibilityAssessmentId == Guid.Parse(icraEligibilityId) && d.ecer_ApplicantIdName.Contains("TEST"));
+    if (icra == null) throw new InvalidOperationException($"ICRA Eligibility '{icraEligibilityId}' not found or this application does not belong to a test account");
+
+    icra.StatusCode = ecer_ICRAEligibilityAssessment_StatusCode.Ineligible;
     context.UpdateObject(icra);
     context.SaveChanges();
     return icraEligibilityId;

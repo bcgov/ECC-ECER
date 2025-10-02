@@ -7,6 +7,8 @@ public interface IICRARepository
   Task<string> Save(ICRAEligibility iCRAEligibility, CancellationToken cancellationToken);
 
   Task<string> Submit(string icraEligibilityId, CancellationToken cancellationToken);
+
+  Task<string> SetIneligibleForUnitTests(string icraEligibilityId, CancellationToken cancellationToken);
 }
 
 public record ICRAQuery
@@ -73,5 +75,6 @@ public enum ICRAStatus
   Ineligible,
   InReview,
   ReadyforReview,
-  Submitted
+  Submitted,
+  ReadyforAssessment
 }
