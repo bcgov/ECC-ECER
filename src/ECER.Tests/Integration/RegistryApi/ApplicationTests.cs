@@ -338,7 +338,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     // Create and attempt to submit a second application for the same user
     var secondApplication = CreateDraftApplication();
-    firstApplication.Id = Fixture.draftTestApplicationId3;
+    secondApplication.Id = Fixture.draftTestApplicationId3;
 
 
     // Save second draft
