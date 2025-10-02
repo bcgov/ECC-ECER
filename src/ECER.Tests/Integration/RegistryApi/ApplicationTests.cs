@@ -316,11 +316,22 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
   [Fact]
   public async Task SubmitApplication_TwiceBySameUser_ReturnsBadRequest()
   {
-    // Create and submit the first application
+    // Assert user already has submitted application
+    var applicationsResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/applications");
+      _.StatusCodeShouldBeOk();
+    });
+    var applications = await applicationsResponse.ReadAsJsonAsync<Application[]>();
+    applications.Where(application => application.Status == ApplicationStatus.Submitted).ShouldNotBeEmpty();
+    
+    // Create and submit application
     var firstApplication = CreateDraftApplication();
-    firstApplication.Id = Fixture.draftTestApplicationId2;
+    firstApplication.Id = Fixture.draftTestApplicationId4;
+    firstApplication.CertificationTypes = new[] { CertificationType.EceAssistant };
 
-    // Save first draft
+    // Save draft
     await Host.Scenario(_ =>
     {
       _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUser);
@@ -328,32 +339,11 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
 
-    // Submit first application
+    // Submit application
     await Host.Scenario(_ =>
     {
       _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUser);
       _.Post.Json(new ApplicationSubmissionRequest(firstApplication.Id!)).ToUrl("/api/applications");
-      _.StatusCodeShouldBeOk();
-    });
-
-    // Create and attempt to submit a second application for the same user
-    var secondApplication = CreateDraftApplication();
-    secondApplication.Id = Fixture.draftTestApplicationId3;
-
-
-    // Save second draft
-    await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUser);
-      _.Put.Json(new SaveDraftApplicationRequest(secondApplication)).ToUrl($"/api/draftapplications/{secondApplication.Id}");
-      _.StatusCodeShouldBeOk();
-    });
-
-    // Attempt to submit second application — should fail
-    await Host.Scenario(_ =>
-    {
-      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUser);
-      _.Post.Json(new ApplicationSubmissionRequest(secondApplication.Id!)).ToUrl("/api/applications");
       _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
     });
   }
