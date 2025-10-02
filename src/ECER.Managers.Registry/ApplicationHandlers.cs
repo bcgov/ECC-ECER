@@ -63,12 +63,10 @@ public class ApplicationHandlers(
         }
       }, cancellationToken);
 
-      var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
-      var existingDraftApplication = draftApplicationResults.Items.FirstOrDefault();
-      if (existingDraftApplication != null)
+      if (applications.Any())
       {
         // user already has a draft application
-        throw new InvalidOperationException($"User already has an application in progress with id '{existingDraftApplication.Id}'");
+        throw new InvalidOperationException($"User already has an application in progress with id '{applications.SingleOrDefault()!.Id}'");
       }
     }
     request.Application.Origin = Contract.Applications.ApplicationOrigin.Portal; // Set application origin to "Portal"
