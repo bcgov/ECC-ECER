@@ -50,7 +50,17 @@ public class ApplicationHandlers(
       var applications = await applicationRepository.Query(new ApplicationQuery
       {
         ByApplicantId = request.Application.RegistrantId,
-        ByStatus = [Resources.Documents.Applications.ApplicationStatus.Draft]
+        ByStatus = new List<Resources.Documents.Applications.ApplicationStatus>
+        {
+          Resources.Documents.Applications.ApplicationStatus.Draft,
+          Resources.Documents.Applications.ApplicationStatus.Submitted,
+          Resources.Documents.Applications.ApplicationStatus.Ready,
+          Resources.Documents.Applications.ApplicationStatus.Escalated,
+          Resources.Documents.Applications.ApplicationStatus.Pending,
+          Resources.Documents.Applications.ApplicationStatus.InProgress,
+          Resources.Documents.Applications.ApplicationStatus.PendingPSPConsultationNeeded,
+          Resources.Documents.Applications.ApplicationStatus.PendingQueue,
+        }
       }, cancellationToken);
 
       var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
@@ -58,7 +68,7 @@ public class ApplicationHandlers(
       if (existingDraftApplication != null)
       {
         // user already has a draft application
-        throw new InvalidOperationException($"User already has a draft application with id '{existingDraftApplication.Id}'");
+        throw new InvalidOperationException($"User already has an application in progress with id '{existingDraftApplication.Id}'");
       }
     }
     request.Application.Origin = Contract.Applications.ApplicationOrigin.Portal; // Set application origin to "Portal"
