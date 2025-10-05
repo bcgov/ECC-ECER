@@ -1,7 +1,7 @@
 <template>
   <v-card :rounded="!isRounded ? '0' : ''" variant="outlined" class="h-100 d-flex flex-column justify-space-between h-100">
     <v-card-item class="ma-4">
-      <h2>Apply with international certification</h2>
+      <h2>Apply with international certification this is IcraCard</h2>
       <p class="small mt-4">
         Apply for
         <b>ECE Five Year Certification</b>
