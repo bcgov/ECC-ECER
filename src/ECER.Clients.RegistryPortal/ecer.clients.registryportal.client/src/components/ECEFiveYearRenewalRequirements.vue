@@ -131,18 +131,19 @@ export default defineComponent({
   },
   computed: {
     formattedLatestCertificationExpiryDate(): string {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return formatDate(this.certificationStore.certificationExpiryDate(fromCertificateId) ?? "", "LLL d, yyyy");
+      if (this.fromCertificate) {
+        return formatDate(this.fromCertificate.expiryDate ?? "", "LLL d, yyyy");
       }
       return formatDate("", "LLL d, yyyy"); // Default to empty if no fromCertificate is specified
     },
     formattedLatestCertificationEffectiveDate(): string {
-      const fromCertificateId = this.applicationStore.draftApplication.fromCertificate;
-      if (fromCertificateId) {
-        return formatDate(this.certificationStore.certificationEffectiveDate(fromCertificateId) ?? "", "LLL d, yyyy");
+      if (this.fromCertificate) {
+        return formatDate(this.fromCertificate.effectiveDate ?? "", "LLL d, yyyy");
       }
       return formatDate("", "LLL d, yyyy"); // Default to empty if no fromCertificate is specified
+    },
+    fromCertificate() {
+      return this.certificationStore.getCertificationById(this.applicationStore.draftApplication.fromCertificate);
     },
   },
 });
