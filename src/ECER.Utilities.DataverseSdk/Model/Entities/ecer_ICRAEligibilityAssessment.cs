@@ -82,6 +82,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_AddAdditionalEmploymentExperienceReferences = "ecer_addadditionalemploymentexperiencereferences";
+			public const string ecer_addadditionalemploymentexperiencereferencesName = "ecer_addadditionalemploymentexperiencereferencesname";
 			public const string ecer_AgreedStatements = "ecer_agreedstatements";
 			public const string ecer_ApplicantId = "ecer_applicantid";
 			public const string ecer_ApplicantIdName = "ecer_applicantidname";
@@ -291,6 +293,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addadditionalemploymentexperiencereferences")]
+		public System.Nullable<bool> ecer_AddAdditionalEmploymentExperienceReferences
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_addadditionalemploymentexperiencereferences");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_addadditionalemploymentexperiencereferences", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_addadditionalemploymentexperiencereferencesname")]
+		public string ecer_addadditionalemploymentexperiencereferencesName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_addadditionalemploymentexperiencereferences"))
+				{
+					return this.FormattedValues["ecer_addadditionalemploymentexperiencereferences"];
 				}
 				else
 				{
