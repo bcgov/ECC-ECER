@@ -172,7 +172,7 @@ export default defineComponent({
       // If the user does not have ECE assistant, or all the ECE assistant certifications have been expired for more than 5 years, show the ECE assistant pathway
       const eceAssistantCertifications = this.certifications.filter((certification) => isEceAssistant(certification));
 
-      return eceAssistantCertifications.length === 0 || eceAssistantCertifications.every((certification) => expiredMoreThan5Years(certification));
+      return eceAssistantCertifications.length === 0;
     },
     showEceOneYearPathway() {
       // If the user does not have ECE one year, or all the ECE one year certifications have been expired for more than 5 years, show the ECE one year pathway
