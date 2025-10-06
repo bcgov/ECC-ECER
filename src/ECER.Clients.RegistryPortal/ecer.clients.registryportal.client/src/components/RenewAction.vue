@@ -68,8 +68,7 @@ export default defineComponent({
     canRenew() {
       return (
         !(this.certificationStore.hasMultipleEceOneYearCertifications && isEceOneYear(this.certification)) &&
-        !(isEceOneYear(this.certification) && this.expiredOverFiveYears) &&
-        !(isEceAssistant(this.certification) && this.expiredOverFiveYears) 
+        !(isEceOneYear(this.certification) && this.expiredOverFiveYears) 
       );
     },
     title() {
@@ -83,9 +82,6 @@ export default defineComponent({
 
       // Assistant
       if (isEceAssistant(this.certification)) {
-        if (this.expiredOverFiveYears) {
-          return "You cannot renew your ECE Assistant certification because it's been expired for over 5 years.";
-        }
         return "You can renew your ECE Assistant certification.";
       }
 
