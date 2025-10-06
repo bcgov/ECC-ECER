@@ -78,10 +78,9 @@
         <p>Your hours:</p>
         <ul v-if="applicationStore.isDraftApplicationRenewal" class="ml-10">
           <li>Be related to the field of early childhood education</li>
-          <li v-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) != 'Expired'">
+          <li v-if="fromCertificate?.statusCode != 'Expired'">
             Have been completed within the term of your current certificate (between
-            {{ formatDate(certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) ?? "", "LLLL d, yyyy") }} and
-            {{ formatDate(certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) ?? "", "LLLL d, yyyy") }})
+            {{ formatDate(fromCertificate?.effectiveDate ?? "", "LLLL d, yyyy") }} and {{ formatDate(fromCertificate?.expiryDate ?? "", "LLLL d, yyyy") }})
           </li>
           <li v-else>Have been completed within the last 5 years</li>
         </ul>
@@ -169,6 +168,8 @@ import { isNumber } from "@/utils/formInput";
 import * as Rules from "@/utils/formRules";
 
 import ProgressBar from "../ProgressBar.vue";
+import { isEceFiveYear } from "@/utils/certification";
+import { expiredMoreThan5Years } from "@/utils/functions";
 
 export default defineComponent({
   name: "EceEdducation",
@@ -218,8 +219,9 @@ export default defineComponent({
       //edge case for renewals > 5 year expired should be 500 hours otherwise all renewals are 400 hours
       if (
         this.applicationStore.isDraftApplicationRenewal &&
-        this.certificationStore.isEceFiveYear(this.applicationStore.draftApplication.fromCertificate) &&
-        this.certificationStore.expiredMoreThan5Years(this.applicationStore.draftApplication.fromCertificate)
+        this.fromCertificate &&
+        isEceFiveYear(this.fromCertificate) &&
+        expiredMoreThan5Years(this.fromCertificate)
       ) {
         return 500;
       }
@@ -254,6 +256,9 @@ export default defineComponent({
       }
 
       return false;
+    },
+    fromCertificate() {
+      return this.certificationStore.getCertificationById(this.applicationStore.draftApplication.fromCertificate);
     },
   },
   mounted() {

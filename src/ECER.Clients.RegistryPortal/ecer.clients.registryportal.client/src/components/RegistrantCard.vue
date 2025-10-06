@@ -24,6 +24,7 @@ import { useCertificationStore } from "@/store/certification";
 import type { Components } from "@/types/openapi";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/store/user";
+import { hasITE, hasSNE, isEceAssistant, isEceFiveYear, isEceOneYear } from "@/utils/certification";
 
 export interface RegistrantFlow {
   types: Components.Schemas.CertificationType[];
@@ -91,22 +92,22 @@ export default defineComponent({
       const currentCertification = this.certificationStore.currentCertification;
       if (!currentCertification) return types;
 
-      if (this.certificationStore.isEceAssistant(currentCertification.id)) {
+      if (isEceAssistant(currentCertification)) {
         types.push(oneYearRegistrantFlow, fiveYearRegistrantFlow);
       }
-      if (this.certificationStore.isEceOneYear(currentCertification.id)) {
-        if (this.certificationStore.certificateStatus(currentCertification.id) === "Expired") types.push(assistantRegistrantFlow);
+      if (isEceOneYear(currentCertification)) {
+        if (currentCertification.statusCode === "Expired") types.push(assistantRegistrantFlow);
         types.push(fiveYearRegistrantFlow);
       }
-      if (this.certificationStore.isEceFiveYear(currentCertification.id)) {
-        if (this.certificationStore.hasSNE(currentCertification.id) && !this.certificationStore.hasITE(currentCertification.id)) {
-          if (this.certificationStore.certificateStatus(currentCertification.id) === "Expired") types.push(assistantRegistrantFlow);
+      if (isEceFiveYear(currentCertification)) {
+        if (hasSNE(currentCertification) && !hasITE(currentCertification)) {
+          if (currentCertification.statusCode === "Expired") types.push(assistantRegistrantFlow);
           else types.push(iteRegistrantFlow);
-        } else if (this.certificationStore.hasITE(currentCertification.id) && !this.certificationStore.hasSNE(currentCertification.id)) {
-          if (this.certificationStore.certificateStatus(currentCertification.id) === "Expired") types.push(assistantRegistrantFlow);
+        } else if (hasITE(currentCertification) && !hasSNE(currentCertification)) {
+          if (currentCertification.statusCode === "Expired") types.push(assistantRegistrantFlow);
           else types.push(sneRegistrantFlow);
-        } else if (!this.certificationStore.hasITE(currentCertification.id) && !this.certificationStore.hasSNE(currentCertification.id)) {
-          if (this.certificationStore.certificateStatus(currentCertification.id) === "Expired") types.push(assistantRegistrantFlow);
+        } else if (!hasITE(currentCertification) && !hasSNE(currentCertification)) {
+          if (currentCertification.statusCode === "Expired") types.push(assistantRegistrantFlow);
           else types.push(specializationRegistrantFlow);
         }
       }

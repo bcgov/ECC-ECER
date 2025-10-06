@@ -7,12 +7,11 @@
       <p>Your hours:</p>
       <ul class="ml-10">
         <div v-if="applicationType === 'Renewal'">
-          <li v-if="certificationStore.certificateStatus(applicationStatus?.fromCertificate) === 'Active'">
+          <li v-if="fromCertificate?.statusCode === 'Active'">
             Have been completed within the term of your current certificate (between the
-            {{ formatDate(certificationStore.certificationEffectiveDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }} and
-            {{ formatDate(certificationStore.certificationExpiryDate(applicationStatus?.fromCertificate) || "", "LLL d, yyyy") }})
+            {{ formatDate(fromCertificate?.effectiveDate || "", "LLL d, yyyy") }} and {{ formatDate(fromCertificate?.expiryDate || "", "LLL d, yyyy") }})
           </li>
-          <li v-if="certificationStore.certificateStatus(applicationStatus?.fromCertificate) === 'Expired'">Have been completed within the last 5 years</li>
+          <li v-if="fromCertificate?.statusCode === 'Expired'">Have been completed within the last 5 years</li>
         </div>
         <div v-else>
           <li>Must have been completed after you started your education and within the last 5 years</li>
@@ -151,6 +150,9 @@ export default defineComponent({
     },
     applicationType() {
       return this.applicationStatus?.applicationType;
+    },
+    fromCertificate() {
+      return this.certificationStore.getCertificationById(this.applicationStatus?.fromCertificate);
     },
   },
   methods: {
