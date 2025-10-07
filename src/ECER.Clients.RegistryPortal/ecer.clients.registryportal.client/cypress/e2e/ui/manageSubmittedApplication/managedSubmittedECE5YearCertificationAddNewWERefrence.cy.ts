@@ -106,17 +106,14 @@ describe("Managed Submitted ECE5Year Certification Add New WE Refrence", () => {
     cy.get('body').then($body => {
       if ($body.find('p.text-links:contains("WorkReference")').length > 0) {
         // Element exists → click it
-        cy.get(selectors.elementType.text_links).contains('WorkReference').click();
+        cy.contains('Unhandled Status').should('be.visible')
+        cy.get(selectors.elementType.spanbutton).contains('Add reference').click();
       } else {
         // Element not found → fallback
-        cy.wait(80000);
-        cy.contains('a','Back to application summary').click();
+        cy.reload()
+        cy.get(selectors.elementType.spanbutton).contains('Add reference').click();
       }
     });
-    cy.get(selectors.elementType.text_links).contains('500 hours of work experience with reference').click()
-    cy.get(selectors.elementType.text_links).contains('WorkReferenceFirstName WorkReferenceLastName').click();
-    cy.contains('a','Choose a new reference').click({ force: true });
-
 
     cy.get('[aria-label="Last name"]').type("WorkReferenceLastName");
     cy.get('[aria-label="First name"]').type("WorkReferenceLastName");
