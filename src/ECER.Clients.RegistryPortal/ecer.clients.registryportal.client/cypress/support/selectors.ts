@@ -119,6 +119,6 @@ export default {
     button: "button",
     vListItem: "div.v-list-item",
     text_links: 'p.text-links',
-    spanbutton: 'span.v-btn__content',
+    span_button: 'span.v-btn__content',
   },
 };

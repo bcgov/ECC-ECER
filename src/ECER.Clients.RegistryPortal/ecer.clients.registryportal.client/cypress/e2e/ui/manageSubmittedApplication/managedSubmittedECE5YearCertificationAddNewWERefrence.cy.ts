@@ -99,19 +99,19 @@ describe("Managed Submitted ECE5Year Certification Add New WE Refrence", () => {
     cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
 
     // Manage Submitted Application 
-    cy.get(selectors.elementType.spanbutton).contains('Home').click();
+    cy.get(selectors.elementType.span_button).contains('Home').click();
     cy.reload();
-    cy.get(selectors.elementType.spanbutton).contains('Manage Application').click();
+    cy.get(selectors.elementType.span_button).contains('Manage Application').click();
     cy.get(selectors.elementType.text_links).contains('500 hours of work experience with reference').click()
     cy.get('body').then($body => {
       if ($body.find('p.text-links:contains("WorkReference")').length > 0) {
         // Element exists → click it
         cy.contains('Unhandled Status').should('be.visible')
-        cy.get(selectors.elementType.spanbutton).contains('Add reference').click();
+        cy.get(selectors.elementType.span_button).contains('Add reference').click();
       } else {
         // Element not found → fallback
         cy.reload()
-        cy.get(selectors.elementType.spanbutton).contains('Add reference').click();
+        cy.get(selectors.elementType.span_button).contains('Add reference').click();
       }
     });
 
@@ -120,7 +120,6 @@ describe("Managed Submitted ECE5Year Certification Add New WE Refrence", () => {
     cy.get('[aria-label="Email"]').type("orkExperience_Reference@test.gov.bc.ca");
     cy.get('[aria-label="Phone number (optional)"]').type("1234567890");
     cy.get('[aria-label="Work experience hours observed by reference"]').type("500");
-    cy.get(selectors.elementType.spanbutton).contains('Save new reference').click();
-
+    cy.get(selectors.elementType.span_button).contains('Save new reference').click();
   });
 });

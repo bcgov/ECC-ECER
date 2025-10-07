@@ -79,9 +79,9 @@ describe("Managed Submitted ECE Assistant Certification Add PreviousName", () =>
     cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
     cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
      // Manage Submitted Application 
-     cy.get(selectors.elementType.spanbutton).contains('Home').click();
+     cy.get(selectors.elementType.span_button).contains('Home').click();
      cy.reload();
-     cy.get(selectors.elementType.spanbutton).contains('Manage Application').click();
+     cy.get(selectors.elementType.span_button).contains('Manage Application').click();
      cy.get(selectors.elementType.text_links).contains('Proof of previous name').click()
      cy.contains('a','Add previous name').click({ force: true });
      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -89,8 +89,8 @@ describe("Managed Submitted ECE Assistant Certification Add PreviousName", () =>
      cy.get('[aria-label="Middle names (optional)"]').type(`Middle tName_${timestamp}`);
      cy.get('[aria-label="Last name"]').type(`Last Name_${timestamp}`);
 
-     cy.get(selectors.elementType.spanbutton).contains('Save and continue').click();
-     cy.get(selectors.elementType.spanbutton).contains('Add file').click();
+     cy.get(selectors.elementType.span_button).contains('Save and continue').click();
+     cy.get(selectors.elementType.span_button).contains('Add file').click();
      // Wait for hidden file input to appear in the DOM
      cy.get('input[type="file"]', { timeout: 10000 }).should('exist');
 
@@ -102,6 +102,6 @@ describe("Managed Submitted ECE Assistant Certification Add PreviousName", () =>
 
      // (Optional) Assert successful upload
      cy.contains('Upload complete').should('be.visible');
-     cy.get(selectors.elementType.spanbutton).contains('Send').click();
+     cy.get(selectors.elementType.span_button).contains('Send').click();
   });
 });

@@ -97,12 +97,12 @@ describe("managed Submitted ECE5Year Plus ITE and SNE Certification Add Program 
     cy.get(selectors.applicationSubmitted.pageTitle).should("be.visible").should("contain.text", "Application Submitted");
     cy.get(selectors.applicationSubmitted.applicationSummaryButton).should("be.visible").should("contain.text", "Go to application summary");
      // Manage Submitted Application 
-     cy.get(selectors.elementType.spanbutton).contains('Home').click();
+     cy.get(selectors.elementType.span_button).contains('Home').click();
      cy.reload();
-     cy.get(selectors.elementType.spanbutton).contains('Manage Application').click();
+     cy.get(selectors.elementType.span_button).contains('Manage Application').click();
      cy.get(selectors.elementType.text_links).contains('Program Confirmation Form:').click()
      cy.get('input[aria-label="I have my Program Confirmation Form and will upload it now."]').check({ force: true });
-     cy.get(selectors.elementType.spanbutton).contains('Add file').click();
+     cy.get(selectors.elementType.span_button).contains('Add file').click();
 
      // Wait for hidden file input to appear in the DOM
      cy.get('input[type="file"]', { timeout: 10000 }).should('exist');
@@ -115,6 +115,6 @@ describe("managed Submitted ECE5Year Plus ITE and SNE Certification Add Program 
  
      // (Optional) Assert successful upload
      cy.contains('Upload complete').should('be.visible');
-     cy.get(selectors.elementType.spanbutton).contains('Save').click();
+     cy.get(selectors.elementType.span_button).contains('Save').click();
   });
 });
