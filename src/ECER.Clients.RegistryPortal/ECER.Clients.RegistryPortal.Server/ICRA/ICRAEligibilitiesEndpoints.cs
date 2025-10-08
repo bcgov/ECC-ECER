@@ -157,7 +157,8 @@ public enum ICRAStatus
   Ineligible,
   InReview,
   ReadyforReview,
-  Submitted
+  Submitted,
+  ReadyforAssessment
 }
 
 public record ICRAEligibilitySubmissionRequest(string Id);

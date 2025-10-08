@@ -36,6 +36,14 @@ export const useIcraStore = defineStore("icra", {
     icraEligibilityStatus(state): Components.Schemas.ICRAStatus | undefined {
       return state.icraEligibility?.status;
     },
+    hasSubmittedIcraEligibility(state): boolean {
+      return (
+        state.icraEligibility?.status === "Submitted" ||
+        state.icraEligibility?.status === "InReview" ||
+        state.icraEligibility?.status === "ReadyforReview" ||
+        state.icraEligibility?.status === "ReadyforAssessment"
+      );
+    },
   },
   actions: {
     async fetchIcraEligibilities() {

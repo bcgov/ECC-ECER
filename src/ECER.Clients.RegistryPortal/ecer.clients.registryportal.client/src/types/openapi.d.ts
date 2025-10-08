@@ -330,7 +330,7 @@ declare namespace Components {
         export interface ICRAEligibilitySubmissionRequest {
             id?: string | null;
         }
-        export type ICRAStatus = "Active" | "Draft" | "Eligible" | "Inactive" | "Ineligible" | "InReview" | "ReadyforReview" | "Submitted";
+        export type ICRAStatus = "Active" | "Draft" | "Eligible" | "Inactive" | "Ineligible" | "InReview" | "ReadyforReview" | "Submitted" | "ReadyforAssessment";
         export interface IdentificationType {
             id?: string | null;
             name?: string | null;
