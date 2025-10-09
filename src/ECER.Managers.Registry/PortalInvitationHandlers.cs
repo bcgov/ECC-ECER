@@ -70,7 +70,7 @@ public class PortalInvitationHandlers(IPortalInvitationTransformationEngine tran
         return PortalInvitationVerificationQueryResult.Failure("Reference has failed.");
     }
 
-    if (result.InviteType == Contract.PortalInvitations.InviteType.WorkExperienceReference)
+    if (result.InviteType == Contract.PortalInvitations.InviteType.WorkExperienceReferenceforApplication)
     {
       var workExRef =
         application.WorkExperienceReferences.SingleOrDefault(work =>
