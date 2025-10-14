@@ -1,29 +1,28 @@
 <template>
   <v-sheet :rounded="0" flat color="primary" width="100%">
     <PageContainer :margin-top="false" class="py-13">
-      <h1 class="text-white">Welcome to the Early Childhood Educator (ECE) Registry</h1>
-      <p class="small text-white mt-4">Manage your certification to work in a licensed child care facility in B.C.</p>
+      <h1 class="text-white">Welcome to the ECE Educational Institution Portal</h1>
+      <p class="small text-white mt-4">For educational institutions to manage their ECE programs with the B.C. ECE
+        Registry</p>
     </PageContainer>
   </v-sheet>
   <PageContainer :margin-top="false">
     <v-row>
       <v-col cols="12" md="6" class="mb-12">
         <div class="d-flex flex-column ga-4">
-          <h2>First time using My ECE Registry online?</h2>
-          <p>You need to create an account to submit a new application or access your existing certifications.</p>
+          <h2>Login is required</h2>
+          <p>In order to login, you will need:</p>
+          <ul class="ml-10">
+            <li>an emailed invitation from the B.C. ECE Registry</li>
+            <li>an active Business BCeID user account (set up by your institution)</li>
+          </ul>
+          <p>If you have these, please continue to login.</p>
         </div>
-        <v-btn class="mt-8" @click="handleCreateAccount()" :size="smAndDown ? 'default' : 'large'"
-          color="primary">Create account</v-btn>
+        <v-btn class="mt-8" @click="handleLogin()" :size="smAndDown ? 'default' : 'large'" color="primary">Login
+          with
+          Business BCeID</v-btn>
       </v-col>
-      <v-col cols="12" md="6">
-        <h2>Already have an account?</h2>
-        <div class="d-inline-flex flex-column ga-8 mt-6">
-          <v-btn @click="handleLogin('bcsc')" :size="smAndDown ? 'default' : 'large'" color="primary"
-            variant="outlined">Log in with BC Services Card</v-btn>
-          <v-btn @click="handleLogin('bceid')" :size="smAndDown ? 'default' : 'large'" color="primary"
-            variant="outlined">Log in with Basic BCeID</v-btn>
-        </div>
-      </v-col>
+
     </v-row>
   </PageContainer>
 </template>
@@ -55,15 +54,13 @@ export default defineComponent({
     return { userStore, oidcStore, configStore, route, smAndDown, router };
   },
   methods: {
-    async handleLogin(provider: string) {
+    async handleLogin() {
       // check for redirect_to query param
       const redirectTo = this.route.query.redirect_to as string;
 
-      await this.oidcStore.login(provider == "bceid" ? "bceidbasic" : "bcsc", redirectTo);
+      await this.oidcStore.login("bceidbasic", redirectTo);
     },
-    handleCreateAccount() {
-      this.router.push({ name: "createAccount" });
-    },
+
   },
 });
 </script>
