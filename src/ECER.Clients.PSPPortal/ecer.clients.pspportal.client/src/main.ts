@@ -14,6 +14,7 @@ import App from "./App.vue";
 import router from "./router";
 import ecerTheme from "./styles/ecer-theme";
 import { VDateInput } from "vuetify/labs/VDateInput";
+import { useConfigStore } from "./store/config";
 
 const vuetify = createVuetify({
   theme: {
@@ -63,7 +64,15 @@ const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 
 const app = createApp(App);
+
 app.use(pinia);
-app.use(router);      
-app.use(vuetify);    
-app.mount("#app");   
+
+const configStore = useConfigStore();
+
+// Fetch OIDC configuration from the API and initialize the store before mounting the app
+configStore.initialize().then(() => {
+  // Ensure the OIDC configuration is loaded before, instantiating the router (which will make a getUser() call) and mounting the app
+  app.use(router);
+  app.use(vuetify);
+  app.mount("#app");
+});
