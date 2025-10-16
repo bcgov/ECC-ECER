@@ -80,6 +80,27 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.ecer_LastName))
       .ForMember(d => d.EmailAddress, opts => opts.MapFrom(s => s.ecer_EmailAddress))
       .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber));
+
+    CreateMap<Applications.ChildcareAgeRanges, ecer_ChildcareAgeRange>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+    CreateMap<Applications.ReferenceRelationship, ecer_ReferenceRelationships>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
+
+    CreateMap<ICRAWorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
+      .ForMember(d => d.ecer_referencefirstname, opts => opts.MapFrom(s => s.FirstName))
+      .ForMember(d => d.ecer_referencelastname, opts => opts.MapFrom(s => s.LastName))
+      .ForMember(d => d.ecer_referenceemailaddress, opts => opts.MapFrom(s => s.EmailAddress))
+      .ForMember(d => d.ecer_ReferencePhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
+      .ForMember(d => d.ecer_NameofEmployer, opts => opts.MapFrom(s => s.EmployerName))
+      .ForMember(d => d.ecer_Role, opts => opts.MapFrom(s => s.PositionTitle))
+      .ForMember(d => d.ecer_StartDate, opts => opts.MapFrom(s => s.StartDate))
+      .ForMember(d => d.ecer_EndDate, opts => opts.MapFrom(s => s.EndDate))
+      .ForMember(d => d.ecer_Applicantworkchildren, opts => opts.MapFrom(s => s.WorkedWithChildren.HasValue ? (s.WorkedWithChildren.Value ? ecer_YesNoNull.Yes : ecer_YesNoNull.No) : (ecer_YesNoNull?)null))
+      .ForMember(d => d.ecer_ChildcareAgeRangeNew, opts => opts.MapFrom(s => s.ChildcareAgeRanges))
+      .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.ReferenceRelationship))
+      .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
   }
 
   public static string IdOrEmpty(EntityReference? reference) =>
