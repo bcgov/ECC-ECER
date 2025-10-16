@@ -260,4 +260,55 @@ public class ReferenceTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBeOk();
     });
   }
+
+  [Fact]
+  public async Task SubmitICRAWorkExperienceReference_ShouldReturnOk()
+  {
+    var bus = Fixture.Services.GetRequiredService<IMediator>();
+    var portalInvitation = Fixture.portalInvitationICRAWorkExperienceReferenceIdSubmit;
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, 7), CancellationToken.None);
+    packingResponse.ShouldNotBeNull();
+
+    var token = packingResponse.VerificationLink.Split('/')[2];
+    var faker = new Faker("en_CA");
+    var icraRequest = new ICRAWorkExperienceReferenceSubmissionRequest(
+      token,
+      faker.Random.Word())
+    {
+      FirstName = faker.Person.FirstName,
+      LastName = faker.Person.LastName,
+      EmailAddress = "reference_icra_test@test.gov.bc.ca",
+      PhoneNumber = faker.Phone.PhoneNumber(),
+      EmployerName = faker.Company.CompanyName(),
+      PositionTitle = faker.Name.JobTitle(),
+      StartDate = faker.Date.Past(),
+      EndDate = faker.Date.Soon(),
+      WorkedWithChildren = faker.Random.Bool(),
+      ChildcareAgeRanges = new List<ChildcareAgeRanges> { ChildcareAgeRanges._35years },
+      ReferenceRelationship = ReferenceRelationship.Supervisor
+    };
+
+    await Host.Scenario(_ =>
+    {
+      _.Post.Json(icraRequest).ToUrl($"/api/References/ICRAWorkExperience");
+      _.StatusCodeShouldBeOk();
+    });
+  }
+
+  [Fact]
+  public async Task OptOutICRAWorkExperienceReference_ShouldReturnOk()
+  {
+    var bus = Fixture.Services.GetRequiredService<IMediator>();
+    var portalInvitation = Fixture.portalInvitationICRAWorkExperienceReferenceIdOptout;
+    var packingResponse = await bus.Send(new GenerateInviteLinkCommand(portalInvitation, 7), CancellationToken.None);
+    packingResponse.ShouldNotBeNull();
+
+    var token = packingResponse.VerificationLink.Split('/')[2];
+    var optOutReferenceRequest = new OptOutReferenceRequest(token, UnabletoProvideReferenceReasons.Idonotknowthisperson, Faker.Random.Word());
+    await Host.Scenario(_ =>
+    {
+      _.Post.Json(optOutReferenceRequest).ToUrl($"/api/References/OptOut");
+      _.StatusCodeShouldBeOk();
+    });
+  }
 }
