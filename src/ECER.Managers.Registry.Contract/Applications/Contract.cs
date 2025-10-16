@@ -117,6 +117,7 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
   public int? TotalNumberofHoursObserved { get; set; }
   public WorkExperienceTypes? Type { get; set; }
 }
+
 public record ProfessionalDevelopment(string? Id, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
 {
   public string? CourseorWorkshopLink { get; set; }
@@ -372,6 +373,7 @@ public record SubmitReferenceCommand(string Token) : IRequest<ReferenceSubmissio
 {
   public WorkExperienceReferenceSubmissionRequest? WorkExperienceReferenceSubmissionRequest { get; set; }
   public CharacterReferenceSubmissionRequest? CharacterReferenceSubmissionRequest { get; set; }
+  public Managers.Registry.Contract.ICRA.ICRAWorkExperienceReferenceSubmissionRequest? ICRAWorkExperienceReferenceSubmissionRequest { get; set; }
 }
 
 public record UpdateWorkExperienceReferenceCommand(WorkExperienceReference workExperienceRef, string applicationId, string referenceId, string userId) : IRequest<UpdateWorkExperienceReferenceResult>;

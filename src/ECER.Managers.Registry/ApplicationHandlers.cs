@@ -6,6 +6,7 @@ using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
+using ECER.Resources.Documents.ICRA;
 using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
 
@@ -20,7 +21,8 @@ public class ApplicationHandlers(
      IApplicationRepository applicationRepository,
      IMapper mapper,
      IApplicationValidationEngineResolver validationResolver,
-     EcerContext ecerContext)
+     EcerContext ecerContext,
+     IICRARepository iCRARepository)
   : IRequestHandler<SaveDraftApplicationCommand, Contract.Applications.Application?>,
     IRequestHandler<CancelDraftApplicationCommand, string>,
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
@@ -220,10 +222,19 @@ public class ApplicationHandlers(
       case InviteType.WorkExperienceReferenceforApplication:
         submitReferenceRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
         break;
+
+      case InviteType.WorkExperienceReferenceforICRA:
+        var icraReferenceId = portalInvitation.WorkexperienceReferenceId!;
+        var icraPayload = mapper.Map<Resources.Documents.ICRA.ICRAWorkExperienceReferenceSubmissionRequest>(request.ICRAWorkExperienceReferenceSubmissionRequest!);
+        await iCRARepository.SubmitEmploymentReference(icraReferenceId, icraPayload, cancellationToken);
+        break;
     }
     submitReferenceRequest.PortalInvitation = portalInvitation;
     submitReferenceRequest.DateSigned = DateTime.Today;
-    await applicationRepository.SubmitReference(submitReferenceRequest, cancellationToken);
+    if (portalInvitation.InviteType == InviteType.CharacterReference || portalInvitation.InviteType == InviteType.WorkExperienceReferenceforApplication)
+    {
+      await applicationRepository.SubmitReference(submitReferenceRequest, cancellationToken);
+    }
     await portalInvitationRepository.Complete(new CompletePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
     ecerContext.CommitTransaction();
     return ReferenceSubmissionResult.Success();
