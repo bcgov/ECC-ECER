@@ -84,14 +84,11 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.EmailAddress, opts => opts.MapFrom(s => s.ecer_EmailAddress))
       .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber));
 
-    CreateMap<Applications.ChildcareAgeRanges, ecer_ChildcareAgeRange>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
-    CreateMap<Applications.ReferenceRelationship, ecer_ReferenceRelationships>()
-      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-      .ReverseMap();
+
 
     CreateMap<ICRAWorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
+      .ForSourceMember(s => s.CountryId, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.WorkedWithChildren, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_referencefirstname, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.ecer_referencelastname, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_referenceemailaddress, opts => opts.MapFrom(s => s.EmailAddress))

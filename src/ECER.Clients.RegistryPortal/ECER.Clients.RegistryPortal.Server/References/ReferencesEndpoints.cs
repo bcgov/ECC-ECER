@@ -157,6 +157,8 @@ public record ICRAWorkExperienceReferenceSubmissionRequest([Required] string Tok
   public bool? WorkedWithChildren { get; set; }
   public IEnumerable<ChildcareAgeRanges>? ChildcareAgeRanges { get; set; }
   public ReferenceRelationship? ReferenceRelationship { get; set; }
+  public DateTime? DateSigned { get; set; }
+
 }
 
 public record WorkExperienceReferenceDetails()
