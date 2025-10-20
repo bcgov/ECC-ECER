@@ -26,7 +26,7 @@
       >
         <v-btn variant="flat" size="large" color="warning" @click="handleManageIcraEligibility">
           <v-icon size="large" icon="mdi-arrow-right" />
-          Manage ICRA eligibility
+          Manage Submission
         </v-btn>
       </v-card-actions>
     </div>
@@ -61,10 +61,11 @@ export default defineComponent({
   computed: {
     title(): string {
       switch (this.icraStore.icraEligibilityStatus) {
-        case "Draft":
         case "Submitted":
         case "InReview":
         case "ReadyforReview":
+          return "Your eligibility to apply with international certification is in review";
+        case "Draft":
         case "Active":
           return "Your submission to determine eligibility to apply with international certification is in progress";
         default:
