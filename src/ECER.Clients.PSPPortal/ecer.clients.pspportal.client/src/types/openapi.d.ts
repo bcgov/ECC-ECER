@@ -56,7 +56,13 @@ declare namespace Paths {
       export type $200 = Components.Schemas.ApplicationConfiguration;
     }
   }
-  namespace ProgramRepresentativePost {
+  namespace PspUserProfileGet {
+    namespace Responses {
+      export type $200 = /* User profile information */ Components.Schemas.PspUserProfile;
+      export interface $404 {}
+    }
+  }
+  namespace PspUserProfilePost {
     export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
     namespace Responses {
       export interface $200 {}
@@ -88,13 +94,21 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.VersionGet.Responses.$200>;
   /**
-   * programRepresentative_post - Create Program Representative
+   * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
    */
-  "programRepresentative_post"(
+  "psp_user_profile_get"(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.ProgramRepresentativePost.RequestBody,
+    data?: any,
     config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ProgramRepresentativePost.Responses.$200>;
+  ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>;
+  /**
+   * psp_user_profile_post - Create Program Representative
+   */
+  "psp_user_profile_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.PspUserProfilePost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.PspUserProfilePost.Responses.$200>;
 }
 
 export interface PathsDictionary {
@@ -114,15 +128,25 @@ export interface PathsDictionary {
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.VersionGet.Responses.$200>;
   };
+  ["/api/users/profile"]: {
+    /**
+     * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
+     */
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>;
+  };
   ["/api/users/register"]: {
     /**
-     * programRepresentative_post - Create Program Representative
+     * psp_user_profile_post - Create Program Representative
      */
     "post"(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.ProgramRepresentativePost.RequestBody,
+      data?: Paths.PspUserProfilePost.RequestBody,
       config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.ProgramRepresentativePost.Responses.$200>;
+    ): OperationResponse<Paths.PspUserProfilePost.Responses.$200>;
   };
 }
 

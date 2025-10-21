@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
+using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,24 @@ public class ProfileEndpoints : IRegisterEndpoints
 {
   public void Register(IEndpointRouteBuilder endpointRouteBuilder)
   {
+    endpointRouteBuilder.MapGet("api/users/profile", async Task<Results<Ok<PspUserProfile>, NotFound>> (HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+      {
+        var user = ctx.User.GetUserContext()!;
+        var results = await bus.Send<PspRepQueryResults>(new SearchPspRepQuery() { ByUserIdentity = user.Identity }, ct);
+
+        var pspUser = results.Items.SingleOrDefault();
+        if (pspUser == null) return TypedResults.NotFound();
+
+        var query = new UserCommunicationsStatusQuery();
+        query.ByRegistrantId = pspUser.UserId;
+
+        var pspUserProfile = mapper.Map<PspUserProfile>(pspUser.Profile);
+        return TypedResults.Ok(pspUserProfile);
+      })
+      .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "psp_user_profile_get")
+      .RequireAuthorization("registry_new_user")
+      .WithParameterValidation();
+    
     endpointRouteBuilder.MapPost("/api/users/register",
         async Task<Results<Ok, BadRequest<ProblemDetails>>> (PspUserProfile pspUserProfile, HttpContext ctx,
           CancellationToken ct, IMediator bus, IMapper mapper) =>
@@ -21,7 +41,7 @@ public class ProfileEndpoints : IRegisterEndpoints
             ctx.RequestAborted);
           return TypedResults.Ok();
         })
-      .WithOpenApi("Create Program Representative", string.Empty, "programRepresentative_post");
+      .WithOpenApi("Create Program Representative", string.Empty, "psp_user_profile_post");
   }
 }
 

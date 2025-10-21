@@ -6,6 +6,8 @@
         <img src="../assets/bc-gov-logo.png" width="155" class="logo" alt="B.C. Government Logo" />
         <!-- </router-link> -->
         <v-toolbar-title>ECE Educational Institution Portal</v-toolbar-title>
+        <p class="small text-decoration-underline text-links" @click="oidcStore.logout">
+          Log out</p>
       </v-row>
     </v-container>
   </v-app-bar>
