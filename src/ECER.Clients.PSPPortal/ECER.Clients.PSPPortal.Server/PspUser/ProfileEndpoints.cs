@@ -22,7 +22,7 @@ public class ProfileEndpoints : IRegisterEndpoints
         if (pspUser == null) return TypedResults.NotFound();
 
         var query = new UserCommunicationsStatusQuery();
-        query.ByRegistrantId = pspUser.UserId;
+        query.ByRegistrantId = pspUser.Id;
 
         var pspUserProfile = mapper.Map<PspUserProfile>(pspUser.Profile);
         return TypedResults.Ok(pspUserProfile);

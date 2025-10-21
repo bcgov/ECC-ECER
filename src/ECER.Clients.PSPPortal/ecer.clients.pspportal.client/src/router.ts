@@ -31,6 +31,12 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: "/invalid-invitation",
+      component: () => import("./components/pages/Invalid.vue"),
+      meta: { requiresAuth: false },
+      name: "invalid-invitation",
+    },
+    {
       path: "/logout-callback",
       component: () => import("./components/pages/LogoutCallback.vue"),
       meta: { requiresAuth: false },

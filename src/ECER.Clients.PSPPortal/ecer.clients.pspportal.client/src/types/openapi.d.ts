@@ -1,160 +1,216 @@
-import type { OpenAPIClient, Parameters, UnknownParamsObject, OperationResponse, AxiosRequestConfig } from "openapi-client-axios";
+import type {
+  OpenAPIClient,
+  Parameters,
+  UnknownParamsObject,
+  OperationResponse,
+  AxiosRequestConfig,
+} from 'openapi-client-axios';
 
 declare namespace Components {
-  namespace Schemas {
-    export interface ApplicationConfiguration {
-      clientAuthenticationMethods?: {
-        [name: string]: OidcAuthenticationSettings;
-      } | null;
+    namespace Schemas {
+        export interface ApplicationConfiguration {
+            clientAuthenticationMethods?: {
+                [name: string]: OidcAuthenticationSettings;
+            } | null;
+        }
+        export interface HttpValidationProblemDetails {
+            [name: string]: any;
+            type?: string | null;
+            title?: string | null;
+            status?: number | null; // int32
+            detail?: string | null;
+            instance?: string | null;
+            errors?: {
+                [name: string]: string[];
+            } | null;
+        }
+        export type InviteType = "PSIProgramRepresentative";
+        export interface OidcAuthenticationSettings {
+            authority?: string | null;
+            clientId?: string | null;
+            scope?: string | null;
+            idp?: string | null;
+        }
+        export interface PortalInvitation {
+            id?: string | null;
+            programRepresentativeId?: string | null;
+            inviteType?: InviteType;
+        }
+        export interface PortalInvitationQueryResult {
+            portalInvitation?: PortalInvitation;
+        }
+        export interface ProblemDetails {
+            [name: string]: any;
+            type?: string | null;
+            title?: string | null;
+            status?: number | null; // int32
+            detail?: string | null;
+            instance?: string | null;
+        }
+        /**
+         * User profile information
+         */
+        export interface PspUserProfile {
+            id?: string | null;
+            firstName?: string | null;
+            lastName?: string | null;
+            email?: string | null;
+            bceidBusinessId?: string | null;
+            programRepresentativeId?: string | null;
+        }
+        export interface VersionMetadata {
+            version?: string | null;
+            timestamp?: string | null;
+            commit?: string | null;
+        }
     }
-    export interface HttpValidationProblemDetails {
-      [name: string]: any;
-      type?: string | null;
-      title?: string | null;
-      status?: number | null; // int32
-      detail?: string | null;
-      instance?: string | null;
-      errors?: {
-        [name: string]: string[];
-      } | null;
-    }
-    export interface OidcAuthenticationSettings {
-      authority?: string | null;
-      clientId?: string | null;
-      scope?: string | null;
-      idp?: string | null;
-    }
-    export interface ProblemDetails {
-      [name: string]: any;
-      type?: string | null;
-      title?: string | null;
-      status?: number | null; // int32
-      detail?: string | null;
-      instance?: string | null;
-    }
-    /**
-     * User profile information
-     */
-    export interface PspUserProfile {
-      id?: string | null;
-      firstName?: string | null;
-      lastName?: string | null;
-      email?: string | null;
-      bceidBusinessId?: string | null;
-      programRepresentativeId?: string | null;
-    }
-    export interface VersionMetadata {
-      version?: string | null;
-      timestamp?: string | null;
-      commit?: string | null;
-    }
-  }
 }
 declare namespace Paths {
-  namespace ConfigurationGet {
-    namespace Responses {
-      export type $200 = Components.Schemas.ApplicationConfiguration;
+    namespace ConfigurationGet {
+        namespace Responses {
+            export type $200 = Components.Schemas.ApplicationConfiguration;
+        }
     }
-  }
-  namespace PspUserProfileGet {
-    namespace Responses {
-      export type $200 = /* User profile information */ Components.Schemas.PspUserProfile;
-      export interface $404 {}
+    namespace PortalInvitationGet {
+        namespace Parameters {
+            export type Token = string;
+        }
+        export interface PathParameters {
+            token?: Parameters.Token;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.PortalInvitationQueryResult;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+        }
     }
-  }
-  namespace PspUserProfilePost {
-    export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
-    namespace Responses {
-      export interface $200 {}
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+    namespace PspUserProfileGet {
+        namespace Responses {
+            export type $200 = /* User profile information */ Components.Schemas.PspUserProfile;
+            export interface $404 {
+            }
+        }
     }
-  }
-  namespace VersionGet {
-    namespace Responses {
-      export type $200 = Components.Schemas.VersionMetadata;
+    namespace PspUserProfilePost {
+        export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
+        namespace Responses {
+            export interface $200 {
+            }
+            export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+        }
     }
-  }
+    namespace VersionGet {
+        namespace Responses {
+            export type $200 = Components.Schemas.VersionMetadata;
+        }
+    }
 }
+
 
 export interface OperationMethods {
   /**
    * configuration_get - Returns the UI initial configuration
    */
-  "configuration_get"(
+  'configuration_get'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ConfigurationGet.Responses.$200>
   /**
    * version_get - Returns the version information
    */
-  "version_get"(
+  'version_get'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.VersionGet.Responses.$200>;
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.VersionGet.Responses.$200>
   /**
    * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
    */
-  "psp_user_profile_get"(
+  'psp_user_profile_get'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: any,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>;
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>
   /**
    * psp_user_profile_post - Create Program Representative
    */
-  "psp_user_profile_post"(
+  'psp_user_profile_post'(
     parameters?: Parameters<UnknownParamsObject> | null,
     data?: Paths.PspUserProfilePost.RequestBody,
-    config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.PspUserProfilePost.Responses.$200>;
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.PspUserProfilePost.Responses.$200>
+  /**
+   * portal_invitation_get - Handles portal invitation queries
+   */
+  'portal_invitation_get'(
+    parameters?: Parameters<Paths.PortalInvitationGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.PortalInvitationGet.Responses.$200>
 }
 
 export interface PathsDictionary {
-  ["/api/configuration"]: {
+  ['/api/configuration']: {
     /**
      * configuration_get - Returns the UI initial configuration
      */
-    "get"(
+    'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.ConfigurationGet.Responses.$200>;
-  };
-  ["/api/version"]: {
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ConfigurationGet.Responses.$200>
+  }
+  ['/api/version']: {
     /**
      * version_get - Returns the version information
      */
-    "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.VersionGet.Responses.$200>;
-  };
-  ["/api/users/profile"]: {
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.VersionGet.Responses.$200>
+  }
+  ['/api/users/profile']: {
     /**
      * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
      */
-    "get"(
+    'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: any,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>;
-  };
-  ["/api/users/register"]: {
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>
+  }
+  ['/api/users/register']: {
     /**
      * psp_user_profile_post - Create Program Representative
      */
-    "post"(
+    'post'(
       parameters?: Parameters<UnknownParamsObject> | null,
       data?: Paths.PspUserProfilePost.RequestBody,
-      config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.PspUserProfilePost.Responses.$200>;
-  };
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.PspUserProfilePost.Responses.$200>
+  }
+  ['/api/PortalInvitations/{token}']: {
+    /**
+     * portal_invitation_get - Handles portal invitation queries
+     */
+    'get'(
+      parameters?: Parameters<Paths.PortalInvitationGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.PortalInvitationGet.Responses.$200>
+  }
 }
 
-export type Client = OpenAPIClient<OperationMethods, PathsDictionary>;
+export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
+
 
 export type ApplicationConfiguration = Components.Schemas.ApplicationConfiguration;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
+export type InviteType = Components.Schemas.InviteType;
 export type OidcAuthenticationSettings = Components.Schemas.OidcAuthenticationSettings;
+export type PortalInvitation = Components.Schemas.PortalInvitation;
+export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
 export type ProblemDetails = Components.Schemas.ProblemDetails;
 export type PspUserProfile = Components.Schemas.PspUserProfile;
 export type VersionMetadata = Components.Schemas.VersionMetadata;
