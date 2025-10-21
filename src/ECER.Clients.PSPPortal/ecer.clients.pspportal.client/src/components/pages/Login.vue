@@ -58,7 +58,7 @@ export default defineComponent({
       // check for redirect_to query param
       const redirectTo = this.route.query.redirect_to as string;
 
-      await this.oidcStore.login("bceidbasic", redirectTo);
+      await this.oidcStore.login("bceidbusiness", redirectTo);
     },
 
   },

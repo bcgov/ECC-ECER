@@ -26,6 +26,11 @@ const router = createRouter({
       meta: { requiresAuth: false },
     },
     {
+      path: "/verify/:token",
+      component: () => import("./components/pages/Verify.vue"),
+      meta: { requiresAuth: false },
+    },
+    {
       path: "/logout-callback",
       component: () => import("./components/pages/LogoutCallback.vue"),
       meta: { requiresAuth: false },
