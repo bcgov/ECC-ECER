@@ -1,5 +1,6 @@
 import "./commands";
 import "./labour-mobility-commands";
+import 'cypress-file-upload';
 
 // eslint-disable-next-line mocha/no-top-level-hooks
 beforeEach(() => {

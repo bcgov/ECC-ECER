@@ -365,7 +365,7 @@ declare namespace Components {
             deletedFiles?: string[] | null;
             newFiles?: string[] | null;
         }
-        export type InviteType = "CharacterReference" | "WorkExperienceReference";
+        export type InviteType = "CharacterReference" | "PSIProgramRepresentative" | "WorkExperienceReferenceforApplication" | "WorkExperienceReferenceforICRA";
         export type LikertScale = "Yes" | "No";
         export interface OidcAuthenticationSettings {
             authority?: string | null;

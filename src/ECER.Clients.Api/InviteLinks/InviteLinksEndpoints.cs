@@ -15,7 +15,7 @@ public class InviteLinksEndpoints : IRegisterEndpoints
       IMediator messageBus,
       CancellationToken ct) =>
     {
-      var referenceLinkResponse = await messageBus.Send(new GenerateInviteLinkCommand(request.portalInvitation, request.inviteType, request.validDays), ct);
+      var referenceLinkResponse = await messageBus.Send(new GenerateInviteLinkCommand(request.portalInvitation, request.validDays), ct);
 
       return TypedResults.Ok(new GenerateInviteLinkResponse(referenceLinkResponse.PortalInvitation, referenceLinkResponse.VerificationLink));
     })
@@ -26,5 +26,5 @@ public class InviteLinksEndpoints : IRegisterEndpoints
   }
 }
 
-public record GenerateInviteLinkRequest(Guid portalInvitation, InviteType inviteType, int validDays);
+public record GenerateInviteLinkRequest(Guid portalInvitation, int validDays);
 public record GenerateInviteLinkResponse(Guid portalInvitation, string inviteLink);

@@ -22,7 +22,8 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.ApplicantId, opts => opts.MapFrom(s => s.ecer_icraeligibilityassessment_ApplicantId.Id))
       .ForMember(d => d.InternationalCertifications, opts => opts.MapFrom(s => s.ecer_internationalcertification_EligibilityAssessment_ecer_icraeligibilityassessment))
       .ForMember(d => d.EmploymentReferences, opts => opts.MapFrom(s => s.ecer_WorkExperienceRef_ecer_ICRAEligibilityAssessment_ecer_ICRAEligibilityAssessment))
-      .ForMember(d => d.CreatedOn, opts => opts.MapFrom(s => s.CreatedOn));
+      .ForMember(d => d.CreatedOn, opts => opts.MapFrom(s => s.CreatedOn))
+      .ForMember(d => d.Status, o => o.MapFrom(s => s.StatusCode));
 
     CreateMap<InternationalCertification, ecer_InternationalCertification>(MemberList.Source)
       .ForSourceMember(s => s.NewFiles, opts => opts.DoNotValidate())
@@ -63,9 +64,11 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.DeletedFiles, opts => opts.Ignore())
       .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_internationalcertificationid.ToList()));
 
+    CreateMap<ecer_ICRAEligibilityAssessment_StatusCode, ICRAStatus>()
+      .ConvertUsingEnumMapping(o => o.MapByName(true));
+
     CreateMap<ICRAStatus, ecer_ICRAEligibilityAssessment_StatusCode>()
-         .ConvertUsingEnumMapping(opts => opts.MapByName(true))
-         .ReverseMap();
+        .ConvertUsingEnumMapping(o => o.MapByName(true));
 
     CreateMap<EmploymentReference, ecer_WorkExperienceRef>(MemberList.Source)
       .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.Id)? null : s.Id))

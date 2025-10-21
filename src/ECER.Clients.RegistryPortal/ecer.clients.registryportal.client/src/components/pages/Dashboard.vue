@@ -359,7 +359,8 @@ export default defineComponent({
         !this.certificationStore.hasCertifications &&
         !this.applicationStore.hasApplication &&
         !this.applicationStore.hasDraftApplication &&
-        !this.icraStore.hasDraftIcraEligibility
+        !this.icraStore.hasDraftIcraEligibility &&
+        !this.icraStore.hasSubmittedIcraEligibility
       );
     },
     showIcraCard(): boolean {
@@ -367,11 +368,15 @@ export default defineComponent({
         (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) &&
         !this.applicationStore.hasApplication &&
         !this.applicationStore.hasDraftApplication &&
-        !this.icraStore.hasDraftIcraEligibility
+        !this.icraStore.hasDraftIcraEligibility &&
+        !this.icraStore.hasSubmittedIcraEligibility
       );
     },
     showIcraEligibilityCard(): boolean {
-      return (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) && this.icraStore.hasDraftIcraEligibility;
+      return (
+        (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) &&
+        (this.icraStore.hasDraftIcraEligibility || this.icraStore.hasSubmittedIcraEligibility)
+      );
     },
     showLoading(): boolean {
       return (

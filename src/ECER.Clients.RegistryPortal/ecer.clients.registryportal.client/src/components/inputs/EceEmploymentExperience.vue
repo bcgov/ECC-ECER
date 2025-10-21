@@ -26,7 +26,7 @@
       </v-row>
       <v-row>
         <v-col md="8" lg="6" xl="4">
-          <EceTextField id="txtWorkReferenceFirstName" v-model="firstName" label="first name" maxlength="100"></EceTextField>
+          <EceTextField id="txtWorkReferenceFirstName" v-model="firstName" label="First name" maxlength="100"></EceTextField>
         </v-col>
       </v-row>
       <v-row>
@@ -35,7 +35,7 @@
             id="txtWorkReferenceEmail"
             v-model="emailAddress"
             :rules="[Rules.required(), Rules.email('Enter your reference\'s email in the format \'name@email.com\'')]"
-            label="Reference email"
+            label="Email"
             maxlength="200"
           ></EceTextField>
         </v-col>
