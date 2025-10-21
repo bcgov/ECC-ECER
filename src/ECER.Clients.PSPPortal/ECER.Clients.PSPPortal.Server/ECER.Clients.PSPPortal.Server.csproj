@@ -3,7 +3,7 @@
   <PropertyGroup>
     <SpaRoot>..\ecer.clients.pspportal.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
-    <SpaProxyServerUrl>https://localhost:5123</SpaProxyServerUrl>
+    <SpaProxyServerUrl>https://localhost:5130</SpaProxyServerUrl>
     <UserSecretsId>c88bcf5c-db2f-4814-aa30-1ef3c67d1808</UserSecretsId>
   </PropertyGroup>
 

@@ -58,7 +58,7 @@ export default defineComponent({
         lastName: user.profile.lastName as string,
         email: user.profile.email,
         bceidBusinessId: user.profile.bceidBusinessId as string,
-        programRepresentativeId: 1, // TODO: Get program representative id from portal invitation
+        programRepresentativeId: "1", // TODO: Get program representative id from portal invitation
       });
     }
   },

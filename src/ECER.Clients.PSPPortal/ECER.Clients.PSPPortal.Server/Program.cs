@@ -48,13 +48,13 @@ internal class Program
         });
         opts.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
+          {
+            new OpenApiSecurityScheme
             {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
-                },
-                []
-            }
+              Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
+            },
+            new List<string>() 
+          }
         });
         opts.UseOneOfForPolymorphism();
       });

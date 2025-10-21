@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
-using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Managers.Registry.Contract.PortalInvitations;
-using ECER.Clients.RegistryPortal.Server.Certifications;
 using ECER.Utilities.Hosting;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ECER.Clients.RegistryPortal.Server.References;
+namespace ECER.Clients.PSPPortal.Server.PortalInvitations;
 
 public class PortalInvitationsEndpoints : IRegisterEndpoints
 {
@@ -26,29 +24,19 @@ public class PortalInvitationsEndpoints : IRegisterEndpoints
         return TypedResults.BadRequest(new ProblemDetails { Status = StatusCodes.Status400BadRequest, Detail = result.ErrorMessage });
       }
       return TypedResults.Ok(new PortalInvitationQueryResult(mapper.Map<PortalInvitation>(result.Invitation)));
-    }).WithOpenApi("Handles references queries", string.Empty, "references_get").WithParameterValidation();
+    }).WithOpenApi("Handles portal invitation queries", string.Empty, "portal_invitation_get").WithParameterValidation();
   }
 }
 
 public record PortalInvitationQueryResult(PortalInvitation PortalInvitation);
 
-public record PortalInvitation(string? Id, string Name, string ReferenceFirstName, string ReferenceLastName, string ReferenceEmailAddress)
+public record PortalInvitation(string? Id)
 {
-  public string? ApplicantFirstName { get; set; }
-  public string? ApplicantLastName { get; set; }
-  public string? ApplicationId { get; set; }
-  public IEnumerable<CertificationType>? CertificationTypes { get; set; }
-  public string? WorkexperienceReferenceId { get; set; }
-  public string? CharacterReferenceId { get; set; }
+  public string? ProgramRepresentativeId { get; set; }
   public InviteType? InviteType { get; set; }
-  public int? WorkExperienceReferenceHours { get; set; }
-  public WorkExperienceTypes? WorkExperienceType { get; set; }
-  public Certification? LatestCertification { get; set; }
 }
 
 public enum InviteType
 {
-  CharacterReference,
-  WorkExperienceReferenceforApplication,
-  WorkExperienceReferenceforICRA
+  PSIProgramRepresentative,
 }
