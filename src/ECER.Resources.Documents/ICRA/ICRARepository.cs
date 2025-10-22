@@ -114,4 +114,27 @@ internal sealed partial class ICRARepository : IICRARepository
     context.SaveChanges();
     return icraEligibilityId;
   }
+
+  public async Task<string> SubmitEmploymentReference(string referenceId, ICRAWorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+
+    var workExperienceReference = context.ecer_WorkExperienceRefSet.Single(c => c.ecer_WorkExperienceRefId == Guid.Parse(referenceId));
+
+    mapper.Map(request, workExperienceReference);
+
+    if (!string.IsNullOrWhiteSpace(request.CountryId) && Guid.TryParse(request.CountryId, out var countryGuid))
+    {
+      var ecer_country = context.ecer_CountrySet.SingleOrDefault(c => c.ecer_CountryId == countryGuid);
+      if (ecer_country != null)
+      {
+        context.AddLink(workExperienceReference, ecer_WorkExperienceRef.Fields.ecer_Country, ecer_country);
+      }
+    }
+
+    workExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.ICRAEligibilitySubmitted;
+    context.UpdateObject(workExperienceReference);
+    context.SaveChanges();
+    return workExperienceReference.ecer_WorkExperienceRefId.ToString()!;
+  }
 }

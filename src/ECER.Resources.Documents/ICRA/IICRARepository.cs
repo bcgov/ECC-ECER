@@ -1,4 +1,7 @@
-﻿namespace ECER.Resources.Documents.ICRA;
+﻿
+using ECER.Resources.Documents.Applications;
+
+namespace ECER.Resources.Documents.ICRA;
 
 public interface IICRARepository
 {
@@ -9,6 +12,8 @@ public interface IICRARepository
   Task<string> Submit(string icraEligibilityId, CancellationToken cancellationToken);
 
   Task<string> SetIneligibleForUnitTests(string icraEligibilityId, CancellationToken cancellationToken);
+
+  Task<string> SubmitEmploymentReference(string referenceId, ICRAWorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken);
 }
 
 public record ICRAQuery
@@ -60,6 +65,24 @@ public record EmploymentReference
   public string? PhoneNumber { get; set; }
 }
 
+
+public record ICRAWorkExperienceReferenceSubmissionRequest
+{
+  public string? FirstName { get; set; }
+  public string? LastName { get; set; }
+  public string? EmailAddress { get; set; }
+  public string? PhoneNumber { get; set; }
+  public string? CountryId { get; set; }
+  public string? EmployerName { get; set; }
+  public string? PositionTitle { get; set; }
+  public DateTime? StartDate { get; set; }
+  public DateTime? EndDate { get; set; }
+  public bool? WorkedWithChildren { get; set; }
+  public IEnumerable<ChildcareAgeRanges>? ChildcareAgeRanges { get; set; }
+  public ReferenceRelationship? ReferenceRelationship { get; set; }
+  public DateTime? DateSigned { get; set; }
+}
+
 public enum CertificateStatus
 {
   Valid,
@@ -78,3 +101,5 @@ public enum ICRAStatus
   Submitted,
   ReadyforAssessment
 }
+
+

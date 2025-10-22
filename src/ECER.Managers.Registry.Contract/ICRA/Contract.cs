@@ -72,6 +72,23 @@ public record EmploymentReference
   public string? PhoneNumber { get; set; }
 }
 
+public record ICRAWorkExperienceReferenceSubmissionRequest
+{
+  public string? FirstName { get; set; }
+  public string? LastName { get; set; }
+  public string? EmailAddress { get; set; }
+  public string? PhoneNumber { get; set; }
+  public string? CountryId { get; set; }
+  public string? EmployerName { get; set; }
+  public string? PositionTitle { get; set; }
+  public DateTime? StartDate { get; set; }
+  public DateTime? EndDate { get; set; }
+  public bool? WorkedWithChildren { get; set; }
+  public IEnumerable<Applications.ChildcareAgeRanges>? ChildcareAgeRanges { get; set; }
+  public Applications.ReferenceRelationship? ReferenceRelationship { get; set; }
+  public DateTime? DateSigned { get; set; }
+}
+
 public enum CertificateStatus
 {
   Valid,

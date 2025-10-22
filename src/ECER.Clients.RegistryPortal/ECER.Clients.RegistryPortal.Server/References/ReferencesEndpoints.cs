@@ -92,6 +92,34 @@ public class ReferencesEndpoints : IRegisterEndpoints
       }
       return TypedResults.Ok();
     }).WithOpenApi("Handles reference optout", string.Empty, "reference_optout").WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/References/ICRAWorkExperience", async Task<Results<Ok, BadRequest<ProblemDetails>>> (ICRAWorkExperienceReferenceSubmissionRequest request, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      if (request.Token == null) return TypedResults.BadRequest(new ProblemDetails { Detail = "Token is required" });
+
+      var recaptchaResult = await messageBus.Send(new Managers.Registry.Contract.Recaptcha.VerifyRecaptchaCommand(request.RecaptchaToken), ct);
+      if (!recaptchaResult.Success)
+      {
+        var problemDetails = new ProblemDetails
+        {
+          Status = StatusCodes.Status400BadRequest,
+          Detail = "Invalid recaptcha token",
+          Extensions = { ["errors"] = recaptchaResult.ErrorCodes }
+        };
+        return TypedResults.BadRequest(problemDetails);
+      }
+
+      var mapped = mapper.Map<Managers.Registry.Contract.ICRA.ICRAWorkExperienceReferenceSubmissionRequest>(request);
+      var result = await messageBus.Send(new Managers.Registry.Contract.Applications.SubmitReferenceCommand(request.Token)
+      {
+        ICRAWorkExperienceReferenceSubmissionRequest = mapped
+      }, ct);
+      if (!result.IsSuccess)
+      {
+        return TypedResults.BadRequest(new ProblemDetails { Detail = result.ErrorMessage });
+      }
+      return TypedResults.Ok();
+    }).WithOpenApi("Handles ICRA work experience reference submission", string.Empty, "icra_workExperience_reference_post").WithParameterValidation();
   }
 }
 
@@ -113,6 +141,24 @@ public enum UnabletoProvideReferenceReasons
   Idonotknowthisperson,
   Idonotmeettherequirementstoprovideareference,
   Other
+}
+
+public record ICRAWorkExperienceReferenceSubmissionRequest([Required] string Token, [Required] string RecaptchaToken)
+{
+  public string? FirstName { get; set; }
+  public string? LastName { get; set; }
+  public string? EmailAddress { get; set; }
+  public string? PhoneNumber { get; set; }
+  public string? CountryId { get; set; }
+  public string? EmployerName { get; set; }
+  public string? PositionTitle { get; set; }
+  public DateTime? StartDate { get; set; }
+  public DateTime? EndDate { get; set; }
+  public bool? WorkedWithChildren { get; set; }
+  public IEnumerable<ChildcareAgeRanges>? ChildcareAgeRanges { get; set; }
+  public ReferenceRelationship? ReferenceRelationship { get; set; }
+  public DateTime? DateSigned { get; set; }
+
 }
 
 public record WorkExperienceReferenceDetails()
