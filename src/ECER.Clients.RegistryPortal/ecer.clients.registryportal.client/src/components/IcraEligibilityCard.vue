@@ -26,7 +26,7 @@
       >
         <v-btn variant="flat" size="large" color="warning" @click="handleManageIcraEligibility">
           <v-icon size="large" icon="mdi-arrow-right" />
-          Manage Submission
+          Manage submission
         </v-btn>
       </v-card-actions>
     </div>
