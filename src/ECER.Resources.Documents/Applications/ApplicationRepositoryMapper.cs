@@ -269,23 +269,21 @@ internal class ApplicationRepositoryMapper : Profile
        .ForMember(d => d.Type, opts => opts.MapFrom(s => s.ecer_Type))
        .ValidateMemberList(MemberList.Destination);
 
+
     CreateMap<WorkExperienceTypes, ecer_WorkExperienceTypes>()
-          .ConvertUsing(src => src switch
-          {
-            WorkExperienceTypes.Is400Hours => ecer_WorkExperienceTypes._400Hours,
-            WorkExperienceTypes.Is500Hours => ecer_WorkExperienceTypes._500Hours,
-            WorkExperienceTypes.ICRA => ecer_WorkExperienceTypes.ICRA,
-            _ => ecer_WorkExperienceTypes._400Hours
-          });
+        .ConvertUsing(src =>
+            src == WorkExperienceTypes.Is500Hours ? ecer_WorkExperienceTypes._500Hours :
+            src == WorkExperienceTypes.ICRA ? ecer_WorkExperienceTypes.ICRA :
+            ecer_WorkExperienceTypes._400Hours
+        );
 
     CreateMap<ecer_WorkExperienceTypes, WorkExperienceTypes>()
-          .ConvertUsing(src => src switch
-          {
-            ecer_WorkExperienceTypes._400Hours => WorkExperienceTypes.Is400Hours,
-            ecer_WorkExperienceTypes._500Hours => WorkExperienceTypes.Is500Hours,
-            ecer_WorkExperienceTypes.ICRA => WorkExperienceTypes.ICRA,
-            _ => WorkExperienceTypes.Is400Hours
-          });
+        .ConvertUsing(src =>
+            src == ecer_WorkExperienceTypes._500Hours ? WorkExperienceTypes.Is500Hours :
+            src == ecer_WorkExperienceTypes.ICRA ? WorkExperienceTypes.ICRA :
+            WorkExperienceTypes.Is400Hours
+        );
+
 
     CreateMap<bcgov_DocumentUrl, FileInfo>(MemberList.Destination)
           .ForMember(d => d.Id, opts => opts.MapFrom(s => s.bcgov_DocumentUrlId))
