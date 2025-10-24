@@ -316,6 +316,7 @@ public enum WorkExperienceTypes
 {
   Is400Hours,
   Is500Hours,
+  ICRA
 }
 
 public enum ProfessionalDevelopmentStatusCode
