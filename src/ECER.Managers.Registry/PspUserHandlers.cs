@@ -4,15 +4,10 @@ namespace ECER.Managers.Registry;
 
 public class PspUserHandlers
 {
-  /// <summary>
-  /// Handles registering a psp user
-  /// </summary>
-  /// <param name="request"></param>
-  /// <param name="cancellationToken"></param>
-  /// <returns></returns>
-  public async Task<string> Handle(RegisterPspUserCommand request, CancellationToken cancellationToken)
-  {
-    ArgumentNullException.ThrowIfNull(request);
+
+  //public async Task<string> Handle(RegisterPspUserCommand request, CancellationToken cancellationToken)
+  //{
+    //ArgumentNullException.ThrowIfNull(request);
     
     // Get institution that psp rep is linked to
     
@@ -25,5 +20,5 @@ public class PspUserHandlers
     // If it matches authentication successful
     
     // If it doesn't match authentication should fail
-  }
+  //}
 }
