@@ -5,13 +5,15 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECER.Resources.Accounts.PSPReps;
 
-internal sealed class PspRepRepository(EcerContext context, IMapper mapper, IConfiguration configuration) : IPspRepRepository
+internal sealed class PspRepRepository() : IPspRepRepository
 {
-  // public async Task<IEnumerable<PspRep>> Query(PspRepQuery query, CancellationToken ct)
-  // {
-  // }
-  //
-  // public async Task Save(PspRep pspRep, CancellationToken ct)
-  // {
-  // }
+  public Task<IEnumerable<PspRep>> Query(PspRepQuery query, CancellationToken ct)
+  {
+    throw new NotImplementedException();
+  }
+
+  public Task Save(PspRep pspRep, CancellationToken ct)
+  {
+    throw new NotImplementedException();
+  }
 }
