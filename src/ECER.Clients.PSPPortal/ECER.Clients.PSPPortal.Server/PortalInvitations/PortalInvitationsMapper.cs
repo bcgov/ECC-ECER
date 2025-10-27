@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ECER.Clients.PSPPortal.Server.PortalInvitations;
 
 namespace ECER.Clients.PSPPortal.Server.PortalInvitations;
 

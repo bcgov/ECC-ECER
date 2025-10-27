@@ -18,6 +18,7 @@ internal sealed class PortalInvitationMapper : Profile
       .ForMember(d => d.CharacterReferenceId, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId.Id))
       .ForMember(d => d.ApplicantId, opts => opts.MapFrom(s => s.ecer_ApplicantId.Id))
       .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.ecer_ApplicationId.Id))
+      .ForMember(d => d.PspProgramRepresentativeId, opts => opts.MapFrom(s => s.ecer_psiprogramrepresentativeid.Id))
       .ForMember(d => d.InviteType, opts => opts.MapFrom(s => s.ecer_Type))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode));
 

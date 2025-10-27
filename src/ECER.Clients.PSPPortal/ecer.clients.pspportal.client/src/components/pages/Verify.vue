@@ -17,14 +17,16 @@ export default {
         const { data, error } = await getPortalInvitation(route.params.token as string);
 
         if (error) {
+            console.log("error", error);
             router.push("/invalid-invitation");
         }
 
         if (data?.portalInvitation?.inviteType === PortalInviteType.PSIProgramRepresentative) {
             // store the program representative id in the store and let the user continue to authentication flow
-            const programRepresentativeId = data?.portalInvitation?.programRepresentativeId;
+            const programRepresentativeId = data?.portalInvitation?.pspProgramRepresentativeId;
             if (programRepresentativeId) {
                 userStore.setInvitedProgramRepresentativeId(programRepresentativeId);
+                router.push("/login");
             } else {
                 router.push("/invalid-invitation");
             }

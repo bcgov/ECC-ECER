@@ -32,7 +32,7 @@ public record PortalInvitationQueryResult(PortalInvitation PortalInvitation);
 
 public record PortalInvitation(string? Id)
 {
-  public string? ProgramRepresentativeId { get; set; }
+  public string? PspProgramRepresentativeId { get; set; }
   public InviteType? InviteType { get; set; }
 }
 
