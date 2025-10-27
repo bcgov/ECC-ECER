@@ -10,8 +10,8 @@
 
 namespace ECER.Utilities.DataverseSdk.Model
 {
-	
-	
+
+
 	/// <summary>
 	/// Status of the Bulk PSP Communication
 	/// </summary>
@@ -19,14 +19,14 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_bulkpspcommunication_statecode
 	{
-		
+
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Active = 0,
-		
+
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 1,
 	}
-	
+
 	/// <summary>
 	/// Reason for the status of the Bulk PSP Communication
 	/// </summary>
@@ -34,23 +34,23 @@ namespace ECER.Utilities.DataverseSdk.Model
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public enum ecer_BulkPSPCommunication_StatusCode
 	{
-		
+
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Active = 1,
-		
+
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Draft = 621870001,
-		
+
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
 	}
-	
+
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_bulkpspcommunication")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
 	public partial class ecer_BulkPSPCommunication : Microsoft.Xrm.Sdk.Entity
 	{
-		
+
 		/// <summary>
 		/// Available fields, a the time of codegen, for the ecer_bulkpspcommunication entity
 		/// </summary>
@@ -101,46 +101,46 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string UTCConversionTimeZoneCode = "utcconversiontimezonecode";
 			public const string VersionNumber = "versionnumber";
 		}
-		
+
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_BulkPSPCommunication(System.Guid id) : 
+		public ecer_BulkPSPCommunication(System.Guid id) :
 				base(EntityLogicalName, id)
 		{
 		}
-		
+
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_BulkPSPCommunication(string keyName, object keyValue) : 
+		public ecer_BulkPSPCommunication(string keyName, object keyValue) :
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
-		
+
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_BulkPSPCommunication(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_BulkPSPCommunication(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) :
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
-		
+
 		/// <summary>
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_BulkPSPCommunication() : 
+		public ecer_BulkPSPCommunication() :
 				base(EntityLogicalName)
 		{
 		}
-		
+
 		public const string PrimaryIdAttribute = "ecer_bulkpspcommunicationid";
-		
+
 		public const string PrimaryNameAttribute = "ecer_name";
-		
+
 		public const string EntitySchemaName = "ecer_BulkPSPCommunication";
-		
+
 		public const string EntityLogicalName = "ecer_bulkpspcommunication";
-		
+
 		public const string EntityLogicalCollectionName = "ecer_bulkpspcommunications";
-		
+
 		public const string EntitySetName = "ecer_bulkpspcommunications";
-		
+
 		/// <summary>
 		/// Unique identifier of the user who created the record.
 		/// </summary>
@@ -153,7 +153,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("createdby");
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyname")]
 		public string CreatedByName
 		{
@@ -170,7 +170,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdbyyominame")]
 		public string CreatedByYomiName
 		{
@@ -187,7 +187,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Date and time when the record was created.
 		/// </summary>
@@ -200,7 +200,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				return this.GetAttributeValue<System.Nullable<System.DateTime>>("createdon");
 			}
 		}
-		
+
 		/// <summary>
 		/// Unique identifier of the delegate user who created the record.
 		/// </summary>
@@ -218,7 +218,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("createdonbehalfby", value);
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfbyname")]
 		public string CreatedOnBehalfByName
 		{
@@ -235,7 +235,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("createdonbehalfbyyominame")]
 		public string CreatedOnBehalfByYomiName
 		{
@@ -252,7 +252,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
@@ -278,7 +278,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkpspcommunicationid")]
 		public override System.Guid Id
 		{
@@ -293,10 +293,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.ecer_BulkPSPCommunicationId = value;
 			}
 		}
-		
+
 		/// <summary>
 		/// 1. Annual Reminder - Program Profile :  Annual Reminder to all Program Representatives listed on the contact list for each PSI (for all approved profiles) 
-///2. Monthly Reminder - Program Profile : PSP reps within an Education Institution to submit program profile by Sept 1  - only to be sent to those who haven’t yet submitted for current academic year
+		///2. Monthly Reminder - Program Profile : PSP reps within an Education Institution to submit program profile by Sept 1  - only to be sent to those who haven’t yet submitted for current academic year
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationtype")]
 		public virtual ecer_BulkPSPCommunicationType? ecer_CommunicationType
@@ -312,7 +312,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("ecer_communicationtype", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationtypename")]
 		public string ecer_communicationtypeName
 		{
@@ -329,7 +329,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_lastcommunicationsenton")]
 		public System.Nullable<System.DateTime> ecer_LastCommunicationSentOn
 		{
@@ -344,7 +344,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("ecer_lastcommunicationsenton", value);
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_message")]
 		public string ecer_Message
 		{
@@ -359,7 +359,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("ecer_message", value);
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
 		public string ecer_Name
 		{
@@ -374,7 +374,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("ecer_name", value);
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psprepresentativerole")]
 		public virtual System.Collections.Generic.IEnumerable<ecer_RepresentativeRole> ecer_PSPRepresentativeRole
 		{
@@ -389,7 +389,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("ecer_psprepresentativerole", EntityOptionSetEnum.GetMultiEnum(this, "ecer_psprepresentativerole", value));
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psprepresentativerolename")]
 		public string ecer_psprepresentativeroleName
 		{
@@ -406,7 +406,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_repeat")]
 		public virtual RepeatPattern_options? ecer_Repeat
 		{
@@ -421,7 +421,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("ecer_repeat", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_repeatname")]
 		public string ecer_repeatName
 		{
@@ -438,7 +438,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_scheduleddate")]
 		public System.Nullable<System.DateTime> ecer_ScheduledDate
 		{
@@ -453,7 +453,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("ecer_scheduleddate", value);
 			}
 		}
-		
+
 		/// <summary>
 		/// End date for the communication message creation.
 		/// </summary>
@@ -471,7 +471,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("ecer_scheduleenddate", value);
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_subject")]
 		public string ecer_Subject
 		{
@@ -486,7 +486,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("ecer_subject", value);
 			}
 		}
-		
+
 		/// <summary>
 		/// Sequence number of the import that created this record.
 		/// </summary>
@@ -504,7 +504,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("importsequencenumber", value);
 			}
 		}
-		
+
 		/// <summary>
 		/// Unique identifier of the user who modified the record.
 		/// </summary>
@@ -517,7 +517,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("modifiedby");
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyname")]
 		public string ModifiedByName
 		{
@@ -534,7 +534,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedbyyominame")]
 		public string ModifiedByYomiName
 		{
@@ -551,7 +551,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Date and time when the record was modified.
 		/// </summary>
@@ -564,7 +564,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				return this.GetAttributeValue<System.Nullable<System.DateTime>>("modifiedon");
 			}
 		}
-		
+
 		/// <summary>
 		/// Unique identifier of the delegate user who modified the record.
 		/// </summary>
@@ -582,7 +582,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("modifiedonbehalfby", value);
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfbyname")]
 		public string ModifiedOnBehalfByName
 		{
@@ -599,7 +599,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("modifiedonbehalfbyyominame")]
 		public string ModifiedOnBehalfByYomiName
 		{
@@ -616,7 +616,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Date and time that the record was migrated.
 		/// </summary>
@@ -634,7 +634,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("overriddencreatedon", value);
 			}
 		}
-		
+
 		/// <summary>
 		/// Owner Id
 		/// </summary>
@@ -652,7 +652,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("ownerid", value);
 			}
 		}
-		
+
 		/// <summary>
 		/// Name of the owner
 		/// </summary>
@@ -672,7 +672,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Yomi name of the owner
 		/// </summary>
@@ -692,7 +692,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Unique identifier for the business unit that owns the record
 		/// </summary>
@@ -705,7 +705,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owningbusinessunit");
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("owningbusinessunitname")]
 		public string OwningBusinessUnitName
 		{
@@ -722,7 +722,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Unique identifier for the team that owns the record.
 		/// </summary>
@@ -735,7 +735,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owningteam");
 			}
 		}
-		
+
 		/// <summary>
 		/// Unique identifier for the user that owns the record.
 		/// </summary>
@@ -748,7 +748,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("owninguser");
 			}
 		}
-		
+
 		/// <summary>
 		/// Status of the Bulk PSP Communication
 		/// </summary>
@@ -766,7 +766,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("statecode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecodename")]
 		public string statecodeName
 		{
@@ -783,7 +783,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Reason for the status of the Bulk PSP Communication
 		/// </summary>
@@ -801,7 +801,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("statuscode", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
 			}
 		}
-		
+
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscodename")]
 		public string statuscodeName
 		{
@@ -818,7 +818,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// For internal use only.
 		/// </summary>
@@ -836,7 +836,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("timezoneruleversionnumber", value);
 			}
 		}
-		
+
 		/// <summary>
 		/// Time zone code that was in use when the record was created.
 		/// </summary>
@@ -854,7 +854,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 				this.SetAttributeValue("utcconversiontimezonecode", value);
 			}
 		}
-		
+
 		/// <summary>
 		/// Version Number
 		/// </summary>
@@ -867,47 +867,47 @@ namespace ECER.Utilities.DataverseSdk.Model
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
 			}
 		}
-		
+
 		/// <summary>
 		/// Constructor for populating via LINQ queries given a LINQ anonymous type
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_BulkPSPCommunication(object anonymousType) : 
+		public ecer_BulkPSPCommunication(object anonymousType) :
 				this()
 		{
-            foreach (var p in anonymousType.GetType().GetProperties())
-            {
-                var value = p.GetValue(anonymousType, null);
-                var name = p.Name.ToLower();
-            
-                if (value != null && name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
-                {
-                    value = new Microsoft.Xrm.Sdk.OptionSetValue((int) value);
-                    name = name.Remove(name.Length - "enum".Length);
-                }
-            
-                switch (name)
-                {
-                    case "id":
-                        base.Id = (System.Guid)value;
-                        Attributes["ecer_bulkpspcommunicationid"] = base.Id;
-                        break;
-                    case "ecer_bulkpspcommunicationid":
-                        var id = (System.Nullable<System.Guid>) value;
-                        if(id == null){ continue; }
-                        base.Id = id.Value;
-                        Attributes[name] = base.Id;
-                        break;
-                    case "formattedvalues":
-                        // Add Support for FormattedValues
-                        FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
-                        break;
-                    default:
-                        Attributes[name] = value;
-                        break;
-                }
-            }
+			foreach (var p in anonymousType.GetType().GetProperties())
+			{
+				var value = p.GetValue(anonymousType, null);
+				var name = p.Name.ToLower();
+
+				if (value != null && name.EndsWith("enum") && value.GetType().BaseType == typeof(System.Enum))
+				{
+					value = new Microsoft.Xrm.Sdk.OptionSetValue((int)value);
+					name = name.Remove(name.Length - "enum".Length);
+				}
+
+				switch (name)
+				{
+					case "id":
+						base.Id = (System.Guid)value;
+						Attributes["ecer_bulkpspcommunicationid"] = base.Id;
+						break;
+					case "ecer_bulkpspcommunicationid":
+						var id = (System.Nullable<System.Guid>)value;
+						if (id == null) { continue; }
+						base.Id = id.Value;
+						Attributes[name] = base.Id;
+						break;
+					case "formattedvalues":
+						// Add Support for FormattedValues
+						FormattedValues.AddRange((Microsoft.Xrm.Sdk.FormattedValueCollection)value);
+						break;
+					default:
+						Attributes[name] = value;
+						break;
+				}
+			}
 		}
 	}
 }
