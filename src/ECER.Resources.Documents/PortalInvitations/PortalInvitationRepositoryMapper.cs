@@ -28,11 +28,11 @@ internal sealed class PortalInvitationMapper : Profile
 
   private static InviteType? DetermineInviteType(ecer_PortalInvitation source)
   {
-    if (source.ecer_WorkExperienceReferenceId != null)
+    if (string.IsNullOrEmpty(source.ecer_WorkExperienceReferenceIdName))
     {
       return InviteType.WorkExperienceReference;
     }
-    else if (source.ecer_CharacterReferenceId != null)
+    else if(string.IsNullOrEmpty(source.ecer_CharacterReferenceIdName))
     {
       return InviteType.CharacterReference;
     }
