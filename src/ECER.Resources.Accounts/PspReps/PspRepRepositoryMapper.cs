@@ -13,12 +13,10 @@ internal sealed class PspRepRepositoryMapper : Profile
         .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.ecer_FirstName))
         .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.ecer_LastName))
         .ForMember(d => d.Email, opts => opts.MapFrom(s => s.ecer_EmailAddress))
-        .ForMember(d => d.BceidBusinessId, opts => opts.MapFrom(s => s.ecer_BusinessBCeID))
         .ReverseMap()
         .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
         .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
         .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.Email))
-        .ForMember(d => d.ecer_BusinessBCeID, opts => opts.MapFrom(s => s.BceidBusinessId))
         .ValidateMemberList(MemberList.Source);
 
     CreateMap<ecer_Authentication, UserIdentity>()

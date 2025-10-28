@@ -21,7 +21,7 @@ public record PostSecondaryInstituteQuery
 {
   public string? ById { get; set; }
   public string? ByBceidBusinessId { get; set; }
-  public string? ByPspRepId { get; set; }
+  public string? ByProgramRepresentativeId { get; set; }
 }
 
 public record PostSecondaryInstitute

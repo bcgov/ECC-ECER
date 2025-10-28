@@ -28,9 +28,23 @@ public class ProfileEndpoints : IRegisterEndpoints
         return TypedResults.Ok(pspUserProfile);
       })
       .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "psp_user_profile_get")
-      .RequireAuthorization("registry_new_user")
+      .RequireAuthorization("psp_new_user")
       .WithParameterValidation();
-    
+
+    endpointRouteBuilder.MapPut("/api/users/profile",
+        async Task<Results<Ok, BadRequest<ProblemDetails>>> (PspUserProfile pspUserProfile, HttpContext ctx,
+          CancellationToken ct, IMediator bus, IMapper mapper) =>
+        {
+          await bus.Send(
+            new RegisterPspUserCommand(
+              mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(pspUserProfile)!),
+            ctx.RequestAborted);
+          return TypedResults.Ok();
+        })
+      .WithOpenApi("Update a psp user profile", string.Empty, "psp_user_profile_put")
+      .RequireAuthorization("psp_new_user")
+      .WithParameterValidation();
+
     endpointRouteBuilder.MapPost("/api/users/register",
         async Task<Results<Ok, BadRequest<ProblemDetails>>> (PspUserProfile pspUserProfile, HttpContext ctx,
           CancellationToken ct, IMediator bus, IMapper mapper) =>
@@ -41,7 +55,8 @@ public class ProfileEndpoints : IRegisterEndpoints
             ctx.RequestAborted);
           return TypedResults.Ok();
         })
-      .WithOpenApi("Create Program Representative", string.Empty, "psp_user_profile_post");
+      .WithOpenApi("Register new Psp Program Representative", string.Empty, "psp_user_register_post")
+      .RequireAuthorization("psp_new_user");
   }
 }
 

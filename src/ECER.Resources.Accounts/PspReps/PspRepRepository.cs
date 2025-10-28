@@ -7,12 +7,12 @@ namespace ECER.Resources.Accounts.PSPReps;
 
 internal sealed class PspRepRepository() : IPspRepRepository
 {
-  public Task<IEnumerable<PspRep>> Query(PspRepQuery query, CancellationToken ct)
+  public Task<IEnumerable<PspUser>> Query(PspRepQuery query, CancellationToken ct)
   {
     throw new NotImplementedException();
   }
 
-  public Task Save(PspRep pspRep, CancellationToken ct)
+  public Task Save(PspUser user, CancellationToken ct)
   {
     throw new NotImplementedException();
   }

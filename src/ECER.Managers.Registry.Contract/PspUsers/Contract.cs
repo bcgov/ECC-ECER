@@ -27,4 +27,29 @@ public record PspUserProfile
   public string? ProgramRepresentativeId { get; set; }
 };
 
-public record RegisterPspUserCommand(PspUserProfile pspUserProfile) : IRequest<string>;
+public record RegisterPspUserCommand(PspUserProfile Profile) : IRequest<RegisterPspUserResult>;
+
+public class RegisterPspUserResult
+{
+  public bool IsSuccess { get; init; }
+  public RegisterPspUserError? Error { get; init; }
+
+  public static RegisterPspUserResult Success() => new()
+  {
+    IsSuccess = true
+  };
+
+  public static RegisterPspUserResult Failure(RegisterPspUserError error) => new()
+  {
+    IsSuccess = false,
+    Error = error
+  };
+}
+
+public enum RegisterPspUserError
+{
+  PostSecondaryInstitutionNotFound,
+  BceidBusinessIdDoesNotMatch,
+}
+
+public record UpdatePspRepProfileCommand(PspUser User) : IRequest<string>;

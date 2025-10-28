@@ -11,12 +11,12 @@ public interface IPspRepRepository
   /// Query Psp representatives
   /// </summary>
   /// <returns>Enumerable of Psp representatives</returns>
-  Task<IEnumerable<PspRep>> Query(PspRepQuery query, CancellationToken ct);
+  Task<IEnumerable<PspUser>> Query(PspRepQuery query, CancellationToken ct);
 
   /// <summary>
   /// Saves a Psp representative's profile - Psp representative must exist
   /// </summary>
-  Task Save(PspRep pspRep, CancellationToken ct);
+  Task Save(PspUser user, CancellationToken ct);
 }
 
 public record PspRepQuery
@@ -25,11 +25,19 @@ public record PspRepQuery
   public UserIdentity? ByIdentity { get; set; }
 }
 
-public record PspRep
+public record PspUser
 {
   public string Id { get; set; } = null!;
+  
+  public IEnumerable<UserIdentity> Identities { get; set; } = Array.Empty<UserIdentity>();
+  public PspUserProfile Profile { get; set; } = null!;
+};
+
+public record PspUserProfile
+{
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? Email { get; set; } = null!;
   public string? BceidBusinessId { get; set; }
+  public string? ProgramRepresentativeId { get; set; }
 };
