@@ -3,6 +3,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" />
     <ProjectReference Include="..\ECER.Infrastructure.Common\ECER.Infrastructure.Common.csproj" />
     <ProjectReference Include="..\ECER.Managers.Registry.Contract\ECER.Managers.Registry.Contract.csproj" />
     <ProjectReference Include="..\ECER.Resources.Documents\ECER.Resources.Documents.csproj" />
