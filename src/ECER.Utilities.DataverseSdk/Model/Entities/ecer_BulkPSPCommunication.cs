@@ -70,6 +70,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_LastCommunicationSentOn = "ecer_lastcommunicationsenton";
 			public const string ecer_Message = "ecer_message";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_Repeat = "ecer_repeat";
+			public const string ecer_repeatName = "ecer_repeatname";
+			public const string ecer_ScheduledDate = "ecer_scheduleddate";
+			public const string ecer_ScheduleEndDate = "ecer_scheduleenddate";
 			public const string ecer_Subject = "ecer_subject";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -362,6 +366,71 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_repeat")]
+		public virtual RepeatPattern_options? ecer_Repeat
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((RepeatPattern_options?)(EntityOptionSetEnum.GetEnum(this, "ecer_repeat")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_repeat", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_repeatname")]
+		public string ecer_repeatName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_repeat"))
+				{
+					return this.FormattedValues["ecer_repeat"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_scheduleddate")]
+		public System.Nullable<System.DateTime> ecer_ScheduledDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_scheduleddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_scheduleddate", value);
+			}
+		}
+		
+		/// <summary>
+		/// End date for the communication message creation.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_scheduleenddate")]
+		public System.Nullable<System.DateTime> ecer_ScheduleEndDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_scheduleenddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_scheduleenddate", value);
 			}
 		}
 		

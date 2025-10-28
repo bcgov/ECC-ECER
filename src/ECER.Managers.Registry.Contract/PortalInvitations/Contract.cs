@@ -26,6 +26,7 @@ public record PortalInvitation(string? Id, string Name, string ReferenceFirstNam
   public IEnumerable<CertificationType> CertificationTypes { get; set; } = Array.Empty<CertificationType>();
   public string? WorkexperienceReferenceId { get; set; }
   public string? CharacterReferenceId { get; set; }
+  public string? PspProgramRepresentativeId { get; set; }
   public InviteType? InviteType { get; set; }
   public PortalInvitationStatusCode? StatusCode { get; set; }
   public int? WorkExperienceReferenceHours { get; set; }

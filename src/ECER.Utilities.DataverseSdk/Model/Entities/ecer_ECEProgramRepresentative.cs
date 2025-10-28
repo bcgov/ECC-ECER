@@ -65,7 +65,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Addby = "ecer_addby";
 			public const string ecer_AddbyName = "ecer_addbyname";
 			public const string ecer_authentication_eceprogramrepresentative = "ecer_authentication_eceprogramrepresentative";
-			public const string ecer_BusinessBCeID = "ecer_businessbceid";
 			public const string ecer_ContactId = "ecer_contactid";
 			public const string ecer_ContactIdName = "ecer_contactidname";
 			public const string ecer_ContactIdYomiName = "ecer_contactidyominame";
@@ -77,6 +76,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string Id = "ecer_eceprogramrepresentativeid";
 			public const string ecer_EmailAddress = "ecer_emailaddress";
 			public const string ecer_FirstName = "ecer_firstname";
+			public const string ecer_HasAcceptedTermsofUse = "ecer_hasacceptedtermsofuse";
+			public const string ecer_hasacceptedtermsofuseName = "ecer_hasacceptedtermsofusename";
 			public const string ecer_InvitetoPortal = "ecer_invitetoportal";
 			public const string ecer_invitetoportalName = "ecer_invitetoportalname";
 			public const string ecer_LastInviteSentDate = "ecer_lastinvitesentdate";
@@ -334,21 +335,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_businessbceid")]
-		public string ecer_BusinessBCeID
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_businessbceid");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_businessbceid", value);
-			}
-		}
-		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_contactid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_ContactId
 		{
@@ -476,6 +462,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_firstname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasacceptedtermsofuse")]
+		public System.Nullable<bool> ecer_HasAcceptedTermsofUse
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_hasacceptedtermsofuse");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_hasacceptedtermsofuse", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_hasacceptedtermsofusename")]
+		public string ecer_hasacceptedtermsofuseName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_hasacceptedtermsofuse"))
+				{
+					return this.FormattedValues["ecer_hasacceptedtermsofuse"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
