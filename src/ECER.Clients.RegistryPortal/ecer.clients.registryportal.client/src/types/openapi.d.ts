@@ -346,6 +346,7 @@ declare namespace Components {
             workedWithChildren?: boolean | null;
             childcareAgeRanges?: ChildcareAgeRanges[] | null;
             referenceRelationship?: ReferenceRelationship;
+            willProvideReference?: boolean;
             dateSigned?: string | null; // date-time
         }
         export interface IdentificationType {

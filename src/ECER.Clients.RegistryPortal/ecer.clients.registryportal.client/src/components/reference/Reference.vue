@@ -291,12 +291,15 @@ export default defineComponent({
 
       const response = await postIcraEligibilityWorkExperienceReference({
         token: this.route.params.token as string,
-        // willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
+        willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
+        recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
+        //contact step
         firstName: icraEligibilityContact.firstName,
         lastName: icraEligibilityContact.lastName,
         emailAddress: icraEligibilityContact.email,
         phoneNumber: icraEligibilityContact.phoneNumber,
-        // countryId: icraWorkExperienceEvaluation.countryId,
+        //work experience evaluation step
+        countryId: icraWorkExperienceEvaluation.countryId,
         employerName: icraWorkExperienceEvaluation.employerName,
         positionTitle: icraWorkExperienceEvaluation.positionTitle,
         startDate: icraWorkExperienceEvaluation.startDate,
@@ -304,10 +307,11 @@ export default defineComponent({
         workedWithChildren: icraWorkExperienceEvaluation.workedWithChildren,
         childcareAgeRanges: icraWorkExperienceEvaluation.childcareAgeRanges,
         referenceRelationship: icraWorkExperienceEvaluation.referenceRelationship,
-        // confirmProvidedInformationIsRight:
-        //   this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id || ""],
-        recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
       });
+
+      if (!response?.error) {
+        this.router.push({ path: "/reference-submitted" });
+      }
     },
     async handleDecline() {
       const currentStepFormId = this.wizardStore.currentStep.form.id;
