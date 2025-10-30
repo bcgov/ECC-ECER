@@ -86,6 +86,7 @@ public record ICRAWorkExperienceReferenceSubmissionRequest
   public bool? WorkedWithChildren { get; set; }
   public IEnumerable<Applications.ChildcareAgeRanges>? ChildcareAgeRanges { get; set; }
   public Applications.ReferenceRelationship? ReferenceRelationship { get; set; }
+  public bool WillProvideReference { get; set; }
   public DateTime? DateSigned { get; set; }
 }
 

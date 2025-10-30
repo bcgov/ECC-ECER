@@ -128,7 +128,7 @@ internal sealed partial class ICRARepository : IICRARepository
       var ecer_country = context.ecer_CountrySet.SingleOrDefault(c => c.ecer_CountryId == countryGuid);
       if (ecer_country != null)
       {
-        context.AddLink(workExperienceReference, ecer_WorkExperienceRef.Fields.ecer_Country, ecer_country);
+        context.AddLink(workExperienceReference, ecer_WorkExperienceRef.Fields.ecer_WorkExperienceRef_ecer_Country_ecer_Country, ecer_country);
       }
     }
 
