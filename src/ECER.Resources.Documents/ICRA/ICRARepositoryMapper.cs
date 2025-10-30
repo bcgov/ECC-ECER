@@ -89,6 +89,7 @@ internal class ICRARepositoryMapper : Profile
     CreateMap<ICRAWorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
       .ForSourceMember(s => s.CountryId, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.WorkedWithChildren, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_referencefirstname, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.ecer_referencelastname, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_referenceemailaddress, opts => opts.MapFrom(s => s.EmailAddress))
