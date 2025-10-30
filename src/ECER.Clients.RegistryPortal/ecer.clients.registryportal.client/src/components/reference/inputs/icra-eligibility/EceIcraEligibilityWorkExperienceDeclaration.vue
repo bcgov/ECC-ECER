@@ -83,7 +83,12 @@
       <v-row>
         <v-col>
           <p>Will you provide a reference?</p>
-          <v-radio-group :rules="[Rules.requiredRadio()]" hide-details="auto" @update:model-value="(value) => $emit('update:model-value', value as boolean)">
+          <v-radio-group
+            id="willProvideReferenceRadio"
+            :rules="[Rules.requiredRadio()]"
+            hide-details="auto"
+            @update:model-value="(value) => $emit('update:model-value', value as boolean)"
+          >
             <v-radio label="Yes" :value="true"></v-radio>
             <v-radio label="No" :value="false"></v-radio>
           </v-radio-group>

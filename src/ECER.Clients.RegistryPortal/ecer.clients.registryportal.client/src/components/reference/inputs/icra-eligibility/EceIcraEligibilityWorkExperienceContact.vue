@@ -6,6 +6,7 @@
       <v-row class="mt-5">
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
+            id="lastNameTextInput"
             :model-value="modelValue.lastName"
             :rules="[Rules.required('Enter your last name')]"
             label="Last Name"
@@ -18,6 +19,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
+            id="firstNameTextInput"
             :model-value="modelValue.firstName"
             label="First Name"
             autocomplete="given-name"
@@ -29,6 +31,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
+            id="emailTextInput"
             :model-value="modelValue.email"
             :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]"
             label="Email"
@@ -41,6 +44,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
+            id="phoneNumberTextInput"
             :model-value="modelValue.phoneNumber"
             :rules="[Rules.required('Enter a phone number'), Rules.phoneNumber('Enter your valid phone number')]"
             label="Phone Number"

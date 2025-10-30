@@ -22,6 +22,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
+            id="employerNameTextInput"
             :rules="[Rules.required('Enter the name of the applicant\'s employer, organization, or child care program')]"
             label="Name of employer, organization, or child care program"
             @update:model-value="updateField('employerName', $event)"
@@ -31,6 +32,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceTextField
+            id="positionTitleTextInput"
             :rules="[Rules.required('Enter the name of the applicant\'s job or position title')]"
             label="Applicant's job or position title"
             @update:model-value="updateField('positionTitle', $event)"
@@ -40,6 +42,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceDateInput
+            id="startDateInput"
             label="Start date of employment"
             :model-value="modelValue.startDate"
             :max="today"
@@ -51,6 +54,7 @@
       <v-row>
         <v-col cols="12" md="8" lg="6" xl="4">
           <EceDateInput
+            id="endDateInput"
             clearable
             label="End date of hours"
             :model-value="modelValue.endDate"
@@ -63,6 +67,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <p>Have you observed the applicant working with young children?</p>
           <v-radio-group
+            id="workedWithChildrenRadioGroup"
             hide-details="auto"
             :rules="[Rules.requiredRadio('Select if you have observed the applicant working with children in the above child care program')]"
             @update:model-value="updateField('workedWithChildren', $event)"
@@ -91,6 +96,7 @@
         <v-col cols="12" md="8" lg="6" xl="4">
           <p>What is your relationship to the applicant?</p>
           <v-radio-group
+            id="referenceRelationshipRadio"
             hide-details="auto"
             :rules="[Rules.requiredRadio('Select your relationship to the applicant')]"
             @update:model-value="updateField('referenceRelationship', $event)"
