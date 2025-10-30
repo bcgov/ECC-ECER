@@ -175,6 +175,7 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
   {
     InviteType.CharacterReference => await OptOutCharacterReference(request),
     InviteType.WorkExperienceReferenceforApplication => await OptOutWorkExperienceReference(request),
+    InviteType.WorkExperienceReferenceforICRA => await OptOutWorkExperienceReference(request),
     _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
   };
 }
