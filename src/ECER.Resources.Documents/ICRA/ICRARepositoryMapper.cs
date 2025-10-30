@@ -89,6 +89,7 @@ internal class ICRARepositoryMapper : Profile
     CreateMap<ICRAWorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
       .ForSourceMember(s => s.CountryId, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.WorkedWithChildren, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_referencefirstname, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.ecer_referencelastname, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_referenceemailaddress, opts => opts.MapFrom(s => s.EmailAddress))
@@ -100,6 +101,7 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.ecer_Applicantworkchildren, opts => opts.MapFrom(s => s.WorkedWithChildren.HasValue ? (s.WorkedWithChildren.Value ? ecer_YesNoNull.Yes : ecer_YesNoNull.No) : (ecer_YesNoNull?)null))
       .ForMember(d => d.ecer_ChildcareAgeRangeNew, opts => opts.MapFrom(s => s.ChildcareAgeRanges))
       .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.ReferenceRelationship))
+      .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
   }
 
