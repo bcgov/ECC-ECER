@@ -331,6 +331,23 @@ declare namespace Components {
             id?: string | null;
         }
         export type ICRAStatus = "Active" | "Draft" | "Eligible" | "Inactive" | "Ineligible" | "InReview" | "ReadyforReview" | "Submitted" | "ReadyforAssessment";
+        export interface ICRAWorkExperienceReferenceSubmissionRequest {
+            token?: string | null;
+            recaptchaToken?: string | null;
+            firstName?: string | null;
+            lastName?: string | null;
+            emailAddress?: string | null;
+            phoneNumber?: string | null;
+            countryId?: string | null;
+            employerName?: string | null;
+            positionTitle?: string | null;
+            startDate?: string | null; // date-time
+            endDate?: string | null; // date-time
+            workedWithChildren?: boolean | null;
+            childcareAgeRanges?: ChildcareAgeRanges[] | null;
+            referenceRelationship?: ReferenceRelationship;
+            dateSigned?: string | null; // date-time
+        }
         export interface IdentificationType {
             id?: string | null;
             name?: string | null;
@@ -702,7 +719,7 @@ declare namespace Components {
             recaptchaToken?: string | null;
             workExperienceType: WorkExperienceTypes;
         }
-        export type WorkExperienceTypes = "Is400Hours" | "Is500Hours";
+        export type WorkExperienceTypes = "Is400Hours" | "Is500Hours" | "ICRA";
         export type WorkHoursType = "FullTime" | "PartTime";
         export type YesNoNull = "No" | "Yes";
     }
@@ -1023,6 +1040,14 @@ declare namespace Paths {
             }
         }
     }
+    namespace IcraWorkExperienceReferencePost {
+        export type RequestBody = Components.Schemas.ICRAWorkExperienceReferenceSubmissionRequest;
+        namespace Responses {
+            export interface $200 {
+            }
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+        }
+    }
     namespace IdentificationTypesGet {
         namespace Parameters {
             export type ById = string;
@@ -1341,6 +1366,14 @@ export interface OperationMethods {
     data?: Paths.ReferenceOptout.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ReferenceOptout.Responses.$200>
+  /**
+   * icra_workExperience_reference_post - Handles ICRA work experience reference submission
+   */
+  'icra_workExperience_reference_post'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.IcraWorkExperienceReferencePost.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.IcraWorkExperienceReferencePost.Responses.$200>
   /**
    * icra_get - Handles icra queries
    */
@@ -1736,6 +1769,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ReferenceOptout.Responses.$200>
   }
+  ['/api/References/ICRAWorkExperience']: {
+    /**
+     * icra_workExperience_reference_post - Handles ICRA work experience reference submission
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.IcraWorkExperienceReferencePost.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.IcraWorkExperienceReferencePost.Responses.$200>
+  }
   ['/api/icra/{id}']: {
     /**
      * icra_put - Save a draft icra eligibility for the current user
@@ -2048,6 +2091,7 @@ export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProb
 export type ICRAEligibility = Components.Schemas.ICRAEligibility;
 export type ICRAEligibilitySubmissionRequest = Components.Schemas.ICRAEligibilitySubmissionRequest;
 export type ICRAStatus = Components.Schemas.ICRAStatus;
+export type ICRAWorkExperienceReferenceSubmissionRequest = Components.Schemas.ICRAWorkExperienceReferenceSubmissionRequest;
 export type IdentificationType = Components.Schemas.IdentificationType;
 export type IdentityDocument = Components.Schemas.IdentityDocument;
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
