@@ -49,6 +49,16 @@ const postWorkExperienceReference = async (
   });
 };
 
+const postIcraEligibilityWorkExperienceReference = async (
+  icraEligibilityWorkExperienceSubmission: Components.Schemas.ICRAWorkExperienceReferenceSubmissionRequest,
+): Promise<ApiResponse<any>> => {
+  const client = await getClient();
+  return apiResultHandler.execute({
+    request: client.icra_workExperience_reference_post(null, icraEligibilityWorkExperienceSubmission),
+    key: "icra_workExperience_reference_post",
+  });
+};
+
 const resendCharacterReference = async (params: Paths.ApplicationCharacterReferenceResendInvitePost.PathParameters): Promise<ApiResponse<any>> => {
   const client = await getClient();
   return apiResultHandler.execute({
@@ -92,6 +102,7 @@ export {
   optOutReference,
   postCharacterReference,
   postWorkExperienceReference,
+  postIcraEligibilityWorkExperienceReference,
   resendCharacterReference,
   resendWorkExperienceReference,
   upsertCharacterReference,

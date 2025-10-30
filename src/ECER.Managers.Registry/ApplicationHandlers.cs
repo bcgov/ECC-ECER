@@ -226,6 +226,7 @@ public class ApplicationHandlers(
       case InviteType.WorkExperienceReferenceforICRA:
         var icraReferenceId = portalInvitation.WorkexperienceReferenceId!;
         var icraPayload = mapper.Map<Resources.Documents.ICRA.ICRAWorkExperienceReferenceSubmissionRequest>(request.ICRAWorkExperienceReferenceSubmissionRequest!);
+        icraPayload.DateSigned = DateTime.Today;
         await iCRARepository.SubmitEmploymentReference(icraReferenceId, icraPayload, cancellationToken);
         break;
     }

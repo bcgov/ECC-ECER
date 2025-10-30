@@ -44,6 +44,11 @@ export default defineComponent({
      * @param value - JS date value as a string
      */
     updateModelValue(value: Date) {
+      //allows the ability to clear the date if necessary
+      if (!value) {
+        this.$emit("update:model-value", "");
+        return;
+      }
       const luxonDate = DateTime.fromJSDate(new Date(value));
       const formattedDate = luxonDate.toFormat("yyyy-MM-dd");
       this.$emit("update:model-value", formattedDate);

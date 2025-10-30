@@ -295,6 +295,31 @@ export const useWizardStore = defineStore("wizard", {
         }),
       });
     },
+    initializeWizardForWorkExReferenceIcraEligibility(wizard: Wizard, portalInvitation: Components.Schemas.PortalInvitation) {
+      this.$reset();
+      this.wizardConfig = wizard;
+
+      this.setWizardData({
+        applicantFirstName: portalInvitation.applicantFirstName,
+        applicantLastName: portalInvitation.applicantLastName,
+        referenceFirstName: portalInvitation.referenceFirstName,
+        referenceLastName: portalInvitation.referenceLastName,
+        inviteType: portalInvitation.inviteType,
+        ...(wizard?.steps?.contactInformation?.form?.inputs?.icraEligibilityWorkExperienceContactInformation?.id && {
+          [wizard.steps.contactInformation.form.inputs.icraEligibilityWorkExperienceContactInformation.id]:
+            {} as Components.Schemas.ReferenceContactInformation,
+        }),
+        ...(wizard?.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id && {
+          [wizard.steps.workExperienceEvaluation.form.inputs.workExperienceEvaluation.id]: {},
+        }),
+        ...(wizard?.steps?.review?.form?.inputs?.confirmProvidedInformationIsRight?.id && {
+          [wizard.steps.review.form.inputs.confirmProvidedInformationIsRight.id]: false,
+        }),
+        ...(wizard?.steps?.review?.form?.inputs?.recaptchaToken?.id && {
+          [wizard.steps.review.form.inputs.recaptchaToken.id]: "",
+        }),
+      });
+    },
     setWizardData(wizardData: WizardData): void {
       this.wizardData = { ...this.wizardData, ...wizardData };
     },
