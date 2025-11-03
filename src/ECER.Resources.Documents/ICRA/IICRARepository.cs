@@ -1,5 +1,4 @@
-﻿
-using ECER.Resources.Documents.Applications;
+﻿using ECER.Resources.Documents.Applications;
 
 namespace ECER.Resources.Documents.ICRA;
 
@@ -63,8 +62,8 @@ public record EmploymentReference
   public string? FirstName { get; set; }
   public string? EmailAddress { get; set; }
   public string? PhoneNumber { get; set; }
+  public WorkExperienceTypesIcra Type { get; set; }
 }
-
 
 public record ICRAWorkExperienceReferenceSubmissionRequest
 {
@@ -103,4 +102,7 @@ public enum ICRAStatus
   ReadyforAssessment
 }
 
-
+public enum WorkExperienceTypesIcra
+{
+  ICRA,
+}

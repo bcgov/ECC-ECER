@@ -46,7 +46,7 @@ export default defineComponent({
     updateModelValue(value: Date) {
       //allows the ability to clear the date if necessary
       if (!value) {
-        this.$emit("update:model-value", "");
+        this.$emit("update:model-value", undefined);
         return;
       }
       const luxonDate = DateTime.fromJSDate(new Date(value));
