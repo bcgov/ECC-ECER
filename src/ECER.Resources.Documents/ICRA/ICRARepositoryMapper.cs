@@ -71,20 +71,20 @@ internal class ICRARepositoryMapper : Profile
         .ConvertUsingEnumMapping(o => o.MapByName(true));
 
     CreateMap<EmploymentReference, ecer_WorkExperienceRef>(MemberList.Source)
-      .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.Id)? null : s.Id))
+      .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.Id) ? null : s.Id))
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
-      .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber));
+      .ForMember(d => d.ecer_PhoneNumber, opts => opts.MapFrom(s => s.PhoneNumber))
+      .ForMember(d => d.ecer_Type, opts => opts.MapFrom(s => s.Type));
 
     CreateMap<ecer_WorkExperienceRef, EmploymentReference>(MemberList.Destination)
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.ecer_WorkExperienceRefId))
       .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.ecer_FirstName))
       .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.ecer_LastName))
       .ForMember(d => d.EmailAddress, opts => opts.MapFrom(s => s.ecer_EmailAddress))
-      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber));
-
-
+      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
+      .ForMember(d => d.Type, opts => opts.MapFrom(s => s.ecer_Type));
 
     CreateMap<ICRAWorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
       .ForSourceMember(s => s.CountryId, opts => opts.DoNotValidate())

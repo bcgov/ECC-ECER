@@ -377,8 +377,8 @@ export default defineComponent({
       onlineCertificateValidationToolOfRegulatoryAuthority: "",
       certificateStatus: "Expired",
       certificateTitle: "",
-      issueDate: "",
-      expiryDate: "",
+      issueDate: undefined,
+      expiryDate: undefined,
       files: [],
       newFiles: [],
       deletedFiles: [],
@@ -627,8 +627,8 @@ export default defineComponent({
       this.onlineCertificateValidationToolOfRegulatoryAuthority = "";
       this.certificateStatus = undefined;
       this.certificateTitle = "";
-      this.issueDate = "";
-      this.expiryDate = "";
+      this.issueDate = undefined;
+      this.expiryDate = undefined;
       this.files = [];
       this.newFiles = [];
       this.deletedFiles = [];

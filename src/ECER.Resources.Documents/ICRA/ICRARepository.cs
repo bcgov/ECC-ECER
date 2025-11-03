@@ -140,7 +140,7 @@ internal sealed partial class ICRARepository : IICRARepository
     }
     else
     {
-      workExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.ICRAEligibilitySubmitted;
+      workExperienceReference.StatusCode = ecer_WorkExperienceRef_StatusCode.EligibilityResponseSubmitted;
     }
     context.UpdateObject(workExperienceReference);
     context.SaveChanges();

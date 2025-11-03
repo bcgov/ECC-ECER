@@ -44,9 +44,9 @@
             <v-btn
               v-else-if="wizardStore.step === userReviewStep"
               :loading="
-                wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER
-                  ? loadingStore.isLoading('character_reference_post')
-                  : loadingStore.isLoading('workExperience_reference_post')
+                loadingStore.isLoading('character_reference_post') ||
+                loadingStore.isLoading('workExperience_reference_post') ||
+                loadingStore.isLoading('icra_workExperience_reference_post')
               "
               rounded="lg"
               variant="flat"
@@ -67,10 +67,17 @@
 import { defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import { getReference, optOutReference, postCharacterReference, postWorkExperienceReference } from "@/api/reference";
+import {
+  getReference,
+  optOutReference,
+  postCharacterReference,
+  postWorkExperienceReference,
+  postIcraEligibilityWorkExperienceReference,
+} from "@/api/reference";
 import characterReferenceWizard from "@/config/character-reference-wizard";
 import workExperienceReference400HoursWizard from "@/config/work-experience-reference-400-hours-wizard";
 import workExperienceReferenceWizard from "@/config/work-experience-reference-wizard";
+import IcraEligibilityWorkExperienceReferenceWizard from "@/config/icra-eligibility/icra-eligibility-work-experience-reference-wizard";
 import { useAlertStore } from "@/store/alert";
 import { useLoadingStore } from "@/store/loading";
 import { useWizardStore } from "@/store/wizard";
@@ -112,6 +119,9 @@ export default defineComponent({
     } else if (data?.portalInvitation?.inviteType === PortalInviteType.CHARACTER) {
       wizardStore.initializeWizardForCharacterReference(characterReferenceWizard, data.portalInvitation);
       wizardConfigSetup = characterReferenceWizard;
+    } else if (data?.portalInvitation?.inviteType === PortalInviteType.ICRA_WORK_EXPERIENCE) {
+      wizardStore.initializeWizardForWorkExReferenceIcraEligibility(IcraEligibilityWorkExperienceReferenceWizard, data.portalInvitation);
+      wizardConfigSetup = IcraEligibilityWorkExperienceReferenceWizard;
     }
     return {
       alertStore,
@@ -137,7 +147,16 @@ export default defineComponent({
       return this.wizardStore.steps.findIndex((step) => step.stage === "Review") + 1;
     },
     inviteTypeTitle(): string {
-      return this.wizardStore.wizardData?.inviteType === PortalInviteType.WORK_EXPERIENCE ? "Work experience reference" : "Character reference";
+      switch (this.wizardStore.wizardData?.inviteType) {
+        case PortalInviteType.CHARACTER:
+          return "Character reference";
+        case PortalInviteType.WORK_EXPERIENCE:
+          return "Work experience reference";
+        case PortalInviteType.ICRA_WORK_EXPERIENCE:
+          return "Employment verification";
+        default:
+          return `Unhandled portal invite type ${this.wizardStore.wizardData?.inviteType}`;
+      }
     },
   },
   watch: {
@@ -187,6 +206,19 @@ export default defineComponent({
         return;
       }
 
+      switch (this.wizardStore.wizardData.inviteType) {
+        case PortalInviteType.CHARACTER:
+        case PortalInviteType.WORK_EXPERIENCE:
+          await this.handleSubmitReferenceFlow();
+          break;
+        case PortalInviteType.ICRA_WORK_EXPERIENCE:
+          await this.handleSubmitIcraEligibilityReferenceFlow();
+          break;
+        default:
+          this.alertStore.setFailureAlert(`Unhandled portal invite type ${this.wizardStore.wizardData?.inviteType}`);
+      }
+    },
+    async handleSubmitReferenceFlow() {
       if (this.wizardStore.wizardData.inviteType === PortalInviteType.CHARACTER) {
         const response = await postCharacterReference({
           token: this.route.params.token as string,
@@ -246,6 +278,39 @@ export default defineComponent({
         if (!response?.error) {
           this.router.push({ path: "/reference-submitted" });
         }
+      }
+    },
+    async handleSubmitIcraEligibilityReferenceFlow() {
+      const icraEligibilityContact =
+        this.wizardStore.wizardData[
+          this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.icraEligibilityWorkExperienceContactInformation?.id || ""
+        ];
+
+      const icraWorkExperienceEvaluation =
+        this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.workExperienceEvaluation?.form?.inputs?.workExperienceEvaluation?.id || ""];
+
+      const response = await postIcraEligibilityWorkExperienceReference({
+        token: this.route.params.token as string,
+        willProvideReference: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.declaration?.form?.inputs?.willProvideReference?.id || ""],
+        recaptchaToken: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.review?.form?.inputs?.recaptchaToken?.id || ""],
+        //contact step
+        firstName: icraEligibilityContact.firstName,
+        lastName: icraEligibilityContact.lastName,
+        emailAddress: icraEligibilityContact.email,
+        phoneNumber: icraEligibilityContact.phoneNumber,
+        //work experience evaluation step
+        countryId: icraWorkExperienceEvaluation.countryId,
+        employerName: icraWorkExperienceEvaluation.employerName,
+        positionTitle: icraWorkExperienceEvaluation.positionTitle,
+        startDate: icraWorkExperienceEvaluation.startDate,
+        endDate: icraWorkExperienceEvaluation.endDate,
+        workedWithChildren: icraWorkExperienceEvaluation.workedWithChildren,
+        childcareAgeRanges: icraWorkExperienceEvaluation.childcareAgeRanges,
+        referenceRelationship: icraWorkExperienceEvaluation.referenceRelationship,
+      });
+
+      if (!response?.error) {
+        this.router.push({ path: "/reference-submitted" });
       }
     },
     async handleDecline() {

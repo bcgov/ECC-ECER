@@ -70,6 +70,7 @@ public record EmploymentReference
   public string? FirstName { get; set; }
   public string? EmailAddress { get; set; }
   public string? PhoneNumber { get; set; }
+  public WorkExperienceTypesIcra Type { get; set; }
 }
 
 public record ICRAWorkExperienceReferenceSubmissionRequest
@@ -107,4 +108,9 @@ public enum ICRAStatus
   ReadyforReview,
   Submitted,
   ReadyforAssessment
+}
+
+public enum WorkExperienceTypesIcra
+{
+  ICRA,
 }

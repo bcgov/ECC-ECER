@@ -252,7 +252,7 @@ export default defineComponent({
     async handleDelete(_reference: Components.Schemas.EmploymentReference, index: number) {
       this.$emit("update:model-value", removeElementByIndex(this.modelValue, index));
 
-      // await this.icraStore.saveDraft();
+      await this.icraStore.saveDraft();
 
       this.alertStore.setSuccessAlert("You have deleted your reference.");
     },
