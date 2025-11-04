@@ -13,6 +13,7 @@ public class ICRAEligibilityMapper : Profile
     CreateMap<InternationalCertification, Managers.Registry.Contract.ICRA.InternationalCertification>()
       .ReverseMap();
     CreateMap<EmploymentReference, Managers.Registry.Contract.ICRA.EmploymentReference>()
+      .ForMember(dest => dest.Type, opt => opt.Ignore())
       .ForMember(d => d.Status, o => o.Ignore())
       .ForMember(d => d.WillProvideReference, o => o.Ignore())
       .ReverseMap();
@@ -26,5 +27,6 @@ public class ICRAEligibilityMapper : Profile
       .ForCtorParam(nameof(EmploymentReference.EmailAddress), o => o.MapFrom(s => s.EmailAddress))
       .ForMember(d => d.PhoneNumber, o => o.MapFrom(s => s.PhoneNumber))
       .ForMember(d => d.WillProvideReference, o => o.MapFrom(s => s.WillProvideReference));
+
   }
 }

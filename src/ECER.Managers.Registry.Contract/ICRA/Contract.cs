@@ -72,6 +72,7 @@ public record EmploymentReference
   public string? PhoneNumber { get; set; }
   public Applications.WorkExperienceRefStage? Status { get; set; }
   public bool? WillProvideReference { get; set; }
+  public WorkExperienceTypesIcra Type { get; set; }
 }
 
 public record ICRAWorkExperienceReferenceSubmissionRequest
@@ -109,4 +110,9 @@ public enum ICRAStatus
   ReadyforReview,
   Submitted,
   ReadyforAssessment
+}
+
+public enum WorkExperienceTypesIcra
+{
+  ICRA,
 }
