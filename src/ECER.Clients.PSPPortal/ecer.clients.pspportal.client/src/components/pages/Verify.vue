@@ -2,35 +2,35 @@
     <div></div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { onMounted } from 'vue';
 import { getPortalInvitation } from '@/api/portal-invitation';
 import { useUserStore } from '@/store/user';
 import { PortalInviteType } from '@/utils/constant';
 import { useRoute, useRouter } from 'vue-router';
 
+const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore();
 
-export default {
-    async setup() {
-        const router = useRouter();
-        const route = useRoute();
-        const userStore = useUserStore();
-        const { data, error } = await getPortalInvitation(route.params.token as string);
+onMounted(async () => {
+    const { data, error } = await getPortalInvitation(route.params.token as string);
 
-        if (error) {
-            console.log("error", error);
+    if (error) {
+        console.log("error", error);
+        router.push("/invalid-invitation");
+        return;
+    }
+
+    if (data?.portalInvitation?.inviteType === PortalInviteType.PSIProgramRepresentative) {
+        const programRepresentativeId = data?.portalInvitation?.pspProgramRepresentativeId;
+        console.log("programRepresentativeId", programRepresentativeId);
+        if (programRepresentativeId) {
+            userStore.setInvitedProgramRepresentativeId(programRepresentativeId);
+            router.push("/login");
+        } else {
             router.push("/invalid-invitation");
         }
-
-        if (data?.portalInvitation?.inviteType === PortalInviteType.PSIProgramRepresentative) {
-            // store the program representative id in the store and let the user continue to authentication flow
-            const programRepresentativeId = data?.portalInvitation?.pspProgramRepresentativeId;
-            if (programRepresentativeId) {
-                userStore.setInvitedProgramRepresentativeId(programRepresentativeId);
-                router.push("/login");
-            } else {
-                router.push("/invalid-invitation");
-            }
-        }
-    },
-};
+    }
+});
 </script>

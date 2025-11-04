@@ -56,7 +56,9 @@ public class ProfileEndpoints : IRegisterEndpoints
           return TypedResults.Ok();
         })
       .WithOpenApi("Register new Psp Program Representative", string.Empty, "psp_user_register_post")
-      .RequireAuthorization("psp_new_user");
+      .RequireAuthorization("psp_new_user")
+      .WithParameterValidation();
+
   }
 }
 

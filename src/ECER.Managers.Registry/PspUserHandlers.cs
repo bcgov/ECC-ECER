@@ -6,7 +6,7 @@ using MediatR;
 
 namespace ECER.Managers.Registry;
 
-public class PspUserHandlers(IPspRepRepository pspRepRepository, IPostSecondaryInstituteRepository postSecondaryInstituteRepository, IMapper mapper, IServiceProvider serviceProvider)
+public class PspUserHandlers(IPspRepRepository pspRepRepository, IPostSecondaryInstituteRepository postSecondaryInstituteRepository, IMapper mapper)
   : IRequestHandler<SearchPspRepQuery, PspRepQueryResults>,
     IRequestHandler<UpdatePspRepProfileCommand, string>,
     IRequestHandler<RegisterPspUserCommand, RegisterPspUserResult>

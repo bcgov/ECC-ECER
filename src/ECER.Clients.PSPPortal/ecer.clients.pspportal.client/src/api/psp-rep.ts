@@ -9,10 +9,10 @@ const getPspUserProfile = async (): Promise<Components.Schemas.PspUserProfile | 
   return response?.data ?? null;
 };
 
-const postPspUserProfile = async (pspUserProfile: Components.Schemas.PspUserProfile): Promise<Components.Schemas.PspUserProfile | null> => {
+const registerPspUser = async (pspUserProfile: Components.Schemas.PspUserProfile): Promise<Components.Schemas.PspUserProfile | null> => {
   const client = await getClient();
-  const response = await apiResultHandler.execute({ request: client.psp_user_profile_post({}, pspUserProfile), key: "psp_user_profile_post" });
+  const response = await apiResultHandler.execute({ request: client.psp_user_register_post({}, pspUserProfile), key: "psp_user_register_post" });
   return response?.data ?? null;
 };
 
-export { getPspUserProfile, postPspUserProfile };
+export { getPspUserProfile, registerPspUser };

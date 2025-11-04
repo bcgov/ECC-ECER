@@ -83,7 +83,14 @@ declare namespace Paths {
       export interface $404 {}
     }
   }
-  namespace PspUserProfilePost {
+  namespace PspUserProfilePut {
+    export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+    }
+  }
+  namespace PspUserRegisterPost {
     export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
     namespace Responses {
       export interface $200 {}
@@ -123,13 +130,21 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>;
   /**
-   * psp_user_profile_post - Create Program Representative
+   * psp_user_profile_put - Update a psp user profile
    */
-  "psp_user_profile_post"(
+  "psp_user_profile_put"(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.PspUserProfilePost.RequestBody,
+    data?: Paths.PspUserProfilePut.RequestBody,
     config?: AxiosRequestConfig,
-  ): OperationResponse<Paths.PspUserProfilePost.Responses.$200>;
+  ): OperationResponse<Paths.PspUserProfilePut.Responses.$200>;
+  /**
+   * psp_user_register_post - Register new Psp Program Representative
+   */
+  "psp_user_register_post"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.PspUserRegisterPost.RequestBody,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.PspUserRegisterPost.Responses.$200>;
   /**
    * portal_invitation_get - Handles portal invitation queries
    */
@@ -166,16 +181,24 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>;
+    /**
+     * psp_user_profile_put - Update a psp user profile
+     */
+    "put"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.PspUserProfilePut.RequestBody,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PspUserProfilePut.Responses.$200>;
   };
   ["/api/users/register"]: {
     /**
-     * psp_user_profile_post - Create Program Representative
+     * psp_user_register_post - Register new Psp Program Representative
      */
     "post"(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.PspUserProfilePost.RequestBody,
+      data?: Paths.PspUserRegisterPost.RequestBody,
       config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.PspUserProfilePost.Responses.$200>;
+    ): OperationResponse<Paths.PspUserRegisterPost.Responses.$200>;
   };
   ["/api/PortalInvitations/{token}"]: {
     /**

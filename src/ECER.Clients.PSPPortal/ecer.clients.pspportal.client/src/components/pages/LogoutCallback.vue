@@ -1,4 +1,6 @@
-<template><div></div></template>
+<template>
+  <div></div>
+</template>
 
 <script lang="ts">
 import { useOidcStore } from "@/store/oidc";
@@ -19,7 +21,7 @@ export default {
   methods: {
     async handleCallback() {
       await this.oidcStore.completeLogout();
-      this.userStore.$reset();
+      this.userStore.setPspUserProfile(null);
       this.router.push("/login");
     },
   },

@@ -54,7 +54,7 @@ router.beforeEach(async (to, _) => {
 
   if (!user) {
     // Reset user store to clear any stale data
-    userStore.$reset();
+    userStore.setPspUserProfile(null);
   }
 
   // instead of having to check every route record with

@@ -12,7 +12,7 @@ import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
 import type { PspUserProfile } from "@/types/openapi";
-import { getPspUserProfile, postPspUserProfile } from "@/api/psp-rep";
+import { getPspUserProfile, registerPspUser } from "@/api/psp-rep";
 
 export default defineComponent({
   name: "Dashboard",
@@ -53,12 +53,13 @@ export default defineComponent({
 
     if (!this.pspUserProfile) {
       // Register a new PSP user profile
-      this.pspUserProfile = await postPspUserProfile({
+      console.log("registering new psp user profile", this.userStore.invitedProgramRepresentativeId);
+      this.pspUserProfile = await registerPspUser({
         firstName: user.profile.firstName as string,
         lastName: user.profile.lastName as string,
         email: user.profile.email,
         bceidBusinessId: user.profile.bceidBusinessId as string,
-        programRepresentativeId: "1", // TODO: Get program representative id from portal invitation
+        programRepresentativeId: this.userStore.invitedProgramRepresentativeId as string,
       });
     }
   },

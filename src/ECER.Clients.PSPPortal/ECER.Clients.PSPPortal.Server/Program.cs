@@ -99,8 +99,8 @@ internal class Program
             .AddAuthenticationSchemes("kc")
             .RequireClaim(PSPPortalClaims.IdenityProvider)
             .RequireClaim(ClaimTypes.Name)
-            .RequireClaim(PSPPortalClaims.UserId)
-            .RequireClaim(PSPPortalClaims.TermsOfUse, "false")
+            // .RequireClaim(PSPPortalClaims.UserId)
+            // .RequireClaim(PSPPortalClaims.TermsOfUse, "false")
             .RequireAuthenticatedUser();
         });
 
