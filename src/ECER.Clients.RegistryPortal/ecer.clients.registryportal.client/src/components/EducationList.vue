@@ -66,7 +66,7 @@
 
     <!-- EceAssistant -->
     <v-col v-if="applicationStore.draftApplicationFlow === 'Assistant'">
-      <p class="mb-3">You must have completed an early childhood education course in at least one of the following:</p>
+      <p class="mb-3">You must have completed a basic early childhood education course in at least one of the following:</p>
       <ul class="ml-10 mb-3">
         <li>Child guidance</li>
         <li>Child health, safety, and nutrition</li>
