@@ -71,6 +71,8 @@ internal class ICRARepositoryMapper : Profile
         .ConvertUsingEnumMapping(o => o.MapByName(true));
 
     CreateMap<EmploymentReference, ecer_WorkExperienceRef>(MemberList.Source)
+      .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.Id)? null : s.Id))
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
@@ -82,7 +84,9 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.ecer_FirstName))
       .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.ecer_LastName))
       .ForMember(d => d.EmailAddress, opts => opts.MapFrom(s => s.ecer_EmailAddress))
-      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber));
+      .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
+      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+      .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.ecer_WillProvideReference.HasValue ? s.ecer_WillProvideReference.Equals(ecer_YesNoNull.Yes) : default(bool?)));
 
 
 
@@ -103,6 +107,7 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.ReferenceRelationship))
       .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
+
   }
 
   public static string IdOrEmpty(EntityReference? reference) =>

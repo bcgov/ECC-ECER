@@ -70,6 +70,8 @@ public record EmploymentReference
   public string? FirstName { get; set; }
   public string? EmailAddress { get; set; }
   public string? PhoneNumber { get; set; }
+  public Applications.WorkExperienceRefStage? Status { get; set; }
+  public bool? WillProvideReference { get; set; }
 }
 
 public record ICRAWorkExperienceReferenceSubmissionRequest
