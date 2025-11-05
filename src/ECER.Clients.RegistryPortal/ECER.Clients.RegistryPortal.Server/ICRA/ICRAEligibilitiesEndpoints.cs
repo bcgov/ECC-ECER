@@ -195,7 +195,7 @@ public record ICRAEligibilityStatus(string Id, DateTime? CreatedOn, DateTime? Si
   public IEnumerable<EmploymentReferenceStatus> EmploymentReferencesStatus { get; set; } = Array.Empty<EmploymentReferenceStatus>();
 }
 
-public record EmploymentReferenceStatus(string Id, Managers.Registry.Contract.Applications.WorkExperienceRefStage? Status, string? FirstName, string? LastName, string? EmailAddress)
+public record EmploymentReferenceStatus(string Id, Applications.WorkExperienceRefStage? Status, string? FirstName, string? LastName, string? EmailAddress)
 {
   public string? PhoneNumber { get; set; }
   public bool? WillProvideReference { get; set; }
