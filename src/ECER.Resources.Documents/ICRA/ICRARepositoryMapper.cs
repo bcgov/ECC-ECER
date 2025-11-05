@@ -71,7 +71,9 @@ internal class ICRARepositoryMapper : Profile
         .ConvertUsingEnumMapping(o => o.MapByName(true));
 
     CreateMap<EmploymentReference, ecer_WorkExperienceRef>(MemberList.Source)
-      .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.Id) ? null : s.Id))
+      .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
+      .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.Id)? null : s.Id))
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
@@ -84,7 +86,9 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.ecer_LastName))
       .ForMember(d => d.EmailAddress, opts => opts.MapFrom(s => s.ecer_EmailAddress))
       .ForMember(d => d.PhoneNumber, opts => opts.MapFrom(s => s.ecer_PhoneNumber))
-      .ForMember(d => d.Type, opts => opts.MapFrom(s => s.ecer_Type));
+      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode))
+      .ForMember(d => d.Type, opts => opts.MapFrom(s => s.ecer_Type))
+      .ForMember(d => d.WillProvideReference, opts => opts.MapFrom(s => s.ecer_WillProvideReference.HasValue ? s.ecer_WillProvideReference.Equals(ecer_YesNoNull.Yes) : default(bool?)));
 
     CreateMap<ICRAWorkExperienceReferenceSubmissionRequest, ecer_WorkExperienceRef>(MemberList.Source)
       .ForSourceMember(s => s.CountryId, opts => opts.DoNotValidate())
@@ -103,6 +107,7 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.ReferenceRelationship))
       .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
+
   }
 
   public static string IdOrEmpty(EntityReference? reference) =>
