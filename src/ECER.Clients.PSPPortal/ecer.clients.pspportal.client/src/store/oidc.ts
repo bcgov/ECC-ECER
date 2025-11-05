@@ -17,28 +17,17 @@ export const useOidcStore = defineStore("oidc", {
     async oidcUserInfo(): Promise<any> {
       const user = await this.getUser();
 
-      if (user?.profile.identity_provider === "bceidbasic") {
-        let { firstName, lastName } = parseFirstNameLastName(user?.profile.given_name || "");
-        return {
-          dateOfBirth: undefined,
-          firstName: firstName,
-          givenName: "",
-          lastName: lastName,
-          phone: "",
-          email: user ? (user.profile.email ?? "") : "",
-          address: "",
-        };
-      } else if (user?.profile.identity_provider === "bcsc") {
-        return {
-          dateOfBirth: user ? (user.profile.birthdate ?? undefined) : undefined,
-          firstName: user ? (user.profile.given_name ?? "") : "",
-          givenName: user ? (user.profile.given_names ?? "") : "",
-          lastName: user ? (user.profile.family_name ?? "") : "",
-          phone: user ? (user.profile.phone_number ?? "") : "",
-          email: user ? (user.profile.email ?? "") : "",
-          address: user ? (user.profile.address ?? "") : "",
-        };
-      }
+      let { firstName, lastName } = parseFirstNameLastName(user?.profile.given_name || "");
+      return {
+        dateOfBirth: undefined,
+        firstName: firstName,
+        givenName: "",
+        lastName: lastName,
+        phone: "",
+        email: user ? (user.profile.email ?? "") : "",
+        address: "",
+        bceidBusinessId: user ? (user.profile.bceid_business_guid ?? "") : "",
+      };
     },
 
     async oidcIdentityProvider(): Promise<any> {

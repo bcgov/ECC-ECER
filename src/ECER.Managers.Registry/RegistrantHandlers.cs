@@ -44,7 +44,7 @@ public class RegistrantHandlers(IRegistrantRepository registrantRepository, ICer
   }
 
   /// <summary>
-  /// Handles register a new registty user use case
+  /// Handles register a new registy user use case
   /// </summary>
   /// <returns>the user id of the newly created user</returns>
   /// <exception cref="InvalidOperationException"></exception>

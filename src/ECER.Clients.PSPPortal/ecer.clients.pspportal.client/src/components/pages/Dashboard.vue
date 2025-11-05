@@ -24,11 +24,14 @@ export default defineComponent({
       pspUserProfile: null as PspUserProfile | null,
     };
   },
-  setup() {
+  async setup() {
     const oidcStore = useOidcStore();
     const userStore = useUserStore();
     const router = useRouter();
-    return { oidcStore, router, userStore };
+
+    const oidcUserInfo = await oidcStore.oidcUserInfo();
+
+    return { oidcStore, router, userStore, oidcUserInfo };
   },
   async mounted() {
     let user;
@@ -53,13 +56,12 @@ export default defineComponent({
 
     if (!this.pspUserProfile) {
       // Register a new PSP user profile
-      console.log("registering new psp user profile", this.userStore.invitedProgramRepresentativeId);
       this.pspUserProfile = await registerPspUser({
         firstName: user.profile.firstName as string,
         lastName: user.profile.lastName as string,
         email: user.profile.email,
-        bceidBusinessId: user.profile.bceidBusinessId as string,
         programRepresentativeId: this.userStore.invitedProgramRepresentativeId as string,
+        bceidBusinessId: this.oidcUserInfo.bceidBusinessId as string,
       });
     }
   },

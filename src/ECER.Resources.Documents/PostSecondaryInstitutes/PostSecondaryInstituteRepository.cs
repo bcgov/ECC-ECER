@@ -27,13 +27,23 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
     {
       if (Guid.TryParse(query.ByProgramRepresentativeId, out var repId))
       {
-        programReps = context.ecer_ECEProgramRepresentativeSet;
-        
+        var programReps = context.ecer_ECEProgramRepresentativeSet;
+        programReps = programReps.Where(r => r.ecer_ECEProgramRepresentativeId == repId);
+        var rep = programReps.SingleOrDefault();
+        if (rep != null)
+        {
+          institutes = institutes.Where(r => r.ecer_PostSecondaryInstituteId == rep.ecer_PostSecondaryInstitute.Id);
+        }
+        else
+        {
+          return Array.Empty<PostSecondaryInstitute>();
+        }
       }
     }
-    
 
-    return mapper.Map<IEnumerable<PostSecondaryInstitute>>(results).ToList();
+    var results = context.From(institutes).Execute();
+    
+    return mapper.Map<IEnumerable<PostSecondaryInstitute>>(results)!.ToList();
   }
 
   public async Task Save(PostSecondaryInstitute institute, CancellationToken ct)
