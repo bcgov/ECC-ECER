@@ -117,7 +117,6 @@
             v-model="expiryDate"
             :rules="[Rules.futureDateNotAllowedRule(), Rules.dateBeforeRule(issueDate || '')]"
             label="Expiry date"
-            :max="today"
             @update:model-value="validateDates"
             append-inner-icon="mdi-calendar"
           ></EceDateInput>
