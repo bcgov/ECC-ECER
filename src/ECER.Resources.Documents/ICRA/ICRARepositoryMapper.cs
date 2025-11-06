@@ -30,6 +30,7 @@ internal class ICRARepositoryMapper : Profile
       .ForSourceMember(s => s.DeletedFiles, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Files, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.CountryId, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_OtherFirstName, opts => opts.MapFrom(s => s.OtherFirstName))
       .ForMember(d => d.ecer_OtherMiddleName, opts => opts.MapFrom(s => s.OtherMiddleName))
       .ForMember(d => d.ecer_OtherLastName, opts => opts.MapFrom(s => s.OtherLastName))
@@ -62,7 +63,8 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.ExpiryDate, opts => opts.MapFrom(s => s.ecer_Expirydate))
       .ForMember(d => d.NewFiles, opts => opts.Ignore())
       .ForMember(d => d.DeletedFiles, opts => opts.Ignore())
-      .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_internationalcertificationid.ToList()));
+      .ForMember(d => d.Files, opts => opts.MapFrom(src => src.ecer_bcgov_documenturl_internationalcertificationid.ToList()))
+      .ForMember(d => d.Status, opts => opts.MapFrom(s => s.StatusCode));
 
     CreateMap<ecer_ICRAEligibilityAssessment_StatusCode, ICRAStatus>()
       .ConvertUsingEnumMapping(o => o.MapByName(true));
@@ -73,7 +75,7 @@ internal class ICRARepositoryMapper : Profile
     CreateMap<EmploymentReference, ecer_WorkExperienceRef>(MemberList.Source)
       .ForSourceMember(s => s.Status, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.WillProvideReference, opts => opts.DoNotValidate())
-      .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.Id)? null : s.Id))
+      .ForMember(d => d.ecer_WorkExperienceRefId, opts => opts.MapFrom(s => string.IsNullOrEmpty(s.Id) ? null : s.Id))
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
       .ForMember(d => d.ecer_LastName, opts => opts.MapFrom(s => s.LastName))
       .ForMember(d => d.ecer_EmailAddress, opts => opts.MapFrom(s => s.EmailAddress))
@@ -107,7 +109,6 @@ internal class ICRARepositoryMapper : Profile
       .ForMember(d => d.ecer_RelationshiptoApplicant, opts => opts.MapFrom(s => s.ReferenceRelationship))
       .ForMember(d => d.ecer_WillProvideReference, opts => opts.MapFrom(s => s.WillProvideReference ? ecer_YesNoNull.Yes : ecer_YesNoNull.No))
       .ForMember(d => d.ecer_DateSigned, opts => opts.MapFrom(s => s.DateSigned));
-
   }
 
   public static string IdOrEmpty(EntityReference? reference) =>

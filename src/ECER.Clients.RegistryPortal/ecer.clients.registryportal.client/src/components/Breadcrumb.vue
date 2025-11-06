@@ -388,6 +388,23 @@ export default defineComponent({
             { title: "Declaration", disabled: true, href: "/icra-eligibility/declaration" },
           ];
 
+        case "manage-icra-eligibility":
+          return [
+            ...this.baseItems,
+            { title: "Apply with international certification", disabled: true, href: `/icra-eligibility/manage/${params.icraEligibilityId}` },
+          ];
+
+        case "manage-icra-eligibility-work-experience-references":
+          return [
+            ...this.baseItems,
+            { title: "Apply with international certification", disabled: false, href: `/icra-eligibility/manage/${params.icraEligibilityId}` },
+            {
+              title: "Employment experience references",
+              disabled: true,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-references`,
+            },
+          ];
+
         default:
           return this.baseItems;
       }

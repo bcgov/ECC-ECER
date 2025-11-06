@@ -61,6 +61,8 @@ public record InternationalCertification
   public IEnumerable<Applications.FileInfo> Files { get; set; } = Array.Empty<ECER.Managers.Registry.Contract.Applications.FileInfo>();
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
+  public InternationalCertificationStatus status { get; set; }
+
 }
 
 public record EmploymentReference
@@ -111,6 +113,20 @@ public enum ICRAStatus
   Submitted,
   ReadyforAssessment
 }
+
+public enum InternationalCertificationStatus
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  ICRAEligibilitySubmitted,
+  Inactive,
+  InProgress,
+  Rejected,
+  UnderReview,
+  WaitingforResponse,
+}
+
 
 public enum WorkExperienceTypesIcra
 {
