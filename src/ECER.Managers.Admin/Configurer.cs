@@ -21,6 +21,7 @@ public class Configurer : IConfigureComponents
 public record PortalAppSettings : IOptions<PortalAppSettings>
 {
   public string BaseUrl { get; set; } = string.Empty;
+  public string PspBaseUrl { get; set; } = string.Empty;
   public string ReferenceVerificationRoute { get; set; } = string.Empty;
   public PortalAppSettings Value => this;
 }
