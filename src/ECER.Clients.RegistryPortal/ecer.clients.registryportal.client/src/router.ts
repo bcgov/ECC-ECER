@@ -340,6 +340,13 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
+      path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-references",
+      name: "manage-icra-eligibility-work-experience-references",
+      component: () => import("./components/IcraEligibilityManageWorkExperienceReferences.vue"),
+      props: true,
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
       path: "/lookup/certification/record",
       component: () => import("./components/LookupCertificationRecord.vue"),
       meta: { requiresAuth: false },

@@ -283,6 +283,16 @@ declare namespace Components {
             firstName?: string | null;
             emailAddress?: string | null;
             phoneNumber?: string | null;
+            status?: ICRAStatus;
+        }
+        export interface EmploymentReferenceStatus {
+            id?: string | null;
+            status?: WorkExperienceRefStage;
+            firstName?: string | null;
+            lastName?: string | null;
+            emailAddress?: string | null;
+            phoneNumber?: string | null;
+            willProvideReference?: boolean | null;
         }
         export interface FileInfo {
             id?: string | null;
@@ -326,6 +336,14 @@ declare namespace Components {
             status?: ICRAStatus;
             internationalCertifications?: InternationalCertification[] | null;
             employmentReferences?: EmploymentReference[] | null;
+        }
+        export interface ICRAEligibilityStatus {
+            id?: string | null;
+            createdOn?: string | null; // date-time
+            signedDate?: string | null; // date-time
+            status?: ICRAStatus;
+            internationalCertifications?: InternationalCertification[] | null;
+            employmentReferencesStatus?: EmploymentReferenceStatus[] | null;
         }
         export interface ICRAEligibilitySubmissionRequest {
             id?: string | null;
@@ -382,7 +400,9 @@ declare namespace Components {
             files?: FileInfo[] | null;
             deletedFiles?: string[] | null;
             newFiles?: string[] | null;
+            status?: InternationalCertificationStatus;
         }
+        export type InternationalCertificationStatus = "ApplicationSubmitted" | "Approved" | "Draft" | "ICRAEligibilitySubmitted" | "Inactive" | "InProgress" | "Rejected" | "UnderReview" | "WaitingforResponse";
         export type InviteType = "CharacterReference" | "PSIProgramRepresentative" | "WorkExperienceReferenceforApplication" | "WorkExperienceReferenceforICRA";
         export type LikertScale = "Yes" | "No";
         export interface OidcAuthenticationSettings {
@@ -1041,6 +1061,19 @@ declare namespace Paths {
             }
         }
     }
+    namespace IcraStatusGet {
+        namespace Parameters {
+            export type Id = string;
+        }
+        export interface PathParameters {
+            id: Parameters.Id;
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ICRAEligibilityStatus;
+            export type $400 = Components.Schemas.HttpValidationProblemDetails;
+            export type $404 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+        }
+    }
     namespace IcraWorkExperienceReferencePost {
         export type RequestBody = Components.Schemas.ICRAWorkExperienceReferenceSubmissionRequest;
         namespace Responses {
@@ -1399,6 +1432,14 @@ export interface OperationMethods {
     data?: Paths.IcraPost.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.IcraPost.Responses.$200>
+  /**
+   * icra_status_get - Handles icra eligibility status queries
+   */
+  'icra_status_get'(
+    parameters?: Parameters<Paths.IcraStatusGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.IcraStatusGet.Responses.$200>
   /**
    * files_certificate_get - Handles fetching certificate PDF's
    */
@@ -1808,6 +1849,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.IcraPost.Responses.$200>
   }
+  ['/api/icra/{id}/status']: {
+    /**
+     * icra_status_get - Handles icra eligibility status queries
+     */
+    'get'(
+      parameters?: Parameters<Paths.IcraStatusGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.IcraStatusGet.Responses.$200>
+  }
   ['/api/files/certificate/{certificateId}']: {
     /**
      * files_certificate_get - Handles fetching certificate PDF's
@@ -2084,12 +2135,14 @@ export type DraftICRAEligibilityResponse = Components.Schemas.DraftICRAEligibili
 export type EducationOrigin = Components.Schemas.EducationOrigin;
 export type EducationRecognition = Components.Schemas.EducationRecognition;
 export type EmploymentReference = Components.Schemas.EmploymentReference;
+export type EmploymentReferenceStatus = Components.Schemas.EmploymentReferenceStatus;
 export type FileInfo = Components.Schemas.FileInfo;
 export type FileResponse = Components.Schemas.FileResponse;
 export type FiveYearRenewalExplanations = Components.Schemas.FiveYearRenewalExplanations;
 export type GetMessagesResponse = Components.Schemas.GetMessagesResponse;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
 export type ICRAEligibility = Components.Schemas.ICRAEligibility;
+export type ICRAEligibilityStatus = Components.Schemas.ICRAEligibilityStatus;
 export type ICRAEligibilitySubmissionRequest = Components.Schemas.ICRAEligibilitySubmissionRequest;
 export type ICRAStatus = Components.Schemas.ICRAStatus;
 export type ICRAWorkExperienceReferenceSubmissionRequest = Components.Schemas.ICRAWorkExperienceReferenceSubmissionRequest;
@@ -2097,6 +2150,7 @@ export type IdentificationType = Components.Schemas.IdentificationType;
 export type IdentityDocument = Components.Schemas.IdentityDocument;
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
 export type InternationalCertification = Components.Schemas.InternationalCertification;
+export type InternationalCertificationStatus = Components.Schemas.InternationalCertificationStatus;
 export type InviteType = Components.Schemas.InviteType;
 export type LikertScale = Components.Schemas.LikertScale;
 export type OidcAuthenticationSettings = Components.Schemas.OidcAuthenticationSettings;
