@@ -8,6 +8,11 @@ namespace ECER.Resources.Accounts.PspReps;
 public interface IPspRepRepository
 {
   /// <summary>
+  /// Attach identity to a Psp representative
+  /// </summary>
+  Task<string> AttachIdentity(PspUser user, CancellationToken ct);
+  
+  /// <summary>
   /// Query Psp representatives
   /// </summary>
   /// <returns>Enumerable of Psp representatives</returns>

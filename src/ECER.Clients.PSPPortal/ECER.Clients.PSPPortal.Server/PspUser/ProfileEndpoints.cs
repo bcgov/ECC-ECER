@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
@@ -35,9 +36,10 @@ public class ProfileEndpoints : IRegisterEndpoints
         async Task<Results<Ok, BadRequest<ProblemDetails>>> (PspUserProfile pspUserProfile, HttpContext ctx,
           CancellationToken ct, IMediator bus, IMapper mapper) =>
         {
+          var pspUser = new PspUser(ctx.User.GetUserContext()!.UserId, mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(pspUserProfile)!);
           await bus.Send(
-            new RegisterPspUserCommand(
-              mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(pspUserProfile)!),
+            new UpdatePspRepProfileCommand(
+              mapper.Map<PspUser>(pspUser)!),
             ctx.RequestAborted);
           return TypedResults.Ok();
         })
@@ -46,12 +48,13 @@ public class ProfileEndpoints : IRegisterEndpoints
       .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/users/register",
-        async Task<Results<Ok, BadRequest<ProblemDetails>>> (PspUserProfile pspUserProfile, HttpContext ctx,
+        async Task<Results<Ok, BadRequest<ProblemDetails>>> (RegisterPspUserRequest request, HttpContext ctx,
           CancellationToken ct, IMediator bus, IMapper mapper) =>
         {
+          var user = ctx.User.GetUserContext()!;
           await bus.Send(
-            new RegisterPspUserCommand(
-              mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(pspUserProfile)!),
+            new RegisterPspUserCommand(request.Token, request.ProgramRepresentativeId, request.BceidBusinessId,
+              mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(request.Profile)!, user.Identity),
             ctx.RequestAborted);
           return TypedResults.Ok();
         })
@@ -63,14 +66,20 @@ public class ProfileEndpoints : IRegisterEndpoints
 }
 
 /// <summary>
+/// Request to register a new psp user
+/// </summary>
+public record RegisterPspUserRequest([Required] string Token, [Required] string ProgramRepresentativeId, [Required] string BceidBusinessId)
+{
+  [Required]
+  public PspUserProfile Profile { get; set; } = null!;
+};
+
+/// <summary>
 /// User profile information
 /// </summary>
 public record PspUserProfile
 {
-  public string Id { get; set; } = null!;
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? Email { get; set; } = null!;
-  public string? BceidBusinessId { get; set; }
-  public string? ProgramRepresentativeId { get; set; }
 };

@@ -31,7 +31,9 @@ export default defineComponent({
 
     const oidcUserInfo = await oidcStore.oidcUserInfo();
 
-    return { oidcStore, router, userStore, oidcUserInfo };
+    return {
+      oidcStore, router, userStore, oidcUserInfo
+    };
   },
   async mounted() {
     let user;
