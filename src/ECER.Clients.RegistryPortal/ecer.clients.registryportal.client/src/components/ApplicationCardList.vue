@@ -130,6 +130,8 @@ import { DateTime } from "luxon";
 import Card from "@/components/Card.vue";
 import type { Components } from "@/types/openapi";
 import { useCertificationStore } from "@/store/certification";
+import { hasITE, hasSNE, isEceAssistant, isEceFiveYear, isEceOneYear } from "@/utils/certification";
+import { expiredMoreThan5Years } from "@/utils/functions";
 
 export default defineComponent({
   name: "ApplicationCardList",
@@ -153,46 +155,38 @@ export default defineComponent({
   },
   methods: {
     hasSne(activeFiveYearCertifications: Components.Schemas.Certification[]) {
-      return activeFiveYearCertifications.some((certification) => certification.levels?.some((level) => level.type === "SNE"));
+      return activeFiveYearCertifications.some((certification) => hasSNE(certification));
     },
     hasIte(activeFiveYearCertifications: Components.Schemas.Certification[]) {
-      return activeFiveYearCertifications.some((certification) => certification.levels?.some((level) => level.type === "ITE"));
+      return activeFiveYearCertifications.some((certification) => hasITE(certification));
     },
     hasBothIteAndSne(activeFiveYearCertifications: Components.Schemas.Certification[]) {
-      return activeFiveYearCertifications.some(
-        (certification) => certification.levels?.some((level) => level.type === "ITE") && certification.levels?.some((level) => level.type === "SNE"),
-      );
+      return activeFiveYearCertifications.some((certification) => hasITE(certification) && hasSNE(certification));
     },
     getActiveFiveYearCertifications() {
-      return this.certifications.filter(
-        (certification) => certification.levels?.some((level) => level.type === "ECE 5 YR") && certification.statusCode === "Active",
-      );
+      return this.certifications.filter((certification) => isEceFiveYear(certification) && certification.statusCode === "Active");
     },
   },
   computed: {
     showEceAssistantPathway() {
       // If the user does not have ECE assistant, or all the ECE assistant certifications have been expired for more than 5 years, show the ECE assistant pathway
-      const eceAssistantCertifications = this.certifications.filter((certification) => certification.levels?.some((level) => level.type === "Assistant"));
+      const eceAssistantCertifications = this.certifications.filter((certification) => isEceAssistant(certification));
 
-      return (
-        eceAssistantCertifications.length === 0 ||
-        eceAssistantCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification.id))
-      );
+      return eceAssistantCertifications.length === 0;
     },
     showEceOneYearPathway() {
       // If the user does not have ECE one year, or all the ECE one year certifications have been expired for more than 5 years, show the ECE one year pathway
-      const eceOneYearCertifications = this.certifications.filter((certification) => certification.levels?.some((level) => level.type === "ECE 1 YR"));
+      const eceOneYearCertifications = this.certifications.filter((certification) => isEceOneYear(certification));
 
       return (
         !this.showEceOneYearEdgeCasePathway &&
-        (eceOneYearCertifications.length === 0 ||
-          eceOneYearCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification.id)))
+        (eceOneYearCertifications.length === 0 || eceOneYearCertifications.every((certification) => expiredMoreThan5Years(certification)))
       );
     },
     showEceOneYearEdgeCasePathway() {
       // If the user has an expired ECE 5 YR certification, does not have an active ECE 1 YR certification, and is not showing standard ECE one year pathway, show the ECE one year edge case pathway
-      const eceFiveYearCertifications = this.certifications.filter((certification) => certification.levels?.some((level) => level.type === "ECE 5 YR"));
-      const eceOneYearCertifications = this.certifications.filter((certification) => certification.levels?.some((level) => level.type === "ECE 1 YR"));
+      const eceFiveYearCertifications = this.certifications.filter((certification) => isEceFiveYear(certification));
+      const eceOneYearCertifications = this.certifications.filter((certification) => isEceOneYear(certification));
 
       const mostRecentFiveYearCertificate = this.certificationStore.getMostRecentCertificationByExpiryDate("ECE 5 YR");
 
@@ -207,13 +201,13 @@ export default defineComponent({
         eceFiveYearCertifications.every((certification) => certification.statusCode === "Expired") &&
         eceOneYearCertifications.every((certification) => certification.statusCode === "Expired") &&
         (eceOneYearCertifications.length === 0 ||
-          eceOneYearCertifications.every((certification) => this.certificationStore.expiredMoreThan5Years(certification.id)) ||
+          eceOneYearCertifications.every((certification) => expiredMoreThan5Years(certification)) ||
           !oneYearCertificateIssuedAfterMostRecentFiveYear)
       );
     },
     showEceFiveYearPathway() {
       // If the user does not have ECE 5 YR, show the ECE 5 YR pathway
-      return !this.certifications.some((certification) => certification.levels?.some((level) => level.type === "ECE 5 YR"));
+      return !this.certifications.some((certification) => isEceFiveYear(certification));
     },
     showSpecializedCertificationPathway() {
       // If the user has an active ECE 5 YR certification, without holding ITE or SNE, show the specialized certification pathway

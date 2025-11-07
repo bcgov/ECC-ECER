@@ -174,7 +174,8 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
   public async Task<string> OptOutReference(OptOutReferenceRequest request, CancellationToken cancellationToken) => request.PortalInvitation!.InviteType switch
   {
     InviteType.CharacterReference => await OptOutCharacterReference(request),
-    InviteType.WorkExperienceReference => await OptOutWorkExperienceReference(request),
+    InviteType.WorkExperienceReferenceforApplication => await OptOutWorkExperienceReference(request),
+    InviteType.WorkExperienceReferenceforICRA => await OptOutWorkExperienceReference(request),
     _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
   };
 }

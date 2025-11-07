@@ -112,6 +112,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ProfessionalDevelopmentIdName = "ecer_professionaldevelopmentidname";
 			public const string ecer_psiprogramrepresentativeid = "ecer_psiprogramrepresentativeid";
 			public const string ecer_psiprogramrepresentativeidName = "ecer_psiprogramrepresentativeidname";
+			public const string ecer_Type = "ecer_type";
+			public const string ecer_typeName = "ecer_typename";
 			public const string ecer_ValidDays = "ecer_validdays";
 			public const string ecer_Views = "ecer_views";
 			public const string ecer_WorkExperienceReferenceId = "ecer_workexperiencereferenceid";
@@ -788,6 +790,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_psiprogramrepresentativeid"))
 				{
 					return this.FormattedValues["ecer_psiprogramrepresentativeid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_type")]
+		public virtual ecer_PortalInvitationTypes? ecer_Type
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_PortalInvitationTypes?)(EntityOptionSetEnum.GetEnum(this, "ecer_type")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_type", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_typename")]
+		public string ecer_typeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_type"))
+				{
+					return this.FormattedValues["ecer_type"];
 				}
 				else
 				{

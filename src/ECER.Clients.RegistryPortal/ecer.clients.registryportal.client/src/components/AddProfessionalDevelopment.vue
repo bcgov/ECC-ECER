@@ -11,24 +11,12 @@
           <br />
           <ul class="ml-10">
             <li>Be relevant to the field of early childhood education</li>
-            <li
-              v-if="
-                applicationStore.draftApplication.fromCertificate &&
-                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active'
-              "
-            >
+            <li v-if="fromCertificate && fromCertificate.statusCode === 'Active'">
               {{
-                `Have been completed within the term of your current certificate (Between ${formatDate(certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy")} to ${formatDate(certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy")})`
+                `Have been completed within the term of your current certificate (Between ${formatDate(fromCertificate?.effectiveDate || "", "LLLL d, yyyy")} to ${formatDate(fromCertificate?.expiryDate || "", "LLLL d, yyyy")})`
               }}
             </li>
-            <li
-              v-else-if="
-                applicationStore.draftApplication.fromCertificate &&
-                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'
-              "
-            >
-              Have been completed within the last 5 years
-            </li>
+            <li v-else-if="fromCertificate && fromCertificate.statusCode === 'Expired'">Have been completed within the last 5 years</li>
           </ul>
         </v-col>
       </v-row>
@@ -99,15 +87,15 @@ They should be able to confirm you completed the course or workshop."
                 Rules.required('Enter the start date of your course or workshop'),
                 Rules.futureDateNotAllowedRule(),
                 Rules.conditionalWrapper(
-                  certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active',
+                  !!(fromCertificate && fromCertificate.statusCode === 'Active'),
                   Rules.dateBetweenRule(
-                    certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate ?? '') || '',
-                    certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate ?? '') || '',
+                    fromCertificate?.effectiveDate || '',
+                    fromCertificate?.expiryDate || '',
                     'The start date of your course or workshop must be within the term of your current certificate',
                   ),
                 ),
                 Rules.conditionalWrapper(
-                  certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired',
+                  !!(fromCertificate && fromCertificate.statusCode === 'Expired'),
                   Rules.dateRuleRange(
                     applicationStore.draftApplication.createdOn || '',
                     5,
@@ -132,15 +120,15 @@ They should be able to confirm you completed the course or workshop."
                 Rules.futureDateNotAllowedRule(),
                 Rules.dateBeforeRule(professionalDevelopment.startDate || ''),
                 Rules.conditionalWrapper(
-                  certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active',
+                  !!(fromCertificate && fromCertificate.statusCode === 'Active'),
                   Rules.dateBetweenRule(
-                    certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate ?? '') || '',
-                    certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate ?? '') || '',
+                    fromCertificate?.effectiveDate || '',
+                    fromCertificate?.expiryDate || '',
                     'The end date of your course or workshop must be within the term of your current certificate',
                   ),
                 ),
                 Rules.conditionalWrapper(
-                  certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired',
+                  !!(fromCertificate && fromCertificate.statusCode === 'Expired'),
                   Rules.dateRuleRange(
                     applicationStore.draftApplication.createdOn || '',
                     5,
@@ -332,6 +320,9 @@ export default defineComponent({
     },
     showFileInput() {
       return this.professionalDevelopment.selection.includes("file");
+    },
+    fromCertificate() {
+      return this.certificationStore.getCertificationById(this.applicationStore.draftApplication.fromCertificate);
     },
   },
 

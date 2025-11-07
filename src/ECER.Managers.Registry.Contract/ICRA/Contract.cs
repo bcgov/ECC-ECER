@@ -61,6 +61,8 @@ public record InternationalCertification
   public IEnumerable<Applications.FileInfo> Files { get; set; } = Array.Empty<ECER.Managers.Registry.Contract.Applications.FileInfo>();
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
+  public InternationalCertificationStatus status { get; set; }
+
 }
 
 public record EmploymentReference
@@ -70,6 +72,27 @@ public record EmploymentReference
   public string? FirstName { get; set; }
   public string? EmailAddress { get; set; }
   public string? PhoneNumber { get; set; }
+  public Applications.WorkExperienceRefStage? Status { get; set; }
+  public bool? WillProvideReference { get; set; }
+  public WorkExperienceTypesIcra Type { get; set; }
+}
+
+public record ICRAWorkExperienceReferenceSubmissionRequest
+{
+  public string? FirstName { get; set; }
+  public string? LastName { get; set; }
+  public string? EmailAddress { get; set; }
+  public string? PhoneNumber { get; set; }
+  public string? CountryId { get; set; }
+  public string? EmployerName { get; set; }
+  public string? PositionTitle { get; set; }
+  public DateTime? StartDate { get; set; }
+  public DateTime? EndDate { get; set; }
+  public bool? WorkedWithChildren { get; set; }
+  public IEnumerable<Applications.ChildcareAgeRanges>? ChildcareAgeRanges { get; set; }
+  public Applications.ReferenceRelationship? ReferenceRelationship { get; set; }
+  public bool WillProvideReference { get; set; }
+  public DateTime? DateSigned { get; set; }
 }
 
 public enum CertificateStatus
@@ -89,4 +112,23 @@ public enum ICRAStatus
   ReadyforReview,
   Submitted,
   ReadyforAssessment
+}
+
+public enum InternationalCertificationStatus
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  ICRAEligibilitySubmitted,
+  Inactive,
+  InProgress,
+  Rejected,
+  UnderReview,
+  WaitingforResponse,
+}
+
+
+public enum WorkExperienceTypesIcra
+{
+  ICRA,
 }

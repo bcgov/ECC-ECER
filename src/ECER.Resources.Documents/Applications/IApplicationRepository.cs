@@ -140,7 +140,7 @@ public enum ApplicationStatus
   PendingQueue,
   PendingPSPConsultationNeeded,
   ReconsiderationDecision,
-  AppealDecision
+  AppealDecision,
 }
 
 public enum ApplicationOrigin
@@ -316,6 +316,7 @@ public enum WorkExperienceTypes
 {
   Is400Hours,
   Is500Hours,
+  ICRA
 }
 
 public enum ProfessionalDevelopmentStatusCode

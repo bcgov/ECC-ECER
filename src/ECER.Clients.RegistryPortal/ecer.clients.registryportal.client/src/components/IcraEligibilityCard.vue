@@ -21,7 +21,8 @@
         v-if="
           icraStore.icraEligibilityStatus === 'Submitted' ||
           icraStore.icraEligibilityStatus === 'ReadyforReview' ||
-          icraStore.icraEligibilityStatus === 'InReview'
+          icraStore.icraEligibilityStatus === 'InReview' ||
+          icraStore.icraEligibilityStatus === 'ReadyforAssessment'
         "
       >
         <v-btn variant="flat" size="large" color="warning" @click="handleManageIcraEligibility">
@@ -64,13 +65,14 @@ export default defineComponent({
   computed: {
     title(): string {
       switch (this.icraStore.icraEligibilityStatus) {
-        case "Draft":
-        case "Active":
-          return "Your submission to determine eligibility to apply with international certification is in progress";
         case "Submitted":
         case "InReview":
         case "ReadyforReview":
+        case "ReadyforAssessment":
           return "Your eligibility to apply with international certification is in review";
+        case "Draft":
+        case "Active":
+          return "Your submission to determine eligibility to apply with international certification is in progress";
         default:
           return "Apply with international certification";
       }
@@ -82,6 +84,7 @@ export default defineComponent({
         case "Submitted":
         case "InReview":
         case "ReadyforReview":
+        case "ReadyforAssessment":
           return `Started ${formatDate(this.icraStore.icraEligibility?.createdOn || "", "LLLL d, yyyy")}`;
         default:
           return "Apply for ECE Five Year Certification if you are internationally certified in a country that regulates the ECE profession and do not have 500 hours work experience supervised by a Canadian-certified ECE.";

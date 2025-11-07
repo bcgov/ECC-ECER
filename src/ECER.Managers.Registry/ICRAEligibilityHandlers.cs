@@ -47,6 +47,12 @@ public class ICRAEligibilityHandlers(
         throw new InvalidOperationException($"Applicant id: {request.eligibility.ApplicantId} has a draft ICRA in progress. A new draft cannot be created");
       }
     }
+
+    foreach(var reference in request.eligibility.EmploymentReferences)
+    {
+      reference.Type = Contract.ICRA.WorkExperienceTypesIcra.ICRA;
+    }
+
     var iCRAEligibilityId = await iCRARepository.Save(mapper.Map<Resources.Documents.ICRA.ICRAEligibility>(request.eligibility)!, cancellationToken);
 
     var freshIcraEligibilities = await iCRARepository.Query(new ICRAQuery

@@ -61,6 +61,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_application_DenialReasonType_ecer_denialr = "ecer_application_DenialReasonType_ecer_denialr";
+			public const string ecer_decisioncomment_ecer_denialreason = "ecer_decisioncomment_ecer_denialreason";
 			public const string ecer_DenialReason1 = "ecer_denialreason";
 			public const string ecer_DenialReasonId = "ecer_denialreasonid";
 			public const string Id = "ecer_denialreasonid";
@@ -692,6 +693,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_DenialReasonType_ecer_denialr", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_decisioncomment_ecer_denialreason
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_decisioncomment_ecer_denialreason")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Comment> ecer_decisioncomment_ecer_denialreason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Comment>("ecer_decisioncomment_ecer_denialreason", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Comment>("ecer_decisioncomment_ecer_denialreason", null, value);
 			}
 		}
 		

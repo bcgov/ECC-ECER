@@ -6,6 +6,7 @@ using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
+using ECER.Resources.Documents.ICRA;
 using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
 
@@ -20,7 +21,8 @@ public class ApplicationHandlers(
      IApplicationRepository applicationRepository,
      IMapper mapper,
      IApplicationValidationEngineResolver validationResolver,
-     EcerContext ecerContext)
+     EcerContext ecerContext,
+     IICRARepository iCRARepository)
   : IRequestHandler<SaveDraftApplicationCommand, Contract.Applications.Application?>,
     IRequestHandler<CancelDraftApplicationCommand, string>,
     IRequestHandler<SubmitApplicationCommand, ApplicationSubmissionResult>,
@@ -47,19 +49,26 @@ public class ApplicationHandlers(
     if (request.Application.Id == null)
     {
       // Check if a draft application already exists for the current user
-
       var applications = await applicationRepository.Query(new ApplicationQuery
       {
         ByApplicantId = request.Application.RegistrantId,
-        ByStatus = [Resources.Documents.Applications.ApplicationStatus.Draft]
+        ByStatus = new List<Resources.Documents.Applications.ApplicationStatus>
+        {
+          Resources.Documents.Applications.ApplicationStatus.Draft,
+          Resources.Documents.Applications.ApplicationStatus.Submitted,
+          Resources.Documents.Applications.ApplicationStatus.Ready,
+          Resources.Documents.Applications.ApplicationStatus.Escalated,
+          Resources.Documents.Applications.ApplicationStatus.Pending,
+          Resources.Documents.Applications.ApplicationStatus.InProgress,
+          Resources.Documents.Applications.ApplicationStatus.PendingPSPConsultationNeeded,
+          Resources.Documents.Applications.ApplicationStatus.PendingQueue,
+        }
       }, cancellationToken);
 
-      var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
-      var existingDraftApplication = draftApplicationResults.Items.FirstOrDefault();
-      if (existingDraftApplication != null)
+      if (applications.Any())
       {
         // user already has a draft application
-        throw new InvalidOperationException($"User already has a draft application with id '{existingDraftApplication.Id}'");
+        throw new InvalidOperationException($"User already has an application in progress with id '{applications.SingleOrDefault()!.Id}'");
       }
     }
     request.Application.Origin = Contract.Applications.ApplicationOrigin.Portal; // Set application origin to "Portal"
@@ -141,18 +150,28 @@ public class ApplicationHandlers(
 
     var applications = await applicationRepository.Query(new ApplicationQuery
     {
-      ById = request.applicationId,
       ByApplicantId = request.userId,
-      ByStatus = [Resources.Documents.Applications.ApplicationStatus.Draft]
+      ByStatus = new List<Resources.Documents.Applications.ApplicationStatus>
+      {
+        Resources.Documents.Applications.ApplicationStatus.Draft,
+        Resources.Documents.Applications.ApplicationStatus.Submitted,
+        Resources.Documents.Applications.ApplicationStatus.Ready,
+        Resources.Documents.Applications.ApplicationStatus.Escalated,
+        Resources.Documents.Applications.ApplicationStatus.Pending,
+        Resources.Documents.Applications.ApplicationStatus.InProgress,
+        Resources.Documents.Applications.ApplicationStatus.PendingPSPConsultationNeeded,
+        Resources.Documents.Applications.ApplicationStatus.PendingQueue,
+      }
     }, cancellationToken);
 
-    var draftApplicationResults = new ApplicationsQueryResults(mapper.Map<IEnumerable<Contract.Applications.Application>>(applications)!);
-    if (!draftApplicationResults.Items.Any())
+    var draftApplication = mapper.Map<Contract.Applications.Application>(applications.SingleOrDefault(dst =>
+      dst.Id == request.applicationId && dst.Status == Resources.Documents.Applications.ApplicationStatus.Draft));
+    var submittedApplications = mapper.Map<IEnumerable<Contract.Applications.Application>>(applications.Where(dst => dst.Status != Resources.Documents.Applications.ApplicationStatus.Draft));
+    
+    if (draftApplication == null)
     {
       return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
     }
-    var draftApplication = draftApplicationResults.Items.First();
-
     var validationEngine = validationResolver?.Resolve(draftApplication.ApplicationType);
     var validationErrors = await validationEngine?.Validate(draftApplication)!;
     if (validationErrors.ValidationErrors.Any())
@@ -169,6 +188,12 @@ public class ApplicationHandlers(
     {
       return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
     }
+
+    if (submittedApplications.Any())
+    {
+      return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.SubmittedApplicationAlreadyExists, ValidationErrors = new List<string>() { "submitted application already exists" } };
+    }
+    
     return new ApplicationSubmissionResult() { Application = mapper.Map<IEnumerable<Contract.Applications.Application>>(freshApplications)!.FirstOrDefault() };
   }
 
@@ -204,7 +229,7 @@ public class ApplicationHandlers(
 
     var transformationResponse = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.Token))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
     if (transformationResponse.PortalInvitation == Guid.Empty) return ReferenceSubmissionResult.Failure("Invalid Token");
-
+    
     var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(transformationResponse.PortalInvitation), cancellationToken);
     if (portalInvitation.StatusCode != PortalInvitationStatusCode.Sent) return ReferenceSubmissionResult.Failure("Portal Invitation is not valid or expired");
 
@@ -217,13 +242,23 @@ public class ApplicationHandlers(
         submitReferenceRequest = mapper.Map<Resources.Documents.Applications.CharacterReferenceSubmissionRequest>(request.CharacterReferenceSubmissionRequest);
         break;
 
-      case InviteType.WorkExperienceReference:
+      case InviteType.WorkExperienceReferenceforApplication:
         submitReferenceRequest = mapper.Map<Resources.Documents.Applications.WorkExperienceReferenceSubmissionRequest>(request.WorkExperienceReferenceSubmissionRequest);
+        break;
+
+      case InviteType.WorkExperienceReferenceforICRA:
+        var icraReferenceId = portalInvitation.WorkexperienceReferenceId!;
+        var icraPayload = mapper.Map<Resources.Documents.ICRA.ICRAWorkExperienceReferenceSubmissionRequest>(request.ICRAWorkExperienceReferenceSubmissionRequest!);
+        icraPayload.DateSigned = DateTime.Today;
+        await iCRARepository.SubmitEmploymentReference(icraReferenceId, icraPayload, cancellationToken);
         break;
     }
     submitReferenceRequest.PortalInvitation = portalInvitation;
     submitReferenceRequest.DateSigned = DateTime.Today;
-    await applicationRepository.SubmitReference(submitReferenceRequest, cancellationToken);
+    if (portalInvitation.InviteType == InviteType.CharacterReference || portalInvitation.InviteType == InviteType.WorkExperienceReferenceforApplication)
+    {
+      await applicationRepository.SubmitReference(submitReferenceRequest, cancellationToken);
+    }
     await portalInvitationRepository.Complete(new CompletePortalInvitationCommand(transformationResponse.PortalInvitation), cancellationToken);
     ecerContext.CommitTransaction();
     return ReferenceSubmissionResult.Success();

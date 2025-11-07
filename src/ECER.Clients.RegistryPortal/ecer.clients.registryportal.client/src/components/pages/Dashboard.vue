@@ -347,12 +347,7 @@ export default defineComponent({
       return (
         this.applicationStore.applicationStatus === undefined ||
         this.applicationStore.applicationStatus === "Draft" ||
-        this.applicationStore.applicationStatus === "Submitted" ||
-        this.applicationStore.applicationStatus === "Ready" ||
-        this.applicationStore.applicationStatus === "InProgress" ||
-        this.applicationStore.applicationStatus === "PendingQueue" ||
-        this.applicationStore.applicationStatus === "Pending" ||
-        this.applicationStore.applicationStatus === "Escalated"
+        this.applicationStore.hasSubmittedApplication
       );
     },
     showTransferCard(): boolean {
@@ -360,6 +355,16 @@ export default defineComponent({
         !this.certificationStore.hasCertifications &&
         !this.applicationStore.hasApplication &&
         !this.applicationStore.hasDraftApplication &&
+        !this.icraStore.hasDraftIcraEligibility &&
+        !this.icraStore.hasSubmittedIcraEligibility
+      );
+    },
+    showIcraCard(): boolean {
+      return (
+        (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) &&
+        !this.applicationStore.hasApplication &&
+        !this.applicationStore.hasDraftApplication &&
+        !this.icraStore.hasSubmittedIcraEligibility &&
         !this.icraStore.hasIcraEligibilityInProcess
       );
     },
@@ -367,17 +372,14 @@ export default defineComponent({
       if (this.configurationStore.applicationConfiguration.icraFeatureEnabled === false) {
         return false;
       }
-
       // do not show if there is an application in process
       if (this.applicationStore.hasApplication || this.applicationStore.hasDraftApplication) {
         return false;
       }
-
       if (this.icraStore.hasIcraEligibilityInProcess || this.icraStore.icraEligibilityStatus === undefined) {
         return true;
       }
-
-      return false; 
+      return false;
     },
     showLoading(): boolean {
       return (

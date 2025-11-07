@@ -1,4 +1,6 @@
-﻿namespace ECER.Resources.Documents.ICRA;
+﻿using ECER.Resources.Documents.Applications;
+
+namespace ECER.Resources.Documents.ICRA;
 
 public interface IICRARepository
 {
@@ -9,6 +11,8 @@ public interface IICRARepository
   Task<string> Submit(string icraEligibilityId, CancellationToken cancellationToken);
 
   Task<string> SetIneligibleForUnitTests(string icraEligibilityId, CancellationToken cancellationToken);
+
+  Task<string> SubmitEmploymentReference(string referenceId, ICRAWorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken);
 }
 
 public record ICRAQuery
@@ -49,6 +53,7 @@ public record InternationalCertification
   public IEnumerable<Applications.FileInfo> Files { get; set; } = Array.Empty<Applications.FileInfo>();
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
+  public InternationalCertificationStatus Status { get; set; }
 }
 
 public record EmploymentReference
@@ -58,6 +63,27 @@ public record EmploymentReference
   public string? FirstName { get; set; }
   public string? EmailAddress { get; set; }
   public string? PhoneNumber { get; set; }
+  public WorkExperienceRefStage? Status { get; set; }
+  public bool? WillProvideReference { get; set; }
+  public WorkExperienceTypesIcra Type { get; set; }
+}
+
+public record ICRAWorkExperienceReferenceSubmissionRequest
+{
+  public string? FirstName { get; set; }
+  public string? LastName { get; set; }
+  public string? EmailAddress { get; set; }
+  public string? PhoneNumber { get; set; }
+  public string? CountryId { get; set; }
+  public string? EmployerName { get; set; }
+  public string? PositionTitle { get; set; }
+  public DateTime? StartDate { get; set; }
+  public DateTime? EndDate { get; set; }
+  public bool? WorkedWithChildren { get; set; }
+  public IEnumerable<ChildcareAgeRanges>? ChildcareAgeRanges { get; set; }
+  public ReferenceRelationship? ReferenceRelationship { get; set; }
+  public bool WillProvideReference { get; set; }
+  public DateTime? DateSigned { get; set; }
 }
 
 public enum CertificateStatus
@@ -77,4 +103,22 @@ public enum ICRAStatus
   ReadyforReview,
   Submitted,
   ReadyforAssessment
+}
+
+public enum InternationalCertificationStatus
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  ICRAEligibilitySubmitted,
+  Inactive,
+  InProgress,
+  Rejected,
+  UnderReview,
+  WaitingforResponse,
+}
+
+public enum WorkExperienceTypesIcra
+{
+  ICRA,
 }

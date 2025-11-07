@@ -2,7 +2,7 @@
   <v-card elevation="0" rounded="0" class="border-t border-b">
     <v-card-text>
       <div class="d-flex" :class="[smAndUp ? 'space-between align-center' : 'flex-column']">
-        <div v-if="!active">
+        <div v-if="!active || !showLink">
           <p>{{ text }}</p>
         </div>
         <a v-else href="#" @click.prevent="buttonClick">
@@ -36,6 +36,11 @@ export default defineComponent({
     goTo: {
       type: Function,
       required: true,
+    },
+    showLink: {
+      type: Boolean,
+      required: false,
+      default: true,
     },
   },
   setup: async () => {

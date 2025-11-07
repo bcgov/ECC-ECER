@@ -89,6 +89,32 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
         .WithOpenApi("Submit an ICRA Eligibility", string.Empty, "icra_post")
         .RequireAuthorization()
         .WithParameterValidation();
+
+    endpointRouteBuilder.MapGet("/api/icra/{id}/status", async Task<Results<Ok<ICRAEligibilityStatus>, BadRequest<ProblemDetails>, NotFound<ProblemDetails>>> (string id, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+        {
+          var userId = ctx.User.GetUserContext()?.UserId;
+          bool IdIsNotGuid = !Guid.TryParse(id, out _);
+          if (IdIsNotGuid)
+          {
+            return TypedResults.BadRequest(new ProblemDetails() { Title = "ICRAEligibilityId is not valid" });
+          }
+
+          var query = new ICRAEligibilitiesQuery
+          {
+            ById = id,
+            ByApplicantId = userId
+          };
+          var result = await messageBus.Send(query, ct);
+          var eligibility = result.Items.FirstOrDefault();
+          if (eligibility == null)
+          {
+            return TypedResults.NotFound(new ProblemDetails() { Title = "ICRA eligibility not found" });
+          }
+          return TypedResults.Ok(mapper.Map<ICRAEligibilityStatus>(eligibility));
+        })
+        .WithOpenApi("Handles icra eligibility status queries", string.Empty, "icra_status_get")
+        .RequireAuthorization()
+        .WithParameterValidation();
   }
 }
 
@@ -103,10 +129,8 @@ public record ICRAEligibility()
   public string? Id { get; set; }
   public string ApplicantId { get; set; } = string.Empty;
   public string? PortalStage { get; set; }
-
   public DateTime? SignedDate { get; set; }
   public DateTime? CreatedOn { get; set; }
-
   public ICRAStatus Status { get; set; }
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
   public IEnumerable<EmploymentReference> EmploymentReferences { get; set; } = Array.Empty<EmploymentReference>();
@@ -131,6 +155,7 @@ public record InternationalCertification
   public IEnumerable<Applications.FileInfo> Files { get; set; } = Array.Empty<Applications.FileInfo>();
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
+  public InternationalCertificationStatus Status { get; set; }
 }
 
 public enum CertificateStatus
@@ -146,6 +171,7 @@ public record EmploymentReference
   public string? FirstName { get; set; }
   public string? EmailAddress { get; set; }
   public string? PhoneNumber { get; set; }
+  public ICRAStatus? Status { get; set; }
 }
 
 public enum ICRAStatus
@@ -161,5 +187,30 @@ public enum ICRAStatus
   ReadyforAssessment
 }
 
+public enum InternationalCertificationStatus
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  ICRAEligibilitySubmitted,
+  Inactive,
+  InProgress,
+  Rejected,
+  UnderReview,
+  WaitingforResponse,
+}
+
 public record ICRAEligibilitySubmissionRequest(string Id);
 public record SubmitICRAEligibilityResponse(ICRAEligibility Eligibility);
+
+public record ICRAEligibilityStatus(string Id, DateTime? CreatedOn, DateTime? SignedDate, ICRAStatus Status)
+{
+  public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
+  public IEnumerable<EmploymentReferenceStatus> EmploymentReferencesStatus { get; set; } = Array.Empty<EmploymentReferenceStatus>();
+}
+
+public record EmploymentReferenceStatus(string Id, Applications.WorkExperienceRefStage? Status, string? FirstName, string? LastName, string? EmailAddress)
+{
+  public string? PhoneNumber { get; set; }
+  public bool? WillProvideReference { get; set; }
+}

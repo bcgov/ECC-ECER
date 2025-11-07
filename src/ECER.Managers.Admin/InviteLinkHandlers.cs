@@ -13,7 +13,7 @@ public class InviteLinkHandlers(IPortalInvitationTransformationEngine transforma
   {
     ArgumentNullException.ThrowIfNull(request);
 
-    var response = await transformationEngine.Transform(new EncryptInviteTokenRequest(request.PortalInvitation, request.InviteType, request.ValidDays))! as EncryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
+    var response = await transformationEngine.Transform(new EncryptInviteTokenRequest(request.PortalInvitation, request.ValidDays))! as EncryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
     string verificationLink = $"{portalAppSettings.Value.BaseUrl}/{portalAppSettings.Value.ReferenceVerificationRoute}/{response.VerificationToken}";
     return new GenerateInviteLinkCommandResponse(response.PortalInvitation, verificationLink);
   }

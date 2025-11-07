@@ -9,7 +9,7 @@
         You must have completed:
       </p>
       <ul class="ml-10">
-        <li>Basic early childhood education training program</li>
+        <li>Basic early childhood education program</li>
         <li>Infant and toddler educator training program</li>
         <li>Special needs early childhood educator training program</li>
       </ul>
@@ -20,7 +20,7 @@
         You must have completed:
       </p>
       <ul class="ml-10">
-        <li>Basic early childhood education training program</li>
+        <li>Basic early childhood education program</li>
         <li>Infant and toddler educator training program</li>
       </ul>
     </v-col>
@@ -30,7 +30,7 @@
         You must have completed:
       </p>
       <ul class="ml-10">
-        <li>Basic early childhood education training program</li>
+        <li>Basic early childhood education program</li>
         <li>Special needs early childhood educator training program</li>
       </ul>
     </v-col>
@@ -61,12 +61,12 @@
         applicationStore.draftApplicationFlow === 'FiveYearRegistrant'
       "
     >
-      <p>You must have completed a basic early childhood education training program.</p>
+      <p>You must have completed a basic early childhood education program.</p>
     </v-col>
 
     <!-- EceAssistant -->
     <v-col v-if="applicationStore.draftApplicationFlow === 'Assistant'">
-      <p class="mb-3">You must have completed an early childhood education course in at least one of the following:</p>
+      <p class="mb-3">You must have completed a basic early childhood education course in at least one of the following:</p>
       <ul class="ml-10 mb-3">
         <li>Child guidance</li>
         <li>Child health, safety, and nutrition</li>
@@ -77,7 +77,7 @@
 
     <!-- renewal flows -->
     <v-col v-if="applicationStore.draftApplicationFlow === 'AssistantRenewal'">
-      <p class="mb-3">You must have completed a new course in an early childhood education training program.</p>
+      <p class="mb-3">You must have completed a new course in a basic early childhood education program.</p>
       <p class="mb-4">The course must:</p>
       <ul class="ml-10">
         <li>Have been completed within the last 5 years</li>
