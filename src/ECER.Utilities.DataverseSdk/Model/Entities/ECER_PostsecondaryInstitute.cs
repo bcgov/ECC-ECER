@@ -63,15 +63,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Auspice = "ecer_auspice";
 			public const string ecer_auspiceName = "ecer_auspicename";
 			public const string ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute = "ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute";
+			public const string ecer_BusinessBCeID = "ecer_businessbceid";
 			public const string ecer_City = "ecer_city";
+			public const string ecer_communication_EducationInstitutionId = "ecer_communication_EducationInstitutionId";
 			public const string ecer_contact_representedpsiid_ecer_postsecondaryinstitute = "ecer_contact_representedpsiid_ecer_postsecondaryinstitute";
 			public const string ecer_Country = "ecer_country";
 			public const string ecer_CountryId = "ecer_countryid";
 			public const string ecer_CountryIdName = "ecer_countryidname";
 			public const string ecer_documentfulladdress = "ecer_documentfulladdress";
-			public const string ecer_documentfullstreetaddress = "ecer_documentfullstreetaddress";
 			public const string ecer_eceprogramrepresentative_PostSecondaryIns = "ecer_eceprogramrepresentative_PostSecondaryIns";
 			public const string ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution = "ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution";
+			public const string ecer_educationinstitutionpreviousname_EducationInstitution = "ecer_educationinstitutionpreviousname_EducationInstitution";
 			public const string ecer_IdNumber = "ecer_idnumber";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_OfferBasicECE = "ecer_offerbasicece";
@@ -319,6 +321,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_businessbceid")]
+		public string ecer_BusinessBCeID
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_businessbceid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_businessbceid", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_city")]
 		public string ecer_City
 		{
@@ -388,16 +405,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<string>("ecer_documentfulladdress");
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentfullstreetaddress")]
-		public string ecer_documentfullstreetaddress
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetAttributeValue<string>("ecer_documentfullstreetaddress");
 			}
 		}
 		
@@ -1224,6 +1231,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_communication_EducationInstitutionId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_EducationInstitutionId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Communication> ecer_communication_EducationInstitutionId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_EducationInstitutionId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_EducationInstitutionId", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_contact_representedpsiid_ecer_postsecondaryinstitute
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_contact_representedpsiid_ecer_postsecondaryinstitute")]
@@ -1274,6 +1299,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Course>("ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_educationinstitutionpreviousname_EducationInstitution
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_educationinstitutionpreviousname_EducationInstitution")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_EducationInstitutionPreviousName> ecer_educationinstitutionpreviousname_EducationInstitution
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_EducationInstitutionPreviousName>("ecer_educationinstitutionpreviousname_EducationInstitution", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_EducationInstitutionPreviousName>("ecer_educationinstitutionpreviousname_EducationInstitution", null, value);
 			}
 		}
 		

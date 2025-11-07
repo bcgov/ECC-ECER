@@ -25,7 +25,7 @@ import { useWizardStore } from "./wizard";
 export interface ApplicationState {
   applications: Components.Schemas.Application[] | null | undefined;
   draftApplication: Components.Schemas.DraftApplication;
-  application: Components.Schemas.Application | null;
+  application: Components.Schemas.Application | null | undefined;
 }
 
 export type ApplicationFlow =

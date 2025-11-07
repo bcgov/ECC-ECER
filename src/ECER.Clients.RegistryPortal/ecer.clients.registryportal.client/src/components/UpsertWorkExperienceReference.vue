@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 import { getApplicationStatus } from "@/api/application";
 import { upsertWorkExperienceReference } from "@/api/reference";
@@ -83,8 +83,7 @@ export default defineComponent({
     const formStore = useFormStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
-    const route = useRoute();
-    const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
 
     let reference: Components.Schemas.WorkExperienceReference | undefined = undefined;
 
@@ -130,7 +129,7 @@ export default defineComponent({
         if (refSet.has(`${this.formStore.formData.firstName.toLowerCase()} ${this.formStore.formData.lastName.toLowerCase()}`)) {
           this.isDuplicateReference = true;
           //scroll to top of page
-          window.scrollTo({
+          globalThis.scrollTo({
             top: 0,
             behavior: "smooth",
           });

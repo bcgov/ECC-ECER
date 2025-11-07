@@ -28,7 +28,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Campus
+	/// Reason for the status of the Post Secondary Institute Campus
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -70,6 +70,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_country = "ecer_country";
 			public const string ecer_countryName = "ecer_countryname";
 			public const string ecer_course_Campus_ecer_postsecondaryinstitute = "ecer_course_Campus_ecer_postsecondaryinstitute";
+			public const string ecer_documentcampuscondition = "ecer_documentcampuscondition";
 			public const string ecer_documentfulladdress = "ecer_documentfulladdress";
 			public const string ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId = "ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId";
 			public const string ecer_IdNumber = "ecer_idnumber";
@@ -354,6 +355,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 				{
 					return default(string);
 				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentcampuscondition")]
+		public string ecer_documentcampuscondition
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_documentcampuscondition");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_documentcampuscondition", value);
 			}
 		}
 		

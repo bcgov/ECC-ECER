@@ -172,13 +172,13 @@ export default defineComponent({
         }
       } else if (this.certification.certificatePDFGeneration === "Yes") {
         const file = await getCertificateFileById(this.certification.id ?? "");
-        this.pdfUrl = window.URL.createObjectURL(file.data);
+        this.pdfUrl = globalThis.URL.createObjectURL(file.data);
         this.fileSize = humanFileSize(file.data.size);
       }
     }
   },
   unmounted() {
-    window.URL.revokeObjectURL(this.pdfUrl);
+    globalThis.URL.revokeObjectURL(this.pdfUrl);
   },
   methods: {
     generateFileDisplayName() {

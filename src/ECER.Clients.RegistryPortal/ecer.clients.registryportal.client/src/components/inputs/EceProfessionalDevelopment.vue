@@ -504,14 +504,14 @@ export default defineComponent({
       this.resetFormData();
       // Change mode to list
       this.mode = "list";
-      window.scroll(0, 0);
+      globalThis.scroll(0, 0);
     },
     handleAddProfessionalDevelopment() {
       // Reset the form fields
       this.resetFormData();
       this.mode = "add";
       this.professionalDevelopmentFormMode = "add";
-      window.scroll(0, 0);
+      globalThis.scroll(0, 0);
     },
     handleEdit(professionalDevelopment: ProfessionalDevelopmentExtended) {
       // Set the form fields to component data
@@ -602,7 +602,7 @@ export default defineComponent({
             : "You have successfully added your professional development.",
         );
 
-        window.scroll(0, 0);
+        globalThis.scroll(0, 0);
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       }
@@ -613,7 +613,7 @@ export default defineComponent({
       this.newFilesWithData = []; // Reset attachments
       if (filesArray && filesArray.length > 0) {
         for (let i = 0; i < filesArray.length; i++) {
-          const file = filesArray[i];
+          const file = filesArray[i] as FileItem;
 
           // Check for file errors
           if (file.fileErrors && file.fileErrors.length > 0) {

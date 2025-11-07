@@ -63,7 +63,7 @@ export default defineComponent({
       this.messages = response.data?.communications || [];
       this.messageCount = response.data?.totalMessagesCount || 0;
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      globalThis.scrollTo({ top: 0, behavior: "smooth" });
 
       // After the list is rendered, select/load the first message if available
       await nextTick();

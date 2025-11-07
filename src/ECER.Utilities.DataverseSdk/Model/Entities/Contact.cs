@@ -715,6 +715,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_hascurrentcertificateconditionsName = "ecer_hascurrentcertificateconditionsname";
 			public const string ecer_HasProvidedID = "ecer_hasprovidedid";
 			public const string ecer_hasprovidedidName = "ecer_hasprovidedidname";
+			public const string ecer_icraeligibilityassessment_ApplicantId = "ecer_icraeligibilityassessment_ApplicantId";
 			public const string ecer_idverificationdecision = "ecer_idverificationdecision";
 			public const string ecer_idverificationdecisionName = "ecer_idverificationdecisionname";
 			public const string ecer_IneligibleReference = "ecer_ineligiblereference";
@@ -731,6 +732,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_IsVerified = "ecer_isverified";
 			public const string ecer_isverifiedName = "ecer_isverifiedname";
 			public const string ecer_LegacyClientID = "ecer_legacyclientid";
+			public const string ecer_legacyenteredby = "ecer_legacyenteredby";
+			public const string ecer_legacyentrydate = "ecer_legacyentrydate";
 			public const string ecer_ParentalConsentVerified = "ecer_parentalconsentverified";
 			public const string ecer_parentalconsentverifiedName = "ecer_parentalconsentverifiedname";
 			public const string ecer_portalinvitation_ApplicantId = "ecer_portalinvitation_ApplicantId";
@@ -743,6 +746,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_previousname_Contactid = "ecer_previousname_Contactid";
 			public const string ecer_primaryidtype = "ecer_primaryidtype";
 			public const string ecer_primaryidtypeName = "ecer_primaryidtypename";
+			public const string ecer_reconsiderationrequest_ApplicantId = "ecer_reconsiderationrequest_ApplicantId";
 			public const string ecer_renewalassessment_ApplicantId = "ecer_renewalassessment_ApplicantId";
 			public const string ecer_representedpsiid = "ecer_representedpsiid";
 			public const string ecer_representedpsiidName = "ecer_representedpsiidname";
@@ -931,6 +935,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "ecer_legacyclientid";
 		
 		/// <summary>
 		/// Default Constructor.
@@ -4658,6 +4664,36 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyenteredby")]
+		public string ecer_legacyenteredby
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_legacyenteredby");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyenteredby", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_legacyentrydate")]
+		public System.Nullable<System.DateTime> ecer_legacyentrydate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_legacyentrydate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_legacyentrydate", value);
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_parentalconsentverified")]
 		public virtual ecer_YesNoNull? ecer_ParentalConsentVerified
 		{
@@ -8061,6 +8097,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
+		/// 1:N ecer_icraeligibilityassessment_ApplicantId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_icraeligibilityassessment_ApplicantId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment> ecer_icraeligibilityassessment_ApplicantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment>("ecer_icraeligibilityassessment_ApplicantId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ICRAEligibilityAssessment>("ecer_icraeligibilityassessment_ApplicantId", null, value);
+			}
+		}
+		
+		/// <summary>
 		/// 1:N ecer_investigationapplication_contact
 		/// </summary>
 		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_investigationapplication_contact")]
@@ -8219,6 +8273,24 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_PreviousName>("ecer_previousname_Contactid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_reconsiderationrequest_ApplicantId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_reconsiderationrequest_ApplicantId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationRequest> ecer_reconsiderationrequest_ApplicantId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationRequest>("ecer_reconsiderationrequest_ApplicantId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_ReconsiderationRequest>("ecer_reconsiderationrequest_ApplicantId", null, value);
 			}
 		}
 		

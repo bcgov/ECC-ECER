@@ -2,7 +2,7 @@
 using ECER.Resources.Documents.Applications;
 using ECER.Resources.Documents.PortalInvitations;
 
-namespace ECER.Managers.Registry;
+namespace ECER.Managers.Registry.PortalInvitations;
 
 public class PortalInvitationMapper : Profile
 {

@@ -46,7 +46,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useAlertStore } from "@/store/alert";
 import { getApplicationStatus, setTranscriptDocumentsAndOptions } from "@/api/application";
 import Breadcrumb from "./Breadcrumb.vue";
@@ -72,9 +72,8 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
-    const route = useRoute();
 
-    const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
 
     let comprehensiveReportOptions = ref<ComprehensiveReportOptions | undefined>(undefined);
     const transcript = applicationStatus?.transcriptsStatus?.find((transcript) => transcript.id === props.transcriptId);

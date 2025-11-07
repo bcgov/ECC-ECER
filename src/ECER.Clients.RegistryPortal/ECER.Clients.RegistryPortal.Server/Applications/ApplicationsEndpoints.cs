@@ -485,9 +485,9 @@ public enum ApplicationStatus
   Ready,
   InProgress,
   PendingQueue,
+  PendingPSPConsultationNeeded,
   ReconsiderationDecision,
   AppealDecision,
-  PendingPSPConsultationNeeded
 }
 
 public enum ApplicationOrigin
@@ -620,13 +620,16 @@ public enum WorkExperienceRefStage
   Rejected,
   Submitted,
   UnderReview,
-  WaitingforResponse
+  WaitingforResponse,
+  ICRAEligibilitySubmitted,
+  EligibilityResponseSubmitted
 }
 
 public enum WorkExperienceTypes
 {
   Is400Hours,
   Is500Hours,
+  ICRA,
 }
 
 public enum CharacterReferenceStage

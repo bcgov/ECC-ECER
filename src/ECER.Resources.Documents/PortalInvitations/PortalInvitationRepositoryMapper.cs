@@ -18,24 +18,14 @@ internal sealed class PortalInvitationMapper : Profile
       .ForMember(d => d.CharacterReferenceId, opts => opts.MapFrom(s => s.ecer_CharacterReferenceId.Id))
       .ForMember(d => d.ApplicantId, opts => opts.MapFrom(s => s.ecer_ApplicantId.Id))
       .ForMember(d => d.ApplicationId, opts => opts.MapFrom(s => s.ecer_ApplicationId.Id))
-      .ForMember(d => d.InviteType, opts => opts.MapFrom(s => DetermineInviteType(s)))
+      .ForMember(d => d.InviteType, opts => opts.MapFrom(s => s.ecer_Type))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.StatusCode));
 
     CreateMap<PortalInvitationStatusCode, ecer_PortalInvitation_StatusCode>()
       .ConvertUsingEnumMapping(opts => opts.MapByName(true))
       .ReverseMap();
-  }
-
-  private static InviteType? DetermineInviteType(ecer_PortalInvitation source)
-  {
-    if (source.ecer_WorkExperienceReferenceId != null)
-    {
-      return InviteType.WorkExperienceReference;
-    }
-    else if(source.ecer_CharacterReferenceId != null)
-    {
-      return InviteType.CharacterReference;
-    }
-    return null;
+    CreateMap<InviteType, ecer_PortalInvitationTypes>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
   }
 }

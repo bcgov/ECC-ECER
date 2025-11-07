@@ -42,13 +42,13 @@ export default defineComponent({
     return { siteKey };
   },
   mounted() {
-    window.recaptchaSuccessCallback = this.recaptchaSuccessCallback;
-    window.recaptchaExpiredCallback = this.recaptchaExpiredCallback;
-    window.recaptchaOnloadCallback = this.recaptchaOnloadCallback;
+    globalThis.recaptchaSuccessCallback = this.recaptchaSuccessCallback;
+    globalThis.recaptchaExpiredCallback = this.recaptchaExpiredCallback;
+    globalThis.recaptchaOnloadCallback = this.recaptchaOnloadCallback;
 
-    if (window.grecaptcha) {
+    if (globalThis.grecaptcha) {
       //checks to see if we've already loaded the grecaptcha script.
-      window.grecaptcha.render(this.recaptchaElementId);
+      globalThis.grecaptcha.render(this.recaptchaElementId);
     }
   },
   methods: {
@@ -59,7 +59,7 @@ export default defineComponent({
       this.$emit("update:model-value", "");
     },
     recaptchaOnloadCallback() {
-      window.grecaptcha.render(this.recaptchaElementId);
+      globalThis.grecaptcha.render(this.recaptchaElementId);
     },
   },
 });

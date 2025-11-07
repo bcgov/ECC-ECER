@@ -4,17 +4,31 @@
       <v-row>
         <v-col :class="[mobile ? 'flex-column-reverse' : 'justify-space-between', 'd-flex']">
           <div>
+            <div v-if="isIcraEligibility" class="text-white text-h5 font-weight-bold">Apply with international certification</div>
             <ApplicationCertificationTypeHeader
+              v-else
               :is-renewal="isRenewal"
               :is-labor-mobility="isLaborMobility"
               :certification-types="applicationStore.draftApplication.certificationTypes ?? []"
             />
-            <a v-if="!isRenewal && !isRegistrant && !isLaborMobility" href="#" class="text-white" @click.prevent="toggleChangeCertificationConfirmation">
+            <a
+              v-if="!isRenewal && !isRegistrant && !isLaborMobility && !isIcraEligibility"
+              href="#"
+              class="text-white"
+              @click.prevent="toggleChangeCertificationConfirmation"
+            >
               Change certification type
             </a>
           </div>
           <div :class="[{ ['text-right mb-2']: mobile }]">
-            <v-btn id="btnSaveAndExit" variant="outlined" :loading="loadingStore.isLoading('draftapplication_put')" @click="saveAndExit">Save and exit</v-btn>
+            <v-btn
+              id="btnSaveAndExit"
+              variant="outlined"
+              :loading="loadingStore.isLoading(isIcraEligibility ? 'icra_put' : 'draftapplication_put')"
+              @click="saveAndExit"
+            >
+              Save and exit
+            </v-btn>
           </div>
         </v-col>
       </v-row>
@@ -85,6 +99,10 @@ export default defineComponent({
       default: false,
     },
     isRegistrant: {
+      type: Boolean,
+      default: false,
+    },
+    isIcraEligibility: {
       type: Boolean,
       default: false,
     },

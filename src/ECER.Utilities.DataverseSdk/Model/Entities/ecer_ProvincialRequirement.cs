@@ -60,8 +60,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_CertificateLevels = "ecer_certificatelevels";
-			public const string ecer_certificatelevelsName = "ecer_certificatelevelsname";
 			public const string ecer_CertificateTypeId = "ecer_certificatetypeid";
 			public const string ecer_CertificateTypeIdName = "ecer_certificatetypeidname";
 			public const string ecer_course_ProvincialRequirement_ecer_provinc = "ecer_course_ProvincialRequirement_ecer_provinc";
@@ -245,38 +243,6 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("createdonbehalfby"))
 				{
 					return this.FormattedValues["createdonbehalfby"];
-				}
-				else
-				{
-					return default(string);
-				}
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatelevels")]
-		public virtual System.Collections.Generic.IEnumerable<ecer_CertificateLevel> ecer_CertificateLevels
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return EntityOptionSetEnum.GetMultiEnum<ecer_CertificateLevel>(this, "ecer_certificatelevels");
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetAttributeValue("ecer_certificatelevels", EntityOptionSetEnum.GetMultiEnum(this, "ecer_certificatelevels", value));
-			}
-		}
-		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatelevelsname")]
-		public string ecer_certificatelevelsName
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				if (this.FormattedValues.Contains("ecer_certificatelevels"))
-				{
-					return this.FormattedValues["ecer_certificatelevels"];
 				}
 				else
 				{

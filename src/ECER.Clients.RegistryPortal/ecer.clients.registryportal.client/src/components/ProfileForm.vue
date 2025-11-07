@@ -38,27 +38,27 @@ export default defineComponent({
     const userProfile = await getProfile();
     if (userProfile !== null) {
       formStore.initializeForm({
-        [profileInformationForm.inputs.legalFirstName.id]: userProfile.firstName,
-        [profileInformationForm.inputs.legalLastName.id]: userProfile.lastName,
-        [profileInformationForm.inputs.dateOfBirth.id]: userProfile.dateOfBirth,
-        [profileInformationForm.inputs.addresses.id]: {
+        [profileInformationForm?.inputs?.legalFirstName?.id || ""]: userProfile.firstName,
+        [profileInformationForm?.inputs?.legalLastName?.id || ""]: userProfile.lastName,
+        [profileInformationForm?.inputs?.dateOfBirth?.id || ""]: userProfile.dateOfBirth,
+        [profileInformationForm?.inputs?.addresses?.id || ""]: {
           [AddressType.RESIDENTIAL]: userProfile.residentialAddress || oidcAddress,
           [AddressType.MAILING]: userProfile.mailingAddress || oidcAddress,
         },
-        [profileInformationForm.inputs.email.id]: userProfile.email,
-        [profileInformationForm.inputs.legalMiddleName.id]: userProfile.middleName,
-        [profileInformationForm.inputs.preferredName.id]: userProfile.preferredName,
-        [profileInformationForm.inputs.alternateContactNumber.id]: userProfile.alternateContactPhone,
-        [profileInformationForm.inputs.primaryContactNumber.id]: userProfile.phone,
+        [profileInformationForm?.inputs?.email?.id || ""]: userProfile.email,
+        [profileInformationForm?.inputs?.legalMiddleName?.id || ""]: userProfile.middleName,
+        [profileInformationForm?.inputs?.preferredName?.id || ""]: userProfile.preferredName,
+        [profileInformationForm?.inputs?.alternateContactNumber?.id || ""]: userProfile.alternateContactPhone,
+        [profileInformationForm?.inputs?.primaryContactNumber?.id || ""]: userProfile.phone,
       });
     } else {
       formStore.initializeForm({
-        [profileInformationForm.inputs.legalFirstName.id]: oidcUserInfo.firstName,
-        [profileInformationForm.inputs.legalLastName.id]: oidcUserInfo.lastName,
-        [profileInformationForm.inputs.dateOfBirth.id]: oidcUserInfo.dateOfBirth,
-        [profileInformationForm.inputs.addresses.id]: { [AddressType.RESIDENTIAL]: oidcAddress, [AddressType.MAILING]: oidcAddress },
-        [profileInformationForm.inputs.email.id]: oidcUserInfo.email,
-        [profileInformationForm.inputs.primaryContactNumber.id]: oidcUserInfo.phone,
+        [profileInformationForm?.inputs?.legalFirstName?.id || ""]: oidcUserInfo.firstName,
+        [profileInformationForm?.inputs?.legalLastName?.id || ""]: oidcUserInfo.lastName,
+        [profileInformationForm?.inputs?.dateOfBirth?.id || ""]: oidcUserInfo.dateOfBirth,
+        [profileInformationForm?.inputs?.addresses?.id || ""]: { [AddressType.RESIDENTIAL]: oidcAddress, [AddressType.MAILING]: oidcAddress },
+        [profileInformationForm?.inputs?.email?.id || ""]: oidcUserInfo.email,
+        [profileInformationForm?.inputs?.primaryContactNumber?.id || ""]: oidcUserInfo.phone,
       });
     }
 
@@ -72,39 +72,39 @@ export default defineComponent({
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
       } else {
         const { error } = await putProfile({
-          firstName: this.formStore.formData[profileInformationForm.inputs.legalFirstName.id],
-          middleName: this.formStore.formData[profileInformationForm.inputs.legalMiddleName.id],
-          preferredName: this.formStore.formData[profileInformationForm.inputs.preferredName.id],
-          lastName: this.formStore.formData[profileInformationForm.inputs.legalLastName.id],
-          dateOfBirth: this.formStore.formData[profileInformationForm.inputs.dateOfBirth.id],
-          residentialAddress: this.formStore.formData[profileInformationForm.inputs.addresses.id][AddressType.RESIDENTIAL],
-          mailingAddress: this.formStore.formData[profileInformationForm.inputs.addresses.id][AddressType.MAILING],
-          email: this.formStore.formData[profileInformationForm.inputs.email.id],
-          phone: this.formStore.formData[profileInformationForm.inputs.primaryContactNumber.id],
-          alternateContactPhone: this.formStore.formData[profileInformationForm.inputs.alternateContactNumber.id],
+          firstName: this.formStore.formData[profileInformationForm?.inputs?.legalFirstName?.id || ""],
+          middleName: this.formStore.formData[profileInformationForm?.inputs?.legalMiddleName?.id || ""],
+          preferredName: this.formStore.formData[profileInformationForm?.inputs?.preferredName?.id || ""],
+          lastName: this.formStore.formData[profileInformationForm?.inputs?.legalLastName?.id || ""],
+          dateOfBirth: this.formStore.formData[profileInformationForm?.inputs?.dateOfBirth?.id || ""],
+          residentialAddress: this.formStore.formData[profileInformationForm?.inputs?.addresses?.id || ""][AddressType.RESIDENTIAL],
+          mailingAddress: this.formStore.formData[profileInformationForm?.inputs?.addresses?.id || ""][AddressType.MAILING],
+          email: this.formStore.formData[profileInformationForm?.inputs?.email?.id || ""],
+          phone: this.formStore.formData[profileInformationForm?.inputs?.primaryContactNumber?.id || ""],
+          alternateContactPhone: this.formStore.formData[profileInformationForm?.inputs?.alternateContactNumber?.id || ""],
         });
 
         if (!error) {
           this.alertStore.setSuccessAlert("You have successfully edited your profile information.");
           this.userStore.setUserInfo({
-            firstName: this.formStore.formData[profileInformationForm.inputs.legalFirstName.id],
-            lastName: this.formStore.formData[profileInformationForm.inputs.legalLastName.id],
-            email: this.formStore.formData[profileInformationForm.inputs.email.id],
-            phone: this.formStore.formData[profileInformationForm.inputs.primaryContactNumber.id],
-            dateOfBirth: this.formStore.formData[profileInformationForm.inputs.dateOfBirth.id],
+            firstName: this.formStore.formData[profileInformationForm?.inputs?.legalFirstName?.id || ""],
+            lastName: this.formStore.formData[profileInformationForm?.inputs?.legalLastName?.id || ""],
+            email: this.formStore.formData[profileInformationForm?.inputs?.email?.id || ""],
+            phone: this.formStore.formData[profileInformationForm?.inputs?.primaryContactNumber?.id || ""],
+            dateOfBirth: this.formStore.formData[profileInformationForm?.inputs?.dateOfBirth?.id || ""],
           });
 
           this.userStore.setUserProfile({
-            firstName: this.formStore.formData[profileInformationForm.inputs.legalFirstName.id],
-            middleName: this.formStore.formData[profileInformationForm.inputs.legalMiddleName.id],
-            preferredName: this.formStore.formData[profileInformationForm.inputs.preferredName.id],
-            lastName: this.formStore.formData[profileInformationForm.inputs.legalLastName.id],
-            dateOfBirth: this.formStore.formData[profileInformationForm.inputs.dateOfBirth.id],
-            residentialAddress: this.formStore.formData[profileInformationForm.inputs.addresses.id][AddressType.RESIDENTIAL],
-            mailingAddress: this.formStore.formData[profileInformationForm.inputs.addresses.id][AddressType.MAILING],
-            email: this.formStore.formData[profileInformationForm.inputs.email.id],
-            phone: this.formStore.formData[profileInformationForm.inputs.primaryContactNumber.id],
-            alternateContactPhone: this.formStore.formData[profileInformationForm.inputs.alternateContactNumber.id],
+            firstName: this.formStore.formData[profileInformationForm?.inputs?.legalFirstName?.id || ""],
+            middleName: this.formStore.formData[profileInformationForm?.inputs?.legalMiddleName?.id || ""],
+            preferredName: this.formStore.formData[profileInformationForm?.inputs?.preferredName?.id || ""],
+            lastName: this.formStore.formData[profileInformationForm?.inputs?.legalLastName?.id || ""],
+            dateOfBirth: this.formStore.formData[profileInformationForm?.inputs?.dateOfBirth?.id || ""],
+            residentialAddress: this.formStore.formData[profileInformationForm?.inputs?.addresses?.id || ""][AddressType.RESIDENTIAL],
+            mailingAddress: this.formStore.formData[profileInformationForm?.inputs?.addresses?.id || ""][AddressType.MAILING],
+            email: this.formStore.formData[profileInformationForm?.inputs?.email?.id || ""],
+            phone: this.formStore.formData[profileInformationForm?.inputs?.primaryContactNumber?.id || ""],
+            alternateContactPhone: this.formStore.formData[profileInformationForm?.inputs?.alternateContactNumber?.id || ""],
           });
         } else {
           this.alertStore.setFailureAlert("Profile save failed");

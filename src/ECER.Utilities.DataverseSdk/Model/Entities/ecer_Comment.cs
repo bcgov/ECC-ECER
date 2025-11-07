@@ -13,7 +13,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Decision Comment
+	/// Status of the Comment
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -28,7 +28,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Decision Comment
+	/// Reason for the status of the Comment
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
@@ -73,7 +73,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_ContactName = "ecer_contactname";
 			public const string ecer_ContactYomiName = "ecer_contactyominame";
 			public const string ecer_Decision = "ecer_decision";
+			public const string ecer_decisioncomment_ecer_denialreason = "ecer_decisioncomment_ecer_denialreason";
 			public const string ecer_decisionName = "ecer_decisionname";
+			public const string ecer_DenialReason = "ecer_denialreason";
+			public const string ecer_DenialReasonName = "ecer_denialreasonname";
 			public const string ecer_Name = "ecer_name";
 			public const string ecer_Notes = "ecer_notes";
 			public const string ImportSequenceNumber = "importsequencenumber";
@@ -430,6 +433,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_decision"))
 				{
 					return this.FormattedValues["ecer_decision"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreason")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_DenialReason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_denialreason");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_denialreason", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasonname")]
+		public string ecer_DenialReasonName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_denialreason"))
+				{
+					return this.FormattedValues["ecer_denialreason"];
 				}
 				else
 				{
@@ -903,6 +938,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_comment_Contact_contact", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_decisioncomment_ecer_denialreason
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreason")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_decisioncomment_ecer_denialreason")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_DenialReason ecer_decisioncomment_ecer_denialreason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_DenialReason>("ecer_decisioncomment_ecer_denialreason", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_DenialReason>("ecer_decisioncomment_ecer_denialreason", null, value);
 			}
 		}
 		

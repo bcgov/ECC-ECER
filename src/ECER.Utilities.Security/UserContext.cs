@@ -28,3 +28,9 @@ public static class RegistryPortalClaims
   public const string Verified = "verified";
   public const string IdenityProvider = "identity_provider";
 }
+public static class PSPPortalClaims
+{
+  public const string UserId = "user_id";
+  public const string Verified = "verified";
+  public const string IdenityProvider = "identity_provider";
+}

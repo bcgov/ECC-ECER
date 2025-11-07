@@ -117,6 +117,7 @@ public record WorkExperienceReference(string? FirstName, string? LastName, strin
   public int? TotalNumberofHoursObserved { get; set; }
   public WorkExperienceTypes? Type { get; set; }
 }
+
 public record ProfessionalDevelopment(string? Id, string? CourseName, string? OrganizationName, DateTime StartDate, DateTime EndDate)
 {
   public string? CourseorWorkshopLink { get; set; }
@@ -204,9 +205,9 @@ public enum ApplicationStatus
   Ready,
   InProgress,
   PendingQueue,
+  PendingPSPConsultationNeeded,
   ReconsiderationDecision,
   AppealDecision,
-  PendingPSPConsultationNeeded
 }
 
 public enum ApplicationOrigin
@@ -373,6 +374,7 @@ public record SubmitReferenceCommand(string Token) : IRequest<ReferenceSubmissio
 {
   public WorkExperienceReferenceSubmissionRequest? WorkExperienceReferenceSubmissionRequest { get; set; }
   public CharacterReferenceSubmissionRequest? CharacterReferenceSubmissionRequest { get; set; }
+  public Managers.Registry.Contract.ICRA.ICRAWorkExperienceReferenceSubmissionRequest? ICRAWorkExperienceReferenceSubmissionRequest { get; set; }
 }
 
 public record UpdateWorkExperienceReferenceCommand(WorkExperienceReference workExperienceRef, string applicationId, string referenceId, string userId) : IRequest<UpdateWorkExperienceReferenceResult>;
@@ -439,13 +441,15 @@ public enum WorkExperienceRefStage
   Rejected,
   Submitted,
   UnderReview,
-  WaitingforResponse
+  WaitingforResponse,
+  ICRAEligibilitySubmitted
 }
 
 public enum WorkExperienceTypes
 {
   Is400Hours,
   Is500Hours,
+  ICRA,
 }
 
 public enum CharacterReferenceStage

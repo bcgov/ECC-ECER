@@ -19,6 +19,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		AnnualReminderProgramProfile = 621870000,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		MonthlyReminderProgramProfile = 621870001,
 	}
 }
 #pragma warning restore CS1591

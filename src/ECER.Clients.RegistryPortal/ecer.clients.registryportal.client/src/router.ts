@@ -8,6 +8,7 @@ import { useFormStore } from "./store/form";
 import { useMessageStore } from "./store/message";
 import { useWizardStore } from "./store/wizard";
 import { useConfigStore } from "./store/config";
+import { useIcraStore } from "./store/icra";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -85,6 +86,7 @@ const router = createRouter({
       path: "/manage-application/:applicationId",
       name: "manageApplication",
       component: () => import("./components/ApplicationSummary.vue"),
+      props: true,
       meta: { requiresAuth: true, requiresVerification: true },
     },
     {
@@ -216,6 +218,7 @@ const router = createRouter({
       component: () => import("./components/Declaration.vue"),
       meta: { requiresAuth: true },
       name: "declaration",
+      props: { stream: "Application" },
     },
     {
       path: "/application/consent-required",
@@ -287,6 +290,54 @@ const router = createRouter({
       component: () => import("./components/LookupCertification.vue"),
       meta: { requiresAuth: false },
       name: "lookup-certification",
+    },
+    {
+      path: "/icra-eligibility",
+      component: () => import("./components/pages/IcraEligibility.vue"),
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+      beforeEnter: (to, from, next) => {
+        //guard to prevent users from coming here if they have a submitted in-progress ICRA Eligibility application
+        const icraStore = useIcraStore();
+        if (icraStore.hasSubmittedIcraEligibility) {
+          console.warn("User has a submitted ICRA Eligibility application, redirecting to home page.");
+          next({ path: "/" });
+        } else {
+          next();
+        }
+      },
+    },
+    {
+      path: "/icra-eligibility/check",
+      component: () => import("./components/pages/IcraEligibilityDisclaimer.vue"),
+      meta: { requiresAuth: true, requiresICRAFeature: true, requiresVerification: true },
+      name: "icra-eligibility",
+    },
+    {
+      path: "/icra-eligibility/requirements",
+      name: "icra-eligibility-requirements",
+      component: () => import("./components/IcraEligibilityRequirements.vue"),
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
+      path: "/icra-eligibility/declaration",
+      component: () => import("./components/Declaration.vue"),
+      meta: { requiresAuth: true, requiresICRAFeature: true },
+      name: "icra-eligibility-declaration",
+      props: { stream: "Eligibility" },
+    },
+    {
+      path: "/icra-eligibility/submitted/:icraEligibilityId",
+      name: "icra-eligibility-submitted",
+      component: () => import("./components/pages/IcraEligibilitySubmitted.vue"),
+      props: true,
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
+      path: "/icra-eligibility/manage/:icraEligibilityId",
+      name: "manage-icra-eligibility",
+      component: () => import("./components/IcraEligibilitySummary.vue"),
+      props: true,
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
       path: "/lookup/certification/record",
@@ -396,6 +447,15 @@ router.beforeEach((to, _, next) => {
   const applicationStore = useApplicationStore();
   if (to.path === "/application" && applicationStore.hasSubmittedApplication) {
     console.warn("User has already submitted an application, redirecting to home page.");
+    next({ path: "/" });
+  } else next();
+});
+
+// Guard to prevent users from accessing ICRA routes if the flag is not enabled
+router.beforeEach((to, _, next) => {
+  const configStore = useConfigStore();
+  if (to.meta.requiresICRAFeature && !configStore.applicationConfiguration.icraFeatureEnabled) {
+    console.warn("ICRA feature is not enabled, redirecting to home page.");
     next({ path: "/" });
   } else next();
 });

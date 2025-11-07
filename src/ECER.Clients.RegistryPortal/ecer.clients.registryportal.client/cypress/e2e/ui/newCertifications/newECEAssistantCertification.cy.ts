@@ -1,5 +1,5 @@
 import selectors from "../../../support/selectors";
-import { courseStartDay, courseEndDay } from "../../../support/utils";
+import { courseStartDay, courseEndDay, todayDay } from "../../../support/utils";
 
 describe("New ECE Assistant Certificate Application", () => {
   it("should sucessfully create a New ECE Assistant Application", () => {
@@ -7,8 +7,7 @@ describe("New ECE Assistant Certificate Application", () => {
     cy.get(selectors.dashboard.applyNowButton).click();
 
     /** Certification Type */
-    cy.get(selectors.certificationType.eceAssistantRadio).check();
-    cy.get(selectors.certificationType.continueButton).click();
+    cy.get(selectors.certificationType.applyNowEceAssistantButton).click();
 
     /** Application Requirements */
     cy.get(selectors.applicationRequirements.applyNowButton).click();
@@ -34,10 +33,12 @@ describe("New ECE Assistant Certificate Application", () => {
 
     /* Start Date - DatePicker*/
     cy.get(selectors.education.programStartDateInput).click({ force: true });
+    cy.get(selectors.education.programStartDateInput).clear();
     cy.get(selectors.education.programStartDateInput).type(`${courseStartDay} {enter}`);
 
     /* End Date - DatePicker*/
     cy.get(selectors.education.programEndDateInput).click({ force: true });
+    cy.get(selectors.education.programEndDateInput).clear();
     cy.get(selectors.education.programEndDateInput).type(`${courseEndDay} {enter}`);
 
     cy.get(selectors.education.studentIDInput).type("1234");

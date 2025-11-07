@@ -21,7 +21,7 @@
             <p class="small">Name of place that hosted the course or workshop</p>
           </v-col>
           <v-col>
-            <p class="small font-weight-bold">{{ professionalDevelopment.organizationName }}</p>
+            <p id="courseProvince" class="small font-weight-bold">{{ professionalDevelopment.organizationName }}</p>
           </v-col>
         </v-row>
         <v-row>
@@ -86,7 +86,6 @@ import { defineComponent } from "vue";
 
 import PreviewCard from "@/components/PreviewCard.vue";
 import { useWizardStore } from "@/store/wizard";
-import type { EcePreviewProps } from "@/types/input";
 import type { Components } from "@/types/openapi";
 import { formatDate } from "@/utils/format";
 
@@ -106,7 +105,7 @@ export default defineComponent({
   },
   computed: {
     professionalDevelopments(): Components.Schemas.ProfessionalDevelopment[] {
-      return this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.professionalDevelopments.form.inputs.professionalDevelopments.id];
+      return this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id || ""];
     },
   },
 });

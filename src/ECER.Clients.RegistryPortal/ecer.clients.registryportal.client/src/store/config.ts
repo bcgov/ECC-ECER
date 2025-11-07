@@ -54,6 +54,9 @@ export const useConfigStore = defineStore("config", {
     provinceName(state) {
       return (provinceId: string) => state.provinceList.find((province) => province.provinceId === provinceId)?.provinceName;
     },
+    countryName(state) {
+      return (countryId: string) => state.countryList.find((country) => country.countryId === countryId)?.countryName;
+    },
     canada(state) {
       return state.countryList.find((country) => country.countryName!.toLowerCase() === "canada");
     },

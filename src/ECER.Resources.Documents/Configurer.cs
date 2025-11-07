@@ -16,5 +16,6 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<IApplicationRepository, ApplicationRepository>();
     configurationContext.Services.AddTransient<IPortalInvitationRepository, PortalInvitationRepository>();
     configurationContext.Services.AddTransient<IMetadataResourceRepository, MetadataResourceRepository>();
+    configurationContext.Services.AddTransient<ICRA.IICRARepository, ICRA.ICRARepository>();
   }
 }

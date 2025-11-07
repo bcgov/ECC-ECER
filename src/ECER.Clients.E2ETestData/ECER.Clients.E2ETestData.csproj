@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" />
     <PackageReference Include="MinimalApis.Extensions" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
@@ -18,6 +19,7 @@
     <ProjectReference Include="..\ECER.Managers.Registry.Contract\ECER.Managers.Registry.Contract.csproj" />
     <ProjectReference Include="..\ECER.Managers.Registry\ECER.Managers.Registry.csproj" />
     <ProjectReference Include="..\ECER.Utilities.Hosting\ECER.Utilities.Hosting.csproj" />
-  </ItemGroup>
+  
+</ItemGroup>
 
 </Project>

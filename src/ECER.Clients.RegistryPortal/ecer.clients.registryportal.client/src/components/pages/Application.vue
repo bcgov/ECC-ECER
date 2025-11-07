@@ -183,12 +183,12 @@ export default defineComponent({
           case "ProfessionalDevelopment":
             await this.saveDraftAndAlertSuccess(false);
             //we need to mimic professional development saved to the server for future calls after this step. This prevents us having to fetch and rehydrate the draft application
-            this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id].forEach(
-              (professionalDevelopment: ProfessionalDevelopmentExtended) => {
-                professionalDevelopment.newFiles = [];
-                professionalDevelopment.deletedFiles = [];
-              },
-            );
+            this.wizardStore.wizardData[
+              this.wizardStore.wizardConfig.steps?.professionalDevelopments?.form?.inputs?.professionalDevelopments?.id || ""
+            ].forEach((professionalDevelopment: ProfessionalDevelopmentExtended) => {
+              professionalDevelopment.newFiles = [];
+              professionalDevelopment.deletedFiles = [];
+            });
             this.incrementWizard();
             break;
           case "ExplanationLetter":
@@ -249,16 +249,17 @@ export default defineComponent({
     },
     async saveProfile(exit: boolean) {
       const { error } = await putProfile({
-        firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
-        middleName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalMiddleName.id],
-        preferredName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.preferredName.id],
-        lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalLastName.id],
-        dateOfBirth: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id],
-        residentialAddress: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.addresses.id][AddressType.RESIDENTIAL],
-        mailingAddress: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.addresses.id][AddressType.MAILING],
-        email: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.email.id],
-        phone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.primaryContactNumber.id],
-        alternateContactPhone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.alternateContactNumber.id],
+        firstName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.legalFirstName?.id || ""],
+        middleName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.legalMiddleName?.id || ""],
+        preferredName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.preferredName?.id || ""],
+        lastName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.legalLastName?.id || ""],
+        dateOfBirth: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.dateOfBirth?.id || ""],
+        residentialAddress:
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.addresses?.id || ""][AddressType.RESIDENTIAL],
+        mailingAddress: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.addresses?.id || ""][AddressType.MAILING],
+        email: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.email?.id || ""],
+        phone: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.primaryContactNumber?.id || ""],
+        alternateContactPhone: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.alternateContactNumber?.id || ""],
       });
 
       if (!error) {
@@ -267,11 +268,11 @@ export default defineComponent({
         this.alertStore.setSuccessAlert(message);
 
         this.userStore.setUserInfo({
-          firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalFirstName.id],
-          lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.legalLastName.id],
-          email: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.email.id],
-          phone: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.primaryContactNumber.id],
-          dateOfBirth: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.profile.form.inputs.dateOfBirth.id],
+          firstName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.legalFirstName?.id || ""],
+          lastName: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.legalLastName?.id || ""],
+          email: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.email?.id || ""],
+          phone: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.primaryContactNumber?.id || ""],
+          dateOfBirth: this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.profile?.form?.inputs?.dateOfBirth?.id || ""],
         });
 
         //we should get the latest from getProfile and update the wizard. In case the wizard refreshes with stale profile data.
@@ -282,7 +283,7 @@ export default defineComponent({
       }
     },
     printPage() {
-      window.print();
+      globalThis.print();
     },
   },
 });

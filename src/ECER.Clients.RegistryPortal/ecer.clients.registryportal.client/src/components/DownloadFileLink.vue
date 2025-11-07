@@ -25,7 +25,7 @@ export default defineComponent({
     };
   },
   unmounted() {
-    window.URL.revokeObjectURL(this.documentUrl);
+    globalThis.URL.revokeObjectURL(this.documentUrl);
   },
   methods: {
     async downloadFile() {
@@ -33,7 +33,7 @@ export default defineComponent({
 
       try {
         const response = await this.getFileFunction();
-        this.documentUrl = window.URL.createObjectURL(response.data);
+        this.documentUrl = globalThis.URL.createObjectURL(response.data);
 
         const anchor = document.createElement("a");
         anchor.href = this.documentUrl;

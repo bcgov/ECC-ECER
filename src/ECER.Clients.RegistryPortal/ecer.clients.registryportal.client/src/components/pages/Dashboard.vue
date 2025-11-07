@@ -64,14 +64,20 @@
       </v-row>
 
       <!-- Your ECE applications -->
-      <v-row v-if="applications && userStore.isVerified && showApplicationCard" justify="center">
+      <v-row v-if="applications && userStore.isVerified && (showApplicationCard || showIcraEligibilityCard)" justify="center">
         <v-col>
           <v-row>
-            <v-col cols="12" :sm="showTransferCard ? 6 : 12">
+            <v-col v-if="showIcraEligibilityCard" cols="12" :sm="showTransferCard ? 6 : 12">
+              <IcraEligibilityCard @cancel-application="showCancelDialog = true" />
+            </v-col>
+            <v-col v-else-if="showApplicationCard" cols="12" :sm="showTransferCard ? 6 : 12">
               <ApplicationCard @cancel-application="showCancelDialog = true" />
             </v-col>
             <v-col v-if="showTransferCard" cols="12" sm="6">
               <TransferCard />
+            </v-col>
+            <v-col v-if="showIcraCard" cols="12" sm="6">
+              <IcraCard />
             </v-col>
           </v-row>
         </v-col>
@@ -132,37 +138,55 @@
               <ECEHeader title="Need other options?" />
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="12" sm="6">
-              <Card>
+          <v-row align="stretch">
+            <v-col class="d-flex" cols="12" sm="6" md="4">
+              <Card class="d-flex flex-column">
                 <h2>Apply for new certification</h2>
                 <p class="mt-4">Start an application for a new certificate level based on your education and work experience.</p>
-                <v-btn
-                  :variant="certificationStore.holdsPostBasicCertification ? 'outlined' : 'flat'"
-                  size="large"
-                  color="primary"
-                  id="btnNeedOtherOptions"
-                  class="mt-12"
-                  @click="handleStartNewApplication"
-                >
-                  Apply now
-                </v-btn>
+                <div class="mt-auto">
+                  <v-btn
+                    :variant="certificationStore.holdsPostBasicCertification ? 'outlined' : 'flat'"
+                    size="large"
+                    class="mt-4"
+                    color="primary"
+                    id="btnNeedOtherOptions"
+                    @click="handleStartNewApplication"
+                  >
+                    Apply now
+                  </v-btn>
+                </div>
               </Card>
             </v-col>
-            <v-col cols="12" sm="6">
-              <Card>
+            <v-col class="d-flex" cols="12" sm="6" md="4">
+              <Card class="d-flex flex-column">
                 <h2>Transfer certification</h2>
                 <p class="mt-4">If you are certified in another province or territory in Canada, you may be eligible to transfer your certification to B.C.</p>
-                <v-btn
-                  :variant="certificationStore.holdsPostBasicCertification ? 'outlined' : 'flat'"
-                  size="large"
-                  color="primary"
-                  id="btnNeedOtherOptions"
-                  class="mt-12"
-                  @click="handleTransfer"
-                >
-                  Transfer
-                </v-btn>
+                <div class="mt-auto">
+                  <v-btn
+                    :variant="certificationStore.holdsPostBasicCertification ? 'outlined' : 'flat'"
+                    size="large"
+                    class="mt-4"
+                    color="primary"
+                    id="btnNeedOtherOptions"
+                    @click="handleTransfer"
+                  >
+                    Transfer
+                  </v-btn>
+                </div>
+              </Card>
+            </v-col>
+            <v-col v-if="configurationStore.applicationConfiguration.icraFeatureEnabled" class="d-flex" cols="12" sm="6" md="4">
+              <Card class="d-flex flex-column">
+                <h2>Apply with international certification</h2>
+                <p class="mt-4">
+                  Apply for
+                  <b>ECE Five Year Certification</b>
+                  if you are internationally certified in a country that regulates the ECE profession and do not have 500 hours work experience supervised by a
+                  Canadian-certified ECE.
+                </p>
+                <div class="mt-auto">
+                  <router-link class="mt-4" :to="{ name: 'icra-eligibility' }">Learn more</router-link>
+                </div>
               </Card>
             </v-col>
           </v-row>
@@ -199,6 +223,8 @@ import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
 import TransferCard from "@/components/TransferCard.vue";
+import IcraCard from "@/components/IcraCard.vue";
+import IcraEligibilityCard from "@/components/IcraEligibilityCard.vue";
 import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
@@ -206,7 +232,9 @@ import PageContainer from "@/components/PageContainer.vue";
 import UnreadMessages from "@/components/UnreadMessages.vue";
 import { useAlertStore } from "@/store/alert";
 import { useApplicationStore } from "@/store/application";
+import { useConfigStore } from "@/store/config";
 import { useCertificationStore } from "@/store/certification";
+import { useIcraStore } from "@/store/icra";
 import { useMessageStore } from "@/store/message";
 import { useUserStore } from "@/store/user";
 import { useLoadingStore } from "@/store/loading";
@@ -222,6 +250,8 @@ export default defineComponent({
     PageContainer,
     ApplicationCard,
     TransferCard,
+    IcraCard,
+    IcraEligibilityCard,
     CertificationCard,
     ECEHeader,
     ActionCard,
@@ -234,7 +264,9 @@ export default defineComponent({
     const userStore = useUserStore();
     const router = useRouter();
     const applicationStore = useApplicationStore();
+    const configurationStore = useConfigStore();
     const certificationStore = useCertificationStore();
+    const icraStore = useIcraStore();
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
     const messageStore = useMessageStore();
@@ -244,6 +276,8 @@ export default defineComponent({
       oidcStore,
       userStore,
       applicationStore,
+      configurationStore,
+      icraStore,
       alertStore,
       loadingStore,
       messageStore,
@@ -264,7 +298,7 @@ export default defineComponent({
     } catch (error) {}
 
     if (!user) {
-      window.location.href = "/login";
+      globalThis.location.href = "/login";
       return; //stops the rest of the component from loading. Prevents 401 calls for the methods below
     }
 
@@ -274,6 +308,11 @@ export default defineComponent({
       getUserInfo(),
       getProfile(),
     ]);
+
+    // Fetch ICRA eligibilities if the feature is enabled
+    if (this.configurationStore.applicationConfiguration.icraFeatureEnabled) {
+      await this.icraStore.fetchIcraEligibilities();
+    }
     this.dataNotFetched = false;
 
     if (this.userInfo !== null) {
@@ -297,7 +336,7 @@ export default defineComponent({
       return this.showTransferCard ? "Apply for ECE certification in B.C." : "My ECE Registry dashboard";
     },
     subheading(): string {
-      return this.showTransferCard ? "There are two options to get certified in British Columbia." : "";
+      return this.showTransferCard ? "Review your options to get certified in British Columbia." : "";
     },
     showApplicationCard(): boolean {
       if (this.certificationStore.hasCertifications && this.applicationStore.applicationStatus === undefined) {
@@ -311,7 +350,28 @@ export default defineComponent({
       );
     },
     showTransferCard(): boolean {
-      return !this.certificationStore.hasCertifications && !this.applicationStore.hasApplication && !this.applicationStore.hasDraftApplication;
+      return (
+        !this.certificationStore.hasCertifications &&
+        !this.applicationStore.hasApplication &&
+        !this.applicationStore.hasDraftApplication &&
+        !this.icraStore.hasDraftIcraEligibility &&
+        !this.icraStore.hasSubmittedIcraEligibility
+      );
+    },
+    showIcraCard(): boolean {
+      return (
+        (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) &&
+        !this.applicationStore.hasApplication &&
+        !this.applicationStore.hasDraftApplication &&
+        !this.icraStore.hasDraftIcraEligibility &&
+        !this.icraStore.hasSubmittedIcraEligibility
+      );
+    },
+    showIcraEligibilityCard(): boolean {
+      return (
+        (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) &&
+        (this.icraStore.hasDraftIcraEligibility || this.icraStore.hasSubmittedIcraEligibility)
+      );
     },
     showLoading(): boolean {
       return (
@@ -324,7 +384,12 @@ export default defineComponent({
     },
     showOptions(): boolean {
       // If the user has certifications, does not have an application, and does not hold all certifications (Active or renewable)
-      return this.certificationStore.hasCertifications && !this.applicationStore.hasApplication && !this.certificationStore.holdsAllCertifications;
+      return (
+        this.certificationStore.hasCertifications &&
+        !this.icraStore.hasIcraEligibility &&
+        !this.applicationStore.hasApplication &&
+        !this.certificationStore.holdsAllCertifications
+      );
     },
     cancelApplicationLoading(): boolean {
       return this.loadingStore.isLoading("draftapplication_delete") || this.loadingStore.isLoading("application_get");

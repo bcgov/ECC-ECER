@@ -1,5 +1,6 @@
 ﻿using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Registrants;
+using ECER.Managers.Registry.PortalInvitations;
 using ECER.Managers.Registry.UserRegistrationIdentityService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,8 +15,12 @@ public class Configurer : IConfigureComponents
   {
     configurationContext.Services.AddTransient<ApplicationHandlers>();
     configurationContext.Services.AddTransient<CommunicationHandlers>();
+    configurationContext.Services.AddTransient<ICRAEligibilityHandlers>();
     configurationContext.Services.AddTransient<RegistrantHandlers>();
     configurationContext.Services.AddTransient<PortalInvitationHandlers>();
+    configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, ReferencePortalInvitationVerificationHandler>();
+    configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, IcraReferencePortalInvitationVerificationHandler>();
+    configurationContext.Services.AddTransient<IPortalInvitationVerificationHandler, PspPortalInvitationVerificationHandler>();
     configurationContext.Services.AddTransient<RecaptchaHandlers>();
     configurationContext.Services.Configure<RecaptchaAppSettings>(recaptchaAppSettings =>
     configurationContext.Configuration.GetSection("Recaptcha").Bind(recaptchaAppSettings));
