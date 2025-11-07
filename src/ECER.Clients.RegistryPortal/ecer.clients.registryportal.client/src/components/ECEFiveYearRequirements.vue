@@ -12,7 +12,7 @@
   <v-row>
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
-      <p>You must have completed a basic early childhood education training program.</p>
+      <p>You must have completed a basic early childhood education program.</p>
       <br />
       <p>The program must be either:</p>
       <br />
@@ -64,7 +64,7 @@
       <p>Important information about calculating hours:</p>
       <br />
       <ul class="ml-10">
-        <li>Only include hours you worked once you began your early childhood education training program</li>
+        <li>Only include hours you worked once you began your basic early childhood education program</li>
         <li>Only include hours completed within the last 5 years</li>
         <li>Cannot include hours that were part of your education (practicum or placement hours)</li>
         <li>Can include hours you volunteered</li>

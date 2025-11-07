@@ -70,6 +70,12 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_LastCommunicationSentOn = "ecer_lastcommunicationsenton";
 			public const string ecer_Message = "ecer_message";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_PSPRepresentativeRole = "ecer_psprepresentativerole";
+			public const string ecer_psprepresentativeroleName = "ecer_psprepresentativerolename";
+			public const string ecer_Repeat = "ecer_repeat";
+			public const string ecer_repeatName = "ecer_repeatname";
+			public const string ecer_ScheduledDate = "ecer_scheduleddate";
+			public const string ecer_ScheduleEndDate = "ecer_scheduleenddate";
 			public const string ecer_Subject = "ecer_subject";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
@@ -288,6 +294,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		/// <summary>
+		/// 1. Annual Reminder - Program Profile :  Annual Reminder to all Program Representatives listed on the contact list for each PSI (for all approved profiles) 
+///2. Monthly Reminder - Program Profile : PSP reps within an Education Institution to submit program profile by Sept 1  - only to be sent to those who haven’t yet submitted for current academic year
+		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationtype")]
 		public virtual ecer_BulkPSPCommunicationType? ecer_CommunicationType
 		{
@@ -362,6 +372,103 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psprepresentativerole")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_RepresentativeRole> ecer_PSPRepresentativeRole
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_RepresentativeRole>(this, "ecer_psprepresentativerole");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_psprepresentativerole", EntityOptionSetEnum.GetMultiEnum(this, "ecer_psprepresentativerole", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_psprepresentativerolename")]
+		public string ecer_psprepresentativeroleName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_psprepresentativerole"))
+				{
+					return this.FormattedValues["ecer_psprepresentativerole"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_repeat")]
+		public virtual RepeatPattern_options? ecer_Repeat
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((RepeatPattern_options?)(EntityOptionSetEnum.GetEnum(this, "ecer_repeat")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_repeat", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_repeatname")]
+		public string ecer_repeatName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_repeat"))
+				{
+					return this.FormattedValues["ecer_repeat"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_scheduleddate")]
+		public System.Nullable<System.DateTime> ecer_ScheduledDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_scheduleddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_scheduleddate", value);
+			}
+		}
+		
+		/// <summary>
+		/// End date for the communication message creation.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_scheduleenddate")]
+		public System.Nullable<System.DateTime> ecer_ScheduleEndDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_scheduleenddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_scheduleenddate", value);
 			}
 		}
 		

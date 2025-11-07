@@ -53,6 +53,7 @@ public record InternationalCertification
   public IEnumerable<Applications.FileInfo> Files { get; set; } = Array.Empty<Applications.FileInfo>();
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
+  public InternationalCertificationStatus Status { get; set; }
 }
 
 public record EmploymentReference
@@ -65,7 +66,6 @@ public record EmploymentReference
   public WorkExperienceRefStage? Status { get; set; }
   public bool? WillProvideReference { get; set; }
   public WorkExperienceTypesIcra Type { get; set; }
-
 }
 
 public record ICRAWorkExperienceReferenceSubmissionRequest
@@ -103,6 +103,19 @@ public enum ICRAStatus
   ReadyforReview,
   Submitted,
   ReadyforAssessment
+}
+
+public enum InternationalCertificationStatus
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  ICRAEligibilitySubmitted,
+  Inactive,
+  InProgress,
+  Rejected,
+  UnderReview,
+  WaitingforResponse,
 }
 
 public enum WorkExperienceTypesIcra

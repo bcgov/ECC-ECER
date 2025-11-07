@@ -14,20 +14,17 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_InitiatedFrom
+	public enum ecer_DecisionOutcome
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Investigation = 621870001,
+		OverturningDecision = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PortalUser = 621870002,
+		UpholdingDecision = 621870001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ProgramRepresentative = 621870003,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Registry = 621870000,
+		VaryingDecision = 621870002,
 	}
 }
 #pragma warning restore CS1591

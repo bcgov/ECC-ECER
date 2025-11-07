@@ -9,19 +9,17 @@
         <br />
         <ul class="ml-10">
           <li>Be related to early childhood education</li>
-          <li v-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active'">
+          <li v-if="fromCertificate?.statusCode === 'Active'">
             Have been completed within the dates of your current certificate:
             <strong>
-              {{ formatDate(certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy") }}
+              {{ formatDate(fromCertificate?.effectiveDate || "", "LLLL d, yyyy") }}
             </strong>
             to
             <strong>
-              {{ formatDate(certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy") }}
+              {{ formatDate(fromCertificate?.expiryDate || "", "LLLL d, yyyy") }}
             </strong>
           </li>
-          <li v-else-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'">
-            Have been completed within the last 5 years
-          </li>
+          <li v-else-if="fromCertificate?.statusCode === 'Expired'">Have been completed within the last 5 years</li>
         </ul>
         <template v-if="professionalDevelopmentFormMode === 'add'">
           <br />
@@ -92,15 +90,15 @@ They should be able to confirm you completed the course or workshop."
               Rules.required('Enter the start date of your course or workshop'),
               Rules.futureDateNotAllowedRule(),
               Rules.conditionalWrapper(
-                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active',
+                fromCertificate?.statusCode === 'Active',
                 Rules.dateBetweenRule(
-                  certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || '',
-                  certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || '',
+                  fromCertificate?.effectiveDate || '',
+                  fromCertificate?.expiryDate || '',
                   'The start date of your course or workshop must be within the term of your current certificate',
                 ),
               ),
               Rules.conditionalWrapper(
-                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired',
+                fromCertificate?.statusCode === 'Expired',
                 Rules.dateRuleRange(
                   applicationStore.draftApplication.createdOn || '',
                   5,
@@ -125,15 +123,15 @@ They should be able to confirm you completed the course or workshop."
               Rules.futureDateNotAllowedRule(),
               Rules.dateBeforeRule(startDate || ''),
               Rules.conditionalWrapper(
-                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active',
+                fromCertificate?.statusCode === 'Active',
                 Rules.dateBetweenRule(
-                  certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || '',
-                  certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || '',
+                  fromCertificate?.effectiveDate || '',
+                  fromCertificate?.expiryDate || '',
                   'The end date of your course or workshop must be within the term of your current certificate',
                 ),
               ),
               Rules.conditionalWrapper(
-                certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired',
+                fromCertificate?.statusCode === 'Expired',
                 Rules.dateRuleRange(
                   applicationStore.draftApplication.createdOn || '',
                   5,
@@ -269,19 +267,17 @@ They should be able to confirm you completed the course or workshop."
         <br />
         <ul class="ml-10">
           <li>Be related to early childhood education</li>
-          <li v-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Active'">
+          <li v-if="fromCertificate?.statusCode === 'Active'">
             Have been completed within the dates of your current certificate:
             <strong>
-              {{ formatDate(certificationStore.certificationEffectiveDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy") }}
+              {{ formatDate(fromCertificate?.effectiveDate || "", "LLLL d, yyyy") }}
             </strong>
             to
             <strong>
-              {{ formatDate(certificationStore.certificationExpiryDate(applicationStore.draftApplication.fromCertificate) || "", "LLLL d, yyyy") }}
+              {{ formatDate(fromCertificate?.expiryDate || "", "LLLL d, yyyy") }}
             </strong>
           </li>
-          <li v-else-if="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'">
-            Have been completed within the last 5 years
-          </li>
+          <li v-else-if="fromCertificate?.statusCode === 'Expired'">Have been completed within the last 5 years</li>
         </ul>
       </v-col>
     </v-row>
@@ -445,6 +441,9 @@ export default defineComponent({
   },
   computed: {
     ...mapWritableState(useWizardStore, { mode: "listComponentMode" }),
+    fromCertificate() {
+      return this.certificationStore.getCertificationById(this.applicationStore.draftApplication.fromCertificate);
+    },
     isDisabled() {
       return this.totalHours >= this.hoursRequired;
     },

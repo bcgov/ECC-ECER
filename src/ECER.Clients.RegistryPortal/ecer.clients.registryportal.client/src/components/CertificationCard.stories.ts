@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 
 import CertificationCard from "./CertificationCard.vue";
+import { getDateMinusYears, getTodayDate } from "@/utils/dateHelpers";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta = {
@@ -34,6 +35,8 @@ const meta = {
       ],
       certificateConditions: [],
     },
+    hasApplication: false,
+    isLatestOfType: true,
   },
 } satisfies Meta<typeof CertificationCard>;
 
@@ -364,5 +367,36 @@ export const HasApplication: Story = {
       certificateConditions: [],
     },
     hasApplication: true,
+  },
+};
+
+export const ExpiredAssistantMoreThan5Years: Story = {
+  args: {
+    certification: {
+      id: "f403a278-8020-f011-998a-6045bdf9b81b",
+      name: "KARISSA CAULKINS",
+      number: "016359",
+      expiryDate: getDateMinusYears(6),
+      effectiveDate: getDateMinusYears(7),
+      date: getTodayDate(),
+      printDate: null,
+      hasConditions: false,
+      levelName: "ECE Assistant",
+      statusCode: "Expired",
+      certificatePDFGeneration: "Yes",
+      levels: [{ id: "556b387e-8020-f011-998a-7c1e52871876", type: "Assistant" }],
+      files: [
+        {
+          id: "3979ff88-f262-4747-b294-c289caa2402a",
+          url: "ecer_certificate/f403a278-8020-f011-998a-6045bdf9b81b",
+          extention: ".pdf",
+          size: "322.00 KB",
+          name: "Cover Letter-016359.pdf",
+        },
+      ],
+      certificateConditions: [],
+    },
+    hasApplication: false,
+    isLatestOfType: true,
   },
 };

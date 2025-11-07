@@ -312,6 +312,41 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBe(400);
     });
   }
+  
+  [Fact]
+  public async Task SubmitApplication_TwiceBySameUser_ReturnsBadRequest()
+  {
+    // Assert user already has submitted application
+    var applicationsResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url("/api/applications");
+      _.StatusCodeShouldBeOk();
+    });
+    var applications = await applicationsResponse.ReadAsJsonAsync<Application[]>();
+    applications.Where(application => application.Status == ApplicationStatus.Submitted).ShouldNotBeEmpty();
+    
+    // Create and submit application
+    var firstApplication = CreateDraftApplication();
+    firstApplication.Id = Fixture.draftTestApplicationId4;
+    firstApplication.CertificationTypes = new[] { CertificationType.EceAssistant };
+
+    // Save draft
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUser);
+      _.Put.Json(new SaveDraftApplicationRequest(firstApplication)).ToUrl($"/api/draftapplications/{firstApplication.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    // Submit application
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(Fixture.AuthenticatedBcscUserIdentity, Fixture.AuthenticatedBcscUser);
+      _.Post.Json(new ApplicationSubmissionRequest(firstApplication.Id!)).ToUrl("/api/applications");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+  }
 
   [Fact]
   public async Task CancelApplication_ById_ShouldReturnId_QueryApplications_ShouldNotReturnCancelledApplications()

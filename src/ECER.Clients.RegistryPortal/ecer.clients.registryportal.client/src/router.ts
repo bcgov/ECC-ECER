@@ -340,6 +340,13 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
+      path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-references",
+      name: "manage-icra-eligibility-work-experience-references",
+      component: () => import("./components/IcraEligibilityManageWorkExperienceReferences.vue"),
+      props: true,
+      meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
+    },
+    {
       path: "/lookup/certification/record",
       component: () => import("./components/LookupCertificationRecord.vue"),
       meta: { requiresAuth: false },
@@ -349,7 +356,7 @@ const router = createRouter({
   ],
 });
 
-// Gaurd for authenticated routes
+// Guard for authenticated routes
 router.beforeEach(async (to, _) => {
   const oidcStore = useOidcStore();
   const userStore = useUserStore();
@@ -438,6 +445,15 @@ router.beforeEach((to, _, next) => {
   const applicationStore = useApplicationStore();
 
   if (to.path === "/application" && applicationStore.applicationStatus === "Draft" && applicationStore.applicationOrigin === "Manual") {
+    next({ path: "/" });
+  } else next();
+});
+
+// Guard to prevent users from accessing /application if they have already submitted an application
+router.beforeEach((to, _, next) => {
+  const applicationStore = useApplicationStore();
+  if (to.path === "/application" && applicationStore.hasSubmittedApplication) {
+    console.warn("User has already submitted an application, redirecting to home page.");
     next({ path: "/" });
   } else next();
 });

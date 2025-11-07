@@ -155,6 +155,7 @@ public record InternationalCertification
   public IEnumerable<Applications.FileInfo> Files { get; set; } = Array.Empty<Applications.FileInfo>();
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
+  public InternationalCertificationStatus Status { get; set; }
 }
 
 public enum CertificateStatus
@@ -184,6 +185,19 @@ public enum ICRAStatus
   ReadyforReview,
   Submitted,
   ReadyforAssessment
+}
+
+public enum InternationalCertificationStatus
+{
+  ApplicationSubmitted,
+  Approved,
+  Draft,
+  ICRAEligibilitySubmitted,
+  Inactive,
+  InProgress,
+  Rejected,
+  UnderReview,
+  WaitingforResponse,
 }
 
 public record ICRAEligibilitySubmissionRequest(string Id);
