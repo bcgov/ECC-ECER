@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ECER.Resources.Accounts.Communications;
+﻿namespace ECER.Resources.Accounts.Communications;
 
 public interface ICommunicationRepository
 {
@@ -70,6 +63,7 @@ public enum InitiatedFrom
   Investigation,
   PortalUser,
   Registry,
+  ProgramRepresentative
 }
 
 public record CommunicationsStatus

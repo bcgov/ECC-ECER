@@ -140,7 +140,7 @@ public enum ApplicationStatus
   PendingQueue,
   PendingPSPConsultationNeeded,
   ReconsiderationDecision,
-  AppealDecision
+  AppealDecision,
 }
 
 public enum ApplicationOrigin

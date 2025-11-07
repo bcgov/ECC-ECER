@@ -12,7 +12,7 @@
   <v-row>
     <v-col>
       <ECEHeader title="Education information"></ECEHeader>
-      <p>You must have completed at least one early childhood education course in one of the following:</p>
+      <p>You must have completed at least one basic early childhood education course in one of the following:</p>
       <br />
       <ul class="ml-10">
         <li>Child guidance</li>

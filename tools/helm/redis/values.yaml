@@ -1,5 +1,5 @@
 imageRepository: artifacts.developer.gov.bc.ca/docker-remote/redis
-imageTag: 7
+imageTag: 7.4.6
 
 redisPort: 6379
 sentinelPort: 26379

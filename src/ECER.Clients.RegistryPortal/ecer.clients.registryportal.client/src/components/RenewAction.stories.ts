@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 
 import RenewAction from "./RenewAction.vue";
+import { getDateMinusYears, getTodayDate } from "@/utils/dateHelpers";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 const meta = {
@@ -54,13 +55,13 @@ export const AssistantExpiredMoreThan5Years: Story = {
       id: "f403a278-8020-f011-998a-6045bdf9b81b",
       name: "KARISSA CAULKINS",
       number: "016359",
-      expiryDate: "2006-04-23T00:00:00",
-      effectiveDate: "2005-04-23T00:00:00",
-      date: "2025-04-23T00:00:00",
+      expiryDate: getDateMinusYears(10),
+      effectiveDate: getDateMinusYears(11),
+      date: getTodayDate(),
       printDate: null,
       hasConditions: false,
       levelName: "ECE Assistant",
-      statusCode: "Active",
+      statusCode: "Expired",
       certificatePDFGeneration: "Yes",
       levels: [{ id: "556b387e-8020-f011-998a-7c1e52871876", type: "Assistant" }],
       files: [

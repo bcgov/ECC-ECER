@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Denial Reason
+	/// Status of the Reconsideration Request
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_denialreason_statecode
+	public enum ecer_reconsiderationrequest_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,28 +28,37 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Denial Reason
+	/// Reason for the status of the Reconsideration Request
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_DenialReason_StatusCode
+	public enum ecer_ReconsiderationRequest_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Active = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Complete = 621870003,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Inactive = 2,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		InReview = 621870002,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		New = 621870001,
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_denialreason")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_reconsiderationrequest")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_DenialReason : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_ReconsiderationRequest : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_denialreason entity
+		/// Available fields, a the time of codegen, for the ecer_reconsiderationrequest entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,11 +69,29 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_application_DenialReasonType_ecer_denialr = "ecer_application_DenialReasonType_ecer_denialr";
-			public const string ecer_decisioncomment_ecer_denialreason = "ecer_decisioncomment_ecer_denialreason";
-			public const string ecer_DenialReason1 = "ecer_denialreason";
-			public const string ecer_DenialReasonId = "ecer_denialreasonid";
-			public const string Id = "ecer_denialreasonid";
+			public const string ecer_ApplicantId = "ecer_applicantid";
+			public const string ecer_ApplicantIdName = "ecer_applicantidname";
+			public const string ecer_ApplicantIdYomiName = "ecer_applicantidyominame";
+			public const string ecer_ApplicationId = "ecer_applicationid";
+			public const string ecer_ApplicationIdName = "ecer_applicationidname";
+			public const string ecer_communication_ReconsiderationRequestId = "ecer_communication_ReconsiderationRequestId";
+			public const string ecer_DecisionDate = "ecer_decisiondate";
+			public const string ecer_DecisionOutcome = "ecer_decisionoutcome";
+			public const string ecer_decisionoutcomeName = "ecer_decisionoutcomename";
+			public const string ecer_DeclarationandSubmitteddate = "ecer_declarationandsubmitteddate";
+			public const string ecer_ExplanationandEvidence = "ecer_explanationandevidence";
+			public const string ecer_FromCertificateId = "ecer_fromcertificateid";
+			public const string ecer_FromCertificateIdName = "ecer_fromcertificateidname";
+			public const string ecer_Name = "ecer_name";
+			public const string ecer_Other = "ecer_other";
+			public const string ecer_ReconsiderationDetails = "ecer_reconsiderationdetails";
+			public const string ecer_reconsiderationrequest_ApplicantId = "ecer_reconsiderationrequest_ApplicantId";
+			public const string ecer_reconsiderationrequest_ApplicationId = "ecer_reconsiderationrequest_ApplicationId";
+			public const string ecer_reconsiderationrequest_FromCertificateId = "ecer_reconsiderationrequest_FromCertificateId";
+			public const string ecer_ReconsiderationRequestId = "ecer_reconsiderationrequestid";
+			public const string Id = "ecer_reconsiderationrequestid";
+			public const string ecer_ReconsiderationRequestReason = "ecer_reconsiderationrequestreason";
+			public const string ecer_reconsiderationrequestreasonName = "ecer_reconsiderationrequestreasonname";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -91,19 +118,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DenialReason(System.Guid id) : 
+		public ecer_ReconsiderationRequest(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DenialReason(string keyName, object keyValue) : 
+		public ecer_ReconsiderationRequest(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DenialReason(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_ReconsiderationRequest(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -112,22 +139,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DenialReason() : 
+		public ecer_ReconsiderationRequest() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_denialreasonid";
+		public const string PrimaryIdAttribute = "ecer_reconsiderationrequestid";
 		
-		public const string PrimaryNameAttribute = "ecer_denialreason";
+		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_DenialReason";
+		public const string EntitySchemaName = "ecer_ReconsiderationRequest";
 		
-		public const string EntityLogicalName = "ecer_denialreason";
+		public const string EntityLogicalName = "ecer_reconsiderationrequest";
 		
-		public const string EntityLogicalCollectionName = "ecer_denialreasons";
+		public const string EntityLogicalCollectionName = "ecer_reconsiderationrequests";
 		
-		public const string EntitySetName = "ecer_denialreasons";
+		public const string EntitySetName = "ecer_reconsiderationrequests";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -241,36 +268,256 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreason")]
-		public string ecer_DenialReason1
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ApplicantId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_denialreason");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_applicantid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_denialreason", value);
+				this.SetAttributeValue("ecer_applicantid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantidname")]
+		public string ecer_ApplicantIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_applicantid"))
+				{
+					return this.FormattedValues["ecer_applicantid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantidyominame")]
+		public string ecer_ApplicantIdYomiName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_applicantid"))
+				{
+					return this.FormattedValues["ecer_applicantid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_ApplicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_applicationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_applicationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationidname")]
+		public string ecer_ApplicationIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_applicationid"))
+				{
+					return this.FormattedValues["ecer_applicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisiondate")]
+		public System.Nullable<System.DateTime> ecer_DecisionDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_decisiondate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_decisiondate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisionoutcome")]
+		public virtual ecer_DecisionOutcome? ecer_DecisionOutcome
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_DecisionOutcome?)(EntityOptionSetEnum.GetEnum(this, "ecer_decisionoutcome")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_decisionoutcome", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_decisionoutcomename")]
+		public string ecer_decisionoutcomeName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_decisionoutcome"))
+				{
+					return this.FormattedValues["ecer_decisionoutcome"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_declarationandsubmitteddate")]
+		public System.Nullable<System.DateTime> ecer_DeclarationandSubmitteddate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_declarationandsubmitteddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_declarationandsubmitteddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_explanationandevidence")]
+		public string ecer_ExplanationandEvidence
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_explanationandevidence");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_explanationandevidence", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromcertificateid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_FromCertificateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_fromcertificateid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_fromcertificateid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromcertificateidname")]
+		public string ecer_FromCertificateIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_fromcertificateid"))
+				{
+					return this.FormattedValues["ecer_fromcertificateid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
+		public string ecer_Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_other")]
+		public string ecer_Other
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_other");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_other", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationdetails")]
+		public string ecer_ReconsiderationDetails
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_reconsiderationdetails");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationdetails", value);
 			}
 		}
 		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasonid")]
-		public System.Nullable<System.Guid> ecer_DenialReasonId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequestid")]
+		public System.Nullable<System.Guid> ecer_ReconsiderationRequestId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_denialreasonid");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_reconsiderationrequestid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_denialreasonid", value);
+				this.SetAttributeValue("ecer_reconsiderationrequestid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -282,7 +529,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasonid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequestid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -293,7 +540,39 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_DenialReasonId = value;
+				this.ecer_ReconsiderationRequestId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequestreason")]
+		public virtual ecer_ReconsiderationRequestReason? ecer_ReconsiderationRequestReason
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return ((ecer_ReconsiderationRequestReason?)(EntityOptionSetEnum.GetEnum(this, "ecer_reconsiderationrequestreason")));
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_reconsiderationrequestreason", value.HasValue ? new Microsoft.Xrm.Sdk.OptionSetValue((int)value) : null);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_reconsiderationrequestreasonname")]
+		public string ecer_reconsiderationrequestreasonName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_reconsiderationrequestreason"))
+				{
+					return this.FormattedValues["ecer_reconsiderationrequestreason"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
@@ -560,15 +839,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Denial Reason
+		/// Status of the Reconsideration Request
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_denialreason_statecode? StateCode
+		public virtual ecer_reconsiderationrequest_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_denialreason_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_reconsiderationrequest_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -595,15 +874,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Denial Reason
+		/// Reason for the status of the Reconsideration Request
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_DenialReason_StatusCode? StatusCode
+		public virtual ecer_ReconsiderationRequest_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_DenialReason_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_ReconsiderationRequest_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -679,38 +958,77 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_application_DenialReasonType_ecer_denialr
+		/// 1:N ecer_communication_ReconsiderationRequestId
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_DenialReasonType_ecer_denialr")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Application> ecer_application_DenialReasonType_ecer_denialr
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ReconsiderationRequestId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Communication> ecer_communication_ReconsiderationRequestId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_DenialReasonType_ecer_denialr", null);
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_ReconsiderationRequestId", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_DenialReasonType_ecer_denialr", null, value);
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_ReconsiderationRequestId", null, value);
 			}
 		}
 		
 		/// <summary>
-		/// 1:N ecer_decisioncomment_ecer_denialreason
+		/// N:1 ecer_reconsiderationrequest_ApplicantId
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_decisioncomment_ecer_denialreason")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Comment> ecer_decisioncomment_ecer_denialreason
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicantid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_reconsiderationrequest_ApplicantId")]
+		public ECER.Utilities.DataverseSdk.Model.Contact ecer_reconsiderationrequest_ApplicantId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Comment>("ecer_decisioncomment_ecer_denialreason", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_reconsiderationrequest_ApplicantId", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Comment>("ecer_decisioncomment_ecer_denialreason", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.Contact>("ecer_reconsiderationrequest_ApplicantId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_reconsiderationrequest_ApplicationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_applicationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_reconsiderationrequest_ApplicationId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Application ecer_reconsiderationrequest_ApplicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_reconsiderationrequest_ApplicationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_reconsiderationrequest_ApplicationId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_reconsiderationrequest_FromCertificateId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_fromcertificateid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_reconsiderationrequest_FromCertificateId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_Certificate ecer_reconsiderationrequest_FromCertificateId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_reconsiderationrequest_FromCertificateId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Certificate>("ecer_reconsiderationrequest_FromCertificateId", null, value);
 			}
 		}
 		
@@ -719,7 +1037,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DenialReason(object anonymousType) : 
+		public ecer_ReconsiderationRequest(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -737,9 +1055,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_denialreasonid"] = base.Id;
+                        Attributes["ecer_reconsiderationrequestid"] = base.Id;
                         break;
-                    case "ecer_denialreasonid":
+                    case "ecer_reconsiderationrequestid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;

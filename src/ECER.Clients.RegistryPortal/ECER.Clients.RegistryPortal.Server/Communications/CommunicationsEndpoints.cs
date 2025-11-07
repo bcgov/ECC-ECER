@@ -156,6 +156,7 @@ public enum InitiatedFrom
   Investigation,
   PortalUser,
   Registry,
+  ProgramRepresentative,
 }
 
 public enum CommunicationStatus

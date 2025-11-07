@@ -16,7 +16,7 @@ import applicationWizardLaborMobilityAssistantAndOneYear from "@/config/applicat
 import applicationWizardLaborMobilityFiveYear from "@/config/application-wizard-labor-mobility-five-year";
 import type { Components } from "@/types/openapi";
 import type { ApplicationStage, Wizard } from "@/types/wizard";
-import { humanFileSize } from "@/utils/functions";
+import { expiredMoreThan5Years, humanFileSize } from "@/utils/functions";
 
 import { useCertificationStore } from "./certification";
 import { useUserStore } from "./user";
@@ -78,6 +78,17 @@ export const useApplicationStore = defineStore("application", {
   getters: {
     hasDraftApplication(state): boolean {
       return state.draftApplication.id !== undefined;
+    },
+    hasSubmittedApplication(state): boolean {
+      return (
+        state.application?.status === "Submitted" ||
+        state.application?.status === "Ready" ||
+        state.application?.status === "InProgress" ||
+        state.application?.status === "PendingQueue" ||
+        state.application?.status === "Pending" ||
+        state.application?.status === "PendingPSPConsultationNeeded" ||
+        state.application?.status === "Escalated"
+      );
     },
     hasApplication(state): boolean {
       return state.application !== null;
@@ -169,20 +180,19 @@ export const useApplicationStore = defineStore("application", {
     draftApplicationFlow(state): ApplicationFlow {
       const userStore = useUserStore();
       const certificationStore = useCertificationStore();
+      const fromCertificate = certificationStore.getCertificationById(state.draftApplication.fromCertificate);
 
       // RENEWAL flows
       if (state.draftApplication.applicationType === "Renewal") {
         if (this.isDraftCertificateTypeEceAssistant) return "AssistantRenewal";
         if (this.isDraftCertificateTypeOneYear) {
-          const fromCertificateId = state.draftApplication.fromCertificate;
-          if (fromCertificateId && certificationStore.certificateStatus(fromCertificateId) === "Active") return "OneYearActiveRenewal";
+          if (fromCertificate && fromCertificate.statusCode === "Active") return "OneYearActiveRenewal";
           return "OneYearExpiredRenewal";
         }
         if (this.isDraftCertificateTypeFiveYears) {
-          const fromCertificateId = state.draftApplication.fromCertificate;
-          if (fromCertificateId) {
-            if (certificationStore.certificateStatus(fromCertificateId) === "Active") return "FiveYearActiveRenewal";
-            if (certificationStore.expiredMoreThan5Years(fromCertificateId)) return "FiveYearExpiredMoreThanFiveYearsRenewal";
+          if (fromCertificate) {
+            if (fromCertificate.statusCode === "Active") return "FiveYearActiveRenewal";
+            if (expiredMoreThan5Years(fromCertificate)) return "FiveYearExpiredMoreThanFiveYearsRenewal";
             return "FiveYearExpiredLessThanFiveYearsRenewal";
           }
           // Default to expired renewal if no fromCertificate is specified
@@ -302,18 +312,14 @@ export const useApplicationStore = defineStore("application", {
 
       // One year renewal explanation letter
       if (oneYearRenewalExplanationId && oneYearRenewalExplanationOtherId) {
-        this.draftApplication.oneYearRenewalExplanationChoice =
-          wizardStore.wizardData[oneYearRenewalExplanationId];
-        this.draftApplication.renewalExplanationOther =
-          wizardStore.wizardData[oneYearRenewalExplanationOtherId];
+        this.draftApplication.oneYearRenewalExplanationChoice = wizardStore.wizardData[oneYearRenewalExplanationId];
+        this.draftApplication.renewalExplanationOther = wizardStore.wizardData[oneYearRenewalExplanationOtherId];
       }
 
       // Five year renewal explanation letter
       if (fiveYearRenewalExplanationId && fiveYearRenewalExplanationOtherId) {
-        this.draftApplication.fiveYearRenewalExplanationChoice =
-          wizardStore.wizardData[fiveYearRenewalExplanationId];
-        this.draftApplication.renewalExplanationOther =
-          wizardStore.wizardData[fiveYearRenewalExplanationOtherId];
+        this.draftApplication.fiveYearRenewalExplanationChoice = wizardStore.wizardData[fiveYearRenewalExplanationId];
+        this.draftApplication.renewalExplanationOther = wizardStore.wizardData[fiveYearRenewalExplanationOtherId];
       }
 
       // Character References step data

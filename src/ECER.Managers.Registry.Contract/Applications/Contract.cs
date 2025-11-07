@@ -186,7 +186,8 @@ public enum OneYearRenewalexplanations
 public enum SubmissionError
 {
   DraftApplicationNotFound,
-  DraftApplicationValidationFailed
+  DraftApplicationValidationFailed,
+  SubmittedApplicationAlreadyExists,
 }
 
 public enum ApplicationStatus
@@ -206,7 +207,7 @@ public enum ApplicationStatus
   PendingQueue,
   PendingPSPConsultationNeeded,
   ReconsiderationDecision,
-  AppealDecision
+  AppealDecision,
 }
 
 public enum ApplicationOrigin

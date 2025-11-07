@@ -12,22 +12,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 {
 	
 	
+	/// <summary>
+	/// Options for how often should an appointment repeat?
+	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_InitiatedFrom
+	public enum RepeatPattern_options
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Investigation = 621870001,
+		Daily = 0,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PortalUser = 621870002,
+		Monthly = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		ProgramRepresentative = 621870003,
+		Weekly = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Registry = 621870000,
+		Yearly = 3,
 	}
 }
 #pragma warning restore CS1591

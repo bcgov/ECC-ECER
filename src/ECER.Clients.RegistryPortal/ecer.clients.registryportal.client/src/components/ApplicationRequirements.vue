@@ -5,14 +5,11 @@
     <!-- Renewal -->
     <template v-if="applicationStore.isDraftApplicationRenewal">
       <ECEAssistantRenewalRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
-      <ECEOneYearRenewalRequirements
-        v-if="applicationStore.isDraftCertificateTypeOneYear"
-        :expired="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'"
-      />
+      <ECEOneYearRenewalRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" :expired="fromCertificate?.statusCode === 'Expired'" />
       <ECEFiveYearRenewalRequirements
         v-if="applicationStore.isDraftCertificateTypeFiveYears"
-        :expired="certificationStore.certificateStatus(applicationStore.draftApplication.fromCertificate) === 'Expired'"
-        :expired-more-than5-years="certificationStore.expiredMoreThan5Years(applicationStore.draftApplication.fromCertificate)"
+        :expired="fromCertificate?.statusCode === 'Expired'"
+        :expired-more-than5-years="fromCertificate && expiredMoreThan5Years(fromCertificate)"
       />
     </template>
 
@@ -68,6 +65,7 @@ import { useApplicationStore } from "@/store/application";
 import { useCertificationStore } from "@/store/certification";
 import { useUserStore } from "@/store/user";
 import type { Components } from "@/types/openapi";
+import { expiredMoreThan5Years } from "@/utils/functions";
 
 import ECEFiveYearRegistrantRequirements from "./ECEFiveYearRegistrantRequirements.vue";
 import ECEIteRegistrantRequirements from "./ECEIteRegistrantRequirements.vue";
@@ -104,7 +102,7 @@ export default defineComponent({
     const userStore = useUserStore();
     const router = useRouter();
 
-    return { applicationStore, certificationStore, userStore, router };
+    return { applicationStore, certificationStore, userStore, router, expiredMoreThan5Years };
   },
   data() {
     return {
@@ -114,6 +112,9 @@ export default defineComponent({
   computed: {
     isPostBasic() {
       return this.applicationStore.draftApplication.certificationTypes?.some((type) => type === "Ite" || type === "Sne");
+    },
+    fromCertificate() {
+      return this.certificationStore.getCertificationById(this.applicationStore.draftApplication.fromCertificate);
     },
   },
   methods: {

@@ -13,11 +13,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	
 	/// <summary>
-	/// Status of the Denial Reason
+	/// Status of the Education Institution Previous Name
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_denialreason_statecode
+	public enum ecer_educationinstitutionpreviousname_statecode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -28,11 +28,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	/// <summary>
-	/// Reason for the status of the Denial Reason
+	/// Reason for the status of the Education Institution Previous Name
 	/// </summary>
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_DenialReason_StatusCode
+	public enum ecer_EducationInstitutionPreviousName_StatusCode
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
@@ -43,13 +43,13 @@ namespace ECER.Utilities.DataverseSdk.Model
 	}
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_denialreason")]
+	[Microsoft.Xrm.Sdk.Client.EntityLogicalNameAttribute("ecer_educationinstitutionpreviousname")]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public partial class ecer_DenialReason : Microsoft.Xrm.Sdk.Entity
+	public partial class ecer_EducationInstitutionPreviousName : Microsoft.Xrm.Sdk.Entity
 	{
 		
 		/// <summary>
-		/// Available fields, a the time of codegen, for the ecer_denialreason entity
+		/// Available fields, a the time of codegen, for the ecer_educationinstitutionpreviousname entity
 		/// </summary>
 		public partial class Fields
 		{
@@ -60,11 +60,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
-			public const string ecer_application_DenialReasonType_ecer_denialr = "ecer_application_DenialReasonType_ecer_denialr";
-			public const string ecer_decisioncomment_ecer_denialreason = "ecer_decisioncomment_ecer_denialreason";
-			public const string ecer_DenialReason1 = "ecer_denialreason";
-			public const string ecer_DenialReasonId = "ecer_denialreasonid";
-			public const string Id = "ecer_denialreasonid";
+			public const string ecer_EducationInstitution = "ecer_educationinstitution";
+			public const string ecer_EducationInstitutionName = "ecer_educationinstitutionname";
+			public const string ecer_educationinstitutionpreviousname_EducationInstitution = "ecer_educationinstitutionpreviousname_EducationInstitution";
+			public const string ecer_EducationInstitutionPreviousNameId = "ecer_educationinstitutionpreviousnameid";
+			public const string Id = "ecer_educationinstitutionpreviousnameid";
+			public const string ecer_EndDate = "ecer_enddate";
+			public const string ecer_Name = "ecer_name";
+			public const string ecer_NewName = "ecer_newname";
+			public const string ecer_StartDate = "ecer_startdate";
 			public const string ImportSequenceNumber = "importsequencenumber";
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedByName = "modifiedbyname";
@@ -91,19 +95,19 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DenialReason(System.Guid id) : 
+		public ecer_EducationInstitutionPreviousName(System.Guid id) : 
 				base(EntityLogicalName, id)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DenialReason(string keyName, object keyValue) : 
+		public ecer_EducationInstitutionPreviousName(string keyName, object keyValue) : 
 				base(EntityLogicalName, keyName, keyValue)
 		{
 		}
 		
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DenialReason(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
+		public ecer_EducationInstitutionPreviousName(Microsoft.Xrm.Sdk.KeyAttributeCollection keyAttributes) : 
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
@@ -112,22 +116,22 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// Default Constructor.
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DenialReason() : 
+		public ecer_EducationInstitutionPreviousName() : 
 				base(EntityLogicalName)
 		{
 		}
 		
-		public const string PrimaryIdAttribute = "ecer_denialreasonid";
+		public const string PrimaryIdAttribute = "ecer_educationinstitutionpreviousnameid";
 		
-		public const string PrimaryNameAttribute = "ecer_denialreason";
+		public const string PrimaryNameAttribute = "ecer_name";
 		
-		public const string EntitySchemaName = "ecer_DenialReason";
+		public const string EntitySchemaName = "ecer_EducationInstitutionPreviousName";
 		
-		public const string EntityLogicalName = "ecer_denialreason";
+		public const string EntityLogicalName = "ecer_educationinstitutionpreviousname";
 		
-		public const string EntityLogicalCollectionName = "ecer_denialreasons";
+		public const string EntityLogicalCollectionName = "ecer_educationinstitutionpreviousnames";
 		
-		public const string EntitySetName = "ecer_denialreasons";
+		public const string EntitySetName = "ecer_educationinstitutionpreviousnames";
 		
 		/// <summary>
 		/// Unique identifier of the user who created the record.
@@ -241,36 +245,53 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreason")]
-		public string ecer_DenialReason1
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationinstitution")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_EducationInstitution
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_denialreason");
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_educationinstitution");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_denialreason", value);
+				this.SetAttributeValue("ecer_educationinstitution", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationinstitutionname")]
+		public string ecer_EducationInstitutionName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_educationinstitution"))
+				{
+					return this.FormattedValues["ecer_educationinstitution"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
 		/// <summary>
 		/// Unique identifier for entity instances
 		/// </summary>
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasonid")]
-		public System.Nullable<System.Guid> ecer_DenialReasonId
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationinstitutionpreviousnameid")]
+		public System.Nullable<System.Guid> ecer_EducationInstitutionPreviousNameId
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_denialreasonid");
+				return this.GetAttributeValue<System.Nullable<System.Guid>>("ecer_educationinstitutionpreviousnameid");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_denialreasonid", value);
+				this.SetAttributeValue("ecer_educationinstitutionpreviousnameid", value);
 				if (value.HasValue)
 				{
 					base.Id = value.Value;
@@ -282,7 +303,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_denialreasonid")]
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationinstitutionpreviousnameid")]
 		public override System.Guid Id
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
@@ -293,7 +314,67 @@ namespace ECER.Utilities.DataverseSdk.Model
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.ecer_DenialReasonId = value;
+				this.ecer_EducationInstitutionPreviousNameId = value;
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_enddate")]
+		public System.Nullable<System.DateTime> ecer_EndDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_enddate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_enddate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_name")]
+		public string ecer_Name
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_name");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newname")]
+		public string ecer_NewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_newname");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_newname", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_startdate")]
+		public System.Nullable<System.DateTime> ecer_StartDate
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_startdate");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_startdate", value);
 			}
 		}
 		
@@ -560,15 +641,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Status of the Denial Reason
+		/// Status of the Education Institution Previous Name
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statecode")]
-		public virtual ecer_denialreason_statecode? StateCode
+		public virtual ecer_educationinstitutionpreviousname_statecode? StateCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_denialreason_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
+				return ((ecer_educationinstitutionpreviousname_statecode?)(EntityOptionSetEnum.GetEnum(this, "statecode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -595,15 +676,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// Reason for the status of the Denial Reason
+		/// Reason for the status of the Education Institution Previous Name
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("statuscode")]
-		public virtual ecer_DenialReason_StatusCode? StatusCode
+		public virtual ecer_EducationInstitutionPreviousName_StatusCode? StatusCode
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return ((ecer_DenialReason_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
+				return ((ecer_EducationInstitutionPreviousName_StatusCode?)(EntityOptionSetEnum.GetEnum(this, "statuscode")));
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
@@ -679,38 +760,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1:N ecer_application_DenialReasonType_ecer_denialr
+		/// N:1 ecer_educationinstitutionpreviousname_EducationInstitution
 		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_application_DenialReasonType_ecer_denialr")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Application> ecer_application_DenialReasonType_ecer_denialr
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_educationinstitution")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_educationinstitutionpreviousname_EducationInstitution")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute ecer_educationinstitutionpreviousname_EducationInstitution
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_DenialReasonType_ecer_denialr", null);
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_educationinstitutionpreviousname_EducationInstitution", null);
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_application_DenialReasonType_ecer_denialr", null, value);
-			}
-		}
-		
-		/// <summary>
-		/// 1:N ecer_decisioncomment_ecer_denialreason
-		/// </summary>
-		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_decisioncomment_ecer_denialreason")]
-		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Comment> ecer_decisioncomment_ecer_denialreason
-		{
-			[System.Diagnostics.DebuggerNonUserCode()]
-			get
-			{
-				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Comment>("ecer_decisioncomment_ecer_denialreason", null);
-			}
-			[System.Diagnostics.DebuggerNonUserCode()]
-			set
-			{
-				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Comment>("ecer_decisioncomment_ecer_denialreason", null, value);
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_PostSecondaryInstitute>("ecer_educationinstitutionpreviousname_EducationInstitution", null, value);
 			}
 		}
 		
@@ -719,7 +783,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 		/// <param name="anonymousType">LINQ anonymous type.</param>
 		/// </summary>
 		[System.Diagnostics.DebuggerNonUserCode()]
-		public ecer_DenialReason(object anonymousType) : 
+		public ecer_EducationInstitutionPreviousName(object anonymousType) : 
 				this()
 		{
             foreach (var p in anonymousType.GetType().GetProperties())
@@ -737,9 +801,9 @@ namespace ECER.Utilities.DataverseSdk.Model
                 {
                     case "id":
                         base.Id = (System.Guid)value;
-                        Attributes["ecer_denialreasonid"] = base.Id;
+                        Attributes["ecer_educationinstitutionpreviousnameid"] = base.Id;
                         break;
-                    case "ecer_denialreasonid":
+                    case "ecer_educationinstitutionpreviousnameid":
                         var id = (System.Nullable<System.Guid>) value;
                         if(id == null){ continue; }
                         base.Id = id.Value;
