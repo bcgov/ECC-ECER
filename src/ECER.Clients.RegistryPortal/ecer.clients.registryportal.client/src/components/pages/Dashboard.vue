@@ -220,7 +220,6 @@ import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
 import TransferCard from "@/components/TransferCard.vue";
-import IcraCard from "@/components/IcraCard.vue";
 import IcraEligibilityCard from "@/components/IcraEligibilityCard.vue";
 import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
@@ -247,7 +246,6 @@ export default defineComponent({
     PageContainer,
     ApplicationCard,
     TransferCard,
-    IcraCard,
     IcraEligibilityCard,
     CertificationCard,
     ECEHeader,
@@ -359,17 +357,11 @@ export default defineComponent({
         !this.icraStore.hasSubmittedIcraEligibility
       );
     },
-    showIcraCard(): boolean {
-      return (
-        (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) &&
-        !this.applicationStore.hasApplication &&
-        !this.applicationStore.hasDraftApplication &&
-        !this.icraStore.hasSubmittedIcraEligibility &&
-        !this.icraStore.hasIcraEligibilityInProcess
-      );
-    },
     showIcraEligibilityCard(): boolean {
       if (this.configurationStore.applicationConfiguration.icraFeatureEnabled === false) {
+        return false;
+      }
+      if (this.certificationStore.hasCertifications && this.icraStore.icraEligibilityStatus === undefined) {
         return false;
       }
       // do not show if there is an application in process
