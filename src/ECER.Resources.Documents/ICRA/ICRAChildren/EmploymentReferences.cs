@@ -45,6 +45,25 @@ internal sealed partial class ICRARepository
       context.AddLink(contact, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_Applicantid, reference);
     }
   }
+
+  public async Task<string> ResendIcraWorkExperienceReferenceInvite(ResendIcraReferenceInviteRequest request, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var workexperienceReference = context.ecer_WorkExperienceRefSet.SingleOrDefault(c => c.ecer_WorkExperienceRefId == Guid.Parse(request.ReferenceId!));
+
+    if (workexperienceReference == null)
+    {
+      throw new InvalidOperationException($"Work experience reference '{request.ReferenceId}' not found");
+    }
+
+    if (workexperienceReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Rejected || workexperienceReference.StatusCode == ecer_WorkExperienceRef_StatusCode.Submitted)
+    {
+      throw new InvalidOperationException($"Work experience reference '{request.ReferenceId}' already responded");
+    }
+
+    workexperienceReference.ecer_InviteAgain = true;
+    context.UpdateObject(workexperienceReference);
+    context.SaveChanges();
+    return workexperienceReference.ecer_WorkExperienceRefId.ToString()!;
+  }
 }
-
-

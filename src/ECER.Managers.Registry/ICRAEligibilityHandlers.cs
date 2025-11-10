@@ -4,6 +4,7 @@ using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.ICRA;
 using ECER.Resources.Documents.ICRA;
 using MediatR;
+using ICRAStatus = ECER.Resources.Documents.ICRA.ICRAStatus;
 
 namespace ECER.Managers.Registry;
 
@@ -16,7 +17,8 @@ public class ICRAEligibilityHandlers(
      IICRAValidationEngine icraValidationEngine)
   : IRequestHandler<SaveICRAEligibilityCommand, Contract.ICRA.ICRAEligibility?>,
     IRequestHandler<ICRAEligibilitiesQuery, ICRAEligibilitiesQueryResults>,
-    IRequestHandler<SubmitICRAEligibilityCommand, SubmitICRAEligibilityResult>
+    IRequestHandler<SubmitICRAEligibilityCommand, SubmitICRAEligibilityResult>,
+    IRequestHandler<ResendIcraWorkExperienceReferenceInviteCommand, string>
 {
   public async Task<Contract.ICRA.ICRAEligibility?> Handle(SaveICRAEligibilityCommand request, CancellationToken cancellationToken)
   {
@@ -48,7 +50,7 @@ public class ICRAEligibilityHandlers(
       }
     }
 
-    foreach(var reference in request.eligibility.EmploymentReferences)
+    foreach (var reference in request.eligibility.EmploymentReferences)
     {
       reference.Type = Contract.ICRA.WorkExperienceTypesIcra.ICRA;
     }
@@ -115,5 +117,36 @@ public class ICRAEligibilityHandlers(
       ByStatus = request.ByStatus?.Convert<Contract.ICRA.ICRAStatus, Resources.Documents.ICRA.ICRAStatus>(),
     }, cancellationToken);
     return new ICRAEligibilitiesQueryResults(mapper.Map<IEnumerable<Contract.ICRA.ICRAEligibility>>(eligibilities)!);
+  }
+
+  public async Task<string> Handle(ResendIcraWorkExperienceReferenceInviteCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var eligibilities = await iCRARepository.Query(new ICRAQuery
+    {
+      ById = request.IcraEligibilityId,
+      ByApplicantId = request.UserId,
+      ByStatus = [ICRAStatus.Submitted],
+    }, cancellationToken);
+
+    if (!eligibilities.Any())
+    {
+      throw new InvalidOperationException($"ICRA eligibility application not found id '{request.IcraEligibilityId}' or ICRA application is past submitted stage");
+    }
+    ArgumentNullException.ThrowIfNull(request);
+
+    //check that reference belongs to applicant and icra eligibility
+    bool foundReference = eligibilities.Any(eligibility =>
+      eligibility.EmploymentReferences.Any(reference => reference.Id == request.ReferenceId)
+    );
+
+    if (!foundReference)
+    {
+      throw new InvalidOperationException($"reference id '{request.ReferenceId}' does not belong to user '{request.UserId}' or Icra application '{request.IcraEligibilityId}'");
+    }
+
+    var icraWorkExperienceReferenceId = await iCRARepository.ResendIcraWorkExperienceReferenceInvite(new ResendIcraReferenceInviteRequest(request.ReferenceId), cancellationToken);
+    return icraWorkExperienceReferenceId;
   }
 }

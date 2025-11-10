@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Infrastructure.Common;
+using ECER.Managers.Registry.Contract.Applications;
 using ECER.Managers.Registry.Contract.ICRA;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -115,6 +117,28 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
         .WithOpenApi("Handles icra eligibility status queries", string.Empty, "icra_status_get")
         .RequireAuthorization()
         .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/icra/{icraEligibilityId}/workReference/{referenceId}/resendInvite", async Task<Results<Ok<ResendIcraReferenceInviteResponse>, BadRequest<ProblemDetails>>> (string icraEligibilityId, string referenceId, HttpContext ctx, CancellationToken ct, IMediator messageBus) =>
+    {
+      var userId = ctx.User.GetUserContext()?.UserId;
+
+      bool IdIsNotGuid = !Guid.TryParse(icraEligibilityId, out _);
+      if (IdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "icraEligibilityId is not a valid guid" });
+      }
+
+      bool ReferenceIdIsNotGuid = !Guid.TryParse(referenceId, out _);
+      if (ReferenceIdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "ReferenceId is not a valid guid" });
+      }
+
+      return TypedResults.Ok(new ResendIcraReferenceInviteResponse(await messageBus.Send(new ResendIcraWorkExperienceReferenceInviteCommand(icraEligibilityId, referenceId, userId!), ct)));
+    })
+    .WithOpenApi("Resend an icra work reference invite", "Changes work reference invite again status to true", "icra_work_reference_resend_invite_post")
+    .RequireAuthorization()
+    .WithParameterValidation();
   }
 }
 
@@ -202,6 +226,7 @@ public enum InternationalCertificationStatus
 
 public record ICRAEligibilitySubmissionRequest(string Id);
 public record SubmitICRAEligibilityResponse(ICRAEligibility Eligibility);
+public record ResendIcraReferenceInviteResponse(string referenceId);
 
 public record ICRAEligibilityStatus(string Id, DateTime? CreatedOn, DateTime? SignedDate, ICRAStatus Status)
 {

@@ -24,6 +24,8 @@ public record SubmitICRAEligibilityResult()
   public bool IsSuccess { get { return ValidationErrors == null || !ValidationErrors.Any(); } }
 }
 
+public record ResendIcraWorkExperienceReferenceInviteCommand(string IcraEligibilityId, string ReferenceId, string UserId) : IRequest<string>;
+
 public enum SubmissionError
 {
   DraftIcraEligibilityNotFound,

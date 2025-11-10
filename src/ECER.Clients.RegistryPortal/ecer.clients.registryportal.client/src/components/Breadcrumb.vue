@@ -404,6 +404,51 @@ export default defineComponent({
               href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-references`,
             },
           ];
+        case "view-icra-eligibility-work-experience-reference":
+          return [
+            ...this.baseItems,
+            { title: "Apply with international certification", disabled: false, href: `/icra-eligibility/manage/${params.icraEligibilityId}` },
+            {
+              title: "Employment experience references",
+              disabled: false,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-references`,
+            },
+            {
+              title: "Reference",
+              disabled: true,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-reference/${params.referenceId}`,
+            },
+          ];
+        case "icra-eligibility-add-work-experience-reference":
+          return [
+            ...this.baseItems,
+            { title: "Apply with international certification", disabled: false, href: `/icra-eligibility/manage/${params.icraEligibilityId}` },
+            {
+              title: "Employment experience references",
+              disabled: false,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-references`,
+            },
+            {
+              title: "Add",
+              disabled: true,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-reference/add`,
+            },
+          ];
+        case "icra-eligibility-upsert-work-experience-reference":
+          return [
+            ...this.baseItems,
+            { title: "Apply with international certification", disabled: false, href: `/icra-eligibility/manage/${params.icraEligibilityId}` },
+            {
+              title: "Employment experience references",
+              disabled: false,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-references`,
+            },
+            {
+              title: "Edit",
+              disabled: false,
+              href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-reference/${params.referenceId}/edit`,
+            },
+          ];
 
         default:
           return this.baseItems;

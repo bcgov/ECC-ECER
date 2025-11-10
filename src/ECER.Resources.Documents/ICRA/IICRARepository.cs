@@ -13,6 +13,8 @@ public interface IICRARepository
   Task<string> SetIneligibleForUnitTests(string icraEligibilityId, CancellationToken cancellationToken);
 
   Task<string> SubmitEmploymentReference(string referenceId, ICRAWorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken);
+
+  Task<string> ResendIcraWorkExperienceReferenceInvite(ResendIcraReferenceInviteRequest request, CancellationToken cancellationToken);
 }
 
 public record ICRAQuery
@@ -85,6 +87,8 @@ public record ICRAWorkExperienceReferenceSubmissionRequest
   public bool WillProvideReference { get; set; }
   public DateTime? DateSigned { get; set; }
 }
+
+public record ResendIcraReferenceInviteRequest(string ReferenceId);
 
 public enum CertificateStatus
 {
