@@ -67,17 +67,14 @@
       <v-row v-if="applications && userStore.isVerified && (showApplicationCard || showIcraEligibilityCard)" justify="center">
         <v-col>
           <v-row>
-            <v-col v-if="showIcraEligibilityCard" cols="12" :sm="showTransferCard ? 6 : 12">
-              <IcraEligibilityCard @cancel-application="showCancelDialog = true" />
-            </v-col>
-            <v-col v-else-if="showApplicationCard" cols="12" :sm="showTransferCard ? 6 : 12">
+            <v-col v-if="showApplicationCard" cols="12" :sm="showTransferCard ? 6 : 12">
               <ApplicationCard @cancel-application="showCancelDialog = true" />
             </v-col>
             <v-col v-if="showTransferCard" cols="12" sm="6">
               <TransferCard />
             </v-col>
-            <v-col v-if="showIcraCard" cols="12" sm="6">
-              <IcraCard />
+            <v-col v-if="showIcraEligibilityCard" cols="12" :sm="showTransferCard ? 6 : 12">
+              <IcraEligibilityCard />
             </v-col>
           </v-row>
         </v-col>
@@ -223,7 +220,6 @@ import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
 import TransferCard from "@/components/TransferCard.vue";
-import IcraCard from "@/components/IcraCard.vue";
 import IcraEligibilityCard from "@/components/IcraEligibilityCard.vue";
 import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
@@ -250,7 +246,6 @@ export default defineComponent({
     PageContainer,
     ApplicationCard,
     TransferCard,
-    IcraCard,
     IcraEligibilityCard,
     CertificationCard,
     ECEHeader,
@@ -343,6 +338,10 @@ export default defineComponent({
         return false;
       }
 
+      if (this.icraStore.hasIcraEligibilityInProcess) {
+        return false;
+      }
+
       return (
         this.applicationStore.applicationStatus === undefined ||
         this.applicationStore.applicationStatus === "Draft" ||
@@ -358,20 +357,21 @@ export default defineComponent({
         !this.icraStore.hasSubmittedIcraEligibility
       );
     },
-    showIcraCard(): boolean {
-      return (
-        (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) &&
-        !this.applicationStore.hasApplication &&
-        !this.applicationStore.hasDraftApplication &&
-        !this.icraStore.hasDraftIcraEligibility &&
-        !this.icraStore.hasSubmittedIcraEligibility
-      );
-    },
     showIcraEligibilityCard(): boolean {
-      return (
-        (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) &&
-        (this.icraStore.hasDraftIcraEligibility || this.icraStore.hasSubmittedIcraEligibility)
-      );
+      if (this.configurationStore.applicationConfiguration.icraFeatureEnabled === false) {
+        return false;
+      }
+      if (this.certificationStore.hasCertifications && this.icraStore.icraEligibilityStatus === undefined) {
+        return false;
+      }
+      // do not show if there is an application in process
+      if (this.applicationStore.hasApplication || this.applicationStore.hasDraftApplication) {
+        return false;
+      }
+      if (this.icraStore.hasIcraEligibilityInProcess || this.icraStore.icraEligibilityStatus === undefined) {
+        return true;
+      }
+      return false;
     },
     showLoading(): boolean {
       return (
