@@ -1,8 +1,8 @@
 <template>
-  <v-card :rounded="!isRounded ? '0' : ''" flat color="primary">
+  <v-card :rounded="!isRounded ? '0' : ''" flat color="primary" :variant="icraStore.icraEligibilityStatus === undefined ? 'outlined' : undefined">
     <v-card-item class="ma-4">
-      <h2 class="text-white">{{ title }}</h2>
-      <p class="small text-white mt-4">
+      <h2 :class="{ 'text-white': icraStore.icraEligibilityStatus !== undefined }">{{ title }}</h2>
+      <p :class="{ small: true, 'mt-4': true, 'text-white': icraStore.icraEligibilityStatus !== undefined }">
         {{ subTitle }}
       </p>
     </v-card-item>
@@ -29,6 +29,9 @@
           <v-icon size="large" icon="mdi-arrow-right" />
           Manage submission
         </v-btn>
+      </v-card-actions>
+      <v-card-actions v-else-if="icraStore.icraEligibilityStatus === undefined">
+        <router-link :to="{ name: 'icra-eligibility' }">Learn more</router-link>
       </v-card-actions>
     </div>
   </v-card>
