@@ -59,12 +59,17 @@ export default defineComponent({
     if (!this.pspUserProfile) {
       // Register a new PSP user profile
       this.pspUserProfile = await registerPspUser({
-        firstName: user.profile.firstName as string,
-        lastName: user.profile.lastName as string,
-        email: user.profile.email,
+        token: this.userStore.invitationToken as string,
         programRepresentativeId: this.userStore.invitedProgramRepresentativeId as string,
         bceidBusinessId: this.oidcUserInfo.bceidBusinessId as string,
+        profile: {
+          firstName: this.oidcUserInfo.firstName as string,
+          lastName: this.oidcUserInfo.lastName as string,
+          email: this.oidcUserInfo.email as string,
+        },
       });
+
+      console.log("pspUserProfile", this.pspUserProfile);
     }
   },
 });

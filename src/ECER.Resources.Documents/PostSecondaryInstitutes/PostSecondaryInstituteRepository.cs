@@ -61,7 +61,11 @@ public class PostSecondaryInstituteRepository(EcerContext context, IMapper mappe
 
     var updatedInstitute = mapper.Map<ecer_PostSecondaryInstitute>(institute);
     updatedInstitute.Id = instituteId;
-    updatedInstitute.ecer_BusinessBCeID = bceidBusinessId;
+
+    if (!String.IsNullOrEmpty(bceidBusinessId))
+    {
+      updatedInstitute.ecer_BusinessBCeID = bceidBusinessId;
+    }
     
     context.Attach(updatedInstitute);
     context.UpdateObject(updatedInstitute);

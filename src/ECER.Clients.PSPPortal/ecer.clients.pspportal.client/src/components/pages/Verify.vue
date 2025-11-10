@@ -17,16 +17,15 @@ onMounted(async () => {
     const { data, error } = await getPortalInvitation(route.params.token as string);
 
     if (error) {
-        console.log("error", error);
         router.push("/invalid-invitation");
         return;
     }
 
     if (data?.portalInvitation?.inviteType === PortalInviteType.PSIProgramRepresentative) {
         const programRepresentativeId = data?.portalInvitation?.pspProgramRepresentativeId;
-        console.log("programRepresentativeId", programRepresentativeId);
         if (programRepresentativeId) {
             userStore.setInvitedProgramRepresentativeId(programRepresentativeId);
+            userStore.setInvitationToken(route.params.token as string);
             router.push("/login");
         } else {
             router.push("/invalid-invitation");

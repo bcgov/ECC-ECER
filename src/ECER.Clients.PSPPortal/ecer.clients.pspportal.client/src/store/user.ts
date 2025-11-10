@@ -4,6 +4,7 @@ import type { Components } from "@/types/openapi";
 export interface UserState {
   pspUserProfile: Components.Schemas.PspUserProfile | null;
   invitedProgramRepresentativeId: string | null;
+  invitationToken: string | null;
 }
 
 export const useUserStore = defineStore("user", {
@@ -11,12 +12,11 @@ export const useUserStore = defineStore("user", {
   state: (): UserState => ({
     pspUserProfile: null,
     invitedProgramRepresentativeId: null,
+    invitationToken: null,
   }),
   getters: {
     hasUserProfile: (state): boolean => state.pspUserProfile !== null,
     email: (state): string => state.pspUserProfile?.email ?? "",
-    bceidBusinessId: (state): string => state.pspUserProfile?.bceidBusinessId ?? "",
-    hasConsumedInvitation: (state): boolean => state.invitedProgramRepresentativeId !== null,
   },
   actions: {
     setPspUserProfile(pspUserProfile: Components.Schemas.PspUserProfile | null): void {
@@ -24,6 +24,9 @@ export const useUserStore = defineStore("user", {
     },
     setInvitedProgramRepresentativeId(invitedProgramRepresentativeId: string | null): void {
       this.$patch({ invitedProgramRepresentativeId: invitedProgramRepresentativeId });
+    },
+    setInvitationToken(invitationToken: string | null): void {
+      this.$patch({ invitationToken: invitationToken });
     },
   },
 });

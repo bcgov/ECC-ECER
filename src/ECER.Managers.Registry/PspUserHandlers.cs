@@ -88,15 +88,15 @@ public class PspUserHandlers(
       await postSecondaryInstituteRepository.Save(postSecondaryInstitution, cancellationToken);
     }
     
-    // Check that the bceid business id matches the request
-    if (request.BceidBusinessId != bceidBusinessId)
+    // Check that the bceid business id matches the request    
+    else if (request.BceidBusinessId != bceidBusinessId)
     {
       return RegisterPspUserResult.Failure(RegisterPspUserError.BceidBusinessIdDoesNotMatch);
     }
     
     // We've saved the business id, proceed with registration of the user (attach the identity)
     BceidRegistrationIdentityService resolver = serviceProvider.GetRequiredService<BceidRegistrationIdentityService>();
-    await resolver.ResolveBusiness(new RegisterNewPspUserCommand(request.Profile, request.Identity),
+    await resolver.Resolve(new RegisterNewPspUserCommand(request.ProgramRepresentativeId, request.Profile, request.Identity),
       cancellationToken);
       
     // Get Portal invitation from token

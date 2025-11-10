@@ -2,8 +2,7 @@ using AutoMapper;
 using ECER.Resources.Accounts.PspReps;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
-using ECER.Utilities.ObjectStorage.Providers;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Accounts.PSPReps;
 

@@ -6,7 +6,7 @@ namespace ECER.Managers.Registry.Contract.PspUsers;
 /// <summary>
 /// Invokes a new psp user registration use case
 /// </summary>
-public record RegisterNewPspUserCommand(PspUserProfile Profile, UserIdentity Identity) : IRequest<string>;
+public record RegisterNewPspUserCommand(string Id, PspUserProfile Profile, UserIdentity Identity) : IRequest<string>;
 
 
 /// <summary>

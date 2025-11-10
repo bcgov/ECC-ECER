@@ -48,20 +48,35 @@ public class ProfileEndpoints : IRegisterEndpoints
       .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/users/register",
-        async Task<Results<Ok, BadRequest<ProblemDetails>>> (RegisterPspUserRequest request, HttpContext ctx,
+        async Task<Results<Ok, BadRequest<ProblemDetails>>> (
+          RegisterPspUserRequest request, HttpContext ctx, 
           CancellationToken ct, IMediator bus, IMapper mapper) =>
         {
           var user = ctx.User.GetUserContext()!;
-          await bus.Send(
-            new RegisterPspUserCommand(request.Token, request.ProgramRepresentativeId, request.BceidBusinessId,
-              mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(request.Profile)!, user.Identity),
+          var result = await bus.Send(
+            new RegisterPspUserCommand(
+              request.Token,
+              request.ProgramRepresentativeId,
+              request.BceidBusinessId,
+              mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(request.Profile)!,
+              user.Identity
+            ),
             ctx.RequestAborted);
+
+          if (!result.IsSuccess)
+          {
+            return TypedResults.BadRequest(new ProblemDetails
+            {
+              Title = "Registration failed",
+              Detail = result.Error.ToString() 
+            });
+          }
+
           return TypedResults.Ok();
         })
       .WithOpenApi("Register new Psp Program Representative", string.Empty, "psp_user_register_post")
       .RequireAuthorization("psp_new_user")
       .WithParameterValidation();
-
   }
 }
 

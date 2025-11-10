@@ -45,12 +45,18 @@ declare namespace Components {
      * User profile information
      */
     export interface PspUserProfile {
-      id?: string | null;
       firstName?: string | null;
       lastName?: string | null;
       email?: string | null;
-      bceidBusinessId?: string | null;
+    }
+    /**
+     * Request to register a new psp user
+     */
+    export interface RegisterPspUserRequest {
+      token?: string | null;
       programRepresentativeId?: string | null;
+      bceidBusinessId?: string | null;
+      profile: /* User profile information */ PspUserProfile;
     }
     export interface VersionMetadata {
       version?: string | null;
@@ -91,10 +97,10 @@ declare namespace Paths {
     }
   }
   namespace PspUserRegisterPost {
-    export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
+    export type RequestBody = /* Request to register a new psp user */ Components.Schemas.RegisterPspUserRequest;
     namespace Responses {
       export interface $200 {}
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace VersionGet {
@@ -222,4 +228,5 @@ export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
 export type ProblemDetails = Components.Schemas.ProblemDetails;
 export type PspUserProfile = Components.Schemas.PspUserProfile;
+export type RegisterPspUserRequest = Components.Schemas.RegisterPspUserRequest;
 export type VersionMetadata = Components.Schemas.VersionMetadata;
