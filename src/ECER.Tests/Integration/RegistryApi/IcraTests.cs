@@ -513,6 +513,169 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
     });
   }
 
+  [Fact]
+  public async Task AddIcraEligibilityWorkReferenceForSubmittedApplication_Succeeds()
+  {
+    //create draft
+    var eligibility = new Clients.RegistryPortal.Server.ICRA.ICRAEligibility
+    {
+      ApplicantId = this.Fixture.AuthenticatedBcscUser.Id.ToString(),
+      Status = Clients.RegistryPortal.Server.ICRA.ICRAStatus.Draft,
+      EmploymentReferences = new[]
+        {
+      new Clients.RegistryPortal.Server.ICRA.EmploymentReference { FirstName = "John", LastName = "Doe", EmailAddress = "john.doe@example.com" }
+    },
+      InternationalCertifications = new List<Clients.RegistryPortal.Server.ICRA.InternationalCertification>
+    {
+      new Clients.RegistryPortal.Server.ICRA.InternationalCertification
+      {
+          CertificateStatus = Clients.RegistryPortal.Server.ICRA.CertificateStatus.Valid,
+          CertificateTitle = faker.Company.CatchPhrase(),
+          IssueDate = faker.Date.Past(),
+          ExpiryDate = faker.Date.Soon(),
+          CountryId = this.Fixture.Country.ecer_CountryId!.Value.ToString(),
+      }
+    }
+    };
+
+    var saveResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Json(new SaveDraftICRAEligibilityRequest(eligibility)).ToUrl($"/api/icra/");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var saved = (await saveResponse.ReadAsJsonAsync<DraftICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
+
+    //submit application
+    var submitResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Post.Json(new ICRAEligibilitySubmissionRequest(saved.Id!)).ToUrl($"/api/icra");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var submitted = (await submitResponse.ReadAsJsonAsync<SubmitICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
+    submitted.ShouldNotBeNull();
+    submitted.Id.ShouldBe(saved.Id);
+    submitted.Status.ShouldBe(Clients.RegistryPortal.Server.ICRA.ICRAStatus.Submitted);
+
+    Clients.RegistryPortal.Server.ICRA.EmploymentReference newEmploymentReference = new Clients.RegistryPortal.Server.ICRA.EmploymentReference()
+    {
+      EmailAddress = "new@gmail.com",
+      FirstName = "new first",
+      LastName = "new last"
+    };
+
+    var newReferenceResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Post.Json(newEmploymentReference).ToUrl($"/api/icra/{submitted.Id}/workReference/add");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var newReference = (await newReferenceResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.ICRA.EmploymentReference>()).ShouldNotBeNull();
+
+    newReference.Id.ShouldNotBeEmpty();
+    newReference.FirstName.ShouldBe("new first");
+
+    //check that icra eligibility has 2 references
+    var getResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/icra/{submitted.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var eligibilities = await getResponse.ReadAsJsonAsync<IEnumerable<Clients.RegistryPortal.Server.ICRA.ICRAEligibility>>();
+    eligibilities.ShouldNotBeNull();
+    eligibilities.First(e => e.Id == submitted.Id).EmploymentReferences.Count().ShouldBe(2);
+
+    await SetEligibilityToIneligible(submitted.Id!);
+  }
+
+  [Fact]
+  public async Task ReplaceIcraEligibilityWorkReferenceForSubmittedApplication_Succeeds()
+  {
+    //create draft
+    var eligibility = new Clients.RegistryPortal.Server.ICRA.ICRAEligibility
+    {
+      ApplicantId = this.Fixture.AuthenticatedBcscUser.Id.ToString(),
+      Status = Clients.RegistryPortal.Server.ICRA.ICRAStatus.Draft,
+      EmploymentReferences = new[]
+        {
+    new Clients.RegistryPortal.Server.ICRA.EmploymentReference { FirstName = "John", LastName = "Doe", EmailAddress = "john.doe@example.com" }
+  },
+      InternationalCertifications = new List<Clients.RegistryPortal.Server.ICRA.InternationalCertification>
+  {
+    new Clients.RegistryPortal.Server.ICRA.InternationalCertification
+    {
+        CertificateStatus = Clients.RegistryPortal.Server.ICRA.CertificateStatus.Valid,
+        CertificateTitle = faker.Company.CatchPhrase(),
+        IssueDate = faker.Date.Past(),
+        ExpiryDate = faker.Date.Soon(),
+        CountryId = this.Fixture.Country.ecer_CountryId!.Value.ToString(),
+    }
+  }
+    };
+
+    var saveResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Json(new SaveDraftICRAEligibilityRequest(eligibility)).ToUrl($"/api/icra/");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var saved = (await saveResponse.ReadAsJsonAsync<DraftICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
+
+    //submit application
+    var submitResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Post.Json(new ICRAEligibilitySubmissionRequest(saved.Id!)).ToUrl($"/api/icra");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var submitted = (await submitResponse.ReadAsJsonAsync<SubmitICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
+    submitted.ShouldNotBeNull();
+    submitted.Id.ShouldBe(saved.Id);
+    submitted.Status.ShouldBe(Clients.RegistryPortal.Server.ICRA.ICRAStatus.Submitted);
+
+    Clients.RegistryPortal.Server.ICRA.EmploymentReference newEmploymentReference = new Clients.RegistryPortal.Server.ICRA.EmploymentReference()
+    {
+      EmailAddress = "replace@gmail.com",
+      FirstName = "replace first",
+      LastName = "replace last"
+    };
+
+    var replacedReferenceResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Post.Json(newEmploymentReference).ToUrl($"/api/icra/{submitted.Id}/workReference/{submitted.EmploymentReferences.First().Id}/replace");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var replacedReference = (await replacedReferenceResponse.ReadAsJsonAsync<Clients.RegistryPortal.Server.ICRA.EmploymentReference>()).ShouldNotBeNull();
+
+    replacedReference.Id.ShouldNotBeEmpty();
+    replacedReference.FirstName.ShouldBe("replace first");
+
+    //check that icra eligibility only has 1 reference
+    var getResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/icra/{submitted.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var eligibilities = await getResponse.ReadAsJsonAsync<IEnumerable<Clients.RegistryPortal.Server.ICRA.ICRAEligibility>>();
+    eligibilities.ShouldNotBeNull();
+    eligibilities.First(e => e.Id == submitted.Id).EmploymentReferences.Count().ShouldBe(1);
+    eligibilities.First(e => e.Id == submitted.Id).EmploymentReferences.First().Id.ShouldBe(replacedReference.Id);
+
+    await SetEligibilityToIneligible(submitted.Id!);
+  }
+
   //private method to set eligibilty application to ineligible so multiple tests do not conflict for one another with the same user
   private async Task SetEligibilityToIneligible(string eligibilityId)
   {

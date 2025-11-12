@@ -15,6 +15,10 @@ public interface IICRARepository
   Task<string> SubmitEmploymentReference(string referenceId, ICRAWorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken);
 
   Task<string> ResendIcraWorkExperienceReferenceInvite(ResendIcraReferenceInviteRequest request, CancellationToken cancellationToken);
+
+  Task<EmploymentReference> AddIcraWorkExperienceReference(AddIcraWorkExperienceReferenceRequest request, CancellationToken cancellationToken);
+
+  Task<EmploymentReference> ReplaceIcraWorkExperienceReference(ReplaceIcraWorkExperienceReferenceRequest request, CancellationToken cancellationToken);
 }
 
 public record ICRAQuery
@@ -89,6 +93,9 @@ public record ICRAWorkExperienceReferenceSubmissionRequest
 }
 
 public record ResendIcraReferenceInviteRequest(string ReferenceId);
+public record AddIcraWorkExperienceReferenceRequest(EmploymentReference employmentReference, string icraEligibilityId, string userId);
+public record DeleteIcraWorkExperienceReferenceRequest(string icraEligibilityId, string referenceId, string userId);
+public record ReplaceIcraWorkExperienceReferenceRequest(EmploymentReference employmentReference, string icraEligibilityId, string referenceId, string userId);
 
 public enum CertificateStatus
 {

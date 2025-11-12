@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Infrastructure.Common;
-using ECER.Managers.Registry.Contract.Applications;
 using ECER.Managers.Registry.Contract.ICRA;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -137,6 +135,69 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
       return TypedResults.Ok(new ResendIcraReferenceInviteResponse(await messageBus.Send(new ResendIcraWorkExperienceReferenceInviteCommand(icraEligibilityId, referenceId, userId!), ct)));
     })
     .WithOpenApi("Resend an icra work reference invite", "Changes work reference invite again status to true", "icra_work_reference_resend_invite_post")
+    .RequireAuthorization()
+    .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/icra/{icraEligibilityId}/workReference/add", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string icraEligibilityId, EmploymentReference employmentReference, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    {
+      var userId = ctx.User.GetUserContext()?.UserId;
+      bool AppIdIsNotGuid = !Guid.TryParse(icraEligibilityId, out _);
+      if (AppIdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
+      }
+      var mappedWorkExperienceReference = mapper.Map<Managers.Registry.Contract.ICRA.EmploymentReference>(employmentReference);
+      var cmd = new AddIcraWorkExperienceReferenceCommand(mappedWorkExperienceReference, icraEligibilityId, userId!);
+      var result = await messageBus.Send(cmd, ct);
+
+      if (!result.IsSuccess)
+      {
+        var problemDetails = new ProblemDetails
+        {
+          Status = StatusCodes.Status400BadRequest,
+          Title = "Icra work experience reference add failed",
+          Extensions = { ["errors"] = result.ErrorMessage }
+        };
+        return TypedResults.BadRequest(problemDetails);
+      }
+      return TypedResults.Ok(mapper.Map<EmploymentReference>(result.EmploymentReference));
+    })
+    .WithOpenApi("Update work experience reference", string.Empty, "icra_work_reference_add_post")
+    .RequireAuthorization()
+    .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("/api/icra/{icraEligibilityId}/workReference/{referenceId}/replace", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string icraEligibilityId, string referenceId, EmploymentReference employmentReference, HttpContext ctx, CancellationToken ct, IMediator messageBus, IMapper mapper) =>
+    {
+      var userId = ctx.User.GetUserContext()?.UserId;
+      bool AppIdIsNotGuid = !Guid.TryParse(icraEligibilityId, out _);
+      if (AppIdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "Application Id is not valid" });
+      }
+
+      bool ReferenceIdIsNotGuid = !Guid.TryParse(referenceId, out _);
+      if (ReferenceIdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "ReferenceId is not a valid guid" });
+      }
+
+      var mappedWorkExperienceReference = mapper.Map<Managers.Registry.Contract.ICRA.EmploymentReference>(employmentReference);
+      var cmd = new ReplaceIcraWorkExperienceReferenceCommand(mappedWorkExperienceReference, icraEligibilityId, referenceId, userId!);
+      var result = await messageBus.Send(cmd, ct);
+
+      if (!result.IsSuccess)
+      {
+        var problemDetails = new ProblemDetails
+        {
+          Status = StatusCodes.Status400BadRequest,
+          Title = "Icra work experience reference replace failed",
+          Extensions = { ["errors"] = result.ErrorMessage }
+        };
+        return TypedResults.BadRequest(problemDetails);
+      }
+      return TypedResults.Ok(mapper.Map<EmploymentReference>(result.EmploymentReference));
+    })
+    .WithOpenApi("Replace work experience reference", string.Empty, "icra_work_reference_replace_post")
     .RequireAuthorization()
     .WithParameterValidation();
   }

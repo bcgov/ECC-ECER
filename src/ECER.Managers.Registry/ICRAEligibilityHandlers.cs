@@ -18,7 +18,9 @@ public class ICRAEligibilityHandlers(
   : IRequestHandler<SaveICRAEligibilityCommand, Contract.ICRA.ICRAEligibility?>,
     IRequestHandler<ICRAEligibilitiesQuery, ICRAEligibilitiesQueryResults>,
     IRequestHandler<SubmitICRAEligibilityCommand, SubmitICRAEligibilityResult>,
-    IRequestHandler<ResendIcraWorkExperienceReferenceInviteCommand, string>
+    IRequestHandler<ResendIcraWorkExperienceReferenceInviteCommand, string>,
+    IRequestHandler<AddIcraWorkExperienceReferenceCommand, AddOrReplaceIcraWorkExperienceReferenceResult>,
+    IRequestHandler<ReplaceIcraWorkExperienceReferenceCommand, AddOrReplaceIcraWorkExperienceReferenceResult>
 {
   public async Task<Contract.ICRA.ICRAEligibility?> Handle(SaveICRAEligibilityCommand request, CancellationToken cancellationToken)
   {
@@ -148,5 +150,67 @@ public class ICRAEligibilityHandlers(
 
     var icraWorkExperienceReferenceId = await iCRARepository.ResendIcraWorkExperienceReferenceInvite(new ResendIcraReferenceInviteRequest(request.ReferenceId), cancellationToken);
     return icraWorkExperienceReferenceId;
+  }
+
+  public async Task<AddOrReplaceIcraWorkExperienceReferenceResult> Handle(AddIcraWorkExperienceReferenceCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var eligibilities = await iCRARepository.Query(new ICRAQuery
+    {
+      ById = request.IcraEligibilityId,
+      ByApplicantId = request.UserId,
+      ByStatus = [ICRAStatus.Submitted],
+    }, cancellationToken);
+
+    if (!eligibilities.Any())
+    {
+      return new AddOrReplaceIcraWorkExperienceReferenceResult()
+      {
+        IsSuccess = false,
+        ErrorMessage = $"ICRA eligibility application not found id '{request.IcraEligibilityId}' or ICRA application is past submitted stage"
+      };
+    }
+
+    var icraWorkExperienceReference = await iCRARepository.AddIcraWorkExperienceReference(new AddIcraWorkExperienceReferenceRequest(mapper.Map<Resources.Documents.ICRA.EmploymentReference>(request.EmploymentReference), request.IcraEligibilityId, request.UserId), cancellationToken);
+    return new AddOrReplaceIcraWorkExperienceReferenceResult() { IsSuccess = true, EmploymentReference = mapper.Map<Contract.ICRA.EmploymentReference>(icraWorkExperienceReference) };
+  }
+
+  public async Task<AddOrReplaceIcraWorkExperienceReferenceResult> Handle(ReplaceIcraWorkExperienceReferenceCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var eligibilities = await iCRARepository.Query(new ICRAQuery
+    {
+      ById = request.IcraEligibilityId,
+      ByApplicantId = request.UserId,
+      ByStatus = [ICRAStatus.Submitted],
+    }, cancellationToken);
+
+    if (!eligibilities.Any())
+    {
+      return new AddOrReplaceIcraWorkExperienceReferenceResult()
+      {
+        IsSuccess = false,
+        ErrorMessage = $"ICRA eligibility application not found id '{request.IcraEligibilityId}' or ICRA application is past submitted stage"
+      };
+    }
+
+    //check that reference belongs to applicant and icra eligibility
+    bool foundReference = eligibilities.Any(eligibility =>
+      eligibility.EmploymentReferences.Any(reference => reference.Id == request.ReferenceId)
+    );
+
+    if (!foundReference)
+    {
+      return new AddOrReplaceIcraWorkExperienceReferenceResult()
+      {
+        IsSuccess = false,
+        ErrorMessage = $"reference id '{request.ReferenceId}' does not belong to user '{request.UserId}' or Icra application '{request.IcraEligibilityId}'"
+      };
+    }
+
+    var icraWorkExperienceReference = await iCRARepository.ReplaceIcraWorkExperienceReference(new ReplaceIcraWorkExperienceReferenceRequest(mapper.Map<Resources.Documents.ICRA.EmploymentReference>(request.EmploymentReference), request.IcraEligibilityId, request.ReferenceId, request.UserId), cancellationToken);
+    return new AddOrReplaceIcraWorkExperienceReferenceResult() { IsSuccess = true, EmploymentReference = mapper.Map<Contract.ICRA.EmploymentReference>(icraWorkExperienceReference) };
   }
 }

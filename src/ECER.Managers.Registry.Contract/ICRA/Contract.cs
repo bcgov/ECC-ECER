@@ -26,6 +26,16 @@ public record SubmitICRAEligibilityResult()
 
 public record ResendIcraWorkExperienceReferenceInviteCommand(string IcraEligibilityId, string ReferenceId, string UserId) : IRequest<string>;
 
+public record AddIcraWorkExperienceReferenceCommand(EmploymentReference EmploymentReference, string IcraEligibilityId, string UserId) : IRequest<AddOrReplaceIcraWorkExperienceReferenceResult>;
+
+public record ReplaceIcraWorkExperienceReferenceCommand(EmploymentReference EmploymentReference, string IcraEligibilityId, string ReferenceId, string UserId) : IRequest<AddOrReplaceIcraWorkExperienceReferenceResult>;
+public record AddOrReplaceIcraWorkExperienceReferenceResult()
+{
+  public EmploymentReference EmploymentReference { get; set; } = new EmploymentReference();
+  public bool IsSuccess { get; set; }
+  public string ErrorMessage { get; set; } = string.Empty;
+}
+
 public enum SubmissionError
 {
   DraftIcraEligibilityNotFound,
@@ -64,7 +74,6 @@ public record InternationalCertification
   public IEnumerable<string> DeletedFiles { get; set; } = Array.Empty<string>();
   public IEnumerable<string> NewFiles { get; set; } = Array.Empty<string>();
   public InternationalCertificationStatus status { get; set; }
-
 }
 
 public record EmploymentReference
@@ -128,7 +137,6 @@ public enum InternationalCertificationStatus
   UnderReview,
   WaitingforResponse,
 }
-
 
 public enum WorkExperienceTypesIcra
 {
