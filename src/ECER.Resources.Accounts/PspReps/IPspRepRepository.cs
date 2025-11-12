@@ -43,7 +43,4 @@ public record PspUserProfile
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? Email { get; set; } = null!;
-  
-  public string? BceidBusinessId { get; set; }
-  public string? ProgramRepresentativeId { get; set; }
 };
