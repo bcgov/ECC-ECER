@@ -676,6 +676,112 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
     await SetEligibilityToIneligible(submitted.Id!);
   }
 
+  [Fact]
+  public async Task GetIcraWorkExperienceReferenceById_WithValidId_Succeeds()
+  {
+    var eligibility = new Clients.RegistryPortal.Server.ICRA.ICRAEligibility
+    {
+      ApplicantId = this.Fixture.AuthenticatedBcscUser.Id.ToString(),
+      Status = Clients.RegistryPortal.Server.ICRA.ICRAStatus.Draft,
+      EmploymentReferences = new[]
+    {
+      new Clients.RegistryPortal.Server.ICRA.EmploymentReference { FirstName = "John", LastName = "Doe", EmailAddress = "john.doe@example.com" }
+    },
+      InternationalCertifications = new List<Clients.RegistryPortal.Server.ICRA.InternationalCertification>
+    {
+      new Clients.RegistryPortal.Server.ICRA.InternationalCertification
+      {
+          CertificateStatus = Clients.RegistryPortal.Server.ICRA.CertificateStatus.Valid,
+          CertificateTitle = faker.Company.CatchPhrase(),
+          IssueDate = faker.Date.Past(),
+          ExpiryDate = faker.Date.Soon(),
+          CountryId = this.Fixture.Country.ecer_CountryId!.Value.ToString(),
+      }
+    }
+    };
+
+    var saveResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Json(new SaveDraftICRAEligibilityRequest(eligibility)).ToUrl($"/api/icra/");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var saved = (await saveResponse.ReadAsJsonAsync<DraftICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
+
+    var response = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/icra/workReference/{saved.EmploymentReferences.First().Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var reference = (await response.ReadAsJsonAsync<Clients.RegistryPortal.Server.ICRA.EmploymentReference>()).ShouldNotBeNull();
+    reference.FirstName.ShouldBe("John");
+
+    await SetEligibilityToIneligible(saved.Id!);
+  }
+
+  [Fact]
+  public async Task GetIcraWorkExperienceReferenceById_WithIncorrectUserOrGuid_ShouldReturnNotFoundAndBadRequest_()
+  {
+    var eligibility = new Clients.RegistryPortal.Server.ICRA.ICRAEligibility
+    {
+      ApplicantId = this.Fixture.AuthenticatedBcscUser.Id.ToString(),
+      Status = Clients.RegistryPortal.Server.ICRA.ICRAStatus.Draft,
+      EmploymentReferences = new[]
+    {
+    new Clients.RegistryPortal.Server.ICRA.EmploymentReference { FirstName = "John", LastName = "Doe", EmailAddress = "john.doe@example.com" }
+  },
+      InternationalCertifications = new List<Clients.RegistryPortal.Server.ICRA.InternationalCertification>
+  {
+    new Clients.RegistryPortal.Server.ICRA.InternationalCertification
+    {
+        CertificateStatus = Clients.RegistryPortal.Server.ICRA.CertificateStatus.Valid,
+        CertificateTitle = faker.Company.CatchPhrase(),
+        IssueDate = faker.Date.Past(),
+        ExpiryDate = faker.Date.Soon(),
+        CountryId = this.Fixture.Country.ecer_CountryId!.Value.ToString(),
+    }
+  }
+    };
+
+    var saveResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Put.Json(new SaveDraftICRAEligibilityRequest(eligibility)).ToUrl($"/api/icra/");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var saved = (await saveResponse.ReadAsJsonAsync<DraftICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
+
+    //search for contact using incorrect user 2
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity2, this.Fixture.AuthenticatedBcscUser2);
+      _.Get.Url($"/api/icra/workReference/{saved.EmploymentReferences.First().Id}");
+      _.StatusCodeShouldBe(HttpStatusCode.NotFound);
+    });
+
+    //search for a random reference contact
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/icra/workReference/{Guid.NewGuid()}");
+      _.StatusCodeShouldBe(HttpStatusCode.NotFound);
+    });
+
+    //Not a guid
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity, this.Fixture.AuthenticatedBcscUser);
+      _.Get.Url($"/api/icra/workReference/not-a-guid");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+
+    await SetEligibilityToIneligible(saved.Id!);
+  }
+
   //private method to set eligibilty application to ineligible so multiple tests do not conflict for one another with the same user
   private async Task SetEligibilityToIneligible(string eligibilityId)
   {

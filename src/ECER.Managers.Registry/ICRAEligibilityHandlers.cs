@@ -20,7 +20,8 @@ public class ICRAEligibilityHandlers(
     IRequestHandler<SubmitICRAEligibilityCommand, SubmitICRAEligibilityResult>,
     IRequestHandler<ResendIcraWorkExperienceReferenceInviteCommand, string>,
     IRequestHandler<AddIcraWorkExperienceReferenceCommand, AddOrReplaceIcraWorkExperienceReferenceResult>,
-    IRequestHandler<ReplaceIcraWorkExperienceReferenceCommand, AddOrReplaceIcraWorkExperienceReferenceResult>
+    IRequestHandler<ReplaceIcraWorkExperienceReferenceCommand, AddOrReplaceIcraWorkExperienceReferenceResult>,
+    IRequestHandler<GetIcraWorkExperienceReferenceByIdCommand, Contract.ICRA.EmploymentReference>
 {
   public async Task<Contract.ICRA.ICRAEligibility?> Handle(SaveICRAEligibilityCommand request, CancellationToken cancellationToken)
   {
@@ -212,5 +213,13 @@ public class ICRAEligibilityHandlers(
 
     var icraWorkExperienceReference = await iCRARepository.ReplaceIcraWorkExperienceReference(new ReplaceIcraWorkExperienceReferenceRequest(mapper.Map<Resources.Documents.ICRA.EmploymentReference>(request.EmploymentReference), request.IcraEligibilityId, request.ReferenceId, request.UserId), cancellationToken);
     return new AddOrReplaceIcraWorkExperienceReferenceResult() { IsSuccess = true, EmploymentReference = mapper.Map<Contract.ICRA.EmploymentReference>(icraWorkExperienceReference) };
+  }
+
+  public async Task<Contract.ICRA.EmploymentReference> Handle(GetIcraWorkExperienceReferenceByIdCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var icraWorkExperienceReference = await iCRARepository.GetIcraWorkExperienceReferenceById(request.ReferenceId, request.ApplicantId, cancellationToken);
+    return mapper.Map<Contract.ICRA.EmploymentReference>(icraWorkExperienceReference);
   }
 }

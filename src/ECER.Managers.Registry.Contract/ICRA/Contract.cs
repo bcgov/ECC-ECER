@@ -29,6 +29,7 @@ public record ResendIcraWorkExperienceReferenceInviteCommand(string IcraEligibil
 public record AddIcraWorkExperienceReferenceCommand(EmploymentReference EmploymentReference, string IcraEligibilityId, string UserId) : IRequest<AddOrReplaceIcraWorkExperienceReferenceResult>;
 
 public record ReplaceIcraWorkExperienceReferenceCommand(EmploymentReference EmploymentReference, string IcraEligibilityId, string ReferenceId, string UserId) : IRequest<AddOrReplaceIcraWorkExperienceReferenceResult>;
+public record GetIcraWorkExperienceReferenceByIdCommand(string ReferenceId, string ApplicantId) : IRequest<EmploymentReference>;
 public record AddOrReplaceIcraWorkExperienceReferenceResult()
 {
   public EmploymentReference EmploymentReference { get; set; } = new EmploymentReference();

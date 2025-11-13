@@ -200,6 +200,30 @@ public class ICRAEligibilitiesEndpoints : IRegisterEndpoints
     .WithOpenApi("Replace work experience reference", string.Empty, "icra_work_reference_replace_post")
     .RequireAuthorization()
     .WithParameterValidation();
+
+    endpointRouteBuilder.MapGet("/api/icra/workReference/{workExperienceReferenceId}", async Task<Results<Ok<EmploymentReference>, BadRequest<ProblemDetails>, NotFound>> (string workExperienceReferenceId, HttpContext ctx, IMediator messageBus, IMapper mapper, CancellationToken ct) =>
+    {
+      var userId = ctx.User.GetUserContext()?.UserId;
+
+      bool IdIsNotGuid = !Guid.TryParse(workExperienceReferenceId, out _); if (IdIsNotGuid)
+      {
+        return TypedResults.BadRequest(new ProblemDetails() { Title = "Work reference id is not a valid guid" });
+      }
+
+      var cmd = new GetIcraWorkExperienceReferenceByIdCommand(workExperienceReferenceId, userId!);
+
+      var result = await messageBus.Send(cmd, ct);
+
+      if (result == null)
+      {
+        return TypedResults.NotFound();
+      }
+      return TypedResults.Ok(mapper.Map<EmploymentReference>(result));
+    })
+
+    .WithOpenApi("Get work experience reference by id", string.Empty, "icra_work_reference_by_id_get")
+    .RequireAuthorization()
+    .WithParameterValidation();
   }
 }
 

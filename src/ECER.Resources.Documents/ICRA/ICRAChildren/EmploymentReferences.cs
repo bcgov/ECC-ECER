@@ -137,4 +137,16 @@ internal sealed partial class ICRARepository
 
     return employmentReference;
   }
+
+  public async Task<EmploymentReference> GetIcraWorkExperienceReferenceById(string referenceId, string applicantId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+
+    var reference = context.ecer_WorkExperienceRefSet.Where(
+      t => t.ecer_Applicantid.Id == Guid.Parse(applicantId) &&
+      t.ecer_WorkExperienceRefId == Guid.Parse(referenceId))
+    .FirstOrDefault();
+
+    return mapper.Map<EmploymentReference>(reference);
+  }
 }
