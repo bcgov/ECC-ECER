@@ -13,7 +13,7 @@ public class PortalInvitationsEndpoints : IRegisterEndpoints
   {
     endpointRouteBuilder.MapGet("/api/PortalInvitations/{token?}", async Task<Results<Ok<PortalInvitationQueryResult>, BadRequest<ProblemDetails>>> (string? token, IMediator messageBus, HttpContext httpContext, IMapper mapper, CancellationToken ct) =>
     {
-      if (token == null)
+      if (string.IsNullOrWhiteSpace(token))
       {
         return TypedResults.BadRequest(new ProblemDetails { Status = StatusCodes.Status400BadRequest, Detail = "Provided token is not valid" });
       }

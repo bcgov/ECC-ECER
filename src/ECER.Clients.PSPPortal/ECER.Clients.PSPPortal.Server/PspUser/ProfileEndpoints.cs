@@ -22,9 +22,6 @@ public class ProfileEndpoints : IRegisterEndpoints
         var pspUser = results.Items.SingleOrDefault();
         if (pspUser == null) return TypedResults.NotFound();
 
-        var query = new UserCommunicationsStatusQuery();
-        query.ByRegistrantId = pspUser.Id;
-
         var pspUserProfile = mapper.Map<PspUserProfile>(pspUser.Profile);
         return TypedResults.Ok(pspUserProfile);
       })
@@ -82,8 +79,6 @@ public class ProfileEndpoints : IRegisterEndpoints
           return TypedResults.Ok();
         })
       .WithOpenApi("Update a psp user profile", string.Empty, "psp_user_register_post")
-      .Produces<PspRegistrationErrorResponse>(StatusCodes.Status400BadRequest)
-      .Produces(StatusCodes.Status200OK)
       .WithOpenApi()
       .RequireAuthorization("psp_new_user");
   }
