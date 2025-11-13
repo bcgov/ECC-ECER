@@ -15,7 +15,7 @@ public static class AuthenticationHelper
   {
     ArgumentNullException.ThrowIfNull(identity);
 
-    scenario.WithClaim(RegistryPortalClaims.IdenityProvider, identity.IdentityProvider);
+    scenario.WithClaim(RegistryPortalClaims.IdentityProvider, identity.IdentityProvider);
     scenario.WithClaim(ClaimTypes.Name, identity.UserId);
     scenario.WithClaim(ClaimTypes.NameIdentifier, identity.UserId);
     if (user != null)

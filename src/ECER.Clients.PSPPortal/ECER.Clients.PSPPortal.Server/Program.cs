@@ -87,7 +87,7 @@ internal class Program
         {
           policy
             .AddAuthenticationSchemes("kc")
-            .RequireClaim(PSPPortalClaims.IdenityProvider)
+            .RequireClaim(PSPPortalClaims.IdentityProvider)
             .RequireClaim(ClaimTypes.Name)
             .RequireClaim(PSPPortalClaims.UserId)
             .RequireClaim(PSPPortalClaims.TermsOfUse, "true")
@@ -97,7 +97,7 @@ internal class Program
         {
           policy
             .AddAuthenticationSchemes("kc")
-            .RequireClaim(PSPPortalClaims.IdenityProvider)
+            .RequireClaim(PSPPortalClaims.IdentityProvider)
             .RequireClaim(ClaimTypes.Name)
             // .RequireClaim(PSPPortalClaims.UserId)
             // .RequireClaim(PSPPortalClaims.TermsOfUse, "false")
