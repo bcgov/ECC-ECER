@@ -83,5 +83,3 @@ public class ReferencePortalInvitationVerificationHandler(
     return PortalInvitationVerificationQueryResult.Success(result);
   }
 }
-
-

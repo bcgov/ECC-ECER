@@ -164,6 +164,7 @@ internal sealed class RegistrantRepository(EcerContext context, IMapper mapper, 
 
     context.SaveChanges();
     await Task.CompletedTask;
+    
   }
 
   private static string GetBucketName(IConfiguration configuration) =>

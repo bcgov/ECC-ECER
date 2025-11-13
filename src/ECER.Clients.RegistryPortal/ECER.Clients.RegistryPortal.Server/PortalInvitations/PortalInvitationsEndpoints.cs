@@ -49,7 +49,6 @@ public record PortalInvitation(string? Id, string Name, string ReferenceFirstNam
 public enum InviteType
 {
   CharacterReference,
-  PSIProgramRepresentative,
   WorkExperienceReferenceforApplication,
   WorkExperienceReferenceforICRA
 }
