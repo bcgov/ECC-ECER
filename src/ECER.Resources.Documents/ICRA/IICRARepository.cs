@@ -40,6 +40,7 @@ public record ICRAEligibility()
   public ICRAStatus Status { get; set; }
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
   public IEnumerable<EmploymentReference> EmploymentReferences { get; set; } = Array.Empty<EmploymentReference>();
+  public bool AddAdditionalEmploymentExperienceReferences { get; set; }
 }
 public record InternationalCertification
 {

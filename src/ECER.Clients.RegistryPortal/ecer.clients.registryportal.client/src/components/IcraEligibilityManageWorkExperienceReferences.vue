@@ -53,6 +53,7 @@
     <!-- end references list -->
     <br />
     <v-btn
+      v-if="additionalWorkReferenceRequired"
       prepend-icon="mdi-plus"
       class="mt-10"
       color="primary"
@@ -60,9 +61,10 @@
     >
       Add reference
     </v-btn>
-    <Callout type="warning" title="Waiting for references to respond">
+    <Callout v-if="!additionalWorkReferenceRequired" type="warning" title="Waiting for references to respond">
       <p>No additional work experience may be added. We are waiting on a response from your one or more of your references.</p>
     </Callout>
+    <br />
     <br />
     <a href="#" @click.prevent="() => router.push({ name: 'manage-icra-eligibility', params: { icraEligibilityId: icraEligibilityId } })">
       Back to application summary
@@ -93,7 +95,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup: async () => {
+  setup: async (props) => {
     const { smAndUp } = useDisplay();
     const loadingStore = useLoadingStore();
     const router = useRouter();
@@ -112,7 +114,35 @@ export default defineComponent({
   async mounted() {
     this.icraEligibilityStatus = (await getIcraEligibilityStatus(this.icraEligibilityId))?.data || {};
   },
-  computed: {},
+  computed: {
+    additionalWorkReferenceRequired(): boolean {
+      //set our variables to check
+      const someReferenceRejected = this.icraEligibilityStatus?.employmentReferencesStatus?.some((reference) => {
+        if (reference.status === "Rejected") {
+          return true;
+        }
+      });
+
+      const totalReferencesWithoutRejections =
+        this.icraEligibilityStatus?.employmentReferencesStatus?.filter((reference) => {
+          if (reference.status !== "Rejected") {
+            return true;
+          }
+        })?.length || 0;
+
+      //begin checking for scenarios
+      if (this.icraEligibilityStatus?.addAdditionalEmploymentExperienceReferences && totalReferencesWithoutRejections < 6) {
+        return true;
+      }
+
+      if (someReferenceRejected && totalReferencesWithoutRejections <= 6) {
+        return true;
+      }
+
+      //No action needed
+      return false;
+    },
+  },
   methods: {
     statusText(reference: Components.Schemas.EmploymentReferenceStatus) {
       switch (reference.status) {

@@ -434,7 +434,7 @@ export default defineComponent({
               href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-reference/add`,
             },
           ];
-        case "icra-eligibility-upsert-work-experience-reference":
+        case "icra-eligibility-replace-work-experience-reference":
           return [
             ...this.baseItems,
             { title: "Apply with international certification", disabled: false, href: `/icra-eligibility/manage/${params.icraEligibilityId}` },
@@ -444,7 +444,7 @@ export default defineComponent({
               href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-references`,
             },
             {
-              title: "Edit",
+              title: "Add",
               disabled: false,
               href: `/icra-eligibility/manage/${params.icraEligibilityId}/icra-work-experience-reference/${params.referenceId}/edit`,
             },

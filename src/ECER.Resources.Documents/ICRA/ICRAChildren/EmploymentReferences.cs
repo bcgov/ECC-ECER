@@ -70,6 +70,10 @@ internal sealed partial class ICRARepository
   private async Task<EmploymentReference> AddIcraWorkExperienceReferenceWithoutSave(AddIcraWorkExperienceReferenceRequest request)
   {
     await Task.CompletedTask;
+
+    var applicant = context.ContactSet.SingleOrDefault(c => c.ContactId == Guid.Parse(request.userId));
+    if (applicant == null) throw new InvalidOperationException($"Applicant '{request.userId}' not found");
+
     var icraEligibilityApplication = context.ecer_ICRAEligibilityAssessmentSet.FirstOrDefault(
       d => d.ecer_ICRAEligibilityAssessmentId == Guid.Parse(request.icraEligibilityId) && d.ecer_icraeligibilityassessment_ApplicantId.Id == Guid.Parse(request.userId));
 
@@ -87,6 +91,7 @@ internal sealed partial class ICRARepository
 
     context.AddObject(ecerIcraWorkExperienceReference);
     context.AddLink(icraEligibilityApplication, ecer_ICRAEligibilityAssessment.Fields.ecer_WorkExperienceRef_ecer_ICRAEligibilityAssessment_ecer_ICRAEligibilityAssessment, ecerIcraWorkExperienceReference);
+    context.AddLink(applicant, ecer_WorkExperienceRef.Fields.ecer_workexperienceref_Applicantid, ecerIcraWorkExperienceReference);
 
     return mapper.Map<EmploymentReference>(ecerIcraWorkExperienceReference);
   }

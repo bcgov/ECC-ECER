@@ -1,5 +1,5 @@
 <template>
-  <Loading v-if="loading" />
+  <Loading v-if="loadingStore.isLoading('icra_status_get')" />
   <v-container v-else>
     <Breadcrumb />
     <h1>Apply with international certification</h1>
@@ -124,6 +124,7 @@ import ApplicationSummaryActionListItem from "./ApplicationSummaryActionListItem
 import ApplicationSummaryHeader from "./ApplicationSummaryHeader.vue";
 import Loading from "./Loading.vue";
 import { useConfigStore } from "@/store/config";
+import { useLoadingStore } from "@/store/loading";
 
 export default defineComponent({
   name: "IcraEligibilitySummary",
@@ -143,6 +144,7 @@ export default defineComponent({
     const { smAndUp } = useDisplay();
     const userStore = useUserStore();
     const configStore = useConfigStore();
+    const loadingStore = useLoadingStore();
     const router = useRouter();
 
     return {
@@ -150,19 +152,18 @@ export default defineComponent({
       formatDate,
       smAndUp,
       configStore,
+      loadingStore,
       userStore,
       router,
     };
   },
   data() {
     return {
-      loading: true,
       icraEligibilityStatus: {} as Components.Schemas.ICRAEligibilityStatus,
     };
   },
   async mounted() {
     this.icraEligibilityStatus = (await getIcraEligibilityStatus(this.icraEligibilityId))?.data || {};
-    this.loading = false;
   },
   methods: {
     certificateNameDisplay(certificate: Components.Schemas.InternationalCertification): string {
@@ -176,7 +177,6 @@ export default defineComponent({
         case "InProgress":
         case "UnderReview":
         case "WaitingforResponse":
-          return true;
         case "Approved":
         case "Rejected":
         case "Inactive":
@@ -189,13 +189,34 @@ export default defineComponent({
   },
   computed: {
     actionNeededWorkReferences(): boolean {
-      return (
-        this.icraEligibilityStatus?.employmentReferencesStatus?.some((reference) => {
-          if (reference.status === "ICRAEligibilitySubmitted" || reference.status === "WaitingforResponse") {
+      const totalReferencesWithoutRejections =
+        this.icraEligibilityStatus?.employmentReferencesStatus?.filter((reference) => {
+          if (reference.status !== "Rejected") {
             return true;
           }
-        }) || false
-      );
+        })?.length || 0;
+
+      const someReferencesRequireResponse = this.icraEligibilityStatus?.employmentReferencesStatus?.some((reference) => {
+        if (reference.status === "ICRAEligibilitySubmitted" || reference.status === "WaitingforResponse") {
+          return true;
+        }
+      });
+
+      console.log("someReferencesRequireResponse:", someReferencesRequireResponse);
+      console.log("totalReferencesWithoutRejections:", totalReferencesWithoutRejections);
+
+      // check if any references still require a response
+      if (someReferencesRequireResponse) {
+        return true;
+      }
+
+      //registry asks for more employement references
+      if (this.icraEligibilityStatus?.addAdditionalEmploymentExperienceReferences && totalReferencesWithoutRejections < 6) {
+        return true;
+      }
+
+      //No action needed
+      return false;
     },
     currentStep(): number {
       switch (this.icraEligibilityStatus?.status) {

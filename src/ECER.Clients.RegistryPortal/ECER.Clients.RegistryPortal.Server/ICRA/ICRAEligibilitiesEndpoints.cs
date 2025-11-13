@@ -243,6 +243,7 @@ public record ICRAEligibility()
   public ICRAStatus Status { get; set; }
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
   public IEnumerable<EmploymentReference> EmploymentReferences { get; set; } = Array.Empty<EmploymentReference>();
+  public bool AddAdditionalEmploymentExperienceReferences { get; set; }
 }
 public record InternationalCertification
 {
@@ -317,6 +318,7 @@ public record ICRAEligibilityStatus(string Id, DateTime? CreatedOn, DateTime? Si
 {
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
   public IEnumerable<EmploymentReferenceStatus> EmploymentReferencesStatus { get; set; } = Array.Empty<EmploymentReferenceStatus>();
+  public bool AddAdditionalEmploymentExperienceReferences { get; set; }
 }
 
 public record EmploymentReferenceStatus(string Id, Applications.WorkExperienceRefStage? Status, string? FirstName, string? LastName, string? EmailAddress)

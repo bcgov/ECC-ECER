@@ -357,14 +357,14 @@ const router = createRouter({
       path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-reference/add",
       name: "icra-eligibility-add-work-experience-reference",
       component: () => import("./components/IcraEligibilityUpsertWorkExperienceReference.vue"),
-      props: true,
+      props: (route) => ({ icraEligibilityId: route.params.icraEligibilityId, type: "add" }),
       meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
-      path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-reference/:referenceId/edit",
-      name: "icra-eligibility-upsert-work-experience-reference",
+      path: "/icra-eligibility/manage/:icraEligibilityId/icra-work-experience-reference/:referenceId/replace",
+      name: "icra-eligibility-replace-work-experience-reference",
       component: () => import("./components/IcraEligibilityUpsertWorkExperienceReference.vue"),
-      props: true,
+      props: (route) => ({ icraEligibilityId: route.params.icraEligibilityId, type: "replace" }),
       meta: { requiresAuth: true, requiresVerification: true, requiresICRAFeature: true },
     },
     {
