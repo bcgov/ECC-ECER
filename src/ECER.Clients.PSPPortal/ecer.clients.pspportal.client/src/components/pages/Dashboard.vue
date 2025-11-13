@@ -94,8 +94,10 @@ export default defineComponent({
           case "PostSecondaryInstitutionNotFound":
             this.router.replace("/access-denied");
             break;
+          case "GenericError":
           default:
             this.router.replace("/generic-registration-error");
+            break;
         }
         return;
       }

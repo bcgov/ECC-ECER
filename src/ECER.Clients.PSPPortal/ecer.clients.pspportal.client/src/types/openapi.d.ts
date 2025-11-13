@@ -48,7 +48,8 @@ declare namespace Components {
       | "PostSecondaryInstitutionNotFound"
       | "PortalInvitationTokenInvalid"
       | "PortalInvitationWrongStatus"
-      | "BceidBusinessIdDoesNotMatch";
+      | "BceidBusinessIdDoesNotMatch"
+      | "GenericError";
     /**
      * Error response for PSP user registration failures. Returns only the error code for frontend handling.
      */

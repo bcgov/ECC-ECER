@@ -50,19 +50,33 @@ public class ProfileEndpoints : IRegisterEndpoints
             ),
             ctx.RequestAborted);
 
-          if (!result.IsSuccess && result.Error.HasValue)
+          if (!result.IsSuccess)
           {
+            var errorCode = PspRegistrationError.GenericError;
+
+            if (result.Error.HasValue)
+            {
+              errorCode = result.Error.Value switch
+              {
+                RegisterPspUserError.PostSecondaryInstitutionNotFound 
+                  => PspRegistrationError.PostSecondaryInstitutionNotFound,
+
+                RegisterPspUserError.PortalInvitationTokenInvalid 
+                  => PspRegistrationError.PortalInvitationTokenInvalid,
+
+                RegisterPspUserError.PortalInvitationWrongStatus 
+                  => PspRegistrationError.PortalInvitationWrongStatus,
+
+                RegisterPspUserError.BceidBusinessIdDoesNotMatch 
+                  => PspRegistrationError.BceidBusinessIdDoesNotMatch,
+
+                _ => PspRegistrationError.GenericError
+              };
+            }
+
             return TypedResults.BadRequest(new PspRegistrationErrorResponse
             {
-              ErrorCode = result.Error.Value switch
-              {
-                RegisterPspUserError.PostSecondaryInstitutionNotFound => PspRegistrationError
-                  .PostSecondaryInstitutionNotFound,
-                RegisterPspUserError.PortalInvitationTokenInvalid => PspRegistrationError.PortalInvitationTokenInvalid,
-                RegisterPspUserError.PortalInvitationWrongStatus => PspRegistrationError.PortalInvitationWrongStatus,
-                RegisterPspUserError.BceidBusinessIdDoesNotMatch => PspRegistrationError.BceidBusinessIdDoesNotMatch,
-                _ => PspRegistrationError.PostSecondaryInstitutionNotFound
-              }
+              ErrorCode = errorCode
             });
           }
 
@@ -106,7 +120,9 @@ public enum PspRegistrationError
   /// <summary>The invitation is not in correct status for registration</summary>
   PortalInvitationWrongStatus,
   /// <summary>The BCeID Business ID doesn't match expected value</summary>
-  BceidBusinessIdDoesNotMatch
+  BceidBusinessIdDoesNotMatch,
+  /// <summary>A generic error occurred during registration</summary>
+  GenericError
 }
 
 /// <summary>
