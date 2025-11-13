@@ -37,6 +37,12 @@ const router = createRouter({
       name: "invalid-invitation",
     },
     {
+      path: "/access-denied",
+      component: () => import("./components/pages/AccessDenied.vue"),
+      meta: { requiresAuth: false },
+      name: "access-denied",
+    },
+    {
       path: "/logout-callback",
       component: () => import("./components/pages/LogoutCallback.vue"),
       meta: { requiresAuth: false },

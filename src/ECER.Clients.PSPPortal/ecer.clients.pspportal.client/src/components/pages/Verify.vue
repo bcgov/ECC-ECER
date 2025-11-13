@@ -17,7 +17,7 @@ onMounted(async () => {
     const { data, error } = await getPortalInvitation(route.params.token as string);
 
     if (error) {
-        router.push("/invalid-invitation");
+        router.push("/access-denied");
         return;
     }
 
@@ -28,7 +28,7 @@ onMounted(async () => {
             userStore.setInvitationToken(route.params.token as string);
             router.push("/login");
         } else {
-            router.push("/invalid-invitation");
+            router.push("/access-denied");
         }
     }
 });
