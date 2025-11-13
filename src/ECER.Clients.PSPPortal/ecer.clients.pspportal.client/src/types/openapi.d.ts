@@ -62,6 +62,7 @@ declare namespace Components {
       firstName?: string | null;
       lastName?: string | null;
       email?: string | null;
+      hasAcceptedTermsOfUse?: boolean | null;
     }
     /**
      * Request to register a new psp user
@@ -104,10 +105,8 @@ declare namespace Paths {
     }
   }
   namespace PspUserProfilePut {
-    export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
     namespace Responses {
       export interface $200 {}
-      export type $400 = Components.Schemas.ProblemDetails | Components.Schemas.HttpValidationProblemDetails;
     }
   }
   namespace PspUserRegisterPost {
@@ -155,7 +154,7 @@ export interface OperationMethods {
    */
   "psp_user_profile_put"(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: Paths.PspUserProfilePut.RequestBody,
+    data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserProfilePut.Responses.$200>;
   /**
@@ -207,7 +206,7 @@ export interface PathsDictionary {
      */
     "put"(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: Paths.PspUserProfilePut.RequestBody,
+      data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserProfilePut.Responses.$200>;
   };

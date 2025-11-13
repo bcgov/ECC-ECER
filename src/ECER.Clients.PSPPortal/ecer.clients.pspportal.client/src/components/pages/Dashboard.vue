@@ -80,13 +80,10 @@ export default defineComponent({
         },
       };
 
-      try {
-        await registerPspUser(request);
-        this.pspUserProfile = await getPspUserProfile();
-      } catch (error: any) {
+      const registrationResult = await registerPspUser(request);
+      if ('errorCode' in registrationResult) {
         // Handle registration errors based on error code from PspRegistrationErrorResponse
-        const errorResponse: PspRegistrationErrorResponse | undefined = error?.response?.data;
-        const errorCode: PspRegistrationError | undefined = errorResponse?.errorCode;
+        const errorCode: PspRegistrationError | undefined = registrationResult.errorCode;
 
         switch (errorCode) {
           case "PortalInvitationTokenInvalid":
@@ -102,6 +99,7 @@ export default defineComponent({
         }
         return;
       }
+      this.pspUserProfile = await getPspUserProfile();
     }
 
     if (this.pspUserProfile) {

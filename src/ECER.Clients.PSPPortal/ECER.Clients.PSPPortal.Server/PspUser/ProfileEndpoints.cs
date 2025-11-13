@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
-using ECER.Managers.Registry.Contract.Communications;
 using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
@@ -26,22 +25,13 @@ public class ProfileEndpoints : IRegisterEndpoints
         return TypedResults.Ok(pspUserProfile);
       })
       .WithOpenApi("Gets the currently logged in user profile or NotFound if no profile found", string.Empty, "psp_user_profile_get")
-      .RequireAuthorization("psp_new_user")
+      .RequireAuthorization("psp_user")
       .WithParameterValidation();
 
     endpointRouteBuilder.MapPut("/api/users/profile",
-        async Task<Results<Ok, BadRequest<ProblemDetails>>> (PspUserProfile pspUserProfile, HttpContext ctx,
-          CancellationToken ct, IMediator bus, IMapper mapper) =>
-        {
-          var pspUser = new PspUser(ctx.User.GetUserContext()!.UserId, mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(pspUserProfile)!);
-          await bus.Send(
-            new UpdatePspRepProfileCommand(
-              mapper.Map<PspUser>(pspUser)!),
-            ctx.RequestAborted);
-          return TypedResults.Ok();
-        })
+        () => TypedResults.StatusCode(StatusCodes.Status501NotImplemented))
       .WithOpenApi("Update a psp user profile", string.Empty, "psp_user_profile_put")
-      .RequireAuthorization("psp_new_user")
+      .RequireAuthorization("psp_user")
       .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/users/register",
@@ -80,7 +70,7 @@ public class ProfileEndpoints : IRegisterEndpoints
         })
       .WithOpenApi("Update a psp user profile", string.Empty, "psp_user_register_post")
       .WithOpenApi()
-      .RequireAuthorization("psp_new_user");
+      .RequireAuthorization("psp_user");
   }
 }
 
@@ -101,6 +91,7 @@ public record PspUserProfile
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? Email { get; set; } = null!;
+  public bool? HasAcceptedTermsOfUse { get; set; }
 };
 
 /// <summary>

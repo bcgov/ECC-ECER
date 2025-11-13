@@ -43,4 +43,5 @@ public record PspUserProfile
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? Email { get; set; } = null!;
+  public bool? HasAcceptedTermsOfUse { get; set; }
 };

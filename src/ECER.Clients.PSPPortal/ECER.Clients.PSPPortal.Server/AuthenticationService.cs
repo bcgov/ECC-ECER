@@ -1,10 +1,10 @@
 ﻿using ECER.Clients.PSPPortal.Server.Shared;
-using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
+using ECER.Managers.Registry.Contract.PspUsers;
 
 namespace ECER.Clients.PSPPortal.Server;
 
@@ -14,7 +14,7 @@ public class AuthenticationService(IMediator messageBus, IDistributedCache cache
   {
     ArgumentNullException.ThrowIfNull(principal);
 
-    var identityProvider = principal.FindFirst(RegistryPortalClaims.IdentityProvider)?.Value;
+    var identityProvider = principal.FindFirst(PSPPortalClaims.IdentityProvider)?.Value;
     var identityId = principal.FindFirst(ClaimTypes.Name)?.Value;
 
     if (string.IsNullOrEmpty(identityProvider) || string.IsNullOrEmpty(identityId)) return principal;
@@ -31,26 +31,18 @@ public class AuthenticationService(IMediator messageBus, IDistributedCache cache
 
   private async Task<Claim[]?> GetUserClaims(UserIdentity userIdentity, CancellationToken ct)
   {
-    // try to find the registrant
-    var registrant = await cache.GetAsync($"userinfo:{userIdentity.UserId}@{userIdentity.IdentityProvider}",
-      async ct => (await messageBus.Send(new SearchRegistrantQuery { ByUserIdentity = userIdentity }, ct)).Items.SingleOrDefault(),
+    // try to find the psp user
+    var pspRep = await cache.GetAsync($"userinfo:{userIdentity.UserId}@{userIdentity.IdentityProvider}",
+      async ct => (await messageBus.Send(new SearchPspRepQuery { ByUserIdentity = userIdentity }, ct)).Items.SingleOrDefault(),
       new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(claimCacheSettings.Value.CacheTimeInSeconds) },
       ct);
 
-    if (registrant == null) return null;
+    if (pspRep == null) return null;
 
     // add registrant claims
-    var userId = new Claim("user_id", registrant.UserId);
-    Claim verificationStatus = new Claim("verified", "");
-    if (registrant.Profile.Status == StatusCode.Verified)
-    {
-      verificationStatus = new Claim("verified", "true");
-    }
-    else if (registrant.Profile.Status is StatusCode.Unverified or StatusCode.PendingforDocuments)
-    {
-      verificationStatus = new Claim("verified", "false");
-    }
+    var userId = new Claim("user_id", pspRep.Id);
+    Claim hasTermsOfUse = new Claim("terms_of_use", pspRep.Profile.HasAcceptedTermsOfUse.HasValue && pspRep.Profile.HasAcceptedTermsOfUse.Value ? "true" : "false");
 
-    return [userId, verificationStatus];
+    return [userId, hasTermsOfUse];
   }
 }

@@ -88,19 +88,15 @@ internal class Program
           policy
             .AddAuthenticationSchemes("kc")
             .RequireClaim(PSPPortalClaims.IdentityProvider)
-            .RequireClaim(ClaimTypes.Name)
-            .RequireClaim(PSPPortalClaims.UserId)
-            .RequireClaim(PSPPortalClaims.TermsOfUse, "true")
             .RequireAuthenticatedUser();
         })
-        .AddPolicy("psp_new_user", policy =>
+        .AddPolicy("psp_user_has_accepted_terms", policy =>
         {
           policy
             .AddAuthenticationSchemes("kc")
             .RequireClaim(PSPPortalClaims.IdentityProvider)
-            .RequireClaim(ClaimTypes.Name)
-            // .RequireClaim(PSPPortalClaims.UserId)
-            // .RequireClaim(PSPPortalClaims.TermsOfUse, "false")
+            .RequireClaim(PSPPortalClaims.UserId)
+            .RequireClaim(PSPPortalClaims.TermsOfUse, "true")
             .RequireAuthenticatedUser();
         });
 
