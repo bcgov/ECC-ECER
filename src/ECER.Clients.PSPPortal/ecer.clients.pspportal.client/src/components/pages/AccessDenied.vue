@@ -7,12 +7,8 @@
         <p>you may have followed an invalid link.</p>
         <p>Contact the ECE Registry if you require help.</p>
       </div>
-      <v-btn
-        class="mt-8 align-self-start"
-        @click="router.push('/')"
-        :size="smAndDown ? 'default' : 'large'"
-        color="primary"
-      >
+      <v-btn class="mt-8 align-self-start" @click="oidcStore.logout" :size="smAndDown ? 'default' : 'large'"
+        color="primary">
         Try again
       </v-btn>
     </div>
@@ -20,14 +16,14 @@
 </template>
 
 <script lang="ts">
-import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
+import { useOidcStore } from "@/store/oidc";
 export default {
   name: "AccessDenied",
   setup() {
-    const router = useRouter();
+    const oidcStore = useOidcStore();
     const { smAndDown } = useDisplay();
-    return { router, smAndDown };
+    return { smAndDown, oidcStore };
   },
 };
 </script>

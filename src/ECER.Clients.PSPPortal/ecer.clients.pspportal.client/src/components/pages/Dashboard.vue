@@ -1,23 +1,30 @@
 <template>
   <PageContainer :margin-top="false">
-    <h1>Hello World</h1>
-    <p>Welcome to the dashboard!</p>
+    <Loading v-if="loadingStore.isLoading('psp_user_profile_get') || loadingStore.isLoading('psp_user_register_post')">
+    </Loading>
+    <div v-else>
+      <h1>Dashboard is under development</h1>
+      <p>This page is currently under development. Please check back soon.</p>
+    </div>
   </PageContainer>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import PageContainer from "@/components/PageContainer.vue";
+import Loading from "@/components/Loading.vue";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
-import type { PspUserProfile } from "@/types/openapi";
 import { getPspUserProfile, registerPspUser } from "@/api/psp-rep";
+import type { PspUserProfile, PspRegistrationError, PspRegistrationErrorResponse, RegisterPspUserRequest } from "@/types/openapi";
+import { useLoadingStore } from "@/store/loading";
 
 export default defineComponent({
   name: "Dashboard",
   components: {
     PageContainer,
+    Loading,
   },
   data() {
     return {
@@ -27,12 +34,11 @@ export default defineComponent({
   async setup() {
     const oidcStore = useOidcStore();
     const userStore = useUserStore();
+    const loadingStore = useLoadingStore();
     const router = useRouter();
 
-    const oidcUserInfo = await oidcStore.oidcUserInfo();
-
     return {
-      oidcStore, router, userStore, oidcUserInfo
+      oidcStore, router, userStore, loadingStore
     };
   },
   async mounted() {
@@ -42,34 +48,64 @@ export default defineComponent({
 
       if (!user) {
         user = await this.oidcStore.signinCallback();
-        console.log("user", user);
         this.router.replace("/");
       }
     } catch (error) { }
 
     if (!user) {
-      globalThis.location.href = "/login";
+      this.router.replace("/login");
       return; //stops the rest of the component from loading. Prevents 401 calls for the methods below
     }
 
+    // Check if the user has a profile, if not, register them
     [this.pspUserProfile] = await Promise.all([
       getPspUserProfile(),
     ]);
 
     if (!this.pspUserProfile) {
-      // Register a new PSP user profile
-      this.pspUserProfile = await registerPspUser({
+      if (!this.userStore.invitationToken || !this.userStore.invitedProgramRepresentativeId) {
+        this.router.replace("/required-invitation");
+        return;
+      }
+
+      // Register a new PSP user profile with typed request
+      const request: RegisterPspUserRequest = {
         token: this.userStore.invitationToken as string,
         programRepresentativeId: this.userStore.invitedProgramRepresentativeId as string,
-        bceidBusinessId: this.oidcUserInfo.bceidBusinessId as string,
+        bceidBusinessId: user.profile.bceid_business_guid as string,
         profile: {
-          firstName: this.oidcUserInfo.firstName as string,
-          lastName: this.oidcUserInfo.lastName as string,
-          email: this.oidcUserInfo.email as string,
+          firstName: user.profile.given_name as string,
+          lastName: user.profile.family_name as string,
+          email: user.profile.email as string,
         },
-      });
+      };
 
-      console.log("pspUserProfile", this.pspUserProfile);
+      try {
+        await registerPspUser(request);
+        this.pspUserProfile = await getPspUserProfile();
+      } catch (error: any) {
+        // Handle registration errors based on error code from PspRegistrationErrorResponse
+        const errorResponse: PspRegistrationErrorResponse | undefined = error?.response?.data;
+        const errorCode: PspRegistrationError | undefined = errorResponse?.errorCode;
+
+        switch (errorCode) {
+          case "PortalInvitationTokenInvalid":
+          case "PortalInvitationWrongStatus":
+            this.router.replace("/invalid-invitation");
+            break;
+          case "BceidBusinessIdDoesNotMatch":
+          case "PostSecondaryInstitutionNotFound":
+            this.router.replace("/access-denied");
+            break;
+          default:
+            this.router.replace("/generic-registration-error");
+        }
+        return;
+      }
+    }
+
+    if (this.pspUserProfile) {
+      this.userStore.setPspUserProfile(this.pspUserProfile);
     }
   },
 });

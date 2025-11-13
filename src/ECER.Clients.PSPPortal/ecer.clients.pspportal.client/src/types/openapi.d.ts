@@ -42,6 +42,20 @@ declare namespace Components {
       instance?: string | null;
     }
     /**
+     * Error codes for PSP user registration failures
+     */
+    export type PspRegistrationError =
+      | "PostSecondaryInstitutionNotFound"
+      | "PortalInvitationTokenInvalid"
+      | "PortalInvitationWrongStatus"
+      | "BceidBusinessIdDoesNotMatch";
+    /**
+     * Error response for PSP user registration failures. Returns only the error code for frontend handling.
+     */
+    export interface PspRegistrationErrorResponse {
+      errorCode?: /* Error codes for PSP user registration failures */ PspRegistrationError;
+    }
+    /**
      * User profile information
      */
     export interface PspUserProfile {
@@ -100,7 +114,8 @@ declare namespace Paths {
     export type RequestBody = /* Request to register a new psp user */ Components.Schemas.RegisterPspUserRequest;
     namespace Responses {
       export interface $200 {}
-      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export type $400 =
+        /* Error response for PSP user registration failures. Returns only the error code for frontend handling. */ Components.Schemas.PspRegistrationErrorResponse;
     }
   }
   namespace VersionGet {
@@ -144,7 +159,7 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserProfilePut.Responses.$200>;
   /**
-   * psp_user_register_post - Register new Psp Program Representative
+   * psp_user_register_post - Update a psp user profile
    */
   "psp_user_register_post"(
     parameters?: Parameters<UnknownParamsObject> | null,
@@ -198,7 +213,7 @@ export interface PathsDictionary {
   };
   ["/api/users/register"]: {
     /**
-     * psp_user_register_post - Register new Psp Program Representative
+     * psp_user_register_post - Update a psp user profile
      */
     "post"(
       parameters?: Parameters<UnknownParamsObject> | null,
@@ -227,6 +242,8 @@ export type OidcAuthenticationSettings = Components.Schemas.OidcAuthenticationSe
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
 export type ProblemDetails = Components.Schemas.ProblemDetails;
+export type PspRegistrationError = Components.Schemas.PspRegistrationError;
+export type PspRegistrationErrorResponse = Components.Schemas.PspRegistrationErrorResponse;
 export type PspUserProfile = Components.Schemas.PspUserProfile;
 export type RegisterPspUserRequest = Components.Schemas.RegisterPspUserRequest;
 export type VersionMetadata = Components.Schemas.VersionMetadata;

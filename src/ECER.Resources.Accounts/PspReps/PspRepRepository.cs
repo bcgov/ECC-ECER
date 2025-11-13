@@ -46,7 +46,7 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
     if (query.ByIdentity != null)
     {
       pspUsers = from pspUser in context.ecer_ECEProgramRepresentativeSet
-                join authentication in context.ecer_AuthenticationSet on pspUser.ecer_ContactId.Id equals authentication.ecer_Customerid.Id
+                join authentication in context.ecer_AuthenticationSet on pspUser.Id equals authentication.ecer_eceprogramrepresentative.Id
                 where authentication.ecer_IdentityProvider == query.ByIdentity.IdentityProvider && authentication.ecer_ExternalID == query.ByIdentity.UserId
                 select pspUser;
     }

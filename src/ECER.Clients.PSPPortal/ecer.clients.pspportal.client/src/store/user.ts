@@ -16,6 +16,8 @@ export const useUserStore = defineStore("user", {
   }),
   getters: {
     hasUserProfile: (state): boolean => state.pspUserProfile !== null,
+    firstName: (state): string => state.pspUserProfile?.firstName ?? "",
+    lastName: (state): string => state.pspUserProfile?.lastName ?? "",
     email: (state): string => state.pspUserProfile?.email ?? "",
   },
   actions: {

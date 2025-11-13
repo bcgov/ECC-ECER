@@ -48,8 +48,8 @@ public class ProfileEndpoints : IRegisterEndpoints
       .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("/api/users/register",
-        async Task<Results<Ok, BadRequest<ProblemDetails>>> (
-          RegisterPspUserRequest request, HttpContext ctx, 
+        async Task<Results<Ok, BadRequest<PspRegistrationErrorResponse>>> (
+          RegisterPspUserRequest request, HttpContext ctx,
           CancellationToken ct, IMediator bus, IMapper mapper) =>
         {
           var user = ctx.User.GetUserContext()!;
@@ -63,20 +63,29 @@ public class ProfileEndpoints : IRegisterEndpoints
             ),
             ctx.RequestAborted);
 
-          if (!result.IsSuccess)
+          if (!result.IsSuccess && result.Error.HasValue)
           {
-            return TypedResults.BadRequest(new ProblemDetails
+            return TypedResults.BadRequest(new PspRegistrationErrorResponse
             {
-              Title = "Registration failed",
-              Detail = result.Error.ToString() 
+              ErrorCode = result.Error.Value switch
+              {
+                RegisterPspUserError.PostSecondaryInstitutionNotFound => PspRegistrationError
+                  .PostSecondaryInstitutionNotFound,
+                RegisterPspUserError.PortalInvitationTokenInvalid => PspRegistrationError.PortalInvitationTokenInvalid,
+                RegisterPspUserError.PortalInvitationWrongStatus => PspRegistrationError.PortalInvitationWrongStatus,
+                RegisterPspUserError.BceidBusinessIdDoesNotMatch => PspRegistrationError.BceidBusinessIdDoesNotMatch,
+                _ => PspRegistrationError.PostSecondaryInstitutionNotFound
+              }
             });
           }
 
           return TypedResults.Ok();
         })
-      .WithOpenApi("Register new Psp Program Representative", string.Empty, "psp_user_register_post")
-      .RequireAuthorization("psp_new_user")
-      .WithParameterValidation();
+      .WithOpenApi("Update a psp user profile", string.Empty, "psp_user_register_post")
+      .Produces<PspRegistrationErrorResponse>(StatusCodes.Status400BadRequest)
+      .Produces(StatusCodes.Status200OK)
+      .WithOpenApi()
+      .RequireAuthorization("psp_new_user");
   }
 }
 
@@ -98,3 +107,31 @@ public record PspUserProfile
   public string? LastName { get; set; }
   public string? Email { get; set; } = null!;
 };
+
+/// <summary>
+/// Error codes for PSP user registration failures
+/// </summary>
+public enum PspRegistrationError
+{
+  /// <summary>The specified post-secondary institution was not found</summary>
+  PostSecondaryInstitutionNotFound,
+  /// <summary>The invitation token is invalid or expired</summary>
+  PortalInvitationTokenInvalid,
+  /// <summary>The invitation is not in correct status for registration</summary>
+  PortalInvitationWrongStatus,
+  /// <summary>The BCeID Business ID doesn't match expected value</summary>
+  BceidBusinessIdDoesNotMatch
+}
+
+/// <summary>
+/// Error response for PSP user registration failures. Returns only the error code for frontend handling.
+/// </summary>
+public record PspRegistrationErrorResponse
+{
+  /// <summary>
+  /// The specific error code that occurred during registration.
+  /// Frontend should handle localization and user messaging based on this code.
+  /// </summary>
+  /// <example>PostSecondaryInstitutionNotFound</example>
+  public PspRegistrationError ErrorCode { get; set; }
+}
