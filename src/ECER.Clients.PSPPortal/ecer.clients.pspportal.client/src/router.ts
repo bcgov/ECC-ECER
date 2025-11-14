@@ -33,25 +33,25 @@ const router = createRouter({
     {
       path: "/invalid-invitation",
       component: () => import("./components/pages/InvalidInvitation.vue"),
-      meta: { requiresAuth: false },
+      meta: { requiresAuth: true },
       name: "invalid-invitation",
     },
     {
       path: "/required-invitation",
       component: () => import("./components/pages/RequiredInvitation.vue"),
-      meta: { requiresAuth: false },
+      meta: { requiresAuth: true },
       name: "required-invitation",
     },
     {
       path: "/generic-registration-error",
       component: () => import("./components/pages/GenericRegistrationError.vue"),
-      meta: { requiresAuth: false },
+      meta: { requiresAuth: true },
       name: "generic-registration-error",
     },
     {
       path: "/access-denied",
       component: () => import("./components/pages/AccessDenied.vue"),
-      meta: { requiresAuth: false },
+      meta: { requiresAuth: true },
       name: "access-denied",
     },
     {
