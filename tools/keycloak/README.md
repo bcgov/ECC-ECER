@@ -78,10 +78,6 @@ export KC_ENVIRONMENT=<<STRING>>
 export KC_REALM_ID=<<STRING>>
 export KC_CLIENT_ID=<<STRING>>
 export KC_CLIENT_SECRET=<<STRING>>
-export KC_BASIC_BCEID_CLIENT_ID=<<STRING>>
-export KC_BASIC_BCEID_SECRET=<<STRING>>
-export KC_BCSC_CLIENT_ID=<<STRING>>
-export KC_BCSC_SECRET=<<STRING>>
 ```
 
 ![alt text](./images/play-debug.png)
