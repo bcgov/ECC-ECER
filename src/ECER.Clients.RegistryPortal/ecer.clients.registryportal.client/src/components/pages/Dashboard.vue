@@ -172,7 +172,13 @@
                 </div>
               </Card>
             </v-col>
-            <v-col v-if="configurationStore.applicationConfiguration.icraFeatureEnabled" class="d-flex" cols="12" sm="6" md="4">
+            <v-col
+              v-if="configurationStore.applicationConfiguration.icraFeatureEnabled && !icraStore.hasApprovedOrRejectedIcraEligibility"
+              class="d-flex"
+              cols="12"
+              sm="6"
+              md="4"
+            >
               <Card class="d-flex flex-column">
                 <h2>Apply with international certification</h2>
                 <p class="mt-4">
@@ -362,6 +368,9 @@ export default defineComponent({
         return false;
       }
       if (this.certificationStore.hasCertifications && this.icraStore.icraEligibilityStatus === undefined) {
+        return false;
+      }
+      if (this.icraStore.hasApprovedOrRejectedIcraEligibility) {
         return false;
       }
       // do not show if there is an application in process
