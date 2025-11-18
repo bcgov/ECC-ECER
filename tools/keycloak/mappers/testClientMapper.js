@@ -347,10 +347,8 @@ let clientArray = [
     alwaysDisplayInConsole: true,
     clientAuthenticatorType: "client-secret",
     redirectUris: [
-      "https://dev-ecer-psp-portal.apps.silver.devops.gov.bc.ca/*",
       "https://uat-ecer-psp-portal.apps.silver.devops.gov.bc.ca/*",
       "https://test-ecer-psp-portal.apps.silver.devops.gov.bc.ca/*",
-      "http://localhost:5130/*",
     ],
     webOrigins: ["+"],
     notBefore: 0,
