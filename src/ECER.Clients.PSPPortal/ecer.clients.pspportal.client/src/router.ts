@@ -27,6 +27,12 @@ const router = createRouter({
       name: "new-user",
     },
     {
+      path: "/profile/edit",
+      component: () => import("./components/pages/EditProfile.vue"),
+      name: "edit-profile",
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/silent-callback",
       component: () => import("./components/pages/SilentCallback.vue"),
       meta: { requiresAuth: false },
@@ -70,7 +76,7 @@ const router = createRouter({
 });
 
 // Gaurd for authenticated routes
-router.beforeEach(async (to, _) => {
+router.beforeEach(async (to, _, next) => {
   const oidcStore = useOidcStore();
   const userStore = useUserStore();
 
@@ -86,25 +92,54 @@ router.beforeEach(async (to, _) => {
   if (to.meta.requiresAuth && !user) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    return {
+    return next({
       path: "/login",
       query: { redirect_to: to.fullPath },
-    };
+    });
   }
+
+  // Always call next() to allow navigation to continue
+  next();
 });
 
 // Gaurd for new user page (redirect to dashboard if they have accepted Terms of Use)
 router.beforeEach(async (to, _, next) => {
+  const oidcStore = useOidcStore();
   const userStore = useUserStore();
-  if (to.path === "/new-user" && userStore.hasAcceptedTermsOfUse) next({ path: "/" });
-  else next();
+
+  // Only check terms acceptance for authenticated users
+  const user = await oidcStore.getUser();
+  if (!user) {
+    return next(); // Let auth guard handle unauthenticated users
+  }
+
+  if (to.path === "/new-user" && userStore.hasUserProfile && userStore.hasAcceptedTermsOfUse) {
+    return next({ path: "/" });
+  }
+  next();
 });
 
 // Gaurd for rest of the routes (redirect to new user page if they have not accepted Terms of Use)
 router.beforeEach(async (to, _, next) => {
+  const oidcStore = useOidcStore();
   const userStore = useUserStore();
-  if (to.path !== "/new-user" && !userStore.hasAcceptedTermsOfUse) next({ path: "/new-user" });
-  else next();
+
+  // Only check terms acceptance for authenticated users
+  const user = await oidcStore.getUser();
+  if (!user) {
+    return next(); // Let auth guard handle unauthenticated users
+  }
+
+  // Don't redirect if already going to login, new-user, or other public routes
+  const publicPaths = ["/login", "/new-user", "/silent-callback", "/logout-callback", "/verify"];
+  if (publicPaths.some((path) => to.path.startsWith(path))) {
+    return next();
+  }
+
+  if (userStore.hasUserProfile && !userStore.hasAcceptedTermsOfUse) {
+    return next({ path: "/new-user" });
+  }
+  next();
 });
 
 // Guard for login page (redirect to dashboard if already authenticated)
@@ -112,8 +147,10 @@ router.beforeEach(async (to, _, next) => {
   const oidcStore = useOidcStore();
   const user = await oidcStore.getUser();
 
-  if (to.path === "/login" && user) next({ path: "/" });
-  else next();
+  if (to.path === "/login" && user) {
+    return next({ path: "/" });
+  }
+  next();
 });
 
 export default router;

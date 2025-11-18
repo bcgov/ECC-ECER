@@ -9,14 +9,14 @@ const getPspUserProfile = async (): Promise<PspUserProfile | null> => {
   return response?.data ?? null;
 };
 
-const updatePspUserProfile = async (pspUserProfile: PspUserProfile): Promise<{} | null> => {
+const updatePspUserProfile = async (pspUserProfile: PspUserProfile, suppressErrorToast: boolean = false): Promise<boolean> => {
   const client = await getClient();
   const response = await apiResultHandler.execute({
     request: client.psp_user_profile_put({}, pspUserProfile),
     key: "psp_user_profile_put",
-    suppressErrorToast: true,
+    suppressErrorToast: suppressErrorToast,
   });
-  return response?.data ?? null;
+  return response != null;
 };
 
 const registerPspUser = async (registerPspUserRequest: RegisterPspUserRequest): Promise<{} | PspRegistrationErrorResponse> => {

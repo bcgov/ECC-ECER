@@ -107,6 +107,9 @@ export default defineComponent({
 
     if (this.pspUserProfile) {
       this.userStore.setPspUserProfile(this.pspUserProfile);
+      if (!this.pspUserProfile.hasAcceptedTermsOfUse) {
+        this.router.replace("/new-user");
+      }
     }
 
     this.loading = false;

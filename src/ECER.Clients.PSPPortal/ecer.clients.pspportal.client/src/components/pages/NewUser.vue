@@ -34,19 +34,23 @@
                     <v-row>
                         <!-- Job title Field -->
                         <v-col sm="12" md="6" class="mt-8">
-                            <EceTextField v-model="jobTitle" label="Job title"></EceTextField>
+                            <EceTextField v-model="jobTitle" label="Job title" :rules="[Rules.required()]">
+                            </EceTextField>
                         </v-col>
                     </v-row>
                     <!-- Phone Field -->
                     <v-row>
                         <v-col sm="12" md="6" class="mt-8">
-                            <EceTextField v-model="phone" label="Primary contact number"></EceTextField>
+                            <EceTextField v-model="phone" label="Primary contact number"
+                                :rules="[Rules.required(), Rules.phoneNumber()]">
+                            </EceTextField>
                         </v-col>
                     </v-row>
                     <!-- Phone extension Field -->
                     <v-row>
                         <v-col sm="12" md="6" class="mt-8">
-                            <EceTextField v-model="phoneExtension" label="Phone extension (optional)"></EceTextField>
+                            <EceTextField v-model="phoneExtension" label="Phone extension (optional)"
+                                @keypress="isNumber($event)"></EceTextField>
                         </v-col>
                     </v-row>
                     <!-- Email Field -->
@@ -60,8 +64,8 @@
                     <!-- Has accepted terms of use Field -->
                     <v-row>
                         <v-col sm="12" md="6" class="mt-8">
-                            <EceCheckbox v-model="hasAcceptedTermsOfUse"
-                                label="I have read and accept the Terms of Use">
+                            <EceCheckbox v-model="hasAcceptedTermsOfUse" label="I have read and accept the Terms of Use"
+                                :rules="[Rules.hasCheckbox('You must read and accept the Terms of Use')]">
                             </EceCheckbox>
                         </v-col>
                     </v-row>
@@ -97,6 +101,7 @@ import type { VForm } from "vuetify/components/VForm";
 import { getPspUserProfile, updatePspUserProfile } from "@/api/psp-rep";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
+import { isNumber } from "@/utils/formInput";
 
 
 export default defineComponent({
@@ -134,21 +139,24 @@ export default defineComponent({
             isRedirecting: false,
         };
     },
-    async onMounted() {
-        this.oidcStore.oidcUserInfo().then(async (userInfo) => {
-            this.firstName = userInfo.firstName ?? "";
-            this.lastName = userInfo.lastName ?? "";
-            this.phone = userInfo.phone ?? "";
-            this.email = userInfo.email ?? "";
-        });
+    async mounted() {
+        this.firstName = this.userStore.firstName ?? "";
+        this.lastName = this.userStore.lastName ?? "";
+        this.phone = this.userStore?.phone ?? "";
+        this.phoneExtension = this.userStore?.phoneExtension ?? "";
+        this.jobTitle = this.userStore?.jobTitle ?? "";
+        this.hasAcceptedTermsOfUse = this.userStore?.hasAcceptedTermsOfUse ?? false;
+        this.preferredName = this.userStore?.preferredName ?? "";
+        this.email = this.userStore?.email ?? "";
     },
     methods: {
+        isNumber,
         async submit() {
             let { valid } = await (this.$refs.form as VForm).validate();
 
             if (valid) {
                 this.isRedirecting = true;
-                const userCreated: boolean = await updatePspUserProfile({
+                const userUpdated: boolean = await updatePspUserProfile({
                     firstName: this.firstName,
                     lastName: this.lastName,
                     preferredName: this.preferredName,
@@ -157,8 +165,8 @@ export default defineComponent({
                     phoneExtension: this.phoneExtension,
                     jobTitle: this.jobTitle,
                     hasAcceptedTermsOfUse: this.hasAcceptedTermsOfUse,
-                });
-                if (userCreated) {
+                }, true);
+                if (userUpdated) {
                     const pspUserProfile = await getPspUserProfile();
                     if (pspUserProfile !== null) {
                         this.userStore.setPspUserProfile(pspUserProfile);

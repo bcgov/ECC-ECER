@@ -6,7 +6,7 @@
           <img src="../assets/bc-gov-logo.png" width="155" class="logo" alt="B.C. Government Logo" />
         </router-link>
         <v-toolbar-title>ECE Educational Institution Portal</v-toolbar-title>
-        <template v-if="userStore.hasUserProfile">
+        <template v-if="userStore.hasUserProfile && userStore.hasAcceptedTermsOfUse">
           <v-menu v-if="$vuetify.display.smAndDown" offset-y bottom transition="slide-y-transition">
             <template #activator="{ props }">
               <v-btn id="btnToggleMenu" icon v-bind="props">
@@ -28,7 +28,7 @@
               <v-list-subheader>{{ userStore.firstName }}</v-list-subheader>
               <v-list-item link>
                 <v-list-item-title>
-                  <router-link class="small" to="/profile">My profile</router-link>
+                  <router-link class="small" to="/profile/edit">My profile</router-link>
                 </v-list-item-title>
               </v-list-item>
               <v-list-item link>
@@ -48,14 +48,14 @@
               <template #activator="{ props }">
                 <v-btn id="btnUserName" class="font-weight-regular" color="primary" v-bind="props"
                   prepend-icon="mdi-account-circle" append-icon="mdi-chevron-down">
-                  {{ cleanPreferredName(userStore.firstName,
+                  {{ userStore.preferredName ? userStore.preferredName : cleanPreferredName(userStore.firstName,
                     userStore.lastName, "first") }}
                 </v-btn>
               </template>
               <v-list>
                 <v-list-item link>
                   <v-list-item-title>
-                    <router-link class="small" to="/profile">My profile</router-link>
+                    <router-link class="small" to="/profile/edit">My profile</router-link>
                   </v-list-item-title>
                 </v-list-item>
                 <v-list-item link>

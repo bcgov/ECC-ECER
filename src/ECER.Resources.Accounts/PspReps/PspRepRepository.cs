@@ -66,7 +66,8 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
 
     var firstName = pspUser.ecer_FirstName;
     var lastName = pspUser.ecer_LastName;
-    var email = pspUser.ecer_EmailAddress;
+    var representativeRole = pspUser.ecer_RepresentativeRole;
+    var hasAcceptedTermsOfUse = pspUser.ecer_HasAcceptedTermsofUse;
 
     context.Detach(pspUser);
 
@@ -74,7 +75,13 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
     pspUser.Id = userId;
     pspUser.ecer_FirstName = firstName;
     pspUser.ecer_LastName = lastName;
-    pspUser.ecer_EmailAddress = email;
+    pspUser.ecer_RepresentativeRole = representativeRole;
+    
+    // Only accept terms of use once
+    if (hasAcceptedTermsOfUse == true)
+    {
+      pspUser.ecer_HasAcceptedTermsofUse = hasAcceptedTermsOfUse;
+    }
     
     context.Attach(pspUser);
     context.UpdateObject(pspUser);

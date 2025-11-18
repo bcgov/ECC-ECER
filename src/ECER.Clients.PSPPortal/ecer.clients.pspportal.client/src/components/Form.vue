@@ -1,14 +1,13 @@
 <template>
-  <v-form :id="form.id" :ref="form.id" validate-on="input" @update:model-value="onFormValidationChanged" @submit.prevent>
-    <template v-for="input in form.inputs" :key="input.id">
+  <v-form :id="form.id" :ref="form.id" validate-on="input" @update:model-value="onFormValidationChanged"
+    @submit.prevent>
+    <template v-for="component in form.components" :key="component.id">
       <v-row>
-        <v-col cols="12" :md="input.cols.md" :lg="input.cols.lg" :xl="input.cols.xl">
-          <Component
-            :is="input.component"
-            v-bind="input.props"
-            :model-value="formData[input.id as keyof {}]"
-            @update:model-value="(value: any) => onInputChanged(input.id, value)"
-          />
+        <v-col cols="12" :md="component.cols.md" :lg="component.cols.lg" :xl="component.cols.xl">
+          <Component v-if="component.isInput !== false" :is="component.component" v-bind="component.props"
+            :model-value="formData[component.id as keyof {}]"
+            @update:model-value="(value: any) => onInputChanged(component.id, value)" />
+          <Component v-else :is="component.component" v-bind="component.props" />
         </v-col>
       </v-row>
     </template>
@@ -19,7 +18,7 @@
 import { defineComponent, type PropType } from "vue";
 
 import PageContainer from "@/components/PageContainer.vue";
-import profileInformationForm from "@/config/profile-information-form";
+import profileInformationForm from "@/config/profile-form";
 import type { Form } from "@/types/form";
 
 export default defineComponent({

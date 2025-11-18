@@ -20,10 +20,18 @@ export const useUserStore = defineStore("user", {
     firstName: (state): string => state.pspUserProfile?.firstName ?? "",
     lastName: (state): string => state.pspUserProfile?.lastName ?? "",
     email: (state): string => state.pspUserProfile?.email ?? "",
+    phone: (state): string => state.pspUserProfile?.phone ?? "",
+    phoneExtension: (state): string => state.pspUserProfile?.phoneExtension ?? "",
+    jobTitle: (state): string => state.pspUserProfile?.jobTitle ?? "",
+    role: (state): Components.Schemas.PspUserRole => state.pspUserProfile?.role ?? "Primary",
+    preferredName: (state): string => state.pspUserProfile?.preferredName ?? "",
   },
   actions: {
     setPspUserProfile(pspUserProfile: Components.Schemas.PspUserProfile | null): void {
       this.$patch({ pspUserProfile: pspUserProfile });
+    },
+    updatePspUserProfile(pspUserProfile: Components.Schemas.PspUserProfile | null): void {
+      this.$patch({ pspUserProfile: { ...this.pspUserProfile, ...pspUserProfile } });
     },
     setInvitedProgramRepresentativeId(invitedProgramRepresentativeId: string | null): void {
       this.$patch({ invitedProgramRepresentativeId: invitedProgramRepresentativeId });
