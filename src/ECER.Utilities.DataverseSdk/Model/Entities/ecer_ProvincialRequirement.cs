@@ -60,11 +60,15 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_CertificateLevels = "ecer_certificatelevels";
+			public const string ecer_certificatelevelsName = "ecer_certificatelevelsname";
 			public const string ecer_CertificateTypeId = "ecer_certificatetypeid";
 			public const string ecer_CertificateTypeIdName = "ecer_certificatetypeidname";
 			public const string ecer_course_ProvincialRequirement_ecer_provinc = "ecer_course_ProvincialRequirement_ecer_provinc";
 			public const string ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement = "ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement";
 			public const string ecer_educationassessment_RequirementAreaId = "ecer_educationassessment_RequirementAreaId";
+			public const string ecer_IsForECEAssistant = "ecer_isforeceassistant";
+			public const string ecer_isforeceassistantName = "ecer_isforeceassistantname";
 			public const string ecer_LegacyRequiredAreaID = "ecer_legacyrequiredareaid";
 			public const string ecer_MinimumHours = "ecer_minimumhours";
 			public const string ecer_Name = "ecer_name";
@@ -251,6 +255,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatelevels")]
+		public virtual System.Collections.Generic.IEnumerable<ecer_CertificateLevel> ecer_CertificateLevels
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return EntityOptionSetEnum.GetMultiEnum<ecer_CertificateLevel>(this, "ecer_certificatelevels");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_certificatelevels", EntityOptionSetEnum.GetMultiEnum(this, "ecer_certificatelevels", value));
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatelevelsname")]
+		public string ecer_certificatelevelsName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_certificatelevels"))
+				{
+					return this.FormattedValues["ecer_certificatelevels"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_certificatetypeid")]
 		public Microsoft.Xrm.Sdk.EntityReference ecer_CertificateTypeId
 		{
@@ -275,6 +311,41 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_certificatetypeid"))
 				{
 					return this.FormattedValues["ecer_certificatetypeid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// 3 of the Basic areas of instruction are optional for ECE Assistant.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isforeceassistant")]
+		public System.Nullable<bool> ecer_IsForECEAssistant
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_isforeceassistant");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_isforeceassistant", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isforeceassistantname")]
+		public string ecer_isforeceassistantName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isforeceassistant"))
+				{
+					return this.FormattedValues["ecer_isforeceassistant"];
 				}
 				else
 				{

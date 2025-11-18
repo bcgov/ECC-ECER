@@ -83,6 +83,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_Description = "ecer_description";
 			public const string ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution = "ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution";
 			public const string ecer_Name = "ecer_name";
+			public const string ecer_NewCode = "ecer_newcode";
+			public const string ecer_NewCourseHourDecimal = "ecer_newcoursehourdecimal";
+			public const string ecer_NewCourseName = "ecer_newcoursename";
 			public const string ecer_postsecondaryinstitutionid = "ecer_postsecondaryinstitutionid";
 			public const string ecer_postsecondaryinstitutionidName = "ecer_postsecondaryinstitutionidname";
 			public const string ecer_ProgramApplication = "ecer_programapplication";
@@ -468,6 +471,51 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_name", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newcode")]
+		public string ecer_NewCode
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_newcode");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_newcode", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newcoursehourdecimal")]
+		public System.Nullable<decimal> ecer_NewCourseHourDecimal
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<decimal>>("ecer_newcoursehourdecimal");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_newcoursehourdecimal", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_newcoursename")]
+		public string ecer_NewCourseName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_newcoursename");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_newcoursename", value);
 			}
 		}
 		

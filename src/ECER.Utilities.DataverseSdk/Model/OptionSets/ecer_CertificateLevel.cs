@@ -14,29 +14,20 @@ namespace ECER.Utilities.DataverseSdk.Model
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
 	[System.CodeDom.Compiler.GeneratedCodeAttribute("Dataverse Model Builder", "2.0.0.11")]
-	public enum ecer_VerifiedDecisions
+	public enum ecer_CertificateLevel
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Denial = 621870006,
+		Basic = 621870002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Escalated = 621870004,
+		ECEAssistant = 621870000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PendingforInformation = 621870001,
+		ITE = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		PreviousOutcome = 621870005,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		UnderReview = 621870002,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Unverified = 621870000,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Verified = 621870003,
+		SNE = 621870003,
 	}
 }
 #pragma warning restore CS1591
