@@ -53,8 +53,8 @@ export const useIcraStore = defineStore("icra", {
         state.icraEligibility?.status === "Draft"
       );
     },
-    hasApprovedOrRejectedIcraEligibility(state): boolean {
-      return state.icraEligibilities?.some((eligibility) => eligibility.status === "Eligible" || eligibility.status === "Ineligible") ?? false;
+    hasApprovedIcraEligibility(state): boolean {
+      return state.icraEligibilities?.some((eligibility) => eligibility.status === "Eligible") ?? false;
     },
   },
   actions: {

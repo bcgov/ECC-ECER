@@ -2,8 +2,13 @@
   <v-container>
     <Breadcrumb />
 
+    <!-- ICRA -->
+    <template v-if="applicationStore.isDraftApplicationIcra">
+      <ECEIcraFiveYearRequirements v-if="applicationStore.isDraftCertificateTypeFiveYears" />
+    </template>
+
     <!-- Renewal -->
-    <template v-if="applicationStore.isDraftApplicationRenewal">
+    <template v-else-if="applicationStore.isDraftApplicationRenewal">
       <ECEAssistantRenewalRequirements v-if="applicationStore.isDraftCertificateTypeEceAssistant" />
       <ECEOneYearRenewalRequirements v-if="applicationStore.isDraftCertificateTypeOneYear" :expired="fromCertificate?.statusCode === 'Expired'" />
       <ECEFiveYearRenewalRequirements
@@ -56,6 +61,7 @@ import ECEAssistantRenewalRequirements from "@/components/ECEAssistantRenewalReq
 import ECEAssistantRequirements from "@/components/ECEAssistantRequirements.vue";
 import ECEFiveYearRenewalRequirements from "@/components/ECEFiveYearRenewalRequirements.vue";
 import ECEFiveYearRequirements from "@/components/ECEFiveYearRequirements.vue";
+import ECEIcraFiveYearRequirements from "@/components/ECEIcraFiveYearRequirements.vue";
 import ECEOneYearRenewalRequirements from "@/components/ECEOneYearRenewalRequirements.vue";
 import ECEAssistantLaborMobilityRequirements from "./ECEAssistantLaborMobilityRequirements.vue";
 import ECEOneYearLaborMobilityRequirements from "./ECEOneYearLaborMobilityRequirements.vue";
@@ -87,6 +93,7 @@ export default defineComponent({
     ECEFiveYearRegistrantRequirements,
     ECEIteRegistrantRequirements,
     ECESneRegistrantRequirements,
+    ECEIcraFiveYearRequirements,
     Breadcrumb,
   },
 
