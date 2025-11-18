@@ -1,6 +1,6 @@
 <template>
   <PageContainer :margin-top="false">
-    <Loading v-if="loadingStore.isLoading('psp_user_profile_get') || loadingStore.isLoading('psp_user_register_post')">
+    <Loading v-if="isLoading">
     </Loading>
     <div v-else>
       <h1>Dashboard is under development</h1>
@@ -29,6 +29,7 @@ export default defineComponent({
   data() {
     return {
       pspUserProfile: null as PspUserProfile | null,
+      loading: true,
     };
   },
   async setup() {
@@ -107,6 +108,13 @@ export default defineComponent({
     if (this.pspUserProfile) {
       this.userStore.setPspUserProfile(this.pspUserProfile);
     }
+
+    this.loading = false;
   },
+  computed: {
+    isLoading(): boolean {
+      return this.loadingStore.isLoading('psp_user_profile_get') || this.loadingStore.isLoading('psp_user_register_post') || this.loading;
+    }
+  }
 });
 </script>

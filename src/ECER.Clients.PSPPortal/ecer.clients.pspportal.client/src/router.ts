@@ -21,6 +21,12 @@ const router = createRouter({
       name: "login",
     },
     {
+      path: "/new-user",
+      component: () => import("./components/pages/NewUser.vue"),
+      meta: { requiresAuth: true },
+      name: "new-user",
+    },
+    {
       path: "/silent-callback",
       component: () => import("./components/pages/SilentCallback.vue"),
       meta: { requiresAuth: false },
@@ -85,6 +91,20 @@ router.beforeEach(async (to, _) => {
       query: { redirect_to: to.fullPath },
     };
   }
+});
+
+// Gaurd for new user page (redirect to dashboard if they have accepted Terms of Use)
+router.beforeEach(async (to, _, next) => {
+  const userStore = useUserStore();
+  if (to.path === "/new-user" && userStore.hasAcceptedTermsOfUse) next({ path: "/" });
+  else next();
+});
+
+// Gaurd for rest of the routes (redirect to new user page if they have not accepted Terms of Use)
+router.beforeEach(async (to, _, next) => {
+  const userStore = useUserStore();
+  if (to.path !== "/new-user" && !userStore.hasAcceptedTermsOfUse) next({ path: "/new-user" });
+  else next();
 });
 
 // Guard for login page (redirect to dashboard if already authenticated)
