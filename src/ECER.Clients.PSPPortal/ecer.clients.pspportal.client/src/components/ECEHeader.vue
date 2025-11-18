@@ -1,8 +1,10 @@
 <template>
-  <svg width="36" height="4">
-    <rect width="36" height="4" fill="#FFC72C" />
-  </svg>
-  <h2>{{ title }}</h2>
+  <div>
+    <svg width="36" height="4">
+      <rect width="36" height="4" fill="#FFC72C" />
+    </svg>
+    <h2>{{ title }}</h2>
+  </div>
 </template>
 
 <script lang="ts">

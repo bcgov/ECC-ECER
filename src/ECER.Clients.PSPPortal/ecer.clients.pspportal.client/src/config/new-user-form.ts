@@ -19,6 +19,7 @@ const newUserForm: Form = {
         lg: 12,
         xl: 12,
       },
+      isInput: false,
     },
     lastName: {
       id: "lastName",
@@ -75,6 +76,7 @@ const newUserForm: Form = {
         lg: 12,
         xl: 12,
       },
+      isInput: false,
     },
     jobTitle: {
       id: "jobTitle",

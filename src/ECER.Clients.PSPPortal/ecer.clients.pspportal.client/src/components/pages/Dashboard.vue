@@ -82,7 +82,7 @@ export default defineComponent({
       };
 
       const registrationResult = await registerPspUser(request);
-      if ('errorCode' in registrationResult) {
+      if (registrationResult && 'errorCode' in registrationResult) {
         // Handle registration errors based on error code from PspRegistrationErrorResponse
         const errorCode: PspRegistrationError | undefined = registrationResult.errorCode;
 

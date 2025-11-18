@@ -1,88 +1,26 @@
 <template>
     <PageContainer>
-        <v-row class="ga-8">
-            <!-- Header Section -->
-            <v-col cols="12">
+        <v-row>
+            <v-col class="ml-1" cols="12">
                 <h1>My contact details</h1>
             </v-col>
-            <v-form ref="form" validate-on="input" class="w-100">
-                <!-- Information needed from BCeID Basic -->
-                <v-col cols="12">
-                    <ECEHeader title="Name" />
-                    <v-row>
-                        <!-- Last name Field -->
-                        <v-col sm="12" md="6" class="mt-8">
-                            <EceTextField v-model="lastName" label="Last name" :readonly="true"></EceTextField>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <!-- First name Field -->
-                        <v-col sm="12" md="6" class="mt-8">
-                            <EceTextField v-model="firstName" label="First name" :readonly="true"></EceTextField>
-                        </v-col>
-                    </v-row>
-                    <!-- Preferred first name Field -->
-                    <v-row>
-                        <v-col sm="12" md="6" class="mt-8">
-                            <EceTextField v-model="preferredName" label="Preferred first name (optional)">
-                            </EceTextField>
-                        </v-col>
-                    </v-row>
-                </v-col>
-                <v-col cols="12">
-                    <ECEHeader title="Contact information" />
-                    <v-row>
-                        <!-- Job title Field -->
-                        <v-col sm="12" md="6" class="mt-8">
-                            <EceTextField v-model="jobTitle" label="Job title" :rules="[Rules.required()]">
-                            </EceTextField>
-                        </v-col>
-                    </v-row>
-                    <!-- Phone Field -->
-                    <v-row>
-                        <v-col sm="12" md="6" class="mt-8">
-                            <EceTextField v-model="phone" label="Primary contact number"
-                                :rules="[Rules.required(), Rules.phoneNumber()]">
-                            </EceTextField>
-                        </v-col>
-                    </v-row>
-                    <!-- Phone extension Field -->
-                    <v-row>
-                        <v-col sm="12" md="6" class="mt-8">
-                            <EceTextField v-model="phoneExtension" label="Phone extension (optional)"
-                                @keypress="isNumber($event)"></EceTextField>
-                        </v-col>
-                    </v-row>
-                    <!-- Email Field -->
-                    <v-row>
-                        <v-col sm="12" md="6" class="mt-8">
-                            <EceTextField v-model="email" label="Email"
-                                :rules="[Rules.required(), Rules.email('Enter your email in the format \'name@email.com\'')]">
-                            </EceTextField>
-                        </v-col>
-                    </v-row>
-                    <!-- Has accepted terms of use Field -->
-                    <v-row>
-                        <v-col sm="12" md="6" class="mt-8">
-                            <EceCheckbox v-model="hasAcceptedTermsOfUse" label="I have read and accept the Terms of Use"
-                                :rules="[Rules.hasCheckbox('You must read and accept the Terms of Use')]">
-                            </EceCheckbox>
-                        </v-col>
-                    </v-row>
-                </v-col>
-            </v-form>
-
-            <v-col cols="12">
-                <div>
-                    <v-btn rounded="lg" :loading="loadingStore.isLoading('psp_user_profile_put') || isRedirecting"
-                        color="primary" class="mr-2" @click="submit">
-                        Save
-                    </v-btn>
-                    <v-btn rounded="lg" :loading="loadingStore.isLoading('psp_user_profile_put') || isRedirecting"
-                        variant="outlined" @click="oidcStore.logout()">
-                        Cancel
-                    </v-btn>
-                </div>
+        </v-row>
+        <v-row>
+            <v-col class="mt-4" cols="12">
+                <EceForm ref="newUserFormRef" :form="newUserForm" :form-data="formStore.formData"
+                    @updated-form-data="formStore.setFormData" />
+                <v-row class="mt-10">
+                    <v-col>
+                        <div class="d-flex flex-row justify-start ga-2">
+                            <v-btn rounded="lg" color="primary"
+                                :loading="loadingStore.isLoading('psp_user_profile_put') || isRedirecting"
+                                @click="submit">Save</v-btn>
+                            <v-btn rounded="lg" color="primary" variant="outlined"
+                                :loading="loadingStore.isLoading('psp_user_profile_put') || isRedirecting"
+                                @click="oidcStore.logout()">Cancel</v-btn>
+                        </div>
+                    </v-col>
+                </v-row>
             </v-col>
         </v-row>
     </PageContainer>
@@ -90,82 +28,67 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+
+import { getPspUserProfile, updatePspUserProfile } from "@/api/psp-rep";
+import EceForm from "@/components/Form.vue";
 import PageContainer from "@/components/PageContainer.vue";
-import ECEHeader from "@/components/ECEHeader.vue";
-import EceTextField from "@/components/inputs/EceTextField.vue";
-import EceCheckbox from "@/components/inputs/EceCheckbox.vue";
-import * as Rules from "@/utils/formRules";
+import newUserForm from "@/config/new-user-form";
+import { useAlertStore } from "@/store/alert";
+import { useFormStore } from "@/store/form";
 import { useLoadingStore } from "@/store/loading";
 import { useOidcStore } from "@/store/oidc";
-import type { VForm } from "vuetify/components/VForm";
-import { getPspUserProfile, updatePspUserProfile } from "@/api/psp-rep";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
-import { isNumber } from "@/utils/formInput";
-
 
 export default defineComponent({
     name: "NewUser",
-    components: {
-        PageContainer,
-        ECEHeader,
-        EceTextField,
-        EceCheckbox,
-    },
+    components: { EceForm, PageContainer },
     setup() {
+        const formStore = useFormStore();
+        const userStore = useUserStore();
+        const alertStore = useAlertStore();
         const loadingStore = useLoadingStore();
         const oidcStore = useOidcStore();
-        const userStore = useUserStore();
         const router = useRouter();
 
-        return {
-            loadingStore,
-            oidcStore,
-            userStore,
-            router,
-            Rules,
-        };
+        // Initialize form data from userStore
+        formStore.initializeForm({
+            [newUserForm?.components?.firstName?.id || ""]: userStore.firstName ?? "",
+            [newUserForm?.components?.lastName?.id || ""]: userStore.lastName ?? "",
+            [newUserForm?.components?.preferredFirstName?.id || ""]: userStore.preferredName ?? "",
+            [newUserForm?.components?.jobTitle?.id || ""]: userStore.jobTitle ?? "",
+            [newUserForm?.components?.phoneNumber?.id || ""]: userStore.phone ?? "",
+            [newUserForm?.components?.phoneNumberExtension?.id || ""]: userStore.phoneExtension ?? "",
+            [newUserForm?.components?.email?.id || ""]: userStore.email ?? "",
+            [newUserForm?.components?.hasAcceptedTermsOfUse?.id || ""]: userStore.hasAcceptedTermsOfUse ?? false,
+        });
+
+        return { newUserForm, formStore, alertStore, userStore, loadingStore, oidcStore, router };
     },
     data() {
         return {
-            firstName: "",
-            lastName: "",
-            preferredName: "",
-            jobTitle: "",
-            phone: "",
-            phoneExtension: "",
-            email: "",
-            hasAcceptedTermsOfUse: false,
             isRedirecting: false,
         };
     },
-    async mounted() {
-        this.firstName = this.userStore.firstName ?? "";
-        this.lastName = this.userStore.lastName ?? "";
-        this.phone = this.userStore?.phone ?? "";
-        this.phoneExtension = this.userStore?.phoneExtension ?? "";
-        this.jobTitle = this.userStore?.jobTitle ?? "";
-        this.hasAcceptedTermsOfUse = this.userStore?.hasAcceptedTermsOfUse ?? false;
-        this.preferredName = this.userStore?.preferredName ?? "";
-        this.email = this.userStore?.email ?? "";
-    },
     methods: {
-        isNumber,
         async submit() {
-            let { valid } = await (this.$refs.form as VForm).validate();
+            const { valid } = await (this.$refs.newUserFormRef as typeof EceForm).$refs[newUserForm.id].validate();
 
-            if (valid) {
+            if (!valid) {
+                this.alertStore.setFailureAlert("You must enter all required fields in the valid format.");
+            } else {
                 this.isRedirecting = true;
-                const userUpdated: boolean = await updatePspUserProfile({
-                    firstName: this.firstName,
-                    lastName: this.lastName,
-                    preferredName: this.preferredName,
-                    email: this.email,
-                    phone: this.phone,
-                    phoneExtension: this.phoneExtension,
-                    jobTitle: this.jobTitle,
-                    hasAcceptedTermsOfUse: this.hasAcceptedTermsOfUse,
+                const userUpdated = await updatePspUserProfile({
+                    firstName: this.formStore.formData[newUserForm?.components?.firstName?.id || ""],
+                    lastName: this.formStore.formData[newUserForm?.components?.lastName?.id || ""],
+                    preferredName: this.formStore.formData[newUserForm?.components?.preferredFirstName?.id || ""],
+                    email: this.formStore.formData[newUserForm?.components?.email?.id || ""],
+                    phone: this.formStore.formData[newUserForm?.components?.phoneNumber?.id || ""],
+                    phoneExtension: this.formStore.formData[newUserForm?.components?.phoneNumberExtension?.id || ""],
+                    jobTitle: this.formStore.formData[newUserForm?.components?.jobTitle?.id || ""],
+                    hasAcceptedTermsOfUse: this.formStore.formData[newUserForm?.components?.hasAcceptedTermsOfUse?.id || ""],
                 }, true);
+
                 if (userUpdated) {
                     const pspUserProfile = await getPspUserProfile();
                     if (pspUserProfile !== null) {
@@ -173,10 +96,11 @@ export default defineComponent({
                     }
                     this.router.push("/");
                 } else {
+                    this.alertStore.setFailureAlert("Profile save failed");
                     this.isRedirecting = false;
                 }
             }
-        }
-    }
+        },
+    },
 });
 </script>
