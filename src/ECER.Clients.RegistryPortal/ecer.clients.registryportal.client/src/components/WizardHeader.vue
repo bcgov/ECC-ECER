@@ -12,7 +12,7 @@
               :certification-types="applicationStore.draftApplication.certificationTypes ?? []"
             />
             <a
-              v-if="!isRenewal && !isRegistrant && !isLaborMobility && !isIcraEligibility"
+              v-if="!isRenewal && !isRegistrant && !isLaborMobility && !isIcraEligibility && !applicationStore.isDraftApplicationIcra"
               href="#"
               class="text-white"
               @click.prevent="toggleChangeCertificationConfirmation"

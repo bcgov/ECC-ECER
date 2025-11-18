@@ -365,6 +365,26 @@
       </v-form>
     </v-col>
     <div v-else-if="mode === 'list'" class="w-100">
+      <!-- Section specific to ICRA applications -->
+      <v-col v-if="applicationStore.isDraftApplicationIcra">
+        <p>
+          You must have completed
+          <a
+            href="https://www2.gov.bc.ca/gov/content/education-training/early-learning/teach/training-and-professional-development/become-an-early-childhood-educator/recognized-ece-institutions"
+            target="_blank"
+          >
+            program recognized by the ECE Registry
+          </a>
+          in:
+        </p>
+        <br />
+        <ul class="ml-10">
+          <li>Basic early childhood education</li>
+          <li>Infant and toddler educator training</li>
+          <li>Special needs early childhood educator training</li>
+        </ul>
+      </v-col>
+      <!-- End section specific to ICRA applications -->
       <v-col>
         <EducationList :educations="modelValue" @edit="handleEdit" @delete="handleDelete" />
       </v-col>
