@@ -62,9 +62,18 @@ declare namespace Components {
     export interface PspUserProfile {
       firstName?: string | null;
       lastName?: string | null;
+      preferredName?: string | null;
+      phone?: string | null;
+      phoneExtension?: string | null;
+      jobTitle?: string | null;
+      role?: /* Role of the PSP user */ PspUserRole;
       email?: string | null;
       hasAcceptedTermsOfUse?: boolean | null;
     }
+    /**
+     * Role of the PSP user
+     */
+    export type PspUserRole = "Primary" | "Secondary";
     /**
      * Request to register a new psp user
      */
@@ -106,6 +115,7 @@ declare namespace Paths {
     }
   }
   namespace PspUserProfilePut {
+    export type RequestBody = /* User profile information */ Components.Schemas.PspUserProfile;
     namespace Responses {
       export interface $200 {}
     }
@@ -151,11 +161,11 @@ export interface OperationMethods {
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>;
   /**
-   * psp_user_profile_put - Update a psp user profile
+   * psp_user_profile_put - Updates the currently logged in users profile
    */
   "psp_user_profile_put"(
     parameters?: Parameters<UnknownParamsObject> | null,
-    data?: any,
+    data?: Paths.PspUserProfilePut.RequestBody,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserProfilePut.Responses.$200>;
   /**
@@ -203,11 +213,11 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserProfileGet.Responses.$200>;
     /**
-     * psp_user_profile_put - Update a psp user profile
+     * psp_user_profile_put - Updates the currently logged in users profile
      */
     "put"(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: any,
+      data?: Paths.PspUserProfilePut.RequestBody,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserProfilePut.Responses.$200>;
   };
@@ -245,5 +255,6 @@ export type ProblemDetails = Components.Schemas.ProblemDetails;
 export type PspRegistrationError = Components.Schemas.PspRegistrationError;
 export type PspRegistrationErrorResponse = Components.Schemas.PspRegistrationErrorResponse;
 export type PspUserProfile = Components.Schemas.PspUserProfile;
+export type PspUserRole = Components.Schemas.PspUserRole;
 export type RegisterPspUserRequest = Components.Schemas.RegisterPspUserRequest;
 export type VersionMetadata = Components.Schemas.VersionMetadata;

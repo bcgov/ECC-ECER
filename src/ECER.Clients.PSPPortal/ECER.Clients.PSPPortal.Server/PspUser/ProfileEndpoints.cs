@@ -5,7 +5,6 @@ using ECER.Utilities.Hosting;
 using ECER.Utilities.Security;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ECER.Clients.PSPPortal.Server.Users;
 
@@ -28,9 +27,13 @@ public class ProfileEndpoints : IRegisterEndpoints
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
 
-    endpointRouteBuilder.MapPut("/api/users/profile",
-        () => TypedResults.StatusCode(StatusCodes.Status501NotImplemented))
-      .WithOpenApi("Update a psp user profile", string.Empty, "psp_user_profile_put")
+    endpointRouteBuilder.MapPut("/api/users/profile", async Task<Ok> (PspUserProfile profile, HttpContext ctx, CancellationToken ct, IMediator bus, IMapper mapper) =>
+      {
+        var pspUser = new PspUser(ctx.User.GetUserContext()!.UserId, mapper.Map<Managers.Registry.Contract.PspUsers.PspUserProfile>(profile)!);
+        await bus.Send(new UpdatePspRepProfileCommand(pspUser), ctx.RequestAborted);
+        return TypedResults.Ok();
+      })
+      .WithOpenApi("Updates the currently logged in users profile", string.Empty, "psp_user_profile_put")
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
 
@@ -104,9 +107,26 @@ public record PspUserProfile
 {
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
+  public string? PreferredName { get; set; }
+  public string? Phone { get; set; }
+  public string? PhoneExtension { get; set; }
+  public string? JobTitle { get; set; }
+  public PspUserRole? Role { get; set; }
   public string? Email { get; set; } = null!;
   public bool? HasAcceptedTermsOfUse { get; set; }
 };
+
+/// <summary>
+/// Role of the PSP user
+/// </summary>
+/// 
+public enum PspUserRole
+{
+  /// <summary>Primary (for email/communications</summary>
+  Primary,
+  /// <summary>Secondary</summary>
+  Secondary
+}
 
 /// <summary>
 /// Error codes for PSP user registration failures

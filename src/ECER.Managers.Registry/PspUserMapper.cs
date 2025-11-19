@@ -22,10 +22,6 @@ internal sealed class PspUserMapper : AutoMapper.Profile
       .ForCtorParam(nameof(Contract.PspUsers.PspUser.Profile), opts => opts.MapFrom(s => s.Profile));
 
     CreateMap<Contract.PspUsers.PspUserProfile, PspUserProfile>()
-      .ForMember(d => d.FirstName, opts => opts.MapFrom(s => s.FirstName))
-      .ForMember(d => d.LastName, opts => opts.MapFrom(s => s.LastName))
-      .ForMember(d => d.Email, opts => opts.MapFrom(s => s.Email))
-      .ForMember(d => d.HasAcceptedTermsOfUse, opts => opts.MapFrom(s => s.HasAcceptedTermsOfUse))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination);
   }

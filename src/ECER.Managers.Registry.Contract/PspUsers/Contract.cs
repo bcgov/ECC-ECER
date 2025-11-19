@@ -28,9 +28,22 @@ public record PspUserProfile
 {
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
+  public string? PreferredName { get; set; }
+  public string? Phone { get; set; }
+  public string? PhoneExtension { get; set; }
+  public string? JobTitle { get; set; }
+  public PspUserRole? Role { get; set; }
   public string? Email { get; set; } = null!;
   public bool? HasAcceptedTermsOfUse { get; set; }
 };
+
+public enum PspUserRole
+{
+  /// <summary>Primary (for email/communications</summary>
+  Primary,
+  /// <summary>Secondary</summary>
+  Secondary
+}
 
 /// <summary>
 /// Request to register a new psp user

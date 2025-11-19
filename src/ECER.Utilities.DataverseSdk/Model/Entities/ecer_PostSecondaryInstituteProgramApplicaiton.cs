@@ -161,6 +161,11 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_interimdecisionlettersentName = "ecer_interimdecisionlettersentname";
 			public const string ecer_InterimRecognitionDate = "ecer_interimrecognitiondate";
 			public const string ecer_InterimRecognitionExpiryDate = "ecer_interimrecognitionexpirydate";
+			public const string ecer_interimrecognitionextendeduntil = "ecer_interimrecognitionextendeduntil";
+			public const string ecer_interimrecognitionextensionlettersent = "ecer_interimrecognitionextensionlettersent";
+			public const string ecer_interimrecognitionextensionlettersentName = "ecer_interimrecognitionextensionlettersentname";
+			public const string ecer_interimrecognitionextensionreadyforreview = "ecer_interimrecognitionextensionreadyforreview";
+			public const string ecer_interimrecognitionextensionreadyforreviewName = "ecer_interimrecognitionextensionreadyforreviewname";
 			public const string ecer_InterimRecognized = "ecer_interimrecognized";
 			public const string ecer_interimrecognizedName = "ecer_interimrecognizedname";
 			public const string ecer_jobdescriptions = "ecer_jobdescriptions";
@@ -1577,6 +1582,85 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetAttributeValue("ecer_interimrecognitionexpirydate", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_interimrecognitionextendeduntil")]
+		public System.Nullable<System.DateTime> ecer_interimrecognitionextendeduntil
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<System.DateTime>>("ecer_interimrecognitionextendeduntil");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_interimrecognitionextendeduntil", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_interimrecognitionextensionlettersent")]
+		public System.Nullable<bool> ecer_interimrecognitionextensionlettersent
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_interimrecognitionextensionlettersent");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_interimrecognitionextensionlettersent", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_interimrecognitionextensionlettersentname")]
+		public string ecer_interimrecognitionextensionlettersentName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_interimrecognitionextensionlettersent"))
+				{
+					return this.FormattedValues["ecer_interimrecognitionextensionlettersent"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_interimrecognitionextensionreadyforreview")]
+		public System.Nullable<bool> ecer_interimrecognitionextensionreadyforreview
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_interimrecognitionextensionreadyforreview");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_interimrecognitionextensionreadyforreview", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_interimrecognitionextensionreadyforreviewname")]
+		public string ecer_interimrecognitionextensionreadyforreviewName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_interimrecognitionextensionreadyforreview"))
+				{
+					return this.FormattedValues["ecer_interimrecognitionextensionreadyforreview"];
+				}
+				else
+				{
+					return default(string);
+				}
 			}
 		}
 		
