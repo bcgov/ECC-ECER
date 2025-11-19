@@ -48,6 +48,9 @@ public class ICRAEligibilityHandlers(
       }
     }
 
+    //set origin to portal
+    request.eligibility.Origin = Contract.ICRA.IcraEligibilityOrigin.Portal;
+
     foreach(var reference in request.eligibility.EmploymentReferences)
     {
       reference.Type = Contract.ICRA.WorkExperienceTypesIcra.ICRA;

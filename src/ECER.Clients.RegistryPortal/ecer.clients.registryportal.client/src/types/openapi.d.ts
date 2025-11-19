@@ -334,6 +334,9 @@ declare namespace Components {
             signedDate?: string | null; // date-time
             createdOn?: string | null; // date-time
             status?: ICRAStatus;
+            origin?: IcraEligibilityOrigin;
+            fullLegalName?: string | null;
+            understandAgreesApplication?: boolean;
             internationalCertifications?: InternationalCertification[] | null;
             employmentReferences?: EmploymentReference[] | null;
         }
@@ -367,6 +370,7 @@ declare namespace Components {
             willProvideReference?: boolean;
             dateSigned?: string | null; // date-time
         }
+        export type IcraEligibilityOrigin = "Manual" | "Oracle" | "Portal";
         export interface IdentificationType {
             id?: string | null;
             name?: string | null;
@@ -380,7 +384,7 @@ declare namespace Components {
             name?: string | null;
             size?: string | null;
         }
-        export type InitiatedFrom = "Investigation" | "PortalUser" | "Registry";
+        export type InitiatedFrom = "Investigation" | "PortalUser" | "Registry" | "ProgramRepresentative";
         export interface InternationalCertification {
             id?: string | null;
             otherFirstName?: string | null;
@@ -403,7 +407,7 @@ declare namespace Components {
             status?: InternationalCertificationStatus;
         }
         export type InternationalCertificationStatus = "ApplicationSubmitted" | "Approved" | "Draft" | "ICRAEligibilitySubmitted" | "Inactive" | "InProgress" | "Rejected" | "UnderReview" | "WaitingforResponse";
-        export type InviteType = "CharacterReference" | "PSIProgramRepresentative" | "WorkExperienceReferenceforApplication" | "WorkExperienceReferenceforICRA";
+        export type InviteType = "CharacterReference" | "WorkExperienceReferenceforApplication" | "WorkExperienceReferenceforICRA";
         export type LikertScale = "Yes" | "No";
         export interface OidcAuthenticationSettings {
             authority?: string | null;
@@ -2146,6 +2150,7 @@ export type ICRAEligibilityStatus = Components.Schemas.ICRAEligibilityStatus;
 export type ICRAEligibilitySubmissionRequest = Components.Schemas.ICRAEligibilitySubmissionRequest;
 export type ICRAStatus = Components.Schemas.ICRAStatus;
 export type ICRAWorkExperienceReferenceSubmissionRequest = Components.Schemas.ICRAWorkExperienceReferenceSubmissionRequest;
+export type IcraEligibilityOrigin = Components.Schemas.IcraEligibilityOrigin;
 export type IdentificationType = Components.Schemas.IdentificationType;
 export type IdentityDocument = Components.Schemas.IdentityDocument;
 export type InitiatedFrom = Components.Schemas.InitiatedFrom;
