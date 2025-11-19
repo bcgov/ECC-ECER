@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="bg-primary">
-    <v-container><h1>Validate an ECE certificate</h1></v-container>
+    <v-container><h1 class="text-white">Validate an ECE certificate</h1></v-container>
   </v-sheet>
   <v-container>
     <v-row v-for="systemMessage in configStore.systemMessages" class="mt-10 mb-10">
@@ -108,22 +108,22 @@
 </template>
 
 <script lang="ts">
+import { postLookupCertificate } from "@/api/certification";
+import Alert from "@/components/Alert.vue";
+import EceTextField from "@/components/inputs/EceTextField.vue";
+import { useAlertStore } from "@/store/alert";
+import { useConfigStore } from "@/store/config";
+import { useLoadingStore } from "@/store/loading";
+import { useLookupCertificationStore } from "@/store/lookupCertification";
+import type { Components } from "@/types/openapi";
+import { formatDate } from "@/utils/format";
+import { isNumber } from "@/utils/formInput";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { useDisplay } from "vuetify";
 import type { VDataTable, VForm } from "vuetify/components";
-import EceTextField from "@/components/inputs/EceTextField.vue";
-import { useAlertStore } from "@/store/alert";
-import { useLookupCertificationStore } from "@/store/lookupCertification";
-import { useLoadingStore } from "@/store/loading";
-import { formatDate } from "@/utils/format";
-import { isNumber } from "@/utils/formInput";
-import { postLookupCertificate } from "@/api/certification";
-import { useConfigStore } from "@/store/config";
 import * as Rules from "../utils/formRules";
 import EceRecaptcha from "./inputs/EceRecaptcha.vue";
-import type { Components } from "@/types/openapi";
-import Alert from "@/components/Alert.vue";
 
 interface LookupCertificationData {
   recaptchaToken: string;
