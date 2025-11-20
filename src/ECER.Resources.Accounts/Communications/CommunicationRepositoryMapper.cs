@@ -34,6 +34,18 @@ internal class CommunicationRepositoryMapper : Profile
       }.ToList().Contains(s.ecer_communication_Applicationid.StatusCode!.Value)
         ? s.ecer_communication_Applicationid.ecer_ApplicationId
         : null))
+     .ForMember(d => d.IcraEligibilityId, opts => opts.MapFrom(s =>
+     s.ecer_communication_ICRAEligibilityAssessmentId != null &&
+     !new[]
+     {
+       ecer_ICRAEligibilityAssessment_StatusCode.Draft,
+       ecer_ICRAEligibilityAssessment_StatusCode.Eligible,
+       ecer_ICRAEligibilityAssessment_StatusCode.Ineligible,
+       ecer_ICRAEligibilityAssessment_StatusCode.Inactive,
+     }.ToList().Contains(s.ecer_communication_ICRAEligibilityAssessmentId.StatusCode!.Value)
+     ? s.ecer_communication_ICRAEligibilityAssessmentId.ecer_ICRAEligibilityAssessmentId
+     : null
+     ))
      .ForMember(d => d.DoNotReply, opts => opts.MapFrom(s => s.ecer_DoNotReply))
      .ForMember(d => d.Documents, opts => opts.MapFrom(s => s.ecer_bcgov_documenturl_CommunicationId_ecer_communication))
      .ForMember(d => d.LatestMessageNotifiedOn, opts => opts.MapFrom(s => s.ecer_IsRoot != null && s.ecer_IsRoot == true ? (s.ecer_LatestMessageNotifiedDate ?? s.ecer_DateNotified) : s.ecer_DateNotified))
@@ -51,6 +63,7 @@ internal class CommunicationRepositoryMapper : Profile
      .ForSourceMember(s => s.IsRead, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.Documents, opts => opts.DoNotValidate())
      .ForSourceMember(s => s.ApplicationId, opts => opts.DoNotValidate())
+     .ForSourceMember(s => s.IcraEligibilityId, opts => opts.DoNotValidate())
      .ForMember(d => d.ecer_Message, opts => opts.MapFrom(s => htmlSanitizer.Sanitize(s.Body, "", null)));
 
     CreateMap<ecer_Communication_StatusCode, CommunicationStatus>()
