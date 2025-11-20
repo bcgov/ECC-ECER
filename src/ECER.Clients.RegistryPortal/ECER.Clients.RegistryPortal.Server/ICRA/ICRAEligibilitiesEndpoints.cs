@@ -132,6 +132,9 @@ public record ICRAEligibility()
   public DateTime? SignedDate { get; set; }
   public DateTime? CreatedOn { get; set; }
   public ICRAStatus Status { get; set; }
+  public IcraEligibilityOrigin? Origin { get; set; }
+  public string FullLegalName { get; set; } = string.Empty;
+  public bool UnderstandAgreesApplication { get; set; }
   public IEnumerable<InternationalCertification> InternationalCertifications { get; set; } = Array.Empty<InternationalCertification>();
   public IEnumerable<EmploymentReference> EmploymentReferences { get; set; } = Array.Empty<EmploymentReference>();
 }
@@ -198,6 +201,12 @@ public enum InternationalCertificationStatus
   Rejected,
   UnderReview,
   WaitingforResponse,
+}
+public enum IcraEligibilityOrigin
+{
+  Manual,
+  Oracle,
+  Portal
 }
 
 public record ICRAEligibilitySubmissionRequest(string Id);

@@ -115,7 +115,7 @@
             id="certificationExpiryDate"
             ref="expiryDateInput"
             v-model="expiryDate"
-            :rules="[Rules.futureDateNotAllowedRule(), Rules.dateBeforeRule(issueDate || '')]"
+            :rules="[Rules.dateBeforeRule(issueDate || '')]"
             label="Expiry date"
             @update:model-value="validateDates"
             append-inner-icon="mdi-calendar"
