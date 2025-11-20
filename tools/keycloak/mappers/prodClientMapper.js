@@ -399,7 +399,7 @@ let clientArray = [
         protocolMapper: "oidc-audience-mapper",
         consentRequired: false,
         config: {
-          "included.client.audience": "childcare-ecer-psp-test",
+          "included.client.audience": "childcare-ecer-psp",
           "id.token.claim": "false",
           "lightweight.claim": "false",
           "introspection.token.claim": "true",
