@@ -7,6 +7,20 @@ declare namespace Components {
         [name: string]: OidcAuthenticationSettings;
       } | null;
     }
+    export type Auspice = "ContinuingEducation" | "PublicOOP" | "Private" | "Public";
+    export interface EducationInstitution {
+      id?: string | null;
+      name?: string | null;
+      auspice?: Auspice;
+      websiteUrl?: string | null;
+      street1?: string | null;
+      street2?: string | null;
+      street3?: string | null;
+      city?: string | null;
+      province?: string | null;
+      country?: string | null;
+      postalCode?: string | null;
+    }
     export interface HttpValidationProblemDetails {
       [name: string]: any;
       type?: string | null;
@@ -94,6 +108,12 @@ declare namespace Paths {
   namespace ConfigurationGet {
     namespace Responses {
       export type $200 = Components.Schemas.ApplicationConfiguration;
+    }
+  }
+  namespace EducationInstitutionGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.EducationInstitution;
+      export interface $404 {}
     }
   }
   namespace PortalInvitationGet {
@@ -184,6 +204,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PortalInvitationGet.Responses.$200>;
+  /**
+   * education_institution_get - Get users education institution
+   */
+  "education_institution_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.EducationInstitutionGet.Responses.$200>;
 }
 
 export interface PathsDictionary {
@@ -241,11 +269,23 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PortalInvitationGet.Responses.$200>;
   };
+  ["/api/education-institution"]: {
+    /**
+     * education_institution_get - Get users education institution
+     */
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.EducationInstitutionGet.Responses.$200>;
+  };
 }
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>;
 
 export type ApplicationConfiguration = Components.Schemas.ApplicationConfiguration;
+export type Auspice = Components.Schemas.Auspice;
+export type EducationInstitution = Components.Schemas.EducationInstitution;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
 export type InviteType = Components.Schemas.InviteType;
 export type OidcAuthenticationSettings = Components.Schemas.OidcAuthenticationSettings;

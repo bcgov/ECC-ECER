@@ -1,9 +1,7 @@
 using AutoMapper;
 using ECER.Engines.Transformation;
 using ECER.Engines.Transformation.PortalInvitations;
-using ECER.Managers.Registry.Contract.Applications;
 using ECER.Managers.Registry.Contract.PspUsers;
-using ECER.Managers.Registry.Contract.Registrants;
 using ECER.Managers.Registry.UserRegistrationIdentityService;
 using ECER.Resources.Accounts.PspReps;
 using ECER.Resources.Documents.PortalInvitations;

@@ -3,8 +3,59 @@
     <Loading v-if="isLoading">
     </Loading>
     <div v-else>
-      <h1>Dashboard is under development</h1>
-      <p>This page is currently under development. Please check back soon.</p>
+      <v-row justify="center">
+        <v-col cols="12">
+          <h1>My PSP dashboard</h1>
+        </v-col>
+        <v-col v-if="educationInstitution" cols="12">
+          <EducationInstitutionCard :education-institution="educationInstitution" />
+        </v-col>
+      </v-row>
+      <v-row justify="center">
+        <v-col cols="12">
+          <ECEHeader title="Portal options" />
+        </v-col>
+      </v-row>
+      <v-row align="stretch">
+        <v-col class="d-flex" cols="12" sm="6" md="4">
+          <Card class="d-flex flex-column">
+            <h2>Program profiles</h2>
+            <p class="mt-4">Program profiles
+              View or manage your institution’s annual program profiles.
+              View program profiles.</p>
+            <div class="mt-auto">
+              <v-btn variant='outlined' size="large" class="mt-4" color="primary" id="btnNeedOtherOptions"
+                @click="router.push('/program-profiles')">
+                View program profiles
+              </v-btn>
+            </div>
+          </Card>
+        </v-col>
+        <v-col class="d-flex" cols="12" sm="6" md="4">
+          <Card class="d-flex flex-column">
+            <h2>Messsages</h2>
+            <p class="mt-4">View or send a new message to the ECE Registry.</p>
+            <div class="mt-auto">
+              <v-btn variant='outlined' size="large" class="mt-4" color="primary" id="btnNeedOtherOptions"
+                @click="router.push('/messages')">
+                Go to messages
+              </v-btn>
+            </div>
+          </Card>
+        </v-col>
+        <v-col class="d-flex" cols="12" sm="6" md="4">
+          <Card class="d-flex flex-column">
+            <h2>User management</h2>
+            <p class="mt-4">Manage which users at your institution have access to this portal.</p>
+            <div class="mt-auto">
+              <v-btn variant='outlined' size="large" class="mt-4" color="primary" id="btnNeedOtherOptions"
+                @click="router.push('/manage-users')">
+                Manage users
+              </v-btn>
+            </div>
+          </Card>
+        </v-col>
+      </v-row>
     </div>
   </PageContainer>
 </template>
@@ -16,19 +67,26 @@ import Loading from "@/components/Loading.vue";
 import { useOidcStore } from "@/store/oidc";
 import { useUserStore } from "@/store/user";
 import { useRouter } from "vue-router";
-import { getPspUserProfile, registerPspUser } from "@/api/psp-rep";
-import type { PspUserProfile, PspRegistrationError, PspRegistrationErrorResponse, RegisterPspUserRequest } from "@/types/openapi";
+import { getEducationInstitution, getPspUserProfile, registerPspUser } from "@/api/psp-rep";
+import type { PspUserProfile, PspRegistrationError, PspRegistrationErrorResponse, RegisterPspUserRequest, EducationInstitution } from "@/types/openapi";
 import { useLoadingStore } from "@/store/loading";
+import ECEHeader from "@/components/ECEHeader.vue";
+import Card from "@/components/Card.vue";
+import EducationInstitutionCard from "@/components/EducationInstitutionCard.vue";
 
 export default defineComponent({
   name: "Dashboard",
   components: {
     PageContainer,
     Loading,
+    ECEHeader,
+    Card,
+    EducationInstitutionCard,
   },
   data() {
     return {
       pspUserProfile: null as PspUserProfile | null,
+      educationInstitution: null as EducationInstitution | null,
       loading: true,
     };
   },
@@ -59,8 +117,9 @@ export default defineComponent({
     }
 
     // Check if the user has a profile, if not, register them
-    [this.pspUserProfile] = await Promise.all([
+    [this.pspUserProfile, this.educationInstitution] = await Promise.all([
       getPspUserProfile(),
+      getEducationInstitution(),
     ]);
 
     if (!this.pspUserProfile) {
@@ -102,7 +161,11 @@ export default defineComponent({
         }
         return;
       }
-      this.pspUserProfile = await getPspUserProfile();
+
+      [this.pspUserProfile, this.educationInstitution] = await Promise.all([
+        getPspUserProfile(),
+        getEducationInstitution(),
+      ]);
     }
 
     if (this.pspUserProfile) {
@@ -116,7 +179,7 @@ export default defineComponent({
   },
   computed: {
     isLoading(): boolean {
-      return this.loadingStore.isLoading('psp_user_profile_get') || this.loadingStore.isLoading('psp_user_register_post') || this.loading;
+      return this.loadingStore.isLoading('psp_user_profile_get') || this.loadingStore.isLoading('psp_user_register_post') || this.loadingStore.isLoading('education_institution_get') || this.loading;
     }
   }
 });
