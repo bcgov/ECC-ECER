@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="bg-primary">
-    <v-container><h1>Validate an ECE certificate</h1></v-container>
+    <v-container><h1 class="text-white">Validate an ECE certificate</h1></v-container>
   </v-sheet>
   <v-container>
     <v-row v-for="systemMessage in configStore.systemMessages" class="mt-10 mb-10">
