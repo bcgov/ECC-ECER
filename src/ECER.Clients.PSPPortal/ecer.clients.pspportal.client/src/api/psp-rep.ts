@@ -1,5 +1,5 @@
 import { getClient } from "@/api/client";
-import type { RegisterPspUserRequest, PspRegistrationErrorResponse, PspUserProfile } from "@/types/openapi";
+import type { EducationInstitution, RegisterPspUserRequest, PspRegistrationErrorResponse, PspUserProfile } from "@/types/openapi";
 import ApiResultHandler from "@/utils/apiResultHandler";
 const apiResultHandler = new ApiResultHandler();
 
@@ -29,4 +29,10 @@ const registerPspUser = async (registerPspUserRequest: RegisterPspUserRequest): 
   return (response.error as PspRegistrationErrorResponse) ?? response.data ?? {};
 };
 
-export { getPspUserProfile, registerPspUser, updatePspUserProfile };
+const getEducationInstitution = async (): Promise<EducationInstitution | null> => {
+  const client = await getClient();
+  const response = await apiResultHandler.execute({ request: client.education_institution_get(), key: "education_institution_get", suppressErrorToast: true });
+  return response?.data ?? null;
+};
+
+export { getEducationInstitution, getPspUserProfile, registerPspUser, updatePspUserProfile };
