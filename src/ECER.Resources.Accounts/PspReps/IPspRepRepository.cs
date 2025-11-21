@@ -28,6 +28,7 @@ public record PspRepQuery
 {
   public string? ById { get; set; }
   public UserIdentity? ByIdentity { get; set; }
+  public string? ByPostSecondaryInstituteId { get; set; }
 }
 
 public record PspUser
@@ -36,6 +37,8 @@ public record PspUser
   
   public IEnumerable<UserIdentity> Identities { get; set; } = Array.Empty<UserIdentity>();
   public PspUserProfile Profile { get; set; } = null!;
+  public PortalAccessStatus? AccessToPortal { get; set; }
+  public string? PostSecondaryInstituteId { get; set; }
 };
 
 public record PspUserProfile
@@ -57,4 +60,11 @@ public enum PspUserRole
   Primary,
   /// <summary>Secondary</summary>
   Secondary
+}
+
+public enum PortalAccessStatus
+{
+  Invited,
+  Active,
+  Disabled
 }

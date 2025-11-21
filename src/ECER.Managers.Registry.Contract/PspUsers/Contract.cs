@@ -15,6 +15,7 @@ public record RegisterNewPspUserCommand(string Id, PspUserProfile Profile, UserI
 public record SearchPspRepQuery : IRequest<PspRepQueryResults>
 {
   public UserIdentity? ByUserIdentity { get; set; }
+  public string? ByPostSecondaryInstituteId { get; set; }
 }
 
 /// <summary>
@@ -22,7 +23,11 @@ public record SearchPspRepQuery : IRequest<PspRepQueryResults>
 /// </summary>
 public record PspRepQueryResults(IEnumerable<PspUser> Items);
 
-public record PspUser(string Id, PspUserProfile Profile);
+public record PspUser(string Id, PspUserProfile Profile)
+{
+  public PortalAccessStatus? AccessToPortal { get; init; }
+  public string? PostSecondaryInstituteId { get; init; }
+}
 
 public record PspUserProfile
 {
@@ -43,6 +48,13 @@ public enum PspUserRole
   Primary,
   /// <summary>Secondary</summary>
   Secondary
+}
+
+public enum PortalAccessStatus
+{
+  Invited,
+  Active,
+  Disabled
 }
 
 /// <summary>

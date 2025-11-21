@@ -36,7 +36,8 @@ public class PspUserHandlers(
 
     var pspUsers = await pspRepRepository.Query(new PspRepQuery
     {
-      ByIdentity = request.ByUserIdentity
+      ByIdentity = request.ByUserIdentity,
+      ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId
     }, cancellationToken);
 
     return new PspRepQueryResults(mapper.Map<IEnumerable<Contract.PspUsers.PspUser>>(pspUsers)!);

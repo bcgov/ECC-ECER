@@ -8,6 +8,9 @@ internal sealed class PspUserMapper : AutoMapper.Profile
 {
   public PspUserMapper()
   {
+    CreateMap<Contract.PspUsers.PortalAccessStatus, PortalAccessStatus>()
+      .ReverseMap();
+
     CreateMap<Contract.PspUsers.RegisterNewPspUserCommand, PspUser>()
       .ForMember(d => d.Identities, opts => opts.MapFrom(s => (new[] { s.Identity })))
       .ForMember(d => d.Profile, opts => opts.MapFrom(s => s.Profile))
@@ -16,6 +19,8 @@ internal sealed class PspUserMapper : AutoMapper.Profile
     CreateMap<Contract.PspUsers.PspUser, PspUser>()
       .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.Identities, opts => opts.Ignore())
+      .ForMember(d => d.AccessToPortal, opts => opts.MapFrom(s => s.AccessToPortal))
+      .ForMember(d => d.PostSecondaryInstituteId, opts => opts.MapFrom(s => s.PostSecondaryInstituteId))
       .ReverseMap()
       .ValidateMemberList(MemberList.Destination)
       .ForCtorParam(nameof(Contract.PspUsers.PspUser.Id), opts => opts.MapFrom(s => s.Id))

@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.Extensions.EnumMapping;
 using ECER.Resources.Accounts.PspReps;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.Security;
@@ -12,7 +13,13 @@ internal sealed class PspRepRepositoryMapper : Profile
     CreateMap<ecer_ECEProgramRepresentative, PspUser>()
       .ForMember(d => d.Profile, opts => opts.MapFrom(s => s))
       .ForMember(d => d.Identities, opts => opts.MapFrom(s => s.ecer_authentication_eceprogramrepresentative))
-      .ReverseMap();
+      .ForMember(d => d.AccessToPortal, opts => opts.MapFrom(s => s.ecer_AccessToPortal))
+      .ForMember(
+        d => d.PostSecondaryInstituteId,
+        opts => opts.MapFrom(s => s.ecer_PostSecondaryInstitute != null ? s.ecer_PostSecondaryInstitute.Id.ToString() : null))
+      .ReverseMap()
+      .ForMember(d => d.ecer_AccessToPortal, opts => opts.Ignore())
+      .ForMember(d => d.ecer_PostSecondaryInstitute, opts => opts.Ignore());
 
     CreateMap<PspUserProfile, ecer_ECEProgramRepresentative>(MemberList.Source)
       .ForMember(d => d.ecer_FirstName, opts => opts.MapFrom(s => s.FirstName))
@@ -37,5 +44,9 @@ internal sealed class PspRepRepositoryMapper : Profile
       .ForMember(d => d.Email, opts => opts.MapFrom(s => s.ecer_EmailAddress))
       .ForMember(d => d.HasAcceptedTermsOfUse, opts => opts.MapFrom(s => s.ecer_HasAcceptedTermsofUse))
       .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<PortalAccessStatus, ecer_AccessToPortal>()
+      .ConvertUsingEnumMapping(opts => opts.MapByName(true))
+      .ReverseMap();
   }
 }

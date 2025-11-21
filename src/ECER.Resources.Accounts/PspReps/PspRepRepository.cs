@@ -3,6 +3,7 @@ using ECER.Resources.Accounts.PspReps;
 using ECER.Utilities.DataverseSdk.Model;
 using ECER.Utilities.DataverseSdk.Queries;
 using Microsoft.Xrm.Sdk.Client;
+using System.Linq;
 
 namespace ECER.Resources.Accounts.PSPReps;
 
@@ -36,7 +37,7 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
   public async Task<IEnumerable<PspUser>> Query(PspRepQuery query, CancellationToken ct)
   {
     await Task.CompletedTask;
-    var pspUsers = context.ecer_ECEProgramRepresentativeSet;
+    IQueryable<ecer_ECEProgramRepresentative> pspUsers = context.ecer_ECEProgramRepresentativeSet;
 
     if (query.ById != null)
     {
@@ -49,6 +50,16 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
                 join authentication in context.ecer_AuthenticationSet on pspUser.Id equals authentication.ecer_eceprogramrepresentative.Id
                 where authentication.ecer_IdentityProvider == query.ByIdentity.IdentityProvider && authentication.ecer_ExternalID == query.ByIdentity.UserId
                 select pspUser;
+    }
+
+    if (query.ByPostSecondaryInstituteId != null)
+    {
+      if (!Guid.TryParse(query.ByPostSecondaryInstituteId, out var instituteId))
+      {
+        return Enumerable.Empty<PspUser>();
+      }
+
+      pspUsers = pspUsers.Where(r => r.ecer_PostSecondaryInstitute != null && r.ecer_PostSecondaryInstitute.Id == instituteId);
     }
     
     var results = context.From(pspUsers).Execute();
