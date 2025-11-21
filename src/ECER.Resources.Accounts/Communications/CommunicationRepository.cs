@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using ECER.Utilities.DataverseSdk.Model;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Client;
+using ECER.Utilities.DataverseSdk.Queries;
+using ECER.Utilities.ObjectStorage.Providers;
 using ECER.Utilities.ObjectStorage.Providers.S3;
 using Microsoft.Extensions.Configuration;
-using ECER.Utilities.ObjectStorage.Providers;
-using ECER.Utilities.DataverseSdk.Queries;
+using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Client;
 
 namespace ECER.Resources.Accounts.Communications;
 
@@ -76,7 +76,12 @@ internal class CommunicationRepository : ICommunicationRepository
     {
       communications = communications.OrderByDescending(item => item.ecer_DateNotified);
     }
-    var results = context.From(communications).Join().Include(c => c.ecer_bcgov_documenturl_CommunicationId_ecer_communication).Include(c=>c.ecer_communication_Applicationid).Execute();
+    var results = context.From(communications)
+      .Join()
+      .Include(c => c.ecer_bcgov_documenturl_CommunicationId_ecer_communication)
+      .Include(c => c.ecer_communication_Applicationid)
+      .Include(c => c.ecer_communication_ICRAEligibilityAssessmentId)
+      .Execute();
 
     var finalCommunications = mapper.Map<IEnumerable<Communication>>(results)!.ToList();
 
