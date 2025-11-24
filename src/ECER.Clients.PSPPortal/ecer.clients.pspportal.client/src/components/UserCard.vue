@@ -40,7 +40,7 @@
         <!-- Pending invitations: Resend invitation button -->
         <v-row v-if="user.accessToPortal === 'Invited'">
             <v-col cols="12" class="align-self-end">
-                <v-btn color="primary" size="small" @click="$emit('resend-invitation', user.id)">
+                <v-btn color="primary" size="small" variant="outlined" @click="$emit('resend-invitation', user.id)">
                     <v-icon class="mr-2">mdi-email-arrow-right-outline</v-icon>
                     Resend invitation
                 </v-btn>
@@ -63,7 +63,6 @@
 import { defineComponent, type PropType } from "vue";
 import Card from "@/components/Card.vue";
 import type { Components } from "@/types/openapi";
-import { template } from "lodash";
 
 export default defineComponent({
     name: "UserCard",
