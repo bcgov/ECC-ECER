@@ -73,6 +73,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_documentfulladdress = "ecer_documentfulladdress";
 			public const string ecer_eceprogramrepresentative_PostSecondaryIns = "ecer_eceprogramrepresentative_PostSecondaryIns";
 			public const string ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution = "ecer_ecer_postsecondaryinstitute_ecer_course_postsecondaryinstitution";
+			public const string ecer_ECESchoolordepartment = "ecer_eceschoolordepartment";
 			public const string ecer_educationinstitutionpreviousname_EducationInstitution = "ecer_educationinstitutionpreviousname_EducationInstitution";
 			public const string ecer_IdNumber = "ecer_idnumber";
 			public const string ecer_Name = "ecer_name";
@@ -409,6 +410,21 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<string>("ecer_documentfulladdress");
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_eceschoolordepartment")]
+		public string ecer_ECESchoolordepartment
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("ecer_eceschoolordepartment");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_eceschoolordepartment", value);
 			}
 		}
 		
