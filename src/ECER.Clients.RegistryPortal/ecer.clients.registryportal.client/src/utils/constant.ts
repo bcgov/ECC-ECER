@@ -25,8 +25,10 @@ export enum AddressType {
 }
 
 export enum PortalInviteType {
-  WORK_EXPERIENCE = "WorkExperienceReference",
+  WORK_EXPERIENCE = "WorkExperienceReferenceforApplication",
   CHARACTER = "CharacterReference",
+  PROGRAM_REPRESENTATIVE = "PSIProgramRepresentative",
+  ICRA_WORK_EXPERIENCE = "WorkExperienceReferenceforICRA",
 }
 
 export enum WorkExperienceType {

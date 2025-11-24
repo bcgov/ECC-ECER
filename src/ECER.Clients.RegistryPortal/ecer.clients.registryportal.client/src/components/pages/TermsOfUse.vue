@@ -7,7 +7,7 @@
       </v-btn>
       <v-row justify="space-between">
         <h2>Terms of Use</h2>
-        <v-btn variant="text" onclick="window.print()">
+        <v-btn variant="text" onclick="globalThis.print()">
           <v-row align="center" justify="end">
             <v-icon size="small" color="secondary" icon="mdi-printer-outline" class="mr-2"></v-icon>
             <a class="small">Print Terms of Use</a>

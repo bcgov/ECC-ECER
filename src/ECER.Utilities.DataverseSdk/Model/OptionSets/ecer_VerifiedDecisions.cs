@@ -18,6 +18,9 @@ namespace ECER.Utilities.DataverseSdk.Model
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		Denial = 621870006,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		Escalated = 621870004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]

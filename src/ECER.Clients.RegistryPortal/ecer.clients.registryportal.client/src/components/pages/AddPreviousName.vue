@@ -77,9 +77,9 @@ export default {
   computed: {
     newPreviousName(): Components.Schemas.PreviousName {
       return {
-        firstName: this.formStore.formData[previousNameForm.inputs.firstName.id] ?? null,
-        middleName: this.formStore.formData[previousNameForm.inputs.middleName.id] ?? null,
-        lastName: this.formStore.formData[previousNameForm.inputs.lastName.id],
+        firstName: this.formStore.formData[previousNameForm?.inputs?.firstName?.id || ""] ?? null,
+        middleName: this.formStore.formData[previousNameForm?.inputs?.middleName?.id || ""] ?? null,
+        lastName: this.formStore.formData[previousNameForm?.inputs?.lastName?.id || ""],
         source: "Profile",
       };
     },
@@ -124,7 +124,7 @@ export default {
             }
           }
         } else {
-          window.scrollTo(0, 0);
+          globalThis.scrollTo(0, 0);
         }
       } else {
         this.alertStore.setFailureAlert("You must enter all required fields in the valid format to continue.");

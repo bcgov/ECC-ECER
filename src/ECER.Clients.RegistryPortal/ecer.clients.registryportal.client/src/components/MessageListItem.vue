@@ -58,7 +58,7 @@ export default defineComponent({
     async loadChildMessages(messageId: string) {
       this.messageStore.currentThread = (await getChildMessages({ parentId: messageId })).data?.communications;
       this.messageStore.currentMessage = this.message;
-      window.scrollTo({
+      globalThis.scrollTo({
         top: 0,
         behavior: "smooth",
       });

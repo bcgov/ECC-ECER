@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5140",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
+        "DataProtection__DirectoryPath": "../../",
+        "DataProtection__ApplicationName": "ECER",
+        "OTEL_SDK_DISABLED": "true",
+        "VERSION": "local",
+        "TIMESTAMP": "timestamp",
+        "COMMIT": "commit"
+      }
+    }
+  }
+}

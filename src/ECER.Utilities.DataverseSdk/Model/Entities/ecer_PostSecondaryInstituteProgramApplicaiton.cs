@@ -140,7 +140,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_detailsofevaluationtools = "ecer_detailsofevaluationtools";
 			public const string ecer_documentdateofapplicationtext = "ecer_documentdateofapplicationtext";
 			public const string ecer_documentInterimrecognitionexpirydatetext = "ecer_documentinterimrecognitionexpirydatetext";
-			public const string ecer_documentInterimrecognitionextendeduntil = "ecer_documentinterimrecognitionextendeduntil";
+			public const string ecer_documentongoingrecognitionexpirydatetext = "ecer_documentongoingrecognitionexpirydatetext";
 			public const string ecer_ecer_post_program_app_communication = "ecer_ecer_post_program_app_communication";
 			public const string ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId = "ecer_ecer_postsecondaryinstitutecampus_ecer_postsecondaryinstituteprogramapplicaiton_CampusId";
 			public const string ecer_examplesofstudentrecords = "ecer_examplesofstudentrecords";
@@ -1278,18 +1278,18 @@ namespace ECER.Utilities.DataverseSdk.Model
 			}
 		}
 		
-		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentinterimrecognitionextendeduntil")]
-		public string ecer_documentInterimrecognitionextendeduntil
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_documentongoingrecognitionexpirydatetext")]
+		public string ecer_documentongoingrecognitionexpirydatetext
 		{
 			[System.Diagnostics.DebuggerNonUserCode()]
 			get
 			{
-				return this.GetAttributeValue<string>("ecer_documentinterimrecognitionextendeduntil");
+				return this.GetAttributeValue<string>("ecer_documentongoingrecognitionexpirydatetext");
 			}
 			[System.Diagnostics.DebuggerNonUserCode()]
 			set
 			{
-				this.SetAttributeValue("ecer_documentinterimrecognitionextendeduntil", value);
+				this.SetAttributeValue("ecer_documentongoingrecognitionexpirydatetext", value);
 			}
 		}
 		

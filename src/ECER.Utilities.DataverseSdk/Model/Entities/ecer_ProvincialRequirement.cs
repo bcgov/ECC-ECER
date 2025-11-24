@@ -67,6 +67,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_course_ProvincialRequirement_ecer_provinc = "ecer_course_ProvincialRequirement_ecer_provinc";
 			public const string ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement = "ecer_courseprovincialrequirement_ProgramAreaId_ecer_provincialrequirement";
 			public const string ecer_educationassessment_RequirementAreaId = "ecer_educationassessment_RequirementAreaId";
+			public const string ecer_IsForECEAssistant = "ecer_isforeceassistant";
+			public const string ecer_isforeceassistantName = "ecer_isforeceassistantname";
 			public const string ecer_LegacyRequiredAreaID = "ecer_legacyrequiredareaid";
 			public const string ecer_MinimumHours = "ecer_minimumhours";
 			public const string ecer_Name = "ecer_name";
@@ -309,6 +311,41 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_certificatetypeid"))
 				{
 					return this.FormattedValues["ecer_certificatetypeid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		/// <summary>
+		/// 3 of the Basic areas of instruction are optional for ECE Assistant.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isforeceassistant")]
+		public System.Nullable<bool> ecer_IsForECEAssistant
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("ecer_isforeceassistant");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_isforeceassistant", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_isforeceassistantname")]
+		public string ecer_isforeceassistantName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_isforeceassistant"))
+				{
+					return this.FormattedValues["ecer_isforeceassistant"];
 				}
 				else
 				{

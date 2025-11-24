@@ -14,7 +14,7 @@ public class AuthenticationService(IMediator messageBus, IDistributedCache cache
   {
     ArgumentNullException.ThrowIfNull(principal);
 
-    var identityProvider = principal.FindFirst(RegistryPortalClaims.IdenityProvider)?.Value;
+    var identityProvider = principal.FindFirst(RegistryPortalClaims.IdentityProvider)?.Value;
     var identityId = principal.FindFirst(ClaimTypes.Name)?.Value;
 
     if (string.IsNullOrEmpty(identityProvider) || string.IsNullOrEmpty(identityId)) return principal;

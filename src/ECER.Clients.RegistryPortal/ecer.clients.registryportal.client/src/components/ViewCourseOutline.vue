@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useAlertStore } from "@/store/alert";
 import { getApplicationStatus, setTranscriptDocumentsAndOptions } from "@/api/application";
 import Breadcrumb from "./Breadcrumb.vue";
@@ -83,9 +83,8 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
-    const route = useRoute();
 
-    const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
 
     const transcript = applicationStatus?.transcriptsStatus?.find((transcript) => transcript.id === props.transcriptId);
 
@@ -169,7 +168,7 @@ export default defineComponent({
       this.newFiles = []; // Reset attachments
       if (filesArray && filesArray.length > 0) {
         for (let i = 0; i < filesArray.length; i++) {
-          const file = filesArray[i];
+          const file = filesArray[i] as FileItem;
 
           // Check if file exists in transcript.courseOutlineFiles
           if (this.transcript?.courseOutlineFiles?.find((f) => f.id === file.fileId)) {

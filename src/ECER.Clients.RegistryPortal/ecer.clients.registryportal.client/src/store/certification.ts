@@ -61,9 +61,9 @@ export const useCertificationStore = defineStore("certification", {
       }
       return count >= 2;
     },
-    currentCertification(state): Components.Schemas.Certification | null {
+    currentCertification(state): Components.Schemas.Certification | undefined {
       if (!state.certifications || state.certifications.length === 0) {
-        return null;
+        return undefined;
       }
 
       //sorts certifications by status code first and then expiry date and then certificate type. Returns first one in the list which should be the latest certificate

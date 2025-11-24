@@ -184,7 +184,7 @@ export default defineComponent({
 
           //reset grecaptcha after success, token cannot be reused
           this.recaptchaToken = "";
-          window.grecaptcha.reset();
+          globalThis.grecaptcha.reset();
           await this.$nextTick();
           (this.$refs.lookupForm as VForm).resetValidation();
         }

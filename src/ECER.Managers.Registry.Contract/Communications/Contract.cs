@@ -72,6 +72,7 @@ public enum InitiatedFrom
   Investigation,
   PortalUser,
   Registry,
+  ProgramRepresentative,
 }
 
 public record CommunicationsStatusResults(CommunicationsStatus Status);

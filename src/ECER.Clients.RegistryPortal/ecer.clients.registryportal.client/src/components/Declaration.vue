@@ -31,7 +31,14 @@
         </v-col>
       </v-row>
     </v-form>
-    <v-btn class="mt-6" rounded="lg" color="primary" :loading="loadingStore.isLoading('draftapplication_put')" @click="continueClick" id="btnContinue">
+    <v-btn
+      class="mt-6"
+      rounded="lg"
+      color="primary"
+      :loading="loadingStore.isLoading('draftapplication_put') || loadingStore.isLoading('icra_put')"
+      @click="continueClick"
+      id="btnContinue"
+    >
       Continue
     </v-btn>
   </v-container>
@@ -39,7 +46,7 @@
 
 <script lang="ts">
 import { DateTime } from "luxon";
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
 import type { VForm } from "vuetify/components";
 import { getProfile } from "@/api/profile";
 import Breadcrumb from "@/components/Breadcrumb.vue";
@@ -54,6 +61,9 @@ import { useUserStore } from "@/store/user";
 import { formatDate } from "@/utils/format";
 import * as Rules from "@/utils/formRules";
 import { useRouter } from "vue-router";
+import { useIcraStore } from "@/store/icra";
+
+export type StreamType = "Eligibility" | "Application";
 
 export default defineComponent({
   name: "Declaration",
@@ -65,6 +75,7 @@ export default defineComponent({
     const alertStore = useAlertStore();
     const loadingStore = useLoadingStore();
     const router = useRouter();
+    const icraStore = useIcraStore();
 
     // Refresh userProfile from the server
     const userProfile = await getProfile();
@@ -73,7 +84,14 @@ export default defineComponent({
       userStore.setUserProfile(userProfile);
     }
 
-    return { Rules, userStore, applicationStore, alertStore, loadingStore, configStore, router };
+    return { Rules, userStore, applicationStore, alertStore, loadingStore, configStore, router, icraStore };
+  },
+  props: {
+    stream: {
+      type: String as PropType<StreamType>,
+      required: false,
+      default: "Application",
+    },
   },
   data() {
     return {
@@ -98,12 +116,37 @@ export default defineComponent({
         return;
       }
 
+      if (this.stream === "Application") {
+        await this.applicationPath();
+      } else if (this.stream === "Eligibility") {
+        await this.eligibilityPath();
+      } else {
+        console.warn("unknown stream type");
+      }
+    },
+    async applicationPath() {
       this.applicationStore.$patch({ draftApplication: { signedDate: this.date } });
 
       let response = await this.applicationStore.upsertDraftApplication();
 
       if (response) {
         this.router.push("/application");
+      }
+    },
+    async eligibilityPath() {
+      this.icraStore.$patch({
+        draftIcraEligibility: {
+          signedDate: this.date,
+          portalStage: "ContactInformation",
+          understandAgreesApplication: this.checkboxValue,
+          fullLegalName: this.name,
+        },
+      });
+
+      let response = await this.icraStore.upsertDraftIcraEligibility();
+
+      if (response) {
+        this.router.push("/icra-eligibility");
       }
     },
   },

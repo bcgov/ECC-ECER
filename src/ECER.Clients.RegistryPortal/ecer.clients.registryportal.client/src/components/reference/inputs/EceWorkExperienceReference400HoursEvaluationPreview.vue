@@ -109,40 +109,49 @@ export default defineComponent({
       const workHoursTypeDisplay = workHoursTypeRadio.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]
-            ?.workHoursType,
+          this.wizardStore.wizardData[
+            this.wizardStore.wizardConfig.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+          ]?.workHoursType,
       )?.label;
 
       const referenceRelationshipDisplay = workReference400HoursRelationshipRadio.find(
         (value) =>
           value.value ===
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]
-            ?.referenceRelationship,
+          this.wizardStore.wizardData[
+            this.wizardStore.wizardConfig.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+          ]?.referenceRelationship,
       )?.label;
 
       return {
         hours:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]
-            ?.hours,
+          this.wizardStore.wizardData[
+            this.wizardStore.wizardConfig.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+          ]?.hours,
         workHoursType: workHoursTypeDisplay as Components.Schemas.WorkHoursType,
         childrenProgramName:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]
-            ?.childrenProgramName,
-        role: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]
-          ?.role,
+          this.wizardStore.wizardData[
+            this.wizardStore.wizardConfig.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+          ]?.childrenProgramName,
+        role: this.wizardStore.wizardData[
+          this.wizardStore.wizardConfig.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+        ]?.role,
         ageofChildrenCaredFor:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]
-            ?.ageofChildrenCaredFor,
+          this.wizardStore.wizardData[
+            this.wizardStore.wizardConfig.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+          ]?.ageofChildrenCaredFor,
         startDate:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]
-            ?.startDate,
+          this.wizardStore.wizardData[
+            this.wizardStore.wizardConfig?.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+          ]?.startDate,
         endDate:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]
-            ?.endDate,
+          this.wizardStore.wizardData[
+            this.wizardStore.wizardConfig.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+          ]?.endDate,
         referenceRelationship: referenceRelationshipDisplay as Components.Schemas.ReferenceRelationship,
         additionalComments:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.workExperience400HoursEvaluation.form.inputs.workExperience400HoursEvaluation.id]
-            ?.additionalComments,
+          this.wizardStore.wizardData[
+            this.wizardStore.wizardConfig.steps?.workExperience400HoursEvaluation?.form?.inputs?.workExperience400HoursEvaluation?.id || ""
+          ]?.additionalComments,
         workExperienceType: WorkExperienceType.IS_400_Hours,
       };
     },

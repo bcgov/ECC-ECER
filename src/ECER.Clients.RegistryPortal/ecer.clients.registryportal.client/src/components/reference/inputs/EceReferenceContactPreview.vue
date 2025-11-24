@@ -86,22 +86,30 @@ export default defineComponent({
   computed: {
     reference(): Components.Schemas.ReferenceContactInformation {
       const provinceName = this.configStore.provinceName(
-        this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.certificateProvinceId,
+        this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
+          ?.certificateProvinceId,
       );
       return {
-        firstName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.firstName,
-        lastName: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.lastName,
-        email: this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.email,
+        firstName:
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
+            ?.firstName,
+        lastName:
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]?.lastName,
+        email:
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]?.email,
         phoneNumber:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.phoneNumber,
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
+            ?.phoneNumber,
         certificateProvinceId: provinceName,
         certificateProvinceOther:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
             ?.certificateProvinceOther,
         certificateNumber:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.certificateNumber,
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps?.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
+            ?.certificateNumber,
         dateOfBirth:
-          this.wizardStore.wizardData[this.wizardStore.wizardConfig.steps.contactInformation.form.inputs.referenceContactInformation.id]?.dateOfBirth,
+          this.wizardStore.wizardData[this.wizardStore?.wizardConfig?.steps.contactInformation?.form?.inputs?.referenceContactInformation?.id || ""]
+            ?.dateOfBirth,
       };
     },
   },

@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useAlertStore } from "@/store/alert";
 import { getApplicationStatus } from "@/api/application";
 import Breadcrumb from "./Breadcrumb.vue";
@@ -50,9 +50,8 @@ export default defineComponent({
   setup: async (props) => {
     const alertStore = useAlertStore();
     const router = useRouter();
-    const route = useRoute();
 
-    const applicationStatus = (await getApplicationStatus(route.params.applicationId.toString()))?.data;
+    const applicationStatus = (await getApplicationStatus(props.applicationId))?.data;
     const transcript = applicationStatus?.transcriptsStatus?.find((transcript) => transcript.id === props.transcriptId);
 
     if (!transcript) {

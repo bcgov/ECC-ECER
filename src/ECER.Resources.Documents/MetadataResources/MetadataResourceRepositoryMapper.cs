@@ -31,10 +31,12 @@ internal class MetadataResourceRepositoryMapper : Profile
         .ForCtorParam(nameof(Country.CountryId), opt => opt.MapFrom(src => src.ecer_CountryId))
         .ForCtorParam(nameof(Country.CountryName), opt => opt.MapFrom(src => src.ecer_Name))
         .ForCtorParam(nameof(Country.CountryCode), opt => opt.MapFrom(src => src.ecer_ShortName))
+        .ForCtorParam(nameof(Country.IsICRA), opt => opt.MapFrom(src => src.ecer_EligibleforICRA))
         .ValidateMemberList(MemberList.Destination)
         .ReverseMap()
         .ForMember(dest => dest.ecer_CountryId, opt => opt.MapFrom(src => src.CountryId))
         .ForMember(dest => dest.ecer_Name, opt => opt.MapFrom(src => src.CountryName))
+        .ForMember(dest => dest.ecer_EligibleforICRA, opt => opt.MapFrom(src => src.IsICRA))
         .ForMember(dest => dest.ecer_ShortName, opt => opt.MapFrom(src => src.CountryCode));
 
     CreateMap<ecer_PostSecondaryInstitute, PostSecondaryInstitution>(MemberList.Source)
@@ -77,6 +79,11 @@ internal class MetadataResourceRepositoryMapper : Profile
         .ForMember(d => d.Name, opts => opts.MapFrom(s => s.ecer_Name))
         .ForMember(d => d.SingleText, opts => opts.MapFrom(s => s.ecer_SingleLineofText))
         .ForMember(d => d.MultiText, opts => opts.MapFrom(s => s.ecer_MultipleLineofText))
+        .ValidateMemberList(MemberList.Destination);
+
+    CreateMap<bcgov_config, DynamicsConfig>(MemberList.Source)
+        .ForCtorParam(nameof(DynamicsConfig.Key), opts => opts.MapFrom(s => s.bcgov_Key))
+        .ForCtorParam(nameof(DynamicsConfig.Value), opts => opts.MapFrom(s => s.bcgov_Value))
         .ValidateMemberList(MemberList.Destination);
   }
 }
