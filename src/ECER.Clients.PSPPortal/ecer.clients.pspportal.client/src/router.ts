@@ -34,7 +34,7 @@ const router = createRouter({
     },
     {
       path: "/manage-users",
-      component: () => import("./components/pages/PageNotFound.vue"),
+      component: () => import("./components/pages/ManageUsers.vue"),
       name: "manage-users",
       meta: { requiresAuth: true },
     },
