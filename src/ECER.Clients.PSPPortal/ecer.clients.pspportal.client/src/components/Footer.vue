@@ -88,11 +88,12 @@ export default defineComponent({
 
     const links: FooterLink[] = [
       { name: "Home", path: "/" },
-      { name: "Contact Us (todo)", path: "https://google.ca", target: "_blank" },
-      { name: "Disclaimer (todo)", path: "https://google.ca", target: "_blank" },
-      { name: "Privacy (todo)", path: "https://google.ca", target: "_blank" },
-      { name: "Accessibility (todo)", path: "https://google.ca", target: "_blank" },
-      { name: "Copyright (todo)", path: "https://google.ca", target: "_blank" },
+      { name: "Contact Us", path: "/messages" },
+      { name: "Terms of Use", path: "/terms-of-use" },
+      { name: "Disclaimer", path: "https://www2.gov.bc.ca/gov/content?id=79F93E018712422FBC8E674A67A70535", target: "_blank" },
+      { name: "Privacy", path: "https://www2.gov.bc.ca/gov/content?id=9E890E16955E4FF4BF3B0E07B4722932", target: "_blank" },
+      { name: "Accessibility", path: "https://www2.gov.bc.ca/gov/content?id=E08E79740F9C41B9B0C484685CC5E412", target: "_blank" },
+      { name: "Copyright", path: "https://www2.gov.bc.ca/gov/content?id=1AAACC9C65754E4D89A118B875E0FBDA", target: "_blank" },
     ];
     return { links, smAndUp, route };
   },

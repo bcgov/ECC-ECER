@@ -78,7 +78,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_AreAllRead = "ecer_areallread";
 			public const string ecer_areallreadName = "ecer_areallreadname";
 			public const string ecer_bcgov_documenturl_CommunicationId_ecer_communication = "ecer_bcgov_documenturl_CommunicationId_ecer_communication";
+			public const string ecer_BulkPSPCommunication = "ecer_bulkpspcommunication";
+			public const string ecer_BulkPSPCommunicationName = "ecer_bulkpspcommunicationname";
 			public const string ecer_communication_Applicationid = "ecer_communication_Applicationid";
+			public const string ecer_communication_ecer_bulkpspcommunication = "ecer_communication_ecer_bulkpspcommunication";
 			public const string ecer_communication_EducationInstitutionId = "ecer_communication_EducationInstitutionId";
 			public const string ecer_communication_ICRAEligibilityAssessmentId = "ecer_communication_ICRAEligibilityAssessmentId";
 			public const string ecer_communication_Investigation_ecer_investig = "ecer_communication_Investigation_ecer_investig";
@@ -460,6 +463,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_areallread"))
 				{
 					return this.FormattedValues["ecer_areallread"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkpspcommunication")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_BulkPSPCommunication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_bulkpspcommunication");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_bulkpspcommunication", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkpspcommunicationname")]
+		public string ecer_BulkPSPCommunicationName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_bulkpspcommunication"))
+				{
+					return this.FormattedValues["ecer_bulkpspcommunication"];
 				}
 				else
 				{
@@ -1983,6 +2018,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_Application>("ecer_communication_Applicationid", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_communication_ecer_bulkpspcommunication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkpspcommunication")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ecer_bulkpspcommunication")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication ecer_communication_ecer_bulkpspcommunication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication>("ecer_communication_ecer_bulkpspcommunication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication>("ecer_communication_ecer_bulkpspcommunication", null, value);
 			}
 		}
 		

@@ -32,14 +32,7 @@
             </v-col>
         </v-row>
 
-        <v-row class="mb-3">
-            <v-col cols="12" sm="3">
-                <span>ECE school or department:</span>
-            </v-col>
-            <v-col cols="12" sm="9">
-                <span class="font-weight-bold">{{ eceSchoolOrDepartment }}</span>
-            </v-col>
-        </v-row>
+
 
         <v-row>
             <v-col cols="12" sm="3">
@@ -102,9 +95,6 @@ export default defineComponent({
             }
 
             return parts.length > 0 ? parts.join(", ") : "—";
-        },
-        eceSchoolOrDepartment(): string {
-            return "Not available on Education Institution in Dynamics";
         },
     },
 });
