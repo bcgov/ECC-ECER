@@ -194,6 +194,7 @@ declare namespace Components {
             latestMessageNotifiedOn?: string | null; // date-time
             isRead?: boolean | null;
             applicationId?: string | null;
+            icraEligibilityId?: string | null;
             documents?: CommunicationDocument[] | null;
         }
         export interface CommunicationDocument {
