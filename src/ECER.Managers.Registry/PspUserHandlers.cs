@@ -22,7 +22,8 @@ public class PspUserHandlers(
     IServiceProvider serviceProvider)
   : IRequestHandler<SearchPspRepQuery, PspRepQueryResults>,
     IRequestHandler<UpdatePspRepProfileCommand, string>,
-    IRequestHandler<RegisterPspUserCommand, RegisterPspUserResult>
+    IRequestHandler<RegisterPspUserCommand, RegisterPspUserResult>,
+    IRequestHandler<DeactivatePspRepCommand, string>
 {
   /// <summary>
   /// Handles search psp program rep use case
@@ -61,6 +62,26 @@ public class PspUserHandlers(
     await pspRepRepository.Save(new Resources.Accounts.PspReps.PspUser { Id = request.User.Id, Profile = profile }, cancellationToken); 
     
     return request.User.Id;
+  }
+
+  /// <summary>
+  /// Handles deactivating a psp user use case
+  /// </summary>
+  public async Task<string> Handle(DeactivatePspRepCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var pspUser = (await pspRepRepository.Query(new PspRepQuery
+    {
+      ById = request.ProgramRepresentativeId
+    }, cancellationToken)).SingleOrDefault();
+
+    if (pspUser == null) throw new InvalidOperationException($"Psp user with id {request.ProgramRepresentativeId} not found");
+
+    ecerContext.BeginTransaction();
+    await pspRepRepository.Deactivate(request.ProgramRepresentativeId, cancellationToken);
+    ecerContext.CommitTransaction();
+    return request.ProgramRepresentativeId;
   }
   
   /// <summary>

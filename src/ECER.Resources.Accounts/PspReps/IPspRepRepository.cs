@@ -22,6 +22,11 @@ public interface IPspRepRepository
   /// Saves a Psp representative's profile - Psp representative must exist
   /// </summary>
   Task Save(PspUser user, CancellationToken ct);
+
+  /// <summary>
+  /// Disables portal access for a Psp representative and removes authentication
+  /// </summary>
+  Task Deactivate(string pspUserId, CancellationToken ct);
 }
 
 public record PspRepQuery

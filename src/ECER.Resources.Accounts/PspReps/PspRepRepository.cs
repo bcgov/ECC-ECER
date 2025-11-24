@@ -27,6 +27,9 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
       ecer_IdentityProvider = identity.IdentityProvider
     };
 
+    // On registration, enable portal access and persist with the authentication link
+    pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Active;
+    context.UpdateObject(pspUser);
     context.AddObject(authentication);
     context.AddLink(pspUser, ecer_Authentication.Fields.ecer_authentication_eceprogramrepresentative, authentication);
 
@@ -66,7 +69,7 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
     
     return mapper.Map<IEnumerable<PspUser>>(results).ToList();
   }
-
+  
   public async Task Save(PspUser user, CancellationToken ct)
   {
     if(!Guid.TryParse(user.Id, out var userId)) throw new InvalidOperationException($"PSP Program Rep id {user.Id} is not a valid GUID");
@@ -98,5 +101,27 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
     context.UpdateObject(pspUser);
     context.SaveChanges();
     await Task.CompletedTask;
+  }
+
+  public async Task Deactivate(string pspUserId, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    if (!Guid.TryParse(pspUserId, out var userId)) throw new InvalidOperationException($"PSP Program Rep id {pspUserId} is not a valid GUID");
+
+    var pspUser = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == userId);
+    if (pspUser == null) throw new InvalidOperationException($"Psp Program Rep with id {pspUserId} not found");
+
+    pspUser.ecer_AccessToPortal = ecer_AccessToPortal.Disabled;
+    context.UpdateObject(pspUser);
+
+    var authentications = context.ecer_AuthenticationSet.Where(authentication =>
+      authentication.ecer_eceprogramrepresentative != null && authentication.ecer_eceprogramrepresentative.Id == userId).ToList();
+
+    foreach (var authentication in authentications)
+    {
+      context.DeleteObject(authentication);
+    }
+
+    context.SaveChanges();
   }
 }

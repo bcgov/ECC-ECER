@@ -88,3 +88,8 @@ public enum RegisterPspUserError
 }
 
 public record UpdatePspRepProfileCommand(PspUser User) : IRequest<string>;
+
+/// <summary>
+/// Request to deactivate a PSP program representative
+/// </summary>
+public record DeactivatePspRepCommand(string ProgramRepresentativeId) : IRequest<string>;
