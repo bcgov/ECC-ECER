@@ -29,6 +29,7 @@ const ecerTheme: ThemeDefinition = {
     "alert-error": "#F4E1E2",
     "alert-success": "#99ff99",
     "support-surface-info": "#F7F9FC",
+    "support-border-info": "#053662",
   },
 };
 
