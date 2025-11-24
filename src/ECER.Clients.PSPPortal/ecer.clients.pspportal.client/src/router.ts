@@ -91,6 +91,12 @@ const router = createRouter({
       name: "access-denied",
     },
     {
+      path: "/terms-of-use",
+      component: () => import("./components/pages/PageNotFound.vue"),
+      meta: { requiresAuth: false },
+      name: "terms-of-use",
+    },
+    {
       path: "/logout-callback",
       component: () => import("./components/pages/LogoutCallback.vue"),
       meta: { requiresAuth: false },
