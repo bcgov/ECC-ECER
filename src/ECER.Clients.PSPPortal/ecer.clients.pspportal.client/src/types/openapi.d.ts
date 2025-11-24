@@ -39,6 +39,7 @@ declare namespace Components {
       scope?: string | null;
       idp?: string | null;
     }
+    export type PortalAccessStatus = "Invited" | "Active" | "Disabled";
     export interface PortalInvitation {
       id?: string | null;
       pspProgramRepresentativeId?: string | null;
@@ -69,6 +70,12 @@ declare namespace Components {
      */
     export interface PspRegistrationErrorResponse {
       errorCode?: /* Error codes for PSP user registration failures */ PspRegistrationError;
+    }
+    export interface PspUserListItem {
+      id?: string | null;
+      profile?: /* User profile information */ PspUserProfile;
+      accessToPortal?: PortalAccessStatus;
+      postSecondaryInstituteId?: string | null;
     }
     /**
      * User profile information
@@ -128,6 +135,12 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace PspUserManageGet {
+    namespace Responses {
+      export type $200 = Components.Schemas.PspUserListItem[];
+      export interface $404 {}
+    }
+  }
   namespace PspUserProfileGet {
     namespace Responses {
       export type $200 = /* User profile information */ Components.Schemas.PspUserProfile;
@@ -172,6 +185,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.VersionGet.Responses.$200>;
+  /**
+   * psp_user_manage_get - Gets PSP representatives for the current user's institution
+   */
+  "psp_user_manage_get"(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.PspUserManageGet.Responses.$200>;
   /**
    * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
    */
@@ -231,6 +252,16 @@ export interface PathsDictionary {
      */
     "get"(parameters?: Parameters<UnknownParamsObject> | null, data?: any, config?: AxiosRequestConfig): OperationResponse<Paths.VersionGet.Responses.$200>;
   };
+  ["/api/users/manage"]: {
+    /**
+     * psp_user_manage_get - Gets PSP representatives for the current user's institution
+     */
+    "get"(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PspUserManageGet.Responses.$200>;
+  };
   ["/api/users/profile"]: {
     /**
      * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
@@ -289,11 +320,13 @@ export type EducationInstitution = Components.Schemas.EducationInstitution;
 export type HttpValidationProblemDetails = Components.Schemas.HttpValidationProblemDetails;
 export type InviteType = Components.Schemas.InviteType;
 export type OidcAuthenticationSettings = Components.Schemas.OidcAuthenticationSettings;
+export type PortalAccessStatus = Components.Schemas.PortalAccessStatus;
 export type PortalInvitation = Components.Schemas.PortalInvitation;
 export type PortalInvitationQueryResult = Components.Schemas.PortalInvitationQueryResult;
 export type ProblemDetails = Components.Schemas.ProblemDetails;
 export type PspRegistrationError = Components.Schemas.PspRegistrationError;
 export type PspRegistrationErrorResponse = Components.Schemas.PspRegistrationErrorResponse;
+export type PspUserListItem = Components.Schemas.PspUserListItem;
 export type PspUserProfile = Components.Schemas.PspUserProfile;
 export type PspUserRole = Components.Schemas.PspUserRole;
 export type RegisterPspUserRequest = Components.Schemas.RegisterPspUserRequest;
