@@ -104,7 +104,7 @@ export default defineComponent({
       const currentRouteName = this.route.name as string;
 
       // Add certification type selection (for new applications)
-      if (!this.applicationStore.isDraftApplicationRenewal && !this.applicationStore.isDraftApplicationLaborMobility) {
+      if (!this.applicationStore.isDraftApplicationRenewal && !this.applicationStore.isDraftApplicationLaborMobility && !this.applicationStore.isDraftApplicationIcra) {
         const step = {
           title: "Apply for new certification",
           disabled: currentRouteName === "application-certification",

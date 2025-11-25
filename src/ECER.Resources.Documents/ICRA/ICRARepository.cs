@@ -63,6 +63,12 @@ internal sealed partial class ICRARepository : IICRARepository
     if (applicant == null) throw new InvalidOperationException($"Applicant '{iCRAEligibility.ApplicantId}' not found");
 
     var icraEligibility = mapper.Map<ecer_ICRAEligibilityAssessment>(iCRAEligibility)!;
+
+    if (iCRAEligibility.Origin != null)
+    {
+      icraEligibility.ecer_Origin = mapper.Map<ecer_Origin>(iCRAEligibility.Origin);
+    }
+
     if (!icraEligibility.ecer_ICRAEligibilityAssessmentId.HasValue)
     {
       icraEligibility.ecer_ICRAEligibilityAssessmentId = Guid.NewGuid();
@@ -76,6 +82,7 @@ internal sealed partial class ICRARepository : IICRARepository
       if (existingIcraEligibility == null || existingIcraEligibility.StatusCode != ecer_ICRAEligibilityAssessment_StatusCode.Draft) throw new InvalidOperationException($"ecer_ICRAEligibilityAssessmentId '{icraEligibility.ecer_ICRAEligibilityAssessmentId}' not found or is not draft!");
 
       if (icraEligibility.ecer_DateSigned.HasValue && existingIcraEligibility.ecer_DateSigned.HasValue) icraEligibility.ecer_DateSigned = existingIcraEligibility.ecer_DateSigned;
+      if (icraEligibility.ecer_ApplicantUnderstandAgreesApplication.HasValue && existingIcraEligibility.ecer_ApplicantUnderstandAgreesApplication.HasValue) icraEligibility.ecer_ApplicantUnderstandAgreesApplication = existingIcraEligibility.ecer_ApplicantUnderstandAgreesApplication;
 
       icraEligibility.ecer_ICRAEligibilityAssessmentId = existingIcraEligibility.ecer_ICRAEligibilityAssessmentId;
       context.Detach(existingIcraEligibility);

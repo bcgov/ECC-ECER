@@ -48,13 +48,13 @@ internal class Program
         });
         opts.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
+          {
+            new OpenApiSecurityScheme
             {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
-                },
-                []
-            }
+              Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
+            },
+            new List<string>() 
+          }
         });
         opts.UseOneOfForPolymorphism();
       });
@@ -87,9 +87,16 @@ internal class Program
         {
           policy
             .AddAuthenticationSchemes("kc")
-            .RequireClaim(PSPPortalClaims.IdenityProvider)
-            .RequireClaim(ClaimTypes.Name)
+            .RequireClaim(PSPPortalClaims.IdentityProvider)
+            .RequireAuthenticatedUser();
+        })
+        .AddPolicy("psp_user_has_accepted_terms", policy =>
+        {
+          policy
+            .AddAuthenticationSchemes("kc")
+            .RequireClaim(PSPPortalClaims.IdentityProvider)
             .RequireClaim(PSPPortalClaims.UserId)
+            .RequireClaim(PSPPortalClaims.TermsOfUse, "true")
             .RequireAuthenticatedUser();
         });
 

@@ -3,3 +3,4 @@
 .vscode
 src/key-*.xml
 .env
+.envrc

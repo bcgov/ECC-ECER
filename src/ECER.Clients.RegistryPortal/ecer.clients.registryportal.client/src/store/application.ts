@@ -14,6 +14,7 @@ import applicationWizardRenewOneYearActive from "@/config/application-wizard-ren
 import applicationWizardRenewOneYearExpired from "@/config/application-wizard-renew-one-year-expired";
 import applicationWizardLaborMobilityAssistantAndOneYear from "@/config/application-wizard-labor-mobility-assistant-and-one-year";
 import applicationWizardLaborMobilityFiveYear from "@/config/application-wizard-labor-mobility-five-year";
+import applicationWizardIcraFiveYear from "@/config/icra-eligibility/application-wizard-icra-five-year";
 import type { Components } from "@/types/openapi";
 import type { ApplicationStage, Wizard } from "@/types/wizard";
 import { expiredMoreThan5Years, humanFileSize } from "@/utils/functions";
@@ -52,7 +53,11 @@ export type ApplicationFlow =
   | "FiveYearWithIteAndSneRegistrant"
   | "IteRegistrant"
   | "SneRegistrant"
-  | "IteAndSneRegistrant";
+  | "IteAndSneRegistrant"
+  | "IcraFiveYear"
+  | "IcraFiveYearWithIteAndSne"
+  | "IcraFiveYearWithIte"
+  | "IcraFiveYearWithSne";
 
 export const useApplicationStore = defineStore("application", {
   state: (): ApplicationState => ({
@@ -136,6 +141,9 @@ export const useApplicationStore = defineStore("application", {
     isDraftApplicationLaborMobility(state): boolean {
       return state.draftApplication.applicationType === "LabourMobility";
     },
+    isDraftApplicationIcra(state): boolean {
+      return state.draftApplication.applicationType === "ICRA";
+    },
     applicationConfiguration(): Wizard {
       switch (this.draftApplicationFlow) {
         case "Assistant":
@@ -143,6 +151,11 @@ export const useApplicationStore = defineStore("application", {
         case "OneYear":
         case "OneYearRegistrant":
           return applicationWizardAssistantAndOneYear;
+        case "IcraFiveYear":
+        case "IcraFiveYearWithIte":
+        case "IcraFiveYearWithSne":
+        case "IcraFiveYearWithIteAndSne":
+          return applicationWizardIcraFiveYear;
         case "FiveYear":
         case "FiveYearWithIte":
         case "FiveYearWithSne":
@@ -182,6 +195,13 @@ export const useApplicationStore = defineStore("application", {
       const certificationStore = useCertificationStore();
       const fromCertificate = certificationStore.getCertificationById(state.draftApplication.fromCertificate);
 
+      // ICRA flows
+      if (state.draftApplication.applicationType === "ICRA") {
+        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte && this.isDraftCertificateTypeSne) return "IcraFiveYearWithIteAndSne";
+        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeIte) return "IcraFiveYearWithIte";
+        if (this.isDraftCertificateTypeFiveYears && this.isDraftCertificateTypeSne) return "IcraFiveYearWithSne";
+        if (this.isDraftCertificateTypeFiveYears) return "IcraFiveYear";
+      }
       // RENEWAL flows
       if (state.draftApplication.applicationType === "Renewal") {
         if (this.isDraftCertificateTypeEceAssistant) return "AssistantRenewal";
@@ -258,6 +278,9 @@ export const useApplicationStore = defineStore("application", {
       }
       return certificationType;
     },
+    hasIcraApplication(state) {
+      return state.applications?.some((app) => app.applicationType === "ICRA") ?? false;
+    },
   },
   actions: {
     async fetchApplications() {
@@ -267,9 +290,9 @@ export const useApplicationStore = defineStore("application", {
       const { data: applications } = await getApplications();
 
       const filteredApplications = applications?.filter((application) => application.status !== "Decision" && application.status !== "Complete");
+      this.applications = applications;
       // Load the first application as the current draft application
       if (filteredApplications?.length && filteredApplications.length > 0) {
-        this.applications = applications;
         this.application = filteredApplications[0];
 
         const draftApplication = filteredApplications.find((app) => app.status === "Draft");

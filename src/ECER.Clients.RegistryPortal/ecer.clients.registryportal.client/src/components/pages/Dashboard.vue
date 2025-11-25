@@ -67,19 +67,23 @@
       <v-row v-if="applications && userStore.isVerified && (showApplicationCard || showIcraEligibilityCard)" justify="center">
         <v-col>
           <v-row>
-            <v-col v-if="showIcraEligibilityCard" cols="12" :sm="showTransferCard ? 6 : 12">
-              <IcraEligibilityCard @cancel-application="showCancelDialog = true" />
-            </v-col>
-            <v-col v-else-if="showApplicationCard" cols="12" :sm="showTransferCard ? 6 : 12">
+            <v-col v-if="showApplicationCard" cols="12" :sm="showTransferCard ? 6 : 12">
               <ApplicationCard @cancel-application="showCancelDialog = true" />
             </v-col>
             <v-col v-if="showTransferCard" cols="12" sm="6">
               <TransferCard />
             </v-col>
-            <v-col v-if="showIcraCard" cols="12" sm="6">
-              <IcraCard />
+            <v-col v-if="showIcraEligibilityCard" cols="12" :sm="showTransferCard ? 6 : 12">
+              <IcraEligibilityCard />
             </v-col>
           </v-row>
+        </v-col>
+      </v-row>
+
+      <!-- Specific section for ICRA Eligibility Step 2 beginning -->
+      <v-row v-if="userStore.isVerified && showIcraEligibilityStep2StartCard" justify="center">
+        <v-col>
+          <IcraEligibilityStep2StartCard />
         </v-col>
       </v-row>
 
@@ -175,7 +179,13 @@
                 </div>
               </Card>
             </v-col>
-            <v-col v-if="configurationStore.applicationConfiguration.icraFeatureEnabled" class="d-flex" cols="12" sm="6" md="4">
+            <v-col
+              v-if="configurationStore.applicationConfiguration.icraFeatureEnabled && !icraStore.hasApprovedIcraEligibility"
+              class="d-flex"
+              cols="12"
+              sm="6"
+              md="4"
+            >
               <Card class="d-flex flex-column">
                 <h2>Apply with international certification</h2>
                 <p class="mt-4">
@@ -223,8 +233,8 @@ import ActionCard from "@/components/ActionCard.vue";
 import Alert from "@/components/Alert.vue";
 import ApplicationCard from "@/components/ApplicationCard.vue";
 import TransferCard from "@/components/TransferCard.vue";
-import IcraCard from "@/components/IcraCard.vue";
 import IcraEligibilityCard from "@/components/IcraEligibilityCard.vue";
+import IcraEligibilityStep2StartCard from "../IcraEligibilityStep2StartCard.vue";
 import CertificationCard from "@/components/CertificationCard.vue";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
@@ -250,8 +260,8 @@ export default defineComponent({
     PageContainer,
     ApplicationCard,
     TransferCard,
-    IcraCard,
     IcraEligibilityCard,
+    IcraEligibilityStep2StartCard,
     CertificationCard,
     ECEHeader,
     ActionCard,
@@ -343,6 +353,15 @@ export default defineComponent({
         return false;
       }
 
+      if (this.icraStore.hasIcraEligibilityInProcess) {
+        return false;
+      }
+
+      //if we have an approved icra eligibility and user has not submitted one yet then they need to continue their application do not show transfer card
+      if (this.icraStore.hasApprovedIcraEligibility && !this.applicationStore.hasIcraApplication) {
+        return false;
+      }
+
       return (
         this.applicationStore.applicationStatus === undefined ||
         this.applicationStore.applicationStatus === "Draft" ||
@@ -350,6 +369,11 @@ export default defineComponent({
       );
     },
     showTransferCard(): boolean {
+      //if we have an approved icra eligibility and user has not submitted one yet then they need to continue their application do not show transfer card
+      if (!this.applicationStore.hasIcraApplication && this.icraStore.hasApprovedIcraEligibility) {
+        return false;
+      }
+
       return (
         !this.certificationStore.hasCertifications &&
         !this.applicationStore.hasApplication &&
@@ -358,20 +382,36 @@ export default defineComponent({
         !this.icraStore.hasSubmittedIcraEligibility
       );
     },
-    showIcraCard(): boolean {
-      return (
-        (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) &&
-        !this.applicationStore.hasApplication &&
-        !this.applicationStore.hasDraftApplication &&
-        !this.icraStore.hasDraftIcraEligibility &&
-        !this.icraStore.hasSubmittedIcraEligibility
-      );
-    },
     showIcraEligibilityCard(): boolean {
-      return (
-        (this.configurationStore.applicationConfiguration.icraFeatureEnabled ?? false) &&
-        (this.icraStore.hasDraftIcraEligibility || this.icraStore.hasSubmittedIcraEligibility)
-      );
+      if (this.configurationStore.applicationConfiguration.icraFeatureEnabled === false) {
+        return false;
+      }
+      if (this.certificationStore.hasCertifications && this.icraStore.icraEligibilityStatus === undefined) {
+        return false;
+      }
+      if (this.icraStore.hasApprovedIcraEligibility) {
+        return false;
+      }
+      // do not show if there is an application in process
+      if (this.applicationStore.hasApplication || this.applicationStore.hasDraftApplication) {
+        return false;
+      }
+      if (this.icraStore.hasIcraEligibilityInProcess || this.icraStore.icraEligibilityStatus === undefined) {
+        return true;
+      }
+      return false;
+    },
+    showIcraEligibilityStep2StartCard(): boolean {
+      if (this.configurationStore.applicationConfiguration.icraFeatureEnabled === false) {
+        return false;
+      }
+
+      //if we have an approved icra eligibility and user has not submitted one yet then they need to start their application
+      if (this.icraStore.hasApprovedIcraEligibility && !this.applicationStore.hasIcraApplication) {
+        return true;
+      }
+
+      return false;
     },
     showLoading(): boolean {
       return (

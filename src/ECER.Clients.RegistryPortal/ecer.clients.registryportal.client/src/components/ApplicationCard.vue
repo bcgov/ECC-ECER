@@ -14,7 +14,9 @@
           <v-icon size="large" icon="mdi-arrow-right" />
           Open application
         </v-btn>
-        <v-btn class="ma-0" size="large" variant="outlined" color="white" @click="$emit('cancel-application')">Cancel application</v-btn>
+        <v-btn v-if="showCancelButton" class="ma-0" size="large" variant="outlined" color="white" @click="$emit('cancel-application')">
+          Cancel application
+        </v-btn>
       </v-card-actions>
 
       <!-- Application status Submitted, Ready, In Progress, Pending Queue -->
@@ -99,6 +101,9 @@ export default defineComponent({
         default:
           return "There are different types of certifications you can apply for. Visit the B.C. government website to learn about the types of Early Childhood Educator (ECE) certificates and which one you may qualify for.";
       }
+    },
+    showCancelButton(): boolean {
+      return !this.applicationStore.isDraftApplicationIcra;
     },
   },
   methods: {

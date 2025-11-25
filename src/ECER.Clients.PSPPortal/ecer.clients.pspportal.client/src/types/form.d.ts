@@ -3,9 +3,24 @@ import type { Input } from "@/types/input";
 interface Form {
   id: string;
   title: string;
-  inputs: {
-    [id: string]: Input;
+  components: {
+    [id: string]: Component;
   };
+}
+
+// Extend Input to include needsModelValue field
+// If Input is defined elsewhere, you may need to use module augmentation
+// For now, assuming we can add this to the Input type definition
+interface Component {
+  id: string;
+  component: any;
+  props?: Record<string, any>;
+  cols: {
+    md?: number;
+    lg?: number;
+    xl?: number;
+  };
+  isInput?: boolean;
 }
 
 // Wrap any type to type a dropdown list for v-select and v-autocomplete

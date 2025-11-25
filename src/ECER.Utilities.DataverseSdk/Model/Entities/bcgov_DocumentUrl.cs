@@ -139,6 +139,7 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
 			public const string ecer_ApplicationId = "ecer_applicationid";
 			public const string ecer_ApplicationIdName = "ecer_applicationidname";
+			public const string ecer_bcgov_documenturl_BulkPSPCommunicationId = "ecer_bcgov_documenturl_BulkPSPCommunicationId";
 			public const string ecer_bcgov_documenturl_CertificateSummaryId = "ecer_bcgov_documenturl_CertificateSummaryId";
 			public const string ecer_bcgov_documenturl_CommunicationId_ecer_communication = "ecer_bcgov_documenturl_CommunicationId_ecer_communication";
 			public const string ecer_bcgov_documenturl_icraeligibilityassessmentid = "ecer_bcgov_documenturl_icraeligibilityassessmentid";
@@ -150,6 +151,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute = "ecer_bcgov_documenturl_psiid_ecer_postsecondaryinstitute";
 			public const string ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos = "ecer_bcgov_documenturl_PSPSiteVisitId_ecer_pos";
 			public const string ecer_bcgov_documenturl_TranscriptId = "ecer_bcgov_documenturl_TranscriptId";
+			public const string ecer_BulkPSPCommunicationId = "ecer_bulkpspcommunicationid";
+			public const string ecer_BulkPSPCommunicationIdName = "ecer_bulkpspcommunicationidname";
 			public const string ecer_CertificateId = "ecer_certificateid";
 			public const string ecer_CertificateIdName = "ecer_certificateidname";
 			public const string ecer_certificatesummary_DocumentURL_bcgov_documenturl = "ecer_certificatesummary_DocumentURL_bcgov_documenturl";
@@ -991,6 +994,38 @@ namespace ECER.Utilities.DataverseSdk.Model
 				if (this.FormattedValues.Contains("ecer_applicationid"))
 				{
 					return this.FormattedValues["ecer_applicationid"];
+				}
+				else
+				{
+					return default(string);
+				}
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkpspcommunicationid")]
+		public Microsoft.Xrm.Sdk.EntityReference ecer_BulkPSPCommunicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("ecer_bulkpspcommunicationid");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetAttributeValue("ecer_bulkpspcommunicationid", value);
+			}
+		}
+		
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkpspcommunicationidname")]
+		public string ecer_BulkPSPCommunicationIdName
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				if (this.FormattedValues.Contains("ecer_bulkpspcommunicationid"))
+				{
+					return this.FormattedValues["ecer_bulkpspcommunicationid"];
 				}
 				else
 				{
@@ -2049,6 +2084,25 @@ namespace ECER.Utilities.DataverseSdk.Model
 			set
 			{
 				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.bcgov_tag>("bcgov_tag3_bcgov_documenturl", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// N:1 ecer_bcgov_documenturl_BulkPSPCommunicationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_bulkpspcommunicationid")]
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_BulkPSPCommunicationId")]
+		public ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication ecer_bcgov_documenturl_BulkPSPCommunicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication>("ecer_bcgov_documenturl_BulkPSPCommunicationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntity<ECER.Utilities.DataverseSdk.Model.ecer_BulkPSPCommunication>("ecer_bcgov_documenturl_BulkPSPCommunicationId", null, value);
 			}
 		}
 		

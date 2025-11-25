@@ -18,14 +18,13 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 
-import FormContainer from "@/components/FormContainer.vue";
 import PageContainer from "@/components/PageContainer.vue";
 import profileInformationForm from "@/config/profile-information-form";
 import type { Form } from "@/types/form";
 
 export default defineComponent({
   name: "EcerForm",
-  components: { FormContainer, PageContainer },
+  components: { PageContainer },
   props: {
     form: {
       type: Object as PropType<Form>,

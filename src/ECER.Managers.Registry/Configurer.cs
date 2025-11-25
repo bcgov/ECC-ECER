@@ -1,11 +1,11 @@
 ﻿using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Registrants;
-using ECER.Managers.Registry.PortalInvitations;
 using ECER.Managers.Registry.UserRegistrationIdentityService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Diagnostics.CodeAnalysis;
+using ECER.Managers.Registry.PortalInvitations;
 
 namespace ECER.Managers.Registry;
 

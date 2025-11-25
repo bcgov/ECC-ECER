@@ -63,8 +63,10 @@ namespace ECER.Utilities.DataverseSdk.Model
 			public const string CreatedOnBehalfBy = "createdonbehalfby";
 			public const string CreatedOnBehalfByName = "createdonbehalfbyname";
 			public const string CreatedOnBehalfByYomiName = "createdonbehalfbyyominame";
+			public const string ecer_bcgov_documenturl_BulkPSPCommunicationId = "ecer_bcgov_documenturl_BulkPSPCommunicationId";
 			public const string ecer_BulkPSPCommunicationId = "ecer_bulkpspcommunicationid";
 			public const string Id = "ecer_bulkpspcommunicationid";
+			public const string ecer_communication_ecer_bulkpspcommunication = "ecer_communication_ecer_bulkpspcommunication";
 			public const string ecer_CommunicationType = "ecer_communicationtype";
 			public const string ecer_communicationtypeName = "ecer_communicationtypename";
 			public const string ecer_LastCommunicationSentOn = "ecer_lastcommunicationsenton";
@@ -295,8 +297,8 @@ namespace ECER.Utilities.DataverseSdk.Model
 		}
 		
 		/// <summary>
-		/// 1. Annual Reminder - Program Profile :  Annual Reminder to all Program Representatives listed on the contact list for each PSI (for all approved profiles) 
-///2. Monthly Reminder - Program Profile : PSP reps within an Education Institution to submit program profile by Sept 1  - only to be sent to those who haven’t yet submitted for current academic year
+		/// 1. Annual Reminder - Program Profile :  Annual Reminder to all Program Representatives listed on the contact list for each Education Institution to publish
+///2. Monthly Reminder - Program Profile : Program Representatives within an Education Institution to submit program profile -only to be sent to those who haven’t yet submitted for current academic year
 		/// </summary>
 		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("ecer_communicationtype")]
 		public virtual ecer_BulkPSPCommunicationType? ecer_CommunicationType
@@ -865,6 +867,42 @@ namespace ECER.Utilities.DataverseSdk.Model
 			get
 			{
 				return this.GetAttributeValue<System.Nullable<long>>("versionnumber");
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_bcgov_documenturl_BulkPSPCommunicationId
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_bcgov_documenturl_BulkPSPCommunicationId")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl> ecer_bcgov_documenturl_BulkPSPCommunicationId
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_BulkPSPCommunicationId", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.bcgov_DocumentUrl>("ecer_bcgov_documenturl_BulkPSPCommunicationId", null, value);
+			}
+		}
+		
+		/// <summary>
+		/// 1:N ecer_communication_ecer_bulkpspcommunication
+		/// </summary>
+		[Microsoft.Xrm.Sdk.RelationshipSchemaNameAttribute("ecer_communication_ecer_bulkpspcommunication")]
+		public System.Collections.Generic.IEnumerable<ECER.Utilities.DataverseSdk.Model.ecer_Communication> ecer_communication_ecer_bulkpspcommunication
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_ecer_bulkpspcommunication", null);
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.SetRelatedEntities<ECER.Utilities.DataverseSdk.Model.ecer_Communication>("ecer_communication_ecer_bulkpspcommunication", null, value);
 			}
 		}
 		

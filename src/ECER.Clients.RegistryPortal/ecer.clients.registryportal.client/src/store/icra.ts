@@ -44,6 +44,18 @@ export const useIcraStore = defineStore("icra", {
         state.icraEligibility?.status === "ReadyforAssessment"
       );
     },
+    hasIcraEligibilityInProcess(state): boolean {
+      return (
+        state.icraEligibility?.status === "Submitted" ||
+        state.icraEligibility?.status === "InReview" ||
+        state.icraEligibility?.status === "ReadyforReview" ||
+        state.icraEligibility?.status === "ReadyforAssessment" ||
+        state.icraEligibility?.status === "Draft"
+      );
+    },
+    hasApprovedIcraEligibility(state): boolean {
+      return state.icraEligibilities?.some((eligibility) => eligibility.status === "Eligible") ?? false;
+    },
   },
   actions: {
     async fetchIcraEligibilities() {
@@ -55,9 +67,9 @@ export const useIcraStore = defineStore("icra", {
       const filteredIcraEligibilities = icraEligibilities?.filter(
         (icraEligibility) => icraEligibility.status !== "Eligible" && icraEligibility.status !== "Ineligible" && icraEligibility.status !== "Inactive",
       );
+      this.icraEligibilities = icraEligibilities;
       // Load the first icra eligibility as the current draft icra eligibility
       if (filteredIcraEligibilities?.length && filteredIcraEligibilities.length > 0) {
-        this.icraEligibilities = icraEligibilities;
         this.icraEligibility = filteredIcraEligibilities[0];
 
         const draftIcraEligibility = filteredIcraEligibilities.find(
