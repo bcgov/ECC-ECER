@@ -14,6 +14,7 @@ public record RegisterNewPspUserCommand(string Id, PspUserProfile Profile, UserI
 /// </summary>
 public record SearchPspRepQuery : IRequest<PspRepQueryResults>
 {
+  public string? ById { get; set; }
   public UserIdentity? ByUserIdentity { get; set; }
   public string? ByPostSecondaryInstituteId { get; set; }
 }
@@ -93,3 +94,8 @@ public record UpdatePspRepProfileCommand(PspUser User) : IRequest<string>;
 /// Request to deactivate a PSP program representative
 /// </summary>
 public record DeactivatePspRepCommand(string ProgramRepresentativeId) : IRequest<string>;
+
+/// <summary>
+/// Request to set a PSP program representative as Primary for their institution
+/// </summary>
+public record SetPrimaryPspRepCommand(string ProgramRepresentativeId) : IRequest<string>;

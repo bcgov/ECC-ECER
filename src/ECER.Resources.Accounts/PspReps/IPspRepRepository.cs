@@ -27,6 +27,11 @@ public interface IPspRepRepository
   /// Disables portal access for a Psp representative and removes authentication
   /// </summary>
   Task Deactivate(string pspUserId, CancellationToken ct);
+
+  /// <summary>
+  /// Sets the specified Psp representative as Primary and others in the same institution to Secondary
+  /// </summary>
+  Task SetPrimary(string pspUserId, CancellationToken ct);
 }
 
 public record PspRepQuery

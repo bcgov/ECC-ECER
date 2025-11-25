@@ -61,6 +61,34 @@ public class ManageUsersEndpoints : IRegisterEndpoints
       .WithOpenApi("Deactivates a PSP representative for the current user's institution", string.Empty, "psp_user_manage_deactivate_post")
       .RequireAuthorization("psp_user")
       .WithParameterValidation();
+
+    endpointRouteBuilder.MapPost("api/users/manage/{programRepId}/set-primary",
+      async Task<Results<Ok, NotFound>> (string programRepId, HttpContext ctx, CancellationToken ct, IMediator bus) =>
+      {
+        if (!Guid.TryParse(programRepId, out _))
+        {
+          return TypedResults.NotFound();
+        }
+
+        var user = ctx.User.GetUserContext()!;
+        var currentRep = (await bus.Send<PspRepQueryResults>(new SearchPspRepQuery { ByUserIdentity = user.Identity }, ct)).Items.SingleOrDefault();
+        if (currentRep == null || string.IsNullOrWhiteSpace(currentRep.PostSecondaryInstituteId))
+        {
+          return TypedResults.NotFound();
+        }
+
+        var targetRep = (await bus.Send<PspRepQueryResults>(new SearchPspRepQuery { ById = programRepId }, ct)).Items.SingleOrDefault();
+        if (targetRep == null || targetRep.PostSecondaryInstituteId != currentRep.PostSecondaryInstituteId)
+        {
+          return TypedResults.NotFound();
+        }
+
+        await bus.Send(new SetPrimaryPspRepCommand(programRepId), ct);
+        return TypedResults.Ok();
+      })
+      .WithOpenApi("Sets the specified PSP representative as Primary for the current user's institution", string.Empty, "psp_user_manage_set_primary_post")
+      .RequireAuthorization("psp_user")
+      .WithParameterValidation();
   }
 }
 

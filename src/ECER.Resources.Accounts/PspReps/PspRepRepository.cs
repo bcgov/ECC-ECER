@@ -124,4 +124,28 @@ internal sealed class PspRepRepository(EcerContext context, IMapper mapper) : IP
 
     context.SaveChanges();
   }
+
+  public async Task SetPrimary(string pspUserId, CancellationToken ct)
+  {
+    await Task.CompletedTask;
+    if (!Guid.TryParse(pspUserId, out var userId)) throw new InvalidOperationException($"PSP Program Rep id {pspUserId} is not a valid GUID");
+
+    var targetRep = context.ecer_ECEProgramRepresentativeSet.SingleOrDefault(r => r.Id == userId);
+    if (targetRep == null) throw new InvalidOperationException($"Psp Program Rep with id {pspUserId} not found");
+
+    var institutionId = targetRep.ecer_PostSecondaryInstitute?.Id;
+    if (institutionId == null) throw new InvalidOperationException($"Psp Program Rep with id {pspUserId} is not linked to a post secondary institute");
+
+    var reps = context.ecer_ECEProgramRepresentativeSet
+      .Where(r => r.ecer_PostSecondaryInstitute != null && r.ecer_PostSecondaryInstitute.Id == institutionId)
+      .ToList();
+
+    foreach (var rep in reps)
+    {
+      rep.ecer_RepresentativeRole = rep.Id == userId ? ecer_RepresentativeRole.Primary : ecer_RepresentativeRole.Secondary;
+      context.UpdateObject(rep);
+    }
+
+    context.SaveChanges();
+  }
 }
