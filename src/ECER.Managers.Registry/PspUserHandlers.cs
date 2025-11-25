@@ -22,7 +22,9 @@ public class PspUserHandlers(
     IServiceProvider serviceProvider)
   : IRequestHandler<SearchPspRepQuery, PspRepQueryResults>,
     IRequestHandler<UpdatePspRepProfileCommand, string>,
-    IRequestHandler<RegisterPspUserCommand, RegisterPspUserResult>
+    IRequestHandler<RegisterPspUserCommand, RegisterPspUserResult>,
+    IRequestHandler<DeactivatePspRepCommand, string>,
+    IRequestHandler<SetPrimaryPspRepCommand, string>
 {
   /// <summary>
   /// Handles search psp program rep use case
@@ -34,7 +36,9 @@ public class PspUserHandlers(
 
     var pspUsers = await pspRepRepository.Query(new PspRepQuery
     {
-      ByIdentity = request.ByUserIdentity
+      ById = request.ById,
+      ByIdentity = request.ByUserIdentity,
+      ByPostSecondaryInstituteId = request.ByPostSecondaryInstituteId
     }, cancellationToken);
 
     return new PspRepQueryResults(mapper.Map<IEnumerable<Contract.PspUsers.PspUser>>(pspUsers)!);
@@ -60,6 +64,47 @@ public class PspUserHandlers(
     await pspRepRepository.Save(new Resources.Accounts.PspReps.PspUser { Id = request.User.Id, Profile = profile }, cancellationToken); 
     
     return request.User.Id;
+  }
+
+  /// <summary>
+  /// Handles deactivating a psp user use case
+  /// </summary>
+  public async Task<string> Handle(DeactivatePspRepCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var pspUser = (await pspRepRepository.Query(new PspRepQuery
+    {
+      ById = request.ProgramRepresentativeId
+    }, cancellationToken)).SingleOrDefault();
+
+    if (pspUser == null) throw new InvalidOperationException($"Psp user with id {request.ProgramRepresentativeId} not found");
+
+    ecerContext.BeginTransaction();
+    await pspRepRepository.Deactivate(request.ProgramRepresentativeId, cancellationToken);
+    ecerContext.CommitTransaction();
+    return request.ProgramRepresentativeId;
+  }
+
+  /// <summary>
+  /// Handles setting a PSP user as the primary representative for their institution
+  /// </summary>
+  public async Task<string> Handle(SetPrimaryPspRepCommand request, CancellationToken cancellationToken)
+  {
+    ArgumentNullException.ThrowIfNull(request);
+
+    var pspUser = (await pspRepRepository.Query(new PspRepQuery
+    {
+      ById = request.ProgramRepresentativeId
+    }, cancellationToken)).SingleOrDefault();
+
+    if (pspUser == null) throw new InvalidOperationException($"Psp user with id {request.ProgramRepresentativeId} not found");
+    if (string.IsNullOrWhiteSpace(pspUser.PostSecondaryInstituteId)) throw new InvalidOperationException($"Psp user with id {request.ProgramRepresentativeId} is not linked to a post secondary institute");
+
+    ecerContext.BeginTransaction();
+    await pspRepRepository.SetPrimary(request.ProgramRepresentativeId, cancellationToken);
+    ecerContext.CommitTransaction();
+    return request.ProgramRepresentativeId;
   }
   
   /// <summary>

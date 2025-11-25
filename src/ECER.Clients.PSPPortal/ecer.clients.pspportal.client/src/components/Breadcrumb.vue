@@ -29,6 +29,12 @@ export default defineComponent({
           { title: "My contact details", disabled: true, href: "/profile/edit" },
         ];
       }
+      if (this.route.name === "manage-users") {
+        return [
+          { title: "Home", disabled: false, href: "/" },
+          { title: "Manage users", disabled: true, href: "/manage-users" },
+        ];
+      }
       return [];
     },
   },

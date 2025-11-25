@@ -14,7 +14,9 @@ public record RegisterNewPspUserCommand(string Id, PspUserProfile Profile, UserI
 /// </summary>
 public record SearchPspRepQuery : IRequest<PspRepQueryResults>
 {
+  public string? ById { get; set; }
   public UserIdentity? ByUserIdentity { get; set; }
+  public string? ByPostSecondaryInstituteId { get; set; }
 }
 
 /// <summary>
@@ -22,10 +24,15 @@ public record SearchPspRepQuery : IRequest<PspRepQueryResults>
 /// </summary>
 public record PspRepQueryResults(IEnumerable<PspUser> Items);
 
-public record PspUser(string Id, PspUserProfile Profile);
+public record PspUser(string Id, PspUserProfile Profile)
+{
+  public PortalAccessStatus? AccessToPortal { get; init; }
+  public string? PostSecondaryInstituteId { get; init; }
+}
 
 public record PspUserProfile
 {
+  public string? Id { get; set; }
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? PreferredName { get; set; }
@@ -43,6 +50,13 @@ public enum PspUserRole
   Primary,
   /// <summary>Secondary</summary>
   Secondary
+}
+
+public enum PortalAccessStatus
+{
+  Invited,
+  Active,
+  Disabled
 }
 
 /// <summary>
@@ -76,3 +90,13 @@ public enum RegisterPspUserError
 }
 
 public record UpdatePspRepProfileCommand(PspUser User) : IRequest<string>;
+
+/// <summary>
+/// Request to deactivate a PSP program representative
+/// </summary>
+public record DeactivatePspRepCommand(string ProgramRepresentativeId) : IRequest<string>;
+
+/// <summary>
+/// Request to set a PSP program representative as Primary for their institution
+/// </summary>
+public record SetPrimaryPspRepCommand(string ProgramRepresentativeId) : IRequest<string>;

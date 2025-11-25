@@ -15,6 +15,7 @@ export const useUserStore = defineStore("user", {
     invitationToken: null,
   }),
   getters: {
+    id: (state): string => state.pspUserProfile?.id ?? "",
     hasUserProfile: (state): boolean => state.pspUserProfile !== null,
     hasAcceptedTermsOfUse: (state): boolean => state.pspUserProfile?.hasAcceptedTermsOfUse ?? false,
     firstName: (state): string => state.pspUserProfile?.firstName ?? "",

@@ -49,7 +49,7 @@
             <p class="mt-4">Manage which users at your institution have access to this portal.</p>
             <div class="mt-auto">
               <v-btn variant='outlined' size="large" class="mt-4" color="primary" id="btnNeedOtherOptions"
-                @click="router.push('/manage-users')">
+                @click="router.push({ name: 'manage-users', params: { educationInstitutionName: educationInstitution?.name } })">
                 Manage users
               </v-btn>
             </div>
