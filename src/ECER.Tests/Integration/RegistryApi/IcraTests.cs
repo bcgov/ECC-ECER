@@ -1,7 +1,7 @@
 ﻿using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.ICRA;
-using ECER.Resources.E2ETests.E2ETestsContacts;
+using ECER.Resources.E2ETests.UnitTest;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Net;

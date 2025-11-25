@@ -1,6 +1,6 @@
 ﻿using ECER.Utilities.DataverseSdk.Model;
 
-namespace ECER.Resources.E2ETests.E2ETestsContacts;
+namespace ECER.Resources.E2ETests.UnitTest;
 
 internal sealed partial class UnitTestRepository : IUnitTestRepository
 {

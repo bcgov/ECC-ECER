@@ -1,5 +1,6 @@
 ﻿using ECER.Infrastructure.Common;
 using ECER.Resources.E2ETests.E2ETestsContacts;
+using ECER.Resources.E2ETests.UnitTest;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 

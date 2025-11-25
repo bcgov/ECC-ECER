@@ -1,4 +1,4 @@
-﻿namespace ECER.Resources.E2ETests.E2ETestsContacts;
+﻿namespace ECER.Resources.E2ETests.UnitTest;
 
 public interface IUnitTestRepository
 {
