@@ -25,11 +25,12 @@
                     <p class="text-success small">Primary contact</p>
                 </span>
                 <div v-else class="d-flex ga-2">
-                    <v-btn color="primary" size="small" @click="$emit('set-primary', user.id)">
+                    <v-btn color="primary" size="small" @click="$emit('set-primary', user.id)" :loading="isLoading">
                         <v-icon class="mr-2">mdi-check-decagram</v-icon>
                         Set user as primary
                     </v-btn>
-                    <v-btn variant="outlined" color="primary" size="small" @click="$emit('remove-access', user.id)">
+                    <v-btn variant="outlined" color="primary" size="small" @click="$emit('remove-access', user.id)"
+                        :disabled="user.id === currentUserId" :loading="isLoading">
                         <v-icon class="mr-2">mdi-minus-circle-outline</v-icon>
                         Remove access
                     </v-btn>
@@ -40,7 +41,8 @@
         <!-- Pending invitations: Resend invitation button -->
         <v-row v-if="user.accessToPortal === 'Invited'">
             <v-col cols="12" class="align-self-end">
-                <v-btn color="primary" size="small" variant="outlined" @click="$emit('resend-invitation', user.id)">
+                <v-btn color="primary" size="small" variant="outlined" @click="$emit('resend-invitation', user.id)"
+                    :loading="isLoading">
                     <v-icon class="mr-2">mdi-email-arrow-right-outline</v-icon>
                     Resend invitation
                 </v-btn>
@@ -50,7 +52,7 @@
         <!-- Inactive users: Reactivate button -->
         <v-row v-if="user.accessToPortal === 'Disabled' || user.accessToPortal == null">
             <v-col cols="12" class="align-self-end">
-                <v-btn color="primary" size="small" @click="$emit('reactivate', user.id)">
+                <v-btn color="primary" size="small" @click="$emit('reactivate', user.id)" :loading="isLoading">
                     <v-icon class="mr-2">mdi-account-plus-outline</v-icon>
                     Reactivate user
                 </v-btn>
@@ -62,6 +64,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from "vue";
 import Card from "@/components/Card.vue";
+import { useLoadingStore } from "@/store/loading";
 import type { Components } from "@/types/openapi";
 
 export default defineComponent({
@@ -72,6 +75,16 @@ export default defineComponent({
             type: Object as PropType<Components.Schemas.PspUserListItem>,
             required: true,
         },
+        currentUserId: {
+            type: String,
+            required: true,
+        },
+    },
+    setup() {
+        const loadingStore = useLoadingStore();
+        return {
+            loadingStore,
+        };
     },
     emits: {
         "set-primary": (userId: string | null | undefined) => true,
@@ -96,6 +109,9 @@ export default defineComponent({
         },
         isPrimary(): boolean {
             return this.user.profile?.role === "Primary";
+        },
+        isLoading(): boolean {
+            return this.loadingStore.isLoading('psp_user_manage_get') || this.loadingStore.isLoading('psp_user_manage_deactivate_post') || this.loadingStore.isLoading('psp_user_manage_set_primary_post');
         },
     },
 });

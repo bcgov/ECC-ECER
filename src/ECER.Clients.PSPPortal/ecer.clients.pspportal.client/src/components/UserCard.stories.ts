@@ -8,6 +8,7 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {},
   args: {
+    currentUserId: "00000000-0000-0000-0000-000000000000",
     user: {
       id: "f403a278-8020-f011-998a-6045bdf9b81b",
       profile: {
@@ -33,6 +34,7 @@ type Story = StoryObj<typeof meta>;
 
 export const ActivePrimary: Story = {
   args: {
+    currentUserId: "00000000-0000-0000-0000-000000000000",
     user: {
       id: "f403a278-8020-f011-998a-6045bdf9b81b",
       profile: {
@@ -49,6 +51,24 @@ export const ActivePrimary: Story = {
 
 export const ActiveSecondary: Story = {
   args: {
+    currentUserId: "00000000-0000-0000-0000-000000000000",
+    user: {
+      id: "a1b2c3d4-8020-f011-998a-6045bdf9b81b",
+      profile: {
+        firstName: "Bob",
+        lastName: "Johnson",
+        email: "bob.johnson@example.com",
+        jobTitle: "Administrative Assistant",
+        role: "Secondary",
+      },
+      accessToPortal: "Active",
+    },
+  },
+};
+
+export const ActiveSecondarySameUser: Story = {
+  args: {
+    currentUserId: "a1b2c3d4-8020-f011-998a-6045bdf9b81b",
     user: {
       id: "a1b2c3d4-8020-f011-998a-6045bdf9b81b",
       profile: {
@@ -65,6 +85,7 @@ export const ActiveSecondary: Story = {
 
 export const Invited: Story = {
   args: {
+    currentUserId: "00000000-0000-0000-0000-000000000000",
     user: {
       id: "e5f6g7h8-8020-f011-998a-6045bdf9b81b",
       profile: {
@@ -81,6 +102,7 @@ export const Invited: Story = {
 
 export const Disabled: Story = {
   args: {
+    currentUserId: "00000000-0000-0000-0000-000000000000",
     user: {
       id: "i9j0k1l2-8020-f011-998a-6045bdf9b81b",
       profile: {

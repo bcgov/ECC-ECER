@@ -35,7 +35,7 @@ public class ManageUsersEndpoints : IRegisterEndpoints
       .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("api/users/manage/{programRepId}/deactivate",
-      async Task<Results<Ok, NotFound>> (string programRepId, HttpContext ctx, CancellationToken ct, IMediator bus) =>
+      async Task<Results<Ok, NotFound, BadRequest<string>>> (string programRepId, HttpContext ctx, CancellationToken ct, IMediator bus) =>
       {
         if (!Guid.TryParse(programRepId, out _))
         {
@@ -53,6 +53,11 @@ public class ManageUsersEndpoints : IRegisterEndpoints
         if (targetRep == null || targetRep.PostSecondaryInstituteId != currentRep.PostSecondaryInstituteId)
         {
           return TypedResults.NotFound();
+        }
+        
+        if (user.UserId == programRepId)
+        {
+          return TypedResults.BadRequest("Cannot deactivate your own account");
         }
 
         await bus.Send(new DeactivatePspRepCommand(programRepId), ct);

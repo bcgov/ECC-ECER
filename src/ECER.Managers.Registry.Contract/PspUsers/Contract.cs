@@ -32,6 +32,7 @@ public record PspUser(string Id, PspUserProfile Profile)
 
 public record PspUserProfile
 {
+  public string? Id { get; set; }
   public string? FirstName { get; set; }
   public string? LastName { get; set; }
   public string? PreferredName { get; set; }

@@ -81,6 +81,7 @@ declare namespace Components {
      * User profile information
      */
     export interface PspUserProfile {
+      id?: string | null;
       firstName?: string | null;
       lastName?: string | null;
       preferredName?: string | null;
@@ -135,9 +136,35 @@ declare namespace Paths {
       export type $400 = Components.Schemas.HttpValidationProblemDetails;
     }
   }
+  namespace PspUserManageDeactivatePost {
+    namespace Parameters {
+      export type ProgramRepId = string;
+    }
+    export interface PathParameters {
+      programRepId: Parameters.ProgramRepId;
+    }
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
+      export interface $404 {}
+    }
+  }
   namespace PspUserManageGet {
     namespace Responses {
       export type $200 = Components.Schemas.PspUserListItem[];
+      export interface $404 {}
+    }
+  }
+  namespace PspUserManageSetPrimaryPost {
+    namespace Parameters {
+      export type ProgramRepId = string;
+    }
+    export interface PathParameters {
+      programRepId: Parameters.ProgramRepId;
+    }
+    namespace Responses {
+      export interface $200 {}
+      export type $400 = Components.Schemas.HttpValidationProblemDetails;
       export interface $404 {}
     }
   }
@@ -193,6 +220,22 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig,
   ): OperationResponse<Paths.PspUserManageGet.Responses.$200>;
+  /**
+   * psp_user_manage_deactivate_post - Deactivates a PSP representative for the current user's institution
+   */
+  "psp_user_manage_deactivate_post"(
+    parameters?: Parameters<Paths.PspUserManageDeactivatePost.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.PspUserManageDeactivatePost.Responses.$200>;
+  /**
+   * psp_user_manage_set_primary_post - Sets the specified PSP representative as Primary for the current user's institution
+   */
+  "psp_user_manage_set_primary_post"(
+    parameters?: Parameters<Paths.PspUserManageSetPrimaryPost.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): OperationResponse<Paths.PspUserManageSetPrimaryPost.Responses.$200>;
   /**
    * psp_user_profile_get - Gets the currently logged in user profile or NotFound if no profile found
    */
@@ -261,6 +304,26 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig,
     ): OperationResponse<Paths.PspUserManageGet.Responses.$200>;
+  };
+  ["/api/users/manage/{programRepId}/deactivate"]: {
+    /**
+     * psp_user_manage_deactivate_post - Deactivates a PSP representative for the current user's institution
+     */
+    "post"(
+      parameters?: Parameters<Paths.PspUserManageDeactivatePost.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PspUserManageDeactivatePost.Responses.$200>;
+  };
+  ["/api/users/manage/{programRepId}/set-primary"]: {
+    /**
+     * psp_user_manage_set_primary_post - Sets the specified PSP representative as Primary for the current user's institution
+     */
+    "post"(
+      parameters?: Parameters<Paths.PspUserManageSetPrimaryPost.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PspUserManageSetPrimaryPost.Responses.$200>;
   };
   ["/api/users/profile"]: {
     /**

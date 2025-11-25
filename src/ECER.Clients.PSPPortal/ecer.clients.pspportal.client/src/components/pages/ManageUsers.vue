@@ -53,7 +53,6 @@
                                 reason
                                 to do so.
                             </p>
-                            <p>
                             <ul class="ml-8">
                                 <li>Setting a user as the Primary contact user does not apply any additional permissions
                                     to
@@ -61,13 +60,13 @@
                                 <li>One active user must be indicated as your Primary contact for your ECE programs.
                                 </li>
                             </ul>
-                            </p>
                         </div>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col cols="12" md="6" lg="4" v-for="user in activeUsers" :key="user.id as string">
-                        <UserCard :user="user" @set-primary="handleSetPrimary" @remove-access="handleRemoveAccess" />
+                        <UserCard :user="user" @set-primary="handleSetPrimary" @remove-access="handleRemoveAccess"
+                            :currentUserId="userStore.pspUserProfile?.id || ''" />
                     </v-col>
                 </v-row>
             </template>
@@ -86,7 +85,8 @@
                 </v-row>
                 <v-row>
                     <v-col cols="12" md="6" lg="4" v-for="user in invitedUsers" :key="user.id as string">
-                        <UserCard :user="user" @resend-invitation="handleResendInvitation" />
+                        <UserCard :user="user" @resend-invitation="handleResendInvitation"
+                            :currentUserId="userStore.pspUserProfile?.id || ''" />
                     </v-col>
                 </v-row>
             </template>
@@ -103,7 +103,8 @@
                 </v-row>
                 <v-row>
                     <v-col cols="12" md="6" lg="4" v-for="user in inactiveUsers" :key="user.id as string">
-                        <UserCard :user="user" @reactivate="handleReactivate" />
+                        <UserCard :user="user" @reactivate="handleReactivate"
+                            :currentUserId="userStore.pspUserProfile?.id || ''" />
                     </v-col>
                 </v-row>
             </template>
@@ -118,8 +119,10 @@ import Breadcrumb from "@/components/Breadcrumb.vue";
 import ECEHeader from "@/components/ECEHeader.vue";
 import UserCard from "@/components/UserCard.vue";
 import Loading from "@/components/Loading.vue";
-import { getUsers } from "@/api/manage-users";
+import { deactivateUser, getUsers, setPrimaryUser } from "@/api/manage-users";
 import type { PspUserListItem } from "@/types/openapi";
+import { useUserStore } from "@/store/user";
+
 export default defineComponent({
     name: "ManageUsers",
     components: { PageContainer, Breadcrumb, ECEHeader, UserCard, Loading },
@@ -128,6 +131,12 @@ export default defineComponent({
             type: String,
             required: true,
         },
+    },
+    setup() {
+        const userStore = useUserStore();
+        return {
+            userStore,
+        };
     },
     data() {
         return {
@@ -143,13 +152,17 @@ export default defineComponent({
         async loadUsers() {
             this.users = await getUsers() ?? [];
         },
-        handleSetPrimary(userId: string | null | undefined) {
-            // TODO: Implement set primary handler
-            console.log("Set primary:", userId);
+        async handleSetPrimary(userId: string | null | undefined) {
+            if (userId) {
+                await setPrimaryUser(userId);
+                await this.loadUsers();
+            }
         },
-        handleRemoveAccess(userId: string | null | undefined) {
-            // TODO: Implement remove access handler
-            console.log("Remove access:", userId);
+        async handleRemoveAccess(userId: string | null | undefined) {
+            if (userId) {
+                await deactivateUser(userId);
+                await this.loadUsers();
+            }
         },
         handleResendInvitation(userId: string | null | undefined) {
             // TODO: Implement resend invitation handler
