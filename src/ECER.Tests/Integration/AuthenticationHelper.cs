@@ -11,6 +11,22 @@ public static class AuthenticationHelper
 
   public static Scenario WithExistingUser(this Scenario scenario, UserIdentity identity, Contact user) => scenario.WithUser(identity, user);
 
+  public static Scenario WithPspUser(this Scenario scenario, UserIdentity identity, string? userId = null, bool hasAcceptedTermsOfUse = false)
+  {
+    ArgumentNullException.ThrowIfNull(identity);
+
+    scenario.WithClaim(PSPPortalClaims.IdentityProvider, identity.IdentityProvider);
+    scenario.WithClaim(ClaimTypes.Name, identity.UserId);
+    scenario.WithClaim(ClaimTypes.NameIdentifier, identity.UserId);
+    if (!string.IsNullOrEmpty(userId))
+    {
+      scenario.WithClaim(PSPPortalClaims.UserId, userId);
+      scenario.WithClaim(PSPPortalClaims.TermsOfUse, hasAcceptedTermsOfUse ? "true" : "false");
+    }
+
+    return scenario;
+  }
+
   private static Scenario WithUser(this Scenario scenario, UserIdentity identity, Contact? user)
   {
     ArgumentNullException.ThrowIfNull(identity);
