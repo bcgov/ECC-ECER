@@ -15,6 +15,7 @@ internal class ICRARepositoryMapper : Profile
       .ForSourceMember(s => s.InternationalCertifications, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.EmploymentReferences, opts => opts.DoNotValidate())
       .ForSourceMember(s => s.Origin, opts => opts.DoNotValidate())
+      .ForSourceMember(s => s.AddAdditionalEmploymentExperienceReferences, opts => opts.DoNotValidate())
       .ForMember(d => d.ecer_ICRAEligibilityAssessmentId, opts => opts.MapFrom(s => s.Id))
       .ForMember(d => d.ecer_PortalStage, opts => opts.MapFrom(s => s.PortalStage))
       .ForMember(d => d.StatusCode, opts => opts.MapFrom(s => s.Status))
