@@ -26,8 +26,6 @@ public interface IApplicationRepository
   Task<string> ResendCharacterReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
 
   Task<string> ResendWorkExperienceReferenceInvite(ResendReferenceInviteRequest request, CancellationToken cancellationToken);
-
-  Task CancelApplicationForUnitTest(string applicationId, CancellationToken cancellationToken);
 }
 
 public record ApplicationQuery

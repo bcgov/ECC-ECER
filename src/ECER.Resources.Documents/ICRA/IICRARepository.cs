@@ -10,8 +10,6 @@ public interface IICRARepository
 
   Task<string> Submit(string icraEligibilityId, CancellationToken cancellationToken);
 
-  Task<string> SetIcraEligibilityForUnitTests(string icraEligibilityId, bool eligible, CancellationToken cancellationToken);
-
   Task<string> SubmitEmploymentReference(string referenceId, ICRAWorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken);
 
   Task LinkIcraEligibilityToIcraApplication(string applicationId, string icraEligibilityId, CancellationToken cancellationToken);

@@ -10,6 +10,6 @@ public class Configurer : IConfigureComponents
   public void Configure([NotNull] ConfigurationContext configurationContext)
   {
     configurationContext.Services.AddTransient<IE2ETestsContactRepository, E2ETestsContactRepository>();
+    configurationContext.Services.AddTransient<IUnitTestRepository, UnitTestRepository>();
   }
 }
-

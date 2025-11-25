@@ -3,7 +3,7 @@ using Bogus;
 using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Clients.RegistryPortal.Server.Files;
 using ECER.Clients.RegistryPortal.Server.ICRA;
-using ECER.Resources.Documents.ICRA;
+using ECER.Resources.E2ETests.E2ETestsContacts;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Net;
@@ -15,13 +15,11 @@ namespace ECER.Tests.Integration.RegistryApi;
 
 public class ApplicationTests : RegistryPortalWebAppScenarioBase
 {
-  private readonly IICRARepository icraRepository;
-  private readonly ECER.Resources.Documents.Applications.IApplicationRepository applicationRepository;
+  private readonly IUnitTestRepository unitTestRepository;
 
   public ApplicationTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
-    icraRepository = Fixture.Services.GetRequiredService<IICRARepository>();
-    applicationRepository = Fixture.Services.GetRequiredService<ECER.Resources.Documents.Applications.IApplicationRepository>();
+    unitTestRepository = Fixture.Services.GetRequiredService<IUnitTestRepository>();
   }
 
   private readonly Faker faker = new Faker("en_CA");
@@ -633,7 +631,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
 
     var saved = (await saveResponse.ReadAsJsonAsync<DraftICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
 
-    await icraRepository.SetIcraEligibilityForUnitTests(saved.Id!, true, CancellationToken.None);
+    await unitTestRepository.SetIcraEligibility(saved.Id!, true, CancellationToken.None);
 
     //create draft application to submit
     var draftApplication = CreateDraftIcraApplication();
@@ -658,8 +656,8 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     var submittedApplication = (await applicationResponse.ReadAsJsonAsync<SubmitApplicationResponse>()).ShouldNotBeNull().Application;
 
     //test cleanup
-    await icraRepository.SetIcraEligibilityForUnitTests(saved.Id!, false, CancellationToken.None);
-    await applicationRepository.CancelApplicationForUnitTest(submittedApplication.Id!, CancellationToken.None);
+    await unitTestRepository.SetIcraEligibility(saved.Id!, false, CancellationToken.None);
+    await unitTestRepository.CancelApplication(submittedApplication.Id!, CancellationToken.None);
   }
 
   [Fact]
@@ -686,7 +684,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     });
 
     //test cleanup
-    await applicationRepository.CancelApplicationForUnitTest(savedDraftApplication.Id!, CancellationToken.None);
+    await unitTestRepository.CancelApplication(savedDraftApplication.Id!, CancellationToken.None);
   }
 
   private static Transcript CreateTranscript()

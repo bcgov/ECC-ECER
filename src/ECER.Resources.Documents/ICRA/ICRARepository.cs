@@ -153,17 +153,4 @@ internal sealed partial class ICRARepository : IICRARepository
     context.AddLink(icraEligibility, ecer_ICRAEligibilityAssessment.Fields.ecer_icraeligibilityassessment_ApplicationId, application);
     context.SaveChanges();
   }
-
-  //This method is used for our unit tests to disable eligibility applications so multiple tests do not conflict
-  public async Task<string> SetIcraEligibilityForUnitTests(string icraEligibilityId, bool eligible, CancellationToken cancellationToken)
-  {
-    await Task.CompletedTask;
-    var icra = context.ecer_ICRAEligibilityAssessmentSet.FirstOrDefault(d => d.ecer_ICRAEligibilityAssessmentId == Guid.Parse(icraEligibilityId) && d.ecer_ApplicantIdName.Contains("TEST"));
-    if (icra == null) throw new InvalidOperationException($"ICRA Eligibility '{icraEligibilityId}' not found or this application does not belong to a test account");
-
-    icra.StatusCode = eligible ? ecer_ICRAEligibilityAssessment_StatusCode.Eligible : ecer_ICRAEligibilityAssessment_StatusCode.Ineligible;
-    context.UpdateObject(icra);
-    context.SaveChanges();
-    return icraEligibilityId;
-  }
 }
