@@ -5,8 +5,8 @@ using ECER.Engines.Validation.Applications;
 using ECER.Infrastructure.Common;
 using ECER.Managers.Registry.Contract.Applications;
 using ECER.Resources.Documents.Applications;
-using ECER.Resources.Documents.PortalInvitations;
 using ECER.Resources.Documents.ICRA;
+using ECER.Resources.Documents.PortalInvitations;
 using ECER.Utilities.DataverseSdk.Model;
 using MediatR;
 
@@ -167,11 +167,22 @@ public class ApplicationHandlers(
     var draftApplication = mapper.Map<Contract.Applications.Application>(applications.SingleOrDefault(dst =>
       dst.Id == request.applicationId && dst.Status == Resources.Documents.Applications.ApplicationStatus.Draft));
     var submittedApplications = mapper.Map<IEnumerable<Contract.Applications.Application>>(applications.Where(dst => dst.Status != Resources.Documents.Applications.ApplicationStatus.Draft));
-    
+
     if (draftApplication == null)
     {
       return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.DraftApplicationNotFound, ValidationErrors = new List<string>() { "draft application does not exist" } };
     }
+
+    ecerContext.BeginTransaction();
+    if (draftApplication.ApplicationType == Contract.Applications.ApplicationTypes.ICRA)
+    {
+      var result = await LinkIcraEligibilityToIcraApplication(draftApplication, request.userId, cancellationToken);
+      if (!result)
+      {
+        return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.MissingApprovedIcraEligibility, ValidationErrors = new List<string>() { "unable to find approved icra eligibility" } };
+      }
+    }
+
     var validationEngine = validationResolver?.Resolve(draftApplication.ApplicationType);
     var validationErrors = await validationEngine?.Validate(draftApplication)!;
     if (validationErrors.ValidationErrors.Any())
@@ -179,6 +190,7 @@ public class ApplicationHandlers(
       return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.DraftApplicationValidationFailed, ValidationErrors = validationErrors.ValidationErrors };
     }
     var applicationId = await applicationRepository.Submit(draftApplication.Id!, cancellationToken);
+    ecerContext.CommitTransaction();
     var freshApplications = await applicationRepository.Query(new ApplicationQuery
     {
       ById = applicationId,
@@ -193,7 +205,7 @@ public class ApplicationHandlers(
     {
       return new ApplicationSubmissionResult() { Application = null, Error = SubmissionError.SubmittedApplicationAlreadyExists, ValidationErrors = new List<string>() { "submitted application already exists" } };
     }
-    
+
     return new ApplicationSubmissionResult() { Application = mapper.Map<IEnumerable<Contract.Applications.Application>>(freshApplications)!.FirstOrDefault() };
   }
 
@@ -229,7 +241,7 @@ public class ApplicationHandlers(
 
     var transformationResponse = await transformationEngine.Transform(new DecryptInviteTokenRequest(request.Token))! as DecryptInviteTokenResponse ?? throw new InvalidCastException("Invalid response type");
     if (transformationResponse.PortalInvitation == Guid.Empty) return ReferenceSubmissionResult.Failure("Invalid Token");
-    
+
     var portalInvitation = await portalInvitationRepository.Query(new PortalInvitationQuery(transformationResponse.PortalInvitation), cancellationToken);
     if (portalInvitation.StatusCode != PortalInvitationStatusCode.Sent) return ReferenceSubmissionResult.Failure("Portal Invitation is not valid or expired");
 
@@ -399,5 +411,28 @@ public class ApplicationHandlers(
     var applicationId = await applicationRepository.SaveApplication(mapper.Map<Resources.Documents.Applications.Application>(application)!, cancellationToken);
 
     return new AddProfessionalDevelopmentResult() { ApplicationId = applicationId, IsSuccess = true };
+  }
+
+  /*This method is specific for ICRA applications where we need to inject the employment references that were approved */
+
+  private async Task<bool> LinkIcraEligibilityToIcraApplication(Contract.Applications.Application application, string userId, CancellationToken cancellationToken)
+  {
+    var icraEligibilities = await iCRARepository.Query(new ICRAQuery { ByApplicantId = userId }, cancellationToken);
+    var approvedIcraEligibility = icraEligibilities.FirstOrDefault(eligibility => eligibility.Status == ICRAStatus.Eligible);
+
+    if (approvedIcraEligibility == null)
+    {
+      //a validation error will be created by the submit application handler that called this method.
+      return false;
+    }
+
+    if (application.Id == null || approvedIcraEligibility.Id == null)
+    {
+      throw new InvalidOperationException($"application id is null {application.Id} or approvedIcraEligibility id is null {approvedIcraEligibility.Id}");
+    }
+
+    await iCRARepository.LinkIcraEligibilityToIcraApplication(application.Id, approvedIcraEligibility.Id, cancellationToken);
+
+    return true;
   }
 }

@@ -178,4 +178,18 @@ internal sealed partial class ApplicationRepository : IApplicationRepository
     InviteType.WorkExperienceReferenceforICRA => await OptOutWorkExperienceReference(request),
     _ => throw new NotSupportedException($"{request.GetType().Name} is not supported")
   };
+
+  //used for unit tests to clean up application data so it doesn't affect other tests
+  public async Task CancelApplicationForUnitTest(string applicationId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var application = context.ecer_ApplicationSet.FirstOrDefault(
+      d => d.ecer_ApplicationId == Guid.Parse(applicationId) && d.ecer_ApplicantidName.Contains("TEST")
+      );
+    if (application == null) throw new InvalidOperationException($"Application '{applicationId}' not found or user is not a test account");
+    application.StatusCode = ecer_Application_StatusCode.Cancelled;
+    application.StateCode = ecer_application_statecode.Inactive;
+    context.UpdateObject(application);
+    context.SaveChanges();
+  }
 }

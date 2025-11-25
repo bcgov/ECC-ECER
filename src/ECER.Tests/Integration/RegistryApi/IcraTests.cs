@@ -446,6 +446,6 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
   //private method to set eligibilty application to ineligible so multiple tests do not conflict for one another with the same user
   private async Task SetEligibilityToIneligible(string eligibilityId)
   {
-    await repository.SetIneligibleForUnitTests(eligibilityId, CancellationToken.None);
+    await repository.SetIcraEligibilityForUnitTests(eligibilityId, false, CancellationToken.None);
   }
 }

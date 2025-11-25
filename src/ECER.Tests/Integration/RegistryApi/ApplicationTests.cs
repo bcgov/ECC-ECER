@@ -2,10 +2,12 @@
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.Applications;
 using ECER.Clients.RegistryPortal.Server.Files;
+using ECER.Clients.RegistryPortal.Server.ICRA;
+using ECER.Resources.Documents.ICRA;
+using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 using Xunit.Abstractions;
 using Xunit.Categories;
 
@@ -13,8 +15,13 @@ namespace ECER.Tests.Integration.RegistryApi;
 
 public class ApplicationTests : RegistryPortalWebAppScenarioBase
 {
+  private readonly IICRARepository icraRepository;
+  private readonly ECER.Resources.Documents.Applications.IApplicationRepository applicationRepository;
+
   public ApplicationTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
+    icraRepository = Fixture.Services.GetRequiredService<IICRARepository>();
+    applicationRepository = Fixture.Services.GetRequiredService<ECER.Resources.Documents.Applications.IApplicationRepository>();
   }
 
   private readonly Faker faker = new Faker("en_CA");
@@ -285,6 +292,19 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     return application;
   }
 
+  private DraftApplication CreateDraftIcraApplication()
+  {
+    var application = new Faker<DraftApplication>("en_CA")
+        .RuleFor(f => f.ApplicationType, f => ApplicationTypes.ICRA)
+        .RuleFor(f => f.CertificationTypes, f => [CertificationType.FiveYears])
+        .RuleFor(f => f.SignedDate, f => f.Date.Recent())
+        .RuleFor(f => f.Transcripts, f => f.Make(1, () => CreateTranscript()))
+        .RuleFor(f => f.CharacterReferences, f => f.Make(1, () => CreateCharacterReference()))
+        .Generate();
+
+    return application;
+  }
+
   [Fact]
   public async Task SaveDraftApplication_ForUserWithExistingDraft_ReturnsBadRequest()
   {
@@ -312,7 +332,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
       _.StatusCodeShouldBe(400);
     });
   }
-  
+
   [Fact]
   public async Task SubmitApplication_TwiceBySameUser_ReturnsBadRequest()
   {
@@ -325,7 +345,7 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     });
     var applications = await applicationsResponse.ReadAsJsonAsync<Application[]>();
     applications.Where(application => application.Status == ApplicationStatus.Submitted).ShouldNotBeEmpty();
-    
+
     // Create and submit application
     var firstApplication = CreateDraftApplication();
     firstApplication.Id = Fixture.draftTestApplicationId4;
@@ -577,6 +597,96 @@ public class ApplicationTests : RegistryPortalWebAppScenarioBase
     newProfessionalDev.Files.ShouldHaveSingleItem();
     newProfessionalDev.Files.First().Id!.ShouldContain(uploadedFileResponse.fileId);
     newProfessionalDev.Status.ShouldBe(ProfessionalDevelopmentStatusCode.Submitted); //for an already submitted application, the professional development should be submitted
+  }
+
+  [Fact]
+  public async Task SubmitIcraApplication_WithExistingIcraEligibilityApproval_ShouldReturnStatusOk()
+  {
+    //create icraEligibility draft
+    var eligibility = new Clients.RegistryPortal.Server.ICRA.ICRAEligibility
+    {
+      ApplicantId = this.Fixture.AuthenticatedBcscUser3.Id.ToString(),
+      Status = Clients.RegistryPortal.Server.ICRA.ICRAStatus.Draft,
+      EmploymentReferences = new[]
+    {
+       new Clients.RegistryPortal.Server.ICRA.EmploymentReference { FirstName = "John", LastName = "Doe", EmailAddress = "john.doe@example.com" }
+     },
+      InternationalCertifications = new List<Clients.RegistryPortal.Server.ICRA.InternationalCertification>
+     {
+       new Clients.RegistryPortal.Server.ICRA.InternationalCertification
+       {
+           CertificateStatus = Clients.RegistryPortal.Server.ICRA.CertificateStatus.Valid,
+           CertificateTitle = faker.Company.CatchPhrase(),
+           IssueDate = faker.Date.Past(),
+           ExpiryDate = faker.Date.Soon(),
+           CountryId = this.Fixture.Country.ecer_CountryId!.Value.ToString(),
+       }
+     }
+    };
+
+    var saveResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity3, this.Fixture.AuthenticatedBcscUser3);
+      _.Put.Json(new SaveDraftICRAEligibilityRequest(eligibility)).ToUrl($"/api/icra/");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var saved = (await saveResponse.ReadAsJsonAsync<DraftICRAEligibilityResponse>()).ShouldNotBeNull().Eligibility;
+
+    await icraRepository.SetIcraEligibilityForUnitTests(saved.Id!, true, CancellationToken.None);
+
+    //create draft application to submit
+    var draftApplication = CreateDraftIcraApplication();
+
+    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity3, this.Fixture.AuthenticatedBcscUser3);
+      _.Put.Json(new SaveDraftApplicationRequest(draftApplication)).ToUrl($"/api/draftapplications/{draftApplication.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var savedDraftApplication = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application;
+
+    // Submit Renewal Application
+    var applicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity3, this.Fixture.AuthenticatedBcscUser3);
+      _.Post.Json(new ApplicationSubmissionRequest(savedDraftApplication.Id!)).ToUrl($"/api/applications");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var submittedApplication = (await applicationResponse.ReadAsJsonAsync<SubmitApplicationResponse>()).ShouldNotBeNull().Application;
+
+    //test cleanup
+    await icraRepository.SetIcraEligibilityForUnitTests(saved.Id!, false, CancellationToken.None);
+    await applicationRepository.CancelApplicationForUnitTest(submittedApplication.Id!, CancellationToken.None);
+  }
+
+  [Fact]
+  public async Task SubmitIcraApplication_WithOutExistingIcraEligibilityApproval_ShouldBeBadRequest()
+  {
+    //create draft application to submit
+    var draftApplication = CreateDraftIcraApplication();
+
+    var newDraftApplicationResponse = await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity3, this.Fixture.AuthenticatedBcscUser3);
+      _.Put.Json(new SaveDraftApplicationRequest(draftApplication)).ToUrl($"/api/draftapplications/{draftApplication.Id}");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var savedDraftApplication = (await newDraftApplicationResponse.ReadAsJsonAsync<DraftApplicationResponse>()).ShouldNotBeNull().Application;
+
+    // Submit Renewal Application
+    await Host.Scenario(_ =>
+    {
+      _.WithExistingUser(this.Fixture.AuthenticatedBcscUserIdentity3, this.Fixture.AuthenticatedBcscUser3);
+      _.Post.Json(new ApplicationSubmissionRequest(savedDraftApplication.Id!)).ToUrl($"/api/applications");
+      _.StatusCodeShouldBe(HttpStatusCode.BadRequest);
+    });
+
+    //test cleanup
+    await applicationRepository.CancelApplicationForUnitTest(savedDraftApplication.Id!, CancellationToken.None);
   }
 
   private static Transcript CreateTranscript()

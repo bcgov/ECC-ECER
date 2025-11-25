@@ -13,6 +13,7 @@ public class Configurer : IConfigureComponents
     configurationContext.Services.AddTransient<NewApplicationSubmissionValidationEngine>();
     configurationContext.Services.AddTransient<LabourMobilityApplicationSubmissionValidationEngine>();
     configurationContext.Services.AddTransient<ApplicationRenewalValidationEngine>();
+    configurationContext.Services.AddTransient<IcraApplicationSubmissionValidationEngine>();
     configurationContext.Services.AddTransient<IApplicationValidationEngineResolver, ApplicationValidationEngineResolver>();
     configurationContext.Services.AddTransient<IApplicationValidationEngine>(provider =>
     {

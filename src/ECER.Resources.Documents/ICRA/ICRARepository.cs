@@ -109,19 +109,6 @@ internal sealed partial class ICRARepository : IICRARepository
     return icraEligibilityId;
   }
 
-  //This method is used for our unit tests to disable eligibility applications so multiple tests so not conflict
-  public async Task<string> SetIneligibleForUnitTests(string icraEligibilityId, CancellationToken cancellationToken)
-  {
-    await Task.CompletedTask;
-    var icra = context.ecer_ICRAEligibilityAssessmentSet.FirstOrDefault(d => d.ecer_ICRAEligibilityAssessmentId == Guid.Parse(icraEligibilityId) && d.ecer_ApplicantIdName.Contains("TEST"));
-    if (icra == null) throw new InvalidOperationException($"ICRA Eligibility '{icraEligibilityId}' not found or this application does not belong to a test account");
-
-    icra.StatusCode = ecer_ICRAEligibilityAssessment_StatusCode.Ineligible;
-    context.UpdateObject(icra);
-    context.SaveChanges();
-    return icraEligibilityId;
-  }
-
   public async Task<string> SubmitEmploymentReference(string referenceId, ICRAWorkExperienceReferenceSubmissionRequest request, CancellationToken cancellationToken)
   {
     await Task.CompletedTask;
@@ -152,5 +139,31 @@ internal sealed partial class ICRARepository : IICRARepository
     context.UpdateObject(workExperienceReference);
     context.SaveChanges();
     return workExperienceReference.ecer_WorkExperienceRefId.ToString()!;
+  }
+
+  public async Task LinkIcraEligibilityToIcraApplication(string applicationId, string icraEligibilityId, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var application = context.ecer_ApplicationSet.SingleOrDefault(app => app.Id == Guid.Parse(applicationId));
+    if (application == null) throw new InvalidOperationException($"application '{applicationId}' not found");
+
+    var icraEligibility = context.ecer_ICRAEligibilityAssessmentSet.SingleOrDefault(c => c.ecer_ICRAEligibilityAssessmentId == Guid.Parse(icraEligibilityId));
+    if (icraEligibility == null) throw new InvalidOperationException($"Icra eligibility '{icraEligibilityId}' not found");
+
+    context.AddLink(icraEligibility, ecer_ICRAEligibilityAssessment.Fields.ecer_icraeligibilityassessment_ApplicationId, application);
+    context.SaveChanges();
+  }
+
+  //This method is used for our unit tests to disable eligibility applications so multiple tests do not conflict
+  public async Task<string> SetIcraEligibilityForUnitTests(string icraEligibilityId, bool eligible, CancellationToken cancellationToken)
+  {
+    await Task.CompletedTask;
+    var icra = context.ecer_ICRAEligibilityAssessmentSet.FirstOrDefault(d => d.ecer_ICRAEligibilityAssessmentId == Guid.Parse(icraEligibilityId) && d.ecer_ApplicantIdName.Contains("TEST"));
+    if (icra == null) throw new InvalidOperationException($"ICRA Eligibility '{icraEligibilityId}' not found or this application does not belong to a test account");
+
+    icra.StatusCode = eligible ? ecer_ICRAEligibilityAssessment_StatusCode.Eligible : ecer_ICRAEligibilityAssessment_StatusCode.Ineligible;
+    context.UpdateObject(icra);
+    context.SaveChanges();
+    return icraEligibilityId;
   }
 }
