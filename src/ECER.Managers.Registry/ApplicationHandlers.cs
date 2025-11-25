@@ -413,7 +413,8 @@ public class ApplicationHandlers(
     return new AddProfessionalDevelopmentResult() { ApplicationId = applicationId, IsSuccess = true };
   }
 
-  /*This method is specific for ICRA applications where we need to inject the employment references that were approved */
+  /*This method is specific for ICRA applications where we need to attach the application to icra eligility which will trigger a dynamics power automate flow to link up
+   * international certificates and work references */
 
   private async Task<bool> LinkIcraEligibilityToIcraApplication(Contract.Applications.Application application, string userId, CancellationToken cancellationToken)
   {
