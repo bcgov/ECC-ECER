@@ -26,6 +26,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   private IServiceScope serviceScope = null!;
   private ecer_PostSecondaryInstitute testPostSecondaryInstitute = null!;
   private ecer_ECEProgramRepresentative testProgramRepresentative = null!;
+  private ecer_ECEProgramRepresentative secondaryProgramRepresentative = null!;
+  private ecer_PostSecondaryInstitute otherPostSecondaryInstitute = null!;
+  private ecer_ECEProgramRepresentative otherInstituteRepresentative = null!;
   private ecer_PortalInvitation testPortalInvitationOne = null!;
   private UserIdentity testPspIdentity = null!;
 
@@ -33,6 +36,8 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   public UserIdentity AuthenticatedPspUserIdentity => testPspIdentity;
   public string AuthenticatedPspUserId => testProgramRepresentative.Id.ToString();
   public string PostSecondaryInstituteId => testPostSecondaryInstitute.ecer_PostSecondaryInstituteId?.ToString() ?? string.Empty;
+  public string SecondaryPspUserId => secondaryProgramRepresentative.Id.ToString();
+  public string OtherInstitutePspUserId => otherInstituteRepresentative.Id.ToString();
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
@@ -64,6 +69,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     testPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context);
     testProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute);
     testPspIdentity = GetOrAddProgramRepresentativeIdentity(context, testProgramRepresentative);
+    secondaryProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute, $"{TestRunId}psp_rep_secondary", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Invited);
+    otherPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context, $"{TestRunId}psp_institute_other");
+    otherInstituteRepresentative = GetOrAddProgramRepresentative(context, otherPostSecondaryInstitute, $"{TestRunId}psp_rep_other", ecer_RepresentativeRole.Secondary, ecer_AccessToPortal.Active);
     testPortalInvitationOne = GetOrAddPortalInvitation_PspProgramRepresentative(context, testProgramRepresentative, $"{TestRunId}psp_invite1");
 
     context.SaveChanges();
@@ -75,9 +83,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     context.SaveChanges();
   }
 
-  private ecer_PostSecondaryInstitute GetOrAddPostSecondaryInstitute(EcerContext context)
+  private ecer_PostSecondaryInstitute GetOrAddPostSecondaryInstitute(EcerContext context, string? nameOverride = null)
   {
-    var instituteName = $"{TestRunId}psp_institute";
+    var instituteName = nameOverride ?? $"{TestRunId}psp_institute";
     var institute = context.ecer_PostSecondaryInstituteSet.FirstOrDefault(i => i.ecer_Name == instituteName);
 
     if (institute == null)
@@ -97,9 +105,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
     return institute;
   }
 
-  private ecer_ECEProgramRepresentative GetOrAddProgramRepresentative(EcerContext context, ecer_PostSecondaryInstitute institute)
+  private ecer_ECEProgramRepresentative GetOrAddProgramRepresentative(EcerContext context, ecer_PostSecondaryInstitute institute, string? repNameOverride = null, ecer_RepresentativeRole role = ecer_RepresentativeRole.Primary, ecer_AccessToPortal access = ecer_AccessToPortal.Active)
   {
-    var repName = $"{TestRunId}psp_rep";
+    var repName = repNameOverride ?? $"{TestRunId}psp_rep";
     var representative = context.ecer_ECEProgramRepresentativeSet.FirstOrDefault(r => r.ecer_FirstName == repName);
 
     if (representative == null)
@@ -118,6 +126,7 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
         ecer_PhoneExtension = "123",
         ecer_Role = "Program Representative",
         ecer_RepresentativeRole = ecer_RepresentativeRole.Primary,
+        ecer_AccessToPortal = access,
         ecer_HasAcceptedTermsofUse = true,
         StateCode = ecer_eceprogramrepresentative_statecode.Active,
         StatusCode = ecer_ECEProgramRepresentative_StatusCode.Active,
@@ -127,6 +136,9 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
       context.AddLink(representative, new Relationship(ecer_ECEProgramRepresentative.Fields.ecer_eceprogramrepresentative_PostSecondaryIns), institute);
     }
 
+    representative.ecer_RepresentativeRole = role;
+    representative.ecer_AccessToPortal = access;
+    context.UpdateObject(representative);
     return representative;
   }
 
