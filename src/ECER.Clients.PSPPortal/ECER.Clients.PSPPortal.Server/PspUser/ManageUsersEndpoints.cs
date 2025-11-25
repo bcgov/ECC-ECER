@@ -55,6 +55,11 @@ public class ManageUsersEndpoints : IRegisterEndpoints
           return TypedResults.NotFound();
         }
         
+        if (targetRep.Profile.Role == (Managers.Registry.Contract.PspUsers.PspUserRole?)PspUserRole.Primary)
+        {
+          return TypedResults.BadRequest("Cannot deactivate the primary representative. Please set another representative as primary before deactivating this user.");
+        }
+        
         if (user.UserId == programRepId)
         {
           return TypedResults.BadRequest("Cannot deactivate your own account");
@@ -68,7 +73,7 @@ public class ManageUsersEndpoints : IRegisterEndpoints
       .WithParameterValidation();
 
     endpointRouteBuilder.MapPost("api/users/manage/{programRepId}/set-primary",
-      async Task<Results<Ok, NotFound>> (string programRepId, HttpContext ctx, CancellationToken ct, IMediator bus) =>
+      async Task<Results<Ok, NotFound, BadRequest<string>>> (string programRepId, HttpContext ctx, CancellationToken ct, IMediator bus) =>
       {
         if (!Guid.TryParse(programRepId, out _))
         {
@@ -86,6 +91,11 @@ public class ManageUsersEndpoints : IRegisterEndpoints
         if (targetRep == null || targetRep.PostSecondaryInstituteId != currentRep.PostSecondaryInstituteId)
         {
           return TypedResults.NotFound();
+        }
+        
+        if(targetRep.AccessToPortal != (Managers.Registry.Contract.PspUsers.PortalAccessStatus?)PortalAccessStatus.Active)
+        {
+          return TypedResults.BadRequest("Cannot set a representative who does not have active portal access as primary.");
         }
 
         await bus.Send(new SetPrimaryPspRepCommand(programRepId), ct);

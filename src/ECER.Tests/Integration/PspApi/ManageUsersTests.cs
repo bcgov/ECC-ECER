@@ -1,6 +1,5 @@
 using Alba;
 using ECER.Clients.PSPPortal.Server.Users;
-using ECER.Managers.Registry.Contract.PspUsers;
 using ECER.Resources.Accounts.PspReps;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -60,20 +59,60 @@ public class ManageUsersTests : PspPortalWebAppScenarioBase
   }
 
   [Fact]
-  public async Task SetPrimaryUser_SwitchesPrimaryRepresentative()
+  public async Task SetPrimaryUser_CannotSetDisabledAsPrimary_ReturnsBadRequest()
   {
     await Host.Scenario(_ =>
     {
       _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
-      _.Post.Url($"/api/users/manage/{Fixture.SecondaryPspUserId}/set-primary");
+      _.Post.Url($"/api/users/manage/{Fixture.AuthenticatedPspUserId}/set-primary");
       _.StatusCodeShouldBeOk();
+    }); 
+    
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Post.Url($"/api/users/manage/{Fixture.SecondaryPspUserId}/set-primary");
+      _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
     });
 
     var repo = Fixture.Services.GetRequiredService<IPspRepRepository>();
     var current = (await repo.Query(new PspRepQuery { ById = Fixture.AuthenticatedPspUserId }, CancellationToken.None)).Single();
     var target = (await repo.Query(new PspRepQuery { ById = Fixture.SecondaryPspUserId }, CancellationToken.None)).Single();
 
+    target.Profile.Role.ShouldBe(RepoPspUserRole.Secondary);
+    current.Profile.Role.ShouldBe(RepoPspUserRole.Primary);
+  }
+  
+  [Fact]
+  public async Task SetPrimaryUser_SwitchesPrimaryRepresentative()
+  {
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Post.Url($"/api/users/manage/{Fixture.TertiaryPspUserId}/set-primary");
+      _.StatusCodeShouldBeOk();
+    });
+
+    var repo = Fixture.Services.GetRequiredService<IPspRepRepository>();
+    var current = (await repo.Query(new PspRepQuery { ById = Fixture.AuthenticatedPspUserId }, CancellationToken.None)).Single();
+    var target = (await repo.Query(new PspRepQuery { ById = Fixture.TertiaryPspUserId }, CancellationToken.None)).Single();
+
     target.Profile.Role.ShouldBe(RepoPspUserRole.Primary);
     current.Profile.Role.ShouldBe(RepoPspUserRole.Secondary);
+  }
+  
+  [Fact]
+  public async Task DeactivateUser_CannotDeactivateSelf_ReturnsBadRequest()
+  {
+    await Host.Scenario(_ =>
+    {
+      _.WithPspUser(Fixture.AuthenticatedPspUserIdentity, Fixture.AuthenticatedPspUserId, true);
+      _.Post.Url($"/api/users/manage/{Fixture.AuthenticatedPspUserId}/deactivate");
+      _.StatusCodeShouldBe(System.Net.HttpStatusCode.BadRequest);
+    });
+
+    var repo = Fixture.Services.GetRequiredService<IPspRepRepository>();
+    var self = (await repo.Query(new PspRepQuery { ById = Fixture.AuthenticatedPspUserId }, CancellationToken.None)).Single();
+    self.AccessToPortal.ShouldBe(RepoPortalAccessStatus.Active);
   }
 }
