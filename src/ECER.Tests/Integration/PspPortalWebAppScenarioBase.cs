@@ -3,8 +3,7 @@ using ECER.Utilities.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Xrm.Sdk.Client;
-using System.Globalization;
+using Microsoft.Xrm.Sdk;
 using Xunit.Abstractions;
 
 namespace ECER.Tests.Integration.PspApi;
@@ -25,29 +24,28 @@ public abstract class PspPortalWebAppScenarioBase : WebAppScenarioBase
 public class PspPortalWebAppFixture : WebAppFixtureBase
 {
   private IServiceScope serviceScope = null!;
-  private ecer_Application inProgressTestApplication = null!;
+  private ecer_PostSecondaryInstitute testPostSecondaryInstitute = null!;
+  private ecer_ECEProgramRepresentative testProgramRepresentative = null!;
   private ecer_PortalInvitation testPortalInvitationOne = null!;
+  private UserIdentity testPspIdentity = null!;
 
-  public Contact AuthenticatedBcscUser { get; set; } = null!;
   public IServiceProvider Services => serviceScope.ServiceProvider;
-  public UserIdentity AuthenticatedBcscUserIdentity => AuthenticatedBcscUser.ecer_contact_ecer_authentication_455.Select(a => new UserIdentity(a.ecer_ExternalID, a.ecer_IdentityProvider)).First();
-  public string AuthenticatedBcscUserId => AuthenticatedBcscUser.Id.ToString();
-  public string inProgressApplicationId => inProgressTestApplication.Id.ToString();
+  public UserIdentity AuthenticatedPspUserIdentity => testPspIdentity;
+  public string AuthenticatedPspUserId => testProgramRepresentative.Id.ToString();
+  public string PostSecondaryInstituteId => testPostSecondaryInstitute.ecer_PostSecondaryInstituteId?.ToString() ?? string.Empty;
   public Guid portalInvitationOneId => testPortalInvitationOne.ecer_PortalInvitationId ?? Guid.Empty;
 
   protected override void AddAuthorizationOptions(AuthorizationOptions opts)
   {
     ArgumentNullException.ThrowIfNull(opts);
-    opts.AddPolicy("registry_verified_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_verified_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
-    opts.AddPolicy("registry_new_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_new_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
-    opts.AddPolicy("registry_unverified_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_unverified_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
-    opts.AddPolicy("registry_user", new AuthorizationPolicyBuilder(opts.GetPolicy("registry_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
-    opts.DefaultPolicy = opts.GetPolicy("registry_verified_user")!;
+    opts.AddPolicy("psp_user", new AuthorizationPolicyBuilder(opts.GetPolicy("psp_user")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+    opts.AddPolicy("psp_user_has_accepted_terms", new AuthorizationPolicyBuilder(opts.GetPolicy("psp_user_has_accepted_terms")!).AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).Build());
+    opts.DefaultPolicy = opts.GetPolicy("psp_user")!;
   }
 
   public override async Task InitializeAsync()
   {
-    Host = await CreateHost<Clients.RegistryPortal.Server.Program>();
+    Host = await CreateHost<Clients.PSPPortal.Server.Program>();
     serviceScope = Host.Services.CreateScope();
     var context = serviceScope.ServiceProvider.GetRequiredService<EcerContext>();
     await InitializeDataverseTestData(context);
@@ -63,82 +61,98 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
   {
     await Task.CompletedTask;
 
-    AuthenticatedBcscUser = GetOrAddApplicant(context, "bcsc", $"{TestRunId}_user1");
-    inProgressTestApplication = GetOrAddApplication(context, AuthenticatedBcscUser, ecer_Application_StatusCode.InProgress);
-    testPortalInvitationOne = GetOrAddPortalInvitation_PspProgramRepresentative(context, AuthenticatedBcscUser, "name1");
+    testPostSecondaryInstitute = GetOrAddPostSecondaryInstitute(context);
+    testProgramRepresentative = GetOrAddProgramRepresentative(context, testPostSecondaryInstitute);
+    testPspIdentity = GetOrAddProgramRepresentativeIdentity(context, testProgramRepresentative);
+    testPortalInvitationOne = GetOrAddPortalInvitation_PspProgramRepresentative(context, testProgramRepresentative, $"{TestRunId}psp_invite1");
 
     context.SaveChanges();
 
     //load dependent properties
-    context.Attach(AuthenticatedBcscUser);
-    context.LoadProperty(AuthenticatedBcscUser, Contact.Fields.ecer_contact_ecer_authentication_455);
+    context.Attach(testProgramRepresentative);
+    context.LoadProperty(testProgramRepresentative, ecer_ECEProgramRepresentative.Fields.ecer_authentication_eceprogramrepresentative);
 
     context.SaveChanges();
   }
 
-  private Contact GetOrAddApplicant(EcerContext context, string identityProvider, string userId)
+  private ecer_PostSecondaryInstitute GetOrAddPostSecondaryInstitute(EcerContext context)
   {
-    var contact = (from a in context.ecer_AuthenticationSet
-                   join c in context.ContactSet on a.ecer_contact_ecer_authentication_455.ContactId equals c.ContactId into contacts
-                   from c in contacts.DefaultIfEmpty()
-                   where a.ecer_IdentityProvider == identityProvider && a.ecer_ExternalID == userId && c.ecer_IsVerified == true
-                   select c).SingleOrDefault();
+    var instituteName = $"{TestRunId}psp_institute";
+    var institute = context.ecer_PostSecondaryInstituteSet.FirstOrDefault(i => i.ecer_Name == instituteName);
 
-    if (contact == null)
+    if (institute == null)
     {
-      contact = new Contact
+      var instituteId = Guid.NewGuid();
+      institute = new ecer_PostSecondaryInstitute
       {
-        FirstName = "psp_test1",
-        LastName = "psp_test1",
-        MiddleName = "psp_test1",
-        Address1_Telephone1 = "1234567890",
-        EMailAddress1 = "test@test.com",
-        ecer_IsVerified = true,
-        StatusCode = Contact_StatusCode.Verified,
-        BirthDate = DateTime.Parse("2000-03-15", CultureInfo.InvariantCulture),
+        Id = instituteId,
+        ecer_PostSecondaryInstituteId = instituteId,
+        ecer_Name = instituteName,
+        ecer_City = "Victoria"
       };
 
-      var authentication = new ecer_Authentication
-      {
-        ecer_IdentityProvider = identityProvider,
-        ecer_ExternalID = userId
-      };
-      context.AddObject(authentication);
-      context.AddObject(contact);
-      context.AddLink(authentication, ecer_Authentication.Fields.ecer_contact_ecer_authentication_455, contact);
+      context.AddObject(institute);
     }
 
-    return contact;
+    return institute;
   }
 
-  private ecer_Application GetOrAddApplication(EcerContext context, Contact applicant, ecer_Application_StatusCode status)
+  private ecer_ECEProgramRepresentative GetOrAddProgramRepresentative(EcerContext context, ecer_PostSecondaryInstitute institute)
   {
-    var application = (from a in context.ecer_ApplicationSet
-                       where a.ecer_Applicantid.Id == applicant.Id && a.ecer_isECE5YR == true && a.StatusCode == status
-                       select a).FirstOrDefault();
+    var repName = $"{TestRunId}psp_rep";
+    var representative = context.ecer_ECEProgramRepresentativeSet.FirstOrDefault(r => r.ecer_FirstName == repName);
 
-    if (application == null)
+    if (representative == null)
     {
-      application = new ecer_Application
+      var repId = Guid.NewGuid();
+      representative = new ecer_ECEProgramRepresentative
+      {
+        Id = repId,
+        ecer_ECEProgramRepresentativeId = repId,
+        ecer_Name = $"{repName}_name",
+        ecer_FirstName = repName,
+        ecer_LastName = "autotest",
+        ecer_PreferredFirstName = repName,
+        ecer_EmailAddress = "psp_rep@test.gov.bc.ca",
+        ecer_PhoneNumber = "5555555555",
+        ecer_PhoneExtension = "123",
+        ecer_Role = "Program Representative",
+        ecer_RepresentativeRole = ecer_RepresentativeRole.Primary,
+        ecer_HasAcceptedTermsofUse = true,
+        StateCode = ecer_eceprogramrepresentative_statecode.Active,
+        StatusCode = ecer_ECEProgramRepresentative_StatusCode.Active,
+        ecer_PostSecondaryInstitute = new EntityReference(ecer_PostSecondaryInstitute.EntityLogicalName, institute.Id)
+      };
+      context.AddObject(representative);
+      context.AddLink(representative, new Relationship(ecer_ECEProgramRepresentative.Fields.ecer_eceprogramrepresentative_PostSecondaryIns), institute);
+    }
+
+    return representative;
+  }
+
+  private UserIdentity GetOrAddProgramRepresentativeIdentity(EcerContext context, ecer_ECEProgramRepresentative representative)
+  {
+    var identity = new UserIdentity($"{TestRunId}psp_user1", "bceidbusiness");
+    var authentication = context.ecer_AuthenticationSet.FirstOrDefault(a => a.ecer_IdentityProvider == identity.IdentityProvider && a.ecer_ExternalID == identity.UserId);
+
+    if (authentication == null)
+    {
+      authentication = new ecer_Authentication
       {
         Id = Guid.NewGuid(),
-        ecer_isECE5YR = true,
-        StatusCode = status,
-        StateCode = ecer_application_statecode.Active,
-        ecer_CertificateType = "ECE 5 YR",
+        ecer_IdentityProvider = identity.IdentityProvider,
+        ecer_ExternalID = identity.UserId
       };
-      context.AddObject(application);
-      context.AddLink(application, ecer_Application.Fields.ecer_application_Applicantid_contact, applicant);
+      context.AddObject(authentication);
+      context.AddLink(authentication, new Relationship(ecer_Authentication.Fields.ecer_authentication_eceprogramrepresentative), representative);
     }
-    return application;
+
+    return identity;
   }
 
-  private ecer_PortalInvitation GetOrAddPortalInvitation_PspProgramRepresentative(EcerContext context, Contact registrant, string name)
+  private ecer_PortalInvitation GetOrAddPortalInvitation_PspProgramRepresentative(EcerContext context, ecer_ECEProgramRepresentative representative, string name)
   {
-    var portalInvitation = context.ecer_PortalInvitationSet.FirstOrDefault(p => p.ecer_ApplicantId != null &&
-                                                                                p.ecer_ApplicationId != null &&
-                                                                                p.ecer_Name == name &&
-                                                                                p.ecer_CharacterReferenceId != null &&
+    var portalInvitation = context.ecer_PortalInvitationSet.FirstOrDefault(p => p.ecer_Name == name &&
                                                                                 p.StatusCode == ecer_PortalInvitation_StatusCode.Sent &&
                                                                                 p.ecer_Type == ecer_PortalInvitationTypes.PSIProgramRepresentative);
 
@@ -150,16 +164,15 @@ public class PspPortalWebAppFixture : WebAppFixtureBase
         Id = guid,
         ecer_PortalInvitationId = guid,
         ecer_Name = name,
-        ecer_FirstName = "psp_autotest_charref_first",
-        ecer_LastName = "psp_autotest_charref_last",
-        ecer_EmailAddress = "reference_test@test.gov.bc.ca",
+        ecer_FirstName = representative.ecer_FirstName,
+        ecer_LastName = representative.ecer_LastName,
+        ecer_EmailAddress = representative.ecer_EmailAddress,
         StatusCode = ecer_PortalInvitation_StatusCode.Sent,
         ecer_Type = ecer_PortalInvitationTypes.PSIProgramRepresentative,
       };
 
       context.AddObject(portalInvitation);
-      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicantId, registrant);
-      context.AddLink(portalInvitation, ecer_PortalInvitation.Fields.ecer_portalinvitation_ApplicationId, inProgressTestApplication);
+      context.AddLink(portalInvitation, new Relationship(ecer_PortalInvitation.Fields.ecer_portalinvitation_psiprogramrepresentativeid), representative);
     }
 
     return portalInvitation;

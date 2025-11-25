@@ -1,5 +1,5 @@
 ﻿using Alba;
-using ECER.Clients.RegistryPortal.Server.References;
+using ECER.Clients.PSPPortal.Server.PortalInvitations;
 using ECER.Managers.Admin.Contract.PortalInvitations;
 using ECER.Managers.Registry.Contract.PortalInvitations;
 using MediatR;
