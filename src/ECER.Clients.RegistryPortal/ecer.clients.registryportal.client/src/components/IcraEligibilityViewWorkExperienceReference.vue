@@ -1,9 +1,9 @@
 <template>
-  <Loading v-if="loadingStore.isLoading('icra_status_get')" />
+  <Loading v-if="loadingStore.isLoading('icra_work_reference_by_id_get')" />
   <v-container v-else>
     <Breadcrumb />
 
-    <h1 class="mb-6">Employment experience reference</h1>
+    <h1 class="mb-4">Employment experience reference</h1>
 
     <p class="mb-8">
       We sent an email to the following person to request a reference.
@@ -11,23 +11,23 @@
 
     <v-row class="mb-12">
       <v-col cols="12" md="6">
-        <div class="detail-block">
-          <strong class="detail-label">Name</strong>
-          <div class="detail-value">
+        <div class="mb-6">
+          <strong class="d-block mb-1">Name</strong>
+          <div>
             {{ fullName || "Not available" }}
           </div>
         </div>
 
-        <div class="detail-block">
-          <strong class="detail-label">Phone number</strong>
-          <div class="detail-value">
+        <div class="mb-6">
+          <strong class="d-block mb-1">Phone number</strong>
+          <div>
             {{ phoneNumber || "Not provided" }}
           </div>
         </div>
 
-        <div class="detail-block">
-          <strong class="detail-label">Email</strong>
-          <div class="detail-value">
+        <div class="mb-6">
+          <strong class="d-block mb-1">Email</strong>
+          <div>
             {{ emailAddress || "Not available" }}
           </div>
         </div>
@@ -35,9 +35,9 @@
     </v-row>
 
 
-    <div class="section-divider mb-4"></div>
+    <ECEHeader class="mb-6" title="Options" />
 
-    <h2 class="mb-6">Options</h2>
+    <div class="mb-6"></div>
 
     <section class="mb-10">
       <h3 class="mb-3">Resend email</h3>
@@ -52,9 +52,9 @@
         If they do not receive the email:
       </p>
 
-      <ul class="mb-4 ml-6 bullet-list">
-        <li class="mb-4">Ask the person to check their spam folder</li>
-        <li>Check you provided the correct email address</li>
+      <ul class="ml-6 mb-4">
+        <li class="mb-2">Ask the person to check their spam folder</li>
+        <li class="mb-2">Check you provided the correct email address</li>
       </ul>
 
       <p class="mb-6">
@@ -65,8 +65,8 @@
       <v-btn
         variant="outlined"
         color="primary"
-        :loading="resending"
-        :disabled="resending || !selectedReference"
+        :loading="loadingStore.isLoading('icra_work_reference_resend_invite_post')"
+        :disabled="!employmentReference || loadingStore.isLoading('icra_work_reference_resend_invite_post')"
         @click.stop.prevent="onResendClick"
       >
         Resend email
@@ -95,16 +95,20 @@ import { useDisplay } from "vuetify";
 import type { Components } from "@/types/openapi";
 import { cleanPreferredName } from "@/utils/functions";
 
-import { getIcraEligibilityStatus, resendIcraEligibilityWorkExperienceReferenceInvite } from "@/api/icra";
+import {
+  getIcraWorkExperienceReferenceById,
+  resendIcraEligibilityWorkExperienceReferenceInvite,
+} from "@/api/icra";
 
 import Breadcrumb from "@/components/Breadcrumb.vue";
 import Loading from "./Loading.vue";
+import ECEHeader from "@/components/ECEHeader.vue";
 
 import { useLoadingStore } from "@/store/loading";
 
 export default defineComponent({
   name: "IcraEligibilityViewWorkExperienceReference",
-  components: { Breadcrumb, Loading },
+  components: { Breadcrumb, Loading, ECEHeader },
   props: {
     icraEligibilityId: {
       type: String,
@@ -128,110 +132,48 @@ export default defineComponent({
   },
   data() {
     return {
-      icraEligibilityStatus: {} as Components.Schemas.ICRAEligibilityStatus,
-      resending: false as boolean,
+      employmentReference: null as Components.Schemas.EmploymentReference | null,
     };
   },
   async mounted() {
-    this.icraEligibilityStatus =
-      (await getIcraEligibilityStatus(this.icraEligibilityId))?.data || {};
+    const response = await getIcraWorkExperienceReferenceById(this.referenceId);
+    this.employmentReference = response.data || null;
   },
   computed: {
-    employmentReferences():
-      Components.Schemas.EmploymentReferenceStatus[] {
-      return this.icraEligibilityStatus?.employmentReferencesStatus ?? [];
-    },
-    selectedReference():
-      | Components.Schemas.EmploymentReferenceStatus
-      | undefined {
-      return this.employmentReferences.find(
-        (ref) => ref.id?.toString() === this.referenceId
-      );
-    },
     fullName(): string {
-      if (!this.selectedReference) return "";
+      if (!this.employmentReference) return "";
       return cleanPreferredName(
-        this.selectedReference.firstName,
-        this.selectedReference.lastName
+        this.employmentReference.firstName,
+        this.employmentReference.lastName
       );
     },
     phoneNumber(): string | null | undefined {
-      return this.selectedReference?.phoneNumber ?? null;
+      return this.employmentReference?.phoneNumber ?? null;
     },
     emailAddress(): string | null | undefined {
-      return this.selectedReference?.emailAddress ?? null;
+      return this.employmentReference?.emailAddress ?? null;
     },
   },
   methods: {
     cleanPreferredName,
     async onResendClick() {
-      if (this.resending) return;
-      if (!this.selectedReference) return;
+      if (!this.employmentReference) return;
 
-      this.resending = true;
-      try {
-        await resendIcraEligibilityWorkExperienceReferenceInvite(
-          this.icraEligibilityId,
-          this.referenceId,
-        );
-      } finally {
-        this.resending = false;
-      }
+      await resendIcraEligibilityWorkExperienceReferenceInvite(
+        this.icraEligibilityId,
+        this.referenceId,
+      );
     },
     onChangeReferenceClick() {
       this.router.push({
-        name: "icra-eligibility-add-work-experience-reference",
+        name: "icra-eligibility-replace-work-experience-reference",
         params: {
           icraEligibilityId: this.icraEligibilityId,
+          referenceId: this.referenceId,
         },
       });
-    },
-  }
+    }
+  },
 });
 </script>
 
-<style scoped>
-.mb-2 {
-  margin-bottom: 0.5rem;
-}
-.mb-3 {
-  margin-bottom: 0.75rem;
-}
-.mb-4 {
-  margin-bottom: 1rem;
-}
-.mb-6 {
-  margin-bottom: 1.5rem;
-}
-.mb-8 {
-  margin-bottom: 2rem;
-}
-.mb-10 {
-  margin-bottom: 2.5rem;
-}
-.mb-12 {
-  margin-bottom: 3rem;
-}
-.ml-6 {
-  margin-left: 1.5rem;
-}
-
-.detail-block {
-  margin-bottom: 2rem;
-}
-
-.detail-label {
-  display: block;
-  margin-bottom: 0.4rem;
-}
-
-.section-divider {
-  width: 40px;
-  height: 4px;
-  background-color: #f2a900;
-}
-
-.bullet-list li {
-  line-height: 1.5;
-}
-</style>

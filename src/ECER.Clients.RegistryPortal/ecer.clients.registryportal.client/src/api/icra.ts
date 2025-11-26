@@ -88,6 +88,20 @@ const replaceIcraEligibilityWorkExperienceReference = async (
   });
 };
 
+const getIcraWorkExperienceReferenceById = async (
+  workExperienceReferenceId: string,
+): Promise<ApiResponse<Components.Schemas.EmploymentReference | null | undefined>> => {
+  const client = await getClient();
+  const pathParameters = {
+    workExperienceReferenceId,
+  };
+
+  return apiResultHandler.execute<Components.Schemas.EmploymentReference | null | undefined>({
+    request: client.icra_work_reference_by_id_get(pathParameters),
+    key: "icra_work_reference_by_id_get",
+  });
+};
+
 const resendIcraEligibilityWorkExperienceReferenceInvite = async (
   icraEligibilityId: string,
   referenceId: string,
@@ -105,11 +119,15 @@ const resendIcraEligibilityWorkExperienceReferenceInvite = async (
 };
 
 
+
+
+
 export {
   addIcraEligibilityWorkExperienceReference,
   createOrUpdateDraftIcraEligibility,
   getIcraEligibilities,
   getIcraEligibilityStatus,
+  getIcraWorkExperienceReferenceById,
   replaceIcraEligibilityWorkExperienceReference,
   submitIcraEligibilityApplication,
   resendIcraEligibilityWorkExperienceReferenceInvite
