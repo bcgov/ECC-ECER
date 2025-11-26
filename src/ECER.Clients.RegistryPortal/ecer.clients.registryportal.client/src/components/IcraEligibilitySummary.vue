@@ -240,7 +240,7 @@ export default defineComponent({
       }
     },
     stepThreeIcon() {
-      return "mdi-arrow-right";
+      return this.currentStep === 3 ? "mdi-arrow-right" : "";
     },
     stepTwoStatusText() {
       switch (this.currentStep) {
@@ -253,7 +253,7 @@ export default defineComponent({
       }
     },
     stepThreeStatusText() {
-      return "Not yet started";
+      return this.currentStep === 3 ? "In progress" : "Not yet started";
     },
     showOtherInformation(): boolean {
       return (
