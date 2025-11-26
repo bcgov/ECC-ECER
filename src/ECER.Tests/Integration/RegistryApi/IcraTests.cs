@@ -1,7 +1,7 @@
 ﻿using Alba;
 using Bogus;
 using ECER.Clients.RegistryPortal.Server.ICRA;
-using ECER.Resources.Documents.ICRA;
+using ECER.Resources.E2ETests.UnitTest;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Net;
@@ -12,11 +12,11 @@ namespace ECER.Tests.Integration.RegistryApi;
 
 public class IcraTests : RegistryPortalWebAppScenarioBase
 {
-  private readonly IICRARepository repository;
+  private readonly IUnitTestRepository repository;
 
   public IcraTests(ITestOutputHelper output, RegistryPortalWebAppFixture fixture) : base(output, fixture)
   {
-    repository = Fixture.Services.GetRequiredService<IICRARepository>();
+    repository = Fixture.Services.GetRequiredService<IUnitTestRepository>();
   }
 
   private readonly Faker faker = new Faker("en_CA");
@@ -446,6 +446,6 @@ public class IcraTests : RegistryPortalWebAppScenarioBase
   //private method to set eligibilty application to ineligible so multiple tests do not conflict for one another with the same user
   private async Task SetEligibilityToIneligible(string eligibilityId)
   {
-    await repository.SetIneligibleForUnitTests(eligibilityId, CancellationToken.None);
+    await repository.SetIcraEligibility(eligibilityId, false, CancellationToken.None);
   }
 }

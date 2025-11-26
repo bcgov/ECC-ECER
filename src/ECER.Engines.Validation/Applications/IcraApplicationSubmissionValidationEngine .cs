@@ -12,7 +12,7 @@ internal sealed class IcraApplicationSubmissionValidationEngine : IApplicationVa
 
     if (!application.CertificationTypes.Contains(CertificationType.FiveYears))
     {
-      validationErrors.Add("Application is not associated with a five year certification type");
+      validationErrors.Add("application is not associated with a five year certification type");
     }
 
     // each application should contain at least one education

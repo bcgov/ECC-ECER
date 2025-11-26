@@ -57,7 +57,7 @@ public class ApplicationsEndpoints : IRegisterEndpoints
           {
             return TypedResults.NotFound();
           }
-          if (!result.IsSuccess && result.Error == SubmissionError.DraftApplicationValidationFailed || result.Error == SubmissionError.SubmittedApplicationAlreadyExists)
+          if (!result.IsSuccess && result.Error == SubmissionError.DraftApplicationValidationFailed || result.Error == SubmissionError.SubmittedApplicationAlreadyExists || result.Error == SubmissionError.MissingApprovedIcraEligibility)
           {
             var problemDetails = new ProblemDetails
             {
